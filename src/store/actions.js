@@ -1,0 +1,114 @@
+import * as types from "./mutation-types";
+import Vue from "vue";
+const vm = new Vue(); //vm等同于this
+
+import { getCaptchaApi,loginInApi,getMenuApi, loginOutApi } from "@/api/login";
+
+import Cookies from "@/js/cookies";
+const actions = {
+  //默认加载最短时间1秒
+  setLoadingState({ commit, state }, status) {
+    let clearTime;
+    let time = new Date().getTime();
+    if (status) {
+      commit(types.COM_LOADINGTIME, time);
+      commit(types.COM_LOADING_STATUS, status);
+      clearTimeout(clearTime);
+    } else {
+      var b = time - state.loadingTime;
+      if (b < 1000) {
+        clearTime = setInterval(function() {
+          commit(types.COM_LOADING_STATUS, status);
+          commit(types.COM_LOADINGTIME, 0);
+          clearTimeout(clearTime);
+        }, 1000 - b);
+      } else {
+        commit(types.COM_LOADING_STATUS, status);
+        commit(types.COM_LOADINGTIME, 0);
+        clearTimeout(clearTime);
+      }
+    }
+  },
+  //获取验证码
+  getCaptcha(){
+    return new Promise((resolve,reject)=>{
+      getCaptchaApi().then(
+        res=>{
+          console.log('验证码',res);
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+
+  // 用户名登录
+  loginIn({ commit }, userInfo) {
+    return new Promise((resolve, reject) => {
+      loginInApi(userInfo)
+        .then(
+          response => {
+            console.log("loginIn response", response);
+            commit(types.SET_AUTHTOKEN, response.date); //token
+            // Cookies.set("menu", "customerService");
+            resolve(response);
+          },
+          error => {
+            reject(error);
+          }
+        )
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  //获取菜单
+  getMenu(){
+    return new Promise((resolve,reject)=>{
+      getMenuApi().then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+  //添加tab
+  addTabs({ commit }, data) {
+    commit(types.ADD_TABS, data);
+  },
+  //删除tab
+  deleteTabs({ commit }, data) {
+    commit(types.DELETE_TABS, data);
+  },
+  //设置选中的tab
+  setActiveIndex({ commit }, data) {
+    commit(types.SET_ACTIVE_INDEX, data);
+  },
+  
+
+  
+  
+  addWhiteList({ commit }, val) {
+    commit(types.SET_WHITELIST, val);
+  },
+  reduceWhiteList({ commit }, val) {
+    commit(types.EDIT_WHITELIST, val);
+  },
+  resetWhiteList({commit}){
+    commit(types.RESET_WHITELIST);
+  },
+
+  
+
+  changePage({ commit }, page) {
+    commit(types.SET_LISTPAGE, page);
+  },
+
+  
+};
+
+export default actions;
