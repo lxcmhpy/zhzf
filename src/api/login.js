@@ -55,7 +55,7 @@ export function getMenuApi() {
 // 退出
 export function loginOutApi() {
   return request({
-    url: "/chat/loginOut",
+    url: "/loginOut",
     method: "post",
     showloading: true,
     cancelToken: setCancelSource()

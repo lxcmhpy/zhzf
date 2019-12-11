@@ -19,21 +19,21 @@ const service = axios.create({
 });
 
 
-function configToken(config) {
-  console.log("config" + JSON.stringify(config));
-  if (config.tokenType && config.tokenType == 1) {
-    console.log("token1");
-    if (getToken("TokenKey")) {
-      config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
-    }
-  } else if (config.tokenType && config.tokenType == 2) {
-    console.log("token2");
-    if (getToken("TokenKey_2")) {
-      config.headers["Authorization"] = "Bearer " + getToken("TokenKey_2");
+// function configToken(config) {
+//   console.log("config" + JSON.stringify(config));
+//   if (config.tokenType && config.tokenType == 1) {
+//     console.log("token1");
+//     if (getToken("TokenKey")) {
+//       config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
+//     }
+//   } else if (config.tokenType && config.tokenType == 2) {
+//     console.log("token2");
+//     if (getToken("TokenKey_2")) {
+//       config.headers["Authorization"] = "Bearer " + getToken("TokenKey_2");
 
-    }
-  }
-}
+//     }
+//   }
+// }
 // request interceptor
 service.interceptors.request.use(
   config => {

@@ -22,6 +22,8 @@ export default {
         console.log(key);
         //将当前选中的一级菜单名传到父组件
         this.$emit("selectHeadMenu",key); 
+        //删除之前的tab页签
+        this.$store.dispatch('deleteAllTabs');
     }
   }
 }

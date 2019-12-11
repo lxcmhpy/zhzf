@@ -9,9 +9,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import "@/js/dateFormat";
 import util from "@/js/util";
 import qs from 'qs';
-import VueClipboard from "vue-clipboard2";
+
 Vue.use(ElementUI);
-Vue.use(VueClipboard);
+
 
 Vue.config.productionTip = false;
 

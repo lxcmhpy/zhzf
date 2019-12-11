@@ -267,44 +267,9 @@ util.removeParenthesis = function(str) {
   return str;
 };
 
-/**
- * 得到标准时区的时间的函数
- * @param {*} time 时间戳 (*1000)/"2018-01-01 12:50:30"/"2018-01-01" 这三种方式都可以，第三种默认时间是00:00:00
- * @param {*} i 零时区：0 ，东八区：8，东七区：7
- * @returns
- */
-util.getLocalTime = function(time, i) {
-  //参数i为时区值数字，比如北京为东八区则输进8,西5输入-5
-  if (typeof i !== "number") return;
-  let d = new Date(time);
-  //得到1970年一月一日到现在的秒数
-  var len = d.getTime();
-  //本地时间与GMT时间的时间偏移差
-  var offset = d.getTimezoneOffset() * 60000;
-  //得到现在的格林尼治时间
-  var utcTime = len + offset;
-  return new Date(utcTime + 3600000 * i);
-};
 
-/**
- * 用当前浏览器时间转换需要的当地时间,如中国时间 2018-01-02 00:00:00 的时间戳,转换后是 印尼2018-01-02 00:00:00的时间
- * @param {*} time 时间戳 (*1000)/"2018-01-01 12:50:30"/"2018-01-01" 这三种方式都可以，第三种默认时间是00:00:00
- * @param {*} i 零时区：0 ，东八区：8，东七区：7
- * @returns
- */
-util.transferLocalTime = function(time, i) {
-  //参数i为时区值数字，比如北京为东八区则输进8,西5输入-5
-  if (typeof i !== "number") return;
-  let d = new Date(time);
-  //得到1970年一月一日到现在的秒数
-  let len = d.getTime();
-  //本地时间与GMT时间的时间偏移差
-  let offset = d.getTimezoneOffset() * 60000;
-  //得到现在的格林尼治时间
-  let utcTime = len + offset;
-  let i2 = -((d.getTimezoneOffset() / 60) * 2 + i);
-  return new Date(utcTime + 3600000 * i2);
-};
+
+
 
 //产生随机数，_idx为位数
 util.addNumber = function(_idx) {
@@ -322,36 +287,7 @@ util.getRandomId = function() {
   return time + num;
 };
 
-/***标签显示图片
- * @param imgId img标签的id
- * @param file 图片文件
- */
 
-util.showFileImage = function(imgId, file) {
-  if (file) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function(e) {
-      document.getElementById(imgId).src = e.target.result; //赋值给图片地址
-    };
-  } else {
-    document.getElementById(imgId).src = ""; //赋值给图片地址
-    // document.getElementById(fileId).value = "";
-  }
-};
-
-/** div标签是否显示
- * @param divId id值
- * @param state false 隐藏 / true 显示
- */
-util.showOrHideDiv = function(divId, state = false) {
-  let _id = document.getElementById(divId);
-  if (state == true) {
-    _id.setAttribute("style", "display:block");
-  } else {
-    _id.setAttribute("style", "display:none");
-  }
-};
 
 //产生随机数(字母数字)
 util.getRandomString=function(len){

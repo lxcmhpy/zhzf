@@ -3,8 +3,10 @@ export const COM_LOADING_STATUS = "COM_LOADING_STATUS";
 export const COM_LOADINGTIME = "COM_LOADINGTIME";
 export const SET_AUTHTOKEN = "SET_AUTHTOKEN";
 
+export const SET_SLIDEMENU = "SET_SLIDEMENU";
 export const ADD_TABS = "ADD_TABS";
 export const DELETE_TABS = "DELETE_TABS";
+export const DELETE_ALLTABS = "DELETE_ALLTABS";
 export const SET_ACTIVE_INDEX = "SET_ACTIVE_INDEX";
 
 export const USERNAME = "USERNAME";

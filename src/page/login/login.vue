@@ -87,7 +87,7 @@ export default {
     getCaptcha(){
        this.$store.dispatch("getCaptcha").then(
          res=>{
-           let captcha = res.date;
+           let captcha = res.data;
            this.captchaId = captcha.split('::')[0];
 
            this.captchaImg = drawCodeImage + this.captchaId;
@@ -129,8 +129,8 @@ export default {
       this.$store.dispatch("getMenu").then(
          res=>{
            console.log('获取菜单',res);
-           iLocalStroage.sets('menu',res.date);
-           this.$router.push({ name: "caseHandle" });
+           iLocalStroage.sets('menu',res.data);
+           this.$router.push({ name: "index" });
          },
          err=>{
            console.log(err);

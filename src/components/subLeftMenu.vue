@@ -2,7 +2,7 @@
   <!-- 左菜单 -->
   <div>
     <el-menu
-      :default-active="$route.name"
+      default-active="userManage"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
@@ -12,9 +12,9 @@
       <el-submenu :index="item.name" v-for="(item,index) in currentSlideMenu" :key="index">
           <template slot="title">
             <i class="el-icon-location"></i>
-            <span slot="title">{{item.title}}</span>
+            <span slot="title">{{item.title}} {{item.name}}</span>
           </template>
-          <el-menu-item :index="subItem.name" v-for="(subItem,subIndex) in item.children" :key="subIndex">{{subItem.title}}</el-menu-item>
+          <el-menu-item :index="subItem.name" v-for="(subItem,subIndex) in item.children" :key="subIndex">{{subItem.title}} {{subItem.name}}</el-menu-item>
       </el-submenu>
     </el-menu>
   
@@ -30,6 +30,7 @@ export default {
       allMenuList:iLocalStroage.gets('menu'),
       currentSlideMenu:[],
       isCollapse:false,
+      
 
       newRoute: [Cookies.get("menu")],
       collapsedNow: false,
@@ -42,11 +43,16 @@ export default {
     //collapsed: Boolean,
     selectedHeadMenu:String
   },
+  computed: {
+    activeSlideMenu(){
+      console.log('activeSlide',this.$store.state.activeSlideMenu)
+      return this.$store.state.activeSlideMenu;
+    }
+  },
   methods: {
     //切换菜单
     changeMenu(key, keyPath) {
       console.log(key, keyPath)
-      //this.$router.push({ name: key });
       this.$router.push({ name: key });
 
       // Cookies.set("menu", item.key);
@@ -99,13 +105,19 @@ export default {
             }  
           }
       });
-      console.log('this.currentSlideMenu',this.currentSlideMenu)
+      console.log('this.currentSlideMenu',this.currentSlideMenu);
+      //默认打开侧边栏第一个子菜单
+      if(this.currentSlideMenu[0].children && this.currentSlideMenu[0].children.length){
+        let newRoute = this.currentSlideMenu[0].children[0].name;
+        this.$router.push({ name: newRoute });
+      }
     }
   },
   mounted() {
    // this.collapsedNow = this.collapsed;
     console.log('selectedHeadMenu',this.selectedHeadMenu);
-    console.log('global.antRouter',global.antRouter)
+    console.log('global.antRouter',global.antRouter);
+    console.log('当前route',this.$route.name);
   },
   created() {
     console.log(this.newRoute);
@@ -115,6 +127,9 @@ export default {
     selectedHeadMenu:function(val,oldVal){
       console.log(val,oldVal);
       this.getSlideMenu(val);
+    },
+    '$route'(to,from){
+      this.$store.dispatch("setActiveSlide", to.name);
     }
   }
 };

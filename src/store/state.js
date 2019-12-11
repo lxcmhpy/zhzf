@@ -7,8 +7,9 @@ const state = {
   loadingTime:'',//加载load记录时间
   authToken: "", //token值    
   
-  openTab:[],//所有打开的路由
-  activeIndex:'', //激活状态
+  activeSlideMenu:"",  //当前选中的侧边栏菜单
+  openTab:[],//tabs所有打开的路由
+  activeIndex:'', //tab激活状态
 
   //app部分状态
   isFullScreen: false,

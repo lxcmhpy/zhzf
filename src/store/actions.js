@@ -3,6 +3,7 @@ import Vue from "vue";
 const vm = new Vue(); //vm等同于this
 
 import { getCaptchaApi,loginInApi,getMenuApi, loginOutApi } from "@/api/login";
+import { getAllOrganApi } from "@/api/system";
 
 import Cookies from "@/js/cookies";
 const actions = {
@@ -76,13 +77,21 @@ const actions = {
         })
     })
   },
+  //设置选中的侧边栏slide
+  setActiveSlide({ commit }, data) {
+    commit(types.SET_SLIDEMENU, data);
+  },
   //添加tab
   addTabs({ commit }, data) {
     commit(types.ADD_TABS, data);
   },
   //删除tab
-  deleteTabs({ commit }, data) {
+  deleteTabs({ commit }, data) { 
     commit(types.DELETE_TABS, data);
+  },
+  //删除所有的tab
+  deleteAllTabs({ commit }) { 
+    commit(types.DELETE_ALLTABS);
   },
   //设置选中的tab
   setActiveIndex({ commit }, data) {
@@ -108,6 +117,18 @@ const actions = {
     commit(types.SET_LISTPAGE, page);
   },
 
+  //获或机构
+  getAllOrgan(){
+    return new Promise((resolve,reject)=>{
+      getAllOrganApi().then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
   
 };
 

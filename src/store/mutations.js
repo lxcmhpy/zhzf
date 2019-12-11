@@ -12,21 +12,25 @@ const mutations = {
   [types.COM_LOADING_STATUS](state, status) {
     state.loading = status;
   },
+  //设置loading time
   [types.COM_LOADINGTIME](state, time) {
     state.loadingTime = time;
   },
-  
+  //设置token
   [types.SET_AUTHTOKEN](state, token) {
     setToken("TokenKey", token, 110);
     state.authToken = token;
   },
-
-  // 添加tabs
+  //设置侧边栏默认选中active
+  [types.SET_SLIDEMENU](state, name) {
+    state.activeSlideMenu = name;
+  },
+  // 添加tab
   [types.ADD_TABS](state, data) {
     console.log('state.openTab',state.openTab)
     state.openTab.push(data);
   },
-  // 删除tabs
+  // 删除tab
   [types.DELETE_TABS](state, name) {
     let index = 0;
     for (let option of state.openTab) {
@@ -36,6 +40,10 @@ const mutations = {
       index++;
     }
     state.openTab.splice(index, 1);
+  },
+  //删除所有的tabs
+  [types.DELETE_ALLTABS](state) {
+    state.openTab = [];
   },
   // 设置当前激活的tab
   [types.SET_ACTIVE_INDEX](state, name) {
