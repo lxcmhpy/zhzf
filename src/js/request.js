@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken, setToken } from "@/js/auth";
+import { getToken, setToken,removeToken } from "@/js/auth";
 import { router } from "@/router/index";
 import Vue from "vue";
 //import { message } from "ant-design-vue";
@@ -48,7 +48,7 @@ service.interceptors.request.use(
       config.headers["accessToken"] = getToken("TokenKey");
 
     }
-   // console.log(config);
+    console.log(config);
     return config;
   },
   error => {
@@ -59,10 +59,13 @@ service.interceptors.request.use(
 // respone interceptor
 service.interceptors.response.use(
   response => {
-    //console.log("response", response);
-    if(response.code){
-
-    }
+    console.log("response", response);
+    // if(response.code == 200){
+    //   tryHideFullScreenLoading();  
+    //   return Promise.resolve(response.data);
+    // }else{
+    //   return Promise.reject(response);
+    // }
     if (response.status == 200) {
       if (response.data.code == 200) {
         tryHideFullScreenLoading();
@@ -71,15 +74,18 @@ service.interceptors.response.use(
         response.data.code == 400) {
         tryHideFullScreenLoading();
         return Promise.reject(response.data);
-      }else {
+      }else if(response.data.code == -1){   //重新登录
         tryHideFullScreenLoading();
-        return Promise.reject(response);
+        alertMessage('账户在其他地方登录，您被迫下线'); //账户在其他地方登录，您被迫下线
+        removeToken()
+        return Promise.reject(response.data);
       }
     } else {
       return Promise.reject(response);
     }
   },
   error => {
+    console.log(error)
     httpErrorStr(error);
     return Promise.reject(error);
   }

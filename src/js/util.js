@@ -302,5 +302,38 @@ util.getRandomString=function(len){
   return randomString;
 }
 
+//将1 2 数字转换为 一级 二级等
+util.transformNumberToJi =function(num){
+  var numStr = '';
+   switch (num){
+      case 1: 
+        numStr = "一级";
+        break;
+      case 2: 
+        numStr = "二级";
+        break;
+      case 3: 
+        numStr = "三级";
+        break;
+      case 4: 
+        numStr = "四级";
+        break;
+      case 5: 
+        numStr = "五级";
+        break;
+      case 6: 
+        numStr = "六级";
+        break;
+      case 7: 
+        numStr = "七级";
+        break;
+      case 8: 
+        numStr = "八级";
+        break;
+      default:
+          numStr = "二十级";
+    }
+  return numStr
+}
 
 export default util;

@@ -3,7 +3,7 @@ import Vue from "vue";
 const vm = new Vue(); //vm等同于this
 
 import { getCaptchaApi,loginInApi,getMenuApi, loginOutApi } from "@/api/login";
-import { getAllOrganApi } from "@/api/system";
+import { getAllOrganApi, getSelectOrganApi} from "@/api/system";
 
 import Cookies from "@/js/cookies";
 const actions = {
@@ -117,10 +117,22 @@ const actions = {
     commit(types.SET_LISTPAGE, page);
   },
 
-  //获或机构
+  //获取所有机构
   getAllOrgan(){
     return new Promise((resolve,reject)=>{
       getAllOrganApi().then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+  //获取选中所有机构
+  getSelectOrgan({ commit },data){
+    return new Promise((resolve,reject)=>{
+      getSelectOrganApi(data).then(
         res=>{
           resolve(res);
         },

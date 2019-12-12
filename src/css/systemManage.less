@@ -1,0 +1,68 @@
+@import "./variables.less";
+
+.departOrUserTree{
+    width: 20%;
+    height: 100%;
+    float: left;
+    background: #F5F7FB;
+    box-sizing: border-box;
+    padding: 20px;
+    border-right: 1px solid #EEEEEE;
+    .el-tree{
+        background: #F5F7FB;
+    }
+    p{
+        line-height: 30px;
+    }
+    .custom-tree-node{
+        span{
+            i{
+                color: @blueC;
+                margin-right: 5px;
+            }
+        }
+    }
+    .searchDepartBox{
+        margin: 10px 0;
+        input{
+            height: 36px;
+        }
+        .el-input-group__append{
+            padding: 0 15px;
+            background: #eee;
+        }
+    }
+}
+.departTable{
+    width: 80%;
+    height: 100%;
+    float: left;
+    box-sizing: border-box;
+    padding: 20px;
+    background: #fff;
+    p{
+        line-height: 30px;
+    }
+    .handelBtn{
+        overflow: hidden;
+        margin-bottom: 20px;
+        &>div:nth-child(1){
+            float: left;
+            line-height: 32px;
+            color: #5F6370;
+        }
+        &>div:nth-child(2){
+            float: right;
+            &>div{
+                float: left;
+            }
+            .el-dropdown__caret-button{
+                padding-top: 9px;
+            }
+        }
+        .handelBtnDel{
+            margin-left: 10px;
+        }
+       
+    }
+}

@@ -28,13 +28,10 @@
                       <img
                         :src="captchaImg"
                         @click="getCaptcha"
-                        alt="加载验证码失败"
                         style="width:100px;cursor:pointer;display:block"
                       />
-                </div>
-                
+                </div>   
               </el-form-item>
-              
               <div class="forgetPass"><el-link type="primary" :underline="false">忘记密码</el-link></div>
               <div >
                   <el-button type="primary" @click="submitLogin('loginForm')">登录</el-button>
@@ -61,7 +58,7 @@ export default {
       captchaId:'',   //验证码id
       captchaImg:'',   //验证码图片src
       loginForm: {
-        username: "admin",
+        username: "test",
         password: "123456",
         code:''       //验证码
       },
@@ -115,7 +112,12 @@ export default {
             error => {
               console.log(error);
               if(error.code == 500){  //验证码错误
-                  
+                this.$message({
+                    showClose: true,
+                    message: '验证码错误',
+                    type: 'error'
+                })
+                this.getCaptcha()
               }
             }
           );
