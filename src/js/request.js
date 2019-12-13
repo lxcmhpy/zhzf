@@ -79,6 +79,8 @@ service.interceptors.response.use(
         alertMessage('账户在其他地方登录，您被迫下线'); //账户在其他地方登录，您被迫下线
         removeToken()
         return Promise.reject(response.data);
+      }else{
+        httpErrorStr(response.data.code);
       }
     } else {
       return Promise.reject(response);

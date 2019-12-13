@@ -95,6 +95,7 @@ function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符
       route.children.unshift({name:'index',component:loadView('caseHandle/index'),path:'/caseHandleIndex'})
     }
 
+  
     if(route.id == "125909152017944576"){
       route.children.unshift({ path:'', redirect:'/sys/user-manage'})
     }

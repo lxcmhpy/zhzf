@@ -21,6 +21,9 @@
                 margin-right: 5px;
             }
         }
+        .hasMarginLeft{
+            margin-left: 2px;
+        }
     }
     .searchDepartBox{
         margin: 10px 0;
@@ -46,6 +49,7 @@
     .handelBtn{
         overflow: hidden;
         margin-bottom: 20px;
+        margin-top: 10px;
         &>div:nth-child(1){
             float: left;
             line-height: 32px;
@@ -64,5 +68,16 @@
             margin-left: 10px;
         }
        
+    }
+}
+.addOrganClass{
+    .item{
+        width: 48%;
+    }
+    &>div.item:nth-child(odd){
+        float: left;
+    }
+    &>div.item:nth-child(even){
+        float: right;
     }
 }

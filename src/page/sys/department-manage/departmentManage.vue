@@ -20,8 +20,8 @@
       >
         <span class="custom-tree-node" slot-scope="{ node,data }">
           <span>
-            <i :class="data.children ? 'iconfont law-icon_shou_bag' : ''"></i>
-            {{ node.label }}
+            <i :class="data.children && data.children.length>0 ? 'iconfont law-icon_shou_bag' : ''"></i>
+            <span :class="data.children ? '' : 'hasMarginLeft'">{{ node.label }}</span>
           </span>
         </span>
       </el-tree>
@@ -29,7 +29,7 @@
     <div class="departTable">
       <p>{{selectCurrentTreeName}}</p>
       <div class="handelBtn">
-        <div>子机构</div>
+        <div>子机构列表</div>
         <div>
           <el-dropdown split-button type="primary" size="medium" @click="addOrgan">
             <i class="iconfont law-icon_weihu"></i>新增机构
@@ -38,22 +38,26 @@
               <el-dropdown-item>批量导入</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <div class="handelBtnDel">
-            <el-button size="medium" type="info" icon="iconfont law-icon_weihu">维护机构</el-button>
-            <el-button size="medium" icon="iconfont law-icon_del">删除机构</el-button>
-          </div>
         </div>
       </div>
-      <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table
+        :data="tableData"
+        stripe
+        style="width: 100%"
+      >
         <el-table-column prop="code" label="机构编码" align="center"></el-table-column>
         <el-table-column prop="name" label="机构名称" align="center"></el-table-column>
-        <el-table-column prop="jb" label="机构级别" align="center"></el-table-column>
         <el-table-column prop="type" label="机构类型" align="center"></el-table-column>
         <el-table-column prop="status" label="状态" align="center">
           <span slot-scope="scope">
             <span>{{scope.row.status == 0 ? '正常': '注销'}}</span>
           </span>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text">维护</el-button>
+            <el-button type="text" >删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <div class="paginationBox">
@@ -68,10 +72,13 @@
         ></el-pagination>
       </div>
     </div>
+
+    <addOrgan ref="addOrganRef"></addOrgan>
   </div>
+
 </template>
-       
 <script>
+import addOrgan from "./addOrgan";     
 export default {
   watch: {
     filterText(val) {
@@ -81,7 +88,7 @@ export default {
   data() {
     return {
       filterText: "",
-      selectCurrentTreeName: "一级机构",
+      selectCurrentTreeName: "",
       organData: [],
       defaultProps: {
         children: "children",
@@ -89,12 +96,16 @@ export default {
       },
       tableData: [], //表格数据
       departLevel: 0, //级别
-      defaultExpandedKeys: [], //默认展开的key 
-      currentPage:1,  //当前页
-      pageSize:10,   //pagesize
-      totalPage:0, //总页数
-      currentOrganId:'',  //当前organ的id
+      defaultExpandedKeys: [], //默认展开的key
+      currentPage: 1, //当前页
+      pageSize: 10, //pagesize
+      totalPage: 0, //总页数
+      currentOrganId: "", //当前organ的id
+      showAddDialog: false,
     };
+  },
+  components: {
+    addOrgan
   },
   methods: {
     filterNode(value, data) {
@@ -121,7 +132,7 @@ export default {
       console.log(data);
       this.selectCurrentTreeName = data.label;
       this.tableData = [];
-      this.currentOrganId = data.id
+      this.currentOrganId = data.id;
       this.getSelectOrgan(this.currentOrganId);
     },
     nodeExpand(data, node, jq) {
@@ -134,9 +145,8 @@ export default {
     getAllOrgan() {
       this.$store.dispatch("getAllOrgan").then(
         res => {
-          console.log("机构", res);
-
           this.defaultExpandedKeys.push(res.data[0].id);
+          this.selectCurrentTreeName = res.data[0].label;
           if (res.data[0].children && res.data[0].children.length > 0) {
             res.data[0].children.forEach(item => {
               this.defaultExpandedKeys.push(item.id);
@@ -146,7 +156,7 @@ export default {
           console.log(this.defaultExpandedKeys);
           console.log(this.organData);
           this.currentOrganId = res.data[0].id;
-          this.getSelectOrgan(this.currentOrganId);
+          this.getSelectOrgan();
         },
         err => {
           console.log(err);
@@ -154,17 +164,15 @@ export default {
       );
     },
     //获取选中的机构下的机构
-    getSelectOrgan(id) {
-      console.log("organId", id);
-      let data = { 
-        id: id,
-        page: this.currentPage,
-        size: this.pageSize 
+    getSelectOrgan() {
+      let data = {
+        id: this.currentOrganId,
+        current: this.currentPage,
+        size: this.pageSize
       };
       console.log(data);
       this.$store.dispatch("getSelectOrgan", data).then(
         res => {
-          console.log("选中的机构", res);
           this.tableData = res.data.records;
           this.totalPage = res.data.pages;
         },
@@ -174,20 +182,20 @@ export default {
       );
     },
     //更改每页显示的条数
-    handleSizeChange(val){
-      console.log('每页显示的条数',val);
-       this.pageSize = val;
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.currentPage = 1;
+      this.getSelectOrgan();
     },
     //更换页码
-    handleCurrentChange(val){
-      console.log('当前页',val);
+    handleCurrentChange(val) {
       this.currentPage = val;
-      this.getSelectOrgan(this.currentOrganId);
+      this.getSelectOrgan();
     },
     //新增机构
-    addOrgan(){
-
-    }
+    addOrgan() {
+      this.$refs.addOrganRef.showModal()
+    },
   },
   mounted() {
     // this.setDepartTable(this.data)
