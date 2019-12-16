@@ -49,22 +49,21 @@ export default {
     tabRemove(targetName) {
       console.log("tabRemove", targetName);
       //首页不删
-      if(targetName == 'caseHandle'){
+      if(targetName == 'home_index'){
         return
       }
       this.$store.dispatch('deleteTabs', targetName);
       if (this.activeIndex === targetName) {
         // 设置当前激活的路由
-        if (this.openTab && this.openTab.length >= 1) {
-          console.log('=============',this.openTab[this.openTab.length-1].name)
-          //this.$store.commit('set_active_index', this.openTab[this.openTab.length-1].route);
-         // console.log(this.activeIndex)
-          this.$store.dispatch('setActiveIndex', this.openTab[this.openTab.length-1].name);
-          this.$router.push({name: this.activeIndex});
-          console.log(this.activeIndex)
-        } else {
-          this.$router.push({path: '/'});
-        }
+        // if (this.openTab && this.openTab.length >= 1) {
+        //   console.log('=============',this.openTab[this.openTab.length-1].name)
+        
+        //   this.$store.dispatch('setActiveIndex', this.openTab[this.openTab.length-1].name);
+        //   this.$router.push({name: this.activeIndex});
+        //   console.log(this.activeIndex)
+        // } else {
+        //   this.$router.push({path: '/'});
+        // }
       }
     }
   },
@@ -72,15 +71,15 @@ export default {
     // 刷新时以当前路由做为tab加入tabs
     // 当前路由不是首页时，添加首页以及另一页到store里，并设置激活状态
     // 当当前路由是首页时，添加首页到store，并设置激活状态
-    if (this.$route.path !== '/' && this.$route.name !== 'caseHandle') {
+    if (this.$route.path !== '/' && this.$route.name !== 'home_index') {
       console.log('添加其他tab')
-       this.$store.dispatch('addTabs', {route: '/caseHandle', name: 'caseHandle',title:'案件办理首页'});
+       this.$store.dispatch('addTabs', {route: '/index', name: 'home_index',title:'首页'});
        this.$store.dispatch('addTabs', {route: this.$route.path , name: this.$route.name,title:this.$route.meta.title });
       this.$store.dispatch('setActiveIndex', this.$route.name);
     } else {
       console.log('添加caseHandle tab')
-      this.$store.dispatch('addTabs', {route: '/caseHandle', name: 'caseHandle',title:'案件办理首页'});
-      this.$store.dispatch('setActiveIndex', 'caseHandle');
+      this.$store.dispatch('addTabs', {route: '/index', name: 'home_index',title:'首页'});
+      this.$store.dispatch('setActiveIndex', 'home_index');
       //this.$router.push('/');
     }
 

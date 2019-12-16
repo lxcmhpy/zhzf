@@ -3,7 +3,7 @@ import Vue from "vue";
 const vm = new Vue(); //vm等同于this
 
 import { getCaptchaApi,loginInApi,getMenuApi, loginOutApi } from "@/api/login";
-import { getAllOrganApi, getSelectOrganApi} from "@/api/system";
+import { getAllOrganApi, getSelectOrganApi,addOrganApi,getOrganDetailApi,deleteOrganApi,hasOrganNameApi} from "@/api/system";
 
 import Cookies from "@/js/cookies";
 const actions = {
@@ -133,6 +133,55 @@ const actions = {
   getSelectOrgan({ commit },data){
     return new Promise((resolve,reject)=>{
       getSelectOrganApi(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+
+  //添加机构
+  addOrgan({ commit },data){
+    return new Promise((resolve,reject)=>{
+      addOrganApi(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+  //机构详情
+  getOrganDetail({ commit },data){
+    return new Promise((resolve,reject)=>{
+      getOrganDetailApi(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+  //删除机构
+  deleteOrgan({ commit },data){
+    return new Promise((resolve,reject)=>{
+      deleteOrganApi(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+  //验证机构名称是否重复
+  hasOrganName({ commit },data){
+    return new Promise((resolve,reject)=>{
+      hasOrganNameApi(data).then(
         res=>{
           resolve(res);
         },

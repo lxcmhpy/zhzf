@@ -37,7 +37,13 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-   
+     if(config.baseUrlType ==1){
+      config.baseURL = process.env.BASE_API // api的base_url
+     } else if(config.baseUrlType ==2){
+      config.baseURL = process.env.BASE_API2
+     }else{
+      config.baseURL = process.env.BASE_API // api的base_url
+     }
     //token一天后过期
     if (config.showloading != false) {
       showFullScreenLoading();
@@ -59,7 +65,7 @@ service.interceptors.request.use(
 // respone interceptor
 service.interceptors.response.use(
   response => {
-    console.log("response", response);
+    //console.log("response", response);
     // if(response.code == 200){
     //   tryHideFullScreenLoading();  
     //   return Promise.resolve(response.data);

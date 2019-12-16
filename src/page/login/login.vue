@@ -132,7 +132,7 @@ export default {
          res=>{
            console.log('获取菜单',res);
            iLocalStroage.sets('menu',res.data);
-           this.$router.push({ name: "index" });
+           this.$router.push({ name: "home_index" });
          },
          err=>{
            console.log(err);

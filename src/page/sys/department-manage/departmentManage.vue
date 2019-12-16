@@ -27,7 +27,7 @@
       </el-tree>
     </div>
     <div class="departTable">
-      <p>{{selectCurrentTreeName}}</p>
+      <p>{{selectCurrentTreeName}} <span class="editSelectNode" @click="editSelectNode"><i class="iconfont law-btn_bianji"></i></span> </p>
       <div class="handelBtn">
         <div>子机构列表</div>
         <div>
@@ -40,10 +40,15 @@
           </el-dropdown>
         </div>
       </div>
+      <!-- <div class="tableBox"> -->
+
+      
       <el-table
         :data="tableData"
         stripe
         style="width: 100%"
+        @row-click="showOrganDetail"
+        height="70%"
       >
         <el-table-column prop="code" label="机构编码" align="center"></el-table-column>
         <el-table-column prop="name" label="机构名称" align="center"></el-table-column>
@@ -55,11 +60,12 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text">维护</el-button>
-            <el-button type="text" >删除</el-button>
+            <el-button @click.stop @click="editOrgan(scope.row.id)" type="text">修改</el-button>
+            <el-button type="text" @click.stop @click="deleteOrgan(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
+      <!-- </div> -->
       <div class="paginationBox">
         <el-pagination
           @size-change="handleSizeChange"
@@ -73,7 +79,7 @@
       </div>
     </div>
 
-    <addOrgan ref="addOrganRef"></addOrgan>
+    <addOrgan ref="addOrganRef" @getAllOrgan2="getAllOrgan"></addOrgan>
   </div>
 
 </template>
@@ -107,26 +113,15 @@ export default {
   components: {
     addOrgan
   },
+  inject: ["reload"],
   methods: {
     filterNode(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
     },
-    //给table添加数据 判断是否有子节点 循环放入数组中
-    // setDepartTable(data) {
-    //   data.forEach(item => {
-    //     this.tableData.push({
-    //       code: item.code,
-    //       name: item.name,
-    //       jb: this.$util.transformNumberToJi(item.jb),
-    //       status: item.status
-    //     });
-    //     if (item.children && item.children.length) {
-    //       this.departLevel++;
-    //       this.setDepartTable(item.children);
-    //     }
-    //   });
-    // },
+    editSelectNode(){
+
+    },
     //点击树事件
     handleNodeClick(data) {
       console.log(data);
@@ -142,11 +137,11 @@ export default {
     },
 
     //获取机构
-    getAllOrgan() {
+    getAllOrgan(organId) {
       this.$store.dispatch("getAllOrgan").then(
         res => {
           this.defaultExpandedKeys.push(res.data[0].id);
-          this.selectCurrentTreeName = res.data[0].label;
+          this.selectCurrentTreeName = this.selectCurrentTreeName ? this.selectCurrentTreeName :res.data[0].label;
           if (res.data[0].children && res.data[0].children.length > 0) {
             res.data[0].children.forEach(item => {
               this.defaultExpandedKeys.push(item.id);
@@ -155,7 +150,11 @@ export default {
           this.organData = res.data;
           console.log(this.defaultExpandedKeys);
           console.log(this.organData);
-          this.currentOrganId = res.data[0].id;
+          if(organId =='root'){
+            this.currentOrganId = res.data[0].id;
+          }else{
+            this.currentOrganId = organId;
+          }
           this.getSelectOrgan();
         },
         err => {
@@ -173,8 +172,9 @@ export default {
       console.log(data);
       this.$store.dispatch("getSelectOrgan", data).then(
         res => {
+          console.log(res);
           this.tableData = res.data.records;
-          this.totalPage = res.data.pages;
+          this.totalPage = res.data.total;
         },
         err => {
           console.log(err);
@@ -194,14 +194,68 @@ export default {
     },
     //新增机构
     addOrgan() {
-      this.$refs.addOrganRef.showModal()
+      let parentNode = {
+        parentNodeId:this.currentOrganId,
+        parentNodeName:this.selectCurrentTreeName
+      }
+      this.$refs.addOrganRef.showModal(0,parentNode);
     },
+    //机构详情
+    showOrganDetail(row,column,event){
+      this.$refs.addOrganRef.showModal(1,row.id);
+    },
+    //修改机构
+    editOrgan(id){
+      let data ={
+        id:id,
+        parentNode:{
+            parentNodeId:this.currentOrganId,
+            parentNodeName:this.selectCurrentTreeName
+        }  
+      }
+      this.$refs.addOrganRef.showModal(2,data);
+    },
+    //修改根节点机构
+    editSelectNode(){
+      let data ={
+        id:id,
+        parentNode:{
+            parentNodeId:this.currentOrganId,
+            parentNodeName:this.selectCurrentTreeName
+        }  
+      }
+      this.$refs.addOrganRef.showModal(2,data);
+    },
+    //删除机构
+    deleteOrgan(id){
+      this.$confirm('确认删除该机构?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch("deleteOrgan", id).then(
+            res => {
+                this.getAllOrgan(this.currentOrganId);
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+            },
+            err => {
+              console.log(err);
+            }
+          );
+          
+        }).catch(() => {
+                
+        });
+    }
   },
   mounted() {
     // this.setDepartTable(this.data)
   },
   created() {
-    this.getAllOrgan();
+    this.getAllOrgan('root');
   }
 };
 </script>

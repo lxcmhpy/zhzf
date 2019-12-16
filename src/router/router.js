@@ -1,5 +1,8 @@
 import mainLagout from "@/page/lagout/mainLagout";
 
+import MainContent from '@/components/mainContent'
+import Layout from '@/page/lagout/mainLagout' //Layout 是架构组件，不在后台返回，在文件里单独引入
+
 // 不作为Main组件的子页面展示的页面单独写，如下
 export const loginRouter = {
   path: "/login",
@@ -19,6 +22,29 @@ export const redirectRouter = {
   redirect: { name: "login" }
 };
 
+//首页
+export const homeRouter = {
+  path: "/home",
+  name: "home",
+  component:Layout,
+  children: [
+    {
+      path: "/index",
+      name: "home2",
+      component:MainContent,
+      children:[
+        {
+          path: "/index",
+          name: "home_index",
+          meta: {
+            title: "首页"
+          },
+          component: () => import("@/page/home.vue")
+        }
+      ]
+    }
+  ] 
+};
 //主页的路由
 export const lagoutOneRouter = [
   {
@@ -27,9 +53,9 @@ export const lagoutOneRouter = [
     component: mainLagout,
     children: [
       {
-        path:'/caseHandle',
-        name:'caseHandle',
-        component: () => import("@/page/caseHandle/index.vue"),
+        path:'/home',
+        name:'home',
+        component: () => import("@/page/home.vue"),
       }
     ]
   },
@@ -43,6 +69,7 @@ export const lagoutOneRouter = [
 export const routers = [
   loginRouter,
   registRouter,
+  homeRouter,
   // ...lagoutOneRouter,
   redirectRouter
 ];

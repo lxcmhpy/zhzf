@@ -95,6 +95,7 @@ export default {
 
     //获取侧边栏菜单
     getSlideMenu(val){
+      console.log(val);
       this.currentSlideMenu =[];
       this.allMenuList.forEach(item => {
           if(item.name == val){
@@ -107,10 +108,10 @@ export default {
       });
       console.log('this.currentSlideMenu',this.currentSlideMenu);
       //默认打开侧边栏第一个子菜单
-      if(this.currentSlideMenu[0].children && this.currentSlideMenu[0].children.length){
-        let newRoute = this.currentSlideMenu[0].children[0].name;
-        this.$router.push({ name: newRoute });
-      }
+      // if(this.currentSlideMenu[0].children && this.currentSlideMenu[0].children.length){
+      //   let newRoute = this.currentSlideMenu[0].children[0].name;
+      //   this.$router.push({ name: newRoute });
+      // }
     }
   },
   mounted() {
@@ -128,9 +129,9 @@ export default {
       console.log(val,oldVal);
       this.getSlideMenu(val);
     },
-    '$route'(to,from){
-      this.$store.dispatch("setActiveSlide", to.name);
-    }
+    // '$route'(to,from){
+    //   this.$store.dispatch("setActiveSlide", to.name);
+    // }
   }
 };
 </script>

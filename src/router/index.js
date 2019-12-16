@@ -30,7 +30,7 @@ router.beforeEach((to, from, next) => {
   if (Cookies.get("TokenKey")) {
     //判断是否登录
     if (to.path == "/login") {
-      next({ name: "index" });
+      next({ name: "home_index" });
     } else {
       console.log('不是登录');
       if(!getRouter){
@@ -63,6 +63,7 @@ router.afterEach(to => {
 
 function routerGo(to, next) {
   getRouter = iLocalStroage.gets('menu')//后台拿到路由
+
   getRouter = filterAsyncRouter(getRouter) //过滤路由
   router.addRoutes(getRouter) //动态添加路由
   //global.antRouter = getRouter //将路由数据传递给全局变量，做侧边栏菜单渲染工作
@@ -90,15 +91,15 @@ function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符
       route.children = filterAsyncRouter(route.children);
     }
    
-     if(route.id == "127996320085446656"){   //给案件办理添加首页
-      console.log('给案件办理添加首页')
-      route.children.unshift({name:'index',component:loadView('caseHandle/index'),path:'/caseHandleIndex'})
-    }
+    //  if(route.id == "127996320085446656"){   //给案件办理添加首页
+    //   console.log('给案件办理添加首页')
+    //   route.children.unshift({name:'index',component:loadView('caseHandle/index'),path:'/caseHandleIndex'})
+    // }
 
   
-    if(route.id == "125909152017944576"){
-      route.children.unshift({ path:'', redirect:'/sys/user-manage'})
-    }
+    // if(route.id == "125909152017944576"){
+    //   route.children.unshift({ path:'', redirect:'/sys/user-manage'})
+    // }
 
 
 

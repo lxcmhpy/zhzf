@@ -8,4 +8,5 @@ module.exports = merge(prodEnv, {
   //BASE_API: '"http://172.16.169.54:8888"',
   //BASE_API: '"http://172.16.170.53:8888"', \\线上的
   BASE_API: '"http://172.16.169.62:8888"',
+  BASE_API2: '"http://baidu.com"',
 })

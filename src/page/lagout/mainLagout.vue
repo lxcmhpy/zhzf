@@ -25,7 +25,9 @@
           <subLeftMenu :selectedHeadMenu="selectedHeadMenu"></subLeftMenu>
         </el-aside>
         <el-container>
-          <el-header id="tabsHeader" style="height:33px"><tabsMenu></tabsMenu></el-header>
+          <el-header id="tabsHeader" style="height:33px">
+            <tabsMenu></tabsMenu>
+          </el-header>
           <el-main>
             <mainContent></mainContent>
             </el-main>
@@ -51,7 +53,7 @@ export default {
       // openKeys: ["sub1"],
       // collapsed: false,
       // avatar: Cookies.get("avatar")
-      selectedHeadMenu:'caseHandle'   //接收headMenu传来的选中的一级菜单
+      selectedHeadMenu:'xboot'   //接收headMenu传来的选中的一级菜单
     };
   },
   components: {

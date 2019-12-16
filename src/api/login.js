@@ -22,6 +22,7 @@ export function loginInApi(params) {
     method: "POST",
     data:data,
     showloading: true,
+    baseUrlType:1,
     cancelToken: setCancelSource()
   });
 }
@@ -32,6 +33,7 @@ export function getCaptchaApi() {
     url: "/catsic/common/captcha/getcaptcha",
     method: "get",
     showloading: true,
+    baseUrlType:1,
     cancelToken: setCancelSource()
   });
 }

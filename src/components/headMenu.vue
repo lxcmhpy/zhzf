@@ -5,6 +5,7 @@
             <el-menu-item  v-for="item in headMenuList" :index="item.name" :key="item.id">{{item.title}}</el-menu-item>
            
         </el-menu>
+        {{activeIndex}}
     </div>
 </template>
 <script>
@@ -13,8 +14,20 @@ export default {
   name: "",
   data() {
     return {
-        activeIndex:'caseHandle',
+        headActiveNav:iLocalStroage.get('headActiveNav'),
+       // activeIndex:this.headActiveNav ? this.headActiveNav :'xboot',
         headMenuList:iLocalStroage.gets('menu'),
+    }
+  },
+  computed:{
+    //刷新设置选中当前头 slide
+    activeIndex :function(){
+      var key = iLocalStroage.get('headActiveNav');
+      if(key){
+        this.$emit("selectHeadMenu",key); 
+        return iLocalStroage.get('headActiveNav')
+      }
+      return 'xboot'
     }
   },
   methods: {
@@ -22,8 +35,14 @@ export default {
         console.log(key);
         //将当前选中的一级菜单名传到父组件
         this.$emit("selectHeadMenu",key); 
+        iLocalStroage.set('headActiveNav',key);
         //删除之前的tab页签
         this.$store.dispatch('deleteAllTabs');
+        console.log(this.$route.name);
+        if(this.$route.name != 'home_index'){
+          this.$router.push({ name: "home_index" });
+        }
+        
     }
   }
 }

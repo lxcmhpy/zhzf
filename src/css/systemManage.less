@@ -45,6 +45,10 @@
     background: #fff;
     p{
         line-height: 30px;
+        .editSelectNode{
+            cursor: pointer;
+            margin-left: 10px;
+        }
     }
     .handelBtn{
         overflow: hidden;
@@ -69,15 +73,38 @@
         }
        
     }
+    // .tableBox{
+    //     height: 42%;
+    //     overflow: auto;
+    // }
 }
 .addOrganClass{
     .item{
         width: 48%;
+        position: relative;
+        .errorInput{
+            position: absolute;
+            top: 44px;
+            left: 100px;
+            color: #F56C6C;
+            font-size: 12px;
+        }
     }
-    &>div.item:nth-child(odd){
-        float: left;
+    .part{
+        overflow: hidden;
+        &>div.item:nth-child(odd){
+            float: right;
+        }
+        &>div.item:nth-child(even){
+            float: left;
+        }
+        .titleP{
+            font-size: 16px;
+            padding-left: 4px;
+            border-left: 4px solid @blueC;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
     }
-    &>div.item:nth-child(even){
-        float: right;
-    }
+    
 }
