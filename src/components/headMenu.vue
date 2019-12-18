@@ -41,6 +41,8 @@ export default {
         console.log(this.$route.name);
         if(this.$route.name != 'home_index'){
           this.$router.push({ name: "home_index" });
+        }else{
+          this.$router.push({ path: "/" });
         }
         
     }

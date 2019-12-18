@@ -18,7 +18,7 @@ export function loginInApi(params) {
   })
   console.log(data)
   return request({
-    url: "/catsic/login",
+    url: "/login",
     method: "POST",
     data:data,
     showloading: true,
@@ -30,7 +30,7 @@ export function loginInApi(params) {
 //获取验证吗
 export function getCaptchaApi() {
   return request({
-    url: "/catsic/common/captcha/getcaptcha",
+    url: "/common/captcha/getcaptcha",
     method: "get",
     showloading: true,
     baseUrlType:1,
@@ -45,7 +45,7 @@ export const drawCodeImage = "/catsic/common/captcha/draw/"
 //获取菜单
 export function getMenuApi() {
   return request({
-    url: "/catsic/sys/permission/getMenuList",
+    url: "/sys/permission/getMenuList",
     method: "get",
     showloading: true,
     cancelToken: setCancelSource()

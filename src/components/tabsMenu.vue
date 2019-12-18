@@ -71,13 +71,14 @@ export default {
     // 刷新时以当前路由做为tab加入tabs
     // 当前路由不是首页时，添加首页以及另一页到store里，并设置激活状态
     // 当当前路由是首页时，添加首页到store，并设置激活状态
+    console.log('刷新页面');
     if (this.$route.path !== '/' && this.$route.name !== 'home_index') {
-      console.log('添加其他tab')
+       this.$store.dispatch('deleteAllTabs');
        this.$store.dispatch('addTabs', {route: '/index', name: 'home_index',title:'首页'});
        this.$store.dispatch('addTabs', {route: this.$route.path , name: this.$route.name,title:this.$route.meta.title });
       this.$store.dispatch('setActiveIndex', this.$route.name);
     } else {
-      console.log('添加caseHandle tab')
+     
       this.$store.dispatch('addTabs', {route: '/index', name: 'home_index',title:'首页'});
       this.$store.dispatch('setActiveIndex', 'home_index');
       //this.$router.push('/');

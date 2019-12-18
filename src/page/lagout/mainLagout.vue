@@ -96,6 +96,11 @@ export default {
       this.selectedHeadMenu = name;
     }
     
+  },
+  watch:{
+    $router(a,b){
+      console.log(a,b)
+    }
   }
 };
 </script>

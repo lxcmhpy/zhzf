@@ -1,12 +1,15 @@
 <template>
   <div class="fullBox departBox">
     <div class="departOrUserTree">
-      <p>机构列表</p>
-      <div class="searchDepartBox">
-        <el-input placeholder="输入机构名" v-model="filterText">
-          <el-button slot="append" size="mini" icon="el-icon-search"></el-button>
-        </el-input>
-      </div>
+      <!-- <div class="treeBoxTitle"> -->
+        <p>机构列表</p>
+        <div class="searchDepartBox">
+          <el-input placeholder="输入机构名" v-model="filterText">
+            <el-button slot="append" size="mini" icon="el-icon-search"></el-button>
+          </el-input>
+        </div>
+      <!-- </div> -->
+
       <div class="treeBox">
         <el-tree
           class="filter-tree"
@@ -31,12 +34,17 @@
       </div>
     </div>
     <div class="departTable">
-      <p>{{selectCurrentTreeName}}</p>
+      <p>
+        {{selectCurrentTreeName}}
+        <span class="editSelectNode" @click="editSelectNode">
+          <i class="iconfont law-btn_bianji"></i>
+        </span>
+      </p>
       <div class="handelBtn">
-        <div>部门列表</div>
+        <div>子机构列表</div>
         <div>
-          <el-dropdown split-button type="primary" size="medium" @click="addDepartment">
-            <i class="iconfont law-icon_weihu"></i>新增部门
+          <el-dropdown split-button type="primary" size="medium" @click="addOrgan">
+            <i class="iconfont law-icon_weihu"></i>新增机构
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>批量添加</el-dropdown-item>
               <el-dropdown-item>批量导入</el-dropdown-item>
@@ -50,20 +58,21 @@
         :data="tableData"
         stripe
         style="width: 100%"
+        @row-click="showOrganDetail"
         height="70%"
       >
-        <!-- <el-table-column prop="code" label="部门编码" align="center"></el-table-column> -->
-        <el-table-column prop="name" label="部门名称" align="center"></el-table-column>
+        <el-table-column prop="code" label="机构编码" align="center"></el-table-column>
+        <el-table-column prop="name" label="机构名称" align="center"></el-table-column>
+        <el-table-column prop="type" label="机构类型" align="center"></el-table-column>
         <el-table-column prop="status" label="状态" align="center">
           <span slot-scope="scope">
             <span>{{scope.row.status == 0 ? '正常': '注销'}}</span>
           </span>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <el-button  @click="editDepartment(scope.row)" type="text">修改</el-button>
-            <el-button type="text"  @click="deleteDepartment(scope.row.id)">删除</el-button>
+            <el-button @click.stop @click="editOrgan(scope.row.id)" type="text">修改</el-button>
+            <el-button type="text" @click.stop @click="deleteOrgan(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -81,11 +90,11 @@
       </div>
     </div>
 
-    <addDepartment ref="addDepartmentRef" @getAllOrgan2="getAllOrgan"></addDepartment>
+    <addOrgan ref="addOrganRef" @getAllOrgan2="getAllOrgan"></addOrgan>
   </div>
 </template>
 <script>
-import addDepartment from "./addDepartment";
+import addOrgan from "./addOrgan";
 export default {
   watch: {
     filterText(val) {
@@ -108,11 +117,11 @@ export default {
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       currentOrganId: "", //当前organ的id
-      departmentLength:0, //部门个数
+      showAddDialog: false
     };
   },
   components: {
-     addDepartment
+    addOrgan
   },
   inject: ["reload"],
   methods: {
@@ -120,6 +129,7 @@ export default {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
     },
+    editSelectNode() {},
     //点击树事件
     handleNodeClick(data) {
       console.log(data);
@@ -162,16 +172,17 @@ export default {
         }
       );
     },
-    //获取选中的机构下的部门
+    //获取选中的机构下的机构
     getSelectOrgan() {
       let data = {
-        oid: this.currentOrganId,
+        id: this.currentOrganId,
         current: this.currentPage,
         size: this.pageSize
       };
-      this.$store.dispatch("getDepartments", data).then(
+      console.log(data);
+      this.$store.dispatch("getSelectOrgan", data).then(
         res => {
-          console.log('部门数据',res);
+          console.log(res);
           this.tableData = res.data.records;
           this.totalPage = res.data.total;
         },
@@ -191,36 +202,49 @@ export default {
       this.currentPage = val;
       this.getSelectOrgan();
     },
-    //新增部门
-    addDepartment() {
+    //新增机构
+    addOrgan() {
       let parentNode = {
         parentNodeId: this.currentOrganId,
-        parentNodeName: this.selectCurrentTreeName,
-        departmentLength:this.totalPage
+        parentNodeName: this.selectCurrentTreeName
       };
-      this.$refs.addDepartmentRef.showModal(0, parentNode);
+      this.$refs.addOrganRef.showModal(0, parentNode);
     },
-    //修改部门
-    editDepartment(row) {
+    //机构详情
+    showOrganDetail(row, column, event) {
+      this.$refs.addOrganRef.showModal(1, row.id);
+    },
+    //修改机构
+    editOrgan(id) {
       let data = {
-        row: row,
+        id: id,
         parentNode: {
           parentNodeId: this.currentOrganId,
           parentNodeName: this.selectCurrentTreeName
         }
       };
-      this.$refs.addDepartmentRef.showModal(2, data);
+      this.$refs.addOrganRef.showModal(2, data);
     },
-    
-    //删除部门
-    deleteDepartment(id) {
-      this.$confirm("确认删除该部门?", "提示", {
+    //修改根节点机构
+    editSelectNode() {
+      let data = {
+        id: id,
+        parentNode: {
+          parentNodeId: this.currentOrganId,
+          parentNodeName: this.selectCurrentTreeName
+        }
+      };
+      this.$refs.addOrganRef.showModal(2, data);
+    },
+    //删除机构
+    deleteOrgan(id) {
+      this.$confirm("确认删除该机构?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.$store.dispatch("deleteDepartment", id).then(
+          this.$store.dispatch("deleteOrgan", id).then(
             res => {
               this.getAllOrgan(this.currentOrganId);
               this.$message({

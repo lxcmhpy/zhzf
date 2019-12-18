@@ -54,7 +54,7 @@ service.interceptors.request.use(
       config.headers["accessToken"] = getToken("TokenKey");
 
     }
-    console.log(config);
+    //console.log(config);
     return config;
   },
   error => {
@@ -65,7 +65,7 @@ service.interceptors.request.use(
 // respone interceptor
 service.interceptors.response.use(
   response => {
-    //console.log("response", response);
+    console.log("response", response);
     // if(response.code == 200){
     //   tryHideFullScreenLoading();  
     //   return Promise.resolve(response.data);
@@ -77,7 +77,7 @@ service.interceptors.response.use(
         tryHideFullScreenLoading();
         return Promise.resolve(response.data);
       } else if (
-        response.data.code == 400) {
+        response.data.code == 400 || response.data.code == 500) {
         tryHideFullScreenLoading();
         return Promise.reject(response.data);
       }else if(response.data.code == -1){   //重新登录

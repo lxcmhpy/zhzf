@@ -8,8 +8,18 @@
     box-sizing: border-box;
     padding: 20px;
     border-right: 1px solid #EEEEEE;
+    // position: relative;
+    // .treeBoxTitle{
+    //     position: absolute;
+    //     left: 0;
+    //     top:0 ;
+    // }
     .el-tree{
         background: #F5F7FB;
+    }
+    .treeBox{
+        max-height: 400px;
+        overflow-y: auto;
     }
     p{
         line-height: 30px;
@@ -35,6 +45,7 @@
             background: #eee;
         }
     }
+    
 }
 .departTable{
     width: 80%;
@@ -107,4 +118,19 @@
         }
     }
     
+}
+
+
+#roleBox{
+    box-sizing: border-box;
+    padding: 50px 10px 0 10px;
+    position: relative;
+    .tablePart{
+        height: 100%;
+    }
+    .handlePart{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
 }
