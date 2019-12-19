@@ -15,6 +15,11 @@
         <!-- <span class="errorInput" v-if="errorName">该部门名称已存在</span> -->
       </div>
       <div class="item">
+        <el-form-item label="描述" prop="notes">
+            <el-input v-model="addDictForm.notes"></el-input>
+        </el-form-item>
+      </div>
+      <div class="item">
         <el-form-item label="序号" prop="sort">
           <el-input v-model="addDictForm.sort"></el-input>
         </el-form-item>
@@ -39,6 +44,7 @@ export default {
       addDictForm: {
         name: "",
         sort: "",
+        notes:"",
         status: true
       },
       rules: {

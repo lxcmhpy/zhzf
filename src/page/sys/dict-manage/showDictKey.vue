@@ -24,10 +24,10 @@
         </el-table-column>
       </el-table>
     </div>
-    <!-- <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取 消</el-button>
-      <el-button type="primary" @click="addOrEditDict('addDictForm')">确 定</el-button>
-    </span> -->
+      <!-- <el-button type="primary" @click="addOrEditDict('addDictForm')">确 定</el-button> -->
+    </span>
     <addEditDict ref="addEditDictRef"></addEditDict>
   </el-dialog>
 </template>

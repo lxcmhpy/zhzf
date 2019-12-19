@@ -8,6 +8,7 @@ import {
   getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getDepartmentsApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, getAllMenuListApi,getTreePermissionApi,getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi
 } from "@/api/system";
 
+import * as systemApi from "@/api/system";
 import Cookies from "@/js/cookies";
 const actions = {
   //默认加载最短时间1秒

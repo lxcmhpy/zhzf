@@ -283,6 +283,7 @@ export function addDictApi(data) {
     id:data.id,
     pid:data.pid,
     name:data.name,
+    notes:data.notes,
     sort:data.sort,
     status:data.status == true ? 0 : 1
   };

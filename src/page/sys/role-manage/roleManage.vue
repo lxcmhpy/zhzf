@@ -1,7 +1,19 @@
 <template>
   <div class="fullBox" id="roleBox">
     <div class="handlePart">
-      <el-button type="primary" size="medium" icon="el-icon-plus" @click="addRole">添加角色</el-button>
+      <div class="search">
+        <el-form :inline="true" :model="dicSearchForm" class="">
+            <el-form-item label="角色名称">
+              <el-input v-model="dicSearchForm.name" placeholder="输入角色名称"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="getDictList">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addRole">添加角色</el-button>
+            </el-form-item>
+        </el-form>
+      </div>
     </div>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
@@ -30,7 +42,10 @@ import bindOrgan from "./bindOrgan";
 export default {
   data() {
     return {
-      tableData: [] //表格数据
+      tableData: [], //表格数据
+      dicSearchForm:{
+        name:''
+      }
     };
   },
   components: {
