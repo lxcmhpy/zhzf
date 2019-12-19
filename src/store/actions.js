@@ -5,8 +5,10 @@ const vm = new Vue(); //vm等同于this
 import { getCaptchaApi, loginInApi, getMenuApi, loginOutApi } from "@/api/login";
 import {
   getAllOrganApi, getSelectOrganApi, addOrganApi, getOrganDetailApi, deleteOrganApi, hasOrganNameApi,
-  getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getDepartmentsApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, getAllMenuListApi,getTreePermissionApi,getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi
+  getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getDepartmentsApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, getAllMenuListApi,getTreePermissionApi,getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi, 
+   getUserListApi,saveOrUpdateUserInfo,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi
 } from "@/api/system";
+// import { getAllOrganApi, getSelectOrganApi,addOrganApi,getOrganDetailApi,deleteOrganApi,hasOrganNameApi} from "@/api/system";
 
 import Cookies from "@/js/cookies";
 const actions = {
@@ -326,6 +328,110 @@ const actions = {
     })
   },
 
+  //用户管理  获取用户列表
+  getUserList({ commit }, data) {
+    return new Promise((resolve,reject)=>{
+      getUserListApi(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+
+   //用户管理  新增  修改 数据
+   saveOrUpdateUserInfo({ commit }, data) {
+    return new Promise((resolve,reject)=>{
+      saveOrUpdateUserInfo(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+
+  //用户管理  修改数据
+  // updateUserInfo({ commit }, data) {
+  //   return new Promise((resolve,reject)=>{
+  //     updateUserInfo(data).then(
+  //       res=>{
+  //         resolve(res);
+  //       },
+  //       error=>{
+  //         reject(error);
+  //       })
+  //   })
+  // },
+  //用户管理 id删除数据
+  getUserdelete({ commit }, data) {
+    return new Promise((resolve,reject)=>{
+      getUserdeleteApi(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+//用户管理 批量删除数据
+getUserdeletes({ commit }, data) {
+  return new Promise((resolve,reject)=>{
+    getUserdeletesApi(data).then(
+      res=>{
+        resolve(res);
+      },
+      error=>{
+        reject(error);
+      })
+  })
+},
+
+
+   //用户管理 密码初始化
+   getUserreset({ commit }, data) {
+    return new Promise((resolve,reject)=>{
+      getUserresetApi(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+
+
+   //用户管理 所属部门
+   getUserall({ commit }, data) {
+    return new Promise((resolve,reject)=>{
+      getUserallApi(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   //删除部门
   deleteDepartment({ commit }, data) {
     return new Promise((resolve, reject) => {
