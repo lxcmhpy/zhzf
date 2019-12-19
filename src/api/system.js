@@ -135,10 +135,10 @@ export function editRoleApi(data) {
 }
 //获取角色下已经绑定的菜单
 export function getRoleBindMenuApi(data) {
+  console.log(data);
   return request({
-    url: "/sys/role/queryRoleMenu",
+    url: "/sys/role/queryRoleMenu/"+data,
     method: "get",
-    params:{roleId:data},
     showloading: true,
     cancelToken: setCancelSource()
   });
@@ -217,6 +217,21 @@ export function addDepartmentApi(data) {
   });
 }
 
+//验证部门名称是否重复
+export function hasDepartmentNameApi(data) {
+  let params ={
+    oid:data.oid,
+    name:data.name
+  }
+  console.log(params);
+  return request({
+    url: "/sys/department/findDepartmentByName/"+data.oid+"/"+data.name,
+    method: "get",
+    // params:params,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
 //删除部门
 export function deleteDepartmentApi(data) {
   console.log('删除部门',data);
@@ -225,5 +240,79 @@ export function deleteDepartmentApi(data) {
     method: "get",
     showloading: true,
     cancelToken: setCancelSource()
+  });
+}
+
+//获取菜单列表  
+export function getAllMenuListApi() {
+  return request({
+    url: "/sys/permission/getAllList",
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+    
+  });
+}
+
+
+//获取权限树 
+export function getTreePermissionApi() {
+  return request({
+    url: "/sys/permission/getTreePermission",
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+    
+  });
+}
+
+//获取数据字典列表
+export function getDictListApi(data) {
+  console.log(data);
+  return request({
+    url: "/sys/drawer/findAllByPage",
+    method: "get",
+    params:data,
+    showloading: true,
+    cancelToken: setCancelSource()  
+  });
+}
+//新增 修改 字典 和字典值
+export function addDictApi(data) {
+  let dictForm={
+    id:data.id,
+    pid:data.pid,
+    name:data.name,
+    sort:data.sort,
+    status:data.status == true ? 0 : 1
+  };
+  console.log('添加字典',dictForm)
+  let data2 = vm.$qs.stringify(dictForm);
+  return request({
+    url: "/sys/drawer/addOrUpdate",
+    method: "post",
+    data:data2,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除部门
+export function deleteDictApi(data) {
+  console.log('删除部门',data);
+  return request({
+    url: "/sys/drawer/delete/"+data,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+//获取字典详情  字典值
+export function getDictListDetailApi(id) {
+  return request({
+    url: "/sys/drawer/findAllDrawerById/"+id,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()  
   });
 }

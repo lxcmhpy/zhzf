@@ -6,12 +6,12 @@
     :close-on-click-modal="false"
     width="35%"
   >
-    <el-form :model="addDepartmentForm" :rules="rules" ref="addDepartmentForm" label-width="80px">
+    <el-form :model="addDepartmentForm" :rules="rules" ref="addDepartmentForm" class="errorTipForm" label-width="80px">
       <div class="item">
         <el-form-item label="部门名称" prop="name">
-          <el-input v-model="addDepartmentForm.name"></el-input>
+          <el-input v-model="addDepartmentForm.name" @focus="focusName"></el-input>
         </el-form-item>
-        <!-- <span class="errorInput" v-if="errorOrganName">该机构名称已存在</span> -->
+        <span class="errorInput" v-if="errorName">该部门名称已存在</span>
       </div>
       <div class="item">
         <el-form-item label="所属机构" prop="pidName">
@@ -26,10 +26,7 @@
       </div>
       <div class="item">
         <el-form-item label="状态" prop="status">
-          <el-switch
-            v-model="addDepartmentForm.status"
-            active-color="#4573D0"
-          ></el-switch>
+          <el-switch v-model="addDepartmentForm.status" active-color="#4573D0"></el-switch>
         </el-form-item>
       </div>
     </el-form>
@@ -47,17 +44,17 @@ export default {
       addDepartmentForm: {
         sortOrder: "",
         name: "",
-        pidName: "" ,
-        status:true,
+        pidName: "",
+        status: true
       },
       rules: {
         name: [{ required: true, message: "请输入角色名称", trigger: "blur" }]
       },
       dialogTitle: "", //弹出框title
-      errorOrganName: false, //添加organname时的验证
+      errorName: false, //添加name时的验证
       handelType: 0, //添加 0  修改2
       parentNode: "", //新增部门时的上级机构
-      departmentId: "", //部门id
+      departmentId: "" //部门id
     };
   },
   inject: ["reload"],
@@ -87,58 +84,67 @@ export default {
     closeDialog() {
       this.visible = false;
       this.$refs["addDepartmentForm"].resetFields();
-      //this.errorOrganName = false;
+      this.errorName = false;
     },
     //聚焦清除错误信息
-    focusOrganName() {
-      this.errorOrganName = false;
-    },
-    //失去焦点请求 名称是否重复
-    blurOrganName() {
-      if (this.addOrganForm.name) {
-        this.$store.dispatch("hasOrganName", this.addOrganForm.name).then(
-          res => {
-            console.log(res);
-            if (res.data.id) {
-              this.errorOrganName = true;
-            } else {
-              this.errorOrganName = false;
-            }
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }
+    focusName() {
+      this.errorName = false;
     },
     //新增角色 修改角色
     addOrEditDepartment(formName) {
       this.$refs[formName].validate(valid => {
-        if (valid && !this.errorOrganName) {
-          this.addDepartmentForm.oid = this.parentNode.parentNodeId;
-          this.addDepartmentForm.id = this.handelType == 0 ? "" : this.departmentId;
-          // console.log("数据", this.addOrganForm);
-          console.log(this.addDepartmentForm)
-            this.$store.dispatch("addDepartment", this.addDepartmentForm).then(
-              res => {
-                console.log("部门", res);
-                this.$emit("getAllOrgan2",this.addDepartmentForm.oid);
-                this.$message({
-                  type: "success",
-                  message: this.handelType == 0 ? "添加成功!" : "修改成功"
-
-                });
-                this.visible = false;
-              },
-              err => {
-                console.log(err);
-              }
-            );
+        if (valid && !this.errorName) {
+            this.departmentNameRepeat();
         }
       });
+    },
+    //查询名称是否重复
+    departmentNameRepeat() {
+      let data = {
+        oid: this.parentNode.parentNodeId,
+        name: this.addDepartmentForm.name
+      };
+      this.$store.dispatch("hasDepartmentName", data).then(
+        res => {
+          console.log(res);
+          if(res.data.id){
+            this.errorName = true;
+          }else{
+            this.addOrEditDepartmentSure();
+          }
+         
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    //新增 修改
+    addOrEditDepartmentSure() {
+      this.addDepartmentForm.oid = this.parentNode.parentNodeId;
+      this.addDepartmentForm.id = this.handelType == 0 ? "" : this.departmentId;
+      // console.log("数据", this.addOrganForm);
+      console.log(this.addDepartmentForm);
+      this.$store.dispatch("addDepartment", this.addDepartmentForm).then(
+        res => {
+          console.log("部门", res);
+          this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
+          this.$message({
+            type: "success",
+            message: this.handelType == 0 ? "添加成功!" : "修改成功"
+          });
+          this.visible = false;
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     //获取机构详情
     getOrganDetail(id) {}
   }
 };
 </script>
+<style lang="less">
+@import "../../../css/systemManage.less";
+</style>

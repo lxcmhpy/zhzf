@@ -5,7 +5,7 @@ const vm = new Vue(); //vm等同于this
 import { getCaptchaApi, loginInApi, getMenuApi, loginOutApi } from "@/api/login";
 import {
   getAllOrganApi, getSelectOrganApi, addOrganApi, getOrganDetailApi, deleteOrganApi, hasOrganNameApi,
-  getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getDepartmentsApi, addDepartmentApi,deleteDepartmentApi
+  getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getDepartmentsApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, getAllMenuListApi,getTreePermissionApi,getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi
 } from "@/api/system";
 
 import Cookies from "@/js/cookies";
@@ -289,7 +289,6 @@ const actions = {
         })
     })
   },
-
   //获取机构下的部门
   getDepartments({ commit }, data) {
     return new Promise((resolve, reject) => {
@@ -314,7 +313,19 @@ const actions = {
         })
     })
   },
-  
+  //验证机构名称是否重复
+  hasDepartmentName({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      hasDepartmentNameApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+
   //删除部门
   deleteDepartment({ commit }, data) {
     return new Promise((resolve, reject) => {
@@ -328,6 +339,78 @@ const actions = {
     })
   },
 
+  //获取所有菜单
+  getAllMenuList() {
+    return new Promise((resolve, reject) => {
+      getAllMenuListApi().then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+  //获取权限树
+  getTreePermission() {
+    return new Promise((resolve, reject) => {
+      getTreePermissionApi().then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+  //获取数据字典列表
+  getDictList({ commit }, data){
+    return new Promise((resolve, reject) => {
+      getDictListApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+  //添加数据字典
+  addDict({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      addDictApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+  //删除字典
+  deleteDict({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      deleteDictApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+  //获取字典值详情
+  getDictListDetail({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      getDictListDetailApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
 };
 
 export default actions;

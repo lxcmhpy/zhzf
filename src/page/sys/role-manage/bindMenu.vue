@@ -50,7 +50,7 @@ export default {
     },
     //获取菜单
     getMenu() {
-      this.$store.dispatch("getMenu").then(
+      this.$store.dispatch("getTreePermission").then(
         res => {
           console.log("获取菜单", res);
           this.menuData = res.data;

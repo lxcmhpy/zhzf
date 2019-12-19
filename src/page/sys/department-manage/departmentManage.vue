@@ -59,7 +59,7 @@
             <span>{{scope.row.status == 0 ? '正常': '注销'}}</span>
           </span>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+        <!-- <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column> -->
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button  @click="editDepartment(scope.row)" type="text">修改</el-button>
