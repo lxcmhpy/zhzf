@@ -14,7 +14,8 @@ module.exports = {
       "/catsic": {
         //target: "http://172.16.169.54:8888",
         //target: "http://172.16.170.53:8888", //线上地址
-        target: "http://172.16.169.75:8888",
+        // target: "http://172.16.169.75:8888",
+        target: "http://172.16.168.84:8888",
         changeOrigin: true,
       }
     },
@@ -27,7 +28,7 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */
