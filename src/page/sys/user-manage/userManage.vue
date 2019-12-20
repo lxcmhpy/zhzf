@@ -219,6 +219,8 @@ export default {
     handleEdit(index, row) {
       this.$refs.addUserRef.handelEdit();
       this.$refs.addUserRef.addUserForm = JSON.parse(JSON.stringify(row))
+      this.$refs.addUserRef.addUserForm.organTitle = this.selectCurrentTreeName
+      this.$refs.addUserRef.addUserForm.organId = this.currentOrganId
     },
     // 表格id删除
     handleDelete(row) {
@@ -245,31 +247,7 @@ export default {
         });
      
     },
-    // 表格批量删除
-    // handleDelete_(id) {
-    //    this.$confirm('确认删除该机构?', '提示', {
-    //       confirmButtonText: '确定',
-    //       cancelButtonText: '取消',
-    //       type: 'warning'
-    //     }).then(() => {
-    //       this.$store.dispatch("getUserdeletes", id).then(
-    //         res => {
-    //             this.getAllOrgan(this.$refs.addUserRef.id);
-    //             this.$message({
-    //               type: 'success',
-    //               message: '删除成功!'
-    //             });
-    //         },
-    //         err => {
-    //           console.log(err);
-    //         }
-    //       );
-
-    //     }).catch(() => {
-                
-    //     });
-     
-    // },
+   
     // 密码初始化
     Initialization(row) {
        this.$confirm('确认初始化密码?', '提示', {

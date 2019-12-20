@@ -6,7 +6,7 @@ import { getCaptchaApi, loginInApi, getMenuApi, loginOutApi } from "@/api/login"
 import {
   getAllOrganApi, getSelectOrganApi, addOrganApi, getOrganDetailApi, deleteOrganApi, hasOrganNameApi,
   getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getDepartmentsApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, getAllMenuListApi,getTreePermissionApi,getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi, 
-   getUserListApi,saveOrUpdateUserInfo,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi
+   getUserListApi,saveOrUpdateUserInfo,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi
 } from "@/api/system";
 // import { getAllOrganApi, getSelectOrganApi,addOrganApi,getOrganDetailApi,deleteOrganApi,hasOrganNameApi} from "@/api/system";
 
@@ -410,6 +410,20 @@ getUserdeletes({ commit }, data) {
    getUserall({ commit }, data) {
     return new Promise((resolve,reject)=>{
       getUserallApi(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+
+
+  //日志管理
+  getloglist({ commit }, data) {
+    return new Promise((resolve,reject)=>{
+      getloglistApi(data).then(
         res=>{
           resolve(res);
         },
