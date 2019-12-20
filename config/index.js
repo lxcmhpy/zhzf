@@ -15,7 +15,8 @@ module.exports = {
         //target: "http://172.16.169.54:8888",
         //target: "http://172.16.170.53:8888", //线上地址
         // target: "http://172.16.169.75:8888",
-        target: "http://172.16.168.84:8888",
+        // target: "http://172.16.168.84:8888",
+        target: "http://172.16.169.83:8888",
         changeOrigin: true,
       }
     },
