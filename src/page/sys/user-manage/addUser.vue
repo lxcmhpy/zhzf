@@ -52,7 +52,7 @@
       </div>
       <div class="item">
         <el-form-item label="所属部门">
-           <el-select v-model="addUserForm.departmentTitle" placeholder="请选择"> -->
+           <el-select v-model="addUserForm.departmentTitle" placeholder="请选择">
             <el-option
               v-for="item in depss"
               :key="item.id"
@@ -203,10 +203,10 @@ export default {
             organId : this.addUserForm.organId
         }
        this.$store.dispatch("getUserall",data).then(res => {
-          if(res.data.code === 200){
+          if(res.code === 200){
                this.depss=res.data;
                console.log(this.depss);
-               console.log(1111111111111111111111)
+               console.log(11111111111111111111111)
           }else{
             console.log(1);
           }
@@ -246,6 +246,7 @@ export default {
       //编辑弹框标题
       this.dialogStatus = "editEquipment";
     },
+    
     // 弹框保存
     save() {
       if (this.dialogStatus === "addEquipment") {
