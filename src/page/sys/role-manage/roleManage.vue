@@ -7,7 +7,7 @@
               <el-input v-model="dicSearchForm.name" placeholder="输入角色名称"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="getDictList">查询</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="getRoles">查询</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addRole">添加角色</el-button>
@@ -30,6 +30,17 @@
         </el-table-column>
       </el-table>
     </div>
+    <div class="paginationBox">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          background
+          :page-sizes="[10, 20, 30, 40]"
+          layout="prev, pager, next,sizes,jumper"
+          :total="totalPage"
+        ></el-pagination>
+    </div>
     <addEditRole ref="addEditRoleRef"></addEditRole>
     <bindMenu ref="bindMenuRef"></bindMenu> 
     <bindOrgan ref="bindOrganRef"></bindOrgan> 
@@ -45,7 +56,10 @@ export default {
       tableData: [], //表格数据
       dicSearchForm:{
         name:''
-      }
+      },
+      currentPage: 1, //当前页
+      pageSize: 10, //pagesize
+      totalPage: 0, //总页数
     };
   },
   components: {
@@ -82,12 +96,25 @@ export default {
         })
         .catch(() => {});
     },
+    //更改每页显示的条数
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.currentPage = 1;
+      this.getSelectOrgan();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getSelectOrgan();
+    },
     //获取角色
     getRoles() {
       this.$store.dispatch("getRoles").then(
         res => {
           console.log("角色列表", res);
-          this.tableData = res.data;
+          this.tableData = res.data.records;
+          this.totalPage = res.data.total;
+
         },
         err => {
           console.log(err);

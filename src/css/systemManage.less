@@ -54,6 +54,7 @@
     box-sizing: border-box;
     padding: 20px;
     background: #fff;
+    overflow-y: scroll;
     p{
         line-height: 30px;
         .editSelectNode{
@@ -131,14 +132,19 @@
         }
     }
 }
+.demo-form-inline{
+    display:flex;
+    justify-content:flex-end;
+}
 
 #roleBox,#dictBox{
     box-sizing: border-box;
-    padding: 80px 20px 0 20px;
+    padding: 80px 20px 50px 20px;
     position: relative;
     .tablePart{
         height: 100%;
         overflow: auto;
+        margin-top: 15px;
     }
     .handlePart{
         position: absolute;
@@ -158,5 +164,42 @@
         right: 0;
         margin: auto;
         text-align: center;
+    }
+}
+
+#userBox{
+    .userSearchPart{
+        overflow: hidden;
+        &>div{
+            float: left;
+        }
+        &>div:nth-child(1),&>div:nth-child(2),&>div:nth-child(3),&>div:nth-child(4){
+            width: 17%; 
+        }
+        &>div:nth-child(5){
+            width: 22%;
+        }
+        &>div:last-child{
+            width: 10%;
+            button{
+                margin-top: 5px;
+            }
+        }
+    }
+    .userSearchPart:nth-child(2){
+        overflow: hidden;
+        &>div{
+            float: right;
+        }
+        &>div:nth-child(1){
+            width: 22%; 
+            margin-left: 10px;
+            button{
+                margin-top: 5px;
+            }
+        }
+        &>div:nth-child(2){
+            width: 25%;
+        }
     }
 }

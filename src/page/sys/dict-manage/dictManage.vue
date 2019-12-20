@@ -2,7 +2,7 @@
   <div class="fullBox" id="dictBox">
     <div class="handlePart">
       <div class="search">
-        <el-form :inline="true" :model="dicSearchForm" class="">
+        <el-form :inline="true" :model="dicSearchForm" >
             <el-form-item label="名称">
               <el-input v-model="dicSearchForm.name" placeholder="输入名称"></el-input>
             </el-form-item>
@@ -18,8 +18,8 @@
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
         <el-table-column prop="name" label="名称" align="center"></el-table-column>
-        <el-table-column prop="description" label="描述" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+        <el-table-column prop="notes" label="描述" align="center"></el-table-column>
+        <!-- <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column> -->
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="editDict(scope.row)">编辑</el-button>

@@ -84,6 +84,108 @@ export function hasOrganNameApi(name) {
   });
 }
 
+//用户管理   获取用户列表
+export function getUserListApi(data) {
+  console.log('用户',data);
+  return request({
+    url: "/sys/user/list",
+    method: "get",
+    params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//用户管理   新增 修改 数据
+export function saveOrUpdateUserInfo(data) {
+
+  console.log('用户', vm.$qs.stringify(data));
+
+  console.log(data)
+  return request({
+    url: "/sys/user/saveOrUpdateUserInfo",
+    method: "POST",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//用户管理   id删除数据
+export function getUserdeleteApi(id) {
+  console.log(id)
+  return request({
+    url: "/sys/user/delete/" + id,
+    method: "GET",
+    data:vm.$qs.stringify(id),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+//用户管理   批量删除数据
+export function getUserdeletesApi(id) {
+  console.log(id)
+  return request({
+    url: "/sys/user/deletes" ,
+    method: "GET",
+    data:vm.$qs.stringify(id),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+
+//用户管理   密码初始化
+export function getUserresetApi(id) {
+  console.log(id)
+  return request({
+    url: "/sys/user/reset/" + id,
+    method: "GET",
+    data:vm.$qs.stringify(id),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//用户管理   所属部门
+// export function getUserallApi(data) {
+//   return request({
+//     url: "/sys/department/all",
+//     method: "GET",
+//     params:data,
+//     showloading: true,
+//     cancelToken: setCancelSource()
+//   });
+// }
+//用户绑定角色
+export function userBindRoleApi(data) {
+  console.log(data);
+  return request({
+    url: "/sys/user/bindRoles",
+    method: "GET",
+    params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+
+//获取用户绑定的角色
+export function queryUserBindRoleApi(data) {
+  console.log(data);
+  return request({
+    url: "/sys/user/findBindRolesByUserId/"+data,
+    method: "GET",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+
+
+
+
+
 //获取角色列表
 export function getRolesApi() {
   return request({
@@ -186,11 +288,33 @@ export function roleBindOrganApi(data) {
 }
 
 
+//获取机构下绑定的角色
+export function getOrganBindRoleApi(data) {
+  return request({
+    url: "/sys/role/queryRoleByOrganId/"+data,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
 //获取选中机构下的部门
 export function getDepartmentsApi(data) {
   console.log('部门',data);
   return request({
     url: "/sys/department/list",
+    method: "get",
+    params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//获取选中机构下的所有部门   没有分页
+export function getDepartmentsNoPageApi(data) {
+  console.log('部门',data);
+  return request({
+    url: "/sys/department/all",
     method: "get",
     params:data,
     showloading: true,
