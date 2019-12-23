@@ -154,7 +154,7 @@ export function getUserresetApi(id) {
 //     method: "GET",
 //     params:data,
 //     showloading: true,
-//     cancelToken: setCancelSource()
+//     cancelToken: setCancelSource(dict
 //   });
 // }
 //用户绑定角色
@@ -171,11 +171,13 @@ export function userBindRoleApi(data) {
 
 //日志管理
 export function getloglistApi(data) {
-  console.log(vm.$qs.stringify(data));
+  // console.log(vm.$qs.stringify(data));
+  console.log(data);
   return request({
     url: "/sys/log/list",
     method: "GET",
-    data:vm.$qs.stringify(data),
+    // data:data,
+    params:data,
     showloading: true,
     cancelToken: setCancelSource()
   });
@@ -199,10 +201,12 @@ export function queryUserBindRoleApi(data) {
 
 
 //获取角色列表
-export function getRolesApi() {
+export function getRolesApi(data) {
+  console.log(data);
   return request({
     url: "/sys/role/all",
     method: "get",
+    params:data,
     showloading: true,
     cancelToken: setCancelSource()
   });

@@ -197,9 +197,9 @@ const actions = {
     })
   },
   //获取角色列表
-  getRoles() {
+  getRoles({ commit }, data) {
     return new Promise((resolve, reject) => {
-      getRolesApi().then(
+      getRolesApi(data).then(
         res => {
           resolve(res);
         },

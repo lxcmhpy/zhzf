@@ -19,6 +19,11 @@
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
         <el-table-column prop="name" label="名称" align="center"></el-table-column>
         <el-table-column prop="notes" label="描述" align="center"></el-table-column>
+        <el-table-column prop="status" label="状态" align="center">
+            <template slot-scope="scope">
+            <div>{{scope.row.status === 0?'有效':scope.row.status === 1?'无效':'待激活'}}</div>
+          </template>
+        </el-table-column>
         <!-- <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column> -->
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">

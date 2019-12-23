@@ -15,7 +15,7 @@
       <el-table :data="tableData" stripe style="width: 100%" height="300px">
         <el-table-column prop="pName" label="字典标签" align="center"></el-table-column>
         <el-table-column prop="name" label="字典值" align="center"></el-table-column>
-        <el-table-column prop="notes" label="描述" align="center"></el-table-column>
+        <!-- <el-table-column prop="notes" label="描述" align="center"></el-table-column> -->
         <el-table-column prop="sort" label="排序" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
