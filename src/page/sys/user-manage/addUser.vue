@@ -27,11 +27,11 @@
             ></el-input>
           </el-form-item>
         </div>
-        <div class="item" v-if="dialogStatus === 'addEquipment'">
+        <!-- <div class="item" v-if="dialogStatus === 'addEquipment'">
           <el-form-item label="初始密码" prop="password">
-            <el-input ref="password" v-model="addUserForm.password"></el-input>
+            <el-input ref="password" ></el-input>
           </el-form-item>
-        </div>
+        </div>-->
       </div>
       <div class="part">
         <p class="titleP">基本信息</p>
@@ -51,7 +51,7 @@
           </el-form-item>
         </div>
         <div class="item">
-          <el-form-item label="执法门类" >
+          <el-form-item label="执法门类">
             <el-input v-model="addUserForm.category"></el-input>
           </el-form-item>
         </div>
@@ -59,14 +59,24 @@
           <el-form-item label="执法机构" prop="organId">
             <!-- <el-input v-model="addUserForm.organTitle"></el-input> -->
             <el-select v-model="addUserForm.organId" placeholder="请选择执法机构" @change="getDepartment">
-              <el-option v-for="item in getOrganList" :key="item.id" :label="item.label" :value="item.id"></el-option>
+              <el-option
+                v-for="item in getOrganList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
         </div>
         <div class="item">
           <el-form-item label="所属部门" prop="departmentId">
             <el-select v-model="addUserForm.departmentId" placeholder="请选择">
-              <el-option v-for="item in departments" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              <el-option
+                v-for="item in departments"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -116,12 +126,12 @@ export default {
       //新增和编辑弹框标题
       dialogStatus: "",
       parentNode: "", //新增用户时默认的上级机构
-      getOrganList:[], //获取机构级下级机构
-      departments:[],   //切换机构获取部门
+      getOrganList: [], //获取机构级下级机构
+      departments: [], //切换机构获取部门
       addUserForm: {
         id: "",
         username: "",
-        password: "",
+        password: "123456",
         mobile: "",
         nickName: "",
         IDnumber: "",
@@ -140,15 +150,11 @@ export default {
           { required: true, message: "请输入登录用户名", trigger: "blur" },
           { min: 6, message: "长度大于6个字符", trigger: "blur" }
         ],
-        password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, message: "长度大于6个字符", trigger: "blur" }
-        ],
         mobile: [{ validator: validatePhone, trigger: "blur" }],
         organId: [{ required: true, message: "请选择机构", trigger: "change" }],
-        departmentId: [
-          { required: true, message: "请选择部门", trigger: "change" }
-        ],
+        // departmentId: [
+        //   { required: true, message: "请选择部门", trigger: "change" }
+        // ],
         IDnumber: [{ validator: validateIDNumber, trigger: "blur" }]
       }
     };
@@ -171,22 +177,26 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.$nextTick(() => {
-        this.$refs["addUserForm"].resetFields();
-      });
+      // this.$nextTick(() => {
+      //   this.$refs["addUserForm"].resetFields();
+      // });
+      this.$refs["addUserForm"].resetFields();
     },
     //编辑
-    handelEdit() {
+    handelEdit(data) {
       //显示弹框
       this.visible = true;
       //编辑弹框标题
       this.dialogStatus = "editEquipment";
+      this.parentNode = data;
+      this.getCurrentOrganAndChild();
     },
-    //获取当前机构及其子机构    稍后换接口
-    getCurrentOrganAndChild(){
-      this.$store.dispatch("getAllOrgan").then(
+    //获取当前机构及其子机构
+    getCurrentOrganAndChild() {
+      this.$store.dispatch("getCurrentAndNextOrgan",this.parentNode.parentNodeId).then(
         res => {
-          console.log("获取当前机构及其子机构    稍后换接口",res)
+
+          console.log(res);
           this.getOrganList = res.data;
         },
         err => {
@@ -198,12 +208,12 @@ export default {
     getDepartment(data1) {
       console.log(data1);
       let data = {
-        organId: data1,
+        organId: data1
       };
-      console.log('获取选中的机构下的部门',data)
+      console.log("获取选中的机构下的部门", data);
       this.$store.dispatch("getDepartmentsNoPage", data).then(
         res => {
-          console.log('部门数据',res);
+          console.log("部门数据", res);
           this.departments = res.data;
         },
         err => {
@@ -213,33 +223,48 @@ export default {
     },
     // 弹框保存
     save() {
-      this.$refs['addUserForm'].validate(valid => {
+      this.$refs["addUserForm"].validate(valid => {
         if (valid) {
           if (this.dialogStatus === "addEquipment") {
             console.log("this.addUserForm", this.addUserForm);
-            // this.$store
-            //   .dispatch("saveOrUpdateUserInfo", this.addUserForm)
-            //   .then(res => {
-            //       this.$message({
-            //         showClose: true,
-            //         message: "新增用户成功",
-            //         type: "success"
-            //       });
-            //       this.visible = false;
-            //       this.$emit("uploadaaa", "1");
-                
-            //   })
-            //   .catch(err => {
-            //     this.$message({
-            //       showClose: true,
-            //       message: err,
-            //       type: "error"
-            //     });
-            //   });
+            this.$store
+              .dispatch("addUser", this.addUserForm)
+              .then(res => {
+                this.$message({
+                  showClose: true,
+                  message: "新增用户成功",
+                  type: "success"
+                });
+                this.visible = false;
+                this.$emit("uploadaaa", "1");
+              })
+              .catch(err => {
+                this.$message({
+                  showClose: true,
+                  message: err,
+                  type: "error"
+                });
+              });
           } else if (this.dialogStatus === "editEquipment") {
             console.log(this.addUserForm);
+            let data = {
+              id: this.addUserForm.id,
+              username: this.addUserForm.username,
+              mobile: this.addUserForm.mobile,
+              nickName: this.addUserForm.nickName,
+              IDnumber: this.addUserForm.IDnumber,
+              category: this.addUserForm.category,
+              organId: this.addUserForm.organId,
+              organTitle: this.addUserForm.organTitle,
+              departmentId: this.addUserForm.departmentId,
+              departmentTitle: this.addUserForm.departmentTitle,
+              Provincial: this.addUserForm.Provincial,
+              Ministerial: this.addUserForm.Ministerial,
+              Maritime: this.addUserForm.Maritime,
+              Other: this.addUserForm.Other
+            };
             this.$store
-              .dispatch("saveOrUpdateUserInfo", this.addUserForm)
+              .dispatch("updateUser", this.addUserForm)
               .then(res => {
                 this.$message({
                   showClose: true,

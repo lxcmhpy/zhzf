@@ -76,49 +76,19 @@
         </div>
       </el-form>
 
-      <!-- <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="查询方法" size="mini">
-          <el-input style="width:120px;"></el-input>
-        </el-form-item>
-        <el-form-item label="用户名" size="mini">
-          <el-input v-model="formInline.username" style="width:120px;"></el-input>
-        </el-form-item>
-        <el-form-item label="姓名" size="mini">
-          <el-input v-model="formInline.nickName" style="width:120px;"></el-input>
-        </el-form-item>
-        <el-form-item label="证件号" size="mini">
-          <el-input v-model="formInline.enforceNo" style="width:120px;"></el-input>
-        </el-form-item>
-        <el-form-item label="账户状态" size="mini">
-          <el-select v-model="formInline.region" style="width:120px;">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item size="mini">
-          <el-button type="primary" @click="getUserList">查询</el-button>
-        </el-form-item>
-      </el-form>-->
-      <!-- <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="联系电话" size="mini">
-          <el-input v-model="formInline.mobile" style="width:120px;"></el-input>
-        </el-form-item>
-        <el-form-item size="mini">
-          <el-button type="primary" @click="addUser">新增用户</el-button>
-        </el-form-item>
-        <el-form-item size="mini">
-          <el-button type="primary">角色绑定</el-button>
-        </el-form-item>
-      </el-form>-->
-
-      
-      <el-table :data="tableData" stripe style="width: 100%" height="70%">
+      <el-table
+        :data="tableData"
+        stripe
+        style="width: 100%"
+        height="70%"
+        @selection-change="selectUser"
+      >
         <el-table-column type="selection" align="center"></el-table-column>
         <el-table-column prop="username" label="用户名"></el-table-column>
         <el-table-column prop="nickName" label="姓名"></el-table-column>
         <el-table-column prop="enforceNo" label="执法证号"></el-table-column>
         <el-table-column prop="mobile" label="联系电话"></el-table-column>
-        <el-table-column prop="roleNames" label="角色"> </el-table-column>
+        <el-table-column prop="roleNames" label="角色"></el-table-column>
         <el-table-column prop="userOrgan" label="所属机构"></el-table-column>
         <el-table-column prop="userDeparment" label="所属部门"></el-table-column>
         <el-table-column prop="status" label="状态">
@@ -131,8 +101,6 @@
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
             <el-button size="mini" @click="Initialization(scope.row)">初始化</el-button>
-            <el-button size="mini" @click="bindRole(scope.row.id)">绑定角色</el-button>
-
           </template>
         </el-table-column>
       </el-table>
@@ -151,7 +119,6 @@
 
     <addUser ref="addUserRef" @uploadaaa="getUserList()"></addUser>
     <bindRole ref="bindRoleRef"></bindRole>
-
   </div>
 </template>
 
@@ -186,8 +153,9 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总数
-      departments:[], //机构下的部门
-      currentOrganId:''
+      departments: [], //机构下的部门
+      currentOrganId: "",
+      selectUserIdList: [] //选中的userid
     };
   },
   components: {
@@ -208,7 +176,7 @@ export default {
       this.currentOrganId = data.id;
       console.log(this.currentOrganId);
       this.getUserList();
-      this.getDepartment();
+     // this.getDepartment();
     },
     //获取机构
     getAllOrgan() {
@@ -228,7 +196,7 @@ export default {
           this.currentOrganId = res.data[0].id;
           this.selectCurrentTreeName = res.data[0].label;
           this.getUserList();
-          this.getDepartment();
+          //this.getDepartment();
         },
         err => {
           console.log(err);
@@ -254,24 +222,23 @@ export default {
         this.totalPage = res.data.ipageList.total;
         let userData1 = res.data.ipageList.records;
         let userRoleData = res.data.userOtherInfoList;
-        userData1.forEach(item=>{
-          let userItemRoles = [];  //用户下的角色
-          let userDeparment = "";  //用户所在的部门
-          let userOrgan = "";  //用户所在的机构
-          userRoleData.forEach(item2=>{
-            if(item.id == item2.userId){
+        userData1.forEach(item => {
+          let userItemRoles = []; //用户下的角色
+          let userDeparment = ""; //用户所在的部门
+          let userOrgan = ""; //用户所在的机构
+          userRoleData.forEach(item2 => {
+            if (item.id == item2.userId) {
               userItemRoles.push(item2.roleName);
               userDeparment = item2.departmentTitle;
               userOrgan = item2.organTitle;
             }
-          })
-          item.roleNames = userItemRoles.join(',');
+          });
+          item.roleNames = userItemRoles.join(",");
           item.userDeparment = userDeparment;
           item.userOrgan = userOrgan;
-        })
-        console.log('userData1',userData1);
+        });
+        console.log("userData1", userData1);
         this.tableData = userData1;
-        
       });
       err => {
         console.log(err);
@@ -291,7 +258,7 @@ export default {
     },
     // 表格编辑
     handleEdit(index, row) {
-      this.$refs.addUserRef.handelEdit();
+      this.$refs.addUserRef.handelEdit(row);
       this.$refs.addUserRef.addUserForm = JSON.parse(JSON.stringify(row));
     },
     // 表格id删除
@@ -317,7 +284,7 @@ export default {
         })
         .catch(() => {});
     },
-  
+
     // 密码初始化
     Initialization(row) {
       this.$confirm("确认初始化密码?", "提示", {
@@ -353,10 +320,27 @@ export default {
       // this.$refs.addUserRef.addUserForm.organId = this.currentOrganId;
       // this.$refs.addUserRef.depss = this.departments;
     },
-    
+
     //角色绑定
-    bindRole(id){
-      this.$refs.bindRoleRef.showModal(id);
+    bindRole() {
+      if (this.selectUserIdList.length) {
+        let data = {
+          userIdList: this.selectUserIdList,
+          organId: this.currentOrganId
+        };
+        this.$refs.bindRoleRef.showModal(data);
+      }else{
+        this.$message('请选择用户');
+      }
+    },
+    //获取选中的user
+    selectUser(val) {
+      console.log(val);
+      this.selectUserIdList = [];
+      val.forEach(item => {
+        this.selectUserIdList.push(item.id);
+        console.log(this.selectUserIdList);
+      });
     }
   },
   mounted() {
