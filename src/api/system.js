@@ -86,6 +86,20 @@ export function hasOrganNameApi(name) {
     cancelToken: setCancelSource()
   });
 }
+//获取本机构及下级机构
+export function getCurrentAndNextOrganApi(data) {
+  return request({
+    url: "/sys/organ/findAllSubListByOrgId/"+data,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+
+
+
+
 
 //用户管理   获取用户列表
 export function getUserListApi(data) {
@@ -100,19 +114,46 @@ export function getUserListApi(data) {
 }
 
 //用户管理   新增 修改 数据
-export function saveOrUpdateUserInfo(data) {
+// export function saveOrUpdateUserInfo(data) {
+//   console.log('用户', vm.$qs.stringify(data));
+//   console.log(data)
+//   return request({
+//     url: "/sys/user/saveOrUpdateUserInfo",
+//     method: "POST",
+//     data:vm.$qs.stringify(data),
+//     showloading: true,
+//     cancelToken: setCancelSource()
+//   });
+// }
 
+//用户管理   新增用户
+export function addUserApi(data) {
   console.log('用户', vm.$qs.stringify(data));
-
   console.log(data)
   return request({
-    url: "/sys/user/saveOrUpdateUserInfo",
+    url: "/sys/user/addUser",
+    method: "POST",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+//用户管理   修改用户
+export function updateUserApi(data) {
+  console.log('用户', vm.$qs.stringify(data));
+  console.log(data);
+
+  return request({
+    url: "/sys/user/updateUser",
     method: "POST",
     data: vm.$qs.stringify(data),
     showloading: true,
     cancelToken: setCancelSource()
   });
 }
+
+
+
 
 //用户管理   id删除数据
 export function getUserdeleteApi(id) {
@@ -199,10 +240,12 @@ export function queryUserBindRoleApi(data) {
 
 
 //获取角色列表
-export function getRolesApi() {
+export function getRolesApi(data) {
+  console.log(data);
   return request({
     url: "/sys/role/all",
     method: "get",
+    params:data,
     showloading: true,
     cancelToken: setCancelSource()
   });
@@ -262,9 +305,8 @@ export function getRoleBindMenuApi(data) {
 //获取角色下已经绑定的机构
 export function getRoleBindOrganApi(data) {
   return request({
-    url: "/sys/role/queryRoleOrgan",
+    url: "/sys/role/queryRoleOrgan/"+data,
     method: "get",
-    params: {roleId: data},
     showloading: true,
     cancelToken: setCancelSource()
   });

@@ -4,13 +4,14 @@ const vm = new Vue(); //vm等同于this
 
 import { getCaptchaApi, loginInApi, getMenuApi, loginOutApi } from "@/api/login";
 import {
-  getAllOrganApi, getSelectOrganApi, addOrganApi, getOrganDetailApi, deleteOrganApi, hasOrganNameApi,
-  getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi,getOrganBindRoleApi,getDepartmentsApi,getDepartmentsNoPageApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, getAllMenuListApi,getTreePermissionApi,getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi,
-   getUserListApi,saveOrUpdateUserInfo,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi,userBindRoleApi,queryUserBindRoleApi,addPermissionApi,deletePermissionApi,
+  getAllOrganApi, getSelectOrganApi, addOrganApi, getOrganDetailApi, deleteOrganApi, hasOrganNameApi,getCurrentAndNextOrganApi,
+  getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi,getOrganBindRoleApi,
+  getDepartmentsApi,getDepartmentsNoPageApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, 
+  getAllMenuListApi,getTreePermissionApi,addPermissionApi,deletePermissionApi,
+  getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi, 
+  getUserListApi,addUserApi,updateUserApi,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi,userBindRoleApi,queryUserBindRoleApi
 } from "@/api/system";
 
-
-import * as systemApi from "@/api/system";
 import Cookies from "@/js/cookies";
 const actions = {
   //默认加载最短时间1秒
@@ -197,9 +198,9 @@ const actions = {
     })
   },
   //获取角色列表
-  getRoles() {
+  getRoles({ commit }, data) {
     return new Promise((resolve, reject) => {
-      getRolesApi().then(
+      getRolesApi(data).then(
         res => {
           resolve(res);
         },
@@ -353,6 +354,21 @@ const actions = {
         })
     })
   },
+  //获取本机构及它的下级机构
+  getCurrentAndNextOrgan({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      getCurrentAndNextOrganApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+
+
+
 
   //用户管理  获取用户列表
   getUserList({ commit }, data) {
@@ -368,9 +384,21 @@ const actions = {
   },
 
    //用户管理  新增  修改 数据
-   saveOrUpdateUserInfo({ commit }, data) {
+  //  saveOrUpdateUserInfo({ commit }, data) {
+  //   return new Promise((resolve,reject)=>{
+  //     saveOrUpdateUserInfo(data).then(
+  //       res=>{
+  //         resolve(res);
+  //       },
+  //       error=>{
+  //         reject(error);
+  //       })
+  //   })
+  // },
+  //新增用户
+  addUser({ commit }, data) {
     return new Promise((resolve,reject)=>{
-      saveOrUpdateUserInfo(data).then(
+      addUserApi(data).then(
         res=>{
           resolve(res);
         },
@@ -379,6 +407,19 @@ const actions = {
         })
     })
   },
+  //修改用户
+  updateUser({ commit }, data) {
+    return new Promise((resolve,reject)=>{
+      updateUserApi(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
+  
 
   //用户管理  修改数据
   // updateUserInfo({ commit }, data) {

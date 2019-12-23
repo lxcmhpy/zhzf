@@ -109,7 +109,12 @@ export default {
     },
     //获取角色
     getRoles() {
-      this.$store.dispatch("getRoles").then(
+      let data = {
+        current: this.currentPage,
+        size: this.pageSize,
+        // name:this.dicSearchForm.name
+      };
+      this.$store.dispatch("getRoles",data).then(
         res => {
           console.log("角色列表", res);
           this.tableData = res.data.records;

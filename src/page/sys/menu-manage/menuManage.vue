@@ -58,7 +58,7 @@
         <div class="item">
           <el-form-item label="菜单类型" prop="type">
             <template>
-              <el-radio v-for="(item,index) in typeList" v-model="addItemObj.type" :label="item.id">{{item.name}}
+              <el-radio v-for="(item,index) in typeList" v-model="addItemObj.type" :label="item.id" :key="item.id">{{item.name}}
               </el-radio>
             </template>
             <el-input ref="type" style="display: none" v-model="addItemObj.type"></el-input>
