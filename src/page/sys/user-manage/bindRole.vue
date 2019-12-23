@@ -23,40 +23,42 @@ export default {
       visible: false,
       roleList: [],
       selectRoleList: [], //选中的角色名列表
-      userId: ""
+      userIds: ""
     };
   },
   inject: ["reload"],
   methods: {
-    showModal(id) {
+    showModal(data) {
       this.visible = true;
       //   this.dictId = row.id;
       //   this.dictName = row.name;
-      this.userId = id;
-      this.getRoleList();
+      let organId = data.organId;
+      this.userIds = data.userIdList;
+      //this.userId = id;
+      this.getRoleList(organId);
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
     },
-    //获取字典值
-    getRoleList() {
-      this.$store.dispatch("getRoles").then(
+    //根据机构获取角色列表
+    getRoleList(organId) {
+      console.log("organId",organId);
+      this.$store.dispatch("getOrganBindRole",organId).then(
         res => {
           console.log(res.data);
           this.roleList = res.data;
-          this.findBindRole();
+          //this.findBindRole();
         },
         err => {
           console.log(err);
         }
       );
     },
-
     //绑定角色
     bindRoleSure() {
       let data = {
-        userId: this.userId,
+        userIds: this.userIds.join(','),
         roleIds: this.selectRoleList.join(",")
       };
 

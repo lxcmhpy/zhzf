@@ -115,7 +115,7 @@ export default {
         type: this.logForm.type,
         operation: this.logForm.operation,
         username: this.logForm.username,
-        // createTime: this.logForm.createTime1+this.logForm.createTime2,
+        createTime: this.logForm.createTime1 + " " +this.logForm.createTime2,
         // createTime: this.logForm.createTime2,
         current: this.currentPage,
         size: this.pageSize
