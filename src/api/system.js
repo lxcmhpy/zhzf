@@ -231,14 +231,12 @@ export function getloglistApi(data) {
 export function queryUserBindRoleApi(data) {
   console.log(data);
   return request({
-    url: "/sys/user/findBindRolesByUserId/"+data,
+    url: "/sys/user/findBindRolesByUserId/" + data,
     method: "GET",
     showloading: true,
     cancelToken: setCancelSource()
   });
 }
-
-
 
 
 //获取角色列表
@@ -349,7 +347,7 @@ export function roleBindOrganApi(data) {
 //获取机构下绑定的角色
 export function getOrganBindRoleApi(data) {
   return request({
-    url: "/sys/role/queryRoleByOrganId/"+data,
+    url: "/sys/role/queryRoleByOrganId/" + data,
     method: "get",
     showloading: true,
     cancelToken: setCancelSource()
@@ -371,11 +369,11 @@ export function getDepartmentsApi(data) {
 
 //获取选中机构下的所有部门   没有分页
 export function getDepartmentsNoPageApi(data) {
-  console.log('部门',data);
+  console.log('部门', data);
   return request({
     url: "/sys/department/all",
     method: "get",
-    params:data,
+    params: data,
     showloading: true,
     cancelToken: setCancelSource()
   });
@@ -465,13 +463,13 @@ export function getDictListApi(data) {
 
 //新增 修改 字典 和字典值
 export function addDictApi(data) {
-  let dictForm={
-    id:data.id,
-    pid:data.pid,
-    name:data.name,
-    notes:data.notes,
-    sort:data.sort,
-    status:data.status == true ? 0 : 1
+  let dictForm = {
+    id: data.id,
+    pid: data.pid,
+    name: data.name,
+    notes: data.notes,
+    sort: data.sort,
+    status: data.status == true ? 0 : 1
   };
   console.log('添加字典', dictForm)
   let data2 = vm.$qs.stringify(dictForm);
@@ -521,10 +519,12 @@ export function addPermissionApi(data) {
 //删除菜单
 export function deletePermissionApi(data) {
   return request({
-    url: "/sys/permission/deleteByIds/",
+    url: "/sys/permission/deleteByIds",
     method: "GET",
+    params: {
+      ids: data
+    },
     showloading: true,
-    data: vm.$qs.stringify(data),
     cancelToken: setCancelSource()
   });
 }
