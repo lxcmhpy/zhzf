@@ -7,7 +7,7 @@ import {
   getAllOrganApi, getSelectOrganApi, addOrganApi, getOrganDetailApi, deleteOrganApi, hasOrganNameApi,getCurrentAndNextOrganApi,
   getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi,getOrganBindRoleApi,
   getDepartmentsApi,getDepartmentsNoPageApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, 
-  getAllMenuListApi,getTreePermissionApi,
+  getAllMenuListApi,getTreePermissionApi,addPermissionApi,deletePermissionApi,
   getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi, 
   getUserListApi,addUserApi,updateUserApi,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi,userBindRoleApi,queryUserBindRoleApi
 } from "@/api/system";
@@ -497,7 +497,7 @@ getUserdeletes({ commit }, data) {
         })
     })
   },
-  
+
   //查询用户绑定角色
   queryUserBindRole({ commit }, data) {
     return new Promise((resolve,reject)=>{
@@ -536,7 +536,7 @@ getUserdeletes({ commit }, data) {
 
 
 
-  
+
   //删除部门
   deleteDepartment({ commit }, data) {
     return new Promise((resolve, reject) => {
@@ -614,6 +614,30 @@ getUserdeletes({ commit }, data) {
   getDictListDetail({ commit }, data) {
     return new Promise((resolve, reject) => {
       getDictListDetailApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+  //添加部门
+  addPermission({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      addPermissionApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+  //删除菜单
+  deletePermission({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      deletePermissionApi(data).then(
         res => {
           resolve(res);
         },

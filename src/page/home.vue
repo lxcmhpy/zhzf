@@ -4,7 +4,7 @@
             系统管理首页
         </div>
         <div v-if="currentHome == 'caseHandle'">
-            案件办理首页
+            案件办理首页hjjjghbjhbjhbjb
         </div>
         {{currentHome}}
     </div>
