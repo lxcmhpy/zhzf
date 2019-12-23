@@ -1,9 +1,9 @@
 <template>
   <div class="fullBox" id="roleBox">
-    <div class="leftTitle">
-      部门列表
-    </div>
     <div class="handlePart">
+      菜单列表
+    </div>
+    <div class="rightTitle">
       <el-button type="primary" size="medium" icon="el-icon-plus" @click="addItem">新增菜单</el-button>
     </div>
     <el-table
@@ -24,7 +24,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="parentId" label="上级菜单" align="center"></el-table-column>
+      <el-table-column prop="parentId" label="上级菜单" align="center" :formatter="searchNameById"></el-table-column>
       <el-table-column prop="path" label="菜单URL" align="center"></el-table-column>
       <el-table-column prop="component" label="菜单组件" align="center"></el-table-column>
       <el-table-column prop="permTypes" label="授权标识" align="center"></el-table-column>
@@ -81,7 +81,7 @@
         </div>
         <div class="item">
           <el-form-item label="上级菜单" prop="parentName">
-            <el-input :disabled="addItemObj.type === '-1'" ref="parentName" v-model="addItemObj.parentName"></el-input>
+            <el-input :disabled="addItemObj.type === -1" ref="parentName" v-model="addItemObj.parentName"></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -205,6 +205,7 @@
           if (that.dialogTitle === '新增' && that.addItemObj.type === -1) {
             that.addItemObj.plevel = 0
           }
+          that.addItemObj.parentId = that.searchIdByName(that.addItemObj.parentName, that.tableData)
           this.$store.dispatch("addPermission", that.addItemObj).then(
             res => {
               if (res.code === 200) {
@@ -228,7 +229,7 @@
       deleteItem(row) {
         let that = this
         let _arr = [row.id]
-        this.$store.dispatch("deletePermission", _arr).then(
+        this.$store.dispatch("deletePermission", row.id).then(
           res => {
             if (res.code === 200) {
               this.$message({
@@ -248,6 +249,37 @@
       },
       handleCurrentChange(val) {
         this.currentPage = val;
+      },
+      searchNameById(row, column, cellValue, index, data) {
+        if (row.parentId === null || row.parentId === undefined || row.parentId.toString().replace(/\s+/g, '') === '') {
+          return '无'
+        }
+        let _data = {}
+        if (!data) {
+          _data = this.tableData
+        } else {
+          _data = data
+        }
+        var Deep, T, F;
+        for (F = _data.length; F;) {
+          T = _data[--F]
+          if (row.parentId === T.id) return T
+          if (T.children) {
+            Deep = this.searchNameById(row, '', '', '', T.children)
+            if (Deep) return Deep.title
+          }
+        }
+      },
+      searchIdByName(title, data) {
+        var Deep, T, F;
+        for (F = data.length; F;) {
+          T = data[--F]
+          if (title === T.title) return T
+          if (T.children) {
+            Deep = this.searchNameById(title, T.children)
+            if (Deep) return Deep.id
+          }
+        }
       },
       verifyAcceptObj() {
         let result = true
@@ -300,6 +332,12 @@
             buttonType: '',
             sortOrder: ''
           }
+        }
+      },
+      'addItemObj.type'(val) {
+        if (val === -1) {
+          this.addItemObj.parentId = ''
+          this.addItemObj.parentName = ''
         }
       }
     }
