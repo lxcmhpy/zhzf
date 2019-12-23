@@ -1,13 +1,25 @@
 <template>
   <div class="fullBox" id="dictBox">
     <div class="handlePart">
-      <el-button type="primary" size="medium" icon="el-icon-plus" @click="addDict">添加</el-button>
+      <div class="search">
+        <el-form :inline="true" :model="dicSearchForm" >
+            <el-form-item label="名称">
+              <el-input v-model="dicSearchForm.name" placeholder="输入名称"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="getDictList">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addDict">添加</el-button>
+            </el-form-item>
+        </el-form>
+      </div>
     </div>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
         <el-table-column prop="name" label="名称" align="center"></el-table-column>
-        <el-table-column prop="description" label="描述" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+        <el-table-column prop="notes" label="描述" align="center"></el-table-column>
+        <!-- <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column> -->
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="editDict(scope.row)">编辑</el-button>
@@ -43,6 +55,10 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
+      searchName:'', //查询名称
+      dicSearchForm:{
+        name:''
+      }
     };
   },
   components: {
@@ -55,7 +71,8 @@ export default {
     getDictList() {
       let data = {
         current: this.currentPage,
-        size: this.pageSize
+        size: this.pageSize,
+        name:this.dicSearchForm.name
       };
       this.$store.dispatch("getDictList",data).then(
         res => {
