@@ -184,11 +184,15 @@ export default {
     },
     //编辑
     handelEdit(data) {
+      console.log(data);
       //显示弹框
       this.visible = true;
       //编辑弹框标题
       this.dialogStatus = "editEquipment";
-      this.parentNode = data;
+      this.parentNode={
+        parentNodeId:data.organId,
+        parentNodeName:data.userDeparment
+      };
       this.getCurrentOrganAndChild();
     },
     //获取当前机构及其子机构
