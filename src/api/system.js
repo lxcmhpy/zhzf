@@ -169,6 +169,18 @@ export function userBindRoleApi(data) {
   });
 }
 
+//日志管理
+export function getloglistApi(data) {
+  console.log(vm.$qs.stringify(data));
+  return request({
+    url: "/sys/log/list",
+    method: "GET",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
 
 //获取用户绑定的角色
 export function queryUserBindRoleApi(data) {
