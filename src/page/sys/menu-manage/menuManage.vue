@@ -4,10 +4,10 @@
       部门列表
     </div>
     <div class="handlePart">
-      <el-button type="primary" size="medium" icon="el-icon-plus" @click="addItem">新增部门</el-button>
+      <el-button type="primary" size="medium" icon="el-icon-plus" @click="addItem">新增菜单</el-button>
     </div>
     <el-table
-      :data="tableData"
+      :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       stripe
       row-key="id"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
@@ -56,12 +56,12 @@
       <el-form :model="addItemObj" :rules="rules" ref="addItemObj" class="errorTipForm"
                label-width="100px">
         <div class="item">
-          <el-form-item label="菜单类型" prop="name">
+          <el-form-item label="菜单类型" prop="type">
             <template>
               <el-radio v-for="(item,index) in typeList" v-model="addItemObj.type" :label="item.id">{{item.name}}
               </el-radio>
             </template>
-            <el-input style="display: none" v-model="addItemObj.type"></el-input>
+            <el-input ref="type" style="display: none" v-model="addItemObj.type"></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -81,7 +81,7 @@
         </div>
         <div class="item">
           <el-form-item label="上级菜单" prop="parentName">
-            <el-input ref="parentName" v-model="addItemObj.parentName"></el-input>
+            <el-input :disabled="addItemObj.type === '-1'" ref="parentName" v-model="addItemObj.parentName"></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -136,6 +136,7 @@
         typeList: [{id: -1, name: '目录'}, {id: 0, name: '菜单'}, {id: 1, name: '按钮'}],
         buttonTypeList: ['add', 'delete', 'enable', 'other', 'edit'],
         addItemObj: {
+          plevel: '',
           permTypes: '',
           id: '',
           parentId: '',
@@ -148,9 +149,14 @@
           component: '',
           icon: '',
           url: '',
-          buttonType: ''
+          buttonType: '',
+          sortOrder: ''
         },
-        rules: {}
+        rules: {
+          title: [{required: true, message: "请输入菜单标题", trigger: "blur"}],
+          name: [{required: true, message: "请输入菜单名称", trigger: "blur"}],
+          type: [{required: true, message: "请选择菜单类型", trigger: "blur"}],
+        }
       };
     },
     components: {},
@@ -160,6 +166,7 @@
         this.$store.dispatch("getTreePermission").then(
           res => {
             this.tableData = res.data;
+            this.total = res.data.length
           },
           err => {
             console.log(err);
@@ -170,14 +177,71 @@
         this.dialogTitle = '新增'
         this.isShowDialog = true
       },
+      editItem(row) {
+        console.log(row);
+        this.addItemObj = {
+          plevel: row.plevel,
+          permTypes: row.permTypes,
+          id: row.id,
+          parentId: row.parentId,
+          parentName: row.parentId,
+          name: row.name,
+          showAlways: row.showAlways,
+          type: row.type,
+          title: row.title,
+          path: row.path,
+          component: row.component,
+          icon: row.icon,
+          url: row.url,
+          buttonType: row.buttonType,
+          sortOrder: row.sortOrder
+        }
+        this.dialogTitle = '修改'
+        this.isShowDialog = true
+      },
       sureAdd() {
-
+        if (this.verifyAcceptObj()) {
+          let that = this
+          if (that.dialogTitle === '新增' && that.addItemObj.type === -1) {
+            that.addItemObj.plevel = 0
+          }
+          this.$store.dispatch("addPermission", that.addItemObj).then(
+            res => {
+              if (res.code === 200) {
+                that.isShowDialog = false
+                this.$message({
+                  type: "success",
+                  message: that.dialogTitle + '成功！'
+                });
+                that.searchTable()
+              }
+            },
+            err => {
+              this.$message({
+                type: "error",
+                message: err
+              });
+            }
+          );
+        }
       },
-      editItem() {
-
-      },
-      deleteItem() {
-
+      deleteItem(row) {
+        let that = this
+        let _arr = [row.id]
+        this.$store.dispatch("deletePermission", _arr).then(
+          res => {
+            if (res.code === 200) {
+              this.$message({
+                type: "success",
+                message: '删除成功！'
+              });
+              that.searchTable()
+            }
+          },
+          err => {
+            console.log(err);
+          }
+        );
       },
       handleSizeChange(val) {
         this.pageSize = val;
@@ -185,11 +249,59 @@
       handleCurrentChange(val) {
         this.currentPage = val;
       },
+      verifyAcceptObj() {
+        let result = true
+        let _this = this
+        for (var field in _this.rules) {
+          let obj = this.$refs['addItemObj']
+          obj.validateField(field, (validMessage) => {
+            if (validMessage !== '' && result === true) {
+              result = false
+              let fields = _this.$refs[field].elForm.fields
+
+              for (let i in fields) {
+                if (fields[i].labelFor === field) {
+                  console.log(fields[i].label)
+                  _this.$alert((fields[i].label) + '填写错误', '提示', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                    }
+                  })
+                }
+              }
+            }
+          })
+        }
+        return result
+      }
     },
     mounted() {
     },
     created() {
       this.searchTable()
+    },
+    watch: {
+      'isShowDialog'(val) {
+        if (!val) {
+          this.addItemObj = {
+            plevel: '',
+            permTypes: '',
+            id: '',
+            parentId: '',
+            parentName: '',
+            name: '',
+            showAlways: '',
+            type: '',
+            title: '',
+            path: '',
+            component: '',
+            icon: '',
+            url: '',
+            buttonType: '',
+            sortOrder: ''
+          }
+        }
+      }
     }
   };
 </script>

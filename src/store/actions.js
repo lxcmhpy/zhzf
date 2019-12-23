@@ -5,8 +5,8 @@ const vm = new Vue(); //vm等同于this
 import { getCaptchaApi, loginInApi, getMenuApi, loginOutApi } from "@/api/login";
 import {
   getAllOrganApi, getSelectOrganApi, addOrganApi, getOrganDetailApi, deleteOrganApi, hasOrganNameApi,
-  getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getDepartmentsApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, getAllMenuListApi,getTreePermissionApi,getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi, 
-   getUserListApi,saveOrUpdateUserInfo,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi
+  getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getDepartmentsApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, getAllMenuListApi,getTreePermissionApi,getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi,
+   getUserListApi,saveOrUpdateUserInfo,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi,addPermissionApi,deletePermissionApi,
 } from "@/api/system";
 // import { getAllOrganApi, getSelectOrganApi,addOrganApi,getOrganDetailApi,deleteOrganApi,hasOrganNameApi} from "@/api/system";
 
@@ -445,7 +445,7 @@ getUserdeletes({ commit }, data) {
 
 
 
-  
+
   //删除部门
   deleteDepartment({ commit }, data) {
     return new Promise((resolve, reject) => {
@@ -523,6 +523,30 @@ getUserdeletes({ commit }, data) {
   getDictListDetail({ commit }, data) {
     return new Promise((resolve, reject) => {
       getDictListDetailApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+  //添加部门
+  addPermission({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      addPermissionApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+  //删除菜单
+  deletePermission({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      deletePermissionApi(data).then(
         res => {
           resolve(res);
         },
