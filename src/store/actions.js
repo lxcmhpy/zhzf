@@ -5,11 +5,12 @@ const vm = new Vue(); //vm等同于this
 import { getCaptchaApi, loginInApi, getMenuApi, loginOutApi } from "@/api/login";
 import {
   getAllOrganApi, getSelectOrganApi, addOrganApi, getOrganDetailApi, deleteOrganApi, hasOrganNameApi,
-  getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getDepartmentsApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, getAllMenuListApi,getTreePermissionApi,getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi, 
-   getUserListApi,saveOrUpdateUserInfo,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi
+  getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi,getOrganBindRoleApi,getDepartmentsApi,getDepartmentsNoPageApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, getAllMenuListApi,getTreePermissionApi,getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi, 
+   getUserListApi,saveOrUpdateUserInfo,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi,userBindRoleApi,queryUserBindRoleApi
 } from "@/api/system";
-// import { getAllOrganApi, getSelectOrganApi,addOrganApi,getOrganDetailApi,deleteOrganApi,hasOrganNameApi} from "@/api/system";
 
+
+import * as systemApi from "@/api/system";
 import Cookies from "@/js/cookies";
 const actions = {
   //默认加载最短时间1秒
@@ -291,6 +292,18 @@ const actions = {
         })
     })
   },
+  //查询机构下绑定的角色
+  getOrganBindRole({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      getOrganBindRoleApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
   //获取机构下的部门
   getDepartments({ commit }, data) {
     return new Promise((resolve, reject) => {
@@ -303,6 +316,19 @@ const actions = {
         })
     })
   },
+  //获取机构下的所有部门  没有分页
+  getDepartmentsNoPage({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      getDepartmentsNoPageApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+
   //添加部门
   addDepartment({ commit }, data) {
     return new Promise((resolve, reject) => {
@@ -407,9 +433,21 @@ getUserdeletes({ commit }, data) {
 
 
    //用户管理 所属部门
-   getUserall({ commit }, data) {
+  //  getUserall({ commit }, data) {
+  //   return new Promise((resolve,reject)=>{
+  //     getUserallApi(data).then(
+  //       res=>{
+  //         resolve(res);
+  //       },
+  //       error=>{
+  //         reject(error);
+  //       })
+  //   })
+  // },
+  //用户绑定角色
+  userBindRole({ commit }, data) {
     return new Promise((resolve,reject)=>{
-      getUserallApi(data).then(
+      userBindRoleApi(data).then(
         res=>{
           resolve(res);
         },
@@ -418,7 +456,19 @@ getUserdeletes({ commit }, data) {
         })
     })
   },
-
+  
+  //查询用户绑定角色
+  queryUserBindRole({ commit }, data) {
+    return new Promise((resolve,reject)=>{
+      queryUserBindRoleApi(data).then(
+        res=>{
+          resolve(res);
+        },
+        error=>{
+          reject(error);
+        })
+    })
+  },
 
   //日志管理
   getloglist({ commit }, data) {

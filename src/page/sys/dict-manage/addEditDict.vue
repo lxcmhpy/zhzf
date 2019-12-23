@@ -15,6 +15,11 @@
         <!-- <span class="errorInput" v-if="errorName">该部门名称已存在</span> -->
       </div>
       <div class="item">
+        <el-form-item label="描述" prop="notes">
+            <el-input v-model="addDictForm.notes"></el-input>
+        </el-form-item>
+      </div>
+      <div class="item">
         <el-form-item label="序号" prop="sort">
           <el-input v-model="addDictForm.sort"></el-input>
         </el-form-item>
@@ -39,6 +44,7 @@ export default {
       addDictForm: {
         name: "",
         sort: "",
+        notes:"",
         status: true
       },
       rules: {
@@ -77,6 +83,7 @@ export default {
         this.addDictForm.pid = this.pid;
         this.addDictForm.name = data.row.name;
         this.addDictForm.status = data.row.status == 0 ? true : false;
+        this.addDictForm.notes = data.row.notes;
         this.addDictForm.sort = data.row.sort;
       }
     },
@@ -100,26 +107,26 @@ export default {
       });
     },
     //查询名称是否重复
-    departmentNameRepeat() {
-      let data = {
-        oid: this.parentNode.parentNodeId,
-        name: this.addDepartmentForm.name
-      };
-      this.$store.dispatch("hasDepartmentName", data).then(
-        res => {
-          console.log(res);
-          if(res.data.id){
-            this.errorName = true;
-          }else{
-            this.addOrEditDepartmentSure();
-          }
+    // departmentNameRepeat() {
+    //   let data = {
+    //     oid: this.parentNode.parentNodeId,
+    //     name: this.addDepartmentForm.name
+    //   };
+    //   this.$store.dispatch("hasDepartmentName", data).then(
+    //     res => {
+    //       console.log(res);
+    //       if(res.data.id){
+    //         this.errorName = true;
+    //       }else{
+    //         this.addOrEditDepartmentSure();
+    //       }
          
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     }
+    //   );
+    // },
     //新增 修改
     addOrEditDictSure() {
       // this.addDepartmentForm.oid = this.parentNode.parentNodeId;
@@ -130,6 +137,13 @@ export default {
       this.$store.dispatch("addDict", this.addDictForm).then(
         res => {
           console.log("新增字典", res);
+          if(!res.data){
+            this.$message({
+              type: "error",
+              message: this.handelType == 0 ? "添加失败,名称不能重复!" : "修改失败,名称不能重复!"
+            });
+            return
+          }
          this.reload();
           this.$message({
             type: "success",
