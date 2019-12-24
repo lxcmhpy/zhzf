@@ -18,7 +18,7 @@ module.exports = {
         // target: "http://172.16.169.75:8888",
         // target: "http://172.16.168.84:8888",
         // target: "http://172.16.169.83:8888",
-        // target: "http://172.16.169.78:8888/",
+        target: "http://172.16.169.78:8888/",
         // target: "http://127.0.0.1:8888",
         changeOrigin: true,
       }
