@@ -1,5 +1,5 @@
 <template>
-  <div class="fullBox" id="dictBox">
+  <div class="searchAndpageBox" id="dictBox">
     <div class="handlePart">
       <div class="search">
         <el-form :inline="true" :model="dicSearchForm" >

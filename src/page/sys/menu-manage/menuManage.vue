@@ -1,41 +1,47 @@
 <template>
-  <div class="fullBox" id="roleBox">
-    <div class="handlePart">
-      菜单列表
-    </div>
+  <div class="searchAndpageBox" id="menuBox">
+    <!-- <div class="handlePart">菜单列表</div>
     <div class="rightTitle">
       <el-button type="primary" size="medium" icon="el-icon-plus" @click="addItem">新增菜单</el-button>
+    </div>-->
+    <div class="handlePart">
+      <div class="leftTitle">菜单列表</div>
+      <div class="rightTitle">
+        <el-button type="primary" size="medium" icon="el-icon-plus" @click="addItem">新增菜单</el-button>
+      </div>
     </div>
-    <el-table
-      :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-      stripe
-      row-key="id"
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-      <el-table-column prop="title" label="名称" align="center"></el-table-column>
-      <el-table-column prop="icon" label="图标" align="center">
-        <!--<template slot-scope="scope">-->
-        <!--<i></i>-->
-        <!--</template>-->
-      </el-table-column>
-      <el-table-column prop="type" label="类型" align="center">
-        <template slot-scope="scope">
-          <div>
-            {{scope.row.type === -1?'目录':scope.row.type === 0?'菜单':'按钮'}}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="parentId" label="上级菜单" align="center" :formatter="searchNameById"></el-table-column>
-      <el-table-column prop="path" label="菜单URL" align="center"></el-table-column>
-      <el-table-column prop="component" label="菜单组件" align="center"></el-table-column>
-      <el-table-column prop="permTypes" label="授权标识" align="center"></el-table-column>
-      <el-table-column prop="sortOrder" label="排序" align="center"></el-table-column>
-      <el-table-column fixed="right" label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button @click="editItem(scope.row)" type="text">编辑</el-button>
-          <el-button type="text" @click="deleteItem(scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="tablePart">
+      <el-table
+        :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+        stripe
+        row-key="id"
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+        height="100%"
+      >
+        <el-table-column prop="title" label="名称" align="center"></el-table-column>
+        <el-table-column prop="icon" label="图标" align="center">
+          <!--<template slot-scope="scope">-->
+          <!--<i></i>-->
+          <!--</template>-->
+        </el-table-column>
+        <el-table-column prop="type" label="类型" align="center">
+          <template slot-scope="scope">
+            <div>{{scope.row.type === -1?'目录':scope.row.type === 0?'菜单':'按钮'}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="parentId" label="上级菜单" align="center" :formatter="searchNameById"></el-table-column>
+        <el-table-column prop="path" label="菜单URL" align="center"></el-table-column>
+        <el-table-column prop="component" label="菜单组件" align="center"></el-table-column>
+        <el-table-column prop="permTypes" label="授权标识" align="center"></el-table-column>
+        <el-table-column prop="sortOrder" label="排序" align="center"></el-table-column>
+        <el-table-column fixed="right" label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button @click="editItem(scope.row)" type="text">编辑</el-button>
+            <el-button type="text" @click="deleteItem(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <div class="paginationBox">
       <el-pagination
         @size-change="handleSizeChange"
@@ -52,14 +58,24 @@
       :title="dialogTitle"
       :visible.sync="isShowDialog"
       :close-on-click-modal="false"
-      width="35%">
-      <el-form :model="addItemObj" :rules="rules" ref="addItemObj" class="errorTipForm"
-               label-width="100px">
+      width="35%"
+    >
+      <el-form
+        :model="addItemObj"
+        :rules="rules"
+        ref="addItemObj"
+        class="errorTipForm"
+        label-width="100px"
+      >
         <div class="item">
           <el-form-item label="菜单类型" prop="type">
             <template>
-              <el-radio v-for="item in typeList" v-model="addItemObj.type" :label="item.id" :key="item.id">{{item.name}}
-              </el-radio>
+              <el-radio
+                v-for="item in typeList"
+                v-model="addItemObj.type"
+                :label="item.id"
+                :key="item.id"
+              >{{item.name}}</el-radio>
             </template>
             <el-input ref="type" style="display: none" v-model="addItemObj.type"></el-input>
           </el-form-item>
@@ -105,12 +121,7 @@
         <div class="item">
           <el-form-item label="按钮权限类型" prop="buttonType">
             <el-select v-model="addItemObj.buttonType" placeholder="请选择">
-              <el-option
-                v-for="item in buttonTypeList"
-                :key="item"
-                :label="item"
-                :value="item">
-              </el-option>
+              <el-option v-for="item in buttonTypeList" :key="item" :label="item" :value="item"></el-option>
             </el-select>
             <el-input ref="buttonType" style="display: none" v-model="addItemObj.buttonType"></el-input>
           </el-form-item>
@@ -127,12 +138,11 @@
         </div>
       </el-form>
       <span slot="footer" class="dialog-footer">
-      <el-button @click="isShowDialog = false">取 消</el-button>
-      <el-button type="primary" @click="sureAdd">确 定</el-button>
-    </span>
+        <el-button @click="isShowDialog = false">取 消</el-button>
+        <el-button type="primary" @click="sureAdd">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
-
 </template>
 
 <script>
@@ -356,6 +366,7 @@
     }
   };
 </script>
+
 <style lang="less">
-  @import "../../../css/systemManage.less";
+@import "../../../css/systemManage.less";
 </style>
