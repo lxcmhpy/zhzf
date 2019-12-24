@@ -58,7 +58,8 @@
         <div class="item">
           <el-form-item label="菜单类型" prop="type">
             <template>
-              <el-radio v-for="(item,index) in typeList" v-model="addItemObj.type" :label="item.id" :key="item.id">{{item.name}}
+              <el-radio v-for="(item,index) in typeList" v-model="addItemObj.type" :label="item.id" :key="item.id">
+                {{item.name}}
               </el-radio>
             </template>
             <el-input ref="type" style="display: none" v-model="addItemObj.type"></el-input>
@@ -79,22 +80,16 @@
             <el-input ref="title" v-model="addItemObj.title"></el-input>
           </el-form-item>
         </div>
-        <div class="item">
+        <div class="item" v-if="addItemObj.type !== -1">
           <el-form-item label="上级菜单" prop="parentName">
-            <!--<el-select v-model="addItemObj.parentId" placeholder="请选择">-->
-              <!--<el-option-group-->
-                <!--v-for="group in options"-->
-                <!--:key="group.label"-->
-                <!--:label="group.label">-->
-                <!--<el-option-->
-                  <!--v-for="item in group.options"-->
-                  <!--:key="item.value"-->
-                  <!--:label="item.label"-->
-                  <!--:value="item.value">-->
-                <!--</el-option>-->
-              <!--</el-option-group>-->
-            <!--</el-select>-->
-            <!--<el-input :disabled="addItemObj.type === -1" ref="parentName" v-model="addItemObj.parentName"></el-input>-->
+            <elSelectTree
+              ref="elSelectTree"
+              :options="tableData"
+              :accordion="true"
+              :props="props"
+              @getValue="hindleChanged"
+            ></elSelectTree>
+            <el-input style="display: none" ref="parentId" v-model="addItemObj.parentId"></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -136,6 +131,8 @@
 </template>
 
 <script>
+  import elSelectTree from '../../../components/elSelectTree/elSelectTree'
+
   export default {
     watch: {},
     data() {
@@ -169,7 +166,12 @@
           title: [{required: true, message: "请输入菜单标题", trigger: "blur"}],
           name: [{required: true, message: "请输入菜单名称", trigger: "blur"}],
           type: [{required: true, message: "请选择菜单类型", trigger: "blur"}],
-        }
+        },
+        props: {
+          label: "title",
+          value: "id"
+        },
+        parentData: []
       };
     },
     components: {},
@@ -263,6 +265,9 @@
       handleCurrentChange(val) {
         this.currentPage = val;
       },
+      hindleChanged(val) {
+        this.addItemObj.parentId = val
+      },
       searchNameById(row, column, cellValue, index, data) {
         if (row.parentId === null || row.parentId === undefined || row.parentId.toString().replace(/\s+/g, '') === '') {
           return '无'
@@ -325,6 +330,9 @@
     created() {
       this.searchTable()
     },
+    components: {
+      elSelectTree
+    },
     watch: {
       'isShowDialog'(val) {
         if (!val) {
@@ -349,8 +357,8 @@
       },
       'addItemObj.type'(val) {
         if (val === -1) {
+          this.$refs.elSelectTree.clearHandle()
           this.addItemObj.parentId = ''
-          this.addItemObj.parentName = ''
         }
       }
     }
