@@ -646,6 +646,19 @@ getUserdeletes({ commit }, data) {
         })
     })
   },
+
+  //获取执法门类列表
+  getLawCategoryList({ commit }, data){
+    return new Promise((resolve, reject) => {
+      getLawCategoryListApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
 };
 
 export default actions;
