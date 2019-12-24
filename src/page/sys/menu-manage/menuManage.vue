@@ -346,6 +346,7 @@
     watch: {
       'isShowDialog'(val) {
         if (!val) {
+          this.$refs.elSelectTree.clearHandle()
           this.addItemObj = {
             plevel: '',
             permTypes: '',
