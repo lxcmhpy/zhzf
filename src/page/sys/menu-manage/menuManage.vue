@@ -81,7 +81,20 @@
         </div>
         <div class="item">
           <el-form-item label="上级菜单" prop="parentName">
-            <el-input :disabled="addItemObj.type === -1" ref="parentName" v-model="addItemObj.parentName"></el-input>
+            <!--<el-select v-model="addItemObj.parentId" placeholder="请选择">-->
+              <!--<el-option-group-->
+                <!--v-for="group in options"-->
+                <!--:key="group.label"-->
+                <!--:label="group.label">-->
+                <!--<el-option-->
+                  <!--v-for="item in group.options"-->
+                  <!--:key="item.value"-->
+                  <!--:label="item.label"-->
+                  <!--:value="item.value">-->
+                <!--</el-option>-->
+              <!--</el-option-group>-->
+            <!--</el-select>-->
+            <!--<el-input :disabled="addItemObj.type === -1" ref="parentName" v-model="addItemObj.parentName"></el-input>-->
           </el-form-item>
         </div>
         <div class="item">
@@ -205,7 +218,7 @@
           if (that.dialogTitle === '新增' && that.addItemObj.type === -1) {
             that.addItemObj.plevel = 0
           }
-          that.addItemObj.parentId = that.searchIdByName(that.addItemObj.parentName, that.tableData)
+          // that.addItemObj.parentId = that.searchIdByName(that.addItemObj.parentName, that.tableData)
           this.$store.dispatch("addPermission", that.addItemObj).then(
             res => {
               if (res.code === 200) {
