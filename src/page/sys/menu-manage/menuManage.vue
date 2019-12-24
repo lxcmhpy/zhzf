@@ -14,6 +14,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         stripe
+        @row-click="tableAdd"
         row-key="id"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         height="100%"
@@ -97,7 +98,7 @@
           </el-form-item>
         </div>
         <div class="item" v-if="addItemObj.type !== -1">
-          <el-form-item label="上级菜单" prop="parentName">
+          <el-form-item label="上级菜单" prop="parentId">
             <elSelectTree
               ref="elSelectTree"
               :options="tableData"
@@ -115,7 +116,7 @@
         </div>
         <div class="item">
           <el-form-item label="按钮权限类型" prop="buttonType">
-            <el-select v-model="addItemObj.buttonType" placeholder="请选择">
+            <el-select v-model="addItemObj.buttonType" multiple="true" multiple-limit="0" placeholder="请选择">
               <el-option v-for="item in buttonTypeList" :key="item" :label="item" :value="item"></el-option>
             </el-select>
             <el-input ref="buttonType" style="display: none" v-model="addItemObj.buttonType"></el-input>
@@ -160,7 +161,6 @@
           permTypes: '',
           id: '',
           parentId: '',
-          parentName: '',
           name: '',
           showAlways: '',
           type: '',
@@ -198,18 +198,22 @@
           }
         );
       },
+      tableAdd(row) {
+        this.$refs.elSelectTree.valueTitle = row.title
+        this.$refs.elSelectTree.valueId = row.id
+        this.$refs.elSelectTree.defaultExpandedKey = []
+        this.addItem()
+      },
       addItem() {
         this.dialogTitle = '新增'
         this.isShowDialog = true
       },
       editItem(row) {
-        console.log(row);
         this.addItemObj = {
           plevel: row.plevel,
           permTypes: row.permTypes,
           id: row.id,
           parentId: row.parentId,
-          parentName: row.parentId,
           name: row.name,
           showAlways: row.showAlways,
           type: row.type,
@@ -221,6 +225,9 @@
           buttonType: row.buttonType,
           sortOrder: row.sortOrder
         }
+        this.$refs.elSelectTree.valueTitle = this.searchNameById(row,'','','',this.tableData)
+        this.$refs.elSelectTree.valueId = row.parentId
+        this.$refs.elSelectTree.defaultExpandedKey = []
         this.dialogTitle = '修改'
         this.isShowDialog = true
       },
@@ -230,7 +237,6 @@
           if (that.dialogTitle === '新增' && that.addItemObj.type === -1) {
             that.addItemObj.plevel = 0
           }
-          // that.addItemObj.parentId = that.searchIdByName(that.addItemObj.parentName, that.tableData)
           this.$store.dispatch("addPermission", that.addItemObj).then(
             res => {
               if (res.code === 200) {
@@ -352,7 +358,6 @@
             permTypes: '',
             id: '',
             parentId: '',
-            parentName: '',
             name: '',
             showAlways: '',
             type: '',
