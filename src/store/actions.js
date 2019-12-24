@@ -12,6 +12,7 @@ import {
   getUserListApi,addUserApi,updateUserApi,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi,userBindRoleApi,queryUserBindRoleApi
 } from "@/api/system";
 
+import { getLawCategoryListApi} from "@/api/caseDeploy";
 import Cookies from "@/js/cookies";
 const actions = {
   //默认加载最短时间1秒
