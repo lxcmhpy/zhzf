@@ -8,14 +8,8 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-search">查询</el-button>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-plus" @click="addRole">新增</el-button>
-          </el-form-item>
-          <el-form-item>
+            <el-button type="primary" size="medium" icon="el-icon-plus" @click="addBanner">新增</el-button>
             <el-button type="primary" size="medium" icon="el-icon-edit">修改</el-button>
-          </el-form-item>
-          <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-delete">删除</el-button>
           </el-form-item>
         </el-form>
@@ -23,27 +17,27 @@
     </div>
     <div class="tablePart">
       <el-table :data="tableDatas" stripe style="width: 100%" height="100%">
-      <el-table-column type="index" width="60" align="center">
-              <template slot="header">序号</template>
-            </el-table-column>
-            <el-table-column prop="name" label="环节名称" align="center">
-            </el-table-column>
-            <el-table-column prop="isApproval" label="是否有审批流程" align="center">
-            </el-table-column>
-            <el-table-column prop="backName" label="所属大环节名称" align="center">
-            </el-table-column>
-            <el-table-column prop="isAutoPdf" label="是否自动生成pdf" align="center">
-            </el-table-column>
-            <el-table-column prop="pdfType" label="生成PDF的对应文书类型" align="center">
-            </el-table-column>
-            <el-table-column prop="order" label="排序" align="center">
-            </el-table-column>
-            <el-table-column prop="adress" label="页面地址" align="center">
-            </el-table-column>
-            <el-table-column prop="discripe" label="描述" align="center">
-            </el-table-column>
-            <el-table-column prop="workId" label="工作流Id" align="center">
-            </el-table-column>
+        <el-table-column type="index" width="60" align="center">
+          <template slot="header">序号</template>
+        </el-table-column>
+        <el-table-column prop="name" label="环节名称" align="center">
+        </el-table-column>
+        <el-table-column prop="isApproval" label="是否有审批流程" align="center">
+        </el-table-column>
+        <el-table-column prop="backName" label="所属大环节名称" align="center">
+        </el-table-column>
+        <el-table-column prop="isAutoPdf" label="是否自动生成pdf" align="center">
+        </el-table-column>
+        <el-table-column prop="pdfType" label="生成PDF的对应文书类型" align="center">
+        </el-table-column>
+        <el-table-column prop="order" label="排序" align="center">
+        </el-table-column>
+        <el-table-column prop="adress" label="页面地址" align="center">
+        </el-table-column>
+        <el-table-column prop="discripe" label="描述" align="center">
+        </el-table-column>
+        <el-table-column prop="workId" label="工作流Id" align="center">
+        </el-table-column>
       </el-table>
     </div>
     <div class="paginationBox">
@@ -97,13 +91,13 @@ export default {
   },
   inject: ['reload'],
   methods: {
-    //编辑角色
+    //编辑环节
     editRole(row) {
       // this.$refs.addEditBannerRef.showModal(2, row);
     },
-    //删除角色
+    //删除环节
     deleteRole(id) {
-      // this.$confirm("确认删除该角色?", "提示", {
+      // this.$confirm("确认删除该环节?", "提示", {
       //   confirmButtonText: "确定",
       //   cancelButtonText: "取消",
       //   type: "warning"
@@ -135,16 +129,16 @@ export default {
       // this.currentPage = val;
       // this.getSelectOrgan();
     },
-    //获取角色
-    getRoles() {
+    //获取环节
+    getBanner() {
       // let data = {
       //   current: this.currentPage,
       //   size: this.pageSize,
       //   name: this.dicSearchForm.name
       // };
-      // this.$store.dispatch("getRoles", data).then(
+      // this.$store.dispatch("getBanner", data).then(
       //   res => {
-      //     console.log("角色列表", res);
+      //     console.log("环节列表", res);
       //     this.tableData = res.data.records;
       //     this.totalPage = res.data.total;
 
@@ -154,21 +148,21 @@ export default {
       //   }
       // );
     },
-    //添加角色
-    addRole() {
-      // this.$refs.addEditBannerRef.showModal(0, '');
+    //添加环节
+    addBanner() {
+      this.$refs.addEditBannerRef.showModal(0, '');
     },
     //绑定菜单权限
     bindMenu(roleId) {
       // this.$refs.bindMenuRef.showModal(roleId);
     },
-    //角色绑定机构
+    //环节绑定机构
     bindOrgan(roleId) {
       // this.$refs.bindOrganRef.showModal(roleId);
     }
   },
   created() {
-    // this.getRoles();
+    // this.getBanner();
   }
 };
 </script>
