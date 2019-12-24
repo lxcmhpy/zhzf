@@ -1,23 +1,16 @@
 <template>
   <!-- 左菜单 -->
   <div>
-    <el-menu
-      default-active="userManage"
-      class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
-      :collapse="isCollapse"
-      @select="changeMenu"
-    >
+    <el-menu default-active="userManage" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" @select="changeMenu">
       <el-submenu :index="item.name" v-for="(item,index) in currentSlideMenu" :key="index">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span slot="title">{{item.title}} {{item.name}}</span>
-          </template>
-          <el-menu-item :index="subItem.name" v-for="(subItem,subIndex) in item.children" :key="subIndex">{{subItem.title}} {{subItem.name}}</el-menu-item>
+        <template slot="title">
+          <i class="el-icon-location"></i>
+          <span slot="title">{{item.title}} {{item.name}}</span>
+        </template>
+        <el-menu-item :index="subItem.name" v-for="(subItem,subIndex) in item.children" :key="subIndex">{{subItem.title}} {{subItem.name}}</el-menu-item>
       </el-submenu>
     </el-menu>
-  
+
   </div>
 </template>
 <script>
@@ -27,10 +20,10 @@ export default {
   name: "backSubmenu",
   data() {
     return {
-      allMenuList:iLocalStroage.gets('menu'),
-      currentSlideMenu:[],
-      isCollapse:false,
-      
+      allMenuList: iLocalStroage.gets('menu'),
+      currentSlideMenu: [],
+      isCollapse: false,
+
 
       newRoute: [Cookies.get("menu")],
       collapsedNow: false,
@@ -41,11 +34,11 @@ export default {
   },
   props: {
     //collapsed: Boolean,
-    selectedHeadMenu:String
+    selectedHeadMenu: String
   },
   computed: {
-    activeSlideMenu(){
-      console.log('activeSlide',this.$store.state.activeSlideMenu)
+    activeSlideMenu() {
+      console.log('activeSlide', this.$store.state.activeSlideMenu)
       return this.$store.state.activeSlideMenu;
     }
   },
@@ -94,19 +87,19 @@ export default {
     // },
 
     //获取侧边栏菜单
-    getSlideMenu(val){
+    getSlideMenu(val) {
       console.log(val);
-      this.currentSlideMenu =[];
+      this.currentSlideMenu = [];
       this.allMenuList.forEach(item => {
-          if(item.name == val){
-            if(item.children && item.children.length){
-              item.children.forEach(item2=>{
-                this.currentSlideMenu.push(item2);
-              })
-            }  
+        if (item.name == val) {
+          if (item.children && item.children.length) {
+            item.children.forEach(item2 => {
+              this.currentSlideMenu.push(item2);
+            })
           }
+        }
       });
-      console.log('this.currentSlideMenu',this.currentSlideMenu);
+      console.log('this.currentSlideMenu', this.currentSlideMenu);
       //默认打开侧边栏第一个子菜单
       // if(this.currentSlideMenu[0].children && this.currentSlideMenu[0].children.length){
       //   let newRoute = this.currentSlideMenu[0].children[0].name;
@@ -115,18 +108,18 @@ export default {
     }
   },
   mounted() {
-   // this.collapsedNow = this.collapsed;
-    console.log('selectedHeadMenu',this.selectedHeadMenu);
-    console.log('global.antRouter',global.antRouter);
-    console.log('当前route',this.$route.name);
+    // this.collapsedNow = this.collapsed;
+    console.log('selectedHeadMenu', this.selectedHeadMenu);
+    console.log('global.antRouter', global.antRouter);
+    console.log('当前route', this.$route.name);
   },
   created() {
     console.log(this.newRoute);
     this.getSlideMenu(this.selectedHeadMenu); //默认加载案件办理的二级菜单
   },
   watch: {
-    selectedHeadMenu:function(val,oldVal){
-      console.log(val,oldVal);
+    selectedHeadMenu: function (val, oldVal) {
+      console.log(val, oldVal);
       this.getSlideMenu(val);
     },
     // '$route'(to,from){

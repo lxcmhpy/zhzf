@@ -64,11 +64,6 @@
         <el-table-column prop="code" label="机构编码" align="center"></el-table-column>
         <el-table-column prop="name" label="机构名称" align="center"></el-table-column>
         <el-table-column prop="type" label="机构类型" align="center"></el-table-column>
-        <el-table-column prop="status" label="状态" align="center">
-          <span slot-scope="scope">
-            <span>{{scope.row.status == 0 ? '正常': '注销'}}</span>
-          </span>
-        </el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button @click.stop @click="editOrgan(scope.row.id)" type="text">修改</el-button>
