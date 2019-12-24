@@ -109,10 +109,10 @@ export default {
     },
     //获取角色
     getRoles() {
-      let data = {
+       let data = {
         current: this.currentPage,
         size: this.pageSize,
-        // name:this.dicSearchForm.name
+        name: this.dicSearchForm.name
       };
       this.$store.dispatch("getRoles",data).then(
         res => {

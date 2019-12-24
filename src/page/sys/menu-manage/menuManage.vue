@@ -97,11 +97,20 @@
         </div>
         <div class="item">
           <el-form-item label="上级菜单" prop="parentName">
-            <el-input
-              :disabled="addItemObj.type === -1"
-              ref="parentName"
-              v-model="addItemObj.parentName"
-            ></el-input>
+            <!--<el-select v-model="addItemObj.parentId" placeholder="请选择">-->
+              <!--<el-option-group-->
+                <!--v-for="group in options"-->
+                <!--:key="group.label"-->
+                <!--:label="group.label">-->
+                <!--<el-option-->
+                  <!--v-for="item in group.options"-->
+                  <!--:key="item.value"-->
+                  <!--:label="item.label"-->
+                  <!--:value="item.value">-->
+                <!--</el-option>-->
+              <!--</el-option-group>-->
+            <!--</el-select>-->
+            <!--<el-input :disabled="addItemObj.type === -1" ref="parentName" v-model="addItemObj.parentName"></el-input>-->
           </el-form-item>
         </div>
         <div class="item">
@@ -137,235 +146,227 @@
 </template>
 
 <script>
-export default {
-  watch: {},
-  data() {
-    return {
-      tableData: [],
-      currentPage: 1,
-      pageSize: 10,
-      total: 0,
-      dialogTitle: "",
-      isShowDialog: false,
-      typeList: [
-        { id: -1, name: "目录" },
-        { id: 0, name: "菜单" },
-        { id: 1, name: "按钮" }
-      ],
-      buttonTypeList: ["add", "delete", "enable", "other", "edit"],
-      addItemObj: {
-        plevel: "",
-        permTypes: "",
-        id: "",
-        parentId: "",
-        parentName: "",
-        name: "",
-        showAlways: "",
-        type: "",
-        title: "",
-        path: "",
-        component: "",
-        icon: "",
-        url: "",
-        buttonType: "",
-        sortOrder: ""
-      },
-      rules: {
-        title: [{ required: true, message: "请输入菜单标题", trigger: "blur" }],
-        name: [{ required: true, message: "请输入菜单名称", trigger: "blur" }],
-        type: [{ required: true, message: "请选择菜单类型", trigger: "blur" }]
-      }
-    };
-  },
-  components: {},
-  inject: ["reload"],
-  methods: {
-    searchTable() {
-      this.$store.dispatch("getTreePermission").then(
-        res => {
-          this.tableData = res.data;
-          this.total = res.data.length;
+  export default {
+    watch: {},
+    data() {
+      return {
+        tableData: [],
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
+        dialogTitle: '',
+        isShowDialog: false,
+        typeList: [{id: -1, name: '目录'}, {id: 0, name: '菜单'}, {id: 1, name: '按钮'}],
+        buttonTypeList: ['add', 'delete', 'enable', 'other', 'edit'],
+        addItemObj: {
+          plevel: '',
+          permTypes: '',
+          id: '',
+          parentId: '',
+          parentName: '',
+          name: '',
+          showAlways: '',
+          type: '',
+          title: '',
+          path: '',
+          component: '',
+          icon: '',
+          url: '',
+          buttonType: '',
+          sortOrder: ''
         },
-        err => {
-          console.log(err);
+        rules: {
+          title: [{required: true, message: "请输入菜单标题", trigger: "blur"}],
+          name: [{required: true, message: "请输入菜单名称", trigger: "blur"}],
+          type: [{required: true, message: "请选择菜单类型", trigger: "blur"}],
         }
-      );
-    },
-    addItem() {
-      this.dialogTitle = "新增";
-      this.isShowDialog = true;
-    },
-    editItem(row) {
-      console.log(row);
-      this.addItemObj = {
-        plevel: row.plevel,
-        permTypes: row.permTypes,
-        id: row.id,
-        parentId: row.parentId,
-        parentName: row.parentId,
-        name: row.name,
-        showAlways: row.showAlways,
-        type: row.type,
-        title: row.title,
-        path: row.path,
-        component: row.component,
-        icon: row.icon,
-        url: row.url,
-        buttonType: row.buttonType,
-        sortOrder: row.sortOrder
       };
-      this.dialogTitle = "修改";
-      this.isShowDialog = true;
     },
-    sureAdd() {
-      if (this.verifyAcceptObj()) {
-        let that = this;
-        if (that.dialogTitle === "新增" && that.addItemObj.type === -1) {
-          that.addItemObj.plevel = 0;
-        }
-        that.addItemObj.parentId = that.searchIdByName(
-          that.addItemObj.parentName,
-          that.tableData
+    components: {},
+    inject: ["reload"],
+    methods: {
+      searchTable() {
+        this.$store.dispatch("getTreePermission").then(
+          res => {
+            this.tableData = res.data;
+            this.total = res.data.length
+          },
+          err => {
+            console.log(err);
+          }
         );
-        this.$store.dispatch("addPermission", that.addItemObj).then(
+      },
+      addItem() {
+        this.dialogTitle = '新增'
+        this.isShowDialog = true
+      },
+      editItem(row) {
+        console.log(row);
+        this.addItemObj = {
+          plevel: row.plevel,
+          permTypes: row.permTypes,
+          id: row.id,
+          parentId: row.parentId,
+          parentName: row.parentId,
+          name: row.name,
+          showAlways: row.showAlways,
+          type: row.type,
+          title: row.title,
+          path: row.path,
+          component: row.component,
+          icon: row.icon,
+          url: row.url,
+          buttonType: row.buttonType,
+          sortOrder: row.sortOrder
+        }
+        this.dialogTitle = '修改'
+        this.isShowDialog = true
+      },
+      sureAdd() {
+        if (this.verifyAcceptObj()) {
+          let that = this
+          if (that.dialogTitle === '新增' && that.addItemObj.type === -1) {
+            that.addItemObj.plevel = 0
+          }
+          // that.addItemObj.parentId = that.searchIdByName(that.addItemObj.parentName, that.tableData)
+          this.$store.dispatch("addPermission", that.addItemObj).then(
+            res => {
+              if (res.code === 200) {
+                that.isShowDialog = false
+                this.$message({
+                  type: "success",
+                  message: that.dialogTitle + '成功！'
+                });
+                that.searchTable()
+              }
+            },
+            err => {
+              this.$message({
+                type: "error",
+                message: err
+              });
+            }
+          );
+        }
+      },
+      deleteItem(row) {
+        let that = this
+        let _arr = [row.id]
+        this.$store.dispatch("deletePermission", row.id).then(
           res => {
             if (res.code === 200) {
-              that.isShowDialog = false;
               this.$message({
                 type: "success",
-                message: that.dialogTitle + "成功！"
+                message: '删除成功！'
               });
-              that.searchTable();
+              that.searchTable()
             }
           },
           err => {
-            this.$message({
-              type: "error",
-              message: err
-            });
+            console.log(err);
           }
         );
-      }
-    },
-    deleteItem(row) {
-      let that = this;
-      let _arr = [row.id];
-      this.$store.dispatch("deletePermission", row.id).then(
-        res => {
-          if (res.code === 200) {
-            this.$message({
-              type: "success",
-              message: "删除成功！"
-            });
-            that.searchTable();
+      },
+      handleSizeChange(val) {
+        this.pageSize = val;
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+      },
+      searchNameById(row, column, cellValue, index, data) {
+        if (row.parentId === null || row.parentId === undefined || row.parentId.toString().replace(/\s+/g, '') === '') {
+          return '无'
+        }
+        let _data = {}
+        if (!data) {
+          _data = this.tableData
+        } else {
+          _data = data
+        }
+        var Deep, T, F;
+        for (F = _data.length; F;) {
+          T = _data[--F]
+          if (row.parentId === T.id) return T
+          if (T.children) {
+            Deep = this.searchNameById(row, '', '', '', T.children)
+            if (Deep) return Deep.title
           }
-        },
-        err => {
-          console.log(err);
         }
-      );
-    },
-    handleSizeChange(val) {
-      this.pageSize = val;
-    },
-    handleCurrentChange(val) {
-      this.currentPage = val;
-    },
-    searchNameById(row, column, cellValue, index, data) {
-      if (
-        row.parentId === null ||
-        row.parentId === undefined ||
-        row.parentId.toString().replace(/\s+/g, "") === ""
-      ) {
-        return "无";
-      }
-      let _data = {};
-      if (!data) {
-        _data = this.tableData;
-      } else {
-        _data = data;
-      }
-      var Deep, T, F;
-      for (F = _data.length; F; ) {
-        T = _data[--F];
-        if (row.parentId === T.id) return T;
-        if (T.children) {
-          Deep = this.searchNameById(row, "", "", "", T.children);
-          if (Deep) return Deep.title;
+      },
+      searchIdByName(title, data) {
+        var Deep, T, F;
+        for (F = data.length; F;) {
+          T = data[--F]
+          if (title === T.title) return T
+          if (T.children) {
+            Deep = this.searchNameById(title, T.children)
+            if (Deep) return Deep.id
+          }
         }
-      }
-    },
-    searchIdByName(title, data) {
-      var Deep, T, F;
-      for (F = data.length; F; ) {
-        T = data[--F];
-        if (title === T.title) return T;
-        if (T.children) {
-          Deep = this.searchNameById(title, T.children);
-          if (Deep) return Deep.id;
-        }
-      }
-    },
-    verifyAcceptObj() {
-      let result = true;
-      let _this = this;
-      for (var field in _this.rules) {
-        let obj = this.$refs["addItemObj"];
-        obj.validateField(field, validMessage => {
-          if (validMessage !== "" && result === true) {
-            result = false;
-            let fields = _this.$refs[field].elForm.fields;
+      },
+      verifyAcceptObj() {
+        let result = true
+        let _this = this
+        for (var field in _this.rules) {
+          let obj = this.$refs['addItemObj']
+          obj.validateField(field, (validMessage) => {
+            if (validMessage !== '' && result === true) {
+              result = false
+              let fields = _this.$refs[field].elForm.fields
 
-            for (let i in fields) {
-              if (fields[i].labelFor === field) {
-                console.log(fields[i].label);
-                _this.$alert(fields[i].label + "填写错误", "提示", {
-                  confirmButtonText: "确定",
-                  callback: action => {}
-                });
+              for (let i in fields) {
+                if (fields[i].labelFor === field) {
+                  console.log(fields[i].label)
+                  _this.$alert((fields[i].label) + '填写错误', '提示', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                    }
+                  })
+                }
               }
             }
-          }
-        });
-      }
-      return result;
-    }
-  },
-  mounted() {},
-  created() {
-    this.searchTable();
-  },
-  watch: {
-    isShowDialog(val) {
-      if (!val) {
-        this.addItemObj = {
-          plevel: "",
-          permTypes: "",
-          id: "",
-          parentId: "",
-          parentName: "",
-          name: "",
-          showAlways: "",
-          type: "",
-          title: "",
-          path: "",
-          component: "",
-          icon: "",
-          url: "",
-          buttonType: "",
-          sortOrder: ""
-        };
+          })
+        }
+        return result
       }
     },
-    "addItemObj.type"(val) {
-      if (val === -1) {
-        this.addItemObj.parentId = "";
-        this.addItemObj.parentName = "";
+    mounted() {
+    },
+    created() {
+      this.searchTable()
+    },
+    watch: {
+      'isShowDialog'(val) {
+        if (!val) {
+          this.addItemObj = {
+            plevel: '',
+            permTypes: '',
+            id: '',
+            parentId: '',
+            parentName: '',
+            name: '',
+            showAlways: '',
+            type: '',
+            title: '',
+            path: '',
+            component: '',
+            icon: '',
+            url: '',
+            buttonType: '',
+            sortOrder: ''
+          }
+        }
+      },
+      'addItemObj.type'(val) {
+        if (val === -1) {
+          this.addItemObj.parentId = ''
+          this.addItemObj.parentName = ''
+        }
       }
     }
-  }
-};
+  };
 </script>
+
 <style lang="less">
 @import "../../../css/systemManage.less";
 </style>
