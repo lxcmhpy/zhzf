@@ -13,20 +13,8 @@ module.exports = {
     proxyTable: {
       "/catsic": {
         //target: "http://172.16.169.54:8888",
-<<<<<<< HEAD
-        // target: "http://172.16.169.75:8888", //线上地址
-=======
-        //target: "http://172.16.170.53:8888", //线上地址
-        // target: "http://172.16.169.75:8888",
-        // target: "http://172.16.168.84:8888",
-<<<<<<< HEAD
-        // target: "http://172.16.169.83:8888",
->>>>>>> b03cec668aa6347482efdbc07fd81d196460c8e5
+
         target: "http://127.0.0.1:8888",
-=======
-        target: "http://172.16.169.83:8888",
-        // target: "http://127.0.0.1:8888",
->>>>>>> e0efbccc5ec19fa154b6e1c5d66dc48724a60518
         changeOrigin: true,
       }
     },
