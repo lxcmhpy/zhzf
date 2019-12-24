@@ -1,13 +1,6 @@
 <template>
   <!-- 放大图片 -->
-  <a-modal
-    title
-    :visible="visible"
-    :closable="true"
-    :centered="true"
-    @cancel="handleCancel"
-    :footer="null"
-  >
+  <a-modal title :visible="visible" :closable="true" :centered="true" @cancel="handleCancel" :footer="null">
     <div class="large_image">
       <img id="img1">
     </div>
