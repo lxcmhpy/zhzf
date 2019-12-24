@@ -1,10 +1,10 @@
 <template>
-  <div class="fullBox searchAndPageFullBox" id="logBox">
+  <div class="searchAndpageBox" id="logBox">
     <div class="handlePart">
       <div class="search">
-        <el-form :inline="true" :model="logForm"  ref="logForm" class="demo-form-inline">
-          <el-row>
-            <el-col :span="13">
+        <el-form :inline="true" :model="logForm"  ref="logForm">
+          <!-- <el-row>
+            <el-col :span="13"> -->
               <el-form-item label="机构名称" prop="organ">
                 <el-input v-model="logForm.organ"></el-input>
               </el-form-item>
@@ -34,14 +34,14 @@
                   ></el-time-picker>
                 </el-form-item>
               </el-form-item>
-            </el-col>
-            <el-col :span="4">
+            <!-- </el-col> -->
+            <!-- <el-col :span="4"> -->
               <el-form-item>
                 <el-button type="primary" size="medium" icon="el-icon-search" @click="getLogList">查询</el-button>
                 <el-button type="primary" size="medium" @click="resetLog">重置</el-button>
               </el-form-item>
-            </el-col>
-          </el-row>
+            <!-- </el-col>
+          </el-row> -->
         </el-form>
       </div>
     </div>
@@ -115,7 +115,7 @@ export default {
         type: this.logForm.type,
         operation: this.logForm.operation,
         username: this.logForm.username,
-        createTime: this.logForm.createTime1 + " " +this.logForm.createTime2,
+        // createTime: this.logForm.createTime1 + " " +this.logForm.createTime2,
         // createTime: this.logForm.createTime2,
         current: this.currentPage,
         size: this.pageSize

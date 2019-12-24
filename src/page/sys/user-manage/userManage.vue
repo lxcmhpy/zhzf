@@ -30,7 +30,14 @@
         <div class="userSearchPart">
           <div>
             <el-form-item label="查询方法">
-              <el-input></el-input>
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in searchType"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </div>
           <div>
@@ -140,7 +147,7 @@ export default {
         username: "",
         mobile: ""
       },
-
+      searchType:[{value:0,label:'本机构'},{value:1,label:'本机构及子机构'}],
       filterText: "",
       selectCurrentTreeName: "机构人员列表",
       organData: [],
@@ -177,7 +184,7 @@ export default {
       this.currentOrganId = data.id;
       console.log(this.currentOrganId);
       this.getUserList();
-     // this.getDepartment();
+      // this.getDepartment();
     },
     //获取机构
     getAllOrgan() {
@@ -327,8 +334,8 @@ export default {
           organId: this.currentOrganId
         };
         this.$refs.bindRoleRef.showModal(data);
-      }else{
-        this.$message('请选择用户');
+      } else {
+        this.$message("请选择用户");
       }
     },
     //获取选中的user

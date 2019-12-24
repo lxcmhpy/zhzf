@@ -12,6 +12,7 @@ import {
   getUserListApi,addUserApi,updateUserApi,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi,userBindRoleApi,queryUserBindRoleApi
 } from "@/api/system";
 
+import { getLawCategoryListApi} from "@/api/caseDeploy";
 import Cookies from "@/js/cookies";
 const actions = {
   //默认加载最短时间1秒
@@ -638,6 +639,19 @@ getUserdeletes({ commit }, data) {
   deletePermission({ commit }, data) {
     return new Promise((resolve, reject) => {
       deletePermissionApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
+
+  //获取执法门类列表
+  getLawCategoryList({ commit }, data){
+    return new Promise((resolve, reject) => {
+      getLawCategoryListApi(data).then(
         res => {
           resolve(res);
         },
