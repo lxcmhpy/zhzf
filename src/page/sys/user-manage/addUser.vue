@@ -156,7 +156,8 @@ export default {
         //   { required: true, message: "请选择部门", trigger: "change" }
         // ],
         IDnumber: [{ validator: validateIDNumber, trigger: "blur" }]
-      }
+      },
+      rowData:'',
     };
   },
   mounted() {},
@@ -194,6 +195,7 @@ export default {
         parentNodeName:data.userDeparment
       };
       this.getCurrentOrganAndChild();
+      this.rowData = data;
     },
     //获取当前机构及其子机构
     getCurrentOrganAndChild() {
@@ -202,6 +204,8 @@ export default {
 
           console.log(res);
           this.getOrganList = res.data;
+          // this.addUserForm = this.rowData;
+          //this.addUserForm.organId  = this.rowData.organId;
         },
         err => {
           console.log(err);

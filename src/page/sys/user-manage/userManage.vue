@@ -72,7 +72,8 @@
               <el-input v-model="formInline.mobile"></el-input>
             </el-form-item>
           </div>
-          <p>{{selectCurrentTreeName}}</p>
+          <!-- <p>{{selectCurrentTreeName}}</p> -->
+          <p>人员列表</p>
         </div>
       </el-form>
 
@@ -259,7 +260,7 @@ export default {
     // 表格编辑
     handleEdit(index, row) {
       this.$refs.addUserRef.handelEdit(row);
-      this.$refs.addUserRef.addUserForm = JSON.parse(JSON.stringify(row));
+      // this.$refs.addUserRef.addUserForm = JSON.parse(JSON.stringify(row));
     },
     // 表格id删除
     handleDelete(row) {
@@ -316,9 +317,6 @@ export default {
         parentNodeName: this.selectCurrentTreeName
       };
       this.$refs.addUserRef.showModal(parentNode);
-      // this.$refs.addUserRef.addUserForm.organTitle = this.selectCurrentTreeName;
-      // this.$refs.addUserRef.addUserForm.organId = this.currentOrganId;
-      // this.$refs.addUserRef.depss = this.departments;
     },
 
     //角色绑定
