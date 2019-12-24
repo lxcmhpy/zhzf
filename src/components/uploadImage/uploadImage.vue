@@ -2,39 +2,18 @@
   <!-- 图片上传 -->
   <div class="upload_image">
     <template v-for="(item,index) in fileList">
-      <div
-        :class="fileList[index].showIcon==true? 'pic_upload border_dash':'pic_upload border_solid' "
-      >
-        <input
-          type="file"
-          accept="image/jpg, image/png, image/jpeg"
-          @change="showFile(index)"
-          class="img_input"
-          :id="setFileId('file',index)"
-          value="{$banner['banner_image']}"
-        >
+      <div :class="fileList[index].showIcon==true? 'pic_upload border_dash':'pic_upload border_solid' ">
+        <input type="file" accept="image/jpg, image/png, image/jpeg" @change="showFile(index)" class="img_input" :id="setFileId('file',index)" value="{$banner['banner_image']}">
         <!--draggable:是否可拖动；@dragstart:元素被拖动;-->
-        <div
-          class="add_icon"
-          v-if="fileList[index].showIcon"
-          @click="clickImage(index)"
-          @dragenter="ignoreDrag($event)"
-          @dragover="ignoreDrag($event)"
-          @drop="drop($event,index)"
-        >
+        <div class="add_icon" v-if="fileList[index].showIcon" @click="clickImage(index)" @dragenter="ignoreDrag($event)" @dragover="ignoreDrag($event)" @drop="drop($event,index)">
           <i class="anticon anticon-plus"></i>
         </div>
-        <div
-          class="img_content"
-          v-else
-          @mousemove="imgMouseShow(index,true)"
-          @mouseout="imgMouseShow(index,false)"
-        >
+        <div class="img_content" v-else @mousemove="imgMouseShow(index,true)" @mouseout="imgMouseShow(index,false)">
           <img src :id="setFileId('img',index)">
           <!-- 蒙层 -->
           <div :class="fileList[index].imgLayer==true?'img_icon':'hide'">
-            <a-icon type="link" class="img_icon_btn" @click="enlargeImage(index)"/>
-            <a-icon type="delete" class="img_icon_btn" @click="deleteImage(index)"/>
+            <a-icon type="link" class="img_icon_btn" @click="enlargeImage(index)" />
+            <a-icon type="delete" class="img_icon_btn" @click="deleteImage(index)" />
           </div>
         </div>
       </div>
