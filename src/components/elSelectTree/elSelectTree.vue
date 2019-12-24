@@ -97,7 +97,7 @@
       }
     },
     watch: {
-      value(){
+      value(val){
         this.valueId = this.value
         this.initHandle()
       }
