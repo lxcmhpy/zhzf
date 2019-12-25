@@ -126,5 +126,5 @@ export default {
 }
 </script>
 <style lang="less">
-@import "../../css/pdf.less";
+@import "../../../css/pdf.less";
 </style>

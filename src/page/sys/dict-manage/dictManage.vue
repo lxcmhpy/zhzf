@@ -125,7 +125,7 @@ export default {
             pid:'',
             leng:this.tableData.length
       }
-      this.$refs.addEditDictRef.showModal(0, data);
+      this.$refs.addEditDictRef.showModal(0, data,'list');
     },
     //编辑字典
     editDict(row){
@@ -133,7 +133,7 @@ export default {
             row:row,
             pid:'',
       }
-      this.$refs.addEditDictRef.showModal(2, data);
+      this.$refs.addEditDictRef.showModal(2, data,'list');
     },
     //更改每页显示的条数
     handleSizeChange(val) {

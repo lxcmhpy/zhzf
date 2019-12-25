@@ -115,6 +115,17 @@
 import { validatePhone, validateIDNumber } from "@/js/validator";
 export default {
   data() {
+    // 判断用户名是否已存在
+    var validateUsername = (rule, value, callback) => {
+      this.$store
+        .dispatch("hasUsername", value)
+        .then(response => {
+          callback();
+        })
+        .catch(error => {
+          callback('用户名重复');
+        });
+    };
     return {
       depss: [], //数据部门数据
       visible: false,
@@ -148,7 +159,8 @@ export default {
       rules: {
         username: [
           { required: true, message: "请输入登录用户名", trigger: "blur" },
-          { min: 6, message: "长度大于6个字符", trigger: "blur" }
+          { min: 6, message: "长度大于6个字符", trigger: "blur" },
+          { validator: validateUsername, trigger: "blur" },
         ],
         mobile: [{ validator: validatePhone, trigger: "blur" }],
         organId: [{ required: true, message: "请选择机构", trigger: "change" }],
@@ -299,7 +311,26 @@ export default {
       this.$nextTick(() => {
         this.$refs["addUserForm"].resetFields();
       });
-    }
+    },
+    //失去焦点请求 名称是否重复
+    // blurName() {
+    //   if(this.addUserForm.name){
+    //     this.$store.dispatch("hasUsername", this.addUserForm.name).then(
+    //     res => {
+    //       console.log(res);
+    //       if(res.data.id){
+    //         this.errorOrganName = true;
+    //       }else{
+    //         this.errorOrganName = false;
+    //       }
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     }
+    //   );
+      
+    //   }
+    // },
   },
   watch: {
     visible(val) {

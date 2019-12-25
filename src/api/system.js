@@ -112,20 +112,6 @@ export  function  getUserListApi(data)  {
     cancelToken:  setCancelSource()
   });
 }
-
-//用户管理      新增  修改  数据
-//  export  function  saveOrUpdateUserInfo(data)  {
-//      console.log('用户',  vm.$qs.stringify(data));
-//      console.log(data)
-//      return  request({
-//          url:  "/sys/user/saveOrUpdateUserInfo",
-//          method:  "POST",
-//          data:vm.$qs.stringify(data),
-//          showloading:  true,
-//          cancelToken:  setCancelSource()
-//      });
-//  }
-
 //用户管理      新增用户
 export  function  addUserApi(data)  {
   console.log('用户',  vm.$qs.stringify(data));
@@ -191,17 +177,17 @@ export function getUserresetApi(id) {
     cancelToken: setCancelSource()
   });
 }
+//验证用户名是否重复
+export  function  hasUsernameApi(name)  {
+  return request({
+    url: "/sys/user/findExistByUserName/" + name,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
 
-//用户管理   所属部门
-// export function getUserallApi(data) {
-//   return request({
-//     url: "/sys/department/all",
-//     method: "GET",
-//     params:data,
-//     showloading: true,
-//     cancelToken: setCancelSource()
-//   });
-// }
+
 //用户绑定角色
 export function userBindRoleApi(data) {
   console.log(data);
@@ -374,7 +360,7 @@ export function getDepartmentsNoPageApi(data) {
     url: "/sys/department/all",
     method: "get",
     params: data,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -519,10 +505,10 @@ export function addPermissionApi(data) {
 //删除菜单
 export function deletePermissionApi(data) {
   return request({
-    url: "/sys/permission/deleteByIds",
-    method: "",
+    url: "/sys/permission/deleteById",
+    method: "get",
     params: {
-      ids: data
+      id: data
     },
     showloading: true,
     cancelToken: setCancelSource()

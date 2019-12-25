@@ -6,8 +6,8 @@
         勘验笔录
       </div>
       <div class="case-number">案号：{{caseNumber}}</div>
-      <div>
-        案由：
+      <div class="pdf-report-info">
+        案由：<u class="pdf-line"></u><br>
         勘验时间： 年 月 日 时 分至 日 时 分
         勘验场所： 天气情况：
         勘验人： 单位及职务： 执法证号：
@@ -35,5 +35,5 @@ export default {
 }
 </script>
 <style lang="less">
-@import "../../css/pdf.less";
+@import "../../../css/pdf.less";
 </style>

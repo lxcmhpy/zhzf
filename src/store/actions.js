@@ -473,20 +473,19 @@ getUserdeletes({ commit }, data) {
         })
     })
   },
+  //验证用户名是否重复
+  hasUsername({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      hasUsernameApi(data).then(
+        res => {
+          resolve(res);
+        },
+        error => {
+          reject(error);
+        })
+    })
+  },
 
-
-   //用户管理 所属部门
-  //  getUserall({ commit }, data) {
-  //   return new Promise((resolve,reject)=>{
-  //     getUserallApi(data).then(
-  //       res=>{
-  //         resolve(res);
-  //       },
-  //       error=>{
-  //         reject(error);
-  //       })
-  //   })
-  // },
   //用户绑定角色
   userBindRole({ commit }, data) {
     return new Promise((resolve,reject)=>{

@@ -30,7 +30,7 @@
         <div class="userSearchPart">
           <div>
             <el-form-item label="查询方法">
-              <el-select v-model="value" placeholder="请选择">
+              <el-select v-model="formInline.searchType1" placeholder="请选择">
                 <el-option
                   v-for="item in searchType"
                   :key="item.value"
