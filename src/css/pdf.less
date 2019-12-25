@@ -32,19 +32,11 @@
 
 .pdf-table td {
     padding       : 5px;
+    height: 30px;
     vertical-align: middle;
     text-align    : center;
     line-height   : 1.2em;
     border        : 1px solid black; //表格边框
-}
-
-// pdf内表格中的选项样式
-.pdf-td-body {
-    text-align: left;
-}
-
-.pdf-td-body input {
-    margin: 0 5px;
 }
 
 // pdf中正文内容
@@ -57,4 +49,16 @@
 .pdf-line{
     display: inline-block;
     min-width: 400px;
+}
+
+// 落款（签章）
+.pdf-seal{
+    margin: 50px 20px 0;
+    text-align: right;
+    line-height   : 1.2em;
+}
+
+// 表格中居左显示的字体
+.text-left{
+    text-align: left;
 }

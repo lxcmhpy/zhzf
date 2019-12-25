@@ -8,6 +8,8 @@
       <!-- 打印版 -->
       <li @click="goEstablish">交通运输行政执法文书式样之一 ： 立案登记表</li>
       <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li>
+      <li @click="goLiveReport">交通运输行政执法文书式样之四 ： 现场笔录</li>
+      <li @click="goSendReprot">交通运输行政执法文书式样之二十三 ：送达回证</li>
       <li @click="goFinishReprot">交通行政执法文书式样之二十四 ： 结案报告</li>
 
     </ul>
@@ -31,9 +33,17 @@ export default {
     goEstablish() {
       this.makeRoute('/establish', '/establish2', '/establish3', 'establish', 'establish2', 'establish3', '问询', 'caseHandle/case/establishForm.vue');
     },
+    // 现场笔录-打印
+    goLiveReport() {
+      this.makeRoute('/live', '/live2', '/live3', '/live', '/live2', '/live3', '问询', 'caseHandle/case/liveRecord.vue');
+    },
     // 勘验笔录-打印
     goInquestReprot() {
       this.makeRoute('/inspect', '/inspect2', '/inspect3', 'inspect', 'inspect2', 'inspect3', '问询', 'caseHandle/case/inspectRecord.vue');
+    },
+    // 送达回证-打印
+    goSendReprot() {
+      this.makeRoute('/send', '/send2', '/send3', 'send', 'send2', 'send3', '问询', 'caseHandle/case/sendReport.vue');
     },
     // 结案报告-打印
     goFinishReprot() {

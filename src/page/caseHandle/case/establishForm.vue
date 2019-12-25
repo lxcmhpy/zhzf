@@ -11,7 +11,7 @@
           <tr>
             <td> 案件<br>来源 </td>
             <td colspan="8">
-              <div class="pdf-td-body">
+              <div class="text-left">
                 <form>
                   <input type="checkbox">1.在行政检查中发现的；<br>
                   <input type="checkbox">2.个人、法人及其他组织举报经核实的；<br>
