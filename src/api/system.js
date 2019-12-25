@@ -505,10 +505,10 @@ export function addPermissionApi(data) {
 //删除菜单
 export function deletePermissionApi(data) {
   return request({
-    url: "/sys/permission/deleteByIds",
+    url: "/sys/permission/deleteById",
     method: "get",
     params: {
-      ids: data
+      id: data
     },
     showloading: true,
     cancelToken: setCancelSource()

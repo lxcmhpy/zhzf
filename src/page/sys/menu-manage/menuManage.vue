@@ -279,7 +279,6 @@
       },
       deleteItem(row) {
         let that = this
-        let _arr = [row.id]
         this.$store.dispatch("deletePermission", row.id).then(
           res => {
             if (res.code === 200) {
