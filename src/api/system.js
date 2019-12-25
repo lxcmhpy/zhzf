@@ -506,7 +506,7 @@ export function addPermissionApi(data) {
 export function deletePermissionApi(data) {
   return request({
     url: "/sys/permission/deleteByIds",
-    method: "",
+    method: "get",
     params: {
       ids: data
     },

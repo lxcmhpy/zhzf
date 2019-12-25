@@ -45,7 +45,7 @@ export const drawCodeImage = "/catsic/common/captcha/draw/"
 //获取菜单
 export function getMenuApi() {
   return request({
-    url: "/sys/permission/getMenuList",
+    url: "/sys/permission/getTreePermission",
     method: "get",
     showloading: true,
     cancelToken: setCancelSource()

@@ -5,9 +5,9 @@
       <el-submenu :index="item.name" v-for="(item,index) in currentSlideMenu" :key="index">
         <template slot="title">
           <i class="el-icon-location"></i>
-          <span slot="title">{{item.title}} {{item.name}}</span>
+          <span slot="title">{{item.title}}</span>
         </template>
-        <el-menu-item :index="subItem.name" v-for="(subItem,subIndex) in item.children" :key="subIndex">{{subItem.title}} {{subItem.name}}</el-menu-item>
+        <el-menu-item :index="subItem.name" v-for="(subItem,subIndex) in item.children" :key="subIndex">{{subItem.title}}</el-menu-item>
       </el-submenu>
     </el-menu>
 
