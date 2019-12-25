@@ -163,7 +163,7 @@
         typeList: [{id: -1, name: '目录'}, {id: 0, name: '菜单'}, {id: 1, name: '按钮'}],
         buttonTypeList: ['add', 'delete', 'enable', 'other', 'edit'],
         addItemObj: {
-          plevel: '',
+          pLevel: '',
           permTypes: '',
           id: '',
           parentId: '',
@@ -216,11 +216,14 @@
       addItem() {
         this.dialogTitle = '新增'
         this.isShowDialog = true
+        setTimeout(() => {
+          this.$refs.elSelectTreeObj.clearHandle()
+        })
       },
       editItem(row) {
         let that = this
         that.addItemObj = {
-          plevel: row.plevel,
+          pLevel: row.pLevel,
           permTypes: row.permTypes,
           id: row.id,
           parentId: row.parentId,
@@ -249,7 +252,7 @@
         if (this.verifyAcceptObj()) {
           let that = this
           if (that.dialogTitle === '新增' && that.addItemObj.type === -1) {
-            that.addItemObj.plevel = 0
+            that.addItemObj.pLevel = 0
           }
           that.addItemObj.buttonType = that.addItemObj.buttonType.join(',')
           this.$store.dispatch("addPermission", that.addItemObj).then(
@@ -367,9 +370,8 @@
     watch: {
       'isShowDialog'(val) {
         if (!val) {
-          this.$refs.elSelectTreeObj.clearHandle()
           this.addItemObj = {
-            plevel: '',
+            pLevel: '',
             permTypes: '',
             id: '',
             parentId: '',
