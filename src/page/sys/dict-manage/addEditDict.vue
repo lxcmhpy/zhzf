@@ -14,11 +14,11 @@
         </el-form-item>
         <!-- <span class="errorInput" v-if="errorName">该部门名称已存在</span> -->
       </div>
-      <!-- <div class="item">
-        <el-form-item label="描述" prop="notes">
+      <div class="item">
+        <el-form-item label="字典描述" prop="notes">
             <el-input v-model="addDictForm.notes"></el-input>
         </el-form-item>
-      </div> -->
+      </div>
       <div class="item">
         <el-form-item label="序号" prop="sort">
           <el-input v-model="addDictForm.sort"></el-input>
@@ -56,15 +56,18 @@ export default {
       editId:'',
       // parentNode: "", //新增部门时的上级机构
       // departmentId: "" //部门id
-      dictData:"",   
+      dictData:"",  
+      formType:'', //字典还是字典值新增 
+      pid:'',  //字典id
     };
   },
   inject: ["reload"],
   methods: {
-    showModal(type, data) {
+    showModal(type, data,formType) {
       this.visible = true;
       this.handelType = type;
       this.dictData = data;
+      this.formType = formType;
       if (type == 0) {
         console.log(data);
         this.dialogTitle = "新增";
@@ -73,6 +76,7 @@ export default {
         this.addDictForm.id = this.dictData.id;
         this.addDictForm.pid = this.dictData.pid;
         this.addDictForm.sort = data.leng + 1;
+        this.pid = this.dictData.pid;
         // this.isDisabled = false;
       } else if (type == 2) {
         console.log(data);
@@ -80,11 +84,12 @@ export default {
         // this.parentNode = data.parentNode;
         // this.departmentId = data.row.id;
         this.editId = data.row.id;
-        this.addDictForm.pid = this.pid;
+        this.addDictForm.pid = data.pid;
         this.addDictForm.name = data.row.name;
         this.addDictForm.status = data.row.status == 0 ? true : false;
         this.addDictForm.notes = data.row.notes;
         this.addDictForm.sort = data.row.sort;
+        this.pid = data.pid;
       }
     },
     //关闭弹窗的时候清除数据
@@ -144,7 +149,14 @@ export default {
             });
             return
           }
-         this.reload();
+        //  this.reload();
+        console.log(this.$refs)
+        if(this.formType == 'list'){
+          this.reload();
+        }else{
+          console.log(this.pid)
+          this.$emit('getDetail',{id:this.pid})
+        }
           this.$message({
             type: "success",
             message: this.handelType == 0 ? "添加成功!" : "修改成功"
