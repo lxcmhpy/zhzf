@@ -9,10 +9,11 @@ import {
   getDepartmentsApi,getDepartmentsNoPageApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi, 
   getAllMenuListApi,getTreePermissionApi,addPermissionApi,deletePermissionApi,
   getDictListApi,getDictListDetailApi,addDictApi,deleteDictApi, 
-  getUserListApi,addUserApi,updateUserApi,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi,userBindRoleApi,queryUserBindRoleApi
+  getUserListApi,addUserApi,updateUserApi,getUserdeleteApi,getUserdeletesApi,getUserresetApi,getUserallApi,getloglistApi,userBindRoleApi,queryUserBindRoleApi,
+  
 } from "@/api/system";
 
-import { getLawCategoryListApi} from "@/api/caseDeploy";
+import { getLawCategoryListApi,getBannerListApi} from "@/api/caseDeploy";
 import Cookies from "@/js/cookies";
 const actions = {
   //默认加载最短时间1秒
@@ -660,6 +661,21 @@ getUserdeletes({ commit }, data) {
         })
     })
   },
+
+  
+    //获取环节列表
+    getBannerList({ commit }, data){
+      return new Promise((resolve, reject) => {
+        getBannerListApi(data).then(
+          res => {
+            resolve(res);
+          },
+          error => {
+            reject(error);
+          })
+      })
+    },
+
 };
 
 export default actions;

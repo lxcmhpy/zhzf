@@ -60,12 +60,6 @@
         </el-form-item>
       </div>
       <div class="item">
-
-      </div>
-      <div class="item">
-
-      </div>
-      <div class="item">
         <el-form-item label="环节介绍" prop="description">
           <el-input v-model="addBannerForm.description"></el-input>
         </el-form-item>

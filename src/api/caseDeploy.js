@@ -14,3 +14,15 @@ export  function  getLawCategoryListApi(data)  {
       cancelToken:  setCancelSource()
     });
   }
+
+  // 获取环节列表
+export function getBannerListApi(data) {
+  console.log(data);
+  return request({
+    url: "/sys/link/queryLinkPage",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
