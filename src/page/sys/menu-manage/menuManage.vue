@@ -129,6 +129,11 @@
           </el-form-item>
         </div>
         <div class="item">
+          <el-form-item label="前端组件" prop="component">
+            <el-input ref="component" v-model="addItemObj.component"></el-input>
+          </el-form-item>
+        </div>
+        <div class="item">
           <el-form-item label="排序编号" prop="sortOrder">
             <el-input v-model="addItemObj.sortOrder"></el-input>
           </el-form-item>
