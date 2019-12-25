@@ -14,6 +14,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         stripe
+        @row-click="tableAdd"
         row-key="id"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         height="100%"
@@ -36,8 +37,8 @@
         <el-table-column prop="sortOrder" label="排序" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <el-button @click="editItem(scope.row)" type="text">编辑</el-button>
-            <el-button type="text" @click="deleteItem(scope.row)">删除</el-button>
+            <el-button @click.stop="editItem(scope.row)" type="text">编辑</el-button>
+            <el-button type="text" @click.stop="deleteItem(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -97,9 +98,9 @@
           </el-form-item>
         </div>
         <div class="item" v-if="addItemObj.type !== -1">
-          <el-form-item label="上级菜单" prop="parentName">
+          <el-form-item label="上级菜单" prop="parentId">
             <elSelectTree
-              ref="elSelectTree"
+              ref="elSelectTreeObj"
               :options="tableData"
               :accordion="true"
               :props="props"
@@ -115,15 +116,21 @@
         </div>
         <div class="item">
           <el-form-item label="按钮权限类型" prop="buttonType">
-            <el-select v-model="addItemObj.buttonType" placeholder="请选择">
+            <el-select v-model="addItemObj.buttonType" multiple :multiple-limit="0" @change="changeButtonType"
+                       placeholder="请选择">
               <el-option v-for="item in buttonTypeList" :key="item" :label="item" :value="item"></el-option>
             </el-select>
-            <el-input ref="buttonType" style="display: none" v-model="addItemObj.buttonType"></el-input>
+            <el-input ref="buttonType" style="display: none" v-model="addItemObj.buttonType.length"></el-input>
           </el-form-item>
         </div>
         <div class="item">
           <el-form-item label="菜单URL" prop="path">
             <el-input ref="path" v-model="addItemObj.path"></el-input>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="前端组件" prop="component">
+            <el-input ref="component" v-model="addItemObj.component"></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -156,11 +163,10 @@
         typeList: [{id: -1, name: '目录'}, {id: 0, name: '菜单'}, {id: 1, name: '按钮'}],
         buttonTypeList: ['add', 'delete', 'enable', 'other', 'edit'],
         addItemObj: {
-          plevel: '',
+          pLevel: '',
           permTypes: '',
           id: '',
           parentId: '',
-          parentName: '',
           name: '',
           showAlways: '',
           type: '',
@@ -169,7 +175,7 @@
           component: '',
           icon: '',
           url: '',
-          buttonType: '',
+          buttonType: [],
           sortOrder: ''
         },
         rules: {
@@ -190,6 +196,7 @@
       searchTable() {
         this.$store.dispatch("getTreePermission").then(
           res => {
+            console.log(res);
             this.tableData = res.data;
             this.total = res.data.length
           },
@@ -198,18 +205,30 @@
           }
         );
       },
+      tableAdd(row) {
+        this.dialogTitle = '新增'
+        this.isShowDialog = true
+        this.addItemObj.parentId = row.id
+        setTimeout(() => {
+          this.$refs.elSelectTreeObj.valueTitle = row.title
+          this.$refs.elSelectTreeObj.valueId = row.id
+        })
+      },
       addItem() {
         this.dialogTitle = '新增'
         this.isShowDialog = true
+        setTimeout(() => {
+          this.$refs.elSelectTreeObj.clearHandle()
+        })
       },
       editItem(row) {
-        console.log(row);
-        this.addItemObj = {
-          plevel: row.plevel,
+        console.log('row',row);
+        let that = this
+        that.addItemObj = {
+          pLevel: row.pLevel,
           permTypes: row.permTypes,
           id: row.id,
           parentId: row.parentId,
-          parentName: row.parentId,
           name: row.name,
           showAlways: row.showAlways,
           type: row.type,
@@ -218,19 +237,26 @@
           component: row.component,
           icon: row.icon,
           url: row.url,
-          buttonType: row.buttonType,
+          buttonType: row.buttonType.length > 0 ? row.buttonType.split(',') : [],
           sortOrder: row.sortOrder
         }
-        this.dialogTitle = '修改'
-        this.isShowDialog = true
+        that.dialogTitle = '修改'
+        that.isShowDialog = true
+        setTimeout(() => {
+          let _title = that.searchNameById(row, '', '', '', that.tableData) ? that.searchNameById(row, '', '', '', that.tableData) : ''
+          that.$refs.elSelectTreeObj.valueTitle = _title
+          that.$refs.elSelectTreeObj.valueId = _title ? row.parentId : ''
+        })
+      },
+      changeButtonType(val) {
       },
       sureAdd() {
         if (this.verifyAcceptObj()) {
           let that = this
           if (that.dialogTitle === '新增' && that.addItemObj.type === -1) {
-            that.addItemObj.plevel = 0
+            that.addItemObj.pLevel = 0
           }
-          // that.addItemObj.parentId = that.searchIdByName(that.addItemObj.parentName, that.tableData)
+          that.addItemObj.buttonType = that.addItemObj.buttonType.join(',')
           this.$store.dispatch("addPermission", that.addItemObj).then(
             res => {
               if (res.code === 200) {
@@ -253,7 +279,6 @@
       },
       deleteItem(row) {
         let that = this
-        let _arr = [row.id]
         this.$store.dispatch("deletePermission", row.id).then(
           res => {
             if (res.code === 200) {
@@ -291,7 +316,7 @@
         var Deep, T, F;
         for (F = _data.length; F;) {
           T = _data[--F]
-          if (row.parentId === T.id) return T
+          if (row.parentId === T.id) return T.title
           if (T.children) {
             Deep = this.searchNameById(row, '', '', '', T.children)
             if (Deep) return Deep.title
@@ -346,13 +371,11 @@
     watch: {
       'isShowDialog'(val) {
         if (!val) {
-          this.$refs.elSelectTree.clearHandle()
           this.addItemObj = {
-            plevel: '',
+            pLevel: '',
             permTypes: '',
             id: '',
             parentId: '',
-            parentName: '',
             name: '',
             showAlways: '',
             type: '',
@@ -361,14 +384,14 @@
             component: '',
             icon: '',
             url: '',
-            buttonType: '',
+            buttonType: [],
             sortOrder: ''
           }
         }
       },
       'addItemObj.type'(val) {
         if (val === -1) {
-          this.$refs.elSelectTree.clearHandle()
+          this.$refs.elSelectTreeObj.clearHandle()
           this.addItemObj.parentId = ''
         }
       }

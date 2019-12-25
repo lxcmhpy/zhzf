@@ -80,7 +80,7 @@ function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符
         route.component = MainContent;
       }
        else {
-        route.meta ={ title:route.title };
+        route.meta ={ title:route.title ,permTypes:route.permTypes ? route.permTypes : ''};
         route.component = loadView(route.component)
       }
     //}

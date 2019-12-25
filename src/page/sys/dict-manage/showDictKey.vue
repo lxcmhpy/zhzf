@@ -1,21 +1,18 @@
 <template>
   <el-dialog
     title="字典详情"
-    :visible.sync="visible"
+    :visible.sync="visibleDetail"
     @close="closeDialog"
     :close-on-click-modal="false"
     width="50%"
   >
-   <!-- <div class="handlePart">
-      <el-button type="primary" size="medium" icon="el-icon-plus" @click="addDictkey">新增</el-button>
-    </div> -->
     <el-button type="primary" size="medium" icon="el-icon-plus" @click="addDictkey">新增</el-button>
 
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="300px">
-        <el-table-column prop="pName" label="字典标签" align="center"></el-table-column>
+        <!-- <el-table-column prop="pName" label="字典标签" align="center"></el-table-column> -->
         <el-table-column prop="name" label="字典值" align="center"></el-table-column>
-        <!-- <el-table-column prop="notes" label="描述" align="center"></el-table-column> -->
+        <el-table-column prop="notes" label="描述" align="center"></el-table-column>
         <el-table-column prop="sort" label="排序" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
@@ -26,10 +23,10 @@
       </el-table>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="visible = false">取 消</el-button>
+      <el-button @click="visibleDetail = false">取 消</el-button>
       <!-- <el-button type="primary" @click="addOrEditDict('addDictForm')">确 定</el-button> -->
     </span>
-    <addEditDict ref="addEditDictRef"></addEditDict>
+    <addEditDict ref="addEditDictRef" @getDetail="showModal"></addEditDict>
   </el-dialog>
 </template>
 <script>
@@ -37,10 +34,10 @@ import addEditDict from "./addEditDict";
 export default {
   data() {
     return {
-      visible: false,
+      visibleDetail: false,
       tableData:[],
       dictId:'', //字典id
-      dictName:'', //name
+      //dictName:'', //name
     };
   },
   components: {
@@ -50,14 +47,14 @@ export default {
   methods: {
     showModal(row) {
         console.log(row);
-      this.visible = true;
+      this.visibleDetail = true;
       this.dictId = row.id;
-      this.dictName = row.name;
+      //this.dictName = row.name;
       this.getDictKeyList();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
-      this.visible = false;
+      this.visibleDetail = false;
     },
     //获取字典值
     getDictKeyList(){
@@ -65,9 +62,9 @@ export default {
         res => {
           console.log("字典值列表", res);
           this.tableData = res.data;
-          this.tableData.forEach(item=>{
-              item.pName = this.dictName
-          })
+          // this.tableData.forEach(item=>{
+          //     item.pName = this.dictName
+          // })
         },
         err => {
           console.log(err);
@@ -81,7 +78,7 @@ export default {
             pid:this.dictId,
             leng:this.tableData.length
         }
-      this.$refs.addEditDictRef.showModal(0, data);
+      this.$refs.addEditDictRef.showModal(0, data,'detail');
     },
     //编辑字典值
     editDictKey(row){
@@ -89,7 +86,7 @@ export default {
             row:row,
             pid:this.dictId,
         }
-      this.$refs.addEditDictRef.showModal(2, data);
+      this.$refs.addEditDictRef.showModal(2, data,'detail');
     },
     //删除字典
     deleteDictKey(id){
@@ -101,11 +98,11 @@ export default {
         .then(() => {
           this.$store.dispatch("deleteDict", id).then(
             res => {
-              this.reload();
               this.$message({
                 type: "success",
                 message: "删除成功!"
               });
+              this.getDictKeyList();
             },
             err => {
               console.log(err);

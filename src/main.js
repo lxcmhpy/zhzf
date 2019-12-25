@@ -9,8 +9,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 import "@/js/dateFormat";
 import util from "@/js/util";
 import qs from 'qs';
+import hasPermission from "@/js/hasPermission"
 
 Vue.use(ElementUI);
+Vue.use(hasPermission);
 
 
 Vue.config.productionTip = false;
