@@ -261,16 +261,12 @@
   }
   .box {
     width: calc(100% - 44px);
-    height: auto;
+    height: 0;
     min-height: 100%;
     padding: 0 22px 65px 22px;
     margin-bottom: 65px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: scroll;
     .header {
       width: 100%;
       flex: 0 0 51px;
