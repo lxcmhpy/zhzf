@@ -9,110 +9,117 @@
 
 //pdf内容盒子
 .pdf-box {
-    // margin : 100px 120px;
-    width     : 100%;
-    height    : 100%;
-    background: white;
-}
-
-// pdf标题
-.pdf-title {
-    font-size  : 25px;
-    line-height: 50px;
-    font-weight: bold;
-    text-align : center;
-}
-
-// 案号
-.case-number {
-    text-align : right;
+    // margin  : 100px 120px;
+    width      : 100%;
+    height     : 100%;
+    background : white;
     line-height: 1.2em;
-}
+    
 
-// pdf内表格
-.pdf-table {
-    width: 100%;
-}
+    // pdf标题
+    .pdf-title {
+        font-size  : 25px;
+        line-height: 50px;
+        font-weight: bold;
+        text-align : center;
+    }
+    // 案由
+    .reson {
+        margin-bottom: 25px;
+    }
 
-.pdf-table td {
-    padding       : 5px;
-    height        : 30px;
-    vertical-align: middle;
-    text-align    : center;
-    line-height   : 1.2em;
-    border        : 1px solid black; //表格边框
-}
+    // 案号
+    .case-number {
+        text-align: right;
+    }
 
-// pdf中正文内容
-.pdf-report-info {
-    line-height: 1.2em;
-    text-indent: 2em;
-    line-height: 27px;
-}
+    // pdf内表格
+    .pdf-table {
+        width: 100%;
+    }
 
-.pdf-report-info /deep/.begin {
-    line-height: 1.2em;
-    text-indent: 0;
-}
+    .pdf-table td {
+        padding       : 5px;
+        height        : 30px;
+        vertical-align: middle;
+        text-align    : center;
+        border        : 1px solid black; //表格边框
+    }
 
-// pdf下划线
-.pdf-line {
-    display      : inline-block;
-    border-bottom: 1px solid black;
-}
+    // pdf中正文内容
+    .pdf-report-info {
+        text-indent: 2em;
+        line-height: 27px;
+    }
 
-// 线条宽度
-.width250 {
-    min-width: 250px;
-}
-// 线条宽度
-.width430 {
-    min-width: 430px;
-}
-// 线条宽度
-.width80 {
-    min-width: 80px;
-}
+    .pdf-report-info /deep/.begin {
+        text-indent: 0;
+    }
 
-// margin
-.margin-top87{
-    margin-top:87px;
-}
+    // pdf下划线
+    .pdf-line {
+        display      : inline-block;
+        border-bottom: 1px solid black;
+    }
 
-// 落款-盒子-用于td
-.pdf-wirte {
-    position: relative;
-    height  : 150px !important; //更高优先级
-}
+    // 线条宽度
+    .width250 {
+        min-width: 250px;
+    }
 
-// 落款（签名）
-.pdf-write-name {
-    // margin     : 100px 20px 0;
-    // text-align : right;
-    width         : 170px;
-    text-align    : left;
-    line-height   : 1.2em;
-    position      : absolute;
-    right         : 10px;
-    bottom        : 10px;
-}
+    // 线条宽度
+    .width430 {
+        min-width: 430px;
+    }
 
-// 落款（签章）
-.pdf-seal {
-    width      : 240px;
-    text-align : center;
-    line-height: 1.2em;
-    position   : absolute;
-    right      : 10px;
-    bottom     : 10px;
-}
+    // 线条宽度
+    .width80 {
+        min-width: 80px;
+    }
 
-// 表格中居左显示的字体
-.text-left {
-    text-align: left;
-}
+    // 线条宽度
+    .width650 {
+        min-width: 650px;
+    }
 
-// 表格中居右显示的字体
-.text-right {
-    text-align: right;
+    // margin
+    .margin-top87 {
+        margin-top: 87px;
+    }
+
+    // 落款-盒子-用于td
+    .pdf-wirte {
+        position: relative;
+        height  : 150px !important; //更高优先级
+    }
+
+    // 落款（签名）
+    .pdf-write-name {
+        // margin     : 100px 20px 0;
+        // text-align : right;
+        width         : 170px;
+        text-align    : left;
+        position      : absolute;
+        right         : 10px;
+        bottom        : 10px;
+    }
+
+    // 落款（签章）
+    .pdf-seal {
+        width     : 240px;
+        text-align: center;
+        position  : absolute;
+        right     : 10px;
+        bottom    : 10px;
+    }
+
+    // 表格中居左显示的字体
+    .text-left {
+        text-align: left;
+    }
+
+    // 表格中居右显示的字体
+    .text-right {
+        text-align: right;
+    }
 }

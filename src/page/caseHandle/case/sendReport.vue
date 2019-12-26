@@ -6,9 +6,9 @@
         送达回证
       </div>
       <div class="case-number">案号：{{caseNumber}}</div>
-      <div>
+      <div class="reson">
         <span>案由:</span>
-        <hr width="90%" />
+       <span class="pdf-line width650">&nbsp;</span>
       </div>
       <div class="pdf-table">
         <table border="1" bordercolor="black" width="100%" cellspacing="0">

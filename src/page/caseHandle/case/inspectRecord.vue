@@ -8,7 +8,7 @@
       <div class="case-number">案号：{{caseNumber}}</div>
       <div class="pdf-report-info">
         <div>案由：
-          <hr width="90%" />
+          <span class="width650">&nbsp;</span>
         </div>
         <div>勘验时间：年 月 日 时 分至 日 时 分</div>
         <div>勘验场所： 天气情况：</div>
