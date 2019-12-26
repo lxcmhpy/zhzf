@@ -1,7 +1,7 @@
 <template>
   <div class="searchAndpageBox" id="waitDealBox">
     <div class="handlePart">
-        <el-button type="primary" size="medium" icon="el-icon-plus" @click="caseRecord">立案登记</el-button>
+        <!-- <el-button type="primary" size="medium" icon="el-icon-plus" @click="caseRecord">立案登记</el-button> -->
     </div>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%">

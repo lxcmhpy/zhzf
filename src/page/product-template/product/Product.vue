@@ -151,7 +151,7 @@ export default {
         inquestResult:""
       },
       rules: {
-        caseName: [{ required: true, message: "案由必须填写" }]
+        caseName: [{ required: true, message: "案由必须填写" ,trigger:blur}]
       }
     };
   }
