@@ -1,13 +1,14 @@
 <template>
   <div class="a4-box">
     <div class="pdf-box">
-      <div>交通行政执法文书式样之二十四 ： 结案报告</div>
+      <!-- <div>交通行政执法文书式样之二十四 ： 结案报告</div> -->
       <div class="pdf-title">
         结案报告
       </div>
       <div class="case-number">案号：{{caseNumber}}</div>
       <div>
-        <span>案由:</span><hr width="90%"/>
+        <span>案由:</span>
+        <hr width="90%" />
       </div>
       <div class="pdf-table">
         <table border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -18,35 +19,35 @@
               况<br>
             </td>
             <td> 个人 </td>
-            <td> 1.3 </td>
+            <td> \</td>
             <td> 年龄 </td>
-            <td> 1.5 </td>
+            <td> \ </td>
             <td> 性别 </td>
-            <td> 1.7 </td>
+            <td> \</td>
           </tr>
           <tr>
             <td> 所在单位 </td>
-            <td> 2.3 </td>
+            <td> \ </td>
             <td> 联系地址 </td>
-            <td colspan="3"> 2.5 </td>
+            <td colspan="3"> \ </td>
           </tr>
           <tr>
-            <td> 联系电话  </td>
-            <td> 3.3 </td>
+            <td> 联系电话 </td>
+            <td> \</td>
             <td> 邮编 </td>
-            <td colspan="3"> 3.5 </td>
+            <td colspan="3">\ </td>
           </tr>
           <tr>
             <td> 单 位 </td>
-            <td> 4.3 </td>
+            <td>\ </td>
             <td> 地址 </td>
-            <td colspan="3"> 4.5 </td>
+            <td colspan="3"> \ </td>
           </tr>
           <tr>
             <td> 法定代表人</td>
-            <td> 5.3 </td>
+            <td> \ </td>
             <td> 职务 </td>
-            <td colspan="3"> 5.5 </td>
+            <td colspan="3"> \ </td>
           </tr>
           <tr>
             <td>
@@ -55,14 +56,14 @@
               结<br>
               果<br>
             </td>
-            <td  colspan="6"> 6.2 </td>
+            <td colspan="6" class="pdf-wirte"> \ </td>
           </tr>
           <tr>
             <td>
               执行<br>
               情况
             </td>
-            <td  colspan="6"> 7.2 </td>
+            <td colspan="6" class="pdf-wirte">\</td>
           </tr>
           <tr>
             <td>
@@ -70,7 +71,12 @@
               构负责<br>
               人意见
             </td>
-            <td  colspan="6"> 8.2 </td>
+            <td colspan="6" class="pdf-wirte">
+              <div class="pdf-write-name">
+                签名：<br>
+                时间: 年 月 日
+              </div>
+            </td>
           </tr>
           <tr>
             <td>
@@ -78,7 +84,12 @@
               审批<br>
               意见
             </td>
-            <td colspan="6"> 9.2 </td>
+            <td colspan="6" class="pdf-wirte">
+              <div class="pdf-write-name">
+                签名：<br>
+                时间: 年 月 日
+              </div>
+            </td>
           </tr>
 
         </table>

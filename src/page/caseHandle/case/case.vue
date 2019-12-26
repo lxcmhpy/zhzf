@@ -10,24 +10,23 @@
     <div>
       <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
       <ul>
-        <li>勘验笔录（已做）</li>
-        <li @click="goWen">询问文书</li>
+        <li @click="goInquestNotes">勘验笔录（已做）</li>       
         <li @click="goAdminPunisheDecision">行政处罚决定书</li>
+        <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
       </ul>
     </div>
     <div>
       <p>zmh(17、18、19、20、21、22、23、24文书表单及pdf打印版)</p>
       <ul>
-
         <!-- 打印版 -->
         <li @click="goEstablish">交通运输行政执法文书式样之一 ： 立案登记表</li>
-        <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li>
-        <li @click="goLiveReport">交通运输行政执法文书式样之四 ： 现场笔录</li>
+        <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
         <li @click="goSendReprot">交通运输行政执法文书式样之二十三 ：送达回证</li>
+        <li @click="goFinishReprotForm">交通行政执法文书式样之二十四 ： 结案报告</li>
         <li @click="goFinishReprot">交通行政执法文书式样之二十四 ： 结案报告</li>
       </ul>
     </div>
-    
+
   </div>
 </template>
 <script>
@@ -75,32 +74,20 @@ export default {
         "caseHandle/case/establishForm.vue"
       );
     },
-    // 现场笔录-打印
-    goLiveReport() {
-      this.makeRoute(
-        "/live",
-        "/live2",
-        "/live3",
-        "/live",
-        "/live2",
-        "/live3",
-        "问询",
-        "caseHandle/case/liveRecord.vue"
-      );
-    },
+
     // 勘验笔录-打印
-    goInquestReprot() {
-      this.makeRoute(
-        "/inspect",
-        "/inspect2",
-        "/inspect3",
-        "inspect",
-        "inspect2",
-        "inspect3",
-        "问询",
-        "caseHandle/case/inspectRecord.vue"
-      );
-    },
+    // goInquestReprot() {
+    //   this.makeRoute(
+    //     "/inspect",
+    //     "/inspect2",
+    //     "/inspect3",
+    //     "inspect",
+    //     "inspect2",
+    //     "inspect3",
+    //     "问询",
+    //     "caseHandle/case/inspectRecord.vue"
+    //   );
+    // },
     // 送达回证-打印
     goSendReprot() {
       this.makeRoute(
@@ -110,8 +97,21 @@ export default {
         "send",
         "send2",
         "send3",
-        "问询",
+        "送达回证-打印",
         "caseHandle/case/sendReport.vue"
+      );
+    },
+    // 结案报告-表单
+    goFinishReprotForm() {
+      this.makeRoute(
+        "/finishForm",
+        "/finishForm2",
+        "/finishForm3",
+        "finishForm",
+        "finishForm2",
+        "finishForm3",
+        "结案报告-表单",
+        "caseHandle/case/finishReportForm.vue"
       );
     },
     // 结案报告-打印
@@ -123,10 +123,11 @@ export default {
         "finish",
         "finish2",
         "finish3",
-        "问询",
+        "结案报告-打印",
         "caseHandle/case/finishReport.vue"
       );
     },
+    //行政处罚决定书
     goAdminPunisheDecision(){
       this.makeRoute(
         "/adminPunishe",
@@ -138,6 +139,31 @@ export default {
         "行政处罚决定书",
         "caseHandle/case/adminPunisheDecision.vue"
       );
+    },
+      //勘验笔录
+      goInquestNotes(){
+        this.makeRoute(
+          "/inquest",
+          "/inquest2",
+          "/inquest3",
+          "inquest",
+          "inquest2",
+          "inquest3",
+          "勘验笔录",
+          "caseHandle/case/inquestNotes.vue"
+        );
+    },
+    goOrderCorrectIllegalAct(){
+        this.makeRoute(
+          "/order",
+          "/order2",
+          "/order3",
+          "order",
+          "order2",
+          "order3",
+          "责令改正违法行为通知书",
+          "caseHandle/case/orderCorrectIllegalAct.vue"
+        );
     },
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
       //path不可以重复  name也不可以重复
@@ -171,22 +197,20 @@ export default {
 };
 </script>
 <style lang="less">
-.case  {
- 
-  &>div{
+.case {
+  & > div {
     width: 30%;
     float: left;
     border-right: 1px solid #ccc;
     padding: 20px;
     box-sizing: border-box;
-    p{
+    p {
       font-size: 20px;
     }
-    li{
-       cursor: pointer;
+    li {
+      cursor: pointer;
       line-height: 30px;
     }
   }
-  
 }
 </style>
