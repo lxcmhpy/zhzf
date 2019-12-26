@@ -10,102 +10,188 @@
       <div class="content">
         <div class="content_title">行政处罚决定书</div>
         <div class="border_blue"></div>
-        <div class="content_form">
-          <el-form :inline="true" ref="adminPunishDecisionObj" :model="adminPunishDecisionForm" label-width="160px">
+        <el-form ref="fieldRecordObj" :model="fieldRecordObj" :rules="rules" label-width="135px">
+          <div class="content_form">
             <div class="row">
-                <div class="col">
-              <el-form-item label="案号："></el-form-item>
-              <el-input style="width:200px;"></el-input>
-                </div>
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="案号：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    class="w-120"
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="rows">
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="当事人姓名：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="身份证号：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="rows">
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="住址：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="联系电话：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+
+            <div class="rows">
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="企业名称：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="地址：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="rows">
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="法定代表人：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="联系电话：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
             </div>
             <div class="row">
-              <el-form-item label="当事人姓名："></el-form-item>
-              <el-input></el-input>
-              <el-form-item label="身份证号码："></el-form-item>
-              <el-input></el-input>
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="统一社会信用代码：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    class="w-120"
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
             </div>
-            <div class="row">
-              <el-form-item label="住址：" style="width:270px;"></el-form-item>
-              <el-input></el-input>
-              <el-form-item label="联系电话：" style="width:270px;"></el-form-item>
-              <el-input></el-input>
+          </div>
+          <div class="border_blue"></div>
+          <div class="content_form bottom_form">
+            <el-form-item label="违法事实及依据：">
+              <el-input
+                type="textarea"
+                class="height106"
+                v-model="fieldRecordObj.test"
+                size="small"
+                placeholder="请输入"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="违法条款：">
+              <el-input v-model="fieldRecordObj.test" size="small" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="处罚依据：">
+              <el-input v-model="fieldRecordObj.test" size="small" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="处罚金额：">
+              <el-input v-model="fieldRecordObj.test" size="small" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="处罚决定：">
+              <el-input v-model="fieldRecordObj.test" size="small" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="其他执行方式：">
+              <el-input v-model="fieldRecordObj.test" size="small" placeholder="请输入"></el-input>
+            </el-form-item>
+            
+          </div>
+          <div class="border_blue"></div>
+          <div class="rows">
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="法定代表人：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="联系电话：">
+                  <el-input
+                    ref="CONTACTOR"
+                    clearable
+                    v-model="fieldRecordObj.CONTACTOR"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
             </div>
-            <div class="row">
-              <el-form-item label="企业名称：" style="width:270px;"></el-form-item>
-              <el-input></el-input>
-              <el-form-item label="地址：" style="width:270px;"></el-form-item>
-              <el-input></el-input>
-            </div>
-            <div class="row">
-              <el-form-item label="法定代表人：" style="width:270px;"></el-form-item>
-              <el-input></el-input>
-              <el-form-item label="联系电话：" style="width:270px;"></el-form-item>
-              <el-input></el-input>
-            </div>
-            <div class="row">
-              <el-form-item label="统一社会信用代码：" style="width:170px;"></el-form-item>
-              <el-input></el-input>
-            </div>
-            <div class="border_middle"></div>
-            <div class="row">
-              <el-form-item label="违法事实及依据：">
-                <textarea style="width:600px;height:100px"></textarea>
-              </el-form-item>
-            </div>
-            <div class="row">
-              <el-form-item label="违法条款：">
-                <el-input style="width:600px;"></el-input>
-              </el-form-item>
-            </div>
-            <div class="row">
-              <el-form-item label="处罚依据：">
-                <el-input style="width:600px;"></el-input>
-              </el-form-item>
-            </div>
-            <div class="row">
-              <el-form-item label="处罚金额：">
-                <el-input style="width:600px;"></el-input>
-              </el-form-item>
-            </div>
-            <div class="row">
-              <el-form-item label="处罚决定：">
-                <el-input style="width:600px;"></el-input>
-              </el-form-item>
-            </div>
-            <div class="row">
-              <el-form-item label="其他执行方式：">
-                <el-input style="width:600px;"></el-input>
-              </el-form-item>
-            </div>
-            <div class="row">
-              <el-form-item label="缴费银行：">
-                <el-input style="width:200px;" placeholder="缴费银行"></el-input>
-                <el-input style="width:400px;" placeholder="缴费银行账户"></el-input>
-              </el-form-item>
-            </div>
-            <div class="row">
-              <el-form-item label="行政复议机构：">
-                <el-checkbox></el-checkbox>
-                <el-input style="width:200px;" placeholder="复议机构名称1"></el-input>
-              </el-form-item>
-            </div>
-            <div class="row">
-              <el-form-item label>
-                &#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;
-                <el-checkbox></el-checkbox>
-                <el-input style="width:200px;" placeholder="复议机构名称2"></el-input>
-              </el-form-item>
-            </div>
-            <div class="row">
-              <el-form-item label>
-                &#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;
-                <el-checkbox></el-checkbox>
-                <el-input style="width:200px;" placeholder="复议机构名称3"></el-input>
-              </el-form-item>
-            </div>
-          </el-form>
-        </div>
-        <div class="border_blue"></div>
+        </el-form>
       </div>
     </div>
   </div>
@@ -114,11 +200,22 @@
 export default {
   data() {
     return {
-      // caseName:''
+      fieldRecordObj: {
+        CONTACTOR: "",
+        test: "123",
+        type: "个人"
+      },
+      rules: {
+        CONTACTOR: [
+          { required: true, message: "经办人姓名必须填写", trigger: "blur" }
+        ]
+      }
     };
-  }
+  },
+  methods: {}
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/caseDocument.less";
+
+<style lang="less" scoped>
+@import "../../../css/documentForm.less";
 </style>

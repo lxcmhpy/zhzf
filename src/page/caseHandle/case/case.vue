@@ -20,12 +20,22 @@
       <p>zmh(17、18、19、20、21、22、23、24文书表单及pdf打印版)</p>
       <ul>
         <!-- 打印版 -->
-        <li @click="goEstablish">交通运输行政执法文书式样之一 ： 立案登记表</li>
+        <li @click="goEstablish">打印一 ： 立案登记表</li>
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
+<<<<<<< HEAD
         <li @click="goSendReprotForm">表单：送达回证</li>
         <li @click="goSendReprot">交通运输行政执法文书式样之二十三 ：送达回证</li>
         <li @click="goFinishReprotForm">表单： 结案报告</li>
         <li @click="goFinishReprot">交通行政执法文书式样之二十四 ： 结案报告</li>
+=======
+        <li @click="goEnforceInsteadReprot">打印二十一 ： 代履行决定书</li>
+        <li @click="goEnforceReprotForm">表单二十二：中止（终结、恢复）行政强制执行通知书(未完成)</li>
+        <li @click="goEnforceReprot">打印二十二 ：中止（终结、恢复）行政强制执行通知书</li>
+        <li @click="goSendReprotForm">表单二十三：送达回证</li>
+        <li @click="goSendReprot">打印二十三 ：送达回证</li>
+        <li @click="goFinishReprotForm">表单二十四： 结案报告</li>
+        <li @click="goFinishReprot">打印二十四 ： 结案报告</li>
+>>>>>>> 154ef943240b193b9f6249907639d3d10310cbe6
       </ul>
     </div>
 
@@ -90,6 +100,58 @@ export default {
     //     "caseHandle/case/inspectRecord.vue"
     //   );
     // },
+    //  代履行决定书-表单
+    goEnforceInsteadReprotForm() {
+      this.makeRoute(
+        "/enforceInsteadForm",
+        "/enforceInsteadForm2",
+        "/enforceInsteadForm3",
+        "/enforceInsteadForm",
+        "/enforceInsteadForm2",
+        "/enforceInsteadForm3",
+        " 代履行决定书-表单",
+        "caseHandle/case/enforceInsteadForm.vue"
+      );
+    },
+    //  代履行决定书-打印
+    goEnforceInsteadReprot() {
+      this.makeRoute(
+        "/enforceInstead",
+        "/enforceInstead2",
+        "/enforceInstead3",
+        "/enforceInstead",
+        "/enforceInstead2",
+        "/enforceInstead3",
+        " 代履行决定书-打印",
+        "caseHandle/case/enforceInstead.vue"
+      );
+    },
+    // 强制执行通知书-表单
+    goEnforceReprotForm() {
+      this.makeRoute(
+        "/enforceForm",
+        "/enforceForm2",
+        "/enforceForm3",
+        "/enforceForm",
+        "/enforceForm2",
+        "/enforceForm3",
+        "中止（终结、恢复）行政强制执行通知书-表单",
+        "caseHandle/case/enforceForm.vue"
+      );
+    },
+    // 强制执行通知书-打印
+    goEnforceReprot() {
+      this.makeRoute(
+        "/enforce",
+        "/enforce2",
+        "/enforce3",
+        "/enforce",
+        "/enforce2",
+        "/enforce3",
+        "中止（终结、恢复）行政强制执行通知书-打印",
+        "caseHandle/case/enforce.vue"
+      );
+    },
     // 送达回证-表单
     goSendReprotForm() {
       this.makeRoute(
