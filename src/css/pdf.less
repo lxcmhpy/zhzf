@@ -1,0 +1,91 @@
+// A4纸大小
+.a4-box {
+    width     : 960px;
+    margin: 0 auto;
+    height    : 1357px;
+    padding   : 50px 30px;
+    background: white;
+}
+
+//pdf内容盒子
+.pdf-box {
+    width     : 100%;
+    height    : 100%;
+    background: white;
+}
+
+// pdf标题
+.pdf-title {
+    font-size  : 25px;
+    line-height: 50px;
+    font-weight: bold;
+    text-align : center;
+}
+
+// 案号
+.case-number {
+    text-align: right;
+}
+
+// pdf内表格
+.pdf-table {
+    width: 100%;
+}
+
+.pdf-table td {
+    padding       : 5px;
+    height        : 30px;
+    vertical-align: middle;
+    text-align    : center;
+    line-height   : 1.2em;
+    border        : 1px solid black; //表格边框
+}
+
+// pdf中正文内容
+.pdf-report-info {
+    line-height: 1.2em;
+
+}
+
+// pdf下划线
+.pdf-line {
+    display  : inline-block;
+    min-width: 400px;
+}
+
+// 落款-盒子-用于td
+.pdf-wirte {
+    position: relative;
+    height: 150px !important; //更高优先级
+}
+
+// 落款（签名）
+.pdf-write-name {
+    // margin     : 100px 20px 0;
+    // text-align : right;
+    width         : 170px;
+    text-align    : left;
+    line-height   : 1.2em;
+    position      : absolute;
+    right         : 10px;
+    bottom        : 10px;
+}
+
+// 落款（签章）
+.pdf-seal {
+    width         : 240px;
+    text-align    : center;
+    line-height   : 1.2em;
+    position      : absolute;
+    right         : 10px;
+    bottom        : 10px;
+}
+
+// 表格中居左显示的字体
+.text-left {
+    text-align: left;
+}
+// 表格中居右显示的字体
+.text-right {
+    text-align: right;
+}

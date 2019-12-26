@@ -10,7 +10,7 @@
             <el-button type="primary" size="medium" icon="el-icon-search">查询</el-button>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addBanner">新增</el-button>
             <el-button type="primary" size="medium" icon="el-icon-edit">修改</el-button>
-            <el-button type="primary" size="medium" icon="el-icon-delete">删除</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-delete" @click="deleteBanner">删除</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -92,11 +92,11 @@ export default {
   inject: ['reload'],
   methods: {
     //编辑环节
-    editRole(row) {
+    editBanner(row) {
       // this.$refs.addEditBannerRef.showModal(2, row);
     },
     //删除环节
-    deleteRole(id) {
+    deleteBanner(id) {
       // this.$confirm("确认删除该环节?", "提示", {
       //   confirmButtonText: "确定",
       //   cancelButtonText: "取消",
@@ -131,22 +131,22 @@ export default {
     },
     //获取环节
     getBanner() {
-      // let data = {
-      //   current: this.currentPage,
-      //   size: this.pageSize,
-      //   name: this.dicSearchForm.name
-      // };
-      // this.$store.dispatch("getBanner", data).then(
-      //   res => {
-      //     console.log("环节列表", res);
-      //     this.tableData = res.data.records;
-      //     this.totalPage = res.data.total;
+      let data = {
+        current: this.currentPage,
+        size: this.pageSize,
+        // name: this.dicSearchForm.name
+      };
+      this.$store.dispatch("getBannerList", data).then(
+        res => {
+          console.log("环节列表", res);
+          this.tableData = res.data.records;
+          this.totalPage = res.data.total;
 
-      //   },
-      //   err => {
-      //     console.log(err);
-      //   }
-      // );
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     //添加环节
     addBanner() {
@@ -162,7 +162,7 @@ export default {
     }
   },
   created() {
-    // this.getBanner();
+    this.getBanner();
   }
 };
 </script>
