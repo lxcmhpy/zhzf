@@ -10,7 +10,8 @@
     <div>
       <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
       <ul>
-        <li @click="goInquestNotes">勘验笔录（已做）</li>       
+        <li @click="goInquestNotes">勘验笔录（已做）</li> 
+        <li @click="goIllegalAction">违法行为通知书</li>      
         <li @click="goAdminPunisheDecision">行政处罚决定书</li>
         <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
       </ul>
@@ -163,6 +164,18 @@ export default {
           "order3",
           "责令改正违法行为通知书",
           "caseHandle/case/orderCorrectIllegalAct.vue"
+        );
+    },
+    goIllegalAction(){
+        this.makeRoute(
+          "/illegalAction",
+          "/illegalAction2",
+          "/illegalAction3",
+          "illegalAction",
+          "illegalAction2",
+          "illegalAction3",
+          "违法行为通知书",
+          "caseHandle/case/illegalAction.vue"
         );
     },
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {

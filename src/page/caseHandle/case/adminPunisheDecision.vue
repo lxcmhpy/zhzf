@@ -1,12 +1,14 @@
 <template>
     <div class="box">
+        <div class="content_box">
       <div class="content">
           <div class="content_title">行政处罚决定书</div>
+          <div class="border_blue"></div>
           <div class="content_form">
-            <el-form :inline="true" :model="adminPunishDecisionForm" >
+            <el-form :inline="true" ref="adminPunishDecisionObj" :model="adminPunishDecisionForm" >
               <div class="row" align="right">
                 <el-form-item label="案号："></el-form-item>
-                  <el-input style="width:200px;"></el-input>
+                  <el-input style="width:200px;" ></el-input>
               </div>
               <div class="row">
                 <el-form-item label="当事人姓名：" style="width:270px;"></el-form-item>
@@ -36,6 +38,7 @@
                 <el-form-item label="统一社会信用代码：" style="width:170px;"></el-form-item>
                   <el-input></el-input>
               </div>
+              <div class="border_middle"></div>
               <div class="row">
                 <el-form-item label="违法事实及依据：">
                   <textarea style="width:650px;height:100px"></textarea>
@@ -95,7 +98,9 @@
             </el-form>
 
           </div>
+      <div class="border_blue"></div>
       </div>
+        </div>
     </div>
 </template>
 <script>

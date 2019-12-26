@@ -1,7 +1,9 @@
 <template>
   <div class="box">
+    <div class="content_box">
     <div class="content">
       <div class="content_title">勘验笔录</div>
+      <div class="border_blue"></div>
       <div class="content_form">
         <el-form :inline="true" :model="inquestNotesForm" :rules="rules">
           <div class="row">
@@ -119,6 +121,8 @@
           </div>
         </el-form>
       </div>
+      <div class="border_blue"></div>
+    </div>
     </div>
   </div>
 </template>
