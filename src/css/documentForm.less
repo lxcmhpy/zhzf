@@ -56,22 +56,23 @@
                 line-height  : 25px;
             }
 
-            .content_form {
-                width         : 794px;
-                height        : auto;
-                padding       : 28px 22px 10px 0;
-                background    : rgba(252, 252, 252, 1);
-                border-left   : 1px solid rgba(238, 238, 238, 1);
-                border-right  : 1px solid rgba(238, 238, 238, 1);
-                display       : flex;
-                flex-direction: column;
-                align-items   : center;
+            /deep/ .el-form {
+                width: 100%;
 
-                /deep/ .el-form {
-                    width: 100%;
+                .content_form {
+                    width         : 794px;
+                    height        : auto;
+                    padding       : 28px 22px 10px 0;
+                    background    : rgba(252, 252, 252, 1);
+                    border-left   : 1px solid rgba(238, 238, 238, 1);
+                    border-right  : 1px solid rgba(238, 238, 238, 1);
+                    display       : flex;
+                    flex-direction: column;
+                    align-items   : center;
 
                     /deep/.el-form-item {
                         // margin-bottom: 6px !important;
+                        width: 100%;
 
                         /deep/.el-input__inner {
                             border-radius: 2px;
@@ -81,20 +82,21 @@
                             /deep/.el-textarea__inner {
                                 border-radius: 2px;
                                 resize       : none;
-                                min-height: 106px !important;
+                                min-height   : 106px !important;
                             }
                         }
+
                         /deep/.height122 {
                             /deep/.el-textarea__inner {
                                 border-radius: 2px;
                                 resize       : none;
-                                min-height: 122px !important;
+                                min-height   : 122px !important;
                             }
                         }
 
                         // 抽屉表
                         /deep/.el-select {
-                           width: 100%;
+                            width: 100%;
                         }
 
 
@@ -108,27 +110,31 @@
 
                 .rows {
                     margin-top: 16px;
-                    width  : 100%;
-                    display: flex;
+                    width     : 100%;
+                    display   : flex;
                 }
 
                 .col {
                     flex: 1;
                 }
+
+                // 更高优先级-不同高度textarea
+                .bottom_form {
+                    background  : transparent !important;
+                    border-left : 0 !important;
+                    border-right: 0 !important;
+
+                }
             }
 
-            // 更高优先级-不同高度textarea
-            .bottom_form {
-                background    : transparent !important;
-                border-left   : 0 !important;
-                border-right  : 0 !important;
 
-            }
+
             // 表格form
-            .table_form{
-                width         : 100%;
-                height        : auto;
-                padding       : 28px 0 37px 0;;
+            .table_form {
+                width  : 100%;
+                height : auto;
+                padding: 28px 0 37px 0;
+                ;
                 display       : flex;
                 flex-direction: column;
                 align-items   : center;

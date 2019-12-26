@@ -14,8 +14,8 @@
           结案报告
         </div>
         <div class="border_blue"></div>
-        <div class="content_form">
-          <el-form ref="fieldRecordObj" :model="fieldRecordObj" :rules="rules" label-width="135px">
+        <el-form ref="fieldRecordObj" :model="fieldRecordObj" :rules="rules" label-width="135px">
+          <div class="content_form">
             <div class="row">
               <div class="col">
                 <el-form-item prop="CONTACTOR" label="案号：">
@@ -109,20 +109,18 @@
               </div>
             </div>
 
-          </el-form>
-
-        </div>
-        <div class="border_blue"></div>
-        <div class="content_form bottom_form">
-          <el-form ref="fieldRecordObj" :model="fieldRecordObj" label-width="135px">
+          </div>
+          <div class="border_blue"></div>
+          <div class="content_form bottom_form">
             <el-form-item label="处理结果：">
-              <el-input type="textarea" class="height106" v-model="fieldRecordObj.CONTACTOR" size="small" placeholder="请输入"></el-input>
+              <el-input type="textarea" class="height106" v-model="fieldRecordObj.test" size="small" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="执行情况：">
-              <el-input type="textarea" class="height122" v-model="fieldRecordObj.CONTACTOR" size="small" placeholder="请输入"></el-input>
+              <el-input type="textarea" class="height122" v-model="fieldRecordObj.test" size="small" placeholder="请输入"></el-input>
             </el-form-item>
-          </el-form>
-        </div>
+
+          </div>
+        </el-form>
       </div>
     </div>
 
@@ -134,6 +132,7 @@ export default {
     return {
       fieldRecordObj: {
         CONTACTOR: '',
+        test: "123",
         type: '个人',
       },
       rules: {
