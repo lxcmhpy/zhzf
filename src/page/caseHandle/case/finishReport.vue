@@ -1,7 +1,7 @@
 <template>
   <div class="a4-box">
     <div class="pdf-box">
-      <div>交通行政执法文书式样之二十四 ： 结案报告</div>
+      <!-- <div>交通行政执法文书式样之二十四 ： 结案报告</div> -->
       <div class="pdf-title">
         结案报告
       </div>

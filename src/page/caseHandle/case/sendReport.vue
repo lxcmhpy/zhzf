@@ -1,7 +1,7 @@
 <template>
   <div class="a4-box">
     <div class="pdf-box">
-      <div>交通运输行政执法文书式样之二十三 ： 送达回证</div>
+      <!-- <div>交通运输行政执法文书式样之二十三 ： 送达回证</div> -->
       <div class="pdf-title">
         送达回证
       </div>
