@@ -20,6 +20,7 @@
         <!-- 打印版 -->
         <li @click="goEstablish">交通运输行政执法文书式样之一 ： 立案登记表</li>
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
+        <li @click="goSendReprotForm">表单：送达回证</li>
         <li @click="goSendReprot">交通运输行政执法文书式样之二十三 ：送达回证</li>
         <li @click="goFinishReprotFormPerson">表单： 结案报告</li>
         <li @click="goFinishReprot">交通行政执法文书式样之二十四 ： 结案报告</li>
@@ -87,6 +88,19 @@ export default {
     //     "caseHandle/case/inspectRecord.vue"
     //   );
     // },
+    // 送达回证-表单
+    goSendReprotForm() {
+      this.makeRoute(
+        "/sendForm",
+        "/sendForm2",
+        "/sendForm3",
+        "/sendForm",
+        "/sendForm2",
+        "/sendForm3",
+        "送达回证-表单",
+        "caseHandle/case/sendReportForm.vue"
+      );
+    },
     // 送达回证-打印
     goSendReprot() {
       this.makeRoute(
