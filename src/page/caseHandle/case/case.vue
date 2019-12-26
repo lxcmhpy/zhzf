@@ -20,6 +20,8 @@
         <!-- 打印版 -->
         <li @click="goEstablish">交通运输行政执法文书式样之一 ： 立案登记表</li>
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
+        <li @click="goEnforceReprotForm">表单：中止（终结、恢复）行政强制执行通知书</li>
+        <li @click="goEnforceReprot">交通运输行政执法文书式样之二十二 ：中止（终结、恢复）行政强制执行通知书</li>
         <li @click="goSendReprotForm">表单：送达回证</li>
         <li @click="goSendReprot">交通运输行政执法文书式样之二十三 ：送达回证</li>
         <li @click="goFinishReprotForm">表单： 结案报告</li>
@@ -88,6 +90,32 @@ export default {
     //     "caseHandle/case/inspectRecord.vue"
     //   );
     // },
+    // 送达回证-表单
+    goEnforceReprotForm() {
+      this.makeRoute(
+        "/enforceForm",
+        "/enforceForm2",
+        "/enforceForm3",
+        "/enforceForm",
+        "/enforceForm2",
+        "/enforceForm3",
+        "中止（终结、恢复）行政强制执行通知书-表单",
+        "caseHandle/case/enforceForm.vue"
+      );
+    },
+    // 送达回证-打印
+    goEnforceReprot() {
+      this.makeRoute(
+        "/enforce",
+        "/enforce2",
+        "/enforce3",
+        "/enforce",
+        "/enforce2",
+        "/enforce3",
+        "中止（终结、恢复）行政强制执行通知书-打印",
+        "caseHandle/case/enforce.vue"
+      );
+    },
     // 送达回证-表单
     goSendReprotForm() {
       this.makeRoute(

@@ -58,7 +58,7 @@
 
         <div class="border_blue"></div>
         <div class="table_form">
-          <el-table :data="tableDatas" stripe border style="width: 100%" height="100%">
+          <el-table :data="tableDatas"  border style="width: 100%" height="100%">
             <el-table-column prop="name" label="送达文书名称、案号" align="center">
             </el-table-column>
             <el-table-column prop="isApproval" label="送达地点" align="center">
