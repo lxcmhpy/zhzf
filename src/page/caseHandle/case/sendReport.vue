@@ -110,7 +110,8 @@
             <td></td>
           </tr>
           <tr>
-            <td colspan="7">
+            <td colspan="7" class="pdf-wirte">
+
               <div class="pdf-seal">
                 交通运输执法部门（印章）<br>
                 年 月 日

@@ -1,7 +1,83 @@
 @import "../variables.less";
+
+.caseFormBac{
+    background: #ffffff;
+    margin: 22px;
+    &>p{
+        line-height: 50px;
+        text-align: center;
+        font-size: 20px;
+    }
+    &>div{
+        overflow: hidden;
+        margin: auto;
+        width: 80%;
+        .item{
+            width: 49%;
+        }
+        .item:nth-child(1){
+            float: left;
+        }
+        .item:nth-child(2){
+            float: right;
+        }
+        .itemThird{
+            width: 32%;
+            float: left;
+        }
+        .itemThird:nth-child(2){
+            margin: 0 2%;
+        }
+        .itemBig{
+            width: 66%;
+            float: left;
+        }
+        .itemSmall{
+            float: right;
+            width: 32%;
+        }
+        .el-date-editor.el-input, .el-date-editor.el-input__inner{
+            width: 100%;
+        }
+        #lawPersonBox{
+            position: relative;
+            .el-form-item__content button{
+                position: absolute;
+                right: 0;
+                height: 32px;
+                width: 20px;
+                top: 4px;
+                border-radius: 0;
+            }
+            .el-select{
+                width: 100%;
+            }
+        }
+
+    }
+    
+
+}
 #inforCollectionBox{
+    position: absolute;
+    width: 100%;
     .linkPart{
         width: 100%;
         background: @grayC;
+        position: absolute;
+        top: 0;
+    }
+    .chooseLawPer{
+        overflow: hidden;
+        .choose{
+            width: 50%;
+            float: right;
+        }
+        .choosed{
+            width: 50%; 
+            float: left;
+            border-right: 1px solid ;
+        }
+
     }
 }

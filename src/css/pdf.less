@@ -1,6 +1,7 @@
 // A4纸大小
 .a4-box {
     width     : 960px;
+    margin: 0 auto;
     height    : 1357px;
     padding   : 50px 30px;
     background: white;
@@ -16,6 +17,7 @@
 // pdf标题
 .pdf-title {
     font-size  : 25px;
+    line-height: 50px;
     font-weight: bold;
     text-align : center;
 }
@@ -71,9 +73,12 @@
 
 // 落款（签章）
 .pdf-seal {
-    margin     : 50px 20px 0;
-    text-align : right;
-    line-height: 1.2em;
+    width         : 240px;
+    text-align    : center;
+    line-height   : 1.2em;
+    position      : absolute;
+    right         : 10px;
+    bottom        : 10px;
 }
 
 // 表格中居左显示的字体
