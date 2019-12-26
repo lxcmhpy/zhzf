@@ -1,18 +1,32 @@
 <template>
   <div class="case">
+    <div>
+      <p>ly(2、4、5、6、7、8、9、10文书表单及pdf打印版)</p>
+      <ul>
+        <li @click="goDiao">调查文书</li>
+        <li @click="goWen">询问文书</li>
+      </ul>
+    </div>
+    <div>
+      <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
+      <ul>
+        <li>勘验笔录（已做）</li>
+        <li @click="goWen">询问文书</li>
+      </ul>
+    </div>
+    <div>
+      <p>zmh(17、18、19、20、21、22、23、24文书表单及pdf打印版)</p>
+      <ul>
 
-    <ul>
-      <li @click="goDiao">调查文书</li>
-      <li @click="goWen">询问文书</li>
-
-      <!-- 打印版 -->
-      <li @click="goEstablish">交通运输行政执法文书式样之一 ： 立案登记表</li>
-      <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li>
-      <li @click="goLiveReport">交通运输行政执法文书式样之四 ： 现场笔录</li>
-      <li @click="goSendReprot">交通运输行政执法文书式样之二十三 ：送达回证</li>
-      <li @click="goFinishReprot">交通行政执法文书式样之二十四 ： 结案报告</li>
-
-    </ul>
+        <!-- 打印版 -->
+        <li @click="goEstablish">交通运输行政执法文书式样之一 ： 立案登记表</li>
+        <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li>
+        <li @click="goLiveReport">交通运输行政执法文书式样之四 ： 现场笔录</li>
+        <li @click="goSendReprot">交通运输行政执法文书式样之二十三 ：送达回证</li>
+        <li @click="goFinishReprot">交通行政执法文书式样之二十四 ： 结案报告</li>
+      </ul>
+    </div>
+    
   </div>
 </template>
 <script>
@@ -24,32 +38,96 @@ export default {
   },
   methods: {
     goDiao() {
-      this.makeRoute('/diao', '/diao2', '/diao3', 'diao', 'diao2', 'diao3', '调查类文书', 'caseHandle/case/diao.vue');
+      this.makeRoute(
+        "/diao",
+        "/diao2",
+        "/diao3",
+        "diao",
+        "diao2",
+        "diao3",
+        "调查类文书",
+        "caseHandle/case/diao.vue"
+      );
     },
     goWen() {
-      this.makeRoute('/la', '/la2', '/la3', 'la', 'la2', 'la3', '问询', 'caseHandle/case/wen.vue');
+      this.makeRoute(
+        "/la",
+        "/la2",
+        "/la3",
+        "la",
+        "la2",
+        "la3",
+        "问询",
+        "caseHandle/case/wen.vue"
+      );
     },
     // 立案登记表-打印
     goEstablish() {
-      this.makeRoute('/establish', '/establish2', '/establish3', 'establish', 'establish2', 'establish3', '问询', 'caseHandle/case/establishForm.vue');
+      this.makeRoute(
+        "/establish",
+        "/establish2",
+        "/establish3",
+        "establish",
+        "establish2",
+        "establish3",
+        "问询",
+        "caseHandle/case/establishForm.vue"
+      );
     },
     // 现场笔录-打印
     goLiveReport() {
-      this.makeRoute('/live', '/live2', '/live3', '/live', '/live2', '/live3', '问询', 'caseHandle/case/liveRecord.vue');
+      this.makeRoute(
+        "/live",
+        "/live2",
+        "/live3",
+        "/live",
+        "/live2",
+        "/live3",
+        "问询",
+        "caseHandle/case/liveRecord.vue"
+      );
     },
     // 勘验笔录-打印
     goInquestReprot() {
-      this.makeRoute('/inspect', '/inspect2', '/inspect3', 'inspect', 'inspect2', 'inspect3', '问询', 'caseHandle/case/inspectRecord.vue');
+      this.makeRoute(
+        "/inspect",
+        "/inspect2",
+        "/inspect3",
+        "inspect",
+        "inspect2",
+        "inspect3",
+        "问询",
+        "caseHandle/case/inspectRecord.vue"
+      );
     },
     // 送达回证-打印
     goSendReprot() {
-      this.makeRoute('/send', '/send2', '/send3', 'send', 'send2', 'send3', '问询', 'caseHandle/case/sendReport.vue');
+      this.makeRoute(
+        "/send",
+        "/send2",
+        "/send3",
+        "send",
+        "send2",
+        "send3",
+        "问询",
+        "caseHandle/case/sendReport.vue"
+      );
     },
     // 结案报告-打印
     goFinishReprot() {
-      this.makeRoute('/finish', '/finish2', '/finish3', 'finish', 'finish2', 'finish3', '问询', 'caseHandle/case/finishReport.vue');
+      this.makeRoute(
+        "/finish",
+        "/finish2",
+        "/finish3",
+        "finish",
+        "finish2",
+        "finish3",
+        "问询",
+        "caseHandle/case/finishReport.vue"
+      );
     },
-    makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {  //path不可以重复  name也不可以重复
+    makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
+      //path不可以重复  name也不可以重复
       this.$router.addRoutes([
         {
           path: path1,
@@ -80,8 +158,22 @@ export default {
 };
 </script>
 <style lang="less">
-.case li {
-  cursor: pointer;
-  line-height: 30px;
+.case  {
+ 
+  &>div{
+    width: 30%;
+    float: left;
+    border-right: 1px solid #ccc;
+    padding: 20px;
+    box-sizing: border-box;
+    p{
+      font-size: 20px;
+    }
+    li{
+       cursor: pointer;
+      line-height: 30px;
+    }
+  }
+  
 }
 </style>
