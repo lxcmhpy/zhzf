@@ -215,6 +215,19 @@
             </div>
           </div>
           <div class="border_blue"></div>
+          <div class="content_text">
+            <div class="content_text_title">
+              备注：
+            </div>
+            <div class="content_text_area">
+              <el-form-item prop="CONTACTOR" label="" label-width="0">
+                <el-input ref="CONTACTOR" v-model="fieldRecordObj.CONTACTOR"
+                          type="textarea" :resize="false"
+                          :autosize="{ minRows: 3, maxRows: 6}"
+                          placeholder="50个汉字以内"></el-input>
+              </el-form-item>
+            </div>
+          </div>
 
         </el-form>
       </div>
@@ -243,9 +256,12 @@
 </script>
 
 <style lang="less" scoped>
+  div{
+    flex-shrink: 0;
+  }
   .box {
     width: calc(100% - 44px);
-    height: auto;
+    height: 0;
     min-height: 100%;
     padding: 0 22px 65px 22px;
     margin-bottom: 65px;
@@ -253,7 +269,7 @@
     box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
     .header {
       width: 100%;
-      height: 51px;
+      flex: 0 0 51px;
       border-bottom: 1px solid rgba(221, 221, 221, 1);
       .header_left {
         width: auto;
@@ -275,6 +291,7 @@
     }
     .content_box {
       width: 100%;
+      flex: none;
       display: flex;
       flex-direction: column;
       align-items: center;
