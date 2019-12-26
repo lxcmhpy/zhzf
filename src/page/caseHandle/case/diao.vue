@@ -8,78 +8,83 @@
         </div>
       </div>
     </div>
-    <div class="content">
-      <div class="content_title">
-        现场笔录
-      </div>
-      <div class="content_form">
-        <el-form ref="fieldRecordObj" :model="fieldRecordObj" :rules="rules"
-                 label-width="135px">
-          <div class="row">
-            <div class="col">
-              <el-form-item prop="CONTACTOR" label="执法地点：">
-                <el-input ref="CONTACTOR" clearable class="w-120"
-                          v-model="fieldRecordObj.CONTACTOR" size="small"
-                          placeholder="请输入"></el-input>
-              </el-form-item>
+    <div class="content_box">
+      <div class="content">
+        <div class="content_title">
+          现场笔录
+        </div>
+        <div class="border_blue"></div>
+        <div class="content_form">
+          <el-form ref="fieldRecordObj" :model="fieldRecordObj" :rules="rules"
+                   label-width="135px">
+            <div class="row">
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="执法地点：">
+                  <el-input ref="CONTACTOR" clearable class="w-120"
+                            v-model="fieldRecordObj.CONTACTOR" size="small"
+                            placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <el-form-item prop="CONTACTOR" label="执法时间：">
-                <el-input ref="CONTACTOR" clearable class="w-120"
-                          v-model="fieldRecordObj.CONTACTOR" size="small"
-                          placeholder="请输入"></el-input>
-              </el-form-item>
+            <div class="row">
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="执法时间：">
+                  <el-input ref="CONTACTOR" clearable class="w-120"
+                            v-model="fieldRecordObj.CONTACTOR" size="small"
+                            placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
             </div>
-          </div>
-          <div class="rows">
-            <div class="col">
-              <el-form-item prop="CONTACTOR" label="执法时间：">
-                <el-input ref="CONTACTOR" clearable class="w-120"
-                          v-model="fieldRecordObj.CONTACTOR" size="small"
-                          placeholder="请输入"></el-input>
-              </el-form-item>
+            <div class="rows">
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="执法时间：">
+                  <el-input ref="CONTACTOR" clearable class="w-120"
+                            v-model="fieldRecordObj.CONTACTOR" size="small"
+                            placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="执法时间：">
+                  <el-input ref="CONTACTOR" clearable class="w-120"
+                            v-model="fieldRecordObj.CONTACTOR" size="small"
+                            placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
             </div>
-            <div class="col">
-              <el-form-item prop="CONTACTOR" label="执法时间：">
-                <el-input ref="CONTACTOR" clearable class="w-120"
-                          v-model="fieldRecordObj.CONTACTOR" size="small"
-                          placeholder="请输入"></el-input>
-              </el-form-item>
+            <div class="row">
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="执法时间：">
+                  <el-input ref="CONTACTOR" clearable class="w-120"
+                            v-model="fieldRecordObj.CONTACTOR" size="small"
+                            placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="执法时间：">
+                  <el-input ref="CONTACTOR" clearable class="w-120"
+                            v-model="fieldRecordObj.CONTACTOR" size="small"
+                            placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <el-form-item prop="CONTACTOR" label="执法时间：">
-                <el-input ref="CONTACTOR" clearable class="w-120"
-                          v-model="fieldRecordObj.CONTACTOR" size="small"
-                          placeholder="请输入"></el-input>
-              </el-form-item>
+            <div class="row">
+              <div class="col">
+                <el-form-item prop="CONTACTOR" label="执法时间：">
+                  <el-input ref="CONTACTOR" clearable class="w-120"
+                            v-model="fieldRecordObj.CONTACTOR" size="small"
+                            placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+              </div>
             </div>
-            <div class="col">
-              <el-form-item prop="CONTACTOR" label="执法时间：">
-                <el-input ref="CONTACTOR" clearable class="w-120"
-                          v-model="fieldRecordObj.CONTACTOR" size="small"
-                          placeholder="请输入"></el-input>
-              </el-form-item>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <el-form-item prop="CONTACTOR" label="执法时间：">
-                <el-input ref="CONTACTOR" clearable class="w-120"
-                          v-model="fieldRecordObj.CONTACTOR" size="small"
-                          placeholder="请输入"></el-input>
-              </el-form-item>
-            </div>
-            <div class="col">
-            </div>
-          </div>
-        </el-form>
+          </el-form>
 
+        </div>
+        <div class="border_blue"></div>
       </div>
     </div>
+
 
   </div>
 </template>
@@ -131,62 +136,68 @@
         }
       }
     }
-    .content {
+    .content_box{
       width: 100%;
-      min-width: 816px;
-      height: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      .content_title {
-        flex: 0 0 25px;
-        margin-top: 32px;
-        margin-bottom: 23px;
-        font-size: 26px;
-        font-family: PingFang SC;
-        font-weight: 600;
-        color: rgba(32, 35, 43, 1);
-        text-align: center;
-        line-height: 25px;
-      }
-      .content_form {
-        width: 794px;
+      .content {
+        width: 818px;
         height: auto;
-        padding: 28px 22px 10px 0;
-        background: rgba(252, 252, 252, 1);
-        border-top: 10px solid rgba(69, 115, 208, 1);
-        border-bottom: 10px solid rgba(69, 115, 208, 1);
-        border-left: 1px solid rgba(238, 238, 238, 1);
-        border-right: 1px solid rgba(238, 238, 238, 1);
         display: flex;
         flex-direction: column;
         align-items: center;
-        /deep/ .el-form {
-          width: 100%;
-          /deep/.el-form-item{
-            margin-bottom: 6px!important;
-            /deep/.el-input__inner{
-              border-radius: 2px;
+        .content_title {
+          flex: 0 0 25px;
+          margin-top: 32px;
+          margin-bottom: 23px;
+          font-size: 26px;
+          font-family: PingFang SC;
+          font-weight: 600;
+          color: rgba(32, 35, 43, 1);
+          text-align: center;
+          line-height: 25px;
+        }
+        .content_form {
+          width: 794px;
+          height: auto;
+          padding: 28px 22px 10px 0;
+          background: rgba(252, 252, 252, 1);
+          border-left: 1px solid rgba(238, 238, 238, 1);
+          border-right: 1px solid rgba(238, 238, 238, 1);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          /deep/ .el-form {
+            width: 100%;
+            /deep/.el-form-item{
+              margin-bottom: 6px!important;
+              /deep/.el-input__inner{
+                border-radius: 2px;
+              }
             }
           }
-        }
-        .row {
-          width: 100%;
-          display: flex;
-        }
-        .rows {
-          width: 100%;
-          display: flex;
-          margin-top: 16px;
-        }
-        .col {
-          flex: 1;
+          .row {
+            width: 100%;
+            display: flex;
+          }
+          .rows {
+            width: 100%;
+            display: flex;
+            margin-top: 16px;
+          }
+          .col {
+            flex: 1;
+          }
         }
       }
     }
 
   }
-
+  .border_blue{
+    width: 100%;
+    border-top: 10px solid rgba(69, 115, 208, 1);
+  }
   .triangle {
     position: relative;
     width: 0;
