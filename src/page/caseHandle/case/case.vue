@@ -22,7 +22,7 @@
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
         <li @click="goSendReprotForm">表单：送达回证</li>
         <li @click="goSendReprot">交通运输行政执法文书式样之二十三 ：送达回证</li>
-        <li @click="goFinishReprotFormPerson">表单： 结案报告</li>
+        <li @click="goFinishReprotForm">表单： 结案报告</li>
         <li @click="goFinishReprot">交通行政执法文书式样之二十四 ： 结案报告</li>
       </ul>
     </div>

@@ -40,11 +40,13 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="接收方式：">
-                  <el-input ref="CONTACTOR" clearable class="w-120" v-model="fieldRecordObj.CONTACTOR" size="small" placeholder="请输入"></el-input>
+                    <el-select v-model="fieldRecordObj.region" placeholder="请选择">
+                      <el-option label="本人接收" value="benren"></el-option>
+                    </el-select>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item>
+                <el-form-item label-width="23px">
                   <el-input ref="CONTACTOR" clearable class="w-120" v-model="fieldRecordObj.CONTACTOR" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
@@ -56,16 +58,16 @@
 
         <div class="border_blue"></div>
         <div class="table_form">
-            <el-table :data="tableDatas" stripe border style="width: 100%" height="100%">
-              <el-table-column prop="name" label="送达文书名称、案号" align="center">
-              </el-table-column>
-              <el-table-column prop="isApproval" label="送达地点" align="center">
-              </el-table-column>
-              <el-table-column prop="backName" label="送达日期" align="center">
-              </el-table-column>
-              <el-table-column prop="isAutoPdf" label="送达方式" align="center">
-              </el-table-column>
-            </el-table>
+          <el-table :data="tableDatas" stripe border style="width: 100%" height="100%">
+            <el-table-column prop="name" label="送达文书名称、案号" align="center">
+            </el-table-column>
+            <el-table-column prop="isApproval" label="送达地点" align="center">
+            </el-table-column>
+            <el-table-column prop="backName" label="送达日期" align="center">
+            </el-table-column>
+            <el-table-column prop="isAutoPdf" label="送达方式" align="center">
+            </el-table-column>
+          </el-table>
         </div>
 
         <div class="border_blue"></div>
@@ -90,6 +92,8 @@ export default {
     return {
       fieldRecordObj: {
         CONTACTOR: '',
+        region: 'benren',
+        
       },
       rules: {
         CONTACTOR: [
