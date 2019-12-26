@@ -12,8 +12,4 @@ module.exports = merge(prodEnv, {
   // BASE_API: '"http://172.16.169.75:8888/catsic"', //单国鑫
   // BASE_API: '"http://172.16.168.84:8888/catsic"', //李垚
   // BASE_API: '"http://172.16.169.78:8888/catsic"', //韩文静
-<<<<<<< HEAD
-
-=======
->>>>>>> b8c0c339b6a0f25a7390e6acaea12b7b00e1d709
 })
