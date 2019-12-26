@@ -5,20 +5,20 @@
         <div class="content_title">责令改正违法行为通知书</div>
         <div class="border_blue"></div>
         <div class="content_form">
-          <el-form :inline="true" :model="orderCorrectIllegalActForm" :rules="rules">
+          <el-form :inline="true" :model="orderCorrectIllegalActForm" :rules="rules" label-width="135px">
             <div class="row">
               <el-form-item label="当事人姓名：">
-                <el-input style="width:680px;"></el-input>
+                <el-input style="width:600px;"></el-input>
               </el-form-item>
             </div>
             <div class="row">
               <el-form-item label="违法行为：">
-                <el-input style="width:700px;"></el-input>
+                <el-input style="width:600px;"></el-input>
               </el-form-item>
             </div>
             <div class="row">
               <el-form-item label="处罚依据：">
-                <el-input style="width:700px;"></el-input>
+                <el-input style="width:600px;"></el-input>
               </el-form-item>
             </div>
             <div class="row">
