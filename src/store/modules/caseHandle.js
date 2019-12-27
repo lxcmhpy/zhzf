@@ -1,4 +1,4 @@
-import { getEnforceLawTypeApi,getCaseTypeApi,getTemporaryApi } from "@/api/caseHandle";
+import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getCaseBasicInfoApi} from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -56,10 +56,10 @@ const caseHandle = {
                     })
             })
         },
-        //根据执法门类行业类别 查询违法行为
-        getTemporary({ commit }, data) {
+        //获取案件详细信息
+        getCaseBasicInfo({ commit }, data) {
             return new Promise((resolve, reject) => {
-                getTemporaryApi(data).then(
+                getCaseBasicInfoApi(data).then(
                     res => {
                         resolve(res);
                     },

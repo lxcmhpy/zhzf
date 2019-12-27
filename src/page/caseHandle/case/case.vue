@@ -10,8 +10,13 @@
     <div>
       <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
       <ul>
-        <li>勘验笔录（已做）</li>
-        <li @click="goWen">询问文书</li>
+        <li @click="goInquestNotes">勘验笔录（已做）</li> 
+        <li @click="goIllegalAction">违法行为通知书</li>
+        <li @click="goIHearingNoticePdf">听证通知书</li>  
+        <li @click="goIllegalActionPdf">违法行为通知书PDF</li>
+        <li @click="goIHearingNoticePdf">听证通知书pdf</li>    
+        <li @click="goAdminPunisheDecision">行政处罚决定书</li>
+        <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
       </ul>
     </div>
     <div>
@@ -39,9 +44,7 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    this.getTemporary();
-  },
+
   methods: {
     goDiao() {
       this.makeRoute(
@@ -198,6 +201,82 @@ export default {
         "caseHandle/case/finishReport.vue"
       );
     },
+    //行政处罚决定书
+    goAdminPunisheDecision(){
+      this.makeRoute(
+        "/adminPunishe",
+        "/adminPunishe2",
+        "/adminPunishe3",
+        "adminPunishe",
+        "adminPunishe2",
+        "adminPunishe3",
+        "行政处罚决定书",
+        "caseHandle/case/adminPunisheDecision.vue"
+      );
+    },
+      //勘验笔录
+      goInquestNotes(){
+        this.makeRoute(
+          "/inquest",
+          "/inquest2",
+          "/inquest3",
+          "inquest",
+          "inquest2",
+          "inquest3",
+          "勘验笔录",
+          "caseHandle/case/inquestNotes.vue"
+        );
+    },
+    //责令改正违法行为通知书
+    goOrderCorrectIllegalAct(){
+        this.makeRoute(
+          "/order",
+          "/order2",
+          "/order3",
+          "order",
+          "order2",
+          "order3",
+          "责令改正违法行为通知书",
+          "caseHandle/case/orderCorrectIllegalAct.vue"
+        );
+    },
+    //违法行为通知书
+    goIllegalAction(){
+        this.makeRoute(
+          "/illegalAction",
+          "/illegalAction2",
+          "/illegalAction3",
+          "illegalAction",
+          "illegalAction2",
+          "illegalAction3",
+          "违法行为通知书",
+          "caseHandle/case/illegalAction.vue"
+        );
+    },
+    goIllegalActionPdf(){
+      this.makeRoute(
+          "/illegalActionPdf",
+          "/illegalActionPdf2",
+          "/illegalActionPdf3",
+          "illegalActionPdf",
+          "illegalActionPdf2",
+          "illegalActionPdf3",
+          "违法行为通知书PDF",
+          "caseHandle/case/illegalActionPdf.vue"
+        );
+    },
+    goIHearingNoticePdf(){
+      this.makeRoute(
+          "/hearingNoticePdf",
+          "/hearingNoticePdf2",
+          "/hearingNoticePdf3",
+          "hearingNoticePdf",
+          "hearingNoticePdf2",
+          "hearingNoticePdf3",
+          "违法行为通知书PDF",
+          "caseHandle/case/hearingNoticePdf.vue"
+        );
+    },
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
       //path不可以重复  name也不可以重复
       this.$router.addRoutes([
@@ -226,17 +305,7 @@ export default {
       ]);
       this.$router.push({ name: name3 });
     },
-    // 获取id
-    getTemporary(){
-      this.$store.dispatch("getTemporary", "1").then(
-        res => {
-
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
+   
   }
 };
 </script>

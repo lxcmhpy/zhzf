@@ -61,7 +61,7 @@ export default {
             };
             this.$store.dispatch("getLawCategoryList",data).then(
                 res => {
-                console.log("字典列表", res);
+                console.log("执法门类管理列表", res);
                 this.tableData = res.data.records;
                 this.totalPage = res.data.total;
                 },
@@ -72,23 +72,23 @@ export default {
         },
         //添加
         addLawCategory(){
-            let data={
-                    id:'',
-                    pid:'',
-                    leng:this.tableData.length
-            }
-            this.$refs.addLawCategoryRef.showModal(0, data);
+            // let data={
+            //         id:'',
+            //         pid:'',
+            //         leng:this.tableData.length
+            // }
+            this.$refs.addLawCategoryRef.showModal(0, '');
         },
         //更改每页显示的条数
         handleSizeChange(val) {
             this.pageSize = val;
             this.currentPage = 1;
-            this.getSelectOrgan();
+            this.getLawCategoryList();
         },
         //更换页码
         handleCurrentChange(val) {
             this.currentPage = val;
-            this.getSelectOrgan();
+            this.getLawCategoryList();
         },
     },
     created() {

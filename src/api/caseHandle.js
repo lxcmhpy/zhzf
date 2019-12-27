@@ -54,28 +54,12 @@ export function getIllegaActApi(organId) {
 }
 
 
-
-// 临时接口-获取id用
-export function getCaseBasicInfoApi(organId) {
+//根据案件ID获取案件信息
+export function getCaseBasicInfoApi(id) { 
   return request({
-    url: "/doc/caseBasicInfo/findById/"+'2c902ae66ae2acc4016ae376f6f1007f',
+    url: "/doc/caseBasicInfo/findById/"+"2c902ae66ae2acc4016ae376f6f1007f",
     method: "get",
-    params: params,
-    showloading: true,
-    cancelToken: setCancelSource()
-  });
-}
-
-// 临时接口-获取id用
-export function getTemporaryApi(organId) {
-  let params = {
-    current: 1,
-    size: 100,
-  };
-  return request({
-    url: "/doc/data/findByCondition",
-    method: "get",
-    params: params,
+    // params:params,
     showloading: true,
     cancelToken: setCancelSource()
   });
