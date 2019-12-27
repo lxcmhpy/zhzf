@@ -180,5 +180,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../../css/documentForm.less";
+@import "../../../../css/documentForm.less";
 </style>
