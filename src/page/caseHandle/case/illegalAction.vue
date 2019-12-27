@@ -3,6 +3,8 @@
     <div class="content_box">
       <div class="content">
         <div class="content_title">违法行为通知书</div>
+        <el-form ref="caseDocDataForm">
+        <el-input ref="id" type="hidden"></el-input></el-form>
         <el-form
           :inline="true"
           ref="illegalActForm"
@@ -253,7 +255,7 @@ export default {
         docData: "",
         status: ""
       },
-      handelType:0      //0 提交  1 暂存  2  修改
+      handelType: 0 //0 提交  1 暂存  2  修改
     };
   },
   methods: {
@@ -278,33 +280,36 @@ export default {
     },
     //保存违法行为通知书(提交生成pdf之后不可以修改，暂存之后可以修改)
     addIllegalAction(handelType) {
-        (this.caseDocDataForm.caseBasicinfoId = "12345666666666");
-        (this.caseDocDataForm.caseDoctypeId = "123");
-        (this.caseDocDataForm.docData = JSON.stringify(this.illegalActForm));
-        if(handelType==0){
-          this.caseDocDataForm.status = "提交";
-        }else{
-          this.caseDocDataForm.status = "暂存";
+      this.caseDocDataForm.caseBasicinfoId = "12345666666666";
+      this.caseDocDataForm.caseDoctypeId = "1234";
+      this.caseDocDataForm.docData = JSON.stringify(this.illegalActForm);
+      if (handelType == 0) {
+        this.caseDocDataForm.status = 0;
+      } else {
+        this.caseDocDataForm.status = 1;
+      }
+      this.$refs["illegalActForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch("addDocData", this.caseDocDataForm).then(
+            res => {
+              console.log("保存文书", res);
+              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
+              this.$message({
+                type: "success",
+                message: "保存成功"
+              });
+            },
+            err => {
+              console.log(err);
+            }
+          );
         }
-        
-      this.$store.dispatch("addDocData", this.caseDocDataForm).then(
-        res => {
-          console.log("保存文书", res);
-          // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-          this.$message({
-            type: "success",
-            message: "保存成功"
-          });
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      });
     },
     getDocDataByCaseIdAndDocId() {
       let data = {
         caseId: "12345666666666",
-        docId: "123"
+        docId: "1234"
       };
       this.$store.dispatch("getDocDataByCaseIdAndDocId", data).then(
         res => {
@@ -314,7 +319,7 @@ export default {
             this.getCaseBasicInfo();
           } else {
             console.log(res.data[0]);
-            this.caseDocDataForm.id = res.data.id;
+            this.caseDocDataForm.id = res.data[0].id;
             this.illegalActForm = JSON.parse(res.data[0].docData);
           }
         },
