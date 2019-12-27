@@ -80,7 +80,7 @@ export default {
         "establish2",
         "establish3",
         "问询",
-        "caseHandle/case/establishForm.vue"
+        "caseHandle/case/pdf/establish.vue"
       );
     },
 
@@ -120,7 +120,7 @@ export default {
         "/enforceInstead2",
         "/enforceInstead3",
         " 代履行决定书-打印",
-        "caseHandle/case/enforceInstead.vue"
+        "caseHandle/case/pdf/enforceInstead.vue"
       );
     },
     // 强制执行通知书-表单
@@ -133,7 +133,7 @@ export default {
         "/enforceForm2",
         "/enforceForm3",
         "中止（终结、恢复）行政强制执行通知书-表单",
-        "caseHandle/case/enforceForm.vue"
+        "caseHandle/case/form/enforceForm.vue"
       );
     },
     // 强制执行通知书-打印
@@ -146,7 +146,7 @@ export default {
         "/enforce2",
         "/enforce3",
         "中止（终结、恢复）行政强制执行通知书-打印",
-        "caseHandle/case/enforce.vue"
+        "caseHandle/case/pdf/enforce.vue"
       );
     },
     // 送达回证-表单
@@ -159,7 +159,7 @@ export default {
         "/sendForm2",
         "/sendForm3",
         "送达回证-表单",
-        "caseHandle/case/sendReportForm.vue"
+        "caseHandle/case/form/sendReportForm.vue"
       );
     },
     // 送达回证-打印
@@ -172,7 +172,7 @@ export default {
         "send2",
         "send3",
         "送达回证-打印",
-        "caseHandle/case/sendReport.vue"
+        "caseHandle/case/pdf/sendReport.vue"
       );
     },
     // 结案报告-表单
@@ -185,7 +185,7 @@ export default {
         "finishForm2",
         "finishForm3",
         "结案报告-表单",
-        "caseHandle/case/finishReportForm.vue"
+        "caseHandle/case/form/finishReportForm.vue"
       );
     },
     // 结案报告-打印
@@ -198,7 +198,7 @@ export default {
         "finish2",
         "finish3",
         "结案报告-打印",
-        "caseHandle/case/finishReport.vue"
+        "caseHandle/case/pdf/finishReport.vue"
       );
     },
     //行政处罚决定书
