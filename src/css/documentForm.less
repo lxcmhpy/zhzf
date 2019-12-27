@@ -5,6 +5,7 @@
     padding   : 0 22px 0 22px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+    position  : relative;
 
     .header {
         width        : 100%;
@@ -72,7 +73,7 @@
 
                     /deep/.el-form-item {
                         // margin-bottom: 6px !important;
-                        width: 100%;
+                        width           : 100%;
 
                         /deep/.el-input__inner {
                             border-radius: 2px;
@@ -140,6 +141,35 @@
                 align-items   : center;
             }
         }
+    }
+
+
+}
+
+// 悬浮按钮
+.float-btns {
+    width        : 48px;
+    height       : 100px;
+    position     : absolute;
+    right        : 27px;
+    bottom       : 97px;
+
+    /deep/.el-button{
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        text-align: center;
+        
+    }
+    /deep/.el-button+.el-button{
+        margin: 0;
+        margin-top: 10px;
+    }
+    /deep/.el-button--success{
+        color:white;
+        background-color: #4AAFA7;
+        border-color: #4AAFA7;
+
     }
 
 }

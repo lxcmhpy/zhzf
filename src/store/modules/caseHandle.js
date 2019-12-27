@@ -1,4 +1,4 @@
-import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi } from "@/api/caseHandle";
+import { getEnforceLawTypeApi,getCaseTypeApi,getTemporaryApi } from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -48,6 +48,18 @@ const caseHandle = {
         getIllegaAct({ commit }, data) {
             return new Promise((resolve, reject) => {
                 getIllegaActApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //根据执法门类行业类别 查询违法行为
+        getTemporary({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getTemporaryApi(data).then(
                     res => {
                         resolve(res);
                     },

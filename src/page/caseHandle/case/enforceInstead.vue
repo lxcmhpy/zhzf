@@ -1,7 +1,6 @@
 <template>
   <div class="a4-box">
     <div class="pdf-box">
-      <!-- <div>交通运输行政执法文书式样之二十二 ： 中止（终结、恢复）行政强制执行通知书</div> -->
       <div class="pdf-title">
         代履行决定书
       </div>
@@ -115,6 +114,7 @@
         </div>
 
         <p class="begin margin-top87">（本文书一式两份：一份存根，一份交当事人或其代理人。）</p>
+
       </div>
     </div>
   </div>
