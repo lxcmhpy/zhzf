@@ -284,7 +284,7 @@ export default {
     focusName() {
       this.errorName = false;
     },
-    //保存违法行为通知书
+    //提交结案表单
     addIllegalAction() {
       console.log(this.CaseDocDataForm);
       // this.$refs[docForm].validate(valid => {
@@ -308,7 +308,7 @@ export default {
       //   }
       // });
       // console.log(this.CaseDocDataForm.docData);
-      this.CaseDocDataForm.docData=JSON.stringify(this.illegalActForm);
+      // this.CaseDocDataForm.docData=JSON.stringify(this.illegalActForm);
       this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
             res => {
               console.log("保存文书", res);

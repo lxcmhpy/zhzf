@@ -68,16 +68,10 @@ const caseHandle = {
                     })
             })
         },
-<<<<<<< HEAD
-        //通过Id查询案件基本信息
-        getTemporary({ commit }, data) {
-            return new Promise((resolve, reject) => {
-                getTemporaryApi(data).then(
-=======
+        // 添加案件信息
         addDocData({ commit }, data) {
             return new Promise((resolve, reject) => {
                 addDocDataApi(data).then(
->>>>>>> 3aef3ee73845f9ed680f5ad3f5d3110ccdd880ca
                     res => {
                         resolve(res);
                     },
