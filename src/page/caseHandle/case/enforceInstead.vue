@@ -49,31 +49,63 @@
         </table>
       </div>
       <div class="pdf-report-info">
-        <p class="begin">当事人（个人姓名或单位名称） ：<span class="pdf-line width250">&nbsp;</span></p>
-        <p><span class="pdf-line width430">&nbsp;</span>一案，本机关于
-          <span class="pdf-line width80">&nbsp;</span>年
-          <span class="pdf-line width80">&nbsp;</span>月
-          <span class="pdf-line width80">&nbsp;</span>日
-          依法作出了行政强制执行决定，并向你（单位）送达了《行政强制执行决定书》
-          (案号：<span class="pdf-line width250">&nbsp;</span>)。</p>
-        <p>代履行人 ：□本机关 □第三人：
-          <span class="pdf-line width80">&nbsp;</span>
-          </p>
+        <p>因你（单位）<span class="pdf-line width555">&nbsp;</span>，</p>
+        <p> □1.本机关于
+          <span class="pdf-line width80">2019</span>年
+          <span class="pdf-line width80">12</span>月
+          <span class="pdf-line width80">31</span>日作出了
+          <span class="pdf-line width245">&nbsp;
+          </span>
+          决定，决定书案号为<span class="pdf-line width250">&nbsp;</span>
+          。经本机关催告后仍不履行，因其后果已经或者将危害交通安全、造成环境污染或者破坏自然资源。依据《中华人民共和国行政强制法》第五十条以及
+          <span class="pdf-line width250">&nbsp;</span>
+          的规定，
+        </p>
+        <p>
+          □2.需要立即清除道路、河道、航道或者公共场所的遗洒物、障碍物或者污
+          染物，因你（单位）不能清除，依据《中华人民共和国行政强制法》第五十二条以及
+          <span class="pdf-line width250">&nbsp;</span>
+          的规定，
+        </p>
+
+        <p>
+          本机关依法作出代履行决定如下：
+        </p>
+
+        <p>
+
+          1.代履行人：
+
+          □本机关 □第三人：
+          <span class="pdf-line width430">&nbsp;</span>
+        </p>
         <p>
           2.代履行标的：
+          <span class="pdf-line width555">&nbsp;</span>
         </p>
         <p>
           3.代履行时间和方式：
+          <span class="pdf-line width430">&nbsp;</span>
         </p>
         <p>
           4.代履行费用（预算）：
-          请你（单位）在收到本决定书后 日内预付代履行预算费用（开
-          户行: 账号： ）。代
-          履行费用据实决算后，多退少补。
+          <span class="pdf-line width430">&nbsp;</span>
+          请你（单位）在收到本决定书后
+          <span class="pdf-line width430">&nbsp;</span>
+          日内预付代履行预算费用（开户行:
+          <span class="pdf-line width250">&nbsp;</span>
+          账号：
+          <span class="pdf-line width250">&nbsp;</span>
+          ）。代履行费用据实决算后，多退少补。
+
         </p>
-        <p>如不服本决定，可以在收到本决定书之日起六十日内向
-          申请行政复议或者在六个月内依法向 人民法院提起
-          行政诉讼。</p>
+        <p>
+          如不服本决定，可以在收到本决定书之日起六十日内向
+          <span class="pdf-line width250">&nbsp;</span>
+          申请行政复议或者在六个月内依法向
+          <span class="pdf-line width250">&nbsp;</span>
+          人民法院提起行政诉讼。
+        </p>
         <div class="pdf-wirte">
           <div class="pdf-seal">
             交通运输执法部门（印章）<br>
