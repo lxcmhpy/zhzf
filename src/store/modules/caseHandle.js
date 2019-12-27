@@ -1,4 +1,4 @@
-import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi } from "@/api/caseHandle";
+import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getCaseBasicInfoApi} from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -48,6 +48,18 @@ const caseHandle = {
         getIllegaAct({ commit }, data) {
             return new Promise((resolve, reject) => {
                 getIllegaActApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //获取案件详细信息
+        getCaseBasicInfo({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getCaseBasicInfoApi(data).then(
                     res => {
                         resolve(res);
                     },

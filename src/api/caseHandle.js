@@ -54,3 +54,15 @@ export function getIllegaActApi(organId) {
 }
 
 
+//根据案件ID获取案件信息
+export function getCaseBasicInfoApi(id) { 
+  return request({
+    url: "/doc/caseBasicInfo/findById/"+"2c902ae66ae2acc4016ae376f6f1007f",
+    method: "get",
+    // params:params,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+

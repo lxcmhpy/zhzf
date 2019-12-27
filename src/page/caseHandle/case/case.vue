@@ -11,7 +11,10 @@
       <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
       <ul>
         <li @click="goInquestNotes">勘验笔录（已做）</li> 
-        <li @click="goIllegalAction">违法行为通知书</li>      
+        <li @click="goIllegalAction">违法行为通知书</li>
+        <li @click="goIHearingNoticePdf">听证通知书</li>  
+        <li @click="goIllegalActionPdf">违法行为通知书PDF</li>
+        <li @click="goIHearingNoticePdf">听证通知书pdf</li>    
         <li @click="goAdminPunisheDecision">行政处罚决定书</li>
         <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
       </ul>
@@ -22,12 +25,6 @@
         <!-- 打印版 -->
         <li @click="goEstablish">打印一 ： 立案登记表</li>
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
-<<<<<<< HEAD
-        <li @click="goSendReprotForm">表单：送达回证</li>
-        <li @click="goSendReprot">交通运输行政执法文书式样之二十三 ：送达回证</li>
-        <li @click="goFinishReprotForm">表单： 结案报告</li>
-        <li @click="goFinishReprot">交通行政执法文书式样之二十四 ： 结案报告</li>
-=======
         <li @click="goEnforceInsteadReprot">打印二十一 ： 代履行决定书</li>
         <li @click="goEnforceReprotForm">表单二十二：中止（终结、恢复）行政强制执行通知书(未完成)</li>
         <li @click="goEnforceReprot">打印二十二 ：中止（终结、恢复）行政强制执行通知书</li>
@@ -35,7 +32,6 @@
         <li @click="goSendReprot">打印二十三 ：送达回证</li>
         <li @click="goFinishReprotForm">表单二十四： 结案报告</li>
         <li @click="goFinishReprot">打印二十四 ： 结案报告</li>
->>>>>>> 154ef943240b193b9f6249907639d3d10310cbe6
       </ul>
     </div>
 
@@ -254,6 +250,30 @@ export default {
           "illegalAction3",
           "违法行为通知书",
           "caseHandle/case/illegalAction.vue"
+        );
+    },
+    goIllegalActionPdf(){
+      this.makeRoute(
+          "/illegalActionPdf",
+          "/illegalActionPdf2",
+          "/illegalActionPdf3",
+          "illegalActionPdf",
+          "illegalActionPdf2",
+          "illegalActionPdf3",
+          "违法行为通知书PDF",
+          "caseHandle/case/illegalActionPdf.vue"
+        );
+    },
+    goIHearingNoticePdf(){
+      this.makeRoute(
+          "/hearingNoticePdf",
+          "/hearingNoticePdf2",
+          "/hearingNoticePdf3",
+          "hearingNoticePdf",
+          "hearingNoticePdf2",
+          "hearingNoticePdf3",
+          "违法行为通知书PDF",
+          "caseHandle/case/hearingNoticePdf.vue"
         );
     },
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {

@@ -4,8 +4,9 @@
       <div class="content">
         <div class="content_title">责令改正违法行为通知书</div>
         <div class="border_blue"></div>
+        <el-form :inline="true" :model="orderCorrectIllegalActForm" :rules="rules" label-width="135px">
         <div class="content_form">
-          <el-form :inline="true" :model="orderCorrectIllegalActForm" :rules="rules" label-width="135px">
+          
             <div class="row">
               <el-form-item label="当事人姓名：">
                 <el-input style="width:600px;"></el-input>
@@ -27,46 +28,49 @@
               </el-form-item>
             </div>
             <div class="row">
-              &#8195;&#8195;&#8195;&#8195;&#8195;
+              &#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;
+              <el-form-item label>
               <el-radio></el-radio>限期改正或整改完毕
               <!-- <el-date-picker></el-date-picker>                   -->
+              </el-form-item>
             </div>
             <div class="row">
               <el-form-item label="行政复议机构：">
-                <el-checkbox></el-checkbox>
+                <el-checkbox></el-checkbox>复议机构名称1
                 <el-input style="width:200px;" placeholder="复议机构名称1"></el-input>
               </el-form-item>
             </div>
             <div class="row">
               <el-form-item label>
-                &#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#32;
-                <el-checkbox></el-checkbox>
+                &#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;
+                <el-checkbox></el-checkbox>复议机构名称2
                 <el-input style="width:200px;" placeholder="复议机构名称2"></el-input>
               </el-form-item>
             </div>
             <div class="row">
               <el-form-item label>
-                &#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#32;
-                <el-checkbox></el-checkbox>
+                &#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;
+                <el-checkbox></el-checkbox>复议机构名称3
                 <el-input style="width:200px;" placeholder="复议机构名称3"></el-input>
               </el-form-item>
             </div>
             <div class="row">
               <el-form-item label="行政诉讼机构：">
-                <el-checkbox></el-checkbox>
+                <el-checkbox></el-checkbox>行政诉讼机构1
                 <el-input style="width:200px;" placeholder="行政诉讼机构1："></el-input>
               </el-form-item>
             </div>
             <div class="row">
               <el-form-item label>
-                &#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#32;
-                <el-checkbox></el-checkbox>
+                &#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;
+                <el-checkbox></el-checkbox>行政诉讼机构2
                 <el-input style="width:200px;" placeholder="行政诉讼机构2："></el-input>
               </el-form-item>
             </div>
-          </el-form>
+          
         </div>
-        <div class="border_blue"></div>
+        </el-form>
+        <!-- <div class="border_blue"></div> -->
       </div>
     </div>
   </div>
@@ -88,4 +92,5 @@ export default {
 </script>
 <style lang="less">
 @import "../../../css/caseHandle/caseDocument.less";
+@import "../../../css/documentForm.less";
 </style>
