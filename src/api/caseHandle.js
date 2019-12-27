@@ -65,3 +65,14 @@ export function getCaseBasicInfoApi(id) {
   });
 }
 
+//保存文书
+export function addDocDataApi(data) { 
+  console.log(data);
+  return request({
+    url: "/doc/data/create",
+    method: "post",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}

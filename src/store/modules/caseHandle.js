@@ -1,4 +1,4 @@
-import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getCaseBasicInfoApi} from "@/api/caseHandle";
+import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getCaseBasicInfoApi,addDocDataApi} from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -68,10 +68,16 @@ const caseHandle = {
                     })
             })
         },
+<<<<<<< HEAD
         //通过Id查询案件基本信息
         getTemporary({ commit }, data) {
             return new Promise((resolve, reject) => {
                 getTemporaryApi(data).then(
+=======
+        addDocData({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                addDocDataApi(data).then(
+>>>>>>> 3aef3ee73845f9ed680f5ad3f5d3110ccdd880ca
                     res => {
                         resolve(res);
                     },
