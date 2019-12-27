@@ -56,6 +56,17 @@ export function getIllegaActApi(organId) {
 
 
 // 临时接口-获取id用
+export function getCaseBasicInfoApi(organId) {
+  return request({
+    url: "/doc/caseBasicInfo/findById/"+'2c902ae66ae2acc4016ae376f6f1007f',
+    method: "get",
+    params: params,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 临时接口-获取id用
 export function getTemporaryApi(organId) {
   let params = {
     current: 1,
