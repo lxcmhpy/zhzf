@@ -44,6 +44,9 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+    this.getTemporary();
+  },
   methods: {
     goDiao() {
       this.makeRoute(
@@ -303,7 +306,18 @@ export default {
         }
       ]);
       this.$router.push({ name: name3 });
-    }
+    },
+    // 获取id
+    getTemporary(){
+      this.$store.dispatch("getTemporary", "1").then(
+        res => {
+
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
   }
 };
 </script>
