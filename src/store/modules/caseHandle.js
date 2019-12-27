@@ -68,6 +68,18 @@ const caseHandle = {
                     })
             })
         },
+        //通过Id查询案件基本信息
+        getTemporary({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getTemporaryApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
     }
 }
 export default caseHandle
