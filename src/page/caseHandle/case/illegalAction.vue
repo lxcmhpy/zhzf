@@ -3,24 +3,15 @@
     <div class="content_box">
       <div class="content">
         <div class="content_title">违法行为通知书</div>
-        <el-form :inline="true" ref="illegalActForm" :model="illegalActForm" label-width="135px" :rules="rules">
+        <el-form
+          :inline="true"
+          ref="illegalActForm"
+          :model="illegalActForm"
+          label-width="135px"
+          :rules="rules"
+        >
           <div class="border_blue"></div>
           <div class="content_form">
-            <!-- <div class="row">
-              <div class="col">
-                <el-form-item label>
-                  <el-input
-                    ref="id"
-                    clearable
-                    class="w-120"
-                    v-model="illegalActForm.id"
-                    size="small"
-                    placeholder="请输入"
-                    hidden
-                  ></el-input>
-                </el-form-item>
-              </div>
-            </div>-->
             <div class="row">
               <div class="col">
                 <el-form-item label="案号：">
@@ -189,7 +180,7 @@
         </el-form>
       </div>
       <div class="float-btns">
-        <el-button type="primary" @click="addIllegalAction">
+        <el-button type="primary" @click="addIllegalAction('0')">
           <svg
             t="1577414377979"
             class="icon"
@@ -208,7 +199,7 @@
           </svg>
           <br />提交
         </el-button>
-        <el-button type="success">
+        <el-button type="success" @click="addIllegalAction('1')">
           <svg
             t="1577415780823"
             class="icon"
@@ -254,14 +245,15 @@ export default {
           { required: true, message: "当事人姓名必须填写", trigger: "blur" }
         ]
       },
-      CaseDocDataForm: {
-        caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
-        caseDoctypeId: "123",
+      caseDocDataForm: {
+        id: "",
+        caseBasicinfoId: "",
+        caseDoctypeId: "",
         //文书数据
-        docData:"",
-        status:"",        
-
-      }
+        docData: "",
+        status: ""
+      },
+      handelType:0      //0 提交  1 暂存  2  修改
     };
   },
   methods: {
@@ -284,50 +276,57 @@ export default {
     focusName() {
       this.errorName = false;
     },
-    //保存违法行为通知书
-    addIllegalAction() {
-      console.log(this.CaseDocDataForm);
-      // this.$refs[docForm].validate(valid => {
-      //   if (valid && !this.errorName) {
-      //     this.formName.status = "保存";
-      //     // this.formName.status = "保存";
-      //     this.$store.dispatch("addIllegalAction", this.docForm).then(
-      //       res => {
-      //         console.log("保存文书", res);
-      //         // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-      //         this.$message({
-      //           type: "success",
-      //           // message: this.handelType == 0 ? "添加成功!" : "修改成功"
-      //         });
-      //         this.visible = false;
-      //       },
-      //       err => {
-      //         console.log(err);
-      //       }
-      //     );
-      //   }
-      // });
-      // console.log(this.CaseDocDataForm.docData);
-      this.CaseDocDataForm.docData=JSON.stringify(this.illegalActForm);
-      this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
-            res => {
-              console.log("保存文书", res);
-              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
-                type: "success",
-                message:"保存成功"
-                
-              });
-              // this.illegalActForm = res.data.docData;
-            },
-            err => {
-              console.log(err);
-            }
-          );
+    //保存违法行为通知书(提交生成pdf之后不可以修改，暂存之后可以修改)
+    addIllegalAction(handelType) {
+        (this.caseDocDataForm.caseBasicinfoId = "12345666666666");
+        (this.caseDocDataForm.caseDoctypeId = "123");
+        (this.caseDocDataForm.docData = JSON.stringify(this.illegalActForm));
+        if(handelType==0){
+          this.caseDocDataForm.status = "提交";
+        }else{
+          this.caseDocDataForm.status = "暂存";
+        }
+        
+      this.$store.dispatch("addDocData", this.caseDocDataForm).then(
+        res => {
+          console.log("保存文书", res);
+          // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
+          this.$message({
+            type: "success",
+            message: "保存成功"
+          });
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    getDocDataByCaseIdAndDocId() {
+      let data = {
+        caseId: "12345666666666",
+        docId: "123"
+      };
+      this.$store.dispatch("getDocDataByCaseIdAndDocId", data).then(
+        res => {
+          console.log("获取文书详情", res);
+          //如果为空，则加载案件信息
+          if (res.data.length == 0) {
+            this.getCaseBasicInfo();
+          } else {
+            console.log(res.data[0]);
+            this.caseDocDataForm.id = res.data.id;
+            this.illegalActForm = JSON.parse(res.data[0].docData);
+          }
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
   },
   created() {
-    this.getCaseBasicInfo();
+    //加载文书信息
+    this.getDocDataByCaseIdAndDocId();
   }
 };
 </script>

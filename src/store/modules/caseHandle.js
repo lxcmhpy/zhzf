@@ -1,4 +1,4 @@
-import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getCaseBasicInfoApi,addDocDataApi} from "@/api/caseHandle";
+import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi} from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -71,6 +71,17 @@ const caseHandle = {
         addDocData({ commit }, data) {
             return new Promise((resolve, reject) => {
                 addDocDataApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        getDocDataByCaseIdAndDocId({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getDocDataByCaseIdAndDocIdApi(data).then(
                     res => {
                         resolve(res);
                     },
