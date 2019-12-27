@@ -113,10 +113,10 @@
           <div class="border_blue"></div>
           <div class="content_form bottom_form">
             <el-form-item label="处理结果：">
-              <el-input type="textarea" class="height106" v-model="docData.test" size="small" placeholder="请输入"></el-input>
+              <el-input type="textarea" class="height106" v-model="docData.closeResult" size="small" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="执行情况：">
-              <el-input type="textarea" class="height122" v-model="docData.test" size="small" placeholder="请输入"></el-input>
+              <el-input type="textarea" class="height122" v-model="docData.closeSituation" size="small" placeholder="请输入"></el-input>
             </el-form-item>
 
           </div>
