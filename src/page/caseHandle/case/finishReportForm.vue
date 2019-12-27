@@ -14,12 +14,12 @@
           结案报告
         </div>
         <div class="border_blue"></div>
-        <el-form ref="docData" :model="docData" :rules="rules" label-width="135px">
+        <el-form ref="docForm" :model="docData" :rules="rules" label-width="135px">
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseNamer" label="案号：">
-                  <el-input ref="caseNamer" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="caseNumber" label="案号：">
+                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -112,10 +112,10 @@
           </div>
           <div class="border_blue"></div>
           <div class="content_form bottom_form">
-            <el-form-item label="处理结果：">
+            <el-form-item prop="closeResult" label="处理结果：">
               <el-input type="textarea" class="height106" v-model="docData.closeResult" size="small" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="执行情况：">
+            <el-form-item prop="closeSituation" label="执行情况：">
               <el-input type="textarea" class="height122" v-model="docData.closeSituation" size="small" placeholder="请输入"></el-input>
             </el-form-item>
 
@@ -149,13 +149,17 @@ export default {
         partyType: '个人',
       },
       CaseDocDataForm: {
-
+        caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
+        caseDoctypeId: "123",
+        //文书数据
+        docData: "",
+        status: "",
       },
       rules: {
         CONTACTOR: [
           { required: true, message: '经办人姓名必须填写', trigger: 'blur' }
         ],
-        caseNamer: [
+        caseNumber: [
           { required: true, message: '案号必须填写', trigger: 'blur' }
         ],
         caseName: [
@@ -163,6 +167,12 @@ export default {
         ],
         partyType: [
           { required: true, message: '当事人类型必须填写', trigger: 'blur' }
+        ],
+        closeResult: [
+          { required: true, message: '处理结果必须填写', trigger: 'blur' }
+        ],
+        closeSituation: [
+          { required: true, message: '执行情况必须填写', trigger: 'blur' }
         ],
       },
     }
@@ -182,32 +192,31 @@ export default {
 
     // 提交表单
     addIllegalAction() {
-      let data = {
-        id: '2c902ae66ae2acc4016ae376f6f1007f',
-        createTime: '',
-        updateTime: '',
-        caseBasicinfoId: '2c902ae66ae2acc4016ae376f6f1007f',
-        caseDoctypeId: '2c902ae66ae2acc4016ae376f6f1007f',
-        docData: JSON.stringify(this.docData),
-        status: '',
-        createName: '',
-        updateName: '',
-      };
-      this.$store.dispatch("addDocData", data).then(
-        res => {
-          console.log("保存文书", res);
-          // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-          this.$message({
-            type: "success",
-            message: "保存成功"
+      console.log(this.CaseDocDataForm);
+      this.$refs["docForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
+            res => {
+              console.log("保存文书", res);
+              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
+              this.$message({
+                type: "success",
+                message: "保存成功"
 
-          });
-          // this.illegalActForm = res.data.docData;
-        },
-        err => {
-          console.log(err);
+              });
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        } else {
+          console.log('error submit!!');
+          return false;
         }
-      );
+
+      });
+      // console.log(this.CaseDocDataForm.docData);
+
     },
     // 暂存
     save() {
