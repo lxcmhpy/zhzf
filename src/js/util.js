@@ -204,6 +204,12 @@ util.timestampToDay = function(val) {
   let newDate =new Date(parseInt(val) * 1000);
   return newDate.format("yyyy-MM-dd hh:mm:ss");
 };
+util.timestampToDay2 = function(val) {
+  // let newDate = new Date(val);
+  // return newDate.format("yyyy-MM-dd hh:mm:ss");
+  let newDate =new Date(parseInt(val) * 1000);
+  return newDate.format("yyyy-MM-dd hh:mm");
+};
 
 /**
  * 转换时间格式
