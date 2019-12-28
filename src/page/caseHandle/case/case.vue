@@ -28,8 +28,8 @@
 
         表单：
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
-        <li @click="goEnforceInsteadForm">表单十九 ： 代履行决定书(无样式图)</li>
-        <li @click="goEnforceInsteadForm">表单二十 ： 代履行决定书(无样式图)</li>
+        <li @click="goEnforceInsteadForm">表单十九 ： 催告书(无样式图)</li>
+        <li @click="goEnforceInsteadForm">表单二十 ： 行政强制执行决定书(无样式图)</li>
         <li @click="goEnforceInsteadForm">表单二十一 ： 代履行决定书(无样式图)</li>
         <li @click="goEnforceReprotForm">表单二十二：中止（终结、恢复）行政强制执行通知书(未完成-无样式图)</li>
         <li @click="goSendReprotForm">表单二十三：送达回证</li>
