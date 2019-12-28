@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="选泽人员"
+    title="选择人员"
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
@@ -39,10 +39,10 @@
           >全选</el-checkbox>
           <div style="margin: 15px 0;"></div>
           <el-checkbox-group v-model="checkedUser" @change="handleCheckedUserChange">
-            <el-checkbox v-for="(user,index) in userList" :label="user.name" :key="user.id">
-              <span class="name">{{user.name}}</span>
+            <el-checkbox v-for="(user,index) in userList" :label="user.lawOfficerName" :key="user.id">
+              <span class="name">{{user.lawOfficerName}}</span>
               <el-select v-model="selectedNumber[index]" placeholder="请选择">
-                <el-option v-for="item in user.number" :key="item" :label="item" :value="item"></el-option>
+                <el-option v-for="item in user.lawOfficerCards" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-checkbox>
           </el-checkbox-group>
@@ -64,17 +64,20 @@ export default {
       checkAll: false,
       checkedUser: [], //选中的人员
       userList: [
-        { id: 1, name: "zhangsan", number: ["1232433", "21321324324"] },
-        { id: 2, name: "zhangsan2", number: ["1232433", "21321324324"] },
-        { id: 3, name: "zhangsan3", number: ["1232433", "21321324324"] }
+        // { id: 1, name: "zhangsan", number: ["1232433", "21321324324"] },
+        // { id: 2, name: "zhangsan2", number: ["1232433", "21321324324"] },
+        // { id: 3, name: "zhangsan3", number: ["1232433", "21321324324"] }
       ], //全部人员
-      selectedNumber: []
+      selectedNumber: [],
+      alreadyChooseLawPerson:[],
     };
   },
   inject: ["reload"],
   methods: {
-    showModal() {
+    showModal(alreadyChooseLawPerson) {
       this.visible = true;
+      this.alreadyChooseLawPerson = alreadyChooseLawPerson
+      this.searchLawPerson()
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -106,16 +109,34 @@ export default {
     //删掉已选中的人员
     deleteUser(tag){
         console.log(tag);
+        this.checkedUser.splice(this.checkedUser.indexOf(tag), 1);
     },
     //点击确定关闭弹窗 添加用户到信息采集页
     addUserToForm(){
       this.visible = false;
+      console.log(this.checkedUser)
       this.$emit('setLawPer',this.checkedUser);
+    },
+    //查询执法人员
+    searchLawPerson(){
+      this.$store.dispatch("findLawOfficerList").then(
+        res => {
+         console.log(res);
+         this.userList = res.data.records;
+         this.userList.forEach(item=>{
+           item.lawOfficerCards =item.lawOfficerCards.split(',');
+         })
+         this.checkedUser = this.alreadyChooseLawPerson;
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
   },
-  mounted() {
-    this.getSelectNumber();
-  }
+  // mounted() {
+  //   this.getSelectNumber();
+  // }
 };
 </script>
 <style lang="less">

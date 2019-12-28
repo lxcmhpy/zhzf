@@ -2,9 +2,10 @@
   <div id="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
-        <a href="#caseInfo" class="activeA" >案件情况</a>
-        <a  @click="jump(2)">当事人</a>
+        <a href="#caseInfo" class="activeA">案件情况</a>
+        <a @click="jump(2)">当事人</a>
         <a href="#carInfo">车辆信息</a>
+        <a href="" v-if="showOverrun">超限信息</a>
         <a href="#breakLaw">违法事实</a>
       </div>
     </div>
@@ -19,10 +20,14 @@
         <p id="caseInfo">案件情况</p>
         <div>
           <div class="item">
-            <el-form-item label="案件来源" prop="caseType">
-              <el-select v-model="inforForm.caseType" placeholder="请选择">
+            <el-form-item label="案件来源" prop="caseSource">
+              <el-select
+                v-model="inforForm.caseSource"
+                placeholder="请选择"
+                @change="changeCaseSource"
+              >
                 <el-option
-                  v-for="item in allCaseType"
+                  v-for="item in allcaseSource"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -30,38 +35,48 @@
               </el-select>
             </el-form-item>
           </div>
-          <div class="item">
-            <el-input></el-input>
+          <div class="item hasMargintop">
+            <el-input v-model="inforForm.caseSourceText" :disabled="caseSourceTextDisable"></el-input>
           </div>
         </div>
         <div>
           <div class="item">
             <el-form-item label="案发时间">
-              <el-date-picker v-model="inforForm.time1" type="datetime"></el-date-picker>
+              <el-date-picker
+                v-model="inforForm.afsj"
+                type="datetime"
+                format="yyyy-MM-dd HH:mm"
+                value-format="yyyy-MM-dd HH:mm"
+              ></el-date-picker>
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="受案时间" prop="time2">
-              <el-date-picker v-model="inforForm.time2" type="datetime"></el-date-picker>
+            <el-form-item label="受案时间" prop="acceptTime">
+              <el-date-picker
+                v-model="inforForm.acceptTime"
+                type="datetime"
+                format="yyyy-MM-dd HH:mm"
+                value-format="yyyy-MM-dd HH:mm"
+              ></el-date-picker>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="itemOne">
             <el-form-item label="违法行为">
-              <el-input :disabled="true"></el-input>
+              <el-input v-model="inforForm.caseCauseName" :disabled="true"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="item">
             <el-form-item label="程序类型">
-              <el-input :disabled="true"></el-input>
+              <el-input v-model="inforForm.programType" :disabled="true"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="案件类型">
-              <el-input :disabled="true"></el-input>
+              <el-input v-model="inforForm.caseType" :disabled="true"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -82,6 +97,7 @@
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
+                  placeholder="请添加"
                 ></el-option>
               </el-select>
               <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
@@ -113,7 +129,7 @@
           </div>
           <div class="item appendSelect">
             <el-form-item label="证件类型">
-              <el-input placeholder="请输入内容" v-model="inforForm.partyIdNo" class="input-with-select">
+              <el-input placeholder="请输入内容" v-model="inforForm.partyIdNo" class="input-with-select hasMargintop">
                 <el-select slot="prepend" v-model="inforForm.partyIdType">
                   <el-option
                     v-for="item in credentialType"
@@ -179,8 +195,8 @@
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemBig">
-            <el-form-item label="单位名称" prop="partyName">
-              <el-input v-model="inforForm.partyName"></el-input>
+            <el-form-item label="单位名称" prop="partyName" >
+              <el-input v-model="inforForm.partyName" maxlength="40" show-word-limit></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
@@ -230,7 +246,7 @@
           <div>
             <div class="item">
               <el-form-item label="与当事人关系">
-                <el-select v-model="driverOrAgentInfo.relationWithParty">
+                <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
                   <el-option
                     v-for="item in allRelationWithParty"
                     :key="item.value"
@@ -256,7 +272,7 @@
           <div>
             <div class="item">
               <el-form-item label="姓名">
-                <el-input v-model="driverOrAgentInfo.name"></el-input>
+                <el-input v-model="driverOrAgentInfo.name" :disabled="relationWithPartyIsOne && index==0"></el-input>
               </el-form-item>
             </div>
             <div class="item appendSelect">
@@ -264,7 +280,8 @@
                 <el-input
                   placeholder="请输入内容"
                   v-model="driverOrAgentInfo.zhengjianNumber"
-                  class="input-with-select"
+                  class="input-with-select hasMargintop"
+                  :disabled="relationWithPartyIsOne && index==0"
                 >
                   <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType">
                     <el-option
@@ -281,7 +298,7 @@
           <div>
             <div class="itemThird">
               <el-form-item label="性别">
-                <el-select v-model="driverOrAgentInfo.sex">
+                <el-select v-model="driverOrAgentInfo.sex" :disabled="relationWithPartyIsOne && index==0">
                   <el-option value="0" label="男"></el-option>
                   <el-option value="1" label="女"></el-option>
                 </el-select>
@@ -289,43 +306,43 @@
             </div>
             <div class="itemThird">
               <el-form-item label="年龄">
-                <el-input v-model="driverOrAgentInfo.age" type="number"></el-input>
+                <el-input v-model="driverOrAgentInfo.age" type="number" :disabled="relationWithPartyIsOne && index==0"></el-input>
               </el-form-item>
             </div>
             <div class="itemThird">
               <el-form-item label="联系电话">
-                <el-input v-model="driverOrAgentInfo.tel"></el-input>
+                <el-input v-model="driverOrAgentInfo.tel" :disabled="relationWithPartyIsOne && index==0"></el-input>
               </el-form-item>
             </div>
           </div>
           <div>
             <div class="itemBig">
               <el-form-item label="联系地址">
-                <el-input v-model="driverOrAgentInfo.adress"></el-input>
+                <el-input v-model="driverOrAgentInfo.adress" :disabled="relationWithPartyIsOne && index==0"></el-input>
               </el-form-item>
             </div>
             <div class="itemSmall">
-              <el-form-item label="邮编">
-                <el-input v-model="driverOrAgentInfo.adressCode"></el-input>
+              <el-form-item label="邮编" >
+                <el-input v-model="driverOrAgentInfo.adressCode" :disabled="relationWithPartyIsOne && index==0"></el-input>
               </el-form-item>
             </div>
           </div>
           <div>
             <div class="itemBig">
               <el-form-item label="工作单位">
-                <el-input v-model="driverOrAgentInfo.company"></el-input>
+                <el-input v-model="driverOrAgentInfo.company" :disabled="relationWithPartyIsOne && index==0"></el-input>
               </el-form-item>
             </div>
             <div class="itemSmall">
               <el-form-item label="职位">
-                <el-input v-model="driverOrAgentInfo.position"></el-input>
+                <el-input v-model="driverOrAgentInfo.position" :disabled="relationWithPartyIsOne && index==0"></el-input>
               </el-form-item>
             </div>
           </div>
           <div>
             <div class="itemOne">
               <el-form-item label="从业资格证号">
-                <el-input v-model="driverOrAgentInfo.zigeNumber"></el-input>
+                <el-input v-model="driverOrAgentInfo.zigeNumber" :disabled="relationWithPartyIsOne && index==0"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -457,14 +474,7 @@
         <div>
           <div class="itemOne">
             <el-form-item label="违法条款" prop="illegalLaw">
-              <el-input v-model="inforForm.illegalLaw"></el-input>
-            </el-form-item>
-          </div>
-        </div>
-        <div>
-          <div class="itemOne">
-            <el-form-item label="处罚依据">
-              <el-input v-model="inforForm.punishLaw" class="input-with-select">
+              <el-input v-model="inforForm.illegalLaw">
                 <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
               </el-input>
             </el-form-item>
@@ -472,9 +482,39 @@
         </div>
         <div>
           <div class="itemOne">
-            <el-form-item label="自由裁量标准">
-              <el-input v-model="inforForm.discretionId"></el-input>
+            <el-form-item label="处罚依据">
+              <el-input v-model="inforForm.punishLaw">
+                <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
+              </el-input>
             </el-form-item>
+          </div>
+        </div>
+        <div>
+          <div class="itemOne" id="judgeFreedomBox" >
+            <!-- <el-form-item label="自由裁量标准">
+              <el-input v-model="inforForm.discretionId"></el-input>
+            </el-form-item>-->
+            <p>自由裁量标准(违法程度/违法情节/建议处罚)</p>
+            <ul>
+              <li v-for="(item,index) in judgFreedomList" :key="index" :class="{activeJudgli : activeJudgli==item.drawerName}" @click="selectJudgFreedom(item)">
+                <div>{{item.drawerName}}</div>
+                <div>{{item.wfqj}}</div>
+                <div>{{item.jycf}}</div>
+              </li>
+            </ul>
+            <!-- <el-table
+              ref="multipleTable"
+              :data="judgFreedomList"
+              tooltip-effect="dark"
+              style="width: 100%"
+              class="judgFreedomTable"
+              @selection-change="selectJudgFreedom"
+            >
+              <el-table-column type="selection"></el-table-column>
+              <el-table-column prop="drawerName" label="违法程度"></el-table-column>
+              <el-table-column prop="wfqj" label="违法情节"></el-table-column>
+              <el-table-column prop="jycf" label="建议处罚"></el-table-column>
+            </el-table> -->
           </div>
         </div>
         <div>
@@ -486,40 +526,46 @@
         </div>
         <el-button class="caseSubmitBtn" icon="el-icon-plus" @click="submitInfo">提交</el-button>
         <el-button class="caseSubmitBtn caseSubmitBtn2" icon="el-icon-plus" @click="stageInfo">暂存</el-button>
-
       </div>
     </el-form>
 
     <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson"></chooseLawPerson>
-    <punishDiag ref="punishDiagRef"></punishDiag>
+    <punishDiag ref="punishDiagRef" @setIllegalLawAndPunishLaw="setIllegalLawAndPunishLaw"></punishDiag>
   </div>
 </template>
 <script>
 import chooseLawPerson from "./chooseLawPerson";
 import punishDiag from "./punishDiag";
+import iLocalStroage from "@/js/localStroage";
 
 export default {
   data() {
     //选择个人试验证
     var validatePart = (rule, value, callback) => {
-      if (partyType == 1 && !value) {
+      if (this.inforForm.partyType == 1 && !value) {
         return callback(new Error("请输入"));
       }
       callback();
     };
     //选择公司时验证
     var validatePartName = (rule, value, callback) => {
-      if (partyType == 2 && !value) {
+      if (this.inforForm.partyType == 2 && !value) {
         return callback(new Error("请输入"));
       }
       callback();
     };
     return {
       inforForm: {
-        caseType: "",
-        time1: "",
+        caseSource: "", //案件来源
+        caseSourceText: "", //案件来源后的
+        afsj: "", //案发时间
+        acceptTime: "", //受案时间
+        caseCauseId: "", //违法行为id
+        caseCauseName: "", //违法行为
+        programType: "", //案件类型
+        caseType: "", //程序类型
         lawPersonList: "",
-        partyType: "1", //当事人类型
+        partyType: 1, //当事人类型
         party: "", //当事人信息-当事人姓名
         partyIdType: "0", //证件类型
         partyIdNo: "", //当事人信息-身份证件号
@@ -550,39 +596,43 @@ export default {
         trailerCcertId: "",
         caseCauseNameCopy: "",
         illegalLaw: "",
-        punishLaw: ""
+        punishLaw: "",
+        discretionId:"",
+        tempPunishAmount:""
       },
       rules: {
-        caseType: [{ required: true, message: "请选择", trigger: "blur" }],
-        time2: [{ required: true, message: "请选择时间", trigger: "blur" }],
+        caseSource: [{ required: true, message: "请选择", trigger: "change" }],
+        acceptTime: [
+          { required: true, message: "请选择时间", trigger: "change" }
+        ],
         party: [
-          { required: true, message: "请输入", trigger: "blur" },
+          // { required: true, message: "请输入", trigger: "blur" },
           { validator: validatePart, trigger: "blur" }
         ],
         partyName: [
-          { required: true, message: "请输入", trigger: "blur" },
+          // { required: true, message: "请输入", trigger: "blur" },
           { validator: validatePartName, trigger: "blur" }
-        ],
-        relationWithCase: [
-          { required: true, message: "请选择", trigger: "blur" }
         ]
+        // relationWithCase: [
+        //   { required: true, message: "请选择", trigger: "change" }
+        // ]
       },
       //案件类型
-      allCaseType: [
-        { value: 0, label: "行政检测" },
-        { value: 1, label: "投诉举报" },
-        { value: 2, label: "上级交办" },
-        { value: 3, label: "下级报请" },
-        { value: 4, label: "部门移送" },
-        { value: 5, label: "其他途径" }
+      allcaseSource: [
+        { value: "行政检查", label: "行政检查" },
+        { value: "投诉举报", label: "投诉举报" },
+        { value: "上级交办", label: "上级交办" },
+        { value: "下级报请", label: "下级报请" },
+        { value: "部门移送", label: "部门移送" },
+        { value: "其他途径", label: "其他途径" }
       ],
       //证件类型
       credentialType: [
         { value: "0", label: "身份证" },
         { value: "1", label: "护照" }
       ],
-      alreadyChooseLawPerson: [{ value: "1", label: "张三" }],
-      partyTypePerson: "", //判断要显示的部分
+      alreadyChooseLawPerson: [],
+      partyTypePerson: "1", //判断要显示的部分
       driverOrAgentInfoList: [
         {
           //驾驶人或代理人
@@ -639,7 +689,12 @@ export default {
         { value: "8", label: "摩托车" },
         { value: "9", label: "拖拉机" }
       ],
-      showTrailer: false //是否显示挂车信息
+      showTrailer: false, //是否显示挂车信息
+      judgFreedomList: [], //自由裁量列表
+      caseSourceTextDisable: false,
+      relationWithPartyIsOne:false, //与当事人关系是否为同一人
+      activeJudgli:'',
+      showOverrun:false,  //显示超限信息锚点
     };
   },
   components: {
@@ -647,9 +702,18 @@ export default {
     punishDiag
   },
   methods: {
+    //更改案件来源
+    changeCaseSource(val) {
+      console.log(val);
+      if (val == "行政检查" || val == "投诉举报") {
+        this.caseSourceTextDisable = true;
+      } else {
+        this.caseSourceTextDisable = false;
+      }
+    },
     //选择执法人员
     addLawPerson() {
-      this.$refs.chooseLawPersonRef.showModal();
+      this.$refs.chooseLawPersonRef.showModal(this.inforForm.lawPersonList);
     },
     //设置执法人员
     setLawPerson(userlist) {
@@ -659,8 +723,48 @@ export default {
     },
     //更改当事人类型
     changePartyType(val) {
-      console.log(val);
       this.partyTypePerson = val;
+      if (val == "1") {
+        this.inforForm.partyName = "";
+        this.inforForm.partyUnitTel = "";
+        this.inforForm.socialCreditCode = "";
+        this.inforForm.roadTransportLicense = "";
+        this.inforForm.partyManager = "";
+        this.inforForm.partyManagerPositions = "";
+        this.inforForm.partyUnitAddress = "";
+      } else {
+        this.inforForm.party = "";
+        this.inforForm.partyIdType = "";
+        this.inforForm.partyIdNo = "";
+        this.inforForm.partySex = "";
+        this.inforForm.partyAge = "";
+        this.inforForm.partyTel = "";
+        this.inforForm.partyAddress = "";
+        this.inforForm.partyZipCode = "";
+        this.inforForm.partyUnitPosition = "";
+        this.inforForm.occupation = "";
+        this.inforForm.partyEcertId = "";
+      }
+    },
+    //更改与当事人关系   为同一人时自动赋值且不可编辑
+    changeRelationWithParty(val){
+      console.log(val);
+      if(val=="0"){
+        console.log(val)
+        this.driverOrAgentInfoList[0].name = this.inforForm.party;
+        this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
+        this.driverOrAgentInfoList[0].sex = this.inforForm.partySex;
+        this.driverOrAgentInfoList[0].age = this.inforForm.partyAge;
+        this.driverOrAgentInfoList[0].tel = this.inforForm.partyTel;
+        this.driverOrAgentInfoList[0].adress = this.inforForm.partyAddress;
+        this.driverOrAgentInfoList[0].adressCode = this.inforForm.partyZipCode;
+        this.driverOrAgentInfoList[0].company = this.inforForm.partyUnitPosition;
+        this.driverOrAgentInfoList[0].position = this.inforForm.occupation;
+        this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
+        this.relationWithPartyIsOne = true;
+      }else{
+        this.relationWithPartyIsOne = false;
+      }
     },
     //添加其他人信息
     addDriverOrAgent() {
@@ -687,25 +791,134 @@ export default {
     },
     //点击处罚依据显示弹窗
     showPunishDiag() {
-      this.$refs.punishDiagRef.showModal();
+      let data = {
+        caseCauseId: this.inforForm.caseCauseId,
+        caseCauseName: this.inforForm.caseCauseName
+      };
+      this.$refs.punishDiagRef.showModal(data);
     },
-    toNextPart(){
+    //设置违法条款和处罚条款
+    setIllegalLawAndPunishLaw(data) {
+      console.log(data);
+      let illegalLawArr = [];
+      let punishLawArr = [];
 
+      data.forEach(item => {
+        illegalLawArr.push(item.illageClause);
+        punishLawArr.push(item.punishClause);
+      });
+      this.inforForm.illegalLaw = illegalLawArr.join(";");
+      this.inforForm.punishLaw = punishLawArr.join(";");
     },
-    jump(index){
-      if(index==2){
-        let a = document.getElementById('title2').scrollTop;
-        console.log("a",a);
+    //查询自由裁量标准
+    findJudgFreedomList() {
+      this.$store.dispatch("findJudgFreedomList").then(
+        res => {
+          console.log(res);
+          this.judgFreedomList = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    //选中自由裁量
+    selectJudgFreedom(item) {
+      console.log(item);
+      if(this.activeJudgli == item.drawerName){
+        this.activeJudgli="";
+        this.inforForm.discretionId = "";
+      }else{
+        this.activeJudgli = item.drawerName;
+        this.inforForm.discretionId = item.id;
+      }
+    },
+    toNextPart() {},
+    jump(index) {
+      if (index == 2) {
+        // let a = document.getElementById('title2').ffsetTop;
+        // console.log("a",a);
       }
     },
     //提交信息
-    submitInfo(){
-
+    submitInfo() {
+      this.$refs["inforForm"].validate(valid => {
+        if (valid) {
+          // let submitData = {
+          //   caseSource: this.inforForm.caseSource,
+          //   inforForm: this.inforForm.inforForm,
+          //   afsj: this.inforForm.afsj,
+          //   acceptTime: this.inforForm.acceptTime,
+          //   caseCauseId: this.inforForm.caseCauseId,
+          //   caseCauseName: this.inforForm.caseCauseName,
+          //   programType: this.inforForm.programType,
+          //   caseType: this.inforForm.caseType,
+          //   lawPersonList: this.inforForm.lawPersonList,
+          //   partyType: this.inforForm.partyType,
+          //   party: this.inforForm.party,
+          //   partyIdType: this.inforForm.partyIdType,
+          //   partyIdNo: this.inforForm.partyIdNo,
+          //   partySex: this.inforForm.partySex,
+          //   partyAge: this.inforForm.partyAge,
+          //   partyTel: this.inforForm.partyTel,
+          //   partyAddress: this.inforForm.partyAddress,
+          //   partyZipCode: this.inforForm.partyZipCode,
+          //   partyUnitPosition: this.inforForm.partyUnitPosition,
+          //   occupation: this.inforForm.occupation,
+          //   partyEcertId: this.inforForm.partyEcertId,
+          //   partyName: this.inforForm.partyName,
+          //   partyUnitTel: this.inforForm.partyUnitTel,
+          //   socialCreditCode: this.inforForm.socialCreditCode,
+          //   roadTransportLicense: this.inforForm.roadTransportLicense,
+          //   partyManager: this.inforForm.partyManager,
+          //   partyManagerPositions: this.inforForm.partyManagerPositions,
+          //   partyUnitAddress: this.inforForm.partyUnitAddress,
+          //   vehicleShipId: this.inforForm.vehicleShipId,
+          //   vehicleIdColor: this.inforForm.vehicleIdColor,
+          //   vehicleShipType: this.inforForm.vehicleShipType,
+          //   brand: this.inforForm.brand,
+          //   ccertId: this.inforForm.ccertId,
+          //   trailerIdNo: this.inforForm.trailerIdNo,
+          //   trailerColor: this.inforForm.trailerColor,
+          //   trailerType: this.inforForm.trailerType,
+          //   trailerBrand: this.inforForm.trailerBrand,
+          //   trailerCcertId: this.inforForm.trailerCcertId,
+          //   caseCauseNameCopy: this.inforForm.caseCauseNameCopy,
+          //   illegalLaw: this.inforForm.illegalLaw,
+          //   punishLaw: this.inforForm.punishLaw,
+          //   agentPartyEcertId:JSON.stringify(this.driverOrAgentInfoList),
+          //   discretionId:this.inforForm.discretionId
+          // };
+          this.inforForm.agentPartyEcertId = JSON.stringify(this.driverOrAgentInfoList);
+          this.$store.dispatch("saveOrUpdateCaseBasicInfo", this.inforForm).then(
+            res => {
+              console.log(res);
+              this.$message({
+                type: "success",
+                message: "提交成功!"
+              });
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        }
+      });
     },
-    stageInfo(){
-
-    }
-
+    stageInfo() {}
+  },
+  mounted() {
+    let someCaseInfo = iLocalStroage.gets("someCaseInfo");
+    console.log(someCaseInfo);
+    this.inforForm.caseCauseName = someCaseInfo.illageAct;
+    this.inforForm.caseCauseNameCopy = someCaseInfo.illageAct;
+    this.inforForm.caseCauseId = someCaseInfo.illageActId;
+    this.inforForm.programType = someCaseInfo.programType;
+    this.inforForm.caseType = someCaseInfo.caseType;
+    this.showOverrun = someCaseInfo.illageAct == '车辆在公路上擅自超限行驶' ? true : false
+  },
+  created() {
+    this.findJudgFreedomList();
   }
 };
 </script>
