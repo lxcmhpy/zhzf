@@ -55,9 +55,9 @@ export function getIllegaActApi(organId) {
 
 
 //根据案件ID获取案件信息
-export function getCaseBasicInfoApi(id) { 
+export function getCaseBasicInfoApi(data) { 
   return request({
-    url: "/doc/caseBasicInfo/findById/"+"12345666666666",
+    url: "/doc/caseBasicInfo/findById/"+data.id,
     method: "get",
     // params:params,
     showloading: true,
@@ -85,6 +85,32 @@ export function getDocDataByCaseIdAndDocIdApi(data) {
     method: "get",
     // data:vm.$qs.stringify(data),
     params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据案件ID和表单模板ID查找表单信息
+export function getFormDataByCaseIdAndFormIdApi(data) { 
+  console.log(data);
+  return request({
+    url: "/doc/linkData/findByCaseIdAndLinkTypeId/"+data.casebasicInfoId+"/"+data.caseLinktypeId,
+    method: "get",
+    // data:vm.$qs.stringify(data),
+    // params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+
+//保存或修改表单
+export function addFormDataApi(data) { 
+  console.log(data);
+  return request({
+    url: "/doc/linkData/saveOrUpdateLink",
+    method: "post",
+    data:vm.$qs.stringify(data),
     showloading: true,
     cancelToken: setCancelSource()
   });

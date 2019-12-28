@@ -121,7 +121,7 @@
             </div>
           </div>
           <div class="border_blue"></div>
-          <div class="content_form bottom_form">
+          <div class="content_form">
             <div class="row">
               <div class="col">
                 <el-form-item label="联系地址：">
@@ -283,7 +283,7 @@ export default {
       this.caseDocDataForm.caseBasicinfoId = "12345666666666";
       this.caseDocDataForm.caseDoctypeId = "1234";
       this.caseDocDataForm.docData = JSON.stringify(this.illegalActForm);
-      if (handelType == 0) {
+      if(handelType == 0) {
         this.caseDocDataForm.status = 0;
       } else {
         this.caseDocDataForm.status = 1;
