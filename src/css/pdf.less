@@ -57,13 +57,7 @@
         text-indent: 0;
     }
 
-    // pdf下划线
-    .pdf-line {
-        display           : inline-block;
-        border-bottom     : 1px solid black;
-        text-align        : center;
-        text-indent       : 0;
-    }
+
 
     // 线条宽度
     .width250 {
@@ -134,5 +128,21 @@
     // 表格中居右显示的字体
     .text-right {
         text-align: right;
+    }
+
+    /deep/p {
+        text-align-last: left;
+        text-align     : justify;
+        text-justify: distribute-all-lines; // 兼容ie浏览器
+  // pdf下划线
+        /deep/.pdf-line {
+            display      : inline-block;
+            border-bottom: 1px solid black;
+            text-align   : center;
+            text-align-last: center;
+            text-justify: distribute-all-lines; // 兼容ie浏览器
+
+            text-indent  : 0;
+        }
     }
 }

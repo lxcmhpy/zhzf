@@ -7,7 +7,114 @@
     box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
     position  : relative;
 
+    /deep/ .el-form {
+        width: 100%;
+
+        .el-form-item__label {
+            padding: 0 12px 0 21px;
+        }
+
+        .line-height15 {
+            /deep/.el-form-item__label {
+                line-height: 1.3em;
+            }
+        }
+
+        .content_form {
+            width         : 794px;
+            height        : auto;
+            padding       : 28px 22px 10px 0;
+            background    : rgba(252, 252, 252, 1);
+            border-left   : 1px solid rgba(238, 238, 238, 1);
+            border-right  : 1px solid rgba(238, 238, 238, 1);
+            display       : flex;
+            flex-direction: column;
+            align-items   : center;
+
+            /deep/.el-form-item {
+                // margin-bottom: 6px !important;
+                width           : 100%;
+
+                /deep/.el-input__inner {
+                    border-radius: 2px;
+                }
+
+                /deep/.height106 {
+                    /deep/.el-textarea__inner {
+                        border-radius: 2px;
+                        resize       : none;
+                        min-height   : 106px !important;
+                    }
+                }
+
+                /deep/.height122 {
+                    /deep/.el-textarea__inner {
+                        border-radius: 2px;
+                        resize       : none;
+                        min-height   : 122px !important;
+                    }
+                }
+
+                // 抽屉表
+                /deep/.el-select {
+                    width: 100%;
+                }
+
+
+            }
+        }
+
+        .row {
+            width  : 100%;
+            display: flex;
+        }
+
+        .rows {
+            margin-top: 16px;
+            width     : 100%;
+            display   : flex;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        // 更高优先级-不同高度textarea
+        .bottom_form {
+            background  : transparent !important;
+            border-left : 0 !important;
+            border-right: 0 !important;
+
+        }
+    }
+
     .header {
+        width        : 100%;
+        height       : 51px;
+        border-bottom: 1px solid rgba(221, 221, 221, 1);
+
+        .header_left {
+            width      : auto;
+            height     : 100%;
+            margin-left: 23px;
+            float      : left;
+            cursor     : pointer;
+            display    : flex;
+            align-items: center;
+
+            .header_left_text {
+                font-size  : 14px;
+                font-family: PingFang SC;
+                font-weight: 400;
+                color      : rgba(100, 105, 116, 1);
+                line-height: 51px;
+                margin-left: 7px;
+            }
+        }
+    }
+
+    // 调查类文书
+    .header-case {
         width        : 100%;
         height       : 51px;
         border-bottom: 1px solid rgba(221, 221, 221, 1);
@@ -37,6 +144,8 @@
         display       : flex;
         flex-direction: column;
         align-items   : center;
+        box-shadow    : 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+
 
         .content {
             width         : 818px;
@@ -57,79 +166,6 @@
                 line-height  : 25px;
             }
 
-            /deep/ .el-form {
-                width: 100%;
-
-                .content_form {
-                    width         : 794px;
-                    height        : auto;
-                    padding       : 28px 22px 10px 0;
-                    background    : rgba(252, 252, 252, 1);
-                    border-left   : 1px solid rgba(238, 238, 238, 1);
-                    border-right  : 1px solid rgba(238, 238, 238, 1);
-                    display       : flex;
-                    flex-direction: column;
-                    align-items   : center;
-
-                    /deep/.el-form-item {
-                        // margin-bottom: 6px !important;
-                        width           : 100%;
-
-                        /deep/.el-input__inner {
-                            border-radius: 2px;
-                        }
-
-                        /deep/.height106 {
-                            /deep/.el-textarea__inner {
-                                border-radius: 2px;
-                                resize       : none;
-                                min-height   : 106px !important;
-                            }
-                        }
-
-                        /deep/.height122 {
-                            /deep/.el-textarea__inner {
-                                border-radius: 2px;
-                                resize       : none;
-                                min-height   : 122px !important;
-                            }
-                        }
-
-                        // 抽屉表
-                        /deep/.el-select {
-                            width: 100%;
-                        }
-
-
-                    }
-                }
-
-                .row {
-                    width  : 100%;
-                    display: flex;
-                }
-
-                .rows {
-                    margin-top: 16px;
-                    width     : 100%;
-                    display   : flex;
-                }
-
-                .col {
-                    flex: 1;
-                }
-
-                // 更高优先级-不同高度textarea
-                .bottom_form {
-                    background  : transparent !important;
-                    border-left : 0 !important;
-                    border-right: 0 !important;
-
-                }
-            }
-
-
-
             // 表格form
             .table_form {
                 width  : 100%;
@@ -139,39 +175,46 @@
                 display       : flex;
                 flex-direction: column;
                 align-items   : center;
+
             }
         }
     }
-
 
 }
 
 // 悬浮按钮
 .float-btns {
-    width        : 48px;
-    height       : 100px;
-    position     : absolute;
-    right        : 27px;
-    bottom       : 97px;
+    width   : 48px;
+    height  : 100px;
+    position: absolute;
+    right   : 27px;
+    bottom  : 97px;
 
-    /deep/.el-button{
-        width: 48px;
-        height: 48px;
-        padding: 0;
+    /deep/.el-button {
+        border-radius: 1px;
+        width     : 48px;
+        height    : 48px;
+        padding   : 0;
         text-align: center;
-        
     }
-    /deep/.el-button+.el-button{
-        margin: 0;
-        margin-top: 10px;
+
+    /deep/.el-button+.el-button {
+        margin-left: 0;
+        margin-top : 10px;
     }
-    /deep/.el-button--success{
-        color:white;
+
+    /deep/.el-button--success {
+        color           : white;
         background-color: #4AAFA7;
-        border-color: #4AAFA7;
+        border-color    : #4AAFA7;
 
     }
 
+}
+.btn-height63{
+    /deep/.el-button {
+        height    : 63px !important;
+    }
 }
 
 .border_blue {
@@ -205,4 +248,12 @@
 
 .height122 {
     height: 122px;
+}
+
+// 表格内图标
+[class*=" el-icon-"],
+[class^=el-icon-] {
+    color: #0074F5;
+    width: 16px;
+    height: 16px;
 }
