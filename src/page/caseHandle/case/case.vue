@@ -270,16 +270,7 @@ export default {
     },
     // 结案报告-表单
     goFinishReprotForm() {
-      this.makeRoute(
-        "/finishForm",
-        "/finishForm2",
-        "/finishForm3",
-        "finishForm",
-        "finishForm2",
-        "finishForm3",
-        "结案报告-表单",
-        "caseHandle/case/form/finishReportForm.vue"
-      );
+      this.$router.push({ name: 'finishForm' });
     },
     // 结案报告-打印
     goFinishReprot() {

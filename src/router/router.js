@@ -22,7 +22,7 @@ export const redirectRouter = {
   redirect: { name: "login" }
 };
 
-//首页
+//首页 及 文书
 export const homeRouter = {
   path: "/home",
   name: "home",
@@ -41,6 +41,30 @@ export const homeRouter = {
           },
           component: () => import("@/page/home.vue")
         }
+      ]
+    },
+    {
+      path: "/caseBook",
+      name: "caseBook",
+      component:MainContent,
+      children:[
+        {
+          path: "/inquestNotes",
+          name: "inquestNotes",
+          meta: {
+            title: "勘验笔录"
+          },
+          component: () => import("@/page/caseHandle/case/inquestNotes.vue")
+        },
+        {
+          path: "/finishForm",
+          name: "finishForm",
+          meta: {
+            title: "结案报告"
+          },
+          component: () => import("@/page/caseHandle/case/form/finishReportForm.vue")
+        }
+        
       ]
     }
   ] 
