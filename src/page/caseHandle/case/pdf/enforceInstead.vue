@@ -49,7 +49,8 @@
       </div>
       <div class="pdf-report-info">
         <p>因你（单位）<span class="pdf-line width555">&nbsp;</span>，</p>
-        <p> □1.本机关于
+        <p>
+          <input type="checkbox">1.本机关于
           <span class="pdf-line width80">2019</span>年
           <span class="pdf-line width80">12</span>月
           <span class="pdf-line width80">31</span>日作出了
@@ -61,7 +62,7 @@
           的规定，
         </p>
         <p>
-          □2.需要立即清除道路、河道、航道或者公共场所的遗洒物、障碍物或者污
+          <input type="checkbox">2.需要立即清除道路、河道、航道或者公共场所的遗洒物、障碍物或者污
           染物，因你（单位）不能清除，依据《中华人民共和国行政强制法》第五十二条以及
           <span class="pdf-line width250">&nbsp;</span>
           的规定，
@@ -75,7 +76,7 @@
 
           1.代履行人：
 
-          □本机关 □第三人：
+          <input type="checkbox">本机关 <input type="checkbox">第三人：
           <span class="pdf-line width430">&nbsp;</span>
         </p>
         <p>

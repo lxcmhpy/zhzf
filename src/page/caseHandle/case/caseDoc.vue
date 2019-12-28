@@ -59,7 +59,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="统一社会信用代码" class="line-height15">
+                <el-form-item prop="caseName" label="统一社会信用代码" class="line-height13">
                   <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>

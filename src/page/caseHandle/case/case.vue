@@ -28,7 +28,10 @@
 
         表单：
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
-        <li @click="goEnforceReprotForm">表单二十二：中止（终结、恢复）行政强制执行通知书(未完成)</li>
+        <li @click="goEnforceInsteadForm">表单十九 ： 代履行决定书(无样式图)</li>
+        <li @click="goEnforceInsteadForm">表单二十 ： 代履行决定书(无样式图)</li>
+        <li @click="goEnforceInsteadForm">表单二十一 ： 代履行决定书(无样式图)</li>
+        <li @click="goEnforceReprotForm">表单二十二：中止（终结、恢复）行政强制执行通知书(未完成-无样式图)</li>
         <li @click="goSendReprotForm">表单二十三：送达回证</li>
         <li @click="goFinishReprotForm">表单二十四： 结案报告</li>
         <br><br>
@@ -104,7 +107,7 @@ export default {
         "establish",
         "establish2",
         "establish3",
-        "问询",
+        "立案登记表",
         "caseHandle/case/pdf/establish.vue"
       );
     },
@@ -118,7 +121,7 @@ export default {
     //     "inspect",
     //     "inspect2",
     //     "inspect3",
-    //     "问询",
+    //     "勘验笔录",
     //     "caseHandle/case/inspectRecord.vue"
     //   );
     // },
@@ -131,7 +134,7 @@ export default {
         "/payStage",
         "/payStage2",
         "/payStage3",
-        " 代履行决定书-表单",
+        "分期（延期）缴纳罚款通知书-打印",
         "caseHandle/case/pdf/payStage.vue"
       );
     },
@@ -144,7 +147,7 @@ export default {
         "/executAnnounce",
         "/executAnnounce2",
         "/executAnnounce3",
-        " 代履行决定书-表单",
+        "执行公告-打印",
         "caseHandle/case/pdf/executAnnounce.vue"
       );
     },
@@ -157,8 +160,21 @@ export default {
         "/remindLetter",
         "/remindLetter2",
         "/remindLetter3",
-        " 代履行决定书-表单",
+        "催告书-打印",
         "caseHandle/case/pdf/remindLetter.vue"
+      );
+    },
+      //  代履行决定书-表单
+    goEnforceInsteadForm() {
+      this.makeRoute(
+        "/enforceInsteadForm",
+        "/enforceInsteadForm2",
+        "/enforceInsteadForm3",
+        "/enforceInsteadForm",
+        "/enforceInsteadForm2",
+        "/enforceInsteadForm3",
+        " 代履行决定书-表单",
+        "caseHandle/case/form/enforceInsteadForm.vue"
       );
     },
         //  代履行决定书-打印

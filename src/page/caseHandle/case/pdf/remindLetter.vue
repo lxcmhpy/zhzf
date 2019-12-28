@@ -33,11 +33,11 @@
         <p>4.履行要求：<span class="pdf-line width430">&nbsp;</span></p>
         <p>5.其他事项：<span class="pdf-line width430">&nbsp;</span></p>
         <p>你（单位）逾期仍不履行的，本机关将依法采取以下措施：</p>
-        <p>□1.到期不缴纳罚款的，每日按罚款数额的百分之三加处罚款。</p>
-        <p>□2.根据法律规定，将查封、扣押的财物拍卖抵缴罚款。</p>
-        <p>□3.申请人民法院强制执行。</p>
-        <p>□4.依法代履行或者委托第三人：<span class="pdf-line width250">&nbsp;</span>代履行。</p>
-        <p>□5.其他强制执行方式：<span class="pdf-line width430">&nbsp;</span>。</p>
+        <p><input type="checkbox">1.到期不缴纳罚款的，每日按罚款数额的百分之三加处罚款。</p>
+        <p><input type="checkbox">2.根据法律规定，将查封、扣押的财物拍卖抵缴罚款。</p>
+        <p><input type="checkbox">3.申请人民法院强制执行。</p>
+        <p><input type="checkbox">4.依法代履行或者委托第三人：<span class="pdf-line width250">&nbsp;</span>代履行。</p>
+        <p><input type="checkbox">5.其他强制执行方式：<span class="pdf-line width430">&nbsp;</span>。</p>
         <p>你（单位）可向本机关进行陈述或申辩，本机关将依法核实。</p>
         <div class="pdf-wirte">
           <div class="pdf-seal">
