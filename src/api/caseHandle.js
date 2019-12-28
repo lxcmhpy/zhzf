@@ -4,28 +4,28 @@ import Vue from "vue";
 let vm = new Vue();
 
 //获取执法门类
-export function getEnforceLawTypeApi(organId) { 
+export function getEnforceLawTypeApi(organId) {
   return request({
-    url: "/sys/lawCategory/findLawCateByOrganId/"+organId,
+    url: "/sys/lawCategory/findLawCateByOrganId/" + organId,
     method: "get",
     showloading: true,
     cancelToken: setCancelSource()
   });
 }
 //获取案件类型
-export function getCaseTypeApi(data) { 
-    let params={
-      programType:data.programType,
-      organId:"1",
-      cateId:data.cateId
-    }
-    return request({
-      url: "/sys/lawCategory/queryLawCateOrganType",
-      method: "get",
-      params:params,
-      showloading: true,
-      cancelToken: setCancelSource()
-    });
+export function getCaseTypeApi(data) {
+  let params = {
+    programType: data.programType,
+    organId: "1",
+    cateId: data.cateId
+  }
+  return request({
+    url: "/sys/lawCategory/queryLawCateOrganType",
+    method: "get",
+    params: params,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
 }
 //获取行业类别
 export function getIndustryCategoryApi(data) { 
@@ -92,6 +92,29 @@ export function findLawOfficerListApi() {
   return request({
     url: "/sys/lawOfficer/listPage",
     method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据案件ID获取案件信息
+export function getCaseBasicInfoApi(id) { 
+  return request({
+    url: "/doc/caseBasicInfo/findById/"+"2c902ae66ae2acc4016ae376f6f1007f",
+    method: "get",
+    // params:params,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//保存文书
+export function addDocDataApi(data) { 
+  console.log(data);
+  return request({
+    url: "/doc/data/create",
+    method: "post",
+    data:vm.$qs.stringify(data),
     showloading: true,
     cancelToken: setCancelSource()
   });

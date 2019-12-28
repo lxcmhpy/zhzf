@@ -1,4 +1,5 @@
-import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi } from "@/api/caseHandle";
+import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,
+    getCaseBasicInfoApi,addDocDataApi } from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -103,7 +104,32 @@ const caseHandle = {
                         reject(error);
                     })
             })
-        }
+        },
+        //获取案件详细信息
+        getCaseBasicInfo({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getCaseBasicInfoApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        // 添加案件信息
+        addDocData({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                addDocDataApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+
 
 
 

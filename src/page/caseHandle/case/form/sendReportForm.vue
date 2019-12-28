@@ -1,0 +1,208 @@
+<template>
+  <div class="box">
+    <div class="header">
+      <div class="header_left">
+        <div class="triangle"></div>
+        <div class="header_left_text">
+          返回
+        </div>
+      </div>
+    </div>
+    <div class="content_box">
+      <div class="content">
+        <div class="content_title">
+          送达回证
+        </div>
+        <div class="border_blue"></div>
+        <el-form ref="docData" :model="docData" label-width="135px">
+          <div class="content_form">
+            <div class="row">
+              <div class="col">
+                <el-form-item label="案号：">
+                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <el-form-item label="案由：">
+                  <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="rows">
+              <div class="col">
+                <el-form-item label="送达单位：">
+                  <el-input ref="CONTACTOR" clearable class="w-120" v-model="docData.CONTACTOR" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <el-form-item label="接收方式：">
+                  <el-select v-model="docData.region" placeholder="请选择">
+                    <el-option label="本人接收" value="benren"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item label-width="23px">
+                  <el-input ref="CONTACTOR" clearable class="w-120" v-model="docData.CONTACTOR" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="border_blue"></div>
+          <div class="table_form">
+            <el-table :data="tableDatas" border style="width: 100%" height="100%">
+              <el-table-column prop="name" label="送达文书名称、案号" align="center">
+              </el-table-column>
+              <el-table-column prop="isApproval" label="送达地点" align="center">
+              </el-table-column>
+              <el-table-column prop="backName" label="送达日期" align="center">
+              </el-table-column>
+              <el-table-column prop="isAutoPdf" label="送达方式" align="center">
+              </el-table-column>
+            </el-table>
+          </div>
+
+          <div class="border_blue"></div>
+          <div class="content_form bottom_form">
+            <el-form-item label="处理结果：">
+              <el-input type="textarea" class="height106" v-model="docData.CONTACTOR" size="small" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="执行情况：">
+              <el-input type="textarea" class="height122" v-model="docData.CONTACTOR" size="small" placeholder="请输入"></el-input>
+            </el-form-item>
+          </div>
+        </el-form>
+      </div>
+      <!-- 悬浮按钮 -->
+      <div class="float-btns">
+        <el-button type="primary" @click="addIllegalAction">
+          <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
+            <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF"></path>
+          </svg><br>
+          提交</el-button>
+        <el-button type="success">
+          <svg t="1577415780823" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2584" width="16" height="16">
+            <path d="M98 124.1V902c0 14.3 11.6 25.9 25.9 25.9h777.9c14.3 0 25.9-11.6 25.9-25.9V124.1c0-14.3-11.6-25.9-25.9-25.9H123.9c-14.3 0-25.9 11.6-25.9 25.9z m207.4 37.6h414.9v191.7H305.4V161.7z m558.8 702.7H162.6V161.7h104v230.6h492.7V161.7h105v702.7z" p-id="2585" fill="#FFFFFF"></path>
+            <path d="M605.1 191.9h70v128h-70z" p-id="2586" fill="#FFFFFF"></path>
+          </svg>
+          <br>
+          暂存</el-button>
+      </div>
+    </div>
+
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      docData: {
+        partyType: '个人',
+      },
+      CaseDocDataForm: {
+        caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
+        caseDoctypeId: "123",
+        //文书数据
+        docData: "",
+        status: "",
+      },
+
+      rules: {
+        caseNumber: [
+          { required: true, message: '案号必须填写', trigger: 'blur' }
+        ],
+        caseName: [
+          { required: true, message: '案由必须填写', trigger: 'blur' }
+        ],
+        partyType: [
+          { required: true, message: '当事人类型必须填写', trigger: 'blur' }
+        ],
+        closeResult: [
+          { required: true, message: '处理结果必须填写', trigger: 'blur' }
+        ],
+        closeSituation: [
+          { required: true, message: '执行情况必须填写', trigger: 'blur' }
+        ],
+      },
+      tableDatas: [{
+        name: '立案',
+        isApproval: '是',
+        backName: '立案',
+        isAutoPdf: '是',
+        pdfType: '立案登记表',
+        pdfType: '立案登记表',
+        order: '1',
+        adress: '../../jdfhu',
+        discripe: '描述',
+        workId: '11'
+      }, {
+        name: '调查类文书',
+        isApproval: '否',
+        backName: '调查',
+        isAutoPdf: '否',
+        pdfType: '',
+        order: '2',
+        adress: './kdsj',
+        discripe: '描述',
+        workId: '21',
+      }],
+    }
+  },
+  methods: {
+    // 获取带入信息
+    getCaseBasicInfo() {
+      this.$store.dispatch("getCaseBasicInfo", "1").then(
+        res => {
+          this.docData = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+
+    // 提交表单
+    addIllegalAction() {
+      console.log(this.CaseDocDataForm);
+      this.$refs["docForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
+            res => {
+              console.log("保存文书", res);
+              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
+              this.$message({
+                type: "success",
+                message: "保存成功"
+
+              });
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+
+      });
+      // console.log(this.CaseDocDataForm.docData);
+
+    },
+  },
+  mounted() {
+    this.getCaseBasicInfo();
+  },
+
+}
+</script>
+
+<style lang="less" scoped>
+@import "../../../../css/documentForm.less";
+</style>
