@@ -26,13 +26,13 @@ export const redirectRouter = {
 export const homeRouter = {
   path: "/home",
   name: "home",
-  component:Layout,
+  component: Layout,
   children: [
     {
       path: "/index",
       name: "home2",
-      component:MainContent,
-      children:[
+      component: MainContent,
+      children: [
         {
           path: "/index",
           name: "home_index",
@@ -46,8 +46,8 @@ export const homeRouter = {
     {
       path: "/caseBook",
       name: "caseBook",
-      component:MainContent,
-      children:[
+      component: MainContent,
+      children: [
         {
           path: "/inquestNotes",
           name: "inquestNotes",
@@ -57,28 +57,124 @@ export const homeRouter = {
           component: () => import("@/page/caseHandle/case/inquestNotes.vue")
         },
         {
+          path: "/enforceForm",
+          name: "enforceForm",
+          meta: {
+            title: "中止（终结、恢复）行政强制执行通知书-表单"
+          },
+          component: () => import("@/page/caseHandle/case/form/enforceForm.vue")
+        },
+        {
           path: "/finishForm",
           name: "finishForm",
           meta: {
-            title: "结案报告"
+            title: "结案报告-表单"
           },
           component: () => import("@/page/caseHandle/case/form/finishReportForm.vue")
-        }
-        
+        },
+        {
+          path: "/sendReportForm",
+          name: "sendReportForm",
+          meta: {
+            title: "送达回证-表单"
+          },
+          component: () => import("@/page/caseHandle/case/form/sendReportForm.vue")
+        },
+        {
+          path: "/caseDoc",
+          name: "caseDoc",
+          meta: {
+            title: "调查类文书"
+          },
+          component: () => import("@/page/caseHandle/case/caseDoc.vue")
+        },
+        {
+          path: "/establish",
+          name: "establish",
+          meta: {
+            title: "立案登记表-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/establish.vue")
+        },
+        {
+          path: "/payStage",
+          name: "payStage",
+          meta: {
+            title: "分期（延期）缴纳罚款通知书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/payStage.vue")
+        },
+        {
+          path: "/executAnnounce",
+          name: "executAnnounce",
+          meta: {
+            title: "执行公告-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/executAnnounce.vue")
+        },
+        {
+          path: "/remindLetter",
+          name: "remindLetter",
+          meta: {
+            title: "催告书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/remindLetter.vue")
+        },
+        {
+          path: "/enforceInstead",
+          name: "enforceInstead",
+          meta: {
+            title: "代履行决定书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/enforceInstead.vue")
+        },
+        {
+          path: "/enforceDecide",
+          name: "enforceDecide",
+          meta: {
+            title: "强制执行决定书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/enforceDecide.vue")
+        },
+        {
+          path: "/enforce",
+          name: "enforce",
+          meta: {
+            title: "中止（终结、恢复）行政强制执行通知书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/enforce.vue")
+        },
+        {
+          path: "/finishReport",
+          name: "finishReport",
+          meta: {
+            title: "结案报告-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/finishReport.vue")
+        },
+        {
+          path: "/sendReport",
+          name: "sendReport",
+          meta: {
+            title: "送达回证-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/sendReport.vue")
+        },
+
       ]
     }
-  ] 
+  ]
 };
 //主页的路由
 export const lagoutOneRouter = [
   {
-    path:'/main',
-    name:'main',
+    path: '/main',
+    name: 'main',
     component: mainLagout,
     children: [
       {
-        path:'/home',
-        name:'home',
+        path: '/home',
+        name: 'home',
         component: () => import("@/page/home.vue"),
       }
     ]
