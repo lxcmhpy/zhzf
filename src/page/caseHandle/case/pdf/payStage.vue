@@ -20,13 +20,13 @@
           关依据《中华人民共和国行政处罚法》第五十二条的规定，现决定：
         </p>
         <p>
-          □同意你（单位）延期缴纳罚款。延长至
+          <input type="checkbox">同意你（单位）延期缴纳罚款。延长至
           <span class="pdf-line width80">&nbsp;</span>年
           <span class="pdf-line width80">&nbsp;</span>月
           <span class="pdf-line width80">&nbsp;</span>日
         </p>
         <p>
-          □同意你（单位）分期缴纳罚款。第
+          <input type="checkbox">同意你（单位）分期缴纳罚款。第
           <span class="pdf-line width80">&nbsp;</span>。期至
           <span class="pdf-line width80">&nbsp;</span>年
           <span class="pdf-line width80">&nbsp;</span>月
@@ -35,7 +35,7 @@
           <span class="pdf-line width80">&nbsp;</span>元（大写）。
         </p>
         <p>
-          □由于<span class="pdf-line width430">&nbsp;</span>
+          <input type="checkbox">由于<span class="pdf-line width430">&nbsp;</span>
           ，因此，本机关认为你的申请不符合《中华人民共和国行政处罚法》第五十二条的规定，不同意你（单位）分期（延期）缴纳罚款。
         </p>
         <p>代收机构以本通知书为据，办理收款手续。</p>

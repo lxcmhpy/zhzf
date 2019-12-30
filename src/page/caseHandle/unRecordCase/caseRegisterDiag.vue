@@ -15,7 +15,7 @@
         label-width="100px"
       >
         <div class="item">
-          <el-form-item label="执法门类" prop="name">
+          <el-form-item label="执法门类" prop="cateId">
             <el-select v-model="caseRegisterForm.cateId" placeholder="请选择" @change="changeLawCate">
               <el-option
                 v-for="item in lawCateList"
@@ -27,7 +27,7 @@
           </el-form-item>
         </div>
         <div class="item">
-          <el-form-item label="程序类型" prop="type">
+          <el-form-item label="程序类型" prop="programType">
             <el-radio-group v-model="caseRegisterForm.programType" @change="changeType">
               <el-radio :label="0">一般程序</el-radio>
               <el-radio :label="1">简易程序</el-radio>
@@ -35,20 +35,20 @@
           </el-form-item>
         </div>
         <div class="item" id="illegalActBox">
-          <el-form-item label="违法行为" prop="yy">
-            <el-input v-model="caseRegisterForm.yy" @click="chooseIllegalAct">
+          <el-form-item label="违法行为" prop="illageAct">
+            <el-input v-model="caseRegisterForm.illageAct" @click="chooseIllegalAct">
               <el-button slot="append" @click="chooseIllegalAct"></el-button>
             </el-input>
           </el-form-item>
         </div>
         <div class="item">
-          <el-form-item label="案件类型" prop="name2">
-            <el-select v-model="caseRegisterForm.name2" placeholder="请选择">
+          <el-form-item label="案件类型" prop="caseType">
+            <el-select v-model="caseRegisterForm.caseType" placeholder="请选择">
               <el-option
                 v-for="item in caseTypeList"
-                :key="item.caseTypeId"
+                :key="item.caseTypeName"
                 :label="item.caseTypeName"
-                :value="item.caseTypeId"
+                :value="item.caseTypeName"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -60,11 +60,12 @@
       <el-button type="primary" @click="goToInforCollect">确 定</el-button>
     </span>
 
-    <chooseillegalAct ref="chooseillegalActRef"></chooseillegalAct>
+    <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
   </el-dialog>
 </template>
 <script>
 import chooseillegalAct from "./chooseillegalAct";
+import iLocalStroage from "@/js/localStroage";
 import MainContent from "@/components/mainContent";
 import Layout from "@/page/lagout/mainLagout"; //Layout 是架构组件，不在后台返回，在文件里单独引入
 export default {
@@ -74,20 +75,18 @@ export default {
       caseRegisterForm: {
         cateId: "",
         programType: 0,
-        name2: "",
-        yy: ""
+        caseType: "",
+        illageAct: ""
       },
+      illageActId: "", //违法行为id
       rules: {
-        name: [{ required: true, message: "请选择", trigger: "blur" }],
-        type: [{ required: true, message: "请选择", trigger: "blur" }],
-        name2: [{ required: true, message: "请选择", trigger: "blur" }],
-        yy: [{ required: true, message: "请选择", trigger: "blur" }]
+        cateId: [{ required: true, message: "请选择", trigger: "change" }],
+        programType: [{ required: true, message: "请选择", trigger: "change" }],
+        caseType: [{ required: true, message: "请选择", trigger: "change" }],
+        illageAct: [{ required: true, message: "请选择", trigger: "change" }]
       },
-      allName: [{ value: "0", label: "公路" }, { value: "1", label: "公路2" }],
-      allName2: [{ value: "0", label: "公路" }, { value: "1", label: "公路2" }],
-      lawCateList:[],  //执法门类列表
-      caseTypeList:[], //案件类型列表
-      
+      lawCateList: [], //执法门类列表
+      caseTypeList: [] //案件类型列表
     };
   },
   inject: ["reload"],
@@ -104,34 +103,33 @@ export default {
       this.visible = false;
     },
     changeType() {
-        this.getCaseType();
+      this.caseRegisterForm.caseType = [];
+      this.getCaseType();
     },
     //选择违法行为弹窗
     chooseIllegalAct() {
-        if(this.caseRegisterForm.cateId){
-            let cateName = '';
-            this.lawCateList.forEach(item=>{
-                if(item.cateId==this.caseRegisterForm.cateId){
-                    name = item.cateName;
-                    return;
-                }
-            })
-            let lawCate={
-                cateId:this.caseRegisterForm.cateId,
-                cateName:cateName
-            }
-            this.$refs.chooseillegalActRef.showModal(lawCate);
-        }else{
-            this.$message("请选择执法门类")
-        }
+      if (this.caseRegisterForm.cateId) {
+        let cateName = "";
+        this.lawCateList.forEach(item => {
+          if (item.cateId == this.caseRegisterForm.cateId) {
+            cateName = item.cateName;
+            return;
+          }
+        });
+        let lawCate = {
+          cateId: this.caseRegisterForm.cateId,
+          cateName: cateName
+        };
+        this.$refs.chooseillegalActRef.showModal(lawCate);
+      } else {
+        this.$message("请选择执法门类");
+      }
     },
     //获取执法门类
     getEnforceLawType() {
-        console.log('获取执法门类')
-      this.$store.dispatch("getEnforceLawType","1").then(
+      this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
           this.lawCateList = res.data;
-
         },
         err => {
           console.log(err);
@@ -140,11 +138,11 @@ export default {
     },
     //获取案件类型
     getCaseType() {
-        let data={
-            programType:this.caseRegisterForm.programType,
-            cateId:this.caseRegisterForm.cateId
-        }
-      this.$store.dispatch("getCaseType",data).then(
+      let data = {
+        programType: this.caseRegisterForm.programType,
+        cateId: this.caseRegisterForm.cateId
+      };
+      this.$store.dispatch("getCaseType", data).then(
         res => {
           console.log("案件类型", res);
           this.caseTypeList = res.data;
@@ -155,20 +153,42 @@ export default {
       );
     },
     //选择门类
-    changeLawCate(val){
-        this.getCaseType();
+    changeLawCate(val) {
+      this.getCaseType();
+    },
+    //设置违法行为
+    setIllegaAct(val) {
+      console.log("设置违法行为", val);
+      this.caseRegisterForm.illageAct = val.strContent;
+      this.illageActId = val.id;
     },
     goToInforCollect() {
-      this.makeRoute(
-        "/inforCollect",
-        "/inforCollect2",
-        "/inforCollect3",
-        "inforCollect",
-        "inforCollect2",
-        "inforCollect3",
-        "信息采集",
-        "caseHandle/unRecordCase/inforCollection.vue"
-      );
+      this.$refs["caseRegisterForm"].validate(valid => {
+        if (valid) {
+          //信息采集页是否显示超限信息
+          let someCaseInfo = {
+            illageAct: this.caseRegisterForm.illageAct,
+            illageActId: this.illageActId,
+            programType:
+              this.caseRegisterForm.programType == "0"
+                ? "一般程序"
+                : "简易程序",
+            caseType: this.caseRegisterForm.caseType,
+            // caseTypeId:caseTypeId
+          };
+          iLocalStroage.sets("someCaseInfo", someCaseInfo);
+          this.makeRoute(
+            "/inforCollect",
+            "/inforCollect2",
+            "/inforCollect3",
+            "inforCollect",
+            "inforCollect2",
+            "inforCollect3",
+            "信息采集",
+            "caseHandle/unRecordCase/inforCollection.vue"
+          );
+        }
+      });
     },
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
       //path不可以重复  name也不可以重复

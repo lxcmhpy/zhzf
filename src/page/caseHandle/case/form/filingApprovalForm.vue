@@ -167,10 +167,10 @@
                 <div class="col">
                   <el-form-item label="立案依据：">
                     <el-input
-                      ref="partyTel"
+                      ref="caseBasis"
                       clearable
                       class="w-120"
-                      v-model="formData.partyTel"
+                      v-model="formData.caseBasis"
                       size="small"
                       placeholder="请输入"
                     ></el-input>
@@ -253,10 +253,10 @@
                 <div class="col">
                   <el-form-item label="立案依据：">
                     <el-input
-                      ref="partyTel"
+                      ref="caseBasis"
                       clearable
                       class="w-120"
-                      v-model="formData.partyTel"
+                      v-model="formData.caseBasis"
                       size="small"
                       placeholder="请输入"
                     ></el-input>

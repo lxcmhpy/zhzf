@@ -8,7 +8,7 @@
     append-to-body
   >
     <div>
-      <p>违法行为:213213982493273953753573</p>
+      <p>违法行为:<span>{{caseCauseName}}</span></p>
       <el-table
         ref="multipleTable"
         :data="tableData"
@@ -16,15 +16,15 @@
         style="width: 100%"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="type" label="类型"></el-table-column>
-        <el-table-column prop="name2" label="违法条款" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="name" label="处罚依据" show-overflow-tooltip></el-table-column>
+        <el-table-column type="selection"></el-table-column>
+        <el-table-column prop="drawerName" label="类型"></el-table-column>
+        <el-table-column prop="illageClause" label="违法条款" ></el-table-column>
+        <el-table-column prop="punishClause" label="处罚依据" ></el-table-column>
       </el-table>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取 消</el-button>
-      <el-button type="primary" @click="addUserToForm()">确 定</el-button>
+      <el-button type="primary" @click="backInfor()">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -33,31 +33,56 @@ export default {
   data() {
     return {
       visible: false,
-      tableData: [
-        {
-          type: 1,
-          name: "asasadjksadsdsdjsbsdbfsdbfds",
-          name2: "qksadnsadjkwwndsadnsadnsa"
-        },
-        {
-          type: 1,
-          name: "asasadjksadsdsdjsbsdbfsdbfds",
-          name2: "qksadnsadjkwwndsadnsadnsa"
-        }
-      ]
+      tableData: [],
+      caseCauseId:"",
+      caseCauseName:"",
+      selectData:[],
     };
   },
   inject: ["reload"],
   methods: {
-    showModal() {
+    showModal(data) {
       this.visible = true;
+      this.caseCauseId = data.caseCauseId;
+      this.caseCauseName = data.caseCauseName;
+      this.findLawRegulationsByCauseId();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
     },
-    handleSelectionChange(){
-        
+    //获取违法条款及处罚条款
+    findLawRegulationsByCauseId(){
+      this.tableData = [];
+      this.$store.dispatch("findLawRegulationsByCauseId",this.caseCauseId).then(
+        res => {
+          console.log(res);
+          let data = res.data;
+          data.forEach(item=>{
+            let xiang1 = item.iitemCog? "第"+ item.iitemCog+"项" : "";
+            let xiang2 = item.iitemPun? "第"+ item.iitemPun+"项" : "";
+
+            let clause={
+              drawerName:item.drawerName,
+              illageClause:"《"+item.bnslawNameCog+"》第"+item.itemCog+"条" + xiang1,
+              punishClause:"《"+item.bnslawNamePun+"》第"+item.itemPun+"条" + xiang2
+            }
+            this.tableData.push(clause);
+
+          })
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    handleSelectionChange(val){   
+      console.log(val);
+      this.selectData = val;
+    },
+    backInfor(){
+      this.visible = false;
+      this.$emit('setIllegalLawAndPunishLaw',this.selectData);
     }
   },
   mounted() {}

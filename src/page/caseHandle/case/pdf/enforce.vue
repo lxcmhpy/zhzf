@@ -14,20 +14,21 @@
           <span class="pdf-line width80">&nbsp;</span>日
           依法作出了行政强制执行决定，并向你（单位）送达了《行政强制执行决定书》
           (案号：<span class="pdf-line width250">&nbsp;</span>)。</p>
-        <p>□1.现因 ，根据《中华人民共和国行政强制法》第三十九条第一款的规定，本机关决定自
+        <p>
+          <input type="checkbox">1.现因 ，根据《中华人民共和国行政强制法》第三十九条第一款的规定，本机关决定自
           <span class="pdf-line width80">&nbsp;</span>年
           <span class="pdf-line width80">&nbsp;</span>月
           <span class="pdf-line width80">&nbsp;</span>日
           起中止该行政强制执行。中止执行的情形消失后，本机关将恢复执行。</p>
-        <p>□2.现因
+        <p><input type="checkbox">2.现因
             <span class="pdf-line width430">&nbsp;</span>，
           根据《中华人民共和国行政强制法》第四十条的规定，本机关决定终结执行。</p>
-        <p>□3.你(单位)<span class="pdf-line width430">&nbsp;</span>一案，本机关于
+        <p><input type="checkbox">3.你(单位)<span class="pdf-line width430">&nbsp;</span>一案，本机关于
             <span class="pdf-line width80">&nbsp;</span>年
             <span class="pdf-line width80">&nbsp;</span>月
             <span class="pdf-line width80">&nbsp;</span>日
             决定中止执行，现中止执行的情形已消失，根据《中华人民共和国行政强制法》第三十九第二款的规定，决定从即日恢复强制执行。</p>
-        <p>□4.本机关于
+        <p><input type="checkbox">4.本机关于
           <span class="pdf-line width80">&nbsp;</span>年
           <span class="pdf-line width80">&nbsp;</span>月
           <span class="pdf-line width80">&nbsp;</span>日
