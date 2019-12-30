@@ -365,7 +365,7 @@ export default {
       );
     },
     // 结案报告-表单
-    goFinishReprotForm() {
+    goFilingApprovalForm() {
       this.$router.push({ name: 'filingApproval' });
     },
     // goFilingApprovalForm(){
