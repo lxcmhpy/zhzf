@@ -1,4 +1,4 @@
-import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,
+import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi } from "@/api/caseHandle";
 
@@ -158,6 +158,19 @@ const caseHandle = {
         addFormData({ commit }, data) {
             return new Promise((resolve, reject) => {
                 addFormDataApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        
+        //未立案列表
+        queryCaseBasicInfoListPage({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                queryCaseBasicInfoListPageApi(data).then(
                     res => {
                         resolve(res);
                     },

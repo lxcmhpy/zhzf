@@ -1,4 +1,5 @@
 <template>
+<div class="com_searchAndpageBoxPadding">
   <div class="searchAndpageBox" id="dictBox">
     <div class="handlePart">
       <div class="search">
@@ -48,6 +49,7 @@
     <addEditDict ref="addEditDictRef"></addEditDict>
     <showDictKey ref="showDictKeyRef"></showDictKey>
   </div>
+</div>
 </template>
 <script>
 import addEditDict from "./addEditDict";

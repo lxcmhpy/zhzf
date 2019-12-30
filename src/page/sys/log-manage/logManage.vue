@@ -1,4 +1,5 @@
 <template>
+<div class="com_searchAndpageBoxPadding">
   <div class="searchAndpageBox" id="logBox">
     <div class="handlePart">
       <div class="search">
@@ -68,6 +69,7 @@
       ></el-pagination>
     </div>
   </div>
+</div>
 </template>
 
 

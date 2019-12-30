@@ -1,8 +1,9 @@
 <template>
-  <div class="searchAndpageBox" id="roleBox">
-    <div class="handlePart">
-      <div class="search">
-        <el-form :inline="true" :model="dicSearchForm" class="">
+  <div class="com_searchAndpageBoxPadding">
+    <div class="searchAndpageBox" id="roleBox">
+      <div class="handlePart">
+        <div class="search">
+          <el-form :inline="true" :model="dicSearchForm" class>
             <el-form-item label="角色名称">
               <el-input v-model="dicSearchForm.name" placeholder="输入角色名称"></el-input>
             </el-form-item>
@@ -12,25 +13,25 @@
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addRole">添加角色</el-button>
             </el-form-item>
-        </el-form>
+          </el-form>
+        </div>
       </div>
-    </div>
-    <div class="tablePart">
-      <el-table :data="tableData" stripe style="width: 100%" height="100%">
-        <el-table-column prop="name" label="角色名称" align="center"></el-table-column>
-        <el-table-column prop="description" label="角色介绍" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
-          <template slot-scope="scope">
-            <el-button type="text" @click="bindMenu(scope.row.id)">菜单权限</el-button>
-            <el-button type="text" @click="bindOrgan(scope.row.id)">绑定机构</el-button>
-            <el-button @click="editRole(scope.row)" type="text">编辑</el-button>
-            <el-button type="text" @click="deleteRole(scope.row.id)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="paginationBox">
+      <div class="tablePart">
+        <el-table :data="tableData" stripe style="width: 100%" height="100%">
+          <el-table-column prop="name" label="角色名称" align="center"></el-table-column>
+          <el-table-column prop="description" label="角色介绍" align="center"></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+          <el-table-column fixed="right" label="操作" align="center">
+            <template slot-scope="scope">
+              <el-button type="text" @click="bindMenu(scope.row.id)">菜单权限</el-button>
+              <el-button type="text" @click="bindOrgan(scope.row.id)">绑定机构</el-button>
+              <el-button @click="editRole(scope.row)" type="text">编辑</el-button>
+              <el-button type="text" @click="deleteRole(scope.row.id)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="paginationBox">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -40,10 +41,11 @@
           layout="prev, pager, next,sizes,jumper"
           :total="totalPage"
         ></el-pagination>
+      </div>
+      <addEditRole ref="addEditRoleRef"></addEditRole>
+      <bindMenu ref="bindMenuRef"></bindMenu>
+      <bindOrgan ref="bindOrganRef"></bindOrgan>
     </div>
-    <addEditRole ref="addEditRoleRef"></addEditRole>
-    <bindMenu ref="bindMenuRef"></bindMenu> 
-    <bindOrgan ref="bindOrganRef"></bindOrgan> 
   </div>
 </template>
 <script>
@@ -54,12 +56,12 @@ export default {
   data() {
     return {
       tableData: [], //表格数据
-      dicSearchForm:{
-        name:''
+      dicSearchForm: {
+        name: ""
       },
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
-      totalPage: 0, //总页数
+      totalPage: 0 //总页数
     };
   },
   components: {
@@ -67,7 +69,7 @@ export default {
     bindMenu,
     bindOrgan
   },
-  inject:['reload'],
+  inject: ["reload"],
   methods: {
     //编辑角色
     editRole(row) {
@@ -109,17 +111,16 @@ export default {
     },
     //获取角色
     getRoles() {
-       let data = {
+      let data = {
         current: this.currentPage,
         size: this.pageSize,
         name: this.dicSearchForm.name
       };
-      this.$store.dispatch("getRoles",data).then(
+      this.$store.dispatch("getRoles", data).then(
         res => {
           console.log("角色列表", res);
           this.tableData = res.data.records;
           this.totalPage = res.data.total;
-
         },
         err => {
           console.log(err);
@@ -128,14 +129,14 @@ export default {
     },
     //添加角色
     addRole() {
-      this.$refs.addEditRoleRef.showModal(0, '');
+      this.$refs.addEditRoleRef.showModal(0, "");
     },
     //绑定菜单权限
-    bindMenu(roleId){
+    bindMenu(roleId) {
       this.$refs.bindMenuRef.showModal(roleId);
     },
     //角色绑定机构
-    bindOrgan(roleId){
+    bindOrgan(roleId) {
       this.$refs.bindOrganRef.showModal(roleId);
     }
   },

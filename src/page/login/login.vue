@@ -104,6 +104,8 @@ export default {
           this.$store.dispatch("loginIn",values).then(
             res => {
               console.log(res);
+              iLocalStroage.sets('userInfo',res.userInfo);
+
               // Cookies.set("menu", "companyInfo");
               // Cookies.set("openMenu","identityCheck");
               //this.$router.push({ name: "index" });

@@ -32,16 +32,12 @@ router.beforeEach((to, from, next) => {
     if (to.path == "/login") {
       next({ name: "home_index" });
     } else {
-      console.log('不是登录');
       if(!getRouter){
-        console.log('没有getRouter');
         if(iLocalStroage.get('menu')){
-          console.log('to',to);
+
           routerGo(to, next)//执行路由跳转方法
         }
       }else{
-        console.log('有getRouter',getRouter);
-        console.log(to);
         next();
       }
       
@@ -105,7 +101,7 @@ function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符
 
     return true
   })
-  console.log('accessedRouters',accessedRouters);
+  // console.log('accessedRouters',accessedRouters);
   return accessedRouters
 }
 

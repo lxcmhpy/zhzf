@@ -1,4 +1,5 @@
 <template>
+<div class="com_searchAndpageBoxPadding">
   <div class="fullBox departBox" id="userBox">
     <div class="departOrUserTree">
       <p>机构列表</p>
@@ -128,6 +129,7 @@
     <addUser ref="addUserRef" @uploadaaa="getUserList()"></addUser>
     <bindRole ref="bindRoleRef"></bindRole>
   </div>
+</div>
 </template>
 
  <script>

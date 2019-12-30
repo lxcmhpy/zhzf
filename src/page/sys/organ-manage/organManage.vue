@@ -1,4 +1,5 @@
 <template>
+<div class="com_searchAndpageBoxPadding">
   <div class="fullBox departBox">
     <div class="departOrUserTree">
       <!-- <div class="treeBoxTitle"> -->
@@ -87,6 +88,7 @@
 
     <addOrgan ref="addOrganRef" @getAllOrgan2="getAllOrgan"></addOrgan>
   </div>
+</div>
 </template>
 <script>
 import addOrgan from "./addOrgan";
