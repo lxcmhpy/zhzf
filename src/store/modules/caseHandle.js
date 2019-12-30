@@ -1,5 +1,6 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,
-    getCaseBasicInfoApi,addDocDataApi } from "@/api/caseHandle";
+    getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
+    ,getFormDataByCaseIdAndFormIdApi,addFormDataApi } from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -117,10 +118,46 @@ const caseHandle = {
                     })
             })
         },
-        // 添加案件信息
+        // 保存或修改文书信息
         addDocData({ commit }, data) {
             return new Promise((resolve, reject) => {
                 addDocDataApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //根据案件ID和文书模板ID查找文书信息
+        getDocDataByCaseIdAndDocId({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getDocDataByCaseIdAndDocIdApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //根据案件ID和表单模板ID查找表单信息
+        getFormDataByCaseIdAndFormId({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getFormDataByCaseIdAndFormIdApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //保存或修改表单
+        addFormData({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                addFormDataApi(data).then(
                     res => {
                         resolve(res);
                     },

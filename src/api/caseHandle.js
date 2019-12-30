@@ -98,9 +98,9 @@ export function findLawOfficerListApi() {
 }
 
 //根据案件ID获取案件信息
-export function getCaseBasicInfoApi(id) { 
+export function getCaseBasicInfoApi(data) { 
   return request({
-    url: "/doc/caseBasicInfo/findById/"+"2c902ae66ae2acc4016ae376f6f1007f",
+    url: "/doc/caseBasicInfo/findById/"+data.id,
     method: "get",
     // params:params,
     showloading: true,
@@ -113,6 +113,46 @@ export function addDocDataApi(data) {
   console.log(data);
   return request({
     url: "/doc/data/create",
+    method: "post",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据案件ID和文书模板ID查找文书信息
+export function getDocDataByCaseIdAndDocIdApi(data) { 
+  console.log(data);
+  return request({
+    url: "/doc/data/findByCaseIdAndDocId",
+    method: "get",
+    // data:vm.$qs.stringify(data),
+    params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据案件ID和表单模板ID查找表单信息
+export function getFormDataByCaseIdAndFormIdApi(data) { 
+  console.log(data);
+  return request({
+    url: "/doc/linkData/findByCaseIdAndLinkTypeId/"+data.casebasicInfoId+"/"+data.caseLinktypeId,
+    // url: "/doc/linkData/findByCaseIdAndLinkTypeId",
+    method: "get",
+    // data:vm.$qs.stringify(data),
+    // params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+
+//保存或修改表单
+export function addFormDataApi(data) { 
+  console.log(data);
+  return request({
+    url: "/doc/linkData/saveOrUpdateLink",
     method: "post",
     data:vm.$qs.stringify(data),
     showloading: true,

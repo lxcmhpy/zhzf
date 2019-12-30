@@ -160,7 +160,16 @@ export const homeRouter = {
           },
           component: () => import("@/page/caseHandle/case/pdf/sendReport.vue")
         },
+        {
 
+          path: "/filingApproval",
+          name: "filingApproval",
+          meta: {
+            title: "立案登记表"
+          },
+          component: () => import("@/page/caseHandle/case/form/filingApprovalForm.vue")
+        }
+        
       ]
     }
   ]

@@ -17,6 +17,9 @@
         <li @click="goIHearingNoticePdf">听证通知书pdf</li>
         <li @click="goAdminPunisheDecision">行政处罚决定书</li>
         <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
+        <li @click="goFilingApprovalForm">立案审批表</li>
+        <li @click="goImportantCaseDissForm">重大案件集体讨论</li>
+        <li @click="goArchivesForm">归档</li>
       </ul>
     </div>
     <div>
@@ -221,7 +224,7 @@ export default {
         "illegalAction2",
         "illegalAction3",
         "违法行为通知书",
-        "caseHandle/case/illegalAction.vue"
+        "caseHandle/case/form/illegalActionForm.vue"
       );
     },
     goIllegalActionPdf() {
@@ -247,6 +250,46 @@ export default {
         "违法行为通知书PDF",
         "caseHandle/case/hearingNoticePdf.vue"
       );
+    },
+    // 结案报告-表单
+    goFinishReprotForm() {
+      this.$router.push({ name: 'filingApproval' });
+    },
+    // goFilingApprovalForm(){
+    //   this.makeRoute(
+    //       "/filingApproval",
+    //       "/filingApproval2",
+    //       "/filingApproval3",
+    //       "filingApproval",
+    //       "filingApproval2",
+    //       "filingApproval3",
+    //       "立案审批表",
+    //       "caseHandle/case/form/filingApprovalForm.vue"
+    //     );
+    // },
+    goImportantCaseDissForm(){
+      this.makeRoute(
+          "/important",
+          "/important2",
+          "/important3",
+          "important",
+          "important2",
+          "important3",
+          "重大案件集体讨论",
+          "caseHandle/case/form/importantCaseDissForm.vue"
+        );
+    },
+    goArchivesForm(){
+      this.makeRoute(
+          "/archives",
+          "/archives2",
+          "/archives3",
+          "archives",
+          "archives2",
+          "archives3",
+          "归档",
+          "caseHandle/case/form/archivesForm.vue"
+        );
     },
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
       //path不可以重复  name也不可以重复
