@@ -26,6 +26,7 @@
       <p>zmh(17、18、19、20、21、22、23、24文书表单及pdf打印版)</p>
       <ul>
         <br><br>
+        <li @click="goCaseInvestig">案件调查报告</li>
         <li @click="goCaseDoc">调查类文书(上级表单)</li>
         <br><br>
 
@@ -88,10 +89,13 @@ export default {
         "caseHandle/case/wen.vue"
       );
     },
+    // 案件调查报告
+    goCaseInvestig() {
+            this.$router.push({ name: 'caseInvestig' });
+    },
     // 调查类文书
     goCaseDoc() {
             this.$router.push({ name: 'caseDoc' });
-
     },
     // 立案登记表-打印
     goEstablish() {

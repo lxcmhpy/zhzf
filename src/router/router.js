@@ -81,6 +81,14 @@ export const homeRouter = {
           component: () => import("@/page/caseHandle/case/form/sendReportForm.vue")
         },
         {
+          path: "/caseInvestig",
+          name: "caseInvestig",
+          meta: {
+            title: "案件调查报告"
+          },
+          component: () => import("@/page/caseHandle/case/caseInvestigReport.vue")
+        },
+        {
           path: "/caseDoc",
           name: "caseDoc",
           meta: {
