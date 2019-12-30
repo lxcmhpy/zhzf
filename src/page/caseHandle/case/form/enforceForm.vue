@@ -138,8 +138,8 @@
           </div>
         </el-form>
       </div>
-    
-     <!-- 悬浮按钮 -->
+
+      <!-- 悬浮按钮 -->
       <div class="float-btns">
         <el-button type="primary">
           <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
@@ -153,9 +153,9 @@
           </svg>
           <br>
           暂存
-          </el-button>
+        </el-button>
       </div>
-      </div>
+    </div>
 
   </div>
 </template>
