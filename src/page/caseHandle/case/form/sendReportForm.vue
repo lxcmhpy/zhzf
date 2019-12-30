@@ -14,7 +14,7 @@
           送达回证
         </div>
         <div class="border_blue"></div>
-        <el-form ref="docData" :model="docData" label-width="135px">
+        <el-form ref="docForm" :model="docData" label-width="135px">
           <div class="content_form">
             <div class="row">
               <div class="col">
@@ -157,7 +157,12 @@ export default {
   methods: {
     // 获取带入信息
     getCaseBasicInfo() {
-      this.$store.dispatch("getCaseBasicInfo", "1").then(
+       let data = {
+        id: "12345666666666",
+        caseId: "12345666666666",
+        docId: "1234"
+      };
+      this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
           this.docData = res.data;
         },

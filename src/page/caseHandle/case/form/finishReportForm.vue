@@ -113,10 +113,10 @@
           <div class="border_blue"></div>
           <div class="content_form bottom_form">
             <el-form-item prop="closeResult" label="处理结果：">
-              <el-input type="textarea" class="height106" v-model="docData.closeResult" size="small" placeholder="请输入"></el-input>
+              <el-input ref="closeResult" type="textarea" class="height106" v-model="docData.closeResult" size="small" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item prop="closeSituation" label="执行情况：">
-              <el-input type="textarea" class="height122" v-model="docData.closeSituation" size="small" placeholder="请输入"></el-input>
+              <el-input ref="closeSituation" type="textarea" class="height122" v-model="docData.closeSituation" size="small" placeholder="请输入"></el-input>
             </el-form-item>
 
           </div>
@@ -176,8 +176,14 @@ export default {
   },
   methods: {
     // 获取带入信息
+    
     getCaseBasicInfo() {
-      this.$store.dispatch("getCaseBasicInfo", "1").then(
+       let data = {
+        id: "12345666666666",
+        caseId: "12345666666666",
+        docId: "1234"
+      };
+      this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
           this.docData = res.data;
         },
@@ -190,6 +196,7 @@ export default {
     // 提交表单
     addIllegalAction() {
       console.log(this.CaseDocDataForm);
+      console.log('11')
       this.$refs["docForm"].validate(valid => {
         if (valid) {
           this.$store.dispatch("addDocData", this.CaseDocDataForm).then(

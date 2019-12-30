@@ -39,6 +39,13 @@
                     border-radius: 2px;
                 }
 
+                /deep/.height88 {
+                    /deep/.el-textarea__inner {
+                        border-radius: 2px;
+                        resize       : none;
+                        min-height   : 88px !important;
+                    }
+                }
                 /deep/.height106 {
                     /deep/.el-textarea__inner {
                         border-radius: 2px;
@@ -52,6 +59,13 @@
                         border-radius: 2px;
                         resize       : none;
                         min-height   : 122px !important;
+                    }
+                }
+                /deep/.height162 {
+                    /deep/.el-textarea__inner {
+                        border-radius: 2px;
+                        resize       : none;
+                        min-height   : 162px !important;
                     }
                 }
 
@@ -165,19 +179,46 @@
                 text-align   : center;
                 line-height  : 25px;
             }
+            // 表单分隔标题
+            .second_title {
+                flex         : 0 0 25px;
+                margin-top   : 32px;
+                font-size    : 18px;
+                font-family  : PingFang SC;
+                color        : rgba(32, 35, 43, 1);
+                text-align   : left;
+                line-height  : 32px;
+            }
+            .second_title_btns {
+                width: 100%;
+                margin-top   : 32px;
+                text-align   : right;
+                
+            }
 
+            // row
+            .el-row {
+                width  : 100%;
+            
+            }
             // 表格form
             .table_form {
                 width  : 100%;
                 height : auto;
                 padding: 28px 0 37px 0;
-                ;
                 display       : flex;
                 flex-direction: column;
                 align-items   : center;
-
             }
         }
+    }
+    .el-button-remind {
+        color: #7B7B7B;
+        background-color: rgba(238,238,238,1);
+        // border-color: rgba(238,238,238,1);
+        border: 0;
+        box-shadow:0 0 3px 0 #DFDFDF;
+
     }
 
 }

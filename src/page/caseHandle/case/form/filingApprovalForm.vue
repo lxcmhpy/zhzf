@@ -287,7 +287,7 @@
       </div>
       <!-- 悬浮按钮 -->
       <div class="float-btns">
-        <el-button type="primary" @click="addFormData('0')">
+        <el-button type="primary" @click="addFormData(1)">
           <svg
             t="1577414377979"
             class="icon"
@@ -429,7 +429,7 @@ export default {
                 });
                 if(handleType == 1){ //保存成功 跳转 pdf
                   this.$router.replace({ 
-                    name: 'filingApproval'
+                    name: 'establish'
                   });
                 }
               },
