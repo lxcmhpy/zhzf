@@ -330,7 +330,7 @@ export default {
         "illegalAction2",
         "illegalAction3",
         "违法行为通知书",
-        "caseHandle/case/illegalAction.vue"
+        "caseHandle/case/form/illegalActionForm.vue"
       );
     },
     goIllegalActionPdf() {

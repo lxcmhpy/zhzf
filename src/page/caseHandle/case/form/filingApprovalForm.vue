@@ -436,6 +436,7 @@ export default {
 
   created() {
     this.getFormDataByCaseIdAndFormId();
+    // this.getCaseBasicInfo();
   }
 };
 </script>

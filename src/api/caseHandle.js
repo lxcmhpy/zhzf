@@ -95,6 +95,7 @@ export function getFormDataByCaseIdAndFormIdApi(data) {
   console.log(data);
   return request({
     url: "/doc/linkData/findByCaseIdAndLinkTypeId/"+data.casebasicInfoId+"/"+data.caseLinktypeId,
+    // url: "/doc/linkData/findByCaseIdAndLinkTypeId",
     method: "get",
     // data:vm.$qs.stringify(data),
     // params:data,
