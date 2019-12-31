@@ -143,8 +143,15 @@
                       <el-col :span="4">
                         <el-checkbox label="罚款"></el-checkbox>
                       </el-col>
-                      <el-col :span="20">
-                        <el-input v-model="docData.punishMoney"></el-input>
+                      <el-col :span="9">
+                        <el-input v-model="docData.punishMoney" placeholder="请输入罚款金额（小写金额）" @change="capital()"></el-input>
+                      </el-col>
+                      <el-col :span="1">
+                        <!-- 有问题-不显示 -->
+                        <div class="grid-content">--</div>
+                      </el-col>
+                      <el-col :span="10">
+                        <el-input v-model="punishMoneyCapital"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -152,7 +159,7 @@
                         <el-checkbox label="责令改正"></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-input v-model="docData.punishCorrect"></el-input>
+                        <el-input v-model="docData.punishCorrect" placeholder="请输入责令改正要求"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -160,15 +167,22 @@
                         <el-checkbox label="警告"></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-input v-model="docData.punishWarn"></el-input>
+                        <el-input v-model="docData.punishWarn" placeholder="请输入警告内容"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="4">
                         <el-checkbox label="没收违法所得"></el-checkbox>
                       </el-col>
-                      <el-col :span="20">
-                        <el-input v-model="docData.confiscateThing"></el-input>
+                      <el-col :span="9">
+                        <el-input v-model="docData.confiscateThing" placeholder="请输入罚款金额（小写金额）" @change="capitalbtm()"></el-input>
+                      </el-col>
+                      <el-col :span="1">
+                        <!-- 有问题-不显示 -->
+                        <div class="grid-content">--</div>
+                      </el-col>
+                      <el-col :span="10">
+                        <el-input v-model="confiscateThingCapital"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -176,7 +190,7 @@
                         <el-checkbox label="没收非法财产"></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-input v-model="docData.confiscateMoney"></el-input>
+                        <el-input v-model="docData.confiscateMoney" placeholder="请输入非法财产内容"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -210,7 +224,7 @@
                     生成意见
                   </el-button>
                   <!-- 双向绑定有问题 -->
-                  <el-input type="textarea" v-model="docData.dealOpinion" class="height162" size="small"></el-input>
+                  <el-input type="textarea" v-model="docData.dealOpinions" class="height162" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -255,8 +269,7 @@ export default {
         isMajorCase: "1",
         punishType: ['警告'],
         investigResult: '',
-        dealOpinion: '',
-
+        dealOpinions: '1212121',
       },
       CaseDocDataForm: {
         caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
@@ -295,6 +308,9 @@ export default {
           { required: true, message: '当事人类型必须填写', trigger: 'blur' }
         ],
       },
+      // 大写
+      punishMoneyCapital: '',
+      confiscateThingCapital: '',
     }
   },
   methods: {
@@ -308,6 +324,7 @@ export default {
           this.docData = res.data;
           // 多选需要数组
           this.docData.punishType = ['警告'];
+          this.docData.dealOpinions = '';
         },
         err => {
           console.log(err);
@@ -351,14 +368,101 @@ export default {
     addDoc() {
 
     },
+    // 大写
+    capital() {
+      this.punishMoneyCapital = '';
+      this.punishMoneyCapital = this.changeMoneyToChinese(this.docData.punishMoney);
+    },
+    // 大写
+    capitalbtm() {
+      this.confiscateThingCapital == '';
+      this.confiscateThingCapital = this.changeMoneyToChinese(this.docData.confiscateThing);
+    },
+    changeMoneyToChinese(money) {
+      var cnNums = new Array("零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"); //汉字的数字  
+      var cnIntRadice = new Array("", "拾", "佰", "仟"); //基本单位  
+      var cnIntUnits = new Array("", "万", "亿", "兆"); //对应整数部分扩展单位  
+      var cnDecUnits = new Array("角", "分", "毫", "厘"); //对应小数部分单位  
+      //var cnInteger = "整"; //整数金额时后面跟的字符  
+      var cnIntLast = "元"; //整型完以后的单位  
+      var maxNum = 999999999999999.9999; //最大处理的数字  
+
+      var IntegerNum; //金额整数部分  
+      var DecimalNum; //金额小数部分  
+      var ChineseStr = ""; //输出的中文金额字符串  
+      var parts; //分离金额后用的数组，预定义  
+      if (money == "") {
+        return "";
+      }
+      money = parseFloat(money);
+      if (money >= maxNum) {
+        $.alert('超出最大处理数字');
+        return "";
+      }
+      if (money == 0) {
+        //ChineseStr = cnNums[0]+cnIntLast+cnInteger;  
+        ChineseStr = cnNums[0] + cnIntLast
+        //document.getElementById("show").value=ChineseStr;  
+        return ChineseStr;
+      }
+      money = money.toString(); //转换为字符串  
+      if (money.indexOf(".") == -1) {
+        IntegerNum = money;
+        DecimalNum = '';
+      } else {
+        parts = money.split(".");
+        IntegerNum = parts[0];
+        DecimalNum = parts[1].substr(0, 4);
+      }
+      if (parseInt(IntegerNum, 10) > 0) {//获取整型部分转换  
+        let zeroCount = 0;
+        let IntLen = IntegerNum.length;
+        for (let i = 0; i < IntLen; i++) {
+          let n = IntegerNum.substr(i, 1);
+          let p = IntLen - i - 1;
+          let q = p / 4;
+          let m = p % 4;
+          if (n == "0") {
+            zeroCount++;
+          } else {
+            if (zeroCount > 0) {
+              ChineseStr += cnNums[0];
+            }
+            zeroCount = 0; //归零  
+            ChineseStr += cnNums[parseInt(n)] + cnIntRadice[m];
+          }
+          if (m == 0 && zeroCount < 4) {
+            ChineseStr += cnIntUnits[q];
+          }
+        }
+        ChineseStr += cnIntLast;
+        //整型部分处理完毕  
+      }
+      if (DecimalNum != '') {//小数部分  
+        let decLen = DecimalNum.length;
+        for (let i = 0; i < decLen; i++) {
+          let n = DecimalNum.substr(i, 1);
+          if (n != '0') {
+            ChineseStr += cnNums[Number(n)] + cnDecUnits[i];
+          }
+        }
+      }
+      if (ChineseStr == '') {
+        //ChineseStr += cnNums[0]+cnIntLast+cnInteger;  
+        ChineseStr += cnNums[0] + cnIntLast;
+      }/* else if( DecimalNum == '' ){ 
+                ChineseStr += cnInteger; 
+                ChineseStr += cnInteger; 
+            } */
+      return ChineseStr;
+    },
     // 生成意见
     generateOpinions() {
-      this.docData.dealOpinion = `经过调查核实：当事人this.docData.party+违法行为，违反了+违法条例+有证据材料（列举：上面证据材料内容）
+      this.docData.dealOpinions = `经过调查核实：当事人this.docData.party+违法行为，违反了+违法条例+有证据材料（列举：上面证据材料内容）
 证明该案中违法事实清楚，依据+处罚条款+拟给予当事人+当事人姓名+拟处罚类型1（名称+后续说明）+
 拟处罚类型2+……+拟处罚类型N+的行政处罚
                                           当否，请批示。 `;
-      console.log('dealOpinion', this.docData.dealOpinion)
-
+      console.log('dealOpinions', this.docData.dealOpinions)
     },
   },
   mounted() {

@@ -97,6 +97,14 @@ export const homeRouter = {
           component: () => import("@/page/caseHandle/case/caseDoc.vue")
         },
         {
+          path: "/inquirieForm",
+          name: "inquirieForm",
+          meta: {
+            title: "询问笔录"
+          },
+          component: () => import("@/page/caseHandle/case/form/inquirieRecordForm.vue")
+        },
+        {
           path: "/establish",
           name: "establish",
           meta: {
