@@ -26,13 +26,13 @@ export const redirectRouter = {
 export const homeRouter = {
   path: "/home",
   name: "home",
-  component:Layout,
+  component: Layout,
   children: [
     {
       path: "/index",
       name: "home2",
-      component:MainContent,
-      children:[
+      component: MainContent,
+      children: [
         {
           path: "/index",
           name: "home_index",
@@ -46,8 +46,8 @@ export const homeRouter = {
     {
       path: "/caseBook",
       name: "caseBook",
-      component:MainContent,
-      children:[
+      component: MainContent,
+      children: [
         {
           path: "/inquestNotes",
           name: "inquestNotes",
@@ -57,14 +57,119 @@ export const homeRouter = {
           component: () => import("@/page/caseHandle/case/inquestNotes.vue")
         },
         {
+          path: "/enforceForm",
+          name: "enforceForm",
+          meta: {
+            title: "中止（终结、恢复）行政强制执行通知书-表单"
+          },
+          component: () => import("@/page/caseHandle/case/form/enforceForm.vue")
+        },
+        {
           path: "/finishForm",
           name: "finishForm",
           meta: {
-            title: "结案报告"
+            title: "结案报告-表单"
           },
           component: () => import("@/page/caseHandle/case/form/finishReportForm.vue")
         },
         {
+          path: "/sendReportForm",
+          name: "sendReportForm",
+          meta: {
+            title: "送达回证-表单"
+          },
+          component: () => import("@/page/caseHandle/case/form/sendReportForm.vue")
+        },
+        {
+          path: "/caseInvestig",
+          name: "caseInvestig",
+          meta: {
+            title: "案件调查报告"
+          },
+          component: () => import("@/page/caseHandle/case/caseInvestigReport.vue")
+        },
+        {
+          path: "/caseDoc",
+          name: "caseDoc",
+          meta: {
+            title: "调查类文书"
+          },
+          component: () => import("@/page/caseHandle/case/caseDoc.vue")
+        },
+        {
+          path: "/establish",
+          name: "establish",
+          meta: {
+            title: "立案登记表-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/establish.vue")
+        },
+        {
+          path: "/payStage",
+          name: "payStage",
+          meta: {
+            title: "分期（延期）缴纳罚款通知书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/payStage.vue")
+        },
+        {
+          path: "/executAnnounce",
+          name: "executAnnounce",
+          meta: {
+            title: "执行公告-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/executAnnounce.vue")
+        },
+        {
+          path: "/remindLetter",
+          name: "remindLetter",
+          meta: {
+            title: "催告书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/remindLetter.vue")
+        },
+        {
+          path: "/enforceInstead",
+          name: "enforceInstead",
+          meta: {
+            title: "代履行决定书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/enforceInstead.vue")
+        },
+        {
+          path: "/enforceDecide",
+          name: "enforceDecide",
+          meta: {
+            title: "强制执行决定书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/enforceDecide.vue")
+        },
+        {
+          path: "/enforce",
+          name: "enforce",
+          meta: {
+            title: "中止（终结、恢复）行政强制执行通知书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/enforce.vue")
+        },
+        {
+          path: "/finishReport",
+          name: "finishReport",
+          meta: {
+            title: "结案报告-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/finishReport.vue")
+        },
+        {
+          path: "/sendReport",
+          name: "sendReport",
+          meta: {
+            title: "送达回证-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/sendReport.vue")
+        },
+        {
+
           path: "/filingApproval",
           name: "filingApproval",
           meta: {
@@ -80,22 +185,49 @@ export const homeRouter = {
             title: "处罚执行"
           },
           component: () => import("@/page/caseHandle/case/form/PenaltyExecutionForm.vue")
+        },
+        //行政处罚决定书
+        {
+          path: "/adminPunishe",
+          name: "adminPunishe",
+          meta: {
+            title: "行政处罚决定书"
+          },
+          component: () => import("@/page/caseHandle/case/form/adminPunisheDecisionForm.vue")
+        },
+        //责令改正违法行为通知书
+        {
+          path: "/order",
+          name: "order",
+          meta: {
+            title: "责令改正违法行为通知书"
+          },
+          component: () => import("@/page/caseHandle/case/form/orderCorrectIllegalAct.vue")
+        },
+        //当事人权利
+        {
+          path: "/partyRights",
+          name: "partyRights",
+          meta: {
+            title: "当事人权利"
+          },
+          component: () => import("@/page/caseHandle/case/form/partyRightsForm.vue")
         }
         
       ]
     }
-  ] 
+  ]
 };
 //主页的路由
 export const lagoutOneRouter = [
   {
-    path:'/main',
-    name:'main',
+    path: '/main',
+    name: 'main',
     component: mainLagout,
     children: [
       {
-        path:'/home',
-        name:'home',
+        path: '/home',
+        name: 'home',
         component: () => import("@/page/home.vue"),
       }
     ]

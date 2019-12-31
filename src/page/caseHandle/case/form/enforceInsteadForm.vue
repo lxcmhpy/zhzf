@@ -11,7 +11,7 @@
     <div class="content_box">
       <div class="content">
         <div class="content_title">
-         代履行决定书
+          代履行决定书
         </div>
         <div class="border_blue"></div>
         <el-form ref="fieldRecordObj" :model="fieldRecordObj" :rules="rules" label-width="135px">
@@ -63,7 +63,7 @@
                 </el-form-item>
               </div>
             </div>
-                       <div class="row">
+            <div class="row">
               <div class="col">
                 <el-form-item prop="CONTACTOR" label="单位电话">
                   <el-input ref="CONTACTOR" clearable class="w-120" v-model="fieldRecordObj.type" size="small" placeholder="请输入"></el-input>
@@ -82,7 +82,6 @@
                 </el-form-item>
               </div>
             </div>
-          
 
           </div>
 
@@ -97,8 +96,8 @@
           </div>
         </el-form>
       </div>
-    
-     <!-- 悬浮按钮 -->
+
+      <!-- 悬浮按钮 -->
       <div class="float-btns">
         <el-button type="primary">
           <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
@@ -112,9 +111,9 @@
           </svg>
           <br>
           暂存
-          </el-button>
+        </el-button>
       </div>
-      </div>
+    </div>
 
   </div>
 </template>

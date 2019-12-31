@@ -85,17 +85,29 @@
         <div class="content">
           <div class="table_form">
             <el-table :data="tableDatas" stripe border style="width: 100%" height="100%">
-              <el-table-column prop="name" label="序号" align="center">
+              <el-table-column prop="index" label="序号" align="center">
               </el-table-column>
-              <el-table-column prop="isApproval" label="材料名称" align="center">
+              <el-table-column prop="name" label="材料名称" align="center">
               </el-table-column>
-              <el-table-column prop="backName" label="状态" align="center">
+              <el-table-column prop="status" label="状态" align="center">
               </el-table-column>
-              <el-table-column prop="isAutoPdf" label="操作" align="center">
-                <template>
-                  <i type="primary" class="el-icon-circle-plus cell-icon"></i>
-                  <i type="primary" class="el-icon-upload2 cell-icon"></i>
-                  <i type="primary" class="el-icon-delete-solid cell-icon"></i>
+              <el-table-column  label="操作" align="center">
+                <template slot-scope="scope">
+                  <!-- {{scope.row.option}} -->
+                  <span v-if="scope.row.status == '-'">
+                    <i type="primary" class="el-icon-circle-plus cell-icon" @click="addDoc"></i>
+                    <i type="primary" class="el-icon-upload2 cell-icon"></i>
+                    <i type="primary" class="el-icon-delete-solid cell-icon"></i>
+                  </span>
+                  <span  v-if="scope.row.status == '完成'">
+                    <i type="primary" class="el-icon-view cell-icon"></i>
+                    <i type="primary" class="el-icon-printer cell-icon"></i>
+                  </span>
+                  <span  v-if="scope.row.status == '暂存'">
+                     <i type="primary" class="el-icon-edit cell-icon"></i>
+                    <i type="primary" class="el-icon-upload2 cell-icon"></i>
+                    <i type="primary" class="el-icon-delete-solid cell-icon"></i>
+                  </span>
                 </template>
               </el-table-column>
             </el-table>
@@ -129,26 +141,20 @@ export default {
         status: "",
       },
       tableDatas: [{
-        name: '立案',
-        isApproval: '是',
-        backName: '立案',
-        isAutoPdf: '是',
-        pdfType: '立案登记表',
-        pdfType: '立案登记表',
-        order: '1',
-        adress: '../../jdfhu',
-        discripe: '描述',
-        workId: '11'
+        index: '1',
+        name: '四川',
+        status: '-',
+        option: '1',
       }, {
-        name: '调查类文书',
-        isApproval: '否',
-        backName: '调查',
-        isAutoPdf: '否',
-        pdfType: '',
-        order: '2',
-        adress: './kdsj',
-        discripe: '描述',
-        workId: '21',
+        index: '2',
+        name: '四川',
+        status: '完成',
+        option: '2',
+      }, {
+        index: '3',
+        name: '四川',
+        status: '暂存',
+        option: '3',
       }],
       rules: {
         caseNumber: [
@@ -172,7 +178,13 @@ export default {
   methods: {
     // 获取带入信息
     getCaseBasicInfo() {
-      this.$store.dispatch("getCaseBasicInfo", "1").then(
+      let data = {
+
+        id: "12345666666666",
+        caseId: "12345666666666",
+        docId: "1234"
+      };
+      this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
           this.docData = res.data;
         },
@@ -212,6 +224,10 @@ export default {
     },
     // 暂存
     save() {
+
+    },
+    // 添加
+    addDoc(){
 
     }
   },

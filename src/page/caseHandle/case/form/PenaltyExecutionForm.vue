@@ -1,6 +1,8 @@
 <template>
   <div class="box">
-    <el-form ref="docForm" :model="docData" label-width="105px">
+    <el-form ref="caseLinkDataForm">
+        <el-input ref="id" type="hidden"></el-input></el-form>
+    <el-form ref="formData" :model="formData" label-width="105px">
 
       <div class="header-case">
         <div class="header_left">
@@ -21,38 +23,38 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="caseNumber" label="处罚类型">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="punishType" label="处罚类型">
+                  <el-input ref="punishType" clearable class="w-120" v-model="formData.punishType" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseName" label="案由">
-                  <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="caseName" label="案由">
-                  <el-input ref="caseName" clearable class="w-120" v-model="docData.处罚期限" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="punishTerm" label="处罚期限">
+                  <el-input ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>           
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="处罚决定">
-                  <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="punishDecision" label="处罚决定">
+                  <el-input ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚金额">
-                  <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="tempPunishAmount" clearable class="w-120" v-model="formData.tempPunishAmount" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -61,32 +63,32 @@
           <div class="content_form bottom_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="执行方式">
+                <el-form-item prop="performWay" label="执行方式">
                     <el-radio-group>
                         <el-radio>线下缴费</el-radio>
                         <el-radio>电子缴纳</el-radio>
                     </el-radio-group>         
                     <el-checkbox></el-checkbox>责令改正
-                  <!-- <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input> -->
+                  <!-- <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="已缴金额">
-                  <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="paidAmount" label="已缴金额">
+                  <el-input ref="paidAmount" clearable class="w-120" v-model="formData.paidAmount" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="caseName" label="待缴金额">
-                  <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="toPayAmount" label="待缴金额">
+                  <el-input ref="toPayAmount" clearable class="w-120" v-model="formData.toPayAmount" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="执行情况">
-                  <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="performance" label="执行情况">
+                  <el-input ref="performance" clearable class="w-120" v-model="formData.performance" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
@@ -97,15 +99,15 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="备注">
-                  <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="note" label="备注">
+                  <el-input ref="note" clearable class="w-120" v-model="formData.note" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="缴纳凭证">
-                  <el-input  type="file" ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="payEvidence" label="缴纳凭证">
+                  <el-input  type="file" ref="payEvidence" clearable class="w-120" v-model="formData.payEvidence" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -151,7 +153,7 @@
 export default {
   data() {
     return {
-      docData: {
+      formData: {
       },
       CaseDocDataForm: {
         caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",

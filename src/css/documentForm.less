@@ -2,10 +2,11 @@
     width     : calc(100% - 44px);
     height    : auto;
     min-height: 100%;
-    padding   : 0 22px 0 22px;
+    // padding   : 0 22px 0 22px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
-    position  : relative;
+    position  : absolute;
+    margin: 22px;
 
     /deep/ .el-form {
         width: 100%;
@@ -39,6 +40,14 @@
                     border-radius: 2px;
                 }
 
+                /deep/.height88 {
+                    /deep/.el-textarea__inner {
+                        border-radius: 2px;
+                        resize       : none;
+                        min-height   : 88px !important;
+                    }
+                }
+
                 /deep/.height106 {
                     /deep/.el-textarea__inner {
                         border-radius: 2px;
@@ -52,6 +61,14 @@
                         border-radius: 2px;
                         resize       : none;
                         min-height   : 122px !important;
+                    }
+                }
+
+                /deep/.height162 {
+                    /deep/.el-textarea__inner {
+                        border-radius: 2px;
+                        resize       : none;
+                        min-height   : 162px !important;
                     }
                 }
 
@@ -166,18 +183,49 @@
                 line-height  : 25px;
             }
 
+            // 表单分隔标题
+            .second_title {
+                flex       : 0 0 25px;
+                margin-top : 32px;
+                font-size  : 18px;
+                font-family: PingFang SC;
+                color      : rgba(32, 35, 43, 1);
+                text-align : left;
+                line-height: 32px;
+            }
+
+            .second_title_btns {
+                width     : 100%;
+                margin-top: 32px;
+                text-align: right;
+
+            }
+
+            // row
+            .el-row {
+                width: 100%;
+
+            }
+
             // 表格form
             .table_form {
-                width  : 100%;
-                height : auto;
-                padding: 28px 0 37px 0;
-                ;
+                width         : 100%;
+                height        : auto;
+                padding       : 28px 0 37px 0;
                 display       : flex;
                 flex-direction: column;
                 align-items   : center;
-
             }
         }
+    }
+
+    .el-button-remind {
+        color           : #7B7B7B;
+        background-color: rgba(238, 238, 238, 1);
+        // border-color : rgba(238,238,238,1);
+        border          : 0;
+        box-shadow      : 0 0 3px 0 #DFDFDF;
+
     }
 
 }
@@ -186,16 +234,16 @@
 .float-btns {
     width   : 48px;
     height  : 100px;
-    position: absolute;
-    right   : 27px;
+    position: fixed;
+    right   : 49px;
     bottom  : 97px;
 
     /deep/.el-button {
         border-radius: 1px;
-        width     : 48px;
-        height    : 48px;
-        padding   : 0;
-        text-align: center;
+        width        : 48px;
+        height       : 48px;
+        padding      : 0;
+        text-align   : center;
     }
 
     /deep/.el-button+.el-button {
@@ -211,9 +259,10 @@
     }
 
 }
-.btn-height63{
+
+.btn-height63 {
     /deep/.el-button {
-        height    : 63px !important;
+        height: 63px !important;
     }
 }
 
@@ -253,7 +302,7 @@
 // 表格内图标
 [class*=" el-icon-"],
 [class^=el-icon-] {
-    color: #0074F5;
-    width: 16px;
+    color : #0074F5;
+    width : 16px;
     height: 16px;
 }

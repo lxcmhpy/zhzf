@@ -8,13 +8,7 @@
         <el-form :inline="true" :model="inquestNotesForm" :rules="rules">
           <div class="row">
             <el-form-item prop="caseName" label="案由：" label-width="100px">
-              &#8195;
-              <textarea
-                ref="caseName"
-                id="caseName"
-                v-model="inquestNotesForm.caseName"
-                required
-              ></textarea>
+              <el-input type="textarea" ref="caseName" clearable class="height106" v-model="inquestNotesForm.caseName" size="small" placeholder="请输入"></el-input>                
             </el-form-item>
           </div>
           <div class="row">

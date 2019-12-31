@@ -159,3 +159,13 @@ export function addFormDataApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//案件列表
+export function queryCaseBasicInfoListPageApi(data) { 
+  return request({
+    url: "/doc/caseBasicInfo/queryCaseBasicInfoListPage",
+    method: "get",
+    params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}

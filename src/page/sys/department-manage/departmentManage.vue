@@ -1,4 +1,5 @@
 <template>
+<div class="com_searchAndpageBoxPadding">
   <div class="fullBox departBox">
     <div class="departOrUserTree">
       <p>机构列表</p>
@@ -83,6 +84,7 @@
 
     <addDepartment ref="addDepartmentRef" @getAllOrgan2="getAllOrgan"></addDepartment>
   </div>
+</div>
 </template>
 <script>
 import addDepartment from "./addDepartment";
