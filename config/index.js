@@ -13,7 +13,11 @@ module.exports = {
     proxyTable: {
       "/catsic": {
 
+<<<<<<< HEAD
         target: "http://172.16.169.83:8888",
+=======
+        target: "http://172.16.169.62:8888",
+>>>>>>> a13138c0bc9d9f711a15bbba032ab218c32d820b
         // target: "http://127.0.0.1:8888",
         changeOrigin: true,
       }

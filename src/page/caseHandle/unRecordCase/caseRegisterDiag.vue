@@ -158,14 +158,18 @@ export default {
     },
     //设置违法行为
     setIllegaAct(val) {
-      console.log("设置违法行为", val);
       this.caseRegisterForm.illageAct = val.strContent;
       this.illageActId = val.id;
     },
     goToInforCollect() {
       this.$refs["caseRegisterForm"].validate(valid => {
         if (valid) {
-          //信息采集页是否显示超限信息
+          let caseTypeId = "";
+          this.caseTypeList.forEach(item=>{
+            if(item.caseTypeName == this.caseRegisterForm.caseType){
+              caseTypeId = item.caseTypeId;
+            }
+          })
           let someCaseInfo = {
             illageAct: this.caseRegisterForm.illageAct,
             illageActId: this.illageActId,
@@ -174,7 +178,7 @@ export default {
                 ? "一般程序"
                 : "简易程序",
             caseType: this.caseRegisterForm.caseType,
-            // caseTypeId:caseTypeId
+            caseTypeId:caseTypeId
           };
           iLocalStroage.sets("someCaseInfo", someCaseInfo);
           this.makeRoute(

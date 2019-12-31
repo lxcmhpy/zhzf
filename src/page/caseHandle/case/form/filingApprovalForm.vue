@@ -1,12 +1,12 @@
 <template>
-  <div class="box">
-    <div class="header">
+  <div class=" caseBox">
+    <!-- <div class="header">
       <div class="header_left">
         <div class="triangle"></div>
         <div class="header_left_text">返回</div>
       </div>
-    </div>
-    <div class="content_box">
+    </div> -->
+    <!-- <div class="content_box"> -->
       <div class="content">
         <div class="content_title">立案审批表</div>
         <div class="border_blue"></div>
@@ -14,29 +14,29 @@
         <el-input ref="id" type="hidden"></el-input></el-form>
         <el-form ref="docForm" :model="formData" :rules="rules" label-width="135px">
           <div class="content_form">
-            <el-input
+            <!-- <el-input
               ref="id"
               type="hidden"
               class="w-120"
               v-model="formData.id"
               size="small"
               placeholder="请输入"
-            ></el-input>
+            ></el-input> -->
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseNumber" label="案号：">
+                <el-form-item prop="tempNo" label="案号：">
                   <el-input
-                    ref="caseNumber"
+                   
                     clearable
                     class="w-120"
-                    v-model="formData.caseNumber"
+                    v-model="formData.tempNo"
                     size="small"
-                    placeholder="请输入"
+                    :disabled="true"
                   ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="caseNumber" label="受案时间：">
+                <el-form-item prop="acceptTime" label="受案时间：">
                   <el-date-picker
                     v-model="formData.acceptTime"
                     type="datetime"
@@ -75,16 +75,16 @@
                   >
                     <el-option
                       v-for="item in partyTypeList"
-                      :key="item"
-                      :label="item"
-                      :value="item"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
               </div>
             </div>
             <!-- 个人 -->
-            <div v-if="formData.partyType=='个人'">
+            <div v-if="formData.partyType=='1'">
               <div class="row">
                 <div class="col">
                   <el-form-item label="姓名：">
@@ -167,10 +167,10 @@
                 <div class="col">
                   <el-form-item label="立案依据：">
                     <el-input
-                      ref="caseBasis"
+                      ref="illegalLaw"
                       clearable
                       class="w-120"
-                      v-model="formData.caseBasis"
+                      v-model="formData.illegalLaw"
                       size="small"
                       placeholder="请输入"
                     ></el-input>
@@ -179,7 +179,7 @@
               </div>
             </div>
             <!-- 企业 -->
-            <div v-if="formData.partyType=='企业'">
+            <div v-if="formData.partyType=='2'">
               <div class="row">
                 <div class="col">
                   <el-form-item label="名称：">
@@ -287,7 +287,7 @@
       </div>
       <!-- 悬浮按钮 -->
       <div class="float-btns">
-        <el-button type="primary" @click="addFormData('0')">
+        <el-button type="primary" @click="addFormData(1)">
           <svg
             t="1577414377979"
             class="icon"
@@ -327,7 +327,7 @@
           <br />暂存
         </el-button>
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 <script>
@@ -338,7 +338,7 @@ export default {
         partyType: "个人"
       },
       rules: {
-        caseNumber: [
+        tempNo: [
           { required: true, message: "案号必须填写", trigger: "blur" }
         ],
         caseName: [
@@ -354,25 +354,30 @@ export default {
           { required: true, message: "案件基本情况必须填写", trigger: "blur" }
         ]
       },
-      partyTypeList: ["个人", "企业"],
+      // partyTypeList: ["个人", "企业"],
+      partyTypeList:[
+        {id:"1",name:'个人'},
+        {id:"2",name:'企业'}
+      ],
       //提交方式
       handleType: 0 ,//0  暂存     1 提交
       caseLinkDataForm: {
-        id:"",
-        caseBasicinfoId: "",
-        caseLinktypeId: "123",
+        id:"",  //修改的时候用
+        caseBasicinfoId: "",  //案件ID
+        caseLinktypeId: "2c90293b6c178b55016c17c255a4000d",  //表单类型ID
         //表单数据
         formData: "",
         status: ""
       },
+      caseId:this.$route.params.id, //案件id
     };
   },
   methods: {
     //加载表单信息
     getFormDataByCaseIdAndFormId() {
       let data = {
-        casebasicInfoId: "12345666666666",
-        caseLinktypeId: "123"
+        casebasicInfoId: this.caseId,
+        caseLinktypeId: "2c90293b6c178b55016c17c255a4000d"
       };
       this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
         res => {
@@ -393,8 +398,9 @@ export default {
     },
     // 获取带入信息
     getCaseBasicInfo() {
+      console.log('this.$route.params.id',this.$route.params.id)
       let data = {
-        id: "12345666666666"
+        id: this.caseId,
       };
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
@@ -407,13 +413,13 @@ export default {
     },
     // 提交表单
     addFormData(handleType) {
-      debugger;
-      (this.caseLinkDataForm.formData = JSON.stringify(this.formData)),
-        (this.caseLinkDataForm.caseBasicinfoId = this.formData.id),
+      this.caseLinkDataForm.formData = JSON.stringify(this.formData);
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;  
         //0暂存 1提交
         this.caseLinkDataForm.status = handleType;
         this.$refs["docForm"].validate(valid => {
           if (valid) {
+            console.log(this.caseLinkDataForm)
             this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
               res => {
                 console.log("保存表单", res);
@@ -421,14 +427,16 @@ export default {
                   type: "success",
                   message: "保存成功"
                 });
+                if(handleType == 1){ //保存成功 跳转 pdf
+                  this.$router.replace({ 
+                    name: 'establish'
+                  });
+                }
               },
               err => {
                 console.log(err);
               }
             );
-          } else {
-            console.log("error submit!!");
-            return false;
           }
         });
     }

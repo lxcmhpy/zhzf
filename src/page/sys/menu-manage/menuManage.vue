@@ -1,4 +1,5 @@
 <template>
+<div class="com_searchAndpageBoxPadding">
   <div class="searchAndpageBox" id="menuBox">
     <!-- <div class="handlePart">菜单列表</div>
     <div class="rightTitle">
@@ -145,6 +146,7 @@
       </span>
     </el-dialog>
   </div>
+</div>
 </template>
 
 <script>

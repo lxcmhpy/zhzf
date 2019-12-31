@@ -562,8 +562,8 @@ export default {
         acceptTime: "", //受案时间
         caseCauseId: "", //违法行为id
         caseCauseName: "", //违法行为
-        programType: "", //案件类型
-        caseType: "", //程序类型
+        programType: "", //程序类型
+        caseType: "", // 案件类型
         lawPersonList: "",
         partyType: 1, //当事人类型
         party: "", //当事人信息-当事人姓名
@@ -598,7 +598,9 @@ export default {
         illegalLaw: "",
         punishLaw: "",
         discretionId:"",
-        tempPunishAmount:""
+        tempPunishAmount:"",
+        organId:iLocalStroage.gets('userInfo').organId,
+        caseTypeId:""
       },
       rules: {
         caseSource: [{ required: true, message: "请选择", trigger: "change" }],
@@ -897,6 +899,13 @@ export default {
                 type: "success",
                 message: "提交成功!"
               });
+              this.$router.replace({ 
+                name: 'filingApproval',
+                params: {
+                  id: res.data.id,
+                  }
+              });
+
             },
             err => {
               console.log(err);
@@ -915,6 +924,7 @@ export default {
     this.inforForm.caseCauseId = someCaseInfo.illageActId;
     this.inforForm.programType = someCaseInfo.programType;
     this.inforForm.caseType = someCaseInfo.caseType;
+    this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
     this.showOverrun = someCaseInfo.illageAct == '车辆在公路上擅自超限行驶' ? true : false
   },
   created() {
