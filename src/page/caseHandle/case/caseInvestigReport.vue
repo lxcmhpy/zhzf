@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="docForm" :rules="rules" :model="docData" label-width="105px">
+    <el-form ref="docForm" :rules="rules" :model="docData" label-width="115px">
 
       <div class="header-case">
         <div class="header_left">
@@ -26,13 +26,14 @@
               </div>
               <div class="col">
                 <el-form-item prop="acceptTime" label="受案时间">
-                  <el-input ref="acceptTime" clearable class="w-120" v-model="docData.acceptTime" size="small" placeholder="请输入"></el-input>
+                  <el-date-picker v-model="docData.acceptTime" type="date" placeholder="选择日期" size="small">
+                  </el-date-picker>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="partyType" label="当事人类型" class="line-height13">
+                <el-form-item prop="partyType" label="当事人类型">
                   <el-input ref="partyType" clearable class="w-120" v-model="docData.partyType" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
@@ -130,60 +131,60 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="调查结论">
-                  <el-input type="textarea" class="height88" size="small" placeholder="请输入"></el-input>
+                  <el-input v-model="docData.investigResult" type="textarea" class="height88" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="拟处罚类型">
-                  <el-checkbox-group v-model="docData.type">
+                  <el-checkbox-group v-model="docData.punishType">
                     <el-row>
                       <el-col :span="4">
-                        <el-checkbox label="罚款" name="type"></el-checkbox>
+                        <el-checkbox label="罚款"></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-input v-model="docData.name"></el-input>
+                        <el-input v-model="docData.punishMoney"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="4">
-                        <el-checkbox label="责令改正" name="type"></el-checkbox>
+                        <el-checkbox label="责令改正"></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-input v-model="docData.name"></el-input>
+                        <el-input v-model="docData.punishCorrect"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="4">
-                        <el-checkbox label="警告" name="type"></el-checkbox>
+                        <el-checkbox label="警告"></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-input v-model="docData.name"></el-input>
+                        <el-input v-model="docData.punishWarn"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="4">
-                        <el-checkbox label="没收违法所得" name="type"></el-checkbox>
+                        <el-checkbox label="没收违法所得"></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-input v-model="docData.name"></el-input>
+                        <el-input v-model="docData.confiscateThing"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="4">
-                        <el-checkbox label="没收非法财产" name="type"></el-checkbox>
+                        <el-checkbox label="没收非法财产"></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-input v-model="docData.name"></el-input>
+                        <el-input v-model="docData.confiscateMoney"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="10">
-                        <el-checkbox label="责令停产停业、暂扣或吊销许可整合执照" name="type"></el-checkbox>
+                        <el-checkbox label="责令停产停业、暂扣或吊销许可整合执照"></el-checkbox>
                       </el-col>
                       <el-col :span="14">
-                        <el-input v-model="docData.name"></el-input>
+                        <el-input v-model="docData.punishSuspend"></el-input>
                       </el-col>
                     </el-row>
 
@@ -194,18 +195,22 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="拟重大案件">
-                  <el-radio v-model="radio" label="1">拟定重大案件</el-radio>
-                  <el-radio v-model="radio" label="2">非重大案件</el-radio>
+                  <el-radio-group v-model="docData.isMajorCase">
+                    <el-radio label="1">拟定重大案件</el-radio>
+                    <el-radio label="2">非重大案件</el-radio>
+                  </el-radio-group>
+
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="处理意见">
-                  <el-button class="el-button-remind" icon="el-icon-edit" @click="addIllegalAction" size="small">
+                  <el-button class="el-button-remind" icon="el-icon-edit" @click="generateOpinions" size="small">
                     生成意见
                   </el-button>
-                  <el-input type="textarea" class="height162" size="small" placeholder="请输入"></el-input>
+                  <!-- 双向绑定有问题 -->
+                  <el-input type="textarea" v-model="docData.dealOpinion" class="height162" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -213,7 +218,7 @@
         </div>
         <!-- 悬浮按钮 -->
         <div class="float-btns">
-          <el-button type="primary">
+          <el-button type="primary" @click="addIllegalAction">
             <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
               <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF"></path>
             </svg><br>
@@ -238,21 +243,7 @@ export default {
       docData: {
         caseNumber: "",
         caseName: "",
-        partyName: "",
-        partyUnitAddress: "",
-        partyManagerPositions: "",
-        partyManager: "",
         party: "",
-        caseCauseNameCopy: "",
-        illegalBasis: "",
-        punishLaw: "",
-        punishDecision: "",
-        partyAddress: "",
-        partyZipCode: "",
-        // contactPerson:"",
-        socialCreditCode: "",
-        vehicleShipId: "",
-        vehicleShipType: "",
         partyAddress: "",
         partyTel: "",
         partyIdNo: "",
@@ -261,6 +252,11 @@ export default {
         partySex: "",
         investigProcess: "",
         caseCauseDescrib: "",
+        isMajorCase: "1",
+        punishType: ['警告'],
+        investigResult: '',
+        dealOpinion: '',
+
       },
       CaseDocDataForm: {
         caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
@@ -290,19 +286,13 @@ export default {
           { required: true, message: '案号必须填写', trigger: 'blur' }
         ],
         caseName: [
-          { required: true, message: '案由必须填写', trigger: 'blur' }
+          { required: true, message: ' 案由必须填写', trigger: 'blur' }
         ],
         acceptTime: [
-          { required: true, message: '案由必须填写', trigger: 'blur' }
+          { required: true, message: '受案时间必须填写', trigger: 'blur' }
         ],
         partyType: [
           { required: true, message: '当事人类型必须填写', trigger: 'blur' }
-        ],
-        closeResult: [
-          { required: true, message: '处理结果必须填写', trigger: 'blur' }
-        ],
-        closeSituation: [
-          { required: true, message: '执行情况必须填写', trigger: 'blur' }
         ],
       },
     }
@@ -316,6 +306,8 @@ export default {
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
           this.docData = res.data;
+          // 多选需要数组
+          this.docData.punishType = ['警告'];
         },
         err => {
           console.log(err);
@@ -358,7 +350,16 @@ export default {
     // 添加
     addDoc() {
 
-    }
+    },
+    // 生成意见
+    generateOpinions() {
+      this.docData.dealOpinion = `经过调查核实：当事人this.docData.party+违法行为，违反了+违法条例+有证据材料（列举：上面证据材料内容）
+证明该案中违法事实清楚，依据+处罚条款+拟给予当事人+当事人姓名+拟处罚类型1（名称+后续说明）+
+拟处罚类型2+……+拟处罚类型N+的行政处罚
+                                          当否，请批示。 `;
+      console.log('dealOpinion', this.docData.dealOpinion)
+
+    },
   },
   mounted() {
     this.getCaseBasicInfo();
