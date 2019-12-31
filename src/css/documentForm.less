@@ -1,12 +1,12 @@
 .box {
-    width     : calc(100% - 44px);
-    height    : auto;
-    min-height: 100%;
+    width        : calc(100% - 44px);
+    height       : auto;
+    min-height   : 100%;
     // padding   : 0 22px 0 22px;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
-    position  : absolute;
-    margin: 22px;
+    background   : rgba(255, 255, 255, 1);
+    box-shadow   : 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+    position     : absolute;
+    margin       : 22px;
 
     /deep/ .el-form {
         width: 100%;
@@ -305,4 +305,39 @@
     color : #0074F5;
     width : 16px;
     height: 16px;
+}
+
+// 问答组合
+.QAs {
+    width: 100%;
+}
+
+// 添加问题字体
+.add_text {
+    color      : #4573D0;
+    font-size  : 13px;
+    line-height: 18px;
+}
+
+// 询问次数
+.ask_number {
+    /deep/.el-input-group__append {
+        background-color   : transparent;
+        color              : #606266;
+        border: 0;
+        vertical-align     : middle;
+        display            : table-cell;
+        position           : relative;
+        border-radius      : 4px;
+        padding            : 0 20px;
+        width              : 1px;
+        white-space        : nowrap;
+    }
+
+   
+
+}
+ // 删除图标颜色
+ .colorC0C5CA{
+        color: #C0C5CA;
 }
