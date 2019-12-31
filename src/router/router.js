@@ -71,6 +71,15 @@ export const homeRouter = {
             title: "立案登记表"
           },
           component: () => import("@/page/caseHandle/case/form/filingApprovalForm.vue")
+        },
+        //处罚执行
+        {
+          path: "/penaltyExecution",
+          name: "penaltyExecution",
+          meta: {
+            title: "处罚执行"
+          },
+          component: () => import("@/page/caseHandle/case/form/PenaltyExecutionForm.vue")
         }
         
       ]
