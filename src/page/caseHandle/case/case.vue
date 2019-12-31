@@ -32,10 +32,13 @@
 
         表单：
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
-        <li >表单十九 ： 催告书(无样式图)</li>
-        <li >表单二十 ： 行政强制执行决定书(无样式图)</li>
-        <li @click="goEnforceInsteadForm">表单二十一 ： 代履行决定书(无样式图)</li>
-        <li @click="goEnforceReprotForm">表单二十二：中止（终结、恢复）行政强制执行通知书(未完成-无样式图)</li>
+        <li class="text-red">表单十七 ： 分期（延期）缴纳罚款通知书(未做-无样式图)</li>
+        <li class="text-red">表单十八 ： 执行公告(未做-无样式图)</li>
+        <li class="text-red">表单十九 ： 催告书(未做-无样式图)</li>
+        <li class="text-red">表单二十 ： 行政强制执行决定书(未做-无样式图)</li>
+        <li class="text-red">表单二十一 ： 代履行决定书(未做-无样式图)</li>
+        <li class="text-red" @click="goEnforceReprotForm">表单二十二：中止（终结、恢复）行政强制执行通知书(未完成-无样式图)</li>
+        <li></li>
         <li @click="goSendReprotForm">表单二十三：送达回证</li>
         <li @click="goFinishReprotForm">表单二十四： 结案报告</li>
         <br><br>
@@ -91,15 +94,15 @@ export default {
     },
     // 案件调查报告
     goCaseInvestig() {
-            this.$router.push({ name: 'caseInvestig' });
+      this.$router.push({ name: 'caseInvestig' });
     },
     // 调查类文书
     goCaseDoc() {
-            this.$router.push({ name: 'caseDoc' });
+      this.$router.push({ name: 'caseDoc' });
     },
     // 立案登记表-打印
     goEstablish() {
-           this.$router.push({ name: 'establish' });
+      this.$router.push({ name: 'establish' });
 
     },
 
@@ -118,17 +121,17 @@ export default {
     // },
     //  分期（延期）缴纳罚款通知书-打印
     goPayStageReprot() {
-            this.$router.push({ name: 'payStage' });
+      this.$router.push({ name: 'payStage' });
 
     },
     //  执行公告-打印
     goExecutAnnounceReprot() {
-          this.$router.push({ name: 'executAnnounce' });
+      this.$router.push({ name: 'executAnnounce' });
 
     },
     //  催告书-打印
     goRemindLetterReprot() {
-            this.$router.push({ name: 'remindLetter' });
+      this.$router.push({ name: 'remindLetter' });
 
     },
     //  代履行决定书-表单
@@ -155,8 +158,7 @@ export default {
     },
     // 中止（终结、恢复）行政强制执行通知书-表单
     goEnforceReprotForm() {
-            this.$router.push({ name: 'enforceForm' });
-
+      this.$router.push({ name: 'enforceForm' });
     },
     // 中止（终结、恢复）行政强制执行通知书-打印
     goEnforceReprot() {
@@ -271,29 +273,29 @@ export default {
     //       "caseHandle/case/form/filingApprovalForm.vue"
     //     );
     // },
-    goImportantCaseDissForm(){
+    goImportantCaseDissForm() {
       this.makeRoute(
-          "/important",
-          "/important2",
-          "/important3",
-          "important",
-          "important2",
-          "important3",
-          "重大案件集体讨论",
-          "caseHandle/case/form/importantCaseDissForm.vue"
-        );
+        "/important",
+        "/important2",
+        "/important3",
+        "important",
+        "important2",
+        "important3",
+        "重大案件集体讨论",
+        "caseHandle/case/form/importantCaseDissForm.vue"
+      );
     },
-    goArchivesForm(){
+    goArchivesForm() {
       this.makeRoute(
-          "/archives",
-          "/archives2",
-          "/archives3",
-          "archives",
-          "archives2",
-          "archives3",
-          "归档",
-          "caseHandle/case/form/archivesForm.vue"
-        );
+        "/archives",
+        "/archives2",
+        "/archives3",
+        "archives",
+        "archives2",
+        "archives3",
+        "归档",
+        "caseHandle/case/form/archivesForm.vue"
+      );
     },
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
       //path不可以重复  name也不可以重复
@@ -342,6 +344,9 @@ export default {
       cursor: pointer;
       line-height: 30px;
     }
+  .text-red{
+    color: red;
+  }
   }
 }
 </style>
