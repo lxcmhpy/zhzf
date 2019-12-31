@@ -176,12 +176,9 @@ export default {
   },
   methods: {
     // 获取带入信息
-    
     getCaseBasicInfo() {
-       let data = {
-        id: "12345666666666",
-        caseId: "12345666666666",
-        docId: "1234"
+      let data = {
+        id: "2c902ae66ae2acc4016ae376f6f1007f"
       };
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {

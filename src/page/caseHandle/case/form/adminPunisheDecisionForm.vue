@@ -169,7 +169,7 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="payBankAccount" label>
+                <el-form-item prop="payBankAccount" label-width="23px">
                   <el-input ref="payBankAccount" v-model="formData.payBankAccount"></el-input>
                 </el-form-item>
               </div>

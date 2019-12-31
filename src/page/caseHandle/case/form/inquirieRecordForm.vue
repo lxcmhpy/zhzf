@@ -11,7 +11,7 @@
     <div class="content_box">
       <div class="content">
         <div class="content_title">
-          送达回证
+          询问笔录
         </div>
         <div class="border_blue"></div>
         <el-form ref="docForm" :model="docData" label-width="135px">

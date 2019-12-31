@@ -52,27 +52,27 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="职务：">
+                <el-form-item label="职务">
                   <el-input ref="partyManagerPositions" clearable class="w-120" v-model="docData.partyManagerPositions" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="统一社会信用代码" class="line-height13">
-                  <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                <el-form-item label="统一社会信用代码" class="line-height13">
+                  <el-input ref="socialCreditCode" clearable class="w-120" v-model="docData.socialCreditCode" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="车牌号码">
-                  <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="vehicleShipId" clearable class="w-120" v-model="docData.vehicleShipId" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="车辆类型">
-                  <el-input ref="partyManagerPositions" clearable class="w-120" v-model="docData.partyManagerPositions" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="vehicleShipType" clearable class="w-120" v-model="docData.vehicleShipType" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -91,7 +91,7 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
               </el-table-column>
-              <el-table-column  label="操作" align="center">
+              <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                   <!-- {{scope.row.option}} -->
                   <span v-if="scope.row.status == '-'">
@@ -99,12 +99,12 @@
                     <i type="primary" class="el-icon-upload2 cell-icon"></i>
                     <i type="primary" class="el-icon-delete-solid cell-icon"></i>
                   </span>
-                  <span  v-if="scope.row.status == '完成'">
+                  <span v-if="scope.row.status == '完成'">
                     <i type="primary" class="el-icon-view cell-icon"></i>
                     <i type="primary" class="el-icon-printer cell-icon"></i>
                   </span>
-                  <span  v-if="scope.row.status == '暂存'">
-                     <i type="primary" class="el-icon-edit cell-icon"></i>
+                  <span v-if="scope.row.status == '暂存'">
+                    <i type="primary" class="el-icon-edit cell-icon"></i>
                     <i type="primary" class="el-icon-upload2 cell-icon"></i>
                     <i type="primary" class="el-icon-delete-solid cell-icon"></i>
                   </span>
@@ -132,6 +132,23 @@ export default {
   data() {
     return {
       docData: {
+        caseNumber: "",
+        caseName: "",
+        partyName: "",
+        partyUnitAddress: "",
+        partyManagerPositions: "",
+        partyManager: "",
+        party: "",
+        caseCauseNameCopy: "",
+        illegalBasis: "",
+        punishLaw: "",
+        punishDecision: "",
+        partyAddress: "",
+        partyZipCode: "",
+        // contactPerson:"",
+        socialCreditCode: "",
+        vehicleShipId: "",
+        vehicleShipType: "",
       },
       CaseDocDataForm: {
         caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
@@ -179,10 +196,7 @@ export default {
     // 获取带入信息
     getCaseBasicInfo() {
       let data = {
-
-        id: "12345666666666",
-        caseId: "12345666666666",
-        docId: "1234"
+        id: "2c902ae66ae2acc4016ae376f6f1007f"
       };
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
@@ -227,7 +241,7 @@ export default {
 
     },
     // 添加
-    addDoc(){
+    addDoc() {
 
     }
   },

@@ -44,6 +44,7 @@
 
         表单：
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
+        <li @click="goInquirieRecordForm">询问笔录</li>
         <li class="text-red">表单十七 ： 分期（延期）缴纳罚款通知书(未做-无样式图)</li>
         <li class="text-red">表单十八 ： 执行公告(未做-无样式图)</li>
         <li class="text-red">表单十九 ： 催告书(未做-无样式图)</li>
@@ -111,6 +112,10 @@ export default {
     // 调查类文书
     goCaseDoc() {
       this.$router.push({ name: 'caseDoc' });
+    },
+    // 询问笔录
+    goInquirieRecordForm() {
+      this.$router.push({ name: 'inquirieForm' });
     },
     // 立案登记表-打印
     goEstablish() {
