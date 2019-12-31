@@ -19,13 +19,13 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="案发时间">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="afsj" clearable class="w-120" v-model="docData.afsj" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="第">
-                  <el-input ref="caseNumber" clearable class="w-120 ask_number" v-model="docData.caseNumber" size="small" placeholder="请输入">
-                    <template slot="append" >次问询</template>
+                  <el-input ref="inquireNum" clearable class="w-120 ask_number" v-model="docData.inquireNum" size="small" placeholder="请输入">
+                    <template slot="append">次问询</template>
                   </el-input>
                 </el-form-item>
               </div>
@@ -33,98 +33,98 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="地点">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireAdress" clearable class="w-120" v-model="docData.inquireAdress" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="询问人">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireMan" clearable class="w-120" v-model="docData.inquireMan" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="记录人">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireRecordMan" clearable class="w-120" v-model="docData.inquireRecordMan" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="被询问人">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireAskMan" clearable class="w-120" v-model="docData.inquireAskMan" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="与案件关系">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireRelation" clearable class="w-120" v-model="docData.inquireRelation" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="性别">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireSex" clearable class="w-120" v-model="docData.inquireSex" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="年龄">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireAge" clearable class="w-120" v-model="docData.inquireAge" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="身份证号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireManNum" clearable class="w-120" v-model="docData.inquireManNum" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="联系电话">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireManPhone" clearable class="w-120" v-model="docData.inquireManPhone" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="工作单位">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireManWorkName" clearable class="w-120" v-model="docData.inquireManWorkName" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="职务">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireManPosition" clearable class="w-120" v-model="docData.inquireManPosition" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="联系地址">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquireManAdress" clearable class="w-120" v-model="docData.inquireManAdress" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="执法人员1">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquirePoliceName1" clearable class="w-120" v-model="docData.inquirePoliceName1" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="证件号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquirePoliceNum1" clearable class="w-120" v-model="docData.inquirePoliceNum1" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="执法人员2">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquirePoliceName2" clearable class="w-120" v-model="docData.inquirePoliceName2" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="证件号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="inquirePoliceNum2" clearable class="w-120" v-model="docData.inquirePoliceNum2" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -134,7 +134,7 @@
           <div class="content_form bottom_form ">
             <div class="row">
               <div class="col">
-                <el-form-item label="被询问人是否申请回避？" label-width="200px">
+                <el-form-item label="被询问人是否申请回避？" v-model="docData.inquireAviod" label-width="200px">
                   <el-radio v-model="radio" label="1">否</el-radio>
                   <el-radio v-model="radio" label="2">是</el-radio>
                 </el-form-item>
@@ -168,14 +168,14 @@
               <div class="row">
                 <div class="col">
                   <el-form-item :label="'问题' + (index+2)">
-                   <el-row :gutter="10">
-                    <el-col :span="22">
-                      <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
-                    </el-col>
-                    <el-col :span="1">
-                      <i class="el-icon-delete-solid colorC0C5CA" @click="removeDomain"></i>
-                    </el-col>
-                  </el-row>
+                    <el-row :gutter="10">
+                      <el-col :span="22">
+                        <el-input ref="caseNumber" clearable class="w-120" v-model="domain.question" size="small" placeholder="请输入"></el-input>
+                      </el-col>
+                      <el-col :span="1">
+                        <i class="el-icon-delete-solid colorC0C5CA" @click="removeDomain"></i>
+                      </el-col>
+                    </el-row>
                   </el-form-item>
                 </div>
               </div>
@@ -184,7 +184,7 @@
                   <el-form-item label="回答">
                     <el-row :gutter="10">
                       <el-col :span="22">
-                        <el-input type="textarea" class="height106" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                        <el-input type="textarea" class="height106" v-model="domain.answer" size="small" placeholder="请输入"></el-input>
                       </el-col>
                     </el-row>
                   </el-form-item>
@@ -225,14 +225,34 @@
 export default {
   data() {
     return {
+      // 问答数据
       dynamicValidateForm: {
         domains: [{
-          value: ''
+          question: '',
+          answer: '',
         }],
-        email: ''
       },
       docData: {
-        partyType: '个人',
+        afsj: '',
+        inquireNum: '',
+        inquireAdress: '',
+        inquireMan: '',
+        inquireRecordMan: '',
+        inquireAskMan: '',
+        inquireRelation: '',
+        inquireSex: '',
+        inquireAge: '',
+        inquireManNum: '',
+        inquireManPhone: '',
+        inquireManWorkName: '',
+        inquireManPosition: '',
+        inquireManAdress: '',
+        inquirePoliceNum1: '',
+        inquirePoliceName1: '',
+        inquirePoliceName2: '',
+        inquirePoliceNum2: '',
+        inquireAviod: '1',
+        inquireQA: [],
       },
       CaseDocDataForm: {
         caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
@@ -301,6 +321,8 @@ export default {
 
     // 提交表单
     addIllegalAction() {
+      this.docData.inquireQA = this.dynamicValidateForm.domains;
+      console.log('dynamicValidateForm', this.docData.inquireQA)
       console.log(this.CaseDocDataForm);
       this.$refs["docForm"].validate(valid => {
         if (valid) {
@@ -331,7 +353,8 @@ export default {
     addQAs() {
       console.log('add')
       this.dynamicValidateForm.domains.push({
-        value: '',
+        question: '',
+        answer: '',
         key: Date.now()
       });
     },
