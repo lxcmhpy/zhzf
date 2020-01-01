@@ -92,7 +92,7 @@
           <div class="border_blue"></div>
           <div class="content_form bottom_form">
             <el-row >
-              <el-col :span="16">
+              <el-col :span="24">
                 <div>
                   现场人员基本情况：
                 </div>
@@ -178,7 +178,7 @@
               </div>
             </div>
           </div>
-          <div class="border_blue"></div>
+          <!-- <div class="border_blue"></div> -->
         </el-form>
       </div>
     </div>

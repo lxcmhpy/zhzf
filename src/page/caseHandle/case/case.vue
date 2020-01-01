@@ -30,8 +30,13 @@
         <li @click="goPartyRights">当事人权利</li>
         <br><br>
         PDF打印：
+        <li @click="goInquestNotesPdf">勘验笔录PDF</li>
         <li @click="goIllegalActionPdf">违法行为通知书PDF</li>
-        <li @click="goIHearingNoticePdf">听证通知书pdf</li>
+        <li @click="goHearingNoticePdf">听证通知书pdf</li>
+        <li @click="goHearingRecordPdf">听证笔录PDF</li>
+        <li @click="goSpotAdmPunishDecisionPdf">当场行政处罚决定书PDF</li>
+        <li @click="goAdmPunishDecisionPdf">行政处罚决定书PDF</li>
+        <li @click="goOrderCorrectIllegalActPdf">责令改正违法行为通知书PDF</li>
       </ul>
     </div>
     <div>
@@ -225,29 +230,33 @@ export default {
         "caseHandle/case/form/illegalActionForm.vue"
       );
     },
-    goIllegalActionPdf() {
-      this.makeRoute(
-        "/illegalActionPdf",
-        "/illegalActionPdf2",
-        "/illegalActionPdf3",
-        "illegalActionPdf",
-        "illegalActionPdf2",
-        "illegalActionPdf3",
-        "违法行为通知书PDF",
-        "caseHandle/case/illegalActionPdf.vue"
-      );
+    //违法行为通知书PDF
+    goIllegalActionPdf() {      
+      this.$router.push({ name: 'illegalActionPdf' });
     },
-    goIHearingNoticePdf() {
-      this.makeRoute(
-        "/hearingNoticePdf",
-        "/hearingNoticePdf2",
-        "/hearingNoticePdf3",
-        "hearingNoticePdf",
-        "hearingNoticePdf2",
-        "hearingNoticePdf3",
-        "违法行为通知书PDF",
-        "caseHandle/case/hearingNoticePdf.vue"
-      );
+    //听证通知书pdf
+    goHearingNoticePdf() {
+      this.$router.push({ name: 'hearingNoticePdf' });
+    },
+    //听证笔录pdf
+    goHearingRecordPdf(){
+      this.$router.push({ name: 'hearingRecordePdf' });
+    },
+    //当场行政处罚决定书pdf
+    goSpotAdmPunishDecisionPdf(){
+      this.$router.push({ name: 'spotAdmPunishDecisionPdf' });
+    },
+    //行政处罚决定书pdf
+    goAdmPunishDecisionPdf(){
+      this.$router.push({ name: 'admPunishDecisionPdf' });
+    },
+    //责令改正违法行为通知书pdf
+    goOrderCorrectIllegalActPdf(){
+      this.$router.push({ name: 'orderCorrectIllegalActPdf' });
+    },
+    //勘验笔录PDF
+    goInquestNotesPdf(){
+      this.$router.push({ name: 'inquestNotesPdf' });
     },
     // 结案报告-表单
     goFilingApprovalForm() {
