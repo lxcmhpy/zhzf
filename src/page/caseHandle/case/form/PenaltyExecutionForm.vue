@@ -15,7 +15,7 @@
       <div class="content_box">
         <div class="content">
           <div class="content_title">
-            处罚执行
+            决定执行
           </div>
           <div class="border_blue"></div>
 
@@ -65,8 +65,8 @@
               <div class="col">
                 <el-form-item prop="performWay" label="执行方式">
                     <el-radio-group>
-                        <el-radio>线下缴费</el-radio>
-                        <el-radio>电子缴纳</el-radio>
+                        <el-radio label="1">线下缴费</el-radio>
+                        <el-radio label="2">电子缴纳</el-radio>
                     </el-radio-group>         
                     <el-checkbox></el-checkbox>责令改正
                   <!-- <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input> -->
@@ -88,7 +88,10 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="performance" label="执行情况">
-                  <el-input ref="performance" clearable class="w-120" v-model="formData.performance" size="small" placeholder="请输入"></el-input>
+                  <el-select v-model="formData.performance">
+                    <el-option></el-option>
+                  </el-select>
+                  <!-- <el-input ref="performance" clearable class="w-120" v-model="formData.performance" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
               <div class="col">

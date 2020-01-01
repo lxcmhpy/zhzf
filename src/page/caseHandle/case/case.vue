@@ -26,7 +26,7 @@
         <li @click="goAdminPunisheDecision">行政处罚决定书</li>
         <li @click="goImportantCaseDissForm">重大案件集体讨论</li>
         <li @click="goArchivesForm">归档</li>
-        <li @click="goPenaltyExecution">处罚执行</li>
+        <li @click="goPenaltyExecution">决定执行</li>
         <li @click="goPartyRights">当事人权利</li>
         <br><br>
         PDF打印：

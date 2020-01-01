@@ -45,7 +45,7 @@
                       <el-col :span="10">
                         <el-radio label="限期改正或整改完毕"></el-radio>
                       </el-col>
-                      <el-col :span="10">
+                      <el-col :span="14">
                         <el-date-picker
                           v-model="formData.correctTime"
                           type="datetime"
@@ -66,7 +66,7 @@
                       <el-col :span="10">
                         <el-checkbox label="复议机构名称1"></el-checkbox>
                       </el-col>
-                      <el-col :span="13">
+                      <el-col :span="14">
                         <el-input v-model="formData.name1"></el-input>
                       </el-col>
                     </el-row>
@@ -74,7 +74,7 @@
                       <el-col :span="10">
                         <el-checkbox label="复议机构名称2"></el-checkbox>
                       </el-col>
-                      <el-col :span="13">
+                      <el-col :span="14">
                         <el-input v-model="formData.name2"></el-input>
                       </el-col>
                     </el-row>
@@ -82,7 +82,7 @@
                       <el-col :span="10">
                         <el-checkbox label="复议机构名称3"></el-checkbox>
                       </el-col>
-                      <el-col :span="13">
+                      <el-col :span="4">
                         <el-input v-model="formData.name3"></el-input>
                       </el-col>
                     </el-row>                    
@@ -99,7 +99,7 @@
                       <el-col :span="10">
                         <el-checkbox label="诉讼机构名称1"></el-checkbox>
                       </el-col>
-                      <el-col :span="13">
+                      <el-col :span="14">
                         <el-input v-model="formData.name4"></el-input>
                       </el-col>
                     </el-row>
@@ -107,7 +107,7 @@
                       <el-col :span="10">
                         <el-checkbox label="诉讼机构名称2"></el-checkbox>
                       </el-col>
-                      <el-col :span="13">
+                      <el-col :span="14">
                         <el-input v-model="formData.name5"></el-input>
                       </el-col>
                     </el-row>                   
