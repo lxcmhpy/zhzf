@@ -45,6 +45,7 @@
         表单：
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
         <li @click="goInquirieRecordForm">询问笔录</li>
+        <li @click="goEvidenceListForm">证据保存清单</li>
         <li class="text-red">表单十七 ： 分期（延期）缴纳罚款通知书(未做-无样式图)</li>
         <li class="text-red">表单十八 ： 执行公告(未做-无样式图)</li>
         <li class="text-red">表单十九 ： 催告书(未做-无样式图)</li>
@@ -116,6 +117,10 @@ export default {
     // 询问笔录
     goInquirieRecordForm() {
       this.$router.push({ name: 'inquirieForm' });
+    },
+    // 询问笔录
+    goEvidenceListForm() {
+      this.$router.push({ name: 'evidenceListForm' });
     },
     // 立案登记表-打印
     goEstablish() {
