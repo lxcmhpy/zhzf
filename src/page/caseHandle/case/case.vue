@@ -51,6 +51,7 @@
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
         <li @click="goInquirieRecordForm">询问笔录</li>
         <li @click="goEvidenceListForm">证据保存清单</li>
+        <li @click="goObtaineEvidenceForm">抽样取样凭证</li>
         <li class="text-red">表单十七 ： 分期（延期）缴纳罚款通知书(未做-无样式图)</li>
         <li class="text-red">表单十八 ： 执行公告(未做-无样式图)</li>
         <li class="text-red">表单十九 ： 催告书(未做-无样式图)</li>
@@ -65,6 +66,9 @@
         打印：
         <!-- 打印版 -->
         <li @click="goEstablish">打印一 ： 立案登记表</li>
+        <li @click="goInquirieRecord">打印：询问笔录</li>
+        <li @click="goEvidenceList">打印：证据保存清单</li>
+        <li @click="goObtaineEvidence">打印：抽样取样凭证</li>
         <li @click="goPayStageReprot">打印十七 ： 分期（延期）缴纳罚款通知书</li>
         <li @click="goExecutAnnounceReprot">打印十八 ： 执行公告</li>
         <li @click="goRemindLetterReprot">打印十九 ： 催告书</li>
@@ -123,9 +127,13 @@ export default {
     goInquirieRecordForm() {
       this.$router.push({ name: 'inquirieForm' });
     },
-    // 询问笔录
+    // 证据保存清单
     goEvidenceListForm() {
       this.$router.push({ name: 'evidenceListForm' });
+    },
+    // 抽样取样凭证
+    goObtaineEvidenceForm() {
+      this.$router.push({ name: 'obtaineEvidenceForm' });
     },
     // 立案登记表-打印
     goEstablish() {
@@ -353,9 +361,9 @@ export default {
       cursor: pointer;
       line-height: 30px;
     }
-  .text-red{
-    color: red;
-  }
+    .text-red {
+      color: red;
+    }
   }
 }
 </style>

@@ -11,7 +11,7 @@
     <div class="content_box">
       <div class="content">
         <div class="content_title">
-          证据保存清单
+          抽样取样凭证
         </div>
         <div class="border_blue"></div>
         <el-form ref="docForm" :model="docData" :rules="rules" label-width="135px">
@@ -112,36 +112,51 @@
             <div class="content">
               <div class="row">
                 <div class="col">
-                  <el-form-item label="保存起止日期">
+                  <el-form-item label="抽样取证机关">
+                    <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                  </el-form-item>
+                </div>
+                <div class="col">
+                  <el-form-item label="联系电话">
+                    <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                  </el-form-item>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <el-form-item label="抽样取证时间">
                     <el-date-picker v-model="docData.dataStart" type="date" placeholder="选择日期" @change="dataChange">
                     </el-date-picker>至
                     <el-date-picker v-model="docData.dataEnd" type="date" placeholder="选择日期" @change="dataChange">
                     </el-date-picker>
-                    共 {{docData.datasTotal}}天
                   </el-form-item>
                 </div>
               </div>
+              <div class="row">
+                <div class="col">
+                  <el-form-item label="抽样地点">
+                    <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                  </el-form-item>
+                </div>
+              </div>
+              <div class="border_blue"></div>
               <div class="table_form">
-                <el-table :data="tableDatas" stripe border style="width: 100%">
+                <div class="table_title_left">
+                  抽样取证物品如下:
+                </div>
+                <el-table :data="tableDatas" stripe border style="width: 100%" >
                   <el-table-column prop="index" label="序号" align="center">
                   </el-table-column>
-                  <el-table-column prop="name" label="证据名称" align="center">
+                  <el-table-column prop="name" label="被抽样物品名称" align="center">
                   </el-table-column>
-                  <el-table-column prop="status" label="规格" align="center">
-                    <template slot-scope="scope">
-                      <!-- {{scope.row.value}} -->
-                      <el-select v-model="scope.row.value" placeholder="请选择">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                      </el-select>
-                    </template>
+                  <el-table-column prop="status" label="规格及批号" align="center">
                   </el-table-column>
                   <el-table-column prop="value" label="数量" align="center">
                     <template slot-scope="scope">
                       <el-input-number size="mini" v-model="scope.row.value" :min="1" :max="10" label="描述文字"></el-input-number>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="status" label="登记保存地点" align="center">
+                  <el-table-column prop="status" label="被抽样物品地点  " align="center">
                   </el-table-column>
                 </el-table>
               </div>
@@ -152,6 +167,12 @@
                     添加证据
                   </center>
                 </div>
+              </div>
+              <div class="border_blue"></div>
+              <div class="content_form bottom_form">
+                <el-form-item label="文书备注：">
+                  <el-input type="textarea" class="height106" v-model="docData.test" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
               </div>
             </div>
           </div>
@@ -295,20 +316,9 @@ export default {
     },
     // 日期变化
     dataChange() {
-      this.docData.datasTotal = 0;
-      console.log(this.docData.dataStart, this.docData.dataEnd)
       if (this.docData.dataEnd && this.docData.dataStart) {
-        console.log("不为空")
         if (this.docData.dataEnd >= this.docData.dataStart) {
-          console.log(this.docData.dataEnd)
-          this.docData.datasTotal = this.docData.dataEnd - this.docData.dataStart;
-          this.docData.datasTotal = Math.abs(this.docData.datasTotal)
-          // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
-          this.docData.datasTotal = this.docData.datasTotal / (24 * 3600 * 1000);
-          // 取整
-          this.docData.datasTotal = Math.floor(this.docData.datasTotal) + 1;
-          // 有问题，第一次点击不回显
-          console.log("timestamp", this.docData.datasTotal)
+
         }
         else {
           this.$message.error('开始日期不能晚于结束日期');
@@ -317,10 +327,11 @@ export default {
 
       }
     },
+    // 动态添加表格内容
     addTable() {
       console.log(this.tableDatas)
       let length = this.tableDatas.length;
-      this.tableDatas.push({'index': Number(this.tableDatas[length - 1].index) + 1});
+      this.tableDatas.push({ 'index': Number(this.tableDatas[length - 1].index) + 1 });
     }
   },
   mounted() {
