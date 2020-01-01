@@ -109,13 +109,18 @@
           </div>
           <div class="border_blue"></div>
           <div class="content_form bottom_form">
-            <el-form-item prop="closeResult" label="处理结果">
-              <el-input ref="closeResult" type="textarea" class="height106" v-model="docData.closeResult" size="small" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item prop="closeSituation" label="执行情况">
-              <el-input ref="closeSituation" type="textarea" class="height122" v-model="docData.closeSituation" size="small" placeholder="请输入"></el-input>
-            </el-form-item>
             <div class="content">
+              <div class="row">
+                <div class="col">
+                  <el-form-item label="保存起止日期">
+                    <el-date-picker v-model="docData.dataStart" type="date" placeholder="选择日期" @change="dataChange">
+                    </el-date-picker>至
+                    <el-date-picker v-model="docData.dataEnd" type="date" placeholder="选择日期" @change="dataChange">
+                    </el-date-picker>
+                    共 {{docData.datasTotal}}天
+                  </el-form-item>
+                </div>
+              </div>
               <div class="table_form">
                 <el-table :data="tableDatas" stripe border style="width: 100%" height="100%">
                   <el-table-column prop="index" label="序号" align="center">
@@ -124,7 +129,8 @@
                   </el-table-column>
                   <el-table-column prop="status" label="规格" align="center">
                     <template slot-scope="scope">
-                      <el-select v-model="value" placeholder="请选择">
+                      <!-- {{scope.row.value}} -->
+                      <el-select v-model="scope.row.value" placeholder="请选择">
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                       </el-select>
@@ -165,6 +171,9 @@ export default {
     return {
       docData: {
         partyType: '个人',
+        dataEnd: '',
+        dataStart: '',
+        datasTotal: '0',
       },
       CaseDocDataForm: {
         caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
@@ -195,27 +204,30 @@ export default {
         name: '四川',
         status: '-',
         option: '1',
+        value: '1',
       }, {
         index: '2',
         name: '四川',
         status: '完成',
         option: '2',
+        value: '2',
       }, {
         index: '3',
         name: '四川',
         status: '暂存',
         option: '3',
+        value: '3',
       }],
       options: [{
-        value: '选项1',
+        value: '1',
         label: '件'
       }, {
-        value: '选项2',
+        value: '2',
         label: '份'
       }, {
-        value: '选项3',
+        value: '3',
         label: '套'
-      }, ],
+      },],
       value: ''
     }
   },
@@ -228,6 +240,8 @@ export default {
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
           this.docData = res.data;
+          this.docData.datasTotal = 0;
+
         },
         err => {
           console.log(err);
@@ -267,7 +281,31 @@ export default {
     // 暂存
     save() {
 
-    }
+    },
+    // 日期变化
+    dataChange() {
+      this.docData.datasTotal = 0;
+      console.log(this.docData.dataStart, this.docData.dataEnd)
+      if (this.docData.dataEnd && this.docData.dataStart) {
+        console.log("不为空")
+        if (this.docData.dataEnd >= this.docData.dataStart) {
+          console.log(this.docData.dataEnd)
+          this.docData.datasTotal = this.docData.dataEnd - this.docData.dataStart;
+          this.docData.datasTotal = Math.abs(this.docData.datasTotal)
+          // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
+          this.docData.datasTotal = this.docData.datasTotal / (24 * 3600 * 1000);
+          // 取整
+          this.docData.datasTotal = Math.floor(this.docData.datasTotal) + 1;
+          // 有问题，第一次点击不回显
+          console.log("timestamp", this.docData.datasTotal)
+        }
+        else {
+          this.$message.error('开始日期不能晚于结束日期');
+          this.docData.dataEnd = this.docData.dataStart = undefined;
+        }
+
+      }
+    },
   },
   mounted() {
     this.getCaseBasicInfo();
