@@ -49,6 +49,9 @@
         打印：
         <!-- 打印版 -->
         <li @click="goEstablish">打印一 ： 立案登记表</li>
+        <li @click="goInquirieRecord">打印：询问笔录</li>
+        <li @click="goEvidenceList">打印：证据保存清单</li>
+        <li @click="goObtaineEvidence">打印：抽样取样凭证</li>
         <li @click="goPayStageReprot">打印十七 ： 分期（延期）缴纳罚款通知书</li>
         <li @click="goExecutAnnounceReprot">打印十八 ： 执行公告</li>
         <li @click="goRemindLetterReprot">打印十九 ： 催告书</li>
@@ -359,9 +362,9 @@ export default {
       cursor: pointer;
       line-height: 30px;
     }
-  .text-red{
-    color: red;
-  }
+    .text-red {
+      color: red;
+    }
   }
 }
 </style>

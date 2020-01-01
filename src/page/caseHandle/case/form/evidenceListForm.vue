@@ -122,7 +122,7 @@
                 </div>
               </div>
               <div class="table_form">
-                <el-table :data="tableDatas" stripe border style="width: 100%" height="100%">
+                <el-table :data="tableDatas" stripe border style="width: 100%">
                   <el-table-column prop="index" label="序号" align="center">
                   </el-table-column>
                   <el-table-column prop="name" label="证据名称" align="center">
@@ -136,11 +136,22 @@
                       </el-select>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="status" label="数量" align="center">
+                  <el-table-column prop="value" label="数量" align="center">
+                    <template slot-scope="scope">
+                      <el-input-number size="mini" v-model="scope.row.value" :min="1" :max="10" label="描述文字"></el-input-number>
+                    </template>
                   </el-table-column>
                   <el-table-column prop="status" label="登记保存地点" align="center">
                   </el-table-column>
                 </el-table>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <center class="add_text" @click="addTable">
+                    <i class="el-icon-circle-plus-outline"></i>
+                    添加证据
+                  </center>
+                </div>
               </div>
             </div>
           </div>
@@ -306,6 +317,11 @@ export default {
 
       }
     },
+    addTable() {
+      console.log(this.tableDatas)
+      let length = this.tableDatas.length;
+      this.tableDatas.push({'index': Number(this.tableDatas[length - 1].index) + 1});
+    }
   },
   mounted() {
     this.getCaseBasicInfo();
