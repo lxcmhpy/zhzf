@@ -49,6 +49,22 @@ export const homeRouter = {
       component: MainContent,
       children: [
         {
+          path: "/side",
+          name: "side",
+          meta: {
+            title: "侧边条"
+          },
+          component: () => import("@/page/caseHandle/case/side.vue")
+        },
+        {
+          path: "/dentail",
+          name: "dentail",
+          meta: {
+            title: "侧边条"
+          },
+          component: () => import("@/page/caseHandle/case/dentail.vue")
+        },
+        {
           path: "/inquestNotes",
           name: "inquestNotes",
           meta: {
@@ -164,7 +180,7 @@ export const homeRouter = {
           path: "/enforceDecide",
           name: "enforceDecide",
           meta: {
-            title: "强制执行决定书-pdf"
+            title: "行政强制执行决定书-pdf"
           },
           component: () => import("@/page/caseHandle/case/pdf/enforceDecide.vue")
         },
