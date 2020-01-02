@@ -45,6 +45,7 @@
         <br><br>
         <!--  -->
         <li @click="goside">侧边栏</li>
+        <li @click="goDentail">案件详情</li>
         <li @click="goCaseInvestig">案件调查报告</li>
         <li @click="goCaseDoc">调查类文书(上级表单)</li>
         <br><br>
@@ -95,14 +96,14 @@ export default {
   methods: {
     goDiao() {
       this.makeRoute(
-        "/diao",
-        "/diao2",
-        "/diao3",
-        "diao",
-        "diao2",
-        "diao3",
+        "/liveReport",
+        "/liveReport2",
+        "/liveReport3",
+        "liveReport",
+        "liveReport2",
+        "liveReport3",
         "调查类文书",
-        "caseHandle/case/diao.vue"
+        "caseHandle/case/liveReport.vue"
       );
     },
     goWen() {
@@ -146,6 +147,11 @@ export default {
     //  分期（延期）缴纳罚款通知书-打印
     goPayStageReprot() {
       this.$router.push({ name: 'payStage' });
+
+    },
+    //  执行公告-打印
+    goDentail() {
+      this.$router.push({ name: 'dentail' });
 
     },
     //  执行公告-打印
