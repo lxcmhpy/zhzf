@@ -1,4 +1,5 @@
 <template>
+<div class="main">
   <div class="a4-box">
     <div class="pdf-box">
       <!-- <div>交通运输行政执法文书式样之二十二 ： 中止（终结、恢复）行政强制执行通知书</div> -->
@@ -48,6 +49,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 <script>
 export default {
@@ -59,5 +61,5 @@ export default {
 };
 </script>
 <style lang="less">
-@import "../../../css/pdf.less";
+@import "../../../../css/pdf.less";
 </style>

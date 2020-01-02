@@ -3,7 +3,7 @@
     <div class="btn_box">
       <i class="el-icon-arrow-down"></i>
     </div>
-    <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" active-background-color="#F3F9F9" text-color="#9EA7B6" active-text-color="#4573D0" :collapse="true">
+    <el-menu class="el-menu-vertical-demo" background-color="#545c64" active-background-color="#F3F9F9" text-color="#9EA7B6" active-text-color="#4573D0" :collapse="true">
 
       <el-menu-item index="1">
         案件<br>总览
@@ -42,12 +42,7 @@
 <script>
 export default {
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    }
+    
   }
 }
 </script>
