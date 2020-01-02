@@ -63,29 +63,6 @@ export default {
       };
       console.log(data);
       this.getCaseList(data);
-
-      // let data = {
-      //   flag: 1,
-      //   organId: iLocalStroage.gets("userInfo").organId,
-      //   current: this.currentPage,
-      //   size: this.pageSize,
-      // };
-      // console.log(data);
-      // this.$store.dispatch("queryCaseBasicInfoListPage", data).then(
-      //   res => {
-      //     console.log(res);
-      //     this.tableData = res.data.records;
-      //     this.tableData.forEach(item=>{
-      //       item.name = item.party ? item.party : item.partyName;
-            
-      //     })
-      //     this.total = res.data.total;
-
-      //   },
-      //   err => {
-      //     console.log(err);
-      //   }
-      // );
     },
     //更改每页显示的条数
     handleSizeChange(val) {

@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="docForm" :model="docData" label-width="105px">
+    <el-form ref="caseDocForm" :model="formData" label-width="105px">
 
       <div class="header-case">
         <div class="header_left">
@@ -21,14 +21,14 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseName" label="案由">
-                  <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="caseCauseName" clearable class="w-120" v-model="formData.caseCauseName" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -36,43 +36,43 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="单位">
-                  <el-input ref="partyName" clearable class="w-120" v-model="docData.partyName" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyName" clearable class="w-120" v-model="formData.partyName" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="地址">
-                  <el-input ref="partyUnitAddress" clearable class="w-120" v-model="docData.partyUnitAddress" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyUnitAddress" clearable class="w-120" v-model="formData.partyUnitAddress" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="法定代表人">
-                  <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyManager" clearable class="w-120" v-model="formData.partyManager" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="职务：">
-                  <el-input ref="partyManagerPositions" clearable class="w-120" v-model="docData.partyManagerPositions" size="small" placeholder="请输入"></el-input>
+                <el-form-item label="职务">
+                  <el-input ref="partyManagerPositions" clearable class="w-120" v-model="formData.partyManagerPositions" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="统一社会信用代码" class="line-height13">
-                  <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                <el-form-item label="统一社会信用代码" class="line-height13">
+                  <el-input ref="socialCreditCode" clearable class="w-120" v-model="formData.socialCreditCode" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="车牌号码">
-                  <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="vehicleShipId" clearable class="w-120" v-model="formData.vehicleShipId" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="车辆类型">
-                  <el-input ref="partyManagerPositions" clearable class="w-120" v-model="docData.partyManagerPositions" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="vehicleShipType" clearable class="w-120" v-model="formData.vehicleShipType" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -91,7 +91,7 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
               </el-table-column>
-              <el-table-column  label="操作" align="center">
+              <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                   <!-- {{scope.row.option}} -->
                   <span v-if="scope.row.status == '-'">
@@ -99,12 +99,12 @@
                     <i type="primary" class="el-icon-upload2 cell-icon"></i>
                     <i type="primary" class="el-icon-delete-solid cell-icon"></i>
                   </span>
-                  <span  v-if="scope.row.status == '完成'">
+                  <span v-if="scope.row.status == '完成'">
                     <i type="primary" class="el-icon-view cell-icon"></i>
                     <i type="primary" class="el-icon-printer cell-icon"></i>
                   </span>
-                  <span  v-if="scope.row.status == '暂存'">
-                     <i type="primary" class="el-icon-edit cell-icon"></i>
+                  <span v-if="scope.row.status == '暂存'">
+                    <i type="primary" class="el-icon-edit cell-icon"></i>
                     <i type="primary" class="el-icon-upload2 cell-icon"></i>
                     <i type="primary" class="el-icon-delete-solid cell-icon"></i>
                   </span>
@@ -115,12 +115,20 @@
         </div>
         <!-- 悬浮按钮 -->
         <div class="float-btns btn-height63">
-          <el-button type="primary" @click="addIllegalAction">
+          <el-button type="primary" @click="continueHandle">
             <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2285" width="24" height="24">
               <path d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z" fill="#FFFFFF" p-id="2286"></path>
             </svg>
             <br>
             下一<br>环节
+          </el-button>
+
+            <el-button type="primary" @click="submitCaseDoc(1)">
+            <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2285" width="24" height="24">
+              <path d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z" fill="#FFFFFF" p-id="2286"></path>
+            </svg>
+            <br>
+            提交
           </el-button>
         </div>
       </div>
@@ -128,18 +136,39 @@
   </div>
 </template>
 <script>
+import { mixinGetCaseApiList } from "@/js/mixins";
+
 export default {
   data() {
     return {
-      docData: {
+      formData: {
+        caseNumber: "",
+        caseName: "",
+        partyName: "",
+        partyUnitAddress: "",
+        partyManagerPositions: "",
+        partyManager: "",
+        party: "",
+        caseCauseNameCopy: "",
+        illegalBasis: "",
+        punishLaw: "",
+        punishDecision: "",
+        partyAddress: "",
+        partyZipCode: "",
+        // contactPerson:"",
+        socialCreditCode: "",
+        vehicleShipId: "",
+        vehicleShipType: "",
       },
-      CaseDocDataForm: {
-        caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
-        caseDoctypeId: "123",
-        //文书数据
-        docData: "",
-        status: "",
+      caseLinkDataForm: {
+        id: "", //修改的时候用
+        caseBasicinfoId: this.$route.params.id, //案件ID
+        caseLinktypeId: "2c90293b6c178b55016c17c93326000f", //表单类型ID
+        //表单数据
+        formData: "",
+        status: ""
       },
+      handleType: 0,
       tableDatas: [{
         index: '1',
         name: '四川',
@@ -175,65 +204,25 @@ export default {
       },
     }
   },
+  mixins:[mixinGetCaseApiList],
   methods: {
-    // 获取带入信息
-    getCaseBasicInfo() {
-      let data = {
-
-        id: "12345666666666",
-        caseId: "12345666666666",
-        docId: "1234"
-      };
-      this.$store.dispatch("getCaseBasicInfo", data).then(
-        res => {
-          this.docData = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    //加载表单信息
+    setFormData(){
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
-
-    // 提交表单
-    addIllegalAction() {
-      console.log(this.CaseDocDataForm);
-      this.$refs["docForm"].validate(valid => {
-        if (valid) {
-          this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
-            res => {
-              console.log("保存文书", res);
-              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
-                type: "success",
-                message: "保存成功"
-
-              });
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-
-      });
-      // console.log(this.CaseDocDataForm.docData);
-
+    //保存表单数据
+    submitCaseDoc(handleType){
+      this.com_submitCaseForm(handleType,'caseDocForm','');
     },
-    // 暂存
-    save() {
-
+    //下一环节
+    continueHandle() {
+      this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId);
     },
-    // 添加
-    addDoc(){
-
-    }
+    addDoc(){}
   },
-  mounted() {
-    this.getCaseBasicInfo();
-  },
+  created() {
+    this.setFormData();
+  }
 }
 </script>
 

@@ -72,7 +72,10 @@ export default {
     //点击进入案件详情
     clickCase(row){
         this.$router.replace({ 
-          name: 'caseDetail'
+          name: 'caseDetail',
+          params: {
+              data: JSON.stringify(row)
+          }
       });
     }
   },

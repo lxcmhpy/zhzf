@@ -15,14 +15,14 @@
       </el-form>
       <el-form ref="docForm" :model="formData" :rules="rules" label-width="135px">
         <div class="content_form">
-          <!-- <el-input
+          <el-input
               ref="id"
               type="hidden"
               class="w-120"
               v-model="formData.id"
               size="small"
               placeholder="请输入"
-          ></el-input>-->
+          ></el-input>
           <div class="row">
             <div class="col">
               <el-form-item prop="tempNo" label="案号：">
@@ -331,6 +331,8 @@
   </div>
 </template>
 <script>
+import { mixinGetCaseApiList } from "@/js/mixins";
+
 export default {
   data() {
     return {
@@ -356,95 +358,103 @@ export default {
       partyTypeList: [{ id: "1", name: "个人" }, { id: "2", name: "企业" }],
       //提交方式
       handleType: 0, //0  暂存     1 提交
-      caseLinkDataForm: {
+      caseLinkDataForm: { 
         id: "", //修改的时候用
-        caseBasicinfoId: "", //案件ID
+        caseBasicinfoId: this.$route.params.id, //案件id
         caseLinktypeId: "2c90293b6c178b55016c17c255a4000d", //表单类型ID
         //表单数据
         formData: "",
         status: ""
       },
-      caseId: this.$route.params.id //案件id
+     
     };
   },
+  mixins:[mixinGetCaseApiList],
   methods: {
     //加载表单信息
-    getFormDataByCaseIdAndFormId() {
-      console.log(this.caseId)
-      let data = {
-        casebasicInfoId: this.caseId,
-        caseLinktypeId: "2c90293b6c178b55016c17c255a4000d"
-      };
-      this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
-        res => {
-          console.log("获取表单详情", res);
-          //如果为空，则加载案件信息
-          if (res.data == "") {
-            this.getCaseBasicInfo();
-          } else {
-            console.log(res.data);
-            this.caseLinkDataForm.id = res.data.id;
-            this.formData = JSON.parse(res.data.formData);
-          }
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    setFormData(){
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
-    // 获取带入信息
-    getCaseBasicInfo() {
-      console.log("this.$route.params.id", this.$route.params.id);
-      let data = {
-        id: this.caseId
-      };
-      this.$store.dispatch("getCaseBasicInfo", data).then(
-        res => {
-          this.formData = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
+    // getFormDataByCaseIdAndFormId() {
+    //   console.log(this.caseId)
+    //   let data = {
+    //     casebasicInfoId: this.caseId,
+    //     caseLinktypeId: "2c90293b6c178b55016c17c255a4000d"
+    //   };
+    //   this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
+    //     res => {
+    //       console.log("获取表单详情", res);
+    //       //如果为空，则加载案件信息
+    //       if (res.data == "") {
+    //         this.getCaseBasicInfo();
+    //       } else {
+    //         console.log(res.data);
+    //         this.caseLinkDataForm.id = res.data.id;
+    //         this.formData = JSON.parse(res.data.formData);
+    //       }
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     }
+    //   );
+    // },
+    // // 获取带入信息
+    // getCaseBasicInfo() {
+    //   console.log("this.$route.params.id", this.$route.params.id);
+    //   let data = {
+    //     id: this.caseId
+    //   };
+    //   this.$store.dispatch("getCaseBasicInfo", data).then(
+    //     res => {
+    //       this.formData = res.data;
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     }
+    //   );
+    // },
     // 提交表单
     addFormData(handleType) {
-      this.caseLinkDataForm.formData = JSON.stringify(this.formData);
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      //0暂存 1提交
-      this.caseLinkDataForm.status = handleType;
-      this.$refs["docForm"].validate(valid => {
-        if (valid) {
-          console.log(this.caseLinkDataForm);
-          this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
-            res => {
-              console.log("保存表单", res);
-              this.$message({
-                type: "success",
-                message: "保存成功"
-              });
-              if (handleType == 1) {
-                //保存成功 跳转 pdf
-                this.$router.replace({
-                  name: "establish",
-                  params: {
-                    id: this.caseId
-                  }
-                });
-              }
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        }
-      });
+      //参数  提交类型 、formRef  、 跳转的pdf路由name
+      this.com_submitCaseForm(handleType,'docForm','establish');
+      
+      // this.caseLinkDataForm.formData = JSON.stringify(this.formData);
+      // this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      // //0暂存 1提交
+      // this.caseLinkDataForm.status = handleType;
+      // this.$refs["docForm"].validate(valid => {
+      //   if (valid) {
+      //     console.log(this.caseLinkDataForm);
+      //     this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
+      //       res => {
+      //         console.log("保存表单", res);
+      //         this.$message({
+      //           type: "success",
+      //           message: "保存成功"
+      //         });
+      //         if (handleType == 1) {
+      //           //保存成功 跳转 pdf
+      //           this.$router.replace({
+      //             name: "establish",
+      //             params: {
+      //               id: this.caseId
+      //             }
+      //           });
+      //         }
+      //       },
+      //       err => {
+      //         console.log(err);
+      //       }
+      //     );
+      //   }
+      // });
     }
   },
 
   created() {
-    this.getFormDataByCaseIdAndFormId();
+    // this.getFormDataByCaseIdAndFormId();
     // this.getCaseBasicInfo();
+    this.setFormData();
   }
 };
 </script>

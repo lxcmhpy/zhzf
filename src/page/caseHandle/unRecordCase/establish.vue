@@ -228,6 +228,7 @@
 </template>
 <script>
 import showApprovePeople from "./showApprovePeople";
+import { mixinGetCaseApiList } from "@/js/mixins";
 
 export default {
   data() {
@@ -240,6 +241,7 @@ export default {
   components: {
     showApprovePeople
   },
+  mixins:[mixinGetCaseApiList],
   methods: {
     //返回编辑
     goEdit() {
@@ -250,23 +252,26 @@ export default {
         }
       });
     },
-    //带入数据
-    setData() {
-      let data = {
-        casebasicInfoId: this.caseId,
-        caseLinktypeId: "2c90293b6c178b55016c17c255a4000d"
-      };
-      this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
-        res => {
-          console.log("获取表单详情", res);
-          this.tableData = JSON.parse(res.data.formData);
-          console.log(this.tableData)
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    setData(){
+      this.com_getFormDataByCaseIdAndFormId(this.caseId,'2c90293b6c178b55016c17c255a4000d','table');
     },
+    //带入数据
+    // setData() {
+    //   let data = {
+    //     casebasicInfoId: this.caseId,
+    //     caseLinktypeId: "2c90293b6c178b55016c17c255a4000d"
+    //   };
+    //   this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
+    //     res => {
+    //       console.log("获取表单详情", res);
+    //       this.tableData = JSON.parse(res.data.formData);
+    //       console.log(this.tableData)
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     }
+    //   );
+    // },
     showApprovePeopleList(){
       let data={
         caseId:this.caseId,

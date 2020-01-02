@@ -207,8 +207,8 @@
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemSmall">
-            <el-form-item label="统一社会信用代码">
-              <el-input v-model="inforForm.socialCreditCode"></el-input>
+            <el-form-item label="统一社会信用代码" >
+              <el-input v-model="inforForm.socialCreditCode" ></el-input>
             </el-form-item>
           </div>
           <div class="itemBig">
