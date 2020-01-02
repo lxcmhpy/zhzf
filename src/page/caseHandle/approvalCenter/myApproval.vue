@@ -1,4 +1,5 @@
 <template>
+<!-- 待我审批 -->
 <div class="com_searchAndpageBoxPadding">
   <div class="searchAndpageBox" id="waitDealBox">
     <!-- <div class="handlePart">
@@ -6,13 +7,13 @@
     </div> -->
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="clickCase">
+        <el-table-column prop="2" label="申请时间" align="center"></el-table-column>
         <el-table-column prop="tempNo" label="案号" align="center"></el-table-column>
-        <el-table-column prop="" label="车/船号" align="center"></el-table-column>
         <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
         <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
-        <el-table-column prop="acceptTime" label="受案时间" align="center"></el-table-column>
         <el-table-column prop="caseType" label="案件类型" align="center"></el-table-column>
-        <el-table-column prop="caseStatus" label="案件状态" align="center"></el-table-column>
+        <el-table-column prop="caseType2" label="申请人" align="center"></el-table-column>
+        <el-table-column prop="caseStatus2" label="当前环节" align="center"></el-table-column>
       </el-table>
     </div>
     <div class="paginationBox">
@@ -34,7 +35,6 @@
 
 import iLocalStroage from "@/js/localStroage";
 import { mixinGetCaseApiList } from "@/js/mixins";
-
 export default {
   data() {
     return {
@@ -47,8 +47,8 @@ export default {
   mixins:[mixinGetCaseApiList],
   methods: {
   
-    //获取审批中的数据
-    getUnRecordCase() {
+    //获取待我审批的数据    接口暂时使用审批中的，稍后修改
+    getMyApprovalCase() {
       let data = {
         flag: 3,
         userId: iLocalStroage.gets("userInfo").id,
@@ -69,18 +69,15 @@ export default {
       this.currentPage = val;
       this.getUnRecordCase();
     },
-    //跳转立案登记
+    //点击进入案件详情
     clickCase(row){
-      // this.$router.replace({ 
-      //     name: 'filingApproval',
-      //     params: {
-      //       id: row.id,
-      //     }
-      // });
+        this.$router.replace({ 
+          name: 'caseDetail'
+      });
     }
   },
   created() {
-    this.getUnRecordCase();
+    this.getMyApprovalCase();
   }
 };
 </script>

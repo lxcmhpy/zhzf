@@ -33,6 +33,8 @@
 <script>
 import caseRegisterDiag from "./caseRegisterDiag";
 import iLocalStroage from "@/js/localStroage";
+import { mixinGetCaseApiList } from "@/js/mixins";
+
 export default {
   data() {
     return {
@@ -42,6 +44,7 @@ export default {
       total: 0 //总页数
     };
   },
+  mixins:[mixinGetCaseApiList],
   components: {
     caseRegisterDiag
   },
@@ -54,26 +57,35 @@ export default {
     getUnRecordCase() {
       let data = {
         flag: 1,
-        organId: iLocalStroage.gets("userInfo").organId,
+        userId: iLocalStroage.gets("userInfo").id,
         current: this.currentPage,
         size: this.pageSize,
       };
       console.log(data);
-      this.$store.dispatch("queryCaseBasicInfoListPage", data).then(
-        res => {
-          console.log(res);
-          this.tableData = res.data.records;
-          this.tableData.forEach(item=>{
-            item.name = item.party ? item.party : item.partyName;
-            
-          })
-          this.total = res.data.total;
+      this.getCaseList(data);
 
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      // let data = {
+      //   flag: 1,
+      //   organId: iLocalStroage.gets("userInfo").organId,
+      //   current: this.currentPage,
+      //   size: this.pageSize,
+      // };
+      // console.log(data);
+      // this.$store.dispatch("queryCaseBasicInfoListPage", data).then(
+      //   res => {
+      //     console.log(res);
+      //     this.tableData = res.data.records;
+      //     this.tableData.forEach(item=>{
+      //       item.name = item.party ? item.party : item.partyName;
+            
+      //     })
+      //     this.total = res.data.total;
+
+      //   },
+      //   err => {
+      //     console.log(err);
+      //   }
+      // );
     },
     //更改每页显示的条数
     handleSizeChange(val) {

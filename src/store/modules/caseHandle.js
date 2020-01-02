@@ -1,6 +1,7 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
-    ,getFormDataByCaseIdAndFormIdApi,addFormDataApi } from "@/api/caseHandle";
+    ,getFormDataByCaseIdAndFormIdApi,addFormDataApi ,
+    submitPdfApi} from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -171,6 +172,18 @@ const caseHandle = {
         queryCaseBasicInfoListPage({ commit }, data) {
             return new Promise((resolve, reject) => {
                 queryCaseBasicInfoListPageApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //pdf页的提交
+        submitPdf({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                submitPdfApi(data).then(
                     res => {
                         resolve(res);
                     },

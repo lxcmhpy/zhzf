@@ -102,7 +102,7 @@ export const homeRouter = {
           meta: {
             title: "立案登记表-pdf"
           },
-          component: () => import("@/page/caseHandle/case/pdf/establish.vue")
+          component: () => import("@/page/caseHandle/unRecordCase/establish.vue")
         },
         {
           path: "/payStage",
@@ -175,7 +175,16 @@ export const homeRouter = {
           meta: {
             title: "立案登记表"
           },
-          component: () => import("@/page/caseHandle/case/form/filingApprovalForm.vue")
+          component: () => import("@/page/caseHandle/unRecordCase/filingApprovalForm.vue")
+        },
+        {
+
+          path: "/caseDetail",
+          name: "caseDetail",
+          meta: {
+            title: "案件详情"
+          },
+          component: () => import("@/page/caseHandle/caseDetail.vue")
         }
         
       ]

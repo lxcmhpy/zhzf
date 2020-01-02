@@ -169,3 +169,13 @@ export function queryCaseBasicInfoListPageApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//pdf页的提交
+export function submitPdfApi(data) { 
+  return request({
+    url: "/doc/linkData/jumpNextLink",
+    method: "post",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
