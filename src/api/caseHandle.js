@@ -169,3 +169,24 @@ export function queryCaseBasicInfoListPageApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//通过案件id和表单类型Id查询已绑定文书
+export function getDocListByCaseIdAndFormIdApi(data){
+  return request({
+    url: "/doc/caseRelevantMaterials/findListByFrom",
+    method: "get",
+    params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+//修改文书状态
+export function saveOrUpdateLinkApi(data){
+  return request({
+    url: "/doc/caseRelevantMaterials/saveOrUpdateLink",
+    method: "post",
+    // params:data,
+    data: vm.$qs.stringify(data),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}

@@ -75,14 +75,14 @@
                           </el-checkbox-group>
                       </el-form-item>  
                     </div>
-                    <!-- <div class="col">
-                        <el-col :span="8">
-                            <div class="second_title_btns">
-                                <el-button type="primary" size="small">选择已上传证据</el-button>
-                                <el-button type="success" size="small">本地上传</el-button>
+                    <div class="col">
+                        <el-col :span="20">
+                            <div align="right">
+                                <el-button type="primary" size="small">上传记录</el-button>
+                                <el-button type="success" size="small">线上记录</el-button>
                             </div>
                         </el-col>
-                    </div> -->
+                    </div>
               </div>
           </div>
         </div>

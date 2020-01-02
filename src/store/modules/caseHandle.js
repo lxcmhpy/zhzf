@@ -1,6 +1,6 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
-    ,getFormDataByCaseIdAndFormIdApi,addFormDataApi } from "@/api/caseHandle";
+    ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi } from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -180,8 +180,30 @@ const caseHandle = {
             })
         },
 
-
-
+        //通过案件id和表单类型Id查询已绑定文书
+        getDocListByCaseIdAndFormId({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getDocListByCaseIdAndFormIdApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //修改文书状态
+        saveOrUpdateLink({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                saveOrUpdateLinkApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
 
     }
 }

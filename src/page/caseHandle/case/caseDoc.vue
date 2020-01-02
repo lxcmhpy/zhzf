@@ -85,17 +85,20 @@
         <div class="content">
           <div class="table_form">
             <el-table :data="tableDatas" stripe border style="width: 100%" height="100%">
-              <el-table-column prop="index" label="序号" align="center">
+              <el-table-column prop="id" label="序号" align="center">
               </el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
+                <!-- <template slot-scope="scope">
+                  <div>{{scope.row.status === null ?'':'完成'}}</div>
+                </template> -->
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                   <!-- {{scope.row.option}} -->
-                  <span v-if="scope.row.status == '-'">
-                    <i type="primary" class="el-icon-circle-plus cell-icon" @click="addDoc"></i>
+                  <span v-if="scope.row.status == null">
+                    <i type="primary" class="el-icon-circle-plus cell-icon" @click="enterDoc(scope.row)"></i>
                     <i type="primary" class="el-icon-upload2 cell-icon"></i>
                     <i type="primary" class="el-icon-delete-solid cell-icon"></i>
                   </span>
@@ -157,22 +160,13 @@ export default {
         docData: "",
         status: "",
       },
-      tableDatas: [{
-        index: '1',
-        name: '四川',
-        status: '-',
-        option: '1',
-      }, {
-        index: '2',
-        name: '四川',
-        status: '完成',
-        option: '2',
-      }, {
-        index: '3',
-        name: '四川',
-        status: '暂存',
-        option: '3',
-      }],
+      tableDatas: [
+      
+      ],
+      caseRelevantMaterialsForm:{
+        casebasicInfoId:"",
+        linkTypeId:""
+      },
       rules: {
         caseNumber: [
           { required: true, message: '案号必须填写', trigger: 'blur' }
@@ -240,14 +234,34 @@ export default {
     save() {
 
     },
-    // 添加
-    addDoc() {
-
+    // 进入文书
+    enterDoc(row) {
+      this.$router.push({ name:row.url});
+    },
+    //通过案件id和表单类型Id查询已绑定文书
+    getDocListByCaseIdAndFormId(){
+      let data = {
+        casebasicInfoId:"123",
+        linkTypeId:"2c90293b6c178b55016c17c93326000f"
+      };
+      this.$store.dispatch("getDocListByCaseIdAndFormId", data).then(
+        res => {
+          this.tableDatas = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
   },
   mounted() {
     this.getCaseBasicInfo();
+    
   },
+  created(){
+    //通过案件id和表单类型Id查询已绑定文书
+    this.getDocListByCaseIdAndFormId();
+  }
 }
 </script>
 
