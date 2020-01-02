@@ -49,6 +49,14 @@ export const homeRouter = {
       component: MainContent,
       children: [
         {
+          path: "/side",
+          name: "side",
+          meta: {
+            title: "侧边条"
+          },
+          component: () => import("@/page/caseHandle/case/side.vue")
+        },
+        {
           path: "/inquestNotes",
           name: "inquestNotes",
           meta: {

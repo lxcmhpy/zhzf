@@ -26,6 +26,8 @@
       <p>zmh(17、18、19、20、21、22、23、24文书表单及pdf打印版)</p>
       <ul>
         <br><br>
+        <!--  -->
+        <li @click="goside">侧边栏</li>
         <li @click="goCaseInvestig">案件调查报告</li>
         <li @click="goCaseDoc">调查类文书(上级表单)</li>
         <br><br>
@@ -140,6 +142,11 @@ export default {
     //  分期（延期）缴纳罚款通知书-打印
     goPayStageReprot() {
       this.$router.push({ name: 'payStage' });
+
+    },
+    //  执行公告-打印
+    goside() {
+      this.$router.push({ name: 'side' });
 
     },
     //  执行公告-打印

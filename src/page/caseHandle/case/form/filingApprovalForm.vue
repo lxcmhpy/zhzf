@@ -1,12 +1,12 @@
 <template>
-  <div class=" caseBox">
+  <div class="box caseBox">
     <!-- <div class="header">
       <div class="header_left">
         <div class="triangle"></div>
         <div class="header_left_text">返回</div>
       </div>
     </div> -->
-    <!-- <div class="content_box"> -->
+    <div class="content_box">
       <div class="content">
         <div class="content_title">立案审批表</div>
         <div class="border_blue"></div>
@@ -327,7 +327,7 @@
           <br />暂存
         </el-button>
       </div>
-    <!-- </div> -->
+    </div>
   </div>
 </template>
 <script>
