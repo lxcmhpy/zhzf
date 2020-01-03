@@ -9,6 +9,8 @@
     <div class="content_box">
       <div class="content">
         <div class="content_title">行政处罚决定书</div>
+        <el-form ref="caseLinkDataForm">
+        <el-input ref="id" type="hidden"></el-input></el-form>
         <el-form ref="adminPunisheDecisionForm" :model="formData" :rules="rules" label-width="135px">
           <div class="border_blue"></div>
           <div class="content_form">
