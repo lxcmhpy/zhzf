@@ -11,114 +11,170 @@
     <div class="content_box">
       <div class="content">
         <div class="content_title">
-          结案报告
+          抽样取样凭证
         </div>
         <div class="border_blue"></div>
         <el-form ref="docForm" :model="docData" :rules="rules" label-width="135px">
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseNumber" label="案号：">
+                <el-form-item prop="caseNumber" label="案号">
                   <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="案由：">
+                <el-form-item prop="caseName" label="案由">
                   <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
-            <div class="rows">
-              <div class="col">
-                <el-form-item prop="partyType" label="当事人类型：">
-                  <el-input ref="partyType" clearable class="w-120" v-model="docData.partyType" size="small" placeholder="请输入"></el-input>
-                </el-form-item>
-              </div>
-            </div>
             <!-- 个人 -->
-            <div v-if="docData.partyType=='个人'">
+            <div>
               <div class="row">
                 <div class="col">
-                  <el-form-item label="姓名：">
+                  <el-form-item label="姓名">
                     <el-input ref="party" clearable class="w-120" v-model="docData.party" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
-                  <el-form-item label="性别：">
+                  <el-form-item label="性别">
                     <el-input ref="partySex" clearable class="w-120" v-model="docData.partySex" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
-                  <el-form-item label="年龄：">
+                  <el-form-item label="年龄">
                     <el-input ref="partyAge" clearable class="w-120" v-model="docData.partyAge" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
-                  <el-form-item label="所在单位：">
+                  <el-form-item label="所在单位">
                     <el-input ref="partyUnitPosition" clearable class="w-120" v-model="docData.partyUnitPosition" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
-                  <el-form-item label="联系地址：">
+                  <el-form-item label="联系地址">
                     <el-input ref="partyAddress" clearable class="w-120" v-model="docData.partyAddress" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
-                  <el-form-item label="联系电话：">
+                  <el-form-item label="联系电话">
                     <el-input ref="partyTel" clearable class="w-120" v-model="docData.partyTel" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
-                  <el-form-item label="邮编：">
+                  <el-form-item label="邮编">
                     <el-input ref="partyZipCode" clearable class="w-120" v-model="docData.partyZipCode" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
               </div>
             </div>
             <!-- 企业 -->
-            <div v-if="docData.partyType=='企业'">
-              <div class="row">
-                <div class="col">
-                  <el-form-item label="单位：">
-                    <el-input ref="partyName" clearable class="w-120" v-model="docData.partyName" size="small" placeholder="请输入"></el-input>
-                  </el-form-item>
-                </div>
-                <div class="col">
-                  <el-form-item label="地址：">
-                    <el-input ref="partyUnitAddress" clearable class="w-120" v-model="docData.partyUnitAddress" size="small" placeholder="请输入"></el-input>
-                  </el-form-item>
-                </div>
+            <div class="row">
+              <div class="col">
+                <el-form-item label="单位">
+                  <el-input ref="partyName" clearable class="w-120" v-model="docData.partyName" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
               </div>
+              <div class="col">
+                <el-form-item label="地址">
+                  <el-input ref="partyUnitAddress" clearable class="w-120" v-model="docData.partyUnitAddress" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <el-form-item label="法定代表人">
+                  <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item label="职务">
+                  <el-input ref="partyManagerPositions" clearable class="w-120" v-model="docData.partyManagerPositions" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <el-form-item label="统一社会信用代码" class="line-height13">
+                  <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+            </div>
+          </div>
+          <div class="border_blue"></div>
+          <div class="content_form bottom_form">
+            <div class="content">
               <div class="row">
                 <div class="col">
-                  <el-form-item label="法定代表人：">
+                  <el-form-item label="抽样取证机关">
                     <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
-                  <el-form-item label="职务：">
-                    <el-input ref="partyManagerPositions" clearable class="w-120" v-model="docData.partyManagerPositions" size="small" placeholder="请输入"></el-input>
+                  <el-form-item label="联系电话">
+                    <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
               </div>
+              <div class="row">
+                <div class="col">
+                  <el-form-item label="抽样取证时间">
+                    <el-date-picker v-model="docData.dataStart" type="date" placeholder="选择日期" @change="dataChange">
+                    </el-date-picker>至
+                    <el-date-picker v-model="docData.dataEnd" type="date" placeholder="选择日期" @change="dataChange">
+                    </el-date-picker>
+                  </el-form-item>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <el-form-item label="抽样地点">
+                    <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                  </el-form-item>
+                </div>
+              </div>
+              <div class="border_blue"></div>
+              <div class="table_form">
+                <div class="table_title_left">
+                  抽样取证物品如下:
+                </div>
+                <el-table :data="tableDatas" stripe border style="width: 100%" >
+                  <el-table-column prop="index" label="序号" align="center">
+                  </el-table-column>
+                  <el-table-column prop="name" label="被抽样物品名称" align="center">
+                  </el-table-column>
+                  <el-table-column prop="status" label="规格及批号" align="center">
+                  </el-table-column>
+                  <el-table-column prop="value" label="数量" align="center">
+                    <template slot-scope="scope">
+                      <el-input-number size="mini" v-model="scope.row.value" :min="1" :max="10" label="描述文字"></el-input-number>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="status" label="被抽样物品地点  " align="center">
+                  </el-table-column>
+                </el-table>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <center class="add_text" @click="addTable">
+                    <i class="el-icon-circle-plus-outline"></i>
+                    添加
+                  </center>
+                </div>
+              </div>
+              <div class="border_blue"></div>
+              <div class="content_form bottom_form">
+                <el-form-item label="文书备注：">
+                  <el-input type="textarea" class="height106" v-model="docData.test" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
             </div>
-
-          </div>
-          <div class="border_blue"></div>
-          <div class="content_form bottom_form">
-            <el-form-item prop="closeResult" label="处理结果：">
-              <el-input ref="closeResult" type="textarea" class="height106" v-model="docData.closeResult" size="small" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item prop="closeSituation" label="执行情况：">
-              <el-input ref="closeSituation" type="textarea" class="height122" v-model="docData.closeSituation" size="small" placeholder="请输入"></el-input>
-            </el-form-item>
-
           </div>
         </el-form>
       </div>
@@ -147,6 +203,9 @@ export default {
     return {
       docData: {
         partyType: '个人',
+        dataEnd: '',
+        dataStart: '',
+        datasTotal: '0',
       },
       CaseDocDataForm: {
         caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
@@ -172,6 +231,36 @@ export default {
           { required: true, message: '执行情况必须填写', trigger: 'blur' }
         ],
       },
+      tableDatas: [{
+        index: '1',
+        name: '四川',
+        status: '-',
+        option: '1',
+        value: '1',
+      }, {
+        index: '2',
+        name: '四川',
+        status: '完成',
+        option: '2',
+        value: '2',
+      }, {
+        index: '3',
+        name: '四川',
+        status: '暂存',
+        option: '3',
+        value: '3',
+      }],
+      options: [{
+        value: '1',
+        label: '件'
+      }, {
+        value: '2',
+        label: '份'
+      }, {
+        value: '3',
+        label: '套'
+      },],
+      value: ''
     }
   },
   methods: {
@@ -183,6 +272,8 @@ export default {
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
           this.docData = res.data;
+          this.docData.datasTotal = 0;
+
         },
         err => {
           console.log(err);
@@ -222,6 +313,25 @@ export default {
     // 暂存
     save() {
 
+    },
+    // 日期变化
+    dataChange() {
+      if (this.docData.dataEnd && this.docData.dataStart) {
+        if (this.docData.dataEnd >= this.docData.dataStart) {
+
+        }
+        else {
+          this.$message.error('开始日期不能晚于结束日期');
+          this.docData.dataEnd = this.docData.dataStart = undefined;
+        }
+
+      }
+    },
+    // 动态添加表格内容
+    addTable() {
+      console.log(this.tableDatas)
+      let length = this.tableDatas.length;
+      this.tableDatas.push({ 'index': Number(this.tableDatas[length - 1].index) + 1 });
     }
   },
   mounted() {

@@ -7,8 +7,8 @@
         <el-input ref="id" type="hidden"></el-input></el-form>
         <el-form
           :inline="true"
-          ref="illegalActForm"
-          :model="illegalActForm"
+          ref="formData"
+          :model="formData"
           label-width="135px"
           :rules="rules"
         >
@@ -16,12 +16,12 @@
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item label="案号：">
+                <el-form-item label="案号：" prop="caseNumber">
                   <el-input
                     ref="caseNumber"
                     clearable
                     class="w-120"
-                    v-model="illegalActForm.caseNumber"
+                    v-model="formData.caseNumber"
                     size="small"
                     placeholder="请输入"
                   ></el-input>
@@ -36,7 +36,7 @@
                     ref="party"
                     clearable
                     class="w-120"
-                    v-model="illegalActForm.party"
+                    v-model="formData.party"
                     size="small"
                     placeholder="请输入"
                   ></el-input>
@@ -51,7 +51,7 @@
                     ref="caseCauseNameCopy"
                     clearable
                     class="w-120"
-                    v-model="illegalActForm.caseCauseNameCopy"
+                    v-model="formData.caseCauseNameCopy"
                     size="small"
                     placeholder="请输入"
                   ></el-input>
@@ -66,7 +66,7 @@
                     ref="illegalBasis"
                     clearable
                     class="w-120"
-                    v-model="illegalActForm.illegalBasis"
+                    v-model="formData.illegalBasis"
                     size="small"
                     placeholder="请输入"
                   ></el-input>
@@ -81,7 +81,7 @@
                     ref="punishLaw"
                     clearable
                     class="w-120"
-                    v-model="illegalActForm.punishLaw"
+                    v-model="formData.punishLaw"
                     size="small"
                     placeholder="请输入"
                   ></el-input>
@@ -96,7 +96,7 @@
                     ref="punishDecision"
                     clearable
                     class="w-120"
-                    v-model="illegalActForm.punishDecision"
+                    v-model="formData.punishDecision"
                     size="small"
                     placeholder="请输入"
                   ></el-input>
@@ -106,19 +106,24 @@
           </div>
           <div class="border_blue"></div>
           <div class="content_form bottom_form">
-            <div>
-              <div class="row">
-                <el-form-item label="当事人权利：">
-                  <el-checkbox></el-checkbox>陈述申辩权利
+            <div class="row">
+              <div class="col">
+                <el-form-item  label="当事人权利：" >
+                  <el-checkbox-group v-model="formData.checkBoxList">
+                    <el-row>
+                      <el-col :span="5">
+                        <el-checkbox label="陈述申辩权利" checked="true"></el-checkbox>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="5">
+                        <el-checkbox label="举行听证权利" checked="true"></el-checkbox>
+                      </el-col>
+                    </el-row>                   
+                  </el-checkbox-group>
                 </el-form-item>
               </div>
-              <div class="row">
-                <el-form-item label>
-                  &#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;
-                  <el-checkbox></el-checkbox>举行听证权利
-                </el-form-item>
-              </div>
-            </div>
+            </div> 
           </div>
           <div class="border_blue"></div>
           <div class="content_form">
@@ -130,7 +135,7 @@
                     ref="partyAddress"
                     clearable
                     class="w-120"
-                    v-model="illegalActForm.partyAddress"
+                    v-model="formData.partyAddress"
                     size="small"
                     placeholder="请输入"
                   ></el-input>
@@ -143,7 +148,7 @@
                     ref="partyZipCode"
                     clearable
                     class="w-120"
-                    v-model="illegalActForm.partyZipCode"
+                    v-model="formData.partyZipCode"
                     size="small"
                     placeholder="请输入"
                   ></el-input>
@@ -158,7 +163,7 @@
                     ref="party"
                     clearable
                     class="w-120"
-                    v-model="illegalActForm.party"
+                    v-model="formData.party"
                     size="small"
                     placeholder="请输入"
                   ></el-input>
@@ -171,7 +176,7 @@
                     ref="partyTel"
                     clearable
                     class="w-120"
-                    v-model="illegalActForm.partyTel"
+                    v-model="formData.partyTel"
                     size="small"
                     placeholder="请输入"
                   ></el-input>
@@ -182,7 +187,7 @@
         </el-form>
       </div>
       <div class="float-btns">
-        <el-button type="primary" @click="addIllegalAction('0')">
+        <el-button type="primary" @click="addIllegalAction(1)">
           <svg
             t="1577414377979"
             class="icon"
@@ -201,7 +206,7 @@
           </svg>
           <br />提交
         </el-button>
-        <el-button type="success" @click="addIllegalAction('1')">
+        <el-button type="success" @click="addIllegalAction(0)">
           <svg
             t="1577415780823"
             class="icon"
@@ -230,7 +235,7 @@
 export default {
   data() {
     return {
-      illegalActForm: {
+      formData: {
         caseNumber: "",
         party: "",
         caseCauseNameCopy: "",
@@ -240,7 +245,8 @@ export default {
         partyAddress: "",
         partyZipCode: "",
         // contactPerson:"",
-        partyTel: ""
+        partyTel: "",
+        checkBoxList:""
       },
       rules: {
         party: [
@@ -267,7 +273,7 @@ export default {
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
           console.log("获取案件详情", res);
-          this.illegalActForm = res.data;
+          this.formData = res.data;
         },
         err => {
           console.log(err);
@@ -282,13 +288,13 @@ export default {
     addIllegalAction(handelType) {
       this.caseDocDataForm.caseBasicinfoId = "12345666666666";
       this.caseDocDataForm.caseDoctypeId = "1234";
-      this.caseDocDataForm.docData = JSON.stringify(this.illegalActForm);
+      this.caseDocDataForm.docData = JSON.stringify(this.formData);
       if(handelType == 0) {
         this.caseDocDataForm.status = 0;
       } else {
         this.caseDocDataForm.status = 1;
       }
-      this.$refs["illegalActForm"].validate(valid => {
+      this.$refs["formData"].validate(valid => {
         if (valid) {
           this.$store.dispatch("addDocData", this.caseDocDataForm).then(
             res => {
@@ -320,7 +326,7 @@ export default {
           } else {
             console.log(res.data[0]);
             this.caseDocDataForm.id = res.data[0].id;
-            this.illegalActForm = JSON.parse(res.data[0].docData);
+            this.formData = JSON.parse(res.data[0].docData);
           }
         },
         err => {
@@ -336,6 +342,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import "../../../../css/caseHandle/caseDocument.less";
+// @import "../../../../css/caseHandle/caseDocument.less";
 @import "../../../../css/documentForm.less";
 </style>

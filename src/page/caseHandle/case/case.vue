@@ -9,29 +9,52 @@
     </div>
     <div>
       <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
+      <br><br>
       <ul>
-        <li @click="goInquestNotes">勘验笔录（已做）</li>
-        <li @click="goIllegalAction">违法行为通知书</li>
-        <li @click="goIHearingNoticePdf">听证通知书</li>
-        <li @click="goIllegalActionPdf">违法行为通知书PDF</li>
-        <li @click="goIHearingNoticePdf">听证通知书pdf</li>
-        <li @click="goAdminPunisheDecision">行政处罚决定书</li>
-        <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
+        文书：
+        <li @click="goInquestNotes">勘验笔录</li>        
+        <li class="text-red" >听证通知书</li>
+        <li class="text-red" >听证笔录</li>
+        <li class="text-red" >当场行政处罚决定书</li>  
+        
+        <br><br>
+
+        表单：
         <li @click="goFilingApprovalForm">立案审批表</li>
+        <li @click="goIllegalAction">违法行为通知书</li>
+        <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
+        <li @click="goAdminPunisheDecision">行政处罚决定书</li>
         <li @click="goImportantCaseDissForm">重大案件集体讨论</li>
         <li @click="goArchivesForm">归档</li>
+        <li @click="goPenaltyExecution">决定执行</li>
+        <li @click="goPartyRights">当事人权利</li>
+        <br><br>
+        PDF打印：
+        <li @click="goInquestNotesPdf">勘验笔录PDF</li>
+        <li @click="goIllegalActionPdf">违法行为通知书PDF</li>
+        <li @click="goHearingNoticePdf">听证通知书pdf</li>
+        <li @click="goHearingRecordPdf">听证笔录PDF</li>
+        <li @click="goSpotAdmPunishDecisionPdf">当场行政处罚决定书PDF</li>
+        <li @click="goAdmPunishDecisionPdf">行政处罚决定书PDF</li>
+        <li @click="goOrderCorrectIllegalActPdf">责令改正违法行为通知书PDF</li>
       </ul>
     </div>
     <div>
       <p>zmh(17、18、19、20、21、22、23、24文书表单及pdf打印版)</p>
       <ul>
         <br><br>
+        <!--  -->
+        <li @click="goside">侧边栏</li>
+        <li @click="goDentail">案件详情</li>
         <li @click="goCaseInvestig">案件调查报告</li>
         <li @click="goCaseDoc">调查类文书(上级表单)</li>
         <br><br>
 
         表单：
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
+        <li @click="goInquirieRecordForm">询问笔录</li>
+        <li @click="goEvidenceListForm">证据保存清单</li>
+        <li @click="goObtaineEvidenceForm">抽样取样凭证</li>
         <li class="text-red">表单十七 ： 分期（延期）缴纳罚款通知书(未做-无样式图)</li>
         <li class="text-red">表单十八 ： 执行公告(未做-无样式图)</li>
         <li class="text-red">表单十九 ： 催告书(未做-无样式图)</li>
@@ -46,6 +69,9 @@
         打印：
         <!-- 打印版 -->
         <li @click="goEstablish">打印一 ： 立案登记表</li>
+        <li @click="goInquirieRecord">打印：询问笔录</li>
+        <li @click="goEvidenceList">打印：证据保存清单</li>
+        <li @click="goObtaineEvidence">打印：抽样取样凭证</li>
         <li @click="goPayStageReprot">打印十七 ： 分期（延期）缴纳罚款通知书</li>
         <li @click="goExecutAnnounceReprot">打印十八 ： 执行公告</li>
         <li @click="goRemindLetterReprot">打印十九 ： 催告书</li>
@@ -70,14 +96,14 @@ export default {
   methods: {
     goDiao() {
       this.makeRoute(
-        "/diao",
-        "/diao2",
-        "/diao3",
-        "diao",
-        "diao2",
-        "diao3",
+        "/liveReport",
+        "/liveReport2",
+        "/liveReport3",
+        "liveReport",
+        "liveReport2",
+        "liveReport3",
         "调查类文书",
-        "caseHandle/case/diao.vue"
+        "caseHandle/case/liveReport.vue"
       );
     },
     goWen() {
@@ -100,28 +126,37 @@ export default {
     goCaseDoc() {
       this.$router.push({ name: 'caseDoc' });
     },
+    // 询问笔录
+    goInquirieRecordForm() {
+      this.$router.push({ name: 'inquirieForm' });
+    },
+    // 证据保存清单
+    goEvidenceListForm() {
+      this.$router.push({ name: 'evidenceListForm' });
+    },
+    // 抽样取样凭证
+    goObtaineEvidenceForm() {
+      this.$router.push({ name: 'obtaineEvidenceForm' });
+    },
     // 立案登记表-打印
     goEstablish() {
       this.$router.push({ name: 'establish' });
 
     },
 
-    // 勘验笔录-打印
-    // goInquestReprot() {
-    //   this.makeRoute(
-    //     "/inspect",
-    //     "/inspect2",
-    //     "/inspect3",
-    //     "inspect",
-    //     "inspect2",
-    //     "inspect3",
-    //     "勘验笔录",
-    //     "caseHandle/case/inspectRecord.vue"
-    //   );
-    // },
     //  分期（延期）缴纳罚款通知书-打印
     goPayStageReprot() {
       this.$router.push({ name: 'payStage' });
+
+    },
+    //  执行公告-打印
+    goDentail() {
+      this.$router.push({ name: 'dentail' });
+
+    },
+    //  执行公告-打印
+    goside() {
+      this.$router.push({ name: 'side' });
 
     },
     //  执行公告-打印
@@ -183,16 +218,8 @@ export default {
     },
     //行政处罚决定书
     goAdminPunisheDecision() {
-      this.makeRoute(
-        "/adminPunishe",
-        "/adminPunishe2",
-        "/adminPunishe3",
-        "adminPunishe",
-        "adminPunishe2",
-        "adminPunishe3",
-        "行政处罚决定书",
-        "caseHandle/case/adminPunisheDecision.vue"
-      );
+      this.$router.push({ name: 'adminPunishe' });
+
     },
     //勘验笔录
     goInquestNotes() {
@@ -209,16 +236,7 @@ export default {
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {
-      this.makeRoute(
-        "/order",
-        "/order2",
-        "/order3",
-        "order",
-        "order2",
-        "order3",
-        "责令改正违法行为通知书",
-        "caseHandle/case/orderCorrectIllegalAct.vue"
-      );
+      this.$router.push({ name: 'order' });
     },
     //违法行为通知书
     goIllegalAction() {
@@ -233,29 +251,33 @@ export default {
         "caseHandle/case/form/illegalActionForm.vue"
       );
     },
-    goIllegalActionPdf() {
-      this.makeRoute(
-        "/illegalActionPdf",
-        "/illegalActionPdf2",
-        "/illegalActionPdf3",
-        "illegalActionPdf",
-        "illegalActionPdf2",
-        "illegalActionPdf3",
-        "违法行为通知书PDF",
-        "caseHandle/case/illegalActionPdf.vue"
-      );
+    //违法行为通知书PDF
+    goIllegalActionPdf() {      
+      this.$router.push({ name: 'illegalActionPdf' });
     },
-    goIHearingNoticePdf() {
-      this.makeRoute(
-        "/hearingNoticePdf",
-        "/hearingNoticePdf2",
-        "/hearingNoticePdf3",
-        "hearingNoticePdf",
-        "hearingNoticePdf2",
-        "hearingNoticePdf3",
-        "违法行为通知书PDF",
-        "caseHandle/case/hearingNoticePdf.vue"
-      );
+    //听证通知书pdf
+    goHearingNoticePdf() {
+      this.$router.push({ name: 'hearingNoticePdf' });
+    },
+    //听证笔录pdf
+    goHearingRecordPdf(){
+      this.$router.push({ name: 'hearingRecordePdf' });
+    },
+    //当场行政处罚决定书pdf
+    goSpotAdmPunishDecisionPdf(){
+      this.$router.push({ name: 'spotAdmPunishDecisionPdf' });
+    },
+    //行政处罚决定书pdf
+    goAdmPunishDecisionPdf(){
+      this.$router.push({ name: 'admPunishDecisionPdf' });
+    },
+    //责令改正违法行为通知书pdf
+    goOrderCorrectIllegalActPdf(){
+      this.$router.push({ name: 'orderCorrectIllegalActPdf' });
+    },
+    //勘验笔录PDF
+    goInquestNotesPdf(){
+      this.$router.push({ name: 'inquestNotesPdf' });
     },
     // 结案报告-表单
     goFilingApprovalForm() {
@@ -296,6 +318,14 @@ export default {
         "归档",
         "caseHandle/case/form/archivesForm.vue"
       );
+    },
+    //处罚执行
+    goPenaltyExecution() {
+      this.$router.push({ name: 'penaltyExecution' });
+    },
+    //当事人权利
+    goPartyRights() {
+      this.$router.push({ name: 'partyRights' });
     },
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
       //path不可以重复  name也不可以重复
@@ -344,9 +374,9 @@ export default {
       cursor: pointer;
       line-height: 30px;
     }
-  .text-red{
-    color: red;
-  }
+    .text-red {
+      color: red;
+    }
   }
 }
 </style>

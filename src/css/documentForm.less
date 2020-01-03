@@ -1,12 +1,12 @@
 .box {
-    width     : calc(100% - 44px);
-    height    : auto;
-    min-height: 100%;
+    width        : calc(100% - 44px);
+    height       : auto;
+    min-height   : 100%;
     // padding   : 0 22px 0 22px;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
-    position  : absolute;
-    margin: 22px;
+    background   : rgba(255, 255, 255, 1);
+    box-shadow   : 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+    position     : absolute;
+    margin       : 22px;
 
     /deep/ .el-form {
         width: 100%;
@@ -201,6 +201,7 @@
 
             }
 
+
             // row
             .el-row {
                 width: 100%;
@@ -215,6 +216,14 @@
                 display       : flex;
                 flex-direction: column;
                 align-items   : center;
+
+                // 表格内图标
+                &>[class*=" el-icon-"],
+                [class^=el-icon-] {
+                    color : #0074F5;
+                    width : 16px;
+                    height: 16px;
+                }
             }
         }
     }
@@ -290,7 +299,9 @@
     border-style: solid;
     border-color: transparent transparent #fff;
 }
-
+.height66 {
+    height: 66px;
+}
 .height106 {
     height: 106px;
 }
@@ -299,10 +310,97 @@
     height: 122px;
 }
 
-// 表格内图标
-[class*=" el-icon-"],
-[class^=el-icon-] {
-    color : #0074F5;
-    width : 16px;
-    height: 16px;
+
+
+// 问答组合
+.QAs {
+    width: 100%;
+}
+
+// 添加问题字体
+.add_text {
+    color      : #4573D0;
+    font-size  : 13px;
+    line-height: 18px;
+}
+
+// 询问次数
+.ask_number {
+    /deep/.el-input-group__append {
+        background-color: transparent;
+        color           : #606266;
+        border          : 0;
+        vertical-align  : middle;
+        display         : table-cell;
+        position        : relative;
+        border-radius   : 4px;
+        padding         : 0 20px;
+        width           : 1px;
+        white-space     : nowrap;
+    }
+
+
+
+}
+
+// 删除图标颜色
+.colorC0C5CA {
+    color: #C0C5CA;
+}
+
+.table_title_left {
+    width      : 100%;
+    color      : #606266;
+    text-align : left;
+    line-height: 28px;
+}
+
+// 侧边栏
+.right_side_box {
+    width     : 58px;
+    height    : 100%;
+    background: #545C64;
+    position  : fixed;
+    right     : 0;
+
+    /deep/.btn_box {
+        width      : 58px;
+        height     : 58px;
+        line-height: 58px;
+        text-align : center;
+
+        &>[class*=" el-icon-"],
+        [class^=el-icon-] {
+            color : #BDBDBD;
+        }
+    }
+
+    /deep/.el-menu--collapse {
+        width: 58px;
+    }
+
+    /deep/.el-menu-item {
+        padding    : 13px 14px !important;
+        line-height: 16px;
+    }
+
+    /deep/.el-menu-item.is-active {
+        background: #F3F9F9 !important;
+    }
+
+    /deep/.el-menu-item:hover {
+        color     : #FFFFFF !important;
+        background: #4573D0 !important;
+    }
+
+
+    &>li {
+        padding: 0 14px;
+        width  : 30px;
+    }
+
+    /deep/.bottom_fixed{
+        position: fixed;
+        bottom: 0;
+    }
 }

@@ -49,6 +49,22 @@ export const homeRouter = {
       component: MainContent,
       children: [
         {
+          path: "/side",
+          name: "side",
+          meta: {
+            title: "侧边条"
+          },
+          component: () => import("@/page/caseHandle/case/side.vue")
+        },
+        {
+          path: "/dentail",
+          name: "dentail",
+          meta: {
+            title: "侧边条"
+          },
+          component: () => import("@/page/caseHandle/case/dentail.vue")
+        },
+        {
           path: "/inquestNotes",
           name: "inquestNotes",
           meta: {
@@ -97,12 +113,36 @@ export const homeRouter = {
           component: () => import("@/page/caseHandle/case/caseDoc.vue")
         },
         {
+          path: "/inquirieForm",
+          name: "inquirieForm",
+          meta: {
+            title: "询问笔录"
+          },
+          component: () => import("@/page/caseHandle/case/form/inquirieRecordForm.vue")
+        },
+        {
+          path: "/evidenceListForm",
+          name: "evidenceListForm",
+          meta: {
+            title: "证据保存清单"
+          },
+          component: () => import("@/page/caseHandle/case/form/evidenceListForm.vue")
+        },
+        {
+          path: "/obtaineEvidenceForm",
+          name: "obtaineEvidenceForm",
+          meta: {
+            title: "抽样取样凭证"
+          },
+          component: () => import("@/page/caseHandle/case/form/obtaineEvidenceForm.vue")
+        },
+        {
           path: "/establish",
           name: "establish",
           meta: {
             title: "立案登记表-pdf"
           },
-          component: () => import("@/page/caseHandle/case/pdf/establish.vue")
+          component: () => import("@/page/caseHandle/unRecordCase/establish.vue")
         },
         {
           path: "/payStage",
@@ -140,7 +180,7 @@ export const homeRouter = {
           path: "/enforceDecide",
           name: "enforceDecide",
           meta: {
-            title: "强制执行决定书-pdf"
+            title: "行政强制执行决定书-pdf"
           },
           component: () => import("@/page/caseHandle/case/pdf/enforceDecide.vue")
         },
@@ -175,6 +215,7 @@ export const homeRouter = {
           meta: {
             title: "立案登记表"
           },
+<<<<<<< HEAD
           component: () => import("@/page/caseHandle/case/form/filingApprovalForm.vue")
         },
         {
@@ -187,6 +228,129 @@ export const homeRouter = {
           component: () => import("@/components/flowChart/flowChart.vue")
         }
 
+=======
+          component: () => import("@/page/caseHandle/unRecordCase/filingApprovalForm.vue")
+        },
+        {
+
+          path: "/caseDetail",
+          name: "caseDetail",
+          meta: {
+            title: "案件详情"
+          },
+          component: () => import("@/page/caseHandle/caseDetail.vue")
+        },
+        //处罚执行
+        {
+          path: "/penaltyExecution",
+          name: "penaltyExecution",
+          meta: {
+            title: "处罚执行"
+          },
+          component: () => import("@/page/caseHandle/case/form/PenaltyExecutionForm.vue")
+        },
+        //行政处罚决定书
+        {
+          path: "/adminPunishe",
+          name: "adminPunishe",
+          meta: {
+            title: "行政处罚决定书"
+          },
+          component: () => import("@/page/caseHandle/case/form/adminPunisheDecisionForm.vue")
+        },
+        //责令改正违法行为通知书
+        {
+          path: "/order",
+          name: "order",
+          meta: {
+            title: "责令改正违法行为通知书"
+          },
+          component: () => import("@/page/caseHandle/case/form/orderCorrectIllegalAct.vue")
+        },
+        //当事人权利
+        {
+          path: "/partyRights",
+          name: "partyRights",
+          meta: {
+            title: "当事人权利"
+          },
+          component: () => import("@/page/caseHandle/case/form/partyRightsForm.vue")
+        },
+        //违法行为通知书PDF
+        {
+          path: "/illegalActionPdf",
+          name: "illegalActionPdf",
+          meta: {
+            title: "违法行为通知书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/illegalActionPdf.vue")
+        },
+        //听证通知书PDF
+        {
+          path: "/hearingNoticePdf",
+          name: "hearingNoticePdf",
+          meta: {
+            title: "听证通知书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/hearingNoticePdf.vue")
+        },
+        //听证笔录PDF
+        {
+          path: "/hearingRecordePdf",
+          name: "hearingRecordePdf",
+          meta: {
+            title: "听证笔录-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/hearingRecordPdf.vue")
+        },
+        //当场行政处罚决定书PDF
+        {
+          path: "/spotAdmPunishDecisionPdf",
+          name: "spotAdmPunishDecisionPdf",
+          meta: {
+            title: "当场行政处罚决定书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/spotAdmPunishDecisionPdf.vue")
+        },
+        //行政处罚决定书PDF
+        {
+          path: "/admPunishDecisionPdf",
+          name: "admPunishDecisionPdf",
+          meta: {
+            title: "行政处罚决定书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/admPunishDecisionPdf.vue")
+        },
+        //责令改正违法行为通知书pdf
+        {
+          path: "/orderCorrectIllegalActPdf",
+          name: "orderCorrectIllegalActPdf",
+          meta: {
+            title: "责令改正违法行为通知书-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/orderCorrectIllegalActPdf.vue")
+        },
+        //勘验笔录pdf
+        {
+          path: "/inquestNotesPdf",
+          name: "inquestNotesPdf",
+          meta: {
+            title: "勘验笔录-pdf"
+          },
+          component: () => import("@/page/caseHandle/case/pdf/inquestNotesPdf.vue")
+        },
+        //案件总览
+        {
+          path: "/caseInfo",
+          name: "caseInfo",
+          meta: {
+            title: "案件总览"
+          },
+          component: () => import("@/page/caseHandle/waitDeal/caseInfo.vue")
+        },
+
+        
+>>>>>>> cf7fb86b53e6a374cbe41c6b3c2a6870fc880d1f
       ]
     }
   ]

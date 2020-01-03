@@ -101,11 +101,11 @@ export default {
     handleCheckedUserChange(val) {
       console.log(val);
     },
-    getSelectNumber() {
-      this.userList.forEach(item => {
-        this.selectedNumber.push("");
-      });
-    },
+    // getSelectNumber() {
+    //   this.userList.forEach(item => {
+    //     this.selectedNumber.push("");
+    //   });
+    // },
     //删掉已选中的人员
     deleteUser(tag){
         console.log(tag);

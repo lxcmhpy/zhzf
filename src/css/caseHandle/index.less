@@ -274,3 +274,25 @@
 .paginationBox{
     margin-top: 10px;
 }
+.showApprovePeople{
+    max-height: 200px;
+    overflow: auto;
+    .part{
+       margin: 10px 0;
+       overflow: hidden;
+       &>div{
+           float: left;
+       }
+       &>div:nth-child(1){
+           width: 30%;
+           margin-top: 10px;
+       }
+       &>div:nth-child(2){
+         width: 70%;
+        }
+       .el-tag{
+           margin-left: 10px;
+           margin-bottom: 10px;
+       }
+    }
+}

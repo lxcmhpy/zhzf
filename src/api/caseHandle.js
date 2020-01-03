@@ -169,3 +169,35 @@ export function queryCaseBasicInfoListPageApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//pdf页的提交
+export function submitPdfApi(data) { 
+  return request({
+    url: "/doc/linkData/jumpNextLink",
+    method: "post",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//pdf页的审批 
+export function approvalPdfApi(data) { 
+  console.log(data);
+  return request({
+    url: "/doc/linkData/handleApprove",
+    method: "post",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+//获取下一环节
+export function getNextLinkAPi(caseBasicInfoId) { 
+  return request({
+    url: "doc/caseBasicInfo/findNextLinkUrlByCaseId/"+caseBasicInfoId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+

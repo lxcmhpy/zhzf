@@ -3,129 +3,92 @@
 
     <div class="a4-box">
       <div class="pdf-box">
-        <!-- <div>交通运输行政执法文书式样之一 ： 立案</div> -->
         <div class="pdf-title">
-          立案登记表
+          行政处罚决定书
         </div>
         <div class="case-number">案号：{{caseNumber}}</div>
         <div class="pdf-table">
           <table border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
-              <td> 案件<br>来源 </td>
-              <td colspan="8">
-                <div class="text-left">
-                  <form>
-                    <input type="checkbox">1.在行政检查中发现的；<br>
-                    <input type="checkbox">2.个人、法人及其他组织举报经核实的；<br>
-                    <input type="checkbox">3.上级机关 交办的；<br>
-                    <input type="checkbox">4.下级机关 报请查处的<br>
-                    <input type="checkbox">5.有关部门 移送的；<br>
-                    <input type="checkbox">6.其他途径发现的<br>
-                  </form>
-
-                </div>
-
+              <td rowspan="6">
+                当<br>
+                事<br>
+                人
               </td>
-            </tr>
-
-            <tr>
-              <td> 案由 </td>
-              <td colspan="8"> \ </td>
-            </tr>
-            <tr>
-              <td> 受案<br>时间 </td>
-              <td colspan="8"> \ </td>
-            </tr>
-            <tr>
-              <td rowspan="5"> 当<br>事<br>人<br>基<br>本<br>情<br>况 </td>
               <td rowspan="2"> 个人 </td>
-              <td> 姓名 </td>
+              <td > 姓名</td>
               <td colspan="2"> \ </td>
-              <td> 性别 </td>
-              <td> \ </td>
-              <td> 年龄 </td>
-              <td> \ </td>
+              <td> 身份证件号 </td>
+              <td colspan="2"> \ </td>
             </tr>
             <tr>
-              <td> 住址</td>
-              <td colspan="2"> \</td>
-              <td> 身份证<br>件号</td>
-              <td> \ </td>
+              <td> 住址 </td>
+              <td colspan="2"> \ </td>
               <td> 联系电话 </td>
-              <td> \ </td>
+              <td colspan="2"> \ </td>
             </tr>
             <tr>
-              <td rowspan="3"> 单位 </td>
-              <td> 名称 </td>
-              <td colspan="4"> \ </td>
-              <td> 法定代表人</td>
-              <td> \ </td>
-            </tr>
-            <tr>
-              <td> 地址 </td>
-              <td colspan="4"> \ </td>
-              <td> 联系电话 </td>
-              <td> \ </td>
-            </tr>
-            <tr>
-              <td colspan="2"> 统一社会信用代码 </td>
+              <td rowspan="4"> 单位 </td>
+              <td> 名称</td>
               <td colspan="5"> \ </td>
             </tr>
             <tr>
-              <td>
-                案件基<br>
-                本情况
-              </td>
-              <td colspan="8"> \ </td>
+              <td> 地址</td>
+              <td colspan="4"> \ </td>
             </tr>
             <tr>
-              <td>
-                立<br>
-                案<br>
-                依<br>
-                据
-              </td>
-              <td colspan="4">
-                \
-              </td>
-              <td>
-                经办机构<br>
-                负责人<br>
-                意见
-              </td>
-              <td colspan="3" class="pdf-wirte">
-                <div class="pdf-write-name">
-                  签名：<br>
-                  时间: 年 月 日
-                </div>
-              </td>
+              <td> 联系电话</td>
+              <td colspan="2"> \ </td>
+              <td> 法定代表人 </td>
+              <td> \ </td>
             </tr>
             <tr>
-              <td>
-                负<br>
-                责<br>
-                人<br>
-                审<br>
-                批<br>
-                意<br>
-                见
+              <td colspan="2">
+                统一社会信用代码
               </td>
-              <td colspan="8" class="pdf-wirte">
-                <div class="pdf-write-name">
-                  签名：<br>
-                  时间: 年 月 日
-                </div>
-              </td>
+              <td colspan="3"> \ </td>
             </tr>
-            <tr>
-              <td>
-                备<br>
-                注
-              </td>
-              <td colspan="8"> \ </td>
-            </tr>
-
           </table>
+        </div>
+        <div class="pdf-report-info">
+          <p>违法事实及依据：<span class="pdf-line width555">&nbsp;</span>
+          <span class="pdf-line width721">&nbsp;</span>
+          <span class="pdf-line width721">&nbsp;</span>
+          <span class="pdf-line width721">&nbsp;</span>
+          <span class="pdf-line width721">&nbsp;</span>
+          </p>
+          <p>你（单位）的行为<span class="pdf-line width555">&nbsp;</span>违反了<span class="pdf-line width245">&nbsp;</span>的规定，决定给予
+          <span class="pdf-line width555">&nbsp;</span>的行政处罚。
+          
+          <p>
+            处以罚款的，自收到本决定书之日起十五日内缴至
+            <span class="pdf-line width150">&nbsp;</span>，账号
+            <span class="pdf-line width150">&nbsp;</span>到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三
+加处罚款，加处罚款的数额不超过罚款本数。
+          </p>
+          <p>
+              其他执行方式和期限：<span class="pdf-line width528">&nbsp;</span>
+              <span class="pdf-line width721">&nbsp;</span>
+          </p>
+          <p>
+            如果不服本处罚决定，可以在六十日内依法向<span class="pdf-line width150">&nbsp;</span>申请
+行政复议，或者在六个月内依法向<span class="pdf-line width150">&nbsp;</span>人民法院提起行政
+诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提
+起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
+          </p>
+          
+          <br><br>
+         
+          <div class="pdf-wirte">
+            <div class="pdf-seal">
+              交通运输执法部门（印章）<br>
+              年 月 日
+            </div>
+
+          </div>
+
+          <p class="begin margin-top87">（本文书一式两份：一份存根，一份交当事人或其代理人。）</p>
+
         </div>
       </div>
     </div>
