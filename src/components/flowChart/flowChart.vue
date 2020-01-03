@@ -15,6 +15,7 @@
 import echarts from 'echarts'
 import 'echarts/lib/chart/graph'
 import _ from 'lodash'
+import { mixinGetCaseApiList } from "@/js/mixins";
 export default {
   data() {
     return {
@@ -175,6 +176,7 @@ export default {
       data: {}
     }
   },
+  mixins:[mixinGetCaseApiList],
   methods: {
     async getFlowStatusByCaseId(id) {
       console.log(id)
@@ -280,11 +282,13 @@ export default {
       flowChart.setOption(option)
       // this.updatePosition(flowChart,option)
       // initInvisibleGraphic(flowChart,option)
+      let that = this;
       flowChart.off('click');
       flowChart.on('click', function(params){
           if (params.name) {
-            debugger
-              alert(1)
+            console.log(params);
+            let clickRouter = that.com_getCaseRouteName(params.data.linkID);
+            that.$router.push({name:clickRouter,params:{id:that.$route.params.id}})
           }
 
       })
