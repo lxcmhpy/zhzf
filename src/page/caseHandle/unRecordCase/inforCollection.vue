@@ -91,7 +91,7 @@
           <div class="itemOne">
             <el-form-item label="执法人员" id="lawPersonBox">
               <!-- <el-input> -->
-              <el-select v-model="inforForm.lawPersonList" multiple>
+              <el-select v-model="lawPersonList" multiple>
                 <el-option
                   v-for="item in alreadyChooseLawPerson"
                   :key="item.value"
@@ -564,7 +564,6 @@ export default {
         caseCauseName: "", //违法行为
         programType: "", //程序类型
         caseType: "", // 案件类型
-        lawPersonList: "",
         partyType: 1, //当事人类型
         party: "", //当事人信息-当事人姓名
         partyIdType: "0", //证件类型
@@ -697,6 +696,7 @@ export default {
       relationWithPartyIsOne:false, //与当事人关系是否为同一人
       activeJudgli:'',
       showOverrun:false,  //显示超限信息锚点
+      lawPersonList: "",
     };
   },
   components: {
@@ -715,12 +715,12 @@ export default {
     },
     //选择执法人员
     addLawPerson() {
-      this.$refs.chooseLawPersonRef.showModal(this.inforForm.lawPersonList);
+      this.$refs.chooseLawPersonRef.showModal(this.lawPersonList);
     },
     //设置执法人员
     setLawPerson(userlist) {
       // console.log(userlist);
-      this.inforForm.lawPersonList = userlist;
+      this.lawPersonList = userlist;
       this.alreadyChooseLawPerson = userlist;
     },
     //更改当事人类型
@@ -929,6 +929,9 @@ export default {
   },
   created() {
     this.findJudgFreedomList();
+    this.setLawPerson(
+      [iLocalStroage.gets('userInfo').username]
+    )
   }
 };
 </script>

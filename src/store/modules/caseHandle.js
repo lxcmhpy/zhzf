@@ -1,6 +1,7 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
-    ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi } from "@/api/caseHandle";
+    ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
+    submitPdfApi,approvalPdfApi,getNextLinkAPi } from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -192,10 +193,47 @@ const caseHandle = {
                     })
             })
         },
+        //pdf页的提交
+        submitPdf({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                submitPdfApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
         //修改文书状态
         saveOrUpdateLink({ commit }, data) {
             return new Promise((resolve, reject) => {
                 saveOrUpdateLinkApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+
+        //pdf页的审批
+        approvalPdf({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                approvalPdfApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //获取下一环节
+        getNextLink({ commit }, caseId) {
+            return new Promise((resolve, reject) => {
+                getNextLinkAPi(caseId).then(
                     res => {
                         resolve(res);
                     },

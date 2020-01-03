@@ -5,7 +5,7 @@
       <el-button type="primary" size="medium" icon="el-icon-plus" @click="caseRecord">立案登记</el-button>
     </div> -->
     <div class="tablePart">
-      <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="handleCurrentChange">
+      <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="clickCase">
         <el-table-column prop="tempNo" label="案号" align="center"></el-table-column>
         <el-table-column prop="" label="车/船号" align="center"></el-table-column>
         <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
@@ -18,7 +18,7 @@
     <div class="paginationBox">
         <el-pagination
           @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+          @current-change="handlePageSizeChange"
           :current-page="currentPage"
           background
           :page-sizes="[10, 20, 30, 40]"
@@ -26,13 +26,15 @@
           :total="total"
         ></el-pagination>
       </div>
-    <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
+  
   </div>
 </div>
 </template>
 <script>
 
 import iLocalStroage from "@/js/localStroage";
+import { mixinGetCaseApiList } from "@/js/mixins";
+
 export default {
   data() {
     return {
@@ -42,31 +44,19 @@ export default {
       total: 0 //总页数
     };
   },
+  mixins:[mixinGetCaseApiList],
   methods: {
   
     //获取审批中的数据
     getUnRecordCase() {
       let data = {
         flag: 3,
-        organId: iLocalStroage.gets("userInfo").organId,
+        userId: iLocalStroage.gets("userInfo").id,
         current: this.currentPage,
         size: this.pageSize,
       };
       console.log(data);
-      this.$store.dispatch("queryCaseBasicInfoListPage", data).then(
-        res => {
-          console.log(res);
-          this.tableData = res.data.records;
-          this.tableData.forEach(item=>{
-            item.name = item.party ? item.party : item.partyName;
-          })
-          this.total = res.data.total;
-
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      this.getCaseList(data);
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -75,12 +65,12 @@ export default {
       this.getUnRecordCase();
     },
     //更换页码
-    handleCurrentChange(val) {
+    handlePageSizeChange(val) {
       this.currentPage = val;
       this.getUnRecordCase();
     },
     //跳转立案登记
-    handleCurrentChange(row){
+    clickCase(row){
       // this.$router.replace({ 
       //     name: 'filingApproval',
       //     params: {

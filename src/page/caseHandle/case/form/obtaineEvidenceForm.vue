@@ -164,7 +164,7 @@
                 <div class="col">
                   <center class="add_text" @click="addTable">
                     <i class="el-icon-circle-plus-outline"></i>
-                    添加证据
+                    添加
                   </center>
                 </div>
               </div>

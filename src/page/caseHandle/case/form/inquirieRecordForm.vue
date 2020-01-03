@@ -336,8 +336,6 @@ export default {
                 type: "success",
                 message: "保存成功",                
               });
-              //修改文书状态
-              this.updateDocStatus();
             },
             err => {
               console.log(err);
@@ -368,27 +366,6 @@ export default {
         this.dynamicValidateForm.domains.splice(index, 3)
       }
     },
-    //修改文书状态
-    updateDocStatus(){
-      let data = {
-        linkDocId : this.$route.params.id,
-        casebasicInfoId : this.$route.params.id,
-      };
-      console.log(data);
-      this.$store.dispatch("saveOrUpdateLink", data).then(
-            res => {
-              console.log("修改文书状态", res);
-              this.$message({
-                type: "success",
-                message: "保存成功",
-                //修改文书状态
-              });
-            },
-            err => {
-              console.log(err);
-            }
-          );
-    }
   },
   mounted() {
     this.getCaseBasicInfo();

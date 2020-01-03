@@ -57,6 +57,14 @@ export const homeRouter = {
           component: () => import("@/page/caseHandle/case/side.vue")
         },
         {
+          path: "/dentail",
+          name: "dentail",
+          meta: {
+            title: "侧边条"
+          },
+          component: () => import("@/page/caseHandle/case/dentail.vue")
+        },
+        {
           path: "/inquestNotes",
           name: "inquestNotes",
           meta: {
@@ -134,7 +142,7 @@ export const homeRouter = {
           meta: {
             title: "立案登记表-pdf"
           },
-          component: () => import("@/page/caseHandle/case/pdf/establish.vue")
+          component: () => import("@/page/caseHandle/unRecordCase/establish.vue")
         },
         {
           path: "/payStage",
@@ -172,7 +180,7 @@ export const homeRouter = {
           path: "/enforceDecide",
           name: "enforceDecide",
           meta: {
-            title: "强制执行决定书-pdf"
+            title: "行政强制执行决定书-pdf"
           },
           component: () => import("@/page/caseHandle/case/pdf/enforceDecide.vue")
         },
@@ -207,7 +215,16 @@ export const homeRouter = {
           meta: {
             title: "立案登记表"
           },
-          component: () => import("@/page/caseHandle/case/form/filingApprovalForm.vue")
+          component: () => import("@/page/caseHandle/unRecordCase/filingApprovalForm.vue")
+        },
+        {
+
+          path: "/caseDetail",
+          name: "caseDetail",
+          meta: {
+            title: "案件详情"
+          },
+          component: () => import("@/page/caseHandle/caseDetail.vue")
         },
         //处罚执行
         {
@@ -308,6 +325,17 @@ export const homeRouter = {
           },
           component: () => import("@/page/caseHandle/case/pdf/inquestNotesPdf.vue")
         },
+        //案件总览
+        {
+          path: "/caseInfo",
+          name: "caseInfo",
+          meta: {
+            title: "案件总览"
+          },
+          component: () => import("@/page/caseHandle/waitDeal/caseInfo.vue")
+        },
+
+        
       ]
     }
   ]
