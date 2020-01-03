@@ -176,8 +176,17 @@ export const homeRouter = {
             title: "立案登记表"
           },
           component: () => import("@/page/caseHandle/case/form/filingApprovalForm.vue")
+        },
+        {
+          // path: '/flowChart/:id',
+          path: '/flowChart',
+          name: 'flowChart',
+          meta: {
+            title: '流程图'
+          },
+          component: () => import("@/components/flowChart/flowChart.vue")
         }
-        
+
       ]
     }
   ]
