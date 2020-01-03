@@ -8,11 +8,13 @@
         </div>
         <div class="case-number">案号：{{caseNumber}}</div>
         <div class="pdf-report-info">
-          <p class="begin">当事人（个人姓名或单位名称） ：<span class="pdf-line width250">&nbsp;</span></p>
-          <p><span class="pdf-line width430">&nbsp;</span>一案，本机关于
-            <span class="pdf-line width80">&nbsp;</span>年
-            <span class="pdf-line width80">&nbsp;</span>月
-            <span class="pdf-line width80">&nbsp;</span>日
+          <p class="begin">当事人（个人姓名或单位名称） ：<span class="pdf-line width250">
+              <el-input v-model="input" placeholder="请输入内容"></el-input>
+            </span></p>
+          <p><span class="pdf-line width430"><el-input v-model="input" placeholder="请输入内容"></el-input></span>一案，本机关于
+            <span class="pdf-line width80"><el-input v-model="input" placeholder="请输入内容"></el-input></span>年
+            <span class="pdf-line width80"><el-input v-model="input" placeholder="请输入内容"></el-input></span>月
+            <span class="pdf-line width80"><el-input v-model="input" placeholder="请输入内容"></el-input></span>日
             依法作出了行政强制执行决定，并向你（单位）送达了《行政强制执行决定书》
             (案号：<span class="pdf-line width250">&nbsp;</span>)。</p>
           <p>
@@ -84,6 +86,7 @@
 export default {
   data() {
     return {
+      input: '',
       caseNumber: '010-123456',
     }  },
   methods: {
