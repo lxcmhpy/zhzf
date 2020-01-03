@@ -177,8 +177,10 @@ export default {
   },
   methods: {
     async getFlowStatusByCaseId(id) {
+      console.log(id)
       this.$store.dispatch("getFlowStatusByCaseId", id).then(
         res => {
+          console.log('流程图',res)
           this.data = res.data;
           this.updateLinkData()
           this.updateGraphData()
@@ -525,19 +527,19 @@ export default {
       })
     },
     async mountedInit() {
-      // this.getFlowStatusByCaseId(this.$route.params.id)
-      this.data = {
-        completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,a36b59bd27ff4b6fe96e1b06390d204e',//已完成
-        //责令改正2c9029ee6cac9281016caca9a0000004
-        doingLink: '2c9029ee6cac9281016caca9a0000004,a36b59bd27ff4b6fe96e1b06390d204h',// 进行中
-        //决定执行
-        unLockLink: '2c9029e16c753a19016c755fe1340001',// 已解锁
-        completeMainLink: '0,1,2',
-        doingMainLink: "3"
-      }
-      this.updateLinkData()
-      this.updateGraphData()
-      this.drawFlowChart()
+      this.getFlowStatusByCaseId(this.$route.params.id);
+      // this.data = {
+      //   completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,a36b59bd27ff4b6fe96e1b06390d204e',//已完成
+      //   //责令改正2c9029ee6cac9281016caca9a0000004
+      //   doingLink: '2c9029ee6cac9281016caca9a0000004,a36b59bd27ff4b6fe96e1b06390d204h',// 进行中
+      //   //决定执行
+      //   unLockLink: '2c9029e16c753a19016c755fe1340001',// 已解锁
+      //   completeMainLink: '0,1,2',
+      //   doingMainLink: "3"
+      // }
+      // this.updateLinkData()
+      // this.updateGraphData()
+      // this.drawFlowChart()
 
     }
   },

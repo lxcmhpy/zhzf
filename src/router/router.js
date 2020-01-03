@@ -262,6 +262,15 @@ export const homeRouter = {
           },
           component: () => import("@/page/caseHandle/case/form/partyRightsForm.vue")
         },
+        //违法行为通知书
+        {
+          path: "/illegalActionForm",
+          name: "illegalActionForm",
+          meta: {
+            title: "违法行为通知书"
+          },
+          component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
+        },
         //违法行为通知书PDF
         {
           path: "/illegalActionPdf",
