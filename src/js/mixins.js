@@ -117,10 +117,11 @@ export const mixinGetCaseApiList = {
         res => {
           console.log(res);
           this.nextLink = res.data;
-          if (this.nextLink.length > 1) {  //有分支
+          if (this.nextLink.length > 1) {  //有分支  弹窗显示分支
             this.$refs.nextLinkDialogRef.showModal(this.nextLink);
           } else {   //无分支
-            // this.$router.push()
+            let routeName = this.com_getCaseRouteName("2c9029ee6cac9281016caca7f38e0002");
+            this.$router.push({name:routeName})
           }
         },
         err => {

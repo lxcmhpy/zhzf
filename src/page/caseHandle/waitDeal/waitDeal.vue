@@ -29,7 +29,6 @@ export default {
   mixins:[mixinGetCaseApiList],
 
   methods: {
-<<<<<<< HEAD
       caseRecord(){
 
       },
@@ -40,8 +39,7 @@ export default {
             id: id
           }
         })
-      }
-=======
+      },
     //获取机构下数据
     getCaseList2() {
       let data = {
@@ -76,7 +74,6 @@ export default {
   },
   created() {
     this.getCaseList2();
->>>>>>> cf7fb86b53e6a374cbe41c6b3c2a6870fc880d1f
   }
 };
 </script>

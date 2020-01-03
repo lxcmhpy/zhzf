@@ -24,6 +24,7 @@ export default {
   methods: {
     //继续办理  跳转流程图   但是还没加流程图 
     continueHandle() {
+      this.$store.dispatch('deleteTabs', 'caseInfo');
       this.com_whatIsNext(this.caseInfo.id);
     },
     //获取弹窗中选中的环节id

@@ -21,11 +21,7 @@ export const router = new VueRouter(RouterConfig);
 
 // 路由拦截
 // 需要鉴权
-<<<<<<< HEAD
-const whiteList = ["/login", "/register", "/service", "/user", "/flowChart"]; //免登录白名单
-=======
 const whiteList = ["/login", "/register", "/service", "/user",'/dentail']; //免登录白名单
->>>>>>> cf7fb86b53e6a374cbe41c6b3c2a6870fc880d1f
 
 let getRouter ;
 router.beforeEach((to, from, next) => {

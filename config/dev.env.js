@@ -6,16 +6,10 @@ module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   ENV_CONFIG: '"dev"',
   //BASE_API: '"http://172.16.169.54:8888"',
-<<<<<<< HEAD
   //BASE_API: '"http://172.16.170.53:8888"', //线上的
   // BASE_API: '"http://172.16.169.62:8888/catsic"', //鸿燕
   // BASE_API: '"http://172.16.169.78:8888/catsic"', //文静
 
-=======
-  // BASE_API: '"http://172.16.170.53:8888/catsic"', //线上的
-  BASE_API: '"http://172.16.169.62:8888/catsic"', //鸿燕
-  // BASE_API: '"http://172.16.169.78:8888/catsic"', //文静
->>>>>>> cf7fb86b53e6a374cbe41c6b3c2a6870fc880d1f
   // BASE_API: '"http://172.16.169.83:8888/catsic"', //罗兴朝
   // BASE_API: '"http://172.16.168.84:8888/catsic"', //李垚
   BASE_API: '"http://172.16.169.62:8888/catsic"', //鸿燕

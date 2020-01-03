@@ -215,20 +215,6 @@ export const homeRouter = {
           meta: {
             title: "立案登记表"
           },
-<<<<<<< HEAD
-          component: () => import("@/page/caseHandle/case/form/filingApprovalForm.vue")
-        },
-        {
-          // path: '/flowChart/:id',
-          path: '/flowChart',
-          name: 'flowChart',
-          meta: {
-            title: '流程图'
-          },
-          component: () => import("@/components/flowChart/flowChart.vue")
-        }
-
-=======
           component: () => import("@/page/caseHandle/unRecordCase/filingApprovalForm.vue")
         },
         {
@@ -348,9 +334,17 @@ export const homeRouter = {
           },
           component: () => import("@/page/caseHandle/waitDeal/caseInfo.vue")
         },
+        {
+          // path: '/flowChart/:id',
+          path: '/flowChart',
+          name: 'flowChart',
+          meta: {
+            title: '流程图'
+          },
+          component: () => import("@/components/flowChart/flowChart.vue")
+        },
 
         
->>>>>>> cf7fb86b53e6a374cbe41c6b3c2a6870fc880d1f
       ]
     }
   ]
