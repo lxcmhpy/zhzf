@@ -112,6 +112,15 @@ export const homeRouter = {
           },
           component: () => import("@/page/caseHandle/case/caseDoc.vue")
         },
+        //违法行为通知书
+        {
+          path: "/illegalAction",
+          name: "illegalAction",
+          meta: {
+            title: "违法行为通知书"
+          },
+          component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
+        },
         {
           path: "/inquirieForm",
           name: "inquirieForm",
@@ -142,7 +151,7 @@ export const homeRouter = {
           meta: {
             title: "立案登记表-pdf"
           },
-          component: () => import("@/page/caseHandle/case/pdf/establish.vue")
+          component: () => import("@/page/caseHandle/unRecordCase/establish.vue")
         },
         {
           path: "/payStage",
@@ -215,7 +224,16 @@ export const homeRouter = {
           meta: {
             title: "立案登记表"
           },
-          component: () => import("@/page/caseHandle/case/form/filingApprovalForm.vue")
+          component: () => import("@/page/caseHandle/unRecordCase/filingApprovalForm.vue")
+        },
+        {
+
+          path: "/caseDetail",
+          name: "caseDetail",
+          meta: {
+            title: "案件详情"
+          },
+          component: () => import("@/page/caseHandle/caseDetail.vue")
         },
         //处罚执行
         {
@@ -252,6 +270,15 @@ export const homeRouter = {
             title: "当事人权利"
           },
           component: () => import("@/page/caseHandle/case/form/partyRightsForm.vue")
+        },
+        //违法行为通知书
+        {
+          path: "/illegalActionForm",
+          name: "illegalActionForm",
+          meta: {
+            title: "违法行为通知书"
+          },
+          component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
         },
         //违法行为通知书PDF
         {
@@ -316,6 +343,26 @@ export const homeRouter = {
           },
           component: () => import("@/page/caseHandle/case/pdf/inquestNotesPdf.vue")
         },
+        //案件总览
+        {
+          path: "/caseInfo",
+          name: "caseInfo",
+          meta: {
+            title: "案件总览"
+          },
+          component: () => import("@/page/caseHandle/waitDeal/caseInfo.vue")
+        },
+        {
+          // path: '/flowChart/:id',
+          path: '/flowChart',
+          name: 'flowChart',
+          meta: {
+            title: '流程图'
+          },
+          component: () => import("@/components/flowChart/flowChart.vue")
+        },
+
+        
       ]
     }
   ]

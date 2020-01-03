@@ -21,7 +21,7 @@ export const router = new VueRouter(RouterConfig);
 
 // 路由拦截
 // 需要鉴权
-const whiteList = ["/login", "/register", "/service", "/user","/spotAdmPunishDecisionPdf"]; //免登录白名单
+const whiteList = ["/login", "/register", "/service", "/user",'/flowChart']; //免登录白名单
 
 let getRouter ;
 router.beforeEach((to, from, next) => {
@@ -40,7 +40,7 @@ router.beforeEach((to, from, next) => {
       }else{
         next();
       }
-      
+
       //next();
     }
   } else {
@@ -69,7 +69,7 @@ function routerGo(to, next) {
 function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，转换为组件对象
   const accessedRouters = asyncRouterMap.filter(route => {
    // if (route.component) {
-     
+
       if (route.component == '' ) {//Layout组件特殊处理
         route.component = Layout
       }else if(route.component == 'Main'){
@@ -86,13 +86,13 @@ function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符
     if (route.children && route.children.length) {
       route.children = filterAsyncRouter(route.children);
     }
-   
+
     //  if(route.id == "127996320085446656"){   //给案件办理添加首页
     //   console.log('给案件办理添加首页')
     //   route.children.unshift({name:'index',component:loadView('caseHandle/index'),path:'/caseHandleIndex'})
     // }
 
-  
+
     // if(route.id == "125909152017944576"){
     //   route.children.unshift({ path:'', redirect:'/sys/user-manage'})
     // }

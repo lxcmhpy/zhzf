@@ -99,9 +99,7 @@ export default {
     },
     //更改选中的人员
     handleCheckedUserChange(val) {
-      // console.log(val);
-      console.log('cards',this.selectedNumber)
-
+      console.log(val);
     },
     // getSelectNumber() {
     //   this.userList.forEach(item => {

@@ -43,15 +43,15 @@ export default {
       this.$store.dispatch('deleteTabs', targetName);
       if (this.activeIndex === targetName) {
         // 设置当前激活的路由
-        // if (this.openTab && this.openTab.length >= 1) {
-        //   console.log('=============',this.openTab[this.openTab.length-1].name)
+        if (this.openTab && this.openTab.length >= 1) {
+          console.log('=============',this.openTab[this.openTab.length-1].name)
 
-        //   this.$store.dispatch('setActiveIndex', this.openTab[this.openTab.length-1].name);
-        //   this.$router.push({name: this.activeIndex});
-        //   console.log(this.activeIndex)
-        // } else {
-        //   this.$router.push({path: '/'});
-        // }
+          this.$store.dispatch('setActiveIndex', this.openTab[this.openTab.length-1].name);
+          this.$router.push({name: this.activeIndex});
+          console.log(this.activeIndex)
+        } else {
+          this.$router.push({path: '/'});
+        }
       }
     }
   },

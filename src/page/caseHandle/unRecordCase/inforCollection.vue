@@ -67,7 +67,13 @@
             <el-form-item label="执法人员" id="lawPersonBox">
               <!-- <el-input> -->
               <el-select v-model="lawPersonList" multiple>
-                <el-option v-for="item in alreadyChooseLawPerson" :key="item.value" :label="item.label" :value="item.value" placeholder="请添加"></el-option>
+                <el-option
+                  v-for="item in alreadyChooseLawPerson"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  placeholder="请添加"
+                ></el-option>
               </el-select>
               <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
               <!-- </el-input> -->
@@ -608,13 +614,10 @@ export default {
       showTrailer: false, //是否显示挂车信息
       judgFreedomList: [], //自由裁量列表
       caseSourceTextDisable: false,
-      relationWithPartyIsOne: false, //与当事人关系是否为同一人
-      activeJudgli: '',
-      showOverrun: false,  //显示超限信息锚点
+      relationWithPartyIsOne:false, //与当事人关系是否为同一人
+      activeJudgli:'',
+      showOverrun:false,  //显示超限信息锚点
       lawPersonList: "",
-      lawPersonIdList: "",//id列表
-      lawPersonCardsList: "",//cards列表
-      allUserList: [],
     };
   },
   components: {

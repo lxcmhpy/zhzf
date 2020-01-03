@@ -3,11 +3,11 @@
     <div class="content_box">
       <div class="content">
         <div class="content_title">违法行为通知书</div>
-        <el-form ref="caseDocDataForm">
+        <el-form ref="caseLinkDataForm">
         <el-input ref="id" type="hidden"></el-input></el-form>
         <el-form
           :inline="true"
-          ref="formData"
+          ref="illegalActionForm"
           :model="formData"
           label-width="135px"
           :rules="rules"
@@ -18,6 +18,7 @@
               <div class="col">
                 <el-form-item label="案号：" prop="caseNumber">
                   <el-input
+                  :disabled="true"
                     ref="caseNumber"
                     clearable
                     class="w-120"
@@ -32,8 +33,8 @@
               <div class="col">
                 <el-form-item prop="party" label="当事人姓名：">
                   <el-input
-                    id="width600px"
                     ref="party"
+                    :disabled="true"
                     clearable
                     class="w-120"
                     v-model="formData.party"
@@ -47,8 +48,8 @@
               <div class="col">
                 <el-form-item label="违法行为：">
                   <el-input
-                    id="width600px"
                     ref="caseCauseNameCopy"
+                    :disabled="true"
                     clearable
                     class="w-120"
                     v-model="formData.caseCauseNameCopy"
@@ -62,7 +63,6 @@
               <div class="col">
                 <el-form-item label="违法依据：">
                   <el-input
-                    id="width600px"
                     ref="illegalBasis"
                     clearable
                     class="w-120"
@@ -77,7 +77,6 @@
               <div class="col">
                 <el-form-item label="处罚依据：">
                   <el-input
-                    id="width600px"
                     ref="punishLaw"
                     clearable
                     class="w-120"
@@ -92,8 +91,8 @@
               <div class="col">
                 <el-form-item label="拟处罚决定：">
                   <el-input
-                    id="width600px"
                     ref="punishDecision"
+                    :disabled="true"
                     clearable
                     class="w-120"
                     v-model="formData.punishDecision"
@@ -112,12 +111,12 @@
                   <el-checkbox-group v-model="formData.checkBoxList">
                     <el-row>
                       <el-col :span="5">
-                        <el-checkbox label="陈述申辩权利" checked="true"></el-checkbox>
+                        <el-checkbox label="陈述申辩权利" v-model="formData.checkBox1" :checked="true"></el-checkbox>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="5">
-                        <el-checkbox label="举行听证权利" checked="true"></el-checkbox>
+                        <el-checkbox label="举行听证权利" v-model="formData.checkBox12" :checked="true"></el-checkbox>
                       </el-col>
                     </el-row>                   
                   </el-checkbox-group>
@@ -131,7 +130,6 @@
               <div class="col">
                 <el-form-item label="联系地址：">
                   <el-input
-                    id="width200px"
                     ref="partyAddress"
                     clearable
                     class="w-120"
@@ -144,7 +142,6 @@
               <div class="col">
                 <el-form-item label="邮编：">
                   <el-input
-                    id="width200px"
                     ref="partyZipCode"
                     clearable
                     class="w-120"
@@ -159,7 +156,6 @@
               <div class="col">
                 <el-form-item label="联系人：">
                   <el-input
-                    id="width200px"
                     ref="party"
                     clearable
                     class="w-120"
@@ -172,7 +168,6 @@
               <div class="col">
                 <el-form-item label="联系电话 ：">
                   <el-input
-                    id="width200px"
                     ref="partyTel"
                     clearable
                     class="w-120"
@@ -187,7 +182,7 @@
         </el-form>
       </div>
       <div class="float-btns">
-        <el-button type="primary" @click="addIllegalAction(1)">
+        <el-button type="primary" @click="addFormData(1)">
           <svg
             t="1577414377979"
             class="icon"
@@ -206,7 +201,7 @@
           </svg>
           <br />提交
         </el-button>
-        <el-button type="success" @click="addIllegalAction(0)">
+        <el-button type="success" @click="addFormData(0)">
           <svg
             t="1577415780823"
             class="icon"
@@ -232,6 +227,8 @@
 </template>
 
 <script>
+import { mixinGetCaseApiList } from "@/js/mixins";
+
 export default {
   data() {
     return {
@@ -244,7 +241,7 @@ export default {
         punishDecision: "",
         partyAddress: "",
         partyZipCode: "",
-        // contactPerson:"",
+        contactPerson:"",
         partyTel: "",
         checkBoxList:""
       },
@@ -253,91 +250,31 @@ export default {
           { required: true, message: "当事人姓名必须填写", trigger: "blur" }
         ]
       },
-      caseDocDataForm: {
-        id: "",
-        caseBasicinfoId: "",
-        caseDoctypeId: "",
-        //文书数据
-        docData: "",
+      //提交方式
+      handleType: 0, //0  暂存     1 提交
+      caseLinkDataForm: { 
+        id: "", //修改的时候用
+        caseBasicinfoId: this.$route.params.id, //案件id
+        caseLinktypeId: "2c9029ee6cac92s81016caca8ea500003", //表单类型IDer
+        //表单数据
+        formData: "",
         status: ""
       },
-      handelType: 0 //0 提交  1 暂存  2  修改
     };
   },
+  mixins:[mixinGetCaseApiList],
   methods: {
-    //获取案件信息
-    getCaseBasicInfo() {
-      let data = {
-        id: "2c902ae66ae2acc4016ae376f6f1007f"
-      };
-      this.$store.dispatch("getCaseBasicInfo", data).then(
-        res => {
-          console.log("获取案件详情", res);
-          this.formData = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    //加载表单信息
+    setFormData(){
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
-    //聚焦清除错误信息
-    focusName() {
-      this.errorName = false;
-    },
-    //保存违法行为通知书(提交生成pdf之后不可以修改，暂存之后可以修改)
-    addIllegalAction(handelType) {
-      this.caseDocDataForm.caseBasicinfoId = "12345666666666";
-      this.caseDocDataForm.caseDoctypeId = "1234";
-      this.caseDocDataForm.docData = JSON.stringify(this.formData);
-      if(handelType == 0) {
-        this.caseDocDataForm.status = 0;
-      } else {
-        this.caseDocDataForm.status = 1;
-      }
-      this.$refs["formData"].validate(valid => {
-        if (valid) {
-          this.$store.dispatch("addDocData", this.caseDocDataForm).then(
-            res => {
-              console.log("保存文书", res);
-              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
-                type: "success",
-                message: "保存成功"
-              });
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        }
-      });
-    },
-    getDocDataByCaseIdAndDocId() {
-      let data = {
-        caseId: "12345666666666",
-        docId: "1234"
-      };
-      this.$store.dispatch("getDocDataByCaseIdAndDocId", data).then(
-        res => {
-          console.log("获取文书详情", res);
-          //如果为空，则加载案件信息
-          if (res.data.length == 0) {
-            this.getCaseBasicInfo();
-          } else {
-            console.log(res.data[0]);
-            this.caseDocDataForm.id = res.data[0].id;
-            this.formData = JSON.parse(res.data[0].docData);
-          }
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    addFormData(handleType) {
+      //参数  提交类型 、formRef  、 跳转的pdf路由name
+      this.com_submitCaseForm(handleType,'illegalActionForm','illegalActionPdf');
     }
   },
   created() {
-    //加载文书信息
-    this.getDocDataByCaseIdAndDocId();
+    this.setFormData();
   }
 };
 </script>

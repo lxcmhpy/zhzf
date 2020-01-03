@@ -2,7 +2,7 @@
   <div class="box">
     <el-form ref="caseLinkDataForm">
         <el-input ref="id" type="hidden"></el-input></el-form>
-    <el-form ref="formData" :model="formData" label-width="105px">
+    <el-form ref="penaltyExecutionForm" :model="formData" label-width="105px">
 
       <div class="header-case">
         <div class="header_left">
@@ -158,12 +158,15 @@ export default {
     return {
       formData: {
       },
-      CaseDocDataForm: {
-        caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
-        caseDoctypeId: "123",
-        //文书数据
-        docData: "",
-        status: "",
+      //提交方式
+      handleType: 0, //0  暂存     1 提交
+      caseLinkDataForm: { 
+        id: "", //修改的时候用
+        caseBasicinfoId: this.$route.params.id, //案件id
+        caseLinktypeId: "2c9029e16c753a19016c755fe1340001", //表单类型IDer
+        //表单数据
+        formData: "",
+        status: ""
       },
       tableDatas: [{
         name: '立案',
@@ -207,54 +210,21 @@ export default {
     }
   },
   methods: {
-    // 获取带入信息
-    getCaseBasicInfo() {
-      this.$store.dispatch("getCaseBasicInfo", "1").then(
-        res => {
-          this.docData = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    //加载表单信息
+    setFormData(){
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
-
-    // 提交表单
-    addIllegalAction() {
-      console.log(this.CaseDocDataForm);
-      this.$refs["docForm"].validate(valid => {
-        if (valid) {
-          this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
-            res => {
-              console.log("保存文书", res);
-              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
-                type: "success",
-                message: "保存成功"
-
-              });
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-
-      });
-      // console.log(this.CaseDocDataForm.docData);
-
-    },
-    // 暂存
-    save() {
-
+    addFormData(handleType) {
+      //参数  提交类型 、formRef  、 跳转的pdf路由name
+      this.com_submitCaseForm(handleType,'adminPunisheDecisionForm','illegalActionPdf');
     }
   },
   mounted() {
-    this.getCaseBasicInfo();
+    // this.getCaseBasicInfo();
   },
+  created(){
+    this.setFormData();
+  }
 }
 </script>
 

@@ -1,6 +1,8 @@
 <template>
   <div class="box">
-    <el-form ref="docForm" :model="docData" label-width="105px">
+    <el-form ref="caseLinkDataForm">
+    <el-input ref="id" type="hidden"></el-input></el-form>
+    <el-form ref="partyRightsForm" :model="formData" label-width="105px">
 
       <div class="header-case">
         <div class="header_left">
@@ -21,42 +23,42 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="caseNumber" :disabled="true" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseName" label="案由">
-                  <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="caseName" :disabled="true" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseCauseNameCopy" label="违法事实">
-                  <el-input type="textarea" ref="caseCauseNameCopy" clearable class="height106" v-model="docData.caseCauseNameCopy" size="small" placeholder="请输入"></el-input>
+                  <el-input type="textarea" ref="caseCauseNameCopy" clearable class="height106" v-model="formData.caseCauseNameCopy" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="违法条款">
-                  <el-input ref="illegalLaw" clearable class="w-120" v-model="docData.illegalLaw" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="illegalLaw" clearable class="w-120" v-model="formData.illegalLaw" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚条款">
-                  <el-input ref="punishLaw" clearable class="w-120" v-model="docData.punishLaw" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="punishLaw" clearable class="w-120" v-model="formData.punishLaw" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="tempPunishAmount" label="拟处罚决定" class="line-height13">
-                  <el-input ref="tempPunishAmount" clearable class="w-120" v-model="docData.tempPunishAmount" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="tempPunishAmount" :disabled="true" clearable class="w-120" v-model="formData.tempPunishAmount" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -66,7 +68,7 @@
               <div class="row">
                     <div class="col">
                       <el-form-item label="执行方式">
-                          <el-checkbox-group v-model="docData.checkList">
+                          <el-checkbox-group v-model="formData.checkList">
                               <el-row>
                                 <el-col :span="4">
                                     <el-checkbox label="是否重大案件" name="isImportant"></el-checkbox>
@@ -75,14 +77,14 @@
                           </el-checkbox-group>
                       </el-form-item>  
                     </div>
-                    <!-- <div class="col">
-                        <el-col :span="8">
-                            <div class="second_title_btns">
-                                <el-button type="primary" size="small">选择已上传证据</el-button>
-                                <el-button type="success" size="small">本地上传</el-button>
+                    <div class="col">
+                        <el-col :span="20">
+                            <div align="right">
+                                <el-button type="primary" size="small">上传记录</el-button>
+                                <el-button type="success" size="small">线上记录</el-button>
                             </div>
                         </el-col>
-                    </div> -->
+                    </div>
               </div>
           </div>
         </div>
@@ -97,7 +99,7 @@
             </el-col>
           </el-row>
           <div class="table_form">
-            <el-table :data="tableDatas" stripe border style="width: 100%" height="100%">
+            <el-table :data="docTableDatas" stripe border style="width: 100%" height="100%">
               <el-table-column prop="index" label="序号" align="center">
               </el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
@@ -142,7 +144,7 @@
             </el-col>
           </el-row>
           <div class="table_form">
-            <el-table :data="tableDatas" stripe border style="width: 100%" height="100%">
+            <el-table :data="evidenceTableDatas" stripe border style="width: 100%" height="100%">
               <el-table-column prop="index" label="序号" align="center">
               </el-table-column>
               <el-table-column prop="name" label="证据名称" align="center">
@@ -193,114 +195,69 @@
   </div>
 </template>
 <script>
+import { mixinGetCaseApiList } from "@/js/mixins";
+
 export default {
   data() {
     return {
-      docData: {
+      formData: {
           checkList:"",
           isImportant:""
       },
-      CaseDocDataForm: {
-        caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
-        caseDoctypeId: "123",
-        //文书数据
-        docData: "",
-        status: "",
+      //提交方式
+      handleType: 0, //0  暂存     1 提交
+      caseLinkDataForm: { 
+        id: "", //修改的时候用
+        caseBasicinfoId: this.$route.params.id, //案件id
+        caseLinktypeId: "2c9029ac6c26fd72016c27247b290003", //表单类型IDer
+        //表单数据
+        formData: "",
+        status: ""
       },
-      tableDatas: [{
+      docTableDatas: [{
         index: '1',
-        name: '四川',
+        name: '听证通知书',
         status: '-',
         option: '1',
       }, {
         index: '2',
-        name: '四川',
+        name: '听证笔录',
         status: '完成',
         option: '2',
       }, {
         index: '3',
-        name: '四川',
+        name: '陈述申辩书',
         status: '暂存',
         option: '3',
       }],
+      evidenceTableDatas:[],
       rules: {
-        caseNumber: [
-          { required: true, message: '案号必须填写', trigger: 'blur' }
-        ],
-        caseName: [
-          { required: true, message: '案由必须填写', trigger: 'blur' }
-        ],
-        partyType: [
-          { required: true, message: '当事人类型必须填写', trigger: 'blur' }
-        ],
-        closeResult: [
-          { required: true, message: '处理结果必须填写', trigger: 'blur' }
-        ],
-        closeSituation: [
-          { required: true, message: '执行情况必须填写', trigger: 'blur' }
-        ],
+        // caseNumber: [
+        //   { required: true, message: '案号必须填写', trigger: 'blur' }
+        // ],
+        // caseName: [
+        //   { required: true, message: '案由必须填写', trigger: 'blur' }
+        // ],
       },
     }
   },
+  mixins:[mixinGetCaseApiList],
   methods: {
-    // 获取带入信息
-    getCaseBasicInfo() {
-      let data = {
-
-        id: "12345666666666",
-        caseId: "12345666666666",
-        docId: "1234"
-      };
-      this.$store.dispatch("getCaseBasicInfo", data).then(
-        res => {
-          this.docData = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    //加载表单信息
+    setFormData(){
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
-
-    // 提交表单
-    addIllegalAction() {
-      console.log(this.CaseDocDataForm);
-      this.$refs["docForm"].validate(valid => {
-        if (valid) {
-          this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
-            res => {
-              console.log("保存文书", res);
-              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
-                type: "success",
-                message: "保存成功"
-
-              });
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-
-      });
-      // console.log(this.CaseDocDataForm.docData);
-
-    },
-    // 暂存
-    save() {
-
-    },
-    // 添加
-    addDoc(){
-
+    addFormData(handleType) {
+      //参数  提交类型 、formRef  、 跳转的pdf路由name
+      this.com_submitCaseForm(handleType,'partyRightsForm','illegalActionPdf');
     }
   },
   mounted() {
-    this.getCaseBasicInfo();
+    // this.setFormData();
   },
+  created(){
+    this.setFormData();
+  }
 }
 </script>
 

@@ -223,33 +223,16 @@ export default {
     },
     //勘验笔录
     goInquestNotes() {
-      this.makeRoute(
-        "/inquest",
-        "/inquest2",
-        "/inquest3",
-        "inquest",
-        "inquest2",
-        "inquest3",
-        "勘验笔录",
-        "caseHandle/case/inquestNotes.vue"
-      );
+      this.$router.push({ name: 'inquestNotes' });
+
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {
       this.$router.push({ name: 'order' });
     },
     //违法行为通知书
-    goIllegalAction() {
-      this.makeRoute(
-        "/illegalAction",
-        "/illegalAction2",
-        "/illegalAction3",
-        "illegalAction",
-        "illegalAction2",
-        "illegalAction3",
-        "违法行为通知书",
-        "caseHandle/case/form/illegalActionForm.vue"
-      );
+    goIllegalAction() {       
+        this.$router.push({ name: 'illegalAction' });
     },
     //违法行为通知书PDF
     goIllegalActionPdf() {      
@@ -283,18 +266,7 @@ export default {
     goFilingApprovalForm() {
       this.$router.push({ name: 'filingApproval' });
     },
-    // goFilingApprovalForm(){
-    //   this.makeRoute(
-    //       "/filingApproval",
-    //       "/filingApproval2",
-    //       "/filingApproval3",
-    //       "filingApproval",
-    //       "filingApproval2",
-    //       "filingApproval3",
-    //       "立案审批表",
-    //       "caseHandle/case/form/filingApprovalForm.vue"
-    //     );
-    // },
+    
     goImportantCaseDissForm() {
       this.makeRoute(
         "/important",
