@@ -1,0 +1,556 @@
+<template>
+  <div class="com_searchAndpageBoxPadding">
+    <div class="searchAndpageBox" >
+      <div class="handlePart">
+        <el-button type="primary" size="medium" icon="el-icon-plus">添加</el-button>
+      </div>
+      <div >
+        <!-- <div id="aa"><?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="icon" width="200px" height="200.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#d81e06" d="M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z"  /></svg></div> -->
+          <div id="flowChart" style="width: 1000px;height:550px;margin:0 auto"></div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import echarts from 'echarts'
+import 'echarts/lib/chart/graph'
+import _ from 'lodash'
+export default {
+  data() {
+    return {
+      stateColor: {
+        complete: '#0174f5',//已完成
+        doing: '#f2a010',// 进行中
+        unLock: '#52c2b6',// 已解锁
+        lock: '#b2b2b2' //未解锁
+      },
+      lineStyle: {
+        complete: {
+              normal: {
+                  color: '#0174f5',
+                  width: 2,
+                  opacity:1
+              }
+        },
+        unLock: {
+            normal: {
+                color: '#b2b2b2'
+            }
+        }
+      },
+      graphData: {
+        nodes:[
+        {id:"1",source: '1',target:"temp1_1",linkID: '2c90293b6c178b55016c17c255a4000d',name:"立案\n登记",position:{x: 2, y: 1}, itemStyleColor: "#b2b2b2", attributes:{modularity_class:'lct_01'}},
+          {id:"temp1_1",source: 'temp1_1',target:"2_2",linkID: '2c90293b6c178b55016c17c255a4000d',name:"",position:{x: 2, y: 1.5},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"temp1_2",source: 'temp1_1',target:"temp1_2",linkID: 'temp1_2',name:"",position:{x: 3, y: 1.5},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"temp1_3",source: 'temp1_2',target:"2_1",linkID: 'temp1_2',name:"",position:{x: 3, y: 2},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"2_1",source: "2_1",target:"2_2",linkID: '2c90293b6c178b55016c17c7ae92000e',name:"行政强\n制措施",position:{x: 3, y: 2},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_02'}},
+          {id:"2_2",source: "2_2",target:"3",linkID: '2c90293b6c178b55016c17c93326000f',name:"调查类\n文书",position:{x: 2, y: 2},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_03'}},
+          {id:"3",source: "3",target:"4",linkID: '2c9029ee6cac9281016caca7f38e0002',name:"调查\n报告",position:{x: 2, y: 3},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_04'}},
+          {id:"4",source: "4",target:"5_2",linkID: 'a36b59bd27ff4b6fe96e1b06390d204e',name:"案件\n审核",position:{x: 2, y: 4},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_05'}},
+          {id:"temp5_1",source: "4",target:"temp5_1",linkID: 'temp5_1',name:"",position:{x: 1, y: 4},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"temp5_2",source: 'temp5_1',target:"5_1",linkID: 'temp5_2',name:"",position:{x: 3, y: 4},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"temp5_3",source: "4",target:"temp5_3",linkID: 'temp5_3',name:"",position:{x: 3, y: 4},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"temp5_4",source: 'temp5_3',target:"8",linkID: 'temp5_2',name:"",position:{x: 3, y: 4},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"temp5_5",source: 'temp5_4',target:"temp5_5",linkID: 'temp5_5',name:"",position:{x: 4, y: 4},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"temp5_6",source: 'temp5_5',target:"9",linkID: 'temp5_2',name:"",position:{x: 3, y: 4},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"5_2",source: "5_2",target:"10",linkID: '2c9029ee6cac9281016caca8ea500003',name:"违法行\n为通知",position:{x: 2, y: 5},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_06'}},
+          {id:"5_1",source: "5_1",target:"12",linkID: '2c9029ee6cac9281016caca9a0000004',name:"责令\n改正",position:{x: 1, y: 5},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_07'}},
+          {id:"8",source: '8',target:"temp9_2",linkID: 'a36b59bd27ff4b6fe96e1b06390d204f',name:"移交\n移送",position:{x: 3, y: 5},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_08'}},
+          {id:"9",source: '9',target:"temp9_1",linkID: 'a36b59bd27ff4b6fe96e1b06390d204g',name:"不予\n处罚",position:{x: 4, y: 5},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_09'}},
+          {id:"temp9_1",source: 'temp9_1',target:"temp9_2",linkID: 'temp9_1',name:"",position:{x: 4, y: 8.5},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"temp9_2",source: 'temp9_2',target:"14",linkID: 'temp9_2',name:"",position:{x: 3, y: 8.5},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"10",source: '10',target:"11",linkID: '2c9029ac6c26fd72016c27247b290003',name:"当事人\n权利",position:{x: 2, y: 6},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_10'}},
+          {id:"11",source: '11',target:"temp11_1",linkID: '2c9029d56c8f7b66016c8f8043c90001',name:"处罚\n决定",position:{x: 2, y: 7},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_11'}},
+          {id:"temp11_1",source: 'temp11_1',target:"temp11_2",linkID: 'temp11_2',name:"",position:{x: 2, y: 7.5},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"temp11_2",source: 'temp11_2',target:"12",linkID: 'temp11_2',name:"",position:{x: 1, y: 7.5},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"12",source: '12',target:"13",linkID: '2c9029e16c753a19016c755fe1340001',name:"决定\n执行",position:{x: 1, y: 8},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_12'}},
+          {id:"temp12_1",source: '12',target:"temp12_1",linkID: '',name:"",position:{x: 1, y: 9},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'hide'}},
+          {id:"temp12_2",source: 'temp12_1',target:"temp13_1",linkID: '    ',name:"",position:{x: 1, y: 9},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"13",source: '13',linkID: 'a36b59bd27ff4b6fe96e1b06390d204h',target:"temp13_1",name:"强制\n执行",position:{x: 2, y: 8},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_13'}},
+          {id:"temp13_1",source: 'temp13_1',target:"14",linkID: 'temp13_1',name:"",position:{x: 2, y: 9},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'hide'}},
+          {id:"14",source: '14',target:"15",linkID: '2c9029ee6cac9281016cacaadf990006',name:"结案\n登记",position:{x: 3, y: 9},itemStyleColor: "#b2b2b2",attributes:{modularity_class:'lct_14'}},
+          {id:"15",source: '',linkID: '2c9029ee6cac9281016cacab478e0007',target:"",name:"归档",position:{x: 4, y: 9},itemStyleColor: "#b2b2b2",attributes:{modularity_class: 'lct_15'}}
+        ],
+        links:[]
+      },
+      svgData: {
+        lct_01:'path://M237.227641 0.004267h603.301891a90.452617 90.452617 0 0 1 91.305944 91.305943v347.730581H90.882133V146.349775A146.772171 146.772171 0 0 1 237.227641 0.004267z" fill="#0074F5" opacity=".2" /><path d="M645.544409 0.004267H182.188077A90.452617 90.452617 0 0 0 90.882133 91.31021v841.380006A90.452617 90.452617 0 0 0 182.188077 1023.99616h654.928149a90.452617 90.452617 0 0 0 91.305943-91.305944V281.602037z" fill="#0074F5" /><path d="M650.237705 0.004267v213.331644a69.546116 69.546116 0 0 0 69.546116 68.266126h213.331645z" fill="#135FD8" /><path d="M237.227641 402.347748a55.039564 55.039564 0 0 0 109.652466 0 55.039564 55.039564 0 1 0-109.652466 0zM493.225615 365.654705h219.30493a34.559726 34.559726 0 0 1 36.693043 36.693043 34.559726 34.559726 0 0 1-36.693043 36.693043H493.225615a34.559726 34.559726 0 0 1-36.693043-36.693043 34.559726 34.559726 0 0 1 36.693043-36.693043z m0 183.038551h219.30493a36.693043 36.693043 0 1 1 0 72.959423H493.225615a36.693043 36.693043 0 1 1 0-72.959423z m0 182.611888h219.30493a36.693043 36.693043 0 0 1 0 73.386086H493.225615a36.693043 36.693043 0 0 1 0-73.386086zM237.227641 584.959636a55.039564 55.039564 0 1 0 54.612901-54.612901 54.612901 54.612901 0 0 0-54.612901 54.612901zM237.227641 767.998187a55.039564 55.039564 0 1 0 54.612901-55.039565A54.612901 54.612901 0 0 0 237.227641 767.998187z',
+        lct_02:'path://M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z',
+        lct_03:'path://M142.114885 365.376939H77.712369a4.293501 4.293501 0 0 0-4.293501 4.293501V944.570231a77.712369 77.712369 0 0 0 77.283019 77.712369h575.75849a4.722851 4.722851 0 0 0 4.293501-4.722852v-63.543815a4.722851 4.722851 0 0 0-4.293501-4.722851H205.22935a58.391614 58.391614 0 0 1-58.820964-58.391614V369.67044a3.864151 3.864151 0 0 0-4.293501-4.293501z"  /><path fill="#d81e06" d="M876.732914 0H292.387421a73.418868 73.418868 0 0 0-72.989517 72.989518v729.895178a72.989518 72.989518 0 0 0 72.989517 72.989518h584.345493a72.989518 72.989518 0 0 0 72.989518-72.989518v-729.895178a73.418868 73.418868 0 0 0-72.989518-72.989518zM786.140042 439.225157a262.762264 262.762264 0 0 1-118.071279 192.778197 188.484696 188.484696 0 0 1-83.29392 25.331656 187.196646 187.196646 0 0 1-82.00587-25.331656 263.191614 263.191614 0 0 1-118.500629-192.778197 1175.560587 1175.560587 0 0 1-18.891405-157.571488 313.425577 313.425577 0 0 0 122.79413-13.309853 257.610063 257.610063 0 0 0 96.603774-48.945912 252.457862 252.457862 0 0 0 96.174423 48.945912 313.425577 313.425577 0 0 0 122.36478 13.309853 1090.549266 1090.549266 0 0 1-17.174004 157.571488z',
+        lct_04:'path://M447.411177 363.576998a128.319784 128.319784 0 1 0 128.319784 128.319783 128.319784 128.319784 0 0 0-128.319784-128.319783z"  /><path fill="#d81e06" d="M651.011901 0.004277v3.849594L647.59004 0.004277H183.072423A90.679314 90.679314 0 0 0 91.537644 91.539056V932.461371a90.679314 90.679314 0 0 0 91.534779 91.534779h654.430896a90.679314 90.679314 0 0 0 91.534779-91.534779V281.452336h3.421861zM447.411177 705.763087a213.866306 213.866306 0 1 1 213.866306-213.866306 213.866306 213.866306 0 0 1-213.866306 213.866306z m365.711384 119.337399c-12.404246 16.253839-68.437218-5.988257-124.897923-50.044716s-92.390244-90.679314-79.985999-108.216351 68.437218 6.415989 124.897923 50.044716 92.390244 91.962512 79.985999 108.216351z',
+        lct_05:'path://M651.046903 0.004292H184.542655A90.554183 90.554183 0 0 0 93.130139 91.416808v841.166814a90.554183 90.554183 0 0 0 91.412516 91.412515h654.908448a90.554183 90.554183 0 0 0 91.412516-91.412515V281.537674z m60.083344 763.487633H307.71351V729.587753h403.416737z m33.904173-66.950011H273.380171v-98.279184a15.450003 15.450003 0 0 1 15.450002-15.450003h159.220862a69.095845 69.095845 0 0 0 21.458337-49.783342 63.945845 63.945845 0 0 0-19.312504-45.491675 56.220843 56.220843 0 0 0-13.733335-10.729168 105.145852 105.145852 0 0 1-35.191673-78.537514 108.579186 108.579186 0 0 1 216.729204 0 103.858352 103.858352 0 0 1-35.620839 78.537514 79.395847 79.395847 0 0 0-13.733336 10.729168 64.375011 64.375011 0 0 0-19.74167 45.491675 69.095845 69.095845 0 0 0 21.458337 49.783342h159.220861a16.308336 16.308336 0 0 1 15.87917 15.450003z',
+        lct_06:'path://M1102.451892 850.721413L662.630068 71.477417c-54.022148-95.303223-142.19037-95.303223-196.212517 0L23.028226 850.721413c-54.022148 95.303223-9.683215 173.278587 98.36108 173.278587h883.211149c107.534652 0 151.873585-77.975364 97.851437-173.278587z m-404.146821-263.995023l-260.937166 313.430385 87.148936-220.675376H427.175047l97.341794-260.937166H713.594358l-123.333582 168.182157z',
+        lct_07:'path://M389.852625 656.047423v-94.456904a24.902275 24.902275 0 0 0-24.902275-24.472925H177.75394a24.902275 24.902275 0 0 1-24.902275-24.902275v-69.12528a24.902275 24.902275 0 0 1 24.902275-24.472925h187.19641a25.331624 25.331624 0 0 0 24.902275-24.472926V300.545983l161.864786 161.864786a25.331624 25.331624 0 0 1 0 34.347965z"  /><path fill="#d81e06" d="M926.96893 990.940084a32.201217 32.201217 0 0 1-9.44569 22.755526 33.489266 33.489266 0 0 1-22.755527 9.016341h-249.452097a36.494713 36.494713 0 0 1-36.065363-36.494713v-53.239346a38.212111 38.212111 0 0 1 10.304389-25.760974 36.924063 36.924063 0 0 1 25.760974-10.733739h115.924382a36.494713 36.494713 0 0 0 36.494713-36.065363V423.339959a36.494713 36.494713 0 0 0-36.494713-36.924063h-185.479012a31.771868 31.771868 0 0 1-22.755526-9.016341 30.05447 30.05447 0 0 1-9.016341-22.755526V166.15957a35.206664 35.206664 0 0 0-10.733739-25.331625 36.924063 36.924063 0 0 0-25.760974-12.021788H262.335804a36.065363 36.065363 0 0 0-25.760974 10.73374 35.206664 35.206664 0 0 0-11.163088 26.619673v115.924382a36.494713 36.494713 0 0 1-36.494713 36.494713H133.101585A36.494713 36.494713 0 0 1 96.606872 282.083952V70.414617A69.554629 69.554629 0 0 1 166.590851 0.001288h425.485419a38.212111 38.212111 0 0 1 26.619673 10.733739l297.539248 298.397948a36.065363 36.065363 0 0 1 10.733739 26.619673z"  /><path fill="#d81e06" d="M476.151887 836.37424h-171.739825a31.342518 31.342518 0 0 0-23.184877 9.445691 32.201217 32.201217 0 0 0-9.44569 22.755527v85.869913L115.498253 799.450178a32.201217 32.201217 0 0 1 0-45.511054l156.283242-156.283242v85.869913a32.201217 32.201217 0 0 0 9.44569 22.755527 30.913169 30.913169 0 0 0 23.184877 9.016341h171.739825a32.201217 32.201217 0 0 1 22.755527 9.44569 33.918616 33.918616 0 0 1 9.445691 23.184877v54.956744a32.201217 32.201217 0 0 1-32.201218 32.201218z',
+        lct_08:'path://M647.889156 0.004267H184.532824A90.452617 90.452617 0 0 0 93.22688 91.31021v841.380006A90.452617 90.452617 0 0 0 184.532824 1023.99616h654.928148a90.452617 90.452617 0 0 0 91.305944-91.305944V281.602037zM294.185289 823.037751A55.039564 55.039564 0 1 1 349.224853 767.998187a54.612901 54.612901 0 0 1-55.039564 55.039564z m0-183.038551A55.039564 55.039564 0 1 1 349.224853 584.959636 54.612901 54.612901 0 0 1 294.185289 639.9992z m0-183.038551a55.039564 55.039564 0 0 1 0-109.652465 55.039564 55.039564 0 1 1 0 109.652465z m420.690003 347.730581H495.570361a36.693043 36.693043 0 0 1 0-73.386086h219.304931a36.693043 36.693043 0 0 1 0 73.386086z m0-183.038551H495.570361a36.693043 36.693043 0 1 1 0-72.959423h219.304931a36.693043 36.693043 0 1 1 0 72.959423z m0-182.611888H495.570361a34.559726 34.559726 0 0 1-36.693042-36.693043 34.559726 34.559726 0 0 1 36.693042-36.693043h219.304931a34.559726 34.559726 0 0 1 36.693043 36.693043 34.559726 34.559726 0 0 1-36.693043 36.693043z',
+        lct_09:'path://M350.541196 862.541196A161.458804 161.458804 0 1 0 512 701.082392a161.458804 161.458804 0 0 0-161.458804 161.458804z"  /><path fill="#d81e06" d="M869.179423 699.797574v-342.618151a357.179423 357.179423 0 0 0-714.358846 0v342.618151H40.900042v188.868256h942.199916v-188.868256z',
+        lct_10:'path://M836.994992 0.049064H182.949057A90.448622 90.448622 0 0 0 91.647146 91.350975v840.062914A90.448622 90.448622 0 0 0 182.949057 1023.995734H646.284925l284.99849-281.15869V91.350975A91.301911 91.301911 0 0 0 836.994992 0.049064z m-597.302224 255.986667a34.5582 34.5582 0 0 1 36.691423-36.264777h144.205822a34.131556 34.131556 0 0 1 36.264778 36.264777v182.603823a34.5582 34.5582 0 0 1-36.264778 36.691423H274.250968a34.5582 34.5582 0 0 1-36.691422-36.691423z m511.973335 401.899068H274.250968a36.691422 36.691422 0 1 1 0-72.9562h474.855268a36.691422 36.691422 0 1 1 0 72.9562z m0-182.603822h-185.163689a36.691422 36.691422 0 1 1 0-72.956201h182.603822a36.691422 36.691422 0 1 1 0 72.956201z m0-182.603823h-185.163689a34.5582 34.5582 0 0 1-36.691423-36.691423 34.5582 34.5582 0 0 1 36.691423-36.264777h182.603822a34.5582 34.5582 0 0 1 36.691423 36.264777 34.5582 34.5582 0 0 1-36.691423 36.691423',
+        lct_11:'path://M988.840785 325.69356l-12.318791-31.536105-108.405362 110.86912 3.449262 12.318791a369.563732 369.563732 0 1 1-261.651122-261.651122l12.318791 3.449261L733.102682 50.738144l-31.536105-14.289798A511.968957 511.968957 0 1 0 988.840785 325.69356z"  /><path fill="#d81e06" d="M382.953365 522.597117L874.571679 30.978803l124.41979 124.370515-491.667589 491.618313zM313.771035 716.445613l154.724015-31.043353-123.680662-123.680663-31.043353 154.724016z',
+        lct_12:'path://M839.405094 474.881999A272.519401 272.519401 0 0 1 722.474703 529.767692a449.108154 449.108154 0 0 1 161.79348 346.973037v14.795274a524.993591 524.993591 0 0 0 129.816597-65.385565 362.722845 362.722845 0 0 0 0-45.340356 352.70024 352.70024 0 0 0-174.679686-305.928083zM745.383515 251.998356a306.882618 306.882618 0 0 1-97.839715 244.360653h15.272541a238.633451 238.633451 0 0 0 0-481.085036 262.974063 262.974063 0 0 0-43.431288 4.772669 306.882618 306.882618 0 0 1 125.998462 231.951714zM602.680711 514.495151a306.882618 306.882618 0 0 1-126.475729 61.567431l-22.908811 62.521964 26.24968 163.702547-69.680968 84.476241-73.021836-84.476241 30.545082-163.22528L340.661182 577.971649a312.132553 312.132553 0 0 1-134.589266-63.476498A398.040596 398.040596 0 0 0 6.574352 859.559121a392.313393 392.313393 0 0 0 2.863601 47.72669 673.900865 673.900865 0 0 0 397.563329 116.453124 676.764466 676.764466 0 0 0 392.313393-112.157722 360.33651 360.33651 0 0 0 3.340868-52.022092 397.563329 397.563329 0 0 0-199.974832-345.06397z"  /><path fill="#d81e06" d="M404.13768 541.222098A270.610333 270.610333 0 1 0 135.436415 270.134498a269.178532 269.178532 0 0 0 268.701265 271.0876z',
+        lct_13:'path://M105.388633 783.336406h46.140297l90.183308-165.685612h-46.140297l256.393241-436.759857L346.576549 0 0 617.650794l105.388633 165.685612z"  /><path fill="#d81e06" d="M1189.685612 632.331797L828.428059 0h-180.890937L629.185868 31.459293l102.242703 175.647722 16.77829-32.507937 264.258065 457.732719h-109.058884L557.353815 0H346.576549l369.646697 632.331797H529.564772l-90.183308 151.004609h364.927804l52.956477 90.183307H328.225294l226.506913-392.716846-90.183308-165.685611-314.068612 558.402457 90.707629 150.480287h707.30978l-1.572965-2.621608 88.610343-147.858679-49.286226-90.183307h113.253456l90.183308-151.004609z',
+        lct_14:'path://M474.740276 72.806357A75.375993 75.375993 0 0 0 407.073191 0H167.668758A74.947721 74.947721 0 0 0 100.001673 72.806357v878.387286a74.947721 74.947721 0 0 0 66.810539 72.806357h240.260979a75.375993 75.375993 0 0 0 67.238812-72.806357V274.094521 85.654538v-3.854454zM687.591803 167.026349h101.500627v379.877875h-101.500627zM760.39816 770.890841a47.109996 47.109996 0 1 0 17.130907 64.669176 47.109996 47.109996 0 0 0-17.130907-64.669176z"  /><path fill="#d81e06" d="M923.998327 270.66834V72.806357A74.519448 74.519448 0 0 0 856.331242 0h-239.404433a74.519448 74.519448 0 0 0-66.81054 72.806357v878.387286a74.519448 74.519448 0 0 0 66.81054 72.806357h239.404433a74.519448 74.519448 0 0 0 66.81054-72.806357V270.66834zM643.479716 124.19908H828.065245v471.099958h-184.585529z m143.899623 777.314931A101.9289 101.9289 0 0 1 634.914262 813.71811a101.072355 101.072355 0 0 1 50.96445-85.654538 101.500627 101.500627 0 1 1 101.500627 176.020075z',
+        lct_15:'path://M874.130887 910.552492a13.375907 13.375907 0 0 1-8.421867-11.889696v-19.320754a33.68747 33.68747 0 0 0-33.192066-33.192066H176.602102a33.68747 33.68747 0 0 0-33.192066 33.192066V891.727141a11.889695 11.889695 0 0 1-10.403484 11.889695 120.383164 120.383164 0 0 0-99.080793 118.401548h919.965167A118.896952 118.896952 0 0 0 874.130887 910.552492zM973.211681 726.262216L626.428904 401.277213l125.832607-125.832607a28.73343 28.73343 0 0 0 41.613934 0 30.219642 30.219642 0 0 0 0-42.109337L568.46664 8.421867a30.219642 30.219642 0 0 0-42.109338 0 29.724238 29.724238 0 0 0-8.917271 20.806967 29.724238 29.724238 0 0 0 9.908079 20.311563L212.766591 364.61732a29.228834 29.228834 0 0 0-42.109337 0 29.228834 29.228834 0 0 0 0 42.109337l222.931785 224.913401a29.724238 29.724238 0 0 0 41.613933 0 29.724238 29.724238 0 0 0 0-41.613933l126.823416-127.31882 325.480406 349.259797a57.46686 57.46686 0 0 0 43.100146 19.320755 59.94388 59.94388 0 0 0 61.430091-61.430092 58.457668 58.457668 0 0 0-18.82535-43.595549z m-646.997581-297.24238l-41.11853-42.604742 272.967586-272.967586 40.623126 40.623126z'
+      },
+      // 立案 0 调查 1 决定 2 执行 3 结案
+      mainLinkData: [
+        {
+            value: ' 立案',
+            name: '0',
+            // backgroundColor: 'red',
+            textStyle: {
+                align: 'right',
+                verticalAlign: 'top',
+                backgroundColor: '#b2b2b2',
+                lineHeight: 26,
+                padding:[10,20,10,22],
+                shadowOffsetX: 10,
+                shadowColor: '#b2b2b2',
+                textShadowOffsetX: 0,
+                    color: 'white',
+                fontSize: 16,
+            },
+        },
+        {
+          value: '调查 ',
+          name: '1',
+          textStyle: {
+              align: 'right',
+              verticalAlign: 'top',
+              backgroundColor: '#b2b2b2',
+              lineHeight: 26,
+              padding:[10, 50,10,72],
+              color: 'white',
+              shadowBlur: '#b2b2b2',
+              fontSize: 16,
+              shadowOffsetX: 30,
+              shadowColor: '#b2b2b2',
+          }
+        },
+        {
+          value: '决定',
+          name: '2',
+          textStyle: {
+              align: 'left',
+              verticalAlign: 'top',
+              backgroundColor: '#b2b2b2',
+              lineHeight: 26,
+              padding:[10,165,10,53],
+              color: 'white',
+              shadowOffsetX: -139,
+              shadowColor: '#b2b2b2',
+              fontSize: 16,
+          }
+        },
+        {
+          value: '执行',
+          name: "3",
+          textStyle: {
+              align: 'center',
+              verticalAlign: 'top',
+              backgroundColor: '#b2b2b2',
+              lineHeight: 26,
+              padding:[10,28,10, 29],
+              color: '#b2b2b2',
+              shadowOffsetX: 125,
+              textShadowOffsetX: 128,
+              textShadowColor: 'white',
+              shadowColor: '#b2b2b2',
+              fontSize: 16,
+          }
+        },
+        {
+          value: '结案',
+          name: "4",
+          textStyle: {
+              align: 'left',
+              verticalAlign: 'top',
+              backgroundColor: '#b2b2b2',
+              lineHeight: 26,
+              padding:[10,29,10, 29],
+              color: 'white',
+              shadowColor: '#b2b2b2',
+              fontSize: 16,
+          }
+      }],
+      data: {}
+    }
+  },
+  methods: {
+    async getFlowStatusByCaseId(id) {
+      console.log(id)
+      this.$store.dispatch("getFlowStatusByCaseId", id).then(
+        res => {
+          console.log('流程图',res)
+          this.data = res.data;
+          this.updateLinkData()
+          this.updateGraphData()
+          this.drawFlowChart()
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    drawFlowChart() {
+      var flowChart = echarts.init(document.getElementById('flowChart'))
+      let graphTemp = this.graphData
+      let stateColorTemp = this.stateColor
+      let mainLinkDataTemp = this.mainLinkData
+
+      var option = {    //这里是option配置
+        title: {
+            text: '办案流程图'
+        },
+        legend: [{    //图例组件
+            data: graphTemp.nodes,
+            itemGap:5,
+            y: 'bottom'
+        }],
+        calculable : true,
+        animationDurationUpdate: 1500,
+        animationEasingUpdate: 'quinticInOut',
+        grid: {
+            left: '5%',
+            top: '10%',
+            right: '5%',
+            bottom: '5%',
+            containLabel: true,
+        },
+        xAxis: [
+            {
+            position:'top',
+            type : 'value',
+            min: 0,
+            max: 9,
+            axisLine: {
+                lineStyle: {
+                    type: 'dashed',
+                    color:'#ccc'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    type: 'dashed',
+                    shadowOffsetX: 10,
+                    shadowColor:'#ccc',
+                    color:'#ccc',
+
+                },
+            },
+            axisLabel: {
+                show: false
+            },
+            splitNumber:9,
+            interval: 1,
+        }
+        ,{
+            position:'top',
+            nameLocation: 'start',
+            type : 'category',
+            axisLine: {
+                lineStyle: {
+                    type: 'dashed',
+                    color:'white',
+                }
+            },
+            data: mainLinkDataTemp
+        }],
+        yAxis: {
+            type: 'value',
+            axisLine: {
+                lineStyle: {
+                    type: 'dashed',
+                    color:'#ccc'
+                }
+            }
+        },
+        series: [
+            {
+                type: 'graph',
+                symbol:'rect',
+                edgeSymbol: ['none', 'arrow'],
+                edgeSymbolSize: [2, 7],
+                data: graphTemp.nodes,
+                links: graphTemp.links,
+                draggable: false,   //注意这里设置为false,不然拖拽鼠标和节点有偏移
+            }
+        ]
+
+      };
+      flowChart.setOption(option)
+      // this.updatePosition(flowChart,option)
+      // initInvisibleGraphic(flowChart,option)
+      flowChart.off('click');
+      flowChart.on('click', function(params){
+          if (params.name) {
+            debugger
+              alert(1)
+          }
+
+      })
+    },
+    updateGraphData() {
+      let svgDataTemp = this.svgData
+      let stateColorTemp = this.stateColor
+      this.graphData.nodes.forEach(function (node) {
+          node.x=parseInt(node.position.y*90);
+          node.y=parseInt(node.position.x*90);
+          if (node.attributes.modularity_class !== 'hide') {
+
+              node.itemStyle = {
+                normal:{
+                    color: node.itemStyleColor == '' ? stateColorTemp.lock : node.itemStyleColor
+                  }
+              }
+              node.label = {
+                normal: {
+                      show:true,
+                      color: '#1f242a',
+                      fontSize: 14,
+                      fontWeight: 800,
+                      position: 'bottom',
+                      lineHeight: 40
+                  }
+              };
+              node.symbolSize=[23, 26];
+              node.sizeFlag=[23, 26];
+              node.symbol = svgDataTemp[node.attributes.modularity_class];
+              // node.symbol = 'path://M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z'
+          } else {
+              node.symbolSize=[0, 0];
+              node.sizeFlag=[0, 0];
+          }
+
+      })
+    },
+    updateLinkData() {
+      let mainLinkDataTemp = this.mainLinkData
+      let graphDataTemp = this.graphData
+      let _this = this
+      let unPassArray = []
+      // let passArray=[]
+      for(let key in this.data) {
+        if(key.indexOf('Main') > -1) {
+          // 更新大环节节点状态
+          let array = this.data[key].split(',')
+          let curColor = this.stateColor[key.split('Main')[0]]
+          array.forEach((v,i)=> {
+            let j = _.findIndex(mainLinkDataTemp, function (chr) {
+              return chr.name === v
+            })
+            if (j > -1) {
+              mainLinkDataTemp[j].textStyle.backgroundColor = curColor
+              mainLinkDataTemp[j].textStyle.shadowColor = curColor
+              mainLinkDataTemp[j].textStyle.shadowBlur = curColor
+            }
+          })
+          mainLinkDataTemp[3].textStyle.backgroundColor = mainLinkDataTemp[2].textStyle.backgroundColor
+          mainLinkDataTemp[3].textStyle.color = mainLinkDataTemp[2].textStyle.backgroundColor
+        } else {
+          // 更新小环节节点状态
+          let array = this.data[key].split(',')
+          let curColor = this.stateColor[key.split('Link')[0]]
+          array.forEach((v,i)=> {
+            let j = _.findIndex(graphDataTemp.nodes, function (chr) {
+              return chr.linkID === v
+            })
+            if (j > -1) {
+              graphDataTemp.nodes[j].itemStyleColor = curColor
+            }
+          })
+        }
+      }
+
+            //循环 graphData生成link
+      for (let i = 0;i<graphDataTemp.nodes.length;i++){
+        let nodes = graphDataTemp.nodes[i]
+        graphDataTemp.links.push({
+          id: i,
+          source: nodes.source,
+          sourceName: nodes.name,
+          target: nodes.target,
+          lineStyle:{
+            normal: {
+              color: '#b2b2b2',
+              width: 1,
+              opacity:1
+            }
+          },
+          symbol: nodes.target.indexOf('temp') > -1 ? ['none', 'circle'] : ['none', 'arrow'],
+          symbolSize: nodes.target.indexOf('temp') > -1 ? [1, 1] : [2, 7]
+        })
+      }
+      // 修改link连接线状态
+      for (let k = graphDataTemp.nodes.length - 1;k>=0;k--){
+
+        let source = graphDataTemp.nodes[k].source
+
+        if (graphDataTemp.nodes[k].itemStyleColor!=="#b2b2b2") {
+
+          let jArray = []
+          let tempArray = graphDataTemp.links.filter((element, i)=>{
+            // debugger
+            if(element.target === source) {
+              jArray.push(i)
+            }
+            return false
+          })
+          jArray.forEach((v,i)=>{
+            if(graphDataTemp.links[v].source.indexOf('temp')===-1){
+              graphDataTemp.links[v].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
+              if (graphDataTemp.links[v].source.indexOf('_')>-1 && graphDataTemp.links[v].target.indexOf('_')>-1){
+                unPassArray.push(graphDataTemp.nodes[k].source)
+              }
+            }
+          })
+        }
+      }
+ // 修改link连接线状态
+      for (let k = graphDataTemp.nodes.length - 1;k>=0;k--){
+
+        let source = graphDataTemp.nodes[k].source
+
+        if (graphDataTemp.nodes[k].itemStyleColor!=="#b2b2b2") {
+
+          let jArray = []
+          let tempArray = graphDataTemp.links.filter((element, i)=>{
+            if(element.target === source) {
+              jArray.push(i)
+            }
+            return false
+          })
+          if(jArray.length === 1 ) {
+            if (unPassArray.indexOf(graphDataTemp.links[jArray[0]].source)=== -1) {
+              graphDataTemp.links[jArray[0]].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
+              if (graphDataTemp.links[jArray[0]].source.indexOf('temp')>-1) {
+
+                 _this.recursion(graphDataTemp, jArray[0],unPassArray)
+              }
+            }
+          } else if(jArray.length>1){
+            let array = {}
+            jArray.forEach((v,i)=>{
+              if(graphDataTemp.links[v].source.indexOf('temp') > -1){
+                array[v] = {}
+                _this.recursion1(graphDataTemp, v,unPassArray,array)
+              }
+            })
+            let parentArray = []
+            let str =JSON.stringify(array)
+            let obj
+            let boo = true
+            while (boo){
+                str = str.replace(/((\")(\d+)(\")(:)(\{)(\})(,)?){1,}/g, '')
+                let newStr = str.replace(/((\")(\d+)(\")(:)(\{)(\})(,)?){1,}/g, '')
+              if(str.length == newStr.length) {
+                boo = false
+                obj = JSON.parse(str.replace(/((\})(,)(\})){1,}/g,'}}'))
+              } else {
+                str = newStr
+              }
+            }
+            for (var key in obj) {
+              if (Object.keys(obj[key]).length === 0) {
+                return
+              }
+              if(!isNaN(key)){
+                graphDataTemp.links[parseInt(key)].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
+                this.recursion3(obj[key],graphDataTemp.links, graphDataTemp.nodes[k].itemStyleColor)
+              }
+            }
+          }
+
+        }
+      }
+    },
+    recursion3(obj,linksObj,color) {
+      for (var key in obj) {
+          if (Object.keys(obj[key]).length === 0) {
+            return
+          }
+          if(!isNaN(key)){
+            linksObj[parseInt(key)].lineStyle.normal.color = color
+            this.recursion3(obj[key],linksObj,color)
+          } else {
+            break
+          }
+        }
+    },
+    recursion1 (graphDataTemp, v, unPassArray,array) {
+      let sourceLink = graphDataTemp.links[v]
+      let _this = this
+      graphDataTemp.nodes.forEach((element,i)=>{
+        let upPassBoo = unPassArray.indexOf(graphDataTemp.links[i].target) > -1
+        if (upPassBoo) {
+            return
+        }
+        let newObj = array[v];
+          if(graphDataTemp.links[i].target==sourceLink.source) {
+            newObj[i]={}
+            if (graphDataTemp.links[i].source.indexOf('temp')>-1) {
+                _this.recursion1(graphDataTemp, i,unPassArray,array[v])
+            } else {
+              if (element.source === element.id && element.itemStyleColor!=='#b2b2b2') {
+              } else {
+                 let index = _.findIndex(graphDataTemp.nodes,(v,m)=>{
+                   return v.id === element.source
+                 })
+                 if (index > -1 && graphDataTemp.nodes[index].itemStyleColor !== '#b2b2b2') {
+                   newObj[i]=graphDataTemp.nodes[index]
+                 }
+              }
+              return
+            }
+          }
+
+      })
+    },
+    recursion (graphDataTemp, v, unPassArray) {
+      let sourceLink = graphDataTemp.links[v]
+      let _this = this
+      graphDataTemp.nodes.forEach((element,i)=>{
+        let upPassBoo = unPassArray.indexOf(graphDataTemp.links[i].target) > -1
+        if (upPassBoo) {
+            return
+        }
+
+        if (sourceLink.source.indexOf('temp')==-1) {
+          return
+        } else {
+          if(graphDataTemp.links[i].target==sourceLink.source) {
+          graphDataTemp.links[i].lineStyle.normal.color = sourceLink.lineStyle.normal.color
+            if (graphDataTemp.links[i].source.indexOf('temp')>-1) {
+                _this.recursion(graphDataTemp, i,unPassArray)
+            }
+          }
+
+        }
+      })
+    },
+    async mountedInit() {
+      this.getFlowStatusByCaseId(this.$route.params.id);
+      // this.data = {
+      //   completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,a36b59bd27ff4b6fe96e1b06390d204e',//已完成
+      //   //责令改正2c9029ee6cac9281016caca9a0000004
+      //   doingLink: '2c9029ee6cac9281016caca9a0000004,a36b59bd27ff4b6fe96e1b06390d204h',// 进行中
+      //   //决定执行
+      //   unLockLink: '2c9029e16c753a19016c755fe1340001',// 已解锁
+      //   completeMainLink: '0,1,2',
+      //   doingMainLink: "3"
+      // }
+      // this.updateLinkData()
+      // this.updateGraphData()
+      // this.drawFlowChart()
+
+    }
+  },
+  created () {
+  },
+  mounted () {
+    this.mountedInit()
+  },
+  components: {
+        echarts
+  }
+}
+</script>

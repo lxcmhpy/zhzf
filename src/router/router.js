@@ -262,6 +262,15 @@ export const homeRouter = {
           },
           component: () => import("@/page/caseHandle/case/form/partyRightsForm.vue")
         },
+        //违法行为通知书
+        {
+          path: "/illegalActionForm",
+          name: "illegalActionForm",
+          meta: {
+            title: "违法行为通知书"
+          },
+          component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
+        },
         //违法行为通知书PDF
         {
           path: "/illegalActionPdf",
@@ -333,6 +342,15 @@ export const homeRouter = {
             title: "案件总览"
           },
           component: () => import("@/page/caseHandle/waitDeal/caseInfo.vue")
+        },
+        {
+          // path: '/flowChart/:id',
+          path: '/flowChart',
+          name: 'flowChart',
+          meta: {
+            title: '流程图'
+          },
+          component: () => import("@/components/flowChart/flowChart.vue")
         },
 
         

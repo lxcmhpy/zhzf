@@ -238,7 +238,7 @@ export default {
         "/illegalAction3",
         "illegalAction",
         "illegalAction2",
-        "illegalAction3",
+        "illegalAction3", 
         "违法行为通知书",
         "caseHandle/case/form/illegalActionForm.vue"
       );
