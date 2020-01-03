@@ -253,8 +253,11 @@ export default {
     }
   },
   mounted() {
-    this.setFormData();
+    // this.setFormData();
   },
+  created(){
+    this.setFormData();
+  }
 }
 </script>
 
