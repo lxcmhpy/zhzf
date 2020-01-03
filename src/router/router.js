@@ -112,6 +112,15 @@ export const homeRouter = {
           },
           component: () => import("@/page/caseHandle/case/caseDoc.vue")
         },
+        //违法行为通知书
+        {
+          path: "/illegalAction",
+          name: "illegalAction",
+          meta: {
+            title: "违法行为通知书"
+          },
+          component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
+        },
         {
           path: "/inquirieForm",
           name: "inquirieForm",

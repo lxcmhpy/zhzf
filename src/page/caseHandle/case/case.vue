@@ -231,17 +231,8 @@ export default {
       this.$router.push({ name: 'order' });
     },
     //违法行为通知书
-    goIllegalAction() {
-      this.makeRoute(
-        "/illegalAction",
-        "/illegalAction2",
-        "/illegalAction3",
-        "illegalAction",
-        "illegalAction2",
-        "illegalAction3", 
-        "违法行为通知书",
-        "caseHandle/case/form/illegalActionForm.vue"
-      );
+    goIllegalAction() {       
+        this.$router.push({ name: 'illegalAction' });
     },
     //违法行为通知书PDF
     goIllegalActionPdf() {      
