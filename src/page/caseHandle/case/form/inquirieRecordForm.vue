@@ -371,7 +371,7 @@ export default {
     //修改文书状态
     updateDocStatus(){
       let data = {
-        linkDocId : this.$route.row.id,
+        linkDocId : this.$route.params.id,
         casebasicInfoId : this.$route.params.id,
       };
       console.log(data);

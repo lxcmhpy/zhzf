@@ -236,7 +236,12 @@ export default {
     },
     // 进入文书
     enterDoc(row) {
-      this.$router.push({ name:row.url});
+      this.$router.push({
+         name:row.url,
+          params: {
+            id: row.id,
+          }        
+      });
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId(){
