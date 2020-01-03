@@ -278,6 +278,14 @@ export default {
       flowChart.setOption(option)
       // this.updatePosition(flowChart,option)
       // initInvisibleGraphic(flowChart,option)
+      flowChart.off('contextmenu');
+      flowChart.on('contextmenu', function(params){
+          if (params.componentType === 'graphic') {
+              alert(1)
+          }
+
+      })
+
     },
     updateGraphData() {
       let svgDataTemp = this.svgData
