@@ -195,6 +195,7 @@
     </div>
 </template>
 <script>
+import { mixinGetCaseApiList } from "@/js/mixins";
 export default {
   data() {
     return {
@@ -228,74 +229,20 @@ export default {
       },
     }
   },
+  mixins:[mixinGetCaseApiList],
   methods: {
-    // 获取带入信息
-    getCaseBasicInfo() {
-      let data = {
-        id: "aa0f2161e5c1ae0d2619203eb63eb78d"
-      };
-      this.$store.dispatch("getCaseBasicInfo", data).then(
-        res => {
-          this.docData = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
-
-    // 提交表单
-    addDocData(handleType) {
-      this.caseDocDataForm.docData = JSON.stringify(this.docData);
-      this.caseDocDataForm.status = handleType;
-      console.log(this.caseDocDataForm);
-      this.$refs["docForm"].validate(valid => {
-        if (valid) {
-          this.$store.dispatch("addDocData", this.caseDocDataForm).then(
-            res => {
-              console.log("保存文书", res);
-              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
-                type: "success",
-                message: "保存成功"
-
-              });
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-
-      });
-      
-    },  
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       let data = {
         caseId: "aa0f2161e5c1ae0d2619203eb63eb78d",
         docId: "2c9029ab655639600165564481f70001"
       };
-      this.$store.dispatch("getDocDataByCaseIdAndDocId", data).then(
-        res => {
-          console.log("获取文书详情", res);
-          //如果为空，则加载案件信息
-          if (res.data.length == 0) {
-            this.getCaseBasicInfo();
-          } else {
-            console.log(res.data[0]);
-            this.caseDocDataForm.id = res.data[0].id;
-            this.docData = JSON.parse(res.data[0].docData);
-          }
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    }
+      this.com_getDocDataByCaseIdAndDocId(data)
+    },
+    // 提交表单
+    addDocData(handleType) {
+      this.com_addDocData(handleType,'docForm')
+    },  
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();

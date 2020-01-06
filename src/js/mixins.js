@@ -203,7 +203,58 @@ export const mixinGetCaseApiList = {
           break;
       }
       return nextLink;
-    }
+    },
+    //根据案件ID和文书Id获取数据   文书数据
+    com_getDocDataByCaseIdAndDocId(params) {
+      let data = {
+        caseId: params.caseId,
+        docId: params.docId
+      };
+      this.$store.dispatch("getDocDataByCaseIdAndDocId", data).then(
+        res => {
+          console.log("获取文书详情", res);
+          //如果为空，则加载案件信息
+          if (res.data.length == 0) {
+            this.com_getCaseBasicInfo(caseId);
+          } else {
+            console.log(res.data[0]);
+            this.caseDocDataForm.id = res.data[0].id;
+            this.docData = JSON.parse(res.data[0].docData);
+          }
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    // 提交文书表单
+    com_addDocData(handleType,docForm) {
+      this.caseDocDataForm.docData = JSON.stringify(this.docData);
+      this.caseDocDataForm.status = handleType;
+      console.log(this.caseDocDataForm);
+      this.$refs[docForm].validate(valid => {
+        if (valid) {
+          this.$store.dispatch("addDocData", this.caseDocDataForm).then(
+            res => {
+              console.log("保存文书", res);
+              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
+              this.$message({
+                type: "success",
+                message: "保存成功"
+
+              });
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+
+      });
+    }, 
   },
   created() {
     // this.getApiList();
