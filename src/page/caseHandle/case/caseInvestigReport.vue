@@ -256,10 +256,12 @@
         </div>
       </div>
     </el-form>
+     <nextLinkDialog ref="caseInReportNextLinkDialogRef"></nextLinkDialog>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
+import nextLinkDialog from "../components/nextLinkDialog";
 
 export default {
   data() {
@@ -325,6 +327,9 @@ export default {
       confiscateThingCapital: '',
     }
   },
+  components: {
+    nextLinkDialog
+  },
   mixins:[mixinGetCaseApiList],
   methods: {
     //加载表单信息
@@ -333,11 +338,11 @@ export default {
     },
     //保存表单数据
     submitCaseDoc(handleType){
-      this.com_submitCaseForm(handleType,'caseInvestiForm','');
+      this.com_submitCaseForm(handleType,'caseInvestiForm',true,'caseInReportNextLinkDialogRef');
     },
     //下一环节
     continueHandle() {
-      this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId);
+      this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId,'caseInReportNextLinkDialogRef');
     },
    
     // 暂存

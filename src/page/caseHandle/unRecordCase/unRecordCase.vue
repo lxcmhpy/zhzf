@@ -78,7 +78,7 @@ export default {
     //跳转立案登记
     handleCurrentChange(row){
       this.$router.replace({ 
-          name: 'filingApproval',
+          name: 'establish',
           params: {
             id: row.id,
           }
