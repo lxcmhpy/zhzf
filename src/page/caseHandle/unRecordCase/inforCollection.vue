@@ -768,7 +768,7 @@ export default {
     },
     //提交信息
     submitInfo() {
-      this.searchLawPerson();
+      // this.searchLawPerson();
       console.log('searchLawPerson', this.allUserList)
       console.log("lawPersonList", this.lawPersonList)
 
