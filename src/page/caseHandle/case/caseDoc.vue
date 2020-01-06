@@ -90,9 +90,9 @@
               <el-table-column prop="name" label="材料名称" align="center">
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
-                <!-- <template slot-scope="scope">
-                  <div>{{scope.row.status === null ?'':'完成'}}</div>
-                </template> -->
+                <template slot-scope="scope">
+                  <div>{{scope.row.status === 0?'暂存':scope.row.status === 1?'完成':''}}</div>
+                </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">

@@ -57,6 +57,14 @@ export const homeRouter = {
           component: () => import("@/page/caseHandle/case/side.vue")
         },
         {
+          path: "/liveReport",
+          name: "liveReport",
+          meta: {
+            title: "现场笔录"
+          },
+          component: () => import("@/page/caseHandle/case/liveReport.vue")
+        },
+        {
           path: "/dentail",
           name: "dentail",
           meta: {
