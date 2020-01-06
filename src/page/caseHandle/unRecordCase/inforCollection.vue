@@ -768,9 +768,9 @@ export default {
     },
     //提交信息
     submitInfo() {
-      this.searchLawPerson();
-      console.log('searchLawPerson', this.allUserList)
-      console.log("lawPersonList", this.lawPersonList)
+      // this.searchLawPerson();
+      // console.log('searchLawPerson', this.allUserList)
+      // console.log("lawPersonList", this.lawPersonList)
 
       this.$refs["inforForm"].validate(valid => {
         if (valid) {

@@ -12,14 +12,9 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       "/catsic": {
-<<<<<<< HEAD
 
         target: "http://172.16.169.62:8888",
         // target: "http://127.0.0.1:8888",
-=======
-        // target: "http://124.192.215.4:8083",
-        target: "http://172.16.169.62:8888",
->>>>>>> c60fc5fde5ad320d8c3cebfd887a7e787e62e351
         changeOrigin: true,
       }
     },
