@@ -108,20 +108,19 @@ export default {
     // },
     //删掉已选中的人员
     deleteUser(tag){
-        console.log(tag);
         this.checkedUser.splice(this.checkedUser.indexOf(tag), 1);
     },
     //点击确定关闭弹窗 添加用户到信息采集页
     addUserToForm(){
       this.visible = false;
-      console.log(this.checkedUser)
+      console.log('cards',this.selectedNumber)
       this.$emit('setLawPer',this.checkedUser);
+      this.$emit('userList',this.userList);
     },
     //查询执法人员
     searchLawPerson(){
       this.$store.dispatch("findLawOfficerList").then(
         res => {
-         console.log(res);
          this.userList = res.data.records;
          this.userList.forEach(item=>{
            item.lawOfficerCards =item.lawOfficerCards.split(',');

@@ -9,29 +9,14 @@
         <a href="#breakLaw">违法事实</a>
       </div>
     </div>
-    <el-form
-      :model="inforForm"
-      :rules="rules"
-      ref="inforForm"
-      class="caseInfoForm"
-      label-width="100px"
-    >
+    <el-form :model="inforForm" :rules="rules" ref="inforForm" class="caseInfoForm" label-width="100px">
       <div class="caseFormBac">
         <p id="caseInfo">案件情况</p>
         <div>
           <div class="item">
             <el-form-item label="案件来源" prop="caseSource">
-              <el-select
-                v-model="inforForm.caseSource"
-                placeholder="请选择"
-                @change="changeCaseSource"
-              >
-                <el-option
-                  v-for="item in allcaseSource"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+              <el-select v-model="inforForm.caseSource" placeholder="请选择" @change="changeCaseSource">
+                <el-option v-for="item in allcaseSource" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -42,22 +27,12 @@
         <div>
           <div class="item">
             <el-form-item label="案发时间">
-              <el-date-picker
-                v-model="inforForm.afsj"
-                type="datetime"
-                format="yyyy-MM-dd HH:mm"
-                value-format="yyyy-MM-dd HH:mm"
-              ></el-date-picker>
+              <el-date-picker v-model="inforForm.afsj" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="受案时间" prop="acceptTime">
-              <el-date-picker
-                v-model="inforForm.acceptTime"
-                type="datetime"
-                format="yyyy-MM-dd HH:mm"
-                value-format="yyyy-MM-dd HH:mm"
-              ></el-date-picker>
+              <el-date-picker v-model="inforForm.acceptTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
             </el-form-item>
           </div>
         </div>
@@ -131,12 +106,7 @@
             <el-form-item label="证件类型">
               <el-input placeholder="请输入内容" v-model="inforForm.partyIdNo" class="input-with-select hasMargintop">
                 <el-select slot="prepend" v-model="inforForm.partyIdType">
-                  <el-option
-                    v-for="item in credentialType"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
+                  <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-input>
             </el-form-item>
@@ -195,7 +165,7 @@
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemBig">
-            <el-form-item label="单位名称" prop="partyName" >
+            <el-form-item label="单位名称" prop="partyName">
               <el-input v-model="inforForm.partyName" maxlength="40" show-word-limit></el-input>
             </el-form-item>
           </div>
@@ -207,8 +177,8 @@
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemSmall">
-            <el-form-item label="统一社会信用代码" >
-              <el-input v-model="inforForm.socialCreditCode" ></el-input>
+            <el-form-item label="统一社会信用代码">
+              <el-input v-model="inforForm.socialCreditCode"></el-input>
             </el-form-item>
           </div>
           <div class="itemBig">
@@ -238,33 +208,19 @@
         </div>
 
         <p>驾驶人或代理人</p>
-        <div
-          class="driverOrAgentBox"
-          v-for="(driverOrAgentInfo,index) in driverOrAgentInfoList"
-          :key="index"
-        >
+        <div class="driverOrAgentBox" v-for="(driverOrAgentInfo,index) in driverOrAgentInfoList" :key="index">
           <div>
             <div class="item">
               <el-form-item label="与当事人关系">
                 <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
-                  <el-option
-                    v-for="item in allRelationWithParty"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
+                  <el-option v-for="item in allRelationWithParty" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
             </div>
             <div class="item">
               <el-form-item label="与案件关系" prop="relationWithCase">
                 <el-select v-model="driverOrAgentInfo.relationWithCase">
-                  <el-option
-                    v-for="item in allRelationWithCase"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
+                  <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -277,19 +233,9 @@
             </div>
             <div class="item appendSelect">
               <el-form-item label="证件类型">
-                <el-input
-                  placeholder="请输入内容"
-                  v-model="driverOrAgentInfo.zhengjianNumber"
-                  class="input-with-select hasMargintop"
-                  :disabled="relationWithPartyIsOne && index==0"
-                >
+                <el-input placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber" class="input-with-select hasMargintop" :disabled="relationWithPartyIsOne && index==0">
                   <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType">
-                    <el-option
-                      v-for="item in credentialType"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    ></el-option>
+                    <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -322,7 +268,7 @@
               </el-form-item>
             </div>
             <div class="itemSmall">
-              <el-form-item label="邮编" >
+              <el-form-item label="邮编">
                 <el-input v-model="driverOrAgentInfo.adressCode" :disabled="relationWithPartyIsOne && index==0"></el-input>
               </el-form-item>
             </div>
@@ -348,12 +294,7 @@
           </div>
         </div>
         <div class="buttonBox">
-          <el-button
-            type="primary"
-            size="medium"
-            icon="el-icon-plus"
-            @click="addDriverOrAgent"
-          >添加其他人</el-button>
+          <el-button type="primary" size="medium" icon="el-icon-plus" @click="addDriverOrAgent">添加其他人</el-button>
         </div>
       </div>
 
@@ -368,12 +309,7 @@
           <div class="item">
             <el-form-item label="车牌颜色">
               <el-select v-model="inforForm.vehicleIdColor">
-                <el-option
-                  v-for="item in allVehicleIdColor"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+                <el-option v-for="item in allVehicleIdColor" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -382,12 +318,7 @@
           <div class="item">
             <el-form-item label="车牌类型">
               <el-select v-model="inforForm.vehicleShipType">
-                <el-option
-                  v-for="item in allVehicleShipType"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+                <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -417,12 +348,7 @@
           <div class="item">
             <el-form-item label="车牌颜色">
               <el-select v-model="inforForm.trailerColor">
-                <el-option
-                  v-for="item in allVehicleIdColor"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+                <el-option v-for="item in allVehicleIdColor" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -431,12 +357,7 @@
           <div class="item">
             <el-form-item label="车牌类型">
               <el-select v-model="inforForm.trailerType">
-                <el-option
-                  v-for="item in allVehicleShipType"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+                <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -490,7 +411,7 @@
           </div>
         </div>
         <div>
-          <div class="itemOne" id="judgeFreedomBox" >
+          <div class="itemOne" id="judgeFreedomBox">
             <!-- <el-form-item label="自由裁量标准">
               <el-input v-model="inforForm.discretionId"></el-input>
             </el-form-item>-->
@@ -529,7 +450,7 @@
       </div>
     </el-form>
 
-    <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson"></chooseLawPerson>
+    <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList='getAllUserList'></chooseLawPerson>
     <punishDiag ref="punishDiagRef" @setIllegalLawAndPunishLaw="setIllegalLawAndPunishLaw"></punishDiag>
   </div>
 </template>
@@ -752,9 +673,9 @@ export default {
       }
     },
     //更改与当事人关系   为同一人时自动赋值且不可编辑
-    changeRelationWithParty(val){
+    changeRelationWithParty(val) {
       console.log(val);
-      if(val=="0"){
+      if (val == "0") {
         console.log(val)
         this.driverOrAgentInfoList[0].name = this.inforForm.party;
         this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
@@ -767,7 +688,7 @@ export default {
         this.driverOrAgentInfoList[0].position = this.inforForm.occupation;
         this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
         this.relationWithPartyIsOne = true;
-      }else{
+      } else {
         this.relationWithPartyIsOne = false;
       }
     },
@@ -830,15 +751,15 @@ export default {
     //选中自由裁量
     selectJudgFreedom(item) {
       console.log(item);
-      if(this.activeJudgli == item.drawerName){
-        this.activeJudgli="";
+      if (this.activeJudgli == item.drawerName) {
+        this.activeJudgli = "";
         this.inforForm.discretionId = "";
-      }else{
+      } else {
         this.activeJudgli = item.drawerName;
         this.inforForm.discretionId = item.id;
       }
     },
-    toNextPart() {},
+    toNextPart() { },
     jump(index) {
       if (index == 2) {
         // let a = document.getElementById('title2').ffsetTop;
@@ -847,6 +768,10 @@ export default {
     },
     //提交信息
     submitInfo() {
+      this.searchLawPerson();
+      console.log('searchLawPerson', this.allUserList)
+      console.log("lawPersonList", this.lawPersonList)
+
       this.$refs["inforForm"].validate(valid => {
         if (valid) {
           // let submitData = {
@@ -907,7 +832,7 @@ export default {
                 name: 'establish',
                 params: {
                   id: res.data.id,
-                  }
+                }
               });
 
             },
@@ -918,7 +843,15 @@ export default {
         }
       });
     },
-    stageInfo() {}
+    //查询执法人员
+    getAllUserList(list) {
+      console.log('list', list)
+      this.allUserList = list;
+      setTimeout(() => {
+        
+      }, 100);
+    },
+    stageInfo() { }
   },
   mounted() {
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");

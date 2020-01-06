@@ -16,92 +16,141 @@
                 人
               </td>
               <td rowspan="2"> 个人 </td>
-              <td > 姓名</td>
-              <td colspan="2"> \ </td>
+              <td> 姓名</td>
+              <td colspan="2">
+
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+
+              </td>
               <td> 身份证件号 </td>
-              <td colspan="2"> \ </td>
+              <td colspan="2">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </td>
             </tr>
             <tr>
               <td> 住址 </td>
-              <td colspan="2"> \ </td>
+              <td colspan="2">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </td>
               <td> 联系电话 </td>
-              <td colspan="2"> \ </td>
+              <td colspan="2">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </td>
             </tr>
             <tr>
               <td rowspan="4"> 单位 </td>
               <td> 名称</td>
-              <td colspan="5"> \ </td>
+              <td colspan="5">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </td>
             </tr>
             <tr>
               <td> 地址</td>
-              <td colspan="4"> \ </td>
+              <td colspan="4">
+                <el-input ref='text' type="textarea" :rows="1" v-model="inputInfos" placeholder="请输入内容" @change="checkHeights"></el-input>
+              </td>
             </tr>
             <tr>
               <td> 联系电话</td>
-              <td colspan="2"> \ </td>
+              <td colspan="2">
+                <el-input v-model="inputInfo" minlength="11" placeholder="请输入内容"></el-input>
+              </td>
               <td> 法定代表人 </td>
-              <td> \ </td>
+              <td>
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </td>
             </tr>
             <tr>
               <td colspan="2">
                 统一社会信用代码
               </td>
-              <td colspan="3"> \ </td>
+              <td colspan="3">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </td>
             </tr>
           </table>
         </div>
         <div class="pdf-report-info">
-          <p>违法事实及依据：<span class="pdf-line width555">&nbsp;</span>
-          <span class="pdf-line width721">&nbsp;</span>
-          <span class="pdf-line width721">&nbsp;</span>
-          <span class="pdf-line width721">&nbsp;</span>
-          <span class="pdf-line width721">&nbsp;</span>
+          <p>违法事实及依据：
+            <span class="pdf-line width555">
+              <!-- <el-input type="textarea"  :rows="5" maxlength="300"  show-word-limit  v-model="inputInfo" placeholder="请输入内容"></el-input> -->
+            </span>
+            <span class="pdf-line width721">
+              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+            </span>
+            <span class="pdf-line width721">
+              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+            </span>
+            <span class="pdf-line width721">
+              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+            </span>
+            <span class="pdf-line width721">
+              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+            </span>
+            <span class="pdf-line width721">
+              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+            </span>
           </p>
-          <p>你（单位）的行为<span class="pdf-line width555">&nbsp;</span>违反了<span class="pdf-line width245">&nbsp;</span>的规定，决定给予
-          <span class="pdf-line width555">&nbsp;</span>的行政处罚。
-          <p>
+          <p>你（单位）的行为<span class="pdf-line width555">
+              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+            </span>违反了<span class="pdf-line width245">
+              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+            </span>的规定，决定给予
+            <span class="pdf-line width555">
+              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+            </span>的行政处罚。
+            <p>
               罚款的履行方式和期限（见打√处）：
-          </p>
-          <p>
+            </p>
+            <p>
               <input type="checkbox">当场缴纳。
-          </p>
-          <p>
-            <input type="checkbox">自收到本决定书之日起十五日内缴至
-            <span class="pdf-line width150">&nbsp;</span>，账号
-            <span class="pdf-line width150">&nbsp;</span>，
-            到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款
-的数额不超过罚款本数。
-          </p>
-          <p>
-            如果不服本处罚决定，可以在六十日内依法向<span class="pdf-line width150">&nbsp;</span>申请
-行政复议，或者在六个月内依法向<span class="pdf-line width150">&nbsp;</span>人民法院提起行政
-诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提
-起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
-          </p>
-          <p>
-          处罚前已口头告知当事人拟作出处罚的事实、理由和依据，并告知当事人依
-法享有的陈述权和申辩权。
-          </p>
-          <br><br>
-          <p>
-          当事人或其代理人签名：   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-           执法人员签名：
-          </p>
-          <p>
-         <span class="pdf-line width150">&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-         <span class="pdf-line width150">&nbsp;</span>
-          </p>
-          <div class="pdf-wirte">
-            <div class="pdf-seal">
-              交通运输执法部门（印章）<br>
-              年 月 日
+            </p>
+            <p>
+              <input type="checkbox">自收到本决定书之日起十五日内缴至
+              <span class="pdf-line width150">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </span>，账号
+              <span class="pdf-line width150">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </span>，
+              到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款
+              的数额不超过罚款本数。
+            </p>
+            <p>
+              如果不服本处罚决定，可以在六十日内依法向<span class="pdf-line width150">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </span>申请
+              行政复议，或者在六个月内依法向<span class="pdf-line width150">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </span>人民法院提起行政
+              诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提
+              起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
+            </p>
+            <p>
+              处罚前已口头告知当事人拟作出处罚的事实、理由和依据，并告知当事人依
+              法享有的陈述权和申辩权。
+            </p>
+            <br><br>
+            <p>
+              当事人或其代理人签名：
+              <span class="pdf-line width150">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </span>
+              执法人员签名：
+              <span class="pdf-line width150">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </span>
+            </p>
+            <div class="pdf-wirte">
+              <div class="pdf-seal">
+                交通运输执法部门（印章）<br>
+                <el-date-picker v-model="value1" type="date" format="yyyy 年 M 月 d日" placeholder="年 月 日" clear-icon='el-icon-circle-close'>
+                </el-date-picker>
+              </div>
+
             </div>
 
-          </div>
-
-          <p class="begin margin-top87">（本文书一式两份：一份存根，一份交当事人或其代理人。）</p>
+            <p class="begin margin-top87">（本文书一式两份：一份存根，一份交当事人或其代理人。）</p>
 
         </div>
       </div>
@@ -143,8 +192,22 @@
 export default {
   data() {
     return {
+      value1: '',
+      inputInfo: '010-123456',
+      inputInfos: '010-123456',
       caseNumber: '010-123456',
-    }  }
+    }
+
+  },
+  methods: {
+    checkHeights(val) {
+      console.log(this.$refs.text.$refs.textarea)
+     if(val.length>10){
+       console.log(11)
+     }
+
+    }
+  },
 }
 </script>
 <style lang="less">

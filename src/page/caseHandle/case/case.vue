@@ -45,7 +45,7 @@
         <br><br>
         <!--  -->
         <li @click="goside">侧边栏</li>
-        <li @click="goDentail">案件详情</li>
+        <li @click="goDentail">案件总览</li>
         <li @click="goCaseInvestig">案件调查报告</li>
         <li @click="goCaseDoc">调查类文书(上级表单)</li>
         <br><br>
