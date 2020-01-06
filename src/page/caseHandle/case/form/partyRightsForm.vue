@@ -69,11 +69,11 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="执行方式">
-                    <el-row>
-                      <el-col :span="4">
-                        <el-checkbox label="是否重大案件" v-model="formData.isImportant"></el-checkbox>
-                      </el-col>
-                    </el-row>
+                  <el-row>
+                    <el-col :span="4">
+                      <el-checkbox label="是否重大案件" v-model="formData.isImportant"></el-checkbox>
+                    </el-col>
+                  </el-row>
                 </el-form-item>
               </div>
               <div class="col">
@@ -199,25 +199,27 @@ export default {
         formData: "",
         status: ""
       },
-      docTableDatas: [{
-        index: '1',
-        name: '听证通知书',
-        status: '-',
-        option: '1',
-        url: 'hearingNoticePdf',
-      }, {
-        index: '2',
-        name: '听证笔录',
-        status: '完成',
-        option: '2',
-        url: 'hearingRecordePdf',
+      docTableDatas: [
+        // {
+        //   index: '1',
+        //   name: '听证通知书',
+        //   status: '-',
+        //   option: '1',
+        //   url: 'hearingNoticePdf',
+        // }, {
+        //   index: '2',
+        //   name: '听证笔录',
+        //   status: '完成',
+        //   option: '2',
+        //   url: 'hearingRecordePdf',
 
-      }, {
-        index: '3',
-        name: '陈述申辩书',
-        status: '未完成',
-        option: '3',
-      }],
+        // }, {
+        //   index: '3',
+        //   name: '陈述申辩书',
+        //   status: '未完成',
+        //   option: '3',
+        // }
+      ],
       evidenceTableDatas: [],
       rules: {
         // caseNumber: [
@@ -236,7 +238,7 @@ export default {
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, 'form');
     },
     submitCaseDoc(handleType) {
-      console.log('handletype',handleType)
+      console.log('handletype', handleType)
       //参数  提交类型 、formRef、有无下一环节按钮、下一环节有多个时有弹窗
       this.com_submitCaseForm(handleType, 'caseLinkDataForm', true, '');
     },

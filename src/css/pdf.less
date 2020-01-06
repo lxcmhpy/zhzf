@@ -191,9 +191,9 @@
     }
 
     /deep/p {
-        text-align-last: left;
-        text-align     : justify;
-        text-justify   : distribute-all-lines; // 兼容ie浏览器
+        // text-align-last: left;
+        text-align        : left;
+        // text-justify   : distribute-all-lines; // 兼容ie浏览器
 
         // pdf下划线
         /deep/.pdf-line {
@@ -206,6 +206,38 @@
             text-indent: 0;
         }
     }
+
+    /deep/input[type=checkbox] {
+        cursor   : pointer;
+        position : relative;
+        width    : 15px;
+        height   : 15px;
+        margin: 0 5px;
+    }
+
+    /deep/input[type=checkbox]::after {
+        position        : absolute;
+        top             : 0;
+        background-color: #ffffff;
+        border: 1px solid #000;
+        color           : #000;
+        width           : 15px;
+        height          : 15px;
+        display         : inline-block;
+        visibility      : visible;
+        padding-left    : 0px;
+        text-align      : center;
+        content         : ' ';
+        border-radius   : 3px
+    }
+
+    /deep/input[type=checkbox]:checked::after {
+        content    : "✓";
+        font-size  : 12px;
+        font-weight: bold;
+        border: 0;
+    }
+
 }
 
 // 悬浮按钮
@@ -244,10 +276,12 @@
     /deep/.el-input {
         font-size: 12px !important;
     }
+
     /deep/.el-input__inner {
         font-size: 12px !important;
     }
 }
-.overflow_style{
-    text-decoration:underline;
+
+.overflow_style {
+    text-decoration: underline;
 }

@@ -521,9 +521,9 @@ export default {
         tempPunishAmount:"",
         organId:iLocalStroage.gets('userInfo').organId,
         caseTypeId:"",
-        staffId:"5",
-        staff:"test2",
-        certificateId:"1234567890"
+        staffId:"7",
+        staff:"ceshiyixia",
+        certificateId:"123456789033333333"
       },
       rules: {
         caseSource: [{ required: true, message: "请选择", trigger: "change" }],

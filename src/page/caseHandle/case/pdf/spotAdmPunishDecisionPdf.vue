@@ -84,17 +84,17 @@
             </span>违反了<span class="pdf-line width245">
               <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
             </span>的规定，决定给予
-            <span class="pdf-line width555">
+            <span class="pdf-line width245">
               <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
             </span>的行政处罚。
             <p>
               罚款的履行方式和期限（见打√处）：
             </p>
             <p>
-              <input v-if="checkedFlag" type="checkbox" @change="checkValueChange(0)"><span v-if="textFlag" @click="checkValueChange(0)">√</span>当场缴纳。
+              <input type="checkbox" >当场缴纳。
             </p>
             <p>
-              <input v-if="checkedFlag1" type="checkbox" @change="checkValueChange(1)"><span v-if="textFlag1" @click="checkValueChange(1)">√</span>自收到本决定书之日起十五日内缴至
+              <input type="checkbox">自收到本决定书之日起十五日内缴至
               <span class="pdf-line width150">
                 <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
               </span>，账号
@@ -187,10 +187,6 @@ export default {
       inputInfo: '010-123456',
       inputInfos: '010-123456',
       caseNumber: '010-123456',
-      checkedFlag: true,
-      textFlag: false,
-      checkedFlag1: true,
-      textFlag1: false,
       overWidthFlag: false,
       editInfo: '',//多行编辑内容
     }
@@ -218,21 +214,9 @@ export default {
     getOverFloeEditInfo(edit) {
       this.editInfo= edit;
     },
-    // 单选符号
-    checkValueChange(e) {
-      if (e == 0) {
-        this.checkedFlag = !this.checkedFlag;
-        this.textFlag = !this.textFlag;
-      }
-      if (e == 1) {
-        this.checkedFlag1 = !this.checkedFlag1;
-        this.textFlag1 = !this.textFlag1;
-      }
-    },
     // 盖章
     makeSeal() {
       console.log('盖章')
-
     },
     //   打印方法
     printContent(e) {

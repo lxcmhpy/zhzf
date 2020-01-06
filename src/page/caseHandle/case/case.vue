@@ -3,7 +3,7 @@
     <div>
       <p>ly(2、4、5、6、7、8、9、10文书表单及pdf打印版)</p>
       <ul>
-        <li @click="goDiao">调查文书</li>
+        <li @click="goDiao">现场笔录</li>
         <li @click="goWen">询问文书</li>
       </ul>
     </div>
@@ -94,17 +94,9 @@ export default {
   },
 
   methods: {
+    //现场笔录
     goDiao() {
-      this.makeRoute(
-        "/liveReport",
-        "/liveReport2",
-        "/liveReport3",
-        "liveReport",
-        "liveReport2",
-        "liveReport3",
-        "调查类文书",
-        "caseHandle/case/liveReport.vue"
-      );
+      this.$router.push({ name: 'liveReport' });
     },
     goWen() {
       this.makeRoute(
