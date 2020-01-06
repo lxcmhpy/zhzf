@@ -1,10 +1,10 @@
 <template>
   <div class="main">
 
-    <div class="a4-box">
+    <div class="a4-box" id="subOutputRank-print">
       <div class="pdf-box">
         <div class="pdf-title">
-          当场行政处罚决定书
+          当场行政处罚决定书1
         </div>
         <div class="case-number">案号：{{caseNumber}}</div>
         <div class="pdf-table">
@@ -47,7 +47,8 @@
             <tr>
               <td> 地址</td>
               <td colspan="4">
-                <el-input ref='text' type="textarea" :rows="1" v-model="inputInfos" placeholder="请输入内容" @change="checkHeights"></el-input>
+                <el-input v-model="inputInfos" :class="{'overWidth': overWidthFlag}" placeholder="请输入内容" @change="checkHeights"></el-input>
+                <!-- <el-input type="textarea" :rows="1" v-model="inputInfos" placeholder="请输入内容" change="checkHeights"></el-input> -->
               </td>
             </tr>
             <tr>
@@ -72,26 +73,13 @@
         </div>
         <div class="pdf-report-info">
           <p>违法事实及依据：
-            <span class="pdf-line width555">
+            <span v-if="editInfo==''" class="pdf-line width555" @click="overFlowEdit">&nbsp;
               <!-- <el-input type="textarea"  :rows="5" maxlength="300"  show-word-limit  v-model="inputInfo" placeholder="请输入内容"></el-input> -->
+              <!-- <el-input v-model="inputInfo" placeholder="请输入内容"></el-input> -->
             </span>
-            <span class="pdf-line width721">
-              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
-            </span>
-            <span class="pdf-line width721">
-              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
-            </span>
-            <span class="pdf-line width721">
-              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
-            </span>
-            <span class="pdf-line width721">
-              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
-            </span>
-            <span class="pdf-line width721">
-              <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
-            </span>
+            <u @click="overFlowEdit">{{editInfo}}</u>
           </p>
-          <p>你（单位）的行为<span class="pdf-line width555">
+          <p >你（单位）的行为<span class="pdf-line width555">
               <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
             </span>违反了<span class="pdf-line width245">
               <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
@@ -103,10 +91,10 @@
               罚款的履行方式和期限（见打√处）：
             </p>
             <p>
-              <input type="checkbox">当场缴纳。
+              <input v-if="checkedFlag" type="checkbox" @change="checkValueChange(0)"><span v-if="textFlag" @click="checkValueChange(0)">√</span>当场缴纳。
             </p>
             <p>
-              <input type="checkbox">自收到本决定书之日起十五日内缴至
+              <input v-if="checkedFlag1" type="checkbox" @change="checkValueChange(1)"><span v-if="textFlag1" @click="checkValueChange(1)">√</span>自收到本决定书之日起十五日内缴至
               <span class="pdf-line width150">
                 <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
               </span>，账号
@@ -130,7 +118,8 @@
               处罚前已口头告知当事人拟作出处罚的事实、理由和依据，并告知当事人依
               法享有的陈述权和申辩权。
             </p>
-            <br><br>
+            <br>
+
             <p>
               当事人或其代理人签名：
               <span class="pdf-line width150">
@@ -143,8 +132,8 @@
             </p>
             <div class="pdf-wirte">
               <div class="pdf-seal">
-                交通运输执法部门（印章）<br>
-                <el-date-picker v-model="value1" type="date" format="yyyy 年 M 月 d日" placeholder="年 月 日" clear-icon='el-icon-circle-close'>
+                <span @click='makeSeal'>交通运输执法部门（印章）</span><br>
+                <el-date-picker v-model="value1" type="date" format="yyyy 年 M 月 d日" placeholder="  年  月  日" clear-icon='el-icon-circle-close'>
                 </el-date-picker>
               </div>
 
@@ -157,7 +146,7 @@
     </div>
     <!-- 悬浮按钮 -->
     <div class="float-btns">
-      <el-button type="success">
+      <el-button type="success" @click="printContent">
         <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
           <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
         </svg>
@@ -171,7 +160,7 @@
         <br>
         编辑
       </el-button>
-      <el-button type="success">
+      <el-button type="success" @click="makeSeal">
         <svg t="1577706320726" class="icon" viewBox="0 0 1052 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1274" width="16" height="16">
           <path d="M615.822222 597.674667c-20.48-18.744889-33.194667-48.981333-33.194666-77.539556 0-27.107556 11.52-51.683556 30.208-70.115555a1.905778 1.905778 0 0 1 0.483555-0.227556c6.314667-6.229333 13.454222-11.776 21.248-16.412444a162.872889 162.872889 0 0 0 54.812445-121.571556c0-91.079111-75.121778-164.892444-167.822223-164.892444-92.728889 0-167.879111 73.813333-167.879111 164.892444 0 48.184889 21.219556 91.477333 54.840889 121.571556 7.822222 4.636444 14.904889 10.183111 21.276445 16.412444a0.995556 0.995556 0 0 1 0.341333 0.170667c18.830222 18.488889 30.293333 43.064889 30.293333 70.172444 0 28.558222-12.714667 58.794667-33.166222 77.539556h-246.613333c-13.368889 0-24.206222 10.609778-24.206223 23.665777v152.092445h730.168889v-152.092445a23.893333 23.893333 0 0 0-24.177777-23.665777h-246.613334z m-407.210666 227.271111H834.56v52.138666H208.611556v-52.138666z" fill="#FFFFFF" p-id="1275"></path>
         </svg>
@@ -185,29 +174,79 @@
         提交</el-button>
 
     </div>
-
+    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
 <script>
+import overflowInput from "./overflowInput";
 export default {
+
   data() {
     return {
       value1: '',
       inputInfo: '010-123456',
       inputInfos: '010-123456',
       caseNumber: '010-123456',
+      checkedFlag: true,
+      textFlag: false,
+      checkedFlag1: true,
+      textFlag1: false,
+      overWidthFlag: false,
+      editInfo: '',//多行编辑内容
     }
 
   },
+  inject: ["reload"],
+  components: {
+    overflowInput,
+  },
+
   methods: {
-    checkHeights(val) {
-      console.log(this.$refs.text.$refs.textarea)
-     if(val.length>10){
-       console.log(11)
-     }
+    checkHeights() {
+      console.log('this.inputInfos')
+      if (this.inputInfos.length > 10) {
+        this.overWidthFlag = true;
+      }
+      else
+        this.overWidthFlag = false;
+    },
+    // 多行编辑
+    overFlowEdit() {
+      this.$refs.overflowInputRef.showModal(0, '');
+    },
+    // 获取多行编辑内容
+    getOverFloeEditInfo(edit) {
+      this.editInfo= edit;
+    },
+    // 单选符号
+    checkValueChange(e) {
+      if (e == 0) {
+        this.checkedFlag = !this.checkedFlag;
+        this.textFlag = !this.textFlag;
+      }
+      if (e == 1) {
+        this.checkedFlag1 = !this.checkedFlag1;
+        this.textFlag1 = !this.textFlag1;
+      }
+    },
+    // 盖章
+    makeSeal() {
+      console.log('盖章')
 
-    }
-  },
+    },
+    //   打印方法
+    printContent(e) {
+      let subOutputRankPrint = document.getElementById('subOutputRank-print');
+      console.log(subOutputRankPrint.innerHTML);
+      let newContent = subOutputRankPrint.innerHTML;
+      let oldContent = document.body.innerHTML;
+      document.body.innerHTML = newContent;
+      window.print();
+      window.location.reload();
+      document.body.innerHTML = oldContent;
+      return false;
+    },
+  }
 }
 </script>
 <style lang="less">
