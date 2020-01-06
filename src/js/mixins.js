@@ -66,6 +66,7 @@ export const mixinGetCaseApiList = {
       };
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
+          console.log('获取案件信息',res)
           this.formData = res.data;
         },
         err => {
@@ -74,7 +75,7 @@ export const mixinGetCaseApiList = {
       );
     },
     //提交文书表单信息，跳转到pdf文书
-    com_submitCaseForm(handleType,docForm, nextRoute) {
+    com_submitCaseForm(handleType,docForm,hasNextBtn,nextLinkDialogRef) {
       this.caseLinkDataForm.formData = JSON.stringify(this.formData);
      // this.caseLinkDataForm.caseBasicinfoId = caseId;
       //0暂存 1提交
@@ -91,15 +92,16 @@ export const mixinGetCaseApiList = {
               });
               if (handleType == 1) {
                 //保存成功 跳转 pdf
-                if(nextRoute){
-                  this.$router.replace({
-                    name: nextRoute,
-                    params: {
-                      id: caseId
-                    }
-                  });
-                }else{   //跳转下一环节
-                  // console.log('跳转下一环节')
+                if(hasNextBtn){    //有下一环节按钮  
+                  // this.$router.replace({
+                  //   name: nextRoute,
+                  //   params: {
+                  //     id: this.caseLinkDataForm.caseBasicinfoId
+                  //   }
+                  // });
+                  this.nextBtnDisab = false;
+                }else{   //表单下无文书 无下一环节按钮  直接跳转下一环节
+                  this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId,nextLinkDialogRef)
                 }
                 
               }
@@ -111,16 +113,37 @@ export const mixinGetCaseApiList = {
         }
       });
     },
-    //判断要进入的下一环节
-    com_whatIsNext(caseId) {
+    //判断要进入的下一环节 案件id  弹窗ref
+    //点击下一环节直接调用  环节下没有文书时提交后也走改该方法
+    com_whatIsNext(caseId,nextLinkDialogRef) {
+      console.log('nextLinkDialogRef',nextLinkDialogRef)
       this.$store.dispatch("getNextLink", caseId).then(
         res => {
           console.log(res);
           this.nextLink = res.data;
           if (this.nextLink.length > 1) {  //有分支  弹窗显示分支
-            this.$refs.nextLinkDialogRef.showModal(this.nextLink);
+            // this.$refs.nextLinkDialogRef.showModal(this.nextLink);
+            let linkData ={
+              caseId:caseId,
+              nextLink:this.nextLink
+            }
+            this.$refs[nextLinkDialogRef].showModal(linkData);
           } else {   //无分支
-            let routeName = this.com_getCaseRouteName("2c9029ee6cac9281016caca7f38e0002");
+            let routeName = this.com_getCaseRouteName(this.nextLink[0].targetLink);
+            this.$store.dispatch('deleteTabs', this.$route.name);
+            //更改流程图中的状态
+            // let setData={
+            //   caseId:caseId,
+            //   nextFlowChart:this.nextLink
+            // }
+            // this.$store.dispatch("setFlowStatus", setData).then(
+            //   res => {
+            //     console.log('更改流程图中的状态',res)
+            //   },
+            //   err => {
+            //     console.log(err);
+            //   }
+            // );
             this.$router.push({name:routeName,params:{id:caseId}})
           }
         },
@@ -164,23 +187,74 @@ export const mixinGetCaseApiList = {
           nextLink = "partyRights";
           break;
         case "2c9029d56c8f7b66016c8f8043c90001":   //处罚决定
-          nextLink = "";
+          nextLink = "adminPunishe";
           break;
         case "2c9029e16c753a19016c755fe1340001":   //决定执行
-          nextLink = "adminPunishe";
+          nextLink = "penaltyExecution";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204h":   //强制执行
           nextLink = "";
           break;
         case "2c9029ee6cac9281016cacaadf990006":   //结案登记
-          nextLink = "";
+          nextLink = "finishForm";
           break;
         case "2c9029ee6cac9281016cacab478e0007":   //归档
           nextLink = "";
           break;
       }
       return nextLink;
-    }
+    },
+    //根据案件ID和文书Id获取数据   文书数据
+    com_getDocDataByCaseIdAndDocId(params) {
+      let data = {
+        caseId: params.caseId,
+        docId: params.docId
+      };
+      this.$store.dispatch("getDocDataByCaseIdAndDocId", data).then(
+        res => {
+          console.log("获取文书详情", res);
+          //如果为空，则加载案件信息
+          if (res.data.length == 0) {
+            this.com_getCaseBasicInfo(caseId);
+          } else {
+            console.log(res.data[0]);
+            this.caseDocDataForm.id = res.data[0].id;
+            this.docData = JSON.parse(res.data[0].docData);
+          }
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    // 提交文书表单
+    com_addDocData(handleType,docForm) {
+      this.caseDocDataForm.docData = JSON.stringify(this.docData);
+      this.caseDocDataForm.status = handleType;
+      console.log(this.caseDocDataForm);
+      this.$refs[docForm].validate(valid => {
+        if (valid) {
+          this.$store.dispatch("addDocData", this.caseDocDataForm).then(
+            res => {
+              console.log("保存文书", res);
+              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
+              this.$message({
+                type: "success",
+                message: "保存成功"
+
+              });
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+
+      });
+    }, 
   },
   created() {
     // this.getApiList();
