@@ -222,3 +222,14 @@ export function getNextLinkAPi(caseBasicInfoId) {
   });
 }
 
+//点击下一环节  更改流程图状态
+export function setFlowStatusAPi(data) { 
+  return request({
+    url: "doc/linkData/jumpNextStep",
+    method: "post",
+    data:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+

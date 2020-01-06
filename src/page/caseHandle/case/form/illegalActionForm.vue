@@ -108,7 +108,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item  label="当事人权利：" >
-                  <el-checkbox-group v-model="formData.checkBoxList">
+                  <!-- <el-checkbox-group v-model="formData.checkBoxList">
                     <el-row>
                       <el-col :span="5">
                         <el-checkbox label="陈述申辩权利" v-model="formData.checkBox1" :checked="true"></el-checkbox>
@@ -119,7 +119,7 @@
                         <el-checkbox label="举行听证权利" v-model="formData.checkBox12" :checked="true"></el-checkbox>
                       </el-col>
                     </el-row>                   
-                  </el-checkbox-group>
+                  </el-checkbox-group> -->
                 </el-form-item>
               </div>
             </div> 
@@ -255,7 +255,7 @@ export default {
       caseLinkDataForm: { 
         id: "", //修改的时候用
         caseBasicinfoId: this.$route.params.id, //案件id
-        caseLinktypeId: "2c9029ee6cac92s81016caca8ea500003", //表单类型IDer
+        caseLinktypeId: "2c9029ee6cac9281016caca8ea500003", //表单类型IDer            
         //表单数据
         formData: "",
         status: ""
@@ -270,7 +270,8 @@ export default {
     },
     addFormData(handleType) {
       //参数  提交类型 、formRef  、 跳转的pdf路由name
-      this.com_submitCaseForm(handleType,'illegalActionForm','illegalActionPdf');
+      // this.com_submitCaseForm(handleType,'illegalActionForm','illegalActionPdf');
+      this.com_submitCaseForm(handleType,'illegalActionForm',false,'');
     }
   },
   created() {

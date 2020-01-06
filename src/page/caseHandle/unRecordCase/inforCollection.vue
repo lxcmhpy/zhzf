@@ -517,10 +517,13 @@ export default {
         caseCauseNameCopy: "",
         illegalLaw: "",
         punishLaw: "",
-        discretionId: "",
-        tempPunishAmount: "",
-        organId: iLocalStroage.gets('userInfo').organId,
-        caseTypeId: ""
+        discretionId:"",
+        tempPunishAmount:"",
+        organId:iLocalStroage.gets('userInfo').organId,
+        caseTypeId:"",
+        staffId:"4",
+        staff:"admin",
+        certificateId:"123123"
       },
       rules: {
         caseSource: [{ required: true, message: "请选择", trigger: "change" }],
@@ -636,7 +639,7 @@ export default {
     },
     //选择执法人员
     addLawPerson() {
-      this.$refs.chooseLawPersonRef.showModal(this.lawPersonList);
+      this.$refs.chooseLawPersonRef.showModal(this.lawPersonList); 
     },
     //设置执法人员
     setLawPerson(userlist) {
@@ -824,8 +827,9 @@ export default {
                 type: "success",
                 message: "提交成功!"
               });
-              this.$router.replace({
-                name: 'filingApproval',
+            this.$store.dispatch('deleteTabs', this.$route.name);
+              this.$router.replace({ 
+                name: 'establish',
                 params: {
                   id: res.data.id,
                 }

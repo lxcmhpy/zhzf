@@ -288,6 +288,7 @@ export default {
           if (params.name) {
             console.log(params);
             let clickRouter = that.com_getCaseRouteName(params.data.linkID);
+            that.$store.dispatch('deleteTabs', 'flowChart');
             that.$router.push({name:clickRouter,params:{id:that.$route.params.id}})
           }
 

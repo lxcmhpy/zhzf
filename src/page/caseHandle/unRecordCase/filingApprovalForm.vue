@@ -287,6 +287,25 @@
     </div>
     <!-- 悬浮按钮 -->
     <div class="float-btns">
+      <el-button type="primary" @click="showApprovePeopleList">
+        <svg
+          t="1577414377979"
+          class="icon"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="1726"
+          width="16"
+          height="16"
+        >
+          <path
+            d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z"
+            p-id="1727"
+            fill="#FFFFFF"
+          />
+        </svg>
+        <br />提交审批
+      </el-button>
       <el-button type="primary" @click="addFormData(1)">
         <svg
           t="1577414377979"
@@ -328,10 +347,13 @@
       </el-button>
     </div>
     <!-- </div> -->
+    <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
+
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
+import showApprovePeople from "./showApprovePeople";
 
 export default {
   data() {
@@ -369,85 +391,27 @@ export default {
      
     };
   },
+  components: {
+    showApprovePeople
+  },
   mixins:[mixinGetCaseApiList],
   methods: {
     //加载表单信息
     setFormData(){
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
-    // getFormDataByCaseIdAndFormId() {
-    //   console.log(this.caseId)
-    //   let data = {
-    //     casebasicInfoId: this.caseId,
-    //     caseLinktypeId: "2c90293b6c178b55016c17c255a4000d"
-    //   };
-    //   this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
-    //     res => {
-    //       console.log("获取表单详情", res);
-    //       //如果为空，则加载案件信息
-    //       if (res.data == "") {
-    //         this.getCaseBasicInfo();
-    //       } else {
-    //         console.log(res.data);
-    //         this.caseLinkDataForm.id = res.data.id;
-    //         this.formData = JSON.parse(res.data.formData);
-    //       }
-    //     },
-    //     err => {
-    //       console.log(err);
-    //     }
-    //   );
-    // },
-    // // 获取带入信息
-    // getCaseBasicInfo() {
-    //   console.log("this.$route.params.id", this.$route.params.id);
-    //   let data = {
-    //     id: this.caseId
-    //   };
-    //   this.$store.dispatch("getCaseBasicInfo", data).then(
-    //     res => {
-    //       this.formData = res.data;
-    //     },
-    //     err => {
-    //       console.log(err);
-    //     }
-    //   );
-    // },
+    
     // 提交表单
     addFormData(handleType) {
-      //参数  提交类型 、formRef  、 跳转的pdf路由name
-      this.com_submitCaseForm(handleType,'docForm','establish');
-      
-      // this.caseLinkDataForm.formData = JSON.stringify(this.formData);
-      // this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      // //0暂存 1提交
-      // this.caseLinkDataForm.status = handleType;
-      // this.$refs["docForm"].validate(valid => {
-      //   if (valid) {
-      //     console.log(this.caseLinkDataForm);
-      //     this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
-      //       res => {
-      //         console.log("保存表单", res);
-      //         this.$message({
-      //           type: "success",
-      //           message: "保存成功"
-      //         });
-      //         if (handleType == 1) {
-      //           //保存成功 跳转 pdf
-      //           this.$router.replace({
-      //             name: "establish",
-      //             params: {
-      //               id: this.caseId
-      //             }
-      //           });
-      //         }
-      //       },
-      //       err => {
-      //         console.log(err);
-      //       }
-      //     );
-      //   }
-      // });
+      //参数  提交类型 、formRef  
+      this.com_submitCaseForm(handleType,'docForm','form');
+    },
+    showApprovePeopleList(){
+      let data={
+        caseId:this.caseId,
+        caseLinktypeId:'2c90293b6c178b55016c17c255a4000d'
+      }
+      this.$refs.showApprovePeopleRef.showModal(data);
     }
   },
 

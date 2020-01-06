@@ -1,7 +1,7 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
-    submitPdfApi,approvalPdfApi,getNextLinkAPi } from "@/api/caseHandle";
+    submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi } from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -234,6 +234,18 @@ const caseHandle = {
         getNextLink({ commit }, caseId) {
             return new Promise((resolve, reject) => {
                 getNextLinkAPi(caseId).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //点击下一环节  更改流程图状态
+        setFlowStatus({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                setFlowStatusAPi(data).then(
                     res => {
                         resolve(res);
                     },
