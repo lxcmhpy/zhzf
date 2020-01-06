@@ -4,7 +4,7 @@
     <div class="a4-box" id="subOutputRank-print">
       <div class="pdf-box">
         <div class="pdf-title">
-          当场行政处罚决定书1
+          当场行政处罚决定书
         </div>
         <div class="case-number">案号：{{caseNumber}}</div>
         <div class="pdf-table">

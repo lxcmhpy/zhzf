@@ -187,7 +187,7 @@ export const homeRouter = {
         },
         {
           path: "/enforceDecide",
-          name: "enforceDecide",
+          name: "enforceDecide", 
           meta: {
             title: "行政强制执行决定书-pdf"
           },
