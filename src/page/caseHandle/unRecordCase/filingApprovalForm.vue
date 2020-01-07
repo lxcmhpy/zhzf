@@ -404,7 +404,7 @@ export default {
     // 提交表单
     addFormData(handleType) {
       //参数  提交类型 、formRef  
-      this.com_submitCaseForm(handleType,'docForm','form');
+      this.com_submitCaseForm(handleType,'docForm',false);
     },
     showApprovePeopleList(){
       let data={
@@ -416,8 +416,6 @@ export default {
   },
 
   created() {
-    // this.getFormDataByCaseIdAndFormId();
-    // this.getCaseBasicInfo();
     this.setFormData();
   }
 };

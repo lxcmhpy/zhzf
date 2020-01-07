@@ -1,13 +1,6 @@
 <template>
   <div class="box">
-    <div class="header">
-      <div class="header_left">
-        <div class="triangle"></div>
-        <div class="header_left_text">
-          返回
-        </div>
-      </div>
-    </div>
+   
     <div class="content_box">
       <div class="content">
         <div class="content_title">
@@ -185,7 +178,7 @@ export default {
     },
     submitCaseDoc(handleType) {
       //参数  提交类型 、formRef  、 跳转的pdf路由name
-      this.com_submitCaseForm(handleType,'finishReportForm','form');
+      this.com_submitCaseForm(handleType,'finishReportForm',false);
     },
 
     

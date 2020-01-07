@@ -1,11 +1,6 @@
 <template>
   <div class="box">
-    <div class="header">
-      <div class="header_left">
-        <div class="triangle"></div>
-        <div class="header_left_text">返回</div>
-      </div>
-    </div>
+   
     <div class="content_box">
       <div class="content">
         <div class="content_title">行政处罚决定书</div>
@@ -299,7 +294,7 @@ export default {
     },
     submitCaseDoc(handleType) {
       //参数  提交类型 、formRef  
-      this.com_submitCaseForm(handleType,'adminPunisheDecisionForm',false,'');
+      this.com_submitCaseForm(handleType,'adminPunisheDecisionForm',false);
     }
   },
   created(){

@@ -271,7 +271,7 @@ export default {
     addFormData(handleType) {
       //参数  提交类型 、formRef  、 跳转的pdf路由name
       // this.com_submitCaseForm(handleType,'illegalActionForm','illegalActionPdf');
-      this.com_submitCaseForm(handleType,'illegalActionForm',false,'');
+      this.com_submitCaseForm(handleType,'illegalActionForm',false);
     }
   },
   created() {
