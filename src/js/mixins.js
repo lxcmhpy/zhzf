@@ -79,7 +79,7 @@ export const mixinGetCaseApiList = {
       );
     },
     //提交文书表单信息，跳转到pdf文书
-    com_submitCaseForm(handleType, docForm, hasNextBtn, nextLinkDialogRef) {
+    com_submitCaseForm(handleType, docForm, hasNextBtn) {
       this.caseLinkDataForm.formData = JSON.stringify(this.formData);
       // this.caseLinkDataForm.caseBasicinfoId = caseId;
       //0暂存 1提交
@@ -101,7 +101,6 @@ export const mixinGetCaseApiList = {
                 } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
                   this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId)
                 }
-
               }
             },
             err => {

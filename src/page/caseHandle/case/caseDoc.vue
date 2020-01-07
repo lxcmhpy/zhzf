@@ -1,15 +1,6 @@
 <template>
   <div class="box">
     <el-form ref="caseDocForm" :model="formData" label-width="105px">
-
-      <div class="header-case">
-        <div class="header_left">
-          <div class="triangle"></div>
-          <div class="header_left_text">
-            返回
-          </div>
-        </div>
-      </div>
       <div class="content_box">
         <div class="content">
           <div class="content_title">
@@ -208,7 +199,7 @@ export default {
     },
     //保存表单数据
     submitCaseDoc(handleType){
-      this.com_submitCaseForm(handleType,'caseDocForm',true,'');
+      this.com_submitCaseForm(handleType,'caseDocForm',true);
     },
     //下一环节
     continueHandle() {
