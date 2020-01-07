@@ -14,6 +14,16 @@
         <!-- <span class="errorInput" v-if="errorOrganName">该机构名称已存在</span> -->
       </div>
       <div class="item">
+        <el-form-item label="角色组" prop="roleGroup">
+          <el-select v-model="addRoleForm.roleGroup" >
+            <el-option value="普通用户" label="普通用户"></el-option>
+            <el-option value="管理员" label="管理员"></el-option>
+            <el-option value="超级管理员" label="超级管理员"></el-option>
+            <el-option value="执法人员" label="执法人员"></el-option>
+          </el-select>
+        </el-form-item>
+      </div>
+      <div class="item">
         <el-form-item label="角色介绍" prop="description">
           <el-input v-model="addRoleForm.description"></el-input>
         </el-form-item>
@@ -35,7 +45,8 @@ export default {
         description: ""
       },
       rules: {
-        name: [{ required: true, message: "请输入角色名称", trigger: "blur" }]
+        name: [{ required: true, message: "请输入角色名称", trigger: "blur" }],
+        roleGroup : [{ required: true, message: "请选择角色组", trigger: "blur" }],
       },
       dialogTitle: "", //弹出框title
       errorOrganName: false, //添加organname时的验证

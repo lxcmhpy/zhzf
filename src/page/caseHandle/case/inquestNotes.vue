@@ -234,9 +234,11 @@ export default {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       let data = {
-        caseId: "aa0f2161e5c1ae0d2619203eb63eb78d",
+        // caseId: "aa0f2161e5c1ae0d2619203eb63eb78d",
+        caseId : this.$route.params.caseBasicinfoId,
         docId: "2c9029ab655639600165564481f70001"
       };
+      console.log(data+"2222")
       this.com_getDocDataByCaseIdAndDocId(data)
     },
     // 提交表单
