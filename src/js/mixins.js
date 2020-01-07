@@ -66,8 +66,12 @@ export const mixinGetCaseApiList = {
       };
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
-          console.log('获取案件信息', res)
-          this.formData = res.data;
+          console.log('获取案件信息',res)
+          if(this.formData){
+            this.formData = res.data;
+          }else{
+            this.docData = res.data;
+          }
         },
         err => {
           console.log(err);
@@ -189,7 +193,7 @@ export const mixinGetCaseApiList = {
           console.log("获取文书详情", res);
           //如果为空，则加载案件信息
           if (res.data.length == 0) {
-            this.com_getCaseBasicInfo(caseId);
+            this.com_getCaseBasicInfo(params.caseId);
           } else {
             console.log(res.data[0]);
             this.caseDocDataForm.id = res.data[0].id;
