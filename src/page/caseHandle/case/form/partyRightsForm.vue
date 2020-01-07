@@ -108,8 +108,11 @@
                   <span v-if="scope.row.status == '1'">
                     已完成
                   </span>
-                  <span v-if="scope.row.status == '0'||scope.row.status == ''">
+                  <span v-if="scope.row.status == '0'">
                     未完成
+                  </span>
+                  <span v-if="scope.row.status == ''">
+                    -
                   </span>
                 </template>
               </el-table-column>
@@ -117,13 +120,17 @@
                 <template slot-scope="scope">
                   <span v-if="scope.row.status == '1'">
                     <!-- 已完成 -->
-                    <i type="primary" class="el-icon-edit cell-icon" @click="viewDoc(scope.row)"></i>
+                    <i type="primary" class="el-icon-view cell-icon" @click="viewDoc(scope.row)"></i>
                     <i type="primary" class="el-icon-printer cell-icon"></i>
                   </span>
-                  <span v-if="scope.row.status == '0'||scope.row.status === ''">
+                  <span v-if="scope.row.status == '0'">
                     <!-- 未完成 -->
                     <i type="primary" class="el-icon-edit cell-icon" @click="viewDoc(scope.row)"></i>
                     <i type="primary" class="el-icon-delete-solid cell-icon" @click="delDocDataByDocId(scope.row)"></i>
+                  </span>
+                  <span v-if="scope.row.status === ''">
+                    <!-- 无状态 -->
+                    <i type="primary" class="el-icon-circle-plus cell-icon" @click="viewDoc(scope.row)"></i>
                   </span>
                 </template>
               </el-table-column>
