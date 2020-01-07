@@ -10,5 +10,6 @@ const getters = {
   whiteList: state => state.whiteList,
   imgIp: state => state.imgIp,
   listPage: state => state.listPage,
+  caseId:state => state.caseHandle.caseId,
 };
 export default getters;

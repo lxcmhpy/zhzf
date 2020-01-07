@@ -117,8 +117,7 @@ export const mixinGetCaseApiList = {
           console.log("更改流程图中的状态", res);
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({
-            name: 'flowChart',
-            params: { id: this.caseLinkDataForm.caseBasicinfoId }
+            name: 'flowChart'
           });
         },
         err => {

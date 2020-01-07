@@ -3,12 +3,16 @@ import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategory
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
     submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi} from "@/api/caseHandle";
 
+
 const caseHandle = {
     state:{
-        // caseId:
+        caseId:'' ,  //案件id
     },
     mutations:{
-
+        //设置caseId
+        setCaseId(state,data){
+            state.caseId = data;
+        }
     },
     actions:{
         //获取执法门类

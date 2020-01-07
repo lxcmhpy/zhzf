@@ -1,13 +1,6 @@
 <template>
   <div class="case">
     <div>
-      <p>ly(2、4、5、6、7、8、9、10文书表单及pdf打印版)</p>
-      <ul>
-        <li @click="goDiao">现场笔录</li>
-        <li @click="goWen">询问文书</li>
-      </ul>
-    </div>
-    <div>
       <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
       <br><br>
       <ul>
@@ -325,6 +318,8 @@ export default {
 </script>
 <style lang="less">
 .case {
+  overflow: hidden;
+  position:absolute;
   & > div {
     width: 30%;
     float: left;

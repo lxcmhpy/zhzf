@@ -127,14 +127,12 @@
         </div>
       </div>
     </el-form>
-    <nextLinkDialog ref="caseDocNextLinkDialogRef"></nextLinkDialog>
 
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
-import nextLinkDialog from "../components/nextLinkDialog";
-
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -159,7 +157,7 @@ export default {
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: this.$route.params.id, //案件ID
+        caseBasicinfoId: '', //案件ID
         caseLinktypeId: "2c90293b6c178b55016c17c93326000f", //表单类型ID
         //表单数据
         formData: "",
@@ -187,13 +185,12 @@ export default {
       nextBtnDisab:true
     }
   },
-  components: {
-    nextLinkDialog
-  },
+  computed:{...mapGetters(['caseId'])},
   mixins:[mixinGetCaseApiList],
   methods: {
     //加载表单信息
     setFormData(){
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
     //保存表单数据

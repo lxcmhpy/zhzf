@@ -160,7 +160,7 @@ export default {
         username: [
           { required: true, message: "请输入登录用户名", trigger: "blur" },
           { min: 6, message: "长度大于6个字符", trigger: "blur" },
-          { validator: validateUsername, trigger: "blur" },
+          // { validator: validateUsername, trigger: "blur" },
         ],
         mobile: [{ validator: validatePhone, trigger: "blur" }],
         organId: [{ required: true, message: "请选择机构", trigger: "change" }],
