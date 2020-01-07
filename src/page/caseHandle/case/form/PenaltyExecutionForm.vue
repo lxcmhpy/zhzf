@@ -4,12 +4,12 @@
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
     <el-form ref="penaltyExecutionForm" :model="formData" label-width="105px">
-      <div class="header-case">
+      <!-- <div class="header-case">
         <div class="header_left">
           <div class="triangle"></div>
           <div class="header_left_text">返回</div>
         </div>
-      </div>
+      </div> -->
       <div class="content_box">
         <div class="content">
           <div class="content_title">决定执行</div>

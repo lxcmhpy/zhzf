@@ -54,7 +54,7 @@ service.interceptors.request.use(
       config.headers["accessToken"] = getToken("TokenKey");
     }
     
-    console.log(config);
+    // console.log(config);
     return config;
   },
   error => {
@@ -87,7 +87,7 @@ service.interceptors.response.use(
         return Promise.reject(response.data);
       }else{
         // httpErrorStr(response.data.code);
-        return Promise.resolve(response.data);
+        return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善
       }
     } else {
       return Promise.reject(response);

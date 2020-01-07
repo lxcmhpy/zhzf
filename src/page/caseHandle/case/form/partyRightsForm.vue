@@ -3,15 +3,16 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="docForm" :model="formData" label-width="105px">
-      <div class="header-case">
+    <el-form ref="partyRightsForm" :model="formData" label-width="105px">
+
+      <!-- <div class="header-case">
         <div class="header_left">
           <div class="triangle"></div>
           <div class="header_left_text">
             返回
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="content_box">
         <div class="content">
           <div class="content_title">
@@ -23,14 +24,14 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" :disabled="true" clearable class="w-120" v-model="formData.caseNumber" size="small" ></el-input>
+                  <el-input ref="caseNumber" :disabled="true" clearable class="w-120" v-model="formData.caseNumber" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseName" label="案由">
-                  <el-input ref="caseName" :disabled="true" clearable class="w-120" v-model="formData.caseName" size="small" ></el-input>
+                  <el-input ref="caseName" :disabled="true" clearable class="w-120" v-model="formData.caseName" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -97,7 +98,7 @@
             </el-col>
           </el-row>
           <div class="table_form">
-            <el-table :data="docTableDatas" stripe border style="width: 100%" >
+            <el-table :data="docTableDatas" stripe border style="width: 100%">
               <el-table-column type="index" label="序号" align="center" width="100px">
               </el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
@@ -185,13 +186,16 @@
         </div>
       </div>
     </el-form>
-    <checkDocFinish ref="checkDocFinish"></checkDocFinish>
+    <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
-
+import checkDocFinish from './checkDocFinish'
 export default {
+  components: {
+    checkDocFinish
+  },
   data() {
     return {
       formData: {
@@ -241,21 +245,20 @@ export default {
     }
   },
   mixins: [mixinGetCaseApiList],
+  inject: ['reload'],
   methods: {
     //加载表单信息
     setFormData() {
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, 'form');
     },
     submitCaseDoc(handleType) {
-      console.log('handletype', handleType)
       //参数  提交类型 、formRef、有无下一环节按钮、下一环节有多个时有弹窗
       this.com_submitCaseForm(handleType, 'docForm', true, '');
     },
     //下一环节
     continueHandle() {
-      // 验证
-      this.$refs.checkDocFinish.handelEdit(row);
-      // this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId, '');
+      this.$refs.checkDocFinishRef.showModal(this.docTableDatas);
+      // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
     // 证据材料- 操作
     evidenceOption(data) {
@@ -291,7 +294,7 @@ export default {
     delDocDataByDocId(data) {
       this.$store.dispatch("delDocDataByDocId", data).then(
         res => {
-          console.log('删除',res)
+          console.log('删除', res)
 
           // this.docTableDatas = res.data;
           // console.log('文书列表', this.docTableDatas)
