@@ -211,7 +211,7 @@ export default {
     },
     //下一环节
     continueHandle() {
-      this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId,'');
+      this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
     // 进入文书
     enterDoc(row) {

@@ -342,15 +342,8 @@ export default {
     },
     //下一环节
     continueHandle() {
-      // this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId,'caseInReportNextLinkDialogRef');
-      this.$router.push({
-          name: "flowChart",
-          params: {
-            id: this.caseLinkDataForm.caseBasicinfoId
-          }
-      })
+      this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
-   
     // 暂存
     save() {
 

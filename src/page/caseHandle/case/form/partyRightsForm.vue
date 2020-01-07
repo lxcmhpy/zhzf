@@ -5,14 +5,14 @@
     </el-form>
     <el-form ref="partyRightsForm" :model="formData" label-width="105px">
 
-      <div class="header-case">
+      <!-- <div class="header-case">
         <div class="header_left">
           <div class="triangle"></div>
           <div class="header_left_text">
             返回
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="content_box">
         <div class="content">
           <div class="content_title">
@@ -252,13 +252,12 @@ export default {
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, 'form');
     },
     submitCaseDoc(handleType) {
-      console.log('handletype', handleType)
       //参数  提交类型 、formRef、有无下一环节按钮、下一环节有多个时有弹窗
       this.com_submitCaseForm(handleType, 'caseLinkDataForm', true, '');
     },
     //下一环节
     continueHandle() {
-      this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId, '');
+      this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
     // 证据材料- 操作
     evidenceOption(data) {
