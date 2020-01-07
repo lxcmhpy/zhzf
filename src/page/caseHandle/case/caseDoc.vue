@@ -7,7 +7,6 @@
             调查类文书
           </div>
           <div class="border_blue"></div>
-
           <div class="content_form">
             <div class="row">
               <div class="col">
@@ -23,7 +22,6 @@
                 </el-form-item>
               </div>
             </div>
-
             <div class="row">
               <div class="col">
                 <el-form-item label="单位">
