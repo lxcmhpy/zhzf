@@ -99,21 +99,35 @@
           </el-row>
           <div class="table_form">
             <el-table :data="docTableDatas" stripe border style="width: 100%" height="100%">
-              <el-table-column prop="index" label="序号" align="center">
+              <el-table-column type="index" label="序号" align="center" width="100px">
               </el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.status == '1'">
+                    已完成
+                  </span>
+                  <span v-if="scope.row.status == '0'">
+                    暂存
+                  </span>
+                </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-
-                  <span v-if="scope.row.status == '完成'">
+                  <span v-if="scope.row.status == '1'">
+                    <!-- 已完成 -->
                     <i type="primary" class="el-icon-view cell-icon" @click="viewDoc(scope.row)"></i>
                     <i type="primary" class="el-icon-printer cell-icon"></i>
                   </span>
-                  <span v-if="scope.row.status == '未完成'">
-                    <i type="primary" class="el-icon-edit cell-icon"></i>
+                  <span v-if="scope.row.status == '0'">
+                    <!-- 暂存 -->
+                    <i type="primary" class="el-icon-edit cell-icon" @click="viewDoc(scope.row)"></i>
+                    <i type="primary" class="el-icon-delete-solid cell-icon"></i>
+                  </span>
+                  <span v-if="scope.row.status === ''">
+                    <!-- 暂存 -->
+                    <i type="primary" class="el-icon-add cell-icon"></i>
                     <i type="primary" class="el-icon-printer cell-icon"></i>
                   </span>
                 </template>
@@ -268,7 +282,8 @@ export default {
       };
       this.$store.dispatch("getDocListByCaseIdAndFormId", data).then(
         res => {
-          this.tableDatas = res.data;
+          this.docTableDatas = res.data;
+          console.log('文书列表', this.docTableDatas)
         },
         err => {
           console.log(err);

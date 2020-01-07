@@ -8,7 +8,7 @@
     position     : absolute;
     margin       : 22px;
 
-    /deep/ .el-form {
+    & .el-form {
         width: 100%;
 
         .el-form-item__label {
@@ -16,7 +16,7 @@
         }
 
         .line-height13 {
-            /deep/.el-form-item__label {
+            & .el-form-item__label {
                 line-height: 1.3em;
             }
         }
@@ -32,40 +32,40 @@
             flex-direction: column;
             align-items   : center;
 
-            /deep/.el-form-item {
+            & .el-form-item {
                 // margin-bottom: 6px !important;
                 width           : 100%;
 
-                /deep/.el-input__inner {
+                & .el-input__inner {
                     border-radius: 2px;
                 }
 
-                /deep/.height88 {
-                    /deep/.el-textarea__inner {
+                & .height88 {
+                    & .el-textarea__inner {
                         border-radius: 2px;
                         resize       : none;
                         min-height   : 88px !important;
                     }
                 }
 
-                /deep/.height106 {
-                    /deep/.el-textarea__inner {
+                & .height106 {
+                    & .el-textarea__inner {
                         border-radius: 2px;
                         resize       : none;
                         min-height   : 106px !important;
                     }
                 }
 
-                /deep/.height122 {
-                    /deep/.el-textarea__inner {
+                & .height122 {
+                    & .el-textarea__inner {
                         border-radius: 2px;
                         resize       : none;
                         min-height   : 122px !important;
                     }
                 }
 
-                /deep/.height162 {
-                    /deep/.el-textarea__inner {
+                & .height162 {
+                    & .el-textarea__inner {
                         border-radius: 2px;
                         resize       : none;
                         min-height   : 162px !important;
@@ -73,7 +73,7 @@
                 }
 
                 // 抽屉表
-                /deep/.el-select {
+                & .el-select {
                     width: 100%;
                 }
 
@@ -247,7 +247,7 @@
     right   : 49px;
     bottom  : 97px;
 
-    /deep/.el-button {
+    & .el-button {
         border-radius: 1px;
         width        : 48px;
         height       : 48px;
@@ -255,12 +255,12 @@
         text-align   : center;
     }
 
-    /deep/.el-button+.el-button {
+    & .el-button+.el-button {
         margin-left: 0;
         margin-top : 10px;
     }
 
-    /deep/.el-button--success {
+    & .el-button--success {
         color           : white;
         background-color: #4AAFA7;
         border-color    : #4AAFA7;
@@ -270,7 +270,7 @@
 }
 
 .btn-height63 {
-    /deep/.el-button {
+    & .el-button {
         height: 63px !important;
     }
 }
@@ -326,7 +326,7 @@
 
 // 询问次数
 .ask_number {
-    /deep/.el-input-group__append {
+    & .el-input-group__append {
         background-color: transparent;
         color           : #606266;
         border          : 0;
@@ -363,7 +363,7 @@
     position  : fixed;
     right     : 0;
 
-    /deep/.btn_box {
+    & .btn_box {
         width      : 58px;
         height     : 58px;
         line-height: 58px;
@@ -375,20 +375,20 @@
         }
     }
 
-    /deep/.el-menu--collapse {
+    & .el-menu--collapse {
         width: 58px;
     }
 
-    /deep/.el-menu-item {
+    & .el-menu-item {
         padding    : 13px 14px !important;
         line-height: 16px;
     }
 
-    /deep/.el-menu-item.is-active {
+    & .el-menu-item.is-active {
         background: #F3F9F9 !important;
     }
 
-    /deep/.el-menu-item:hover {
+    & .el-menu-item:hover {
         color     : #FFFFFF !important;
         background: #4573D0 !important;
     }
@@ -399,7 +399,7 @@
         width  : 30px;
     }
 
-    /deep/.bottom_fixed{
+    & .bottom_fixed{
         position: fixed;
         bottom: 0;
     }
