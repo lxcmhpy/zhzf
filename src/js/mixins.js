@@ -79,9 +79,9 @@ export const mixinGetCaseApiList = {
       );
     },
     //提交文书表单信息，跳转到pdf文书
-    com_submitCaseForm(handleType,docForm,hasNextBtn,nextLinkDialogRef) {
+    com_submitCaseForm(handleType, docForm, hasNextBtn, nextLinkDialogRef) {
       this.caseLinkDataForm.formData = JSON.stringify(this.formData);
-     // this.caseLinkDataForm.caseBasicinfoId = caseId;
+      // this.caseLinkDataForm.caseBasicinfoId = caseId;
       //0暂存 1提交
       this.caseLinkDataForm.status = handleType;
       this.$refs[docForm].validate(valid => {
@@ -95,19 +95,13 @@ export const mixinGetCaseApiList = {
                 message: "保存成功"
               });
               if (handleType == 1) {
-                //保存成功 跳转 pdf
-                if(hasNextBtn){    //有下一环节按钮  
-                  // this.$router.replace({
-                  //   name: nextRoute,
-                  //   params: {
-                  //     id: this.caseLinkDataForm.caseBasicinfoId
-                  //   }
-                  // });
+                //保存成功 
+                if (hasNextBtn) {    //有下一环节按钮  
                   this.nextBtnDisab = false;
-                }else{   //表单下无文书 无下一环节按钮  直接跳转下一环节
-                  this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId,nextLinkDialogRef)
+                } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
+                  this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId)
                 }
-                
+
               }
             },
             err => {
@@ -117,39 +111,20 @@ export const mixinGetCaseApiList = {
         }
       });
     },
-    //判断要进入的下一环节 案件id  弹窗ref
-    //点击下一环节直接调用  环节下没有文书时提交后也走改该方法
-    com_whatIsNext(caseId,nextLinkDialogRef) {
-      console.log('nextLinkDialogRef',nextLinkDialogRef)
-      this.$store.dispatch("getNextLink", caseId).then(
+    //点击下一环节和提交按钮都跳转流程图
+    com_goToNextLinkTu(caseLinktypeId) {
+      let data={
+        caseId:this.caseLinkDataForm.caseBasicinfoId,
+        caseLinktypeId:caseLinktypeId
+      };
+      this.$store.dispatch("submitPdf", data).then(
         res => {
-          console.log(res);
-          this.nextLink = res.data;
-          if (this.nextLink.length > 1) {  //有分支  弹窗显示分支
-            // this.$refs.nextLinkDialogRef.showModal(this.nextLink);
-            let linkData ={
-              caseId:caseId,
-              nextLink:this.nextLink
-            }
-            this.$refs[nextLinkDialogRef].showModal(linkData);
-          } else {   //无分支
-            let routeName = this.com_getCaseRouteName(this.nextLink[0].targetLink);
-            this.$store.dispatch('deleteTabs', this.$route.name);
-            //更改流程图中的状态
-            // let setData={
-            //   caseId:caseId,
-            //   nextFlowChart:this.nextLink
-            // }
-            // this.$store.dispatch("setFlowStatus", setData).then(
-            //   res => {
-            //     console.log('更改流程图中的状态',res)
-            //   },
-            //   err => {
-            //     console.log(err);
-            //   }
-            // );
-            this.$router.push({name:routeName,params:{id:caseId}})
-          }
+          console.log("更改流程图中的状态", res);
+          this.$store.dispatch("deleteTabs", this.$route.name);
+          this.$router.push({
+            name: 'flowChart',
+            params: { id: this.caseLinkDataForm.caseBasicinfoId }
+          });
         },
         err => {
           console.log(err);
@@ -232,7 +207,7 @@ export const mixinGetCaseApiList = {
       );
     },
     // 提交文书表单
-    com_addDocData(handleType,docForm) {
+    com_addDocData(handleType, docForm) {
       this.caseDocDataForm.docData = JSON.stringify(this.docData);
       this.caseDocDataForm.status = handleType;
       console.log(this.caseDocDataForm);
@@ -258,7 +233,7 @@ export const mixinGetCaseApiList = {
         }
 
       });
-    }, 
+    },
   },
   created() {
     // this.getApiList();

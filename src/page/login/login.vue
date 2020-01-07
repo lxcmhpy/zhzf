@@ -86,8 +86,28 @@ export default {
          res=>{
            let captcha = res.data;
            this.captchaId = captcha.split('::')[0];
+          
+          //  this.captchaImg = drawCodeImage + this.captchaId;
+          this.getCaptchaImgsrc()
+         },
+         err=>{
+           console.log(err)
+         }
+       )
+    },
+    
+    getCaptchaImgsrc(){
+      console.log('this.captchaId',this.captchaId)
+       this.$store.dispatch("getCapImgSrc",this.captchaId).then(
+         res=>{
+           console.log(res);
+           let a = 'data:image/png;base64,' + btoa(
+              new Uint8Array(res)
+                .reduce((data, byte) => data + String.fromCharCode(byte), '')
+            );
+            console.log(a);
+           this.captchaImg = a;
 
-           this.captchaImg = drawCodeImage + this.captchaId;
          },
          err=>{
            console.log(err)

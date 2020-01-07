@@ -2,7 +2,7 @@ import * as types from "../mutation-types";
 import Vue from "vue";
 const vm = new Vue(); //vm等同于this
 
-import { getCaptchaApi, loginInApi, getMenuApi, loginOutApi } from "@/api/login";
+import { getCaptchaApi, loginInApi, getMenuApi, loginOutApi,getCapImgSrcApi } from "@/api/login";
 import {
     getAllOrganApi, getSelectOrganApi, addOrganApi, getOrganDetailApi, deleteOrganApi, hasOrganNameApi, getCurrentAndNextOrganApi,
     getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getOrganBindRoleApi,
@@ -34,6 +34,20 @@ const system = {
                         resolve(res);
                     },
                     error => {
+                        reject(error);
+                    })
+            })
+        },
+        //获取验证码图片
+        getCapImgSrc({ commit },data) {
+            return new Promise((resolve, reject) => {
+                getCapImgSrcApi(data).then(
+                    res => {
+                        console.log('验证码', res);
+                        resolve(res);
+                    },
+                    error => {
+                        console.log(error)
                         reject(error);
                     })
             })

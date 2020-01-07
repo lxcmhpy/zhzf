@@ -120,6 +120,17 @@ export function addDocDataApi(data) {
   });
 }
 
+//根据文书模板ID删除文书信息
+export function delDocDataByDocIdApi(data) { 
+  console.log(data);
+  return request({
+    url: "/doc/data/findByCaseIdAndDocId/"+data.id,
+    method: "get",
+    // params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
 //根据案件ID和文书模板ID查找文书信息
 export function getDocDataByCaseIdAndDocIdApi(data) { 
   console.log(data);
