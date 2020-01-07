@@ -24,13 +24,13 @@
     background : white;
     line-height: 1.2em;
 
-    /deep/.el-input .el-input__inner {
+    &.pdf-box .el-input .el-input__inner {
         border   : 0;
         font-size: 16px;
         width    : 100%;
     }
 
-    /deep/.el-textarea__inner {
+    &.pdf-box .el-textarea__inner {
         border         : 0;
         font-size      : 17px;
         text-align     : center;
@@ -78,8 +78,10 @@
         line-height: 2em;
     }
 
-    .pdf-report-info /deep/.begin {
-        text-indent: 0;
+    .pdf-report-info {
+        & .begin {
+            text-indent: 0;
+        }
     }
 
 
@@ -175,7 +177,7 @@
         right     : 10px;
         bottom    : 10px;
 
-        /deep/.el-input__icon {
+        &.pdf-seal .el-input__icon {
             display: none;
         }
     }
@@ -190,13 +192,13 @@
         text-align: right;
     }
 
-    /deep/p {
+    & p {
         // text-align-last: left;
         text-align        : left;
         // text-justify   : distribute-all-lines; // 兼容ie浏览器
 
         // pdf下划线
-        /deep/.pdf-line {
+        & .pdf-line {
             display        : inline-block;
             border-bottom  : 1px solid black;
             text-align     : center;
@@ -207,19 +209,19 @@
         }
     }
 
-    /deep/input[type=checkbox] {
-        cursor   : pointer;
-        position : relative;
-        width    : 15px;
-        height   : 15px;
-        margin: 0 5px;
+    & input[type=checkbox] {
+        cursor  : pointer;
+        position: relative;
+        width   : 15px;
+        height  : 15px;
+        margin  : 0 5px;
     }
 
-    /deep/input[type=checkbox]::after {
+    & input[type=checkbox]::after {
         position        : absolute;
         top             : 0;
         background-color: #ffffff;
-        border: 1px solid #000;
+        border          : 1px solid #000;
         color           : #000;
         width           : 15px;
         height          : 15px;
@@ -231,11 +233,11 @@
         border-radius   : 3px
     }
 
-    /deep/input[type=checkbox]:checked::after {
+    & input[type=checkbox]:checked::after {
         content    : "✓";
         font-size  : 12px;
         font-weight: bold;
-        border: 0;
+        border     : 0;
     }
 
 }
@@ -248,7 +250,7 @@
     right   : 27px;
     bottom  : 167px;
 
-    /deep/.el-button {
+    &.float-btns .el-button {
         border-radius: 1px;
         width        : 48px;
         height       : 48px;
@@ -256,12 +258,12 @@
         text-align   : center;
     }
 
-    /deep/.el-button+.el-button {
+    &.float-btns .el-button+.el-button {
         margin-left: 0;
         margin-top : 10px;
     }
 
-    /deep/.el-button--success {
+    &.float-btns .el-button--success {
         color           : white;
         background-color: #4AAFA7;
         border-color    : #4AAFA7;
@@ -273,11 +275,11 @@
 .overWidth {
     font-size: 10px;
 
-    /deep/.el-input {
+    &.overWidth .el-input {
         font-size: 12px !important;
     }
 
-    /deep/.el-input__inner {
+    &.overWidth .el-input__inner {
         font-size: 12px !important;
     }
 }
