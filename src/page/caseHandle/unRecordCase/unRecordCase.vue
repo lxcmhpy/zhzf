@@ -77,11 +77,10 @@ export default {
     },
     //跳转立案登记
     handleCurrentChange(row){
+      console.log(row)
+      this.$store.commit("setCaseId", row.id);
       this.$router.replace({ 
           name: 'establish',
-          params: {
-            id: row.id,
-          }
       });
     }
   },

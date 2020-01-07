@@ -244,3 +244,12 @@ export function setFlowStatusAPi(data) {
   });
 }
 
+//查询审批角色列表 
+export function getApprovePeopleApi(caseBasicInfoId) { 
+  return request({
+    url: "/doc/linkData/findApproveRole/"+caseBasicInfoId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}

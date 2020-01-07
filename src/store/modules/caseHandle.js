@@ -1,7 +1,7 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
-    submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi} from "@/api/caseHandle";
+    submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi} from "@/api/caseHandle";
 
 
 const caseHandle = {
@@ -262,6 +262,19 @@ const caseHandle = {
         setFlowStatus({ commit }, data) {
             return new Promise((resolve, reject) => {
                 setFlowStatusAPi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        
+        //查询审批角色列表 
+        getApprovePeople({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getApprovePeopleApi(data).then(
                     res => {
                         resolve(res);
                     },

@@ -39,6 +39,7 @@
   </el-dialog>
 </template>
 <script>
+
 export default {
   data() {
     return {
@@ -53,12 +54,24 @@ export default {
     showModal(data) {
       this.visible = true;
       this.caseInfo = data;
-      //   this.alreadyChooseLawPerson = alreadyChooseLawPerson
-      //   this.searchLawPerson()
+      this.getApprovePeople()
+
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
+    },
+    //获取审核人员
+    getApprovePeople(){
+      console.log(this.caseInfo)
+      this.$store.dispatch("getApprovePeople",this.caseInfo.caseId).then(
+        res => {
+         console.log(res)
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     deleteOne(tag){
         this.people1.splice(this.people1.indexOf(tag), 1);
@@ -73,6 +86,10 @@ export default {
             this.$message({
                 type: "success",
                 message: "提交成功"
+            });
+            this.$store.commit("setCaseId", this.caseInfo.caseId);
+            this.$router.push({
+              name: 'flowChart'
             });
         },
         err => {
