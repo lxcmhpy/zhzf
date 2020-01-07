@@ -98,7 +98,7 @@
             </el-col>
           </el-row>
           <div class="table_form">
-            <el-table :data="docTableDatas" stripe border style="width: 100%" height="100%">
+            <el-table :data="docTableDatas" stripe border style="width: 100%" >
               <el-table-column type="index" label="序号" align="center" width="100px">
               </el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
@@ -108,8 +108,8 @@
                   <span v-if="scope.row.status == '1'">
                     已完成
                   </span>
-                  <span v-if="scope.row.status == '0'">
-                    暂存
+                  <span v-if="scope.row.status == '0'||scope.row.status == ''">
+                    未完成
                   </span>
                 </template>
               </el-table-column>
@@ -117,18 +117,13 @@
                 <template slot-scope="scope">
                   <span v-if="scope.row.status == '1'">
                     <!-- 已完成 -->
-                    <i type="primary" class="el-icon-view cell-icon" @click="viewDoc(scope.row)"></i>
-                    <i type="primary" class="el-icon-printer cell-icon"></i>
-                  </span>
-                  <span v-if="scope.row.status == '0'">
-                    <!-- 暂存 -->
                     <i type="primary" class="el-icon-edit cell-icon" @click="viewDoc(scope.row)"></i>
-                    <i type="primary" class="el-icon-delete-solid cell-icon"></i>
-                  </span>
-                  <span v-if="scope.row.status === ''">
-                    <!-- 暂存 -->
-                    <i type="primary" class="el-icon-add cell-icon"></i>
                     <i type="primary" class="el-icon-printer cell-icon"></i>
+                  </span>
+                  <span v-if="scope.row.status == '0'||scope.row.status === ''">
+                    <!-- 未完成 -->
+                    <i type="primary" class="el-icon-edit cell-icon" @click="viewDoc(scope.row)"></i>
+                    <i type="primary" class="el-icon-delete-solid cell-icon" @click="delDocDataByDocId(scope.row)"></i>
                   </span>
                 </template>
               </el-table-column>
@@ -236,9 +231,9 @@ export default {
       ],
       evidenceTableDatas: [],
       rules: {
-        // caseNumber: [
-        //   { required: true, message: '案号必须填写', trigger: 'blur' }
-        // ],
+        caseNumber: [
+          { required: true, message: '案号必须填写', trigger: 'blur' }
+        ],
         // caseName: [
         //   { required: true, message: '案由必须填写', trigger: 'blur' }
         // ],
@@ -253,7 +248,7 @@ export default {
     },
     submitCaseDoc(handleType) {
       //参数  提交类型 、formRef、有无下一环节按钮、下一环节有多个时有弹窗
-      this.com_submitCaseForm(handleType, 'caseLinkDataForm', true, '');
+      this.com_submitCaseForm(handleType, 'docForm', true, '');
     },
     //下一环节
     continueHandle() {
@@ -288,7 +283,21 @@ export default {
           console.log(err);
         }
       );
-    }
+    },
+    //通过案件id和表单类型Id查询已绑定文书
+    delDocDataByDocId(data) {
+      this.$store.dispatch("delDocDataByDocId", data).then(
+        res => {
+          console.log('删除',res)
+
+          // this.docTableDatas = res.data;
+          // console.log('文书列表', this.docTableDatas)
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
   },
   mounted() {
     // this.setFormData();

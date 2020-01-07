@@ -1,7 +1,7 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
-    submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi } from "@/api/caseHandle";
+    submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi} from "@/api/caseHandle";
 
 const caseHandle = {
     state:{
@@ -123,6 +123,18 @@ const caseHandle = {
         addDocData({ commit }, data) {
             return new Promise((resolve, reject) => {
                 addDocDataApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //根据文书模板ID删除文书信息
+        delDocDataByDocId({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                delDocDataByDocIdApi(data).then(
                     res => {
                         resolve(res);
                     },
