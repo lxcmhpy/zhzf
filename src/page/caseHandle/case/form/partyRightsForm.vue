@@ -3,7 +3,7 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="partyRightsForm" :model="formData" label-width="105px">
+    <el-form ref="docForm" :model="formData" label-width="105px">
 
       <!-- <div class="header-case">
         <div class="header_left">
