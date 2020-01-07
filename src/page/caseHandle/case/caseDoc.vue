@@ -230,8 +230,8 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId(){
       let data = {
-        caseBasicinfoId: this.$route.params.id,    //案件ID
-        // casebasicInfoId : "aa0f2161e5c1ae0d2619203eb63eb78d",
+        // caseBasicinfoId: this.caseBasicinfoId,    //案件ID
+        casebasicInfoId : "aa0f2161e5c1ae0d2619203eb63eb78d",
         linkTypeId:"2c90293b6c178b55016c17c93326000f"     //环节ID
       };
       console.log(data+"1111111");
