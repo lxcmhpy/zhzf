@@ -166,6 +166,7 @@ export default {
         vehicleShipId: "",
         vehicleShipType: "",
       },
+      caseBasicinfoId: this.$route.params.id, //案件ID
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: this.$route.params.id, //案件ID
@@ -219,6 +220,8 @@ export default {
          name:row.url,
           params: {
             id: row.id,
+            //案件ID
+            caseBasicinfoId : this.caseBasicinfoId,
           }        
       });
     },
@@ -228,17 +231,19 @@ export default {
          name:row.url,
           params: {
             id: row.id,
+            //案件ID
+            caseBasicinfoId : this.caseBasicinfoId,
           }        
       });
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId(){
       let data = {
-        // caseBasicinfoId: this.$route.params.id,
-
-        casebasicInfoId : "aa0f2161e5c1ae0d2619203eb63eb78d",
-        linkTypeId:"2c90293b6c178b55016c17c93326000f"
+        caseBasicinfoId: this.$route.params.id,    //案件ID
+        // casebasicInfoId : "aa0f2161e5c1ae0d2619203eb63eb78d",
+        linkTypeId:"2c90293b6c178b55016c17c93326000f"     //环节ID
       };
+      console.log(data+"1111111");
       this.$store.dispatch("getDocListByCaseIdAndFormId", data).then(
         res => {
           this.tableDatas = res.data;
