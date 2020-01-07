@@ -198,7 +198,9 @@
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
 import checkDocFinish from './checkDocFinish'
+
 export default {
   components: {
     checkDocFinish
@@ -213,7 +215,7 @@ export default {
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: this.$route.params.id, //案件id
+        caseBasicinfoId: '', //案件id
         caseLinktypeId: "2c9029ac6c26fd72016c27247b290003", //表单类型IDer
         //表单数据
         formData: "",
@@ -252,10 +254,12 @@ export default {
     }
   },
   mixins: [mixinGetCaseApiList],
+  computed: { ...mapGetters(['caseId']) },
   inject: ['reload'],
   methods: {
     //加载表单信息
     setFormData() {
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, 'form');
     },
     submitCaseDoc(handleType) {
@@ -273,6 +277,7 @@ export default {
     },
     //查看文书
     viewDoc(row) {
+      this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
       this.$router.push({
         name: row.url,
         params: {

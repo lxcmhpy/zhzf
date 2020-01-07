@@ -136,6 +136,8 @@
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -145,7 +147,7 @@ export default {
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: this.$route.params.id, //案件id
+        caseBasicinfoId: '', //案件id
         caseLinktypeId: "2c9029ee6cac9281016cacaadf990006", //表单类型IDer
         //表单数据
         formData: "",
@@ -170,10 +172,12 @@ export default {
       },
     }
   },
+  computed:{...mapGetters(['caseId'])},
   mixins:[mixinGetCaseApiList],
   methods: {
      //加载表单信息
     setFormData(){
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
     submitCaseDoc(handleType) {

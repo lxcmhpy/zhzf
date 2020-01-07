@@ -16,6 +16,7 @@ import echarts from 'echarts'
 import 'echarts/lib/chart/graph'
 import _ from 'lodash'
 import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -177,6 +178,7 @@ export default {
     }
   },
   mixins:[mixinGetCaseApiList],
+  computed:{...mapGetters(['caseId'])},
   methods: {
     async getFlowStatusByCaseId(id) {
       console.log(id)
@@ -289,7 +291,7 @@ export default {
             console.log(params);
             let clickRouter = that.com_getCaseRouteName(params.data.linkID);
             that.$store.dispatch('deleteTabs', 'flowChart');
-            that.$router.push({name:clickRouter,params:{id:that.$route.params.id}})
+            that.$router.push({name:clickRouter})
           }
 
       })
@@ -533,7 +535,7 @@ export default {
       })
     },
     async mountedInit() {
-      this.getFlowStatusByCaseId(this.$route.params.id);
+      this.getFlowStatusByCaseId(this.caseId);
       // this.data = {
       //   completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,a36b59bd27ff4b6fe96e1b06390d204e',//已完成
       //   //责令改正2c9029ee6cac9281016caca9a0000004

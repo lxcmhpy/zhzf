@@ -183,10 +183,7 @@ export default {
     continueHandle() {
       this.$store.dispatch('deleteTabs', 'caseInfo');
       this.$router.push({
-          name: "flowChart",
-          params: {
-            id: this.caseInfo.id
-          }
+          name: "flowChart"
       })
       // this.com_whatIsNext(this.caseInfo.id);
     },

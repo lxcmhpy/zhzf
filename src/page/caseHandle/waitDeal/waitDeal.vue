@@ -52,24 +52,14 @@ export default {
     },
     clickCase(row){
       console.log(row)
+      this.$store.commit("setCaseId", row.id);
+      console.log(this.$store.state.caseId)
       this.$router.replace({
         name: 'caseInfo',
         params: {
           caseInfo: row
         }
       });
-      // let data={
-      //   caseBasicInfoId:row.id
-      // }
-      // this.$store.dispatch("getNextLink", data).then(
-      //   res => {
-      //     console.log(res);
-    
-      //   },
-      //   err => {
-      //     console.log(err);
-      //   }
-      // );
     }
   },
   created() {
