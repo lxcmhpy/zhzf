@@ -100,8 +100,14 @@ export const mixinGetCaseApiList = {
                   //   }
                   // });
                   this.nextBtnDisab = false;
-                }else{   //表单下无文书 无下一环节按钮  直接跳转下一环节
+                }else{   //表单下无文书 无下一环节按钮  直接跳转流程图
                   this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId,nextLinkDialogRef)
+                //   this.$router.push({
+                //     name: "flowChart",
+                //     params: {
+                //       id: this.caseLinkDataForm.caseBasicinfoId
+                //     }
+                // })
                 }
                 
               }

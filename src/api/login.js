@@ -39,8 +39,18 @@ export function getCaptchaApi() {
 }
 
 // 验证码渲染图片接口
-export const drawCodeImage = "/catsic/common/captcha/draw/"
-
+// export const drawCodeImage = "/catsic/common/captcha/draw/"
+export function getCapImgSrcApi(captchaId) {
+  console.log('captchaId',captchaId)
+  return request({
+    url: "/common/captcha/draw/"+captchaId,
+    method: "get",
+    showloading: true,
+    baseUrlType:1,
+    responseType: 'arraybuffer',
+    cancelToken: setCancelSource()
+  });
+}
 
 //获取菜单
 export function getMenuApi() {
