@@ -5,7 +5,7 @@ import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategory
 
 const caseHandle = {
     state:{
-
+        // caseId:
     },
     mutations:{
 
