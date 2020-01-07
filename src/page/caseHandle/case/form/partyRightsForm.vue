@@ -23,14 +23,14 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" :disabled="true" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="caseNumber" :disabled="true" clearable class="w-120" v-model="formData.caseNumber" size="small" ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseName" label="案由">
-                  <el-input ref="caseName" :disabled="true" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="caseName" :disabled="true" clearable class="w-120" v-model="formData.caseName" size="small" ></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -58,7 +58,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="tempPunishAmount" label="拟处罚决定" class="line-height13">
-                  <el-input ref="tempPunishAmount" :disabled="true" clearable class="w-120" v-model="formData.tempPunishAmount" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="tempPunishAmount" :disabled="true" clearable class="w-120" v-model="formData.tempPunishAmount" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -185,6 +185,7 @@
         </div>
       </div>
     </el-form>
+    <checkDocFinish ref="checkDocFinish"></checkDocFinish>
   </div>
 </template>
 <script>
@@ -252,7 +253,9 @@ export default {
     },
     //下一环节
     continueHandle() {
-      this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId, '');
+      // 验证
+      this.$refs.checkDocFinish.handelEdit(row);
+      // this.com_whatIsNext(this.caseLinkDataForm.caseBasicinfoId, '');
     },
     // 证据材料- 操作
     evidenceOption(data) {
