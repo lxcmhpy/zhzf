@@ -254,7 +254,7 @@ export default {
     }
   },
   mixins: [mixinGetCaseApiList],
-  computed:{...mapGetters(['caseId'])},
+  computed: { ...mapGetters(['caseId']) },
   inject: ['reload'],
   methods: {
     //加载表单信息
@@ -277,10 +277,14 @@ export default {
     },
     //查看文书
     viewDoc(row) {
+      this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+      console.log('row:',row)
       this.$router.push({
         name: row.url,
         params: {
           id: row.id,
+          docId:row.docId,
+          url:this.$route.name
         }
       });
     },
