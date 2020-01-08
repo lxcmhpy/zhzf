@@ -19,6 +19,8 @@
       <div class="tablePart">
         <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="name" label="角色名称" align="center"></el-table-column>
+          <el-table-column prop="roleGroup" label="角色组" align="center">
+          </el-table-column>
           <el-table-column prop="description" label="角色介绍" align="center"></el-table-column>
           <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center">

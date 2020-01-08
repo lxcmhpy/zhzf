@@ -1,15 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="docForm" :rules="rules" :model="docData" label-width="115px">
-
-      <div class="header-case">
-        <div class="header_left">
-          <div class="triangle"></div>
-          <div class="header_left_text">
-            返回
-          </div>
-        </div>
-      </div>
+    <el-form ref="caseInvestiForm" :rules="rules" :model="formData" label-width="115px">
       <div class="content_box">
         <div class="content">
           <div class="content_title">
@@ -21,12 +12,12 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="acceptTime" label="受案时间">
-                  <el-date-picker v-model="docData.acceptTime" type="date" placeholder="选择日期" size="small">
+                  <el-date-picker v-model="formData.acceptTime" type="date" placeholder="选择日期" size="small">
                   </el-date-picker>
                 </el-form-item>
               </div>
@@ -34,57 +25,57 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="当事人类型">
-                  <el-input ref="partyType" clearable class="w-120" v-model="docData.partyType" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="姓名">
-                  <el-input ref="party" clearable class="w-120" v-model="docData.party" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="性别">
-                  <el-input ref="partySex" clearable class="w-120" v-model="docData.partySex" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partySex" clearable class="w-120" v-model="formData.partySex" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="年龄">
-                  <el-input ref="partyAge" clearable class="w-120" v-model="docData.partyAge" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyAge" clearable class="w-120" v-model="formData.partyAge" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="身份证号">
-                  <el-input ref="partyIdNo" clearable class="w-120" v-model="docData.partyIdNo" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyIdNo" clearable class="w-120" v-model="formData.partyIdNo" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="联系电话">
-                  <el-input ref="partyTel" clearable class="w-120" v-model="docData.partyTel" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyTel" clearable class="w-120" v-model="formData.partyTel" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="住址">
-                  <el-input ref="partyAddress" clearable class="w-120" v-model="docData.partyAddress" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyAddress" clearable class="w-120" v-model="formData.partyAddress" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="调查经过">
-                  <el-input ref="investigProcess" clearable class="w-120" v-model="docData.investigProcess" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="investigProcess" clearable class="w-120" v-model="formData.investigProcess" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="违法事实">
-                  <el-input type="textarea" class="height122" v-model="docData.caseCauseDescrib" size="small" placeholder="请输入"></el-input>
+                  <el-input type="textarea" class="height122" v-model="formData.caseCauseDescrib" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -131,20 +122,20 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="调查结论">
-                  <el-input v-model="docData.investigResult" type="textarea" class="height88" size="small" placeholder="请输入"></el-input>
+                  <el-input v-model="formData.investigResult" type="textarea" class="height88" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="拟处罚类型">
-                  <el-checkbox-group v-model="docData.punishType">
+                  <el-checkbox-group v-model="formData.punishType">
                     <el-row>
                       <el-col :span="4">
                         <el-checkbox label="罚款"></el-checkbox>
                       </el-col>
                       <el-col :span="9">
-                        <el-input v-model="docData.punishMoney" placeholder="请输入罚款金额（小写金额）" @change="capital()"></el-input>
+                        <el-input v-model="formData.punishMoney" placeholder="请输入罚款金额（小写金额）" @change="capital()"></el-input>
                       </el-col>
                       <el-col :span="1">
                         <!-- 有问题-不显示 -->
@@ -159,7 +150,7 @@
                         <el-checkbox label="责令改正"></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-input v-model="docData.punishCorrect" placeholder="请输入责令改正要求"></el-input>
+                        <el-input v-model="formData.punishCorrect" placeholder="请输入责令改正要求"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -167,7 +158,7 @@
                         <el-checkbox label="警告"></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-input v-model="docData.punishWarn" placeholder="请输入警告内容"></el-input>
+                        <el-input v-model="formData.punishWarn" placeholder="请输入警告内容"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -175,7 +166,7 @@
                         <el-checkbox label="没收违法所得"></el-checkbox>
                       </el-col>
                       <el-col :span="9">
-                        <el-input v-model="docData.confiscateThing" placeholder="请输入罚款金额（小写金额）" @change="capitalbtm()"></el-input>
+                        <el-input v-model="formData.confiscateThing" placeholder="请输入罚款金额（小写金额）" @change="capitalbtm()"></el-input>
                       </el-col>
                       <el-col :span="1">
                         <!-- 有问题-不显示 -->
@@ -190,7 +181,7 @@
                         <el-checkbox label="没收非法财产"></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-input v-model="docData.confiscateMoney" placeholder="请输入非法财产内容"></el-input>
+                        <el-input v-model="formData.confiscateMoney" placeholder="请输入非法财产内容"></el-input>
                       </el-col>
                     </el-row>
                     <el-row>
@@ -198,7 +189,7 @@
                         <el-checkbox label="责令停产停业、暂扣或吊销许可整合执照"></el-checkbox>
                       </el-col>
                       <el-col :span="14">
-                        <el-input v-model="docData.punishSuspend"></el-input>
+                        <el-input v-model="formData.punishSuspend"></el-input>
                       </el-col>
                     </el-row>
 
@@ -209,7 +200,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="拟重大案件">
-                  <el-radio-group v-model="docData.isMajorCase">
+                  <el-radio-group v-model="formData.isMajorCase">
                     <el-radio label="1">拟定重大案件</el-radio>
                     <el-radio label="2">非重大案件</el-radio>
                   </el-radio-group>
@@ -224,7 +215,7 @@
                     生成意见
                   </el-button>
                   <!-- 双向绑定有问题 -->
-                  <el-input type="textarea" v-model="docData.dealOpinions" class="height162" size="small"></el-input>
+                  <el-input type="textarea" v-model="formData.dealOpinions" class="height162" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -232,11 +223,19 @@
         </div>
         <!-- 悬浮按钮 -->
         <div class="float-btns">
-          <el-button type="primary" @click="addIllegalAction">
+          <el-button type="primary" @click="continueHandle">
+            <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2285" width="24" height="24">
+              <path d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z" fill="#FFFFFF" p-id="2286"></path>
+            </svg>
+            <br>
+            下一<br>环节
+          </el-button>
+          
+          <el-button type="primary" @click="submitCaseDoc(1)">
             <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
               <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF"></path>
             </svg><br>
-            提交</el-button>
+            保存</el-button>
           <el-button type="success">
             <svg t="1577415780823" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2584" width="16" height="16">
               <path d="M98 124.1V902c0 14.3 11.6 25.9 25.9 25.9h777.9c14.3 0 25.9-11.6 25.9-25.9V124.1c0-14.3-11.6-25.9-25.9-25.9H123.9c-14.3 0-25.9 11.6-25.9 25.9z m207.4 37.6h414.9v191.7H305.4V161.7z m558.8 702.7H162.6V161.7h104v230.6h492.7V161.7h105v702.7z" p-id="2585" fill="#FFFFFF"></path>
@@ -251,10 +250,13 @@
   </div>
 </template>
 <script>
+import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
-      docData: {
+      formData: {
         caseNumber: "",
         caseName: "",
         party: "",
@@ -271,13 +273,15 @@ export default {
         investigResult: '',
         dealOpinions: '1212121',
       },
-      CaseDocDataForm: {
-        caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
-        caseDoctypeId: "123",
+      caseLinkDataForm: {
+        id: "", //修改的时候用
+        caseBasicinfoId: '', //案件ID
+        caseLinktypeId: "2c9029ee6cac9281016caca7f38e0002",
         //文书数据
-        docData: "",
+        formData: "",
         status: "",
       },
+      handleType: 0,
       tableDatas: [{
         index: '1',
         name: '四川',
@@ -313,52 +317,21 @@ export default {
       confiscateThingCapital: '',
     }
   },
+  computed:{...mapGetters(['caseId'])},
+  mixins:[mixinGetCaseApiList],
   methods: {
-    // 获取带入信息
-    getCaseBasicInfo() {
-      let data = {
-        id: "2c902ae66ae2acc4016ae376f6f1007f"
-      };
-      this.$store.dispatch("getCaseBasicInfo", data).then(
-        res => {
-          this.docData = res.data;
-          // 多选需要数组
-          this.docData.punishType = ['警告'];
-          this.docData.dealOpinions = '';
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    //加载表单信息
+    setFormData(){
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
-
-    // 提交表单
-    addIllegalAction() {
-      console.log(this.CaseDocDataForm);
-      this.$refs["docForm"].validate(valid => {
-        if (valid) {
-          this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
-            res => {
-              console.log("保存文书", res);
-              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
-                type: "success",
-                message: "保存成功"
-
-              });
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-
-      });
-      // console.log(this.CaseDocDataForm.docData);
-
+    //保存表单数据
+    submitCaseDoc(handleType){
+      this.com_submitCaseForm(handleType,'caseInvestiForm',true);
+    },
+    //下一环节
+    continueHandle() {
+      this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
     // 暂存
     save() {
@@ -458,16 +431,16 @@ export default {
     },
     // 生成意见
     generateOpinions() {
-      this.docData.dealOpinions = `经过调查核实：当事人this.docData.party+违法行为，违反了+违法条例+有证据材料（列举：上面证据材料内容）
+      this.docData.dealOpinions = `经过调查核实：当事人this.formData.party+违法行为，违反了+违法条例+有证据材料（列举：上面证据材料内容）
 证明该案中违法事实清楚，依据+处罚条款+拟给予当事人+当事人姓名+拟处罚类型1（名称+后续说明）+
 拟处罚类型2+……+拟处罚类型N+的行政处罚
                                           当否，请批示。 `;
-      console.log('dealOpinions', this.docData.dealOpinions)
+      console.log('dealOpinions', this.formData.dealOpinions)
     },
   },
-  mounted() {
-    this.getCaseBasicInfo();
-  },
+  created() {
+    this.setFormData();
+  }
 }
 </script>
 

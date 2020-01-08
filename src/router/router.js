@@ -57,6 +57,14 @@ export const homeRouter = {
           component: () => import("@/page/caseHandle/case/side.vue")
         },
         {
+          path: "/liveReport",
+          name: "liveReport",
+          meta: {
+            title: "现场笔录"
+          },
+          component: () => import("@/page/caseHandle/case/liveReport.vue")
+        },
+        {
           path: "/dentail",
           name: "dentail",
           meta: {
@@ -111,6 +119,15 @@ export const homeRouter = {
             title: "调查类文书"
           },
           component: () => import("@/page/caseHandle/case/caseDoc.vue")
+        },
+        //违法行为通知书
+        {
+          path: "/illegalAction",
+          name: "illegalAction",
+          meta: {
+            title: "违法行为通知书"
+          },
+          component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
         },
         {
           path: "/inquirieForm",
@@ -178,7 +195,7 @@ export const homeRouter = {
         },
         {
           path: "/enforceDecide",
-          name: "enforceDecide",
+          name: "enforceDecide", 
           meta: {
             title: "行政强制执行决定书-pdf"
           },
@@ -261,6 +278,15 @@ export const homeRouter = {
             title: "当事人权利"
           },
           component: () => import("@/page/caseHandle/case/form/partyRightsForm.vue")
+        },
+        //违法行为通知书
+        {
+          path: "/illegalActionForm",
+          name: "illegalActionForm",
+          meta: {
+            title: "违法行为通知书"
+          },
+          component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
         },
         //违法行为通知书PDF
         {

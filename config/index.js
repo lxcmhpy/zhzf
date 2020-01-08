@@ -12,9 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       "/catsic": {
-        // target: "http://172.16.169.84:8888",
-        // target: "http://172.16.169.83:8888",
-        target: "http://172.16.169.62:8888",
+        // target: "http://124.192.215.4:8083",
+        target: "http://172.16.169.78:8888",
         // target: "http://127.0.0.1:8888",
         changeOrigin: true,
       }
@@ -52,7 +51,6 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-
     /**
      * Source Maps
      */

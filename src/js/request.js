@@ -52,9 +52,9 @@ service.interceptors.request.use(
     if (getToken("TokenKey")) {
       // config.headers["accessToken"] = "CATSIC_TOKEN_PRE:" + getToken("TokenKey");
       config.headers["accessToken"] = getToken("TokenKey");
-
     }
-    //console.log(config);
+    
+    // console.log(config);
     return config;
   },
   error => {
@@ -86,7 +86,8 @@ service.interceptors.response.use(
         removeToken()
         return Promise.reject(response.data);
       }else{
-        httpErrorStr(response.data.code);
+        // httpErrorStr(response.data.code);
+        return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善
       }
     } else {
       return Promise.reject(response);

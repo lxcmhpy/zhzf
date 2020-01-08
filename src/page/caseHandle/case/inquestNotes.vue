@@ -13,12 +13,12 @@
         <div class="content_title">
           勘验笔录
         </div>
-        <el-form ref="docForm" :model="docData" label-width="135px">
+        <el-form ref="docForm" :model="docData" label-width="135px" :rules="rules">
           <div class="border_blue"></div>
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item label="案由：">
+                <el-form-item prop="caseName" label="案由：">
                   <el-input type="textarea" ref="caseName" clearable class="height66" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
@@ -26,22 +26,15 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="勘验时间：">
-                  <el-date-picker type="datetime"
-                    format="yyyy-MM-dd HH:mm"
-                    value-format="yyyy-MM-dd HH:mm" ref="inquestStartTime" clearable class="w-120" v-model="docData.inquestStartTime" size="small" placeholder="请输入"></el-date-picker>
-                  <!-- <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input> -->
-                </el-form-item>
-              </div>
-              <div class="col">
-                <el-form-item label="至">
+                  <el-date-picker type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" ref="inquestStartTime" clearable class="w-120" v-model="docData.inquestStartTime" size="small" placeholder="请输入"></el-date-picker>
+                  至
                   <el-time-picker ref="inquestEndTime" clearable class="w-120" v-model="docData.inquestEndTime" size="small" placeholder="请输入"></el-time-picker>
-                  <!-- <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
             </div>
             <div class="rows">
               <div class="col">
-                <el-form-item label="勘验场所：">
+                <el-form-item prop="inquestAddress" label="勘验场所：">
                   <el-input ref="inquestAddress" clearable class="w-120" v-model="docData.inquestAddress" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
@@ -91,7 +84,7 @@
           </div>
           <div class="border_blue"></div>
           <div class="content_form bottom_form">
-            <el-row >
+            <el-row>
               <el-col :span="24">
                 <div>
                   现场人员基本情况：
@@ -100,7 +93,7 @@
             </el-row>
             <div class="rows">
               <div class="col">
-                <el-form-item label="当事人（代理人）姓名：" class="line-height13">
+                <el-form-item prop="party" label="当事人（代理人）姓名：" class="line-height13">
                   <el-input ref="party" clearable class="w-120" v-model="docData.party" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
@@ -157,10 +150,10 @@
                   <el-input ref="invitedUnitAndPosition" clearable class="w-120" v-model="docData.invitedUnitAndPosition" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
-            </div> 
+            </div>
             <div class="rows">
               <div class="col">
-                <el-form-item label="记录人：">
+                <el-form-item prop="recorder" label="记录人：">
                   <el-input ref="recorder" clearable class="w-120" v-model="docData.recorder" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
@@ -172,7 +165,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="勘验情况及结果：" class="line-height13">
+                <el-form-item prop="inquestResult" label="勘验情况及结果：" class="line-height13">
                   <el-input type="textarea" ref="inquestResult" clearable class="height106" v-model="docData.inquestResult" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
@@ -182,103 +175,98 @@
         </el-form>
       </div>
     </div>
-      <!-- 悬浮按钮 -->
-      <div class="float-btns">
-        <el-button type="primary" @click="addIllegalAction">
-          <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
-            <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF"></path>
-          </svg><br>
-          提交</el-button>
-        <el-button type="success">
-          <svg t="1577415780823" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2584" width="16" height="16">
-            <path d="M98 124.1V902c0 14.3 11.6 25.9 25.9 25.9h777.9c14.3 0 25.9-11.6 25.9-25.9V124.1c0-14.3-11.6-25.9-25.9-25.9H123.9c-14.3 0-25.9 11.6-25.9 25.9z m207.4 37.6h414.9v191.7H305.4V161.7z m558.8 702.7H162.6V161.7h104v230.6h492.7V161.7h105v702.7z" p-id="2585" fill="#FFFFFF"></path>
-            <path d="M605.1 191.9h70v128h-70z" p-id="2586" fill="#FFFFFF"></path>
-          </svg>
-          <br>
-          暂存</el-button>
-      </div>
+    <!-- 悬浮按钮 -->
+    <div class="float-btns">
+      <el-button type="primary" @click="addDocData(1)">
+        <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
+          <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF"></path>
+        </svg><br>
+        提交</el-button>
+      <el-button type="success" @click="addDocData(0)">
+        <svg t="1577415780823" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2584" width="16" height="16">
+          <path d="M98 124.1V902c0 14.3 11.6 25.9 25.9 25.9h777.9c14.3 0 25.9-11.6 25.9-25.9V124.1c0-14.3-11.6-25.9-25.9-25.9H123.9c-14.3 0-25.9 11.6-25.9 25.9z m207.4 37.6h414.9v191.7H305.4V161.7z m558.8 702.7H162.6V161.7h104v230.6h492.7V161.7h105v702.7z" p-id="2585" fill="#FFFFFF"></path>
+          <path d="M605.1 191.9h70v128h-70z" p-id="2586" fill="#FFFFFF"></path>
+        </svg>
+        <br>
+        暂存</el-button>
     </div>
+  </div>
 </template>
 <script>
+import { mixinGetCaseApiList } from "@/js/mixins";
 export default {
   data() {
     return {
       docData: {
       },
-      CaseDocDataForm: {
-        caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
-        caseDoctypeId: "123",
+      caseDocDataForm: {
+        id: "",   //修改的时候用
+        caseBasicinfoId: "aa0f2161e5c1ae0d2619203eb63eb78d",   //案件ID
+        caseDoctypeId: "2c9029ab655639600165564481f70001",    //文书类型ID
         //文书数据
         docData: "",
-        status: "",
+        status: "",   //提交状态
       },
-
+      handleType: "",  // 0 暂存  1  提交
       rules: {
-        caseNumber: [
-          { required: true, message: '案号必须填写', trigger: 'blur' }
+        inquestAddress: [
+          { required: true, message: '勘验场所必须填写', trigger: 'blur' }
         ],
         caseName: [
           { required: true, message: '案由必须填写', trigger: 'blur' }
         ],
-        partyType: [
-          { required: true, message: '当事人类型必须填写', trigger: 'blur' }
+        party: [
+          { required: true, message: '当事人必须填写', trigger: 'blur' }
         ],
-        closeResult: [
-          { required: true, message: '处理结果必须填写', trigger: 'blur' }
+        recorder: [
+          { required: true, message: '记录人必须填写', trigger: 'blur' }
         ],
-        closeSituation: [
-          { required: true, message: '执行情况必须填写', trigger: 'blur' }
+        inquestResult: [
+          { required: true, message: '勘验情况及结果必须填写', trigger: 'blur' }
         ],
       },
     }
   },
+  mixins: [mixinGetCaseApiList],
   methods: {
-    // 获取带入信息
-    getCaseBasicInfo() {
+    //根据案件ID和文书Id获取数据
+    getDocDataByCaseIdAndDocId() {
       let data = {
-        id: "2c902ae66ae2acc4016ae376f6f1007f"
+        // caseId: "aa0f2161e5c1ae0d2619203eb63eb78d",
+        caseId: this.$route.params.caseBasicinfoId,
+        docId: "2c9029ab655639600165564481f70001"
       };
-      this.$store.dispatch("getCaseBasicInfo", data).then(
+      console.log(data + "2222")
+      this.com_getDocDataByCaseIdAndDocId(data)
+    },
+    // 提交表单
+    addDocData(handleType) {
+      this.com_addDocData(handleType, 'docForm').then(
         res => {
-          this.docData = res.data;
+          this.$message({
+            type: "success",
+            message: "保存成功",
+          });
+          this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+          this.$router.push({
+            name: 'caseDoc',
+            // name: row.url,
+            params: {
+              // id: row.id,
+              // //案件ID
+              // caseBasicinfoId: this.caseBasicinfoId,
+            }
+          });
         },
         err => {
           console.log(err);
         }
       );
-    },
-
-    // 提交表单
-    addIllegalAction() {
-      console.log(this.CaseDocDataForm);
-      this.$refs["docForm"].validate(valid => {
-        if (valid) {
-          this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
-            res => {
-              console.log("保存文书", res);
-              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
-                type: "success",
-                message: "保存成功"
-
-              });
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-
-      });
-      // console.log(this.CaseDocDataForm.docData);
 
     },
   },
   mounted() {
-    this.getCaseBasicInfo();
+    this.getDocDataByCaseIdAndDocId();
   },
 
 }

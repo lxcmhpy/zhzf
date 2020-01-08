@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="docForm"  :model="docData" label-width="115px">
+    <el-form ref="docForm"  :model="caseLinkDataFor" label-width="115px">
 
       <div class="header-case">
         <div class="header_left">
@@ -21,19 +21,19 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="caseNumber" clearable class="w-120" v-model="caseLinkDataForm.caseNumber" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="caseStatus" label="案件状态">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="docData.caseStatus" size="small" placeholder="请输入" disabled></el-input>
+                  <el-input ref="caseNumber" clearable class="w-120" v-model="caseLinkDataForm.caseStatus" size="small" placeholder="请输入" disabled></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="acceptTime" label="受案时间">
-                  <el-date-picker v-model="docData.acceptTime" type="date" placeholder="选择日期" size="small">
+                  <el-date-picker v-model="caseLinkDataForm.acceptTime" type="date" placeholder="选择日期" size="small">
                   </el-date-picker>
                 </el-form-item>
               </div>
@@ -41,33 +41,33 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="案由">
-                  <el-input ref="partyType" clearable class="w-120" v-model="docData.partyType" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyType" clearable class="w-120" v-model="caseLinkDataForm.partyType" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="当事人">
-                  <el-input ref="partyType" clearable class="w-120" v-model="docData.partyType" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyType" clearable class="w-120" v-model="caseLinkDataForm.partyType" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="partyType" label="车/船信息">
-                  <el-input ref="partyType" clearable class="w-120" v-model="docData.partyType" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyType" clearable class="w-120" v-model="caseLinkDataForm.partyType" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="案发地点">
-                  <el-input ref="party" clearable class="w-120" v-model="docData.party" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="party" clearable class="w-120" v-model="caseLinkDataForm.party" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="基本情况">
-                  <el-input type="textarea" class="height106" v-model="docData.caseCauseDescrib" size="small" placeholder="请输入"></el-input>
+                  <el-input type="textarea" class="height106" v-model="caseLinkDataForm.caseCauseDescrib" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -78,19 +78,19 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="执法人员">
-                  <el-input ref="party" clearable class="w-120" v-model="docData.party" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="party" clearable class="w-120" v-model="caseLinkDataForm.party" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="当前环节">
-                  <el-input ref="party" clearable class="w-120" v-model="docData.party" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="party" clearable class="w-120" v-model="caseLinkDataForm.party" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚类型">
-                  <el-select v-model="docData.party" placeholder="请选择">
+                  <el-select v-model="caseLinkDataForm.party" placeholder="请选择">
                     <el-option label="行政处罚" value="shanghai"></el-option>
                     <el-option label="处罚类型二" value="beijing"></el-option>
                   </el-select>
@@ -102,21 +102,21 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚金额">
-                  <el-input ref="party" clearable class="w-120" v-model="docData.party" size="small" placeholder="请输入">
+                  <el-input ref="party" clearable class="w-120" v-model="caseLinkDataForm.party" size="small" placeholder="请输入">
                        <span slot="prefix" >￥</span>
                   </el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="执行情况">
-                  <el-input ref="party" clearable class="w-120" v-model="docData.party" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="party" clearable class="w-120" v-model="caseLinkDataForm.party" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="结案时间">
-                  <el-date-picker v-model="docData.acceptTime" type="date" placeholder="选择日期" size="small">
+                  <el-date-picker v-model="caseLinkDataForm.acceptTime" type="date" placeholder="选择日期" size="small">
                   </el-date-picker>
                 </el-form-item>
               </div>
@@ -141,7 +141,7 @@
 export default {
   data() {
     return {
-      docData: {
+      caseLinkDataForm: {
         caseStatus: "办理中",
         caseNumber: "",
         caseName: "",
@@ -163,7 +163,7 @@ export default {
         caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
         caseDoctypeId: "123",
         //文书数据
-        docData: "",
+        caseLinkDataFor: "",
         status: "",
       },
       tableDatas: [{
@@ -206,10 +206,10 @@ export default {
       };
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
-          this.docData = res.data;
+          this.caseLinkDataFor = res.data;
           // 多选需要数组
-          this.docData.punishType = ['警告'];
-          this.docData.dealOpinions = '';
+          this.caseLinkDataFor.punishType = ['警告'];
+          this.caseLinkDataFor.dealOpinions = '';
         },
         err => {
           console.log(err);
@@ -242,7 +242,7 @@ export default {
         // }
 
     //   });
-      // console.log(this.CaseDocDataForm.docData);
+      // console.log(this.CaseDocDataForm.caseLinkDataFor);
 
     },
     // 暂存

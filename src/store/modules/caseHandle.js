@@ -1,14 +1,18 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
-    ,getFormDataByCaseIdAndFormIdApi,addFormDataApi ,
-    submitPdfApi,approvalPdfApi,getNextLinkAPi} from "@/api/caseHandle";
+    ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
+    submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi} from "@/api/caseHandle";
+
 
 const caseHandle = {
     state:{
-
+        caseId:'' ,  //案件id
     },
     mutations:{
-
+        //设置caseId
+        setCaseId(state,data){
+            state.caseId = data;
+        }
     },
     actions:{
         //获取执法门类
@@ -131,6 +135,18 @@ const caseHandle = {
                     })
             })
         },
+        //根据文书模板ID删除文书信息
+        delDocDataByDocId({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                delDocDataByDocIdApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
         //根据案件ID和文书模板ID查找文书信息
         getDocDataByCaseIdAndDocId({ commit }, data) {
             return new Promise((resolve, reject) => {
@@ -180,6 +196,19 @@ const caseHandle = {
                     })
             })
         },
+
+        //通过案件id和表单类型Id查询已绑定文书
+        getDocListByCaseIdAndFormId({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getDocListByCaseIdAndFormIdApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
         //pdf页的提交
         submitPdf({ commit }, data) {
             return new Promise((resolve, reject) => {
@@ -192,6 +221,19 @@ const caseHandle = {
                     })
             })
         },
+        //修改文书状态
+        saveOrUpdateLink({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                saveOrUpdateLinkApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+
         //pdf页的审批
         approvalPdf({ commit }, data) {
             return new Promise((resolve, reject) => {
@@ -216,6 +258,32 @@ const caseHandle = {
                     })
             })
         },
+        //点击下一环节  更改流程图状态
+        setFlowStatus({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                setFlowStatusAPi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        
+        //查询审批角色列表 
+        getApprovePeople({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getApprovePeopleApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+
     }
 }
 export default caseHandle

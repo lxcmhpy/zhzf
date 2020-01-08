@@ -15,6 +15,8 @@
 import echarts from 'echarts'
 import 'echarts/lib/chart/graph'
 import _ from 'lodash'
+import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -175,10 +177,14 @@ export default {
       data: {}
     }
   },
+  mixins:[mixinGetCaseApiList],
+  computed:{...mapGetters(['caseId'])},
   methods: {
     async getFlowStatusByCaseId(id) {
+      console.log(id)
       this.$store.dispatch("getFlowStatusByCaseId", id).then(
         res => {
+          console.log('流程图',res)
           this.data = res.data;
           this.updateLinkData()
           this.updateGraphData()
@@ -278,11 +284,14 @@ export default {
       flowChart.setOption(option)
       // this.updatePosition(flowChart,option)
       // initInvisibleGraphic(flowChart,option)
+      let that = this;
       flowChart.off('click');
       flowChart.on('click', function(params){
           if (params.name) {
-            debugger
-              alert(1)
+            console.log(params);
+            let clickRouter = that.com_getCaseRouteName(params.data.linkID);
+            that.$store.dispatch('deleteTabs', 'flowChart');
+            that.$router.push({name:clickRouter})
           }
 
       })
@@ -526,19 +535,19 @@ export default {
       })
     },
     async mountedInit() {
-      // this.getFlowStatusByCaseId(this.$route.params.id)
-      this.data = {
-        completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,a36b59bd27ff4b6fe96e1b06390d204e',//已完成
-        //责令改正2c9029ee6cac9281016caca9a0000004
-        doingLink: '2c9029ee6cac9281016caca9a0000004,a36b59bd27ff4b6fe96e1b06390d204h',// 进行中
-        //决定执行
-        unLockLink: '2c9029e16c753a19016c755fe1340001',// 已解锁
-        completeMainLink: '0,1,2',
-        doingMainLink: "3"
-      }
-      this.updateLinkData()
-      this.updateGraphData()
-      this.drawFlowChart()
+      this.getFlowStatusByCaseId(this.caseId);
+      // this.data = {
+      //   completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,a36b59bd27ff4b6fe96e1b06390d204e',//已完成
+      //   //责令改正2c9029ee6cac9281016caca9a0000004
+      //   doingLink: '2c9029ee6cac9281016caca9a0000004,a36b59bd27ff4b6fe96e1b06390d204h',// 进行中
+      //   //决定执行
+      //   unLockLink: '2c9029e16c753a19016c755fe1340001',// 已解锁
+      //   completeMainLink: '0,1,2',
+      //   doingMainLink: "3"
+      // }
+      // this.updateLinkData()
+      // this.updateGraphData()
+      // this.drawFlowChart()
 
     }
   },

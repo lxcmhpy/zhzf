@@ -1,13 +1,6 @@
 <template>
   <div class="case">
     <div>
-      <p>ly(2、4、5、6、7、8、9、10文书表单及pdf打印版)</p>
-      <ul>
-        <li @click="goDiao">调查文书</li>
-        <li @click="goWen">询问文书</li>
-      </ul>
-    </div>
-    <div>
       <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
       <br><br>
       <ul>
@@ -45,7 +38,7 @@
         <br><br>
         <!--  -->
         <li @click="goside">侧边栏</li>
-        <li @click="goDentail">案件详情</li>
+        <li @click="goDentail">案件总览</li>
         <li @click="goCaseInvestig">案件调查报告</li>
         <li @click="goCaseDoc">调查类文书(上级表单)</li>
         <br><br>
@@ -94,17 +87,9 @@ export default {
   },
 
   methods: {
+    //现场笔录
     goDiao() {
-      this.makeRoute(
-        "/liveReport",
-        "/liveReport2",
-        "/liveReport3",
-        "liveReport",
-        "liveReport2",
-        "liveReport3",
-        "调查类文书",
-        "caseHandle/case/liveReport.vue"
-      );
+      this.$router.push({ name: 'liveReport' });
     },
     goWen() {
       this.makeRoute(
@@ -223,33 +208,16 @@ export default {
     },
     //勘验笔录
     goInquestNotes() {
-      this.makeRoute(
-        "/inquest",
-        "/inquest2",
-        "/inquest3",
-        "inquest",
-        "inquest2",
-        "inquest3",
-        "勘验笔录",
-        "caseHandle/case/inquestNotes.vue"
-      );
+      this.$router.push({ name: 'inquestNotes' });
+
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {
       this.$router.push({ name: 'order' });
     },
     //违法行为通知书
-    goIllegalAction() {
-      this.makeRoute(
-        "/illegalAction",
-        "/illegalAction2",
-        "/illegalAction3",
-        "illegalAction",
-        "illegalAction2",
-        "illegalAction3",
-        "违法行为通知书",
-        "caseHandle/case/form/illegalActionForm.vue"
-      );
+    goIllegalAction() {       
+        this.$router.push({ name: 'illegalAction' });
     },
     //违法行为通知书PDF
     goIllegalActionPdf() {      
@@ -283,18 +251,7 @@ export default {
     goFilingApprovalForm() {
       this.$router.push({ name: 'filingApproval' });
     },
-    // goFilingApprovalForm(){
-    //   this.makeRoute(
-    //       "/filingApproval",
-    //       "/filingApproval2",
-    //       "/filingApproval3",
-    //       "filingApproval",
-    //       "filingApproval2",
-    //       "filingApproval3",
-    //       "立案审批表",
-    //       "caseHandle/case/form/filingApprovalForm.vue"
-    //     );
-    // },
+    
     goImportantCaseDissForm() {
       this.makeRoute(
         "/important",
@@ -361,6 +318,8 @@ export default {
 </script>
 <style lang="less">
 .case {
+  overflow: hidden;
+  position:absolute;
   & > div {
     width: 30%;
     float: left;

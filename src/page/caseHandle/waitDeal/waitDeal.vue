@@ -1,7 +1,7 @@
 <template>
   <div class="searchAndpageBox" id="waitDealBox">
     <div class="handlePart">
-      <el-button type="primary" size="medium" icon="el-icon-plus" @click="goFlowChart('2c902ae66ae2acc4016ae376f6f1007f')">流程图</el-button>
+      <!-- <el-button type="primary" size="medium" icon="el-icon-plus" @click="goFlowChart('2c902ae66ae2acc4016ae376f6f1007f')">流程图</el-button> -->
         <!-- <el-button type="primary" size="medium" icon="el-icon-plus" @click="caseRecord">立案登记</el-button> -->
     </div>
     <div class="tablePart">
@@ -52,24 +52,14 @@ export default {
     },
     clickCase(row){
       console.log(row)
+      this.$store.commit("setCaseId", row.id);
+      console.log(this.$store.state.caseId)
       this.$router.replace({
         name: 'caseInfo',
         params: {
           caseInfo: row
         }
       });
-      // let data={
-      //   caseBasicInfoId:row.id
-      // }
-      // this.$store.dispatch("getNextLink", data).then(
-      //   res => {
-      //     console.log(res);
-    
-      //   },
-      //   err => {
-      //     console.log(err);
-      //   }
-      // );
     }
   },
   created() {

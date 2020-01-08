@@ -120,6 +120,17 @@ export function addDocDataApi(data) {
   });
 }
 
+//根据文书模板ID删除文书信息
+export function delDocDataByDocIdApi(data) { 
+  console.log(data);
+  return request({
+    url: "/doc/data/findByCaseIdAndDocId/"+data.id,
+    method: "get",
+    // params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
 //根据案件ID和文书模板ID查找文书信息
 export function getDocDataByCaseIdAndDocIdApi(data) { 
   console.log(data);
@@ -169,12 +180,33 @@ export function queryCaseBasicInfoListPageApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//通过案件id和表单类型Id查询已绑定文书
+export function getDocListByCaseIdAndFormIdApi(data){
+  return request({
+    url: "/doc/caseLinkDoc/findListByCaseIdAndLinkTypeId/"+data.casebasicInfoId+"/"+data.linkTypeId,
+    method: "get",
+    // params:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
 //pdf页的提交
 export function submitPdfApi(data) { 
   return request({
     url: "/doc/linkData/jumpNextLink",
     method: "post",
     data:vm.$qs.stringify(data),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+//修改文书状态
+export function saveOrUpdateLinkApi(data){
+  return request({
+    url: "/doc/caseRelevantMaterials/saveOrUpdateLink",
+    method: "post",
+    // params:data,
+    data: vm.$qs.stringify(data),
     showloading: true,
     cancelToken: setCancelSource()
   });
@@ -201,3 +233,23 @@ export function getNextLinkAPi(caseBasicInfoId) {
   });
 }
 
+//点击下一环节  更改流程图状态
+export function setFlowStatusAPi(data) { 
+  return request({
+    url: "doc/linkData/jumpNextStep",
+    method: "post",
+    data:data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//查询审批角色列表 
+export function getApprovePeopleApi(caseBasicInfoId) { 
+  return request({
+    url: "/doc/linkData/findApproveRole/"+caseBasicInfoId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
