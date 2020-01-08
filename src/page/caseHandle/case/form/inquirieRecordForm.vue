@@ -233,7 +233,7 @@ export default {
         }],
       },
       //提交方式   0 暂存   1 提交
-      handleType:"",
+      handleType: "",
       docData: {
         afsj: '',
         inquireNum: '',
@@ -310,6 +310,7 @@ export default {
     getCaseBasicInfo() {
       let data = {
         id: "2c902ae66ae2acc4016ae376f6f1007f"
+        // id: this.$route.params.docId
       };
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
@@ -334,7 +335,16 @@ export default {
               // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
               this.$message({
                 type: "success",
-                message: "保存成功",                
+                message: "保存成功",
+              });
+              this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+              this.$router.push({
+                name: this.$route.params.url,
+                params: {
+                  // id: row.id,
+                  // //案件ID
+                  // caseBasicinfoId: this.caseBasicinfoId,
+                }
               });
             },
             err => {
