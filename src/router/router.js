@@ -369,8 +369,51 @@ export const homeRouter = {
           },
           component: () => import("@/components/flowChart/flowChart.vue")
         },
-
-        
+        //行政处罚决定书
+        {
+          path: "/punishDecisionDoc",
+          name: "punishDecisionDoc",
+          meta: {
+            title: "行政处罚决定书-doc"
+          },
+          component: () => import("@/page/caseHandle/case/caseDocument/punishDecisionDoc.vue")
+        },
+        //勘验笔录-doc
+        {
+          path: "/inquestNotesDoc",
+          name: "inquestNotesDoc",
+          meta: {
+            title: "勘验笔录-doc"
+          },
+          component: () => import("@/page/caseHandle/case/caseDocument/inquestNotesDoc.vue")
+        },
+        //抽样取样凭证-doc
+        {
+          path: "/sampleEvidenceDoc",
+          name: "sampleEvidenceDoc",
+          meta: {
+            title: "抽样取样凭证-doc"
+          },
+          component: () => import("@/page/caseHandle/case/caseDocument/sampleEvidenceDoc.vue")
+        },
+        //现场笔录-doc
+        {
+          path: "/sceneNotesDoc",
+          name: "sceneNotesDoc",
+          meta: {
+            title: "现场笔录-doc"
+          },
+          component: () => import("@/page/caseHandle/case/caseDocument/sceneNotesDoc.vue")
+        },
+        //询问笔录-doc
+        {
+          path: "/inquiryNotesDoc",
+          name: "inquiryNotesDoc",
+          meta: {
+            title: "询问笔录-doc"
+          },
+          component: () => import("@/page/caseHandle/case/caseDocument/inquiryNotesDoc.vue")
+        },
       ]
     }
   ]

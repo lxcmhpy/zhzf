@@ -5,6 +5,15 @@
       <ul>
         <li @click="goDiao">现场笔录</li>
         <li @click="goWen">询问文书</li>
+
+        <br><br>
+
+        文书：
+        <li @click="goPunishDecisionDoc">行政处罚决定书</li>
+        <li @click="goInquestNotesDoc">勘验笔录</li>
+        <li @click="goSampleEvidenceDoc">抽样取样凭证</li>
+        <li @click="goSceneNotesDoc">现场笔录</li>
+        <li @click="goInquiryNotesDoc">询问笔录</li>
       </ul>
     </div>
     <div>
@@ -109,6 +118,22 @@ export default {
         "问询",
         "caseHandle/case/wen.vue"
       );
+    },
+    goInquestNotesDoc(){
+      this.$router.push({ name: 'inquestNotesDoc' });
+    },
+    goPunishDecisionDoc(){
+      this.$router.push({ name: 'punishDecisionDoc' });
+    },
+    //抽样取样凭证Doc
+    goSampleEvidenceDoc(){
+      this.$router.push({ name: 'sampleEvidenceDoc' });
+    },
+    goSceneNotesDoc(){
+      this.$router.push({ name: 'sceneNotesDoc' });
+    },
+    goInquiryNotesDoc(){
+      this.$router.push({ name: 'inquiryNotesDoc' });
     },
     // 案件调查报告
     goCaseInvestig() {
