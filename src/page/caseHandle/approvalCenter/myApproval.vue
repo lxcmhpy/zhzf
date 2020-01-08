@@ -50,7 +50,7 @@ export default {
     //获取待我审批的数据    接口暂时使用审批中的，稍后修改
     getMyApprovalCase() {
       let data = {
-        flag: 3,
+        flag: 4,
         userId: iLocalStroage.gets("userInfo").id,
         current: this.currentPage,
         size: this.pageSize,

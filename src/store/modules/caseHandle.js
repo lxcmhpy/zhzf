@@ -100,9 +100,9 @@ const caseHandle = {
             })
         },
         //查询机构下的执法人员
-        findLawOfficerList(){
+        findLawOfficerList({ commit },organId){
             return new Promise((resolve, reject) => {
-                findLawOfficerListApi().then(
+                findLawOfficerListApi(organId).then(
                     res => {
                         resolve(res);
                     },

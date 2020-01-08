@@ -11,24 +11,24 @@
         <div>经办机构负责人</div>
         <div>
           <el-tag
-            :key="tag"
-            v-for="tag in people1"
+            :key="tag.userId"
+            v-for="tag in firstApprovePeople"
             closable
             :disable-transitions="false"
             @close="deleteOne(tag)"
-          >{{tag}}</el-tag>
+          >{{tag.userName}}</el-tag>
         </div>
       </div>
       <div class="part">
         <div>执法部门负责人</div>
         <div>
           <el-tag
-            :key="tag"
-            v-for="tag in people2"
+            :key="tag.userId"
+            v-for="tag in secondApprovePeople"
             closable
             :disable-transitions="false"
             @close="deleteOne(tag)"
-          >{{tag}}</el-tag>
+          >{{tag.userName}}</el-tag>
         </div>
       </div>
     </div>
@@ -44,8 +44,8 @@ export default {
   data() {
     return {
       visible: false,
-      people1:['张三','李四'],
-      people2:['王吧'],
+      firstApprovePeople:[],
+      secondApprovePeople:[],
       caseInfo:"",
     };
   },
@@ -66,7 +66,9 @@ export default {
       console.log(this.caseInfo)
       this.$store.dispatch("getApprovePeople",this.caseInfo.caseId).then(
         res => {
-         console.log(res)
+         console.log(res);
+          this.firstApprovePeople = res.data[1].approveUserVo;
+          this.secondApprovePeople = res.data[2].approveUserVo;
         },
         err => {
           console.log(err);
@@ -74,12 +76,17 @@ export default {
       );
     },
     deleteOne(tag){
-        this.people1.splice(this.people1.indexOf(tag), 1);
+      this.firstApprovePeople.splice(this.firstApprovePeople.indexOf(tag), 1);
     },
     deleteTwo(tag){
-        this.people2.splice(this.people2.indexOf(tag), 1);
+      this.secondApprovePeople.splice(this.secondApprovePeople.indexOf(tag), 1);
     },
     submitPdf(){
+      // let data={
+      //   caseId:this.caseInfo.caseId,
+      //   caseLinktypeId:this.caseInfo.caseLinktypeId,
+        
+      //   }
         this.$store.dispatch("submitPdf", this.caseInfo).then(
         res => {
          console.log('pdf提交',res);
@@ -87,6 +94,7 @@ export default {
                 type: "success",
                 message: "提交成功"
             });
+            this.$store.dispatch("deleteTabs", this.$route.name);
             this.$store.commit("setCaseId", this.caseInfo.caseId);
             this.$router.push({
               name: 'flowChart'

@@ -170,6 +170,13 @@ export default {
               caseTypeId = item.caseTypeId;
             }
           })
+          let cateName = ''; //执法门类name
+          this.lawCateList.forEach(item => {
+            if (item.cateId == this.caseRegisterForm.cateId) {
+              cateName = item.cateName;
+              return;
+            } 
+          });
           let someCaseInfo = {
             illageAct: this.caseRegisterForm.illageAct,
             illageActId: this.illageActId,
@@ -178,7 +185,9 @@ export default {
                 ? "一般程序"
                 : "简易程序",
             caseType: this.caseRegisterForm.caseType,
-            caseTypeId:caseTypeId
+            caseTypeId:caseTypeId,
+            cateId:this.caseRegisterForm.cateId,
+            cateName:cateName 
           };
           iLocalStroage.sets("someCaseInfo", someCaseInfo);
           this.makeRoute(
