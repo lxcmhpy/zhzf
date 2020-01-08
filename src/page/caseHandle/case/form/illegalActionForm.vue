@@ -94,7 +94,7 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="联系电话 ：">
+                <el-form-item label="联系电话：">
                   <el-input ref="partyTel" clearable class="w-120" v-model="formData.partyTel" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>

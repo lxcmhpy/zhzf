@@ -37,6 +37,7 @@
       <ul>
         <br><br>
         <!--  -->
+        <li @click="goModle">标准文书模板</li>
         <li @click="goside">侧边栏</li>
         <li @click="goDentail">案件总览</li>
         <li @click="goCaseInvestig">案件调查报告</li>
@@ -283,6 +284,10 @@ export default {
     //当事人权利
     goPartyRights() {
       this.$router.push({ name: 'partyRights' });
+    },
+    //当事人权利
+    goModle() {
+      this.$router.push({ name: 'modle' });
     },
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
       //path不可以重复  name也不可以重复
