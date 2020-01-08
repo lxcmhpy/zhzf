@@ -15,12 +15,12 @@
         </p>
         <div>
           <el-tag
-            :key="tag"
+            :key="tag.id"
             v-for="tag in checkedUser"
             closable
             :disable-transitions="false"
             @close="deleteUser(tag)"
-          >{{tag}}</el-tag>
+          >{{tag.lawOfficerName}}</el-tag>
         </div>
       </div>
       <div class="choose">
@@ -38,11 +38,25 @@
             @change="handleCheckAllChange"
           >全选</el-checkbox>
           <div style="margin: 15px 0;"></div>
-          <el-checkbox-group v-model="checkedUser" @change="handleCheckedUserChange">
-            <el-checkbox v-for="(user,index) in userList" :label="user.lawOfficerName" :key="user.id">
+          <el-checkbox-group v-model="checkedUserId" @change="handleCheckedUserChange">
+            <el-checkbox
+              v-for="(user,index) in userList"
+              :label="user.id"
+              :key="user.id"
+              :disabled="user.lawOfficerName == currentUserName ? true : false"
+            >
               <span class="name">{{user.lawOfficerName}}</span>
-              <el-select v-model="selectedNumber[index]" placeholder="请选择">
-                <el-option v-for="item in user.lawOfficerCards" :key="item" :label="item" :value="item"></el-option>
+              <el-select
+                v-model="selectedNumber[index]"
+                placeholder="请选择"
+                @change="changeLawOfficerCards($event,user.lawOfficerCardsAndId)"
+              >
+                <el-option
+                  v-for="item in user.lawOfficerCardsAndId.lawOfficerCards"
+                  :key="item"
+                  :label="item"
+                  :value="item"
+                ></el-option>
               </el-select>
             </el-checkbox>
           </el-checkbox-group>
@@ -56,6 +70,8 @@
   </el-dialog>
 </template>
 <script>
+import iLocalStroage from "@/js/localStroage";
+
 export default {
   data() {
     return {
@@ -63,21 +79,22 @@ export default {
       isIndeterminate: true,
       checkAll: false,
       checkedUser: [], //选中的人员
-      userList: [
-        // { id: 1, name: "zhangsan", number: ["1232433", "21321324324"] },
-        // { id: 2, name: "zhangsan2", number: ["1232433", "21321324324"] },
-        // { id: 3, name: "zhangsan3", number: ["1232433", "21321324324"] }
-      ], //全部人员
+      userList: [], //全部人员
       selectedNumber: [],
-      alreadyChooseLawPerson:[],
+      alreadyChooseLawPerson: [], //信息采集页传来的
+      currentUserName: iLocalStroage.gets("userInfo").username, //当前登录用户的username
+      checkedUserId: []
     };
   },
   inject: ["reload"],
   methods: {
-    showModal(alreadyChooseLawPerson) {
+    showModal(alreadyChooseLawPersonId, inforCollectLawPerson) {
       this.visible = true;
-      this.alreadyChooseLawPerson = alreadyChooseLawPerson
-      this.searchLawPerson()
+      // this.alreadyChooseLawPerson = alreadyChooseLawPerson;
+      // console.log(this.alreadyChooseLawPerson)
+      this.checkedUserId = alreadyChooseLawPersonId;
+      console.log("alreadyChooseLawPersonId", alreadyChooseLawPersonId);
+      this.searchLawPerson(alreadyChooseLawPersonId, inforCollectLawPerson);
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -88,18 +105,31 @@ export default {
       console.log(val);
       if (val) {
         this.userList.forEach(item => {
-          this.checkedUser.push(item.name);
+          //复选框存入id
+          this.checkedUserId.push(item.id);
+          //tag
+          this.checkedUser.push(item);
         });
       } else {
+        this.checkedUserId = [];
         this.checkedUser = [];
       }
-      //   this.checkedUser = val ? this.userList : [];
-      console.log(this.checkedUser);
       this.isIndeterminate = false;
     },
     //更改选中的人员
     handleCheckedUserChange(val) {
       console.log(val);
+      this.checkedUser = [];
+      val.forEach(item => {
+        this.userList.forEach(item2 => {
+          if (item == item2.id) {
+            //更新tag
+            console.log('更新tag',item2);
+            this.checkedUser.push(item2);
+            return;
+          }
+        });
+      });
     },
     // getSelectNumber() {
     //   this.userList.forEach(item => {
@@ -107,32 +137,80 @@ export default {
     //   });
     // },
     //删掉已选中的人员
-    deleteUser(tag){
-        this.checkedUser.splice(this.checkedUser.indexOf(tag), 1);
+    deleteUser(tag) {
+      console.log(tag);
+      //当前用户不允许删除
+      if (tag.lawOfficerName == this.currentUserName) return;
+      this.checkedUser.splice(this.checkedUser.indexOf(tag), 1);
+      //更新复选框
+      this.checkedUserId.splice(this.checkedUser.indexOf(tag.id), 1);
+    },
+    //更改执法证号
+    changeLawOfficerCards(val, personData) {
+      console.log(val);
+      console.log(personData);
+      //更新选中的执法证号
+      this.userList.forEach(item => {
+        if (item.id == personData.id) {
+          item.selectLawOfficerCard = val;
+        }
+      });
     },
     //点击确定关闭弹窗 添加用户到信息采集页
-    addUserToForm(){
+    addUserToForm() {
       this.visible = false;
-      console.log('cards',this.selectedNumber)
-      this.$emit('setLawPer',this.checkedUser);
-      this.$emit('userList',this.userList);
+      this.$emit("setLawPer", this.checkedUser);
+      console.log("this.checkedUser", this.checkedUser);
+      this.$emit("userList", this.userList);
     },
     //查询执法人员
-    searchLawPerson(){
-      this.$store.dispatch("findLawOfficerList").then(
-        res => {
-         this.userList = res.data.records;
-         this.userList.forEach(item=>{
-           item.lawOfficerCards =item.lawOfficerCards.split(',');
-         })
-         this.checkedUser = this.alreadyChooseLawPerson;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    searchLawPerson(alreadyChooseLawPersonId, inforCollectLawPerson) {
+      this.$store
+        .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
+        .then(
+          res => {
+            this.userList = res.data;
+            this.userList.forEach(item => {
+              //执法证号下拉框
+              item.lawOfficerCardsAndId = {
+                id: item.id,
+                lawOfficerCards: item.lawOfficerCards.split(",")
+              };
+              //执法证号默认选中 或 从信息采集页带入
+              //  this.selectedNumber.push(item.lawOfficerCardsAndId.lawOfficerCards[0]);
+              let hasChangeCard = false;
+              let inforCollectLawPerson2 = '';
+              inforCollectLawPerson.forEach(inforCollectLawPersonItem => {
+                if (item.id == inforCollectLawPersonItem.id) {
+                  hasChangeCard = true;
+                  inforCollectLawPerson2 = inforCollectLawPersonItem;
+                }
+              });
+              if (hasChangeCard) {
+                this.selectedNumber.push(
+                  inforCollectLawPerson2.selectLawOfficerCard
+                );
+                //userList新增字段 选中的执法证号
+                item.selectLawOfficerCard =
+                  inforCollectLawPerson2.selectLawOfficerCard;
+              } else {
+                this.selectedNumber.push(
+                  item.lawOfficerCardsAndId.lawOfficerCards[0]
+                );
+                //userList新增字段 选中的执法证号
+                item.selectLawOfficerCard =
+                  item.lawOfficerCardsAndId.lawOfficerCards[0];
+              }
+            });
+            //  this.checkedUser = this.alreadyChooseLawPerson;
+            this.handleCheckedUserChange(alreadyChooseLawPersonId);
+          },
+          err => {
+            console.log(err);
+          }
+        );
     }
-  },
+  }
   // mounted() {
   //   this.getSelectNumber();
   // }

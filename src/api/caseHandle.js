@@ -88,10 +88,14 @@ export function findJudgFreedomListApi() {
   });
 }
 //查询机构下的执法人员
-export function findLawOfficerListApi() { 
+export function findLawOfficerListApi(organId) { 
+  let params={
+    organId:organId
+  }
   return request({
-    url: "/sys/lawOfficer/listPage",
+    url: "/sys/lawOfficer/listLawOfficer",
     method: "get",
+    params:params,
     showloading: true,
     cancelToken: setCancelSource()
   });

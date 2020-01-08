@@ -20,7 +20,7 @@
                     <br />
                     <input type="checkbox" />2.个人、法人及其他组织举报经核实的；
                     <br />
-                    <input type="checkbox" />3.上级机关 交办的；
+                    <input type="checkbox" />3.上级机关交办的；
                     <br />
                     <input type="checkbox" />4.下级机关 报请查处的
                     <br />

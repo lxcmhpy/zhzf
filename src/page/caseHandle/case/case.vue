@@ -1,6 +1,18 @@
 <template>
   <div class="case">
     <div>
+      <p>ly(2、4、5、6、7、8、9、10文书表单及pdf打印版)</p>
+      <ul>
+
+        文书：
+        <li @click="goPunishDecisionDoc">行政处罚决定书</li>
+        <li @click="goInquestNotesDoc">勘验笔录</li>
+        <li @click="goSampleEvidenceDoc">抽样取样凭证</li>
+        <li @click="goSceneNotesDoc">现场笔录</li>
+        <li @click="goInquiryNotesDoc">询问笔录</li>
+      </ul>
+    </div>
+    <div>
       <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
       <br><br>
       <ul>
@@ -103,6 +115,22 @@ export default {
         "问询",
         "caseHandle/case/wen.vue"
       );
+    },
+    goInquestNotesDoc(){
+      this.$router.push({ name: 'inquestNotesDoc' });
+    },
+    goPunishDecisionDoc(){
+      this.$router.push({ name: 'punishDecisionDoc' });
+    },
+    //抽样取样凭证Doc
+    goSampleEvidenceDoc(){
+      this.$router.push({ name: 'sampleEvidenceDoc' });
+    },
+    goSceneNotesDoc(){
+      this.$router.push({ name: 'sceneNotesDoc' });
+    },
+    goInquiryNotesDoc(){
+      this.$router.push({ name: 'inquiryNotesDoc' });
     },
     // 案件调查报告
     goCaseInvestig() {
