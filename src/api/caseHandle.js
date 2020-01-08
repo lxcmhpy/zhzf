@@ -88,10 +88,14 @@ export function findJudgFreedomListApi() {
   });
 }
 //查询机构下的执法人员
-export function findLawOfficerListApi() { 
+export function findLawOfficerListApi(organId) { 
+  let params={
+    organId:organId
+  }
   return request({
-    url: "/sys/lawOfficer/listPage",
+    url: "/sys/lawOfficer/listLawOfficer",
     method: "get",
+    params:params,
     showloading: true,
     cancelToken: setCancelSource()
   });
@@ -244,3 +248,12 @@ export function setFlowStatusAPi(data) {
   });
 }
 
+//查询审批角色列表 
+export function getApprovePeopleApi(caseBasicInfoId) { 
+  return request({
+    url: "/doc/linkData/findApproveRole/"+caseBasicInfoId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}

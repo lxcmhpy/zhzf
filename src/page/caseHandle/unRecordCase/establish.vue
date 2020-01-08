@@ -167,7 +167,7 @@
         </svg>
         <br />打印
       </el-button>
-      <el-button type="success" @click="goEdit">
+      <!-- <el-button type="success" @click="goEdit">
         <svg
           t="1577706400265"
           class="icon"
@@ -185,7 +185,7 @@
           />
         </svg>
         <br />编辑
-      </el-button>
+      </el-button> -->
       <el-button type="success">
         <svg
           t="1577706320726"
@@ -250,19 +250,19 @@
 <script>
 import showApprovePeople from "./showApprovePeople";
 import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
       caseNumber: "010-123456",
-      caseId: this.$route.params.id, //案件id
       // tableData: {},
       formData: {
         partyType: "个人"
       },
       caseLinkDataForm: { 
         id: "", //修改的时候用
-        caseBasicinfoId: this.$route.params.id, //案件id
+        caseBasicinfoId: '', //案件id
         caseLinktypeId: "2c90293b6c178b55016c17c255a4000d", //表单类型ID
         //表单数据
         formData: "",
@@ -273,24 +273,26 @@ export default {
   components: {
     showApprovePeople
   },
+  computed:{...mapGetters(['caseId'])},
   mixins:[mixinGetCaseApiList],
   methods: {
     //返回编辑
-    goEdit() {
-      this.$router.push({
-        name: "filingApproval",
-        params: {
-          id: this.caseId
-        }
-      });
-    },
+    // goEdit() {
+    //   this.$router.push({
+    //     name: "filingApproval",
+    //     params: {
+    //       id: this.caseId
+    //     }
+    //   });
+    // },
     setData(){
-      this.com_getFormDataByCaseIdAndFormId(this.caseId,'2c90293b6c178b55016c17c255a4000d','form');
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
     // 提交表单
     addFormData(handleType) {
       //参数  提交类型 、formRef  
-      this.com_submitCaseForm(handleType,'docForm',false);
+      this.com_submitCaseForm(handleType,'docForm',true);
     },
     showApprovePeopleList(){
       let data={

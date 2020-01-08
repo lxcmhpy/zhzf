@@ -10,15 +10,6 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-      "/catsic": {
-        target: "http://124.192.215.4:8083",
-        // target: "http://172.16.169.62:8888",
-        // target: "http://127.0.0.1:8888",
-        changeOrigin: true,
-      }
-    },
-
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8075, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined

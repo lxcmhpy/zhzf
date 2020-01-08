@@ -1,14 +1,18 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
-    submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi} from "@/api/caseHandle";
+    submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi} from "@/api/caseHandle";
+
 
 const caseHandle = {
     state:{
-        // caseId:
+        caseId:'' ,  //案件id
     },
     mutations:{
-
+        //设置caseId
+        setCaseId(state,data){
+            state.caseId = data;
+        }
     },
     actions:{
         //获取执法门类
@@ -96,9 +100,9 @@ const caseHandle = {
             })
         },
         //查询机构下的执法人员
-        findLawOfficerList(){
+        findLawOfficerList({ commit },organId){
             return new Promise((resolve, reject) => {
-                findLawOfficerListApi().then(
+                findLawOfficerListApi(organId).then(
                     res => {
                         resolve(res);
                     },
@@ -258,6 +262,19 @@ const caseHandle = {
         setFlowStatus({ commit }, data) {
             return new Promise((resolve, reject) => {
                 setFlowStatusAPi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        
+        //查询审批角色列表 
+        getApprovePeople({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getApprovePeopleApi(data).then(
                     res => {
                         resolve(res);
                     },
