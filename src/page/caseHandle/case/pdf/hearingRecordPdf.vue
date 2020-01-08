@@ -4,7 +4,7 @@
       <div class="pdf-box">
         <!-- <div>交通运输行政执法文书式样之二十二 ： 中止（终结、恢复）行政强制执行通知书</div> -->
         <div class="pdf-title">听证笔录</div>
-        <div class="case-number">案号：{{caseNumber}}</div>
+        <div class="case-number">案号：{{docData.caseNumber}}</div>
         <div class="pdf-report-info">
           <p class="begin">
             案件名称：
@@ -151,30 +151,42 @@
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
+
 export default {
   mixins: [mixinGetCaseApiList],
   data() {
     return {
-      caseNumber: "010-123456"
+      // caseNumber: "",
+      docData:{
+        caseNumber:""
+      },
+      caseDocDataForm:{
+        id: "", //修改的时候用
+        caseBasicinfoId: '', //案件id
+        caseDoctypeId: "2c9029ca5b71686d015b718068cf0015", //文书模版ID
+        docData:'',
+        status:''
+      }
     };
   },
+  computed: { ...mapGetters(['caseId']) },
   methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
-        caseId: "aa0f2161e5c1ae0d2619203eb63eb78d",
+        caseId: this.caseId,
         docId: this.$route.params.docId
       };
       this.com_getDocDataByCaseIdAndDocId(data)
     },
     addDocData(handleType) {
-      this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-      this.$router.push({
-        name: this.$route.params.url,
-        params: {
-          // id: row.id,
-        }
-      });
+      this.com_addDocData(handleType);
+      // this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+      // this.$router.push({
+      //   name: this.$route.params.url,
+      // });
     }
   },
   mounted() {

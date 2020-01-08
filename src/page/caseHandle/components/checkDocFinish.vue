@@ -31,7 +31,7 @@
     </el-row>
     <p>是否确认进入下一环节？</p>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="visible = false">确 定</el-button>
+      <el-button type="primary" :disabled="sureDisab"  @click="enterNext">确 定</el-button>
       <el-button @click="visible = false">取 消</el-button>
     </span>
 
@@ -39,20 +39,43 @@
 
 </template>
 <script>
+import { mixinGetCaseApiList } from "@/js/mixins";
+
 export default {
   data() {
     return {
       visible: false,
       checkList: [],
       title: '进入下一环节',
+      sureDisab:false,
+      caseLinkDataForm:{ //为了在公共方法中使用，所以这样组装
+        caseBasicinfoId:'',
+        caseLinktypeId:''
+      }
     };
   },
+  mixins: [mixinGetCaseApiList],
   mounted() { },
   inject: ['reload'],
   methods: {
     //新增
-    showModal(data) {
+    showModal(data,caseData) {
       //显示弹框
+      console.log(data);
+      this.caseLinkDataForm.caseLinktypeId = caseData.caseLinktypeId;
+      this.caseLinkDataForm.caseBasicinfoId = caseData.caseBasicinfoId;
+      data.forEach(item=>{
+        if(item.status != 1){
+          this.title = ''
+        }
+      })
+      for(let i=0;i<data.length;i++){
+        if(data[i].status != 1 || data[i].status != "1"){
+          this.title = '无法进入下一环节';
+          this.sureDisab = true;
+          break;
+        }
+      }
       this.visible = true;
       this.checkList = data
     },
@@ -60,6 +83,10 @@ export default {
     closeDialog() {
       this.visible = false;
       this.checkList = [];
+    },
+    //进入下一环节
+    enterNext(){
+      this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
     // 弹框关闭按钮
     resetForm() {

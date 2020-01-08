@@ -47,7 +47,7 @@ export default {
   mixins:[mixinGetCaseApiList],
   methods: {
   
-    //获取待我审批的数据    接口暂时使用审批中的，稍后修改
+    //获取待我审批的数据
     getMyApprovalCase() {
       let data = {
         flag: 4,
@@ -71,12 +71,21 @@ export default {
     },
     //点击进入案件详情
     clickCase(row){
-        this.$router.replace({ 
-          name: 'caseDetail',
-          params: {
-              data: JSON.stringify(row)
-          }
+      console.log(row)
+      this.$store.commit("setCaseId", row.id);
+      // console.log(this.$store.state.caseId)
+      this.$router.replace({
+        name: 'caseInfo',
+        params: {
+          caseInfo: row
+        }
       });
+      //   this.$router.replace({ 
+      //     name: 'caseDetail',
+      //     params: {
+      //         data: JSON.stringify(row)
+      //     }
+      // });
     }
   },
   created() {

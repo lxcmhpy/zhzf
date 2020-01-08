@@ -199,7 +199,7 @@
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
-import checkDocFinish from './checkDocFinish'
+import checkDocFinish from '../../components/checkDocFinish'
 
 export default {
   components: {
@@ -268,7 +268,11 @@ export default {
     },
     //下一环节
     continueHandle() {
-      this.$refs.checkDocFinishRef.showModal(this.docTableDatas);
+      let caseData={
+        caseBasicinfoId:this.caseLinkDataForm.caseBasicinfoId,
+        caseLinktypeId:this.caseLinkDataForm.caseLinktypeId,
+      }
+      this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
       // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
     // 证据材料- 操作
@@ -277,35 +281,16 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-      console.log('row:',row)
-      this.$router.push({
-        name: row.url,
-        params: {
-          id: row.id,
-          docId:row.docId,
-          url:this.$route.name
-        }
-      });
+      this.com_viewDoc(row);
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
-      let data = {
-        // caseBasicinfoId: this.$route.params.id,
-        casebasicInfoId: "aa0f2161e5c1ae0d2619203eb63eb78d",
-        linkTypeId: "2c9029ac6c26fd72016c27247b290003"
-      };
-      this.$store.dispatch("getDocListByCaseIdAndFormId", data).then(
-        res => {
-          this.docTableDatas = res.data;
-          console.log('文书列表', this.docTableDatas)
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      let data={
+        linkTypeId:'2c9029ac6c26fd72016c27247b290003'
+      }
+      this.com_getDocListByCaseIdAndFormId(data)
     },
-    //通过案件id和表单类型Id查询已绑定文书
+    //删除
     delDocDataByDocId(data) {
       this.$store.dispatch("delDocDataByDocId", data).then(
         res => {

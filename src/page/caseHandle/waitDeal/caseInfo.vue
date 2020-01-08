@@ -8,14 +8,14 @@
   <div class="box">
     <el-form ref="docForm"  :model="formData" label-width="115px">
 
-      <div class="header-case">
+      <!-- <div class="header-case">
         <div class="header_left">
           <div class="triangle"></div>
           <div class="header_left_text">
             返回
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="content_box">
         <div class="content">
           <div class="content_title">
