@@ -71,29 +71,39 @@
       <div class="content_box">
         <div class="content">
           <div class="table_form">
-            <el-table :data="tableDatas" stripe border style="width: 100%">
+            <el-table :data="docTableDatas" stripe border style="width: 100%">
               <el-table-column prop="id" label="序号" align="center">
               </el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <div>{{scope.row.status === 0?'暂存':scope.row.status === 1?'完成':''}}</div>
+                  <span v-if="scope.row.status == '1'">
+                    已完成
+                  </span>
+                  <span v-if="scope.row.status == '0'">
+                    未完成
+                  </span>
+                  <span v-if="scope.row.status == ''">
+                    -
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <!-- {{scope.row.option}} -->
-                  <span v-if="scope.row.status == ''">
-                    <i type="primary" class="el-icon-circle-plus cell-icon" @click="enterDoc(scope.row)"></i>
-                  </span>
                   <span v-if="scope.row.status == '1'">
+                    <!-- 已完成 -->
                     <i type="primary" class="el-icon-view cell-icon" @click="viewDoc(scope.row)"></i>
                     <i type="primary" class="el-icon-printer cell-icon"></i>
                   </span>
                   <span v-if="scope.row.status == '0'">
-                    <i type="primary" class="el-icon-edit cell-icon"></i>
-                    <i type="primary" class="el-icon-delete-solid cell-icon"></i>
+                    <!-- 未完成 -->
+                    <i type="primary" class="el-icon-edit cell-icon" @click="viewDoc(scope.row)"></i>
+                    <i type="primary" class="el-icon-delete-solid cell-icon" @click="delDocDataByDocId(scope.row)"></i>
+                  </span>
+                  <span v-if="scope.row.status === ''">
+                    <!-- 无状态 -->
+                    <i type="primary" class="el-icon-circle-plus cell-icon" @click="viewDoc(scope.row)"></i>
                   </span>
                 </template>
               </el-table-column>
@@ -126,6 +136,7 @@
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
+import checkDocFinish from '../components/checkDocFinish'
 export default {
   data() {
     return {
@@ -181,6 +192,7 @@ export default {
   },
   computed: { ...mapGetters(['caseId']) },
   mixins: [mixinGetCaseApiList],
+  inject: ['reload'],
   methods: {
     //加载表单信息
     setFormData() {
@@ -193,7 +205,12 @@ export default {
     },
     //下一环节
     continueHandle() {
-      this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
+      let caseData={
+        caseBasicinfoId:this.caseLinkDataForm.caseBasicinfoId,
+        caseLinktypeId:this.caseLinkDataForm.caseLinktypeId,
+      }
+      this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
+      // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
     // 进入文书
     enterDoc(row) {
@@ -212,39 +229,15 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-      this.$router.push({
-        name: row.url,
-        params: {
-          id: row.id,
-          //案件ID
-          caseBasicinfoId: this.caseBasicinfoId,
-          docId: row.docId,
-          url: this.$route.name,
-        }
-      });
+      this.com_viewDoc(row);
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        caseBasicinfoId: this.caseBasicinfoId,    //案件ID
-        // casebasicInfoId: "aa0f2161e5c1ae0d2619203eb63eb78d",
         linkTypeId: "2c90293b6c178b55016c17c93326000f"     //环节ID
       };
-      console.log(data + "1111111");
-      this.$store.dispatch("getDocListByCaseIdAndFormId", data).then(
-        res => {
-          this.tableDatas = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    }
-  },
-  mounted() {
-    // this.getCaseBasicInfo();
-
+      this.com_getDocListByCaseIdAndFormId(data);
+    },
   },
   created() {
     this.setFormData();
