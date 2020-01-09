@@ -61,7 +61,7 @@
         <br>
         签章
       </el-button>
-      <el-button type="primary">
+      <el-button type="primary" @click="addDocData(1)">
         <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
           <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF"></path>
         </svg><br>
@@ -72,17 +72,52 @@
   </div>
 </template>
 <script>
+import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
-      caseNumber: '010-123456',
+      // caseNumber: '010-123456',
+      docData:{
+        caseNumber:""
+      },
+      caseDocDataForm:{
+        id: "", //修改的时候用
+        caseBasicinfoId: '', //案件id
+        caseDoctypeId: this.$route.params.docId, //文书模版ID
+        docData:'',
+        status:''
+      }
     }
   },
+  mixins: [mixinGetCaseApiList],
+  computed: { ...mapGetters(['caseId']) },
   methods: {
     pdfEdit() {
       this.$router.push({ name: 'sendReportForm' });
+    },
+    //根据案件ID和文书Id获取数据
+    getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      let data = {
+        caseId: this.caseId,
+        docId: this.$route.params.docId
+      };
+      this.com_getDocDataByCaseIdAndDocId(data)
+    },
+    addDocData(handleType) {
+      this.com_addDocData(handleType);
+      // this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+      // this.$router.push({
+      //   name: this.$route.params.url,
+      // });
     }
-  }
+  },
+  mounted() {
+    this.getDocDataByCaseIdAndDocId();
+    console.log('$route.params',this.$route.params)
+  },
 }
 </script>
 <style lang="less">
