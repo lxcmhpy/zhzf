@@ -107,13 +107,14 @@
               <td colspan="4">\</td>
               <td>
                 经办机构
-                <br />负责人
+                <br />负责人  
                 <br />意见
               </td>
               <td colspan="3" class="pdf-wirte">
+                {{formData.approveOpinions}}
                 <div class="pdf-write-name">
-                  签名：
-                  <br />时间: 年 月 日
+                  签名：{{formData.approvePeo}}
+                  <br />时间:{{formData.approveTime}}
                 </div>
               </td>
             </tr>
@@ -128,9 +129,10 @@
                 <br />见
               </td>
               <td colspan="8" class="pdf-wirte">
+                {{formData.secondApproveOpinions}}
                 <div class="pdf-write-name">
-                  签名：
-                  <br />时间: 年 月 日
+                  签名：{{formData.secondApprovePeo}}
+                  <br />时间: {{formData.secondApproveTime}}
                 </div>
               </td>
             </tr>
@@ -264,7 +266,7 @@
       </el-button>
     </div>
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
-    <approvalDialog ref="approvalDialogRef"></approvalDialog>
+    <approvalDialog ref="approvalDialogRef" @getNewData="setData"></approvalDialog>
 
   </div>
 </template>
@@ -329,9 +331,12 @@ export default {
     },
     //审批弹窗
     showApproval(){
+      //判断是一级审批还是二级审批
+      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : ''
       let caseData={
         caseId:this.caseId,
         caseLinktypeId:"2c90293b6c178b55016c17c255a4000d",
+        firstApproval:approvePeo
       }
       this.$refs.approvalDialogRef.showModal(caseData);
     }
