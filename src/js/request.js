@@ -11,7 +11,7 @@ var vue = new Vue();
 const service = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
   timeout: 15000, // request timeout
-  
+
   "Content-Type": "application/x-www-form-urlencoded",
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "X-Requested-With,Content-Type",
@@ -37,6 +37,7 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
+    debugger;
      if(config.baseUrlType ==1){
       config.baseURL = process.env.BASE_API // api的base_url
      } else if(config.baseUrlType ==2){
@@ -53,7 +54,7 @@ service.interceptors.request.use(
       // config.headers["accessToken"] = "CATSIC_TOKEN_PRE:" + getToken("TokenKey");
       config.headers["accessToken"] = getToken("TokenKey");
     }
-    
+
     // console.log(config);
     return config;
   },
@@ -67,7 +68,7 @@ service.interceptors.response.use(
   response => {
     console.log("response", response);
     // if(response.code == 200){
-    //   tryHideFullScreenLoading();  
+    //   tryHideFullScreenLoading();
     //   return Promise.resolve(response.data);
     // }else{
     //   return Promise.reject(response);
