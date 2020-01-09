@@ -1,9 +1,11 @@
+import { mapGetters } from "vuex";
 
 export const mixinGetCaseApiList = {
   data() {
     return {
     }
   },
+  computed: { ...mapGetters(['caseId']) },
   methods: {
     //获取列表中的数据  未立案 审批中  待办理
     getCaseList(params) {
@@ -116,6 +118,7 @@ export const mixinGetCaseApiList = {
         caseId:this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId:caseLinktypeId
       };
+      console.log(data);
       this.$store.dispatch("submitPdf", data).then(
         res => {
           console.log("更改流程图中的状态", res);
@@ -209,29 +212,61 @@ export const mixinGetCaseApiList = {
       this.caseDocDataForm.docData = JSON.stringify(this.docData);
       this.caseDocDataForm.status = handleType;
       console.log(this.caseDocDataForm);
-      this.$refs[docForm].validate(valid => {
-        if (valid) {
+      // this.$refs[docForm].validate(valid => {
+      //   if (valid) {
           this.$store.dispatch("addDocData", this.caseDocDataForm).then(
             res => {
               console.log("保存文书", res);
               // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
               this.$message({
                 type: "success",
-                message: "保存成功"
-
+                message: "提交成功"
+              });
+              this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+              this.$router.push({
+                name: this.$route.params.url,
               });
             },
             err => {
               console.log(err);
             }
           );
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
+        // } else {
+        //   console.log('error submit!!');
+        //   return false;
+        // }
 
-      });
+      // });
     },
+    //通过案件id和表单类型Id查询已绑定文书
+    com_getDocListByCaseIdAndFormId(params) {
+      let data = {
+        casebasicInfoId: this.caseId,
+        linkTypeId: params.linkTypeId
+      };
+      this.$store.dispatch("getDocListByCaseIdAndFormId", data).then(
+        res => {
+          this.docTableDatas = res.data;
+          console.log('文书列表', this.docTableDatas)
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    //查看环节下的文书
+    com_viewDoc(row) {
+      this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+      console.log('row:',row)
+      this.$router.push({
+        name: row.url,
+        params: {
+          id: row.id,
+          docId:row.docId,
+          url:this.$route.name
+        }
+      });
+    }
   },
   created() {
     // this.getApiList();

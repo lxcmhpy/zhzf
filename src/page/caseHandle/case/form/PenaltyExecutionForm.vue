@@ -116,15 +116,38 @@
       <div class="content_box">
         <div class="content">
           <div class="table_form">
-            <el-table :data="tableDatas" stripe border style="width: 100%" height="100%">
+            <el-table :data="docTableDatas" stripe border style="width: 100%" height="100%">
               <el-table-column prop="name" label="序号" align="center"></el-table-column>
               <el-table-column prop="isApproval" label="材料名称" align="center"></el-table-column>
-              <el-table-column prop="backName" label="状态" align="center"></el-table-column>
-              <el-table-column prop="isAutoPdf" label="操作" align="center">
-                <template>
-                  <i type="primary" class="el-icon-circle-plus cell-icon"></i>
-                  <i type="primary" class="el-icon-upload2 cell-icon"></i>
-                  <i type="primary" class="el-icon-delete-solid cell-icon"></i>
+              <el-table-column prop="status" label="状态" align="center">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.status == '1'">
+                    已完成
+                  </span>
+                  <span v-if="scope.row.status == '0'">
+                    未完成
+                  </span>
+                  <span v-if="scope.row.status == ''">
+                    -
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.status == '1'">
+                    <!-- 已完成 -->
+                    <i type="primary" class="el-icon-view cell-icon" @click="viewDoc(scope.row)"></i>
+                    <i type="primary" class="el-icon-printer cell-icon"></i>
+                  </span>
+                  <span v-if="scope.row.status == '0'">
+                    <!-- 未完成 -->
+                    <i type="primary" class="el-icon-edit cell-icon" @click="viewDoc(scope.row)"></i>
+                    <i type="primary" class="el-icon-delete-solid cell-icon" @click="delDocDataByDocId(scope.row)"></i>
+                  </span>
+                  <span v-if="scope.row.status === ''">
+                    <!-- 无状态 -->
+                    <i type="primary" class="el-icon-circle-plus cell-icon" @click="viewDoc(scope.row)"></i>
+                  </span>
                 </template>
               </el-table-column>
             </el-table>
@@ -153,13 +176,18 @@
         </div>
       </div>
     </el-form>
+    <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
+import checkDocFinish from '../../components/checkDocFinish'
 
 export default {
+  components: {
+    checkDocFinish
+  },
   data() {
     return {
       formData: {},
@@ -173,31 +201,7 @@ export default {
         formData: "",
         status: ""
       },
-      tableDatas: [
-        {
-          name: "立案",
-          isApproval: "是",
-          backName: "立案",
-          isAutoPdf: "是",
-          pdfType: "立案登记表",
-          pdfType: "立案登记表",
-          order: "1",
-          adress: "../../jdfhu",
-          discripe: "描述",
-          workId: "11"
-        },
-        {
-          name: "调查类文书",
-          isApproval: "否",
-          backName: "调查",
-          isAutoPdf: "否",
-          pdfType: "",
-          order: "2",
-          adress: "./kdsj",
-          discripe: "描述",
-          workId: "21"
-        }
-      ],
+      docTableDatas: [],
       rules: {
         caseNumber: [
           { required: true, message: "案号必须填写", trigger: "blur" }
@@ -223,23 +227,46 @@ export default {
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(
-        this.caseLinkDataForm.caseBasicinfoId,
-        this.caseLinkDataForm.caseLinktypeId,
-        "form"
-      );
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, 'form');
     },
+    //保存表单数据
     submitCaseDoc(handleType) {
-      //参数  提交类型 、formRef  、 跳转的pdf路由name
-      this.com_submitCaseForm(
-        handleType,
-        "penaltyExecutionForm",
-        true
-      );
+      this.com_submitCaseForm(handleType, 'caseDocForm', true);
     },
     //下一环节
     continueHandle() {
-      this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
+      let caseData={
+        caseBasicinfoId:this.caseLinkDataForm.caseBasicinfoId,
+        caseLinktypeId:this.caseLinkDataForm.caseLinktypeId,
+      }
+      this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
+      // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
+    },
+    // 进入文书
+    enterDoc(row) {
+      this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+      console.log('row', row)
+      this.$router.push({
+        name: row.url,
+        params: {
+          id: row.id,
+          //案件ID
+          caseBasicinfoId: this.caseBasicinfoId,
+          docId: row.docId,
+          url: this.$route.name,
+        }
+      });
+    },
+    //查看文书
+    viewDoc(row) {
+      this.com_viewDoc(row);
+    },
+    //通过案件id和表单类型Id查询已绑定文书
+    getDocListByCaseIdAndFormId() {
+      let data = {
+        linkTypeId: "2c9029e16c753a19016c755fe1340001"     //环节ID
+      };
+      this.com_getDocListByCaseIdAndFormId(data);
     },
   },
 
@@ -247,7 +274,10 @@ export default {
     // this.getCaseBasicInfo();
   },
   created() {
+    //获取表单数据
     this.setFormData();
+    //通过案件id和表单类型Id查询已绑定文书
+    this.getDocListByCaseIdAndFormId();
   }
 };
 </script>

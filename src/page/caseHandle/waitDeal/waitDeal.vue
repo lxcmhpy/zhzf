@@ -14,6 +14,17 @@
         <el-table-column prop="caseStatus" label="案件状态" align="center"></el-table-column>
       </el-table>
     </div>
+    <div class="paginationBox">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        background
+        :page-sizes="[10, 20, 30, 40]"
+        layout="prev, pager, next,sizes,jumper"
+        :total="total"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 <script>
@@ -24,6 +35,9 @@ export default {
   data() {
     return {
       tableData:[],
+      currentPage: 1, //当前页
+      pageSize: 10, //pagesize
+      total: 0, //总数
     };
   },
   mixins:[mixinGetCaseApiList],
@@ -60,6 +74,18 @@ export default {
           caseInfo: row
         }
       });
+    },
+    //更改每页显示的条数
+    handleSizeChange(val) {
+      console.log("每页显示的条数", val);
+      this.pageSize = val;
+      this.getCaseList2();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      console.log("当前页", val);
+      this.currentPage = val;
+      this.getCaseList2();
     }
   },
   created() {
