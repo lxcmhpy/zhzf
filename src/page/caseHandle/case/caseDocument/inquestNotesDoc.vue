@@ -80,11 +80,11 @@
                 <el-input class="pdf-line width395" v-model="docData.recorderUnitAndPosition">&nbsp; </el-input>
             </p>
             <p>勘验情况及结果：
-            <span v-if="docData.inquestResult==''" class="pdf-line width555" @click="overFlowEdit">&nbsp;
+            <span v-if="inquestResult==''" class="pdf-line width555" @click="overFlowEdit">&nbsp;
               <!-- <el-input type="textarea"  :rows="5" maxlength="300"  show-word-limit  v-model="inputInfo" placeholder="请输入内容"></el-input> -->
               <!-- <el-input v-model="inputInfo" placeholder="请输入内容"></el-input> -->
             </span>
-            <u @click="overFlowEdit">{{docData.inquestResult}}</u>
+            <u @click="overFlowEdit">{{inquestResult}}</u>
           </p>
 
 
@@ -160,6 +160,7 @@ export default {
 
   data() {
     return {
+      inquestResult:'',
       docData:{
         // caseBasicinfoId:this.caseId,
         caseNumber:"",
@@ -214,7 +215,7 @@ export default {
   methods: {
     checkHeights() {
       console.log('this.inputInfos')
-      if (this.docData.inquestResult.length > 10) {
+      if (this.inquestResult.length > 10) {
         this.overWidthFlag = true;
       }
       else
@@ -226,7 +227,7 @@ export default {
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
-      this.docData.inquestResult = edit;
+      this.inquestResult = edit;
     },
     // 盖章
     makeSeal() {

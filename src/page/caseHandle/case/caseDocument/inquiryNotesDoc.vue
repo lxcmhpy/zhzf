@@ -25,102 +25,65 @@
             </p>
             <p>
               询问人：             
-                <el-input class="pdf-line width272" v-model="partyAddress">&nbsp; </el-input>            
+                <el-input class="pdf-line width272" v-model="inquiryStaff">&nbsp; </el-input>            
               记录人：
-                <el-input class="pdf-line width272" v-model="partyTel">&nbsp; </el-input>
+                <el-input class="pdf-line width272" v-model="recordStaff">&nbsp; </el-input>
             </p>
             <p>
               被询问人：             
-                <el-input class="pdf-line width250" v-model="partyAddress">&nbsp; </el-input>            
+                <el-input class="pdf-line width250" v-model="inquiried">&nbsp; </el-input>            
               与案件关系：
-                <el-input class="pdf-line width224" v-model="partyTel">&nbsp; </el-input>
+                <el-input class="pdf-line width224" v-model="inquiriedRelation">&nbsp; </el-input>
             </p>
-            <p>
-              勘验场所：             
-                <el-input class="pdf-line width256" v-model="inquestAddress">&nbsp; </el-input>            
-              天气情况：
-                <el-select class="pdf-line width256" v-model="weather">&nbsp; </el-select>
-            </p>
-            <p>
-              勘验人：             
-                <el-input class="pdf-line width100" v-model="staff1">&nbsp; </el-input>            
-              单位及职务：
-                <el-input class="pdf-line width224" v-model="staffUnitAndPosition1">&nbsp; </el-input>
-              执法证号：
-              <el-input class="pdf-line width100" v-model="certificateId1">&nbsp; </el-input>
-            </p>
-            <p>
-              勘验人：             
-                <el-input class="pdf-line width100" v-model="staff2">&nbsp; </el-input>            
-              单位及职务：
-                <el-input class="pdf-line width224" v-model="staffUnitAndPosition2">&nbsp; </el-input>
-              执法证号：
-              <el-input class="pdf-line width100" v-model="certificateId2">&nbsp; </el-input>
-            </p>
-            <p>
-              当事人（当事人代理人姓名）：             
-                <el-input class="pdf-line width150" v-model="party">&nbsp; </el-input>            
+            <p>          
               性别：
-                <el-select class="pdf-line width94" v-model="partySex">&nbsp; 
+                <el-select class="pdf-line width94" v-model="inquiriedSex">&nbsp; 
                     <el-option value="0" label="男"></el-option>
                     <el-option value="1" label="女"></el-option>
                 </el-select>
               年龄：
-              <el-input class="pdf-line width100" v-model="partyAge">&nbsp; </el-input>
+              <el-input class="pdf-line width100" v-model="inquiriedAge">&nbsp; </el-input>
             </p>
             <p>
               身份证件号：             
-                <el-input class="pdf-line width240" v-model="partyIdNo">&nbsp; </el-input>            
-              单位及职务：
-                <el-input class="pdf-line width240" v-model="partyUnitAndPosition">&nbsp; </el-input>
-            </p>
-            <p>
-              住址：             
-                <el-input class="pdf-line width395" v-model="partyAddress">&nbsp; </el-input>            
+                <el-input class="pdf-line width240" v-model="inquiriedIdNo">&nbsp; </el-input>            
               联系电话：
-                <el-input class="pdf-line width150" v-model="partyTel">&nbsp; </el-input>
+                <el-input class="pdf-line width240" v-model="inquiriedTel">&nbsp; </el-input>
             </p>
             <p>
-              被邀请人：             
-                <el-input class="pdf-line width100" v-model="invited">&nbsp; </el-input>            
-              单位及职务：
-                <el-input class="pdf-line width395" v-model="invitedUnitAndPosition">&nbsp; </el-input>
+              工作单位及职务：             
+                <el-input class="pdf-line width555" v-model="inquiriedUnitPosition">&nbsp; </el-input>            
             </p>
             <p>
-              记录人：             
-                <el-input class="pdf-line width118" v-model="recorder">&nbsp; &nbsp;&nbsp;</el-input>            
-              单位及职务：
-                <el-input class="pdf-line width395" v-model="recorderUnitAndPosition">&nbsp; </el-input>
+              联系地址：             
+                <el-input class="pdf-line width603" v-model="inquestAddress">&nbsp; </el-input>            
             </p>
-            <p>勘验情况及结果：
-            <span v-if="inquestResult==''" class="pdf-line width555" @click="overFlowEdit">&nbsp;
-              <!-- <el-input type="textarea"  :rows="5" maxlength="300"  show-word-limit  v-model="inputInfo" placeholder="请输入内容"></el-input> -->
-              <!-- <el-input v-model="inputInfo" placeholder="请输入内容"></el-input> -->
-            </span>
-            <u @click="overFlowEdit">{{inquestResult}}</u>
-          </p>
+            <p>
+              我们是<span class="pdf-line width150">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input></span>的执法人员
+                <span class="pdf-line width150">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input></span>、
+                <span class="pdf-line width150">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input></span>，这是我们的执法证件，执法证号分别是
+                <span class="pdf-line width150">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input></span>、<span class="pdf-line width150">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input></span>，请你确认。现依法想你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。
+            </p>
 
+            <p>
+              问：<el-input class="pdf-line width603" v-model="inquestAddress">&nbsp; </el-input>
+            </p>
+            <p>
+              答：<el-input class="pdf-line width603" v-model="inquestAddress">&nbsp; </el-input>
+            </p>
 
           <br><br>
-
           <p>
-            当事人或其代理人签名：
-            <span class="pdf-line width250">
-            <el-input v-model="partySign" placeholder="请输入内容"></el-input>
-            </span>
-            勘验人签名：
-            <span class="pdf-line width150">
-            <el-input v-model="inquestedSign" placeholder="请输入内容"></el-input>
-            </span>
-          </p>
-
-          <br>
-          <p>
-            被邀请人签名：
+            被询问人签名：
             <span class="pdf-line width250">
             <el-input v-model="invitedSign" placeholder="请输入内容"></el-input>
             </span>
-            记录人签名：
+            询问人签名：
             <span class="pdf-line width210" align="right">
             <el-input v-model="recorderSign" placeholder="请输入内容"></el-input>
             </span>

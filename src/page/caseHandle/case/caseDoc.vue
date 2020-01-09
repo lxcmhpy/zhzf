@@ -130,7 +130,7 @@
         </div>
       </div>
     </el-form>
-
+    <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
   </div>
 </template>
 <script>
@@ -138,6 +138,9 @@ import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from '../components/checkDocFinish'
 export default {
+  components: {
+    checkDocFinish
+  },
   data() {
     return {
       formData: {
@@ -169,7 +172,7 @@ export default {
         status: ""
       },
       handleType: 0,
-      tableDatas: [],
+      docTableDatas: [],
       rules: {
         caseNumber: [
           { required: true, message: '案号必须填写', trigger: 'blur' }
@@ -187,7 +190,7 @@ export default {
           { required: true, message: '执行情况必须填写', trigger: 'blur' }
         ],
       },
-      nextBtnDisab: true
+      // nextBtnDisab: true
     }
   },
   computed: { ...mapGetters(['caseId']) },
