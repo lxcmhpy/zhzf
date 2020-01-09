@@ -77,7 +77,8 @@ export default {
       this.$router.replace({
         name: 'caseInfo',
         params: {
-          caseInfo: row
+          caseInfo: row,
+          isApproval:true
         }
       });
       //   this.$router.replace({ 
