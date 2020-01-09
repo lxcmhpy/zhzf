@@ -220,7 +220,7 @@ export const mixinGetCaseApiList = {
               // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
               this.$message({
                 type: "success",
-                message: "提及成功"
+                message: "提交成功"
               });
               this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
               this.$router.push({

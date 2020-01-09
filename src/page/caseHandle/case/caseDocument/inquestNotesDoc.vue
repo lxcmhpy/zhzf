@@ -161,6 +161,7 @@ export default {
   data() {
     return {
       docData:{
+        // caseBasicinfoId:this.caseId,
         caseNumber:"",
         caseName:"",
         inquestStartTime:"",
@@ -194,7 +195,7 @@ export default {
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
-        caseBasicinfoId: this.caseId,   //案件ID
+        caseBasicinfoId: '',   //案件ID
         caseDoctypeId: "2c9029ab655639600165564481f70001",    //文书类型ID
         //文书数据
         docData: "",
@@ -245,10 +246,10 @@ export default {
     },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
-        // caseId: "aa0f2161e5c1ae0d2619203eb63eb78d",
         caseId: this.caseId,
-        docId: "2c9029ab655639600165564481f70001"
+        docId: this.$route.params.docId
       };
       console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
