@@ -8,7 +8,7 @@
       <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="clickCase">
         <el-table-column prop="caseNumber" label="案号" align="center"></el-table-column>
         <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
-        <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
+        <el-table-column prop="caseCauseName" label="违法行为"  align="center"></el-table-column>
         <el-table-column prop="acceptTime" label="受案时间" align="center"></el-table-column>
         <el-table-column prop="currentLinkName" label="当前环节" align="center"></el-table-column>
         <el-table-column prop="caseStatus" label="案件状态" align="center"></el-table-column>

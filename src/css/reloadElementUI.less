@@ -1,65 +1,87 @@
 @import "./variables.less";
-.fullscreen {
-  .login{
-    
-  }
 
-  .el-aside{
+.fullscreen {
+  .login {}
+
+  .el-aside {
     background: @blackC2;
   }
-  .el-main{
+
+  .el-main {
     background: #EAEDF4;
-    padding: 0;
-    height: 100%;
+    padding   : 0;
+    height    : 100%;
     box-sizing: border-box;
-    position: relative;
+    position  : relative;
   }
-  .paginationBox{
+
+  .paginationBox {
     margin-top: 20px;
   }
+
   /* 按钮 */
-  .el-button{
-    i{
+  .el-button {
+    i {
       margin-right: 2px;
     }
   }
-  .el-button--default{
+
+  .el-button--default {
     border: 1px solid #DDDDDD;
-    color: #7B7B7B;
+    color : #7B7B7B;
   }
-  .el-button--info{
-    background: @greenC2;
+
+  .el-button--info {
+    background  : @greenC2;
     border-color: @greenC2;
-    color: #fff;
+    color       : #fff;
   }
-  .el-button--primary{
-    background: @blueC;
+
+  .el-button--primary {
+    background  : @blueC;
     border-color: @blueC;
   }
-  .el-button--medium{
+
+  .el-button--medium {
     padding: 7px 14px;
   }
+
   /* 表单 */
-  .el-form-item{
+  .el-form-item {
     margin-bottom: 17px;
   }
-  .el-input .el-input__inner{
-    height:32px;
+
+  .el-input .el-input__inner {
+    height: 32px;
   }
+
   /* 表格 */
-  .el-table td, .el-table th{
+  .el-table td,
+  .el-table th {
     padding: 4px 0;
   }
-  .el-table th{
+
+  .el-table th {
     background: #E9EDF6;
   }
+
   /* 弹窗 */
-  .el-dialog__header{
+  .el-dialog__header {
     background: #E9EDF6;
   }
-  .el-dialog__body{
+
+  .el-dialog__body {
     max-height: 450px;
-    overflow: auto;
+    overflow  : auto;
   }
-  
+
+  /* 表格溢出-默认最多显示两行*/
+  .el-table .cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
 }
