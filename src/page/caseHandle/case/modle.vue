@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
     <div class="print_info">
-      <el-form :rules="rules" ref="ruleForm" :inline-message="true" :inline="true" :model="docData" class="demo-form-inline">
+      <el-form :rules="rules" ref="ruleForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">当场行政处罚决定书</div>
         <div class="doc_number">案号：隆阳字[2017]第543939号</div>
         <!-- <el-button @click="onSubmit('ruleForm')">formName</el-button> -->
@@ -31,7 +31,7 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="name">
-                <el-input type='textarea' :autosize="{ minRows: 1, maxRows: 3}" show-word-limit v-model="inputInfo"  @input="widthCheck($event.target, 23,$event)" v-bind:class="{ over_flow: isOverflow }"></el-input>
+                <el-input type='textarea' :autosize="{ minRows: 1, maxRows: 3}" show-word-limit v-model="inputInfo" @input="widthCheck($event.target, 23,$event)" v-bind:class="{ over_flow: isOverflow }"></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
@@ -86,85 +86,84 @@
             </td>
           </tr>
         </table>
-        <div class="pdf-report-info">
-          <p class="side_right_indent" >
-            <span class="side_left">违法事实及依据：</span>
-            <span class="side_right text_bg" @click="overFlowEdit"  v-if="editInfo==''">
-              <el-form-item prop="name" >
-                {{editInfo}}
-                <!-- <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}" show-word-limit v-model="editInfo" placeholder="请输入内容" @click="overFlowEdit"></el-input> -->
-              </el-form-item>
-            </span>
-            <span class="text_bg" v-if="editInfo!=''" @click="overFlowEdit" >{{editInfo}}</span>
+        <p class="side_right_indent">
+          <span class="side_left">违法事实及依据：</span>
+          <span class="side_right" @click="overFlowEdit" v-if="editInfo==''">
+            <el-form-item prop="name">
+              <span class="span_bg">&nbsp;</span>
+            </el-form-item>
+          </span>
+          <span class="span_bg" v-if="editInfo==''">&nbsp;</span>
+          <span class="span_bg" v-if="editInfo==''">&nbsp;</span>
+          <span class="text_bg" v-if="editInfo!=''" @click="overFlowEdit">{{editInfo}}</span>
+        </p>
+        <p>你(单位)的行为<span>
+            <el-form-item prop="name">
+              <el-input v-model="inputInfo"></el-input>
+            </el-form-item>
+          </span>违反了<span>
+            <el-form-item prop="name">
+              <el-input v-model="inputInfo"></el-input>
+            </el-form-item>
+          </span>的规定，决定给予
+          <span>
+            <el-form-item prop="name">
+              <el-input v-model="inputInfo"></el-input>
+            </el-form-item>
+          </span>的行政处罚。
+          <p>
+            罚款的履行方式和期限(见打√处)：
           </p>
-          <p>你(单位)的行为<span>
+          <p>
+            <input type="checkbox">当场缴纳。
+          </p>
+          <p>
+            <input type="checkbox">自收到本决定书之日起十五日内缴至<span>
               <el-form-item prop="name">
-                <el-input v-model="inputInfo"></el-input>
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
               </el-form-item>
-            </span>违反了<span >
+            </span>，账号<span>
               <el-form-item prop="name">
-                <el-input v-model="inputInfo"></el-input>
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
               </el-form-item>
-            </span>的规定，决定给予
-            <span>
+            </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
+          </p>
+          <p>
+            如果不服本处罚决定，可以在六十日内依法向<span>
               <el-form-item prop="name">
-                <el-input v-model="inputInfo" ></el-input>
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
               </el-form-item>
-            </span>的行政处罚。
-            <p>
-              罚款的履行方式和期限(见打√处)：
-            </p>
-            <p>
-              <input type="checkbox">当场缴纳。
-            </p>
-            <p>
-              <input type="checkbox">自收到本决定书之日起十五日内缴至<span>
-                <el-form-item prop="name">
-                  <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
-                </el-form-item>
-              </span>，账号<span >
-                <el-form-item prop="name">
-                  <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
-                </el-form-item>
-              </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
-            </p>
-            <p>
-              如果不服本处罚决定，可以在六十日内依法向<span>
-                <el-form-item prop="name">
-                  <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
-                </el-form-item>
-              </span>申请行政复议，或者在六个月内依法向<span>
-                <el-form-item prop="name">
-                  <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
-                </el-form-item>
-              </span>人民法院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
-            </p>
-            <p>
-              处罚前已口头告知当事人拟作出处罚的事实、理由和依据，并告知当事人依法享有的陈述权和申辩权。
-            </p>
-            <el-row :gutter="20">
-              <el-col :span="12">
-                当事人或其代理人签名：
-                <span  class="pdf-line width150"></span>
-              </el-col>
-              <el-col :span="12">
-                执法人员签名：
-                <span  class="pdf-line width150"></span>
-              </el-col>
-            </el-row>
-            <div class="pdf_seal">
-              <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
-              <el-date-picker v-model="value1" type="date" format="yyyy年 MM月 dd日" placeholder="    年   月   日" clear-icon='el-icon-circle-close'>
-              </el-date-picker>
-            </div>
-            <div class="notice clear">
-              <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
-            </div>
+            </span>申请行政复议，或者在六个月内依法向<span>
+              <el-form-item prop="name">
+                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input>
+              </el-form-item>
+            </span>人民法院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
+          </p>
+          <p>
+            处罚前已口头告知当事人拟作出处罚的事实、理由和依据，并告知当事人依法享有的陈述权和申辩权。
+          </p>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              当事人或其代理人签名：
+              <span class="write_line width250"></span>
+            </el-col>
+            <el-col :span="12">
+              执法人员签名：
+              <span class="write_line width250"></span>
+            </el-col>
+          </el-row>
+          <div class="pdf_seal">
+            <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+            <el-date-picker v-model="value1" type="date" format="yyyy年 MM月 dd日" placeholder="    年   月   日" clear-icon='el-icon-circle-close'>
+            </el-date-picker>
+          </div>
+          <div class="notice clear">
+            <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
+          </div>
 
-            <div class="container" :style="{height: scrollerHeight}">
-            </div>
+          <div class="container" :style="{height: scrollerHeight}">
+          </div>
 
-        </div>
       </el-form>
     </div>
     <!-- 悬浮按钮 -->
@@ -302,6 +301,10 @@ export default {
     getOverFloeEditInfo(edit) {
       this.editInfo = edit;
     },
+  },
+
+  created() {
+    this.$GETCSS('name')
   }
 }
 </script>

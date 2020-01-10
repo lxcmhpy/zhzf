@@ -4,7 +4,7 @@
       <!-- <el-button type="primary" size="medium" icon="el-icon-plus" @click="goFlowChart('2c902ae66ae2acc4016ae376f6f1007f')">流程图</el-button> -->
         <!-- <el-button type="primary" size="medium" icon="el-icon-plus" @click="caseRecord">立案登记</el-button> -->
     </div>
-    <div class="tablePart">
+    <div class="tablePart table_tr_overflow">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="clickCase">
         <el-table-column prop="caseNumber" label="案号" align="center"></el-table-column>
         <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
@@ -93,3 +93,4 @@ export default {
   }
 };
 </script>
+

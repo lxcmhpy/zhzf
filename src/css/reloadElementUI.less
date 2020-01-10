@@ -77,11 +77,17 @@
 
   /* 表格溢出-默认最多显示两行*/
   .el-table .cell {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
+    overflow          : hidden;
+    text-overflow     : ellipsis;
+    display           : -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    // min-height     : 44px;
+  }
+
+  /* 表格行高-默认最小值*/
+  .el-table__row {
+    height: 53px;
   }
 
 }
