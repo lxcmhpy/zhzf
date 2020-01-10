@@ -4,7 +4,7 @@
     <div class="a4-box">
       <div class="pdf-box">
         <div class="pdf-title">
-          代履行决定书
+          当场行政处罚决定书
         </div>
         <div class="case-number">案号：{{caseNumber}}</div>
         <div class="pdf-table">
@@ -15,7 +15,8 @@
                 事<br>
                 人
               </td>
-              <td> 个人 </td>
+              <td rowspan="2"> 个人 </td>
+              <td> 姓名 </td>
               <td colspan="2"> \</td>
               <td> 身份证件号 </td>
               <td> \ </td>
@@ -27,7 +28,7 @@
               <td> \ </td>
             </tr>
             <tr>
-              <td> 单位 </td>
+              <td rowspan="4"> 单位 </td>
               <td> 名称</td>
               <td colspan="4"> \ </td>
             </tr>

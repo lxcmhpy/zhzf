@@ -26,7 +26,14 @@
               勘验场所：             
                 <el-input class="pdf-line width256" v-model="docData.inquestAddress">&nbsp; </el-input>            
               天气情况：
-                <el-select class="pdf-line width256" v-model="docData.weather">&nbsp; </el-select>
+                <el-select class="pdf-line width256" v-model="docData.weather">&nbsp; 
+                  <el-option
+                    v-for="item in options"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.name">
+                  </el-option>
+                </el-select>
             </p>
             <p>
               勘验人：             
@@ -80,11 +87,8 @@
                 <el-input class="pdf-line width395" v-model="docData.recorderUnitAndPosition">&nbsp; </el-input>
             </p>
             <p>勘验情况及结果：
-            <span v-if="inquestResult==''" class="pdf-line width555" @click="overFlowEdit">&nbsp;
-              <!-- <el-input type="textarea"  :rows="5" maxlength="300"  show-word-limit  v-model="inputInfo" placeholder="请输入内容"></el-input> -->
-              <!-- <el-input v-model="inputInfo" placeholder="请输入内容"></el-input> -->
-            </span>
-            <u @click="overFlowEdit">{{inquestResult}}</u>
+            <span v-if="docData.inquestResult==''" class="pdf-line width555" @click="overFlowEdit">&nbsp; </span>
+            <u @click="overFlowEdit">{{docData.inquestResult}}</u>
           </p>
 
 
@@ -160,7 +164,7 @@ export default {
 
   data() {
     return {
-      inquestResult:'',
+      // inquestResult:'',
       docData:{
         // caseBasicinfoId:this.caseId,
         caseNumber:"",
@@ -197,12 +201,14 @@ export default {
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: "2c9029ab655639600165564481f70001",    //文书类型ID
+        caseDoctypeId: this.$route.params.docId,    //文书类型ID
         //文书数据
         docData: "",
         status: "",   //提交状态
       },
       handleType: "",  // 0 暂存  1  提交
+      dictId:"2dc1e0a3a8ce225c292259da39294847",
+      options:[],
     }
 
   },
@@ -215,7 +221,7 @@ export default {
   methods: {
     checkHeights() {
       console.log('this.inputInfos')
-      if (this.inquestResult.length > 10) {
+      if (this.docData.inquestResult.length > 10) {
         this.overWidthFlag = true;
       }
       else
@@ -227,7 +233,7 @@ export default {
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
-      this.inquestResult = edit;
+      this.docData.inquestResult = edit;
     },
     // 盖章
     makeSeal() {
@@ -278,10 +284,24 @@ export default {
           console.log(err);
         }
       );
-    }
+    },
+    //获取天气字典值
+    getDictKeyList(){   
+        this.$store.dispatch("getDictListDetail",this.dictId).then(
+        res => {
+          console.log("字典值列表", res);
+          this.options = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
   },
   created() {
     this.getDocDataByCaseIdAndDocId();
+    //加载天气抽屉表
+    this.getDictKeyList();
   },
 }
 </script>

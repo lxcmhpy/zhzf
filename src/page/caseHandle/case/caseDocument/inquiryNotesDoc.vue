@@ -60,32 +60,32 @@
             </p>
             <p>
               我们是<span class="pdf-line width150">
-                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input></span>的执法人员
+                <el-input v-model="organName" placeholder="请输入内容"></el-input></span>的执法人员
                 <span class="pdf-line width150">
-                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input></span>、
+                <el-input v-model="staff1" placeholder="请输入内容"></el-input></span>、
                 <span class="pdf-line width150">
-                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input></span>，这是我们的执法证件，执法证号分别是
+                <el-input v-model="staff2" placeholder="请输入内容"></el-input></span>，这是我们的执法证件，执法证号分别是
                 <span class="pdf-line width150">
-                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input></span>、<span class="pdf-line width150">
-                <el-input v-model="inputInfo" placeholder="请输入内容"></el-input></span>，请你确认。现依法想你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。
+                <el-input v-model="certificateId1" placeholder="请输入内容"></el-input></span>、<span class="pdf-line width150">
+                <el-input v-model="certificateId2" placeholder="请输入内容"></el-input></span>，请你确认。现依法想你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。
             </p>
 
             <p>
-              问：<el-input class="pdf-line width603" v-model="inquestAddress">&nbsp; </el-input>
+              问：<el-input class="pdf-line width603" v-model="question">&nbsp; </el-input>
             </p>
             <p>
-              答：<el-input class="pdf-line width603" v-model="inquestAddress">&nbsp; </el-input>
+              答：<el-input class="pdf-line width603" v-model="answer">&nbsp; </el-input>
             </p>
 
           <br><br>
           <p>
             被询问人签名：
             <span class="pdf-line width250">
-            <el-input v-model="invitedSign" placeholder="请输入内容"></el-input>
+            <el-input v-model="inquiriedSign" placeholder="请输入内容"></el-input>
             </span>
             询问人签名：
             <span class="pdf-line width210" align="right">
-            <el-input v-model="recorderSign" placeholder="请输入内容"></el-input>
+            <el-input v-model="inquirySign" placeholder="请输入内容"></el-input>
             </span>
           </p>
           <p>
@@ -135,16 +135,13 @@ export default {
   data() {
     return {
       caseNumber:"",
-      caseName:"",
-      inquestStartTime:"",
-      inquestEndTime:"",
-      inquestAddress:"",
-      weather:"",
-      staff1:"",
-      staffUnitAndPosition1:"",
+      inquiryStartTime:"",
+      inquiryEndTime:"",
+      inquiryIndex:"",     
+      inquiryAddress:"",
+      staff1:"",      
       certificateId1:"",
       staff2:"",
-      staffUnitAndPosition2:"",
       certificateId2:"",
       party:"",
       partySex:"",
@@ -163,7 +160,6 @@ export default {
       invitedSign:"",
       recorderSign:"",
       overWidthFlag: false,
-      inquestResult: '',//多行编辑内容
     }
 
   },
