@@ -53,6 +53,10 @@
                 text-align     : justify;
                 text-align-last: justify;
 
+                .el-form-item {
+                    width        : 100%;
+                }
+
                 /* 输入框 */
                 .el-textarea {
                     height         : calc(100% - 1px);
@@ -85,9 +89,6 @@
                 text-indent: 0;
             }
 
-            span {
-                display: inline-block;
-            }
 
             .el-form-item__content {
                 height     : 32px;
@@ -99,9 +100,9 @@
             }
 
             .el-input__inner {
-                font-size          : 16px;
-                font-family        : SimSun;
-                background         : #DBE4EF;
+                font-size  : 16px;
+                font-family: SimSun;
+                background : #DBE4EF;
             }
 
             /* 错误提示  */
@@ -110,14 +111,23 @@
             }
 
             .side_left {
+                display: inline-block;
                 float      : left;
                 text-indent: 2em;
+                
             }
 
             .side_right {
                 display : block;
-                overflow: hidden
+                overflow: hidden;
             }
+            .text_bg{
+                background: #DBE4EF;
+            }
+            
+        }
+        .side_right_indent {
+            text-indent: 0;
         }
 
         /* input表格背景色 */
@@ -145,18 +155,20 @@
             height             : 100%;
             text-align         : center;
             text-align-last    : center;
+            font-weight        : 600;
             background         : #F6F7FB;
             color              : #000000;
             text-overflow      : clip;
-            -webkit-text-stroke: 1px rgba(0, 0, 0, 1);
-            text-stroke        : 1px rgba(0, 0, 0, 1);
         }
 
 
         .el-textarea__inner {
+            resize: none;
+            /* 去掉右下角标 */
             border         : 0;
             padding        : 0;
             font-size      : 17px;
+            font-weight    : 600;
             text-align     : center;
             text-align-last: center;
             text-justify   : distribute-all-lines;
@@ -166,14 +178,13 @@
             background              : #F6F7FB;
             // max-height           : 42px;
             // align-items          : center;
-            -webkit-text-stroke     : 1px rgba(0, 0, 0, 1);
-            text-stroke             : 1px rgba(0, 0, 0, 1);
+
 
         }
 
         .el-form-item {
             margin-bottom: 0;
-            width        : 100%;
+            // width        : 100%;
         }
 
         .el-form-item__content {
@@ -204,7 +215,7 @@
 
             .el-textarea__inner {
                 font-size  : 12px;
-                line-height: 14px;
+                line-height: 13px;
             }
         }
 
