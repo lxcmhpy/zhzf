@@ -1,48 +1,41 @@
 import axios from "axios";
 import { getToken, setToken,removeToken } from "@/js/auth";
-import { router } from "@/router/index";
 import Vue from "vue";
 //import { message } from "ant-design-vue";
 import { showFullScreenLoading, tryHideFullScreenLoading } from "./loading";
-import store from "@/store";
+
 
 var vue = new Vue();
+
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api的base_url
+  // baseURL: '', // api的base_url
   timeout: 15000, // request timeout
-
   "Content-Type": "application/x-www-form-urlencoded",
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "X-Requested-With,Content-Type",
   "Access-Control-Allow-Methods": "PUT,POST,GET,DELETE,OPTIONS"
 });
+var BASEURL
+service({
+  url: '/static/json/hostUrl/host.json',
+  method: "get",
+  params: {},
+}).then(
+  res => {
+    BASEURL = res.data
+  },
+  error => {
+    console.log(error)
+ })
 
-
-// function configToken(config) {
-//   console.log("config" + JSON.stringify(config));
-//   if (config.tokenType && config.tokenType == 1) {
-//     console.log("token1");
-//     if (getToken("TokenKey")) {
-//       config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
-//     }
-//   } else if (config.tokenType && config.tokenType == 2) {
-//     console.log("token2");
-//     if (getToken("TokenKey_2")) {
-//       config.headers["Authorization"] = "Bearer " + getToken("TokenKey_2");
-
-//     }
-//   }
-// }
 // request interceptor
 service.interceptors.request.use(
   config => {
-     if(config.baseUrlType ==1){
-      config.baseURL = process.env.BASE_API // api的base_url
-     } else if(config.baseUrlType ==2){
-      config.baseURL = process.env.BASE_API2
+     if(config.baseUrlType == 1){
+       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
      }else{
-      config.baseURL = process.env.BASE_API // api的base_url
+      config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
      }
     //token一天后过期
     if (config.showloading != false) {
@@ -53,7 +46,6 @@ service.interceptors.request.use(
       // config.headers["accessToken"] = "CATSIC_TOKEN_PRE:" + getToken("TokenKey");
       config.headers["accessToken"] = getToken("TokenKey");
     }
-
     // console.log(config);
     return config;
   },
@@ -61,17 +53,10 @@ service.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 // respone interceptor
 service.interceptors.response.use(
   response => {
     console.log("response", response);
-    // if(response.code == 200){
-    //   tryHideFullScreenLoading();
-    //   return Promise.resolve(response.data);
-    // }else{
-    //   return Promise.reject(response);
-    // }
     if (response.status == 200) {
       if (response.data.code == 200) {
         tryHideFullScreenLoading();
@@ -87,6 +72,7 @@ service.interceptors.response.use(
         return Promise.reject(response.data);
       }else{
         // httpErrorStr(response.data.code);
+        tryHideFullScreenLoading();
         return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善
       }
     } else {
@@ -99,7 +85,6 @@ service.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 
 function httpErrorStr(error) {
   tryHideFullScreenLoading();

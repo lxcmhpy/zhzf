@@ -1,3 +1,15 @@
 {
-  "host": "http://172.16.170.44:8080/"
+  "CURRENT": "ONLINE",
+  "ONLINE": {
+    "HOST": "http://172.16.170.44:8088/catsic",
+    "CAPTCHA_HOST": "http://172.16.170.44:8088/catsic"
+  },
+  "TEST": {
+    "HOST": "http://172.16.170.44:8080/catsic",
+    "CAPTCHA_HOST": "http://172.16.170.44:8088/catsic"
+  },
+  "LOCAL": {
+    "HOST": "http://172.16.170.44:8080/catsic",
+    "CAPTCHA_HOST": "http://172.16.170.44:8088/catsic"
+  }
 }

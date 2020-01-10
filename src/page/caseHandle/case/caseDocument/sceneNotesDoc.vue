@@ -1,61 +1,40 @@
 <template>
   <div class="main">
     <div class="a4-box" id="subOutputRank-print">
-      <div class="pdf-box">
-        <div class="pdf-title">现场笔录</div>
+      <div class="pdf-box" ref='docForm'>
+        <div class="pdf-title">
+          现场笔录
+        </div>
+        <div class="case-number" style="display:none">{{caseDocDataForm.id}}</div>
         <div class="case-number">案号：{{docData.caseNumber}}</div>
         <div class="pdf-table">
           <table border="1" bordercolor="black" width="100%" cellspacing="0">
-            <tr>
-              <td>执法地点</td>
-              <td colspan="3">
-                <el-input v-model="docData.fillingPlace" placeholder="请输入内容"></el-input>
-              </td>
-              <td>执法时间</td>
-              <td colspan="3">
-                <span class="pdf-line width264">
-                  <el-date-picker
-                    v-model="docData.enforceStartTime"
-                    type="date"
-                    format="yyyy 年 M 月 d 日 HH 时 mm 分"
-                    placeholder="  年  月  日 时 分"
-                    clear-icon="el-icon-circle-close"
-                  ></el-date-picker>
-                </span>
-                至
-                <span class="pdf-line width264">
-                  <el-date-picker
-                    v-model="docData.enforceEndTime"
-                    type="date"
-                    format="M 月 d 日 HH 时 mm 分"
-                    placeholder=" 月 日 时 分"
-                    clear-icon="el-icon-circle-close"
-                  ></el-date-picker>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td rowspan="2">执法人员</td>
-              <td colspan="2">
-                <el-input v-model="docData.staff1" placeholder="请输入内容"></el-input>
-              </td>
-              <td rowspan="2">执法证号</td>
-              <td colspan="2">
-                <el-input v-model="docData.certificateId1" placeholder="请输入内容"></el-input>
-              </td>
-              <td rowspan="2">记录人</td>
-              <td rowspan="2">
-                <el-input v-model="docData.recorder" placeholder="请输入内容"></el-input>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <el-input v-model="docData.staff2" placeholder="请输入内容"></el-input>
-              </td>
-              <td colspan="2">
-                <el-input v-model="docData.certificateId2" placeholder="请输入内容"></el-input>
-              </td>
-            </tr>
+              <tr>
+                <td>执法地点</td>
+                <td colspan="3"><el-input v-model="docData.fillingPlace" placeholder="请输入内容"></el-input></td>
+                <td>执法时间</td>
+                <td colspan="3">
+                    <span class="pdf-line width264">
+                <el-date-picker v-model="docData.enforceStartTime" type="date" format="yyyy 年 M 月 d 日 HH 时 mm 分" placeholder="  年  月  日 时 分" clear-icon='el-icon-circle-close'></el-date-picker>
+              </span>
+              至
+              <span class="pdf-line width264">
+                <el-date-picker v-model="docData.enforceEndTime" type="date" format="M 月 d 日 HH 时 mm 分" placeholder=" 月 日 时 分" clear-icon='el-icon-circle-close'></el-date-picker>
+              </span>
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="2">执法人员</td>
+                <td colspan="2"><el-input v-model="docData.staff1" placeholder="请输入内容"></el-input></td>
+                <td rowspan="2">执法证号</td>
+                <td colspan="2"><el-input v-model="docData.certificateId1" placeholder="请输入内容"></el-input></td>
+                <td rowspan="2">记录人</td>
+                <td rowspan="2"><el-input v-model="docData.recorder" placeholder="请输入内容"></el-input></td>
+              </tr>
+              <tr>
+                <td colspan="2"><el-input v-model="docData.staff2" placeholder="请输入内容"></el-input></td>
+                <td colspan="2"><el-input v-model="docData.certificateId2" placeholder="请输入内容"></el-input></td>
+              </tr>
             <tr>
               <td rowspan="5">
                 现场
@@ -141,10 +120,14 @@
                 </div>
                 <br />
                 <div class="text-right">
-                  <p>
-                    现场人员签名：
-                    <span class="pdf-line width210" align="right">
-                      <el-input v-model="docData.partySign" placeholder="请输入内容"></el-input>
+                <p>
+                    现场人员签名：<span class="pdf-line width210" align="right">
+                        <el-input v-model="docData.partySign" placeholder="请输入内容"></el-input></span>
+                </p>
+                <p>
+                    时间：<span class="pdf-line width210" align="right">
+                    <el-date-picker v-model="docData.partySignTime" type="date" format="yyyy 年 M 月 d 日" placeholder="  年  月  日" clear-icon='el-icon-circle-close'>
+                    </el-date-picker>
                     </span>
                   </p>
                   <p>
@@ -163,34 +146,24 @@
               </td>
             </tr>
             <tr>
-              <td colspan="7">
-                <p>
-                  备注：
-                  <span class="pdf-line width528" align="right">
-                    <el-input v-model="docData.note" placeholder="请输入内容"></el-input>
-                  </span>
-                </p>
-              </td>
+                <td colspan="7">
+                    <p>
+                        备注：<span class="pdf-line width528" align="right">
+                            <el-input v-model="docData.note" placeholder="请输入内容"></el-input></span>
+                    </p>
+                </td>
             </tr>
             <tr>
-              <td colspan="7">
-                <p>
-                  执法人员签名：
-                  <span class="pdf-line width250" align="right">
-                    <el-input v-model="docData.staffSign" placeholder="请输入内容"></el-input>
-                  </span>
-                  时间：
-                  <span class="pdf-line width150" align="right">
-                    <el-date-picker
-                      v-model="docData.staffSignTime"
-                      type="date"
-                      format="yyyy 年 M 月 d 日"
-                      placeholder="  年  月  日"
-                      clear-icon="el-icon-circle-close"
-                    ></el-date-picker>
-                  </span>
-                </p>
-              </td>
+                <td colspan="7">
+                    <p>
+                        执法人员签名：<span class="pdf-line width250" align="right">
+                            <el-input v-model="docData.staffSign" placeholder="请输入内容"></el-input></span>
+                        时间：<span class="pdf-line width150" align="right">
+                            <el-date-picker v-model="docData.staffSignTime" type="date" format="yyyy 年 M 月 d 日" placeholder="  年  月  日" clear-icon='el-icon-circle-close'>
+                            </el-date-picker>
+                        </span>
+                    </p>
+                </td>
             </tr>
           </table>
         </div>
@@ -282,45 +255,45 @@
 import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
-
 export default {
   data() {
     return {
-      docData: {
-        caseNumber: "",
-        caseNumber: "",
-        enforceStartTime: "",
-        enforceEndTime: "",
-        staff1: "",
-        certificateId1: "",
-        recorder: "",
-        staff2: "",
-        certificateId2: "",
-        arty: "",
-        partyTel: "",
-        partyIdNo: "",
-        relation: "",
-        partyAddress: "",
-        partySex: "",
-        vehicleShipId: "",
-        vehicleShipType: "",
-        checkBox: "", //复选框
-        partySign: "",
-        partySignTime: "",
-        note: "",
-        staffSign: "",
-        staffSignTime: "",
+      docData:{
+        caseNumber: '',
+        enforceStartTime:'',
+        enforceEndTime:'',
+        staff1:'',
+        certificateId1:'',
+        recorder:'',
+        staff2:'',
+        certificateId2:'',
+        arty:"",
+        partyTel:"",
+        partyIdNo:"",
+        relation:'',
+        partyAddress:"",     
+        partySex:"",
+        vehicleShipId:'',
+        vehicleShipType:'',
+        checkBox:'',   //复选框
+        partySign:'',
+        partySignTime:'',
+        note:'',
+        staffSign:'',
+        staffSignTime:'',
         overWidthFlag: false,
-        illegalFacts: "" //多行编辑内容
+        illegalFacts: '',//多行编辑内容
       },
-      caseDocDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: "", //案件id
-        caseDoctypeId: "", //文书模版ID
+       caseDocDataForm: {
+        id: "",   //修改的时候用
+        caseBasicinfoId: '',   //案件ID
+        caseDoctypeId: this.$route.params.docId,    //文书类型ID
+        //文书数据
         docData: "",
-        status: ""
-      }
-    };
+        status: "",   //提交状态
+      },
+      handleType: "",  // 0 暂存  1  提交
+    }
   },
   computed: { ...mapGetters(['caseId']) },
   mixins: [mixinGetCaseApiList],
