@@ -33,7 +33,8 @@ export default {
       svgData: svgData,
       // 立案 0 调查 1 决定 2 执行 3 结案
       mainLinkData: mainLinkData,
-      data: {}
+      data: {},
+      stateLinkArray: ['complete','doing','unLock']
     }
   },
   mixins:[mixinGetCaseApiList],
@@ -91,7 +92,9 @@ export default {
             axisLine: {
                 lineStyle: {
                     type: 'dashed',
-                    color:'#ccc'
+                    color:'#ccc',
+                    shadowOffsetX: 10,
+                    shadowColor:'#ccc',
                 }
             },
             splitLine: {
@@ -116,6 +119,7 @@ export default {
                 lineStyle: {
                     type: 'dashed',
                     color:'#ccc',
+                    shadowColor:'#ccc'
                 }
             },
             data: mainLinkDataTemp
@@ -125,7 +129,7 @@ export default {
             axisLine: {
                 lineStyle: {
                     type: 'dashed',
-                    color:'#ccc'
+                    color:'white'
                 }
             }
         },
@@ -149,10 +153,12 @@ export default {
       flowChart.off('click');
       flowChart.on('click', function(params){
           if (params.name) {
-            console.log(params);
-            let clickRouter = that.com_getCaseRouteName(params.data.linkID);
-            that.$store.dispatch('deleteTabs', 'flowChart');
-            that.$router.push({name:clickRouter})
+            // complete: '#0174f5',//已完成  doing: '#f2a010',// 进行中  unLock: '#52c2b6',// 已解锁  lock: '#b2b2b2' //未解锁
+            if (that.stateLinkArray.indexOf(params.data.curLinkState) >-1){
+              let clickRouter = that.com_getCaseRouteName(params.data.linkID);
+              that.$store.dispatch('deleteTabs', 'flowChart');
+              that.$router.push({name:clickRouter})
+            }
           }
 
       })
@@ -197,7 +203,8 @@ export default {
       let graphDataTemp = this.graphData
       let _this = this
       let unPassArray = []
-      // let passArray=[]
+
+      // 更新节点状态
       for(let key in this.data) {
         if(key.indexOf('Main') > -1) {
           // 更新大环节节点状态
@@ -218,120 +225,168 @@ export default {
         } else {
           // 更新小环节节点状态
           let array = this.data[key].split(',')
-          let curColor = this.stateColor[key.split('Link')[0]]
+          let curLinkState = key.split('Link')[0]
+          let curColor = this.stateColor[curLinkState]
           array.forEach((v,i)=> {
             let j = _.findIndex(graphDataTemp.nodes, function (chr) {
               return chr.linkID === v
             })
             if (j > -1) {
               graphDataTemp.nodes[j].itemStyleColor = curColor
+              graphDataTemp.nodes[j].curLinkState = curLinkState
             }
           })
         }
       }
 
-            //循环 graphData生成link
+      //循环 graphData生成link,初始化连线颜色为灰色,初始化临时节点的箭头样式
       for (let i = 0;i<graphDataTemp.nodes.length;i++){
         let nodes = graphDataTemp.nodes[i]
-        nodes.itemStyleColor = '#b2b2b2'
+        if (_this.stateLinkArray.indexOf(nodes.curLinkState) == -1){
+          nodes.itemStyleColor = '#b2b2b2'
+          nodes.curLinkState = 'lock'
+        }
         graphDataTemp.links.push({
           id: i,
           source: nodes.source,
           sourceName: nodes.name,
+          linkID: nodes.linkID,
+          curLinkState: nodes.curLinkState,
           target: nodes.target,
           lineStyle:{
             normal: {
               color: '#b2b2b2',
-              width: 1,
-              opacity:1
+              width: 1
             }
           },
           symbol: nodes.target.indexOf('temp') > -1 ? ['none', 'circle'] : ['none', 'arrow'],
           symbolSize: nodes.target.indexOf('temp') > -1 ? [1, 1] : [2, 7]
         })
       }
-      // 修改link连接线状态
+
+      // 从后往前遍历节点，查找路径，修改节点状态
       for (let k = graphDataTemp.nodes.length - 1;k>=0;k--){
-
-        let source = graphDataTemp.nodes[k].source
-
-        if (graphDataTemp.nodes[k].itemStyleColor!=="#b2b2b2") {
-
-          let jArray = []
-          let tempArray = graphDataTemp.links.filter((element, i)=>{
-            // debugger
-            if(element.target === source) {
-              jArray.push(i)
-            }
-            return false
-          })
-          jArray.forEach((v,i)=>{
-            if(graphDataTemp.links[v].source.indexOf('temp')===-1){
-              graphDataTemp.links[v].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
-              if (graphDataTemp.links[v].source.indexOf('_')>-1 && graphDataTemp.links[v].target.indexOf('_')>-1){
-                unPassArray.push(graphDataTemp.nodes[k].source)
-              }
-            }
-          })
-        }
-      }
- // 修改link连接线状态
-      for (let k = graphDataTemp.nodes.length - 1;k>=0;k--){
-
-        let source = graphDataTemp.nodes[k].source
-
-        if (graphDataTemp.nodes[k].itemStyleColor!=="#b2b2b2") {
-
-          let jArray = []
-          let tempArray = graphDataTemp.links.filter((element, i)=>{
-            if(element.target === source) {
-              jArray.push(i)
-            }
-            return false
-          })
-          if(jArray.length === 1 ) {
-            if (unPassArray.indexOf(graphDataTemp.links[jArray[0]].source)=== -1) {
-              graphDataTemp.links[jArray[0]].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
-              if (graphDataTemp.links[jArray[0]].source.indexOf('temp')>-1) {
-
-                 _this.recursion(graphDataTemp, jArray[0],unPassArray)
-              }
-            }
-          } else if(jArray.length>1){
-            let array = {}
-            jArray.forEach((v,i)=>{
-              if(graphDataTemp.links[v].source.indexOf('temp') > -1){
-                array[v] = {}
-                _this.recursion1(graphDataTemp, v,unPassArray,array)
-              }
-            })
-            let parentArray = []
-            let str =JSON.stringify(array)
-            let obj
-            let boo = true
-            while (boo){
-                str = str.replace(/((\")(\d+)(\")(:)(\{)(\})(,)?){1,}/g, '')
-                let newStr = str.replace(/((\")(\d+)(\")(:)(\{)(\})(,)?){1,}/g, '')
-              if(str.length == newStr.length) {
-                boo = false
-                obj = JSON.parse(str.replace(/((\})(,)(\})){1,}/g,'}}'))
-              } else {
-                str = newStr
-              }
-            }
-            for (var key in obj) {
-              if (Object.keys(obj[key]).length === 0) {
-                return
-              }
-              if(!isNaN(key)){
-                graphDataTemp.links[parseInt(key)].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
-                this.recursion3(obj[key],graphDataTemp.links, graphDataTemp.nodes[k].itemStyleColor)
-              }
+        // 记录当前节点
+        let curNode = graphDataTemp.nodes[k]
+        if (curNode.curLinkState === 'lock') {
+          // 如果当前节点=='lock'说明其未解锁，不操作，
+        } else {
+          // 否则过滤得到当前节点的前一节点集合
+          // let filterPreLinkArray = [] // 前一节点数组集合
+          // graphDataTemp.links.filter((element, i)=>{
+          //   if(curNode.source == element.target) {
+          //     filterPreLinkArray.push(element)
+          //   }
+          //   return false
+          // })
+          debugger
+          let filterPreLinkArray = this.findPreLinkArray(graphDataTemp.links, curNode.source)
+          // 如果数组集合元素为1，说明当前元素只有一个前节点，则前一节点的颜色，必然和当前节点颜色一致
+          if (filterPreLinkArray.length == 1) {
+            filterPreLinkArray[0].lineStyle = lineStyle[curNode.curLinkState]
+          } else if (filterPreLinkArray.length > 1) {
+            // 如果有多个前节点，则找到前节点是否包含temp节点
+            // 如果不包含temp 节点，再遍历前节点，看是否存在父子关系
+            let filterPreIDPassArray = []
+            for (let f = 0;f <filterPreLinkArray.length;f++) {
+              let passCurSource = filterPreLinkArray[f].source
+              //  = []
+               let idPassArray = this.findPreLinkArray(graphDataTemp.links, passCurSource)
+               console.log(idPassArray)
             }
           }
 
         }
       }
+
+
+ //-----old-----old--------old-------修改link连接线状态----//
+      // for (let k = graphDataTemp.nodes.length - 1;k>=0;k--){
+      //   debugger
+      //   let source = graphDataTemp.nodes[k].source
+      //   if (graphDataTemp.nodes[k].itemStyleColor!=="#b2b2b2") {
+      //     let jArray = []
+      //     let tempArray = graphDataTemp.links.filter((element, i)=>{
+      //       if(element.target === source) {
+      //         jArray.push(i)
+      //       }
+      //       return false
+      //     })
+      //     jArray.forEach((v,i)=>{
+      //       if(graphDataTemp.links[v].source.indexOf('temp')===-1){
+      //         graphDataTemp.links[v].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
+      //         if (graphDataTemp.links[v].source.indexOf('_')>-1 && graphDataTemp.links[v].target.indexOf('_')>-1){
+      //           unPassArray.push(graphDataTemp.nodes[k].source)
+      //         }
+      //       }
+      //     })
+      //   }
+      // }
+ // 修改link连接线状态
+      // for (let k = graphDataTemp.nodes.length - 1;k>=0;k--){
+      //   let source = graphDataTemp.nodes[k].source
+      //   if (graphDataTemp.nodes[k].itemStyleColor!=="#b2b2b2") {
+      //     let jArray = []
+      //     let tempArray = graphDataTemp.links.filter((element, i)=>{
+      //       if(element.target === source) {
+      //         jArray.push(i)
+      //       }
+      //       return false
+      //     })
+      //     if(jArray.length === 1 ) {
+      //       if (unPassArray.indexOf(graphDataTemp.links[jArray[0]].source)=== -1) {
+      //         graphDataTemp.links[jArray[0]].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
+      //         if (graphDataTemp.links[jArray[0]].source.indexOf('temp')>-1) {
+
+      //            _this.recursion(graphDataTemp, jArray[0],unPassArray)
+      //         }
+      //       }
+      //     } else if(jArray.length>1){
+      //       let array = {}
+      //       jArray.forEach((v,i)=>{
+      //         if(graphDataTemp.links[v].source.indexOf('temp') > -1){
+      //           array[v] = {}
+      //           _this.recursion1(graphDataTemp, v,unPassArray,array)
+      //         }
+      //       })
+      //       let parentArray = []
+      //       let str =JSON.stringify(array)
+      //       let obj
+      //       let boo = true
+      //       while (boo){
+      //           str = str.replace(/((\")(\d+)(\")(:)(\{)(\})(,)?){1,}/g, '')
+      //           let newStr = str.replace(/((\")(\d+)(\")(:)(\{)(\})(,)?){1,}/g, '')
+      //         if(str.length == newStr.length) {
+      //           boo = false
+      //           obj = JSON.parse(str.replace(/((\})(,)(\})){1,}/g,'}}'))
+      //         } else {
+      //           str = newStr
+      //         }
+      //       }
+      //       for (var key in obj) {
+      //         if (Object.keys(obj[key]).length === 0) {
+      //           return
+      //         }
+      //         if(!isNaN(key)){
+      //           graphDataTemp.links[parseInt(key)].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
+      //           this.recursion3(obj[key],graphDataTemp.links, graphDataTemp.nodes[k].itemStyleColor)
+      //         }
+      //       }
+      //     }
+
+      //   }
+      // }
+    },
+    // 找到当前节点的所有前节点并返回array ,source为当前节点
+    findPreLinkArray (allArray, source) {
+      let array = []
+      allArray.filter((element, i)=>{
+            if(source == element.target) {
+              array.push(element)
+            }
+            return false
+      })
+      return array
     },
     recursion3(obj,linksObj,color) {
       for (var key in obj) {
