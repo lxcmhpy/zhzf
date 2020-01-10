@@ -116,7 +116,7 @@
       <div class="content_box">
         <div class="content">
           <div class="table_form">
-            <el-table :data="docTableDatas" stripe border style="width: 100%" height="100%">
+            <el-table :data="docTableDatas" stripe border style="width: 100%" max-height="250">
               <el-table-column prop="name" label="序号" align="center"></el-table-column>
               <el-table-column prop="isApproval" label="材料名称" align="center"></el-table-column>
               <el-table-column prop="status" label="状态" align="center">
@@ -231,7 +231,7 @@ export default {
     },
     //保存表单数据
     submitCaseDoc(handleType) {
-      this.com_submitCaseForm(handleType, 'caseDocForm', true);
+      this.com_submitCaseForm(handleType, 'penaltyExecutionForm', true);
     },
     //下一环节
     continueHandle() {
@@ -267,6 +267,7 @@ export default {
         linkTypeId: "2c9029e16c753a19016c755fe1340001"     //环节ID
       };
       this.com_getDocListByCaseIdAndFormId(data);
+      
     },
   },
 

@@ -213,6 +213,9 @@ export default {
         case "案件调查报告":
           approvalLink = 'caseInvestig';
           break;
+          case "结案报告":
+          approvalLink = 'finishForm';
+          break;
       }
       this.$router.push({
           name: approvalLink,

@@ -8,10 +8,10 @@
       <el-menu-item index="caseInfo">
         案件<br>总览
       </el-menu-item>
-      <el-menu-item index="2">
+      <el-menu-item index="2" >
         基本<br>信息
       </el-menu-item>
-      <el-menu-item index="3">
+      <el-menu-item index="3" @click="goTo">
         案件<br>流程
       </el-menu-item>
       <el-menu-item index="4">
@@ -48,7 +48,12 @@ export default {
   },
   props:['activeIndex'],
   methods: {
-    
+    goTo(){
+      this.$store.dispatch('deleteTabs', 'caseInfo');
+      this.$router.push({
+          name: "flowChart"
+      })
+    }
   }
 }
 </script>

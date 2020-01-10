@@ -86,16 +86,17 @@
             </td>
           </tr>
         </table>
-        <p class="side_right_indent">
+        <p class="side_right_indent" style="position: relative;">
           <span class="side_left">违法事实及依据：</span>
-          <span class="side_right" @click="overFlowEdit" v-if="editInfo==''">
+          <span class="side_right" @click="overFlowEdit" style="height:80px;line-height:18px;position: absolute;left:0;top:17px;display:block">
             <el-form-item prop="name">
-              <span class="span_bg">&nbsp;</span>
+              <span class="span_bg">{{editInfo}}</span>
             </el-form-item>
           </span>
-          <span class="span_bg" v-if="editInfo==''">&nbsp;</span>
-          <span class="span_bg" v-if="editInfo==''">&nbsp;</span>
-          <span class="text_bg" v-if="editInfo!=''" @click="overFlowEdit">{{editInfo}}</span>
+          <span class="span_bg"  >&nbsp;</span>
+          <span class="span_bg" >&nbsp;</span>
+          <span class="span_bg">&nbsp;</span>
+
         </p>
         <p>你(单位)的行为<span>
             <el-form-item prop="name">

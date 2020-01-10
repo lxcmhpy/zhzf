@@ -9,9 +9,14 @@
           <div id="flowChart" style="width: 1000px;height:550px;margin:0 auto"></div>
       </div>
     </div>
+    <!--快速入口 -->
+    <div class="caseFaseEnterPart">
+      <caseSlideMenu :activeIndex="'caseInfo'"></caseSlideMenu>
+    </div>
   </div>
 </template>
 <script>
+import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import echarts from 'echarts'
 import 'echarts/lib/chart/graph'
 import _ from 'lodash'
@@ -33,6 +38,9 @@ export default {
   },
   mixins:[mixinGetCaseApiList],
   computed:{...mapGetters(['caseId'])},
+  components: {
+    caseSlideMenu
+  },
   methods: {
     async getFlowStatusByCaseId(id) {
       console.log(id)
@@ -416,3 +424,6 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+// @import "../../../css/caseHandle/index.less";
+</style>

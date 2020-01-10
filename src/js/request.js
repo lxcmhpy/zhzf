@@ -9,7 +9,7 @@ var vue = new Vue();
 
 // create an axios instance
 const service = axios.create({
-  // baseURL: '', // api的base_url
+  // baseURL: process.env.BASE_API, // api的base_url
   timeout: 15000, // request timeout
   "Content-Type": "application/x-www-form-urlencoded",
   "Access-Control-Allow-Origin": "*",
@@ -18,7 +18,7 @@ const service = axios.create({
 });
 var BASEURL
 service({
-  url: '/static/json/hostUrl/host.json',
+  url: '/static/json/hostUrl/host.json', 
   method: "get",
   params: {},
 }).then(
