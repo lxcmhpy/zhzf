@@ -353,7 +353,7 @@
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
-import showApprovePeople from "./showApprovePeople";
+// import showApprovePeople from "./showApprovePeople";
 
 export default {
   data() {

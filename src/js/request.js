@@ -37,7 +37,6 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    debugger;
      if(config.baseUrlType ==1){
       config.baseURL = process.env.BASE_API // api的base_url
      } else if(config.baseUrlType ==2){

@@ -207,7 +207,8 @@ export default {
         parentNodeName:data.userDeparment
       };
       this.getCurrentOrganAndChild();
-      this.rowData = data;
+      // this.rowData = data;
+      this.addUserForm = data;
     },
     //获取当前机构及其子机构
     getCurrentOrganAndChild() {

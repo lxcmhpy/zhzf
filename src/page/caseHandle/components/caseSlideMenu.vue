@@ -3,9 +3,9 @@
     <div class="btn_box">
       <i class="el-icon-arrow-down"></i>
     </div>
-    <el-menu class="el-menu-vertical-demo" background-color="#545c64" active-background-color="#F3F9F9" text-color="#9EA7B6" active-text-color="#4573D0" :collapse="true">
+    <el-menu class="el-menu-vertical-demo" :default-active="activeIndex" background-color="#545c64" active-background-color="#F3F9F9" text-color="#9EA7B6" active-text-color="#4573D0" :collapse="true">
 
-      <el-menu-item index="1">
+      <el-menu-item index="caseInfo">
         案件<br>总览
       </el-menu-item>
       <el-menu-item index="2">
@@ -41,6 +41,12 @@
 
 <script>
 export default {
+  data(){
+    return{
+      
+    }
+  },
+  props:['activeIndex'],
   methods: {
     
   }

@@ -252,9 +252,9 @@ export function addRoleApi(data) {
 //删除角色
 export function deleteRoleApi(data) {
   return request({
-    url: "/sys/role/delete",
+    url: "/sys/role/delete/"+data,
     method: "get",
-    params: {id: data},
+    // params: {id: data},
     showloading: true,
     cancelToken: setCancelSource()
   });
@@ -505,11 +505,11 @@ export function addPermissionApi(data) {
 //删除菜单
 export function deletePermissionApi(data) {
   return request({
-    url: "/sys/permission/deleteById",
+    url: "/sys/permission/deleteById/"+data,
     method: "get",
-    params: {
-      id: data
-    },
+    // params: {
+    //   id: data
+    // },
     showloading: true,
     cancelToken: setCancelSource()
   });

@@ -215,7 +215,6 @@ export default {
     },
     //表单筛选
     getUserList() {
-      this.currentPage = 1;
       let data = {
         mobile: this.formInline.mobile,
         username: this.formInline.username,
