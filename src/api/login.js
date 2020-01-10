@@ -9,7 +9,7 @@ let vm = new Vue();
  * @param {*} params.password  必填  密码
  */
 export function loginInApi(params) {
-  
+
   let data = vm.$qs.stringify({
     username: params.username,
     password: params.password,
@@ -57,9 +57,10 @@ export function getMenuApi() {
   return request({
     url: "/sys/permission/getTreePermission",
     method: "get",
+    baseUrlType:1,
     showloading: true,
     cancelToken: setCancelSource()
-    
+
   });
 }
 

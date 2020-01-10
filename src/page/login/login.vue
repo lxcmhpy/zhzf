@@ -30,13 +30,13 @@
                         @click="getCaptcha"
                         style="width:100px;cursor:pointer;display:block"
                       />
-                </div>   
+                </div>
               </el-form-item>
               <div class="forgetPass"><el-link type="primary" :underline="false">忘记密码</el-link></div>
               <div >
                   <el-button type="primary" @click="submitLogin('loginForm')">登录</el-button>
               </div>
-              
+
             </el-form>
           </div>
         </div>
@@ -79,14 +79,14 @@ export default {
     };
   },
   methods: {
-   
+
     //获取验证码
     getCaptcha(){
        this.$store.dispatch("getCaptcha").then(
          res=>{
            let captcha = res.data;
            this.captchaId = captcha.split('::')[0];
-          
+
           //  this.captchaImg = drawCodeImage + this.captchaId;
           this.getCaptchaImgsrc()
          },
@@ -95,7 +95,7 @@ export default {
          }
        )
     },
-    
+
     getCaptchaImgsrc(){
       console.log('this.captchaId',this.captchaId)
        this.$store.dispatch("getCapImgSrc",this.captchaId).then(
@@ -120,7 +120,7 @@ export default {
         if (valid) {
           let values = this.loginForm;
           values.captchaId = this.captchaId;
-      
+
           this.$store.dispatch("loginIn",values).then(
             res => {
               console.log(res);
