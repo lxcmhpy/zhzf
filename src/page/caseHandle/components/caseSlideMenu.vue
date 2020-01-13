@@ -5,13 +5,13 @@
     </div>
     <el-menu class="el-menu-vertical-demo" :default-active="activeIndex" background-color="#545c64" active-background-color="#F3F9F9" text-color="#9EA7B6" active-text-color="#4573D0" :collapse="true">
 
-      <el-menu-item index="caseInfo">
+      <el-menu-item index="caseInfo" @click="goTo('caseInfo')">
         案件<br>总览
       </el-menu-item>
-      <el-menu-item index="2" >
+      <el-menu-item index="inforCollect" @click="goTo('inforCollect')">
         基本<br>信息
       </el-menu-item>
-      <el-menu-item index="3" @click="goTo">
+      <el-menu-item index="flowChart" @click="goTo('flowChart')">
         案件<br>流程
       </el-menu-item>
       <el-menu-item index="4">
@@ -48,10 +48,13 @@ export default {
   },
   props:['activeIndex'],
   methods: {
-    goTo(){
+    goTo(name){
       this.$store.dispatch('deleteTabs', 'caseInfo');
       this.$router.push({
-          name: "flowChart"
+          name: name,
+          params:{
+            fromSlide: true
+          }
       })
     }
   }

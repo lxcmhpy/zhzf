@@ -564,20 +564,26 @@
             </el-form-item>
           </div>
         </div>
-        <el-button class="caseSubmitBtn" icon="el-icon-plus" @click="submitInfo(1)">提交</el-button>
-        <el-button class="caseSubmitBtn caseSubmitBtn2" icon="el-icon-plus" @click="stageInfo">暂存</el-button>
+        <el-button class="caseSubmitBtn" icon="el-icon-plus" :disabled="disableBtn" @click="submitInfo(1)">提交</el-button>
+        <el-button class="caseSubmitBtn caseSubmitBtn2" icon="el-icon-plus" :disabled="disableBtn" @click="stageInfo">暂存</el-button>
       </div>
     </el-form>
 
     <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
     <punishDiag ref="punishDiagRef" @setIllegalLawAndPunishLaw="setIllegalLawAndPunishLaw"></punishDiag>
+    <!--快速入口 -->
+    
+      <caseSlideMenu :activeIndex="'inforCollect'" @fromSlide="fromSlide"></caseSlideMenu>
+   
   </div>
 </template>
 <script>
 import chooseLawPerson from "./chooseLawPerson";
 import punishDiag from "./punishDiag";
+import caseSlideMenu from '../components/caseSlideMenu'
 import iLocalStroage from "@/js/localStroage";
-
+import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
 export default {
   data() {
     //选择个人试验证
@@ -756,13 +762,17 @@ export default {
       activeJudgli: "",
       showOverrun: false, //显示超限信息锚点
       lawPersonListId: "",
-      currentUserLawId: ""
+      currentUserLawId: "",
+      disableBtn:false, //提交暂存按钮的禁用
     };
   },
   components: {
     chooseLawPerson,
-    punishDiag
+    punishDiag,
+    caseSlideMenu
   },
+  mixins:[mixinGetCaseApiList],
+  computed:{...mapGetters(['caseId'])},
   methods: {
     //更改案件来源
     changeCaseSource(val) {
@@ -1040,7 +1050,24 @@ export default {
       this.allUserList = list;
       setTimeout(() => {}, 100);
     },
-    stageInfo() {}
+    stageInfo() {},
+    //右侧小导航进入的，则获取案件信息
+    fromSlide(){
+      console.log('fromSlide',);
+      let data = {
+        id: this.caseId
+      };
+      this.$store.dispatch("getCaseBasicInfo", data).then(
+        res => {
+          console.log('获取案件信息',res)
+           this.inforForm = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
+
   },
   mounted() {
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
@@ -1062,7 +1089,12 @@ export default {
     // this.setLawPerson(
     //   [iLocalStroage.gets('userInfo').username]
     // )
+    console.log(this.$route)
     this.setLawPersonCurrentP();
+    if(this.$route.params.fromSlide){
+      this.fromSlide();
+      this.disableBtn = true;
+    }
   }
 };
 </script>

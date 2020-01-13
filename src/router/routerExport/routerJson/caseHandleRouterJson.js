@@ -372,4 +372,13 @@ export default  [
     title: "询问笔录-doc"
   },
   component: () => import("@/page/caseHandle/case/caseDocument/inquiryNotesDoc.vue")
-}]
+},
+{
+  path: "/inforCollect",
+  name: "inforCollect",
+  meta: {
+    title: "信息采集"
+  },
+  component: () => import("@/page/caseHandle/unRecordCase/inforCollection.vue")
+}
+]

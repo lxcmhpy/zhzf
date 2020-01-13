@@ -23,7 +23,8 @@ service({
   params: {},
 }).then(
   res => {
-    BASEURL = res.data
+    BASEURL = res.data;
+    console.log('res.data',res.data)
   },
   error => {
     console.log(error)
@@ -37,6 +38,7 @@ service.interceptors.request.use(
      }else{
       config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
      }
+     console.log('config.baseURL',config.baseURL)
     //token一天后过期
     if (config.showloading != false) {
       showFullScreenLoading();

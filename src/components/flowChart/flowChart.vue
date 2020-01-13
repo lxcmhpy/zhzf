@@ -10,9 +10,8 @@
       </div>
     </div>
     <!--快速入口 -->
-    <div class="caseFaseEnterPart">
-      <caseSlideMenu :activeIndex="'caseInfo'"></caseSlideMenu>
-    </div>
+    <caseSlideMenu :activeIndex="'flowChart'" ></caseSlideMenu>
+    
   </div>
 </template>
 <script>
@@ -39,9 +38,6 @@ export default {
   },
   mixins:[mixinGetCaseApiList],
   computed:{...mapGetters(['caseId'])},
-  components: {
-    caseSlideMenu
-  },
   methods: {
     async getFlowStatusByCaseId(id) {
       console.log(id)
@@ -475,10 +471,13 @@ export default {
     this.mountedInit()
   },
   components: {
-        echarts
+        echarts,
+        caseSlideMenu
   }
 }
 </script>
 <style lang="less" scoped>
 // @import "../../../css/caseHandle/index.less";
+// @import "../../css/caseHandle/index.less";
+@import "../../css/documentForm.less";
 </style>
