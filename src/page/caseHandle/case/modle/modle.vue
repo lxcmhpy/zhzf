@@ -200,7 +200,7 @@
   </div>
 </template>
 <script>
-import overflowInput from "./overflowInput";
+
 import { mixinGetCaseApiList } from "@/js/mixins";
 export default {
   components: {
@@ -329,7 +329,8 @@ export default {
     },
     // 多行编辑
     overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '');
+      let maxlength= 122;
+      this.$refs.overflowInputRef.showModal(0, '',maxlength);
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
@@ -376,6 +377,7 @@ export default {
 
   }
 }
+import overflowInput from "./overflowInput";
 </script>
 <style lang="less" >
 @import "../../../../css/caseHandle/caseDocModle.less";
