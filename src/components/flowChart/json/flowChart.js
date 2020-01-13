@@ -1,3 +1,4 @@
+
 // svg矢量图形path
 const svgData = {
   lct_01:'path://M237.227641 0.004267h603.301891a90.452617 90.452617 0 0 1 91.305944 91.305943v347.730581H90.882133V146.349775A146.772171 146.772171 0 0 1 237.227641 0.004267z" fill="#0074F5" opacity=".2" /><path d="M645.544409 0.004267H182.188077A90.452617 90.452617 0 0 0 90.882133 91.31021v841.380006A90.452617 90.452617 0 0 0 182.188077 1023.99616h654.928149a90.452617 90.452617 0 0 0 91.305943-91.305944V281.602037z" fill="#0074F5" /><path d="M650.237705 0.004267v213.331644a69.546116 69.546116 0 0 0 69.546116 68.266126h213.331645z" fill="#135FD8" /><path d="M237.227641 402.347748a55.039564 55.039564 0 0 0 109.652466 0 55.039564 55.039564 0 1 0-109.652466 0zM493.225615 365.654705h219.30493a34.559726 34.559726 0 0 1 36.693043 36.693043 34.559726 34.559726 0 0 1-36.693043 36.693043H493.225615a34.559726 34.559726 0 0 1-36.693043-36.693043 34.559726 34.559726 0 0 1 36.693043-36.693043z m0 183.038551h219.30493a36.693043 36.693043 0 1 1 0 72.959423H493.225615a36.693043 36.693043 0 1 1 0-72.959423z m0 182.611888h219.30493a36.693043 36.693043 0 0 1 0 73.386086H493.225615a36.693043 36.693043 0 0 1 0-73.386086zM237.227641 584.959636a55.039564 55.039564 0 1 0 54.612901-54.612901 54.612901 54.612901 0 0 0-54.612901 54.612901zM237.227641 767.998187a55.039564 55.039564 0 1 0 54.612901-55.039565A54.612901 54.612901 0 0 0 237.227641 767.998187z',
@@ -174,12 +175,11 @@ const graphData = {
     {id:"4_1",source: "4_1",target:"5",linkID: '2c9029ee6cac9281016caca8ea500003',name:"违法行\n为通知",position:{x: 1, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_06'}},
     {id:"4_2",source: "4_2",target:"temp4_2_1",linkID: '2c9029ee6cac9281016caca9a0000004',name:"责令\n改正",position:{x: 2, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_07'}},
     {id:"temp4_2_1",source: 'temp4_2_1',target:"temp4_2_2",linkID: 'temp4_2_1',name:"",position:{x: 2, y: 6.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp4_2_2",source: 'temp4_2_1',target:"temp4_2_2",linkID: 'temp4_2_2',name:"",position:{x: 1, y: 6.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp4_2_3",source: 'temp4_2_2',target:"7_1",linkID: 'temp4_2_3',name:"",position:{x: 1, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+    {id:"temp4_2_2",source: 'temp4_2_2',target:"7_1",linkID: 'temp4_2_2',name:"",position:{x: 1, y: 6.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+    // {id:"temp4_2_3",source: 'temp4_2_2',target:"7_1",linkID: 'temp4_2_3',name:"",position:{x: 1, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     {id:"4_3",source: "4_3",target:"temp4_3_1",linkID: 'a36b59bd27ff4b6fe96e1b06390d204f',name:"移交\n移送",position:{x: 3, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_08'}},
     {id:"temp4_3_1",source: 'temp4_3_1',target:"temp4_3_2",linkID: 'temp4_3_1',name:"",position:{x: 3, y: 7},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp4_3_2",source: 'temp4_3_1',target:"temp4_3_2",linkID: 'temp4_3_1',name:"",position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp4_3_2_1",source: 'temp4_3_2',target:"8",linkID: 'temp4_3_1',name:"",position:{x: 1, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+    {id:"temp4_3_2",source: 'temp4_3_2',target:"8",linkID: 'temp4_3_1',name:"",position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     {id:"4_4",source: "4_4",target:"temp4_4_1",linkID: 'a36b59bd27ff4b6fe96e1b06390d204g',name:"不予\n处罚",position:{x: 4, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_09'}},
     {id:"temp4_4_1",source: 'temp4_4_1',target:"temp4_3_1",linkID: 'temp4_4_1',name:"",position:{x: 4, y: 7},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     {id:"5",source: '5',target:"6",linkID: '2c9029ac6c26fd72016c27247b290003',name:"当事人\n权利",position:{x: 1, y: 5},itemStyleColor: "",attributes:{modularity_class:'lct_10'}},
@@ -197,3 +197,47 @@ const graphData = {
 
 
 export {svgData, stateColor, lineStyle, graphData, mainLinkData,layoutCharts}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

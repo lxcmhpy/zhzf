@@ -232,6 +232,7 @@ export default {
       }
 
       //循环 graphData生成link,初始化连线颜色为灰色,初始化临时节点的箭头样式
+      graphDataTemp.links = []
       for (let i = 0;i<graphDataTemp.nodes.length;i++){
         let nodes = graphDataTemp.nodes[i]
         if (_this.stateLinkArray.indexOf(nodes.curLinkState) == -1){
@@ -239,7 +240,7 @@ export default {
           nodes.curLinkState = 'lock'
         }
         graphDataTemp.links.push({
-          id: i,
+          id: nodes.id,
           source: nodes.source,
           sourceName: nodes.name,
           linkID: nodes.linkID,
@@ -255,7 +256,7 @@ export default {
           symbolSize: nodes.target.indexOf('temp') > -1 ? [1, 1] : [2, 7]
         })
       }
-
+      // 默认一个节点，最多只有两个前节点横向一个，纵向一个，
       // 从后往前遍历节点，查找路径，修改节点状态
       for (let k = graphDataTemp.nodes.length - 1;k>=0;k--){
         // 记录当前节点
@@ -263,31 +264,7 @@ export default {
         if (curNode.curLinkState === 'lock') {
           // 如果当前节点=='lock'说明其未解锁，不操作，
         } else {
-          // 否则过滤得到当前节点的前一节点集合
-          // let filterPreLinkArray = [] // 前一节点数组集合
-          // graphDataTemp.links.filter((element, i)=>{
-          //   if(curNode.source == element.target) {
-          //     filterPreLinkArray.push(element)
-          //   }
-          //   return false
-          // })
-          debugger
-          let filterPreLinkArray = this.findPreLinkArray(graphDataTemp.links, curNode.source)
-          // 如果数组集合元素为1，说明当前元素只有一个前节点，则前一节点的颜色，必然和当前节点颜色一致
-          if (filterPreLinkArray.length == 1) {
-            filterPreLinkArray[0].lineStyle = lineStyle[curNode.curLinkState]
-          } else if (filterPreLinkArray.length > 1) {
-            // 如果有多个前节点，则找到前节点是否包含temp节点
-            // 如果不包含temp 节点，再遍历前节点，看是否存在父子关系
-            let filterPreIDPassArray = []
-            for (let f = 0;f <filterPreLinkArray.length;f++) {
-              let passCurSource = filterPreLinkArray[f].source
-              //  = []
-               let idPassArray = this.findPreLinkArray(graphDataTemp.links, passCurSource)
-               console.log(idPassArray)
-            }
-          }
-
+          this.recursionTempLinkArray (graphDataTemp, curNode, unPassArray)
         }
       }
 
@@ -369,25 +346,125 @@ export default {
       //   }
       // }
     },
-    // 找到当前节点的所有前节点并返回array ,source为当前节点
-    findPreLinkArray (allArray, source) {
-      let array = []
-      allArray.filter((element, i)=>{
-            if(source == element.target) {
-              array.push(element)
-            }
-            return false
+    findAdjacentIndexLinkArray (allArray, source) {
+      let array = new Array()
+      allArray.filter((v, i)=>{
+        if(source == v.target) {
+          array.push(i)
+          return true
+        }
+        return false
       })
+      // debugger
       return array
     },
-    recursion3(obj,linksObj,color) {
+    // 找到当前节点的所有前节点并返回array ,source为当前节点
+    findAdjacentLinkArray (allArray, source) {
+      let array = new Array()
+      allArray.filter((v, i)=>{
+        if(source == v.target) {
+          array.push(v)
+          return true
+        }
+        return false
+      })
+      // debugger
+      return array
+    },
+    recursionTempLinkArray (graphDataTemp, curNode, unPassArray) {
+         // let filterPreSourceLinkArray = new Array()
+          // let filterPreTargetLinkArray = new Array()
+          // 寻找当前节点的前一节点
+          // debugger
+          let filterPreSourceLinkArray = this.findAdjacentLinkArray(graphDataTemp.links, curNode.source)
+          // 寻找所有 -> 指向当前节点的target 的所有节点
+          let filterPreTargetLinkArray = this.findAdjacentLinkArray(graphDataTemp.links, curNode.target)
+          let checkNumber = {
+            hasSiblingsNumber: null,
+            parent: null,
+            tempList: []
+          }
+          // 如果数组集合元素为1，说明当前元素只有一个前节点，则前一节点的颜色，必然和当前节点颜色一致
+          if (filterPreSourceLinkArray.length == 1) {
+            filterPreSourceLinkArray[0].lineStyle = lineStyle[curNode.curLinkState]
+            filterPreSourceLinkArray[0].curLinkState = curNode.curLinkState
+            if (filterPreSourceLinkArray[0].source.indexOf('temp') > -1) {
+              this.recursionTempLinkArray(graphDataTemp, filterPreSourceLinkArray[0], unPassArray)
+            }
+          } else if (filterPreSourceLinkArray.length > 1) {
+            // 如果有多个前节点，则找到前节点是否包含temp节点
+            // 如果不包含temp 节点，再遍历前节点，同一列节点优先选中，分支横向节点不选中
+            // let filterPresourcePassArray = new Array()
+            for (let f = 0;f <filterPreSourceLinkArray.length;f++) {
+              // 正则表达式删选，除去最后一位的，节点111
+              let curFilterPreSourceLink = filterPreSourceLinkArray[f]
+              let str = curFilterPreSourceLink.source.substring(0, curFilterPreSourceLink.source.length - 1)
+              if(curFilterPreSourceLink.curLinkState == 'lock') {
+                // 过滤的节点curlinkstate为lock说明未解锁(也可能为temp节点)，此时，放入temp节点
+                if (curFilterPreSourceLink.source.indexOf('temp') > -1) {
+                  checkNumber.tempList.push(curFilterPreSourceLink)
+                }
+              } else {
+                if (str !== '' && curNode.source.indexOf(str) > -1) {
+                  // str不为空，并且source有相同部分，说明是相邻节点（状态不是“未解锁”） ，记录
+                  checkNumber.hasSiblingsNumber = f
+                } else {
+                  // 非相邻节点，记录
+                  checkNumber.parent = f
+                }
+              }
+            }
+
+            if (typeof checkNumber.hasSiblingsNumber == 'number') {
+              // 有兄弟节点并且有颜色状态
+              filterPreSourceLinkArray[checkNumber.hasSiblingsNumber].lineStyle = lineStyle[curNode.curLinkState]
+              filterPreSourceLinkArray[checkNumber.hasSiblingsNumber].curLinkState = curNode.curLinkState
+              // this.recursionTempLinkArray(graphDataTemp, filterPreSourceLinkArray[checkNumber.hasSiblingsNumber])
+            } else if (typeof checkNumber.parent == 'number') {
+              // 有父节点，无兄弟节点，并且父级节点有颜色状态
+              filterPreSourceLinkArray[checkNumber.parent].lineStyle = lineStyle[curNode.curLinkState]
+              filterPreSourceLinkArray[checkNumber.parent].curLinkState = curNode.curLinkState
+              // this.recursionTempLinkArray(graphDataTemp, filterPreSourceLinkArray[checkNumber.other])
+            } else if (checkNumber.tempList.length > 0) {
+
+              if (checkNumber.tempList.length == 1) {
+                // 临时节点有一个
+                checkNumber.tempList[0].lineStyle = lineStyle[curNode.curLinkState]
+                checkNumber.tempList[0].curLinkState = curNode.curLinkState
+
+                this.recursionTempLinkArray(graphDataTemp, checkNumber.tempList[0], unPassArray)
+              } else {
+              // 有多个temp节点
+                let that = this
+                for (let m = 0; m < checkNumber.tempList.length;m++) {
+                  // this.recursionTempLinkArray(graphDataTemp, checkNumber.tempList[v])
+                  let source = checkNumber.tempList[m].source
+                      graphDataTemp.links.forEach((v, i)=>{
+                        if(element.target === source) {
+                          let tempIndexArray = []
+                          tempIndexArray[i] = {}
+                          that.findTempIndexArray(graphDataTemp.links, tempIndexArray, i)
+                        }
+                      })
+
+                }
+              }
+            }
+
+          }
+    },
+    findTempIndexArray(links, tempIndexArray, currentIndex) {
+      let filterPreSourceLinkArray = this.findAdjacentIndexLinkArray(links, links[currentIndex].source)
+
+    },
+    recursion3(obj,linksObj,lineStyle) {
       for (var key in obj) {
           if (Object.keys(obj[key]).length === 0) {
             return
           }
           if(!isNaN(key)){
-            linksObj[parseInt(key)].lineStyle.normal.color = color
-            this.recursion3(obj[key],linksObj,color)
+            linksObj[parseInt(key)].lineStyle = lineStyle[lineStyle]
+            this.recursion3(obj[key],linksObj, lineStyle)
           } else {
             break
           }
@@ -445,16 +522,16 @@ export default {
       })
     },
     async mountedInit() {
-      this.getFlowStatusByCaseId(this.caseId);
-      // this.data = {
-      //   completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,a36b59bd27ff4b6fe96e1b06390d204e',//已完成
-      //   //责令改正2c9029ee6cac9281016caca9a0000004
-      //   doingLink: '2c9029ee6cac9281016caca9a0000004,a36b59bd27ff4b6fe96e1b06390d204h',// 进行中
-      //   //决定执行
-      //   unLockLink: '2c9029e16c753a19016c755fe1340001',// 已解锁
-      //   completeMainLink: '0,1,2',
-      //   doingMainLink: "3"
-      // }
+      // this.getFlowStatusByCaseId(this.caseId);
+      this.data = {
+        completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,a36b59bd27ff4b6fe96e1b06390d204g,2c9029ee6cac9281016cacaadf990006',//已完成
+        //责令改正2c9029ee6cac9281016caca9a0000004
+        doingLink: '',// 进行中
+        //决定执行
+        unLockLink: '',// 已解锁
+        completeMainLink: '0,1,2',
+        doingMainLink: "3"
+      }
       this.updateLinkData()
       this.updateGraphData()
       this.drawFlowChart()
