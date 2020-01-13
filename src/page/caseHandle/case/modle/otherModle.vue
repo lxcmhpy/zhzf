@@ -209,9 +209,7 @@ export default {
     getQAModleInfo(edit) {
       this.docData.QAModleInfo = edit;
     },
-    overFlowEdit(){
-      
-    }
+    overFlowEdit(){}
   },
 }
 </script>
