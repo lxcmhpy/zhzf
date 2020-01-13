@@ -212,8 +212,8 @@ export const mixinGetCaseApiList = {
       this.caseDocDataForm.docData = JSON.stringify(this.docData);
       this.caseDocDataForm.status = handleType;
       console.log(this.caseDocDataForm);
-      this.$refs[docForm].validate(valid => {
-        if (valid) {
+      // this.$refs[docForm].validate(valid => {
+      //   if (valid) {
           this.$store.dispatch("addDocData", this.caseDocDataForm).then(
             res => {
               console.log("保存文书", res);
@@ -231,12 +231,12 @@ export const mixinGetCaseApiList = {
               console.log(err);
             }
           );
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
+        // } else {
+        //   console.log('error submit!!');
+        //   return false;
+        // }
 
-      });
+      // });
     },
     //通过案件id和表单类型Id查询已绑定文书
     com_getDocListByCaseIdAndFormId(params) {
