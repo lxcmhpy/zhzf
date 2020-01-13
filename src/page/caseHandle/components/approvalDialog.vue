@@ -7,7 +7,7 @@
     width="30%"
   >
     <div>
-      <el-form ref="approvalForm" :model="approvalForm" label-width="80px">
+      <el-form ref="approvalForm" :model="approvalForm" label-width="90px">
         <el-form-item label="审批意见">
           <el-radio-group v-model="approvalForm.executeHandle">
             <el-radio :label="1">同意</el-radio>
@@ -20,7 +20,7 @@
             v-model="approvalForm.approveOpinions"
           ></el-input>
         </el-form-item>
-        <el-form-item label="签批时间">
+        <el-form-item label="签批时间" id="approvalTimeBox">
           <el-date-picker
             v-model="approvalForm.approvalTime"
             type="date"
@@ -69,39 +69,72 @@ export default {
     },
     //审批
     approvalSure() {
-      console.log(this.data);
-      let params={};
-      if (this.caseData.firstApproval) {
-        //一级审批有签名说明审批过 此时为二级审批
-        params = {
-          caseId: this.caseData.caseId,
-          executeHandle:
-            this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
-          caseLinktypeId: this.caseData.caseLinktypeId,
-          approveOpinions: this.approvalForm.approveOpinions,
-          jsonApproveData: JSON.stringify({
-            secondApproveOpinions:
-              this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
-            secondApprovePeo: iLocalStroage.gets("userInfo").username,
-            secondApproveTime: this.approvalForm.approvalTime
-          })
-        };
-      } else {
-        params = {
-          caseId: this.caseData.caseId,
-          executeHandle:
-            this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
-          caseLinktypeId: this.caseData.caseLinktypeId,
-          approveOpinions: this.approvalForm.approveOpinions,
-          jsonApproveData: JSON.stringify({
+      // console.log(this.data);
+      let params = {
+        caseId: this.caseData.caseId,
+        executeHandle: this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
+        caseLinktypeId: this.caseData.caseLinktypeId,
+        approveOpinions: this.approvalForm.approveOpinions,
+        jsonApproveData: ""
+      };
+
+      //有三级审批时
+      if (this.caseData.approvalNumber == 3) {
+        if (this.caseData.firstApproval) {
+          //一级审批过
+          if (this.caseData.secondApproval) {
+            //二级审批过  此时为三级审批
+            console.log('此时为三级审批')
+            params.jsonApproveData = JSON.stringify({
+              thirdApproveOpinions:
+                this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
+              thirdApprovePeo: iLocalStroage.gets("userInfo").username,
+              thirdApproveTime: this.approvalForm.approvalTime
+            });
+          } else {
+            // 此时为二级审批
+            console.log('此时为2级审批')
+
+            params.jsonApproveData = JSON.stringify({
+              secondApproveOpinions:
+                this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
+              secondApprovePeo: iLocalStroage.gets("userInfo").username,
+              secondApproveTime: this.approvalForm.approvalTime
+            });
+          }
+        } else {
+          //此时为一级审批
+            console.log('此时为一级审批')
+
+          params.jsonApproveData = JSON.stringify({
             approveOpinions:
               this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
             approvePeo: iLocalStroage.gets("userInfo").username,
             approveTime: this.approvalForm.approvalTime
-          })
-        };
+          });
+        }
+      } else if (this.caseData.approvalNumber == 2) {
+        //有两级审批时
+        if (this.caseData.firstApproval) {
+          // 此时为二级审批
+          params.jsonApproveData = JSON.stringify({
+            secondApproveOpinions:
+              this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
+            secondApprovePeo: iLocalStroage.gets("userInfo").username,
+            secondApproveTime: this.approvalForm.approvalTime
+          });
+        } else {
+          //此时为一级审批
+          params.jsonApproveData = JSON.stringify({
+            approveOpinions:
+              this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
+            approvePeo: iLocalStroage.gets("userInfo").username,
+            approveTime: this.approvalForm.approvalTime
+          });
+        }
       }
 
+    
       console.log(params);
       this.$store.dispatch("approvalPdf", params).then(
         res => {
@@ -110,9 +143,8 @@ export default {
             type: "success",
             message: "审批通过"
           });
-          this.$emit('getNewData')
+          this.$emit("getNewData");
           this.visible = false;
-          
         },
         err => {
           console.log(err);
@@ -125,7 +157,7 @@ export default {
 </script>
 <style lang="less">
 // @import "../../../css/caseHandle/index.less";
-.el-date-editor {
+#approvalTimeBox .el-date-editor {
   width: 100%;
 }
 </style>

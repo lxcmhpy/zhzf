@@ -224,7 +224,7 @@
             fill="#FFFFFF"
           />
         </svg>
-        <br />提交审批
+        <br />提交审批 
       </el-button>
       <el-button type="primary" @click="addFormData(1)" v-if="!approval">
         <svg
@@ -271,7 +271,7 @@
   </div>
 </template>
 <script>
-import showApprovePeople from "./showApprovePeople";
+import showApprovePeople from "../components/showApprovePeople";
 import approvalDialog from "../components/approvalDialog";
 
 import { mixinGetCaseApiList } from "@/js/mixins";
@@ -331,12 +331,21 @@ export default {
     },
     //审批弹窗
     showApproval(){
-      //判断是一级审批还是二级审批
-      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : ''
+      //判断是一级审批还是二级审批(经办机构负责人审批、部门负责人审批)
+      // let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
+      // let caseData={
+      //   caseId:this.caseId,
+      //   caseLinktypeId:"2c90293b6c178b55016c17c255a4000d",
+      //   firstApproval:approvePeo
+      // }
+      // this.$refs.approvalDialogRef.showModal(caseData);
+
+      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
       let caseData={
         caseId:this.caseId,
         caseLinktypeId:"2c90293b6c178b55016c17c255a4000d",
-        firstApproval:approvePeo
+        firstApproval:approvePeo,
+        approvalNumber:2 //2次审批
       }
       this.$refs.approvalDialogRef.showModal(caseData);
     }

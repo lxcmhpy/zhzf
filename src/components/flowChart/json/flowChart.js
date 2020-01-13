@@ -28,25 +28,38 @@ const lineStyle = {
   complete: {
         normal: {
             color: '#0174f5',
-            width: 2,
-            opacity:1
+            width: 2
         }
+  },
+  doing: {
+    normal: {
+      color: '#f2a010',
+      width: 2
+    }
   },
   unLock: {
       normal: {
-          color: '#b2b2b2'
+          color: '#52c2b6',
+          width: 2,
+          opacity:2
       }
+  },
+  lock: {
+    normal: {
+        color: '#b2b2b2',
+        width: 2,
+        opacity:2
+    }
   }
-}
-// 页面布局x轴平均分布数，以及每列平均宽度和高度设置
+}// 页面布局x轴平均分布数，以及每列平均宽度和高度设置
 const layoutCharts = {
   xMargin: 90,
   yMargin: 70,
   splitNumber: 8
 }
+
 // 页面大环节文字以及颜色设置
-const mainLinkData = [
-  {
+const mainLinkData = [{
       value: ' 立案',
       name: '0',
       // backgroundColor: 'red',
@@ -55,8 +68,10 @@ const mainLinkData = [
           verticalAlign: 'top',
           backgroundColor: '#b2b2b2',
           lineHeight: 26,
-          padding:[10,10,10,33],
-          shadowOffsetX: 20,
+          // 上宽，左宽，下宽，宽
+          padding:[10,20,10,22],
+          // 右边的宽度
+          shadowOffsetX: 22,
           shadowColor: '#b2b2b2',
           textShadowOffsetX: 0,
               color: 'white',
@@ -71,11 +86,12 @@ const mainLinkData = [
         verticalAlign: 'top',
         backgroundColor: '#b2b2b2',
         lineHeight: 26,
-        padding:[10, 50,10,72],
+        padding:[10, 10,10,102],
         color: 'white',
         shadowBlur: '#b2b2b2',
         fontSize: 16,
-        shadowOffsetX: 40,
+        // 右边的宽度
+        shadowOffsetX: 68,
         shadowColor: '#b2b2b2',
     }
   },
@@ -83,13 +99,17 @@ const mainLinkData = [
     value: '决定',
     name: '2',
     textStyle: {
-        align: 'left',
+        align: 'center',
         verticalAlign: 'top',
         backgroundColor: '#b2b2b2',
         lineHeight: 26,
-        padding:[10,165,10,53],
+        // 上 右，*，*
+        padding:[10,50,10,123],
         color: 'white',
-        shadowOffsetX: -139,
+        // 据左边的宽度（不考虑负号）
+        shadowOffsetX: 123,
+        // 文字的偏移量
+        textShadowOffsetX: -300,
         shadowColor: '#b2b2b2',
         fontSize: 16,
     }
@@ -98,14 +118,17 @@ const mainLinkData = [
     value: '执行',
     name: "3",
     textStyle: {
-        align: 'center',
+        align: 'right',
         verticalAlign: 'top',
         backgroundColor: '#b2b2b2',
         lineHeight: 26,
-        padding:[10,28,10, 29],
+        // 上  右 下左 为前一节点的位置
+        padding:[10,35,10, 34],
         color: '#b2b2b2',
-        shadowOffsetX: 125,
-        textShadowOffsetX: 128,
+        // 左边宽 当前节点的位置
+        shadowOffsetX: 157,
+        // 文字的偏移量
+        textShadowOffsetX: 160,
         textShadowColor: 'white',
         shadowColor: '#b2b2b2',
         fontSize: 16,
@@ -120,11 +143,16 @@ const mainLinkData = [
         backgroundColor: '#b2b2b2',
         lineHeight: 26,
         padding:[10,29,10, 29],
+        // 左边宽偏移量
+        shadowOffsetX: -12,
+        // 文字的偏移量
+        textShadowOffsetX: -50,
         color: 'white',
         shadowColor: '#b2b2b2',
         fontSize: 16,
     }
 }]
+
 
 // 初始化节点位置
 const graphData = {
@@ -166,5 +194,6 @@ const graphData = {
   ],
   links:[]
 }
+
 
 export {svgData, stateColor, lineStyle, graphData, mainLinkData,layoutCharts}

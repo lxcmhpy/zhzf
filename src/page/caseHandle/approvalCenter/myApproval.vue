@@ -13,7 +13,7 @@
         <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
         <el-table-column prop="caseType" label="案件类型" align="center"></el-table-column>
         <el-table-column prop="caseType2" label="申请人" align="center"></el-table-column>
-        <el-table-column prop="caseStatus2" label="当前环节" align="center"></el-table-column>
+        <el-table-column prop="currentLinkName" label="当前环节" align="center"></el-table-column>
       </el-table>
     </div>
     <div class="paginationBox">

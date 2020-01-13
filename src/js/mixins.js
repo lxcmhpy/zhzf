@@ -99,7 +99,7 @@ export const mixinGetCaseApiList = {
               if (handleType == 1) {
                 //保存成功 
                 if (hasNextBtn) {    //有下一环节按钮  
-                  this.nextBtnDisab = false;
+                  // this.nextBtnDisab = false;
                 } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
                   this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId)
                 }

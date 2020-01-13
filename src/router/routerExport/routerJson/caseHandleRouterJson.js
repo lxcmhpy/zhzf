@@ -1,11 +1,12 @@
-export default  [{
-  path: "/side",
-  name: "side",
-  meta: {
-    title: "侧边条"
-  },
-  component: () => import("@/page/caseHandle/case/side.vue")
-},
+export default  [
+//   {
+//   path: "/side",
+//   name: "side",
+//   meta: {
+//     title: "侧边条"
+//   },
+//   component: () => import("@/page/caseHandle/case/side.vue")
+// },
 {
   path: "/modle",
   name: "modle",

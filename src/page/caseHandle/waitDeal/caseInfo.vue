@@ -1,11 +1,5 @@
 <template>
-  <!-- <div class="searchAndpageBox" id="waitDealBox">
-    <div>我是案件总览</div>
-    <el-button @click="continueHandle">继续办理</el-button>
-    <nextLinkDialog ref="nextLinkDialogRef" @myChooseNext="getMyChooseNext"></nextLinkDialog>
-  </div> -->
-
-  <div class="box">
+  <div class="box" id="caseInfoBox">
     <el-form ref="docForm"  :model="formData" label-width="115px">
 
       <!-- <div class="header-case">
@@ -148,10 +142,15 @@
         </div>
       </div>
     </el-form>
+    <!--快速入口 -->
+    <div class="caseFaseEnterPart">
+      <caseSlideMenu :activeIndex="'caseInfo'"></caseSlideMenu>
+    </div>
     
   </div>
 </template>
 <script>
+import caseSlideMenu from '../components/caseSlideMenu'
 import iLocalStroage from "@/js/localStroage";
 import { mixinGetCaseApiList } from "@/js/mixins";
 
@@ -183,8 +182,11 @@ export default {
     };
   },
   mixins: [mixinGetCaseApiList],
+  components: {
+    caseSlideMenu
+  },
   methods: {
-    //继续办理  跳转流程图   但是还没加流程图 
+    //继续办理  跳转流程图  
     continueHandle() {
       this.$store.dispatch('deleteTabs', 'caseInfo');
       this.$router.push({
@@ -192,17 +194,31 @@ export default {
       })
     },
     //获取弹窗中选中的环节id
-    getMyChooseNext(targetLink){
-        console.log(targetLink);
-        let nextLink = this.com_getCaseRouteName(targetLink);
-        console.log(nextLink);
-        this.$router.push({name:nextLink,params:{id:this.caseInfo.id}})
-    },
+    // getMyChooseNext(targetLink){
+    //     console.log(targetLink);
+    //     let nextLink = this.com_getCaseRouteName(targetLink);
+    //     console.log(nextLink);
+    //     this.$router.push({name:nextLink,params:{id:this.caseInfo.id}})
+    // },
     //案件审批
     approvalCase(){
       this.$store.dispatch('deleteTabs', 'caseInfo');
+      console.log(this.caseInfo)
+      // currentLinkName
+      let approvalLink = ''
+      switch(this.caseInfo.currentLinkName){
+        case "立案登记":
+          approvalLink = 'establish';
+          break;
+        case "案件调查报告":
+          approvalLink = 'caseInvestig';
+          break;
+          case "结案报告":
+          approvalLink = 'finishForm';
+          break;
+      }
       this.$router.push({
-          name: "establish",
+          name: approvalLink,
           params:{
             isApproval:true
           }
@@ -216,5 +232,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "../../../css/caseHandle/index.less";
 @import "../../../css/documentForm.less";
 </style>
