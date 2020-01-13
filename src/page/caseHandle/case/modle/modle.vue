@@ -246,47 +246,47 @@ export default {
       },
       rules: {
         test: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
 
         ],
         party: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyIdNo: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyName: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyUnitAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyUnitTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyManager: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         punishLaw: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         socialCreditCode: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         // illegalFactsEvidence: [
-        //   // { required: true, message: '请输入', trigger: 'blur' },
+        //   // { required: true, message: ' ', trigger: 'blur' },
         // ],
         reconsiderationOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         litigationOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         makeDate: [
           { required: true, message: '请选择日期', trigger: 'blur' },
