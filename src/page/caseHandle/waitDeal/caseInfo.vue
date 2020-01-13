@@ -143,9 +143,9 @@
       </div>
     </el-form>
     <!--快速入口 -->
-    <div class="caseFaseEnterPart">
+  
       <caseSlideMenu :activeIndex="'caseInfo'"></caseSlideMenu>
-    </div>
+   
     
   </div>
 </template>
@@ -153,7 +153,7 @@
 import caseSlideMenu from '../components/caseSlideMenu'
 import iLocalStroage from "@/js/localStroage";
 import { mixinGetCaseApiList } from "@/js/mixins";
-
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -182,6 +182,7 @@ export default {
     };
   },
   mixins: [mixinGetCaseApiList],
+  computed:{...mapGetters(['caseId'])},
   components: {
     caseSlideMenu
   },
@@ -226,7 +227,11 @@ export default {
     }
   },
   mounted(){
-    this.formData = this.caseInfo;
+    if(this.$route.params.fromSlide){
+      this.com_getCaseBasicInfo(this.caseId);
+    }else{
+      this.formData = this.caseInfo;
+    }
   },
   created() {}
 };

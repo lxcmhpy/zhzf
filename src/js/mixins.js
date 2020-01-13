@@ -113,25 +113,25 @@ export const mixinGetCaseApiList = {
       });
     },
     //点击下一环节和提交按钮都跳转流程图
-    com_goToNextLinkTu(caseLinktypeId) {
-      let data={
-        caseId:this.caseLinkDataForm.caseBasicinfoId,
-        caseLinktypeId:caseLinktypeId
-      };
-      console.log(data);
-      this.$store.dispatch("submitPdf", data).then(
-        res => {
-          console.log("更改流程图中的状态", res);
-          this.$store.dispatch("deleteTabs", this.$route.name);
-          this.$router.push({
-            name: 'flowChart'
-          });
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
+    // com_goToNextLinkTu(caseLinktypeId) {
+    //   let data={
+    //     caseId:this.caseLinkDataForm.caseBasicinfoId,
+    //     caseLinktypeId:caseLinktypeId
+    //   };
+    //   console.log(data);
+    //   this.$store.dispatch("submitPdf", data).then(
+    //     res => {
+    //       console.log("更改流程图中的状态", res);
+    //       this.$store.dispatch("deleteTabs", this.$route.name);
+    //       this.$router.push({
+    //         name: 'flowChart'
+    //       });
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     }
+    //   );
+    // },
     //根据环节ID转路由name 跳转
     com_getCaseRouteName(caseLinkId) {
       let nextLink = "";
@@ -217,7 +217,6 @@ export const mixinGetCaseApiList = {
           this.$store.dispatch("addDocData", this.caseDocDataForm).then(
             res => {
               console.log("保存文书", res);
-              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
               this.$message({
                 type: "success",
                 message: "提交成功"

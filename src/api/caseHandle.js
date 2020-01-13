@@ -67,6 +67,20 @@ export function saveOrUpdateCaseBasicInfoApi(data) {
   });
 }
 
+//修改部分案件基本信息   把立案登记表的案由添加到案件信息里
+export function updatePartCaseBasicInfoApi(data) { 
+  let  data2  =  vm.$qs.stringify(data);
+  console.log(data2);
+  return request({
+    url: "/doc/caseBasicInfo/updatePartCaseBasicInfo",
+    method: "post",
+    data:data2,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+
 //根据违法行为id查询绑定的法条
 export function findLawRegulationsByCauseIdApi(causeId) { 
   console.log(causeId);

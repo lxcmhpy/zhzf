@@ -5,8 +5,8 @@ const prodEnv = require('./prod.env')
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   ENV_CONFIG: '"dev"',
-  // BASE_API: '"http://172.16.170.44:8080/catsic"', //线上的
-  BASE_API: '"http://172.16.169.62:8888/catsic"', //鸿燕
+  BASE_API: '"http://172.16.170.44:8088/catsic"', //线上的
+  // BASE_API: '"http://172.16.169.62:8888/catsic"', //鸿燕
   // BASE_API: '"http://172.16.169.78:8888/catsic"', //文静
   // BASE_API: '"http://172.16.169.83:8888/catsic"', //罗兴朝
   // BASE_API: '"http://172.16.168.84:8888/catsic"', //李垚
