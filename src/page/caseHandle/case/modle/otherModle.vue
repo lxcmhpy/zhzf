@@ -20,6 +20,27 @@
         <p @click="QAModleEdit">
           请你确认。现依法向你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。(询问笔录)
         </p>
+          <p class="side_right_indent">
+          <!-- <span class="side_left">违法事实及依据：</span> -->
+          <span class="side_right" @click="overFlowEdit">
+            <el-form-item prop="illegalFactsEvidence">
+              <span class="over_topic">问：</span>
+              <!-- {{docData.illegalFactsEvidence}} -->
+            </el-form-item>
+          </span>
+          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+        </p>
+          <p class="side_right_indent">
+          <!-- <span class="side_left">违法事实及依据：</span> -->
+          <span class="side_right" @click="overFlowEdit">
+            <el-form-item prop="illegalFactsEvidence">
+              <span class="over_topic">答：</span>
+              <!-- {{docData.illegalFactsEvidence}} -->
+            </el-form-item>
+          </span>
+          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+        </p>
         <span class="span_bg">{{docData.QAModleInfo}}</span>
         <el-row :gutter="20">
           <el-col :span="12">
@@ -188,6 +209,7 @@ export default {
     getQAModleInfo(edit) {
       this.docData.QAModleInfo = edit;
     },
+    overFlowEdit(){}
   },
 }
 </script>

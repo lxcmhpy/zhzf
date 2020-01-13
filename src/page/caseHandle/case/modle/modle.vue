@@ -2,8 +2,8 @@
   <div class="print_box">
     <div class="print_info">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
-        <div class="doc_topic">当场行政处罚决定书</div>
-        <div class="doc_number">案号：隆阳字[2017]第543939号</div>
+        <div class="doc_topic">当场行政处罚决定书aaa</div>
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
@@ -16,15 +16,15 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party">
-                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>23?true:false }" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
-                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}"></el-input> -->
+                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
 
             </td>
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyIdNo">
-                <el-input v-model="docData.partyIdNo"></el-input>
+                <el-input v-model="docData.partyIdNo" :maxLength='maxLength'  placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -32,13 +32,13 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>23?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="27"></el-input>
+                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyTel">
-                <el-input v-model="docData.partyTel"></el-input>
+                <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -47,7 +47,7 @@
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="partyName">
-                <el-input v-model="docData.partyName"></el-input>
+                <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -55,7 +55,7 @@
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="partyUnitAddress">
-                <el-input v-model="docData.partyUnitAddress"></el-input>
+                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -63,13 +63,13 @@
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyUnitTel">
-                <el-input v-model="docData.partyUnitTel" minlength="11"></el-input>
+                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td> 法定代表人 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager">
-                <el-input v-model="docData.partyManager"></el-input>
+                <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -79,38 +79,38 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode">
-                <el-input v-model="docData.socialCreditCode"></el-input>
+                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
         </table>
+        <!-- <p>{{docData.illegalFactsEvidence}}</p> -->
         <p class="side_right_indent">
-          <!-- <span class="side_left">违法事实及依据：</span> -->
           <span class="side_right" @click="overFlowEdit">
-            <el-form-item prop="illegalFactsEvidence">
-              <span class="over_topic">违法事实及依据：</span>{{docData.illegalFactsEvidence}}
+            <el-form-item>
+              <span class="over_topic">违法事实及依据：</span>
+              {{this.docData.illegalFactsEvidence}}
+              <!-- <span v-text="docData.illegalFactsEvidence"></span> -->
             </el-form-item>
           </span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <!-- <span class="span_bg">{{docData.illegalFactsEvidence}}</span> -->
         </p>
         <p>你(单位)的行为违反了<span>
             <el-form-item prop="illegalLaw">
-              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.illegalLaw.length>20?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="27"></el-input>
-              <!-- <el-input v-model="docData.illegalLaw"></el-input> -->
+              <el-input type='textarea' v-model="docData.illegalLaw"  v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>的规定，依据
-          <span>
+          <span contenteditable="true">
             <el-form-item prop="punishLaw">
-              <el-input v-model="docData.punishLaw"></el-input>
+              <el-input type='textarea' v-model="docData.punishLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>的规定，决定给予
           <span>
             <el-form-item prop="tempPunishAmount">
-              <el-input type='textarea' v-model="docData.tempPunishAmount" v-bind:class="{ over_flow:docData.tempPunishAmount.length>20?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="27"></el-input>
-              <!-- <el-input v-model="docData.tempPunishAmount"></el-input> -->
+              <el-input type='textarea' v-model="docData.tempPunishAmount"  v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="\"></el-input> -->
             </el-form-item>
           </span>的行政处罚。
           <p>
@@ -122,22 +122,22 @@
           <p>
             <input type="checkbox">自收到本决定书之日起十五日内缴至<span>
               <el-form-item prop="bank">
-                <el-input v-model="docData.bank"></el-input>
+                <el-input v-model="docData.bank" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>，账号<span>
               <el-form-item prop="account">
-                <el-input v-model="docData.account"></el-input>
+                <el-input v-model="docData.account" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
           </p>
           <p>
             如果不服本处罚决定，可以在六十日内依法向<span>
               <el-form-item prop="reconsiderationOrgan">
-                <el-input v-model="docData.reconsiderationOrgan"></el-input>
+                <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>申请行政复议，或者在六个月内依法向<span>
               <el-form-item prop="litigationOrgan">
-                <el-input v-model="docData.litigationOrgan"></el-input>
+                <el-input v-model="docData.litigationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>人民法院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
           </p>
@@ -200,7 +200,7 @@
   </div>
 </template>
 <script>
-
+import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
 export default {
   components: {
@@ -233,7 +233,6 @@ export default {
       name: '',
       inputInfo: '',
       inputInfos: '',
-      illegalFactsEvidence: '',
       value1: '',
       //提交方式
       handleType: 0, //0  暂存     1 提交
@@ -242,59 +241,70 @@ export default {
         caseBasicinfoId: '', //案件id
         caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型IDer
         //表单数据
-        formData: "",
+        docData: "",
         status: ""
       },
       rules: {
         test: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
+
         ],
         party: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyIdNo: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyName: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyUnitAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyUnitTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         partyManager: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         punishLaw: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         socialCreditCode: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
-        illegalFactsEvidence: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
+        // illegalFactsEvidence: [
+        //   // { required: true, message: ' ', trigger: 'blur' },
+        // ],
         reconsiderationOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         litigationOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: ' ', trigger: 'blur' },
         ],
         makeDate: [
           { required: true, message: '请选择日期', trigger: 'blur' },
         ],
 
-      }
+      },
+      nameLength:23,
+      adressLength:23,
+      maxLength:23,
     }
   },
+  // computed(){
+  //     this.docData.illegalFactsEvidence(){
+  //       setTimeout(() => {
+          
+  //       }, timeout);
+  //     }
+  // },
   methods: {
     // widthCheck(str, len, event) {
     //   console.log('event,', event)
@@ -332,20 +342,23 @@ export default {
       let maxlength= 122;
       this.$refs.overflowInputRef.showModal(0, '',maxlength);
     },
-    // 获取多行编辑内容
+// 获取多行编辑内容
     getOverFloeEditInfo(edit) {
       this.docData.illegalFactsEvidence = edit;
+      console.log('docData.illegalFactsEvidence',this.docData.illegalFactsEvidence)
     },
 
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      this.caseDocDataForm.caseBasicinfoId = 'dbabb371505af9325fb8c09c1702cfec';
       let data = {
-        caseId: this.caseId,
-        docId: this.$route.params.docId
+        caseId: 'dbabb371505af9325fb8c09c1702cfec',
+        docId: '5cad5b54eb97a15250672a4c397cee56'
       };
       console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
+      console.log('213233432',this.docData.illegalFactsEvidence)
     },
     //保存文书信息
     addDocData(handleType) {
@@ -377,7 +390,7 @@ export default {
 
   }
 }
-import overflowInput from "./overflowInput";
+
 </script>
 <style lang="less" >
 @import "../../../../css/caseHandle/caseDocModle.less";

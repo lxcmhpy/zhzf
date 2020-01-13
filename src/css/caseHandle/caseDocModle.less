@@ -13,9 +13,10 @@
         width      : 720px;
         height     : 1217px;
         position   : absolute;
-        left       : 25%;
-        margin-left: -360px;
-        margin     : 0 auto;
+        left       : calc(50% - 360px);
+        // margin-left: -360px;
+        left:0; right:0; 
+        margin     :  auto;
         padding    : 81px 82px 0;
         background : #FFFFFF;
 
@@ -67,7 +68,8 @@
                 /* 输入框 */
                 .el-textarea {
                     height         : calc(100% - 1px);
-                    text-align-last: center;
+                    // text-align: left;
+                    // text-align-last: left;
                     vertical-align : middle;
                     text-decoration: none;
                 }
@@ -88,6 +90,20 @@
             font-family: SimSun;
         }
 
+        /* 缩文字 */
+        .over_flow {
+            font-size: 12px;
+
+            .el-input .el-input__inner {
+                font-size: 12px;
+            }
+
+            .el-textarea__inner {
+                font-size  : 12px;
+                line-height: 13px;
+            }
+        }
+
         /* 段落 */
         & p {
             text-indent: 2em;
@@ -102,30 +118,41 @@
                 line-height: 32px;
                 text-indent: 0;
                 width      : 200px;
+     
 
                 .el-input {
-                    height           : 24px;
-                    // vertical-align: middle;
+                    height           : 30px;
+                   
                 }
 
                 .el-textarea {
-                    height        : 26px;
+                    width: 1%;
+                    height        : 30px;
                     vertical-align: middle;
+                    background    : #DBE4EF;
+                    border-radius: 4px;
+                    display        : table-cell;
+                    right: 0;
+                    // white-space    : nowrap;
                 }
 
                 .el-input__inner,
                 .el-textarea__inner {
-                    font-size : 16px;
-                    background: #DBE4EF;
+                    font-size: 16px;
+                    background       : #DBE4EF;
+                    max-height : 30px;
+                    line-height: 14px;
+                    text-align: left;
+                    text-align-last: left;
                 }
             }
 
 
 
-            /* 错误提示  */
-            .el-form-item__error--inline {
-                line-height: 32px;
-            }
+            // /* 错误提示  */
+            // .el-form-item__error--inline {
+            //     line-height: 32px;
+            // }
 
             .side_left {
                 display    : inline-block;
@@ -150,12 +177,9 @@
             }
 
             .side_right {
-                // display   : block;
-                // overflow  : hidden;
                 width        : 100%;
                 height       : 100px;
                 position     : absolute;
-                // background: pink;
                 word-break   : break-all;
                 top          : -8px;
                 font-size    : 16px;
@@ -182,13 +206,13 @@
                 }
 
                 /* 错误提示  */
-                .el-form-item__error--inline {
-                    position   : absolute;
-                    display    : inline-block;
-                    padding-top: 2px;
-                    left       : 145px;
-                    font-size  : 16px;
-                }
+                // .el-form-item__error--inline {
+                //     position   : absolute;
+                //     display    : inline-block;
+                //     padding-top: 2px;
+                //     left       : 145px;
+                //     font-size  : 16px;
+                // }
 
                 .span_bg {
                     margin-top: 5px;
@@ -232,8 +256,8 @@
             padding        : 0;
             border         : 0;
             height         : 100%;
-            text-align     : center;
-            text-align-last: center;
+            text-align: left;
+            text-align-last: left;
             font-weight    : 600;
             background     : #F6F7FB;
             color          : #000000;
@@ -263,9 +287,17 @@
         }
 
         /* 错误提示  */
+        .el-form-item__error {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+        }
+        /* 错误提示  */
         .el-form-item__error--inline {
             position       : absolute;
             display        : inline-block;
+            margin: 0;
+            background-color: pink;
             padding-top    : 0;
             left           : 0;
             line-height    : 40px;
@@ -274,19 +306,7 @@
             font-size      : 16px;
         }
 
-        /* 缩文字 */
-        .over_flow {
-            font-size: 12px;
 
-            .el-input .el-input__inner {
-                font-size: 12px;
-            }
-
-            .el-textarea__inner {
-                font-size  : 12px;
-                line-height: 13px;
-            }
-        }
 
         /* 换行 */
         .over_line {
@@ -319,15 +339,15 @@
             font-family  : SimSun;
             float        : right;
 
-            /* 错误提示  */
-            .el-form-item__error--inline {
-                position   : absolute;
-                display    : inline-block;
-                padding-top: 0;
-                left       : 15px;
-                top        : 17px;
-                font-size  : 16px;
-            }
+            // /* 错误提示  */
+            // .el-form-item__error--inline {
+            //     position   : absolute;
+            //     display    : inline-block;
+            //     padding-top: 0;
+            //     left       : 15px;
+            //     top        : 17px;
+            //     font-size  : 16px;
+            // }
         }
 
         .pdf_datapick {
@@ -351,7 +371,6 @@
                 text-align    : center;
                 background    : #DBE4EF;
                 color         : #000000;
-                // margin-left: -32px;
                 text-indent   : 0;
 
             }
