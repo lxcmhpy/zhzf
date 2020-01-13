@@ -434,92 +434,38 @@ export default {
 
                 this.recursionTempLinkArray(graphDataTemp, checkNumber.tempList[0], unPassArray)
               } else {
-              // 有多个temp节点
-                let that = this
-                for (let m = 0; m < checkNumber.tempList.length;m++) {
-                  // this.recursionTempLinkArray(graphDataTemp, checkNumber.tempList[v])
-                  let source = checkNumber.tempList[m].source
-                      graphDataTemp.links.forEach((v, i)=>{
-                        if(element.target === source) {
-                          let tempIndexArray = []
-                          tempIndexArray[i] = {}
-                          that.findTempIndexArray(graphDataTemp.links, tempIndexArray, i)
-                        }
-                      })
-
-                }
+              // 有多个temp节点(待开发)
+                // let that = this
+                // for (let m = 0; m < checkNumber.tempList.length;m++) {
+                //   let source = checkNumber.tempList[m].source
+                //   let tempIndexObj= {}
+                //   graphDataTemp.links.forEach((v, i)=>{
+                //     if(v.target === source) {
+                //       tempIndexObj[i] = v
+                //       that.findTempIndexArray(graphDataTemp.links, tempIndexObj, i)
+                //       // debugger
+                //     }
+                //   })
+                // }
               }
             }
 
           }
     },
-    findTempIndexArray(links, tempIndexArray, currentIndex) {
-      let filterPreSourceLinkArray = this.findAdjacentIndexLinkArray(links, links[currentIndex].source)
-
-    },
-    recursion3(obj,linksObj,lineStyle) {
-      for (var key in obj) {
-          if (Object.keys(obj[key]).length === 0) {
-            return
+    findTempIndexArray(links, tempIndexObj, m) {
+      let tempObj = tempIndexObj[m]
+      let source = tempIndexObj[m].source
+      if (source.indexOf('temp') > -1) {
+        let that = this
+        links.forEach((v, i)=>{
+          if(v.target === source) {
+            tempObj[i] = v
+            that.findTempIndexArray(links, tempObj, i)
+            // debugger
           }
-          if(!isNaN(key)){
-            linksObj[parseInt(key)].lineStyle = lineStyle[lineStyle]
-            this.recursion3(obj[key],linksObj, lineStyle)
-          } else {
-            break
-          }
-        }
-    },
-    recursion1 (graphDataTemp, v, unPassArray,array) {
-      let sourceLink = graphDataTemp.links[v]
-      let _this = this
-      graphDataTemp.nodes.forEach((element,i)=>{
-        let upPassBoo = unPassArray.indexOf(graphDataTemp.links[i].target) > -1
-        if (upPassBoo) {
-            return
-        }
-        let newObj = array[v];
-          if(graphDataTemp.links[i].target==sourceLink.source) {
-            newObj[i]={}
-            if (graphDataTemp.links[i].source.indexOf('temp')>-1) {
-                _this.recursion1(graphDataTemp, i,unPassArray,array[v])
-            } else {
-              if (element.source === element.id && element.itemStyleColor!=='#b2b2b2') {
-              } else {
-                 let index = _.findIndex(graphDataTemp.nodes,(v,m)=>{
-                   return v.id === element.source
-                 })
-                 if (index > -1 && graphDataTemp.nodes[index].itemStyleColor !== '#b2b2b2') {
-                   newObj[i]=graphDataTemp.nodes[index]
-                 }
-              }
-              return
-            }
-          }
-
-      })
-    },
-    recursion (graphDataTemp, v, unPassArray) {
-      let sourceLink = graphDataTemp.links[v]
-      let _this = this
-      graphDataTemp.nodes.forEach((element,i)=>{
-        let upPassBoo = unPassArray.indexOf(graphDataTemp.links[i].target) > -1
-        if (upPassBoo) {
-            return
-        }
-
-        if (sourceLink.source.indexOf('temp')==-1) {
-          return
-        } else {
-          if(graphDataTemp.links[i].target==sourceLink.source) {
-          graphDataTemp.links[i].lineStyle.normal.color = sourceLink.lineStyle.normal.color
-            if (graphDataTemp.links[i].source.indexOf('temp')>-1) {
-                _this.recursion(graphDataTemp, i,unPassArray)
-            }
-          }
-
-        }
-      })
+        })
+      }
+      debugger
     },
     async mountedInit() {
       // this.getFlowStatusByCaseId(this.caseId);
