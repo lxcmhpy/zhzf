@@ -9,7 +9,7 @@ var vue = new Vue();
 
 // create an axios instance
 const service = axios.create({
-  // baseURL: '', // api的base_url
+  // baseURL: process.env.BASE_API, // api的base_url
   timeout: 15000, // request timeout
   "Content-Type": "application/x-www-form-urlencoded",
   "Access-Control-Allow-Origin": "*",
@@ -18,12 +18,13 @@ const service = axios.create({
 });
 var BASEURL
 service({
-  url: '/static/json/hostUrl/host.json',
+  url: '/static/json/hostUrl/host.json', 
   method: "get",
   params: {},
 }).then(
   res => {
-    BASEURL = res.data
+    BASEURL = res.data;
+    console.log('res.data',res.data)
   },
   error => {
     console.log(error)
@@ -37,6 +38,7 @@ service.interceptors.request.use(
      }else{
       config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
      }
+     console.log('config.baseURL',config.baseURL)
     //token一天后过期
     if (config.showloading != false) {
       showFullScreenLoading();

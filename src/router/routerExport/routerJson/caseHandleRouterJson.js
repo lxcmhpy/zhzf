@@ -13,7 +13,15 @@ export default  [
   meta: {
     title: "标准文书模板"
   },
-  component: () => import("@/page/caseHandle/case/modle.vue")
+  component: () => import("@/page/caseHandle/case/modle/modle.vue")
+},
+{
+  path: "/othermodle",
+  name: "othermodle",
+  meta: {
+    title: "其他文书模板"
+  },
+  component: () => import("@/page/caseHandle/case/modle/otherModle.vue")
 },
 {
   path: "/liveReport",
@@ -372,4 +380,13 @@ export default  [
     title: "询问笔录-doc"
   },
   component: () => import("@/page/caseHandle/case/caseDocument/inquiryNotesDoc.vue")
-}]
+},
+{
+  path: "/inforCollect",
+  name: "inforCollect",
+  meta: {
+    title: "信息采集"
+  },
+  component: () => import("@/page/caseHandle/unRecordCase/inforCollection.vue")
+}
+]

@@ -7,13 +7,19 @@
     color      : #000000;
     line-height: 32px;
 
+
     /* a4盒子 */
     .print_info {
-        width     : 720px;
-        height    : 1217px;
-        margin    : 0 auto;
-        padding   : 81px 82px 0;
-        background: #FFFFFF;
+        width      : 720px;
+        height     : 1217px;
+        position   : absolute;
+        left       : calc(50% - 360px);
+        // margin-left: -360px;
+        left:0; right:0; 
+        margin     :  auto;
+        padding    : 81px 82px 0;
+        background : #FFFFFF;
+
 
         /*  标题 */
         .doc_topic {
@@ -52,6 +58,8 @@
                 padding        : 0 8px;
                 text-align     : justify;
                 text-align-last: justify;
+                white-space    : nowrap;
+
 
                 .el-form-item {
                     width: 100%;
@@ -60,7 +68,8 @@
                 /* 输入框 */
                 .el-textarea {
                     height         : calc(100% - 1px);
-                    text-align-last: center;
+                    // text-align: left;
+                    // text-align-last: left;
                     vertical-align : middle;
                     text-decoration: none;
                 }
@@ -73,161 +82,12 @@
         }
 
         /* placeholder颜色 */
-        .el-input__inner::-webkit-input-placeholder {
+        .el-input__inner::-webkit-input-placeholder,
+        .el-textarea__inner::-webkit-input-placeholder {
             color      : #000000;
             text-align : center;
             font-size  : 16px;
             font-family: SimSun;
-        }
-
-        /* 段落 */
-        & p {
-            text-indent: 2em;
-
-            label,
-            span {
-                text-indent: 0;
-            }
-
-
-            .side_right {
-                & .el-form-item {
-                    width         : 100%;
-                    
-                }
-                .el-form-item__content {
-                    vertical-align: middle;
-                }
-                .span_bg{
-                    margin-top: 5px;
-                }
-            }
-
-            .el-form-item__content {
-                height     : 32px;
-                line-height: 32px;
-            }
-
-            .el-input {
-                height: 18px;
-            }
-
-            .el-input__inner {
-                font-size  : 16px;
-                font-family: SimSun;
-                background : #DBE4EF;
-            }
-
-            /* 错误提示  */
-            .el-form-item__error--inline {
-                line-height: 32px;
-            }
-
-            .side_left {
-                display    : inline-block;
-                float      : left;
-                text-indent: 2em;
-
-            }
-
-            .side_right {
-                display   : block;
-                overflow  : hidden;
-            }
-
-            .span_bg {
-                display   : inline-block;
-                background: #DBE4EF;
-                width     : 100%;
-                height    : 18px;
-
-            }
-
-            .text_bg {
-                background: #DBE4EF;
-                font-weight    : 600;
-            }
-
-        }
-
-        .side_right_indent {
-            text-indent: 0;
-            line-height: 32px;
-        }
-
-        /* input表格背景色 */
-        .color_DBE4EF {
-            background: #F6F7FB;
-        }
-
-
-
-        /* 输入框 */
-        .el-input {
-            width        : 100%;
-            height       : 100%;
-            color        : #000000;
-            font-size    : 16px;
-            font-family  : SimSun;
-            text-overflow: clip;
-
-        }
-
-
-        .el-input__inner {
-            padding        : 0;
-            border         : 0;
-            height         : 100%;
-            text-align     : center;
-            text-align-last: center;
-            font-weight    : 600;
-            background     : #F6F7FB;
-            color          : #000000;
-            text-overflow  : clip;
-        }
-
-
-        .el-textarea__inner {
-            resize: none;
-            /* 去掉右下角标 */
-            border         : 0;
-            padding        : 0;
-            font-size      : 17px;
-            font-weight    : 600;
-            text-align     : center;
-            text-align-last: center;
-            text-justify   : distribute-all-lines;
-            /* 兼容ie浏览器 */
-            // text-decoration      : underline;
-            // height               : 100%;
-            background              : #F6F7FB;
-            // max-height           : 42px;
-            // align-items          : center;
-
-
-        }
-
-        .el-form-item {
-            margin-bottom   : 0;
-            // width        : 100%;
-        }
-
-        .el-form-item__content {
-            width : 100%;
-            height: 100%;
-        }
-
-        /* 错误提示  */
-        .el-form-item__error--inline {
-            position       : absolute;
-            display        : inline-block;
-            padding-top    : 0;
-            left           : 0;
-            line-height    : 40px;
-            text-align-last: center;
-            vertical-align : middle;
-            width          : 100%;
-            font-size      : 16px;
         }
 
         /* 缩文字 */
@@ -243,6 +103,212 @@
                 line-height: 13px;
             }
         }
+
+        /* 段落 */
+        & p {
+            text-indent: 2em;
+
+            label,
+            span {
+                text-indent: 0;
+            }
+
+            .el-form-item__content {
+                height     : 32px;
+                line-height: 32px;
+                text-indent: 0;
+                width      : 200px;
+     
+
+                .el-input {
+                    height           : 30px;
+                   
+                }
+
+                .el-textarea {
+                    width: 1%;
+                    height        : 30px;
+                    vertical-align: middle;
+                    background    : #DBE4EF;
+                    border-radius: 4px;
+                    display        : table-cell;
+                    right: 0;
+                    // white-space    : nowrap;
+                }
+
+                .el-input__inner,
+                .el-textarea__inner {
+                    font-size: 16px;
+                    background       : #DBE4EF;
+                    max-height : 30px;
+                    line-height: 14px;
+                    text-align: left;
+                    text-align-last: left;
+                }
+            }
+
+
+
+            /* 错误提示  */
+            .el-form-item__error--inline {
+                line-height: 32px;
+                
+            }
+
+            .side_left {
+                display    : inline-block;
+                float      : left;
+                text-indent: 2em;
+
+            }
+
+
+
+            .span_bg {
+                display   : inline-block;
+                background: #DBE4EF;
+                width     : 100%;
+                height    : 24px;
+
+            }
+
+            .text_bg {
+                background : #DBE4EF;
+                font-weight: 600;
+            }
+
+            .side_right {
+                width        : 100%;
+                height       : 100px;
+                position     : absolute;
+                word-break   : break-all;
+                top          : -8px;
+                font-size    : 16px;
+
+                & .el-form-item {
+                    width: 100%;
+
+                }
+
+                .over_topic {
+                    display    : inline-block;
+                    text-indent: 2em;
+                    font-weight: 300;
+                    background : #FFFFFF;
+                }
+
+                .el-form-item__content {
+                    width         : 100%;
+                    vertical-align: middle;
+                    text-indent   : 50px;
+                    font-weight   : 600;
+                    font-size     : 16px;
+                    font-family   : SimSun;
+                }
+
+                /* 错误提示  */
+                .el-form-item__error--inline {
+                    position   : absolute;
+                    display    : inline-block;
+                    padding-top: 2px;
+                    left       : 145px;
+                    font-size  : 16px;
+                }
+
+                .span_bg {
+                    margin-top: 5px;
+                }
+
+            }
+
+        }
+
+        .side_right_indent {
+            margin-bottom: 10px;
+            text-indent  : 0;
+            line-height  : 32px;
+            position     : relative;
+            top          : 12px;
+        }
+
+        /* input表格背景色 */
+        .color_DBE4EF {
+            background: #F6F7FB;
+        }
+
+
+
+        /* 输入框 */
+        .el-input,
+        .el-textarea {
+            width        : 100%;
+            height       : 100%;
+            color        : #000000;
+            font-size    : 16px;
+            font-family  : SimSun;
+            text-overflow: clip;
+
+        }
+
+
+        .el-input__inner,
+        .el-textarea__inner {
+            font-family    : SimSun;
+            padding        : 0;
+            border         : 0;
+            height         : 100%;
+            text-align: left;
+            text-align-last: left;
+            font-weight    : 600;
+            background     : #F6F7FB;
+            color          : #000000;
+            text-overflow  : clip;
+        }
+
+
+        .el-textarea__inner {
+            resize: none;
+            /* 去掉右下角标 */
+            font-size   : 16px;
+            font-weight : 600;
+            text-justify: distribute-all-lines;
+        }
+
+        .el-form-item {
+            margin-bottom: 0;
+        }
+
+        .el-form--inline .el-form-item {
+            margin: 0;
+        }
+
+        .el-form-item__content {
+            width : 100%;
+            height: 100%;
+        }
+
+        /* 错误提示  */
+        .el-form-item__error {
+            // width: 100%;
+            // height: 100%;
+            border-radius: 4px;
+        }
+        /* 错误提示  */
+        .el-form-item__error--inline {
+            position       : absolute;
+            display        : inline-block;
+            margin: 0;
+            // background-color: pink;
+            padding-top    : 0;
+            padding-left: 10px;
+            left           : 0;
+            line-height    : 40px;
+            text-align-last: center;
+            vertical-align : middle;
+            font-size      : 16px;
+        }
+
+
 
         /* 换行 */
         .over_line {
@@ -275,8 +341,23 @@
             font-family  : SimSun;
             float        : right;
 
+            /* 错误提示  */
+            .el-form-item__error--inline {
+                position   : absolute;
+                display    : inline-block;
+                padding-top: 0;
+                left       : 15px;
+                top        : 17px;
+                font-size  : 16px;
+            }
+        }
+
+        .pdf_datapick {
+            width: 128px;
 
             .el-input {
+                padding    : 0;
+                border     : 0;
                 width      : 128px;
                 height     : 18px;
                 color      : #000000;
@@ -286,18 +367,20 @@
             }
 
             .el-input__inner {
-                padding   : 0;
-                border    : 0;
-                height    : 18px;
-                text-align: center;
-                background: #DBE4EF;
-                color     : #000000;
+                padding       : 0;
+                border        : 0;
+                height        : 18px;
+                text-align    : center;
+                background    : #DBE4EF;
+                color         : #000000;
+                text-indent   : 0;
 
             }
 
             .el-input__icon {
                 display: none;
             }
+
         }
 
         /* 选择框 */

@@ -9,9 +9,13 @@
           <div id="flowChart" style="width: 1000px;height:550px;margin:0 auto"></div>
       </div>
     </div>
+    <!--快速入口 -->
+    <caseSlideMenu :activeIndex="'flowChart'" ></caseSlideMenu>
+    
   </div>
 </template>
 <script>
+import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import echarts from 'echarts'
 import 'echarts/lib/chart/graph'
 import _ from 'lodash'
@@ -584,7 +588,13 @@ export default {
     this.mountedInit()
   },
   components: {
-        echarts
+        echarts,
+        caseSlideMenu
   }
 }
 </script>
+<style lang="less" scoped>
+// @import "../../../css/caseHandle/index.less";
+// @import "../../css/caseHandle/index.less";
+@import "../../css/documentForm.less";
+</style>

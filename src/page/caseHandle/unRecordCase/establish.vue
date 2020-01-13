@@ -332,11 +332,20 @@ export default {
     //审批弹窗
     showApproval(){
       //判断是一级审批还是二级审批(经办机构负责人审批、部门负责人审批)
+      // let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
+      // let caseData={
+      //   caseId:this.caseId,
+      //   caseLinktypeId:"2c90293b6c178b55016c17c255a4000d",
+      //   firstApproval:approvePeo
+      // }
+      // this.$refs.approvalDialogRef.showModal(caseData);
+
       let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
       let caseData={
         caseId:this.caseId,
         caseLinktypeId:"2c90293b6c178b55016c17c255a4000d",
-        firstApproval:approvePeo
+        firstApproval:approvePeo,
+        approvalNumber:2 //2次审批
       }
       this.$refs.approvalDialogRef.showModal(caseData);
     }
