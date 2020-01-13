@@ -202,11 +202,13 @@
 <script>
 import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
 export default {
   components: {
     overflowInput,
   },
   mixins: [mixinGetCaseApiList],
+  computed:{...mapGetters(['caseId'])},
   data() {
     return {
       isOverflow: false,
@@ -298,13 +300,6 @@ export default {
       maxLength:23,
     }
   },
-  // computed(){
-  //     this.docData.illegalFactsEvidence(){
-  //       setTimeout(() => {
-          
-  //       }, timeout);
-  //     }
-  // },
   methods: {
     // widthCheck(str, len, event) {
     //   console.log('event,', event)
@@ -350,39 +345,16 @@ export default {
 
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
-      this.caseDocDataForm.caseBasicinfoId = this.caseId;
-      this.caseDocDataForm.caseBasicinfoId = 'dbabb371505af9325fb8c09c1702cfec';
       let data = {
-        caseId: 'dbabb371505af9325fb8c09c1702cfec',
+        // caseId: this.caseId, //流程里的案件id
+        caseId: 'dbabb371505af9325fb8c09c1702cfec', //先写死
         docId: '5cad5b54eb97a15250672a4c397cee56'
       };
-      console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
-      console.log('213233432',this.docData.illegalFactsEvidence)
     },
     //保存文书信息
     addDocData(handleType) {
-      this.com_addDocData(handleType, 'docForm').then(
-        res => {
-          this.$message({
-            type: "success",
-            message: "保存成功",
-          });
-          this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-          this.$router.push({
-            name: 'caseDoc',
-            // name: row.url,
-            params: {
-              // id: row.id,
-              // //案件ID
-              // caseBasicinfoId: this.caseBasicinfoId,
-            }
-          });
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      this.com_addDocData(handleType, 'docForm');
     }
   },
   created() {
