@@ -26,9 +26,9 @@
       <el-menu-item index="7">
         证据<br>目录
       </el-menu-item>
-      <el-menu-item index="8">
+      <!-- <el-menu-item index="8">
         审核<br>流程
-      </el-menu-item>
+      </el-menu-item> -->
       <el-menu-item index="9">
         卷宗<br>目录
       </el-menu-item>
