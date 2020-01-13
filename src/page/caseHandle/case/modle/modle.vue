@@ -3,7 +3,7 @@
     <div class="print_info">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">当场行政处罚决定书</div>
-        <div class="doc_number">案号：隆阳字[2017]第543939号</div>
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
