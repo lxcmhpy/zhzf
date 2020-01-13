@@ -2,7 +2,7 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox" >
       <div class="handlePart">
-        <el-button type="primary" size="medium" icon="el-icon-plus">添加</el-button>
+        <!-- <el-button type="primary" size="medium" icon="el-icon-plus">添加</el-button> -->
       </div>
       <div >
         <!-- <div id="aa"><?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="icon" width="200px" height="200.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#d81e06" d="M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z"  /></svg></div> -->
@@ -58,7 +58,7 @@ export default {
       let layoutCharts = this.layoutCharts
       var option = {    //这里是option配置
         title: {
-            text: '办案流程图'
+            text: '办案流程图',
         },
         legend: [{    //图例组件
             data: graphTemp.nodes,
@@ -435,49 +435,143 @@ export default {
                 this.recursionTempLinkArray(graphDataTemp, checkNumber.tempList[0], unPassArray)
               } else {
               // 有多个temp节点(待开发)
-                // let that = this
-                // for (let m = 0; m < checkNumber.tempList.length;m++) {
-                //   let source = checkNumber.tempList[m].source
-                //   let tempIndexObj= {}
-                //   graphDataTemp.links.forEach((v, i)=>{
-                //     if(v.target === source) {
-                //       tempIndexObj[i] = v
-                //       that.findTempIndexArray(graphDataTemp.links, tempIndexObj, i)
-                //       // debugger
-                //     }
-                //   })
-                // }
+                let that = this
+                for (let m = 0; m < checkNumber.tempList.length;m++) {
+
+                  let source = checkNumber.tempList[m].source
+                  if (source == 'temp7_2_1') {
+                    debugger
+                  }
+                  let boo = false
+                  graphDataTemp.links.forEach((v, i)=>{
+                  // for (let i = graphDataTemp.links.length -1; i >= 0; i--) {
+                  //     let v = graphDataTemp.links[i]
+                      if(v.target === source) {
+                        let tempIndexObj= {}
+                        tempIndexObj[i] = {}
+                        tempIndexObj[i].node = v
+                        let other = false
+                        that.findTempIndexArray(graphDataTemp.links, tempIndexObj, i, other)
+                        console.log(tempIndexObj)
+                        let tempStr = JSON.stringify(tempIndexObj)
+                        if (tempStr.indexOf('"curLinkState":"complete"')  > -1 ||
+                        tempStr.indexOf('"curLinkState":"doing"')  > -1 ||
+                        tempStr.indexOf('"curLinkState":"unLock"')  > -1) {
+                              v.lineStyle = {
+                                              normal: {
+                                                color: '#f2a010',
+                                                width: 2
+                                              }
+                                            }
+                              v.curLinkState = "doing"
+                              boo = true
+                        }
+                      }
+                  })
+                  if (boo) {
+                    checkNumber.tempList[m].lineStyle = {
+                                                normal: {
+                                                  color: '#f2a010',
+                                                  width: 2
+                                                }
+                                              }
+                    checkNumber.tempList[m].curLinkState = "doing"
+                  }
+
+
+                  // graphDataTemp.links.forEach((v, i)=>{
+                  //   if(v.target === source) {
+                  //     let tempIndexObj= {}
+                  //     let checkIndex = null
+                  //     tempIndexObj[i] = {}
+                  //     tempIndexObj[i].node = v
+                  //     that.findTempIndexArray(graphDataTemp.links, tempIndexObj, i, checkIndex)
+                  //     console.log(tempIndexObj)
+                  //     debugger
+                  //     let str = JSON.stringify(tempIndexObj[i])
+                  //     if (str.indexOf('"curLinkState":"complete"')  > -1 ||
+                  //         str.indexOf('"curLinkState":"doing"')  > -1 ||
+                  //         str.indexOf('"curLinkState":"unLock"')  > -1) {
+                  //           v.lineStyle = {
+                  //                           normal: {
+                  //                             color: '#f2a010',
+                  //                             width: 2
+                  //                           }
+                  //                         }
+                  //           v.curLinkState = "doing"
+                  //     }
+                  //   }
+                  // })
+                }
               }
             }
 
           }
     },
-    findTempIndexArray(links, tempIndexObj, m) {
+    findTempIndexArray(links, tempIndexObj, m, other) {
+
       let tempObj = tempIndexObj[m]
-      let source = tempIndexObj[m].source
-      if (source.indexOf('temp') > -1) {
+      let source = tempIndexObj[m].node.source
+      let id = tempIndexObj[m].node.id
+      let boo = false
+      let current = null
+      if (source.indexOf('temp') > -1 || other) {
         let that = this
-        links.forEach((v, i)=>{
+        for (let i = links.length -1; i>=0 ; i--) {
+          let v = links[i]
           if(v.target === source) {
-            tempObj[i] = v
-            that.findTempIndexArray(links, tempObj, i)
-            // debugger
+            let checkIndex = null
+              tempObj[i] = {}
+              tempObj[i].node = v
+              that.findTempIndexArray(links, tempObj, i, false)
+            let str = JSON.stringify(tempIndexObj[m])
+
+            if (str.indexOf('"curLinkState":"complete"')  > -1 ||
+                str.indexOf('"curLinkState":"doing"')  > -1 ||
+                str.indexOf('"curLinkState":"unLock"')  > -1) {
+                  v.lineStyle = {
+                                  normal: {
+                                    color: '#f2a010',
+                                    width: 2
+                                  }
+                                }
+                  v.curLinkState = "doing"
+                  boo = true
+                  current = v
+            }
           }
-        })
+        }
+
+        // if (boo && current.source.indexOf('temp') === -1) {
+        //   debugger
+        //     let s = v.source
+        //     let index = _.findIndex(links,(chr)=>{
+        //       return chr.target = s
+        //     })
+        //     links[index].lineStyle = {
+        //                                 normal: {
+        //                                   color: '#f2a010',
+        //                                   width: 2
+        //                                 }
+        //                               }
+        //     links[index].curLinkState = "doing"
+        //   }
       }
-      debugger
     },
     async mountedInit() {
-      // this.getFlowStatusByCaseId(this.caseId);
-      this.data = {
-        completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,a36b59bd27ff4b6fe96e1b06390d204g,2c9029ee6cac9281016cacaadf990006',//已完成
-        //责令改正2c9029ee6cac9281016caca9a0000004
-        doingLink: '',// 进行中
-        //决定执行
-        unLockLink: '',// 已解锁
-        completeMainLink: '0,1,2',
-        doingMainLink: "3"
-      }
+      this.getFlowStatusByCaseId(this.caseId);
+      // this.data = {
+      //   // completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,2c9029ee6cac9281016caca9a0000004,a36b59bd27ff4b6fe96e1b06390d204h,2c9029e16c753a19016c755fe1340001,2c9029ee6cac9281016cacaadf990006',//已完成
+      //   // completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,a36b59bd27ff4b6fe96e1b06390d204f,2c9029ee6cac9281016cacaadf990006',//已完成
+      //   // completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,a36b59bd27ff4b6fe96e1b06390d204g,2c9029ee6cac9281016cacaadf990006',//已完成
+      //   completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002,2c9029ee6cac9281016caca8ea500003,2c9029ac6c26fd72016c27247b290003,2c9029d56c8f7b66016c8f8043c90001,2c9029e16c753a19016c755fe1340001,2c9029ee6cac9281016cacaadf990006',//已完成
+      //   //责令改正2c9029ee6cac9281016caca9a0000004
+      //   doingLink: '',// 进行中
+      //   //决定执行
+      //   unLockLink: '',// 已解锁
+      //   completeMainLink: '0,1,2',
+      //   doingMainLink: "3"
+      // }
       this.updateLinkData()
       this.updateGraphData()
       this.drawFlowChart()
