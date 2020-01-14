@@ -321,6 +321,7 @@ export default {
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
+      console.log('回显',edit)
       this.docData.illegalFactsEvidence = edit;
     },
   },
