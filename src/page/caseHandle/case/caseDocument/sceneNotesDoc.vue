@@ -169,7 +169,7 @@
         </div>
       </div>
     </div>
-    <casePageFloatBtns :pageDomId="subOutputRank-print"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'subOutputRank-print'"></casePageFloatBtns>
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
@@ -178,6 +178,7 @@ import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from '@/components/casePageFloatBtns/casePageFloatBtns.vue'
+
 export default {
   data() {
     return {
@@ -222,7 +223,7 @@ export default {
   mixins: [mixinGetCaseApiList],
   inject: ["reload"],
   components: {
-    overflowInput
+    overflowInput, casePageFloatBtns
   },
   methods: {
     //根据案件ID和文书Id获取数据
@@ -250,13 +251,10 @@ export default {
     getOverFloeEditInfo(edit) {
       this.docData.illegalFacts = edit;
     },
-
   },
   mounted() {
+    alert(1)
     this.getDocDataByCaseIdAndDocId();
-  },
-  components: {
-    casePageFloatBtns
   }
 };
 </script>

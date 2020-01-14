@@ -9,6 +9,7 @@ import * as types from "./mutation-types";
 import system from './modules/system';
 import caseHandle from './modules/caseHandle';
 import flowChart from './modules/flowChart';
+import uploadFile from './modules/uploadFile'
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -44,7 +45,8 @@ const store = new Vuex.Store({
     modules: {
         system,
         caseHandle,
-        flowChart
+        flowChart,
+        uploadFile
     }
 });
 
