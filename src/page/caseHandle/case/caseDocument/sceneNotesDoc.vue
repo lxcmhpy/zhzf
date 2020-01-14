@@ -135,20 +135,27 @@
                 <span class="over_topic">
                   现场情况：（如实施行政强制措施的，包括当场告知当事人采取<br>
                   行政强制措施的理由、依据以及当事人依法享有的权利、<br>
-                  救济途径，听取当事人陈述、申辩情况。）
+                  救济途径，听取当事人陈述、申辩情况。）<br>
                 </span>
                 <span>{{docData.illegalFacts}}</span>              
-                </el-form-item>
-              </span>
-              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>              
+                </el-form-item>                
+              </span> 
+                                  
             </td>
           </tr>
+          <!-- <tr>
+            <td colspan="7">
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span> 
+            </td>    
+          </tr> -->
           <tr>
             <td colspan="7">
               <input type="checkbox">上述笔录我已看过。
               <input type="checkbox">或已向我宣读过，情况属实无误。
+              <br>
+              
             </td>
           </tr>
           <tr>
