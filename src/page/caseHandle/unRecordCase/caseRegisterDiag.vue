@@ -190,46 +190,11 @@ export default {
             cateName:cateName 
           };
           iLocalStroage.sets("someCaseInfo", someCaseInfo);
-          this.makeRoute(
-            "/inforCollect",
-            "/inforCollect2",
-            "/inforCollect3",
-            "inforCollect",
-            "inforCollect2",
-            "inforCollect3",
-            "信息采集",
-            "caseHandle/unRecordCase/inforCollection.vue"
-          );
+          this.$router.push({
+                name:'inforCollect',
+          });
         }
       });
-    },
-    makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
-      //path不可以重复  name也不可以重复
-      this.$router.addRoutes([
-        {
-          path: path1,
-          name: name1,
-          component: Layout,
-          children: [
-            {
-              path: path2,
-              name: name2,
-              component: MainContent,
-              children: [
-                {
-                  path: path3,
-                  name: name3,
-                  meta: {
-                    title: title
-                  },
-                  component: () => import("@/page/" + componentName)
-                }
-              ]
-            }
-          ]
-        }
-      ]);
-      this.$router.push({ name: name3 });
     }
   },
   mounted() {}

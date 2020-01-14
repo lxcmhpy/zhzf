@@ -16,15 +16,15 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party">
-                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
-                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}"></el-input> -->
+                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
 
             </td>
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyIdNo">
-                <el-input v-model="docData.partyIdNo" :maxLength='maxLength'></el-input>
+                <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -32,13 +32,13 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength"></el-input>
+                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyTel">
-                <el-input v-model="docData.partyTel" :maxLength='maxLength'></el-input>
+                <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -47,7 +47,7 @@
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="partyName">
-                <el-input v-model="docData.partyName" :maxLength='maxLength'></el-input>
+                <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -55,7 +55,7 @@
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="partyUnitAddress">
-                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength'></el-input>
+                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -63,13 +63,13 @@
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyUnitTel">
-                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength'></el-input>
+                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td> 法定代表人 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager">
-                <el-input v-model="docData.partyManager" :maxLength='maxLength'></el-input>
+                <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -79,7 +79,7 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode">
-                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength'></el-input>
+                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -88,7 +88,8 @@
           <!-- <span class="side_left">违法事实及依据：</span> -->
           <span class="side_right" @click="overFlowEdit">
             <el-form-item prop="illegalFactsEvidence">
-              <span class="over_topic">违法事实及依据：</span>{{docData.illegalFactsEvidence}}
+              <span class="over_topic">违法事实及依据：</span>
+              {{docData.illegalFactsEvidence}}
             </el-form-item>
           </span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
@@ -98,72 +99,72 @@
         </p>
         <p>你(单位)的行为违反了<span>
             <el-form-item prop="illegalLaw">
-              <el-input type='textarea' v-model="docData.illegalLaw"  v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
-              <!-- <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :maxLength='maxLength'></el-input> -->
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>的规定，依据
           <span contenteditable="true">
             <el-form-item prop="punishLaw">
-              <el-input type='textarea' v-model="docData.punishLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
+              <el-input type='textarea' v-model="docData.punishLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>的规定，决定给予
           <span>
             <el-form-item prop="tempPunishAmount">
-              <el-input type='textarea' v-model="docData.tempPunishAmount"  v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
-              <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength'></el-input> -->
+              <el-input type='textarea' v-model="docData.tempPunishAmount" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="\"></el-input> -->
             </el-form-item>
           </span>的行政处罚。
-          <p>
-            罚款的履行方式和期限(见打√处)：
-          </p>
-          <p>
-            <input type="checkbox">当场缴纳。
-          </p>
-          <p>
-            <input type="checkbox">自收到本决定书之日起十五日内缴至<span>
-              <el-form-item prop="bank">
-                <el-input v-model="docData.bank" :maxLength='maxLength'></el-input>
-              </el-form-item>
-            </span>，账号<span>
-              <el-form-item prop="account">
-                <el-input v-model="docData.account" :maxLength='maxLength'></el-input>
-              </el-form-item>
-            </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
-          </p>
-          <p>
-            如果不服本处罚决定，可以在六十日内依法向<span>
-              <el-form-item prop="reconsiderationOrgan">
-                <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength'></el-input>
-              </el-form-item>
-            </span>申请行政复议，或者在六个月内依法向<span>
-              <el-form-item prop="litigationOrgan">
-                <el-input v-model="docData.litigationOrgan" :maxLength='maxLength'></el-input>
-              </el-form-item>
-            </span>人民法院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
-          </p>
-          <p>
-            处罚前已口头告知当事人拟作出处罚的事实、理由和依据，并告知当事人依法享有的陈述权和申辩权。
-          </p>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              当事人或其代理人签名：
-              <span class="write_line width250"></span>
-            </el-col>
-            <el-col :span="12">
-              执法人员签名：
-              <span class="write_line width250"></span>
-            </el-col>
-          </el-row>
-          <div class="pdf_seal">
-            <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
-            <el-form-item prop="makeDate" class="pdf_datapick">
-              <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
-              </el-date-picker>
+        </p>
+        <p>
+          罚款的履行方式和期限(见打√处)：
+        </p>
+        <p>
+          <input type="checkbox">当场缴纳。
+        </p>
+        <p>
+          <input type="checkbox">自收到本决定书之日起十五日内缴至<span>
+            <el-form-item prop="bank">
+              <el-input v-model="docData.bank" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
-          </div>
-          <div class="notice clear">
-            <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
-          </div>
+          </span>，账号<span>
+            <el-form-item prop="account">
+              <el-input v-model="docData.account" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
+        </p>
+        <p>
+          如果不服本处罚决定，可以在六十日内依法向<span>
+            <el-form-item prop="reconsiderationOrgan">
+              <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          </span>申请行政复议，或者在六个月内依法向<span>
+            <el-form-item prop="litigationOrgan">
+              <el-input v-model="docData.litigationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          </span>人民法院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
+        </p>
+        <p>
+          处罚前已口头告知当事人拟作出处罚的事实、理由和依据，并告知当事人依法享有的陈述权和申辩权。
+        </p>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            当事人或其代理人签名：
+            <span class="write_line width250"></span>
+          </el-col>
+          <el-col :span="12">
+            执法人员签名：
+            <span class="write_line width250"></span>
+          </el-col>
+        </el-row>
+        <div class="pdf_seal">
+          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+          <el-form-item prop="makeDate" class="pdf_datapick">
+            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            </el-date-picker>
+          </el-form-item>
+        </div>
+        <div class="notice clear">
+          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
+        </div>
       </el-form>
     </div>
     <!-- 悬浮按钮 -->
@@ -189,7 +190,7 @@
         <br>
         签章
       </el-button>
-      <el-button type="primary" @click="addDocData">
+      <el-button type="primary" @click="addDocData(1)">
         <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
           <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF"></path>
         </svg><br>
@@ -200,16 +201,15 @@
   </div>
 </template>
 <script>
-import signature from "@/js/signature";
+import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
-import MainContent from "@/components/mainContent";
-import Layout from "@/page/lagout/mainLagout"; //Layout 是架构组件，不在后台返回，在文件里单独引入
-
+import { mapGetters } from "vuex";
 export default {
   components: {
     overflowInput,
   },
   mixins: [mixinGetCaseApiList],
+  computed: { ...mapGetters(['caseId']) },
   data() {
     return {
       isOverflow: false,
@@ -229,25 +229,22 @@ export default {
         socialCreditCode: "",
         illegalFactsEvidence: "",
         reconsiderationOrgan: "",
-        litigationOrgan: "",
-        makeDate: "",
         test: "",
+      },
+      handleType: 0, //0  暂存     1 提交
+      caseDocDataForm: {
+        id: "", //修改的时候用
+        caseBasicinfoId: '297708bcd8e80872febb61577329194f', //案件id--从流程进入删掉，先写死测试用
+        caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型IDer
+        //表单数据
+        docData: "",
+        status: ""
       },
       name: '',
       inputInfo: '',
       inputInfos: '',
       illegalFactsEvidence: '',
       value1: '',
-      //提交方式
-      handleType: 0, //0  暂存     1 提交
-      caseDocDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: '', //案件id
-        caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型IDer
-        //表单数据
-        formData: "",
-        status: ""
-      },
       rules: {
         party: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -264,17 +261,11 @@ export default {
         reconsiderationOrgan: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
-        litigationOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        makeDate: [
-          { required: true, message: '请选择日期', trigger: 'blur' },
-        ],
 
       },
-      nameLength:23,
-      adressLength:23,
-      maxLength:23,
+      nameLength: 23,
+      adressLength: 23,
+      maxLength: 23,
     }
   },
   methods: {
@@ -301,6 +292,21 @@ export default {
         }
       });
     },
+    //根据案件ID和文书Id获取数据
+    getDocDataByCaseIdAndDocId() {
+      let data = {
+        // caseId: this.caseId, //流程里的案件id
+        caseId: '297708bcd8e80872febb61577329194f', //先写死
+        docId: '5cad5b54eb97a15250672a4c397cee56'
+      };
+      this.com_getDocDataByCaseIdAndDocId(data);
+
+    },
+    //保存文书信息
+    addDocData(handleType) {
+      
+      this.com_addDocData(handleType, 'docForm');
+    },
     // 盖章
     makeSeal() {
       signature.openURL('oeder');
@@ -311,56 +317,18 @@ export default {
     },
     // 多行编辑
     overFlowEdit() {
-      let maxlength= 122;
-      this.$refs.overflowInputRef.showModal(0, '',maxlength);
+      this.$refs.overflowInputRef.showModal(0, '');
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
       this.docData.illegalFactsEvidence = edit;
     },
-
-    //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
-      this.caseDocDataForm.caseBasicinfoId = this.caseId;
-      this.caseDocDataForm.caseBasicinfoId = 'dbabb371505af9325fb8c09c1702cfec';
-      let data = {
-        caseId: 'dbabb371505af9325fb8c09c1702cfec',
-        docId: '5cad5b54eb97a15250672a4c397cee56'
-      };
-      console.log(data);
-      this.com_getDocDataByCaseIdAndDocId(data);
-    },
-    //保存文书信息
-    addDocData(handleType) {
-      this.com_addDocData(handleType, 'docForm').then(
-        res => {
-          this.$message({
-            type: "success",
-            message: "保存成功",
-          });
-          this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-          this.$router.push({
-            name: 'caseDoc',
-            // name: row.url,
-            params: {
-              // id: row.id,
-              // //案件ID
-              // caseBasicinfoId: this.caseBasicinfoId,
-            }
-          });
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    }
   },
   created() {
     this.getDocDataByCaseIdAndDocId()
 
   }
 }
-import overflowInput from "./overflowInput";
 </script>
 <style lang="less" >
 @import "../../../../css/caseHandle/caseDocModle.less";
