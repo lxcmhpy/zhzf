@@ -48,6 +48,7 @@ export const mixinGetCaseApiList = {
             if (tableOrForm == 'form') {  //文书表单
               this.caseLinkDataForm.id = res.data.id;
               this.formData = JSON.parse(res.data.formData);
+              console.log('this.formData',this.formData)
             } else if (tableOrForm == 'table') {
               this.tableData = JSON.parse(res.data.formData);
             }
@@ -113,25 +114,25 @@ export const mixinGetCaseApiList = {
       });
     },
     //点击下一环节和提交按钮都跳转流程图
-    // com_goToNextLinkTu(caseLinktypeId) {
-    //   let data={
-    //     caseId:this.caseLinkDataForm.caseBasicinfoId,
-    //     caseLinktypeId:caseLinktypeId
-    //   };
-    //   console.log(data);
-    //   this.$store.dispatch("submitPdf", data).then(
-    //     res => {
-    //       console.log("更改流程图中的状态", res);
-    //       this.$store.dispatch("deleteTabs", this.$route.name);
-    //       this.$router.push({
-    //         name: 'flowChart'
-    //       });
-    //     },
-    //     err => {
-    //       console.log(err);
-    //     }
-    //   );
-    // },
+    com_goToNextLinkTu(caseLinktypeId) {
+      let data={
+        caseId:this.caseLinkDataForm.caseBasicinfoId,
+        caseLinktypeId:caseLinktypeId
+      };
+      console.log(data);
+      this.$store.dispatch("submitPdf", data).then(
+        res => {
+          console.log("更改流程图中的状态", res);
+          this.$store.dispatch("deleteTabs", this.$route.name);
+          this.$router.push({
+            name: 'flowChart'
+          });
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
     //根据环节ID转路由name 跳转
     com_getCaseRouteName(caseLinkId) {
       let nextLink = "";
