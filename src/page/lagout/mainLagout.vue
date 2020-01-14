@@ -8,7 +8,7 @@
           <div>
               <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
-                  admin<i class="el-icon-arrow-down el-icon--right"></i>
+                  {{userInfo.username}}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="a">个人设置</el-dropdown-item>
@@ -32,10 +32,10 @@
             <mainContent></mainContent>
             </el-main>
         </el-container>
-        
+
       </el-container>
     </el-container>
-    
+
   </div>
 </template>
 <script>
@@ -53,6 +53,7 @@ export default {
       // openKeys: ["sub1"],
       // collapsed: false,
       // avatar: Cookies.get("avatar")
+      userInfo:  iLocalStroage.gets('userInfo'),
       selectedHeadMenu:'xboot'   //接收headMenu传来的选中的一级菜单
     };
   },
@@ -66,7 +67,6 @@ export default {
     // curreyRouterName() {
     //   return this.$route.name;
     // }
-    
   },
   inject: ["reload"],
   methods: {
@@ -95,12 +95,15 @@ export default {
     getSelectHeadMenu(name){
       this.selectedHeadMenu = name;
     }
-    
+
   },
   watch:{
     $router(a,b){
       console.log(a,b)
     }
+  },
+  mounted () {
+    console.log(this.userInfo)
   }
 };
 </script>

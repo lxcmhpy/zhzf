@@ -80,12 +80,12 @@
       </div>
 </template>
 <script>
+import {htmlExportPDF} from '@/js/htmlExportPDF'
 export default {
   props: ['pageDomId'],
   methods: {
     //   打印方法
-    printContent(e) {
-      alert(this.pageDomId)
+    printContent() {
       // let subOutputRankPrint = document.getElementById("subOutputRank-print");
       // console.log(subOutputRankPrint.innerHTML);
       // let newContent = subOutputRankPrint.innerHTML;
@@ -95,6 +95,25 @@ export default {
       // window.location.reload();
       // document.body.innerHTML = oldContent;
       // return false;
+
+      let pdf =  htmlExportPDF(this.pageDomId)
+      debugger
+      this.uploadFile(pdf)
+    },
+    uploadFile (file) {
+      debugger
+      this.$store.dispatch("uploadFile", {
+
+      }).then(
+        res => {
+          debugger;
+          console.log(res)
+        },
+        err => {
+          debugger;
+          console.log(err);
+        }
+      );
     },
       // 盖章
     makeSeal() {
