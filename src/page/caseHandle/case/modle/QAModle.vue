@@ -32,27 +32,28 @@
         </el-row>
 
       </el-form-item>
-      <el-form-item label="问1：">
-        <el-select v-model="region" filterable allow-create>
+      <!-- <el-form-item label="问1：">
+        <el-select filterable allow-create v-model="addBannerForm.domains[0].question">
           <el-option label="不认识执法人员，不需要回避" value="no"></el-option>
           <el-option label="认识执法人员，需要回避" value="yes"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="答1：">
-        <el-input type="textarea" :autosize="{ minRows: 2,}" placeholder="请输入内容" v-model="textarea"></el-input>
-      </el-form-item>
+        <el-input type="textarea" :autosize="{ minRows: 2,}" placeholder="请输入内容" v-model="addBannerForm.domains[0].answer"></el-input>
+      </el-form-item> -->
       <span v-for="(domain, index) in addBannerForm.domains" :key="domain.key">
-        <el-form-item :label="'问' + (index +2)" :prop="'domains.' + (index +2)+ '.value'">
-          <el-select v-model="region" filterable allow-create>
-            <el-option label="不认识执法人员，不需要回避" value="no"></el-option>
-            <el-option label="认识执法人员，需要回避" value="yes"></el-option>
-          </el-select>
+        <el-form-item :label="'问' + (index +1)" :prop="'domains.' + (index +1)+ '.question'">
+          <!-- <el-select v-model="domain.question" filterable allow-create>
+            <el-option label="不认识执法人员，不需要回避" question="no"></el-option>
+            <el-option label="认识执法人员，需要回避" question="yes"></el-option>
+          </el-select> -->
+          <el-input type="textarea" :autosize="{ minRows: 2,}" v-model="domain.question"></el-input>
         </el-form-item>
-        <el-form-item :label="'答' + (index +2)" :prop="'domains.' + (index +2) + '.value'" :rules="{
-      required: true, message: '域名不能为空', trigger: 'blur'}">
+        <el-form-item :label="'答' + (index +1)" :prop="'domains.' + (index +1) + '.answer'" :rules="{
+      required: true, message: '不能为空', trigger: 'blur'}">
           <el-row :gutter="10">
             <el-col :span="21">
-              <el-input type="textarea" :autosize="{ minRows: 2,}" v-model="domain.value"></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 2,}" v-model="domain.answer"></el-input>
             </el-col>
             <el-col :span="1">
               <el-button @click.prevent="removeDomain(domain)" size="medium">删除</el-button>
@@ -60,15 +61,11 @@
           </el-row>
         </el-form-item>
       </span>
-
-      <!-- <el-input type="textarea" :autosize="{ minRows: 2,}" placeholder="请输入内容" v-model="textarea">
-      </el-input> -->
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="addDomain">新增</el-button>
-      <el-button type="primary" @click="submitForm('addBannerForm')">提交</el-button>
-
-      <el-button type="primary" @click="overFloeEdit()">取消</el-button>
+      <!-- <el-button type="primary" @click="submitForm('addBannerForm')">提交</el-button> -->
+      <el-button type="primary" @click="overFloeEdit()">确定</el-button>
     </span>
   </el-dialog>
 
@@ -78,13 +75,13 @@ export default {
   data() {
     return {
       visible: false,
-      textarea: '',
-      addBannerForm: '',
       dialogTitle: "填写问答",
       region: "no",
       addBannerForm: {
         domains: [{
-          value: ''
+          key: '',
+          question: '',
+          answer: '',
         }],
         email: ''
       }
@@ -106,21 +103,22 @@ export default {
     //确定
     overFloeEdit() {
       //将当前内容传到父组件
-      this.$emit("overFloeEditInfo", this.textarea);
+      console.log('模板',this.addBannerForm.domains)
+      this.$emit("QAModleInfo", this.addBannerForm.domains);
       this.visible = false;
       //   this.reload();
     },
 
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
+    // submitForm(formName) {
+    //   this.$refs[formName].validate((valid) => {
+    //     if (valid) {
+    //       alert('submit!');
+    //     } else {
+    //       console.log('error submit!!');
+    //       return false;
+    //     }
+    //   });
+    // },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
