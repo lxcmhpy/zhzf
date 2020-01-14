@@ -11,7 +11,7 @@ export default {
 
     install ( ) {
       //太虚
-      debugger
+      // debugger
       var width = document.querySelector('#pdfDom').offsetWidth; //获取dom 宽度
   var height = document.querySelector('#pdfDom').offsetHeight; //获取dom 高度
   var element = document.getElementById('a4-outDom');
