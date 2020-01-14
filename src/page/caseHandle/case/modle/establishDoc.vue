@@ -1,6 +1,6 @@
 <template>
   <div class="print_box">
-    <div class="print_info">
+    <div class="print_info"> 
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">立案登记表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>

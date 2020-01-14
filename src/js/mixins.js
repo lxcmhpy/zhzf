@@ -138,7 +138,7 @@ export const mixinGetCaseApiList = {
       let nextLink = "";
       switch (caseLinkId) {
         case "2c90293b6c178b55016c17c255a4000d":   //立案登记
-          nextLink = "filingApproval";
+          nextLink = "establish";
           break;
         case "2c90293b6c178b55016c17c93326000f":   //调查类文书
           nextLink = "caseDoc";
