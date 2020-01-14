@@ -200,8 +200,11 @@
   </div>
 </template>
 <script>
-
+import signature from "@/js/signature";
 import { mixinGetCaseApiList } from "@/js/mixins";
+import MainContent from "@/components/mainContent";
+import Layout from "@/page/lagout/mainLagout"; //Layout 是架构组件，不在后台返回，在文件里单独引入
+
 export default {
   components: {
     overflowInput,
@@ -246,31 +249,7 @@ export default {
         status: ""
       },
       rules: {
-        test: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
         party: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyIdNo: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyName: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyUnitAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyUnitTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyManager: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         punishLaw: [
@@ -324,7 +303,7 @@ export default {
     },
     // 盖章
     makeSeal() {
-      console.log('盖章!');
+      signature.openURL('oeder');
     },
     // 打印
     print() {

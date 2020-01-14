@@ -128,34 +128,34 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      formData: {
-        caseNumber: "",
-        party: "",
-        caseCauseNameCopy: "",
-        illegalBasis: "",
-        punishLaw: "",
-        punishDecision: "",
-        partyAddress: "",
-        partyZipCode: "",
-        contactPerson: "",
-        partyTel: "",
-        checkBoxList: ""
-      },
-      rules: {
-        party: [
-          { required: true, message: "当事人姓名必须填写", trigger: "blur" }
-        ]
-      },
+      // formData: {
+      //   caseNumber: "",
+      //   party: "",
+      //   caseCauseNameCopy: "",
+      //   illegalBasis: "",
+      //   punishLaw: "",
+      //   punishDecision: "",
+      //   partyAddress: "",
+      //   partyZipCode: "",
+      //   contactPerson: "",
+      //   partyTel: "",
+      //   checkBoxList: ""
+      // },
+      // rules: {
+      //   party: [
+      //     { required: true, message: "当事人姓名必须填写", trigger: "blur" }
+      //   ]
+      // },
       //提交方式
-      handleType: 0, //0  暂存     1 提交
-      caseLinkDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId:'', //案件id
-        caseLinktypeId: "2c9029ee6cac9281016caca8ea500003", //表单类型IDer            
-        //表单数据
-        formData: "",
-        status: ""
-      },
+      // handleType: 0, //0  暂存     1 提交
+      // caseLinkDataForm: {
+      //   id: "", //修改的时候用
+      //   caseBasicinfoId:'', //案件id
+      //   caseLinktypeId: "2c9029ee6cac9281016caca8ea500003", //表单类型IDer            
+      //   //表单数据
+      //   formData: "",
+      //   status: ""
+      // },
     };
   },
   mixins:[mixinGetCaseApiList],
