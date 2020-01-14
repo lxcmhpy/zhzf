@@ -169,7 +169,7 @@
         </div>
       </div>
     </div>
-    <casePageFloatBtns pageDomId="subOutputRank-print"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="subOutputRank-print"></casePageFloatBtns>
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
@@ -177,7 +177,7 @@
 import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
-import casePageFloatBtns from '@/components/casePageFloatBtns/casePageFloatBtns'
+import casePageFloatBtns from '@/components/casePageFloatBtns/casePageFloatBtns.vue'
 export default {
   data() {
     return {

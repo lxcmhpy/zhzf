@@ -81,7 +81,7 @@
 </template>
 <script>
 export default {
-  props: [pageDomId],
+  props: ['pageDomId'],
   methods: {
     //   打印方法
     printContent(e) {
