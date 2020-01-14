@@ -1,66 +1,147 @@
 <template>
   <div class="print_box">
-    <div class="print_info">
-      <el-form :rules="rules" ref="ruleForm" :inline-message="true" :inline="true" :model="docData">
-        <div class="doc_topic">其他样式模板</div>
-        <div class="doc_number">案号：隆阳字[2017]第543939号</div>
-        <!-- <el-button @click="onSubmit('ruleForm')">formName</el-button> -->
-
-        <p>
-          国<el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
-            </el-date-picker>
-          </el-form-item>
-          至
-          <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
-            </el-date-picker>
-          </el-form-item>
-        </p>
-        <p @click="QAModleEdit">
-          请你确认。现依法向你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。(询问笔录)
-        </p>
-          <p class="side_right_indent">
-          <!-- <span class="side_left">违法事实及依据：</span> -->
-          <span class="side_right" @click="overFlowEdit">
-            <el-form-item prop="illegalFactsEvidence">
-              <span class="over_topic">问：</span>
-              <!-- {{docData.illegalFactsEvidence}} -->
+   
+      <el-form :rules="rules" ref="ruleForm" :inline-message="true" :inline="true" :model="docData" label-width="80px"> 
+       
+        <div class="print_info">
+       
+        <div class="doc_topic">询问笔录</div>
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <span class="indent_style">
+          <p>
+            时间：<el-form-item prop="makeDate" class="pdf_datapick">
+              <el-date-picker v-model="docData.askdata" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+              </el-date-picker>
             </el-form-item>
-          </span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-        </p>
-          <p class="side_right_indent">
-          <!-- <span class="side_left">违法事实及依据：</span> -->
-          <span class="side_right" @click="overFlowEdit">
-            <el-form-item prop="illegalFactsEvidence">
-              <span class="over_topic">答：</span>
-              <!-- {{docData.illegalFactsEvidence}} -->
+            <el-time-picker is-range arrow-control v-model="docData.askTime" range-separator="至" format="HH时mm分"  placeholder="选择时间范围"  size="mini">
+            </el-time-picker>
+            第<el-input-number size="mini" v-model="num4"></el-input-number>次询问
+          </p>
+          <p>
+             <el-form-item label="地点：" v-if="!lineStyleFlag" prop="illegalLaw" label-width="50px">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
-          </span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-        </p>
-        <span class="span_bg">{{docData.QAModleInfo}}</span>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            当事人或其代理人签名：
-            <span class="write_line width250"></span>
-          </el-col>
-          <el-col :span="12">
-            执法人员签名：
-            <span class="write_line width250"></span>
-          </el-col>
-        </el-row>
-        <div class="pdf_seal">
-          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>
+          </p>
+          <el-row>
+            <el-col :span="12">
+              询问人： <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>
+            </el-col>
+            <el-col :span="12">
+              记录人： <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              被询问人： <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>
+            </el-col>
+            <el-col :span="12">
+              与案件关系： <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              性别： <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>
+            </el-col>
+            <el-col :span="12">
+              年龄： <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              身份证件号： <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>
+            </el-col>
+            <el-col :span="12">
+              联系电话： <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>
+            </el-col>
+          </el-row>
+          <p>工作单位及职务： <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u></p>
+          <p>联系地址： <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u></p>
+          <p>我们是 <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>的执法人员 <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>、 <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>，这是我们的执法证件，执法证号分别是  <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>、 <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u> ，
+            请你确认。现依法向你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。(询问笔录)
+          </p>
+          <p class="side_right_indent" @click="QAModleEdit">
+            <!-- <span class="side_left">违法事实及依据：</span> -->
+            <span class="side_right" @click="overFlowEdit">
+              <el-form-item prop="illegalFactsEvidence">
+                <span class="over_topic">问：</span>
+                <!-- {{docData.illegalFactsEvidence}} -->
+              </el-form-item>
+            </span>
+            <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+          </p>
+          <p class="side_right_indent">
+            <!-- <span class="side_left">违法事实及依据：</span> -->
+            <span class="side_right" @click="overFlowEdit">
+              <el-form-item prop="illegalFactsEvidence">
+                <span class="over_topic">答：</span>
+                <!-- {{docData.illegalFactsEvidence}} -->
+              </el-form-item>
+            </span>
+            <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+            <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+          </p>
+          <span class="span_bg">{{docData.QAModleInfo}}</span>
+          <br>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              被询问人签名：
+              <span class="write_line width250"></span>
+            </el-col>
+            <el-col :span="12">
+              询问人签名：
+              <span class="write_line width250"></span>
+            </el-col>
+          </el-row>
+        </span>
 
-        </div>
-        <div class="notice clear">
-          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
-        </div>
-      </el-form>
-    </div>
+     
+    </div> </el-form>
     <!-- 悬浮按钮 -->
     <div class="float-btns">
       <el-button type="success">
@@ -96,16 +177,10 @@
   </div>
 </template>
 <script>
-import overflowInput from "./overflowInput";
-import QAModle from "./QAModle";
-
 export default {
-  components: {
-    overflowInput,
-    QAModle
-  },
   data() {
     return {
+      value2: '',
       isOverflow: false,
       isOverLine: false,
       docData: {
@@ -123,7 +198,10 @@ export default {
         reconsiderationOrgan: "",
         test: "",
         QAModleInfo: "",
+        askTime:1,
       },
+      num4:1,
+      lineStyleFlag:false,
       name: '',
       inputInfo: '',
       inputInfos: '',
@@ -173,46 +251,26 @@ export default {
       }
     }
   },
+  inject: ["reload"],
   methods: {
-    // widthCheck(str, len, event) {
-    //   console.log('event,', event)
-    //   console.log('str,', str, '  len:', len)
-    //   if (event.length > len) {
-    //     this.isOverflow = true
-    //   } else
-    //     this.isOverflow = false
-    //   if (event.length > 40) {
-    //     this.isOverLine = true
-    //     console.log('overline', this.isOverLine)
-    //   }
-    // },
-    onSubmit(formName) {
-      console.log('submit!');
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
+    showModal(type, data,maxlength) {
+      console.log(type, data,maxlength);
+      this.visible = true;
+      this.maxlength = maxlength;
+      this.dialogTitle = "多行编辑"
     },
-    // 盖章
-    makeSeal() {
-      console.log('盖章!');
-    },
-     // 问答编辑
+    // 问答编辑
     QAModleEdit() {
       this.$refs.QAModleInfoRef.showModal(0, '');
     },
-    // 获取问答内容
-    getQAModleInfo(edit) {
-      this.docData.QAModleInfo = edit;
+    //确定
+    overFloeEdit() {
+      //将当前内容传到父组件
+      this.$emit("overFloeEditInfo", this.textarea);
+      this.visible = false;
+    //   this.reload();
     },
-    overFlowEdit(){}
+    overFlowEdit() { }
   },
 }
 </script>
-<style lang="less" >
-@import "../../../../css/caseHandle/caseDocModle.less";
-</style>

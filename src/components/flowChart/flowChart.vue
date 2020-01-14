@@ -458,7 +458,7 @@ export default {
 
                   let source = checkNumber.tempList[m].source
                   if (source == 'temp7_2_1') {
-                    debugger
+                    // debugger
                   }
                   let boo = false
                   graphDataTemp.links.forEach((v, i)=>{

@@ -1,30 +1,89 @@
 <template>
   <div class="print_box">
     <div class="print_info">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
-        <div class="doc_topic">当场行政处罚决定书</div>
-        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
+        <div class="doc_topic">立案登记表</div>
+        <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
-            <td rowspan="6">
-              当<br>
-              事<br>
-              人
+            <td>
+              <p>案件</p>
+              <p>来源</p>
+            </td>
+            <td colspan="8" class="color_DBE4EF">
+              <div class="text-left">
+                <form>
+                  <p><input type="checkbox" />1.在行政检查中发现的；</p>
+                  <p><input type="checkbox" />2.个人、法人及其他组织举报经核实的；</p>
+                  <p><input type="checkbox" />3.上级机关交办的；</p>
+                  <p>
+                    <input type="checkbox" />4.下级机关<el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan">
+                      <el-input v-model="formData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
+                    </el-form-item>报请查处的
+                  </p>
+                  <p>
+                    <input type="checkbox" />5.有关部门<el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan">
+                      <el-input v-model="formData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
+                    </el-form-item>移送的；
+                  </p>
+                  <p>
+                    <input type="checkbox" />6.其他途径发现的<el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan">
+                      <el-input v-model="formData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
+                    </el-form-item>
+                  </p>
+                </form>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td rowspan="2">案由</td>
+            <td rowspan="2" colspan="8" class="color_DBE4EF">
+              <el-form-item prop="caseName">
+                <el-input type='textarea' v-model="formData.caseName" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr></tr>
+          <tr>
+            <td>
+              <p>受案</p>
+              <p>时间</p>
+            </td>
+            <td colspan="8" class="color_DBE4EF">
+              <el-form-item prop="acceptTime" class="pdf_datapick">
+                <el-date-picker v-model="formData.acceptTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                </el-date-picker>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td rowspan="5">
+              <P class="center_similar">当</P>
+              <P class="center_similar">事</P>
+              <P class="center_similar">人</P>
+              <P class="center_similar">基</P>
+              <P class="center_similar">本</P>
+              <P class="center_similar">情</P>
+              <P class="center_similar">况</P>
             </td>
             <td rowspan="2">个人</td>
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party">
-                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
-                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
+                <el-input type='textarea' v-model="formData.party" v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
-
             </td>
-            <td>身份证件号</td>
-            <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyIdNo">
-                <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input>
+            <td>性别</td>
+            <td class="color_DBE4EF">
+              <el-form-item prop="partySex">
+                <el-input type='textarea' v-model="formData.partySex" v-bind:class="{ over_flow:formData.partySex.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+            <td>年龄</td>
+            <td class="color_DBE4EF">
+              <el-form-item prop="partyAge" style="width:110px">
+                <el-input type='textarea' v-model="formData.partyAge" v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -32,22 +91,37 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyAddress" v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+            <td>
+              <p>身份证</p>
+              <p>件号</p>
+            </td>
+            <td class="color_DBE4EF">
+              <el-form-item prop="partyIdNo">
+                <el-input type='textarea' v-model="formData.partyIdNo" v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
-            <td colspan="2" class="color_DBE4EF">
+            <td class="color_DBE4EF">
               <el-form-item prop="partyTel">
-                <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyTel" v-bind:class="{ over_flow:formData.partyTel.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
-            <td rowspan="4"> 单位 </td>
+            <td rowspan="3">单位</td>
             <td>名称</td>
-            <td colspan="5" class="color_DBE4EF">
+            <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="partyName">
-                <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyName" v-bind:class="{ over_flow:formData.partyName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+            <td>法定代表人</td>
+            <td class="color_DBE4EF">
+              <el-form-item prop="partyManager">
+                <el-input type='textarea' v-model="formData.partyManager" v-bind:class="{ over_flow:formData.partyManager.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -55,128 +129,99 @@
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="partyUnitAddress">
-                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyUnitAddress" v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
-          </tr>
-          <tr>
             <td>联系电话</td>
-            <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyUnitTel">
-                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </td>
-            <td> 法定代表人 </td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyManager">
-                <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-form-item prop="partyUnitTel">
+                <el-input type='textarea' v-model="formData.partyUnitTel" v-bind:class="{ over_flow:formData.partyUnitTel.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
-            <td colspan="2">
-              统一社会信用代码
-            </td>
-            <td colspan="3" class="color_DBE4EF">
+            <td colspan="2">统一社会信用代码</td>
+            <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode">
-                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.socialCreditCode" v-bind:class="{ over_flow:formData.socialCreditCode.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>案件基</p>
+              <p>本情况</p>
+            </td>
+            <td colspan="8" class="color_DBE4EF">
+              <el-form-item prop="caseBasicInfo">
+                <el-input type='textarea' v-model="formData.caseBasicInfo" v-bind:class="{ over_flow:formData.caseBasicInfo.length>14?true:false }" :autosize="{ minRows: 5, maxRows: 5}" :maxlength="nameLength" placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p class="center_similar">立</p>
+              <p class="center_similar">案</p>
+              <p class="center_similar">依</p>
+              <p class="center_similar">据</p>
+            </td>
+            <td colspan="4" class="color_DBE4EF">
+              <el-form-item prop="caseReplay">
+                <el-input type='textarea' v-model="formData.caseReplay" v-bind:class="{ over_flow:formData.caseReplay.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+            <td>
+              <p>经办机构</p>
+              <p>负责人</p>
+              <p>意见</p>
+            </td>
+            <td colspan="3" class=" color_DBE4EF table_seal">
+              {{formData.approveOpinions}}
+              <div class="pdf_seal">
+                <p>签名：</p>
+                <p>
+                  时间:<el-form-item prop="makeDate" class="pdf_datapick">
+                    <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+                    </el-date-picker>
+                  </el-form-item>
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p class="center_similar">负</p>
+              <p class="center_similar">责</p>
+              <p class="center_similar">人</p>
+              <p class="center_similar">审</p>
+              <p class="center_similar">批</p>
+              <p class="center_similar">意</p>
+              <p class="center_similar">见</p>
+            </td>
+            <td colspan="8" class="color_DBE4EF table_seal">
+              <div class="pdf_seal">
+               <p>签名：</p>
+                <p>
+                  时间:<el-form-item prop="makeDate" class="pdf_datapick">
+                    <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+                    </el-date-picker>
+                  </el-form-item>
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p class="center_similar">备</p>
+              <p class="center_similar">注</p>
+            </td>
+            <td colspan="8" class="color_DBE4EF">
+              <el-form-item prop="note">
+                <el-input type='textarea' v-model="formData.note" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
         </table>
-        <p class="side_right_indent"  v-if="!lineStyleFlag">
-          <!-- <span class="side_left">违法事实及依据：</span> -->
-          <span class="side_right" @click="overFlowEdit">
-            <el-form-item  prop="illegalFactsEvidence">
-              <span class="over_topic">违法事实及依据：</span>
-              <span>{{docData.illegalFactsEvidence}}</span>
-            </el-form-item>
-            
-          </span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-
-          <!-- <span class="span_bg">{{docData.illegalFactsEvidence}}</span> -->
-        </p>
-        <p  v-if="lineStyleFlag">
-          违法事实及依据：<u>{{docData.illegalFactsEvidence}}</u>
-        </p>
-        <p>你(单位)的行为违反了<span>
-            <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
-              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
-            </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>
-          </span>的规定，依据
-          <span contenteditable="true">
-            <el-form-item v-if="!lineStyleFlag"  prop="punishLaw">
-              <el-input type='textarea' v-model="docData.punishLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.punishLaw}}</u>
-          </span>的规定，决定给予
-          <span>
-            <el-form-item v-if="!lineStyleFlag"  prop="tempPunishAmount">
-              <el-input type='textarea' v-model="docData.tempPunishAmount" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
-              <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="\"></el-input> -->
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.tempPunishAmount}}</u>
-          </span>的行政处罚。
-        </p>
-        <p>
-          罚款的履行方式和期限(见打√处)：
-        </p>
-        <p>
-          <input type="checkbox">当场缴纳。
-        </p>
-        <p>
-          <input type="checkbox">自收到本决定书之日起十五日内缴至<span>
-            <el-form-item v-if="!lineStyleFlag"  prop="bank">
-              <el-input v-model="docData.bank" :maxLength='maxLength' placeholder="\"></el-input>
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.bank}}</u>
-          </span>，账号<span>
-            <el-form-item v-if="!lineStyleFlag"  prop="account">
-              <el-input v-model="docData.account" :maxLength='maxLength' placeholder="\"></el-input>
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.account}}</u>
-          </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
-        </p>
-        <p>
-          如果不服本处罚决定，可以在六十日内依法向<span>
-            <el-form-item v-if="!lineStyleFlag"  prop="reconsiderationOrgan">
-              <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.reconsiderationOrgan}}</u>
-          </span>申请行政复议，或者在六个月内依法向<span>
-            <el-form-item v-if="!lineStyleFlag"  prop="litigationOrgan">
-              <el-input v-model="docData.litigationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.litigationOrgan}}</u>
-          </span>人民法院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
-        </p>
-        <p>
-          处罚前已口头告知当事人拟作出处罚的事实、理由和依据，并告知当事人依法享有的陈述权和申辩权。
-        </p>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            当事人或其代理人签名：
-            <span class="write_line width250"></span>
-          </el-col>
-          <el-col :span="12">
-            执法人员签名：
-            <span class="write_line width250"></span>
-          </el-col>
-        </el-row>
-        <div class="pdf_seal">
-          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
-          <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
-            </el-date-picker>
-          </el-form-item>
-        </div>
-        <div class="notice clear">
-          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
-        </div>
       </el-form>
     </div>
     <!-- 悬浮按钮 -->
@@ -233,7 +278,7 @@ export default {
     return {
       isOverflow: false,
       // isOverLine: false,
-      docData: {
+      formData: {
         party: '',
         partyIdNo: '',
         partyAddress: "",
@@ -249,6 +294,12 @@ export default {
         illegalFactsEvidence: "",
         reconsiderationOrgan: "",
         test: "",
+        note: "",
+        party: "",
+        partySex: "",
+        partyAge: "",
+        partyManager: "",
+        socialCreditCode: "",
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -256,10 +307,12 @@ export default {
         caseBasicinfoId: '297708bcd8e80872febb61577329194f', //案件id--从流程进入删掉，先写死测试用
         caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型IDer
         //表单数据
-        docData: "",
+        formData: "",
         status: ""
       },
       name: '',
+      illegalFactsEvidence: '',
+      value1: '',
       rules: {
         test: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -304,7 +357,6 @@ export default {
       },
       nameLength: 23,
       adressLength: 23,
-      maxLengthOverLine: 122,
       maxLength: 23,
       lineStyleFlag: false,
     }
@@ -358,11 +410,11 @@ export default {
     },
     // 多行编辑
     overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '',this.maxLengthOverLine);
+      this.$refs.overflowInputRef.showModal(0, '');
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
-      this.docData.illegalFactsEvidence = edit;
+      this.formData.illegalFactsEvidence = edit;
     },
     // 下划线版本
     changeLineStyle() {
