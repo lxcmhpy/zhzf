@@ -11,47 +11,52 @@
               执法地点
             </td>
             <td colspan='3' class="color_DBE4EF">
-              <el-form-item prop="party">
-                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              <el-form-item prop="fillingPlace">
+                <el-input type='textarea' v-model="docData.fillingPlace" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
                 <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
             <td>执法时间</td>
-            <td colspan="3" class="color_DBE4EF">
-              <el-form-item prop="party">
-                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <td colspan="3">
+              <el-form-item prop="enforceStartTime" class="pdf_datapick">
+                <el-date-picker v-model="docData.enforceStartTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item prop="enforceEndTime" class="pdf_datapick">
+                <el-date-picker v-model="docData.enforceEndTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                </el-date-picker>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td rowspan="2">执法人员</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
+              <el-form-item prop="staff1">
+                <el-input type='textarea' v-model="docData.staff1" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td rowspan="2">执法证号</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
+              <el-form-item prop="certificateId1">
+                <el-input type='textarea' v-model="docData.certificateId1" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td rowspan="2">记录人</td>
             <td rowspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
+              <el-form-item prop="recorder">
+                <el-input type='textarea' v-model="docData.recorder" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
+              <el-form-item prop="staff2">
+                <el-input type='textarea' v-model="docData.staff2" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
+              <el-form-item prop="certificateId2">
+                <el-input type='textarea' v-model="docData.certificateId2" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -59,71 +64,116 @@
             <td rowspan="5"> 现场<br>人员<br>基本<br>情况 </td>
             <td>姓名</td>
             <td colspan="3" class="color_DBE4EF">
-              <el-form-item prop="partyName">
-                <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-form-item prop="party">
+                <el-input v-model="docData.party" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td>性别</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyName">
-                <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-form-item prop="partySex">
+                <el-input v-model="docData.partySex" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
-            <td>地址</td>
-            <td colspan="4" class="color_DBE4EF">
-              <el-form-item prop="partyUnitAddress">
-                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="\"></el-input>
+            <td>身份证件号</td>
+            <td colspan="3" class="color_DBE4EF">
+              <el-form-item prop="partyIdNo">
+                <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+            <td>与案件关系</td>
+            <td colspan="2" class="color_DBE4EF">
+              <el-form-item prop="relation">
+                <el-input v-model="docData.relation" minlength="11" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
+            <td>单位及职务</td>
+            <td colspan="3" class="color_DBE4EF">
+              <el-form-item prop="partyUnitPosition">
+                <el-input v-model="docData.partyUnitPosition" :maxLength='maxLength' placeholder="\"></el-input>
+              </el-form-item>
+            </td>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyUnitTel">
-                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </td>
-            <td> 法定代表人 </td>
-            <td class="color_DBE4EF">
-              <el-form-item prop="partyManager">
-                <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-form-item prop="partyTel">
+                <el-input v-model="docData.partyTel" minlength="11" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
-            <td colspan="2">
-              统一社会信用代码
-            </td>
-            <td colspan="3" class="color_DBE4EF">
-              <el-form-item prop="socialCreditCode">
-                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="\"></el-input>
+            <td>联系地址</td>
+            <td colspan="6" class="color_DBE4EF">
+              <el-form-item prop="partyAddress">
+                <el-input v-model="docData.partyAddress" minlength="11" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
-        </table>
-        
-        <el-row :gutter="20">
-          <el-col :span="12">
-            当事人或其代理人签名：
-            <span class="write_line width250"></span>
-          </el-col>
-          <el-col :span="12">
-            执法人员签名：
-            <span class="write_line width250"></span>
-          </el-col>
-        </el-row>
-        <div class="pdf_seal">
-          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
-          <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
-            </el-date-picker>
-          </el-form-item>
-        </div>
-        <div class="notice clear">
-          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
-        </div>
+          <tr>
+            <td>车船号</td>
+            <td colspan="3" class="color_DBE4EF">
+              <el-form-item prop="vehicleShipId">
+                <el-input v-model="docData.vehicleShipId" :maxLength='maxLength' placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+            <td>车船型</td>
+            <td colspan="2" class="color_DBE4EF">
+              <el-form-item prop="vehicleShipType">
+                <el-input v-model="docData.vehicleShipType" minlength="11" :maxLength='maxLength' placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td rowspan="11">
+              主要内容
+            </td>
+            <td colspan="7">
+              <span class="side_right" @click="overFlowEdit">
+                <el-form-item  prop="illegalFacts">
+                <span class="over_topic">
+                  现场情况：（如实施行政强制措施的，包括当场告知当事人采取<br>
+                  行政强制措施的理由、依据以及当事人依法享有的权利、<br>
+                  救济途径，听取当事人陈述、申辩情况。）
+                </span>
+                <span>{{docData.illegalFacts}}</span>              
+                </el-form-item>
+              </span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>              
+            </td>
+          </tr>
+          <tr>
+            <td colspan="7">
+              <input type="checkbox">上述笔录我已看过。
+              <input type="checkbox">或已向我宣读过，情况属实无误。
+            </td>
+          </tr>
+          <tr>
+            <td colspan="7">
+              备注：
+              <el-form-item prop="note">
+                <el-input v-model="docData.note"  placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="7">
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  执法人员签名：
+                  <span class="write_line width150"></span>
+                </el-col>
+                <el-col :span="12">
+                  时间：
+                  <span class="write_line width150"></span>
+                </el-col>
+              </el-row>
+            </td>
+          </tr>
+        </table>     
       </el-form>
     </div>
     <!-- 悬浮按钮 -->
@@ -174,36 +224,44 @@ export default {
       isOverflow: false,
       isOverLine: false,
       docData: {
-        party: '',
-        partyIdNo: '',
-        partyAddress: "",
+        caseNumber: '',
+        fillingPlace: '',
+        enforceStartTime:"",
+        enforceEndTime:"",
+        staff1: "",
+        staff2: "",
+        certificateId1: "",
+        certificateId2: "",
+        recorder: "",
+        party: "",
+        partySex: "",
+        partyIdNo: "",
+        relation: "",
+        partyUnitPosition: "",
         partyTel: "",
-        partyName: "",
-        partyUnitAddress: "",
-        partyUnitTel: "",
-        partyManager: "",
-        punishLaw: "",
-        illegalLaw: "",
-        tempPunishAmount: "",
-        socialCreditCode: "",
-        illegalFactsEvidence: "",
-        reconsiderationOrgan: "",
-        test: "",
+        partyAddress: "",
+        vehicleShipId: "",
+        vehicleShipType:"",
+        illegalFacts:"",
+        checkBox:"",
+        partySign:"",
+        partySignTime:"",
+        note:"",
+        staffSign:"",
+        staffSign:""
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: '297708bcd8e80872febb61577329194f', //案件id--从流程进入删掉，先写死测试用
-        caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型IDer
-        //表单数据
+        id: "",   //修改的时候用
+        caseBasicinfoId: '',   //案件ID
+        caseDoctypeId: this.$route.params.docId,    //文书类型ID
+        //文书数据
         docData: "",
-        status: ""
+        status: "",   //提交状态
       },
-      name: '',
-      inputInfo: '',
-      inputInfos: '',
-      illegalFactsEvidence: '',
-      value1: '',
+      handleType: "",  // 0 暂存  1  提交
+      dictId:"2dc1e0a3a8ce225c292259da39294847",
+      options:[],
       rules: {
         party: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -253,19 +311,39 @@ export default {
     },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
-        // caseId: this.caseId, //流程里的案件id
-        caseId: '297708bcd8e80872febb61577329194f', //先写死
-        docId: '5cad5b54eb97a15250672a4c397cee56'
+        caseId: this.caseId,
+        docId: this.$route.params.docId
       };
+      console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
-
     },
     //保存文书信息
-    addDocData(handleType) {
-      
-      this.com_addDocData(handleType, 'docForm');
+    addDocData(handleType){
+      this.com_addDocData(handleType,'docForm').then(
+        res => {
+          this.$message({
+            type: "success",
+            message: "保存成功",
+          });
+          this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+          this.$router.push({
+            name: 'caseDoc',
+            // name: row.url,
+            params: {
+              // id: row.id,
+              // //案件ID
+              // caseBasicinfoId: this.caseBasicinfoId,
+            }
+          });
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
+    
     // 盖章
     makeSeal() {
       signature.openURL('oeder');
