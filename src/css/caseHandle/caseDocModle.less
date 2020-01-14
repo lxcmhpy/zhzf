@@ -482,6 +482,8 @@
 .clear {
     clear: both;
 }
+
+
 .center_similar{
     text-indent: 1em !important;
 }
@@ -514,5 +516,33 @@
     // td{
         vertical-align: bottom !important;
     // }
-    
+}  
+
+
+.printNumbers_box{
+    position: absolute;
+    .print_info{
+        position: relative;
+        margin-bottom: 10px;
+    }
+    .opinionTable{
+        tr{
+            td:first-child{
+                width: 50px;
+            }
+            td{
+                position: relative;
+                .handleIdea{
+                    position: absolute;
+                    right: 15px;
+                    bottom: 15px;
+                    p{
+                        display: inline-block;
+                        min-width: 80px;
+                        border-bottom: 1px solid #000000;
+                    }
+                }
+            }
+        }
+    }
 }

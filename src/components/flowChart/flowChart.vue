@@ -11,7 +11,7 @@
     </div>
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'flowChart'" ></caseSlideMenu>
-    
+
   </div>
 </template>
 <script>
@@ -199,6 +199,20 @@ export default {
       let graphDataTemp = this.graphData
       let _this = this
       let unPassArray = []
+      // 初始顔色狀態
+      mainLinkDataTemp.forEach((v,i)=> {
+        v.textStyle.backgroundColor = this.stateColor.lock
+        v.textStyle.shadowColor = this.stateColor.lock
+        v.textStyle.shadowBlur = this.stateColor.lock
+        if (i == 3) {
+          v.textStyle.backgroundColor = mainLinkDataTemp[2].textStyle.backgroundColor
+          v.textStyle.color = mainLinkDataTemp[2].textStyle.backgroundColor
+        }
+      })
+      graphDataTemp.nodes.forEach((v,i)=> {
+        v.itemStyleColor = this.stateColor.lock
+        v.curLinkState = 'lock'
+      })
 
       // 更新节点状态
       for(let key in this.data) {
@@ -390,7 +404,7 @@ export default {
           }
           // 如果数组集合元素为1，说明当前元素只有一个前节点，则前一节点的颜色，必然和当前节点颜色一致
           if (filterPreSourceLinkArray.length == 1) {
-            filterPreSourceLinkArray[0].lineStyle = lineStyle[curNode.curLinkState]
+            filterPreSourceLinkArray[0].lineStyle = this.lineStyle[curNode.curLinkState]
             filterPreSourceLinkArray[0].curLinkState = curNode.curLinkState
             if (filterPreSourceLinkArray[0].source.indexOf('temp') > -1) {
               this.recursionTempLinkArray(graphDataTemp, filterPreSourceLinkArray[0], unPassArray)
@@ -421,19 +435,19 @@ export default {
 
             if (typeof checkNumber.hasSiblingsNumber == 'number') {
               // 有兄弟节点并且有颜色状态
-              filterPreSourceLinkArray[checkNumber.hasSiblingsNumber].lineStyle = lineStyle[curNode.curLinkState]
+              filterPreSourceLinkArray[checkNumber.hasSiblingsNumber].lineStyle = this.lineStyle[curNode.curLinkState]
               filterPreSourceLinkArray[checkNumber.hasSiblingsNumber].curLinkState = curNode.curLinkState
               // this.recursionTempLinkArray(graphDataTemp, filterPreSourceLinkArray[checkNumber.hasSiblingsNumber])
             } else if (typeof checkNumber.parent == 'number') {
               // 有父节点，无兄弟节点，并且父级节点有颜色状态
-              filterPreSourceLinkArray[checkNumber.parent].lineStyle = lineStyle[curNode.curLinkState]
+              filterPreSourceLinkArray[checkNumber.parent].lineStyle = this.lineStyle[curNode.curLinkState]
               filterPreSourceLinkArray[checkNumber.parent].curLinkState = curNode.curLinkState
               // this.recursionTempLinkArray(graphDataTemp, filterPreSourceLinkArray[checkNumber.other])
             } else if (checkNumber.tempList.length > 0) {
 
               if (checkNumber.tempList.length == 1) {
                 // 临时节点有一个
-                checkNumber.tempList[0].lineStyle = lineStyle[curNode.curLinkState]
+                checkNumber.tempList[0].lineStyle = this.lineStyle[curNode.curLinkState]
                 checkNumber.tempList[0].curLinkState = curNode.curLinkState
 
                 this.recursionTempLinkArray(graphDataTemp, checkNumber.tempList[0], unPassArray)
@@ -444,7 +458,7 @@ export default {
 
                   let source = checkNumber.tempList[m].source
                   if (source == 'temp7_2_1') {
-                    debugger
+                    // debugger
                   }
                   let boo = false
                   graphDataTemp.links.forEach((v, i)=>{
@@ -461,25 +475,15 @@ export default {
                         if (tempStr.indexOf('"curLinkState":"complete"')  > -1 ||
                         tempStr.indexOf('"curLinkState":"doing"')  > -1 ||
                         tempStr.indexOf('"curLinkState":"unLock"')  > -1) {
-                              v.lineStyle = {
-                                              normal: {
-                                                color: '#f2a010',
-                                                width: 2
-                                              }
-                                            }
-                              v.curLinkState = "doing"
+                              v.lineStyle = this.lineStyle.complete
+                              v.curLinkState = "complete"
                               boo = true
                         }
                       }
                   })
                   if (boo) {
-                    checkNumber.tempList[m].lineStyle = {
-                                                normal: {
-                                                  color: '#f2a010',
-                                                  width: 2
-                                                }
-                                              }
-                    checkNumber.tempList[m].curLinkState = "doing"
+                    checkNumber.tempList[m].lineStyle = this.lineStyle.complete
+                    checkNumber.tempList[m].curLinkState = "complete"
                   }
 
 
@@ -533,13 +537,8 @@ export default {
             if (str.indexOf('"curLinkState":"complete"')  > -1 ||
                 str.indexOf('"curLinkState":"doing"')  > -1 ||
                 str.indexOf('"curLinkState":"unLock"')  > -1) {
-                  v.lineStyle = {
-                                  normal: {
-                                    color: '#f2a010',
-                                    width: 2
-                                  }
-                                }
-                  v.curLinkState = "doing"
+                  v.lineStyle = this.lineStyle.complete
+                  v.curLinkState = "complete"
                   boo = true
                   current = v
             }

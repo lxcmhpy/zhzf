@@ -212,14 +212,7 @@
   </div>
 </template>
 <script>
-import overflowInput from "./overflowInput";
-import QAModle from "./QAModle";
-
 export default {
-  components: {
-    overflowInput,
-    QAModle
-  },
   data() {
     return {
       value2: '',
@@ -314,33 +307,13 @@ export default {
       }
     }
   },
+  inject: ["reload"],
   methods: {
-    // widthCheck(str, len, event) {
-    //   console.log('event,', event)
-    //   console.log('str,', str, '  len:', len)
-    //   if (event.length > len) {
-    //     this.isOverflow = true
-    //   } else
-    //     this.isOverflow = false
-    //   if (event.length > 40) {
-    //     this.isOverLine = true
-    //     console.log('overline', this.isOverLine)
-    //   }
-    // },
-    onSubmit(formName) {
-      console.log('submit!');
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
-    // 盖章
-    makeSeal() {
-      console.log('盖章!');
+    showModal(type, data,maxlength) {
+      console.log(type, data,maxlength);
+      this.visible = true;
+      this.maxlength = maxlength;
+      this.dialogTitle = "多行编辑"
     },
     // 问答编辑
     QAModleEdit() {
@@ -350,12 +323,9 @@ export default {
     getQAModleInfo(edit) {
       console.log('回显',edit)
       this.docData.qaList = edit;
-      this.docData.QAModleInfo = edit;
+      // this.docData.QAModleInfo = edit;
     },
     overFlowEdit() { }
   },
 }
 </script>
-<style lang="less" >
-@import "../../../../css/caseHandle/caseDocModle.less";
-</style>

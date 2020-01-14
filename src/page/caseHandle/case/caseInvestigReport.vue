@@ -1,330 +1,208 @@
 <template>
-  <div class="box">
-    <el-form ref="caseInvestiForm" :rules="rules" :model="formData" label-width="115px">
-      <div class="content_box">
-        <div class="content">
-          <div class="content_title">案件调查报告(需要改为pdf版)</div>
-          <div class="border_blue"></div>
+  <div class="print_box printNumbers_box">
+    <el-form :rules="rules" ref="caseInvestiForm" :inline-message="true" :inline="true" :model="formData">
+      <div class="print_info">
+        <div class="doc_topic">案件调查报告</div>
+        <div class="doc_number">案号：{{formData.caseNumber}}</div>
+        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+          <tr>
+            <td rowspan="2">案由</td>
+            <td colspan="5" rowspan="2" class="color_DBE4EF">
+             <el-input v-model="formData.caseName"></el-input>
+            </td>
+            <td rowspan="2">案件调查人员</td>
+            <td rowspan="2" class="color_DBE4EF">
+              <el-form-item >
+                <el-input type="textarea"  v-model="formData.staff"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr></tr>
+          <tr>
+            <td rowspan="6">
+              当
+              <br />事
+              <br />人
+            </td>
+            <td rowspan="2">个人</td>
+            <td>姓名</td>
+            <td>
+              <el-input v-model="formData.party"  placeholder="\"></el-input>
+            </td>
+            <td>性别</td>
+            <td>
+              <el-input v-model="formData.partySex"  placeholder="\"></el-input>
+            </td>
+            <td>年龄</td>
+            <td>
+              <el-input v-model="formData.partyAge" placeholder="\"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td>住址</td>
+            <td colspan="3" class="color_DBE4EF">
+                <el-input type="textarea" v-model="formData.partyAddress" placeholder="\"></el-input>
+            </td>
+            <td>职业</td>
+            <td class="color_DBE4EF">
+                <el-input type="textarea" v-model="formData.occupation" placeholder="\"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td rowspan="4">单位</td>
+            <td>名称</td>
+            <td colspan="5" class="color_DBE4EF">
+                <el-input type="textarea" v-model="formData.partyName" placeholder="\"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td>法定代表人</td>
+            <td colspan="5" class="color_DBE4EF">
+                <el-input type="textarea" v-model="formData.partyManager" placeholder="\"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td>地址</td>
+            <td colspan="5" class="color_DBE4EF">
+                <el-input type="textarea" v-model="formData.partyUnitAddress" placeholder="\"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td>联系电话</td>
+            <td colspan="5" class="color_DBE4EF">
+                <el-input type="textarea" v-model="formData.partyUnitTel" placeholder="\"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td rowspan="6">
+              案件
+              <br />调查
+              <br />经过
+              <br />及违
+              <br />法事
+              <br />实
+            </td>
+            <td rowspan="6" colspan="7" class="color_DBE4EF">
+                <el-input type="textarea" v-model="formData.illegalLaw" placeholder="\"></el-input>
+            </td>
+          </tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
 
-          <div class="content_form">
-            <div class="row">
-              <div class="col">
-                <el-form-item prop="caseNumber" label="案号">
-                  <el-input
-                    ref="caseNumber"
-                    clearable
-                    class="w-120"
-                    v-model="formData.caseNumber"
-                    size="small"
-                    placeholder="请输入"
-                  ></el-input>
-                </el-form-item>
-              </div>
-              <div class="col">
-                <el-form-item prop="acceptTime" label="受案时间">
-                  <el-date-picker
-                    v-model="formData.acceptTime"
-                    type="date"
-                    placeholder="选择日期"
-                    size="small"
-                  ></el-date-picker>
-                </el-form-item>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item prop="partyType" label="当事人类型">
-                  <el-input
-                    ref="partyType"
-                    clearable
-                    class="w-120"
-                    v-model="formData.partyType"
-                    size="small"
-                    placeholder="请输入"
-                  ></el-input>
-                </el-form-item>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item label="姓名">
-                  <el-input
-                    ref="party"
-                    clearable
-                    class="w-120"
-                    v-model="formData.party"
-                    size="small"
-                    placeholder="请输入"
-                  ></el-input>
-                </el-form-item>
-              </div>
-              <div class="col">
-                <el-form-item label="性别">
-                  <el-input
-                    ref="partySex"
-                    clearable
-                    class="w-120"
-                    v-model="formData.partySex"
-                    size="small"
-                    placeholder="请输入"
-                  ></el-input>
-                </el-form-item>
-              </div>
-              <div class="col">
-                <el-form-item label="年龄">
-                  <el-input
-                    ref="partyAge"
-                    clearable
-                    class="w-120"
-                    v-model="formData.partyAge"
-                    size="small"
-                    placeholder="请输入"
-                  ></el-input>
-                </el-form-item>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item label="身份证号">
-                  <el-input
-                    ref="partyIdNo"
-                    clearable
-                    class="w-120"
-                    v-model="formData.partyIdNo"
-                    size="small"
-                    placeholder="请输入"
-                  ></el-input>
-                </el-form-item>
-              </div>
-              <div class="col">
-                <el-form-item label="联系电话">
-                  <el-input
-                    ref="partyTel"
-                    clearable
-                    class="w-120"
-                    v-model="formData.partyTel"
-                    size="small"
-                    placeholder="请输入"
-                  ></el-input>
-                </el-form-item>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item label="住址">
-                  <el-input
-                    ref="partyAddress"
-                    clearable
-                    class="w-120"
-                    v-model="formData.partyAddress"
-                    size="small"
-                    placeholder="请输入"
-                  ></el-input>
-                </el-form-item>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item label="调查经过">
-                  <el-input
-                    ref="investigProcess"
-                    clearable
-                    class="w-120"
-                    v-model="formData.investigProcess"
-                    size="small"
-                    placeholder="请输入"
-                  ></el-input>
-                </el-form-item>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item label="违法事实">
-                  <el-input
-                    type="textarea"
-                    class="height122"
-                    v-model="formData.caseCauseDescrib"
-                    size="small"
-                    placeholder="请输入"
-                  ></el-input>
-                </el-form-item>
-              </div>
-            </div>
-          </div>
+          <tr>
+            <td rowspan="5">
+              证据
+              <br />材料
+            </td>
+            <td>序号</td>
+            <td colspan="2">证据名称</td>
+            <td colspan="2">规格</td>
+            <td colspan="2">数量</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td colspan="2"></td>
+            <td colspan="2"></td>
+            <td colspan="2"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td colspan="2"></td>
+            <td colspan="2"></td>
+            <td colspan="2"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td colspan="2"></td>
+            <td colspan="2"></td>
+            <td colspan="2"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td colspan="2"></td>
+            <td colspan="2"></td>
+            <td colspan="2"></td>
+          </tr>
+        </table>
+      </div>
 
-          <div class="border_blue"></div>
+      <div class="print_info">
+        <table class="print_table opinionTable" border="1" bordercolor="black" width="100%" cellspacing="0">
+  
+          <tr>
+            <td rowspan="6">调查<br>结论<br>和处<br>理意<br>见</td>
+            <td rowspan="6" colspan="7" > 
+              <div class="handleIdea">
+                  <div>执法人员签名：<p></p></div>
+                  <div>年月日</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+          </tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
 
-          <el-row :gutter="20">
-            <el-col :span="16">
-              <div class="second_title">证据材料</div>
-            </el-col>
-            <el-col :span="8">
-              <div class="second_title_btns">
-                <el-button type="primary" size="small">选择已上传证据</el-button>
-                <el-button type="success" size="small">本地上传</el-button>
+          <tr>
+            <td rowspan="6">经办<br>机构<br>负责<br>人意<br>见</td>
+            <td rowspan="6" colspan="7"> 
+              {{formData.approveOpinions}}
+              <div class="handleIdea">
+                  <div>签名：<p>{{formData.approvePeo}}</p></div>
+                  <div>年月日 {{formData.approveTime}}</div>
               </div>
-            </el-col>
-          </el-row>
+            </td>
+          </tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
 
-          <div class="table_form">
-            <el-table :data="tableDatas" stripe border style="width: 100%" height="100%">
-              <el-table-column prop="index" label="序号" align="center"></el-table-column>
-              <el-table-column prop="name" label="证据名称" align="center"></el-table-column>
-              <el-table-column prop="status" label="规格" align="center"></el-table-column>
-              <el-table-column prop="status" label="数量" align="center"></el-table-column>
-              <el-table-column label="操作" align="center">
-                <template slot-scope="scope">
-                  <!-- {{scope.row.option}} -->
-                  <i type="primary" class="el-icon-top cell-icon" @click="addDoc(scope)"></i>
-                  <i type="primary" class="el-icon-bottom cell-icon"></i>
-                  <i type="primary" class="el-icon-delete cell-icon"></i>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-          <div class="border_blue"></div>
-          <div class="content_form bottom_form">
-            <div class="row">
-              <div class="col">
-                <el-form-item label="调查结论">
-                  <el-input
-                    v-model="formData.investigResult"
-                    type="textarea"
-                    class="height88"
-                    size="small"
-                    placeholder="请输入"
-                  ></el-input>
-                </el-form-item>
+          <tr>
+            <td rowspan="6">重大<br>案件<br>法制<br>工作<br>机构<br>审核<br>意见</td>
+            <td rowspan="6" colspan="7">
+              <div class="handleIdea">
+                {{formData.secondApproveOpinions}}
+                  <div>签名：<p>{{formData.secondApprovePeo}}</p></div>
+                  <div>年月日 {{formData.secondApproveTime}}</div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item label="拟处罚类型">
-                  <el-checkbox-group v-model="formData.punishType">
-                    <el-row>
-                      <el-col :span="4">
-                        <el-checkbox label="罚款"></el-checkbox>
-                      </el-col>
-                      <el-col :span="9">
-                        <el-input
-                          v-model="formData.punishMoney"
-                          placeholder="请输入罚款金额（小写金额）"
-                          @change="capital()"
-                        ></el-input>
-                      </el-col>
-                      <el-col :span="1">
-                        <!-- 有问题-不显示 -->
-                        <div class="grid-content">--</div>
-                      </el-col>
-                      <el-col :span="10">
-                        <el-input v-model="punishMoneyCapital"></el-input>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4">
-                        <el-checkbox label="责令改正"></el-checkbox>
-                      </el-col>
-                      <el-col :span="20">
-                        <el-input v-model="formData.punishCorrect" placeholder="请输入责令改正要求"></el-input>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4">
-                        <el-checkbox label="警告"></el-checkbox>
-                      </el-col>
-                      <el-col :span="20">
-                        <el-input v-model="formData.punishWarn" placeholder="请输入警告内容"></el-input>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4">
-                        <el-checkbox label="没收违法所得"></el-checkbox>
-                      </el-col>
-                      <el-col :span="9">
-                        <el-input
-                          v-model="formData.confiscateThing"
-                          placeholder="请输入罚款金额（小写金额）"
-                          @change="capitalbtm()"
-                        ></el-input>
-                      </el-col>
-                      <el-col :span="1">
-                        <!-- 有问题-不显示 -->
-                        <div class="grid-content">--</div>
-                      </el-col>
-                      <el-col :span="10">
-                        <el-input v-model="confiscateThingCapital"></el-input>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4">
-                        <el-checkbox label="没收非法财产"></el-checkbox>
-                      </el-col>
-                      <el-col :span="20">
-                        <el-input v-model="formData.confiscateMoney" placeholder="请输入非法财产内容"></el-input>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="10">
-                        <el-checkbox label="责令停产停业、暂扣或吊销许可整合执照"></el-checkbox>
-                      </el-col>
-                      <el-col :span="14">
-                        <el-input v-model="formData.punishSuspend"></el-input>
-                      </el-col>
-                    </el-row>
-                  </el-checkbox-group>
-                </el-form-item>
+            </td>
+          </tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
+        </table>
+      </div>
+
+      <div class="print_info">
+        <table class="print_table opinionTable" border="1" bordercolor="black" width="100%" cellspacing="0">
+          <tr>
+            <td rowspan="6" >交通<br>运输<br>执法<br>部门<br>负责<br>人审<br>批意<br>见</td>
+            <td rowspan="6" colspan="7"> 
+              {{formData.thirdApproveOpinions}}
+              <div class="handleIdea">
+                  <div>签名：<p>{{formData.thirdApprovePeo}}</p></div>
+                  <div>年月日 {{formData.thirdApproveTime}}</div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item label="拟重大案件">
-                  <el-radio-group v-model="formData.isMajorCase">
-                    <el-radio label="1">拟定重大案件</el-radio>
-                    <el-radio label="2">非重大案件</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item label="处理意见">
-                  <el-button
-                    class="el-button-remind"
-                    icon="el-icon-edit"
-                    @click="generateOpinions"
-                    size="small"
-                  >生成意见</el-button>
-                  <!-- 双向绑定有问题 -->
-                  <el-input
-                    type="textarea"
-                    v-model="formData.dealOpinions"
-                    class="height162"
-                    size="small"
-                  ></el-input>
-                </el-form-item>
-              </div>
-            </div>
-            <div class="row">
-              <span>经办机构负责人:</span>
-              <span>意见：{{formData.approveOpinions}}</span>
-              <span>签名：{{formData.approvePeo}}</span>
-              <span>时间:{{formData.approveTime}}</span>
-            </div>
-            <div class="row">
-              <span>法制审查:</span>
-              <span>意见：{{formData.secondApproveOpinions}}</span>
-              <span>签名：{{formData.secondApprovePeo}}</span>
-              <span>时间:{{formData.secondApproveTime}}</span>
-            </div>
-            <div class="row">
-              <span>部门负责人:</span>
-              <span>意见：{{formData.thirdApproveOpinions}}</span>
-              <span>签名：{{formData.thirdApprovePeo}}</span>
-              <span>时间:{{formData.thirdApproveTime}}</span>
-            </div>
-          </div>
-        </div>
-        <!-- 悬浮按钮 -->
+            </td>
+          </tr>
+          <tr>
+          </tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
+        </table>
+      </div>
+      <!-- 悬浮按钮 -->
         <div class="float-btns">
           <!-- <el-button type="primary" @click="continueHandle">
             <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2285" width="24" height="24">
@@ -412,13 +290,12 @@
             <br />审批
           </el-button>
         </div>
-      </div>
     </el-form>
+
     <!-- 提交审批 -->
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <!-- 审批 -->
     <approvalDialog ref="approvalDialogRef" @getNewData="setFormData"></approvalDialog>
-
   </div>
 </template>
 <script>
@@ -478,18 +355,18 @@ export default {
         }
       ],
       rules: {
-        caseNumber: [
-          { required: true, message: "案号必须填写", trigger: "blur" }
-        ],
-        caseName: [
-          { required: true, message: " 案由必须填写", trigger: "blur" }
-        ],
-        acceptTime: [
-          { required: true, message: "受案时间必须填写", trigger: "blur" }
-        ],
-        partyType: [
-          { required: true, message: "当事人类型必须填写", trigger: "blur" }
-        ]
+        // caseNumber: [
+        //   { required: true, message: "案号必须填写", trigger: "blur" }
+        // ],
+        // caseName: [
+        //   { required: true, message: " 案由必须填写", trigger: "blur" }
+        // ],
+        // acceptTime: [
+        //   { required: true, message: "受案时间必须填写", trigger: "blur" }
+        // ],
+        // partyType: [
+        //   { required: true, message: "当事人类型必须填写", trigger: "blur" }
+        // ]
       },
       // 大写
       punishMoneyCapital: "",
@@ -529,23 +406,25 @@ export default {
       this.$refs.showApprovePeopleRef.showModal(data);
     },
     //审批弹窗
-    showApproval(){
+    showApproval() {
       //判断是一级审批还是二级审批还是三级(经办机构负责人审批、法制审查、部门负责人审批)
       console.log(this.formData);
       // let caInvestApprovalPeo = '';
       // if(this.formData.caInvestApprovalPeoFirst){
       //   caInvestApprovalPeo = ''
       // }
-      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
-      let secondApprovePeo = this.formData.secondApprovePeo ? this.formData.secondApprovePeo : '';
-      
-      let caseData={
-        caseId:this.caseId,
-        caseLinktypeId:"2c9029ee6cac9281016caca7f38e0002",
-        firstApproval:approvePeo,
-        secondApproval:secondApprovePeo,
-        approvalNumber:3 //3次审批
-      }
+      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : "";
+      let secondApprovePeo = this.formData.secondApprovePeo
+        ? this.formData.secondApprovePeo
+        : "";
+
+      let caseData = {
+        caseId: this.caseId,
+        caseLinktypeId: "2c9029ee6cac9281016caca7f38e0002",
+        firstApproval: approvePeo,
+        secondApproval: secondApprovePeo,
+        approvalNumber: 3 //3次审批
+      };
       this.$refs.approvalDialogRef.showModal(caseData);
     },
     // 暂存
@@ -673,5 +552,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../../css/documentForm.less";
+// @import "../../../css/documentForm.less";
+@import "../../../css/caseHandle/caseDocModle.less";
 </style>

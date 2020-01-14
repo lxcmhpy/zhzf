@@ -75,7 +75,7 @@ const mainLinkData = [{
           shadowOffsetX: 22,
           shadowColor: '#b2b2b2',
           textShadowOffsetX: 0,
-              color: 'white',
+          color: 'white',
           fontSize: 16,
       },
   },
