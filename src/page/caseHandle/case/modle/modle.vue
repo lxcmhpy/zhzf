@@ -97,6 +97,9 @@
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <!-- <span class="span_bg">{{docData.illegalFactsEvidence}}</span> -->
         </p>
+        <p  v-if="lineStyleFlag">
+          违法事实及依据：<u>{{docData.illegalFactsEvidence}}</u>
+        </p>
         <p>你(单位)的行为违反了<span>
             <el-form-item prop="illegalLaw">
               <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
@@ -241,10 +244,6 @@ export default {
         status: ""
       },
       name: '',
-      inputInfo: '',
-      inputInfos: '',
-      illegalFactsEvidence: '',
-      value1: '',
       rules: {
         party: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -265,6 +264,7 @@ export default {
       },
       nameLength: 23,
       adressLength: 23,
+      maxLengthOverLine: 122,
       maxLength: 23,
     }
   },
@@ -317,7 +317,7 @@ export default {
     },
     // 多行编辑
     overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '');
+      this.$refs.overflowInputRef.showModal(0, '',this.maxLengthOverLine);
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {

@@ -16,6 +16,14 @@ export default  [
   component: () => import("@/page/caseHandle/case/modle/modle.vue")
 },
 {
+  path: "/establishDoc",
+  name: "establishDoc",
+  meta: {
+    title: "立案登记表"
+  },
+  component: () => import("@/page/caseHandle/case/modle/establishDoc.vue")
+},
+{
   path: "/othermodle",
   name: "othermodle",
   meta: {
