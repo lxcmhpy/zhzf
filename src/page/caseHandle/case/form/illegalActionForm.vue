@@ -42,14 +42,14 @@
           <br>
           <el-row>
             <el-col :span="12">
-              <p>联系地址： <el-form-item v-if="!lineStyleFlag" prop="partyAddress" style="width:260px">
+              <p>联系地址： <el-form-item v-if="!lineStyleFlag" prop="partyAddress" style="width:180px">
                   <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.partyAddress}}</u>
               </p>
             </el-col>
             <el-col :span="12">
-              <p>邮编：<el-form-item v-if="!lineStyleFlag" prop="partyZipCode " style="width:253px">
+              <p>邮编：<el-form-item v-if="!lineStyleFlag" prop="partyZipCode " style="width:210px">
                   <el-input type='textarea' v-model="docData.partyZipCode " v-bind:class="{ over_flow:docData.partyZipCode .length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.partyZipCode }}</u>
@@ -58,14 +58,14 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <p>联系人： <el-form-item v-if="!lineStyleFlag" prop="party" style="width:260px">
+              <p>联系人： <el-form-item v-if="!lineStyleFlag" prop="party" style="width:200px">
                   <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.party}}</u>
               </p>
             </el-col>
             <el-col :span="12">
-              <p>联系电话：<el-form-item v-if="!lineStyleFlag" prop="partyTel" style="width:253px">
+              <p>联系电话：<el-form-item v-if="!lineStyleFlag" prop="partyTel" style="width:180px">
                   <el-input type='textarea' v-model="docData.partyTel" v-bind:class="{ over_flow:docData.partyTel.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.partyTel}}</u>
