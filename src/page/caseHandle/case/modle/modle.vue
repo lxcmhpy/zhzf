@@ -207,7 +207,9 @@
 import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
-// import signture from signture;
+// import signture from "../../../../js/signture";
+import mySignture from "@/js/mySignture";
+// import {signture2} from "@/js/signture";
 
 export default {
   components: {
@@ -268,6 +270,7 @@ export default {
       adressLength: 23,
       maxLengthOverLine: 122,
       maxLength: 23,
+      lineStyleFlag:false,
     }
   },
   methods: {
@@ -311,7 +314,8 @@ export default {
     },
     // 盖章
     makeSeal() {
-      signature.openURL('oeder');
+      mySignture.openURL('oeder');
+      // this.$util.openURL('a');
     },
     // 打印
     print() {
