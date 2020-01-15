@@ -154,7 +154,7 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <el-form-item prop="caseBasicInfo">
-                <el-input type='textarea' v-model="formData.caseBasicInfo" v-bind:class="{ over_flow:formData.caseBasicInfo.length>14?true:false }" :autosize="{ minRows: 5, maxRows: 5}" :maxlength="nameLength" placeholder="\"></el-input>
+                <!-- <el-input type='textarea' v-model="formData.caseBasicInfo" v-bind:class="{ over_flow:formData.caseBasicInfo.length>14?true:false }" :autosize="{ minRows: 5, maxRows: 5}" :maxlength="nameLength" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
           </tr>
@@ -167,7 +167,7 @@
             </td>
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="caseReplay">
-                <el-input type='textarea' v-model="formData.caseReplay" v-bind:class="{ over_flow:formData.caseReplay.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <!-- <el-input type='textarea' v-model="formData.caseReplay" v-bind:class="{ over_flow:formData.caseReplay.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
             <td>
@@ -300,6 +300,8 @@ export default {
         partyAge: "",
         partyManager: "",
         socialCreditCode: "",
+        caseBasicInfo: "",
+        caseReplay: "",
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
