@@ -56,10 +56,10 @@
             }
 
             .el-textarea__inner {
-                margin-top: -9px;
-                min-height: 32px !important;
-                height    : 32px !important;
-                background: #DBE4EF;
+                margin-top    : -9px;
+                min-height    : 32px !important;
+                height        : 32px !important;
+                background    : #DBE4EF;
                 vertical-align: center !important;
 
                 overflow: auto;
@@ -161,12 +161,12 @@
                 }
 
                 .el-textarea {
-                    width         : 1%;
-                    height        : 30px;
-                    vertical-align: middle;
-                    display       : table-cell;
-                    background    : #DBE4EF;
-                    border-radius : 4px;
+                    width             : 1%;
+                    height            : 30px;
+                    vertical-align    : middle;
+                    display           : table-cell;
+                    background        : #DBE4EF;
+                    border-radius     : 4px;
                     right             : 0;
                     // white-space    : nowrap;
                 }
@@ -390,36 +390,7 @@
             }
         }
 
-        .pdf_datapick {
-            width: 128px;
 
-            .el-input {
-                padding    : 0;
-                border     : 0;
-                width      : 128px;
-                height     : 18px;
-                color      : #000000;
-                font-size  : 16px;
-                font-family: SimSun;
-
-            }
-
-            .el-input__inner {
-                padding    : 0;
-                border     : 0;
-                height     : 18px;
-                text-align : center;
-                background : #DBE4EF;
-                color      : #000000;
-                text-indent: 0;
-
-            }
-
-            .el-input__icon {
-                display: none;
-            }
-
-        }
 
         /* 选择框 */
         & input[type=checkbox] {
@@ -557,6 +528,28 @@
     // }
 }
 
+/* 询问笔录时间选择框 */
+.pdf_datapick {
+    // width: 128px;
+    .el-date-editor--datetimerange.el-input__inner {
+        width: 430px;
+        font-family: SimSun;
+        font-size  : 16px;
+        color      : #000000;
+        line-height: 32px;
+
+        .el-range-editor, .el-range-input{
+            font-size: 16px;
+            background: #DBE4EF;
+        }
+        i{
+            display: none;
+        }
+    }
+   
+
+
+}
 
 .printNumbers_box {
     position: absolute;

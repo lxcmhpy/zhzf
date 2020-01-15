@@ -110,7 +110,6 @@ export default {
       this.visible = false;
       //   this.reload();
     },
-
     // submitForm(formName) {
     //   this.$refs[formName].validate((valid) => {
     //     if (valid) {
@@ -132,7 +131,8 @@ export default {
     },
     addDomain() {
       this.addBannerForm.domains.push({
-        value: '',
+        question: '',
+        answer: '',
         key: Date.now()
       });
     }
