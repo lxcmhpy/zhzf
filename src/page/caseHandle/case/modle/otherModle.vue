@@ -212,7 +212,13 @@
   </div>
 </template>
 <script>
+import QAModle from "./QAModle";
+import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
 export default {
+  components: {
+    QAModle,
+  },
   data() {
     return {
       value2: '',
@@ -309,12 +315,12 @@ export default {
   },
   inject: ["reload"],
   methods: {
-    showModal(type, data,maxlength) {
-      console.log(type, data,maxlength);
-      this.visible = true;
-      this.maxlength = maxlength;
-      this.dialogTitle = "多行编辑"
-    },
+    // showModal(type, data,maxlength) {
+    //   console.log(type, data,maxlength);
+    //   this.visible = true;
+    //   this.maxlength = maxlength;
+    //   this.dialogTitle = "多行编辑"
+    // },
     // 问答编辑
     QAModleEdit() {
       this.$refs.QAModleInfoRef.showModal(0, '');
@@ -329,3 +335,7 @@ export default {
   },
 }
 </script>
+<style lang="less" >
+@import "../../../../css/caseHandle/caseDocModle.less";
+</style>
+
