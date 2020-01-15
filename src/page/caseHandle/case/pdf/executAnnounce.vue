@@ -7,7 +7,7 @@
         <div class="pdf-title">
           执行公告
         </div>
-        <div class="case-number">案号：{{caseNumber}}</div>
+        <div class="case-number">案号：{{docData.caseNumber}}</div>
         <div class="pdf-report-info">
           <p><span class="pdf-line width250">&nbsp;</span>一案，本机关于
             <span class="pdf-line width80">&nbsp;</span>年
@@ -39,7 +39,7 @@
       </div>
     </div>
     <!-- 悬浮按钮 -->
-    <div class="float-btns">
+    <!-- <div class="float-btns">
       <el-button type="success">
         <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
           <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
@@ -67,27 +67,37 @@
         </svg><br>
         提交</el-button>
 
-    </div>
+    </div> -->
+
+    <casePageFloatBtns :pageDomId="'executAnnounce-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
+import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
 export default {
+    components: {
+    casePageFloatBtns
+  },
   data() {
     return {
       // caseNumber: '010-123456',
-      docData:{
-        caseNumber:""
+      docData: {
+        caseNumber: ""
       },
-      caseDocDataForm:{
+      caseDocDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '', //案件id
         caseDoctypeId: this.$route.params.docId, //文书模版ID
-        docData:'',
-        status:''
+        docData: '',
+        status: ''
+      },
+      formOrDocData: {
+        showBtn: [false, true, true, false, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        pageDomId: 'executAnnounce-print',
       }
     }
   },
@@ -112,12 +122,31 @@ export default {
       // this.$router.push({
       //   name: this.$route.params.url,
       // });
+    },
+    //保存文书信息
+    saveData(handleType) {
+      this.com_addDocData(handleType, "docForm");
+    },
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
+    },
+      //是否是完成状态
+    isOverStatus(){
+      if(this.$route.params.docStatus == '1'){
+        this.formOrDocData.showBtn =[false,false,false,false,false,false,false,false,false,true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
     }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
-    console.log('$route.params',this.$route.params)
+    console.log('$route.params', this.$route.params)
   },
+    created(){
+    this.isOverStatus();
+  }
 }
 </script>
 <style lang="less">
