@@ -3,11 +3,11 @@
     <div class="print_info">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">责令改正违法行为通知书</div>
-        <div class="doc_number">案号：{{formData.caseNumber}}</div>
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <p class="side_right_indent">
           当事人（个人姓名或单位名称）：
           <el-form-item prop="party">
-              <el-input type='textarea' v-model="formData.party"  v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
+              <el-input type='textarea' v-model="docData.party"  v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
               <!-- <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :maxLength='maxLength'></el-input> -->
           </el-form-item>
         </p>
@@ -15,7 +15,7 @@
           <!-- <span class="side_left">违法事实及依据：</span> -->
           <span class="side_right" @click="overFlowEdit">
             <el-form-item prop="illegalFact">
-              <span class="over_topic">经调查，你（单位）存在下列违法事实：</span>{{formData.illegalFact}}
+              <span class="over_topic">经调查，你（单位）存在下列违法事实：</span>{{docData.illegalFact}}
             </el-form-item>
           </span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
@@ -25,7 +25,7 @@
         </p>
         <p>根据<span>
             <el-form-item prop="punishLaw">
-              <el-input type='textarea' v-model="formData.punishLaw"  v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
+              <el-input type='textarea' v-model="docData.punishLaw"  v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>的规定，现责令你（单位）
           <p>
@@ -33,18 +33,18 @@
           </p>
           <p>
             <input type="checkbox">在<el-form-item prop="makeDate" class="pdf_datapick">
-              <el-date-picker v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>前改正或者整改完毕。
           </p>
           <p>
             如果不服本处罚决定，可以在六十日内依法向<span>
               <el-form-item prop="reconsiderationOrgan">
-                <el-input v-model="formData.reconsiderationOrgan" :maxLength='maxLength'></el-input>
+                <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>申请行政复议，或者在六个月内依法向<span>
               <el-form-item prop="litigationOrgan">
-                <el-input v-model="formData.litigationOrgan" :maxLength='maxLength'></el-input>
+                <el-input v-model="docData.litigationOrgan" :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>人民法院提起行政诉讼。
           </p>
@@ -62,7 +62,7 @@
           <div class="pdf_seal">
             <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
             <el-form-item prop="makeDate" class="pdf_datapick">
-              <el-date-picker v-model="formData.correctTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.correctTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
           </div>
@@ -114,7 +114,7 @@ export default {
     return {
       isOverflow: false,
       isOverLine: false,
-      formData: {
+      docData: {
         caseNumber:'',
         party: '',
         illegalFact:'',
@@ -157,7 +157,7 @@ export default {
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
-      this.docData.illegalFactsEvidence = edit;
+      this.docData.illegalFact = edit;
     },
     //加载表单信息
     setFormData(){
@@ -171,7 +171,7 @@ export default {
     }
   },
   created() {
-    // this.setFormData();
+    this.setFormData();
   }
 };
 </script>

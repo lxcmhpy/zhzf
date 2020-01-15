@@ -1,7 +1,9 @@
 <template>
+    
       <!-- 悬浮按钮 -->
-      <div class="float-btns">
-        <el-button type="success" @click="printContent">
+      <div class="float-btns" style="bottom:250px">
+        <a target="_blank" href="javascript:void(0)" @click="getFile()">访问</a>
+        <el-button type="success" @click="printContent" v-if="formOrDocData.showBtn[3]">
           <svg
             t="1577706357599"
             class="icon"
@@ -20,7 +22,7 @@
           </svg>
           <br />打印
         </el-button>
-        <el-button type="success">
+        <el-button type="success" v-if="formOrDocData.showBtn[4]">
           <svg
             t="1577706400265"
             class="icon"
@@ -39,7 +41,7 @@
           </svg>
           <br />编辑
         </el-button>
-        <el-button type="success" @click="makeSeal">
+        <el-button type="success" @click="makeSeal" v-if="formOrDocData.showBtn[5]">
           <svg
             t="1577706320726"
             class="icon"
@@ -58,7 +60,7 @@
           </svg>
           <br />签章
         </el-button>
-        <el-button type="primary" @click="submitDataBtn(1)">
+        <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]">
           <svg
             t="1577414377979"
             class="icon"
@@ -77,6 +79,83 @@
           </svg>
           <br />提交
         </el-button>
+        
+        <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[2]">
+          <svg
+            t="1577414377979"
+            class="icon"
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="1726"
+            width="16"
+            height="16"
+          >
+            <path
+              d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z"
+              p-id="1727"
+              fill="#FFFFFF"
+            />
+          </svg>
+          <br />保存
+        </el-button>
+        <el-button type="primary" @click="submitDataBtn(0)" v-if="formOrDocData.showBtn[2]">
+          <svg
+            t="1577414377979"
+            class="icon"
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="1726"
+            width="16"
+            height="16"
+          >
+            <path
+              d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z"
+              p-id="1727"
+              fill="#FFFFFF"
+            />
+          </svg>
+          <br />暂存
+        </el-button>
+        <el-button type="primary" @click="showApprovePeopleListBtn"  v-if="formOrDocData.showBtn[6]">
+        <svg
+          t="1577414377979"
+          class="icon"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="1726"
+          width="16"
+          height="16"
+        >
+          <path
+            d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z"
+            p-id="1727"
+            fill="#FFFFFF"
+          />
+        </svg>
+        <br />提交审批 
+      </el-button>
+      <el-button type="primary" @click="approvalBtn" v-if="formOrDocData.showBtn[7]">
+        <svg
+          t="1577414377979"
+          class="icon"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="1726"
+          width="16"
+          height="16"
+        >
+          <path
+            d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z"
+            p-id="1727"
+            fill="#FFFFFF"
+          />
+        </svg>
+        <br />审批
+      </el-button>
       </div>
 </template>
 <script>
@@ -85,37 +164,31 @@ import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
 
 export default {
-  props: ['pageDomId'],
+  data(){
+    return{
+      // docId
+    }
+  },
+  props: ['pageDomId','formOrDocData'],
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   methods: {
     //   打印方法
-    printContent() {
-      // let subOutputRankPrint = document.getElementById("subOutputRank-print");
-      // console.log(subOutputRankPrint.innerHTML);
-      // let newContent = subOutputRankPrint.innerHTML;
-      // let oldContent = document.body.innerHTML;
-      // document.body.innerHTML = newContent;
-      // window.print();
-      // window.location.reload();
-      // document.body.innerHTML = oldContent;
-      // return false;
-
-      let pdf =  htmlExportPDF(this.pageDomId)
-      debugger
-      this.uploadFile(pdf)
+    async printContent() {
+      htmlExportPDF(this.pageDomId, this.uploadFile)
     },
-    uploadFile (file) {
-      debugger
-      this.$store.dispatch("uploadFile", {
+    uploadFile (file, name) {
+      var f = new File([file.output("blob")], name, {type: 'application/pdf'})
+      var fd = new FormData()
+      fd.append("file", f)
+      fd.append('caseId',this.caseId)
+      fd.append('docId','5cad5b54eb97a15250672a4c397cee56')
 
-      }).then(
+      this.$store.dispatch("uploadFile", fd).then(
         res => {
-          debugger;
           console.log(res)
         },
         err => {
-          debugger;
           console.log(err);
         }
       );
@@ -127,6 +200,30 @@ export default {
     submitDataBtn(handleType) {
       this.$emit('submitData',handleType);
     },
+    saveDataBtn(handleType){
+      this.$emit('saveData',handleType);
+    },
+    getFile () {
+      this.$store.dispatch("getFile", {
+          docId: '5cad5b54eb97a15250672a4c397cee56',
+          caseId: '297708bcd8e80872febb61577329194f'
+      }).then(
+        res => {
+          console.log(res[0].storagePath)
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    showApprovePeopleListBtn(){
+      this.$emit('showApprovePeopleList');
+    },
+    approvalBtn(){
+      console.log(1111)
+      this.$emit('showApproval');
+    }
+    
   }
 }
 </script>

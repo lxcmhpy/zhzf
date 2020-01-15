@@ -1,4 +1,5 @@
 import { mapGetters } from "vuex";
+import {htmlExportPDF} from '@/js/htmlExportPDF'
 
 export const mixinGetCaseApiList = {
   data() {
@@ -85,7 +86,7 @@ export const mixinGetCaseApiList = {
         }
       );
     },
-    //提交文书表单信息，跳转到pdf文书
+    //提交表单信息，跳转到pdf文书
     com_submitCaseForm(handleType, docForm, hasNextBtn) {
       this.caseLinkDataForm.formData = JSON.stringify(this.formData);
       // this.caseLinkDataForm.caseBasicinfoId = caseId;
@@ -116,6 +117,9 @@ export const mixinGetCaseApiList = {
                   id:this.caseLinkDataForm.caseBasicinfoId
                 }  
                 this.com_updatePartCaseBasicInfo(newData)
+              }
+              if(this.formOrDocData ){
+                  this.formOrDocData.showBtn=[false,false,false,true,true,true,true,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
               }
             },
             err => {
@@ -234,10 +238,14 @@ export const mixinGetCaseApiList = {
                 type: "success",
                 message: "提交成功"
               });
-              this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-              this.$router.push({
-                name: this.$route.params.url,
-              });
+              if(this.formOrDocData ){
+                this.formOrDocData.showBtn=[true,false,false,true,true,true,false,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+              }
+              this.printContent();
+              // this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+              // this.$router.push({
+              //   name: this.$route.params.url,
+              // });
             },
             err => {
               console.log(err);
@@ -294,7 +302,26 @@ export const mixinGetCaseApiList = {
           console.log(err);
         }
       );
-    }
+    },
+    async printContent() {
+      htmlExportPDF(this.formOrDocData.pageDomId, this.uploadFile)
+    },
+    uploadFile (file, name) {
+      var f = new File([file.output("blob")], name, {type: 'application/pdf'})
+      var fd = new FormData()
+      fd.append("file", f)
+      fd.append('caseId',this.caseId)
+      fd.append('docId',this.caseDocDataForm.caseDoctypeId);
+
+      this.$store.dispatch("uploadFile", fd).then(
+        res => {
+          console.log('上传',res)
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
   },
   created() {
     // this.getApiList();
