@@ -295,7 +295,8 @@ export const mixinGetCaseApiList = {
         params: {
           id: row.id,
           docId:row.docId,
-          url:this.$route.name
+          url:this.$route.name,
+          docStatus:row.status,
         }
       });
     },

@@ -255,6 +255,7 @@
       :formOrDocData="formOrDocData"
       @submitData="submitData"
       @saveData="saveData"
+      @backHuanjie="submitData"
     ></casePageFloatBtns>
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
@@ -333,7 +334,7 @@ export default {
       adressLength: 23,
       maxLength: 23,
       formOrDocData: {
-        showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+        showBtn: [false, true, true, false, false, false, false, false, false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId:'subOutputRank-print',
       }
     };
@@ -389,6 +390,7 @@ export default {
         name: this.$route.params.url
       });
     },
+
     // 盖章
     makeSeal() {
       signature.openURL("oeder");
@@ -404,10 +406,19 @@ export default {
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
       this.docData.illegalFactsEvidence = edit;
+    },
+    //是否是完成状态
+    isOverStatus(){
+      if(this.$route.params.docStatus == '1'){
+        this.formOrDocData.showBtn =[false,false,false,false,false,false,false,false,false,true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
     }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
+  },
+  created(){
+    this.isOverStatus();
   }
 };
 </script>

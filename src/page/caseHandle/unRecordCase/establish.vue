@@ -348,7 +348,7 @@ export default {
       lineStyleFlag: false,
       approval:this.$route.params.isApproval ? true : false, //   是否是审批人员进入
       formOrDocData:{
-        showBtn:[false,true,true,false,false,false,false,false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+        showBtn:[false,true,true,false,false,false,false,false,false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     };
   },
@@ -422,9 +422,8 @@ export default {
       this.lineStyleFlag = false;
     },
     isApproval(){
-      console.log(this.$route.params.isApproval)
       if(this.$route.params.isApproval){
-        this.formOrDocData.showBtn =[false,false,false,false,false,false,false,true,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+        this.formOrDocData.showBtn =[false,false,false,false,false,false,false,true,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     }
     
