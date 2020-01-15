@@ -1,11 +1,11 @@
 import { mapGetters } from "vuex";
 import Cookies from "@/js/cookies";
 
-let signture = {};
+let signture2 = {};
 /**
  * 安证通电子签章（开始）
  */
-signture.MultBrowser = function(){
+signture2.MultBrowser = function(){
 	return{
 			openBrowserURL:function(url, top, func){
 			var param = {"command":110,"code":0,"parameter":[url, top, document.cookie]};
@@ -92,7 +92,7 @@ signture.MultBrowser = function(){
 				window.external.closeBrowser();
 			}
 	}
-}();
+};
 
 /*
  * $Id: base64.js,v 2.15 2014/04/05 12:58:57 dankogai Exp dankogai $
@@ -345,4 +345,4 @@ signture.openURL = function(pdfPath){
  * 安证通电子签章（结束）
  */
 
-export default signture;
+export default signture2;
