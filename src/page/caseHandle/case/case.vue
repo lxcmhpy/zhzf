@@ -52,6 +52,7 @@
         <li @click="goModle">标准文书模板-当场行政处罚决定书</li>
         <li @click="goEstablishDoc">标准文书模板-立案登记表</li>
         <li @click="goQAreport">标准文书模板-询问笔录</li>
+        <li @click="goFinishCaseReport">标准文书模板-结案报告</li>
         <li @click="goside">侧边栏</li>
         <li @click="goDentail">案件总览</li>
         <li @click="goCaseInvestig">案件调查报告</li>
@@ -109,6 +110,10 @@ export default {
     // 询问笔录
     goQAreport() {
       this.$router.push({ name: 'othermodle' });
+    },
+    // 结案报告
+    goFinishCaseReport() {
+      this.$router.push({ name: 'finishCaseReport' });
     },
     //现场笔录
     goDiao() {

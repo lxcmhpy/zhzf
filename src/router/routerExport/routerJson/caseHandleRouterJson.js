@@ -27,9 +27,17 @@ export default  [
   path: "/othermodle",
   name: "othermodle",
   meta: {
-    title: "其他文书模板"
+    title: "询问笔录"
   },
   component: () => import("@/page/caseHandle/case/modle/otherModle.vue")
+},
+{
+  path: "/finishCaseReport",
+  name: "finishCaseReport",
+  meta: {
+    title: "结案报告"
+  },
+  component: () => import("@/page/caseHandle/case/modle/finishCaseReport.vue")
 },
 {
   path: "/liveReport",
