@@ -326,15 +326,16 @@ function callBackWaitStatus(id, error, status, msg){
 signture.openURL = function(pdfPath){
     debugger
     console.log(pdfPath);
-	// var test = window.location.href;
-	// var string =test.split("/");
-	// path = string[0]+"//"+string[2]+"/"+string[3];
-	// var ActivexURL=path + "/jsp/zfba/aztDzqz/iWebEditor.html?pdfPath="+pdfPath;  
-  //功能说明：创建AZTBrowser浏览器并打开URL地址
-	//参数1：URL地址
-	//参数2：是否置顶 1表示置顶，0表示不置顶
-	//参数3：回调函数
-    // MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+	var test = window.location.href;
+	var string =test.split("/");
+    path = string[0]+"//"+string[2]+"/"+string[3];
+    // src\page\caseHandle\case\modle\iWebEditor.vue
+	var ActivexURL=path + "/page/caseHandle/case//modle/iWebEditor.html?pdfPath="+pdfPath;  
+//   功能说明：创建AZTBrowser浏览器并打开URL地址
+// 	参数1：URL地址
+// 	参数2：是否置顶 1表示置顶，0表示不置顶
+// 	参数3：回调函数
+    MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
     this.$router.push({ name: pdfPath });
 }
 
