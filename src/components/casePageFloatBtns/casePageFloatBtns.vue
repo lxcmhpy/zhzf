@@ -80,8 +80,10 @@
       </div>
 </template>
 <script>
+import { mixinGetCaseApiList } from "@/js/mixins";
 import {htmlExportPDF} from '@/js/htmlExportPDF'
 export default {
+  mixins: [mixinGetCaseApiList],
   props: ['pageDomId'],
   methods: {
     //   打印方法

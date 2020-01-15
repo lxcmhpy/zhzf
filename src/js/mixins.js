@@ -70,10 +70,21 @@ export const mixinGetCaseApiList = {
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
           console.log('获取案件信息',res)
+          console.log(this);
           if(this.formData){
             this.formData = res.data;
           }else{
             this.docData = res.data;
+            // if(this.docData.staff){
+            //   debugger;
+            //   this.docData.staffArr = res.data.staff.split(',');
+            //   // this.docData.staff1 = this.docData.staffArr.staffArr['0'];
+            // }
+            // if(this.docData.staffId){
+            //   this.docData.certificateIdArr = res.data.staffId.split(',');
+            //   // this.docData.certificateId1 = certificateIdArr[0];
+            // }
+
           }
         },
         err => {
@@ -199,6 +210,7 @@ export const mixinGetCaseApiList = {
             this.com_getCaseBasicInfo(params.caseId);
           } else {
             console.log(res.data[0]);
+            console.log(res.data[0].docData);
             this.caseDocDataForm.id = res.data[0].id;
             this.docData = JSON.parse(res.data[0].docData);
           }
