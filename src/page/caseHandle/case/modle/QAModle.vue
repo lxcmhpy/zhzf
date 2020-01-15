@@ -30,9 +30,7 @@
             </el-select>
           </el-col>
         </el-row>
-
-        {{addBannerForm.domains}}
-      </el-form-item> {{addBannerForm.domains[0]}}{{addBannerForm.domains[1]}}
+      </el-form-item> 
       <!-- <el-form-item label="问1：">
         <el-select filterable allow-create v-model="addBannerForm.domains[0].question">
           <el-option label="不认识执法人员，不需要回避" value="no"></el-option>
@@ -66,7 +64,6 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="addDomain">新增</el-button>
-      <el-button type="primary" @click="submitForm('addBannerForm')">提交</el-button>
       <el-button type="primary" @click="overFloeEdit('addBannerForm')">确定</el-button>
     </span>
   </el-dialog>
