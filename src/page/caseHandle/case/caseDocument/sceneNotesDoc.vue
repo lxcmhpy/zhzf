@@ -24,49 +24,27 @@
             <td>执法时间</td>
             <td colspan="3">
               <el-form-item prop="enforceStartTime" class="pdf_datapick">
-                <el-date-picker
-                  v-model="docData.enforceStartTime"
-                  type="date"
-                  format="yyyy年MM月dd日"
-                  placeholder="    年  月  日"
-                ></el-date-picker>
-              </el-form-item>
-              <el-form-item prop="enforceEndTime" class="pdf_datapick">
-                <el-date-picker
-                  v-model="docData.enforceEndTime"
-                  type="date"
-                  format="yyyy年MM月dd日"
-                  placeholder="    年  月  日"
-                ></el-date-picker>
+                <el-date-picker v-model="docData.enforceStartTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                </el-date-picker><br>至
+                <el-date-picker v-model="docData.enforceEndTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                </el-date-picker>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td rowspan="2">执法人员</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="staff1">
-                <el-input
-                  type="textarea"
-                  v-model="docData.staff1"
-                  v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
-                  :maxlength="adressLength"
-                  placeholder="\"
-                ></el-input>
-              </el-form-item>
+              {{docData.staff}}
+              <!-- <el-form-item prop="staff1">
+                <el-input type='textarea' v-model="docData.staff1" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
+              </el-form-item> -->
             </td>
             <td rowspan="2">执法证号</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="certificateId1">
-                <el-input
-                  type="textarea"
-                  v-model="docData.certificateId1"
-                  v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
-                  :maxlength="adressLength"
-                  placeholder="\"
-                ></el-input>
-              </el-form-item>
+              {{docData.staffId}}
+              <!-- <el-form-item prop="certificateId1">
+                <el-input type='textarea' v-model="docData.certificateId1" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
+              </el-form-item> -->
             </td>
             <td rowspan="2">记录人</td>
             <td rowspan="2" class="color_DBE4EF">
@@ -85,26 +63,12 @@
           <tr>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="staff2">
-                <el-input
-                  type="textarea"
-                  v-model="docData.staff2"
-                  v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
-                  :maxlength="adressLength"
-                  placeholder="\"
-                ></el-input>
+                <el-select type='textarea' v-model="docData.staff2" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-select>
               </el-form-item>
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="certificateId2">
-                <el-input
-                  type="textarea"
-                  v-model="docData.certificateId2"
-                  v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
-                  :maxlength="adressLength"
-                  placeholder="\"
-                ></el-input>
+                <el-select type='textarea' v-model="docData.certificateId2" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-select>
               </el-form-item>
             </td>
           </tr>
@@ -235,7 +199,7 @@
             <td colspan="7">
               备注：
               <el-form-item prop="note">
-                <el-input v-model="docData.note" placeholder="\"></el-input>
+                <el-input v-model="docData.note"  placeholder="\" class=""></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -315,14 +279,14 @@ export default {
       isOverflow: false,
       isOverLine: false,
       docData: {
-        caseNumber: "",
-        fillingPlace: "",
-        enforceStartTime: "",
-        enforceEndTime: "",
-        staff1: "",
+        caseNumber: '',
+        fillingPlace: '',
+        enforceStartTime:"",
+        enforceEndTime:"",
+        staff:"",
         staff2: "",
-        certificateId1: "",
-        certificateId2: "",
+        staffId:"",
+        staffId2:"",
         recorder: "",
         party: "",
         partySex: "",

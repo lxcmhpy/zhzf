@@ -159,6 +159,7 @@
       </div>
 </template>
 <script>
+
 import {htmlExportPDF} from '@/js/htmlExportPDF'
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";

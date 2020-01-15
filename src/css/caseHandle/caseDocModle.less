@@ -1,3 +1,4 @@
+
 .print_box {
     width : 100%;
     height: 100%;
@@ -20,17 +21,18 @@
         margin        : auto;
         padding       : 81px 82px 0;
         background    : #FFFFFF;
+        box-sizing    : border-box;/* 包含padding */
 
 
         /*  标题 */
         .doc_topic {
-            margin-top : 80px;
-            height     : 28px;
-            font-size  : 20px;
-            font-family: STSongti-SC-Black, STSongti-SC;
-            font-weight: 900;
-            line-height: 28px;
-            text-align : center;
+            // margin-top : 80px;
+            height        : 28px;
+            font-size     : 20px;
+           /*  font-family   : STSongti-SC-Black, STSongti-SC; */
+            font-weight   : 900;
+            line-height   : 28px;
+            text-align    : center;
 
         }
 
@@ -571,33 +573,45 @@
 
 .printNumbers_box {
     position: absolute;
+    left    : calc(50% - 360px);
 
     .print_info {
         position     : relative;
         margin-bottom: 10px;
-    }
 
-    .opinionTable {
-        tr {
-            td:first-child {
-                width: 50px;
-            }
-
-            td {
-                position: relative;
-
-                .handleIdea {
-                    position: absolute;
-                    right   : 15px;
-                    bottom  : 15px;
-
-                    p {
-                        display      : inline-block;
-                        min-width    : 80px;
-                        border-bottom: 1px solid #000000;
-                    }
-                }
-            }
+        .pdf_seal {
+            margin-top     : 15px;
+            margin-bottom  : 11px;
+            width          : 215px;
+            text-align     : left;
+            text-align-last: left;
+            font-size      : 16px;
+            font-family    : SimSun;
+            float          : right;
         }
     }
+
+    // .opinionTable {
+    //     tr {
+    //         td:first-child {
+    //             width: 50px;
+    //         }
+
+    //         td {
+    //             position: relative;
+
+    //             .handleIdea {
+    //                 position: absolute;
+    //                 right   : 15px;
+    //                 bottom  : 15px;
+
+    //                 p {
+    //                     display      : inline-block;
+    //                     min-width    : 80px;
+    //                     border-bottom: 1px solid #000000;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
