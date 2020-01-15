@@ -261,7 +261,6 @@ export default {
         staffSign:"",
         staffSign:""
       },
-      handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
@@ -384,6 +383,6 @@ export default {
   }
 }
 </script>
-<style lang="less" >
+<style lang="less">
 @import "../../../../css/caseHandle/caseDocModle.less";
 </style>
