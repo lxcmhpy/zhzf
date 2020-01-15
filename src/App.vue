@@ -45,4 +45,6 @@ export default {
 @import "./css/transition.less";
 @import "./css/reloadElementUI.less";
 @import "./css/components.less";
+/* 字体 */
+@import "./font/font.css";
 </style>

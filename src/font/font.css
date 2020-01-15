@@ -1,0 +1,10 @@
+
+/* 打印字体 */
+@font-face {  
+    font-family: 'SimSun';  /* 重命名字体名 */
+    src: url('./SimSun.ttf');  /* 引入字体 */
+    src: url('./SimSun.eot');  /* 引入字体 适配ie*/
+    font-weight: normal;  
+    font-style: normal;  
+    
+}
