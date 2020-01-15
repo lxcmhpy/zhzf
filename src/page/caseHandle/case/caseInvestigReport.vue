@@ -1,210 +1,271 @@
 <template>
-  <div class="print_box printNumbers_box">
+  <div class="print_box ">
+
     <el-form :rules="rules" ref="caseInvestiForm" :inline-message="true" :inline="true" :model="formData">
-      <div class="print_info">
-        <div class="doc_topic">案件调查报告</div>
-        <div class="doc_number">案号：{{formData.caseNumber}}</div>
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
-          <tr>
-            <td rowspan="2">案由</td>
-            <td colspan="5" rowspan="2" class="color_DBE4EF">
-             <el-input v-model="formData.caseName"></el-input>
-            </td>
-            <td rowspan="2">案件调查人员</td>
-            <td rowspan="2" class="color_DBE4EF">
-              <el-form-item >
-                <el-input type="textarea"  v-model="formData.staff"></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-          <tr></tr>
-          <tr>
-            <td rowspan="6">
-              当
-              <br />事
-              <br />人
-            </td>
-            <td rowspan="2">个人</td>
-            <td>姓名</td>
-            <td>
-              <el-input v-model="formData.party"  placeholder="\"></el-input>
-            </td>
-            <td>性别</td>
-            <td>
-              <el-input v-model="formData.partySex"  placeholder="\"></el-input>
-            </td>
-            <td>年龄</td>
-            <td>
-              <el-input v-model="formData.partyAge" placeholder="\"></el-input>
-            </td>
-          </tr>
-          <tr>
-            <td>住址</td>
-            <td colspan="3" class="color_DBE4EF">
+      <div class="printNumbers_box">
+
+        <div class="print_info">
+          <div class="doc_topic">案件调查报告</div>
+          <div class="doc_number">案号：{{formData.caseNumber}}</div>
+          <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+            <tr>
+              <td rowspan="2">案由</td>
+              <td colspan="5" rowspan="2" class="color_DBE4EF">
+                <el-form-item prop="closeResult">
+                  <el-input v-model="formData.caseName"></el-input>
+                </el-form-item>
+              </td>
+              <td rowspan="2">案件调查人员</td>
+              <td rowspan="2" class="color_DBE4EF">
+                <el-form-item>
+                  <el-input type="textarea" v-model="formData.staff"></el-input>
+                </el-form-item>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td rowspan="6">
+                <p class="center_similar">当</p>
+                <p class="center_similar">事</p>
+                <p class="center_similar">人</p>
+              </td>
+              <td rowspan="2">个人</td>
+              <td>姓名</td>
+              <td class="color_DBE4EF">
+                <el-form-item prop="closeResult">
+                  <el-input v-model="formData.party" placeholder="\"></el-input>
+                </el-form-item>
+              </td>
+              <td>性别</td>
+              <td class="color_DBE4EF">
+                <el-form-item prop="closeResult">
+                  <el-input v-model="formData.partySex" placeholder="\"></el-input>
+                </el-form-item>
+              </td>
+              <td>年龄</td>
+              <td class="color_DBE4EF">
+                <el-form-item prop="closeResult">
+                  <el-input v-model="formData.partyAge" placeholder="\"></el-input>
+                </el-form-item>
+              </td>
+            </tr>
+            <tr>
+              <td>住址</td>
+              <td colspan="3" class="color_DBE4EF">
                 <el-input type="textarea" v-model="formData.partyAddress" placeholder="\"></el-input>
-            </td>
-            <td>职业</td>
-            <td class="color_DBE4EF">
+              </td>
+              <td>职业</td>
+              <td class="color_DBE4EF">
                 <el-input type="textarea" v-model="formData.occupation" placeholder="\"></el-input>
-            </td>
-          </tr>
-          <tr>
-            <td rowspan="4">单位</td>
-            <td>名称</td>
-            <td colspan="5" class="color_DBE4EF">
+              </td>
+            </tr>
+            <tr>
+              <td rowspan="4">单位</td>
+              <td>名称</td>
+              <td colspan="5" class="color_DBE4EF">
                 <el-input type="textarea" v-model="formData.partyName" placeholder="\"></el-input>
-            </td>
-          </tr>
-          <tr>
-            <td>法定代表人</td>
-            <td colspan="5" class="color_DBE4EF">
+              </td>
+            </tr>
+            <tr>
+              <td>法定代表人</td>
+              <td colspan="5" class="color_DBE4EF">
                 <el-input type="textarea" v-model="formData.partyManager" placeholder="\"></el-input>
-            </td>
-          </tr>
-          <tr>
-            <td>地址</td>
-            <td colspan="5" class="color_DBE4EF">
+              </td>
+            </tr>
+            <tr>
+              <td>地址</td>
+              <td colspan="5" class="color_DBE4EF">
                 <el-input type="textarea" v-model="formData.partyUnitAddress" placeholder="\"></el-input>
-            </td>
-          </tr>
-          <tr>
-            <td>联系电话</td>
-            <td colspan="5" class="color_DBE4EF">
+              </td>
+            </tr>
+            <tr>
+              <td>联系电话</td>
+              <td colspan="5" class="color_DBE4EF">
                 <el-input type="textarea" v-model="formData.partyUnitTel" placeholder="\"></el-input>
-            </td>
-          </tr>
-          <tr>
-            <td rowspan="6">
-              案件
-              <br />调查
-              <br />经过
-              <br />及违
-              <br />法事
-              <br />实
-            </td>
-            <td rowspan="6" colspan="7" class="color_DBE4EF">
+              </td>
+            </tr>
+            <tr>
+              <td rowspan="6">
+                <p>案件</p>
+                <p>调查</p>
+                <p>经过</p>
+                <p>及违</p>
+                <p>法事</p>
+                <p>实</p>
+              </td>
+              <td rowspan="6" colspan="7" class="color_DBE4EF">
                 <el-input type="textarea" v-model="formData.illegalLaw" placeholder="\"></el-input>
-            </td>
-          </tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
 
-          <tr>
-            <td rowspan="5">
-              证据
-              <br />材料
-            </td>
-            <td>序号</td>
-            <td colspan="2">证据名称</td>
-            <td colspan="2">规格</td>
-            <td colspan="2">数量</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td colspan="2"></td>
-            <td colspan="2"></td>
-            <td colspan="2"></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td colspan="2"></td>
-            <td colspan="2"></td>
-            <td colspan="2"></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td colspan="2"></td>
-            <td colspan="2"></td>
-            <td colspan="2"></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td colspan="2"></td>
-            <td colspan="2"></td>
-            <td colspan="2"></td>
-          </tr>
-        </table>
-      </div>
+            <tr>
+              <td rowspan="5">
+                <p>证据</p>
+                <p>材料</p>
+              </td>
+              <td>序号</td>
+              <td colspan="2">证据名称</td>
+              <td colspan="2">规格</td>
+              <td colspan="2">数量</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="2"></td>
+              <td colspan="2"></td>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="2"></td>
+              <td colspan="2"></td>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="2"></td>
+              <td colspan="2"></td>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="2"></td>
+              <td colspan="2"></td>
+              <td colspan="2"></td>
+            </tr>
+          </table>
+        </div>
 
-      <div class="print_info">
-        <table class="print_table opinionTable" border="1" bordercolor="black" width="100%" cellspacing="0">
-  
-          <tr>
-            <td rowspan="6">调查<br>结论<br>和处<br>理意<br>见</td>
-            <td rowspan="6" colspan="7" > 
-              <div class="handleIdea">
-                  <div>执法人员签名：<p></p></div>
-                  <div>年月日</div>
+        <div class="print_info">
+          <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+
+            <tr>
+              <td rowspan="6">
+                <p>调查</p>
+                <p>结论</p>
+                <p>和处</p>
+                <p>理意</p>
+                <p>见</p>
+              </td>
+              <td rowspan="6" colspan="7">
+                <div class="pdf_seal">
+                  <p>执法人员签名：</p>
+                  <p>
+                    时间:<el-form-item prop="makeDate" class="pdf_datapick">
+                      <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+                      </el-date-picker>
+                    </el-form-item>
+                  </p>
+                </div>
+              </td>
+            </tr>
+            <tr>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+
+            <tr>
+              <td rowspan="6">
+                <p>经办</p>
+                <p>机构</p>
+                <p>负责</p>
+                <p>人意</p>
+                <p>见</p>
+              </td>
+              <td rowspan="6" colspan="7">
+                {{formData.approveOpinions}}
+                <div class="pdf_seal">
+                  <p>签名：</p>
+                  <p>
+                    <el-form-item prop="makeDate" class="pdf_datapick">
+                      <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+                      </el-date-picker>
+                    </el-form-item>
+                  </p>
+                </div>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+
+            <tr>
+              <td rowspan="6">
+                <p>重大</p>
+                <p>案件</p>
+                <p>法制</p>
+                <p>工作</p>
+                <p>机构</p>
+                <p>审核</p>
+                <p>意见</p>
+              </td>
+              <td rowspan="6" colspan="7">
+                <div class="pdf_seal">
+                <p>签名：</p>
+                <p>
+                  <el-form-item prop="makeDate" class="pdf_datapick">
+                    <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+                    </el-date-picker>
+                  </el-form-item>
+                </p>
               </div>
-            </td>
-          </tr>
-          <tr>
-          </tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+          </table>
+        </div>
 
-          <tr>
-            <td rowspan="6">经办<br>机构<br>负责<br>人意<br>见</td>
-            <td rowspan="6" colspan="7"> 
-              {{formData.approveOpinions}}
-              <div class="handleIdea">
-                  <div>签名：<p>{{formData.approvePeo}}</p></div>
-                  <div>年月日 {{formData.approveTime}}</div>
-              </div>
-            </td>
-          </tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
+        <div class="print_info">
+          <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+            <tr>
+              <td rowspan="6">
+                <p>交通</p>
+                <p>运输</p>
+                <p>执法</p>
+                <p>部门</p>
+                <p>负责</p>
+                <p>人审</p>
+                <p>批意</p>
+                <p>见</p>
+              </td>
+              <td rowspan="6" colspan="7">
 
-          <tr>
-            <td rowspan="6">重大<br>案件<br>法制<br>工作<br>机构<br>审核<br>意见</td>
-            <td rowspan="6" colspan="7">
-              <div class="handleIdea">
-                {{formData.secondApproveOpinions}}
-                  <div>签名：<p>{{formData.secondApprovePeo}}</p></div>
-                  <div>年月日 {{formData.secondApproveTime}}</div>
-              </div>
-            </td>
-          </tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-        </table>
-      </div>
-
-      <div class="print_info">
-        <table class="print_table opinionTable" border="1" bordercolor="black" width="100%" cellspacing="0">
-          <tr>
-            <td rowspan="6" >交通<br>运输<br>执法<br>部门<br>负责<br>人审<br>批意<br>见</td>
-            <td rowspan="6" colspan="7"> 
-              {{formData.thirdApproveOpinions}}
-              <div class="handleIdea">
-                  <div>签名：<p>{{formData.thirdApprovePeo}}</p></div>
-                  <div>年月日 {{formData.thirdApproveTime}}</div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-          </tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-        </table>
+                {{formData.thirdApproveOpinions}}
+                <div class="pdf_seal">
+                  <p>签名：</p>
+                  <p>
+                    <el-form-item prop="makeDate" class="pdf_datapick">
+                      <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+                      </el-date-picker>
+                    </el-form-item>
+                  </p>
+                </div>
+              </td>
+            </tr>
+            <tr>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+          </table>
+        </div>
       </div>
       <!-- 悬浮按钮 -->
-        <div class="float-btns">
-          <!-- <el-button type="primary" @click="continueHandle">
+      <div class="float-btns">
+        <!-- <el-button type="primary" @click="continueHandle">
             <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2285" width="24" height="24">
               <path d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z" fill="#FFFFFF" p-id="2286"></path>
             </svg>
@@ -212,84 +273,32 @@
             下一<br>环节
           </el-button>-->
 
-          <el-button type="primary" @click="submitCaseDoc(1)" v-if="!approval">
-            <svg
-              t="1577414377979"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="1726"
-              width="16"
-              height="16"
-            >
-              <path
-                d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z"
-                p-id="1727"
-                fill="#FFFFFF"
-              />
-            </svg>
-            <br />提交
-          </el-button>
-          <el-button type="primary" @click="showApprovePeopleList" v-if="!approval">
-            <svg
-              t="1577414377979"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="1726"
-              width="16"
-              height="16"
-            >
-              <path
-                d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z"
-                p-id="1727"
-                fill="#FFFFFF"
-              />
-            </svg>
-            <br />提交审批
-          </el-button>
-          <el-button type="success" v-if="!approval">
-            <svg
-              t="1577415780823"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="2584"
-              width="16"
-              height="16"
-            >
-              <path
-                d="M98 124.1V902c0 14.3 11.6 25.9 25.9 25.9h777.9c14.3 0 25.9-11.6 25.9-25.9V124.1c0-14.3-11.6-25.9-25.9-25.9H123.9c-14.3 0-25.9 11.6-25.9 25.9z m207.4 37.6h414.9v191.7H305.4V161.7z m558.8 702.7H162.6V161.7h104v230.6h492.7V161.7h105v702.7z"
-                p-id="2585"
-                fill="#FFFFFF"
-              />
-              <path d="M605.1 191.9h70v128h-70z" p-id="2586" fill="#FFFFFF" />
-            </svg>
-            <br />暂存
-          </el-button>
-          <el-button type="primary" @click="showApproval" v-if="approval">
-            <svg
-              t="1577414377979"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="1726"
-              width="16"
-              height="16"
-            >
-              <path
-                d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z"
-                p-id="1727"
-                fill="#FFFFFF"
-              />
-            </svg>
-            <br />审批
-          </el-button>
-        </div>
+        <el-button type="primary" @click="submitCaseDoc(1)" v-if="!approval">
+          <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
+            <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF" />
+          </svg>
+          <br />提交
+        </el-button>
+        <el-button type="primary" @click="showApprovePeopleList" v-if="!approval">
+          <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
+            <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF" />
+          </svg>
+          <br />提交审批
+        </el-button>
+        <el-button type="success" v-if="!approval">
+          <svg t="1577415780823" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2584" width="16" height="16">
+            <path d="M98 124.1V902c0 14.3 11.6 25.9 25.9 25.9h777.9c14.3 0 25.9-11.6 25.9-25.9V124.1c0-14.3-11.6-25.9-25.9-25.9H123.9c-14.3 0-25.9 11.6-25.9 25.9z m207.4 37.6h414.9v191.7H305.4V161.7z m558.8 702.7H162.6V161.7h104v230.6h492.7V161.7h105v702.7z" p-id="2585" fill="#FFFFFF" />
+            <path d="M605.1 191.9h70v128h-70z" p-id="2586" fill="#FFFFFF" />
+          </svg>
+          <br />暂存
+        </el-button>
+        <el-button type="primary" @click="showApproval" v-if="approval">
+          <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
+            <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF" />
+          </svg>
+          <br />审批
+        </el-button>
+      </div>
     </el-form>
 
     <!-- 提交审批 -->
@@ -428,9 +437,9 @@ export default {
       this.$refs.approvalDialogRef.showModal(caseData);
     },
     // 暂存
-    save() {},
+    save() { },
     // 添加
-    addDoc() {},
+    addDoc() { },
     // 大写
     capital() {
       this.punishMoneyCapital = "";
@@ -551,7 +560,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 // @import "../../../css/documentForm.less";
 @import "../../../css/caseHandle/caseDocModle.less";
 </style>

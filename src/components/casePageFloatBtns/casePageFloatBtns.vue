@@ -1,6 +1,7 @@
 <template>
       <!-- 悬浮按钮 -->
       <div class="float-btns">
+        <a target="_blank" href="javascript:void(0)" @click="getFile()">访问</a>
         <el-button type="success" @click="printContent">
           <svg
             t="1577706357599"
@@ -87,32 +88,21 @@ export default {
   props: ['pageDomId'],
   methods: {
     //   打印方法
-    printContent() {
-      // let subOutputRankPrint = document.getElementById("subOutputRank-print");
-      // console.log(subOutputRankPrint.innerHTML);
-      // let newContent = subOutputRankPrint.innerHTML;
-      // let oldContent = document.body.innerHTML;
-      // document.body.innerHTML = newContent;
-      // window.print();
-      // window.location.reload();
-      // document.body.innerHTML = oldContent;
-      // return false;
-
-      let pdf =  htmlExportPDF(this.pageDomId)
-      debugger
-      this.uploadFile(pdf)
+    async printContent() {
+      htmlExportPDF(this.pageDomId, this.uploadFile)
     },
-    uploadFile (file) {
-      debugger
-      this.$store.dispatch("uploadFile", {
+    uploadFile (file, name) {
+      var f = new File([file.output("blob")], name, {type: 'application/pdf'})
+      var fd = new FormData()
+      fd.append("file", f)
+      fd.append('caseId', '297708bcd8e80872febb61577329194f')
+      fd.append('docId', '5cad5b54eb97a15250672a4c397cee56')
 
-      }).then(
+      this.$store.dispatch("uploadFile", fd).then(
         res => {
-          debugger;
           console.log(res)
         },
         err => {
-          debugger;
           console.log(err);
         }
       );
@@ -124,6 +114,19 @@ export default {
     addDocData(handleType) {
       this.com_addDocData(handleType);
     },
+    getFile () {
+      this.$store.dispatch("getFile", {
+          docId: '5cad5b54eb97a15250672a4c397cee56',
+          caseId: '297708bcd8e80872febb61577329194f'
+        }).then(
+        res => {
+          console.log(res[0].storagePath)
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
   }
 }
 </script>

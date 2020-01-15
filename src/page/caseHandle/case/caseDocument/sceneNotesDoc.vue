@@ -20,7 +20,7 @@
             <td colspan="3">
               <el-form-item prop="enforceStartTime" class="pdf_datapick">
                 <el-date-picker v-model="docData.enforceStartTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
-                </el-date-picker>至
+                </el-date-picker><br>至
                 <el-date-picker v-model="docData.enforceEndTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
                 </el-date-picker>
               </el-form-item>

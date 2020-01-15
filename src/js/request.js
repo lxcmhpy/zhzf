@@ -10,16 +10,14 @@ var vue = new Vue();
 // create an axios instance
 const service = axios.create({
 
-  baseURL: process.env.BASE_API, // api的base_url
+  // baseURL: process.env.BASE_API, // api的base_url
   timeout: 15000, // request timeout
-  "Content-Type": "application/x-www-form-urlencoded",
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "X-Requested-With,Content-Type",
-  "Access-Control-Allow-Methods": "PUT,POST,GET,DELETE,OPTIONS"
+  // "Content-Type": "application/x-www-form-urlencoded",
+  Accept: '*/*',
 });
 var BASEURL
 service({
-  url: '/static/json/hostUrl/host.json', 
+  url: '/static/json/hostUrl/host.json',
   method: "get",
   params: {},
 }).then(
@@ -34,22 +32,26 @@ service({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    //  if(config.baseUrlType == 1){
-    //    config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
-    //  }else{
-    //   config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
-    //  }
-     console.log('config.baseURL',config.baseURL)
+     if(config.baseUrlType == 1){
+       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
+     }else{
+      config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
+     }
+
+     if (config.responseType) {
+       config["responseType"] = config.responseType
+     }
+
+     config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
+
     //token一天后过期
     if (config.showloading != false) {
       showFullScreenLoading();
     }
-    config.headers["Content-Type"] = 'application/x-www-form-urlencoded';
     if (getToken("TokenKey")) {
       // config.headers["accessToken"] = "CATSIC_TOKEN_PRE:" + getToken("TokenKey");
       config.headers["accessToken"] = getToken("TokenKey");
     }
-    // console.log(config);
     return config;
   },
   error => {

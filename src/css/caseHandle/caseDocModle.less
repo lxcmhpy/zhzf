@@ -20,17 +20,18 @@
         margin        : auto;
         padding       : 81px 82px 0;
         background    : #FFFFFF;
+        box-sizing    : border-box;/* 包含padding */
 
 
         /*  标题 */
         .doc_topic {
-            margin-top : 80px;
-            height     : 28px;
-            font-size  : 20px;
-            font-family: STSongti-SC-Black, STSongti-SC;
-            font-weight: 900;
-            line-height: 28px;
-            text-align : center;
+            // margin-top : 80px;
+            height        : 28px;
+            font-size     : 20px;
+            font-family   : STSongti-SC-Black, STSongti-SC;
+            font-weight   : 900;
+            line-height   : 28px;
+            text-align    : center;
 
         }
 
@@ -56,10 +57,10 @@
             }
 
             .el-textarea__inner {
-                margin-top: -9px;
-                min-height: 32px !important;
-                height    : 32px !important;
-                background: #DBE4EF;
+                margin-top    : -9px;
+                min-height    : 32px !important;
+                height        : 32px !important;
+                background    : #DBE4EF;
                 vertical-align: center !important;
 
                 overflow: auto;
@@ -161,12 +162,12 @@
                 }
 
                 .el-textarea {
-                    width         : 1%;
-                    height        : 30px;
-                    vertical-align: middle;
-                    display       : table-cell;
-                    background    : #DBE4EF;
-                    border-radius : 4px;
+                    width             : 1%;
+                    height            : 30px;
+                    vertical-align    : middle;
+                    display           : table-cell;
+                    background        : #DBE4EF;
+                    border-radius     : 4px;
                     right             : 0;
                     // white-space    : nowrap;
                 }
@@ -390,36 +391,7 @@
             }
         }
 
-        .pdf_datapick {
-            width: 128px;
 
-            .el-input {
-                padding    : 0;
-                border     : 0;
-                width      : 128px;
-                height     : 18px;
-                color      : #000000;
-                font-size  : 16px;
-                font-family: SimSun;
-
-            }
-
-            .el-input__inner {
-                padding    : 0;
-                border     : 0;
-                height     : 18px;
-                text-align : center;
-                background : #DBE4EF;
-                color      : #000000;
-                text-indent: 0;
-
-            }
-
-            .el-input__icon {
-                display: none;
-            }
-
-        }
 
         /* 选择框 */
         & input[type=checkbox] {
@@ -557,36 +529,88 @@
     // }
 }
 
+/* 询问笔录时间选择框 */
+.pdf_datapick {
+
+    // width: 128px;
+    .el-date-editor--datetimerange.el-input__inner {
+        width      : 480px;
+        font-family: SimSun;
+        font-size  : 16px;
+        color      : #000000;
+        line-height: 32px;
+        font-weight: 600;
+
+        .el-range-editor,
+        .el-range-input {
+            font-size  : 16px;
+            background : #DBE4EF;
+            color      : #000000;
+            line-height: 32px;
+            font-weight: 600;
+
+        }
+
+        .el-range-editor::-webkit-input-placeholder,
+        .el-range-input::-webkit-input-placeholder {
+            font-size  : 16px;
+            background : #DBE4EF;
+            color      : #000000;
+            line-height: 32px;
+            font-weight: 600;
+
+        }
+
+        i {
+            display: none;
+        }
+    }
+
+
+
+}
 
 .printNumbers_box {
     position: absolute;
+    left    : calc(50% - 360px);
 
     .print_info {
         position     : relative;
         margin-bottom: 10px;
-    }
 
-    .opinionTable {
-        tr {
-            td:first-child {
-                width: 50px;
-            }
-
-            td {
-                position: relative;
-
-                .handleIdea {
-                    position: absolute;
-                    right   : 15px;
-                    bottom  : 15px;
-
-                    p {
-                        display      : inline-block;
-                        min-width    : 80px;
-                        border-bottom: 1px solid #000000;
-                    }
-                }
-            }
+        .pdf_seal {
+            margin-top     : 15px;
+            margin-bottom  : 11px;
+            width          : 215px;
+            text-align     : left;
+            text-align-last: left;
+            font-size      : 16px;
+            font-family    : SimSun;
+            float          : right;
         }
     }
+
+    // .opinionTable {
+    //     tr {
+    //         td:first-child {
+    //             width: 50px;
+    //         }
+
+    //         td {
+    //             position: relative;
+
+    //             .handleIdea {
+    //                 position: absolute;
+    //                 right   : 15px;
+    //                 bottom  : 15px;
+
+    //                 p {
+    //                     display      : inline-block;
+    //                     min-width    : 80px;
+    //                     border-bottom: 1px solid #000000;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
