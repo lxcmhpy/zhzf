@@ -10,7 +10,7 @@ import "@/js/dateFormat";
 import util from "@/js/util";
 import qs from 'qs';
 import hasPermission from "@/js/hasPermission"
-// import mySignture from "@/js/mySignture";
+
 
 
 Vue.use(ElementUI);
@@ -21,7 +21,7 @@ Vue.config.productionTip = false;
 
 Vue.prototype.$util = util;
 Vue.prototype.$qs = qs;
-// Vue.prototype.$mySignture = mySignture;
+
 
 /* eslint-disable no-new */
 new Vue({

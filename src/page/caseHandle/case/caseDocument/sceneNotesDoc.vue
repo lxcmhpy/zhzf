@@ -211,7 +211,7 @@
         提交
       </el-button>
     </div>
-    <casePageFloatBtns :pageDomId="'subOutputRank-print'"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'subOutputRank-print'" @submitData="submitData"></casePageFloatBtns>
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
@@ -337,28 +337,8 @@ export default {
       this.com_getDocDataByCaseIdAndDocId(data);
     },
     //保存文书信息
-    addDocData(handleType){
-      this.com_addDocData(handleType,'docForm').then(
-        res => {
-          this.$message({
-            type: "success",
-            message: "保存成功",
-          });
-          this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-          this.$router.push({
-            name: 'caseDoc',
-            // name: row.url,
-            params: {
-              // id: row.id,
-              // //案件ID
-              // caseBasicinfoId: this.caseBasicinfoId,
-            }
-          });
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    submitData(handleType){
+      this.com_addDocData(handleType,'docForm');
     },
     
     // 盖章
@@ -379,7 +359,6 @@ export default {
     },
   },
   mounted() {
-    alert(1)
     this.getDocDataByCaseIdAndDocId();
   }
 }

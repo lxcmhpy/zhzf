@@ -1,4 +1,5 @@
-
+import axios from "axios";
+import vueJsonp from 'vue-jsonp'
 let Base64 = require('js-base64').Base64;
 let mySignture = {};
 
@@ -13,22 +14,24 @@ mySignture.MultBrowser = function(){
 			var data = Base64.encode(jsonData);
 			var callBack = Math.random().toString(36).substr(2);
 			try	{
-				var ajax=$.ajax({
-				type : "get",
-				async:false,
-				url :"http://127.0.0.1:16888?data="+data,
-				dataType : "jsonp",
-				jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(默认为:callback)
-				jsonpCallback:"success_jsonpCallback" + callBack,//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
-				success : function(json){
-						if(json.error == 0){
-							func(json.error, json.parameter[0]);
-						}
-						else{
-							func(json.error, json.msg);
-						}
-					}
-				});
+				console.log(vueJsonp.install)
+				vueJsonp()
+				// var ajax=$.ajax({
+				// type : "get",
+				// async:false,
+				// url :"http://127.0.0.1:16888?data="+data,
+				// dataType : "jsonp",
+				// jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(默认为:callback)
+				// jsonpCallback:"success_jsonpCallback" + callBack,//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+				// success : function(json){
+				// 		if(json.error == 0){
+				// 			func(json.error, json.parameter[0]);
+				// 		}
+				// 		else{
+				// 			func(json.error, json.msg);
+				// 		}
+				// 	}
+				// });
 			}catch (e){
 				alert("jsonp发送数据失败！");
 				}

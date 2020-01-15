@@ -58,7 +58,7 @@
           </svg>
           <br />签章
         </el-button>
-        <el-button type="primary" @click="addDocData(1)">
+        <el-button type="primary" @click="submitDataBtn(1)">
           <svg
             t="1577414377979"
             class="icon"
@@ -81,8 +81,13 @@
 </template>
 <script>
 import {htmlExportPDF} from '@/js/htmlExportPDF'
+import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
+
 export default {
   props: ['pageDomId'],
+  mixins: [mixinGetCaseApiList],
+  computed: { ...mapGetters(['caseId']) },
   methods: {
     //   打印方法
     printContent() {
@@ -119,8 +124,8 @@ export default {
     makeSeal() {
       console.log("盖章");
     },
-    addDocData(handleType) {
-      this.com_addDocData(handleType);
+    submitDataBtn(handleType) {
+      this.$emit('submitData',handleType);
     },
   }
 }

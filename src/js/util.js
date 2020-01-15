@@ -343,22 +343,6 @@ util.transformNumberToJi =function(num){
 }
 
 
-util.openURL = function(pdfPath){
-  console.log('openURL')
-  var test = window.location.href;
-  var string =test.split("/");
-  // path = string[0]+"//"+string[2]+"/"+string[3];
-  // var ActivexURL=path + "/jsp/zfba/aztDzqz/iWebEditor.html?pdfPath="+pdfPath;  
-  var ActivexURL = './index.vue';  
-  
-  //功能说明：创建AZTBrowser浏览器并打开URL地址
-  //参数1：URL地址
-  //参数2：是否置顶 1表示置顶，0表示不置顶
-  //参数3：回调函数
-  // MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
-}
-
-
 
 
 

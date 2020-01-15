@@ -2,7 +2,7 @@
   <div class="print_box">
     <!-- sdmaskjdnsjdns -->
     <div class="print_info"> 
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
+      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">立案登记表</div>
         <div class="doc_number">案号：{{formData.tempNo}}</div>
        
@@ -156,7 +156,7 @@
             <td colspan="8" class="color_DBE4EF">
               <el-form-item prop="caseBasicInfo">
                 <!-- <el-input type='textarea' v-model="formData.caseBasicInfo" v-bind:class="{ over_flow:formData.caseBasicInfo.length>14?true:false }" :autosize="{ minRows: 5, maxRows: 5}" :maxlength="nameLength" placeholder="\"></el-input> -->
-                <el-input type='textarea'></el-input>
+                <el-input type='textarea' v-model="formData.caseInfo"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -170,7 +170,7 @@
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="caseReplay">
                 <!-- <el-input type='textarea' v-model="formData.caseReplay" v-bind:class="{ over_flow:formData.caseReplay.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input> -->
-                <el-input type='textarea'></el-input>
+                <el-input type='textarea'  v-model="formData.illegalLaw"></el-input>
               </el-form-item>
             </td>
             <td>
@@ -325,7 +325,9 @@ export default {
       caseNumber: "010-123456",
       // tableData: {},
       formData: {
-        partyType: "个人"
+        partyType: "个人",
+        caseName:"",
+        caseInfo:"",
       },
       caseLinkDataForm: { 
         id: "", //修改的时候用
@@ -368,7 +370,8 @@ export default {
     // 提交表单
     addFormData(handleType) {
       //参数  提交类型 、formRef  
-      this.com_submitCaseForm(handleType,'docForm',true);
+      this.com_submitCaseForm(handleType,'establishForm',true);
+
     },
     showApprovePeopleList(){
       let data={

@@ -30,7 +30,7 @@ export const mixinGetCaseApiList = {
         }
       );
     },
-    //进入文书先是否保存过 保存过就直接带入信息，未保存择获取案件信息
+    //进入表单先是否保存过 保存过就直接带入信息，未保存择获取案件信息
     com_getFormDataByCaseIdAndFormId(caseId, caseLinktypeId, tableOrForm) {
       // console.log(this.caseId)
       let data = {
@@ -42,7 +42,7 @@ export const mixinGetCaseApiList = {
           console.log("获取表单详情", res);
           //如果为空，则加载案件信息
           if (res.data == "") {
-            this.com_getCaseBasicInfo(caseId);
+            this.com_getCaseBasicInfo(caseLinktypeId,caseId);
           } else {
             console.log(res.data);
             if (tableOrForm == 'form') {  //文书表单
@@ -61,18 +61,22 @@ export const mixinGetCaseApiList = {
       );
     },
     // 获取案件信息
-    com_getCaseBasicInfo(caseId) {
+    com_getCaseBasicInfo(typeId,caseId) {
       // console.log("this.$route.params.id", this.$route.params.id);
       // 获取案件信息
       let data = {
+        // typeId:typeId,
+        // caseBasicInfoId: caseId
         id: caseId
+
       };
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
           console.log('获取案件信息',res)
           if(this.formData){
             this.formData = res.data;
-          }else{
+          }
+          else{
             this.docData = res.data;
           }
         },
@@ -104,6 +108,14 @@ export const mixinGetCaseApiList = {
                 } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
                   this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId)
                 }
+              };
+              if(docForm == 'establishForm'){  //立案登记需要额外提交一些信息 调用另一个接口
+                let newData = {
+                  caseName:this.formData.caseName,
+                  caseInfo:this.formData.caseInfo,
+                  id:this.caseLinkDataForm.caseBasicinfoId
+                }  
+                this.com_updatePartCaseBasicInfo(newData)
               }
             },
             err => {
@@ -196,7 +208,7 @@ export const mixinGetCaseApiList = {
           console.log("获取文书详情", res);
           //如果为空，则加载案件信息
           if (res.data.length == 0) {
-            this.com_getCaseBasicInfo(params.caseId);
+            this.com_getCaseBasicInfo(params.docId,params.caseId);
           } else {
             console.log(res.data[0]);
             this.caseDocDataForm.id = res.data[0].id;
@@ -266,6 +278,22 @@ export const mixinGetCaseApiList = {
           url:this.$route.name
         }
       });
+    },
+    //立案登记表提交之后调用  更新案由等信息到案件基本信息中
+    com_updatePartCaseBasicInfo(formData){
+      let data ={
+        caseName:formData.caseName,
+        caseInfo:formData.caseInfo,
+        id:formData.id,
+      }
+      this.$store.dispatch("updatePartCaseBasicInfo", data).then(
+        res => {
+         console.log('修改案件信息',res);
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
   },
   created() {
