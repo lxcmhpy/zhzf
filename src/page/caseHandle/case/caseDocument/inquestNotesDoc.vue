@@ -1,15 +1,16 @@
 <template>
   <div class="print_box">
-    <div class="print_info">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
+    <div class="print_info indent_style">
+      <el-form  ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">勘验笔录</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->        
-        <p>
-          案由：<el-form-item prop="caseName">
-              <el-input v-model="docData.caseName" :maxLength='maxLength' placeholder="\"></el-input>
+        <p>案由：
+            <el-form-item v-if="!lineStyleFlag" prop="caseName" style="width:653px">
+              <el-input type='textarea' v-model="docData.caseName" v-bind:class="{ over_flow:docData.caseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
-        </p>
+            <u v-if="lineStyleFlag">{{docData.caseName}}</u>
+          </p>
         <p>
           勘验时间：<el-form-item prop="inquestStartTime" class="pdf_datapick">
               <el-date-picker v-model="docData.inquestStartTime" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
@@ -21,20 +22,26 @@
               </el-date-picker>
             </el-form-item>
         </p>
-        <p>
-          勘验场所：<el-form-item prop="caseName">
-              <el-input v-model="docData.inquestAddress" :maxLength='maxLength' placeholder="\"></el-input>
-            </el-form-item>
-          天气状况：<el-form-item prop="caseName">
-            <el-select v-model="docData.weather" :maxLength='maxLength' placeholder="\">
-              <el-option v-for="item in options"
-                :key="item.name"
-                :label="item.label"
-                :value="item.name">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </p>
+        <el-row>
+            <el-col :span="14">
+              <p>勘验场所：<el-form-item v-if="!lineStyleFlag" prop="inquestAddress" style="width:285px">
+                  <el-input type='textarea' v-model="docData.inquestAddress" v-bind:class="{ over_flow:docData.inquestAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                </el-form-item>
+                <u v-if="lineStyleFlag">{{docData.inquestAddress}}</u></p>
+            </el-col>
+            <el-col :span="10">
+              <p>天气状况：<el-form-item prop="weather">
+                  <el-select v-model="docData.weather" :maxLength='maxLength' placeholder="\">
+                    <el-option v-for="item in options"
+                      :key="item.name"
+                      :label="item.label"
+                      :value="item.name">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </p>
+            </el-col>
+          </el-row>
         <p>
           勘验人：<el-form-item prop="staff1">
               <el-input v-model="docData.staff1" :maxLength='maxLength' placeholder="\"></el-input>
@@ -68,6 +75,21 @@
               <el-input v-model="docData.partyAge" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item> 
         </p>
+        <!-- <el-row>
+            <el-col :span="12">
+              <p>身份证号：<el-form-item v-if="!lineStyleFlag" prop="partyIdNo" style="width:285px">
+                  <el-input type='textarea' v-model="docData.partyIdNo" v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                </el-form-item>
+                <u v-if="lineStyleFlag">{{docData.partyIdNo}}</u></p>
+            </el-col>
+            <el-col :span="12">
+              <p>单位及职务：<el-form-item v-if="!lineStyleFlag" prop="partyUnitAndPosition" style="width:285px">
+                  <el-input type='textarea' v-model="docData.partyUnitAndPosition" v-bind:class="{ over_flow:docData.partyUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                </el-form-item>
+                <u v-if="lineStyleFlag">{{docData.partyUnitAndPosition}}</u>
+              </p>
+            </el-col>
+          </el-row> -->
         <p>
           身份证号：<el-form-item prop="partyIdNo">
               <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input>
@@ -231,6 +253,8 @@ export default {
       handleType: "",  // 0 暂存  1  提交
       dictId:"2dc1e0a3a8ce225c292259da39294847",
       options:[],
+      lineStyleFlag:false,
+      maxLength:'23',
     }
 
   },
@@ -318,6 +342,14 @@ export default {
           console.log(err);
         }
       );
+    },
+    // 盖章
+    makeSeal() {
+      signature.openURL('oeder');
+    },
+    // 打印
+    print() {
+      console.log('打印!');
     },
   },
   created() {
