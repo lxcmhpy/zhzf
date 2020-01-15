@@ -92,7 +92,7 @@ export default {
     showModal(type, data) {
       console.log(type, data);
       this.visible = true;
-      this.dialogTitle = "多行编辑"
+      this.dialogTitle = "问答编辑"
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
