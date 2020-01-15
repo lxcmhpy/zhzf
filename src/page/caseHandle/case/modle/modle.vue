@@ -84,42 +84,37 @@
             </td>
           </tr>
         </table>
-        <p class="side_right_indent"  v-if="!lineStyleFlag">
+        <p class="side_right_indent">
           <!-- <span class="side_left">违法事实及依据：</span> -->
           <span class="side_right" @click="overFlowEdit">
-            <el-form-item  prop="illegalFactsEvidence">
+            <el-form-item prop="illegalFactsEvidence">
               <span class="over_topic">违法事实及依据：</span>
-              <span>{{docData.illegalFactsEvidence}}</span>
+              {{docData.illegalFactsEvidence}}
             </el-form-item>
-            
           </span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-
           <!-- <span class="span_bg">{{docData.illegalFactsEvidence}}</span> -->
         </p>
         <p  v-if="lineStyleFlag">
           违法事实及依据：<u>{{docData.illegalFactsEvidence}}</u>
         </p>
         <p>你(单位)的行为违反了<span>
-            <el-form-item v-if="!lineStyleFlag" prop="illegalLaw">
+            <el-form-item prop="illegalLaw">
               <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.illegalLaw}}</u>
           </span>的规定，依据
           <span contenteditable="true">
-            <el-form-item v-if="!lineStyleFlag"  prop="punishLaw">
+            <el-form-item prop="punishLaw">
               <el-input type='textarea' v-model="docData.punishLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.punishLaw}}</u>
+            </el-form-item>
           </span>的规定，决定给予
           <span>
-            <el-form-item v-if="!lineStyleFlag"  prop="tempPunishAmount">
+            <el-form-item prop="tempPunishAmount">
               <el-input type='textarea' v-model="docData.tempPunishAmount" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
               <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="\"></el-input> -->
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.tempPunishAmount}}</u>
+            </el-form-item>
           </span>的行政处罚。
         </p>
         <p>
@@ -130,28 +125,24 @@
         </p>
         <p>
           <input type="checkbox">自收到本决定书之日起十五日内缴至<span>
-            <el-form-item v-if="!lineStyleFlag"  prop="bank">
+            <el-form-item prop="bank">
               <el-input v-model="docData.bank" :maxLength='maxLength' placeholder="\"></el-input>
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.bank}}</u>
+            </el-form-item>
           </span>，账号<span>
-            <el-form-item v-if="!lineStyleFlag"  prop="account">
+            <el-form-item prop="account">
               <el-input v-model="docData.account" :maxLength='maxLength' placeholder="\"></el-input>
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.account}}</u>
+            </el-form-item>
           </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
         </p>
         <p>
           如果不服本处罚决定，可以在六十日内依法向<span>
-            <el-form-item v-if="!lineStyleFlag"  prop="reconsiderationOrgan">
+            <el-form-item prop="reconsiderationOrgan">
               <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.reconsiderationOrgan}}</u>
+            </el-form-item>
           </span>申请行政复议，或者在六个月内依法向<span>
-            <el-form-item v-if="!lineStyleFlag"  prop="litigationOrgan">
+            <el-form-item prop="litigationOrgan">
               <el-input v-model="docData.litigationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
-             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.litigationOrgan}}</u>
+            </el-form-item>
           </span>人民法院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
         </p>
         <p>
@@ -188,14 +179,7 @@
         <br>
         打印
       </el-button>
-      <el-button type="success" @click="changeLineStyle">
-        <svg t="1577706400265" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3033" width="16" height="16">
-          <path d="M946.176 896a34.304 34.304 0 0 1 0 68.608H77.824a34.304 34.304 0 0 1 0-68.608h868.352z m0-622.08L401.92 818.176 189.44 839.68l21.504-211.968 473.088-473.088 71.168-71.168c31.744-31.744 87.552-31.744 119.296 0l71.168 71.168c15.872 15.872 24.576 37.376 24.576 59.904 0.512 22.016-8.192 43.52-24.064 59.392zM266.24 762.88l103.936-10.752 431.616-431.616-93.696-93.696L276.48 658.432 266.24 762.88zM815.104 127.488c-4.096 0-8.192 1.536-11.264 4.608l-46.592 46.592 93.696 93.696 46.592-46.592c6.144-6.144 6.144-16.384 0-22.528l-71.168-71.168c-3.072-3.072-7.168-4.608-11.264-4.608z" p-id="3034" fill="#FFFFFF"></path>
-        </svg>
-        <br>
-        生成
-      </el-button>
-      <el-button type="success" @click="edit">
+      <el-button type="success">
         <svg t="1577706400265" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3033" width="16" height="16">
           <path d="M946.176 896a34.304 34.304 0 0 1 0 68.608H77.824a34.304 34.304 0 0 1 0-68.608h868.352z m0-622.08L401.92 818.176 189.44 839.68l21.504-211.968 473.088-473.088 71.168-71.168c31.744-31.744 87.552-31.744 119.296 0l71.168 71.168c15.872 15.872 24.576 37.376 24.576 59.904 0.512 22.016-8.192 43.52-24.064 59.392zM266.24 762.88l103.936-10.752 431.616-431.616-93.696-93.696L276.48 658.432 266.24 762.88zM815.104 127.488c-4.096 0-8.192 1.536-11.264 4.608l-46.592 46.592 93.696 93.696 46.592-46.592c6.144-6.144 6.144-16.384 0-22.528l-71.168-71.168c-3.072-3.072-7.168-4.608-11.264-4.608z" p-id="3034" fill="#FFFFFF"></path>
         </svg>
@@ -223,6 +207,10 @@
 import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
+// import signture from "../../../../js/signture";
+import mySignture from "@/js/mySignture";
+// import {signture2} from "@/js/signture";
+
 export default {
   components: {
     overflowInput,
@@ -232,7 +220,7 @@ export default {
   data() {
     return {
       isOverflow: false,
-      // isOverLine: false,
+      isOverLine: false,
       docData: {
         party: '',
         partyIdNo: '',
@@ -261,31 +249,7 @@ export default {
       },
       name: '',
       rules: {
-        test: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
         party: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyIdNo: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyName: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyUnitAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyUnitTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyManager: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         punishLaw: [
@@ -306,7 +270,7 @@ export default {
       adressLength: 23,
       maxLengthOverLine: 122,
       maxLength: 23,
-      lineStyleFlag: false,
+      lineStyleFlag:false,
     }
   },
   methods: {
@@ -345,12 +309,13 @@ export default {
     },
     //保存文书信息
     addDocData(handleType) {
-
+      
       this.com_addDocData(handleType, 'docForm');
     },
     // 盖章
     makeSeal() {
-      console.log('盖章!');
+      mySignture.openURL('oeder');
+      // this.$util.openURL('a');
     },
     // 打印
     print() {
@@ -365,17 +330,10 @@ export default {
       console.log('回显',edit)
       this.docData.illegalFactsEvidence = edit;
     },
-    // 下划线版本
-    changeLineStyle() {
-      this.lineStyleFlag = true;
-    },
-    // 下划线版本
-    edit() {
-      this.lineStyleFlag = false;
-    },
   },
   created() {
     this.getDocDataByCaseIdAndDocId()
+
   }
 }
 </script>

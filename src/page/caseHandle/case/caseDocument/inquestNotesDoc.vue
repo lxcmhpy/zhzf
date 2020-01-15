@@ -1,131 +1,175 @@
 <template>
-  <div class="main">
-
-    <div class="a4-box" id="subOutputRank-print">
-      <div class="pdf-box"  ref='docForm'>
-        <div class="pdf-title">
-          勘验笔录
-        </div>
-        <div class="case-number" style="display:none">{{caseDocDataForm.id}}</div>
-        <div class="case-number">案号：{{docData.caseNumber}}</div>
-        <div class="pdf-report-info">
-          <p>案由：
-            <el-input class="pdf-line width635" v-model="docData.caseName">&nbsp;</el-input>
+  <div class="print_box">
+    <div class="print_info indent_style">
+      <el-form  ref="docForm" :inline-message="true" :inline="true" :model="docData">
+        <div class="doc_topic">勘验笔录</div>
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->        
+        <p>案由：
+            <el-form-item v-if="!lineStyleFlag" prop="caseName" style="width:653px">
+              <el-input type='textarea' v-model="docData.caseName" v-bind:class="{ over_flow:docData.caseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+            <u v-if="lineStyleFlag">{{docData.caseName}}</u>
           </p>
-          <p>
-              勘验时间：
-              <span class="pdf-line width360">
-                <el-date-picker v-model="docData.inquestStartTime" type="date" format="yyyy 年 M 月 d 日 HH 时 mm 分" placeholder="  年  月  日 时 分" clear-icon='el-icon-circle-close'></el-date-picker>
-              </span>
-              至：
-              <span class="pdf-line width200">
-                <el-date-picker v-model="docData.inquestEndTime" type="date" format="d 日 HH 时 mm 分" placeholder=" 日 时 分" clear-icon='el-icon-circle-close'></el-date-picker>
-              </span>
-            </p>
-            <p>
-              勘验场所：             
-                <el-input class="pdf-line width256" v-model="docData.inquestAddress">&nbsp; </el-input>            
-              天气情况：
-                <el-select class="pdf-line width256" v-model="docData.weather">&nbsp; 
-                  <el-option
-                    v-for="item in options"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.name">
-                  </el-option>
-                </el-select>
-            </p>
-            <p>
-              勘验人：             
-                <el-input class="pdf-line width100" v-model="docData.staff1">&nbsp; </el-input>            
-              单位及职务：
-                <el-input class="pdf-line width224" v-model="docData.staffUnitAndPosition1">&nbsp; </el-input>
-              执法证号：
-              <el-input class="pdf-line width100" v-model="docData.certificateId1">&nbsp; </el-input>
-            </p>
-            <p>
-              勘验人：             
-                <el-input class="pdf-line width100" v-model="docData.staff2">&nbsp; </el-input>            
-              单位及职务：
-                <el-input class="pdf-line width224" v-model="docData.staffUnitAndPosition2">&nbsp; </el-input>
-              执法证号：
-              <el-input class="pdf-line width100" v-model="docData.certificateId2">&nbsp; </el-input>
-            </p>
-            <p>
-              当事人（当事人代理人姓名）：             
-                <el-input class="pdf-line width150" v-model="docData.party">&nbsp; </el-input>            
-              性别：
-                <el-select class="pdf-line width94" v-model="docData.partySex">&nbsp; 
-                    <el-option value="0" label="男"></el-option>
-                    <el-option value="1" label="女"></el-option>
-                </el-select>
-              年龄：
-              <el-input class="pdf-line width100" v-model="docData.partyAge">&nbsp; </el-input>
-            </p>
-            <p>
-              身份证件号：             
-                <el-input class="pdf-line width240" v-model="docData.partyIdNo">&nbsp; </el-input>            
-              单位及职务：
-                <el-input class="pdf-line width240" v-model="docData.partyUnitAndPosition">&nbsp; </el-input>
-            </p>
-            <p>
-              住址：             
-                <el-input class="pdf-line width395" v-model="docData.partyAddress">&nbsp; </el-input>            
-              联系电话：
-                <el-input class="pdf-line width150" v-model="docData.partyTel">&nbsp; </el-input>
-            </p>
-            <p>
-              被邀请人：             
-                <el-input class="pdf-line width100" v-model="docData.invited">&nbsp; </el-input>            
-              单位及职务：
-                <el-input class="pdf-line width395" v-model="docData.invitedUnitAndPosition">&nbsp; </el-input>
-            </p>
-            <p>
-              记录人：             
-                <el-input class="pdf-line width118" v-model="docData.recorder">&nbsp; &nbsp;&nbsp;</el-input>            
-              单位及职务：
-                <el-input class="pdf-line width395" v-model="docData.recorderUnitAndPosition">&nbsp; </el-input>
-            </p>
-            <p>勘验情况及结果：
-            <span v-if="docData.inquestResult==''" class="pdf-line width555" @click="overFlowEdit">&nbsp; </span>
-            <u @click="overFlowEdit">{{docData.inquestResult}}</u>
-          </p>
-
-
-          <br><br>
-
-          <p>
+        <p>
+          勘验时间：<el-form-item prop="inquestStartTime" class="pdf_datapick">
+              <el-date-picker v-model="docData.inquestStartTime" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+              </el-date-picker>
+            </el-form-item>
+            至
+            <el-form-item prop="inquestEndTime" class="pdf_datapick">
+              <el-date-picker v-model="docData.inquestEndTime" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+              </el-date-picker>
+            </el-form-item>
+        </p>
+        <el-row>
+            <el-col :span="14">
+              <p>勘验场所：<el-form-item v-if="!lineStyleFlag" prop="inquestAddress" style="width:285px">
+                  <el-input type='textarea' v-model="docData.inquestAddress" v-bind:class="{ over_flow:docData.inquestAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                </el-form-item>
+                <u v-if="lineStyleFlag">{{docData.inquestAddress}}</u></p>
+            </el-col>
+            <el-col :span="10">
+              <p>天气状况：<el-form-item prop="weather">
+                  <el-select v-model="docData.weather" :maxLength='maxLength' placeholder="\">
+                    <el-option v-for="item in options"
+                      :key="item.name"
+                      :label="item.label"
+                      :value="item.name">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </p>
+            </el-col>
+          </el-row>
+        <p>
+          勘验人：<el-form-item prop="staff1">
+              <el-input v-model="docData.staff1" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          单位及职务：<el-form-item prop="staffUnitAndPosition1">
+              <el-input v-model="docData.staffUnitAndPosition1" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          执法证号：<el-form-item prop="certificateId1">
+              <el-input v-model="docData.certificateId1" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item> 
+        </p>
+        <p>
+          勘验人：<el-form-item prop="staff2">
+              <el-input v-model="docData.staff2" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          单位及职务：<el-form-item prop="staffUnitAndPosition2">
+              <el-input v-model="docData.staffUnitAndPosition2" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          执法证号：<el-form-item prop="certificateId2">
+              <el-input v-model="docData.certificateId2" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item> 
+        </p>
+        <p>
+          当事人（当事人代理人）姓名：<el-form-item prop="party">
+              <el-input v-model="docData.party" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          性别：<el-form-item prop="partySex">
+              <el-input v-model="docData.partySex" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          年龄：<el-form-item prop="partyAge">
+              <el-input v-model="docData.partyAge" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item> 
+        </p>
+        <!-- <el-row>
+            <el-col :span="12">
+              <p>身份证号：<el-form-item v-if="!lineStyleFlag" prop="partyIdNo" style="width:285px">
+                  <el-input type='textarea' v-model="docData.partyIdNo" v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                </el-form-item>
+                <u v-if="lineStyleFlag">{{docData.partyIdNo}}</u></p>
+            </el-col>
+            <el-col :span="12">
+              <p>单位及职务：<el-form-item v-if="!lineStyleFlag" prop="partyUnitAndPosition" style="width:285px">
+                  <el-input type='textarea' v-model="docData.partyUnitAndPosition" v-bind:class="{ over_flow:docData.partyUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                </el-form-item>
+                <u v-if="lineStyleFlag">{{docData.partyUnitAndPosition}}</u>
+              </p>
+            </el-col>
+          </el-row> -->
+        <p>
+          身份证号：<el-form-item prop="partyIdNo">
+              <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          单位及职务：<el-form-item prop="partyUnitAndPosition">
+              <el-input v-model="docData.partyUnitAndPosition" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+        </p>
+        <p>
+          住址：<el-form-item prop="partyAddress">
+              <el-input v-model="docData.partyAddress" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          联系电话：<el-form-item prop="partyTel">
+              <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+        </p>
+        <p>
+          被邀请人：<el-form-item prop="invited">
+              <el-input v-model="docData.invited" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          单位及职务：<el-form-item prop="invitedUnitAndPosition">
+              <el-input v-model="docData.invitedUnitAndPosition" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+        </p>
+        <p>
+          记录人：<el-form-item prop="recorder">
+              <el-input v-model="docData.recorder" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          单位及职务：<el-form-item prop="recorderUnitAndPosition">
+              <el-input v-model="docData.recorderUnitAndPosition" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+        </p>
+         <p class="side_right_indent">
+          <!-- <span class="side_left">违法事实及依据：</span> -->
+          <span class="side_right" @click="overFlowEdit">
+            <el-form-item prop="inquestResult">
+              <span class="over_topic">勘验情况及结果：</span>
+              {{docData.inquestResult}}
+            </el-form-item>
+          </span>
+          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+          <!-- <span class="span_bg">{{docData.illegalFactsEvidence}}</span> -->
+        </p>
+        <p  v-if="lineStyleFlag">
+          勘验情况及结果：<u>{{docData.inquestResult}}</u>
+        </p>
+        
+        <el-row :gutter="20">
+          <el-col :span="12">
             当事人或其代理人签名：
-            <span class="pdf-line width250">
-            <el-input v-model="docData.partySign" placeholder="请输入内容"></el-input>
-            </span>
+            <span class="write_line width250"></span>
+          </el-col>
+          <el-col :span="12">
             勘验人签名：
-            <span class="pdf-line width150">
-            <el-input v-model="docData.inquestedSign" placeholder="请输入内容"></el-input>
-            </span>
-          </p>
-
-          <br>
-          <p>
+            <span class="write_line width250"></span>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
             被邀请人签名：
-            <span class="pdf-line width250">
-            <el-input v-model="docData.invitedSign" placeholder="请输入内容"></el-input>
-            </span>
-            记录人签名：
-            <span class="pdf-line width210" align="right">
-            <el-input v-model="docData.recorderSign" placeholder="请输入内容"></el-input>
-            </span>
-          </p>
-          <p>
-            
-          </p>  
-
+            <span class="write_line width250"></span>
+          </el-col>
+        </el-row>
+        <!-- <div class="pdf_seal">
+          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+          <el-form-item prop="makeDate" class="pdf_datapick">
+            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            </el-date-picker>
+          </el-form-item>
         </div>
-      </div>
+        <div class="notice clear">
+          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
+        </div> -->
+      </el-form>
     </div>
     <!-- 悬浮按钮 -->
     <div class="float-btns">
-      <el-button type="success" @click="printContent">
+      <el-button type="success" @click="print">
         <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
           <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
         </svg>
@@ -209,6 +253,8 @@ export default {
       handleType: "",  // 0 暂存  1  提交
       dictId:"2dc1e0a3a8ce225c292259da39294847",
       options:[],
+      lineStyleFlag:false,
+      maxLength:'23',
     }
 
   },
@@ -237,7 +283,7 @@ export default {
     },
     // 盖章
     makeSeal() {
-      console.log('盖章')
+      signature.openURL('oeder');
     },
     //   打印方法
     printContent(e) {
@@ -297,6 +343,14 @@ export default {
         }
       );
     },
+    // 盖章
+    makeSeal() {
+      signature.openURL('oeder');
+    },
+    // 打印
+    print() {
+      console.log('打印!');
+    },
   },
   created() {
     this.getDocDataByCaseIdAndDocId();
@@ -306,5 +360,5 @@ export default {
 }
 </script>
 <style lang="less">
-@import "../../../../css/pdf.less";
+@import "../../../../css/caseHandle/caseDocModle.less";
 </style>

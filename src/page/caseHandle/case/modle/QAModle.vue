@@ -30,8 +30,9 @@
             </el-select>
           </el-col>
         </el-row>
+       
 
-      </el-form-item>
+      </el-form-item> {{addBannerForm.domains}}
       <!-- <el-form-item label="问1：">
         <el-select filterable allow-create v-model="addBannerForm.domains[0].question">
           <el-option label="不认识执法人员，不需要回避" value="no"></el-option>
@@ -41,7 +42,8 @@
       <el-form-item label="答1：">
         <el-input type="textarea" :autosize="{ minRows: 2,}" placeholder="请输入内容" v-model="addBannerForm.domains[0].answer"></el-input>
       </el-form-item> -->
-      <span v-for="(domain, index) in addBannerForm.domains" :key="domain.key">
+      
+      <span v-for="(domain, index) in addBannerForm.domains"  :key="domain.key">
         <el-form-item :label="'问' + (index +1)" :prop="'domains.' + (index +1)+ '.question'">
           <!-- <el-select v-model="domain.question" filterable allow-create>
             <el-option label="不认识执法人员，不需要回避" question="no"></el-option>
@@ -92,7 +94,7 @@ export default {
     showModal(type, data) {
       console.log(type, data);
       this.visible = true;
-      this.dialogTitle = "多行编辑"
+      this.dialogTitle = "问答编辑"
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -108,7 +110,6 @@ export default {
       this.visible = false;
       //   this.reload();
     },
-
     // submitForm(formName) {
     //   this.$refs[formName].validate((valid) => {
     //     if (valid) {
@@ -130,7 +131,8 @@ export default {
     },
     addDomain() {
       this.addBannerForm.domains.push({
-        value: '',
+        question: '',
+        answer: '',
         key: Date.now()
       });
     }
