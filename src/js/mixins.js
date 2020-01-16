@@ -178,7 +178,7 @@ export const mixinGetCaseApiList = {
           nextLink = "partyRights";
           break;
         case "2c9029d56c8f7b66016c8f8043c90001":   //处罚决定
-          nextLink = "adminPunishe";
+          nextLink = "punishDecisionDoc";
           break;
         case "2c9029e16c753a19016c755fe1340001":   //决定执行
           nextLink = "penaltyExecution";
