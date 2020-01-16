@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="a4-box">
-      <div class="pdf-box" ref="docForm" id="inquestNote_print">
+      <div class="pdf-box" ref="docForm" id="hearingRecord_print">
         <!-- <div>交通运输行政执法文书式样之二十二 ： 中止（终结、恢复）行政强制执行通知书</div> -->
         <div class="pdf-title">听证笔录</div>
         <div class="case-number">案号：{{docData.caseNumber}}</div>
@@ -134,7 +134,7 @@
     </div>
     <!-- 悬浮按钮 -->
     <casePageFloatBtns
-      :pageDomId="'inquestNote_print'"
+      :pageDomId="'hearingRecord_print'"
       :formOrDocData="formOrDocData"
       @submitData="submitData"
       @saveData="saveData"
@@ -177,7 +177,7 @@ export default {
       },
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId:'inquestNote_print',
+        pageDomId:'hearingRecord_print',
       }
     };
   },
