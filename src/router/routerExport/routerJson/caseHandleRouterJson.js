@@ -404,5 +404,13 @@ export default  [
     title: "信息采集"
   },
   component: () => import("@/page/caseHandle/unRecordCase/inforCollection.vue")
+},
+{
+  path: "/viewPDF",
+  name: "viewPDF",
+  meta: {
+    title: "pdf展示"
+  },
+  component: () => import("@/components/htmlExportPDF/viewPDF.vue")
 }
 ]

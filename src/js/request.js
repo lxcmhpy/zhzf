@@ -12,7 +12,7 @@ const service = axios.create({
   // baseURL: process.env.BASE_API, // api的base_url
   timeout: 15000, // request timeout
   // "Content-Type": "application/x-www-form-urlencoded",
-  Accept: '*/*',
+
 });
 var BASEURL
 service({
