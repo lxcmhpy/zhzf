@@ -4,9 +4,9 @@
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">结案报告</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
-        <div class="doc_cause">案由：
+        <div class="doc_cause" >案由：
             <!-- {{formData.caseName}} -->
-            <el-form-item prop="caseName">
+            <el-form-item prop="caseName" class="width500">
                 <el-input type='textarea'  v-model="formData.caseName" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
         </div>
@@ -31,9 +31,9 @@
               </el-form-item>
             </td>
             <td> 性别 </td>
-            <td class="color_DBE4EF">
+            <td class="color_DBE4EF width20" >
               <el-form-item prop="partySex">
-                <el-input type='textarea' v-model="formData.partySex" v-bind:class="{ over_flow:formData.partySex.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input  v-model="formData.partySex" maxlength="1" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
