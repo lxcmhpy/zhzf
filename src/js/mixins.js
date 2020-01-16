@@ -187,7 +187,7 @@ export const mixinGetCaseApiList = {
           nextLink = "";
           break;
         case "2c9029ee6cac9281016cacaadf990006":   //结案登记
-          nextLink = "finishForm";
+          nextLink = "finishCaseReport";
           break;
         case "2c9029ee6cac9281016cacab478e0007":   //归档
           nextLink = "";
