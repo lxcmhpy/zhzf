@@ -1,5 +1,5 @@
-import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,updatePartCaseBasicInfoApi,
-    getCaseBasicInfoApi,getCaseBasicInfoByIdsApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
+import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
+    getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
     submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi} from "@/api/caseHandle";
 
@@ -75,19 +75,6 @@ const caseHandle = {
                     })
             })
         },
-        
-        //修改部分案件基本信息   把立案登记表的案由添加到案件信息里
-        updatePartCaseBasicInfo({commit},data){
-            return new Promise((resolve, reject) => {
-                updatePartCaseBasicInfoApi(data).then(
-                    res => {
-                        resolve(res);
-                    },
-                    error => {
-                        reject(error);
-                    })
-            })
-        },
         //根据违法行为id查询绑定的法条
         findLawRegulationsByCauseId({commit},data){
             return new Promise((resolve, reject) => {
@@ -128,18 +115,6 @@ const caseHandle = {
         getCaseBasicInfo({ commit }, data) {
             return new Promise((resolve, reject) => {
                 getCaseBasicInfoApi(data).then(
-                    res => {
-                        resolve(res);
-                    },
-                    error => {
-                        reject(error);
-                    })
-            })
-        },
-        //根据案件ID、表单类型id(文书类型id)获取案件信息
-        getCaseBasicInfoByIds({ commit }, data) {
-            return new Promise((resolve, reject) => {
-                getCaseBasicInfoByIdsApi(data).then(
                     res => {
                         resolve(res);
                     },

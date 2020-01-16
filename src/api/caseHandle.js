@@ -126,16 +126,6 @@ export function getCaseBasicInfoApi(data) {
   });
 }
 
-//根据案件ID、表单类型id(文书类型id)获取案件信息
-export function getCaseBasicInfoByIdsApi(data) { 
-  return request({
-    url: "doc/propertyBind/findAllBindProperty/"+data.typeId+"/"+data.caseBasicInfoId,
-    method: "get",
-    showloading: true,
-    cancelToken: setCancelSource()
-  });
-}
-
 //保存文书
 export function addDocDataApi(data) { 
   console.log(data);

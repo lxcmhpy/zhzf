@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
 
-    <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" label-width="80px">
+    <el-form :rules="rules" ref="ruleForm" :inline-message="true" :inline="true" :model="docData" label-width="80px">
 
       <div class="print_info indent_style">
 
@@ -12,7 +12,7 @@
             时间：<el-form-item prop="makeDate" class="pdf_datapick">
               <!-- <el-date-picker style="height:100%" v-model="docData.askdata" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
               </el-date-picker> -->
-              <el-date-picker v-model="docData.askdata" type="datetimerange" range-separator="至" format="yyyy年MM月dd日HH时MM分" start-placeholder="    年  月  日  时  分" end-placeholder="    年  月  日  时  分">
+              <el-date-picker v-model="docData.askdata" type="datetimerange" range-separator="至" format="yyyy年MM月dd日HH时MM分" start-placeholder="    年  月  日  时  分" end-placeholder="  时  分" clearable="flase">
               </el-date-picker>
             </el-form-item>
 
@@ -202,8 +202,6 @@
       </el-button>
     </div> -->
     <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
-    <casePageFloatBtns :pageDomId="'QAlist-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
-
     <QAModle ref="QAModleInfoRef" @QAModleInfo="getQAModleInfo"></QAModle>
   </div>
 </template>
@@ -211,12 +209,9 @@
 import QAModle from "./QAModle";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
-import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-
 export default {
   components: {
     QAModle,
-    casePageFloatBtns,
   },
   data() {
     return {
@@ -309,17 +304,6 @@ export default {
           { required: true, message: '请输入', trigger: 'blur' },
         ],
 
-      },
-      formOrDocData: {
-        showBtn: [false, true, true, false, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: 'QAlist-print',
-      },
-      caseDocDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: '', //案件id
-        caseDoctypeId: "2c9029ca5b71686d015b71a86ead0032", //文书模版ID
-        docData: '',
-        status: ''
       }
     }
   },
@@ -382,9 +366,6 @@ export default {
   mounted() {
     this.getDocDataByCaseIdAndDocId();
   },
-  created() {
-    this.isOverStatus();
-  }
 }
 </script>
 <style lang="less" >

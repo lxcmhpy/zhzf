@@ -1,8 +1,8 @@
 <template>
-  <div class="print_box" >
+  <div class="print_box">
     <!-- sdmaskjdnsjdns -->
-    <div class="print_info" id="establish-print"> 
-      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
+    <div class="print_info"> 
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">立案登记表</div>
         <div class="doc_number">案号：{{formData.tempNo}}</div>
        
@@ -159,7 +159,7 @@
             <td colspan="8" class="color_DBE4EF">
               <el-form-item prop="caseBasicInfo">
                 <!-- <el-input type='textarea' v-model="formData.caseBasicInfo" v-bind:class="{ over_flow:formData.caseBasicInfo.length>14?true:false }" :autosize="{ minRows: 5, maxRows: 5}" :maxlength="nameLength" placeholder="\"></el-input> -->
-                <el-input type='textarea' v-model="formData.caseInfo"></el-input>
+                <el-input type='textarea'></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -234,7 +234,7 @@
       </el-form>
     </div>
    
-    <!-- <div class="float-btns" style="bottom:250px">
+    <div class="float-btns" style="bottom:250px">
       <el-button type="success" @click="print">
         <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
           <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
@@ -307,10 +307,7 @@
         </svg>
         <br />审批
       </el-button>
-    </div> -->
-    
-    <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
-   
+    </div>
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
      <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="setData"></approvalDialog>
@@ -321,7 +318,6 @@
 import showApprovePeople from "../components/showApprovePeople";
 import approvalDialog from "../components/approvalDialog";
 import overflowInput from "../case/modle/overflowInput";
-import casePageFloatBtns from '@/components/casePageFloatBtns/casePageFloatBtns.vue'
 
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
@@ -332,9 +328,7 @@ export default {
       caseNumber: "010-123456",
       // tableData: {},
       formData: {
-        partyType: "个人",
-        caseName:"",
-        caseInfo:"",
+        partyType: "个人"
       },
       caseLinkDataForm: { 
         id: "", //修改的时候用
@@ -350,16 +344,13 @@ export default {
       maxLength: 23,
       lineStyleFlag: false,
       approval:this.$route.params.isApproval ? true : false, //   是否是审批人员进入
-      formOrDocData:{
-        showBtn:[false,true,true,false,false,false,false,false,false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-      }
+
     };
   },
   components: {
     showApprovePeople,
     approvalDialog,
-    overflowInput,
-    casePageFloatBtns
+    overflowInput
   },
   computed:{...mapGetters(['caseId'])},
   mixins:[mixinGetCaseApiList],
@@ -378,9 +369,9 @@ export default {
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
     // 提交表单
-    submitData(handleType) {
+    addFormData(handleType) {
       //参数  提交类型 、formRef  
-      this.com_submitCaseForm(handleType,'establishForm',true);
+      this.com_submitCaseForm(handleType,'docForm',true);
     },
     showApprovePeopleList(){
       let data={
@@ -391,6 +382,15 @@ export default {
     },
     //审批弹窗
     showApproval(){
+      //判断是一级审批还是二级审批(经办机构负责人审批、部门负责人审批)
+      // let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
+      // let caseData={
+      //   caseId:this.caseId,
+      //   caseLinktypeId:"2c90293b6c178b55016c17c255a4000d",
+      //   firstApproval:approvePeo
+      // }
+      // this.$refs.approvalDialogRef.showModal(caseData);
+
       let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
       let caseData={
         caseId:this.caseId,
@@ -424,21 +424,14 @@ export default {
     edit() {
       this.lineStyleFlag = false;
     },
-    isApproval(){
-      if(this.$route.params.isApproval){
-        this.formOrDocData.showBtn =[false,false,false,false,false,false,false,true,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-      }
-    }
-    
   },
   created(){
     this.setData();
-    this.isApproval();
   }
 };
 </script>
-<style lang="less">
-// @import "../../../css/pdf.less";
-@import "../../../css/caseHandle/caseDocModle.less";
+// <style lang="less">
+// // @import "../../../css/pdf.less";
+// @import "../../../css/caseHandle/caseDocModle.less";
 
-</style>
+// </style>
