@@ -187,7 +187,7 @@ export const mixinGetCaseApiList = {
           nextLink = "";
           break;
         case "2c9029ee6cac9281016cacaadf990006":   //结案登记
-          nextLink = "finishForm";
+          nextLink = "finishCaseReport";
           break;
         case "2c9029ee6cac9281016cacab478e0007":   //归档
           nextLink = "";
@@ -301,16 +301,21 @@ export const mixinGetCaseApiList = {
       var fd = new FormData()
       fd.append("file", f)
       fd.append('caseId',this.caseId);
-      let docId = '';  //环节id
+      let docId = '';  //文书 id
+      
       if(this.caseDocDataForm != undefined){
         // 只是文书
         docId = this.caseDocDataForm.caseDoctypeId;
       }else{
         //即是环节也是文书
-        docId = this.huanjieAndDocId
+        docId = this.huanjieAndDocId;
       }
       fd.append('docId',docId);
 
+      let caseLinktypeId =""; //环节id
+      if(this.caseLinkDataForm){
+        caseLinktypeId = this.caseLinkDataForm.caseLinktypeId
+      }
 
       console.log('fd',fd.get('docId'));
 
@@ -319,10 +324,10 @@ export const mixinGetCaseApiList = {
           console.log('上传',res);
           //上传pdf之后显示pdf
           let routerData = {
-            hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' ? true : false,
+            hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' ? true : false,
             docId:docId,
-            approvalOver:this.approvalOver ? true : false
-            
+            approvalOver:this.approvalOver ? true : false,
+            caseLinktypeId:caseLinktypeId, //环节id 立案登记、调查报告 提交审批时需要
           }
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({name:'myPDF',params:routerData})

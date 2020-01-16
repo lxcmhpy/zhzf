@@ -80,21 +80,21 @@ export default {
     showApprovePeopleList(){
       let data={
         caseId:this.caseId,
-        caseLinktypeId:'2c90293b6c178b55016c17c255a4000d'
+        caseLinktypeId:this.$route.params.caseLinktypeId
       }
       this.$refs.showApprovePeopleRef.showModal(data);
     },
     //审批弹窗
-    showApproval(){
-      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
-      let caseData={
-        caseId:this.caseId,
-        caseLinktypeId:"2c90293b6c178b55016c17c255a4000d",
-        firstApproval:approvePeo,
-        approvalNumber:2 //2次审批
-      }
-      this.$refs.approvalDialogRef.showModal(caseData);
-    },
+    // showApproval(){
+    //   let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
+    //   let caseData={
+    //     caseId:this.caseId,
+    //     caseLinktypeId:"2c90293b6c178b55016c17c255a4000d",
+    //     firstApproval:approvePeo,
+    //     approvalNumber:2 //2次审批
+    //   }
+    //   this.$refs.approvalDialogRef.showModal(caseData);
+    // },
     approvalOver(){
       // this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       // this.com_getFormDataByCaseIdAndFormId(this.caseId,'2c90293b6c178b55016c17c255a4000d',true);
