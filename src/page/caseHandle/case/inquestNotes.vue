@@ -18,8 +18,8 @@
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="案由：">
-                  <el-input type="textarea" ref="caseName" clearable class="height66" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="caseName" label="案由：" class="width500">
+                  <el-input type="textarea" ref="caseName" clearable v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
