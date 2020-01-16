@@ -1,7 +1,7 @@
 <template>
   <div class="main">
 
-    <div class="a4-box">
+    <div class="a4-box" id="executAnnounce-print">
       <div class="pdf-box">
         <!-- <div>交通运输行政执法文书式样之十八 ：执行公告</div> -->
         <div class="pdf-title">
@@ -91,13 +91,13 @@ export default {
       caseDocDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '', //案件id
-        caseDoctypeId: this.$route.params.docId, //文书模版ID
+        caseDoctypeId: this.$route.params.docId, //文书模版ID  
         docData: '',
         status: ''
       },
       formOrDocData: {
-        showBtn: [false, true, true, false, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: 'executAnnounce-print',
+        showBtn: [false, true, true, false, false, false, false, false, false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        pageDomId:'executAnnounce-print',
       }
     }
   },
@@ -115,13 +115,6 @@ export default {
         docId: this.$route.params.docId
       };
       this.com_getDocDataByCaseIdAndDocId(data)
-    },
-    addDocData(handleType) {
-      this.com_addDocData(handleType);
-      // this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-      // this.$router.push({
-      //   name: this.$route.params.url,
-      // });
     },
     //保存文书信息
     saveData(handleType) {

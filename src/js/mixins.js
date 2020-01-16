@@ -324,7 +324,7 @@ export const mixinGetCaseApiList = {
           console.log('上传',res);
           //上传pdf之后显示pdf
           let routerData = {
-            hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' ? true : false,
+            hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
             docId:docId,
             approvalOver:this.approvalOver ? true : false,
             caseLinktypeId:caseLinktypeId, //环节id 立案登记、调查报告 提交审批时需要

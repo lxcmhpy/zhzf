@@ -218,7 +218,7 @@ export default {
           // docId="2c9029ee6cac9281016cacb5a5b6000c";
           break;
           case "结案报告":
-          approvalLink = 'finishForm';
+          approvalLink = 'finishCaseReport';
           // docId="2c9029d2695c03fd01695c278e7a0001";
           break;
       }

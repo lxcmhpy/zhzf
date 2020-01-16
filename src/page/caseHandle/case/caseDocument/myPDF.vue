@@ -82,6 +82,7 @@ export default {
         caseId:this.caseId,
         caseLinktypeId:this.$route.params.caseLinktypeId
       }
+      console.log('daaaaa',data)
       this.$refs.showApprovePeopleRef.showModal(data);
     },
     //审批弹窗
