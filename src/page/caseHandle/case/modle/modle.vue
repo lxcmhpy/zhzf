@@ -84,8 +84,8 @@
             </td>
           </tr>
         </table>
-        <p class="side_right_indent">
-          <!-- <span class="side_left">违法事实及依据：</span> -->
+        <!-- 弹窗样式 -->
+        <!-- <p class="side_right_indent">
           <span class="side_right" @click="overFlowEdit">
             <el-form-item prop="illegalFactsEvidence">
               <span class="over_topic">违法事实及依据：</span>
@@ -95,11 +95,21 @@
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <!-- <span class="span_bg">{{docData.illegalFactsEvidence}}</span> -->
-        </p>
-        <p  v-if="lineStyleFlag">
+        </p> -->
+        <!-- 多行样式 -->
+        <div class="overflow_lins_style">
+          <div class="overflow_lins_textarea">
+            <el-form-item prop="illegalFactsEvidence">
+              <el-input class='text_indent10' type='textarea' v-model="docData.illegalFactsEvidence" rows="3" maxLength='90' placeholder="\"></el-input>
+            </el-form-item>
+          </div>
+          <span class="overflow_describe">违法事实及依据：</span>
+          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+        </div>
+        <p v-if="lineStyleFlag">
           违法事实及依据：<u>{{docData.illegalFactsEvidence}}</u>
-          <!-- 因返回数据中暂无此字段，可能无法正常显示 -->
         </p>
         <p>你(单位)的行为违反了<span>
             <el-form-item prop="illegalLaw">
@@ -203,7 +213,7 @@
     </div> -->
     <!-- 悬浮按钮 -->
     <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
-    
+
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
@@ -276,7 +286,7 @@ export default {
       adressLength: 23,
       maxLengthOverLine: 122,
       maxLength: 23,
-      lineStyleFlag:false,
+      lineStyleFlag: false,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'subOutputRank-print',
@@ -319,7 +329,7 @@ export default {
     },
     //保存文书信息
     addDocData(handleType) {
-      
+
       this.com_addDocData(handleType, 'docForm');
     },
     // 盖章
@@ -333,11 +343,11 @@ export default {
     },
     // 多行编辑
     overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '',this.maxLengthOverLine);
+      this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
-      console.log('回显',edit)
+      console.log('回显', edit)
       this.docData.illegalFactsEvidence = edit;
     },
     //提交
@@ -359,7 +369,7 @@ export default {
     }
 
   },
-   mounted() {
+  mounted() {
     this.getDocDataByCaseIdAndDocId();
   },
   created() {
