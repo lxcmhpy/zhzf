@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box" >
+  <div class="print_box">
     <!-- sdmaskjdnsjdns -->
     <div class="print_info" id="establish-print"> 
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
@@ -83,7 +83,7 @@
             </td>
             <td>年龄</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyAge" style="width:110px">
+              <el-form-item prop="partyAge" >
                 <el-input type='textarea' v-model="formData.partyAge" v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -119,7 +119,10 @@
                 <el-input type='textarea' v-model="formData.partyName" v-bind:class="{ over_flow:formData.partyName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
-            <td>法定代表人</td>
+            <td>
+              <p>法定</p>
+              <p>代表人</p>
+              </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager">
                 <el-input type='textarea' v-model="formData.partyManager" v-bind:class="{ over_flow:formData.partyManager.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
@@ -133,7 +136,7 @@
                 <el-input type='textarea' v-model="formData.partyUnitAddress" v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
-            <td>联系电话</td>
+            <td style="width:50px">联系电话</td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyUnitTel">
                 <el-input type='textarea' v-model="formData.partyUnitTel" v-bind:class="{ over_flow:formData.partyUnitTel.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
@@ -141,7 +144,7 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2">统一社会信用代码</td>
+            <td colspan="2" >统一社会信用代码</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode">
                 <el-input type='textarea' v-model="formData.socialCreditCode" v-bind:class="{ over_flow:formData.socialCreditCode.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
@@ -156,7 +159,7 @@
             <td colspan="8" class="color_DBE4EF">
               <el-form-item prop="caseBasicInfo">
                 <!-- <el-input type='textarea' v-model="formData.caseBasicInfo" v-bind:class="{ over_flow:formData.caseBasicInfo.length>14?true:false }" :autosize="{ minRows: 5, maxRows: 5}" :maxlength="nameLength" placeholder="\"></el-input> -->
-                <el-input type='textarea' v-model="formData.caseInfo"></el-input>
+                <el-input type='textarea'></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -170,7 +173,7 @@
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="caseReplay">
                 <!-- <el-input type='textarea' v-model="formData.caseReplay" v-bind:class="{ over_flow:formData.caseReplay.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input> -->
-                <el-input type='textarea'  v-model="formData.illegalLaw"></el-input>
+                <el-input type='textarea' :autosize="{ minRows: 3, maxRows: 4}"  v-model="formData.illegalLaw"></el-input>
               </el-form-item>
             </td>
             <td>
@@ -304,13 +307,13 @@
         </svg>
         <br />审批
       </el-button>
-    </div> -->
+    </div>  -->
     
-    <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @saveData="saveData" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
    
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
      <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
-    <approvalDialog ref="approvalDialogRef" @getNewData="setData"></approvalDialog>
+    <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
   </div>
 
 </template>
@@ -329,9 +332,7 @@ export default {
       caseNumber: "010-123456",
       // tableData: {},
       formData: {
-        partyType: "个人",
-        caseName:"",
-        caseInfo:"",
+        partyType: "个人"
       },
       caseLinkDataForm: { 
         id: "", //修改的时候用
@@ -349,7 +350,10 @@ export default {
       approval:this.$route.params.isApproval ? true : false, //   是否是审批人员进入
       formOrDocData:{
         showBtn:[false,true,true,false,false,false,false,false,false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-      }
+        pageDomId:"establish-print",
+      },
+      huanjieAndDocId:"2c9029ae654210eb0165421564970001", //立案登记表的文书id
+      approvalOver:false,    //审核完成
     };
   },
   components: {
@@ -372,11 +376,11 @@ export default {
     // },
     setData(){
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,false);
     },
     // 提交表单
-    submitData(handleType) {
-      //参数  提交类型 、formRef  
+    saveData(handleType) {
+      //参数  提交类型 、formRef 
       this.com_submitCaseForm(handleType,'establishForm',true);
     },
     showApprovePeopleList(){
@@ -421,12 +425,18 @@ export default {
     edit() {
       this.lineStyleFlag = false;
     },
+    goToPfd(){
+      //提交pdf 显示pdf页
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.approvalOver = true;
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,true);
+    },
     isApproval(){
+      //只有审核按钮
       if(this.$route.params.isApproval){
         this.formOrDocData.showBtn =[false,false,false,false,false,false,false,true,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
-    }
-    
+    },
   },
   created(){
     this.setData();
@@ -434,8 +444,8 @@ export default {
   }
 };
 </script>
-<style lang="less">
-// @import "../../../css/pdf.less";
-@import "../../../css/caseHandle/caseDocModle.less";
+ <style lang="less">
+ // @import "../../../css/pdf.less";
+ @import "../../../css/caseHandle/caseDocModle.less";
 
-</style>
+ </style>

@@ -1,3 +1,4 @@
+// 废弃
 <script>
 import html2Canvas from 'html2canvas'
 import JsPDF from 'jspdf'

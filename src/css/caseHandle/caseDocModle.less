@@ -1,9 +1,8 @@
-
 .print_box {
     width : 100%;
     height: 100%;
     /* 默认属性 */
-    font-family: SimSun;
+    font-family: 'SimSun';
     font-size  : 16px;
     color      : #000000;
     line-height: 32px;
@@ -20,19 +19,20 @@
         right         : 0;
         margin        : auto;
         padding       : 81px 82px 0;
-        background    : #FFFFFF;
-        box-sizing    : border-box;/* 包含padding */
+        background    : #ffffff;
+        box-sizing    : border-box;
+        /* 包含padding */
 
 
         /*  标题 */
         .doc_topic {
-            // margin-top : 80px;
-            height        : 28px;
-            font-size     : 20px;
-           /*  font-family   : STSongti-SC-Black, STSongti-SC; */
-            font-weight   : 900;
-            line-height   : 28px;
-            text-align    : center;
+            // margin-top     : 80px;
+            height            : 28px;
+            font-size         : 20px;
+            /*  font-family   : STSongti-SC-Black, STSongti-SC; */
+            font-weight       : 900;
+            line-height       : 28px;
+            text-align        : center;
 
         }
 
@@ -63,8 +63,7 @@
                 height        : 32px !important;
                 background    : #DBE4EF;
                 vertical-align: center !important;
-
-                overflow: auto;
+                overflow      : auto;
 
             }
 
@@ -148,6 +147,11 @@
             label,
             span {
                 text-indent: 0;
+            }
+
+
+            .el-form-item {
+                width: 200px;
             }
 
             .el-form-item__content {
@@ -257,6 +261,11 @@
                 }
 
             }
+
+            .el-input__prefix {
+                display: none;
+            }
+
 
         }
 
@@ -389,6 +398,41 @@
                 left       : 15px;
                 top        : 17px;
                 font-size  : 16px;
+            }
+
+            .el-input__prefix {
+                display: none;
+            }
+
+            & .pdf_datapick {
+                width: 128px;
+
+                .el-input {
+                    padding    : 0;
+                    border     : 0;
+                    width      : 128px;
+                    height     : 18px;
+                    color      : #000000;
+                    font-size  : 16px;
+                    font-family: SimSun;
+
+                }
+
+                .el-input__inner {
+                    padding    : 0;
+                    border     : 0;
+                    height     : 18px;
+                    text-align : center;
+                    background : #DBE4EF;
+                    color      : #000000;
+                    text-indent: 0;
+
+                }
+
+                .el-input__icon {
+                    display: none;
+                }
+
             }
         }
 
@@ -535,7 +579,7 @@
 
     // width: 128px;
     .el-date-editor--datetimerange.el-input__inner {
-        width      : 480px;
+        width      : 420px;
         font-family: SimSun;
         font-size  : 16px;
         color      : #000000;
@@ -549,6 +593,7 @@
             color      : #000000;
             line-height: 32px;
             font-weight: 600;
+            width      : 47%;
 
         }
 
@@ -573,21 +618,33 @@
 
 .printNumbers_box {
     position: absolute;
-    left    : calc(50% - 360px);
 
     .print_info {
         position     : relative;
         margin-bottom: 10px;
+    }
 
-        .pdf_seal {
-            margin-top     : 15px;
-            margin-bottom  : 11px;
-            width          : 215px;
-            text-align     : left;
-            text-align-last: left;
-            font-size      : 16px;
-            font-family    : SimSun;
-            float          : right;
+    .opinionTable {
+        tr {
+            td:first-child {
+                width: 50px;
+            }
+
+            td {
+                position: relative;
+
+                .handleIdea {
+                    position: absolute;
+                    right   : 15px;
+                    bottom  : 15px;
+
+                    p {
+                        display      : inline-block;
+                        min-width    : 80px;
+                        border-bottom: 1px solid #000000;
+                    }
+                }
+            }
         }
     }
 
@@ -614,4 +671,54 @@
     //         }
     //     }
     // }
+}
+
+
+/* 特殊长度 */
+.width500 {
+    width: 500px;
+}
+
+.width212 {
+    width: 212px;
+}
+
+.width213 {
+    width: 213px;
+}
+
+.width188 {
+    width: 188px;
+}
+
+.width182 {
+    width: 182px;
+}
+
+.width228 {
+    width: 228px;
+}
+
+.width230 {
+    width: 230px;
+}
+
+.width180 {
+    width: 180px;
+}
+
+.width60 {
+    width: 60px;
+}
+
+.width198 {
+    width: 198px;
+}
+
+.width428 {
+    width: 428px;
+}
+
+.width476 {
+    width: 476px;
 }

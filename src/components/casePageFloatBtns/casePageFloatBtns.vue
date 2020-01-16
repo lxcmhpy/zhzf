@@ -1,9 +1,10 @@
 <template>
-    
+
       <!-- 悬浮按钮 -->
       <div class="float-btns" style="bottom:250px">
-        {{formOrDocData.showBtn[1]}}
-        <a target="_blank" href="javascript:void(0)" @click="getFile()">访问</a>
+        <!-- <a target="_blank" href="javascript:void(0)" @click="getFile()">访问</a>
+        <a href="javascript:void(0)" @click="viewPDF()">跳转到pdf</a> -->
+
         <el-button type="success" @click="printContent" v-if="formOrDocData.showBtn[3]">
           <svg
             t="1577706357599"
@@ -23,7 +24,7 @@
           </svg>
           <br />打印
         </el-button>
-        <el-button type="success" v-if="formOrDocData.showBtn[4]">
+        <!-- <el-button type="success" v-if="formOrDocData.showBtn[4]">
           <svg
             t="1577706400265"
             class="icon"
@@ -41,11 +42,10 @@
             />
           </svg>
           <br />编辑
-        </el-button>
+        </el-button> -->
         <el-button type="success" @click="makeSeal" v-if="formOrDocData.showBtn[5]">
           <svg
-            t="1577706320726"
-            class="icon"
+            t="1577706320726" class="icon"
             viewBox="0 0 1052 1024"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@
           </svg>
           <br />提交
         </el-button>
-        
+
         <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]">
           <svg
             t="1577414377979"
@@ -136,7 +136,7 @@
             fill="#FFFFFF"
           />
         </svg>
-        <br />提交审批 
+        <br />提交审批
       </el-button>
       <el-button type="primary" @click="approvalBtn" v-if="formOrDocData.showBtn[7]">
         <svg
@@ -216,7 +216,7 @@ export default {
     },
       // 盖章
     makeSeal() {
-      console.log("盖章");
+      signature.openURL('oeder');
     },
     submitDataBtn(handleType) {
       this.$emit('submitData',handleType);
@@ -237,6 +237,34 @@ export default {
         }
       );
     },
+     //保存文书信息
+     addDocData(handleType){
+      this.com_addDocData(handleType,'docForm').then(
+        res => {
+          this.$message({
+            type: "success",
+            message: "保存成功",
+          });
+          this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+          this.$router.push({
+            name: 'caseDoc',
+            // name: row.url,
+            params: {
+              // id: row.id,
+              // //案件ID
+              // caseBasicinfoId: this.caseBasicinfoId,
+            }
+          });
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    // 跳转到pdf页面
+    viewPDF () {
+      this.$router.push({name: "viewPDF"})
+    },
     showApprovePeopleListBtn(){
       this.$emit('showApprovePeopleList');
     },
@@ -247,7 +275,6 @@ export default {
     backHuanjieBtn(){
       this.$emit('backHuanjie');
     }
-    
   }
 }
 </script>

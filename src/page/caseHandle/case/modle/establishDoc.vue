@@ -82,7 +82,7 @@
             </td>
             <td>年龄</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyAge" style="width:110px">
+              <el-form-item prop="partyAge">
                 <el-input type='textarea' v-model="formData.partyAge" v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>

@@ -99,6 +99,7 @@
         </p>
         <p  v-if="lineStyleFlag">
           违法事实及依据：<u>{{docData.illegalFactsEvidence}}</u>
+          <!-- 因返回数据中暂无此字段，可能无法正常显示 -->
         </p>
         <p>你(单位)的行为违反了<span>
             <el-form-item prop="illegalLaw">
@@ -171,7 +172,7 @@
       </el-form>
     </div>
     <!-- 悬浮按钮 -->
-    <div class="float-btns">
+    <!-- <div class="float-btns">
       <el-button type="success" @click="print">
         <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
           <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
@@ -199,7 +200,10 @@
         </svg><br>
         提交
       </el-button>
-    </div>
+    </div> -->
+    <!-- 悬浮按钮 -->
+    <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
@@ -207,6 +211,7 @@
 import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
+import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // import signture from "../../../../js/signture";
 import mySignture from "@/js/mySignture";
 // import {signture2} from "@/js/signture";
@@ -214,6 +219,7 @@ import mySignture from "@/js/mySignture";
 export default {
   components: {
     overflowInput,
+    casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
@@ -271,6 +277,10 @@ export default {
       maxLengthOverLine: 122,
       maxLength: 23,
       lineStyleFlag:false,
+      formOrDocData: {
+        showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+        pageDomId: 'subOutputRank-print',
+      }
     }
   },
   methods: {
@@ -330,10 +340,30 @@ export default {
       console.log('回显',edit)
       this.docData.illegalFactsEvidence = edit;
     },
+    //提交
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
+    },
+    //保存文书信息
+    saveData(handleType) {
+      this.com_addDocData(handleType, "docForm");
+    },
+    //是否是完成状态
+    isOverStatus() {
+      if (this.$route.params.docStatus == '1') {
+        this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
+    }
+
+  },
+   mounted() {
+    this.getDocDataByCaseIdAndDocId();
   },
   created() {
-    this.getDocDataByCaseIdAndDocId()
-
+    this.isOverStatus();
   }
 }
 </script>
