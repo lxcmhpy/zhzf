@@ -15,42 +15,30 @@
               <el-date-picker v-model="docData.askdata" type="datetimerange" range-separator="至" format="yyyy年MM月dd日HH时MM分" start-placeholder="    年  月  日  时  分" end-placeholder="    年  月  日  时  分">
               </el-date-picker>
             </el-form-item>
-            <!-- <el-time-picker is-range arrow-control v-model="docData.askTime" range-separator="至" format="HH时mm分" placeholder="选择时间范围" size="mini">
-            </el-time-picker> -->
-            <!-- <el-form-item prop="partyIdNo" style="width:40px">
-              <el-input v-model="docData.partyIdNo" maxLength='2' placeholder="\"></el-input>
-            </el-form-item>时
-            <el-form-item prop="partyIdNo" style="width:40px">
-              <el-input v-model="docData.partyIdNo" maxLength='2' placeholder="\"></el-input>
-            </el-form-item>分至
-            <el-form-item prop="partyIdNo" style="width:40px">
-              <el-input v-model="docData.partyIdNo" maxLength='2' placeholder="\"></el-input>
-            </el-form-item>时
-            <el-form-item prop="partyIdNo" style="width:40px">
-              <el-input v-model="docData.partyIdNo" maxLength='2' placeholder="\"></el-input>
-            </el-form-item>分 -->
 
-            第<el-form-item prop="partyIdNo" style="width:80px">
+            第<el-form-item prop="partyIdNo" class="width60">
               <el-input v-model="docData.partyIdNo" maxLength='2' placeholder="\"></el-input>
             </el-form-item>次询问
 
           </p>
           <p>地点：
-            <el-form-item v-if="!lineStyleFlag" prop="inquiryAddress" style="width:500px">
+            <el-form-item v-if="!lineStyleFlag" prop="inquiryAddress" class="width500">
               <el-input v-model="docData.inquiryAddress" maxLength='40' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiryAddress}}</u>
           </p>
           <el-row>
             <el-col :span="12">
-              <p>询问人：<el-form-item v-if="!lineStyleFlag" prop="inquiryStaff" style="width:212px">
-                  <el-input type='textarea' v-model="docData.inquiryStaff" v-bind:class="{ over_flow:docData.inquiryStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <p>询问人：<el-form-item v-if="!lineStyleFlag" prop="inquiryStaff" class="width212">
+                  <!-- <el-input type='textarea' v-model="docData.inquiryStaff" v-bind:class="{ over_flow:docData.inquiryStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <el-input type='textarea' v-model="docData.inquiryStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiryStaff}}</u></p>
             </el-col>
             <el-col :span="12">
-              <p>记录人：<el-form-item v-if="!lineStyleFlag" prop="recordStaff" style="width:213px">
-                  <el-input type='textarea' v-model="docData.recordStaff" v-bind:class="{ over_flow:docData.recordStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <p>记录人：<el-form-item v-if="!lineStyleFlag" prop="recordStaff" class="width213">
+                  <!-- <el-input type='textarea' v-model="docData.recordStaff" v-bind:class="{ over_flow:docData.recordStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <el-input type='textarea' v-model="docData.recordStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.recordStaff}}</u>
               </p>
@@ -58,15 +46,17 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <p>被询问人： <el-form-item v-if="!lineStyleFlag" prop="inquiried" style="width:188px">
-                  <el-input type='textarea' v-model="docData.inquiried" v-bind:class="{ over_flow:docData.inquiried.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <p>被询问人： <el-form-item v-if="!lineStyleFlag" prop="inquiried" class="width188">
+                  <!-- <el-input type='textarea' v-model="docData.inquiried" v-bind:class="{ over_flow:docData.inquiried.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <el-input type='textarea' v-model="docData.inquiried" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiried}}</u>
               </p>
             </el-col>
             <el-col :span="12">
-              <p>与案件关系：<el-form-item v-if="!lineStyleFlag" prop="inquiriedRelation" style="width:182px">
-                  <el-input type='textarea' v-model="docData.inquiriedRelation" v-bind:class="{ over_flow:docData.inquiriedRelation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <p>与案件关系：<el-form-item v-if="!lineStyleFlag" prop="inquiriedRelation" class="width182">
+                  <!-- <el-input type='textarea' v-model="docData.inquiriedRelation" v-bind:class="{ over_flow:docData.inquiriedRelation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <el-input type='textarea' v-model="docData.inquiriedRelation" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedRelation}}</u>
               </p>
@@ -75,8 +65,9 @@
           <el-row>
             <el-col :span="12">
               <p>
-                性别：<el-form-item v-if="!lineStyleFlag" prop="inquiriedSex" style="width:228px">
-                  <el-input type='textarea' v-model="docData.inquiriedSex" v-bind:class="{ over_flow:docData.inquiriedSex.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                性别：<el-form-item v-if="!lineStyleFlag" prop="inquiriedSex" class="width228">
+                  <!-- <el-input type='textarea' v-model="docData.inquiriedSex" v-bind:class="{ over_flow:docData.inquiriedSex.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <el-input type='textarea' v-model="docData.inquiriedSex" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedSex}}</u>
 
@@ -84,8 +75,9 @@
             </el-col>
             <el-col :span="12">
               <p>
-                年龄：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAge" style="width:230px">
-                  <el-input type='textarea' v-model="docData.inquiriedAge" v-bind:class="{ over_flow:docData.inquiriedAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                年龄：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAge" class="width230">
+                  <!-- <el-input type='textarea' v-model="docData.inquiriedAge" v-bind:class="{ over_flow:docData.inquiriedAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <el-input type='textarea' v-model="docData.inquiriedAge" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedAge}}</u>
               </p>
@@ -94,58 +86,58 @@
           <el-row>
             <el-col :span="12">
               <p>
-                身份证件号：<el-form-item v-if="!lineStyleFlag" prop="inquiriedIdNo" style="width:180px">
-                  <el-input type='textarea' v-model="docData.inquiriedIdNo" v-bind:class="{ over_flow:docData.inquiriedIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                身份证件号：<el-form-item v-if="!lineStyleFlag" prop="inquiriedIdNo" class="width180">
+                  <el-input type='textarea' v-model="docData.inquiriedIdNo" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedIdNo}}</u>
               </p>
             </el-col>
             <el-col :span="12">
               <p>
-                联系电话：<el-form-item v-if="!lineStyleFlag" prop="inquiriedTel" style="width:198px">
-                  <el-input type='textarea' v-model="docData.inquiriedTel" v-bind:class="{ over_flow:docData.inquiriedTel.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                联系电话：<el-form-item v-if="!lineStyleFlag" prop="inquiriedTel" class="width198">
+                  <el-input type='textarea' v-model="docData.inquiriedTel" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedTel}}</u>
               </p>
             </el-col>
           </el-row>
-          <p>工作单位及职务：<el-form-item v-if="!lineStyleFlag" prop="inquiriedUnitPosition" style="width:428px">
-              <el-input type='textarea' v-model="docData.inquiriedUnitPosition" v-bind:class="{ over_flow:docData.inquiriedUnitPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+          <p>工作单位及职务：<el-form-item v-if="!lineStyleFlag" prop="inquiriedUnitPosition" class="width428">
+              <el-input type='textarea' v-model="docData.inquiriedUnitPosition" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiriedUnitPosition}}</u></p>
-          <p>联系地址：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAddress" style="width:476px">
-              <el-input type='textarea' v-model="docData.inquiriedAddress" v-bind:class="{ over_flow:docData.inquiriedAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+          <p>联系地址：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAddress" class="width476">
+              <el-input type='textarea' v-model="docData.inquiriedAddress" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiriedAddress}}</u></p>
           <p>我们是
             <el-form-item v-if="!lineStyleFlag" prop="organName">
-              <el-input type='textarea' v-model="docData.organName" v-bind:class="{ over_flow:docData.organName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input type='textarea' v-model="docData.organName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.organName}}</u>
             的执法人员
             <el-form-item v-if="!lineStyleFlag" prop="staff1">
-              <el-input type='textarea' v-model="docData.staff1" v-bind:class="{ over_flow:docData.staff1.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input type='textarea' v-model="docData.staff1" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.staff1}}</u>、
             <el-form-item v-if="!lineStyleFlag" prop="staff2">
-              <el-input type='textarea' v-model="docData.staff2" v-bind:class="{ over_flow:docData.staff2.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input type='textarea' v-model="docData.staff2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.staff2}}</u>，
             这是我们的执法证件，执法证号分别是
             <el-form-item v-if="!lineStyleFlag" prop="certificateId1">
-              <el-input type='textarea' v-model="docData.certificateId1" v-bind:class="{ over_flow:docData.certificateId1.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input type='textarea' v-model="docData.certificateId1" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.certificateId1}}</u>、
             <el-form-item v-if="!lineStyleFlag" prop="certificateId2">
-              <el-input type='textarea' v-model="docData.certificateId2" v-bind:class="{ over_flow:docData.certificateId2.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input type='textarea' v-model="docData.certificateId2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.certificateId2}}</u>，请你确认。现依法向你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。
           </p>
-          <span v-for="item in docData.qaList" :key="item.id">
+          <span v-for="(item, index) in docData.qaList" :key="item.id">
             <p class="side_right_indent" @click="QAModleEdit">
               <span class="side_right" @click="overFlowEdit">
                 <el-form-item prop="illegalFactsEvidence">
-                  <span class="over_topic">问：</span>
+                  <span class="over_topic">问{{index+1}}：</span>
                   {{item.question}}
                 </el-form-item>
               </span>
@@ -154,7 +146,7 @@
             <p class="side_right_indent">
               <span class="side_right" @click="overFlowEdit">
                 <el-form-item prop="illegalFactsEvidence">
-                  <span class="over_topic">答：</span>
+                  <span class="over_topic">答{{index+1}}：</span>
                   {{item.answer}}
                 </el-form-item>
               </span>
@@ -180,7 +172,7 @@
       </div>
     </el-form>
     <!-- 悬浮按钮 -->
-    <div class="float-btns">
+    <!-- <div class="float-btns">
       <el-button type="success">
         <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
           <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
@@ -208,7 +200,7 @@
         </svg><br>
         提交
       </el-button>
-    </div>
+    </div> -->
     <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
     <casePageFloatBtns :pageDomId="'QAlist-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
@@ -267,7 +259,7 @@ export default {
         certificateId1: "",
         certificateId2: "",
         askTime: 1,
-        qaList: [{}, {}],
+        qaList: [{}],//弹出框问答数组，如请求时未返回即数组未定义，可能回显失败，刷新即可查看效果
       },
       num4: 1,
       lineStyleFlag: false,
@@ -332,10 +324,10 @@ export default {
     }
   },
   inject: ["reload"],
-    mixins: [mixinGetCaseApiList],
+  mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   methods: {
-      //根据案件ID和文书Id获取数据
+    //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
@@ -343,20 +335,22 @@ export default {
         docId: this.$route.params.docId
       };
       this.com_getDocDataByCaseIdAndDocId(data)
+
+      this.docData.qaList.push({
+        question: '',
+        answer: '',
+        key: ''
+      });
+
     },
-     addDocData(handleType) {
+    addDocData(handleType) {
       this.com_addDocData(handleType);
       // this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
       // this.$router.push({
       //   name: this.$route.params.url,
       // });
     },
-    // showModal(type, data,maxlength) {
-    //   console.log(type, data,maxlength);
-    //   this.visible = true;
-    //   this.maxlength = maxlength;
-    //   this.dialogTitle = "多行编辑"
-    // },
+
     // 问答编辑
     QAModleEdit() {
       this.$refs.QAModleInfoRef.showModal(0, '');
@@ -378,14 +372,14 @@ export default {
         name: this.$route.params.url
       });
     },
-      //是否是完成状态
-    isOverStatus(){
-      if(this.$route.params.docStatus == '1'){
-        this.formOrDocData.showBtn =[false,false,false,false,false,false,false,false,false,true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+    //是否是完成状态
+    isOverStatus() {
+      if (this.$route.params.docStatus == '1') {
+        this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
-    }
+    },
   },
-   mounted() {
+  mounted() {
     this.getDocDataByCaseIdAndDocId();
   },
   created() {

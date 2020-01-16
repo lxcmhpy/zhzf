@@ -83,7 +83,7 @@
             </td>
             <td>年龄</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyAge" style="width:110px">
+              <el-form-item prop="partyAge" >
                 <el-input type='textarea' v-model="formData.partyAge" v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -119,7 +119,10 @@
                 <el-input type='textarea' v-model="formData.partyName" v-bind:class="{ over_flow:formData.partyName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
-            <td>法定代表人</td>
+            <td>
+              <p>法定</p>
+              <p>代表人</p>
+              </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager">
                 <el-input type='textarea' v-model="formData.partyManager" v-bind:class="{ over_flow:formData.partyManager.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
@@ -133,7 +136,7 @@
                 <el-input type='textarea' v-model="formData.partyUnitAddress" v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
-            <td>联系电话</td>
+            <td style="width:50px">联系电话</td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyUnitTel">
                 <el-input type='textarea' v-model="formData.partyUnitTel" v-bind:class="{ over_flow:formData.partyUnitTel.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
@@ -141,7 +144,7 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2">统一社会信用代码</td>
+            <td colspan="2" >统一社会信用代码</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode">
                 <el-input type='textarea' v-model="formData.socialCreditCode" v-bind:class="{ over_flow:formData.socialCreditCode.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
@@ -170,7 +173,7 @@
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="caseReplay">
                 <!-- <el-input type='textarea' v-model="formData.caseReplay" v-bind:class="{ over_flow:formData.caseReplay.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input> -->
-                <el-input type='textarea'  v-model="formData.illegalLaw"></el-input>
+                <el-input type='textarea' :autosize="{ minRows: 3, maxRows: 4}"  v-model="formData.illegalLaw"></el-input>
               </el-form-item>
             </td>
             <td>
