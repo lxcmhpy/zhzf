@@ -1,6 +1,6 @@
 <template>
   <div class="print_box">
-    <div class="print_info indent_style">
+    <div class="print_info indent_style" id="inquestNote_print">
       <el-form  ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">勘验笔录</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
@@ -168,7 +168,7 @@
       </el-form>
     </div>
     <!-- 悬浮按钮 -->
-    <div class="float-btns">
+    <!-- <div class="float-btns">
       <el-button type="success" @click="print">
         <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
           <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
@@ -196,7 +196,14 @@
         </svg><br>
         提交
       </el-button>
-    </div>
+    </div> -->
+    <casePageFloatBtns
+      :pageDomId="'inquestNote_print'"
+      :formOrDocData="formOrDocData"
+      @submitData="submitData"
+      @saveData="saveData"
+      @backHuanjie="submitData"
+    ></casePageFloatBtns>
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
@@ -204,6 +211,8 @@
 import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
+import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+
 export default {
 
   data() {
@@ -266,6 +275,7 @@ export default {
   inject: ["reload"],
   components: {
     overflowInput,
+    casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
@@ -291,17 +301,17 @@ export default {
       signature.openURL('oeder');
     },
     //   打印方法
-    printContent(e) {
-      let subOutputRankPrint = document.getElementById('subOutputRank-print');
-      console.log(subOutputRankPrint.innerHTML);
-      let newContent = subOutputRankPrint.innerHTML;
-      let oldContent = document.body.innerHTML;
-      document.body.innerHTML = newContent;
-      window.print();
-      window.location.reload();
-      document.body.innerHTML = oldContent;
-      return false;
-    },
+    // printContent(e) {
+    //   let subOutputRankPrint = document.getElementById('subOutputRank-print');
+    //   console.log(subOutputRankPrint.innerHTML);
+    //   let newContent = subOutputRankPrint.innerHTML;
+    //   let oldContent = document.body.innerHTML;
+    //   document.body.innerHTML = newContent;
+    //   window.print();
+    //   window.location.reload();
+    //   document.body.innerHTML = oldContent;
+    //   return false;
+    // },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -313,28 +323,20 @@ export default {
       this.com_getDocDataByCaseIdAndDocId(data);
     },
     //保存文书信息
-    addDocData(handleType){
-      this.com_addDocData(handleType,'docForm').then(
-        res => {
-          this.$message({
-            type: "success",
-            message: "保存成功",
-          });
-          this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-          this.$router.push({
-            name: 'caseDoc',
-            // name: row.url,
-            params: {
-              // id: row.id,
-              // //案件ID
-              // caseBasicinfoId: this.caseBasicinfoId,
-            }
-          });
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    saveData(handleType) {
+      this.com_addDocData(handleType, "docForm");
+    },
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
+    },
+    //是否是完成状态
+    isOverStatus(){
+      if(this.$route.params.docStatus == '1'){
+        this.formOrDocData.showBtn =[false,false,false,false,false,false,false,false,false,true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
     },
     //获取天气字典值
     getDictKeyList(){   
@@ -359,6 +361,8 @@ export default {
   },
   created() {
     this.getDocDataByCaseIdAndDocId();
+    this.isOverStatus();
+
     //加载天气抽屉表
     this.getDictKeyList();
   },

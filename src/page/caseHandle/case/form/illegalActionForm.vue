@@ -1,6 +1,6 @@
 <template>
   <div class="print_box">
-    <div class="print_info indent_style">
+    <div class="print_info indent_style" id="illegalAction_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">违法行为通知书</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
@@ -85,7 +85,7 @@
       </el-form>
     </div>
     <!-- 悬浮按钮 -->
-    <div class="float-btns">
+    <!-- <div class="float-btns">
       <el-button type="success" @click="print">
         <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
           <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
@@ -113,7 +113,12 @@
         </svg><br>
         提交
       </el-button>
-    </div>
+    </div> -->
+    <casePageFloatBtns
+      :pageDomId="'illegalAction_print'"
+      :formOrDocData="formOrDocData"
+      @submitData="submitData"
+    ></casePageFloatBtns>
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
@@ -123,6 +128,8 @@
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
 import overflowInput from "../modle/overflowInput";
+import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+
 export default {
   data() {
     return {
@@ -154,12 +161,17 @@ export default {
       },
       maxLength: 23,
       lineStyleFlag: false,
+      formOrDocData: {
+        showBtn: [true, false, true, true, false, true, false, false, true,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        pageDomId:'illegalAction_print',
+      }
     };
   },
   mixins:[mixinGetCaseApiList],
   computed:{...mapGetters(['caseId'])},
   components: {
     overflowInput,
+    casePageFloatBtns,
   },
   methods: {
     // 多行编辑
@@ -178,7 +190,7 @@ export default {
     // 提交表单
     submitData(handleType) {
       //参数  提交类型 、formRef  
-      this.com_submitCaseForm(handleType,'docForm',true);
+      this.com_submitCaseForm(handleType,'docForm',false);
     },
     
     // 盖章

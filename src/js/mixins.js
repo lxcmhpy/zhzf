@@ -129,8 +129,10 @@ export const mixinGetCaseApiList = {
                 }  
                 this.com_updatePartCaseBasicInfo(newData)
               }
-              if(this.formOrDocData ){
+              if(this.formOrDocData){
+                if(this.formOrDocData.pageDomId=='caseInvestig_pinft'){
                   this.formOrDocData.showBtn=[false,false,false,true,true,true,true,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+                }
               }
             },
             err => {

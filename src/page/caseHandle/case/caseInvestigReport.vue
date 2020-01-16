@@ -181,12 +181,13 @@
               <td rowspan="6" colspan="7">
                 {{formData.approveOpinions}}
                 <div class="pdf_seal">
-                  <p>签名：</p>
+                  <p>签名：{{formData.approvePeo}}</p>
                   <p>
-                    <el-form-item prop="makeDate" class="pdf_datapick">
+                    {{formData.approveTime}}
+                    <!-- <el-form-item prop="makeDate" class="pdf_datapick">
                       <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
                       </el-date-picker>
-                    </el-form-item>
+                    </el-form-item> -->
                   </p>
                 </div>
               </td>
@@ -208,13 +209,15 @@
                 <p>意见</p>
               </td>
               <td rowspan="6" colspan="7">
+                {{formData.secondApproveOpinions}}
                 <div class="pdf_seal">
-                <p>签名：</p>
+                <p>签名：{{formData.secondApprovePeo}}</p>
                 <p>
-                  <el-form-item prop="makeDate" class="pdf_datapick">
+                  {{formData.secondApproveTime}}
+                  <!-- <el-form-item prop="makeDate" class="pdf_datapick">
                     <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
                     </el-date-picker>
-                  </el-form-item>
+                  </el-form-item> -->
                 </p>
               </div>
               </td>
@@ -244,12 +247,13 @@
 
                 {{formData.thirdApproveOpinions}}
                 <div class="pdf_seal">
-                  <p>签名：</p>
+                  <p>签名：{{formData.thirdApprovePeo}}</p>
                   <p>
-                    <el-form-item prop="makeDate" class="pdf_datapick">
+                    {{formData.thirdApproveTime}}
+                    <!-- <el-form-item prop="makeDate" class="pdf_datapick">
                       <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
                       </el-date-picker>
-                    </el-form-item>
+                    </el-form-item> -->
                   </p>
                 </div>
               </td>
@@ -264,15 +268,7 @@
         </div>
       </div>
       <!-- 悬浮按钮 -->
-      <div class="float-btns">
-        <!-- <el-button type="primary" @click="continueHandle">
-            <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2285" width="24" height="24">
-              <path d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z" fill="#FFFFFF" p-id="2286"></path>
-            </svg>
-            <br>
-            下一<br>环节
-          </el-button>-->
-
+      <!-- <div class="float-btns">
         <el-button type="primary" @click="submitCaseDoc(1)" v-if="!approval">
           <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
             <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF" />
@@ -298,9 +294,15 @@
           </svg>
           <br />审批
         </el-button>
-      </div>
+      </div> -->
     </el-form>
-
+    <casePageFloatBtns
+      :pageDomId="'subOutputRank-print'"
+      :formOrDocData="formOrDocData"
+      @submitData="submitData"
+      @showApprovePeopleList="showApprovePeopleList" 
+      @showApproval="showApproval"
+    ></casePageFloatBtns>
     <!-- 提交审批 -->
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <!-- 审批 -->
@@ -310,6 +312,7 @@
 <script>
 import showApprovePeople from "../components/showApprovePeople";
 import approvalDialog from "../components/approvalDialog";
+import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
@@ -380,14 +383,19 @@ export default {
       // 大写
       punishMoneyCapital: "",
       confiscateThingCapital: "",
-      approval: this.$route.params.isApproval ? true : false //   是否是审批人员进入
+      approval: this.$route.params.isApproval ? true : false, //   是否是审批人员进入
+      formOrDocData: {
+        showBtn: [true, false, true, false, false, false, false, false, false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        pageDomId:'caseInvestig_pinft',
+      }
     };
   },
   computed: { ...mapGetters(["caseId"]) },
   mixins: [mixinGetCaseApiList],
   components: {
     showApprovePeople,
-    approvalDialog
+    approvalDialog,
+    casePageFloatBtns
   },
   methods: {
     //加载表单信息
@@ -400,7 +408,7 @@ export default {
       );
     },
     //保存表单数据
-    submitCaseDoc(handleType) {
+    submitData(handleType){
       this.com_submitCaseForm(handleType, "caseInvestiForm", true);
     },
     //下一环节
@@ -552,10 +560,16 @@ export default {
 拟处罚类型2+……+拟处罚类型N+的行政处罚
                                           当否，请批示。 `;
       console.log("dealOpinions", this.formData.dealOpinions);
+    },
+    isApproval(){
+      if(this.$route.params.isApproval){
+        this.formOrDocData.showBtn =[false,false,false,false,false,false,false,true,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
     }
   },
   created() {
     this.setFormData();
+    this.isApproval();
   }
 };
 </script>

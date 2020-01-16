@@ -2,6 +2,7 @@
     
       <!-- 悬浮按钮 -->
       <div class="float-btns" style="bottom:250px">
+        {{formOrDocData.showBtn[1]}}
         <a target="_blank" href="javascript:void(0)" @click="getFile()">访问</a>
         <el-button type="success" @click="printContent" v-if="formOrDocData.showBtn[3]">
           <svg
@@ -80,7 +81,7 @@
           <br />提交
         </el-button>
         
-        <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[2]">
+        <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]">
           <svg
             t="1577414377979"
             class="icon"
