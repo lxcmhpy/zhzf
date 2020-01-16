@@ -117,6 +117,9 @@ export const mixinGetCaseApiList = {
                 //保存成功 
                 if (hasNextBtn) {    //有下一环节按钮  
                   // this.nextBtnDisab = false;
+                  //提交pdf 显示pdf页
+                  this.printContent();
+                  
                 } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
                   this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId)
                 }
@@ -326,11 +329,22 @@ export const mixinGetCaseApiList = {
       var fd = new FormData()
       fd.append("file", f)
       fd.append('caseId',this.caseId)
-      fd.append('docId',this.caseDocDataForm.caseDoctypeId);
+      if(this.caseDocDataForm != undefined){
+        // 只是文书
+        fd.append('docId',this.caseDocDataForm.caseDoctypeId);
+      }else{
+        //即是环节也是文书
+        fd.append('docId',this.huanjieAndDocId);
+      }
 
       this.$store.dispatch("uploadFile", fd).then(
         res => {
-          console.log('上传',res)
+          console.log('上传',res);
+          //上传pdf之后显示pdf
+          let routerData = {
+            hasApprovalBtn: this.huanjieAndDocId == '2c9029ae654210eb0165421564970001' ? true : false
+          }
+          this.$router.push({name:'myPDF',params:routerData})
         },
         err => {
           console.log(err);

@@ -306,7 +306,7 @@
       </el-button>
     </div> -->
     
-    <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @saveData="saveData" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
    
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
      <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
@@ -349,7 +349,9 @@ export default {
       approval:this.$route.params.isApproval ? true : false, //   是否是审批人员进入
       formOrDocData:{
         showBtn:[false,true,true,false,false,false,false,false,false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-      }
+        pageDomId:"establish-print",
+      },
+      huanjieAndDocId:"2c9029ae654210eb0165421564970001", //立案登记表的文书id
     };
   },
   components: {
@@ -375,8 +377,8 @@ export default {
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
     // 提交表单
-    submitData(handleType) {
-      //参数  提交类型 、formRef  
+    saveData(handleType) {
+      //参数  提交类型 、formRef 
       this.com_submitCaseForm(handleType,'establishForm',true);
     },
     showApprovePeopleList(){

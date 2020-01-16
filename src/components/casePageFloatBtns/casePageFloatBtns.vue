@@ -2,7 +2,6 @@
     
       <!-- 悬浮按钮 -->
       <div class="float-btns" style="bottom:250px">
-        {{formOrDocData.showBtn[1]}}
         <a target="_blank" href="javascript:void(0)" @click="getFile()">访问</a>
         <el-button type="success" @click="printContent" v-if="formOrDocData.showBtn[3]">
           <svg
@@ -23,7 +22,7 @@
           </svg>
           <br />打印
         </el-button>
-        <el-button type="success" v-if="formOrDocData.showBtn[4]">
+        <!-- <el-button type="success" v-if="formOrDocData.showBtn[4]">
           <svg
             t="1577706400265"
             class="icon"
@@ -41,7 +40,7 @@
             />
           </svg>
           <br />编辑
-        </el-button>
+        </el-button> -->
         <el-button type="success" @click="makeSeal" v-if="formOrDocData.showBtn[5]">
           <svg
             t="1577706320726"
