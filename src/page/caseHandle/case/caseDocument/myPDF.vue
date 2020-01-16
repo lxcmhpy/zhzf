@@ -3,10 +3,10 @@
       <!-- <div class="print_info"> -->
         <embed class="print_info" style="padding:0px;width: 730px;height:100% !important" name="plugin" id="plugin" :src="storagePath" type="application/pdf" internalinstanceid="29">
       <!-- </div>  -->
-    <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @backHuanjie="backHuanjie" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
 
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
-    <approvalDialog ref="approvalDialogRef" @getNewData="setData"></approvalDialog>
+    <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
   </div>
 </template>
 <script>
@@ -40,6 +40,9 @@ export default {
   computed:{...mapGetters(['caseId'])},
   methods: {
     getFile () {
+      console.log('docId',this.$route.params.docId);
+      console.log('caseId',this.caseId)
+
       this.$store.dispatch("getFile", {
           docId: this.$route.params.docId,
           caseId: this.caseId,
@@ -58,12 +61,20 @@ export default {
       if(this.$route.params.hasApprovalBtn){
         this.formOrDocData.showBtn =[false,false,false,true,false,true,true,false,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }else{
-        this.formOrDocData.showBtn.showBtn=[true,false,false,true,false,true,true,false,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        this.formOrDocData.showBtn=[true,false,false,true,false,true,false,false,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
 
       }
-      //只有审核按钮
+      //审核人员进入 只有审核按钮
       if(this.$route.params.isApproval){
         this.formOrDocData.showBtn =[false,false,false,false,false,false,false,true,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
+      //审核人员审核完成 只有打印按钮
+      if(this.$route.params.approvalOver){
+        this.formOrDocData.showBtn =[false,false,false,true,false,false,false,false,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
+      //文书预览只有返回按钮
+      if(this.$route.params.hasBack){
+        this.formOrDocData.showBtn =[false,false,false,false,false,false,false,false,false,true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
     showApprovePeopleList(){
@@ -84,10 +95,24 @@ export default {
       }
       this.$refs.approvalDialogRef.showModal(caseData);
     },
-    setData(){
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
+    approvalOver(){
+      // this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      // this.com_getFormDataByCaseIdAndFormId(this.caseId,'2c90293b6c178b55016c17c255a4000d',true);
+      // this.formOrDocData.showBtn =[false,false,false,true,false,false,false,false,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
     },
+    // setData(){
+    //   this.com_getFormDataByCaseIdAndFormId(this.caseId,'2c90293b6c178b55016c17c255a4000d',false);
+    // },
+    //文书提交返回环节
+    submitData(){
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.go(-2);
+    },
+    backHuanjie(){
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.go(-1);
+    },
+
     // 盖章
     makeSeal() {
       console.log('盖章!');
@@ -100,7 +125,7 @@ export default {
   },
   mounted () {
     this.getFile();
-    this.setData();
+    // this.setData();
   },
   created() {
     this.isApproval();

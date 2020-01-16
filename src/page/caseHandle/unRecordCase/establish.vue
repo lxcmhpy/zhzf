@@ -353,6 +353,7 @@ export default {
         pageDomId:"establish-print",
       },
       huanjieAndDocId:"2c9029ae654210eb0165421564970001", //立案登记表的文书id
+      approvalOver:false,    //审核完成
     };
   },
   components: {
@@ -427,6 +428,7 @@ export default {
     goToPfd(){
       //提交pdf 显示pdf页
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.approvalOver = true;
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,true);
     },
     isApproval(){
@@ -442,8 +444,8 @@ export default {
   }
 };
 </script>
-// <style lang="less">
-// // @import "../../../css/pdf.less";
-// @import "../../../css/caseHandle/caseDocModle.less";
+ <style lang="less">
+ // @import "../../../css/pdf.less";
+ @import "../../../css/caseHandle/caseDocModle.less";
 
-// </style>
+ </style>

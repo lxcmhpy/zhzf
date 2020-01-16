@@ -25,7 +25,7 @@ export async function htmlExportPDF(id, callback) {
     context.msImageSmoothingEnabled = true;
     context.imageSmoothingEnabled = true;
 
-    let imgData = canvas.toDataURL('image/png','1.0');//转化成base64格式,可上网了解此格式
+    let imgData = canvas.toDataURL('image/jpeg','1.0');//转化成base64格式,可上网了解此格式
     let img = new Image();
     img.src = imgData;
     let doc = new JsPDF('', 'pt', 'a4');

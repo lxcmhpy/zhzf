@@ -56,7 +56,9 @@ export const mixinGetCaseApiList = {
             // }
             if(refreshDataForPdf){
               //提交pdf页
-              this.printContent();
+              setTimeout(()=>{
+                this.printContent();
+              },3000)
             }
 
           }
@@ -106,7 +108,6 @@ export const mixinGetCaseApiList = {
               if (handleType == 1) {
                 //保存成功 
                 if (hasNextBtn) {    //有下一环节按钮  
-                  // this.nextBtnDisab = false;
                   //提交pdf 显示pdf页
                   this.printContent();
                   
@@ -232,9 +233,8 @@ export const mixinGetCaseApiList = {
                 message: "提交成功"
               });
               this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-              this.$router.push({
-                name: this.$route.params.url,
-              });
+              //提交成功后提交pdf到服务器，后打开pdf
+              this.printContent();
             },
             err => {
               console.log(err);
@@ -300,23 +300,31 @@ export const mixinGetCaseApiList = {
       var f = new File([file.output("blob")], name, {type: 'application/pdf'})
       var fd = new FormData()
       fd.append("file", f)
-      fd.append('caseId',this.caseId)
+      fd.append('caseId',this.caseId);
+      let docId = '';  //环节id
       if(this.caseDocDataForm != undefined){
         // 只是文书
-        fd.append('docId',this.caseDocDataForm.caseDoctypeId);
+        docId = this.caseDocDataForm.caseDoctypeId;
       }else{
         //即是环节也是文书
-        fd.append('docId',this.huanjieAndDocId);
+        docId = this.huanjieAndDocId
       }
+      fd.append('docId',docId);
+
 
       console.log('fd',fd.get('docId'));
+
       this.$store.dispatch("uploadFile", fd).then(
         res => {
           console.log('上传',res);
           //上传pdf之后显示pdf
           let routerData = {
-            hasApprovalBtn: this.huanjieAndDocId == '2c9029ae654210eb0165421564970001' ? true : false
+            hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' ? true : false,
+            docId:docId,
+            approvalOver:this.approvalOver ? true : false
+            
           }
+          this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({name:'myPDF',params:routerData})
         },
         err => {
@@ -324,6 +332,7 @@ export const mixinGetCaseApiList = {
         }
       );
     },
+
   },
   created() {
     // this.getApiList();
