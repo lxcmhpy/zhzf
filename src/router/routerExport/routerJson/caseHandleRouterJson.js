@@ -412,5 +412,13 @@ export default  [
     title: "pdf"
   },
   component: () => import("@/page/caseHandle/case/caseDocument/myPDF.vue")
+},
+{
+  path: "/viewPDF",
+  name: "viewPDF",
+  meta: {
+    title: "pdf展示"
+  },
+  component: () => import("@/components/htmlExportPDF/viewPDF.vue")
 }
 ]

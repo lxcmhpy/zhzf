@@ -660,7 +660,7 @@ export default {
         caseTypeId: "",
         staffId: "",
         staff: "",
-        certificateId: "",
+        certificateId: ""
       },
       rules: {
         caseSource: [{ required: true, message: "请选择", trigger: "change" }],

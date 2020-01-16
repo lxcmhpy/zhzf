@@ -9,10 +9,10 @@ var vue = new Vue();
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api的base_url
+  // baseURL: process.env.BASE_API, // api的base_url
   timeout: 15000, // request timeout
   // "Content-Type": "application/x-www-form-urlencoded",
-  Accept: '*/*',
+
 });
 var BASEURL
 service({
@@ -31,15 +31,16 @@ service({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    //  if(config.baseUrlType == 1){
-    //    config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
-    //  }else{
-    //   config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
-    //  }
+     if(config.baseUrlType == 1){
+       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
+     }else{
+      config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
+     }
 
      if (config.responseType) {
        config["responseType"] = config.responseType
      }
+
      config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
 
     //token一天后过期

@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box" >
+  <div class="print_box">
     <!-- sdmaskjdnsjdns -->
     <div class="print_info" id="establish-print"> 
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
@@ -156,7 +156,7 @@
             <td colspan="8" class="color_DBE4EF">
               <el-form-item prop="caseBasicInfo">
                 <!-- <el-input type='textarea' v-model="formData.caseBasicInfo" v-bind:class="{ over_flow:formData.caseBasicInfo.length>14?true:false }" :autosize="{ minRows: 5, maxRows: 5}" :maxlength="nameLength" placeholder="\"></el-input> -->
-                <el-input type='textarea' v-model="formData.caseInfo"></el-input>
+                <el-input type='textarea'></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -170,7 +170,7 @@
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="caseReplay">
                 <!-- <el-input type='textarea' v-model="formData.caseReplay" v-bind:class="{ over_flow:formData.caseReplay.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input> -->
-                <el-input type='textarea'  v-model="formData.illegalLaw"></el-input>
+                <el-input type='textarea'></el-input>
               </el-form-item>
             </td>
             <td>
@@ -304,13 +304,13 @@
         </svg>
         <br />审批
       </el-button>
-    </div> -->
+    </div>  -->
     
     <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @saveData="saveData" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
    
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
      <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
-    <approvalDialog ref="approvalDialogRef" @getNewData="setData"></approvalDialog>
+    <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
   </div>
 
 </template>
@@ -329,9 +329,7 @@ export default {
       caseNumber: "010-123456",
       // tableData: {},
       formData: {
-        partyType: "个人",
-        caseName:"",
-        caseInfo:"",
+        partyType: "个人"
       },
       caseLinkDataForm: { 
         id: "", //修改的时候用
@@ -374,7 +372,7 @@ export default {
     // },
     setData(){
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,false);
     },
     // 提交表单
     saveData(handleType) {
@@ -423,12 +421,17 @@ export default {
     edit() {
       this.lineStyleFlag = false;
     },
+    goToPfd(){
+      //提交pdf 显示pdf页
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,true);
+    },
     isApproval(){
+      //只有审核按钮
       if(this.$route.params.isApproval){
         this.formOrDocData.showBtn =[false,false,false,false,false,false,false,true,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
-    }
-    
+    },
   },
   created(){
     this.setData();

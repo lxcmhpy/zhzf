@@ -1,5 +1,4 @@
 import axios from "axios";
-import vueJsonp from 'vue-jsonp'
 let Base64 = require('js-base64').Base64;
 let mySignture = {};
 
@@ -14,8 +13,6 @@ mySignture.MultBrowser = function(){
 			var data = Base64.encode(jsonData);
 			var callBack = Math.random().toString(36).substr(2);
 			try	{
-				console.log(vueJsonp.install)
-				vueJsonp()
 				// var ajax=$.ajax({
 				// type : "get",
 				// async:false,
@@ -31,7 +28,19 @@ mySignture.MultBrowser = function(){
 				// 			func(json.error, json.msg);
 				// 		}
 				// 	}
-				// });
+                // });
+                axios({
+					method: 'get',
+					url: 'http://127.0.0.1:16888?data='+data,
+					dataType : "jsonp",
+					jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(默认为:callback)
+					jsonpCallback:"success_jsonpCallback" + callBack,//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+				}).then(res=>{
+					console.log(res)
+				},err=>{
+					console.log(err)
+
+				});
 			}catch (e){
 				alert("jsonp发送数据失败！");
 				}

@@ -143,7 +143,9 @@ export default {
             type: "success",
             message: "审批通过"
           });
+          
           this.$emit("getNewData");
+          
           this.visible = false;
         },
         err => {
