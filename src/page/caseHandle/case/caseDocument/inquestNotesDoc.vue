@@ -6,7 +6,7 @@
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->        
         <p>案由：
-            <el-form-item v-if="!lineStyleFlag" prop="caseName" style="width:653px">
+            <el-form-item v-if="!lineStyleFlag" prop="caseName" class="width500">
               <el-input type='textarea' v-model="docData.caseName" v-bind:class="{ over_flow:docData.caseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.caseName}}</u>
