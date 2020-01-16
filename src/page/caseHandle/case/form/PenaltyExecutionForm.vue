@@ -136,7 +136,7 @@
                 <template slot-scope="scope">
                   <span v-if="scope.row.status == '1'">
                     <!-- 已完成 -->
-                    <i type="primary" class="el-icon-view cell-icon" @click="viewDoc(scope.row)"></i>
+                    <i type="primary" class="el-icon-view cell-icon" @click="viewDocPdf(scope.row)"></i>
                     <i type="primary" class="el-icon-printer cell-icon"></i>
                   </span>
                   <span v-if="scope.row.status == '0'">
@@ -268,6 +268,17 @@ export default {
       };
       this.com_getDocListByCaseIdAndFormId(data);
       
+    },
+     //预览pdf
+    viewDocPdf(row){
+      let routerData = {
+          hasApprovalBtn:false,
+          docId:row.docId,
+          approvalOver:false,
+          hasBack:true,
+        }
+        this.$store.dispatch("deleteTabs", this.$route.name);
+        this.$router.push({name:'myPDF',params:routerData})
     },
   },
 
