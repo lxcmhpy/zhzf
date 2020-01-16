@@ -3,7 +3,7 @@
 
     <el-form :rules="rules" ref="ruleForm" :inline-message="true" :inline="true" :model="docData" label-width="80px">
 
-      <div class="print_info indent_style">
+      <div class="print_info indent_style" id="question_print">
 
         <div class="doc_topic">询问笔录</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
@@ -202,6 +202,13 @@
       </el-button>
     </div> -->
     <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
+    <casePageFloatBtns
+      :pageDomId="'question_print'"
+      :formOrDocData="formOrDocData"
+      @submitData="submitData"
+      @saveData="saveData"
+      @backHuanjie="submitData"
+    ></casePageFloatBtns>
     <QAModle ref="QAModleInfoRef" @QAModleInfo="getQAModleInfo"></QAModle>
   </div>
 </template>
@@ -209,9 +216,13 @@
 import QAModle from "./QAModle";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
+import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+
 export default {
   components: {
     QAModle,
+    casePageFloatBtns
+
   },
   data() {
     return {
@@ -255,6 +266,14 @@ export default {
         certificateId2: "",
         askTime: 1,
         qaList: [{}],//弹出框问答数组，如请求时未返回即数组未定义，可能回显失败，刷新即可查看效果
+      },
+      caseDocDataForm: {
+        id: "",   //修改的时候用
+        caseBasicinfoId: '',   //案件ID
+        caseDoctypeId: this.$route.params.docId,    //文书类型ID
+        //文书数据
+        docData: "",
+        status: "",   //提交状态
       },
       num4: 1,
       lineStyleFlag: false,
@@ -304,6 +323,10 @@ export default {
           { required: true, message: '请输入', trigger: 'blur' },
         ],
 
+      },
+      formOrDocData: {
+        showBtn: [false, true, true, false, false, false, false, false, false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        pageDomId:'question_print',
       }
     }
   },
@@ -346,6 +369,7 @@ export default {
       // this.docData.QAModleInfo = edit;
     },
     overFlowEdit() { },
+  
     //保存文书信息
     saveData(handleType) {
       this.com_addDocData(handleType, "docForm");
@@ -357,14 +381,15 @@ export default {
       });
     },
     //是否是完成状态
-    isOverStatus() {
-      if (this.$route.params.docStatus == '1') {
-        this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+    isOverStatus(){
+      if(this.$route.params.docStatus == '1'){
+        this.formOrDocData.showBtn =[false,false,false,false,false,false,false,false,false,true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
+     this.isOverStatus();
   },
 }
 </script>
