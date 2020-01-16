@@ -212,7 +212,7 @@
             提交
           </el-button>
         </div> -->
-        <casePageFloatBtns :pageDomId="'subOutputRank-print'"></casePageFloatBtns>
+        <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
         <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
       </div>
     </div>
@@ -295,6 +295,10 @@ export default {
       nameLength: 23,
       adressLength: 23,
       maxLength: 23,
+      formOrDocData:{
+        showBtn:[false,true,true,false,false,false,false,false,false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        pageDomId:"subOutputRank-print",
+      },
     }
   },
   computed: { ...mapGetters(['caseId']) },
@@ -316,17 +320,17 @@ export default {
     //     console.log('overline', this.isOverLine)
     //   }
     // },
-    onSubmit(formName) {
-      console.log('submit!');
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
+    // onSubmit(formName) {
+    //   console.log('submit!');
+    //   this.$refs[formName].validate((valid) => {
+    //     if (valid) {
+    //       alert('submit!');
+    //     } else {
+    //       console.log('error submit!!');
+    //       return false;
+    //     }
+    //   });
+    // },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
