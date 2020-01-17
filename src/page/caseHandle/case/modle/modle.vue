@@ -1,7 +1,10 @@
 <template>
-  <div class="print_box">
-    <div class="print_info">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
+  <div class="print_box" id='btnB'>
+    <div class="print_info" >
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
+        <el-button type="primary" @click="changeStyle">
+          提交
+        </el-button>
         <div class="doc_topic">当场行政处罚决定书</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
@@ -108,17 +111,19 @@
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
         </div>
-        <p v-if="lineStyleFlag">
+        <!-- <p v-if="lineStyleFlag">
           违法事实及依据：<u>{{docData.illegalFactsEvidence}}</u>
-        </p>
+        </p> -->
         <p>你(单位)的行为违反了<span>
             <el-form-item prop="illegalLaw">
-              <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input type='textarea' :rules="[
+      { required: true, trigger: 'blur' }]" v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>的规定，依据
           <span contenteditable="true">
-            <el-form-item prop="punishLaw">
-              <el-input type='textarea' v-model="docData.punishLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="punishLaw" >
+              <el-input type='textarea' class="big_error" :rules="[
+      { required: true, trigger: 'blur' }]" v-model="docData.punishLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>的规定，决定给予
           <span>
@@ -132,10 +137,10 @@
           罚款的履行方式和期限(见打√处)：
         </p>
         <p>
-          <input type="checkbox">当场缴纳。
+          <el-checkbox></el-checkbox>当场缴纳。
         </p>
         <p>
-          <input type="checkbox">自收到本决定书之日起十五日内缴至<span>
+          <el-checkbox></el-checkbox>自收到本决定书之日起十五日内缴至<span>
             <el-form-item prop="bank">
               <el-input v-model="docData.bank" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
@@ -172,7 +177,7 @@
         <div class="pdf_seal">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -269,7 +274,13 @@ export default {
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         punishLaw: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入tiaok', trigger: 'blur' },
+        ],
+        illegalLaw: [
+          { required: true, message: '请输入tiaok', trigger: 'blur' },
+        ],
+        tempPunishAmount: [
+          { required: true, message: '请输入tiaok', trigger: 'blur' },
         ],
         socialCreditCode: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -280,17 +291,21 @@ export default {
         reconsiderationOrgan: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
+        makeDate: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
 
       },
       nameLength: 23,
       adressLength: 23,
       maxLengthOverLine: 122,
       maxLength: 23,
-      lineStyleFlag: false,
+      // lineStyleFlag: false,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'subOutputRank-print',
-      }
+      },
+      isPdf: '',
     }
   },
   methods: {
@@ -366,14 +381,20 @@ export default {
       if (this.$route.params.docStatus == '1') {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
-    }
+    },
+    //生成文书
+    changeStyle() {
+      console.log('生成')
+      this.isPdf = 'color_FFFFFF';
+    },
 
   },
+
   mounted() {
-    this.getDocDataByCaseIdAndDocId();
+    // this.getDocDataByCaseIdAndDocId();
   },
   created() {
-    this.isOverStatus();
+    // this.isOverStatus();
   }
 }
 </script>
