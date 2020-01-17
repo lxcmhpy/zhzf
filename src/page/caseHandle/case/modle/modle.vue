@@ -1,9 +1,7 @@
 <template>
   <div class="print_box" id='btnB'>
-    <div class="print_info" >
+    <div class="print_info">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
-        <el-button type="primary" @click="changeStyle">
-          提交
         </el-button>
         <div class="doc_topic">当场行政处罚决定书</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
@@ -121,7 +119,7 @@
             </el-form-item>
           </span>的规定，依据
           <span contenteditable="true">
-            <el-form-item prop="punishLaw" >
+            <el-form-item prop="punishLaw">
               <el-input type='textarea' class="big_error" :rules="[
       { required: true, trigger: 'blur' }]" v-model="docData.punishLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
@@ -374,18 +372,18 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      this.com_addDocData(handleType, "docForm");
+      // 预览样式
+      this.isPdf = 'color_FFFFFF';
+      setTimeout(() => {
+         this.com_addDocData(handleType, "docForm");
+      }, 3000);
+
     },
     //是否是完成状态
     isOverStatus() {
       if (this.$route.params.docStatus == '1') {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
-    },
-    //生成文书
-    changeStyle() {
-      console.log('生成')
-      this.isPdf = 'color_FFFFFF';
     },
 
   },
