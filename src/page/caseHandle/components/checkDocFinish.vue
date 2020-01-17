@@ -40,6 +40,7 @@
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -55,6 +56,7 @@ export default {
     };
   },
   mixins: [mixinGetCaseApiList],
+  computed:{...mapGetters(['caseId'])},
   mounted() { },
   inject: ['reload'],
   methods: {
@@ -86,7 +88,7 @@ export default {
     },
     //进入下一环节
     enterNext(){
-      this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
+      this.com_goToNextLinkTu(this.caseId,this.caseLinkDataForm.caseLinktypeId);
     },
     // 弹框关闭按钮
     resetForm() {

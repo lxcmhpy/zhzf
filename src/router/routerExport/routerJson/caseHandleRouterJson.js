@@ -71,14 +71,7 @@ export default  [
   },
   component: () => import("@/page/caseHandle/case/form/enforceForm.vue")
 },
-{
-  path: "/finishForm",
-  name: "finishForm",
-  meta: {
-    title: "结案报告-表单"
-  },
-  component: () => import("@/page/caseHandle/case/form/finishReportForm.vue")
-},
+
 {
   path: "/sendReportForm",
   name: "sendReportForm",
@@ -104,14 +97,14 @@ export default  [
   component: () => import("@/page/caseHandle/case/caseDoc.vue")
 },
 //违法行为通知书
-{
-  path: "/illegalAction",
-  name: "illegalAction",
-  meta: {
-    title: "违法行为通知书"
-  },
-  component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
-},
+// {
+//   path: "/illegalAction",
+//   name: "illegalAction",
+//   meta: {
+//     title: "违法行为通知书"
+//   },
+//   component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
+// },
 {
   path: "/inquirieForm",
   name: "inquirieForm",
@@ -191,14 +184,6 @@ export default  [
     title: "中止（终结、恢复）行政强制执行通知书-pdf"
   },
   component: () => import("@/page/caseHandle/case/pdf/enforce.vue")
-},
-{
-  path: "/finishReport",
-  name: "finishReport",
-  meta: {
-    title: "结案报告-pdf"
-  },
-  component: () => import("@/page/caseHandle/case/pdf/finishReport.vue")
 },
 {
   path: "/sendReport",

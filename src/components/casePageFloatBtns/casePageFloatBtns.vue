@@ -219,6 +219,7 @@ export default {
       signature.openURL('oeder');
     },
     submitDataBtn(handleType) {
+      //判断是环节的提交还是文书的提交
       this.$emit('submitData',handleType);
     },
     saveDataBtn(handleType){

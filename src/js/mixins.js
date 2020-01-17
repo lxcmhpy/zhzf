@@ -112,7 +112,7 @@ export const mixinGetCaseApiList = {
                   this.printContent();
                   
                 } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
-                  this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId)
+                  // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId)
                 }
               }
             },
@@ -124,9 +124,9 @@ export const mixinGetCaseApiList = {
       });
     },
     //点击下一环节和提交按钮都跳转流程图
-    com_goToNextLinkTu(caseLinktypeId) {
+    com_goToNextLinkTu(caseBasicinfoId,caseLinktypeId) {
       let data={
-        caseId:this.caseLinkDataForm.caseBasicinfoId,
+        caseId:caseBasicinfoId,
         caseLinktypeId:caseLinktypeId
       };
       console.log(data);
@@ -324,7 +324,7 @@ export const mixinGetCaseApiList = {
           console.log('上传',res);
           //上传pdf之后显示pdf
           let routerData = {
-            hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' ? true : false,
+            hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
             docId:docId,
             approvalOver:this.approvalOver ? true : false,
             caseLinktypeId:caseLinktypeId, //环节id 立案登记、调查报告 提交审批时需要

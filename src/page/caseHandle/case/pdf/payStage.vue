@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div class="a4-box">
+    <div class="a4-box" id="payStage-print">
       <div class="pdf-box">
         <!-- <div>交通运输行政执法文书式样之十七 ：分期（延期）缴纳罚款通知书</div> -->
         <div class="pdf-title">分期（延期）缴纳罚款通知书</div>
@@ -120,13 +120,6 @@ export default {
         docId: this.$route.params.docId
       };
       this.com_getDocDataByCaseIdAndDocId(data)
-    },
-    addDocData(handleType) {
-      this.com_addDocData(handleType);
-      // this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-      // this.$router.push({
-      //   name: this.$route.params.url,
-      // });
     },
     //保存文书信息
     saveData(handleType) {

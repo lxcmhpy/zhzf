@@ -82,6 +82,7 @@ export default {
         caseId:this.caseId,
         caseLinktypeId:this.$route.params.caseLinktypeId
       }
+      console.log('daaaaa',data)
       this.$refs.showApprovePeopleRef.showModal(data);
     },
     //审批弹窗
@@ -105,8 +106,12 @@ export default {
     // },
     //文书提交返回环节
     submitData(){
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.go(-2);
+      if(this.$route.params.caseLinktypeId){
+        this.com_goToNextLinkTu(this.caseId,this.$route.params.caseLinktypeId)
+      }else{
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$router.go(-2);
+      }
     },
     backHuanjie(){
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
