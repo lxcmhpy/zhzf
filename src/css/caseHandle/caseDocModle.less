@@ -93,6 +93,13 @@
                 .el-form-item {
                     width: 100%;
                 }
+                .el-form-item__content {
+                    width: calc(100% + 16px) !important;
+                    margin-left: -8px;
+                    padding: 0 8px;
+                    box-sizing: border-box;
+                }
+
 
                 /* 输入框 */
                 .el-textarea {
@@ -330,6 +337,7 @@
             text-justify: distribute-all-lines;
         }
 
+        /* 验证提示 */
         .is-error {
 
             .el-input__inner,
@@ -345,6 +353,28 @@
                 .el-textarea__inner:focus {
                     background: #DF5A5B !important;
                 }
+            }
+        }
+        td{
+            .is-error {
+                .el-form-item__content{
+                    background: #F7C9CB !important;
+                }
+
+                // .el-input__inner,
+                // .el-input__inner:focus,
+                // .el-textarea__inner,
+                // .el-textarea__inner:focus {
+                //     background: #F7C9CB !important;
+                // }
+                // .big_error{
+                //     .el-input__inner,
+                //     .el-input__inner:focus,
+                //     .el-textarea__inner,
+                //     .el-textarea__inner:focus {
+                //         background: #DF5A5B !important;
+                //     }
+                // }
             }
         }
 
