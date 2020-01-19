@@ -358,18 +358,6 @@ export default {
     }
   },
   methods: {
-    // widthCheck(str, len, event) {
-    //   console.log('event,', event)
-    //   console.log('str,', str, '  len:', len)
-    //   if (event.length > len) {
-    //     this.isOverflow = true
-    //   } else
-    //     this.isOverflow = false
-    //   if (event.length > 40) {
-    //     this.isOverLine = true
-    //     console.log('overline', this.isOverLine)
-    //   }
-    // },
     onSubmit(formName) {
       console.log('submit!');
       this.$refs[formName].validate((valid) => {
@@ -393,17 +381,7 @@ export default {
     },
     //保存文书信息
     addDocData(handleType) {
-
       this.com_addDocData(handleType, 'docForm');
-    },
-    // 盖章
-    makeSeal() {
-      mySignture.openURL('oeder');
-      // this.$util.openURL('a');
-    },
-    // 打印
-    print() {
-      console.log('打印!');
     },
     // 多行编辑
     overFlowEdit() {
@@ -424,7 +402,7 @@ export default {
     //保存文书信息
     saveData(handleType) {
       // 预览样式
-      // this.isPdf = 'color_FFFFFF';
+      this.isPdf = 'color_FFFFFF';
       setTimeout(() => {
         this.com_addDocData(handleType, "docForm");
       }, 3000);
@@ -440,10 +418,10 @@ export default {
   },
 
   mounted() {
-    // this.getDocDataByCaseIdAndDocId();
+    this.getDocDataByCaseIdAndDocId();
   },
   created() {
-    // this.isOverStatus();
+    this.isOverStatus();
   }
 }
 </script>
