@@ -12,17 +12,17 @@
     .print_info {
         // width         : 720px;
         // height        : 1217px;
-        width         : 790px;
-        height        : 1117px;
-        position      : absolute;
-        left          : calc(50% - 360px);
-        // margin-left: -360px;
-        left          : 0;
-        right         : 0;
-        margin        : auto;
-        padding       : 81px 82px 0;
-        background    : #ffffff;
-        box-sizing    : border-box;
+        width            : 790px;
+        height           : 1117px;
+        position         : absolute;
+        left             : calc(50% - 360px);
+        // margin-left   : -360px;
+        left             : 0;
+        right            : 0;
+        margin           : auto;
+        padding          : 81px 82px 0;
+        background       : #ffffff;
+        box-sizing       : border-box;
         /* 包含padding */
 
 
@@ -93,11 +93,12 @@
                 .el-form-item {
                     width: 100%;
                 }
+
                 .el-form-item__content {
-                    width: calc(100% + 16px) !important;
+                    width      : calc(100% + 16px) !important;
                     margin-left: -8px;
-                    padding: 0 8px;
-                    box-sizing: border-box;
+                    padding    : 0 8px;
+                    box-sizing : border-box;
                 }
 
 
@@ -144,8 +145,8 @@
             }
 
             .el-textarea__inner {
-                font-size  : 12px;
-                line-height: 13px;
+                font-size  : 12px !important;
+                line-height: 14px !important;
             }
         }
 
@@ -222,10 +223,10 @@
 
 
             .span_bg {
-                display   : inline-block;
-                background: #DBE4EF;
-                width     : 100%;
-                height    : 24px;
+                display      : inline-block;
+                background   : #DBE4EF;
+                width        : 100%;
+                // height    : 18px;
             }
 
             .text_bg {
@@ -346,7 +347,9 @@
             .el-textarea__inner:focus {
                 background: #F7C9CB !important;
             }
-            .big_error{
+
+            .big_error {
+
                 .el-input__inner,
                 .el-input__inner:focus,
                 .el-textarea__inner,
@@ -355,26 +358,27 @@
                 }
             }
         }
-        td{
+
+        td {
             .is-error {
-                .el-form-item__content{
+                .el-form-item__content {
                     background: #F7C9CB !important;
                 }
+            }
+        }
 
-                // .el-input__inner,
-                // .el-input__inner:focus,
-                // .el-textarea__inner,
-                // .el-textarea__inner:focus {
-                //     background: #F7C9CB !important;
-                // }
-                // .big_error{
-                //     .el-input__inner,
-                //     .el-input__inner:focus,
-                //     .el-textarea__inner,
-                //     .el-textarea__inner:focus {
-                //         background: #DF5A5B !important;
-                //     }
-                // }
+        .overflow_lins_style {
+
+            .el-textarea__inner,
+            .el-textarea__inner:focus {
+                background: transparent !important;
+            }
+
+            .is-error {
+
+                .span_bg {
+                    background: #F7C9CB !important;
+                }
             }
         }
 
@@ -722,12 +726,9 @@
 
     }
 
-    .overflow_lins_textarea {
-        position  : absolute;
-        top       : 0;
-        width     : 100%;
-        height    : 100%;
-        margin-top: -4px;
+    .overflow_lins {
+        width : 100%;
+        height: 100%;
 
         .el-form-item {
             width: 100%;
@@ -737,16 +738,27 @@
             background : transparent;
             line-height: 32px;
         }
+
+        .overflow_lins_textarea {
+            position  : absolute;
+            top       : 0;
+            width     : 100%;
+            height    : 100%;
+            margin-top: -4px;
+        }
     }
 
+
     .span_bg {
+        margin-top           : 2px;
+        // line-height       : 24px;
+        margin-bottom        : 6px;
         display              : inline-block;
         background           : #DBE4EF;
         border-bottom        : 1px solid #ffffff;
         width                : 100%;
-        height               : 24px;
-        // line-height       : 24px;
-        margin-bottom        : 8px;
+        height               : 18px;
+
 
     }
 
@@ -812,7 +824,7 @@
 
 .text_indent10 {
     .el-textarea__inner {
-        text-indent: 10em;
+        text-indent: 9em;
     }
 }
 
@@ -877,7 +889,9 @@
         .el-textarea__inner:focus {
             background: #ffffff !important;
         }
-        .big_error{
+
+        .big_error {
+
             .el-input__inner,
             .el-input__inner:focus,
             .el-textarea__inner,

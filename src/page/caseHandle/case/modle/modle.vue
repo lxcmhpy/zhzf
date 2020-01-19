@@ -2,7 +2,6 @@
   <div class="print_box" id='btnB'>
     <div class="print_info">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
-        </el-button>
         <div class="doc_topic">当场行政处罚决定书</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
@@ -99,15 +98,14 @@
         </p> -->
         <!-- 多行样式 -->
         <div class="overflow_lins_style">
-          <div class="overflow_lins_textarea">
+          <div class="overflow_lins">
             <el-form-item prop="illegalFactsEvidence">
-              <el-input class='text_indent10' type='textarea' v-model="docData.illegalFactsEvidence" rows="3" maxLength='90' placeholder="\"></el-input>
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.illegalFactsEvidence" rows="3" maxLength='90' placeholder="\"></el-input>
+              <span class="overflow_describe">违法事实及依据：</span>
+              <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span>
             </el-form-item>
           </div>
-          <span class="overflow_describe">违法事实及依据：</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+
         </div>
         <!-- <p v-if="lineStyleFlag">
           违法事实及依据：<u>{{docData.illegalFactsEvidence}}</u>
@@ -115,18 +113,18 @@
         <p>你(单位)的行为违反了<span>
             <el-form-item prop="illegalLaw">
               <el-input type='textarea' :rules="[
-      { required: true, trigger: 'blur' }]" v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+      { required: true, trigger: 'blur' }]" v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.illegalLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>的规定，依据
           <span contenteditable="true">
             <el-form-item prop="punishLaw">
               <el-input type='textarea' class="big_error" :rules="[
-      { required: true, trigger: 'blur' }]" v-model="docData.punishLaw" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+      { required: true, trigger: 'blur' }]" v-model="docData.punishLaw" v-bind:class="{ over_flow:docData.punishLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>的规定，决定给予
           <span>
             <el-form-item prop="tempPunishAmount">
-              <el-input type='textarea' v-model="docData.tempPunishAmount" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input type='textarea' v-model="docData.tempPunishAmount" v-bind:class="{ over_flow:docData.tempPunishAmount.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
               <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="\"></el-input> -->
             </el-form-item>
           </span>的行政处罚。
@@ -218,6 +216,8 @@
     <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <!-- <el-alert title="错误提示的文案" type="error"  show-icon>
+    </el-alert> -->
   </div>
 </template>
 <script>
@@ -228,6 +228,8 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 // import signture from "../../../../js/signture";
 import mySignture from "@/js/mySignture";
 // import {signture2} from "@/js/signture";
+// 验证规则
+import { validatePhone, validateIDNumber } from "@/js/validator";
 
 export default {
   components: {
@@ -237,7 +239,21 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   data() {
+    var validatePhone = (rule, value, callback) => {
+      var reg = /^1(3|4|5|6|7|8)\d{9}$/;
+      if (!reg.test(value) && value) {
+        // this.$alert('232')
+        // this.$message('手机号不正确')
+         this.$notify.error({
+          title: '错误',
+          message: '这是一条错误的提示消息'
+        });
+        // callback(new Error('手机号格式错误'));
+      }
+      callback();
+    };
     return {
+      overFlowEditList:[{},{},{}],
       isOverflow: false,
       isOverLine: false,
       docData: {
@@ -271,14 +287,16 @@ export default {
         party: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
+        partyTel: [{ validator: validatePhone, trigger: "blur" }],
+        partyIdNo: [{ validator: validateIDNumber, trigger: "blur" }],
         punishLaw: [
-          { required: true, message: '请输入tiaok', trigger: 'blur' },
+          { required: true, message: '请输入', trigger: 'blur' },
         ],
         illegalLaw: [
-          { required: true, message: '请输入tiaok', trigger: 'blur' },
+          { required: true, message: '请输入', trigger: 'blur' },
         ],
         tempPunishAmount: [
-          { required: true, message: '请输入tiaok', trigger: 'blur' },
+          { required: true, message: '请输入', trigger: 'blur' },
         ],
         socialCreditCode: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -287,6 +305,18 @@ export default {
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         reconsiderationOrgan: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        bank: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        account: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        reconsiderationOrgan: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        litigationOrgan: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         makeDate: [
@@ -373,9 +403,9 @@ export default {
     //保存文书信息
     saveData(handleType) {
       // 预览样式
-      this.isPdf = 'color_FFFFFF';
+      // this.isPdf = 'color_FFFFFF';
       setTimeout(() => {
-         this.com_addDocData(handleType, "docForm");
+        this.com_addDocData(handleType, "docForm");
       }, 3000);
 
     },
