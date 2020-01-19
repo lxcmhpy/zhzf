@@ -102,6 +102,7 @@
             <el-form-item prop="illegalFactsEvidence">
               <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.illegalFactsEvidence" rows="3" maxLength='90' placeholder="\"></el-input>
               <span class="overflow_describe">违法事实及依据：</span>
+              <span  class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span>
             </el-form-item>
           </div>
@@ -252,7 +253,7 @@ export default {
       callback();
     };
     return {
-      overFlowEditList:[{},{},{}],
+      overFlowEditList:[{},{}],
       isOverflow: false,
       isOverLine: false,
       docData: {
