@@ -1,22 +1,92 @@
 <template>
-<div class="com_searchAndpageBoxPadding">
-  <div class="searchAndpageBox" id="waitDealBox">
-    <div class="handlePart">
-      <el-button type="primary" size="medium" icon="el-icon-plus" @click="caseRecord">立案登记</el-button>
-      <!-- <div></div> -->
-    </div>
-    <div class="tablePart">
-      <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="handleCurrentChange">
-        <el-table-column prop="tempNo" label="案号" align="center"></el-table-column>
-        <el-table-column prop="" label="车/船号" align="center"></el-table-column>
-        <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
-        <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
-        <el-table-column prop="acceptTime" label="受案时间" align="center"></el-table-column>
-        <el-table-column prop="caseType" label="案件类型" align="center"></el-table-column>
-        <el-table-column prop="caseStatus" label="案件状态" align="center"></el-table-column>
-      </el-table>
-    </div>
-    <div class="paginationBox">
+  <div class="com_searchAndpageBoxPadding">
+    <div
+      :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'"
+      id="waitDealBox"
+    >
+      <div class="handlePart caseHandlepart">
+        <div>
+          <el-button type="primary" size="medium" icon="el-icon-plus" @click="caseRecord">立案登记</el-button>
+        </div>
+        <div>
+          <el-form
+            :model="caseSearchForm"
+            ref="caseSearchForm"
+            class="caseSearchForm"
+            label-width="90px"
+          >
+            <div>
+              <div class="item">
+                <el-form-item label="当事人/单位">
+                  <el-input v-model="caseSearchForm.caseId"></el-input>
+                </el-form-item>
+              </div>
+              <div class="item">
+                <el-form-item label="车船号">
+                  <el-input v-model="caseSearchForm.caseId2"></el-input>
+                </el-form-item>
+              </div>
+              <div class="item">
+                <el-form-item label="案件类型">
+                  <el-input v-model="caseSearchForm.caseId3"></el-input>
+                </el-form-item>
+              </div>
+              <div class="item">
+                <el-form-item label="案件状态">
+                  <el-input v-model="caseSearchForm.caseId4"></el-input>
+                </el-form-item>
+              </div>
+              <div class="item">
+                <el-button type="primary" size="medium" icon="el-icon-search"></el-button>
+                <el-button
+                  type
+                  size="medium"
+                  :icon="hideSomeSearch ? 'el-icon-arrow-down':'el-icon-arrow-up'"
+                  @click="showSomeSearch"
+                ></el-button>
+              </div>
+            </div>
+            <div :class="hideSomeSearch ? 'hideSomeSearchClass' : ''">
+              <div class="item">
+                <el-form-item label="违法行为">
+                  <el-input v-model="caseSearchForm.caseId5"></el-input>
+                </el-form-item>
+              </div>
+              <div class="item">
+                <el-form-item label="受案时间">
+                  <!-- <el-input v-model="caseSearchForm.caseId6"></el-input> -->
+                  <el-date-picker
+                    v-model="value1"
+                    type="daterange"
+                    range-separator="-"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                  ></el-date-picker>
+                </el-form-item>
+              </div>
+            </div>
+          </el-form>
+        </div>
+      </div>
+      <div class="tablePart">
+        <el-table
+          :data="tableData"
+          stripe
+          style="width: 100%"
+          height="100%"
+          highlight-current-row
+          @current-change="handleCurrentChange"
+        >
+          <el-table-column prop="tempNo" label="案号" align="center"></el-table-column>
+          <el-table-column prop label="车/船号" align="center"></el-table-column>
+          <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
+          <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
+          <el-table-column prop="acceptTime" label="受案时间" align="center"></el-table-column>
+          <el-table-column prop="caseType" label="案件类型" align="center"></el-table-column>
+          <el-table-column prop="caseStatus" label="案件状态" align="center"></el-table-column>
+        </el-table>
+      </div>
+      <div class="paginationBox">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -27,9 +97,9 @@
           :total="total"
         ></el-pagination>
       </div>
-    <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
+      <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
+    </div>
   </div>
-</div>
 </template>
 <script>
 import caseRegisterDiag from "./caseRegisterDiag";
@@ -39,13 +109,22 @@ import { mixinGetCaseApiList } from "@/js/mixins";
 export default {
   data() {
     return {
+      caseSearchForm: {
+        caseId: "",
+        caseId2: "",
+        caseId3: "",
+        caseId4: "",
+        caseId5: "",
+        caseId6: ""
+      },
       tableData: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
-      total: 0 //总页数
+      total: 0, //总页数
+      hideSomeSearch: true
     };
   },
-  mixins:[mixinGetCaseApiList],
+  mixins: [mixinGetCaseApiList],
   components: {
     caseRegisterDiag
   },
@@ -60,7 +139,7 @@ export default {
         flag: 1,
         userId: iLocalStroage.gets("userInfo").id,
         current: this.currentPage,
-        size: this.pageSize,
+        size: this.pageSize
       };
       console.log(data);
       this.getCaseList(data);
@@ -77,12 +156,16 @@ export default {
       this.getUnRecordCase();
     },
     //跳转立案登记
-    handleCurrentChange(row){
-      console.log(row)
+    handleCurrentChange(row) {
+      console.log(row);
       this.$store.commit("setCaseId", row.id);
-      this.$router.replace({ 
-          name: 'establish',
+      this.$router.replace({
+        name: "establish"
       });
+    },
+    //展开
+    showSomeSearch() {
+      this.hideSomeSearch = !this.hideSomeSearch;
     }
   },
   created() {
@@ -90,3 +173,6 @@ export default {
   }
 };
 </script>
+<style lang="less">
+@import "../../../css/caseHandle/index.less";
+</style>

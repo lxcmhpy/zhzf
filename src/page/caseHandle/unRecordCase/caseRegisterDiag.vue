@@ -79,7 +79,7 @@ export default {
         illageAct: ""
       },
       illageActId: "", //违法行为id
-      rules: {
+      rules: { 
         cateId: [{ required: true, message: "请选择", trigger: "change" }],
         programType: [{ required: true, message: "请选择", trigger: "change" }],
         caseType: [{ required: true, message: "请选择", trigger: "change" }],

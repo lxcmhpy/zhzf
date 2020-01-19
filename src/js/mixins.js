@@ -48,12 +48,7 @@ export const mixinGetCaseApiList = {
             console.log(res.data);
             this.caseLinkDataForm.id = res.data.id;
               this.formData = JSON.parse(res.data.formData);
-            // if (tableOrForm == 'form') {  //文书表单
-              
-            //   console.log('this.formData',this.formData)
-            // } else if (tableOrForm == 'table') {
-            //   this.tableData = JSON.parse(res.data.formData);
-            // }
+              this.setSomeData(this.formData);
             if(refreshDataForPdf){
               //提交pdf页
               setTimeout(()=>{
@@ -80,6 +75,7 @@ export const mixinGetCaseApiList = {
           console.log('获取案件信息',res)
           if(this.formData){
             this.formData = res.data;
+            this.setSomeData(this.formData);
           }else{
             this.docData = res.data;
           }
@@ -327,7 +323,7 @@ export const mixinGetCaseApiList = {
             hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
             docId:docId,
             approvalOver:this.approvalOver ? true : false,
-            caseLinktypeId:caseLinktypeId, //环节id 立案登记、调查报告 提交审批时需要
+            caseLinktypeId:caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
           }
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({name:'myPDF',params:routerData})
@@ -337,6 +333,19 @@ export const mixinGetCaseApiList = {
         }
       );
     },
+    //为form设置数据，
+    setSomeData(formData){
+      //带入数据禁止编辑
+      if(this.originalData != undefined){
+        this.originalData = JSON.parse(JSON.stringify(formData));
+      }
+      //判断当事人类型
+      if(formData.party){
+        this.isParty = true;
+      }else{
+        this.isParty = false;
+      }
+    }
 
   },
   created() {
