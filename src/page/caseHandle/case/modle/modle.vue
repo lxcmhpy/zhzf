@@ -118,8 +118,7 @@
           </span>的规定，依据
           <span contenteditable="true">
             <el-form-item prop="punishLaw">
-              <el-input type='textarea' class="big_error" :rules="[
-      { required: true, trigger: 'blur' }]" v-model="docData.punishLaw" v-bind:class="{ over_flow:docData.punishLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input type='textarea' class="big_error" v-bind:class="{ over_flow:docData.punishLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>的规定，决定给予
           <span>
@@ -242,11 +241,11 @@ export default {
     var validatePhone = (rule, value, callback) => {
       var reg = /^1(3|4|5|6|7|8)\d{9}$/;
       if (!reg.test(value) && value) {
-        // this.$alert('232')
-        // this.$message('手机号不正确')
+        // this.$alert('手机号格式错误')
+        // this.$message('手机号格式错误')
          this.$notify.error({
           title: '错误',
-          message: '这是一条错误的提示消息'
+          message: '手机号格式错误'
         });
         // callback(new Error('手机号格式错误'));
       }
@@ -298,7 +297,28 @@ export default {
         tempPunishAmount: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
+        partyAddress: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        partyIdNo: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
         socialCreditCode: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        partyManager: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        partyUnitTel: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        partyUnitAddress: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        partyName: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        partyTel: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         illegalFactsEvidence: [

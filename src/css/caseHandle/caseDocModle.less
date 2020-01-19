@@ -124,6 +124,13 @@
                         width: auto;
                     }
                 }
+
+                .big_error {
+                        .el-input{
+                            background: #DF5A5B !important;
+                  
+                    }
+                }
             }
         }
 
@@ -223,10 +230,10 @@
 
 
             .span_bg {
-                display      : inline-block;
-                background   : #DBE4EF;
-                width        : 100%;
-                // height    : 18px;
+                display   : inline-block;
+                background: #DBE4EF;
+                width     : 100%;
+                height    : 18px;
             }
 
             .text_bg {
@@ -272,9 +279,9 @@
                 //     font-size  : 16px;
                 // }
 
-                .span_bg {
-                    margin-top: 5px;
-                }
+                // .span_bg {
+                //     margin-top: 5px;
+                // }
 
             }
 
@@ -750,9 +757,12 @@
 
 
     .span_bg {
-        margin-top           : 2px;
-        // line-height       : 24px;
-        margin-bottom        : 6px;
+       
+
+        margin-top           : -2px !important;
+        // line-height       : 18px !important;
+        // line-height: 18px !important;
+        // margin-bottom        : 4px;
         display              : inline-block;
         background           : #DBE4EF;
         border-bottom        : 1px solid #ffffff;
@@ -858,6 +868,9 @@
     .overflow_lins_textarea {
         .el-textarea__inner {
             background: transparent !important;
+        }
+        .el-form-item__content {
+            line-height: auto !important;
         }
     }
 
