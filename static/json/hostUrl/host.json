@@ -1,19 +1,23 @@
 {
   "CURRENT": "ONLINE",
   "ONLINE": {
-    "HOST": "http://172.16.170.44:8088/catsic", 
-    "CAPTCHA_HOST": "http://172.16.170.44:8088/catsic"
+    "//": "http://172.16.170.44:8088/catsic",
+    "HOST": "http://124.192.215.4:8088/catsic",
+    "CAPTCHA_HOST": "http://124.192.215.4:8088/catsic"
   },
   "TEST": {
-    "HOST": "http://172.16.170.44:8080/catsic",
-    "CAPTCHA_HOST": "http://172.16.170.44:8088/catsic"
+    "//": "http://172.16.170.44:8080/catsic",
+    "HOST": "http://124.192.215.4:8088/catsic",
+    "CAPTCHA_HOST": "http://124.192.215.4:8088/catsic"
   },
   "LOCAL": {
-    "HOST": "http://172.16.170.44:8080/catsic",
-    "CAPTCHA_HOST": "http://172.16.170.44:8088/catsic"
+    "//": "http://172.16.170.44:8080/catsic",
+    "HOST": "http://124.192.215.4:8088/catsic",
+    "CAPTCHA_HOST": "http://124.192.215.4:8088/catsic"
   },
   "LXC": {
-    "HOST": "http://172.16.169.83:8888/catsic",
-    "CAPTCHA_HOST": "http://172.16.169.83:8888/catsic"
+    "//": "http://172.16.169.83:8888/catsic",
+    "HOST": "http://124.192.215.4:8088/catsic",
+    "CAPTCHA_HOST": "http://124.192.215.4:8088/catsic"
   }
 }
