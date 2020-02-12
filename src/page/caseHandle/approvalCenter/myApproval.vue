@@ -1,10 +1,11 @@
 <template>
 <!-- 待我审批 -->
 <div class="com_searchAndpageBoxPadding">
-  <div class="searchAndpageBox" id="waitDealBox">
-    <!-- <div class="handlePart">
-      <el-button type="primary" size="medium" icon="el-icon-plus" @click="caseRecord">立案登记</el-button>
-    </div> -->
+  <div
+      :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'"
+      
+    >
+    <caseListSearch @showSomeSearch="showSomeSearch"  @searchCase="getMyApprovalCase" :caseState="'myApproval'"></caseListSearch>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="clickCase">
         <el-table-column prop="2" label="申请时间" align="center"></el-table-column>
@@ -35,27 +36,32 @@
 
 import iLocalStroage from "@/js/localStroage";
 import { mixinGetCaseApiList } from "@/js/mixins";
+import caseListSearch from "@/components/caseListSearch/caseListSearch";
+
 export default {
   data() {
     return {
       tableData: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
-      total: 0 //总页数
+      total: 0, //总页数
+      hideSomeSearch: true
+
     };
   },
   mixins:[mixinGetCaseApiList],
+  components: {
+    caseListSearch,
+  },
   methods: {
   
     //获取待我审批的数据
-    getMyApprovalCase() {
-      let data = {
-        flag: 4,
-        userId: iLocalStroage.gets("userInfo").id,
-        current: this.currentPage,
-        size: this.pageSize,
-      };
-      console.log(data);
+    getMyApprovalCase(searchData) {
+      let data = searchData;
+      data.flag = 4;
+      data.userId = iLocalStroage.gets("userInfo").id;
+      data.current = this.currentPage;
+      data.size = this.pageSize;
       this.getCaseList(data);
     },
     //更改每页显示的条数
@@ -68,6 +74,10 @@ export default {
     handlePageSizeChange(val) {
       this.currentPage = val;
       this.getUnRecordCase();
+    },
+    //展开
+    showSomeSearch() {
+      this.hideSomeSearch = !this.hideSomeSearch;
     },
     //点击进入案件详情
     clickCase(row){
@@ -90,7 +100,10 @@ export default {
     }
   },
   created() {
-    this.getMyApprovalCase();
+    this.getMyApprovalCase({});
   }
 };
 </script>
+<style lang="less">
+@import "../../../css/caseHandle/index.less";
+</style>

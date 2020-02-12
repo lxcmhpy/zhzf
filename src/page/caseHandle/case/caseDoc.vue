@@ -68,7 +68,7 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="邮编">
+                <el-form-item label="邮编" prop="partyZipCode">
                   <el-input ref="partyZipCode" clearable class="w-120" v-model="formData.partyZipCode" size="small" placeholder="请输入" :disabled="originalData.partyZipCode ? true : false"></el-input>
                 </el-form-item>
               </div>
@@ -124,7 +124,7 @@
         <div class="content">
           <div class="table_form">
             <el-table :data="docTableDatas" stripe border style="width: 100%">
-              <el-table-column prop="id" label="序号" align="center">
+              <el-table-column type="index" label="序号" align="center" width="50">
               </el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
               </el-table-column>
@@ -143,19 +143,19 @@
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'">
+                  <span v-if="scope.row.status == '1'" class="tableHandelcase">
                     <!-- 已完成 -->
-                    <i type="primary" class="el-icon-view cell-icon" @click="viewDocPdf(scope.row)"></i>
-                    <i type="primary" class="el-icon-printer cell-icon"></i>
+                    <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
+                    <i  class="iconfont law-print"></i>
                   </span>
-                  <span v-if="scope.row.status == '0'">
+                  <span v-if="scope.row.status == '0'" class="tableHandelcase">
                     <!-- 未完成 -->
-                    <i type="primary" class="el-icon-edit cell-icon" @click="viewDoc(scope.row)"></i>
-                    <i type="primary" class="el-icon-delete-solid cell-icon" @click="delDocDataByDocId(scope.row)"></i>
+                    <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
+                    <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
                   </span>
-                  <span v-if="scope.row.status === ''">
+                  <span v-if="scope.row.status === ''" class="tableHandelcase">
                     <!-- 无状态 -->
-                    <i type="primary" class="el-icon-circle-plus cell-icon" @click="viewDoc(scope.row)"></i>
+                    <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
                   </span>
                 </template>
               </el-table-column>
@@ -170,12 +170,10 @@
             </svg>
             <br>
             下一<br>环节
-          </el-button>
+          </el-button> 
 
           <el-button type="primary" @click="submitCaseDoc(1)">
-            <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2285" width="24" height="24">
-              <path d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z" fill="#FFFFFF" p-id="2286"></path>
-            </svg>
+            <i class="iconfont law-save"></i>
             <br>
             保存
           </el-button>
@@ -189,7 +187,7 @@
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from '../components/checkDocFinish'
-import {validateIDNumber,validatePhone} from '@/js/validator'
+import {validateIDNumber,validatePhone,validateZIP} from '@/js/validator'
 export default {
   components: {
     checkDocFinish
@@ -232,6 +230,9 @@ export default {
         partyTel:[
           { validator: validatePhone, trigger: "blur" }
         ],
+        partyZipCode:[
+          { validator: validateZIP, trigger: "blur" }
+        ],
         closeResult: [
           { required: true, message: '处理结果必须填写', trigger: 'blur' }
         ],
@@ -242,6 +243,7 @@ export default {
       // nextBtnDisab: true
       isParty:true,  //当事人类型为个人
       originalData:"",
+      
     }
   },
   computed: { ...mapGetters(['caseId']) },
@@ -263,7 +265,20 @@ export default {
         caseBasicinfoId:this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId:this.caseLinkDataForm.caseLinktypeId,
       }
-      this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
+      let canGotoNext = true; //是否进入下一环节
+      for(let i=0;i<this.docTableDatas.length;i++){
+        if(this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1"){
+          canGotoNext = false
+          break;
+        }
+      }
+      if(canGotoNext){
+        this.com_goToNextLinkTu(this.caseId,this.caseLinkDataForm.caseLinktypeId);
+      }else{
+        this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
+      }
+
+
       // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
     // 进入文书

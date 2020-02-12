@@ -81,7 +81,7 @@ export default {
       this.visible = true;
       this.checkList = data
     },
-    //关闭弹窗的时候清除数据
+    //关闭弹窗的时候清除数据 
     closeDialog() {
       this.visible = false;
       this.checkList = [];

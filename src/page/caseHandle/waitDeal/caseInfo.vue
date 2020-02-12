@@ -21,53 +21,63 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  {{formData.caseNumber}}
+                  <!-- <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="caseStatus" label="案件状态">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseStatus" size="small" placeholder="请输入" disabled></el-input>
+                  {{formData.caseStatus}}
+                  <!-- <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseStatus" size="small" placeholder="请输入" disabled></el-input> -->
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="acceptTime" label="受案时间">
-                  <el-date-picker v-model="formData.acceptTime" type="date" placeholder="选择日期" size="small">
-                  </el-date-picker>
+                  {{formData.acceptTime}}
+                  <!-- <el-date-picker v-model="formData.acceptTime" type="date" placeholder="选择日期" size="small"> -->
+                  <!-- </el-date-picker> -->
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="案由">
-                  <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input>
+                  {{formData.partyType}}
+                  <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="当事人">
-                  <el-input ref="partyType" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input>
+                  {{formData.party}}
+                  <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="partyType" label="车/船信息">
-                  <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input>
+                {{formData.partyType}}
+                  <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="案发地点">
-                  <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input>
+                  <!-- 字段名 -->
+                  {{formData.party}}
+                  <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="基本情况">
-                  <el-input type="textarea" class="height106" v-model="formData.caseCauseDescrib" size="small" placeholder="请输入"></el-input>
+                  {{formData.caseCauseDescrib}}
+                  南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。
+                  <!-- <el-input type="textarea" class="height106" v-model="formData.caseCauseDescrib" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
             </div>
@@ -78,22 +88,26 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="执法人员">
-                  <el-input ref="party" clearable class="w-120" v-model="formData.staff" size="small" placeholder="请输入"></el-input>
+                  {{formData.staff}}
+                  <!-- <el-input ref="party" clearable class="w-120" v-model="formData.staff" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="当前环节">
-                  <el-input ref="party" clearable class="w-120" v-model="formData.currentLinkName" size="small" placeholder="请输入"></el-input>
+                  {{formData.currentLinkName}}
+                  <!-- <el-input ref="party" clearable class="w-120" v-model="formData.currentLinkName" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚类型">
-                  <el-select v-model="formData.party" placeholder="请选择">
+                  <!-- 字段名 -->
+                  {{formData.party}}
+                  <!-- <el-select v-model="formData.party" placeholder="请选择">
                     <el-option label="行政处罚" value="shanghai"></el-option>
                     <el-option label="处罚类型二" value="beijing"></el-option>
-                  </el-select>
+                  </el-select> -->
                 </el-form-item>
               </div>
               <div class="col">
@@ -102,22 +116,27 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚金额">
-                  <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入">
+                  <!-- 字段名 -->
+                  ￥{{formData.party}}
+                  <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入">
                        <span slot="prefix" >￥</span>
-                  </el-input>
+                  </el-input> -->
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="执行情况">
-                  <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input>
+                  <!-- 字段名 -->
+                  {{formData.party}}
+                  <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="结案时间">
-                  <el-date-picker v-model="formData.acceptTime" type="date" placeholder="选择日期" size="small">
-                  </el-date-picker>
+                  {{formData.closeDate}}
+                  <!-- <el-date-picker v-model="formData.acceptTime" type="date" placeholder="选择日期" size="small">
+                  </el-date-picker> -->
                 </el-form-item>
               </div>
             </div>
