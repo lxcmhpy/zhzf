@@ -1,10 +1,13 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
-    <div
-      :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'"
-      id="waitDealBox"
-    >
-      <div class="handlePart caseHandlepart">
+    <div :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'">
+      <caseListSearch
+        @showSomeSearch="showSomeSearch"
+        @caseRecord="caseRecord"
+        @searchCase="getUnRecordCase"
+        :caseState="'unRecordCase'"
+      ></caseListSearch>
+      <!-- <div class="handlePart caseHandlepart">
         <div>
           <el-button type="primary" size="medium" icon="el-icon-plus" @click="caseRecord">立案登记</el-button>
         </div>
@@ -13,7 +16,7 @@
             :model="caseSearchForm"
             ref="caseSearchForm"
             class="caseSearchForm"
-            label-width="90px"
+            label-width="90px" 
           >
             <div>
               <div class="item">
@@ -54,7 +57,6 @@
               </div>
               <div class="item">
                 <el-form-item label="受案时间">
-                  <!-- <el-input v-model="caseSearchForm.caseId6"></el-input> -->
                   <el-date-picker
                     v-model="value1"
                     type="daterange"
@@ -67,7 +69,7 @@
             </div>
           </el-form>
         </div>
-      </div>
+      </div>-->
       <div class="tablePart">
         <el-table
           :data="tableData"
@@ -77,8 +79,8 @@
           highlight-current-row
           @current-change="handleCurrentChange"
         >
-          <el-table-column prop="tempNo" label="案号" align="center"></el-table-column>
-          <el-table-column prop label="车/船号" align="center"></el-table-column>
+          <el-table-column prop="tempNo" label="编号" align="center"></el-table-column>
+          <el-table-column prop="vehicleShipId" label="车/船号" align="center"></el-table-column>
           <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
           <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
           <el-table-column prop="acceptTime" label="受案时间" align="center"></el-table-column>
@@ -102,6 +104,7 @@
   </div>
 </template>
 <script>
+import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import caseRegisterDiag from "./caseRegisterDiag";
 import iLocalStroage from "@/js/localStroage";
 import { mixinGetCaseApiList } from "@/js/mixins";
@@ -109,14 +112,14 @@ import { mixinGetCaseApiList } from "@/js/mixins";
 export default {
   data() {
     return {
-      caseSearchForm: {
-        caseId: "",
-        caseId2: "",
-        caseId3: "",
-        caseId4: "",
-        caseId5: "",
-        caseId6: ""
-      },
+      // caseSearchForm: {
+      //   caseId: "",
+      //   caseId2: "",
+      //   caseId3: "",
+      //   caseId4: "",
+      //   caseId5: "",
+      //   caseId6: ""
+      // },
       tableData: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -126,6 +129,7 @@ export default {
   },
   mixins: [mixinGetCaseApiList],
   components: {
+    caseListSearch,
     caseRegisterDiag
   },
   methods: {
@@ -134,13 +138,12 @@ export default {
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     //获取机构下的未立案数据
-    getUnRecordCase() {
-      let data = {
-        flag: 1,
-        userId: iLocalStroage.gets("userInfo").id,
-        current: this.currentPage,
-        size: this.pageSize
-      };
+    getUnRecordCase(searchData) {
+      let data = searchData;
+      data.flag = 1;
+      data.userId = iLocalStroage.gets("userInfo").id;
+      data.current = this.currentPage;
+      data.size = this.pageSize;
       console.log(data);
       this.getCaseList(data);
     },
@@ -169,7 +172,7 @@ export default {
     }
   },
   created() {
-    this.getUnRecordCase();
+    this.getUnRecordCase({});
   }
 };
 </script>
