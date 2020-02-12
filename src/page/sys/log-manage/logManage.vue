@@ -1,53 +1,57 @@
 <template>
 <div class="com_searchAndpageBoxPadding">
-  <div class="searchAndpageBox" id="logBox">
+  <div class="searchPage toggleBox">
     <div class="handlePart">
-      <div class="search">
-        <el-form :inline="true" :model="logForm"  ref="logForm">
-          <!-- <el-row>
-            <el-col :span="13"> -->
+        <el-form :inline="true" :model="logForm" label-width="80px"  ref="logForm">
               <el-form-item label="机构名称" prop="organ">
-                <el-input v-model="logForm.organ"></el-input>
+                <el-input v-model="logForm.organ" placeholder="回车可直接查询" @keyup.enter.native="getLogList(1)"></el-input>
               </el-form-item>
               <el-form-item label="功能名称" prop="type">
-                <el-input v-model="logForm.type"></el-input>
+                <el-input v-model="logForm.type" placeholder="回车可直接查询" @keyup.enter.native="getLogList(1)"></el-input>
               </el-form-item>
               <el-form-item label="操作名称" prop="operation">
-                <el-input v-model="logForm.operation"></el-input>
+                <el-input v-model="logForm.operation" placeholder="回车可直接查询" @keyup.enter.native="getLogList(1)"></el-input>
               </el-form-item>
-              <el-form-item label="操作人" prop="username">
-                <el-input v-model="logForm.username"></el-input>
-              </el-form-item>
-              <el-form-item label="操作日期" >
-                <el-form-item prop="createTime1">
-                  <el-date-picker
-                    type="date"
-                    placeholder="选择日期"
-                    v-model="logForm.createTime1"
-                    style="width: 100%;"
-                  ></el-date-picker>
-                </el-form-item>
-                <el-form-item prop="createTime2">
-                  <el-time-picker
-                    placeholder="选择时间"
-                    v-model="logForm.createTime2"
-                    style="width: 100%;"
-                  ></el-time-picker>
-                </el-form-item>
-              </el-form-item>
-            <!-- </el-col> -->
-            <!-- <el-col :span="4"> -->
               <el-form-item>
-                <el-button type="primary" size="medium" icon="el-icon-search" @click="getLogList">查询</el-button>
-                <el-button type="primary" size="medium" @click="resetLog">重置</el-button>
+                <el-button size="medium" class="commonBtn searchBtn" icon="iconfont law-sousuo" @click="getLogList(1)"></el-button>
+                <el-button size="medium" class="commonBtn searchBtn" icon="iconfont law-zhongzhi" @click="resetLog"></el-button>
+                <el-button size="medium" class="commonBtn toogleBtn" :icon="isShow? 'iconfont law-down': 'iconfont law-top'" @click="showSomeSearch" >
+                </el-button>
               </el-form-item>
-            <!-- </el-col>
-          </el-row> -->
+              <el-collapse-transition>
+                <div v-show="isShow" :class="{'ransition-box':true}">
+                    <el-form-item label="操作人" prop="username">
+                        <el-input v-model="logForm.username" placeholder="回车可直接查询" @keyup.enter.native="getLogList(1)"></el-input>
+                    </el-form-item>
+                    <el-form-item label="操作日期" >
+                                <!-- type="daterange" -->
+                        <el-form-item prop="startTime">
+                            <el-date-picker
+                                type="date"
+                                placeholder="开始日期"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                format="yyyy-MM-dd"
+                                range-separator="—"
+                                v-model="logForm.startTime"
+                            ></el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="至" prop="endTime">
+                            <el-date-picker
+                                placeholder="结束日期"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                format="yyyy-MM-dd"
+                                range-separator="—"
+                                v-model="logForm.endTime"
+                            ></el-date-picker>
+                        </el-form-item>
+                    </el-form-item>
+
+                </div>
+              </el-collapse-transition>
         </el-form>
-      </div>
     </div>
     <div class="tablePart">
-      <el-table :data="tableData" stripe style="width: 100%;height:100%">
+      <el-table :data="tableData" stripe fit style="width: 100%;height:100%;" >
         <!-- <el-table-column type="selection" width="55" align="center"></el-table-column>-->
         <el-table-column prop="organ" label="机构名称" align="center"></el-table-column>
         <el-table-column prop="ip" label="IP地址" align="center"></el-table-column>
@@ -57,17 +61,17 @@
         <el-table-column prop="createTime" label="时间" align="center"></el-table-column>
       </el-table>
     </div>
-    <div class="paginationBox">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        background
-        :page-sizes="[10, 20, 30, 40]"
-        layout="prev, pager, next,sizes,jumper"
-        :total="totalPage"
-      ></el-pagination>
-    </div>
+    <div class="paginationBox" v-show="totalPage">
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            background
+            :page-sizes="[10, 20, 30, 40]"
+            layout="prev, pager, next,sizes,jumper"
+            :total="totalPage"
+        ></el-pagination>
+        </div>
   </div>
 </div>
 </template>
@@ -86,69 +90,68 @@ export default {
         type: "",
         operation: "",
         username: "",
-        createTime1: "",
-        createTime2: ""
+        startTime: "",
+        endTime: ""
       },
-      rules: {
-        createTime1: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择日期",
-            trigger: "change"
-          }
-        ],
-        createTime2: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择时间",
-            trigger: "change"
-          }
-        ]
-      }
+    //   rules: {
+    //     startTime: [
+    //       {
+    //         type: "date",
+    //         required: true,
+    //         message: "请选择日期",
+    //         trigger: "change"
+    //       }
+    //     ],
+    //     endTime: [
+    //       {
+    //         type: "date",
+    //         required: true,
+    //         message: "请选择时间",
+    //         trigger: "change"
+    //       }
+    //     ]
+    //   },
+      isShow: false
     };
   },
   methods: {
     //表单筛选
-    getLogList() {
+    getLogList(val) {
+      this.currentPage = val
       let data = {
         organ: this.logForm.organ,
         type: this.logForm.type,
         operation: this.logForm.operation,
         username: this.logForm.username,
-        // createTime: this.logForm.createTime1 + " " +this.logForm.createTime2,
-        // createTime: this.logForm.createTime2,
+        // startTime: this.logForm.startTime,
+        // endTime: this.logForm.endTime,
         current: this.currentPage,
         size: this.pageSize
       };
-      console.log(data);
       this.$store.dispatch("getloglist", data).then(res => {
         this.tableData = res.data.records;
          this.totalPage = res.data.total;
-        console.log(res);
       });
       err => {
         console.log(err);
       };
     },
-
+    //展开
+    showSomeSearch() {
+      this.isShow = !this.isShow;
+    },
     // 日志重置
     resetLog() {
       this.$refs["logForm"].resetFields();
     },
-
     //更改每页显示的条数
     handleSizeChange(val) {
-      console.log("每页显示的条数", val);
       this.pageSize = val;
-      this.getLogList();
+      this.getLogList(1);
     },
     //更换页码
     handleCurrentChange(val) {
-      console.log("当前页", val);
-      this.currentPage = val;
-      this.getLogList();
+      this.getLogList(val);
     }
   },
   mounted() {
@@ -159,6 +162,4 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../css/systemManage.less";
-</style>
+<style src="@/css/searchPage.less" lang="less" scoped></style>
