@@ -37,8 +37,7 @@
                     format="yyyy年MM月dd日"
                     placeholder="    年  月  日"
                   ></el-date-picker>
-                </el-form-item>
-                <el-form-item prop="enforceEndTime" class="pdf_datapick">
+                  <br>至
                   <el-date-picker
                     v-model="docData.enforceEndTime"
                     type="date"
@@ -46,6 +45,9 @@
                     placeholder="    年  月  日"
                   ></el-date-picker>
                 </el-form-item>
+                <!-- <el-form-item prop="enforceEndTime" class="pdf_datapick">
+                  
+                </el-form-item> -->
               </td>
             </tr>
             <tr>
