@@ -12,10 +12,10 @@
               <el-form-item label="操作名称" prop="operation">
                 <el-input v-model="logForm.operation" placeholder="回车可直接查询" @keyup.enter.native="getLogList(1)"></el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item label=" " label-width="13px">
                 <el-button size="medium" class="commonBtn searchBtn" icon="iconfont law-sousuo" @click="getLogList(1)"></el-button>
                 <el-button size="medium" class="commonBtn searchBtn" icon="iconfont law-zhongzhi" @click="resetLog"></el-button>
-                <el-button size="medium" class="commonBtn toogleBtn" :icon="isShow? 'iconfont law-down': 'iconfont law-top'" @click="showSomeSearch" >
+                <el-button size="medium" class="commonBtn toogleBtn" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="showSomeSearch" >
                 </el-button>
               </el-form-item>
               <el-collapse-transition>
@@ -35,7 +35,7 @@
                                 v-model="logForm.startTime"
                             ></el-date-picker>
                             </el-form-item>
-                            <el-form-item label="至" prop="endTime">
+                            <el-form-item label="至" label-width="30px" prop="endTime">
                             <el-date-picker
                                 placeholder="结束日期"
                                 value-format="yyyy-MM-dd HH:mm:ss"

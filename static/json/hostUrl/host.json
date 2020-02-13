@@ -1,14 +1,9 @@
 {
   "CURRENT": "WW",
   "ONLINE": {
-<<<<<<< HEAD
-    "HOST": "http://172.16.170.44:8088/catsic",
-    "CAPTCHA_HOST": "http://172.16.170.44:8088/catsic"
-=======
     "//": "http://172.16.170.44:8088/catsic",
     "HOST": "http://124.192.215.4:8088/catsic",
     "CAPTCHA_HOST": "http://124.192.215.4:8088/catsic"
->>>>>>> 4d1d4fc9010005e91d444af58fefd91cc6192289
   },
   "TEST": {
     "//": "http://172.16.170.44:8080/catsic",
@@ -21,14 +16,11 @@
     "CAPTCHA_HOST": "http://124.192.215.4:8088/catsic"
   },
   "LXC": {
-<<<<<<< HEAD
     "HOST": "http://172.16.169.83:8888/catsic",
     "CAPTCHA_HOST": "http://172.16.169.83:8888/catsic"
   },
   "WW": {
-=======
     "//": "http://172.16.169.83:8888/catsic",
->>>>>>> 4d1d4fc9010005e91d444af58fefd91cc6192289
     "HOST": "http://124.192.215.4:8088/catsic",
     "CAPTCHA_HOST": "http://124.192.215.4:8088/catsic"
   }
