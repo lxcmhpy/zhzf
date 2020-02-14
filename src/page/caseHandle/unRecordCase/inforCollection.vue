@@ -5,7 +5,7 @@
         <a :class="activeA[0]? 'activeA' :''" @click="jump(1)">案件情况</a>
         <a :class="activeA[1]? 'activeA' :''" @click="jump(2)">当事人</a>
         <a :class="activeA[2]? 'activeA' :''" @click="jump(3)">车辆信息</a>
-        <a  :class="activeA[3]? 'activeA' :''" v-if="showOverrun" @click="jump(4)">超限信息</a>
+        <a :class="activeA[3]? 'activeA' :''" v-if="showOverrun" @click="jump(4)">超限信息</a>
         <!-- <a :class="activeA[3]? 'activeA' :''" @click="jump(4)">超限信息</a> -->
         <a :class="activeA[4]? 'activeA' :''" @click="jump(5)">违法事实</a>
       </div>
@@ -383,7 +383,7 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测站">
-               <el-select v-model="inforForm.checkStastions">
+              <el-select v-model="inforForm.checkStastions">
                 <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
               <!-- <el-input v-model="inforForm.checkStastions"></el-input> -->
@@ -430,23 +430,32 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车辆轴数">
-              <el-input v-model="inforForm.vehicleAxleNumber"></el-input>
+              <el-select placeholder="请选择" v-model="inforForm.vehicleAxleNumber" @change="weightLimit">
+                <el-option label="2" value="2"></el-option>
+                <el-option label="3" value="3"></el-option>
+                <el-option label="4" value="4"></el-option>
+                <el-option label="5" value="5"></el-option>
+                <el-option label="6" value="6"></el-option>
+
+              </el-select>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="车型">
-              <el-select placeholder="请选择" v-model="inforForm.vehicleType">
-                <el-option  label="中置轴挂车列车"></el-option>
-                <el-option label="铰链列车"></el-option>
-                <el-option  label="全挂汽车列车"></el-option>
+              <el-select placeholder="请选择" v-model="inforForm.vehicleType" @change="weightLimit">
+                <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                <!-- <el-option label="中置轴挂车列车"></el-option>
+                <el-option label="铰列车"></el-option>
+                <el-option label="全挂汽车列车"></el-option> -->
               </el-select>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="轴数分布">
-              <el-select placeholder="请选择" v-model="inforForm.vehicleAxlesType">
-                <el-option  label="1+2+3"></el-option>
-                <el-option  label="2+2+2"></el-option>
+              <el-select placeholder="请选择" v-model="inforForm.vehicleAxlesType" @change="weightLimit">
+                <el-option v-for="item in vehicleAxlesTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                <!-- <el-option label="1+2+3"></el-option>
+                <el-option label="2+2+2"></el-option> -->
               </el-select>
             </el-form-item>
           </div>
@@ -454,16 +463,16 @@
         <div>
           <div class="item">
             <el-form-item label="车货总重">
-              <el-input v-model="inforForm.allWeight">
+              <el-input v-model="inforForm.allWeight" @change="concludeOverWeight">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="驱动轴" v-show="inforForm.vehicleAxleNumber==6">
-              <el-radio-group v-model="inforForm.vehiclePowerType">
-                <el-radio  label="单轴"></el-radio>
-                <el-radio  label="双轴"></el-radio>
+              <el-radio-group v-model="inforForm.vehiclePowerType" @change="weightLimit">
+                <el-radio label="单轴"></el-radio>
+                <el-radio label="双轴"></el-radio>
               </el-radio-group>
             </el-form-item>
           </div>
@@ -471,7 +480,7 @@
         <div>
           <div class="item">
             <el-form-item label="总质量限值">
-              <el-input v-model="inforForm.allWeightLimit">
+              <el-input v-model="inforForm.weightLimit" @change="concludeOverWeight">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -688,6 +697,10 @@ export default {
       callback();
     };
     return {
+      RecentCheckStastions: [{ value: '', label: '' }],//最近五个检测站
+      RecentCheckWorkers: [{ value: '', label: '' }],//历史保存过检测人员
+      vehicleTypeList: [],//车型
+      vehicleAxlesTypeList: [],//轴数
       inforForm: {
         caseSource: "", //案件来源
         caseSourceText: "", //案件来源后的
@@ -739,8 +752,8 @@ export default {
         staff: "",
         certificateId: "",
         isBigTransfer: '0',
-        RecentCheckStastions:[],//最近五个检测站
-        RecentCheckWorkers:[],//历史保存过检测人员
+        weightLimit: '',
+        overWeight: '',
       },
       rules: {
         caseSource: [{ required: true, message: "请选择", trigger: "change" }],
@@ -756,16 +769,13 @@ export default {
           { validator: validatePartName, trigger: "blur" }
         ],
         lawPersonListId: [
-          // { required: true, message: "", trigger: "blur" },
           { validator: validateLawPersonNumber, trigger: "change" }
         ],
         checkTime: [
-          // { required: true, message: "", trigger: "blur" },
-          { required: true, trigger: "change" }
+          { required: true,message: "请输入检测时间", trigger: "change" }
         ],
         vehiclefiledThing: [
-          // { required: true, message: "", trigger: "blur" },
-          { required: true, trigger: "change" }
+          { required: true,message: "请输入装载物",  trigger: "change" }
         ],
         // relationWithCase: [
         //   { required: true, message: "请选择", trigger: "change" }
@@ -1167,8 +1177,75 @@ export default {
           console.log(err);
         }
       );
-    }
+    },
+    // 超重限制及抽屉表
+    weightLimit() {
+      var inforForm = this.inforForm;
+      inforForm.weightLimit = '';
+      if (inforForm.vehicleAxleNumber == 6) {
+        this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
+        this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }, { label: '2+2+2', value: '2+2+2' }];
+        if (inforForm.vehiclePowerType) {
+          inforForm.weightLimit = 46;
+          if (inforForm.vehiclePowerType == '双轴') {
+            inforForm.weightLimit = 49;
+          }
+        }
 
+      }
+      if (inforForm.vehicleAxleNumber == 5) {
+        this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
+        this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' }, { label: '2+1+2', value: '2+1+2' }, { label: '1+1+3', value: '1+1+3' }];
+        if (inforForm.vehicleAxleNumber && inforForm.vehiclePowerType && inforForm.vehicleType && inforForm.vehicleAxlesType) {
+          this.inforForm.weightLimit = 43;
+          if (inforForm.vehicleAxlesType == '1+1+3') {
+            inforForm.weightLimit = 42;
+          }
+        }
+
+      }
+      if (inforForm.vehicleAxleNumber == 4) {
+        this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '全挂汽车列车', value: '全挂汽车列车' }, { label: '载货汽车', value: '载货汽车' }]
+        this.vehicleAxlesTypeList = [{ label: '2+1+2', value: '2+1+2' }, { label: '1+1+2', value: '1+1+2' }, { label: '1+1+1+1', value: '1+1+1+1' }, { label: '2+2', value: '2+2' }];
+        if (inforForm.vehicleAxleNumber && inforForm.vehiclePowerType && inforForm.vehicleType && inforForm.vehicleAxlesType) {
+          this.inforForm.weightLimit = 36;
+          if (inforForm.vehicleType == '中置轴挂车列车') {
+            if (inforForm.vehicleAxlesType == '1+2+1') {
+              inforForm.weightLimit = 35;
+            }
+          }
+          if (inforForm.vehicleType == '载货汽车') {
+            inforForm.weightLimit = 31;
+          }
+        }
+
+      }
+      if (inforForm.vehicleAxleNumber == 3) {
+        this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '载货汽车', value: '载货汽车' }]
+        this.vehicleAxlesTypeList = [{ label: '1+1+1', value: '1+1+1' }];
+        if (inforForm.vehicleAxleNumber && inforForm.vehiclePowerType && inforForm.vehicleType && inforForm.vehicleAxlesType) {
+          this.inforForm.weightLimit = 27;
+          if (inforForm.vehicleType == '载货汽车') {
+            inforForm.weightLimit = 25;
+          }
+        }
+
+      }
+      if (inforForm.vehicleAxleNumber == 2) {
+        this.vehicleTypeList = [{ label: '载货汽车', value: '载货汽车' }]
+        this.vehicleAxlesTypeList = [{ label: '1+1', value: '1+1' }];
+        this.inforForm.weightLimit = 18;
+      }
+
+       if (this.inforForm.weightLimit&& this.inforForm.allWeight)
+      inforForm.overWeight = this.inforForm.allWeight - this.inforForm.weightLimit
+    },
+    // 计算超重
+    concludeOverWeight() {
+      this.inforForm.overWeight='';
+      if (this.inforForm.weightLimit && this.inforForm.allWeight)
+      this.inforForm.overWeight = this.inforForm.allWeight - this.inforForm.weightLimit
+    }
   },
   mounted() {
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
@@ -1184,7 +1261,7 @@ export default {
     console.log("标志", someCaseInfo.illageAct)
     this.showOverrun =
       someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
-      console.log(this.showOverrun)
+    console.log(this.showOverrun)
   },
   created() {
     this.findJudgFreedomList();
