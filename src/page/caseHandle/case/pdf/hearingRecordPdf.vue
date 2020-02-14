@@ -1,8 +1,14 @@
 <template>
   <div class="main">
     <div class="a4-box">
-      <div class="pdf-box" ref="docForm" id="hearingRecord_print">
+      <div class="pdf-box"  id="hearingRecord_print">
         <!-- <div>交通运输行政执法文书式样之二十二 ： 中止（终结、恢复）行政强制执行通知书</div> -->
+        <el-form
+      :inline-message="true"
+      :inline="true"
+      ref="docForm"
+      :model="docData"
+    >
         <div class="pdf-title">听证笔录</div>
         <div class="case-number">案号：{{docData.caseNumber}}</div>
         <div class="pdf-report-info">
@@ -130,6 +136,7 @@
 
         <p class="begin margin-top87">（本文书一式两份：一份存根，一份交当事人或其代理人。）</p> -->
         </div>
+        </el-form>
       </div>
     </div>
     <!-- 悬浮按钮 -->

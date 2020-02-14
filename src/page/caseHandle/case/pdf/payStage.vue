@@ -2,6 +2,12 @@
   <div class="main">
     <div class="a4-box" id="payStage-print">
       <div class="pdf-box">
+        <el-form
+        ref="docForm"
+        :inline-message="true"
+        :inline="true"
+        :model="docData"
+      >
         <!-- <div>交通运输行政执法文书式样之十七 ：分期（延期）缴纳罚款通知书</div> -->
         <div class="pdf-title">分期（延期）缴纳罚款通知书</div>
         <div class="case-number">案号：{{docData.caseNumber}}</div>
@@ -47,6 +53,7 @@
             </div>
           </div>
         </div>
+        </el-form>
       </div>
     </div>
     <!-- 悬浮按钮 -->

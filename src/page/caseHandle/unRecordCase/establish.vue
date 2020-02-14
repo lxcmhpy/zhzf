@@ -10,7 +10,7 @@
         :model="formData"
       >
         <div class="doc_topic">立案登记表</div>
-        <div class="doc_number">案号：{{formData.tempNo}}</div>
+        <div class="doc_number">案号：{{formData.caseNumber}}</div>
 
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
@@ -20,47 +20,59 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <div class="text-left">
-                <form>
+                  <el-checkbox-group v-model="caseSourceCheckBox">
                   <p>
-                    <input type="checkbox" />1.在行政检查中发现的；
+                    <el-checkbox label="行政检查">1.在行政检查中发现的；</el-checkbox>
                   </p>
                   <p>
-                    <input type="checkbox" />2.个人、法人及其他组织举报经核实的；
+                    <el-checkbox label="投诉举报"> 2.个人、法人及其他组织举报经核实的；</el-checkbox>
                   </p>
                   <p>
-                    <input type="checkbox" />3.上级机关交办的；
-                  </p>
-                  <p>
-                    <input type="checkbox" />4.下级机关
-                    <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan">
+                    <el-checkbox label="上级交办"> 3.上级机关
+                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
                       <el-input
-                        v-model="formData.reconsiderationOrgan"
+                        v-model="caseSourceText3"
                         :maxLength="maxLength"
                         placeholder="\"
+                        disabled
                       ></el-input>
-                    </el-form-item>报请查处的
+                    </el-form-item>交办的；
+                    </el-checkbox>
                   </p>
                   <p>
-                    <input type="checkbox" />5.有关部门
-                    <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan">
+                    <el-checkbox label="下级报请"> 4.下级机关
+                    <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
                       <el-input
-                        v-model="formData.reconsiderationOrgan"
+                        v-model="caseSourceText4"
                         :maxLength="maxLength"
                         placeholder="\"
+                        disabled
                       ></el-input>
-                    </el-form-item>移送的；
+                    </el-form-item>报请查处的 </el-checkbox>
                   </p>
                   <p>
-                    <input type="checkbox" />6.其他途径发现的
-                    <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan">
+                    <el-checkbox label="部门移送"> 5.有关部门
+                    <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
                       <el-input
-                        v-model="formData.reconsiderationOrgan"
+                        v-model="caseSourceText5"
                         :maxLength="maxLength"
                         placeholder="\"
+                        disabled
                       ></el-input>
-                    </el-form-item>
+                    </el-form-item>移送的；</el-checkbox>
                   </p>
-                </form>
+                  <p>
+                    <el-checkbox label="其他途径">6.其他途径发现的
+                    <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
+                      <el-input
+                        v-model="caseSourceText6"
+                        :maxLength="maxLength"
+                        placeholder="\"
+                        disabled
+                      ></el-input>
+                    </el-form-item></el-checkbox>
+                  </p>
+                  </el-checkbox-group>
               </div>
             </td>
           </tr>
@@ -87,12 +99,17 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <el-form-item prop="acceptTime" class="pdf_datapick">
-                <el-date-picker
+                <!-- <el-date-picker
                   v-model="formData.acceptTime"
                   type="date"
                   format="yyyy年MM月dd日"
                   placeholder="    年  月  日"
-                ></el-date-picker>
+                ></el-date-picker> -->
+                <el-input
+                  v-model="formData.acceptTime"
+                  placeholder="\"
+                  disabled
+                ></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -114,9 +131,10 @@
                   type="textarea"
                   v-model="formData.party"
                   v-bind:class="{ over_flow:formData.party.length>14?true:false }"
-                  :autosize="{ minRows: 2, maxRows: 3}"
+                  :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   placeholder="\"
+                  disabled
                 ></el-input>
               </el-form-item>
             </td>
@@ -127,9 +145,10 @@
                   type="textarea"
                   v-model="formData.partySex"
                   v-bind:class="{ over_flow:formData.partySex.length>14?true:false }"
-                  :autosize="{ minRows: 2, maxRows: 3}"
-                  :maxlength="nameLength"
+                  :autosize="{ minRows: 1, maxRows: 3}"
+                  maxlength="2"
                   placeholder="\"
+                  :disabled="isParty ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -140,8 +159,9 @@
                   type="textarea"
                   v-model="formData.partyAge"
                   v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }"
-                  :autosize="{ minRows: 2, maxRows: 3}"
-                  :maxlength="nameLength"
+                  :autosize="{ minRows: 1, maxRows: 3}"
+                  maxlength="3"
+                  :disabled="isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -155,9 +175,10 @@
                   type="textarea"
                   v-model="formData.partyAddress"
                   v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
-                  :autosize="{ minRows: 2, maxRows: 3}"
+                  :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   placeholder="\"
+                  :disabled="isParty ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -171,9 +192,10 @@
                   type="textarea"
                   v-model="formData.partyIdNo"
                   v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }"
-                  :autosize="{ minRows: 2, maxRows: 3}"
+                  :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   placeholder="\"
+                  :disabled="isParty ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -187,6 +209,7 @@
                   :autosize="{ minRows: 2, maxRows: 3}"
                   :maxlength="nameLength"
                   placeholder="\"
+                  :disabled="isParty ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -200,9 +223,10 @@
                   type="textarea"
                   v-model="formData.partyName"
                   v-bind:class="{ over_flow:formData.partyName.length>14?true:false }"
-                  :autosize="{ minRows: 2, maxRows: 3}"
+                  :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   placeholder="\"
+                  disabled
                 ></el-input>
               </el-form-item>
             </td>
@@ -215,10 +239,11 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyManager"
-                  v-bind:class="{ over_flow:formData.partyManager.length>14?true:false }"
-                  :autosize="{ minRows: 2, maxRows: 3}"
-                  :maxlength="nameLength"
+                  v-bind:class="{ over_flow:formData.partyManager.length>3?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 3}"
+                  maxlength="10"
                   placeholder="\"
+                  :disabled="isParty ? true : false"
                 ></el-input>
               </el-form-item>
             </td>
@@ -231,9 +256,10 @@
                   type="textarea"
                   v-model="formData.partyUnitAddress"
                   v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }"
-                  :autosize="{ minRows: 2, maxRows: 3}"
-                  :maxlength="nameLength"
+                  :autosize="{ minRows: 1, maxRows: 2}"
+                  maxlength="45"
                   placeholder="\"
+                  :disabled="isParty ? true : false"
                 ></el-input>
               </el-form-item>
             </td>
@@ -244,9 +270,10 @@
                   type="textarea"
                   v-model="formData.partyUnitTel"
                   v-bind:class="{ over_flow:formData.partyUnitTel.length>14?true:false }"
-                  :autosize="{ minRows: 2, maxRows: 3}"
+                  :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   placeholder="\"
+                  :disabled="isParty ? true : false"
                 ></el-input>
               </el-form-item>
             </td>
@@ -259,9 +286,10 @@
                   type="textarea"
                   v-model="formData.socialCreditCode"
                   v-bind:class="{ over_flow:formData.socialCreditCode.length>14?true:false }"
-                  :autosize="{ minRows: 2, maxRows: 3}"
+                  :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   placeholder="\"
+                  :disabled="isParty ? true : false"
                 ></el-input>
               </el-form-item>
             </td>
@@ -272,9 +300,9 @@
               <p>本情况</p>
             </td>
             <td colspan="8" class="color_DBE4EF">
-              <el-form-item prop="caseBasicInfo">
-                <!-- <el-input type='textarea' v-model="formData.caseBasicInfo" v-bind:class="{ over_flow:formData.caseBasicInfo.length>14?true:false }" :autosize="{ minRows: 5, maxRows: 5}" :maxlength="nameLength" placeholder="\"></el-input> -->
-                <el-input type="textarea"></el-input>
+              <el-form-item prop="caseSituation">
+                <el-input type='textarea' v-model="formData.caseSituation" v-bind:class="{ over_flow:formData.caseSituation && formData.caseSituation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 5}" maxlength="200" placeholder="\"></el-input>
+                <!-- <el-input type="textarea" ></el-input> -->
               </el-form-item>
             </td>
           </tr>
@@ -380,6 +408,7 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
+import {validateIDNumber,validatePhone,validateZIP} from '@/js/validator'
 
 export default {
   data() {
@@ -387,7 +416,8 @@ export default {
       caseNumber: "010-123456",
       // tableData: {},
       formData: {
-        partyType: "个人"
+        partyType: "个人",
+        caseBasicInfo:"",
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -397,10 +427,22 @@ export default {
         formData: "",
         status: ""
       },
-      rules: {},
+      rules: {
+        partyIdNo:[
+          { validator: validateIDNumber, trigger: "blur" }
+        ],
+        partyTel:[
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        partyUnitTel:[
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        
+        
+      },
       nameLength: 23,
       adressLength: 23,
-      maxLength: 23,
+      maxLength: 12,
       lineStyleFlag: false,
       approval: this.$route.params.isApproval ? true : false, //   是否是审批人员进入
       formOrDocData: {
@@ -419,7 +461,13 @@ export default {
         pageDomId: "establish-print"
       },
       huanjieAndDocId: "2c9029ae654210eb0165421564970001", //立案登记表的文书id
-      approvalOver: false //审核完成
+      approvalOver: false,//审核完成
+      isParty: true, //当事人类型为个人
+      caseSourceText3:"",
+      caseSourceText4:"",
+      caseSourceText5:"",
+      caseSourceText6:"",
+      caseSourceCheckBox:[],
     };
   },
   components: {
@@ -521,6 +569,20 @@ export default {
           false
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
+    },
+    //案件来源
+    setEstabishCaseSourceAndText(){
+      if(this.formData.checkBox == '上级交办'){
+        this.caseSourceText3 = this.formData.caseSourceText;
+      }else if(this.formData.checkBox == '下级报请'){
+        this.caseSourceText4 = this.formData.caseSourceText;
+      }else if(this.formData.checkBox == '部门移送'){
+        this.caseSourceText5 = this.formData.caseSourceText;
+      }else if(this.formData.checkBox == '其他途径'){
+        this.caseSourceText6 = this.formData.caseSourceText;
+      }
+      this.caseSourceCheckBox.push(this.formData.checkBox);
+      
     }
   },
   created() {
@@ -531,5 +593,5 @@ export default {
 </script>
  <style lang="less">
 // @import "../../../css/pdf.less";
-@import "../../../css/caseHandle/caseDocModle.less";
+@import "../../../css/caseHandle/caseDocModle.less"; 
 </style>

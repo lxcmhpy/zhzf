@@ -151,12 +151,12 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getUnRecordCase();
+      this.getUnRecordCase({});
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getUnRecordCase();
+      this.getUnRecordCase({});
     },
     //跳转立案登记
     handleCurrentChange(row) {

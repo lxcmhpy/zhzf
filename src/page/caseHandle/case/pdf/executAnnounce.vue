@@ -3,6 +3,12 @@
 
     <div class="a4-box" id="executAnnounce-print">
       <div class="pdf-box">
+        <el-form
+        ref="docForm"
+        :inline-message="true"
+        :inline="true"
+        :model="docData"
+      >
         <!-- <div>交通运输行政执法文书式样之十八 ：执行公告</div> -->
         <div class="pdf-title">
           执行公告
@@ -36,6 +42,7 @@
 
           </div>
         </div>
+        </el-form>
       </div>
     </div>
     <!-- 悬浮按钮 -->

@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
 
-    <el-form :rules="rules" ref="ruleForm" :inline-message="true" :inline="true" :model="docData" label-width="80px">
+    <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" label-width="80px">
 
       <div class="print_info indent_style" id="question_print">
 
@@ -283,45 +283,45 @@ export default {
       illegalFactsEvidence: '',
       value1: '',
       rules: {
-        test: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        party: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyIdNo: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyName: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyUnitAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyUnitTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyManager: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        punishLaw: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        socialCreditCode: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        illegalFactsEvidence: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        reconsiderationOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
+        // test: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // party: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // partyIdNo: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // partyAddress: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // partyTel: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // partyName: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // partyUnitAddress: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // partyUnitTel: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // partyManager: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // punishLaw: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // socialCreditCode: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // illegalFactsEvidence: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
+        // reconsiderationOrgan: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
 
       },
       formOrDocData: {

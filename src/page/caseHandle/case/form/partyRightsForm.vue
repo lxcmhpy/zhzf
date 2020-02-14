@@ -31,14 +31,14 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseName" label="案由">
-                  <el-input ref="caseName" :disabled="true" clearable class="w-120" v-model="formData.caseName" size="small"></el-input>
+                  <el-input ref="caseName" :disabled="true" clearable class="w-120" v-model="formData.caseCauseName" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseCauseNameCopy" label="违法事实">
-                  <el-input type="textarea" ref="caseCauseNameCopy" clearable class="height106" v-model="formData.caseCauseNameCopy" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="illegalFact" label="违法事实">
+                  <el-input type="textarea" ref="illegalFact" clearable class="height106" v-model="formData.illegalFact" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -58,7 +58,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="tempPunishAmount" label="拟处罚决定" class="line-height13">
+                <el-form-item prop="tempPunishAmount" label="拟处罚决定">
                   <el-input ref="tempPunishAmount" :disabled="true" clearable class="w-120" v-model="formData.tempPunishAmount" size="small"></el-input>
                 </el-form-item>
               </div>

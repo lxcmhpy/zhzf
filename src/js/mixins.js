@@ -1,6 +1,8 @@
 import { mapGetters } from "vuex";
 import { htmlExportPDF } from '@/js/htmlExportPDF'
-
+import {
+  findCaseAllBindPropertyApi,
+ } from "@/api/caseHandle";
 export const mixinGetCaseApiList = {
   data() {
     return {
@@ -47,12 +49,18 @@ export const mixinGetCaseApiList = {
           console.log("获取表单详情", res);
           //如果为空，则加载案件信息
           if (res.data == "") {
-            this.com_getCaseBasicInfo(caseId);
+            this.com_getCaseBasicInfo(caseId,caseLinktypeId);
           } else {
             console.log(res.data);
             this.caseLinkDataForm.id = res.data.id;
             this.formData = JSON.parse(res.data.formData);
+            if(this.formData.checkBox){  //案件来源转数组
+              // this.formData.checkBox = [this.formData.checkBox];
+              this.setEstabishCaseSourceAndText();
+            }
+            console.log('this.formData',this.formData)
             this.setSomeData(this.formData);
+            this.isSaveLink = true;
             if (refreshDataForPdf) {
               //提交pdf页
               setTimeout(() => {
@@ -68,24 +76,49 @@ export const mixinGetCaseApiList = {
       );
     },
     // 获取案件信息
-    com_getCaseBasicInfo(caseId) {
+    com_getCaseBasicInfo(caseId,formOrDocId) {
       // console.log("this.$route.params.id", this.$route.params.id);
       // 获取案件信息
+      // let data = {
+      //   id: caseId
+      // };
+      // this.$store.dispatch("getCaseBasicInfo", data).then(
+      //   res => {
+      //     console.log('获取案件信息', res)
+      //     if (this.formData) {
+      //       this.formData = res.data;
+      //       this.setSomeData(this.formData);
+      //     } else {
+      //       this.docData = res.data;
+      //     }
+      //   },
+      //   err => {
+      //     console.log(err);
+      //   }
+      // );
       let data = {
-        id: caseId
+        caseBasicInfoId: caseId,
+        typeId:formOrDocId
       };
-      this.$store.dispatch("getCaseBasicInfo", data).then(
+      console.log('xinxi',data)
+      findCaseAllBindPropertyApi(data).then(
         res => {
           console.log('获取案件信息', res)
+          let caseData = JSON.parse(res.data.propertyData);
+          console.log('获取案件信息2', caseData)
           if (this.formData) {
-            this.formData = res.data;
+            this.formData = caseData;
+            if(this.formData.checkBox){  //案件来源转数组
+              // this.formData.checkBox = [this.formData.checkBox];
+              this.setEstabishCaseSourceAndText();
+            }
             this.setSomeData(this.formData);
           } else {
-            this.docData = res.data;
+            this.docData = caseData;
           }
         },
-        err => {
-          console.log(err);
+        error => {
+          console.log(error)
         }
       );
     },
@@ -105,6 +138,7 @@ export const mixinGetCaseApiList = {
                 type: "success",
                 message: "保存成功"
               });
+              
               if (handleType == 1) {
                 //保存成功 
                 if (hasNextBtn) {    //有下一环节按钮  
@@ -206,7 +240,7 @@ export const mixinGetCaseApiList = {
           console.log("获取文书详情", res);
           //如果为空，则加载案件信息
           if (res.data.length == 0) {
-            this.com_getCaseBasicInfo(params.caseId);
+            this.com_getCaseBasicInfo(params.caseId,params.docId);
           } else {
             console.log(res.data[0]);
             this.caseDocDataForm.id = res.data[0].id;
@@ -265,6 +299,7 @@ export const mixinGetCaseApiList = {
     },
     //查看环节下的文书
     com_viewDoc(row) {
+      console.log(row);
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
         console.log('row:', row)
