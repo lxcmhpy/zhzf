@@ -14,7 +14,7 @@
           <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
-              <td>执法地点</td>
+              <td>执法地点</td>  
               <td colspan="3" class="color_DBE4EF">
                 <el-form-item prop="fillingPlace">
                   <el-input
@@ -43,6 +43,7 @@
                     type="date"
                     format="yyyy年MM月dd日"
                     placeholder="    年  月  日"
+                    style="width:200px"
                   ></el-date-picker>
                 </el-form-item>
                 <!-- <el-form-item prop="enforceEndTime" class="pdf_datapick">
@@ -214,7 +215,7 @@
             <tr>
               <td rowspan="11">主要内容</td>
               <td colspan="7">
-                <span class="side_right" @click="overFlowEdit">
+                <!-- <span class="side_right" @click="overFlowEdit">
                   <el-form-item prop="illegalFacts">
                     <span class="over_topic">
                       现场情况：（如实施行政强制措施的，包括当场告知当事人采取
@@ -222,18 +223,29 @@
                       <br />救济途径，听取当事人陈述、申辩情况。）
                       <br />
                     </span>
-                    <span>{{docData.illegalFacts}}</span>
+                    
                   </el-form-item>
-                </span>
+                </span> -->
+                <!-- 多行样式 -->
+                <div class="overflow_lins_style">
+                  <div class="overflow_lins">
+                    <el-form-item prop="inquestResult">
+                      现场情况：（如实施行政强制措施的，包括当场告知当事人采取
+                        <br>行政强制措施的理由、依据以及当事人依法享有的权利、
+                        <br>救济途径，听取当事人陈述、申辩情况。）：
+                        <br>
+                      <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.inquestResult" rows="3" maxLength='90' placeholder="\"></el-input>                 
+                      <span  class="span_bg" @click="overFlowEdit">&nbsp;</span> <br>
+                      <span  class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span> <br>
+                      <span  class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
+                      <!-- <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span> -->
+                    </el-form-item>
+                  </div>
+
+                </div>
               </td>
             </tr>
-            <!-- <tr>
-                <td colspan="7">
-                  <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-                  <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-                  <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-                </td>
-            </tr>-->
+           
             <tr>
               <td colspan="7">
                 <input type="checkbox" />上述笔录我已看过。
@@ -244,7 +256,7 @@
               <td colspan="7">
                 备注：
                 <el-form-item prop="note">
-                  <el-input v-model="docData.note" placeholder="\"></el-input>
+                  <el-input v-model="docData.note" placeholder="\" style="width:480px"></el-input>
                 </el-form-item>
               </td>
             </tr>
@@ -311,6 +323,8 @@ import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+// 验证规则
+import { validatePhone, validateIDNumber } from "@/js/validator";
 
 export default {
   components: {
@@ -322,7 +336,21 @@ export default {
     casePageFloatBtns
   },
   data() {
+     var  validatePhone = (rule, value, callback) => {
+      var reg = /^1(3|4|5|6|7|8)\d{9}$/;
+      if (!reg.test(value) && value) {
+        // this.$alert('手机号格式错误')
+        // this.$message('手机号格式错误')
+         this.$notify.error({
+          title: '错误',
+          message: '手机号格式错误'
+        });
+        // callback(new Error('手机号格式错误'));
+      }
+      callback();
+    };
     return {
+      // overFlowEditList:[{},{}],
       isOverflow: false,
       isOverLine: false,
       docData: {
@@ -352,18 +380,9 @@ export default {
         staffSign: "",
         staffSign: ""
       },
-      caseDocDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: "", //案件ID
-        caseDoctypeId: this.$route.params.docId, //文书类型ID
-        //文书数据
-        docData: "",
-        status: "" //提交状态
-      },
-      handleType: "", // 0 暂存  1  提交
-      dictId: "2dc1e0a3a8ce225c292259da39294847",
-      options: [],
       rules: {
+        partyTel:[{ validator:validatePhone , trigger: "blur" }],
+        partyIdNo:[{ validator:validateIDNumber , trigger: "blur"}],
         party: [{ required: true, message: "请输入", trigger: "blur" }],
         punishLaw: [{ required: true, message: "请输入", trigger: "blur" }],
         socialCreditCode: [
@@ -376,6 +395,17 @@ export default {
           { required: true, message: "请输入", trigger: "blur" }
         ]
       },
+      caseDocDataForm: {
+        id: "", //修改的时候用
+        caseBasicinfoId: "", //案件ID
+        caseDoctypeId: this.$route.params.docId, //文书类型ID
+        //文书数据
+        docData: "",
+        status: "" //提交状态
+      },
+      handleType: "", // 0 暂存  1  提交
+      dictId: "2dc1e0a3a8ce225c292259da39294847",
+      options: [],
       nameLength: 23,
       adressLength: 23,
       maxLength: 23,

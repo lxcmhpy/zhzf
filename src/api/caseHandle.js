@@ -12,7 +12,7 @@ export function getEnforceLawTypeApi(organId) {
     cancelToken: setCancelSource()
   });
 }
-//获取案件类型
+//根据条件获取案件类型
 export function getCaseTypeApi(data) {
   let params = {
     programType: data.programType,
@@ -266,6 +266,25 @@ export function setFlowStatusAPi(data) {
 export function getApprovePeopleApi(caseBasicInfoId) { 
   return request({
     url: "/doc/linkData/findApproveRole/"+caseBasicInfoId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//查询所有环节
+export function getQueryLinkListApi() { 
+  return request({
+    url: "/caseTemplate/linkType/queryLinkList",
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+//查询所有案件类型
+export function getQueryCaseTypeListApi() { 
+  return request({
+    url: "/sys/caseType/list",
     method: "get",
     showloading: true,
     cancelToken: setCancelSource()

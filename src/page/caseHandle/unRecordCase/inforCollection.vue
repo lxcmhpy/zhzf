@@ -2,11 +2,11 @@
   <div id="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
-        <a href="#caseInfo" class="activeA">案件情况</a>
-        <a @click="jump(2)">当事人</a>
-        <a href="#carInfo">车辆信息</a>
-        <a href v-if="showOverrun">超限信息</a>
-        <a href="#breakLaw">违法事实</a>
+        <a  :class="activeA[0]? 'activeA' :''" @click="jump(1)">案件情况</a>
+        <a :class="activeA[1]? 'activeA' :''" @click="jump(2)">当事人</a>
+        <a :class="activeA[2]? 'activeA' :''" @click="jump(3)">车辆信息</a>
+        <a  :class="activeA[3]? 'activeA' :''" v-if="showOverrun" @click="jump(4)">超限信息</a>
+        <a :class="activeA[4]? 'activeA' :''" @click="jump(5)">违法事实</a>
       </div>
     </div>
     <el-form
@@ -16,8 +16,8 @@
       class="caseInfoForm"
       label-width="100px"
     >
-      <div class="caseFormBac">
-        <p id="caseInfo">案件情况</p>
+      <div class="caseFormBac" id="link_1">
+        <p >案件情况</p>
         <div>
           <div class="item">
             <el-form-item label="案件来源" prop="caseSource">
@@ -107,8 +107,8 @@
         </div>
       </div>
 
-      <div class="caseFormBac">
-        <p id="title2">当事人信息</p>
+      <div class="caseFormBac" id="link_2">
+        <p >当事人信息</p>
         <div>
           <div class="itemOne">
             <el-form-item label="执法人员">
@@ -392,8 +392,8 @@
         </div>
       </div>
 
-      <div class="caseFormBac">
-        <p>车辆信息</p>
+      <div class="caseFormBac" id="link_3">
+        <p >车辆信息</p>
         <div>
           <div class="item">
             <el-form-item label="车牌号">
@@ -497,8 +497,8 @@
           <el-button type="primary" size="medium" icon="el-icon-plus">添加其他</el-button>
         </div>
       </div>-->
-      <div class="caseFormBac">
-        <p>违法事实</p>
+      <div class="caseFormBac" id="link_4">
+        <p >违法事实</p>
         <div>
           <div class="itemOne">
             <el-form-item label="违法行为">
@@ -764,6 +764,7 @@ export default {
       lawPersonListId: "",
       currentUserLawId: "",
       disableBtn:false, //提交暂存按钮的禁用
+      activeA:[true,false,false,false,false]
     };
   },
   components: {
@@ -957,10 +958,19 @@ export default {
       }
     },
     toNextPart() {},
+    //点击滚动
     jump(index) {
-      if (index == 2) {
-        // let a = document.getElementById('title2').ffsetTop;
-        // console.log("a",a);
+      console.log(this.$el);
+      this.activeA = [false,false,false,false,false];
+      this.activeA[index-1] = true;
+      if(index>1){
+        let numTotal = 0;
+        for(let i = 0;i<index;i++){
+          let elPageOt = this.$el.querySelector(`#link_${i}`) ? this.$el.querySelector(`#link_${i}`).offsetHeight : 40;
+          numTotal += elPageOt;
+        }
+        console.log('numTotal',numTotal);
+        document.getElementById("inforCollectionBox").scrollTop = numTotal;
       }
     },
     //提交信息

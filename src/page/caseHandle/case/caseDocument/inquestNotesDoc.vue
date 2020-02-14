@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
     <div class="print_info indent_style" id="inquestNote_print">
-      <el-form ref="docForm" :inline-message="true" :inline="true" :model="docData">
+      <el-form ref="docForm" :inline-message="true" :inline="true" :model="docData" :rules="rules" >
         <div class="doc_topic">勘验笔录</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
@@ -119,8 +119,7 @@
             <el-input v-model="docData.recorderUnitAndPosition" :maxLength='maxLength' placeholder="\"></el-input>
           </el-form-item>
         </p>
-        <p class="side_right_indent">
-          <!-- <span class="side_left">违法事实及依据：</span> -->
+        <!-- <p class="side_right_indent">
           <span class="side_right" @click="overFlowEdit">
             <el-form-item prop="inquestResult">
               <span class="over_topic">勘验情况及结果：</span>
@@ -130,12 +129,22 @@
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <!-- <span class="span_bg">{{docData.illegalFactsEvidence}}</span> -->
         </p>
         <p v-if="lineStyleFlag">
           勘验情况及结果：<u>{{docData.inquestResult}}</u>
-        </p>
+        </p> -->
+        <!-- 多行样式 -->
+        <div class="overflow_lins_style">
+          <div class="overflow_lins">
+            <el-form-item prop="inquestResult">
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.inquestResult" rows="3" maxLength='90' placeholder="\"></el-input>
+              <span class="overflow_describe">勘验情况及结果：</span>
+              <span  class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
+              <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span>
+            </el-form-item>
+          </div>
 
+        </div>
         <el-row :gutter="20">
           <el-col :span="12">
             当事人或其代理人签名：
@@ -203,12 +212,28 @@ import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+// 验证规则
+import { validatePhone, validateIDNumber } from "@/js/validator";
 
 export default {
 
   data() {
+    var  validatePhone = (rule, value, callback) => {
+      var reg = /^1(3|4|5|6|7|8)\d{9}$/;
+      if (!reg.test(value) && value) {
+        // this.$alert('手机号格式错误')
+        // this.$message('手机号格式错误')
+         this.$notify.error({
+          title: '错误',
+          message: '手机号格式错误'
+        });
+        // callback(new Error('手机号格式错误'));
+      }
+      callback();
+    };
     return {
       // inquestResult:'',
+      overFlowEditList:[{},{}],
       docData: {
         // caseBasicinfoId:this.caseId,
         caseNumber: "",
@@ -241,6 +266,10 @@ export default {
         recorderSign: "",
         overWidthFlag: false,
         inquestResult: '',//多行编辑内容
+      },
+      rules: {
+        partyTel:[{ validator:validatePhone , trigger: "blur" }],
+        partyIdNo:[{ validator:validateIDNumber , trigger: "blur"}],
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
@@ -279,12 +308,22 @@ export default {
       else
         this.overWidthFlag = false;
     },
-    // 多行编辑
+    // // 多行编辑
+    // overFlowEdit() {
+    //   this.$refs.overflowInputRef.showModal(0, '');
+    // },
+    // // 获取多行编辑内容
+    // getOverFloeEditInfo(edit) {
+    //   this.docData.inquestResult = edit;
+    // },
+
+     // 多行编辑
     overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '');
+      this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
+      console.log('回显', edit)
       this.docData.inquestResult = edit;
     },
     // 盖章

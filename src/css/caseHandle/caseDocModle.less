@@ -6,23 +6,25 @@
     font-size  : 16px;
     color      : #000000;
     line-height: 32px;
+    font-weight: 200;
+   /*  line-height: 24px; *//* 可解决模板页面多出一行问题 */
     text-shadow: 1px 0px 0px black;
 
     /* a4盒子 */
     .print_info {
         // width         : 720px;
         // height        : 1217px;
-        width         : 790px;
-        height        : 1117px;
-        position      : absolute;
-        left          : calc(50% - 360px);
-        // margin-left: -360px;
-        left          : 0;
-        right         : 0;
-        margin        : auto;
-        padding       : 81px 82px 0;
-        background    : #ffffff;
-        box-sizing    : border-box;
+        width            : 790px;
+        height           : 1117px;
+        position         : absolute;
+        left             : calc(50% - 360px);
+        // margin-left   : -360px;
+        left             : 0;
+        right            : 0;
+        margin           : auto;
+        padding          : 81px 82px 0;
+        background       : #ffffff;
+        box-sizing       : border-box;
         /* 包含padding */
 
 
@@ -94,6 +96,14 @@
                     width: 100%;
                 }
 
+                .el-form-item__content {
+                    width      : calc(100% + 16px) !important;
+                    margin-left: -8px;
+                    padding    : 0 8px;
+                    box-sizing : border-box;
+                }
+
+
                 /* 输入框 */
                 .el-textarea {
                     height            : calc(100% - 1px);
@@ -114,6 +124,13 @@
 
                     .el-form-item {
                         width: auto;
+                    }
+                }
+
+                .big_error {
+                        .el-input{
+                            background: #DF5A5B !important;
+                  
                     }
                 }
             }
@@ -137,8 +154,8 @@
             }
 
             .el-textarea__inner {
-                font-size  : 12px;
-                line-height: 13px;
+                font-size  : 12px !important;
+                line-height: 14px !important;
             }
         }
 
@@ -169,34 +186,41 @@
                 }
 
                 .el-textarea {
-                    width             : 1%;
-                    height            : 30px;
-                    vertical-align    : middle;
-                    display           : table-cell;
-                    background        : #DBE4EF;
-                    border-radius     : 4px;
-                    right             : 0;
-                    // white-space    : nowrap;
+                    width                : 1%;
+                    height               : 30px;
+                    vertical-align       : middle;
+                    display              : table-cell;
+                    // background        : #DBE4EF;
+                    border-radius        : 4px;
+                    right                : 0;
+                    // white-space       : nowrap;
                 }
 
                 .el-input__inner,
                 .el-textarea__inner {
                     font-size      : 16px;
                     background     : #DBE4EF;
-                    max-height     : 30px;
-                    line-height    : 14px;
+                    line-height    : 16px;
                     text-align     : left;
                     text-align-last: left;
+                }
+
+                .el-input__inner {
+                    height: 16px;
+                }
+
+                .el-textarea__inner {
+                    max-height: 30px;
                 }
             }
 
 
 
             /* 错误提示  */
-            .el-form-item__error--inline {
-                line-height: 32px;
+            // .el-form-item__error--inline {
+            //     line-height: 32px;
 
-            }
+            // }
 
             .side_left {
                 display    : inline-block;
@@ -211,8 +235,7 @@
                 display   : inline-block;
                 background: #DBE4EF;
                 width     : 100%;
-                height    : 24px;
-
+                height    : 18px;
             }
 
             .text_bg {
@@ -250,17 +273,17 @@
                 }
 
                 /* 错误提示  */
-                .el-form-item__error--inline {
-                    position   : absolute;
-                    display    : inline-block;
-                    padding-top: 2px;
-                    left       : 145px;
-                    font-size  : 16px;
-                }
+                // .el-form-item__error--inline {
+                //     position   : absolute;
+                //     display    : inline-block;
+                //     padding-top: 2px;
+                //     left       : 145px;
+                //     font-size  : 16px;
+                // }
 
-                .span_bg {
-                    margin-top: 5px;
-                }
+                // .span_bg {
+                //     margin-top: 5px;
+                // }
 
             }
 
@@ -324,6 +347,55 @@
             text-justify: distribute-all-lines;
         }
 
+        /* 验证提示 */
+        .is-error {
+
+            .el-input__inner,
+            .el-input__inner:focus,
+            .el-textarea__inner,
+            .el-textarea__inner:focus {
+                background: #F7C9CB !important;
+            }
+
+            .big_error {
+
+                .el-input__inner,
+                .el-input__inner:focus,
+                .el-textarea__inner,
+                .el-textarea__inner:focus {
+                    background: #DF5A5B !important;
+                }
+            }
+        }
+
+        td {
+            .is-error {
+                .el-form-item__content {
+                    background: #F7C9CB !important;
+                }
+            }
+        }
+
+        .overflow_lins_style {
+
+            .el-textarea__inner,
+            .el-textarea__inner:focus {
+                background: transparent !important;
+            }
+
+            .is-error {
+
+                .span_bg {
+                    background: #F7C9CB !important;
+                }
+            }
+        }
+
+        .el-form-item__error {
+
+            display: none;
+        }
+
         .el-form-item {
             margin-bottom: 0;
         }
@@ -335,29 +407,31 @@
         .el-form-item__content {
             width : 100%;
             height: 100%;
+
+
         }
 
         /* 错误提示  */
-        .el-form-item__error {
-            // width     : 100%;
-            // height    : 100%;
-            border-radius: 4px;
-        }
+        // .el-form-item__error {
+        //     // width     : 100%;
+        //     // height    : 100%;
+        //     border-radius: 4px;
+        // }
 
         /* 错误提示  */
-        .el-form-item__error--inline {
-            position           : absolute;
-            display            : inline-block;
-            margin             : 0;
-            // background-color: pink;
-            padding-top        : 0;
-            padding-left       : 10px;
-            left               : 0;
-            line-height        : 40px;
-            text-align-last    : center;
-            vertical-align     : middle;
-            font-size          : 16px;
-        }
+        // .el-form-item__error--inline {
+        //     position           : absolute;
+        //     display            : inline-block;
+        //     margin             : 0;
+        //     // background-color: pink;
+        //     padding-top        : 0;
+        //     padding-left       : 10px;
+        //     left               : 0;
+        //     line-height        : 40px;
+        //     text-align-last    : center;
+        //     vertical-align     : middle;
+        //     font-size          : 16px;
+        // }
 
 
 
@@ -393,14 +467,14 @@
             float        : right;
 
             /* 错误提示  */
-            .el-form-item__error--inline {
-                position   : absolute;
-                display    : inline-block;
-                padding-top: 0;
-                left       : 15px;
-                top        : 17px;
-                font-size  : 16px;
-            }
+            // .el-form-item__error--inline {
+            //     position   : absolute;
+            //     display    : inline-block;
+            //     padding-top: 0;
+            //     left       : 15px;
+            //     top        : 17px;
+            //     font-size  : 16px;
+            // }
 
             .el-input__prefix {
                 display: none;
@@ -440,39 +514,9 @@
 
 
 
-        /* 选择框 */
-        & input[type=checkbox] {
-            cursor      : pointer;
-            position    : relative;
-            width       : 12px;
-            height      : 12px;
-            border      : 0;
-            margin-right: 0.5em;
-        }
+        .el-checkbox__inner {
+            border: 1px solid #000000;
 
-        & input[type=checkbox]::after {
-            position    : absolute;
-            background  : rgba(219, 228, 239, 1);
-            border      : 1px solid #000000;
-            color       : #000;
-            width       : 12px;
-            height      : 12px;
-            display     : inline-block;
-            visibility  : visible;
-            padding-left: 0px;
-            text-align  : center;
-            content     : ' ';
-        }
-
-        & input[type=checkbox]:checked::after {
-            content    : "✓";
-            background : #FFFFFF;
-            width      : 15px;
-            height     : 15px;
-            font-size  : 15px;
-            font-weight: bold;
-            border     : 0;
-            box-shadow : none;
         }
     }
 
@@ -620,7 +664,8 @@
 
 .printNumbers_box {
     position: absolute;
-
+    left: 0;
+    right: 0;
     .print_info {
         position     : relative;
         margin-bottom: 10px;
@@ -688,35 +733,52 @@
         text-indent: 2em;
         line-height: 24px;
         background : #ffffff;
+        font-family: 'SimSun';
+        font-size  : 16px;
+        color      : #000000;
+        line-height: 32px;
 
     }
 
-    .overflow_lins_textarea {
-        position  : absolute;
-        top       : 0;
-        width     : 100%;
-        height    : 100%;
-        margin-top: -4px;
+    .overflow_lins {
+        width : 100%;
+        height: 100%;
 
         .el-form-item {
             width: 100%;
         }
-
+        .el-form-item__content{
+            line-height: 32px;
+        }
         .el-textarea__inner {
             background : transparent;
             line-height: 32px;
         }
+
+        .overflow_lins_textarea {
+            position  : absolute;
+            top       : 3px;
+            width     : 100%;
+            height    : 100%;
+            margin-top: -2px;
+        }
     }
+
 
     .span_bg {
         display              : inline-block;
         background           : #DBE4EF;
+        border-bottom        : 1px solid #ffffff;
         width                : 100%;
-        height               : 24px;
-        // line-height       : 24px;
-        margin-bottom        : 8px;
+        height               : 18px;
 
     }
+    .span_bg_top {
+        margin-top: 7px;
+
+    }
+
+
 
 
 }
@@ -780,4 +842,86 @@
     .el-textarea__inner {
         text-indent: 10em;
     }
+}
+
+
+/* 表格文书样式 */
+.color_FFFFFF {
+    background-color: #ffffff;
+
+    /* 表格 */
+    .color_DBE4EF {
+        background-color: #ffffff !important;
+    }
+
+    /* 输入框 */
+    .el-input__inner,
+    .el-textarea__inner {
+        background-color: #ffffff !important;
+
+    }
+
+    P {
+
+        /* 下划线 */
+        .el-input,
+        .el-textarea {
+            border-radius: 0 !important;
+            border-bottom: 1px solid #000000 !important;
+        }
+    }
+
+    .overflow_lins_textarea {
+        .el-textarea__inner {
+            background: transparent !important;
+        }
+        .el-form-item__content {
+            line-height: auto !important;
+        }
+    }
+
+    /* 多行 */
+    .span_bg {
+        background   : #ffffff;
+        border-bottom: 1px solid #000000 !important;
+        box-sizing   : border-box;
+    }
+
+    /* 复选框 */
+    // .is-checked {
+    .el-checkbox__inner {
+        background-color: #ffffff !important;
+        // }
+    }
+
+    .el-checkbox__inner::after {
+        // content                 : "√";
+        border                     : 1px solid #000 !important;
+
+    }
+
+    .is-error {
+
+        .el-input__inner,
+        .el-input__inner:focus,
+        .el-textarea__inner,
+        .el-textarea__inner:focus {
+            background: #ffffff !important;
+        }
+
+        .big_error {
+
+            .el-input__inner,
+            .el-input__inner:focus,
+            .el-textarea__inner,
+            .el-textarea__inner:focus {
+                background: #ffffff !important;
+            }
+        }
+    }
+
+}
+
+.approveDiv{
+    text-align-last:auto
 }
