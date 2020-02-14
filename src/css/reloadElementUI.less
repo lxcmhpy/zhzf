@@ -115,6 +115,12 @@
     overflow-y:auto;
     min-height:33px;
     }
+    .el-table--border, .el-table--group,.el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed {
+        border: 0px solid black;
+    }
+    .el-table--border::after, .el-table--group::after {
+        width: 0px;
+    }
 }
 // 新增-by:jingli
 .searchPage {
@@ -134,6 +140,14 @@
                 right: 5px;
             }
         }
+        .el-input__suffix {
+            left: auto;
+            right: 5px;
+        }
+        .el-input--prefix .el-input__inner {
+            padding-left: 15px;
+        }
+
     }
     .paginationBox {
         text-align: center;
@@ -164,5 +178,6 @@
             border: 1px solid #f4f4f4 !important;
         }
     }
+
 }
 
