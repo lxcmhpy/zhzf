@@ -6,8 +6,16 @@
               <el-form-item label="机构名称" prop="organ">
                 <el-input v-model="logForm.organ" placeholder="回车可直接查询" @keyup.enter.native="getLogList(1)"></el-input>
               </el-form-item>
-              <el-form-item label="功能名称" prop="type">
-                <el-input v-model="logForm.type" placeholder="回车可直接查询" @keyup.enter.native="getLogList(1)"></el-input>
+              <el-form-item label="日志类型" prop="type">
+                <!-- <el-input v-model="logForm.type" placeholder="回车可直接查询" @keyup.enter.native="getLogList(1)"></el-input> -->
+                <el-select v-model="logForm.type" prop="type">
+                    <el-option
+                    v-for="item in logType"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                    ></el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="操作名称" prop="operation">
                 <el-input v-model="logForm.operation" placeholder="回车可直接查询" @keyup.enter.native="getLogList(1)"></el-input>
@@ -38,7 +46,7 @@
                             <el-form-item label="至" label-width="30px" prop="endTime">
                             <el-date-picker
                                 placeholder="结束日期"
-                                value-format="yyyy-MM-dd HH:mm:ss"
+                                value-format="yyyy-MM-dd 23:59:59"
                                 format="yyyy-MM-dd"
                                 range-separator="—"
                                 v-model="logForm.endTime"
@@ -93,6 +101,18 @@ export default {
         startTime: "",
         endTime: ""
       },
+      logType:[{
+            value: null,
+            label:'全部'
+          },
+          {
+            value:0,
+            label:'操作日志'
+          },
+          {
+            value:1,
+            label:'登录日志'
+      }],
     //   rules: {
     //     startTime: [
     //       {
@@ -123,8 +143,8 @@ export default {
         type: this.logForm.type,
         operation: this.logForm.operation,
         username: this.logForm.username,
-        // startTime: this.logForm.startTime,
-        // endTime: this.logForm.endTime,
+        startTime: this.logForm.startTime,
+        endTime: this.logForm.endTime,
         current: this.currentPage,
         size: this.pageSize
       };
