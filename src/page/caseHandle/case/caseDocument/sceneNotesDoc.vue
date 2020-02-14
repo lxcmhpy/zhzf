@@ -230,11 +230,11 @@
                 <div class="overflow_lins_style">
                   <div class="overflow_lins">
                     <el-form-item prop="inquestResult">
-                      现场情况：（如实施行政强制措施的，包括当场告知当事人采取
+                      <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.inquestResult" rows="3" maxLength='90' placeholder="\"></el-input>
+                     <span> 现场情况：（如实施行政强制措施的，包括当场告知当事人采取
                         <br>行政强制措施的理由、依据以及当事人依法享有的权利、
-                        <br>救济途径，听取当事人陈述、申辩情况。）：
+                        <br>救济途径，听取当事人陈述、申辩情况。）：</span>
                         <br>
-                      <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.inquestResult" rows="3" maxLength='90' placeholder="\"></el-input>                 
                       <span  class="span_bg" @click="overFlowEdit">&nbsp;</span> <br>
                       <span  class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span> <br>
                       <span  class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
