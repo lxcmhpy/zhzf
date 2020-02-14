@@ -68,7 +68,17 @@ export function validateIDNumber(rule, value, callback) {
         callback(new Error('身份证格式错误'));
     }
     callback();
-  }
+}
+
+/* 验证6位邮编   有值时验证*/
+export function validateZIP(rule, value, callback) {
+    var reg= /^\d{6}$/;
+    if (!reg.test(value) && value) {
+        callback(new Error('请输入正确的6位邮编'));
+    }
+    callback();
+}
+
 
 
 

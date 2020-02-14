@@ -11,8 +11,9 @@
               type="textarea"
               v-model="formData.party"
               v-bind:class="{ over_flow:formData.party.length>14?true:false }"
-              :autosize="{ minRows: 1, maxRows: 3}"
+              :autosize="{ minRows: 1, maxRows: 2}"
               :maxLength="maxLength"
+              disabled
             ></el-input>
             <!-- <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :maxLength='maxLength'></el-input> -->
           </el-form-item>
@@ -21,32 +22,46 @@
           &nbsp;&nbsp;经调查，本机关认为你（单位）
           <span>
             <el-form-item prop="caseCauseNameCopy">
-              <el-input v-model="formData.caseCauseNameCopy" :maxLength="maxLength"></el-input>
+              <el-input
+                type="textarea"
+                v-model="formData.caseCauseNameCopy"
+                v-bind:class="{ over_flow:formData.party && formData.caseCauseNameCopy.length>14?true:false }"
+                :autosize="{ minRows: 1, maxRows: 2}"
+                :maxLength="maxLength"
+              ></el-input>
             </el-form-item>
           </span>行为，违反了
           <span>
             <el-form-item prop="illegalBasis">
-              <el-input v-model="formData.illegalBasis" :maxLength="maxLength"></el-input>
+              <el-input
+                type="textarea"
+                v-model="formData.illegalBasis"
+                v-bind:class="{ over_flow:formData.illegalBasis && formData.illegalBasis.length>14?true:false }"
+                :autosize="{ minRows: 1, maxRows: 2}"
+                :maxLength="maxLength"
+              ></el-input>
             </el-form-item>
           </span>的规定，依据
           <span>
             <el-form-item prop="punishLaw">
-              <el-input v-model="formData.punishLaw" :maxLength="maxLength"></el-input>
+              <el-input type="textarea" v-model="formData.punishLaw" v-bind:class="{ over_flow:formData.punishLaw && formData.punishLaw.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength"></el-input>
             </el-form-item>
           </span>的规定，本机关拟作出
           <span>
             <el-form-item prop="punishDecision">
-              <el-input v-model="formData.punishDecision" :maxLength="maxLength"></el-input>
+              <el-input type="textarea" v-model="formData.punishDecision" v-bind:class="{ over_flow:formData.punishDecision && formData.punishDecision.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength"></el-input>
             </el-form-item>
           </span>的处罚决定。
         </p>
         <p>
           &nbsp;&nbsp;
-          <input type="checkbox" />根据《中华人民共和国行政处罚法》第三十一条、第三十二条的规定，你（单位）如对该处罚意见有异议，可向本机关提出陈述申辩，本机关将依法予以核实。
+          <el-checkbox></el-checkbox>根据《中华人民共和国行政处罚法》第三十一条、第三十二条的规定，你（单位）如对该处罚意见有异议，可向本机关提出陈述申辩，本机关将依法予以核实。
         </p>
         <p>
           &nbsp;&nbsp;
-          <input type="checkbox" />根据《中华人民共和国行政处罚法》第四十二条的规定，你（单位）有权在收到本通知书之日起三日内向本机关要求举行听证；逾期不要求举行听证的，视为你（单位）放弃听证的权利。
+          <el-checkbox></el-checkbox>根据《中华人民共和国行政处罚法》第四十二条的规定，你（单位）有权在收到本通知书之日起三日内向本机关要求举行听证；逾期不要求举行听证的，视为你（单位）放弃听证的权利。
         </p>
         <p>（注：在序号前□内打“√”的为当事人享有该权利。）</p>
         <br />
@@ -70,7 +85,7 @@
           <el-col :span="12">
             <p>
               邮编：
-              <el-form-item v-if="!lineStyleFlag" prop="partyZipCode " style="width:210px">
+              <el-form-item v-if="!lineStyleFlag" prop="partyZipCode" style="width:210px">
                 <el-input
                   type="textarea"
                   v-model="formData.partyZipCode "
@@ -96,6 +111,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
+                  disabled
                 ></el-input>
               </el-form-item>
               <u v-if="lineStyleFlag">{{formData.party}}</u>
@@ -151,6 +167,7 @@ import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
 import overflowInput from "../modle/overflowInput";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+import { validatePhone, validateZIP } from "@/js/validator";
 
 export default {
   data() {
@@ -171,7 +188,25 @@ export default {
       rules: {
         party: [
           { required: true, message: "当事人姓名必须填写", trigger: "blur" }
-        ]
+        ],
+        caseCauseNameCopy: [
+          { required: true, message: "必须填写", trigger: "blur" }
+        ],
+        illegalBasis: [
+          { required: true, message: "必须填写", trigger: "blur" }
+        ],
+        punishLaw: [
+          { required: true, message: "必须填写", trigger: "blur" }
+        ],
+        punishDecision: [
+          { required: true, message: "必须填写", trigger: "blur" }
+        ],
+        partyTel:[
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        partyZipCode:[
+          { validator: validateZIP, trigger: "blur" }
+        ],
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -197,10 +232,9 @@ export default {
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "illegalAction_print",
-        isHuanjie:true,
+        isHuanjie: true
       },
-      huanjieAndDocId: "2c9029ca5b71686d015b719fe0900026", //违法行为通知书的文书id
-
+      huanjieAndDocId: "2c9029ca5b71686d015b719fe0900026" //违法行为通知书的文书id
     };
   },
   mixins: [mixinGetCaseApiList],
@@ -228,8 +262,7 @@ export default {
       );
     },
     // 提交表单
-    submitDataIllegal(handleType) {
-    },
+    submitDataIllegal(handleType) {},
     saveData(handleType) {
       //参数  提交类型 、
       this.com_submitCaseForm(handleType, "docForm", true);
