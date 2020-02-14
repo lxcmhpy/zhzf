@@ -185,7 +185,6 @@ export default {
       return data.label.indexOf(value) !== -1;
     },
     reset() {
-        alert(1)
       this.$refs["userForm"].resetFields();
     },
     //展开
@@ -230,7 +229,6 @@ export default {
     //表单筛选
     getUserList(val) {
       this.currentPage = val
-      alert(this.formInline.mobile)
       let data = {
         mobile: this.formInline.mobile,
         username: this.formInline.username,
