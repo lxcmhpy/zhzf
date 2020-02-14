@@ -20,6 +20,7 @@ export function loginInApi(params) {
   return request({
     url: "/login",
     method: "POST",
+    contentType: 'multipart/form-data',
     data:data,
     showloading: true,
     baseUrlType:1,
