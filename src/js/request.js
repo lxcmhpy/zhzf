@@ -62,7 +62,7 @@ service.interceptors.response.use(
   response => {
       response.headers['content-type'] = "application/json;charset=UTF-8";
     console.log("response", response);
-    debugger;
+    // debugger;
     if (response.status == 200) {
       if (response.data.code == 200) {
         tryHideFullScreenLoading();

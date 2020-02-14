@@ -44,7 +44,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="案由">
-                  {{formData.partyType}}
+                  {{formData.caseCauseName}}
                   <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -58,7 +58,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="partyType" label="车/船信息">
-                {{formData.partyType}}
+                {{formData.vehicleShipId}}
                   <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -67,7 +67,7 @@
               <div class="col">
                 <el-form-item label="案发地点">
                   <!-- 字段名 -->
-                  {{formData.party}}
+                  {{formData.afdd}}
                   <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -75,7 +75,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="基本情况">
-                  {{formData.caseCauseDescrib}}
+                  {{formData.caseInfo}}
                   南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。
                   <!-- <el-input type="textarea" class="height106" v-model="formData.caseCauseDescrib" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
@@ -117,7 +117,7 @@
               <div class="col">
                 <el-form-item label="处罚金额">
                   <!-- 字段名 -->
-                  ￥{{formData.party}}
+                  ￥{{formData.punishAmount}}
                   <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入">
                        <span slot="prefix" >￥</span>
                   </el-input> -->
@@ -125,8 +125,7 @@
               </div>
               <div class="col">
                 <el-form-item label="执行情况">
-                  <!-- 字段名 -->
-                  {{formData.party}}
+                  {{formData.executeInfo}}
                   <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>

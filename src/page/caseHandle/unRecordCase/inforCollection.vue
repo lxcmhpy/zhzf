@@ -5,8 +5,8 @@
         <a :class="activeA[0]? 'activeA' :''" @click="jump(1)">案件情况</a>
         <a :class="activeA[1]? 'activeA' :''" @click="jump(2)">当事人</a>
         <a :class="activeA[2]? 'activeA' :''" @click="jump(3)">车辆信息</a>
-        <!-- <a  :class="activeA[3]? 'activeA' :''" v-if="showOverrun" @click="jump(4)">超限信息</a> -->
-        <a :class="activeA[3]? 'activeA' :''" @click="jump(4)">超限信息</a>
+        <a  :class="activeA[3]? 'activeA' :''" v-if="showOverrun" @click="jump(4)">超限信息</a>
+        <!-- <a :class="activeA[3]? 'activeA' :''" @click="jump(4)">超限信息</a> -->
         <a :class="activeA[4]? 'activeA' :''" @click="jump(5)">违法事实</a>
       </div>
     </div>
@@ -378,17 +378,20 @@
           <el-button type="primary" size="medium" icon="el-icon-plus">添加其他</el-button>
         </div>
       </div>-->
-      <div class="caseFormBac" id="link_4">
+      <div class="caseFormBac" id="link_4" v-if="showOverrun">
         <p>超限信息</p>
         <div>
           <div class="itemBig">
             <el-form-item label="检测站">
-              <el-input v-model="inforForm.vehicleShipId"></el-input>
+               <el-select v-model="inforForm.checkStastions">
+                <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+              <!-- <el-input v-model="inforForm.checkStastions"></el-input> -->
             </el-form-item>
           </div>
           <div class="itemSmall">
             <el-form-item label="检测单号">
-              <el-input v-model="inforForm.vehicleShipId">
+              <el-input v-model="inforForm.checkNumber">
                 <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
               </el-input>
             </el-form-item>
@@ -397,7 +400,10 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测人员">
-              <el-input v-model="inforForm.vehicleShipId"></el-input>
+              <el-select v-model="inforForm.checkWorker">
+                <el-option v-for="item in RecentCheckWorkers" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+              <!-- <el-input v-model="inforForm.checkWorker"></el-input> -->
             </el-form-item>
           </div>
           <div class="itemSmall">
@@ -415,8 +421,8 @@
           <div class="itemSmall">
             <el-form-item label="是否为大件运输" label-width="110px">
               <el-radio-group v-model="inforForm.isBigTransfer">
-                <el-radio :label="1">是</el-radio>
-                <el-radio :label="0">否</el-radio>
+                <el-radio label="是"></el-radio>
+                <el-radio label="否"></el-radio>
               </el-radio-group>
             </el-form-item>
           </div>
@@ -429,18 +435,18 @@
           </div>
           <div class="itemThird">
             <el-form-item label="车型">
-              <el-select placeholder="请选择" v-model="inforForm.partySex">
-                <el-option value="0" label="中置轴挂车列车"></el-option>
-                <el-option value="1" label="铰链列车"></el-option>
-                <el-option value="2" label="全挂汽车列车"></el-option>
+              <el-select placeholder="请选择" v-model="inforForm.vehicleType">
+                <el-option  label="中置轴挂车列车"></el-option>
+                <el-option label="铰链列车"></el-option>
+                <el-option  label="全挂汽车列车"></el-option>
               </el-select>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="轴数分布">
-              <el-select placeholder="请选择" v-model="inforForm.partySex">
-                <el-option value="0" label="1+2+3"></el-option>
-                <el-option value="1" label="2+2+2"></el-option>
+              <el-select placeholder="请选择" v-model="inforForm.vehicleAxlesType">
+                <el-option  label="1+2+3"></el-option>
+                <el-option  label="2+2+2"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -448,16 +454,16 @@
         <div>
           <div class="item">
             <el-form-item label="车货总重">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.allWeight">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="驱动轴" v-show="inforForm.vehicleAxleNumber==6">
-              <el-radio-group v-model="inforForm.vehicleShipId">
-                <el-radio value="0" label="单轴"></el-radio>
-                <el-radio value="1" label="双轴"></el-radio>
+              <el-radio-group v-model="inforForm.vehiclePowerType">
+                <el-radio  label="单轴"></el-radio>
+                <el-radio  label="双轴"></el-radio>
               </el-radio-group>
             </el-form-item>
           </div>
@@ -465,14 +471,14 @@
         <div>
           <div class="item">
             <el-form-item label="总质量限值">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.allWeightLimit">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="超限">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.overWeight">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -481,21 +487,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总长">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.allLength">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="长度限值">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.lengthLimit">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超长">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.overLength">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -504,21 +510,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总宽">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.allWidth">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="宽度限值">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.widthLimit">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超宽">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.overWidth">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -527,21 +533,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货高度">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.allHeight">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="高度限值">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.heightLimit">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超高">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.overHeight">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -558,7 +564,7 @@
           </div>
           <div class="item">
             <el-form-item label="备注">
-              <el-input v-model="inforForm.partyTel">
+              <el-input v-model="inforForm.overLimitRemark">
               </el-input>
             </el-form-item>
           </div>
@@ -732,7 +738,9 @@ export default {
         staffId: "",
         staff: "",
         certificateId: "",
-        isBigTransfer:'0'
+        isBigTransfer: '0',
+        RecentCheckStastions:[],//最近五个检测站
+        RecentCheckWorkers:[],//历史保存过检测人员
       },
       rules: {
         caseSource: [{ required: true, message: "请选择", trigger: "change" }],
@@ -753,7 +761,7 @@ export default {
         ],
         checkTime: [
           // { required: true, message: "", trigger: "blur" },
-          { required: true,trigger: "change" }
+          { required: true, trigger: "change" }
         ],
         vehiclefiledThing: [
           // { required: true, message: "", trigger: "blur" },
@@ -1060,6 +1068,7 @@ export default {
       // this.searchLawPerson();
       // console.log('searchLawPerson', this.allUserList)
       // console.log("lawPersonList", this.lawPersonList)
+      console.log("表单数据", this.inforForm)
 
       this.$refs["inforForm"].validate(valid => {
         if (valid) {
@@ -1172,9 +1181,10 @@ export default {
     this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
     this.inforForm.zfmlId = someCaseInfo.cateId;
     this.inforForm.zfml = someCaseInfo.cateName;
-
+    console.log("标志", someCaseInfo.illageAct)
     this.showOverrun =
       someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
+      console.log(this.showOverrun)
   },
   created() {
     this.findJudgFreedomList();
