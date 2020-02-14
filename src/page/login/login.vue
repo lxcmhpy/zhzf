@@ -28,11 +28,16 @@
                       <img
                         :src="captchaImg"
                         @click="getCaptcha"
-                        style="width:100px;cursor:pointer;display:block"
+                        style="width:120px;border-radius:4px;height:40px;cursor:pointer;display:block"
                       />
                 </div>
               </el-form-item>
-              <div class="forgetPass"><el-link type="primary" :underline="false">忘记密码</el-link></div>
+              <div class="forgetPass">
+                  <el-collapse-transition>
+                       <div v-show="errorMessage" class="error">{{errorMessage}}</div>
+                  </el-collapse-transition>
+                  <el-link type="primary" :underline="false">忘记密码</el-link>
+              </div>
               <div >
                   <el-button type="primary" @click="submitLogin('loginForm')">登录</el-button>
               </div>
@@ -75,7 +80,8 @@ export default {
       },
       hasUserError: false,
       haspasswordError: false,
-      showLogin: false
+      showLogin: false,
+      errorMessage: ''
     };
   },
   methods: {
@@ -133,14 +139,18 @@ export default {
             },
             error => {
               console.log(error);
-              if(error.code == 500){  //验证码错误
-                this.$message({
-                    showClose: true,
-                    message: '验证码错误',
-                    type: 'error'
-                })
-                this.getCaptcha()
-              }
+              this.errorMessage = error.message
+              setTimeout(()=>{
+                  this.errorMessage = ""
+              }, 3000)
+            //   if(error.code == 500){  //验证码错误
+            //     this.$message({
+            //         showClose: true,
+            //         message: '验证码错误',
+            //         type: 'error'
+            //     })
+            //     this.getCaptcha()
+            //   }
             }
           );
           //this.$router.push({ name: "index" });

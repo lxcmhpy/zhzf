@@ -6,27 +6,54 @@
     float: left;
     background: #F5F7FB;
     box-sizing: border-box;
-    padding: 20px 0 20px 20px;
+    padding: 15px 0 15px 17px;
     border-right: 1px solid #EEEEEE;
+    position: relative;
     .el-input{
         padding-right: 20px;
         box-sizing: border-box;
+        margin-bottom: 15px;
+        .el-input__inner {
+            height: 36px;
+            border-radius: 0px;
+        }
+        .el-input-group__append {
+            height: 34px;
+            border-radius: 0px;
+            background: #F0F0F0;
+            button {
+                width: 36px;
+                .el-icon-search {
+                    font-size: 18px;
+                    margin-left: -4px;
+                }
+            }
+        }
     }
     .el-tree{
         background: #F5F7FB;
+        font-size: 12px;
+        margin-left: -10px;
+        .el-tree-node__content {
+            line-height: 30px;
+            height: 30px;
+        }
     }
     .treeBox{
-        max-height: 400px;
-        overflow-y: auto;
+        height:calc(100% - 100px) ;
+        overflow: auto;
     }
     p{
-        line-height: 30px;
+        padding: 10px 0 19px 0px;
+        font-size: 18px;
+        font-weight: bolder;
     }
     .custom-tree-node{
         span{
             i{
                 color: @blueC;
                 margin-right: 5px;
+                font-size: 13px;
             }
         }
         .hasMarginLeft{
@@ -34,7 +61,7 @@
         }
     }
     .searchDepartBox{
-        margin: 10px 0;
+        // margin: 10px 0;
         input{
             height: 36px;
         }

@@ -44,7 +44,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="案由">
-                  {{formData.partyType}}
+                  {{formData.caseCauseName}}
                   <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -58,7 +58,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="partyType" label="车/船信息">
-                {{formData.partyType}}
+                {{formData.vehicleShipId}}
                   <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -67,7 +67,7 @@
               <div class="col">
                 <el-form-item label="案发地点">
                   <!-- 字段名 -->
-                  {{formData.party}}
+                  {{formData.afdd}}
                   <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -75,7 +75,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="基本情况">
-                  {{formData.caseCauseDescrib}}
+                  {{formData.caseInfo}}
                   南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。
                   <!-- <el-input type="textarea" class="height106" v-model="formData.caseCauseDescrib" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
@@ -117,7 +117,7 @@
               <div class="col">
                 <el-form-item label="处罚金额">
                   <!-- 字段名 -->
-                  ￥{{formData.party}}
+                  ￥{{formData.punishAmount}}
                   <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入">
                        <span slot="prefix" >￥</span>
                   </el-input> -->
@@ -125,8 +125,7 @@
               </div>
               <div class="col">
                 <el-form-item label="执行情况">
-                  <!-- 字段名 -->
-                  {{formData.party}}
+                  {{formData.executeInfo}}
                   <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -164,9 +163,19 @@
     <!--快速入口 -->
   
       <caseSlideMenu :activeIndex="'caseInfo'"></caseSlideMenu>
-   
+       <!-- 置顶 -->
+    <el-backtop target="#caseInfoBox" :bottom="46" :right='8' :visibility-height='800'>
+      <div class="back-ball">
+        <svg t="1581647372853" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1939" width="18" height="22">
+          <path d="M862.72 147.2H161.28c-18.432 0-33.28-14.848-33.28-33.28s14.848-33.28 33.28-33.28h701.44c18.432 0 33.28 14.848 33.28 33.28s-14.848 33.28-33.28 33.28zM549.376 323.84v580.608c0 21.504-17.408 38.912-38.912 38.912-21.504 0-38.912-17.408-38.912-38.912V323.84c0-21.504 17.408-38.912 38.912-38.912 21.504 0 38.912 17.408 38.912 38.912z" p-id="1940" fill="#bfbfbf"></path>
+          <path d="M542.72 262.144L207.872 661.248c-13.824 16.384-38.4 18.688-54.784 4.864-16.384-13.824-18.688-38.4-4.864-54.784L483.072 212.224c13.824-16.384 38.4-18.688 54.784-4.864 16.384 13.824 18.688 38.4 4.864 54.784z" p-id="1941" fill="rgb(158, 167, 182)"></path>
+          <path d="M481.28 262.144l334.848 398.848c13.824 16.384 38.4 18.688 54.784 4.864 16.384-13.824 18.688-38.4 4.864-54.784L540.928 212.224c-13.824-16.384-38.4-18.688-54.784-4.864-16.384 13.824-18.688 38.4-4.864 54.784z" p-id="1942" fill="rgb(158, 167, 182)"></path>
+        </svg>
+      </div>
+    </el-backtop>
     
   </div>
+  
 </template>
 <script>
 import caseSlideMenu from '../components/caseSlideMenu'

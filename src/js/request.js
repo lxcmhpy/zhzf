@@ -8,10 +8,11 @@ import { showFullScreenLoading, tryHideFullScreenLoading } from "./loading";
 var vue = new Vue();
 
 // create an axios instance
+// axiosObj.headers = { 'Content-Type': 'application/x-www-form-urlencoded' };charset=GB2312
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api的base_url
+  // baseURL: process.env.BASE_API, // api的base_url
   timeout: 15000, // request timeout
-  // "Content-Type": "application/x-www-form-urlencoded",
+  "Content-Type": "multipart/form-data;charset=UTF-8",
 
 });
 var BASEURL
@@ -31,12 +32,11 @@ service({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    //  if(config.baseUrlType == 1){
-    //    config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
-    //  }else{
-    //   config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
-    //  }
-
+     if(config.baseUrlType == 1){
+       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
+     }else{
+      config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
+     }
      if (config.responseType) {
        config["responseType"] = config.responseType
      }
@@ -60,7 +60,9 @@ service.interceptors.request.use(
 // respone interceptor
 service.interceptors.response.use(
   response => {
+      response.headers['content-type'] = "application/json;charset=UTF-8";
     console.log("response", response);
+    // debugger;
     if (response.status == 200) {
       if (response.data.code == 200) {
         tryHideFullScreenLoading();
