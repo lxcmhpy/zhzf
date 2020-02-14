@@ -41,8 +41,8 @@
           </el-form-item>
         </div>
         <div class="item">
-          <el-form-item label="身份证号码" prop="IDnumber">
-            <el-input ref="IDnumber" v-model="addUserForm.IDnumber"></el-input>
+          <el-form-item label="身份证号码" prop="idNumber">
+            <el-input ref="idNumber" v-model="addUserForm.idNumber"></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -145,7 +145,7 @@ export default {
         password: "123456",
         mobile: "",
         nickName: "",
-        IDnumber: "",
+        idNumber: "",
         category: "",
         organId: "",
         organTitle: "",
@@ -167,7 +167,7 @@ export default {
         // departmentId: [
         //   { required: true, message: "请选择部门", trigger: "change" }
         // ],
-        IDnumber: [{ validator: validateIDNumber, trigger: "blur" }]
+        idNumber: [{ validator: validateIDNumber, trigger: "blur" }]
       },
       rowData:'',
     };
@@ -273,7 +273,7 @@ export default {
               username: this.addUserForm.username,
               mobile: this.addUserForm.mobile,
               nickName: this.addUserForm.nickName,
-              IDnumber: this.addUserForm.IDnumber,
+              idNumber: this.addUserForm.idNumber,
               category: this.addUserForm.category,
               organId: this.addUserForm.organId,
               organTitle: this.addUserForm.organTitle,
@@ -329,7 +329,7 @@ export default {
     //       console.log(err);
     //     }
     //   );
-      
+
     //   }
     // },
   },
@@ -342,7 +342,7 @@ export default {
           password: "",
           mobile: "",
           nickName: "",
-          IDnumber: "",
+          idNumber: "",
           category: "",
           organId: "",
           organTitle: "",
