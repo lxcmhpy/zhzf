@@ -87,30 +87,12 @@ function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符
       route.children = filterAsyncRouter(route.children);
     }
 
-    //  if(route.id == "127996320085446656"){   //给案件办理添加首页
-    //   console.log('给案件办理添加首页')
-    //   route.children.unshift({name:'index',component:loadView('caseHandle/index'),path:'/caseHandleIndex'})
-    // }
-
-
-    // if(route.id == "125909152017944576"){
-    //   route.children.unshift({ path:'', redirect:'/sys/user-manage'})
-    // }
-
-
-
     return true
   })
-  // console.log('accessedRouters',accessedRouters);
   return accessedRouters
 }
 
 function loadView(view)
 {
-  //  console.log(`@/page/${view}.vue`);
-  //  if(view){
-  //   // 路由懒加载
-  //   return () => import(`@/page/${view}.vue`);
-  //  }
    return () => import(`@/page/${view}.vue`);
 }

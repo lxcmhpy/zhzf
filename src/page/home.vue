@@ -1,12 +1,12 @@
 <template>
     <div >
-        <div v-if="currentHome == 'xboot'">
+        <div v-if="headActiveNav == 'xboot'">
             系统管理首页
         </div>
-        <div v-if="currentHome == 'caseHandle'">
+        <div v-if="headActiveNav == 'caseHandle'">
             案件办理首页
         </div>
-        {{currentHome}}
+        {{headActiveNav}}
     </div>
 </template>
 <script>
@@ -14,22 +14,15 @@ import iLocalStroage from "@/js/localStroage";
 export default {
     data() {
         return{
-            nav:iLocalStroage.get('headActiveNav')
         }
     },
     computed:{
-        currentHome :function(){
-            console.log(iLocalStroage.get('headActiveNav'))
-            return iLocalStroage.get('headActiveNav')
-        }
+        headActiveNav() {
+            return this.$store.state.headActiveNav;
+        },
     },
     methods:{
 
-    },
-    watch:{
-        nav(to,from) {
-            console.log(to);
-        }
     }
 
 }

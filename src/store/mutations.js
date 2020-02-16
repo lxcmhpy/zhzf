@@ -43,11 +43,18 @@ const mutations = {
   },
   //删除所有的tabs
   [types.DELETE_ALLTABS](state) {
-    state.openTab = [];
+    // state.openTab = [];
+    state.openTab = [{route: "/index",name: "home_index",title: "首页"}];
   },
   // 设置当前激活的tab
   [types.SET_ACTIVE_INDEX](state, name) {
     state.activeIndex = name;
+  },
+  setHeadActiveNav(state,name){
+    state.headActiveNav = name;
+  },
+  setActiveSlideMenu(state,name){
+    state.activeSlideMenu = name;
   },
 
 
