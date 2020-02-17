@@ -68,12 +68,12 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getUnRecordCase();
+      this.getMyApprovalCase({});
     },
     //更换页码
     handlePageSizeChange(val) {
       this.currentPage = val;
-      this.getUnRecordCase();
+      this.getMyApprovalCase({});
     },
     //展开
     showSomeSearch() {
@@ -91,12 +91,8 @@ export default {
           isApproval:true
         }
       });
-      //   this.$router.replace({ 
-      //     name: 'caseDetail',
-      //     params: {
-      //         data: JSON.stringify(row)
-      //     }
-      // });
+      let setCaseNumber = row.caseNumber!='' ?  row.caseNumber : '案件'
+      this.$store.commit("setCaseNumber", setCaseNumber);
     }
   },
   created() {

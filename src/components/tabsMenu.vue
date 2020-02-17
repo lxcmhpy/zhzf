@@ -67,15 +67,40 @@ export default {
       //已经打开的 ，将其置为active
       //未打开的，将其放入队列里
       let flag = false;
-      for (let item of this.openTab) {
-        if (item.name === to.name) {
-          this.$store.dispatch("setActiveIndex", to.name);
-          flag = true;
+      for(let i = 0;i<this.openTab.length;i++){
+        if(to.name == this.openTab[i].name){
+          this.$store.dispatch("setActiveIndex", to.name);   //设置active tab
+          if(this.openTab[i].isCase){
+            let changeTabData ={
+            tabIndex:i,
+            title: this.$store.state.caseNumber 
+          }
+          this.$store.commit("changeOneTabName", changeTabData);
+          }
+          
+         flag = true;
           break;
         }
       }
+      // for (let item of this.openTab) {
+      //   if (item.name === to.name) {
+      //     this.$store.dispatch("setActiveIndex", to.name);   //设置active tab
+        
+      //     flag = true;
+      //     break;
+      //   }
+      // }
       if (!flag) {
-        this.$store.dispatch("addTabs", { route: to.path, name: to.name, title: this.$route.meta.title });
+        let tabTitle = '';
+        let isCase = false;
+        if(this.$store.state.caseNumber && this.$store.state.caseNumber !='案件'){
+          tabTitle = this.$store.state.caseNumber;
+          isCase = true;
+        }else{
+          tabTitle = this.$route.meta.title;
+          isCase = false;
+        }
+        this.$store.dispatch("addTabs", { route: to.path, name: to.name, title: tabTitle ,isCase:isCase});
         this.$store.dispatch("setActiveIndex", to.name);
       }
 

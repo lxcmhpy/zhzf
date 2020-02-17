@@ -7,7 +7,7 @@
           <i class="el-icon-location"></i>
           <span slot="title">{{item.title}}</span>
         </template>
-        <el-menu-item :index="subItem.name" v-for="subItem in item.children" :key="subItem.id">{{subItem.title}}</el-menu-item>
+        <el-menu-item :index="subItem.name" v-for="subItem in item.children" :key="subItem.id" @click="clicSubmenu">{{subItem.title}}</el-menu-item>
       </el-submenu>
     </el-menu>
 
@@ -40,6 +40,9 @@ export default {
     },
     //收起菜单
     handleClose(key, keyPath) {
+    },
+    clicSubmenu(){
+      this.$store.commit("setCaseNumber", '');
     },
     //获取侧边栏菜单
     getSlideMenu(val) {
