@@ -1,6 +1,6 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
-    <div class="searchAndpageBox" id="logBox" style="height:1350px;">
+    <div class="searchAndpageBox" id="logBox" style="height:1500px;">
       <div class="handlePart" style="margin-left:15%;">
         <div class="search">
           <template>
