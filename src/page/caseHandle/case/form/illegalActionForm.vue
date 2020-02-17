@@ -10,7 +10,7 @@
             <el-input
               type="textarea"
               v-model="formData.party"
-              v-bind:class="{ over_flow:formData.party.length>14?true:false }"
+              v-bind:class="{ over_flow:formData.party && formData.party.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 2}"
               :maxLength="maxLength"
               disabled
@@ -25,7 +25,7 @@
               <el-input
                 type="textarea"
                 v-model="formData.caseCauseNameCopy"
-                v-bind:class="{ over_flow:formData.party && formData.caseCauseNameCopy.length>14?true:false }"
+                v-bind:class="{ over_flow:formData.caseCauseNameCopy && formData.caseCauseNameCopy.length>14?true:false }"
                 :autosize="{ minRows: 1, maxRows: 2}"
                 :maxLength="maxLength"
               ></el-input>
@@ -49,9 +49,22 @@
             </el-form-item>
           </span>的规定，本机关拟作出
           <span>
+            <!-- <el-form-item prop="punishDecisionSelect">
+              <el-input type="textarea" v-model="formData.punishDecisionSelect" v-bind:class="{ over_flow:formData.punishDecisionSelect && formData.punishDecisionSelect.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength"></el-input>
+            </el-form-item>
+            </span> -->
+             <!-- <el-select v-model="formData.punishDecision">
+                <el-option
+                  v-for="item in punishDecisionOptions"
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.value">
+                </el-option>
+              </el-select> -->
             <el-form-item prop="punishDecision">
               <el-input type="textarea" v-model="formData.punishDecision" v-bind:class="{ over_flow:formData.punishDecision && formData.punishDecision.length>14?true:false }"
-              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength"></el-input>
+              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength" @focus="showPunishDecision"></el-input>
             </el-form-item>
           </span>的处罚决定。
         </p>
@@ -74,7 +87,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyAddress"
-                  v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyAddress && formData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
@@ -90,7 +103,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyZipCode "
-                  v-bind:class="{ over_flow:formData.partyZipCode.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyZipCode && formData.partyZipCode.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
@@ -108,7 +121,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyPeople"
-                  v-bind:class="{ over_flow:formData.partyPeople.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyPeople && formData.partyPeople.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
@@ -125,7 +138,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyTel"
-                  v-bind:class="{ over_flow:formData.partyTel.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyTel && formData.partyTel.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
@@ -159,6 +172,7 @@
       @saveData="saveData"
     ></casePageFloatBtns>
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <illegalActionPunishDecision ref="illegalActionPunishDecisionRef" @sendPunishDecis="setPunishDecis"></illegalActionPunishDecision>
   </div>
 </template>
 
@@ -169,6 +183,7 @@ import { mapGetters } from "vuex";
 import overflowInput from "../modle/overflowInput";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateZIP } from "@/js/validator";
+import illegalActionPunishDecision from "./illegalActionPunishDecision";
 
 export default {
   data() {
@@ -186,7 +201,7 @@ export default {
         checkBoxList: "",
         makeDate: "",
         checkLaw1:false,
-        checkLaw2:false,
+        checkLaw2:false, 
       },
       rules: {
         party: [
@@ -201,9 +216,9 @@ export default {
         punishLaw: [
           { required: true, message: "必须填写", trigger: "blur" }
         ],
-        punishDecision: [
-          { required: true, message: "必须填写", trigger: "blur" }
-        ],
+        // punishDecision: [
+        //   { required: true, message: "必须填写", trigger: "blur" }
+        // ],
         partyTel:[
           { validator: validatePhone, trigger: "blur" }
         ],
@@ -237,14 +252,23 @@ export default {
         pageDomId: "illegalAction_print",
         isHuanjie: true
       },
-      huanjieAndDocId: "2c9029ca5b71686d015b719fe0900026" //违法行为通知书的文书id
+      huanjieAndDocId: "2c9029ca5b71686d015b719fe0900026", //违法行为通知书的文书id
+      // punishDecisionOptions:[
+      //   {id:1,value:'罚款'},
+      //   {id:2,value:'责令整改'},
+      //   {id:3,value:'警告'},
+      //   {id:4,value:'没收违法所得'},
+      //   {id:5,value:'没收非法财产'},
+      //   {id:6,value:'责令停产停业、暂扣或吊销'},
+      // ]
     };
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId"]) },
   components: {
     overflowInput,
-    casePageFloatBtns
+    casePageFloatBtns,
+    illegalActionPunishDecision
   },
   methods: {
     // 多行编辑
@@ -278,7 +302,16 @@ export default {
     print() {
       console.log("打印!");
     },
-    //对返回的表单数据做处理
+    //显示拟处罚决定弹窗
+    showPunishDecision(){
+      this.$refs.illegalActionPunishDecisionRef.showModal();
+    },
+    //设置拟处罚决定
+    setPunishDecis(val){
+      console.log('val',val);
+      console.log('this.formData.punishDecision ',this.formData.punishDecision)
+      this.formData.punishDecision = val;
+    }
   },
   created() {
     this.setData();

@@ -130,6 +130,14 @@ export default  [
   component: () => import("@/page/caseHandle/case/form/obtaineEvidenceForm.vue")
 },
 {
+  path: "/obtaineEvidenceFormReport",
+  name: "obtaineEvidenceFormReport",
+  meta: {
+    title: "抽样取样凭证"
+  },
+  component: () => import("@/page/caseHandle/case/form/obtaineEvidenceFormReport.vue")
+},
+{
   path: "/establish",
   name: "establish",
   meta: {

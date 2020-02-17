@@ -344,13 +344,13 @@
           </tr>
           <tr>
             <td>
-              <p class="center_similar">负</p>
-              <p class="center_similar">责</p>
-              <p class="center_similar">人</p>
-              <p class="center_similar">审</p>
-              <p class="center_similar">批</p>
-              <p class="center_similar">意</p>
-              <p class="center_similar">见</p>
+              <p>负责</p>
+              <p>人审</p>
+              <p>批意</p>
+              <p>见</p>
+              <!-- <p class="center_similar"></p>
+              <p class="center_similar"></p>
+              <p class="center_similar"></p> -->
             </td>
             <td colspan="8" class="color_DBE4EF table_seal">
               {{formData.secondApproveOpinions}}
