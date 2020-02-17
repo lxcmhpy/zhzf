@@ -106,7 +106,6 @@
               <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span>
             </el-form-item>
           </div>
-
         </div>
         <!-- <p v-if="lineStyleFlag">
           违法事实及依据：<u>{{docData.illegalFactsEvidence}}</u>
