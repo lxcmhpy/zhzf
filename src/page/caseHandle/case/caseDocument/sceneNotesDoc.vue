@@ -34,15 +34,15 @@
                   <el-date-picker
                     v-model="docData.enforceStartTime"
                     type="date"
-                    format="yyyy年MM月dd日"
-                    placeholder="    年  月  日"
+                    format="yyyy年MM月dd日HH时mm分"
+                    placeholder="    年  月  日  时  分"
                   ></el-date-picker>
                   <br>至
                   <el-date-picker
                     v-model="docData.enforceEndTime"
                     type="date"
-                    format="yyyy年MM月dd日"
-                    placeholder="    年  月  日"
+                    format="HH时mm分"
+                    placeholder="    时  分"
                     style="width:200px"
                   ></el-date-picker>
                 </el-form-item>
@@ -134,7 +134,11 @@
               <td>性别</td>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="partySex">
-                  <el-input v-model="docData.partySex" :maxLength="maxLength" placeholder="\"></el-input>
+                  <!-- <el-input v-model="docData.partySex" :maxLength="maxLength" placeholder="\"></el-input> -->
+                  <el-select v-model="docData.partySex" :maxLength='maxLength' placeholder="\">
+                    <el-option value="0" label="男"></el-option>
+                    <el-option value="1" label="女"></el-option>
+                  </el-select>
                 </el-form-item>
               </td>
             </tr>
@@ -148,12 +152,16 @@
               <td>与案件关系</td>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="relation">
-                  <el-input
+                  <!-- <el-input
                     v-model="docData.relation"
                     minlength="11"
                     :maxLength="maxLength"
                     placeholder="\"
-                  ></el-input>
+                  ></el-input> -->
+                  <el-select v-model="docData.relation" :maxLength='maxLength' placeholder="\">
+                    <el-option v-for="item in options" :key="item.name" :label="item.label" :value="item.name">
+                  </el-option>
+                </el-select>
                 </el-form-item>
               </td>
             </tr>
@@ -229,15 +237,15 @@
                 <!-- 多行样式 -->
                 <div class="overflow_lins_style">
                   <div class="overflow_lins">
-                    <el-form-item prop="inquestResult">
-                      <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.inquestResult" rows="3" maxLength='90' placeholder="\"></el-input>
+                    <el-form-item prop="illegalFacts">                      
+                     <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.illegalFacts" rows="3" maxLength='90' placeholder="\"></el-input>
                      <span> 现场情况：（如实施行政强制措施的，包括当场告知当事人采取
                         <br>行政强制措施的理由、依据以及当事人依法享有的权利、
                         <br>救济途径，听取当事人陈述、申辩情况。）：</span>
                         <br>
                       <span  class="span_bg" @click="overFlowEdit">&nbsp;</span> <br>
                       <span  class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span> <br>
-                      <span  class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
+                      <span  class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>                     
                       <!-- <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span> -->
                     </el-form-item>
                   </div>
@@ -381,6 +389,27 @@ export default {
         staffSign: ""
       },
       rules: {
+        fillingPlace: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        enforceStartTime: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        enforceEndTime: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        staff1: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        certificateId11: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        staff2: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        certificateId12: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
         partyTel:[{ validator:validatePhone , trigger: "blur" }],
         partyIdNo:[{ validator:validateIDNumber , trigger: "blur"}],
         party: [{ required: true, message: "请输入", trigger: "blur" }],
