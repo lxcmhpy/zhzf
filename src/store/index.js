@@ -10,6 +10,10 @@ import system from './modules/system';
 import caseHandle from './modules/caseHandle';
 import flowChart from './modules/flowChart';
 import uploadFile from './modules/uploadFile'
+
+//yyq:添加执法人员系统接口到store
+import person from './modules/person';
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -46,7 +50,8 @@ const store = new Vuex.Store({
         system,
         caseHandle,
         flowChart,
-        uploadFile
+        uploadFile,
+        person
     }
 });
 
