@@ -138,10 +138,10 @@ export const mixinGetCaseApiList = {
                 type: "success",
                 message: "保存成功"
               });
-              
+
               if (handleType == 1) {
-                //保存成功 
-                if (hasNextBtn) {    //有下一环节按钮  
+                //保存成功
+                if (hasNextBtn) {    //有下一环节按钮
                   //提交pdf 显示pdf页
                   this.printContent();
                   this.isSaveLink = true;

@@ -73,6 +73,7 @@ export default {
       this.pageSize = val;
       this.currentPage = 1;
       this.getMyApprovalCase(this.$refs.caseListSearch.caseSearchForm);
+
     },
     //更换页码
     handlePageSizeChange(val) {
@@ -95,12 +96,8 @@ export default {
           isApproval:true
         }
       });
-      //   this.$router.replace({
-      //     name: 'caseDetail',
-      //     params: {
-      //         data: JSON.stringify(row)
-      //     }
-      // });
+      let setCaseNumber = row.caseNumber!='' ?  row.caseNumber : '案件'
+      this.$store.commit("setCaseNumber", setCaseNumber);
     }
   },
   created() {

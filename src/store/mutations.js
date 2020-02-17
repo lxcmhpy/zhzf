@@ -56,6 +56,14 @@ const mutations = {
   setActiveSlideMenu(state,name){
     state.activeSlideMenu = name;
   },
+  setCaseNumber(state,name){
+    state.caseNumber = name;
+  },
+  //更改tab title
+  changeOneTabName(state,data){
+    state.openTab[data.tabIndex].title = data.title;
+  },
+  
 
 
 

@@ -29,7 +29,7 @@ export default {
         this.$emit("selectHeadMenu", key);
         return iLocalStroage.get("headActiveNav");
       }
-      return "xboot";
+      return "caseHandle";
     },
     headActiveNav() {
       return this.$store.state.app.headActiveNav;

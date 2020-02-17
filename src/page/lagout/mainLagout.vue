@@ -83,7 +83,8 @@ export default {
       Cookies.remove("TokenKey");
       iLocalStroage.removeAll();
       // this.$store.state.openTab = [];
-      this.$router.push("/");
+      this.$store.dispatch('deleteAllTabs');
+      this.$router.push("/"); 
     },
     //个人设置  待完善
     goToUser() {

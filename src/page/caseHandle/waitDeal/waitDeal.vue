@@ -84,12 +84,15 @@ export default {
       console.log(row);
       this.$store.commit("setCaseId", row.id);
       console.log(this.$store.state.caseId);
-      this.$router.replace({
+      this.$router.push({
         name: "caseInfo",
         params: {
           caseInfo: row
         }
       });
+      let setCaseNumber = row.caseNumber!='' ?  row.caseNumber : '案件'
+      this.$store.commit("setCaseNumber", setCaseNumber);
+
     },
     //更改每页显示的条数
     handleSizeChange(val) {
