@@ -9,7 +9,7 @@
           <div class="triangle"></div>
           <div class="header_left_text">返回</div>
         </div>
-      </div> -->
+      </div>-->
       <div class="content_box">
         <div class="content">
           <div class="content_title">决定执行</div>
@@ -19,38 +19,79 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input>
+                  <el-input
+                    ref="caseNumber"
+                    clearable
+                    class="w-120"
+                    v-model="formData.caseNumber"
+                    size="small"
+                    disabled
+                  ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="punishType" label="处罚类型">
-                  <el-input ref="punishType" clearable class="w-120" v-model="formData.punishType" size="small" placeholder="请输入"></el-input>
+                  <el-input
+                    ref="punishType"
+                    clearable
+                    class="w-120"
+                    v-model="formData.punishType"
+                    size="small"
+                    disabled
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseName" label="案由">
-                  <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input>
+                  <el-input
+                    ref="caseName"
+                    clearable
+                    class="w-120"
+                    v-model="formData.caseName"
+                    size="small"
+                    disabled
+                  ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="punishTerm" label="处罚期限">
-                  <el-input ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-input>
+                  <!-- <el-input ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-input> -->
+                  <el-date-picker
+                    class="w-120"
+                    v-model="formData.punishTerm"
+                    type="date"
+                    placeholder="选择日期"
+                  ></el-date-picker>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="punishDecision" label="处罚决定">
-                  <el-input ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
+                  <el-input
+                    ref="punishDecision"
+                    clearable
+                    class="w-120"
+                    v-model="formData.punishDecision"
+                    size="small"
+                    placeholder="请输入"
+                    disabled
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚金额">
-                  <el-input ref="tempPunishAmount" clearable class="w-120" v-model="formData.tempPunishAmount" size="small" placeholder="请输入"></el-input>
+                  <el-input
+                    clearable
+                    class="w-120"
+                    v-model="formData.tempPunishAmount"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -59,8 +100,8 @@
           <div class="content_form bottom_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="performWay" label="执行方式"  v-model="formData.performWay">
-                  <el-radio-group>
+                <el-form-item label="执行方式">
+                  <el-radio-group v-model="formData.performWay" @change="changePayWay">
                     <el-radio label="1">线下缴费</el-radio>
                     <el-radio label="2">电子缴纳</el-radio>
                   </el-radio-group>
@@ -72,12 +113,26 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="paidAmount" label="已缴金额">
-                  <el-input ref="paidAmount" clearable class="w-120" v-model="formData.paidAmount" size="small" placeholder="请输入"></el-input>
+                  <el-input
+                    ref="paidAmount"
+                    clearable
+                    class="w-120"
+                    v-model="formData.paidAmount"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="toPayAmount" label="待缴金额">
-                  <el-input ref="toPayAmount" clearable class="w-120" v-model="formData.toPayAmount" size="small" placeholder="请输入"></el-input>
+                  <el-input
+                    ref="toPayAmount"
+                    clearable
+                    class="w-120"
+                    v-model="formData.toPayAmount"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -85,7 +140,9 @@
               <div class="col">
                 <el-form-item prop="performance" label="执行情况">
                   <el-select v-model="formData.performance">
-                    <el-option></el-option>
+                    <el-option label="未完成" value="未完成"></el-option>
+                    <el-option label="已完成" value="已完成"></el-option>
+                    <el-option label="催告" value="催告"></el-option>
                   </el-select>
                   <!-- <el-input ref="performance" clearable class="w-120" v-model="formData.performance" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
@@ -99,14 +156,67 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="note" label="备注">
-                  <el-input ref="note" clearable class="w-120" v-model="formData.note" size="small" placeholder="请输入"></el-input>
+                  <el-input
+                    ref="note"
+                    clearable
+                    class="w-120"
+                    v-model="formData.note"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="payEvidence" label="缴纳凭证">
-                  <el-input type="file" ref="payEvidence" clearable class="w-120" v-model="formData.payEvidence" size="small" placeholder="请输入"></el-input>
+                  <el-input
+                    type="file"
+                    ref="payEvidence"
+                    clearable
+                    class="w-120"
+                    v-model="formData.payEvidence"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row" v-if="isOnlinePay">
+              <div class="col">
+                <el-form-item label="缴纳金额">
+                  <el-input
+                    clearable
+                    class="w-120"
+                    v-model="formData.payAmount"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row" v-if="isOnlinePay">
+              <div class="col">
+                <el-form-item label="收款人">
+                  <el-input
+                    clearable
+                    class="w-120"
+                    v-model="formData.payee"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row" v-if="isOnlinePay">
+              <div class="col">
+                <el-form-item label="缴费时间">
+                  <el-date-picker
+                    v-model="formData.paymentTime"
+                    type="datetime"
+                    format="yyyy-MM-dd HH:mm"
+                    value-format="yyyy-MM-dd HH:mm"
+                  ></el-date-picker>
                 </el-form-item>
               </div>
             </div>
@@ -121,32 +231,26 @@
               <el-table-column prop="isApproval" label="材料名称" align="center"></el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'">
-                    已完成
-                  </span>
-                  <span v-if="scope.row.status == '0'">
-                    未完成
-                  </span>
-                  <span v-if="scope.row.status == ''">
-                    -
-                  </span>
+                  <span v-if="scope.row.status == '1'">已完成</span>
+                  <span v-if="scope.row.status == '0'">未完成</span>
+                  <span v-if="scope.row.status == ''">-</span>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'">
+                  <span v-if="scope.row.status == '1'" class="tableHandelcase">
                     <!-- 已完成 -->
-                    <i type="primary" class="el-icon-view cell-icon" @click="viewDocPdf(scope.row)"></i>
-                    <i type="primary" class="el-icon-printer cell-icon"></i>
+                    <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
+                    <i class="iconfont law-print"></i>
                   </span>
-                  <span v-if="scope.row.status == '0'">
+                  <span v-if="scope.row.status == '0'" class="tableHandelcase">
                     <!-- 未完成 -->
-                    <i type="primary" class="el-icon-edit cell-icon" @click="viewDoc(scope.row)"></i>
-                    <i type="primary" class="el-icon-delete-solid cell-icon" @click="delDocDataByDocId(scope.row)"></i>
+                    <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
+                    <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
                   </span>
-                  <span v-if="scope.row.status === ''">
+                  <span v-if="scope.row.status === ''" class="tableHandelcase">
                     <!-- 无状态 -->
-                    <i type="primary" class="el-icon-circle-plus cell-icon" @click="viewDoc(scope.row)"></i>
+                    <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
                   </span>
                 </template>
               </el-table-column>
@@ -156,21 +260,31 @@
         <!-- 悬浮按钮 -->
         <div class="float-btns btn-height63">
           <el-button type="primary" @click="continueHandle">
-            <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
-              <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF"></path>
-            </svg><br>
-            下一<br>环节</el-button>
-          <el-button type="primary" @click="submitCaseDoc(1)">
-            <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
-              <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF" />
+            <svg
+              t="1577414377979"
+              class="icon"
+              viewBox="0 0 1024 1024"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              p-id="1726"
+              width="16"
+              height="16"
+            >
+              <path
+                d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z"
+                p-id="1727"
+                fill="#FFFFFF"
+              />
             </svg>
+            <br />下一
+            <br />环节
+          </el-button>
+          <el-button type="primary" @click="submitCaseDoc(1)">
+            <i class="iconfont law-save"></i>
             <br />保存
           </el-button>
           <el-button type="success">
-            <svg t="1577415780823" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2584" width="16" height="16">
-              <path d="M98 124.1V902c0 14.3 11.6 25.9 25.9 25.9h777.9c14.3 0 25.9-11.6 25.9-25.9V124.1c0-14.3-11.6-25.9-25.9-25.9H123.9c-14.3 0-25.9 11.6-25.9 25.9z m207.4 37.6h414.9v191.7H305.4V161.7z m558.8 702.7H162.6V161.7h104v230.6h492.7V161.7h105v702.7z" p-id="2585" fill="#FFFFFF" />
-              <path d="M605.1 191.9h70v128h-70z" p-id="2586" fill="#FFFFFF" />
-            </svg>
+            <i class="iconfont law-save"></i>
             <br />暂存
           </el-button>
         </div>
@@ -182,7 +296,7 @@
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
-import checkDocFinish from '../../components/checkDocFinish'
+import checkDocFinish from "../../components/checkDocFinish";
 
 export default {
   components: {
@@ -190,12 +304,15 @@ export default {
   },
   data() {
     return {
-      formData: {},
+      formData: {
+        tempPunishAmount: 0,
+        performWay: ""
+      },
       //提交方式
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: '', //案件id
+        caseBasicinfoId: "", //案件id
         caseLinktypeId: "2c9029e16c753a19016c755fe1340001", //表单类型IDer
         //表单数据
         formData: "",
@@ -218,34 +335,49 @@ export default {
         closeSituation: [
           { required: true, message: "执行情况必须填写", trigger: "blur" }
         ]
-      }
+      },
+      isOnlinePay: false //是否为电子缴纳
     };
   },
-  computed: { ...mapGetters(['caseId']) },
+  computed: { ...mapGetters(["caseId"]) },
   mixins: [mixinGetCaseApiList],
   methods: {
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, 'form');
+      this.com_getFormDataByCaseIdAndFormId(
+        this.caseLinkDataForm.caseBasicinfoId,
+        this.caseLinkDataForm.caseLinktypeId,
+        "form"
+      );
     },
     //保存表单数据
     submitCaseDoc(handleType) {
-      this.com_submitCaseForm(handleType, 'penaltyExecutionForm', true);
+      this.com_submitCaseForm(handleType, "penaltyExecutionForm", true);
     },
     //下一环节
     continueHandle() {
-      let caseData={
-        caseBasicinfoId:this.caseLinkDataForm.caseBasicinfoId,
-        caseLinktypeId:this.caseLinkDataForm.caseLinktypeId,
+      let caseData = {
+        caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
+        caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
+      };
+     let canGotoNext = true; //是否进入下一环节
+      for(let i=0;i<this.docTableDatas.length;i++){
+        if(this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1"){
+          canGotoNext = false
+          break;
+        }
       }
-      this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
-      // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
+      if(canGotoNext){
+        this.com_goToNextLinkTu(this.caseId,this.caseLinkDataForm.caseLinktypeId);
+      }else{
+        this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
+      }
     },
     // 进入文书
     enterDoc(row) {
-      this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-      console.log('row', row)
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      console.log("row", row);
       this.$router.push({
         name: row.url,
         params: {
@@ -253,7 +385,7 @@ export default {
           //案件ID
           caseBasicinfoId: this.caseBasicinfoId,
           docId: row.docId,
-          url: this.$route.name,
+          url: this.$route.name
         }
       });
     },
@@ -264,22 +396,31 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        linkTypeId: "2c9029e16c753a19016c755fe1340001"     //环节ID
+        linkTypeId: "2c9029e16c753a19016c755fe1340001" //环节ID
       };
       this.com_getDocListByCaseIdAndFormId(data);
-      
     },
-     //预览pdf
-    viewDocPdf(row){
+    //预览pdf
+    viewDocPdf(row) {
       let routerData = {
-          hasApprovalBtn:false,
-          docId:row.docId,
-          approvalOver:false,
-          hasBack:true,
-        }
-        this.$store.dispatch("deleteTabs", this.$route.name);
-        this.$router.push({name:'myPDF',params:routerData})
+        hasApprovalBtn: false,
+        docId: row.docId,
+        approvalOver: false,
+        hasBack: true
+      };
+      this.$store.dispatch("deleteTabs", this.$route.name);
+      this.$router.push({ name: "myPDF", params: routerData });
     },
+    //执行方式
+    changePayWay(val) {
+      console.log(val);
+      if (val == 2) {
+        //电子缴纳
+        this.isOnlinePay = true;
+      } else {
+        this.isOnlinePay = false;
+      }
+    }
   },
 
   mounted() {

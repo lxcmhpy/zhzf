@@ -28,7 +28,7 @@
                       <img
                         :src="captchaImg"
                         @click="getCaptcha"
-                        style="width:100px;cursor:pointer;display:block"
+                        style="width:120px;border-radius:4px;height:40px;cursor:pointer;display:block"
                       />
                 </div>
               </el-form-item>

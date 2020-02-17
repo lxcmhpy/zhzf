@@ -95,13 +95,13 @@ export default {
     handleSizeChange(val) {
       console.log("每页显示的条数", val);
       this.pageSize = val;
-      this.getCaseList2();
+      this.getCaseList2({});
     },
     //更换页码
     handleCurrentChange(val) {
       console.log("当前页", val);
       this.currentPage = val;
-      this.getCaseList2();
+      this.getCaseList2({});
     },
     //展开
     showSomeSearch() {

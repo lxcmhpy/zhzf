@@ -21,19 +21,19 @@
             <td> 个人 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="party">
-                <el-input type='textarea' v-model="formData.party" v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.party" v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" disabled placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td> 年龄 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyAge" style="width:110px">
-                <el-input type='textarea' v-model="formData.partyAge" v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyAge" v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td> 性别 </td>
             <td class="color_DBE4EF width20" >
               <el-form-item prop="partySex">
-                <el-input  v-model="formData.partySex" maxlength="1" placeholder="\"></el-input>
+                <el-input  v-model="formData.partySex" maxlength="2" :disabled="isParty ? false : true" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -41,13 +41,13 @@
             <td> 所在单位 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyUnitPosition">
-                <el-input type='textarea' v-model="formData.partyUnitPosition" v-bind:class="{ over_flow:formData.partyUnitPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyUnitPosition" v-bind:class="{ over_flow:formData.partyUnitPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td> 联系地址 </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="formData.partyAddress" v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyAddress" v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -55,13 +55,13 @@
             <td> 联系电话 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyTel">
-                <el-input type='textarea' v-model="formData.partyTel" v-bind:class="{ over_flow:formData.partyTel.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyTel" v-bind:class="{ over_flow:formData.partyTel.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td> 邮编 </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="partyZipCode">
-                <el-input type='textarea' v-model="formData.partyZipCode" v-bind:class="{ over_flow:formData.partyZipCode.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyZipCode" v-bind:class="{ over_flow:formData.partyZipCode && formData.partyZipCode.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -69,13 +69,13 @@
             <td> 单位 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyName">
-                <el-input type='textarea' v-model="formData.partyName" v-bind:class="{ over_flow:formData.partyName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyName" v-bind:class="{ over_flow:formData.partyName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" disabled placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td> 地址 </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="partyUnitAddress">
-                <el-input type='textarea' v-model="formData.partyUnitAddress" v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyUnitAddress" v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" :disabled="isParty ? true : false" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -83,13 +83,13 @@
             <td> 法定代表人</td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager">
-                <el-input type='textarea' v-model="formData.partyManager" v-bind:class="{ over_flow:formData.partyManager.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyManager" v-bind:class="{ over_flow:formData.partyManager.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" :disabled="isParty ? true : false" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td> 职务 </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="partyManagerPositions">
-                <el-input type='textarea' v-model="formData.partyManagerPositions" v-bind:class="{ over_flow:formData.partyManagerPositions.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.partyManagerPositions" v-bind:class="{ over_flow:formData.partyManagerPositions.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" :disabled="isParty ? true : false" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -102,7 +102,7 @@
             </td>
             <td colspan="6" class="color_DBE4EF">
               <el-form-item prop="closeResult">
-                <el-input type='textarea' v-model="formData.closeResult"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.closeResult"  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 5}" maxlength="200" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -113,7 +113,7 @@
             </td>
             <td colspan="6" class="color_DBE4EF">
               <el-form-item prop="closeSituation">
-                <el-input type='textarea' v-model="formData.closeSituation"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.closeSituation"  v-bind:class="{ over_flow:formData.closeSituation && formData.closeSituation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="90" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -125,7 +125,7 @@
             </td>
             <td colspan="6" class="color_DBE4EF">
               <el-form-item prop="leadOpinion">
-                <el-input type='textarea' v-model="formData.leadOpinion" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.leadOpinion" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder=""></el-input>
               </el-form-item>
               <div class="pdf_seal">
                 <p>签名：</p>
@@ -146,7 +146,7 @@
             </td>
             <td colspan="6" class="color_DBE4EF">
               <el-form-item prop="approvalOpinion">
-                <el-input type='textarea' v-model="formData.approvalOpinion"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="formData.approvalOpinion"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder=""></el-input>
               </el-form-item>
               <div class="pdf_seal">
                 <p>签名：</p>
@@ -246,12 +246,12 @@ export default {
       illegalFactsEvidence: '',
       value1: '',
       rules: {
-        // test: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // party: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
+        closeResult: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        closeSituation: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
         // partyIdNo: [
         //   { required: true, message: '请输入', trigger: 'blur' },
         // ],

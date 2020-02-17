@@ -82,7 +82,7 @@ export default {
     loginOut() {
       Cookies.remove("TokenKey");
       iLocalStroage.removeAll();
-      this.$store.state.openTab = [];
+      // this.$store.state.openTab = [];
       this.$router.push("/");
     },
     //个人设置  待完善

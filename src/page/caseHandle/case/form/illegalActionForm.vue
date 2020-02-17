@@ -55,13 +55,14 @@
             </el-form-item>
           </span>的处罚决定。
         </p>
+        
         <p>
           &nbsp;&nbsp;
-          <el-checkbox></el-checkbox>根据《中华人民共和国行政处罚法》第三十一条、第三十二条的规定，你（单位）如对该处罚意见有异议，可向本机关提出陈述申辩，本机关将依法予以核实。
+          <el-checkbox v-model="formData.checkLaw1"></el-checkbox> 根据《中华人民共和国行政处罚法》第三十一条、第三十二条的规定，你（单位）如对该处罚意见有异议，可向本机关提出陈述申辩，本机关将依法予以核实。
         </p>
         <p>
           &nbsp;&nbsp;
-          <el-checkbox></el-checkbox>根据《中华人民共和国行政处罚法》第四十二条的规定，你（单位）有权在收到本通知书之日起三日内向本机关要求举行听证；逾期不要求举行听证的，视为你（单位）放弃听证的权利。
+          <el-checkbox v-model="formData.checkLaw2"></el-checkbox> 根据《中华人民共和国行政处罚法》第四十二条的规定，你（单位）有权在收到本通知书之日起三日内向本机关要求举行听证；逾期不要求举行听证的，视为你（单位）放弃听证的权利。
         </p>
         <p>（注：在序号前□内打“√”的为当事人享有该权利。）</p>
         <br />
@@ -89,7 +90,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyZipCode "
-                  v-bind:class="{ over_flow:formData.partyZipCode .length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyZipCode.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
@@ -103,18 +104,18 @@
           <el-col :span="12">
             <p>
               联系人：
-              <el-form-item v-if="!lineStyleFlag" prop="party" style="width:200px">
+              <el-form-item v-if="!lineStyleFlag" prop="partyPeople" style="width:200px">
                 <el-input
                   type="textarea"
-                  v-model="formData.party"
-                  v-bind:class="{ over_flow:formData.party.length>14?true:false }"
+                  v-model="formData.partyPeople"
+                  v-bind:class="{ over_flow:formData.partyPeople.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
                   disabled
                 ></el-input>
               </el-form-item>
-              <u v-if="lineStyleFlag">{{formData.party}}</u>
+              <u v-if="lineStyleFlag">{{formData.partyPeople}}</u>
             </p>
           </el-col>
           <el-col :span="12">
@@ -183,7 +184,9 @@ export default {
         partyZipCode: "",
         partyTel: "",
         checkBoxList: "",
-        makeDate: ""
+        makeDate: "",
+        checkLaw1:false,
+        checkLaw2:false,
       },
       rules: {
         party: [
@@ -274,7 +277,8 @@ export default {
     // 打印
     print() {
       console.log("打印!");
-    }
+    },
+    //对返回的表单数据做处理
   },
   created() {
     this.setData();

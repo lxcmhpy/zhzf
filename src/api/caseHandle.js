@@ -290,3 +290,13 @@ export function getQueryCaseTypeListApi() {
     cancelToken: setCancelSource()
   });
 }
+
+//通过表单（文书）类型Id查询表单（文书）绑定的案件基本信息属性
+export function findCaseAllBindPropertyApi(data) { 
+  return request({
+    url: "/doc/propertyBind/findAllBindProperty/"+data.typeId+"/"+data.caseBasicInfoId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}

@@ -13,12 +13,12 @@
         </p>
         <p>
           勘验时间：<el-form-item prop="inquestStartTime" class="pdf_datapick" style="width:212px">
-            <el-date-picker v-model="docData.inquestStartTime" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+            <el-date-picker v-model="docData.inquestStartTime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分" clear-icon='el-icon-circle-close'>
             </el-date-picker>
           </el-form-item>
           至
           <el-form-item prop="inquestEndTime" class="pdf_datapick" style="width:212px">
-            <el-date-picker v-model="docData.inquestEndTime" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+            <el-date-picker v-model="docData.inquestEndTime" format="dd日HH时mm分" placeholder="    日  时  分" clear-icon='el-icon-circle-close'>
             </el-date-picker>
           </el-form-item>
         </p>
@@ -268,8 +268,18 @@ export default {
         inquestResult: '',//多行编辑内容
       },
       rules: {
+        party:[{ required: true, message: "请输入", trigger: "blur" }],
         partyTel:[{ validator:validatePhone , trigger: "blur" }],
         partyIdNo:[{ validator:validateIDNumber , trigger: "blur"}],
+        inquestAddress:[{ required: true, message: "请输入", trigger: "blur" }],
+        staff1:[{ required: true, message: "请输入", trigger: "blur" }],
+        staffUnitAndPosition1:[{ required: true, message: "请输入", trigger: "blur" }],
+        certificateId1:[{ required: true, message: "请输入", trigger: "blur" }],
+        staff2:[{ required: true, message: "请输入", trigger: "blur" }],
+        staffUnitAndPosition2:[{ required: true, message: "请输入", trigger: "blur" }],
+        certificateId2:[{ required: true, message: "请输入", trigger: "blur" }],
+        recorder:[{ required: true, message: "请输入", trigger: "blur" }],
+        inquestResult:[{ required: true, message: "请输入", trigger: "blur" }],
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
