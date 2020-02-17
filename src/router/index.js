@@ -34,12 +34,12 @@ router.beforeEach((to, from, next) => {
     } else {
       if(!getRouter){
         if(iLocalStroage.get('menu')){
-
           routerGo(to, next)//执行路由跳转方法
         }
       }else{
         next();
       }
+      
 
       //next();
     }

@@ -165,6 +165,8 @@ export default {
       this.$router.replace({
         name: "establish"
       });
+      let setCaseNumber = row.caseNumber!='' ?  row.caseNumber : '案件'
+      this.$store.commit("setCaseNumber", setCaseNumber);
     },
     //展开
     showSomeSearch() {
