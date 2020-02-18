@@ -457,5 +457,13 @@ export default  [
     title: "pdf展示"
   },
   component: () => import("@/components/htmlExportPDF/viewPDF.vue")
+},
+{
+  path: "/archiveCover",
+  name: "archiveCover",
+  meta: {
+    title: "归档"
+  },
+  component: () => import("@/page/caseHandle/waitArchive/archiveCover.vue")
 }
 ]

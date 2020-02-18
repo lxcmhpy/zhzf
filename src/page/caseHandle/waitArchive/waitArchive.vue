@@ -67,17 +67,26 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getUnRecordCase();
+      this.getWaitArchiveCase({});
     },
     //更换页码
     handlePageSizeChange(val) {
       this.currentPage = val;
-      this.getUnRecordCase();
+      this.getWaitArchiveCase({});
     },
     //展开
     showSomeSearch() {
       this.hideSomeSearch = !this.hideSomeSearch;
     },
+    clickCase(row){
+      console.log(row);
+      this.$router.push({
+        name: "archiveCover",
+        params: {
+          caseInfo: row
+        }
+      });
+    }
   },
   created() {
     this.getWaitArchiveCase({});
