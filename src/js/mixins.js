@@ -54,10 +54,11 @@ export const mixinGetCaseApiList = {
             console.log(res.data);
             this.caseLinkDataForm.id = res.data.id;
             this.formData = JSON.parse(res.data.formData);
-            if(this.formData.checkBox){  //案件来源转数组
-              // this.formData.checkBox = [this.formData.checkBox];
-              this.setEstabishCaseSourceAndText();
-            }
+            // if(this.formData.checkBox){  //案件来源转数组
+            //   this.setEstabishCaseSourceAndText();
+            // }
+            this.setSelfData(this.formData);  //对环节或文书中的一些字段做处理
+
             console.log('this.formData',this.formData)
             this.setSomeData(this.formData);
             this.isSaveLink = true;
@@ -105,16 +106,18 @@ export const mixinGetCaseApiList = {
         res => {
           console.log('获取案件信息', res)
           let caseData = JSON.parse(res.data.propertyData);
-          console.log('获取案件信息2', caseData)
+          console.log('获取案件信息2', caseData);
           if (this.formData) {
             this.formData = caseData;
-            if(this.formData.checkBox){  //案件来源转数组
-              // this.formData.checkBox = [this.formData.checkBox];
-              this.setEstabishCaseSourceAndText();
-            }
+            // if(this.formData.checkBox){  //案件来源转数组
+            //   this.setEstabishCaseSourceAndText();
+            // }
+            this.setSelfData(this.formData);  //对环节或文书中的一些字段做处理
             this.setSomeData(this.formData);
           } else {
-            this.docData = caseData;
+            this.docData = caseData; 
+            this.setSelfData(this.docData);  //对环节或文书中的一些字段做处理
+
           }
         },
         error => {
@@ -387,6 +390,17 @@ export const mixinGetCaseApiList = {
         this.isParty = true;
       } else {
         this.isParty = false;
+      }
+    },
+    setSelfData(data){
+      //立案登记表中数据处理
+      if(data.checkBox){  //案件来源转数组
+        this.setEstabishCaseSourceAndText();
+      }
+      //现场笔录中数据处理
+      if(data.staff){
+        console.log('data.staff',data.staff);
+        this.setStaffAndCertificateId();
       }
     }
 

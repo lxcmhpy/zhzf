@@ -28,7 +28,7 @@
       <!-- <el-menu-item index="8">
         审核<br>流程
       </el-menu-item> -->
-      <el-menu-item index="9">
+      <el-menu-item index="archiveCatalogue" @click="showArchiveCatalogueEmit()">
         卷宗<br>目录
       </el-menu-item>
       <!-- <el-menu-item index="10" class="top" @click="scrollToTop">
@@ -65,6 +65,10 @@ export default {
     scrollToTop() {
         let scrollId = this.$route.meta.scrollId;
         $("#" + scrollId + "").find(".el-scrollbar__wrap").animate({ scrollTop: 0 }, "slow");
+    },
+    //显示卷宗目录
+    showArchiveCatalogueEmit(){
+      this.$emit('showArchiveCatalogue');
     }
   }
 }
