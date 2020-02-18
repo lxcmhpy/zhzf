@@ -113,7 +113,7 @@
         </p>
         <p>
           记录人：<el-form-item prop="recorder">
-            <el-input v-model="docData.recorder" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-autocomplete v-model="docData.recorder" :maxLength='maxLength' placeholder="\" :fetch-suggestions="queryStaff"  @select="handleSelect"></el-autocomplete>
           </el-form-item>
           单位及职务：<el-form-item prop="recorderUnitAndPosition">
             <el-input v-model="docData.recorderUnitAndPosition" :maxLength='maxLength' placeholder="\"></el-input>
@@ -233,6 +233,7 @@ export default {
     };
     return {
       // inquestResult:'',
+      restaurants: [],
       overFlowEditList:[{},{}],
       docData: {
         // caseBasicinfoId:this.caseId,
@@ -398,6 +399,38 @@ export default {
     print() {
       console.log('打印!');
     },
+    //记录人，查找本机构下人员
+    queryStaff(queryString, cb) {
+        debugger;
+        var restaurants = this.restaurants;
+        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
+    },
+    createFilter(queryString) {
+        return (restaurant) => {
+          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+    },
+    handleSelect(item) {
+        console.log(item);
+    },
+    loadAll(){
+      return[
+          // { "value": "张三" },
+          // { "value": "李四" },
+          // { "value": "王五"  },
+          // { "value": "赵六"},
+          // { "value": "胖胖" },
+          { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
+          { "value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号" },
+          { "value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+          { "value": "泷千家(天山西路店)", "address": "天山西路438号" },
+          { "value": "胖仙女纸杯蛋糕（上海凌空店）", "address": "上海市长宁区金钟路968号1幢18号楼一层商铺18-101" },
+          { "value": "贡茶", "address": "上海市长宁区金钟路633号" },
+      ],
+      console.log("111");
+    }
   },
   created() {
     this.getDocDataByCaseIdAndDocId();
@@ -405,6 +438,8 @@ export default {
 
     //加载天气抽屉表
     this.getDictKeyList();
+    //加载记录人
+    this.restaurants = this.loadAll();
   },
 }
 </script>
