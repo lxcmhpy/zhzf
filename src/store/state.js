@@ -7,7 +7,7 @@ const state = {
   loadingTime:'',//加载load记录时间
   authToken: "", //token值    
   
-  headActiveNav:'caseHandle', //当前选中的header
+  headActiveNav:'xboot', //当前选中的header
   activeSlideMenu:"",  //当前选中的侧边栏菜单
   openTab:[{name:'home_index',title:'首页',route:'/index'}],//tabs所有打开的路由
   activeIndex:'', //tab激活状态

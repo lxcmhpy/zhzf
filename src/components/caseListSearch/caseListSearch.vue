@@ -66,7 +66,7 @@
           </div>
           <div class="item" v-if="caseState == 'myApproval'">
             <el-form-item label="申请人">
-              <el-input v-model="caseSearchForm.caseStatus"></el-input>
+              <el-input v-model="caseSearchForm.applicant"></el-input>
             </el-form-item>
           </div>
           <div class="item">
@@ -114,6 +114,8 @@
                 range-separator="-"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                format="yyyy-MM-dd"
               ></el-date-picker>
             </el-form-item>
           </div>
@@ -121,11 +123,13 @@
           <div class="item" v-if="caseState == 'myApproval'" >
             <el-form-item label="申请时间">
               <el-date-picker
-                v-model="caseSearchForm.value1"
+                v-model="value1"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                format="yyyy-MM-dd HH:mm:ss"
               ></el-date-picker>
             </el-form-item>
           </div>
@@ -152,7 +156,11 @@ export default {
         currentLinkName:"",
         acceptStartTime:"",
         acceptEndTime:"",
+        applicant: "",
+        applyStartTime: "",
+        applyEndTime: ""
       },
+      value1:[],
       hideSomeSearch: true,
       linkList:[], //环节
       caseTypeList:[],//类型
@@ -206,6 +214,8 @@ export default {
     //搜索
     searchCaseEmit(){
         console.log('点击')
+        this.caseSearchForm.applyStartTime = this.value1[0]
+        this.caseSearchForm.applyEndTime = this.value1[1]
         this.$emit('searchCase',this.caseSearchForm);
     }
   },

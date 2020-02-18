@@ -3,7 +3,7 @@ import { getToken, setToken,removeToken } from "@/js/auth";
 import Vue from "vue";
 //import { message } from "ant-design-vue";
 import { showFullScreenLoading, tryHideFullScreenLoading } from "./loading";
-
+import iLocalStroage from '@/js/localStroage'
 
 var vue = new Vue();
 
@@ -23,7 +23,7 @@ service({
 }).then(
   res => {
     BASEURL = res.data;
-    console.log('res.data',res.data)
+    iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
   },
   error => {
     console.log(error)

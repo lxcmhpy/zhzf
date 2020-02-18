@@ -3,17 +3,21 @@
 <div class="com_searchAndpageBoxPadding">
   <div
       :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'"
-      
+
     >
-    <caseListSearch @showSomeSearch="showSomeSearch"  @searchCase="getMyApprovalCase" :caseState="'myApproval'"></caseListSearch>
+    <caseListSearch ref="caseListSearch" @showSomeSearch="showSomeSearch"  @searchCase="getMyApprovalCase" :caseState="'myApproval'"></caseListSearch>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="clickCase">
-        <el-table-column prop="2" label="申请时间" align="center"></el-table-column>
-        <el-table-column prop="tempNo" label="案号" align="center"></el-table-column>
+        <el-table-column prop="applyDate" label="申请时间" align="center"></el-table-column>
+        <el-table-column label="案号" align="center">
+            <template slot-scope="scope">
+                <span>{{scope.row.caseNumber ? scope.row.caseNumber : scope.row.tempNo}}</span>
+            </template>
+        </el-table-column>
         <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
         <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
         <el-table-column prop="caseType" label="案件类型" align="center"></el-table-column>
-        <el-table-column prop="caseType2" label="申请人" align="center"></el-table-column>
+        <el-table-column prop="applicant" label="申请人" align="center"></el-table-column>
         <el-table-column prop="currentLinkName" label="当前环节" align="center"></el-table-column>
       </el-table>
     </div>
@@ -28,7 +32,7 @@
           :total="total"
         ></el-pagination>
       </div>
-  
+
   </div>
 </div>
 </template>
@@ -54,7 +58,7 @@ export default {
     caseListSearch,
   },
   methods: {
-  
+
     //获取待我审批的数据
     getMyApprovalCase(searchData) {
       let data = searchData;
@@ -68,12 +72,13 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getMyApprovalCase({});
+      this.getMyApprovalCase(this.$refs.caseListSearch.caseSearchForm);
+
     },
     //更换页码
     handlePageSizeChange(val) {
       this.currentPage = val;
-      this.getMyApprovalCase({});
+      this.getMyApprovalCase(this.$refs.caseListSearch.caseSearchForm);
     },
     //展开
     showSomeSearch() {
