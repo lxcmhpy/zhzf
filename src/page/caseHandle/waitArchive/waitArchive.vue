@@ -2,12 +2,12 @@
 <div class="com_searchAndpageBoxPadding">
   <div
       :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'"
-      
+
     >
-    <caseListSearch @showSomeSearch="showSomeSearch" @searchCase="getWaitArchiveCase" :caseState="'waitArchive'"></caseListSearch>
+    <caseListSearch ref="archiveCaseSearch" @showSomeSearch="showSomeSearch" @searchCase="getWaitArchiveCase" :caseState="'waitArchive'"></caseListSearch>
 
     <div class="tablePart">
-      <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="clickCase">
+      <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row >
         <el-table-column prop="tempNo" label="案号" align="center"></el-table-column>
         <el-table-column prop="vehicleShipId" label="车/船号" align="center"></el-table-column>
         <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
@@ -28,7 +28,7 @@
           :total="total"
         ></el-pagination>
       </div>
-  
+
   </div>
 </div>
 </template>
@@ -53,7 +53,7 @@ export default {
     caseListSearch,
   },
   methods: {
-  
+
     //获取待归档的数据
     getWaitArchiveCase(searchData) {
       let data = searchData;
@@ -67,12 +67,12 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getUnRecordCase();
+      this.getWaitArchiveCase(this.$refs.archiveCaseSearch.caseSearchForm);
     },
     //更换页码
     handlePageSizeChange(val) {
       this.currentPage = val;
-      this.getUnRecordCase();
+      this.getWaitArchiveCase(this.$refs.archiveCaseSearch.caseSearchForm);
     },
     //展开
     showSomeSearch() {
