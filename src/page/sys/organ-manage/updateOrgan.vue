@@ -38,7 +38,6 @@
         </div>
         <div class="item">
           <el-form-item label="机构类型" prop="organType">
-            <!-- <el-select v-model="addOrganForm.organType" placeholder></el-select> -->
             <el-select v-model="addOrganForm.organType" placeholder>
                 <el-option
                   v-for="item in organTypeArray"
@@ -51,7 +50,6 @@
         </div>
         <div class="item">
           <el-form-item label="职权取得方式" prop="accessToAuthority">
-            <!-- <el-select v-model="addOrganForm.accessToAuthority" placeholder></el-select> -->
             <el-select v-model="addOrganForm.accessToAuthority" placeholder>
                 <el-option
                   v-for="item in accessToAuthorityArray"
@@ -64,7 +62,6 @@
         </div>
         <div class="item">
           <el-form-item label="机构性质" prop="organNature">
-            <!-- <el-select v-model="addOrganForm.organNature" placeholder></el-select> -->
             <el-select v-model="addOrganForm.organNature" placeholder>
                 <el-option
                   v-for="item in organNatureArray"
@@ -73,7 +70,6 @@
                   :value="item.id"
                 ></el-option>
             </el-select>
-
           </el-form-item>
         </div>
         <div class="item" style="width: 100%">
@@ -105,6 +101,36 @@
         <div class="item">
           <el-form-item label="联系人" prop="contactor">
             <el-input v-model="addOrganForm.contactor"></el-input>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="缴款银行" prop="bank">
+            <el-input v-model="addOrganForm.bank"></el-input>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="账户号" prop="account">
+            <el-input v-model="addOrganForm.account"></el-input>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="复议机构" prop="reconsiderationOrgan1">
+            <el-input v-model="addOrganForm.reconsiderationOrgan1"></el-input>
+          </el-form-item>
+        </div>
+         <div class="item">
+          <el-form-item label="复议机构2" prop="reconsiderationOrgan2">
+            <el-input v-model="addOrganForm.reconsiderationOrgan2"></el-input>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="诉讼机构" prop="enforcementOrgan1">
+            <el-input v-model="addOrganForm.enforcementOrgan1"></el-input>
+          </el-form-item>
+        </div>
+         <div class="item">
+          <el-form-item label="诉讼机构2" prop="enforcementOrgan2">
+            <el-input v-model="addOrganForm.enforcementOrgan2"></el-input>
           </el-form-item>
         </div>
       </div>
@@ -195,18 +221,6 @@ export default {
       }
       this.getBasicData()
     },
-    async getDictListDetailTb (val) {
-        let list = await this.$store.dispatch("getDictListDetailTb", val);
-        return list.data
-    },
-    async getBasicData () {
-        //   机构类型
-        this.organTypeArray = await this.getDictListDetailTb(BASIC_DATA_SYS.organTypeId)
-        //   机构性质
-        this.organNatureArray = await this.getDictListDetailTb(BASIC_DATA_SYS.organNature);
-        //   职权取得方式
-        this.accessToAuthorityArray = await this.getDictListDetailTb(BASIC_DATA_SYS.accessToAuthority);
-    },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
@@ -276,7 +290,35 @@ export default {
           console.log(err);
         }
       );
+    },
+    async getDictListDetailTb (val) {
+        let list = await this.$store.dispatch("getDictListDetailTb", val);
+        return list.data
+    },
+    async getBasicData () {
+        //   机构类型
+        this.organTypeArray = await this.getDictListDetailTb(BASIC_DATA_SYS.organTypeId)
+        //   机构性质
+        this.organNatureArray = await this.getDictListDetailTb(BASIC_DATA_SYS.organNature);
+        //   职权取得方式
+        this.accessToAuthorityArray = await this.getDictListDetailTb(BASIC_DATA_SYS.accessToAuthority);
     }
-  }
+    //获取字典值
+    // async getDictKeyList(val){
+    //   this.$store.dispatch("getDictListDetail", val).then(
+    //     async res => {
+    //       console.log("字典值列表", res);
+    //       debugger
+    //       return res.data;
+    //       // this.tableData.forEach(item=>{
+    //       //     item.pName = this.dictName
+    //       // })
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     }
+    //   );
+    // }
+  },
 };
 </script>

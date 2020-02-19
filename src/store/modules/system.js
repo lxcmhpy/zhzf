@@ -24,7 +24,7 @@ const system = {
 
     },
     actions: {
-        
+
         //获取验证码
         getCaptcha() {
             return new Promise((resolve, reject) => {
@@ -622,6 +622,10 @@ const system = {
                         reject(error);
                     })
             })
+        },
+        //获取字典值详情
+        async getDictListDetailTb({ commit }, data) {
+            return await getDictListDetailApi(data);
         },
         //添加部门
         addPermission({ commit }, data) {
