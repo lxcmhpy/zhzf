@@ -14,14 +14,15 @@
 <script>
 import personInfoPage from "./../../../components/personComponents/personInfo"
 export default {
+    name:'personDetailPage',
     data(){
         return{
-            personIn:'人员调入',
+            
         }
     },
     components:{
       personInfoPage
-    }
+    },
 }
 
 </script>

@@ -284,5 +284,12 @@
   p{
     font-weight: bold;
   }
-  
-  
+  .MyFade-enter-active, .MyFade-leave-active {
+    transition: opacity 2s;
+  }
+  .MyFade-enter, .MyFade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+  .el-select>.el-input el-input--suffix {
+      width: 202px;
+  }
