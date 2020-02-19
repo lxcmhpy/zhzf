@@ -20,7 +20,7 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <div class="text-left">
-                  <el-checkbox-group v-model="caseSourceCheckBox">
+                  <el-checkbox-group v-model="formData.caseSourceCheckBox">
                   <p>
                     <el-checkbox label="行政检查">1.在行政检查中发现的；</el-checkbox>
                   </p>
@@ -416,6 +416,30 @@ export default {
       caseNumber: "010-123456",
       // tableData: {},
       formData: {
+        caseNumber:"",
+        caseSourceCheckBox:"",
+        caseName:"",
+        acceptTime:"",
+        party:"",
+        partySex:"",
+        partyAge:"",
+        partyAddress:"",
+        partyIdNo:"",
+        partyTel:"",
+        partyName:"",
+        partyManager:"",
+        partyUnitAddress:"",
+        partyUnitTel:"",
+        socialCreditCode:"",
+        caseSituation:"",
+        illegalLaw:"",
+        approveOpinions:"",
+        approvePeo:"",
+        approveTime:"",
+        secondApproveOpinions:"",
+        secondApprovePeo:"",
+        secondApproveTime:"",
+        note:"",
         partyType: "个人",
         caseBasicInfo:"",
       },
