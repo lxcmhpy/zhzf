@@ -97,11 +97,14 @@
           <div class="item" v-if="caseState != 'myApproval'">
             <el-form-item label="受案时间">
               <el-date-picker
-                v-model="caseSearchForm.value1"
+                v-model="acceptTimeArray"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                format="yyyy-MM-dd"
+                :default-time="['00:00:00', '23:59:59']">
               ></el-date-picker>
             </el-form-item>
           </div>
@@ -109,13 +112,14 @@
           <div class="item" v-if="caseState == 'waitArchive'">
             <el-form-item label="结案时间">
               <el-date-picker
-                v-model="caseSearchForm.value1"
+                v-model="endCaseTimeArray"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 value-format="yyyy-MM-dd HH:mm:ss"
                 format="yyyy-MM-dd"
+                :default-time="['00:00:00', '23:59:59']">
               ></el-date-picker>
             </el-form-item>
           </div>
@@ -123,13 +127,14 @@
           <div class="item" v-if="caseState == 'myApproval'" >
             <el-form-item label="申请时间">
               <el-date-picker
-                v-model="value1"
+                v-model="applyTimeArray"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 value-format="yyyy-MM-dd HH:mm:ss"
-                format="yyyy-MM-dd HH:mm:ss"
+                format="yyyy-MM-dd"
+                :default-time="['00:00:00', '23:59:59']">
               ></el-date-picker>
             </el-form-item>
           </div>
@@ -158,9 +163,13 @@ export default {
         acceptEndTime:"",
         applicant: "",
         applyStartTime: "",
-        applyEndTime: ""
+        applyEndTime: "",
+        endCaseStartTime: "",
+        endCaseEndTime: ""
       },
-      value1:[],
+      acceptTimeArray: [],
+      endCaseTimeArray: [],
+      applyTimeArray: [],
       hideSomeSearch: true,
       linkList:[], //环节
       caseTypeList:[],//类型
@@ -214,8 +223,15 @@ export default {
     //搜索
     searchCaseEmit(){
         console.log('点击')
-        this.caseSearchForm.applyStartTime = this.value1[0]
-        this.caseSearchForm.applyEndTime = this.value1[1]
+        this.caseSearchForm.applyStartTime = this.applyTimeArray[0]
+        this.caseSearchForm.applyEndTime = this.applyTimeArray[1]
+
+        this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0]
+        this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1]
+
+        this.caseSearchForm.endCaseStartTime = this.endCaseTimeArray[0]
+        this.caseSearchForm.endCaseEndTime = this.endCaseTimeArray[1]
+
         this.$emit('searchCase',this.caseSearchForm);
     }
   },

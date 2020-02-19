@@ -67,7 +67,7 @@
         <el-table-column prop="type" label="机构类型" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <el-button @click.stop @click="editOrgan(scope.row.id)" type="text">修改</el-button>
+            <el-button @click.stop @click="updateOrgan(scope.row.id)" type="text">修改</el-button>
             <el-button type="text" @click.stop @click="deleteOrgan(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -87,11 +87,13 @@
     </div>
 
     <addOrgan ref="addOrganRef" @getAllOrgan2="getAllOrgan"></addOrgan>
+    <updateOrgan ref="updateOrganRef" @getAllOrgan2="getAllOrgan"></updateOrgan>
   </div>
 </div>
 </template>
 <script>
 import addOrgan from "./addOrgan";
+import updateOrgan from "./updateOrgan";
 export default {
   watch: {
     filterText(val) {
@@ -118,7 +120,7 @@ export default {
     };
   },
   components: {
-    addOrgan
+    addOrgan, updateOrgan
   },
   inject: ["reload"],
   methods: {
@@ -208,10 +210,10 @@ export default {
     },
     //机构详情
     showOrganDetail(row, column, event) {
-      this.$refs.addOrganRef.showModal(1, row.id);
+      this.$refs.updateOrganRef.showModal(1, row.id);
     },
     //修改机构
-    editOrgan(id) {
+    updateOrgan(id) {
       let data = {
         id: id,
         parentNode: {
@@ -219,7 +221,7 @@ export default {
           parentNodeName: this.selectCurrentTreeName
         }
       };
-      this.$refs.addOrganRef.showModal(2, data);
+      this.$refs.updateOrganRef.showModal(2, data);
     },
     //修改根节点机构
     editSelectNode() {

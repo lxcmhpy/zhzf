@@ -54,8 +54,8 @@ const lineStyle = {
   }
 }// 页面布局x轴平均分布数，以及每列平均宽度和高度设置
 const layoutCharts = {
-  xMargin: 90,
-  yMargin: 70,
+  xMargin: 120,
+  yMargin: 140,
   splitNumber: 8
 }
 

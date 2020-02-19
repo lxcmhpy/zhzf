@@ -23,7 +23,7 @@
             <el-input v-model="addOrganForm.name" @focus="focusOrganName" @blur="blurOrganName"></el-input>
           </el-form-item>
 
-          
+
           <span class="errorInput" v-if="errorOrganName">该机构名称已存在</span>
         </div>
         <div class="item">
@@ -38,20 +38,45 @@
         </div>
         <div class="item">
           <el-form-item label="机构类型" prop="organType">
-            <el-select v-model="addOrganForm.organType" placeholder></el-select>
+            <!-- <el-select v-model="addOrganForm.organType" placeholder></el-select> -->
+            <el-select v-model="addOrganForm.organType" placeholder>
+                <el-option
+                  v-for="item in organTypeArray"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+            </el-select>
           </el-form-item>
         </div>
         <div class="item">
           <el-form-item label="职权取得方式" prop="accessToAuthority">
-            <el-select v-model="addOrganForm.accessToAuthority" placeholder></el-select>
+            <!-- <el-select v-model="addOrganForm.accessToAuthority" placeholder></el-select> -->
+            <el-select v-model="addOrganForm.accessToAuthority" placeholder>
+                <el-option
+                  v-for="item in accessToAuthorityArray"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+            </el-select>
           </el-form-item>
         </div>
         <div class="item">
           <el-form-item label="机构性质" prop="organNature">
-            <el-select v-model="addOrganForm.organNature" placeholder></el-select>
+            <!-- <el-select v-model="addOrganForm.organNature" placeholder></el-select> -->
+            <el-select v-model="addOrganForm.organNature" placeholder>
+                <el-option
+                  v-for="item in organNatureArray"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+            </el-select>
+
           </el-form-item>
         </div>
-        <div>
+        <div class="item" style="width: 100%">
           <el-form-item label="是否具有独立执法资格" label-width="160px" prop="isIndependentEnforce">
             <el-radio-group v-model="addOrganForm.isIndependentEnforce">
               <el-radio label="是"></el-radio>
@@ -109,6 +134,7 @@
   </el-dialog>
 </template>
 <script>
+import {BASIC_DATA_SYS} from '@/js/BASIC_DATA'
 export default {
   data() {
     return {
@@ -138,6 +164,9 @@ export default {
       errorOrganName: false, //添加organname时的验证
       handelType:0,  //添加 0  修改2
       isDisabled:false,  //查看详情禁用form
+      accessToAuthorityArray: [], // 职权取得方式
+      organNatureArray: [], //机构性质
+      organTypeArray: []
     };
   },
 
@@ -147,7 +176,7 @@ export default {
       this.handelType = type;
       if (type == 0) {
         this.dialogTitle = "新增机构";
-        
+
         this.parentNode = data;
         this.addOrganForm.pidName = data.parentNodeName;
         this.isDisabled = false;
@@ -164,6 +193,19 @@ export default {
         this.getOrganDetail(data.id);
         this.isDisabled = false;
       }
+      this.getBasicData()
+    },
+    async getDictListDetailTb (val) {
+        let list = await this.$store.dispatch("getDictListDetailTb", val);
+        return list.data
+    },
+    async getBasicData () {
+        //   机构类型
+        this.organTypeArray = await this.getDictListDetailTb(BASIC_DATA_SYS.organTypeId)
+        //   机构性质
+        this.organNatureArray = await this.getDictListDetailTb(BASIC_DATA_SYS.organNature);
+        //   职权取得方式
+        this.accessToAuthorityArray = await this.getDictListDetailTb(BASIC_DATA_SYS.accessToAuthority);
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -191,9 +233,9 @@ export default {
           console.log(err);
         }
       );
-      
+
       }
-      
+
     },
     //新增机构 修改机构
     addOrgan(formName) {

@@ -48,6 +48,7 @@ export default {
         }).then(
         res => {
           console.log(res[0].storageId)
+          console.log(11111111)
           this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST+res[0].storageId
         },
         err => {
