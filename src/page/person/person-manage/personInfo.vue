@@ -133,7 +133,14 @@ export default {
     methods:{
         //点击添加tab标签，查看人员详情信息
         getDetailInfo(row){
-
+            console.info(row);
+            this.$router.replace({
+                name: 'personDetailPage',
+                params: {
+                caseInfo: "",
+                isApproval:true
+                }
+            });
         },
         //点击下拉框的时候后头获取下拉框数据
         getDepatements(pid){

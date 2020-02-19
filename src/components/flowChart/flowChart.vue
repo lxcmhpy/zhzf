@@ -1,12 +1,12 @@
 <template>
-  <div class="com_searchAndpageBoxPadding">
-    <div class="searchAndpageBox" >
+  <div class="com_searchAndpageBoxPadding chartBg">
+    <div class="searchAndpageBox " >
       <div class="handlePart">
         <!-- <el-button type="primary" size="medium" icon="el-icon-plus">添加</el-button> -->
       </div>
       <div >
         <!-- <div id="aa"><?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="icon" width="200px" height="200.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#d81e06" d="M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z"  /></svg></div> -->
-          <div id="flowChart" style="width: 1000px;height:550px;margin:0 auto"></div>
+          <div id="flowChart" style="width: 1041px;height:600px;margin:0 auto"></div>
       </div>
     </div>
     <!--快速入口 -->
@@ -63,11 +63,14 @@ export default {
       var option = {    //这里是option配置
         title: {
             text: '办案流程图',
+            textStyle: {
+                fontSize: 26
+            },
+            left: '40%'
         },
         legend: [{    //图例组件
             data: graphTemp.nodes,
-            itemGap:5,
-            y: 'bottom'
+            y: 'top',
         }],
         calculable : true,
         animationDurationUpdate: 1500,
@@ -76,55 +79,79 @@ export default {
             left: '5%',
             top: '10%',
             right: '5%',
-            bottom: '5%',
+            bottom: '15%',
             containLabel: true,
         },
         xAxis: [
         {
             position:'top',
             type : 'value',
-            min: 0,
-            max: layoutCharts.splitNumber,
             axisLine: {
                 lineStyle: {
-                    type: 'dashed',
-                    color:'#ccc',
-                    shadowOffsetX: 10,
-                    shadowColor:'#ccc',
+                    type: 'solid',
+                    color:'white'
                 }
-            },
-            splitLine: {
-                lineStyle: {
-                    type: 'dashed',
-                    shadowOffsetX: 10,
-                    shadowColor:'#ccc',
-                    color:'#ccc',
-                },
-            },
-            axisLabel: {
-                show: false
-            },
-            splitNumber: layoutCharts.splitNumber,
-            interval: 1,
-        }
-        ,{
-            position:'top',
-            nameLocation: 'start',
-            type : 'category',
-            axisLine: {
-                lineStyle: {
-                    type: 'dashed',
-                    color:'#ccc',
-                    shadowColor:'#ccc'
-                }
-            },
-            data: mainLinkDataTemp
-        }],
+            }
+        },
+        // {
+        //     position:'top',
+        //     nameLocation: 'start',
+        //     type : 'category',
+        //     axisLine: {
+        //         lineStyle: {
+        //             type: 'dashed',
+        //             color:'#f8f8fc',
+        //             shadowColor:'#f8f8fc'
+        //         }
+        //     },
+        //     // data: mainLinkDataTemp
+        // }
+        // {
+        //     position:'top',
+        //     type : 'value',
+        //     min: 0,
+        //     max: layoutCharts.splitNumber,
+        //     axisLine: {
+        //         lineStyle: {
+        //             type: 'dashed',
+        //             color:'#ccc',
+        //             shadowOffsetX: 10,
+        //             shadowColor:'#ccc',
+        //         }
+        //     },
+        //     splitLine: {
+        //         lineStyle: {
+        //             type: 'dashed',
+        //             shadowOffsetX: 10,
+        //             shadowColor:'#ccc',
+        //             color:'#ccc',
+        //         },
+        //     },
+        //     axisLabel: {
+        //         show: false
+        //     },
+        //     splitNumber: layoutCharts.splitNumber,
+        //     interval: 1,
+        // }
+        // ,{
+        //     position:'top',
+        //     nameLocation: 'start',
+        //     type : 'category',
+        //     axisLine: {
+        //         lineStyle: {
+        //             type: 'dashed',
+        //             color:'#ccc',
+        //             shadowColor:'#ccc'
+        //         }
+        //     },
+        //     data: mainLinkDataTemp
+        // }
+        ],
         yAxis: {
             type: 'value',
             axisLine: {
                 lineStyle: {
-                    type: 'dashed',
+                    type: 'solid',
                     color:'white'
                 }
             }
@@ -132,9 +159,16 @@ export default {
         series: [
             {
                 type: 'graph',
-                symbol:'rect',
-                edgeSymbol: ['none', 'arrow'],
+                symbol:'roundRect',
+                borderRadius: 3,
                 edgeSymbolSize: [2, 7],
+                top: 120,
+                itemStyle: {
+                    borderColor: 'orange',
+                    borderWidth: 2,
+                    backgroundColor: 'white',
+                    color: 'white'
+                },
                 data: graphTemp.nodes,
                 links: graphTemp.links,
                 draggable: false,   //注意这里设置为false,不然拖拽鼠标和节点有偏移
@@ -168,24 +202,52 @@ export default {
           node.y=parseInt(node.position.x * layoutCharts.yMargin);
           if (node.attributes.modularity_class !== 'hide') {
 
-              node.itemStyle = {
-                normal:{
-                    color: node.itemStyleColor == '' ? stateColorTemp.lock : node.itemStyleColor
-                  }
-              }
+            //   node.itemStyle = {
+            //     normal:{
+            //         color: node.itemStyleColor == '' ? stateColorTemp.lock : node.itemStyleColor
+            //     }
+            //   }
               node.label = {
+                // symbolSize: [20,50],
                 normal: {
                       show:true,
-                      color: '#1f242a',
                       fontSize: 14,
                       fontWeight: 800,
-                      position: 'bottom',
-                      lineHeight: 40
-                  }
+                      position: 'inside',
+                      offset: [0, 20],
+                      color: 'red'
+                },
+                backgroundColor: {
+                    image: 'image://http://localhost:8075/static/images/chart/flowchart-dsrql.png'
+                },
+                borderColor: 'black'
+                //    formatter: [
+                //         '{a|这段文本采用样式a}',
+                //         '{b|这段文本采用样式b}这段用默认样式{x|这段用样式x}'
+                //     ].join('\n'),
+                //     rich: {
+                //         a: {
+                //             color: 'red',
+                //             lineHeight: 10
+                //         },
+                //         b: {
+                //             backgroundColor: 'red',
+                //             height: 80
+                //         },
+                //         x: {
+                //             fontSize: 18,
+                //             fontFamily: 'Microsoft YaHei',
+                //             borderColor: '#449933',
+                //             borderRadius: 4
+                //         }
+                //     }
               };
-              node.symbolSize=[23, 26];
+              node.symbolSize=[70, 85];
               node.sizeFlag=[23, 26];
-              node.symbol = svgDataTemp[node.attributes.modularity_class];
+            //   node.symbol = 'image://http://localhost:8075/static/images/chart/flowchart-dsrql.png'
+            //   node.zlevel = -1,
+                // node.symbol.borderRadius = 20;
+            //   node.symbol = svgDataTemp[node.attributes.modularity_class];
               // node.symbol = 'path://M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z'
           } else {
               node.symbolSize=[0, 0];
@@ -267,7 +329,8 @@ export default {
           lineStyle:{
             normal: {
               color: '#b2b2b2',
-              width: 1
+              width: 1,
+              type: 'dotted'
             }
           },
           symbol: nodes.target.indexOf('temp') > -1 ? ['none', 'circle'] : ['none', 'arrow'],
@@ -596,4 +659,17 @@ export default {
 // @import "../../../css/caseHandle/index.less";
 // @import "../../css/caseHandle/index.less";
 @import "../../css/documentForm.less";
+</style>
+<style lang="less" scoped>
+.chartBg {
+    background-color: white;
+    background-image: url('../../../static/images/chart/cross-line.png');
+    background-repeat: repeat;
+    background-size: 14px 14px;
+    .searchAndpageBox {
+        background: none;
+        overflow-y:auto;
+        padding: 30px;
+    }
+}
 </style>
