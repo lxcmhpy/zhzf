@@ -57,8 +57,8 @@
                 <el-form-item prop="staff1">
                   <el-input
                     type="textarea"
-                    v-model="staff1"
-                    v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
+                    v-model="docData.staff1"
+                    v-bind:class="{ over_flow:docData.staff1.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="adressLength"
                     placeholder="\"
@@ -70,8 +70,8 @@
                 <el-form-item prop="certificateId1">
                   <el-input
                     type="textarea"
-                    v-model="certificateId1"
-                    v-bind:class="{ over_flow:certificateId2.length>14?true:false }"
+                    v-model="docData.certificateId1"
+                    v-bind:class="{ over_flow:docData.certificateId2.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="adressLength"
                     placeholder="\"
@@ -97,8 +97,8 @@
                 <el-form-item prop="staff2">
                   <el-input
                     type="textarea"
-                    v-model="staff2"
-                    v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
+                    v-model="docData.staff2"
+                    v-bind:class="{ over_flow:docData.staff2.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="adressLength"
                     placeholder="\"
@@ -109,8 +109,8 @@
                 <el-form-item prop="certificateId2">
                   <el-input
                     type="textarea"
-                    v-model="certificateId2"
-                    v-bind:class="{ over_flow:certificateId2.length>14?true:false }"
+                    v-model="docData.certificateId2"
+                    v-bind:class="{ over_flow:docData.certificateId2.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="adressLength"
                     placeholder="\"
@@ -392,7 +392,10 @@ export default {
         partySignTime: "",
         note: "",
         staffSign: "",
-        staffSign: ""
+        staff1: "",
+        staff2: "",
+        certificateId1: "",
+        certificateId2: ""
       },
       rules: {
         fillingPlace: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -457,10 +460,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "subOutputRank-print"
       },
-      staff1: "",
-      staff2: "",
-      certificateId1: "",
-      certificateId2: ""
+      
     };
   },
   computed: { ...mapGetters(["caseId"]) },
@@ -541,16 +541,14 @@ export default {
     },
     setStaffAndCertificateId() {
       console.log('this.docData',this.docData)
-      if (this.docData.staff) {
-        let staffStr = this.docData.staff;
-        let staffArr = staffStr.split(",");
-        let staffcertificateIdArr = this.docData.certificateId.split(",");
-        this.staff1 = staffArr[0];
-        this.staff2 = staffArr[1];
-        this.certificateId1 = staffcertificateIdArr[0];
-        this.certificateId2 = staffcertificateIdArr[1];
-        this.docData.recorder = staffArr[0];
-      }
+      let staffStr = this.docData.staff;
+      let staffArr = staffStr.split(",");
+      let staffcertificateIdArr = this.docData.certificateId.split(",");
+      this.docData.staff1 = staffArr[0];
+      this.docData.staff2 = staffArr[1];
+      this.docData.certificateId1 = staffcertificateIdArr[0];
+      this.docData.certificateId2 = staffcertificateIdArr[1];
+      this.docData.recorder = staffArr[0];
     }
   },
   mounted() {

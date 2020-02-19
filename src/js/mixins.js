@@ -53,11 +53,17 @@ export const mixinGetCaseApiList = {
           } else {
             console.log(res.data);
             this.caseLinkDataForm.id = res.data.id;
-            this.formData = JSON.parse(res.data.formData);
+            // this.formData = JSON.parse(res.data.formData);
             // if(this.formData.checkBox){  //案件来源转数组
             //   this.setEstabishCaseSourceAndText();
             // }
-            this.setSelfData(this.formData);  //对环节或文书中的一些字段做处理
+            //利用属性给this.formData赋值
+            let formData = JSON.parse(res.data.formData);
+            for( var key in formData ){
+              this.formData[key]=formData[key]
+            }
+            //对环节或文书中的一些字段做处理
+            this.setSelfData(this.formData,caseLinktypeId);  
 
             console.log('this.formData',this.formData)
             this.setSomeData(this.formData);
@@ -106,17 +112,24 @@ export const mixinGetCaseApiList = {
         res => {
           console.log('获取案件信息', res)
           let caseData = JSON.parse(res.data.propertyData);
+
           console.log('获取案件信息2', caseData);
           if (this.formData) {
-            this.formData = caseData;
+            // this.formData = caseData;
+            for( var key in caseData ){
+              this.formData[key]=caseData[key]
+            }
             // if(this.formData.checkBox){  //案件来源转数组
             //   this.setEstabishCaseSourceAndText();
             // }
-            this.setSelfData(this.formData);  //对环节或文书中的一些字段做处理
+            this.setSelfData(this.formData,formOrDocId);  //对环节或文书中的一些字段做处理
             this.setSomeData(this.formData);
           } else {
-            this.docData = caseData; 
-            this.setSelfData(this.docData);  //对环节或文书中的一些字段做处理
+            // this.docData = caseData; 
+            for( var key in caseData ){
+              this.docData[key]=caseData[key]
+            }
+            this.setSelfData(this.docData,formOrDocId);  //对环节或文书中的一些字段做处理
 
           }
         },
@@ -392,15 +405,23 @@ export const mixinGetCaseApiList = {
         this.isParty = false;
       }
     },
-    setSelfData(data){
+
+    setSelfData(data,caseLinktypeId){
+      console.log(caseLinktypeId);
       //立案登记表中数据处理
-      if(data.checkBox){  //案件来源转数组
+      if(caseLinktypeId == '2c90293b6c178b55016c17c255a4000d'){  //案件来源转数组
         this.setEstabishCaseSourceAndText();
       }
-      //现场笔录中数据处理
-      if(data.staff){
+      //现场笔录、勘验笔录中数据处理
+      if(caseLinktypeId == '2c9029ca5b71f8a3015b71fc67ee0001' || caseLinktypeId == '2c9029ab655639600165564481f70001'){
         console.log('data.staff',data.staff);
         this.setStaffAndCertificateId();
+      }
+      //决定执行的缴费金额
+      console.log(data,caseLinktypeId);
+      if(caseLinktypeId == '2c9029e16c753a19016c755fe1340001'){
+        console.log('jinru');
+        this.setPunishAmount();
       }
     }
 

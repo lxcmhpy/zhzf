@@ -3,7 +3,7 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="penaltyExecutionForm" :model="formData" label-width="105px">
+    <el-form ref="penaltyExecutionForm" :model="formData" :rules="rules" label-width="105px">
       <!-- <div class="header-case">
         <div class="header_left">
           <div class="triangle"></div>
@@ -88,9 +88,9 @@
                   <el-input
                     clearable
                     class="w-120"
-                    v-model="formData.tempPunishAmount"
+                    v-model.number="formData.tempPunishAmount"
                     size="small"
-                    placeholder="请输入"
+                    placeholder="-"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -102,10 +102,10 @@
               <div class="col">
                 <el-form-item label="执行方式">
                   <el-radio-group v-model="formData.performWay" @change="changePayWay">
-                    <el-radio label="1">线下缴费</el-radio>
-                    <el-radio label="2">电子缴纳</el-radio>
+                    <el-radio :label="1">线下缴费</el-radio>
+                    <el-radio :label="2">电子缴纳</el-radio>
                   </el-radio-group>
-                  <el-checkbox v-model="formData.correct"></el-checkbox>责令改正
+                  <el-checkbox v-model="formData.correct"></el-checkbox> 责令改正
                   <!-- <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -114,24 +114,23 @@
               <div class="col">
                 <el-form-item prop="paidAmount" label="已缴金额">
                   <el-input
-                    ref="paidAmount"
                     clearable
                     class="w-120"
-                    v-model="formData.paidAmount"
+                    v-model.number="formData.paidAmount"
                     size="small"
-                    placeholder="请输入"
+                    placeholder="-"
+                  
                   ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="toPayAmount" label="待缴金额">
                   <el-input
-                    ref="toPayAmount"
                     clearable
                     class="w-120"
-                    v-model="formData.toPayAmount"
                     size="small"
-                    placeholder="请输入"
+                    v-model.number="formData.toPayAmount"
+                    placeholder="-"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -149,7 +148,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="checkbox">
-                  <el-checkbox v-model="formData.stepPay"></el-checkbox>分期（延期）缴纳
+                  <el-checkbox v-model="formData.stepPay"></el-checkbox> 分期（延期）缴纳
                 </el-form-item>
               </div>
             </div>
@@ -303,10 +302,34 @@ export default {
     checkDocFinish
   },
   data() {
+    var validatePaid = (rule, value, callback) => {
+        if(value && typeof(value) != 'number'){
+          callback(new Error('必须为数字!'));
+        }
+        if(value  && (value<0 ||value> Number(this.formData.tempPunishAmount))){
+          callback(new Error('不得小于0或大于处罚金额!'));
+        }else{
+          callback();
+        }
+    };
     return {
       formData: {
-        tempPunishAmount: 0,
-        performWay: ""
+        caseNumber:"",
+        punishType:"",
+        caseName:"",
+        punishTerm:"",
+        punishDecision:"",
+        tempPunishAmount: "",
+        performWay:"",
+        correct:"",
+        performance:"",
+        paidAmount:"", 
+        toPayAmount:"",
+        stepPay:"",
+        note:"",
+        payEvidence:"",
+        payee:"",
+        paymentTime:"",
       },
       //提交方式
       handleType: 0, //0  暂存     1 提交
@@ -320,26 +343,19 @@ export default {
       },
       docTableDatas: [],
       rules: {
-        caseNumber: [
-          { required: true, message: "案号必须填写", trigger: "blur" }
+        paidAmount:[
+          { validator: validatePaid, trigger: 'blur'}
         ],
-        caseName: [
-          { required: true, message: "案由必须填写", trigger: "blur" }
-        ],
-        partyType: [
-          { required: true, message: "当事人类型必须填写", trigger: "blur" }
-        ],
-        closeResult: [
-          { required: true, message: "处理结果必须填写", trigger: "blur" }
-        ],
-        closeSituation: [
-          { required: true, message: "执行情况必须填写", trigger: "blur" }
+        toPayAmount:[
+          { validator: validatePaid, trigger: 'blur'}
         ]
       },
       isOnlinePay: false //是否为电子缴纳
     };
   },
-  computed: { ...mapGetters(["caseId"]) },
+  computed: { 
+    ...mapGetters(["caseId"]) ,
+  },
   mixins: [mixinGetCaseApiList],
   methods: {
     //加载表单信息
@@ -420,6 +436,15 @@ export default {
       } else {
         this.isOnlinePay = false;
       }
+    },
+    setPunishAmount(){
+      if(this.formData.tempPunishAmount){
+        this.formData.paidAmount = this.formData.paidAmount ? this.formData.paidAmount : 0;
+      }
+      this.formData.performWay = this.formData.performWay ? this.formData.performWay : 1;
+      this.isOnlinePay = this.formData.performWay == 1 ? false : true;
+    
+      //分期延期缴纳单选按钮默认不选，  选中后列表中展示分期延期缴纳罚款通知书 执行情况为催告时  列表中展示催告书
     }
   },
 
@@ -431,6 +456,22 @@ export default {
     this.setFormData();
     //通过案件id和表单类型Id查询已绑定文书
     this.getDocListByCaseIdAndFormId();
+  },
+  watch:{
+    //代缴金额为0时,执行情况为已完成
+    'formData.paidAmount'(val){
+      console.log(val);
+      this.formData.toPayAmount = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
+
+    },
+    'formData.toPayAmount'(val){
+      console.log(val);
+      if(!val){
+        this.formData.performance = '已完成';
+      }else{
+        this.formData.performance = '未完成';
+      }
+    }
   }
 };
 </script>

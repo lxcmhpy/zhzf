@@ -31,7 +31,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseName" label="案由">
-                  <el-input ref="caseName" :disabled="true" clearable class="w-120" v-model="formData.caseCauseName" size="small"></el-input>
+                  <el-input :disabled="true" clearable class="w-120" v-model="formData.caseName" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -204,6 +204,12 @@ export default {
   data() {
     return {
       formData: {
+        caseNumber:"",
+        caseName:"",
+        illegalFact:"",
+        illegalLaw:"",
+        punishLaw:"",
+        tempPunishAmount:"",
         checkList: "",
         isImportant: ""
       },

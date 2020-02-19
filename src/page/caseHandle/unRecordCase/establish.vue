@@ -20,7 +20,7 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <div class="text-left">
-                  <el-checkbox-group v-model="formData.caseSourceCheckBox">
+                  <el-checkbox-group v-model="formData.checkBox">
                   <p>
                     <el-checkbox label="行政检查">1.在行政检查中发现的；</el-checkbox>
                   </p>
@@ -417,7 +417,7 @@ export default {
       // tableData: {},
       formData: {
         caseNumber:"",
-        caseSourceCheckBox:"",
+        checkBox:[],
         caseName:"",
         acceptTime:"",
         party:"",
@@ -605,8 +605,9 @@ export default {
       }else if(this.formData.checkBox == '其他途径'){
         this.caseSourceText6 = this.formData.caseSourceText;
       }
-      this.caseSourceCheckBox.push(this.formData.checkBox);
-      
+      if(typeof(this.formData.checkBox)== 'string'){
+        this.formData.checkBox=[this.formData.checkBox];
+      }
     }
   },
   created() {
