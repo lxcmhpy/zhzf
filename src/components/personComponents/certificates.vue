@@ -3,28 +3,11 @@
     :data="tableData"
     border
     style="width: 100%">
-    <el-table-column
-      prop="date"
-      label="姓名"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="name"
-      label="证件状态"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="address"
-      label="操作用户">
-    </el-table-column>
-    <el-table-column
-      prop="address"
-      label="操作日期">
-    </el-table-column>
-    <el-table-column
-      prop="address"
-      label="变化原因">
-    </el-table-column>
+    <el-table-column prop="date"  label="姓名"></el-table-column>
+    <el-table-column prop="name"  label="证件状态"></el-table-column>
+    <el-table-column prop="address" label="操作用户"></el-table-column>
+    <el-table-column prop="address" label="操作日期"></el-table-column>
+    <el-table-column prop="address" label="变化原因"></el-table-column>
   </el-table>
 </template>
 
@@ -52,7 +35,5 @@
 </script>
 
 <style scoped>
-  .el-table_column {
-    border:1px solid #CAC5C5;
-  }
+  @import "./../../css/personManage.less";
 </style>

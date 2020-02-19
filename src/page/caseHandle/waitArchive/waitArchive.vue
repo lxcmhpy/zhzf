@@ -68,6 +68,7 @@ export default {
       this.pageSize = val;
       this.currentPage = 1;
       this.getWaitArchiveCase(this.$refs.archiveCaseSearch.caseSearchForm);
+
     },
     //更换页码
     handlePageSizeChange(val) {
@@ -78,6 +79,15 @@ export default {
     showSomeSearch() {
       this.hideSomeSearch = !this.hideSomeSearch;
     },
+    clickCase(row){
+      console.log(row);
+      this.$router.push({
+        name: "archiveCover",
+        params: {
+          caseInfo: row
+        }
+      });
+    }
   },
   created() {
     this.getWaitArchiveCase({});

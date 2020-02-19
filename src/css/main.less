@@ -158,7 +158,18 @@
         border-bottom: 1px solid #D6DBE3;
     }
   }
-
+  /* 左侧弹出框  右边有距离 */
+  .leftDialog2{
+    margin-right: 58px;
+    height:calc(100% - 60px);
+    .el-dialog__body{
+        height:calc(100% - 200px);
+        overflow: auto;
+    }
+    .el-dialog__footer{
+        text-align: center;
+    }
+  }
   .caseBox{
       position: absolute;
       width: 100%;
