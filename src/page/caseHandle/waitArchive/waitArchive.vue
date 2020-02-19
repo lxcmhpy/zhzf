@@ -68,7 +68,6 @@ export default {
       this.pageSize = val;
       this.currentPage = 1;
       this.getWaitArchiveCase(this.$refs.archiveCaseSearch.caseSearchForm);
-
     },
     //更换页码
     handlePageSizeChange(val) {
