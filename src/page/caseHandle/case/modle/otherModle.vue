@@ -109,7 +109,7 @@
               <el-input type='textarea' v-model="docData.inquiriedAddress" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiriedAddress}}</u></p>
-          <p>我们是
+          <p >我们是
             <el-form-item v-if="!lineStyleFlag" prop="organName">
               <el-input type='textarea' v-model="docData.organName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
@@ -131,9 +131,9 @@
             <el-form-item v-if="!lineStyleFlag" prop="certificateId2">
               <el-input type='textarea' v-model="docData.certificateId2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
-            <u v-if="lineStyleFlag">{{docData.certificateId2}}</u>，请你确认。现依法向你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。
+            <u v-if="lineStyleFlag" >{{docData.certificateId2}}</u>，请你确认。现依法向你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。
           </p>
-          <span v-for="(item, index) in docData.qaList" :key="item.id">
+          <span v-for="(item, index) in qaList" :key="item.id" @click="QAModleEdit">
             <p class="side_right_indent" @click="QAModleEdit">
               <span class="side_right" @click="overFlowEdit">
                 <el-form-item prop="illegalFactsEvidence">
@@ -265,8 +265,9 @@ export default {
         certificateId1: "",
         certificateId2: "",
         askTime: 1,
-        qaList: [{}],//弹出框问答数组，如请求时未返回即数组未定义，可能回显失败，刷新即可查看效果
+        qaList: [{},{}],//弹出框问答数组，如请求时未返回即数组未定义，可能回显失败，刷新即可查看效果
       },
+      qaList: [{},{}],
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
@@ -365,7 +366,11 @@ export default {
     // 获取问答内容
     getQAModleInfo(edit) {
       console.log('回显', edit)
-      this.docData.qaList = edit;
+      this.qaList = edit;
+      if(this.qaList.length<2){
+        this.qaList.push({})
+      }
+
       // this.docData.QAModleInfo = edit;
     },
     overFlowEdit() { },

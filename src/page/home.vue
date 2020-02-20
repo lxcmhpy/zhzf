@@ -4,8 +4,8 @@
       系统管理首页
     </div>
     <div v-if="currentHome == 'caseHandle'" class="full">
-      案件办理首页
-      <!-- <caseHome></caseHome> -->
+      <!-- 案件办理首页 -->
+      <caseHome></caseHome>
     </div>
   </div>
 </template>

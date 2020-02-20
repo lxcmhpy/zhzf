@@ -41,23 +41,28 @@
         </el-row>
         <p>
           勘验人：<el-form-item prop="staff1" style="width:80px">
-            <el-input v-model="docData.staff1" :maxLength='maxLength' placeholder="\"></el-input>
+            <!-- <el-input v-model="docData.staff1" :maxLength='maxLength' placeholder="\"></el-input> -->
+            <el-select v-model="docData.staff1" :maxLength='maxLength'>
+              <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option> 
+            </el-select>
           </el-form-item>
           单位及职务：<el-form-item prop="staffUnitAndPosition1" style="width:140px">
             <el-input v-model="docData.staffUnitAndPosition1" :maxLength='maxLength' placeholder="\"></el-input>
           </el-form-item>
-          执法证号：<el-form-item prop="certificateId1" style="width:80px">
+          执法证号：<el-form-item prop="certificateId1" style="width:120px">
             <el-input v-model="docData.certificateId1" :maxLength='maxLength' placeholder="\"></el-input>
           </el-form-item>
         </p>
         <p>
           勘验人：<el-form-item prop="staff2" style="width:80px">
-            <el-input v-model="docData.staff2" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff">
+              <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option> 
+            </el-select>
           </el-form-item>
           单位及职务：<el-form-item prop="staffUnitAndPosition2" style="width:140px">
             <el-input v-model="docData.staffUnitAndPosition2" :maxLength='maxLength' placeholder="\"></el-input>
           </el-form-item>
-          执法证号：<el-form-item prop="certificateId2" style="width:80px">
+          执法证号：<el-form-item prop="certificateId2" style="width:120px">
             <el-input v-model="docData.certificateId2" :maxLength='maxLength' placeholder="\"></el-input>
           </el-form-item>
         </p>
@@ -113,7 +118,10 @@
         </p>
         <p>
           记录人：<el-form-item prop="recorder">
-            <el-autocomplete v-model="docData.recorder" :maxLength='maxLength' placeholder="\" :fetch-suggestions="queryStaff"  @select="handleSelect"></el-autocomplete>
+            <!-- <el-autocomplete v-model="docData.recorder" :maxLength='maxLength' placeholder="\" :fetch-suggestions="queryStaff"  @select="handleSelect"></el-autocomplete> -->
+            <el-select v-model="docData.recorder" :maxLength='maxLength'>
+              <el-option v-for="(item,index) in userList" :key="index" :value="item" :label="item"></el-option> 
+            </el-select>
           </el-form-item>
           单位及职务：<el-form-item prop="recorderUnitAndPosition">
             <el-input v-model="docData.recorderUnitAndPosition" :maxLength='maxLength' placeholder="\"></el-input>
@@ -299,7 +307,9 @@ export default {
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: 'inquestNote_print',
-      }
+      },
+      staffList:[],
+      userList:['papas'], //机构下的人员
     }
 
   },
@@ -400,36 +410,43 @@ export default {
       console.log('打印!');
     },
     //记录人，查找本机构下人员
-    queryStaff(queryString, cb) {
-        debugger;
-        var restaurants = this.restaurants;
-        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-        // 调用 callback 返回建议列表的数据
-        cb(results);
+    // queryStaff(queryString, cb) {
+    //     debugger;
+    //     var restaurants = this.restaurants;
+    //     var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+    //     // 调用 callback 返回建议列表的数据
+    //     cb(results);
+    // },
+    // createFilter(queryString) {
+    //     return (restaurant) => {
+    //       return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+    //     };
+    // },
+    // handleSelect(item) {
+    //     console.log(item);
+    // },
+    // loadAll(){
+    //   return[
+
+    //       { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
+    //       { "value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号" },
+    //       { "value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+    //       { "value": "泷千家(天山西路店)", "address": "天山西路438号" },
+    //       { "value": "胖仙女纸杯蛋糕（上海凌空店）", "address": "上海市长宁区金钟路968号1幢18号楼一层商铺18-101" },
+    //       { "value": "贡茶", "address": "上海市长宁区金钟路633号" },
+    //   ],
+    //   console.log("111");
+    // },
+    setStaffAndCertificateId() {
+      this.staffList=this.docData.staff.split(',');
+      this.docData.staff1 = this.docData.staff.split(',')[0];
+      this.docData.certificateId1 = this.docData.certificateId.split(',')[0];
     },
-    createFilter(queryString) {
-        return (restaurant) => {
-          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-        };
-    },
-    handleSelect(item) {
-        console.log(item);
-    },
-    loadAll(){
-      return[
-          // { "value": "张三" },
-          // { "value": "李四" },
-          // { "value": "王五"  },
-          // { "value": "赵六"},
-          // { "value": "胖胖" },
-          { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
-          { "value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号" },
-          { "value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
-          { "value": "泷千家(天山西路店)", "address": "天山西路438号" },
-          { "value": "胖仙女纸杯蛋糕（上海凌空店）", "address": "上海市长宁区金钟路968号1幢18号楼一层商铺18-101" },
-          { "value": "贡茶", "address": "上海市长宁区金钟路633号" },
-      ],
-      console.log("111");
+    //修改勘验人员
+    changeStaff(val){
+      let staffIndex = this.docData.staff.split(',').indexOf(val);
+      this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
+      console.log(staffIndex);
     }
   },
   created() {
@@ -439,7 +456,7 @@ export default {
     //加载天气抽屉表
     this.getDictKeyList();
     //加载记录人
-    this.restaurants = this.loadAll();
+    // this.restaurants = this.loadAll();
   },
 }
 </script>

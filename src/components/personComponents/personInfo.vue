@@ -66,7 +66,7 @@
         name: "personInfo",//人员详情总页面
         data(){
           return {
-            activeName:'one'
+            activeName:'one',
           }
         },
         components:{
@@ -84,7 +84,7 @@
         },
         methods:{
           handleClick(tab, event) {
-            console.log(tab, event);
+            //console.log(tab, event);
           },
 
         },

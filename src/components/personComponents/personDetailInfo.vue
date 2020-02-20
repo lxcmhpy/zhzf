@@ -3,15 +3,15 @@
     <div class="el-table__body-wrapper is-scrolling-none">
       <table class="el-table__body">
           <tr class="el-table__row">
-            <td class="el-table_column_right_1" style=""><p>所属机构：&nbsp;</p></td>
-            <td class="el-table_column_left" >&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.orgName}}</td>
+            <td class="el-table_column_right_1"><p>所属机构：&nbsp;</p></td>
+            <td class="el-table_column_left">&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.oid}}</td>
             <td class="el-table_column_right"><p>执法门类：&nbsp;</p></td>
-            <td class="el-table_column_left_1">&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.branchName}}</td>
+            <td class="el-table_column_left_1">&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.branchId}}</td>
           </tr>
           <tr class="el-table__row">
             <td class="el-table_column_right_1"><p>姓名：&nbsp;</p></td>
             <td class="el-table_column_left">&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.personName}}</td>
-            <td class="el-table_column_right" ><p>性别：&nbsp;</p></td>
+            <td class="el-table_column_right"><p>性别：&nbsp;</p></td>
             <td class="el-table_column_left_1">&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.sex}}</td>
           </tr>
           <tr class="el-table__row">
@@ -64,9 +64,9 @@
           </tr>
         <tr class="el-table__row">
           <td class="el-table_column_right_1"><p>执法证号：&nbsp;</p></td>
-          <td class="el-table_column_left">&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.photo}}</td>
+          <td class="el-table_column_left">&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.certNo}}</td>
           <td class="el-table_column_right"><p>资格证书编号：&nbsp;</p></td>
-          <td class="el-table_column_left_1">&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.zgzfbh}}</td>
+          <td class="el-table_column_left_1">&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.qualificationNo}}</td>
         </tr>
         <tr class="el-table__row">
           <td class="el-table_column_right_1"><p>政治面貌：&nbsp;</p></td>
@@ -92,7 +92,7 @@
         </tr>
         <tr class="el-table__row">
           <td class="el-table_column_right_1" style="text-align:right;width:260px;"><p>附件：&nbsp;</p></td>
-          <td class="el-table_column" style="text-align:left;" colspan="3">&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.orgName}}</td>
+          <td class="el-table_column" style="text-align:left;" colspan="3">&nbsp;&nbsp;&nbsp;{{personInfoDetailForm.attached}}</td>
         </tr>
       </table>
     </div>
@@ -100,39 +100,41 @@
 </template>
 
 <script>
+    import { mapState, mapMutations } from 'vuex';
     export default {
         name: "personDetailInfo",//人员基本信息组件
         data(){
           return {
             url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',//图片路径
             personInfoDetailForm:{
-              personId:"",
-              orgName:"执法机构",
-              branchName:"没类",
-              personName:"战三",
-              sex:"男",
-              nation:"",
-              degree:"",
-              idNo:"",
-              birthDate:"",
-              workDate:"",
-              enfoceDate:"",
-              major:"",
-              graduationNo:"",
-              disChannel:"",
-              post:"",
-              area:"",
-              provinceNo:"",
-              ministerialNo:"",
-              maritimeNo:"",
-              staffing:"",
-              photo:"",
-              zgzfbh:"",
-              politicalStatus:"",
-              admissionDate:"",
-              certStatus:"",
-              personStatus:"",
-              note:"",
+              personId:this.$route.params.personInfo.personId,     
+              orgName:this.$route.params.personInfo.orgName,      
+              branchName:this.$route.params.personInfo.branchName,      
+              personName:this.$route.params.personInfo.personName,      
+              sex:this.$route.params.personInfo.sex,
+              nation:this.$route.params.personInfo.nation,       
+              degree:this.$route.params.personInfo.degree,       
+              idNo:this.$route.params.personInfo.idNo,            
+              birthDate:this.$route.params.personInfo.birthDate,       
+              workDate:this.$route.params.personInfo.workDate,
+              enfoceDate:this.$route.params.personInfo.enfoceDate,   
+              major:this.$route.params.personInfo.major,        
+              graduationNo:this.$route.params.personInfo.graduationNo,    
+              disChannel:this.$route.params.personInfo.disChannel,      
+              post:this.$route.params.personInfo.post,
+              area:this.$route.params.personInfo.area,         
+              provinceNo:this.$route.params.personInfo.provinceNo,   
+              ministerialNo:this.$route.params.personInfo.ministerialNo,   
+              maritimeNo:this.$route.params.personInfo.maritimeNo,      
+              staffing:this.$route.params.personInfo.staffing,
+              certNo:this.$route.params.personInfo.certNo,       
+              qualificationNo:this.$route.params.personInfo.qualificationNo,                  
+              politicalStatus:this.$route.params.personInfo.politicalStatus,   
+              admissionDate:this.$route.params.personInfo.admissionDate,              
+              certStatus:this.$route.params.personInfo.certStatus,   
+              personStatus:this.$route.params.personInfo.personStatus,  
+              note:this.$route.params.personInfo.note,           
+              attached:this.$route.params.personInfo.attached,
             },
           }
         },

@@ -49,8 +49,13 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="勘验人员1：">
-                  <el-input ref="staff1" clearable class="w-120" v-model="docData.staff1" size="small" placeholder="请输入"></el-input>
-                </el-form-item>
+                  <!-- <el-input clearable class="w-120" v-model="docData.staff1"></el-input> -->
+                
+                  <el-select v-model="docData.staff1" >
+                    <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option>
+                  </el-select>
+               
+                </el-form-item> 
               </div>
               <div class="col">
                 <el-form-item label="单位及职务：">
@@ -225,6 +230,7 @@ export default {
           { required: true, message: '勘验情况及结果必须填写', trigger: 'blur' }
         ],
       },
+      staffList:[],
     }
   },
   mixins: [mixinGetCaseApiList],
@@ -264,6 +270,9 @@ export default {
       );
 
     },
+    setStaffAndCertificateId() {
+      this.staffList=this.docData.staff.split(',')
+    }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();

@@ -198,7 +198,30 @@ export default {
   data() {
     return {
       formData: {
+        caseNumber:"",
+        caseName:"",
+        partyType:"",
+        party:"",
+        partySex:"",
+        partyAge:"",
+        partyUnitPosition:"",
+        partyAddress:"",
+        partyTel:"",
+        partyZipCode:"",
+        partyName:"",
+        partyUnitAddress:"",
+        partyManager:"",
+        partyManagerPositions:"",
+        closeResult:"",
+        closeSituation:"",
+        approveOpinions:"",
+        approvePeo:"",
+        approveTime:"",
+        secondApproveOpinions:"",
+        secondApprovePeo:"",
+        secondApproveTime:""
       },
+
       //提交方式
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
