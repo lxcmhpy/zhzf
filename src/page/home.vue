@@ -7,7 +7,6 @@
       <!-- 案件办理首页 -->
       <caseHome></caseHome>
     </div>
-    <!-- {{currentHome}} -->
   </div>
 </template>
 <script>
@@ -24,17 +23,11 @@ export default {
   },
   computed: {
     currentHome: function () {
-      console.log(iLocalStroage.get('headActiveNav'))
-      return iLocalStroage.get('headActiveNav')
+      return this.$store.state.headActiveNav;
     }
   },
   methods: {
 
-  },
-  watch: {
-    nav(to, from) {
-      console.log(to);
-    }
   }
 
 }

@@ -356,6 +356,7 @@ export default {
       isOverflow: false,
       isOverLine: false,
       formData: {
+        caseNumber:"",
         party: "",
         partyIdNo: "",
         partyAddress: "",
@@ -364,6 +365,7 @@ export default {
         partyUnitAddress: "",
         partyUnitTel: "",
         partyManager: "",
+        illegalFact:"",
         punishLaw: "",
         illegalLaw: "",
         tempPunishAmount: "",
@@ -375,6 +377,7 @@ export default {
         otherWay: "",
         account:"",
         bank:"",
+        makeDate:"",
       },
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {

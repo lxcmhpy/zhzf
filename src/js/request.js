@@ -3,7 +3,7 @@ import { getToken, setToken,removeToken } from "@/js/auth";
 import Vue from "vue";
 //import { message } from "ant-design-vue";
 import { showFullScreenLoading, tryHideFullScreenLoading } from "./loading";
-
+import iLocalStroage from '@/js/localStroage'
 
 var vue = new Vue();
 
@@ -23,7 +23,7 @@ service({
 }).then(
   res => {
     BASEURL = res.data;
-    console.log('res.data',res.data)
+    iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
   },
   error => {
     console.log(error)
@@ -59,14 +59,11 @@ service.interceptors.request.use(
 );
 // respone interceptor
 service.interceptors.response.use(
-  response => {
-      response.headers['content-type'] = "application/json;charset=UTF-8";
-    console.log("response", response);
-    // debugger;
+   response => {
     if (response.status == 200) {
       if (response.data.code == 200) {
         tryHideFullScreenLoading();
-        return Promise.resolve(response.data);
+        return response.data;
       } else if (
         response.data.code == 400 || response.data.code == 500) {
         tryHideFullScreenLoading();
@@ -82,6 +79,7 @@ service.interceptors.response.use(
         return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善
       }
     } else {
+
       return Promise.reject(response);
     }
   },

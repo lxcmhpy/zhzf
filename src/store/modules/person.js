@@ -5,10 +5,13 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
 
 const person = {
   state:{
-
+      personInfo:{},//人员id
   },
   mutations:{
-
+      //设置人员id
+      setPersonInfo(state,data){
+        state.personInfo = data;
+    }
   },
   actions:{
     //查询数据字典begin

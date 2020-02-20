@@ -3,7 +3,7 @@
       <!-- <div class="print_info"> -->
         <embed class="print_info" style="padding:0px;width: 730px;height:100% !important" name="plugin" id="plugin" :src="storagePath" type="application/pdf" internalinstanceid="29">
       <!-- </div>  -->
-    <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @backHuanjie="backHuanjie" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @backHuanjie="backHuanjie" @showApprovePeopleList="showApprovePeopleList"></casePageFloatBtns>
 
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
@@ -12,7 +12,6 @@
 <script>
 
 import pdf from 'vue-pdf'
-
 import iLocalStroage from "@/js/localStroage";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import casePageFloatBtns from '@/components/casePageFloatBtns/casePageFloatBtns.vue'
@@ -48,8 +47,9 @@ export default {
           caseId: this.caseId,
         }).then(
         res => {
-          console.log(res[0].storagePath)
-          this.storagePath = res[0].storagePath
+          console.log(res[0].storageId)
+          console.log(11111111)
+          this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST+res[0].storageId
         },
         err => {
           console.log(err);
@@ -85,7 +85,7 @@ export default {
       console.log('daaaaa',data)
       this.$refs.showApprovePeopleRef.showModal(data);
     },
-    //审批弹窗
+    // 审批弹窗
     // showApproval(){
     //   let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
     //   let caseData={
@@ -126,7 +126,7 @@ export default {
     print() {
       console.log('打印!');
     },
-    
+
   },
   mounted () {
     this.getFile();
