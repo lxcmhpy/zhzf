@@ -413,5 +413,13 @@ export default  [
     title: "pdf展示"
   },
   component: () => import("@/components/htmlExportPDF/viewPDF.vue")
+},
+{
+  path: "/industry",
+  name: "industry",
+  meta: {
+    title: "信息查验-业户查验"
+  },
+  component: () => import("@/page/InformInspect/industry.vue")
 }
 ]

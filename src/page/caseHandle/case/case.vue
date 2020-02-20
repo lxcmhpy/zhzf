@@ -235,7 +235,7 @@ export default {
     },
     // 送达回证-表单
     goSendReprotForm() {
-      this.$router.push({ name: 'sendReportForm' });
+       
     },
     // 送达回证-打印
     goSendReprot() {

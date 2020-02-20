@@ -32,7 +32,8 @@
         </el-row>
        
 
-      </el-form-item> {{addBannerForm.domains}}
+      </el-form-item> 
+      {{addBannerForm.domains}}
       <!-- <el-form-item label="问1：">
         <el-select filterable allow-create v-model="addBannerForm.domains[0].question">
           <el-option label="不认识执法人员，不需要回避" value="no"></el-option>
@@ -86,7 +87,8 @@ export default {
           answer: '',
         }],
         email: ''
-      }
+      },
+      pathData:[],//传值
     }
   },
   inject: ["reload"],
@@ -101,12 +103,13 @@ export default {
       this.visible = false;
       this.$refs["addBannerForm"].resetFields();
       //this.errorOrganName = false;
+      this.pathData=[];
     },
     //确定
     overFloeEdit() {
       //将当前内容传到父组件
-      console.log('模板',this.addBannerForm.domains)
-      this.$emit("QAModleInfo", this.addBannerForm.domains);
+      console.log('模板',this.pathData)
+      this.$emit("QAModleInfo", this.pathData);
       this.visible = false;
       //   this.reload();
     },
@@ -135,6 +138,9 @@ export default {
         answer: '',
         key: Date.now()
       });
+      console.log('数组',this.addBannerForm.domains)
+      this.pathData = this.addBannerForm.domains;
+      console.log('传值',this.pathData)
     }
   }
 }
