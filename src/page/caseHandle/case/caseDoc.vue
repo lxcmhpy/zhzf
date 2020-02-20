@@ -181,16 +181,20 @@
       </div>
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
+    <chooseAskPeopleDia ref="chooseAskPeopleDiaRef"></chooseAskPeopleDia>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from '../components/checkDocFinish'
+import chooseAskPeopleDia from '@/page/caseHandle/components/chooseAskPeopleDia'
+
 import {validateIDNumber,validatePhone,validateZIP} from '@/js/validator'
 export default {
   components: {
-    checkDocFinish
+    checkDocFinish,
+    chooseAskPeopleDia
   },
   data() {
     return {
@@ -298,7 +302,13 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      this.com_viewDoc(row);
+      //为询问笔录时弹出选择框
+      if(row.docId=="2c9029ca5b71686d015b71a86ead0032"){
+          this.$refs.chooseAskPeopleDiaRef.showModal(row,this.isSaveLink);
+      }else{
+        this.com_viewDoc(row);
+      }
+
     },
     //预览pdf
     viewDocPdf(row){

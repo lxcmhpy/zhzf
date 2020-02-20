@@ -412,18 +412,36 @@ export const mixinGetCaseApiList = {
       if(caseLinktypeId == '2c90293b6c178b55016c17c255a4000d'){  //案件来源转数组
         this.setEstabishCaseSourceAndText();
       }
-      //现场笔录、勘验笔录中数据处理
-      if(caseLinktypeId == '2c9029ca5b71f8a3015b71fc67ee0001' || caseLinktypeId == '2c9029ab655639600165564481f70001'){
+      
+      //现场笔录、勘验笔录、询问笔录中数据处理
+      if(caseLinktypeId == '2c9029ca5b71f8a3015b71fc67ee0001' || caseLinktypeId == '2c9029ab655639600165564481f70001' || caseLinktypeId == '2c9029ca5b71686d015b71a86ead0032'){
         console.log('data.staff',data.staff);
         this.setStaffAndCertificateId();
       }
+
       //决定执行的缴费金额
       console.log(data,caseLinktypeId);
       if(caseLinktypeId == '2c9029e16c753a19016c755fe1340001'){
         console.log('jinru');
         this.setPunishAmount();
       }
-    }
+    },
+        //通过案件id和表单类型Id查询已绑定文书
+        com_yehuCheck(params) {
+          let data = {
+            casebasicInfoId: this.caseId,
+            linkTypeId: params.linkTypeId
+          };
+          this.$store.dispatch("yehuCheck", data).then(
+            res => {
+              this.docTableDatas = res.data;
+              console.log('文书列表', this.docTableDatas)
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        },
 
   },
   created() {
