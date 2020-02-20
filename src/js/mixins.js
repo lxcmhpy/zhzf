@@ -423,7 +423,23 @@ export const mixinGetCaseApiList = {
         console.log('jinru');
         this.setPunishAmount();
       }
-    }
+    },
+        //通过案件id和表单类型Id查询已绑定文书
+        com_yehuCheck(params) {
+          let data = {
+            casebasicInfoId: this.caseId,
+            linkTypeId: params.linkTypeId
+          };
+          this.$store.dispatch("yehuCheck", data).then(
+            res => {
+              this.docTableDatas = res.data;
+              console.log('文书列表', this.docTableDatas)
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        },
 
   },
   created() {

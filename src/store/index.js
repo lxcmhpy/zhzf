@@ -13,6 +13,7 @@ import uploadFile from './modules/uploadFile'
 
 //yyq:添加执法人员系统接口到store
 import person from './modules/person';
+import checkInfo from './modules/checkInfo';
 
 Vue.use(Vuex);
 
@@ -51,7 +52,8 @@ const store = new Vuex.Store({
         caseHandle,
         flowChart,
         uploadFile,
-        person
+        person,
+        checkInfo
     }
 });
 
