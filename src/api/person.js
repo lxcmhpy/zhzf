@@ -188,3 +188,44 @@ return  request({
   cancelToken:  setCancelSource()
 });
 }
+//查询人员证件信息
+export  function  getCertInfoListMoudledApi(data)  {
+  return  request({
+    url:  "/perCert/perCertPageList",
+    method:  "get",
+    data: data,
+    showloading:  true,
+    cancelToken:  setCancelSource()
+  });
+}
+//查询人员调岗信息
+export  function  getAdjustingPostsMoudledApi(data)  {
+  return  request({
+    url:  "/transfer/transferPageList",
+    method:  "get",
+    data: data,
+    showloading:  true,
+    cancelToken:  setCancelSource()
+  });
+}
+//查询人员审批信息
+export  function  getApproveMoudledApi(data)  {
+  return  request({
+    url:  "/approve/detailApprovePageList",
+    method:  "get",
+    data: data,
+    showloading:  true,
+    cancelToken:  setCancelSource()
+  });
+}
+
+//查询人员年审信息
+export  function  getAnnualReviewMoudledApi(data)  {
+  return  request({
+    url:  "/annualreview/annualreviewPageList",
+    method:  "get",
+    data: data,
+    showloading:  true,
+    cancelToken:  setCancelSource()
+  });
+}

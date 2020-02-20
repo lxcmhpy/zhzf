@@ -1,7 +1,8 @@
 import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePersonByIdApi,
          getAwardListApi,addAwardApi,updateAwardApi,deleteAwardApi,deleteAwardByIdApi,
          getEducationListApi,addEducationApi,updateEducationApi,deleteEducationApi,deleteEducationByIdApi,
-         getDictInfoAllApi,getDictInfoByCodeApi } from "@/api/person";
+         getDictInfoAllApi,getDictInfoByCodeApi ,getCertInfoListMoudledApi,getAdjustingPostsMoudledApi,
+         getApproveMoudledApi,getAnnualReviewMoudledApi} from "@/api/person";
 
 const person = {
   state:{
@@ -214,6 +215,61 @@ const person = {
               })
       })
     },
+//////////////////////////人员证件begin//////////////////////////////////////
+    //根据personId查询人员证件信息
+    getCertInfoListMoudle({commit},data){
+      return new Promise((resolve, reject) => {
+        getCertInfoListMoudledApi(data).then(
+              res => {
+                  resolve(res);
+              },
+              error => {
+                  reject(error);
+              })
+      })
+    },
+    
+    //////////////////////////人员调岗信息begin//////////////////////////////////////
+    //根据personId查询人员调岗信息
+    geAdjustingPostsMoudle({commit},data){
+      return new Promise((resolve, reject) => {
+        getAdjustingPostsMoudledApi(data).then(
+              res => {
+                  resolve(res);
+              },
+              error => {
+                  reject(error);
+              })
+      })
+    },
+    //////////////////////////人员审批信息begin//////////////////////////////////////
+    //根据personId查询人员审批信息
+    getApproveMoudled({commit},data){
+      return new Promise((resolve, reject) => {
+        getApproveMoudledApi(data).then(
+              res => {
+                  resolve(res);
+              },
+              error => {
+                  reject(error);
+              })
+      })
+    },
+    //////////////////////////人员年审信息begin//////////////////////////////////////
+    //根据personId查询人员审批信息
+    getAnnualReviewMoudled({commit},data){
+      return new Promise((resolve, reject) => {
+        getAnnualReviewMoudledApi(data).then(
+              res => {
+                  resolve(res);
+              },
+              error => {
+                  reject(error);
+              })
+      })
+    },
   }
 }
+
+
 export default person

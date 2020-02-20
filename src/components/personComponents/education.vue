@@ -8,7 +8,7 @@
       <el-table
         :data="tableData"
         border
-        style="width: 100%;height:500px"
+        style="width: 100%;height:582px"
         @selection-change="handleSelectionChange">
         <el-table-column prop="educationId" type="selection" width="55"></el-table-column>
         <el-table-column prop="personName" label="姓名"></el-table-column>
@@ -72,12 +72,12 @@
           //更改每页显示的条数
           handleSizeChange(val) {
               this.pageSize = val;
-              this.getPersonList();
+              //this.getPersonList();
           },
           //更换页码
           handleCurrentChange(val) {
               this.currentPage = val;
-              this.getPersonList();
+              //this.getPersonList();
           },
           getEducation(){//初始化人员教育信息
             let paramsData={

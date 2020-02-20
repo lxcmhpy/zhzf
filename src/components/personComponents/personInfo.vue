@@ -5,48 +5,45 @@
         <personDetailInfo/>
       </template>
     </div>
-    <div>
-      <br><br>
+    <div style="width:1000px;height:650px;left:18%;border:1px solid #e4e7ed;">
+        <template >
+            <keep-alive>
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                  <el-tab-pane label="审批信息" name="one">
+                    <approval/>
+                  </el-tab-pane>
+                  <el-tab-pane label="教育信息" name="two">
+                    <education/>
+                  </el-tab-pane>
+                  <el-tab-pane label="培训信息" name="three">
+                    <train/>
+                  </el-tab-pane>
+                  <el-tab-pane label="考试信息" name="four">
+                    <exam/>
+                  </el-tab-pane>
+                  <el-tab-pane label="奖励信息" name="five">
+                    <reward/>
+                  </el-tab-pane>
+                  <el-tab-pane label="惩罚信息" name="six">
+                    <punishment/>
+                  </el-tab-pane>
+                  <el-tab-pane label="年审信息" name="seven">
+                    <annual-review/>
+                  </el-tab-pane>
+                  <el-tab-pane label="审批记录" name="night">
+                    <approvalRecord/>
+                  </el-tab-pane>
+                  <el-tab-pane label="调岗信息" name="nine">
+                    <adjusting-posts/>
+                  </el-tab-pane>
+                  <el-tab-pane label="证件信息" name="ten">
+                    <certificates/>
+                  </el-tab-pane>
+                </el-tabs>
+            </keep-alive>
+        </template>
+      </div>
     </div>
-    <div style="width:1000px;height: 62%;left:18%;border:1px solid #e4e7ed;">
-      <template>
-          <keep-alive>
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane label="审批信息" name="one">
-                <approval/>
-              </el-tab-pane>
-              <el-tab-pane label="教育信息" name="two">
-                <education/>
-              </el-tab-pane>
-              <el-tab-pane label="培训信息" name="three">
-                <train/>
-              </el-tab-pane>
-              <el-tab-pane label="考试信息" name="four">
-                <exam/>
-              </el-tab-pane>
-              <el-tab-pane label="奖励信息" name="five">
-                <reward/>
-              </el-tab-pane>
-              <el-tab-pane label="惩罚信息" name="six">
-                <punishment/>
-              </el-tab-pane>
-              <el-tab-pane label="年审信息" name="seven">
-                <annual-review/>
-              </el-tab-pane>
-              <el-tab-pane label="审批记录" name="night">
-                <approvalRecord/>
-              </el-tab-pane>
-              <el-tab-pane label="调岗信息" name="nine">
-                <adjusting-posts/>
-              </el-tab-pane>
-              <el-tab-pane label="证件信息" name="ten">
-                <certificates/>
-              </el-tab-pane>
-            </el-tabs>
-          </keep-alive>
-      </template>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -67,6 +64,7 @@
         data(){
           return {
             activeName:'one',
+            divStyle:"divStyle",
           }
         },
         components:{
@@ -92,5 +90,5 @@
 </script>
 
 <style scoped>
-
+ @import "./../../css/personManage.less";
 </style>
