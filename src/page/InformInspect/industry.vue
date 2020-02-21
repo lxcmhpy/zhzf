@@ -70,9 +70,13 @@
           <td>{{licenseCode}}</td>
         </tr>
         <tr>
-          <td class="color_ff">经营范围</td>
-          <td :colspan="3">1</td>
+          <td class="color_ff" rowspan="2">经营范围</td>
+          <td :colspan="3" rowspan="2">
+            经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围
+            经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围
+          </td>
         </tr>
+        <tr></tr>
         <tr>
           <td class="color_ff">有效期起</td>
           <td></td>
@@ -144,10 +148,8 @@ export default {
     },
     // 清空数据
     clearData() {
-      this.checkData = {
-        ownerName: '',
-        licenseCode: ''
-      }
+      this.checkData.ownerName = '';
+      this.checkData.licenseCode = '';
     }
 
   }

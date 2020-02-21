@@ -17,7 +17,7 @@
             <center>
               <div style="margin-top: 15px;width:60%;">
                 <el-input placeholder="请输入案件关键字" v-model="waitDealSearch" @keyup.enter.native="search(0,waitDealSearch)">
-                  <el-button slot="append" icon="el-icon-search" @click="search(0,waitDealSearch)" ></el-button>
+                  <el-button slot="append" icon="el-icon-search" @click="search(0,waitDealSearch)"></el-button>
                 </el-input>
               </div>
             </center>
@@ -132,33 +132,39 @@
       </div>
 
       <div class="shadow case_home_bottom">
-        <div class="casehome_topic">立案登记
-          <div style="float:right;height:20px" class="programType">
-            <el-radio v-model="radio" label="1">简易程序</el-radio>
-            <el-radio v-model="radio" label="2">一般程序</el-radio>
+        <el-form ref="form" :model="caseForm" label-width="80px">
+          <div class="casehome_topic">立案登记
+            <div style="float:right;height:20px" class="programType">
+              <el-radio-group v-model="caseForm.programType">
+                <el-radio :label='1'>简易程序</el-radio>
+                <el-radio :label='2'>一般程序</el-radio>
+              </el-radio-group>
+            </div>
           </div>
-        </div>
-        <el-tabs type="border-card">
-          <el-tab-pane label="公路路政"></el-tab-pane>
-          <el-tab-pane label="道路运政"></el-tab-pane>
-          <el-tab-pane label="水路运政"></el-tab-pane>
-          <el-tab-pane label="水路运政"></el-tab-pane>
-        </el-tabs>
-        <div class="casehome_topic">常见违法行为
-          <span class="casehome_topic_select">
-            <el-select v-model="value" placeholder="请选择" size='small'>
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </span>
-        </div>
+          <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back">
+            <el-radio-button label="公路路政"></el-radio-button>
+            <el-radio-button label="道路运政"></el-radio-button>
+            <el-radio-button label="水路运政"></el-radio-button>
+            <el-radio-button label="更多"> <i class="el-icon-arrow-down"></i></el-radio-button>
+          </el-radio-group>
+          <div class="casehome_topic">常见违法行为
+            <span class="casehome_topic_select">
+              <el-select v-model="value" placeholder="请选择" size='small'>
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </span>
+          </div>
+        </el-form>
         <ul v-for="item in caseList" :key="item.id">
           <li @click="caseRecord"><span class="bull">&bull;</span>{{item.value}}</li>
         </ul>
         <center>
           <el-button size="small" @click="router(unRecordCase)">查看更多</el-button>
         </center>
+
       </div>
+
     </div>
     <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
   </div>
@@ -183,41 +189,33 @@ export default {
       unRecordCaseSearch: '',
       waitArchiveSearch: '',
       approveIngSearch: '',
-      radio: '',
+      radio: 1,
       radio3: '',
       tableData: [],
       options: [{
-        value: '选项1',
+        value: '1',
         label: '不限类别'
       }, {
-        value: '选项2',
+        value: '2',
         label: '双皮奶'
       }, {
-        value: '选项3',
+        value: '3',
         label: '蚵仔煎'
       }, {
-        value: '选项4',
+        value: '4',
         label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
       }],
       value: '选项1',
       caseList: [{
         value: '选项1选项1选项1选项1选项1选项1选项1选项1选项1选项1选项1选项1',
-        label: '黄金糕'
       }, {
         value: '选项2',
-        label: '双皮奶'
       }, {
         value: '选项3',
-        label: '蚵仔煎'
       }, {
         value: '选项4',
-        label: '龙须面'
       }, {
         value: '选项5',
-        label: '北京烤鸭'
       }],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -225,6 +223,10 @@ export default {
       caseSearchForm: {
         caseNumber: "",
         caseCauseName: "",
+      },
+      caseForm: {
+        programType: 1,
+        wayType: '公路路政',
       },
     };
   },
@@ -457,5 +459,10 @@ img {
 }
 .casehome_topic_select /deep/.el-input__inner {
   border: 0;
+}
+
+.case_home /deep/ .el-radio-button__inner {
+  padding: 10px 16px;
+  background: #f6f8fd;
 }
 </style>
