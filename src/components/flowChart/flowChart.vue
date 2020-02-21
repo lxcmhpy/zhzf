@@ -6,8 +6,16 @@
       </div>
       <div >
         <!-- <div id="aa"><?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="icon" width="200px" height="200.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#d81e06" d="M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z"  /></svg></div> -->
-          <div id="flowChart" style="width: 1041px;height:600px;margin:0 auto"></div>
+          <div id="flowChart" style="width: 1200px;height:750px;margin:0 auto"></div>
       </div>
+        <div >
+            <template  v-for="(item,index) in legend" >
+            <span :key="index">
+                <span  style="display:inline-block;width:12px;height:12px;border-radius:50%;margin:0 5px;" :style="'background:'+item.textStyle.color"></span>
+                <span style="display:inline-block;font-size: 12px;margin-right: 20px" :style="'color:'+item.textStyle.color">{{item.name}}</span>
+            </span>
+            </template>
+        </div>
     </div>
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'flowChart'" ></caseSlideMenu>
@@ -21,12 +29,13 @@ import 'echarts/lib/chart/graph'
 import _ from 'lodash'
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
-import {svgData,imgList,linePosition,stateColor,lineStyle,graphData,mainLinkData,layoutCharts} from './json/flowChart'
+import {svgData,imgList,linePosition,stateColor,lineStyle,graphData,mainLinkData,layoutCharts,legend} from './json/flowChart'
 export default {
   data() {
     return {
       stateColor: stateColor,
       lineStyle: lineStyle,
+      legend: legend,
       layoutCharts: layoutCharts,
       graphData: graphData,
       svgData: svgData,
@@ -70,25 +79,66 @@ export default {
             left: '40%'
         },
         legend: [{    //图例组件
-            data: graphTemp.nodes,
+        //   data: graphTemp.nodes,
+            // data: [{
+            //     name: '已解锁',
+            //     itemStyleColor: 'unLock',
+            //     // 强制设置图形为圆。
+            //     icon: 'circle',
+            //     // 设置文本为红色
+            //     textStyle: {
+            //         color: '#0074F5'
+            //     }
+            // }, {
+            //     name: '进行中',
+            //     // 强制设置图形为圆。
+            //     itemStyleColor: 'doing',
+            //     icon: 'circle',
+            //     // 设置文本为红色
+            //     textStyle: {
+            //         color: '#F0AE11'
+            //     }
+            // }, {
+            //     name: '已完成',
+            //     // 强制设置图形为圆。
+            //     itemStyleColor: 'complete',
+            //     icon: 'circle',
+            //     // 设置文本为红色
+            //     textStyle: {
+            //         color: '#00B93B'
+            //     }
+            // }, {
+            //     name: '未解锁',
+            //     // 强制设置图形为圆。
+            //     itemStyleColor: 'lock',
+            //     icon: 'circle',
+            //     // 设置文本为红色
+            //     textStyle: {
+            //         color: '#B2B2B2'
+            //     }
+            // }].map(function (a) {
+            //     return a.itemStyleColor;
+            // }),
+            // zlevel: 110,
+            // show: true,
             // type: 'plain',
-            bottom: -10,
-            left: 10
+            // top: 'auto',
+            // left: 'auto'
         }],
         calculable : true,
         animationDurationUpdate: 1500,
         animationEasingUpdate: 'quinticInOut',
         grid: {
-            left: '5%',
-            top: '10%',
-            right: '5%',
-            bottom: '15%',
+            left: '1%',
+            top: '2%',
+            right: '1%',
+            bottom: '2%',
             containLabel: true,
         },
         xAxis: [
         {
         //     position:'top',
-            type : 'value',
+            type : 'category',
             axisLine: {
                 lineStyle: {
                     type: 'none',
@@ -151,7 +201,7 @@ export default {
         // }
         ],
         yAxis: {
-            type: 'value',
+            type: 'category',
             axisLine: {
                 lineStyle: {
                     type: 'none',

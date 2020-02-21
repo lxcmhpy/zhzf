@@ -47,6 +47,43 @@ const stateColor = {
     unLock: '#20232B',// 已解锁
     lock: '#B8BBC2' //未解锁
   }
+  const legend = [{
+        name: '已解锁',
+        itemStyleColor: 'unLock',
+        // 强制设置图形为圆。
+        icon: 'circle',
+        // 设置文本为红色
+        textStyle: {
+            color: '#0074F5'
+        }
+    }, {
+        name: '进行中',
+        // 强制设置图形为圆。
+        itemStyleColor: 'doing',
+        icon: 'circle',
+        // 设置文本为红色
+        textStyle: {
+            color: '#F0AE11'
+        }
+    }, {
+        name: '已完成',
+        // 强制设置图形为圆。
+        itemStyleColor: 'complete',
+        icon: 'circle',
+        // 设置文本为红色
+        textStyle: {
+            color: '#00B93B'
+        }
+    }, {
+        name: '未解锁',
+        // 强制设置图形为圆。
+        itemStyleColor: 'lock',
+        icon: 'circle',
+        // 设置文本为红色
+        textStyle: {
+            color: '#B2B2B2'
+        }
+    }]
 // 线条颜色
 const lineStyle = {
   complete: {
@@ -398,7 +435,7 @@ const linePosition = [
     // }
 ]
 
-export {svgData, imgList, linePosition, stateColor, lineStyle, graphData, mainLinkData,layoutCharts}
+export {svgData, imgList, linePosition, stateColor, lineStyle, graphData, mainLinkData,layoutCharts, legend}
 
 
 
