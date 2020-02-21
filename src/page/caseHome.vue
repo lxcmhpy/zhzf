@@ -262,8 +262,8 @@ export default {
       var data = {
         size: 5,
         current: 1,
-        categoryId: this.caseForm.programType,
-        strNumber: this.caseForm.wayType,
+        // categoryId: this.caseForm.programType,
+        // strNumber: this.caseForm.wayType,
       }
       this.$store.dispatch("getIllegaAct", data).then(
         res => {
