@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box">
+  <div class="print_box" id="askRecordBox">
 
     <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" label-width="80px">
 
@@ -9,20 +9,36 @@
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <span class="datapick_style">
           <p>
-            时间：<el-form-item prop="makeDate" class="pdf_datapick">
+            时间：<el-form-item prop="askdataStart" class="pdf_datapick" >
               <!-- <el-date-picker style="height:100%" v-model="docData.askdata" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
               </el-date-picker> -->
-              <el-date-picker v-model="docData.askdata" type="datetimerange" range-separator="至" format="yyyy年MM月dd日HH时MM分" start-placeholder="    年  月  日  时  分" end-placeholder="  时  分" clearable="flase">
+              <!-- <el-date-picker v-model="docData.askdata" type="datetimerange" range-separator="至" format="yyyy年MM月dd日HH时MM分" start-placeholder="    年  月  日  时  分" end-placeholder="  时  分" :clearable="false">
+              </el-date-picker> -->
+              <el-date-picker
+                v-model="docData.askdataStart"
+                type="datetime"
+                placeholder="年 月 日 时 分"
+                format="yyyy年MM月dd日HH时mm分">
               </el-date-picker>
             </el-form-item>
+            至
+            <el-form-item prop="askdataEnd" class="pdf_datapick" style="width:100px">
+              <el-time-picker
+                placeholder="时 分"
+                v-model="docData.askdataEnd"
+                format="HH时mm分"
+              >
+              </el-time-picker>
+            </el-form-item>
 
-            第<el-form-item prop="partyIdNo" class="width60">
-              <el-input v-model="docData.partyIdNo" maxLength='2' placeholder="\"></el-input>
+            第
+            <el-form-item class="askRecordNumberBox" prop="askRecordNumber">
+              <el-input v-model="docData.askRecordNumber" maxLength='2' placeholder="\"></el-input>
             </el-form-item>次询问
 
           </p>
           <p>地点：
-            <el-form-item v-if="!lineStyleFlag" prop="inquiryAddress" class="width500">
+            <el-form-item v-if="!lineStyleFlag" prop="inquiryAddress" class="inquiryAddressBox">
               <el-input v-model="docData.inquiryAddress" maxLength='40' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiryAddress}}</u>
@@ -31,14 +47,20 @@
             <el-col :span="12">
               <p>询问人：<el-form-item v-if="!lineStyleFlag" prop="inquiryStaff" class="width212">
                   <!-- <el-input type='textarea' v-model="docData.inquiryStaff" v-bind:class="{ over_flow:docData.inquiryStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <el-input type='textarea' v-model="docData.inquiryStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                  <!-- <el-input type='textarea' v-model="docData.inquiryStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <el-select v-model="docData.inquiryStaff" :maxLength='maxLength'>
+                    <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option> 
+                  </el-select>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiryStaff}}</u></p>
             </el-col>
             <el-col :span="12">
               <p>记录人：<el-form-item v-if="!lineStyleFlag" prop="recordStaff" class="width213">
                   <!-- <el-input type='textarea' v-model="docData.recordStaff" v-bind:class="{ over_flow:docData.recordStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <el-input type='textarea' v-model="docData.recordStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                  <!-- <el-input type='textarea' v-model="docData.recordStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <el-select v-model="docData.recordStaff" :maxLength='maxLength'>
+                    <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option> 
+                  </el-select>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.recordStaff}}</u>
               </p>
@@ -54,11 +76,18 @@
               </p>
             </el-col>
             <el-col :span="12">
-              <p>与案件关系：<el-form-item v-if="!lineStyleFlag" prop="inquiriedRelation" class="width182">
-                  <!-- <el-input type='textarea' v-model="docData.inquiriedRelation" v-bind:class="{ over_flow:docData.inquiriedRelation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+              <p>与案件关系：
+                <!-- <el-form-item v-if="!lineStyleFlag" prop="inquiriedRelation" class="width182">
+  
                   <el-input type='textarea' v-model="docData.inquiriedRelation" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                </el-form-item> -->
+                <el-form-item prop="inquiriedRelation" class="width182">
+                <el-select v-model="docData.inquiriedRelation" @change="changeRelationWithCase">
+                  <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
                 </el-form-item>
-                <u v-if="lineStyleFlag">{{docData.inquiriedRelation}}</u>
+                <!-- <u v-if="lineStyleFlag">{{docData.inquiriedRelation}}</u> -->
+
               </p>
             </el-col>
           </el-row>
@@ -101,11 +130,11 @@
               </p>
             </el-col>
           </el-row>
-          <p>工作单位及职务：<el-form-item v-if="!lineStyleFlag" prop="inquiriedUnitPosition" class="width428">
+          <p>工作单位及职务：<el-form-item v-if="!lineStyleFlag" prop="inquiriedUnitPosition" class="inquiriedUnitPositionBox">
               <el-input type='textarea' v-model="docData.inquiriedUnitPosition" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiriedUnitPosition}}</u></p>
-          <p>联系地址：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAddress" class="width476">
+          <p>联系地址：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAddress" class="inquiriedAddressBox">
               <el-input type='textarea' v-model="docData.inquiriedAddress" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiriedAddress}}</u></p>
@@ -115,12 +144,15 @@
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.organName}}</u>
             的执法人员
-            <el-form-item v-if="!lineStyleFlag" prop="staff1">
+            <el-form-item v-if="!lineStyleFlag" prop="staff1" style="width:100px">
               <el-input type='textarea' v-model="docData.staff1" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.staff1}}</u>、
-            <el-form-item v-if="!lineStyleFlag" prop="staff2">
-              <el-input type='textarea' v-model="docData.staff2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item v-if="!lineStyleFlag" prop="staff2" style="width:100px">
+              <!-- <el-input type='textarea' v-model="docData.staff2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+              <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff2">
+                <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option> 
+              </el-select>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.staff2}}</u>，
             这是我们的执法证件，执法证号分别是
@@ -217,6 +249,7 @@ import QAModle from "./QAModle";
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+import iLocalStroage from "@/js/localStroage";
 
 export default {
   components: {
@@ -232,6 +265,7 @@ export default {
       maxLength: '14',
       docData: {
         caseNumber: '',
+        askRecordNumber:'',
         party: '',
         partyIdNo: '',
         partyAddress: "",
@@ -266,6 +300,8 @@ export default {
         certificateId2: "",
         askTime: 1,
         qaList: [{},{}],//弹出框问答数组，如请求时未返回即数组未定义，可能回显失败，刷新即可查看效果
+        askdataStart:"",
+        askdataEnd:"",
       },
       qaList: [{},{}],
       caseDocDataForm: {
@@ -284,9 +320,42 @@ export default {
       illegalFactsEvidence: '',
       value1: '',
       rules: {
-        // test: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
+        askdataStart: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        askdataEnd: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        askRecordNumber: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        inquiryAddress: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        inquiryStaff: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        recordStaff: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        inquiried: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        staff1: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        staff2: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        certificateId1: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        certificateId2: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        
+        
+        
         // party: [
         //   { required: true, message: '请输入', trigger: 'blur' },
         // ],
@@ -328,7 +397,18 @@ export default {
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId:'question_print',
-      }
+      },
+      allRelationWithCase: [
+        //与案件关系下拉框
+        { value: "0", label: "当事人" },
+        { value: "1", label: "驾驶人" },
+        { value: "2", label: "实际所有者" },
+        { value: "3", label: "证人" },
+        { value: "4", label: "承运人" },
+        { value: "5", label: "代理人" }
+      ],
+      staffList:[],
+
     }
   },
   inject: ["reload"],
@@ -361,12 +441,12 @@ export default {
 
     // 问答编辑
     QAModleEdit() {
-      this.$refs.QAModleInfoRef.showModal(0, '');
+      this.$refs.QAModleInfoRef.showModal(this.qaList);
     },
     // 获取问答内容
     getQAModleInfo(edit) {
       console.log('回显', edit)
-      this.qaList = edit;
+      this.qaList = JSON.parse(edit);
       if(this.qaList.length<2){
         this.qaList.push({})
       }
@@ -391,6 +471,50 @@ export default {
         this.formOrDocData.showBtn =[false,false,false,false,false,false,false,false,false,true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
+    //更改与案件关系
+    changeRelationWithCase(val){
+      if(val == '0'){//为当事人
+        this.docData.inquiried = this.docData.party;
+        this.docData.inquiriedSex = this.docData.partySex;
+        this.docData.inquiriedAge = this.docData.partyAge;
+        this.docData.inquiriedIdNo = this.docData.partyIdNo;
+        this.docData.inquiriedTel = this.docData.partyTel;
+        this.docData.inquiriedUnitPosition = this.docData.partyUnitPosition;
+      }else{
+        this.docData.inquiried = '';
+        this.docData.inquiriedSex = '';
+        this.docData.inquiriedAge = '';
+        this.docData.inquiriedIdNo = '';
+        this.docData.inquiriedTel = '';
+        this.docData.inquiriedUnitPosition = '';
+      }
+    },
+    //更改执法人员2
+    changeStaff2(){
+      let staffIndex = this.staffList.indexOf(val);
+      this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
+      console.log(staffIndex);
+    },
+    setStaffAndCertificateId(){ 
+      this.staffList=this.docData.staff.split(',');
+      this.docData.staff1 =  this.staffList[0];
+      this.docData.staff2 =  this.staffList[1];
+      this.docData.certificateId1 = this.docData.certificateId.split(",")[0];
+      this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
+      //询问人默认填写文书的人
+      this.docData.inquiryStaff =iLocalStroage.gets('userInfo').username;
+      this.docData.organName = iLocalStroage.gets('userInfo').organName;
+      //与案件关系默认为当事人
+      this.docData.inquiriedRelation = "0";
+      this.docData.inquiried = this.docData.party;
+      this.docData.inquiriedSex = this.docData.partySex;
+      this.docData.inquiriedAge = this.docData.partyAge;
+      this.docData.inquiriedIdNo = this.docData.partyIdNo;
+      this.docData.inquiriedTel = this.docData.partyTel;
+      this.docData.inquiriedUnitPosition = this.docData.partyUnitPosition;
+      //默认第一次询问
+      this.docData.askRecordNumber = 1;
+    }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
@@ -400,5 +524,21 @@ export default {
 </script>
 <style lang="less" >
 @import "../../../../css/caseHandle/caseDocModle.less";
+#askRecordBox{
+ .askRecordNumberBox{
+   width: 100px;
+ }
+ .inquiryAddressBox{
+   width: calc(100% - 60px);
+  // width: 500px;
+ }
+ .inquiriedUnitPositionBox{
+   width: calc(100% - 130px);
+ }
+ .inquiriedAddressBox{
+   width: calc(100% - 80px);
+ }
+ 
+}
 </style>
 
