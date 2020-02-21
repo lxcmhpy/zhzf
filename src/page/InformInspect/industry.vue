@@ -44,62 +44,61 @@
         <span class="title">查验结果</span>
       </div>
       <div v-if="tableData.lenth>0">请在上方查验条件输入检索内容，显示结果</div>
-      <table>
+      <table >
         <tr>
           <td class="color_ff" valign="middle">
             经营业户名称
           </td>
-          <td :colspan="3">{{ownerName}}</td>
+          <td :colspan="3">{{searchList.OwnerName}}</td>
         </tr>
         <tr>
           <td class="color_ff" width='20%'>
             省份名称
           </td>
-          <td width='30%'>1</td>
+          <td width='30%'>{{searchList.ProvinceCode}}</td>
           <td class="color_ff" width='20%'>
             经营业户所在地行政区划代码
           </td>
-          <td width='30%'>{{}}</td>
+          <td width='30%'>{{searchList.NativeAreaCode}}</td>
         </tr>
         <tr>
           <td class="color_ff">
             经营许可证字
           </td>
-          <td></td>
+          <td>{{searchList.LicenseWord}}</td>
           <td class="color_ff">经营许可证号</td>
-          <td>{{licenseCode}}</td>
+          <td>{{searchList.LicenseCode}}</td>
         </tr>
         <tr>
           <td class="color_ff" rowspan="2">经营范围</td>
           <td :colspan="3" rowspan="2">
-            经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围
-            经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围经营范围
+            {{searchList.BusinessScopeCode}}
           </td>
         </tr>
         <tr></tr>
         <tr>
           <td class="color_ff">有效期起</td>
-          <td></td>
+          <td>{{searchList.ValidBeginDate}}</td>
           <td class="color_ff">有效期止</td>
-          <td></td>
+          <td>{{searchList.ExpireDate}}</td>
         </tr>
         <tr>
           <td class="color_ff">经营类型</td>
-          <td></td>
+          <td>{{searchList.EconType}}</td>
           <td class="color_ff">经营状态</td>
-          <td></td>
+          <td>{{searchList.OperatingStatus}}</td>
         </tr>
         <tr>
           <td class="color_ff">发证机关</td>
-          <td></td>
+          <td>{{searchList.LicenseIssueOrgan}}</td>
           <td class="color_ff">核发日期</td>
-          <td></td>
+          <td>{{searchList.LicenseIssueDate}}</td>
         </tr>
         <tr>
           <td class="color_ff">企业组织机构代码</td>
-          <td></td>
+          <td>{{searchList.OrganizationCode}}</td>
           <td class="color_ff">经营业户负责人姓名</td>
-          <td></td>
+          <td>{{searchList.PrincipalName}}</td>
         </tr>
       </table>
     </div>
@@ -112,13 +111,19 @@ export default {
   data() {
     return {
       checkData: {
-        provinceCode: '',
-        ownerName: '',
-        licenseCode: ''
+        provinceCode: '110000',
+        ownerName: '北京京版物流有限责任公司',
+        licenseCode: '货备110115000169'
       },
+      // checkData: {
+      //   provinceCode: '',
+      //   ownerName: '',
+      //   licenseCode: ''
+      // },
       radio: '1',
       checkType: 1,
       tableData: [],
+      searchList:{},
     }
   },
   methods: {
@@ -133,10 +138,8 @@ export default {
     getYehuCheck() {
       this.$store.dispatch("yehuCheck", this.checkData).then(
         res => {
-          console.log(res);
-          res.data.forEach(item => {
-            this.selectRoleList.push(item.roleId);
-          });
+         console.log('返回',res)
+         this.searchList= res.data[0]
         },
         err => {
           console.log(err);
