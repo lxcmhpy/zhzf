@@ -37,9 +37,10 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
+<style>
 @import "../static/iconfont/iconfont.css";
+</style>
+<style lang="scss">
 @import "@/assets/css/basicStyles/variables.scss";
 @import "@/assets/css/basicStyles/base.scss";
 @import "@/assets/css/basicStyles/transition.scss";

@@ -1,6 +1,6 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
-    <div class="searchAndpageBox" id="logBox" style="height:1500px;">
+    <div class="searchAndpageBox" id="logBox" style="height:1400px;">
       <div class="handlePart" style="margin-left:15%;">
         <div class="search">
           <template>
@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import personInfoPage from "./../../../components/personComponents/personInfo"
+import personInfoPage from "@/components/personComponents/personInfo"
 export default {
     name:'personDetailPage',
     data(){

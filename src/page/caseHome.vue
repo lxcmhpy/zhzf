@@ -135,13 +135,13 @@
         <el-form ref="form" :model="caseForm" label-width="80px">
           <div class="casehome_topic">立案登记
             <div style="float:right;height:20px" class="programType">
-              <el-radio-group v-model="caseForm.programType">
+              <el-radio-group v-model="caseForm.programType" @change="getIllegaAct">
                 <el-radio :label='1'>简易程序</el-radio>
                 <el-radio :label='2'>一般程序</el-radio>
               </el-radio-group>
             </div>
           </div>
-          <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back">
+          <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back" @change="getIllegaAct">
             <el-radio-button label="公路路政"></el-radio-button>
             <el-radio-button label="道路运政"></el-radio-button>
             <el-radio-button label="水路运政"></el-radio-button>
@@ -149,7 +149,7 @@
           </el-radio-group>
           <div class="casehome_topic">常见违法行为
             <span class="casehome_topic_select">
-              <el-select v-model="value" placeholder="请选择" size='small'>
+              <el-select v-model="caseForm.value" placeholder="请选择" size='small'>
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
@@ -157,8 +157,9 @@
           </div>
         </el-form>
         <ul v-for="item in caseList" :key="item.id">
-          <li @click="caseRecord"><span class="bull">&bull;</span>{{item.value}}</li>
+          <li @click="caseRecord(item)"><span class="bull">&bull;</span>{{item.strContent}}</li>
         </ul>
+
         <center>
           <el-button size="small" @click="router(unRecordCase)">查看更多</el-button>
         </center>
@@ -195,28 +196,8 @@ export default {
       options: [{
         value: '1',
         label: '不限类别'
-      }, {
-        value: '2',
-        label: '双皮奶'
-      }, {
-        value: '3',
-        label: '蚵仔煎'
-      }, {
-        value: '4',
-        label: '龙须面'
       }],
-      value: '选项1',
-      caseList: [{
-        value: '选项1选项1选项1选项1选项1选项1选项1选项1选项1选项1选项1选项1',
-      }, {
-        value: '选项2',
-      }, {
-        value: '选项3',
-      }, {
-        value: '选项4',
-      }, {
-        value: '选项5',
-      }],
+      caseList: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       total: 0, //总数
@@ -227,6 +208,7 @@ export default {
       caseForm: {
         programType: 1,
         wayType: '公路路政',
+        value: '不限类别',
       },
     };
   },
@@ -260,8 +242,9 @@ export default {
       this.$router.push({ name: path });
     },
     // 立案登记
-    caseRecord() {
-      this.$refs.caseRegisterDiagRef.showModal();
+    caseRecord(data) {
+      console.log(data)
+      this.$refs.caseRegisterDiagRef.showModal(data,this.caseForm);
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     // 查找
@@ -273,7 +256,26 @@ export default {
       };
       console.log('点击')
       this.getCaseList2(this.caseSearchForm)
-    }
+    },
+    //查询违法行为
+    getIllegaAct() {
+      var data = {
+        size: 5,
+        current: 1,
+        // categoryId: this.caseForm.programType,
+        // strNumber: this.caseForm.wayType,
+      }
+      this.$store.dispatch("getIllegaAct", data).then(
+        res => {
+          console.log('getIllegaAct', res)
+          this.caseList = res.data.records
+          console.log('caseList', this.caseList)
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
 
   },
   mounted() {
@@ -282,6 +284,8 @@ export default {
       flag: 0
     }
     this.getCaseList2(searchData);
+    this.getIllegaAct();
+
   }
 };
 </script>

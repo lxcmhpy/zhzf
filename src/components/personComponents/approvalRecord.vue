@@ -1,14 +1,18 @@
 <template>
-  <el-table
-    :data="tableData"
-    align="center"
-    style="width: 100%;">
-    <el-table-column prop="name" label="审批单位" width="180"></el-table-column>
-    <el-table-column prop="address" label="审批状态" width="180"></el-table-column>
-    <el-table-column prop="address" label="审批人"></el-table-column>
-    <el-table-column prop="address" label="审批信息"></el-table-column>
-    <el-table-column prop="date" label="操作审批时间"></el-table-column>
-  </el-table>
+  <div>
+    <div>
+        <el-table
+          :data="tableData"
+          align="center"
+          style="width: 100%;height:610px">
+          <el-table-column prop="oid" label="审批单位"></el-table-column>
+          <el-table-column prop="approveStatus" label="审批状态"></el-table-column>
+          <el-table-column prop="userId" label="审批人"></el-table-column>
+          <el-table-column prop="approveInfo" label="审批信息"></el-table-column>
+          <el-table-column prop="operationDate" label="操作审批时间"></el-table-column>
+        </el-table>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -16,24 +20,32 @@
       name: "approvalRecord",//审批记录
       data(){
         return {
-          tableData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-          }]
+            tableData: [],
+            currentPage: 1, //当前页
+            pageSize: 20,   //pagesize
+          }
+        },
+        methods:{
+          getApprovalRecordInfo(){
+            let paramsData={
+              current: this.currentPage,
+              size: this.pageSize,
+              personId: this.$route.params.personInfo.personId,
+            }
+            this.$store.dispatch("getApproveListMoudle",paramsData).then(res=>{
+                  this.tableData = res.data.records;
+            });
+            error=>{
+              console.info(error);
+            };
+          }
+        },
+        created(){
+          this.getApprovalRecordInfo();
         }
-      }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   @import "@/assets/css/personManage.scss";
 </style>

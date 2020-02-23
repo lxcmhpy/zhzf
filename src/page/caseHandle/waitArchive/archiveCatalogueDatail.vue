@@ -71,7 +71,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/documentForm.scss";
-@import "@/assets/css/basicStyle/colorStylesSet.scss";
+@import "@/assets/css/basicStyles/colorStylesSet.scss";
 </style>
-<style src="@/css/searchPage.scss" lang="scss" scoped></style>
-
+<style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>

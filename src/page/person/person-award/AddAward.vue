@@ -4,38 +4,33 @@
         :visible.sync="visible"
         @close="closeDialog"
         :close-on-click-modal="false"
-        width="60%"
+        width="35%"
     >
-    <el-form :inline="true" :model="addAwardForm"  ref="addAwardForm">
+    <el-form :inline="true" :model="addAwardForm" label-position="right"  label-width="100px"  ref="addAwardForm">
         <el-form-item label="id" prop="awardId" v-show="false">
             <el-input v-model="addAwardForm.awardId"></el-input>
         </el-form-item>
-        <el-form-item  label="奖励类型" prop="awardType">
-            <el-select v-model="addAwardForm.awardType" placeholder="奖励类型">
+        <el-form-item  label="奖励类型:" prop="awardType">
+            <el-select v-model="addAwardForm.awardType" placeholder="奖励类型" style="width:320px;">
                 <el-option label="demo0" value="0"></el-option>
                 <el-option label="demo1" value="1"></el-option>
             </el-select>
         </el-form-item>
-      <el-form-item label="备注" prop="note">
-        <el-input v-model="addAwardForm.note" type="textarea" placeholder="请输入备注"
-          :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
-      </el-form-item>
-      <el-form-item label="奖励日期时间" prop="awardDate">
+      
+      <el-form-item label="奖励日期:" prop="awardDate">
         <el-date-picker v-model="addAwardForm.awardDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
-          :style="{width: '100%'}" placeholder="请选择奖励日期时间" clearable></el-date-picker>
+          style="width:320px;" placeholder="请选择奖励日期时间" clearable></el-date-picker>
       </el-form-item>
-      <el-form-item label="奖励原因" prop="reward">
+      <el-form-item label="奖励原因:" prop="reward">
         <el-input v-model="addAwardForm.reward" type="textarea" placeholder="请输入奖励原因"
-          :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
+          :rows=2 style="width:320px;"></el-input>
       </el-form-item>
-        <el-form-item label="奖励机构" prop="awardDept" v-show="false">
-            <el-input v-model="addAwardForm.awardDept"></el-input>
+        <el-form-item label="奖励机构:" prop="awardDept" v-show="false">
+            <el-input v-model="addAwardForm.awardDept" style="width:320px;"></el-input>
         </el-form-item>
-        <el-form-item label="数据类型" prop="dataType">
-            <el-select v-model="addAwardForm.dataType" placeholder="数据类型">
-                <el-option label="demo0" value="0"></el-option>
-                <el-option label="demo1" value="1"></el-option>
-            </el-select>
+        <el-form-item label="备注:" prop="note">
+            <el-input v-model="addAwardForm.note" type="textarea" placeholder="请输入备注"
+            :rows=2 style="width:320px;"></el-input>
         </el-form-item>
         <div class="item" style="text-align:center">
             <span slot="footer" class="dialog-footer">
@@ -58,7 +53,7 @@ export default {
                 awardDate: "",
                 reward: "",
                 awardDept: "",
-                dataType: "",
+                dataType: 0,
                 personId:"555",
                 awardId:"",
             },
@@ -82,7 +77,7 @@ export default {
             };
             if(this.handelType==1){
                 this.$store.dispatch("addAwardMoudle", this.addAwardForm).then(res => {
-                    this.$emit("getAwardList");
+                    this.$emit("getAllReward");
                         this.$message({
                             type: "success",
                             message:  "添加成功!",
@@ -93,9 +88,8 @@ export default {
                         console.log(err);
                 };
             }else if(this.handelType==2){
-                console.info(this.addAwardForm.awardId);
                 this.$store.dispatch("updateAwardMoudle", this.addAwardForm).then(res => {
-                    this.$emit("getAwardList");
+                    this.$emit("getAllReward");
                         this.$message({
                             type: "success",
                             message:  "修改成功!",
@@ -112,8 +106,9 @@ export default {
             this.visible = true;
             this.handelType = type;
             if(type==1){//新增
-                this.dialogTitle = "新增执法人员奖励信息";
+                this.dialogTitle = "新增";
             }else if(type==2){//修改
+                this.dialogTitle = "修改";
                 this.addAwardForm.awardType=row.awardType;
                 this.addAwardForm.note=row.note;
                 this.addAwardForm.awardDate=row.awardDate;

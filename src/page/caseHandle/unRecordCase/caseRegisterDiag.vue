@@ -1,28 +1,11 @@
 <template>
-  <el-dialog
-    title="立案登记"
-    :visible.sync="visible"
-    @close="closeDialog"
-    :close-on-click-modal="false"
-    width="40%"
-  >
+  <el-dialog title="立案登记" :visible.sync="visible" @close="closeDialog" :close-on-click-modal="false" width="40%">
     <div>
-      <el-form
-        :model="caseRegisterForm"
-        :rules="rules"
-        ref="caseRegisterForm"
-        class="caseRegisterForm"
-        label-width="100px"
-      >
+      <el-form :model="caseRegisterForm" :rules="rules" ref="caseRegisterForm" class="caseRegisterForm" label-width="100px">
         <div class="item">
           <el-form-item label="执法门类" prop="cateId">
             <el-select v-model="caseRegisterForm.cateId" placeholder="请选择" @change="changeLawCate">
-              <el-option
-                v-for="item in lawCateList"
-                :key="item.cateId"
-                :label="item.cateName"
-                :value="item.cateId"
-              ></el-option>
+              <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateId"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -44,12 +27,7 @@
         <div class="item">
           <el-form-item label="案件类型" prop="caseType">
             <el-select v-model="caseRegisterForm.caseType" placeholder="请选择">
-              <el-option
-                v-for="item in caseTypeList"
-                :key="item.caseTypeName"
-                :label="item.caseTypeName"
-                :value="item.caseTypeName"
-              ></el-option>
+              <el-option v-for="item in caseTypeList" :key="item.caseTypeName" :label="item.caseTypeName" :value="item.caseTypeName"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -94,10 +72,18 @@ export default {
     chooseillegalAct
   },
   methods: {
-    showModal() {
+    showModal(data, caseForm) {
+
       this.visible = true;
       this.getEnforceLawType();
+      // 首页跳转代入
+      // this.chooseIllegalAct()
+      this.caseRegisterForm.illageAct = data.strContent;
+      this.caseRegisterForm.cateId = caseForm.wayType;
+      this.caseRegisterForm.programType = caseForm.programType;
+      this.getCaseType()
     },
+
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
@@ -130,6 +116,7 @@ export default {
       this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
           this.lawCateList = res.data;
+          console.log('列表121', this.lawCateList)
         },
         err => {
           console.log(err);
@@ -165,8 +152,8 @@ export default {
       this.$refs["caseRegisterForm"].validate(valid => {
         if (valid) {
           let caseTypeId = "";
-          this.caseTypeList.forEach(item=>{
-            if(item.caseTypeName == this.caseRegisterForm.caseType){
+          this.caseTypeList.forEach(item => {
+            if (item.caseTypeName == this.caseRegisterForm.caseType) {
               caseTypeId = item.caseTypeId;
             }
           })
@@ -185,19 +172,19 @@ export default {
                 ? "一般程序"
                 : "简易程序",
             caseType: this.caseRegisterForm.caseType,
-            caseTypeId:caseTypeId,
-            cateId:this.caseRegisterForm.cateId,
-            cateName:cateName
+            caseTypeId: caseTypeId,
+            cateId: this.caseRegisterForm.cateId,
+            cateName: cateName
           };
           iLocalStroage.sets("someCaseInfo", someCaseInfo);
           this.$router.push({
-                name:'inforCollect',
+            name: 'inforCollect',
           });
         }
       });
     }
   },
-  mounted() {}
+  mounted() { }
 };
 </script>
 <style lang="scss">

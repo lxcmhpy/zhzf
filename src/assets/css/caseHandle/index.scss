@@ -1,4 +1,4 @@
-@import "../basicStyle/variables.scss";
+@import "../basicStyles/variables.scss";
 
 .caseFormBac{
     background: #ffffff;
@@ -90,7 +90,7 @@
     overflow: auto;
     .linkPart{
         width: 100%;
-        background: @grayC;
+        background: $grayC;
         position: fixed;
         top: 92px;
         height: 60px;

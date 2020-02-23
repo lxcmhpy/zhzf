@@ -153,20 +153,20 @@ body {
 }
 
 ::-webkit-scrollbar-track-piece {
-    background-color: @contentBC;
-    .borderRadius(8px);
+    background-color: $contentBC;
+    @include borderRadius(8px);
 }
 
 ::-webkit-scrollbar-thumb:vertical {
     height: 5px;
-    background-color: @scrollbarC;
-    .borderRadius(8px);
+    background-color: $scrollbarC;
+    @include borderRadius(8px);
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
     width: 5px;
-    background-color: @scrollbarC;
-    .borderRadius(8px);
+    background-color: $scrollbarC;
+    @include borderRadius(8px);
 }
 
 
