@@ -2,12 +2,13 @@
     width : 100%;
     height: 100%;
     /* 默认属性 */
-    font-family: 'SimSun';
-    font-size  : 16px;
-    color      : #000000;
-    line-height: 32px;
-    font-weight: 200;
-   /*  line-height: 24px; *//* 可解决模板页面多出一行问题 */
+    font-family    : 'SimSun';
+    font-size      : 16px;
+    color          : #000000;
+    line-height    : 32px;
+    font-weight    : 200;
+    /*  line-height: 24px; */
+    /* 可解决模板页面多出一行问题 */
     text-shadow: 1px 0px 0px black;
 
     /* a4盒子 */
@@ -128,9 +129,9 @@
                 }
 
                 .big_error {
-                        .el-input{
-                            background: #DF5A5B !important;
-                  
+                    .el-input {
+                        background: #DF5A5B !important;
+
                     }
                 }
             }
@@ -510,7 +511,8 @@
                 }
 
             }
-            &>p{
+
+            &>p {
                 text-align-last: auto;
             }
         }
@@ -667,8 +669,9 @@
 
 .printNumbers_box {
     position: absolute;
-    left: 0;
-    right: 0;
+    left    : 0;
+    right   : 0;
+
     .print_info {
         position     : relative;
         margin-bottom: 10px;
@@ -729,7 +732,6 @@
     margin-top: 8px;
 
     .overflow_describe {
-        background : red;
         position   : absolute;
         top        : 0;
         display    : inline-block;
@@ -750,9 +752,11 @@
         .el-form-item {
             width: 100%;
         }
-        .el-form-item__content{
+
+        .el-form-item__content {
             line-height: 32px;
         }
+
         .el-textarea__inner {
             background : transparent;
             line-height: 32px;
@@ -769,13 +773,14 @@
 
 
     .span_bg {
-        display              : inline-block;
-        background           : #DBE4EF;
-        border-bottom        : 1px solid #ffffff;
-        width                : 100%;
-        height               : 18px;
+        display      : inline-block;
+        background   : #DBE4EF;
+        border-bottom: 1px solid #ffffff;
+        width        : 100%;
+        height       : 18px;
 
     }
+
     .span_bg_top {
         margin-top: 7px;
 
@@ -878,6 +883,7 @@
         .el-textarea__inner {
             background: transparent !important;
         }
+
         .el-form-item__content {
             line-height: auto !important;
         }
@@ -923,39 +929,159 @@
         }
     }
 
+    .pager_input {
+        .el-input__inner {
+            border-bottom: 1px solid #000000 !important;
+            border-radius: 0;
+        }
+
+    }
+
+    .data_picker {
+        .el-range-input {
+            background : #ffffff;
+            border-bottom: 1px solid #000000 !important;
+
+        }
+    }
+
 }
 
-.approveDiv{
-    text-align-last:auto
+.approveDiv {
+    text-align-last: auto
 }
-#establish-print{
+
+#establish-print {
     padding-top: 35px;
 }
 
-#illegalActionPunishDecisionBox{
+#illegalActionPunishDecisionBox {
 
-    p{
-        &>label{
+    p {
+        &>label {
             min-width: 125px;
         }
-        .el-input{
-            width: 200px;
+
+        .el-input {
+            width      : 200px;
             margin-left: 15px;
         }
     }
 }
+
 // 询问笔录
-.addQuestForm{
-    .domainsBox{
+.addQuestForm {
+    .domainsBox {
         position: relative;
-        .handleBtn{
-          position: absolute;
-          color:#4573D0;
-          font-size: 20px;
-          i{
-              display: inline;
-              cursor: pointer;
-          }
+
+        .handleBtn {
+            position : absolute;
+            color    : #4573D0;
+            font-size: 20px;
+
+            i {
+                display: inline;
+                cursor : pointer;
+            }
         }
-      }
+    }
+}
+
+.remark {
+    .el-form-item {
+        width: calc(100% - 40px) !important;
+    }
+}
+
+/* 表格内日期控件 */
+.pdf_data {
+    width      : 127px;
+    text-align : center;
+    font-size  : 16px;
+    font-family: SimSun;
+    float      : right;
+
+    /* 错误提示  */
+    // .el-form-item__error--inline {
+    //     position   : absolute;
+    //     display    : inline-block;
+    //     padding-top: 0;
+    //     left       : 15px;
+    //     top        : 17px;
+    //     font-size  : 16px;
+    // }
+
+    .el-input__prefix {
+        display: none;
+    }
+
+    & .pdf_datapick {
+        width: 128px;
+
+        .el-input {
+            padding    : 0;
+            border     : 0;
+            width      : 128px;
+            height     : 18px;
+            color      : #000000;
+            font-size  : 16px;
+            font-family: SimSun;
+
+        }
+
+        .el-input__inner {
+            padding    : 0;
+            border     : 0;
+            height     : 18px;
+            text-align : center;
+            background : #DBE4EF;
+            color      : #000000;
+            text-indent: 0;
+
+        }
+
+        .el-input__icon {
+            display: none;
+        }
+
+    }
+
+}
+
+.data_picker {
+    i {
+        display: none !important;
+    }
+
+    .el-range-input {
+        line-height: 1;
+        background : #DBE4EF;
+        width      : 48%;
+        font-size  : 16px;
+        font-weight: 600;
+        color      : #000000;
+    }
+
+    .el-input__inner {
+        height    : 24px !important;
+        background: transparent;
+
+    }
+}
+
+.pager_input {
+    .el-form-item__content {
+        line-height: 32px;
+
+        .el-input__inner {
+            background: #DBE4EF;
+        }
+    }
+
+}
+
+.quzheng {
+    .el-form-item {
+        width: 506px;
+    }
 }

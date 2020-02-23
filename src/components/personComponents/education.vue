@@ -100,7 +100,7 @@
                 cancelButtonText: "取消",
                 type: "warning"
             }).then(() => {
-                this.$store.dispatch("deletePersonInfo", this.multipleSelection).then(
+                this.$store.dispatch("deleteEducationMoudle", this.multipleSelection).then(
                     res => {
                         this.$message({
                             type: "success",

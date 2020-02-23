@@ -37,7 +37,7 @@
               size: this.pageSize,
               personId: this.$route.params.personInfo.personId,
             }
-            this.$store.dispatch("geAdjustingPostsMoudle",paramsData).then(res=>{
+            this.$store.dispatch("getTransferListMoudle",paramsData).then(res=>{
                   this.tableData = res.data.records;
             });
             error=>{

@@ -151,6 +151,15 @@ export default [
     component: () => import("@/page/caseHandle/case/form/obtaineEvidenceFormReport.vue")
   },
   {
+    path: "/deliveryCertificate",
+    name: "deliveryCertificate",
+    meta: {
+      title: "送达回证",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/caseDocument/deliveryCertificate.vue")
+  },
+  {
     path: "/establish",
     name: "establish",
     meta: {

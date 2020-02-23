@@ -6,66 +6,41 @@
         :close-on-click-modal="false"
         width="35%"
     >
-        <el-form :inline="true" :model="addEducationForm"  ref="addEducationForm">
+        <el-form :inline="true" :model="addEducationForm" label-position="right"  label-width="100px" ref="addEducationForm">
             <el-row>
-                <el-form-item label="学历" prop="degree">
-                    <div v-if="handelType!=3">
-                        <el-select v-model="addEducationForm.degree" placeholder="学历">
-                            <el-option label="demo0" value="0"></el-option>
-                            <el-option label="demo1" value="1"></el-option>
-                        </el-select>
-                    </div>
-                    <div v-if="handelType==3">
-                        {{addEducationForm.degree}}
-                    </div>
-                </el-form-item>
-            </el-row>
-            <el-row>
-                <el-form-item label="毕业院校" prop="school">
-                    <div v-if="handelType!=3">
-                    <el-select v-model="addEducationForm.school" placeholder="毕业院校">
+                <el-form-item label="学历:"  prop="degree">
+                    <el-select v-model="addEducationForm.degree" style="width: 320px;" placeholder="学历" :disabled='isDisabled'>
                         <el-option label="demo0" value="0"></el-option>
                         <el-option label="demo1" value="1"></el-option>
                     </el-select>
-                    </div>
-                    <div v-if="handelType==3">
-                        {{addEducationForm.school}}
-                    </div>
                 </el-form-item>
             </el-row>
             <el-row>
-                <el-form-item label="毕业专业" prop="major">
-                    <div v-if="handelType!=3">
-                        <el-select v-model="addEducationForm.major" placeholder="毕业专业">
-                            <el-option label="demo0" value="0"></el-option>
-                            <el-option label="demo1" value="1"></el-option>
-                        </el-select>
-                    </div>
-                    <div v-if="handelType==3">
-                        {{addEducationForm.major}}
-                    </div>
+                <el-form-item label="毕业院校:" prop="school">
+                    <el-select v-model="addEducationForm.school" style="width: 320px;"  placeholder="毕业院校" :disabled='isDisabled'>
+                        <el-option label="demo0" value="0"></el-option>
+                        <el-option label="demo1" value="1"></el-option>
+                    </el-select>
                 </el-form-item>
             </el-row>
             <el-row>
-                <el-form-item label="毕业日期" prop="graduationDate">
-                    <div v-if="handelType!=3">
-                        <el-date-picker v-model="addEducationForm.graduationDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
-                            :style="{width: '100%'}" placeholder="请选择毕业日期" clearable></el-date-picker>
-                    </div>
-                    <div v-if="handelType==3">
-                        {{addEducationForm.graduationDate}}
-                    </div>
+                <el-form-item label="毕业专业:" prop="major">
+                    <el-select v-model="addEducationForm.major" style="width: 320px;" placeholder="毕业专业" :disabled='isDisabled'>
+                        <el-option label="demo0" value="0"></el-option>
+                        <el-option label="demo1" value="1"></el-option>
+                    </el-select>
                 </el-form-item>
             </el-row>
             <el-row>
-                <el-form-item label="备注" prop="note">
-                    <div v-if="handelType!=3">
-                        <el-input v-model="addEducationForm.note" type="textarea" placeholder="请输入备注"
-                        :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
-                    </div>
-                    <div v-if="handelType==3">
-                        {{addEducationForm.note}}
-                    </div>
+                <el-form-item label="毕业日期:" prop="graduationDate">
+                    <el-date-picker v-model="addEducationForm.graduationDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                        style="width: 320px;" placeholder="请选择毕业日期" :disabled='isDisabled' clearable ></el-date-picker>
+                </el-form-item>
+            </el-row>
+            <el-row>
+                <el-form-item label="备注:" prop="note">
+                    <el-input v-model="addEducationForm.note" type="textarea" placeholder="请输入备注"
+                        :rows=2 style="width:320px;" :disabled='isDisabled'></el-input>
                 </el-form-item>
             </el-row>
             <div class="item" style="text-align:center">
@@ -87,6 +62,7 @@
 export default {
     data(){
         return{
+            isDisabled:false,
             visible: false,
             addEducationForm: {
                 personName:"",
@@ -142,11 +118,14 @@ export default {
             this.handelType = type;
             if(type==1){//新增
                 this.dialogTitle = "新增";
+                this.isDisabled=false;
             }else if(type==2 || type==3){//修改,查看
                 if(type==2){
                     this.dialogTitle = "修改";
+                    this.isDisabled=false;
                 }else if(type==3){
                     this.dialogTitle = "详情";
+                    this.isDisabled=true;
                 }
 				this.addEducationForm.educationId=row.educationId;
                 this.addEducationForm.degree=row.degree;

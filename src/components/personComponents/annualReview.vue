@@ -31,7 +31,7 @@
               size: this.pageSize,
               personId: this.$route.params.personInfo.personId,
             }
-            this.$store.dispatch("getAnnualReviewMoudled",paramsData).then(res=>{
+            this.$store.dispatch("getAnnualreviewListMoudle",paramsData).then(res=>{
                   this.tableData = res.data.records;
             });
             error=>{

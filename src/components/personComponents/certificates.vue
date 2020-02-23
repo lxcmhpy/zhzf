@@ -28,7 +28,7 @@
               size: this.pageSize,
               personId: this.$route.params.personInfo.personId,
             }
-            this.$store.dispatch("getCertInfoListMoudle",paramsData).then(res=>{
+            this.$store.dispatch("getPerCertListMoudle",paramsData).then(res=>{
                   this.tableData = res.data.records;
             });
             error=>{
