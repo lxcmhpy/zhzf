@@ -6,7 +6,7 @@
                  <el-form-item>
                  <el-button type="primary" size="medium" icon="el-icon-plus" @click="addLawCategory">添加</el-button>
                  </el-form-item>
-              </el-form>             
+              </el-form>
           </div>
       </div>
      <div class="tablePart">
@@ -51,7 +51,7 @@ export default {
         addLawCategory
     },
     inject:['reload'],
-    methods: { 
+    methods: {
         //获取列表
         getLawCategoryList() {
             let data = {
@@ -96,6 +96,6 @@ export default {
   }
 }
 </script>
-<style lang="less">
-@import "../../../css/systemManage.less";
+<style lang="scss">
+@import "@/assets/css/systemManage.scss";
 </style>

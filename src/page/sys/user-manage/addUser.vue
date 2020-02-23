@@ -112,7 +112,7 @@
   </el-dialog>
 </template>
 <script>
-import { validatePhone, validateIDNumber } from "@/js/validator";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 export default {
   data() {
     // 判断用户名是否已存在

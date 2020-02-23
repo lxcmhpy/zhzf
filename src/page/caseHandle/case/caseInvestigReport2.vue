@@ -425,7 +425,7 @@
 import showApprovePeople from "../components/showApprovePeople";
 import approvalDialog from "../components/approvalDialog";
 
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 
 export default {
@@ -538,7 +538,7 @@ export default {
       // }
       let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
       let secondApprovePeo = this.formData.secondApprovePeo ? this.formData.secondApprovePeo : '';
-      
+
       let caseData={
         caseId:this.caseId,
         caseLinktypeId:"2c9029ee6cac9281016caca7f38e0002",
@@ -651,9 +651,9 @@ export default {
       if (ChineseStr == "") {
         //ChineseStr += cnNums[0]+cnIntLast+cnInteger;
         ChineseStr += cnNums[0] + cnIntLast;
-      } /* else if( DecimalNum == '' ){ 
-                ChineseStr += cnInteger; 
-                ChineseStr += cnInteger; 
+      } /* else if( DecimalNum == '' ){
+                ChineseStr += cnInteger;
+                ChineseStr += cnInteger;
             } */
       return ChineseStr;
     },
@@ -672,6 +672,6 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-@import "../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/documentForm.scss";
 </style>

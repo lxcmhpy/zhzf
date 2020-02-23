@@ -473,5 +473,13 @@ export default [
       title: "归档"
     },
     component: () => import("@/page/caseHandle/waitArchive/archiveCover.vue")
+  },
+  {
+      path: "/archiveCatalogueDatail",
+      name: "archiveCatalogueDatail",
+      meta: {
+          title: "卷宗目录详情"
+      },
+      component: () => import("@/page/caseHandle/waitArchive/archiveCatalogueDatail.vue")
   }
 ]

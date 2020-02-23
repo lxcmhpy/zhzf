@@ -12,8 +12,8 @@
 <script>
 
 import pdf from 'vue-pdf'
-import iLocalStroage from "@/js/localStroage";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import casePageFloatBtns from '@/components/casePageFloatBtns/casePageFloatBtns.vue'
 import showApprovePeople from "../../components/showApprovePeople";
 import approvalDialog from "../../components/approvalDialog";
@@ -137,7 +137,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../../css/caseHandle/caseDocModle.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>
 

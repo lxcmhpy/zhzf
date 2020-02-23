@@ -74,7 +74,7 @@ export default {
       );
     },
     deleteOne(tag) {
-      
+
       // this.firstApprovePeople.splice(this.firstApprovePeople.indexOf(tag), 1);
     },
     deleteTwo(tag) {
@@ -107,6 +107,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/index.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/index.scss";
 </style>

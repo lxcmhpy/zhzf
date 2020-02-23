@@ -193,7 +193,7 @@
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from '../../components/checkDocFinish'
 
@@ -274,7 +274,7 @@ export default {
         caseBasicinfoId:this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId:this.caseLinkDataForm.caseLinktypeId,
       }
-     
+
       let canGotoNext = true; //是否进入下一环节
       for(let i=0;i<this.docTableDatas.length;i++){
         if(this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1"){
@@ -340,6 +340,6 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-@import "../../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/documentForm.scss";
 </style>

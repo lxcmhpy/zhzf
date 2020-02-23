@@ -1,5 +1,5 @@
 // import Cookies from 'js-cookie'
-import Cookies from "@/js/cookies";
+import Cookies from "@/common/js/cookies";
 
 const TokenKey = "TokenKey";
 

@@ -1,5 +1,5 @@
-import  request  from  "@/js/request";
-import  {setCancelSource}  from  "@/js/cancelToken";
+import  request  from  "@/common/js/request";
+import  {setCancelSource}  from  "@/common/js/cancelToken";
 import  Vue  from  "vue";
 
 //执法人员管理系统接口映射

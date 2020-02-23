@@ -36,7 +36,7 @@
           :page-sizes="[10, 20, 30, 40, 50]"
           layout="prev, pager, next,sizes,jumper"
           :total="totalPage"
-      ></el-pagination> 
+      ></el-pagination>
     </div>
 
     <!-- 新增、修改、查看页面 -->
@@ -116,7 +116,7 @@
               })
               .catch(() => {});
           },
-          addEducation(){//添加  addEducationMoudle    
+          addEducation(){//添加  addEducationMoudle
             this.$refs.addEducationCompRef.showModal(1, '');
           },
           editEducation(row){//编辑 updateEducationMoudle
@@ -133,5 +133,5 @@
 </script>
 
 <style scoped>
-  @import "./../../css/personManage.less";
+  @import "@/assets/css/personManage.scss";
 </style>

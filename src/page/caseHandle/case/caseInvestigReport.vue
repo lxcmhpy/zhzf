@@ -370,7 +370,7 @@
           </table>
         </div>
       </div>
-     
+
     </el-form>
 
     <casePageFloatBtns
@@ -390,9 +390,9 @@ import showApprovePeople from "../components/showApprovePeople";
 import approvalDialog from "../components/approvalDialog";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import { validatePhone, validateIDNumber } from "@/js/validator";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 
 export default {
   data() {
@@ -632,9 +632,9 @@ export default {
       if (ChineseStr == "") {
         //ChineseStr += cnNums[0]+cnIntLast+cnInteger;
         ChineseStr += cnNums[0] + cnIntLast;
-      } /* else if( DecimalNum == '' ){ 
-                ChineseStr += cnInteger; 
-                ChineseStr += cnInteger; 
+      } /* else if( DecimalNum == '' ){
+                ChineseStr += cnInteger;
+                ChineseStr += cnInteger;
             } */
       return ChineseStr;
     },
@@ -681,7 +681,7 @@ export default {
 };
 </script>
 
-<style lang="less">
-// @import "../../../css/documentForm.less";
-@import "../../../css/caseHandle/caseDocModle.less";
+<style lang="scss">
+// @import "@/assets/css/documentForm.scss";
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

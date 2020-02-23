@@ -213,7 +213,7 @@ export default {
       };
       this.$refs.addDepartmentRef.showModal(2, data);
     },
-    
+
     //删除部门
     deleteDepartment(id) {
       this.$confirm("确认删除该部门?", "提示", {
@@ -247,6 +247,6 @@ export default {
 };
 </script>
 
-<style lang="less">
-@import "../../../css/systemManage.less";
+<style lang="scss">
+@import "@/assets/css/systemManage.scss";
 </style>

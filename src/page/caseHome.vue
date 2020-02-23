@@ -96,35 +96,35 @@
         <div class="icon_content">
           <ul>
             <li class="imgbox">
-              <img src="@/img/icon_lit_yyunc.png">营运车辆
+              <img :src="'./static/images/img/icon_lit_yyunc.png'">营运车辆
             </li>
             <li class="imgbox" @click="infoCheck(industry)">
-              <img src="@/img/icon_lit_jyyehu.png">经营业户
+              <img :src="'./static/images/img/icon_lit_jyyehu.png'">经营业户
             </li>
             <li class="imgbox">
-              <img src="@/img/icon_lit_kyxlu.png">客运线路<br />标志牌
-            </li>
-          </ul>
-          <ul>
-            <li class="imgbox">
-              <img src="@/img/icon_lit_jyyh.png">道路运输<br />从业人员
-            </li>
-            <li class="imgbox">
-              <img src="@/img/icon_lit_car.png">出租车
-            </li>
-            <li class="imgbox">
-              <img src="@/img/icon_lit_cbyyzheng.png">船舶营运证
+              <img :src="'./static/images/img/icon_lit_kyxlu.png'">客运线路<br />标志牌
             </li>
           </ul>
           <ul>
             <li class="imgbox">
-              <img src="@/img/icon_lit_cy.png">船员适应证
+              <img :src="'./static/images/img/icon_lit_jyyh.png'">道路运输<br />从业人员
             </li>
             <li class="imgbox">
-              <img src="@/img/icon_lit_slu.png">水路运输经<br />营许可证
+              <img :src="'./static/images/img/icon_lit_car.png'">出租车
             </li>
             <li class="imgbox">
-              <img src="@/img/icon_lit_zge.png">经营资格证<br />（企业）
+              <img :src="'./static/images/img/icon_lit_cbyyzheng.png'">船舶营运证
+            </li>
+          </ul>
+          <ul>
+            <li class="imgbox">
+              <img :src="'./static/images/img/icon_lit_cy.png'">船员适应证
+            </li>
+            <li class="imgbox">
+              <img :src="'./static/images/img/icon_lit_slu.png'">水路运输经<br />营许可证
+            </li>
+            <li class="imgbox">
+              <img :src="'./static/images/img/icon_lit_zge.png'">经营资格证<br />（企业）
             </li>
           </ul>
 
@@ -170,8 +170,8 @@
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
-import iLocalStroage from "@/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
 // 立案登记
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import caseRegisterDiag from "@/page/caseHandle/unRecordCase/caseRegisterDiag.vue";

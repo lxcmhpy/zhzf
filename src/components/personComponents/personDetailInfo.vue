@@ -107,33 +107,33 @@
           return {
             url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',//图片路径
             personInfoDetailForm:{
-              personId:this.$route.params.personInfo.personId,     
-              orgName:this.$route.params.personInfo.orgName,      
-              branchName:this.$route.params.personInfo.branchName,      
-              personName:this.$route.params.personInfo.personName,      
+              personId:this.$route.params.personInfo.personId,
+              orgName:this.$route.params.personInfo.orgName,
+              branchName:this.$route.params.personInfo.branchName,
+              personName:this.$route.params.personInfo.personName,
               sex:this.$route.params.personInfo.sex,
-              nation:this.$route.params.personInfo.nation,       
-              degree:this.$route.params.personInfo.degree,       
-              idNo:this.$route.params.personInfo.idNo,            
-              birthDate:this.$route.params.personInfo.birthDate,       
+              nation:this.$route.params.personInfo.nation,
+              degree:this.$route.params.personInfo.degree,
+              idNo:this.$route.params.personInfo.idNo,
+              birthDate:this.$route.params.personInfo.birthDate,
               workDate:this.$route.params.personInfo.workDate,
-              enfoceDate:this.$route.params.personInfo.enfoceDate,   
-              major:this.$route.params.personInfo.major,        
-              graduationNo:this.$route.params.personInfo.graduationNo,    
-              disChannel:this.$route.params.personInfo.disChannel,      
+              enfoceDate:this.$route.params.personInfo.enfoceDate,
+              major:this.$route.params.personInfo.major,
+              graduationNo:this.$route.params.personInfo.graduationNo,
+              disChannel:this.$route.params.personInfo.disChannel,
               post:this.$route.params.personInfo.post,
-              area:this.$route.params.personInfo.area,         
-              provinceNo:this.$route.params.personInfo.provinceNo,   
-              ministerialNo:this.$route.params.personInfo.ministerialNo,   
-              maritimeNo:this.$route.params.personInfo.maritimeNo,      
+              area:this.$route.params.personInfo.area,
+              provinceNo:this.$route.params.personInfo.provinceNo,
+              ministerialNo:this.$route.params.personInfo.ministerialNo,
+              maritimeNo:this.$route.params.personInfo.maritimeNo,
               staffing:this.$route.params.personInfo.staffing,
-              certNo:this.$route.params.personInfo.certNo,       
-              qualificationNo:this.$route.params.personInfo.qualificationNo,                  
-              politicalStatus:this.$route.params.personInfo.politicalStatus,   
-              admissionDate:this.$route.params.personInfo.admissionDate,              
-              certStatus:this.$route.params.personInfo.certStatus,   
-              personStatus:this.$route.params.personInfo.personStatus,  
-              note:this.$route.params.personInfo.note,           
+              certNo:this.$route.params.personInfo.certNo,
+              qualificationNo:this.$route.params.personInfo.qualificationNo,
+              politicalStatus:this.$route.params.personInfo.politicalStatus,
+              admissionDate:this.$route.params.personInfo.admissionDate,
+              certStatus:this.$route.params.personInfo.certStatus,
+              personStatus:this.$route.params.personInfo.personStatus,
+              note:this.$route.params.personInfo.note,
               attached:this.$route.params.personInfo.attached,
             },
           }
@@ -142,5 +142,5 @@
 </script>
 
 <style scoped>
-  @import "./../../css/personManage.less";
+  @import "@/assets/css/personManage.scss";
 </style>

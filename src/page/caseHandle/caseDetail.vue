@@ -6,11 +6,11 @@
 </template>
 <script>
 
-import iLocalStroage from "@/js/localStroage";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
-      data:this.$route.params.data 
+      data:this.$route.params.data
     };
   },
   methods: {
@@ -37,7 +37,7 @@ export default {
     }
   },
   created() {
-   
+
   }
 };
 </script>

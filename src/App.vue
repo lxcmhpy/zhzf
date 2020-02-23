@@ -38,11 +38,11 @@ export default {
 };
 </script>
 
-<style lang="less">
-@import "./assets/iconfont/iconfont.css";
-@import "./css/variables.less";
-@import "./css/base.less";
-@import "./css/transition.less";
-@import "./css/reloadElementUI.less";
-@import "./css/components.less";
+<style lang="scss">
+@import "../static/iconfont/iconfont.css";
+@import "@/assets/css/basicStyles/variables.scss";
+@import "@/assets/css/basicStyles/base.scss";
+@import "@/assets/css/basicStyles/transition.scss";
+@import "@/assets/css/reloadElementUI.scss";
+@import "@/assets/css/components.scss";
 </style>

@@ -2,6 +2,7 @@ import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategory
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
     submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi,
+    findByMlCaseId,findByCondition
     } from "@/api/caseHandle";
 
 
@@ -184,7 +185,7 @@ const caseHandle = {
                     })
             })
         },
-        
+
         //未立案列表
         queryCaseBasicInfoListPage({ commit }, data) {
             return new Promise((resolve, reject) => {
@@ -271,8 +272,8 @@ const caseHandle = {
                     })
             })
         },
-        
-        //查询审批角色列表 
+
+        //查询审批角色列表
         getApprovePeople({ commit }, data) {
             return new Promise((resolve, reject) => {
                 getApprovePeopleApi(data).then(
@@ -284,7 +285,30 @@ const caseHandle = {
                     })
             })
         },
-
+        // 获取归档目录
+        getByMlCaseId ({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                findByMlCaseId(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        // 通过条件查询证据目录
+        getByCondition ({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                findByCondition(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        }
     }
 }
 export default caseHandle

@@ -137,6 +137,6 @@ export default {
     }
 }
 </script>
-<style lang="less">
-  @import "../../../css/personManage.less";
+<style lang="scss">
+  @import "@/assets/css/personManage.scss";
 </style>

@@ -107,7 +107,7 @@
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'archiveCatalogue'" @showArchiveCatalogue="showArchiveCatalogue"></caseSlideMenu>
     <!-- 卷宗目录 -->
-    <archiveCatalogue ref="archiveCatalogueRef"></archiveCatalogue>
+    <archiveCatalogue ref="archiveCatalogueRef" :caseInfo="caseInfo"></archiveCatalogue>
   </div>
 </template>
 <script>
@@ -127,7 +127,7 @@ export default {
         party: "",
         party2: ""
       },
-      rules: []
+      rules: {}
     };
   },
   components: {
@@ -138,15 +138,16 @@ export default {
     submitArchive() {},
     //点击卷宗目录后 显示卷宗目录
     showArchiveCatalogue(){
-        this.$refs.archiveCatalogueRef.showModal();   
+        this.$refs.archiveCatalogueRef.showModal();
     }
   },
   mounted() {
     this.formData = this.caseInfo;
+    console.log(JSON.stringify(this.caseInfo));
     this.$refs.archiveCatalogueRef.showModal();
   }
 };
 </script>
-<style lang="less" scoped>
-@import "../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/documentForm.scss";
 </style>

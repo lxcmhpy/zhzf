@@ -119,7 +119,7 @@
                     v-model.number="formData.paidAmount"
                     size="small"
                     placeholder="-"
-                  
+
                   ></el-input>
                 </el-form-item>
               </div>
@@ -293,7 +293,7 @@
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from "../../components/checkDocFinish";
 
@@ -323,7 +323,7 @@ export default {
         performWay:"",
         correct:"",
         performance:"",
-        paidAmount:"", 
+        paidAmount:"",
         toPayAmount:"",
         stepPay:"",
         note:"",
@@ -353,7 +353,7 @@ export default {
       isOnlinePay: false //是否为电子缴纳
     };
   },
-  computed: { 
+  computed: {
     ...mapGetters(["caseId"]) ,
   },
   mixins: [mixinGetCaseApiList],
@@ -443,7 +443,7 @@ export default {
       }
       this.formData.performWay = this.formData.performWay ? this.formData.performWay : 1;
       this.isOnlinePay = this.formData.performWay == 1 ? false : true;
-    
+
       //分期延期缴纳单选按钮默认不选，  选中后列表中展示分期延期缴纳罚款通知书 执行情况为催告时  列表中展示催告书
     }
   },
@@ -476,6 +476,6 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-@import "../../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/documentForm.scss";
 </style>

@@ -37,8 +37,8 @@
   </el-dialog>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
-import iLocalStroage from "@/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   data() {
@@ -134,7 +134,7 @@ export default {
         }
       }
 
-    
+
       console.log(params);
       this.$store.dispatch("approvalPdf", params).then(
         res => {
@@ -143,9 +143,9 @@ export default {
             type: "success",
             message: "审批通过"
           });
-          
+
           this.$emit("getNewData");
-          
+
           this.visible = false;
         },
         err => {
@@ -157,8 +157,8 @@ export default {
   mounted() {}
 };
 </script>
-<style lang="less">
-// @import "../../../css/caseHandle/index.less";
+<style lang="scss">
+// @import "@/assets/css/caseHandle/index.scss";
 #approvalTimeBox .el-date-editor {
   width: 100%;
 }

@@ -1,9 +1,9 @@
 import axios from "axios";
-import { getToken, setToken,removeToken } from "@/js/auth";
+import { getToken, setToken,removeToken } from "@/common/js/auth";
 import Vue from "vue";
 //import { message } from "ant-design-vue";
 import { showFullScreenLoading, tryHideFullScreenLoading } from "./loading";
-import iLocalStroage from '@/js/localStroage'
+import iLocalStroage from '@/common/js/localStroage'
 
 var vue = new Vue();
 

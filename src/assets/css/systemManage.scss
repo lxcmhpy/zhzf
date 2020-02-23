@@ -1,4 +1,4 @@
-@import "./variables.less";
+@import "./basicStyles/variables.scss";
 
 .departOrUserTree{
     width: 20%;
@@ -51,7 +51,7 @@
     .custom-tree-node{
         span{
             i{
-                color: @blueC;
+                color: $blueC;
                 margin-right: 5px;
                 font-size: 13px;
             }
@@ -134,7 +134,7 @@
         .titleP{
             font-size: 16px;
             padding-left: 4px;
-            border-left: 4px solid @blueC;
+            border-left: 4px solid $blueC;
             margin-bottom: 15px;
             font-weight: bold;
         }
@@ -240,7 +240,7 @@
     .custom-tree-node{
         span{
             i{
-                color: @blueC;
+                color: $blueC;
                 margin-right: 5px;
             }
         }

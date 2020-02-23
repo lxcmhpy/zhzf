@@ -18,7 +18,7 @@
           <span class="pdf-line width721">&nbsp;</span>
         </p>
         <p>
-          根据<span class="pdf-line width250">&nbsp;</span>的规定，现责令你（单位）          
+          根据<span class="pdf-line width250">&nbsp;</span>的规定，现责令你（单位）
         </p>
         <p>
           <input type="checkbox"/>立即予以改正。
@@ -34,13 +34,13 @@
         </p>
         <br><br>
          <p>
-          当事人或其代理人签名：   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+          当事人或其代理人签名：   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
            执法人员签名：
           </p>
           <p>
-         <span class="pdf-line width150">&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+         <span class="pdf-line width150">&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
          <span class="pdf-line width150">&nbsp;</span>
           </p>
         <div class="pdf-wirte">
@@ -65,6 +65,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../../css/pdf.less";
+<style lang="scss">
+@import "@/assets/css/pdf.scss";
 </style>

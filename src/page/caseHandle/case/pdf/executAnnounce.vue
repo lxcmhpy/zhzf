@@ -81,7 +81,7 @@
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
@@ -98,7 +98,7 @@ export default {
       caseDocDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '', //案件id
-        caseDoctypeId: this.$route.params.docId, //文书模版ID  
+        caseDoctypeId: this.$route.params.docId, //文书模版ID
         docData: '',
         status: ''
       },
@@ -149,8 +149,8 @@ export default {
   }
 }
 </script>
-<style lang="less">
-@import "../../../../css/pdf.less";
+<style lang="scss">
+@import "@/assets/css/pdf.scss";
 </style>
 正品白菜价汉服店：钟灵记，衣锦江南汉服馆，兰若庭，梨花渡，临鹤轩，重回汉唐，鹿韵记，南雅集，山有扶苏，如梦霓裳，都城南庄，织羽集，三十六雨，川黛，
 流烟昔泠，倾杯序，六仙书阁，一溪月，云裳纪，汉衣晟道。

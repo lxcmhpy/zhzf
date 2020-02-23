@@ -105,7 +105,7 @@
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 export default {
   mixins: [mixinGetCaseApiList],
   data() {
@@ -159,5 +159,5 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-@import "../../css/industry.less";
+@import "@/assets/css/industry.scss";
 </style>

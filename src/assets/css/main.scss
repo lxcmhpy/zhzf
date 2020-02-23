@@ -1,4 +1,4 @@
-@import "./variables.less";
+@import "./basicStyles/variables.scss";
 .fullscreen{
     height: 100%;
     #fullscreenCon{
@@ -37,7 +37,7 @@
               }
               &>.el-menu-item.is-active{
                   color: #fff;
-                  border-bottom: 2px solid @blueC;
+                  border-bottom: 2px solid $blueC;
               }
               .el-menu-item:focus,.el-menu-item:hover{
                   background:  #20232B;
@@ -59,7 +59,7 @@
   }
   .el-aside{
     .el-menu{
-        background: @blackC2;
+        background: $blackC2;
         border-right: 0;
         .el-submenu__title{
             color: #9FA3AF;
@@ -68,19 +68,19 @@
             color: #9FA3AF;
         }
         .el-menu-item.is-active{
-            background: @blueC;
+            background: $blueC;
             color: #fff;
         }
         .el-menu-item:focus, .el-menu-item:hover,.el-menu-item:focus, .el-menu-item:hover{
-            background: @blueC;
+            background: $blueC;
             color: #fff;
         }
-        
+
     }
   }
   #tabsHeader{
       height: 33px;
-      background: @blackC2;
+      background: $blackC2;
       color:#9FA3AF;
       padding: 0;
       .el-tabs__item{
@@ -88,7 +88,7 @@
           line-height: 32px;
       }
       .el-tabs--border-card>.el-tabs__header{
-          background: @blackC2;
+          background: $blackC2;
       }
       .el-tabs--border-card{
           border: 1px solid #414752;
@@ -142,7 +142,7 @@
       .tablePart{
         height: 100%;
         overflow: auto;
-        /* margin-top: 15px; */ 
+        /* margin-top: 15px; */
         padding-top: 15px;
     box-sizing: border-box;
       }

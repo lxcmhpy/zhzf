@@ -331,18 +331,18 @@
 </template>
 <script>
 // import overflowInput from "./overflowInput";
-// import { mixinGetCaseApiList } from "@/js/mixins";
+// import { mixinGetCaseApiList } from "@/common/js/mixins";
 // import { mapGetters } from "vuex";
 // import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // // import signture from "../../../../js/signture";
-// import mySignture from "@/js/mySignture";
-// // import {signture2} from "@/js/signture";
+// import mySignture from "@/common/js/mySignture";
+// // import {signture2} from "@/common/js/signture";
 import overflowInput from "../pdf/overflowInput";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-import mySignture from "@/js/mySignture";
-import { validatePhone } from "@/js/validator";
+import mySignture from "@/common/js/mySignture";
+import { validatePhone } from "@/common/js/validator";
 
 export default {
   components: {
@@ -404,7 +404,7 @@ export default {
          illegalFact: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
-        
+
         // socialCreditCode: [
         //   { required: true, message: '请输入', trigger: 'blur' },
         // ],
@@ -504,6 +504,6 @@ export default {
   }
 };
 </script>
-<style lang="less" >
-@import "../../../../css/caseHandle/caseDocModle.less";
+<style lang="scss" >
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

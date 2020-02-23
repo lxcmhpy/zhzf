@@ -182,4 +182,4 @@ export default {
   }
 };
 </script>
-<style src="@/css/searchPage.less" lang="less" scoped></style>
+<style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>

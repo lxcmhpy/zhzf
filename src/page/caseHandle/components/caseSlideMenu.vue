@@ -35,20 +35,20 @@
         置顶
       </el-menu-item> -->
     </el-menu>
-    
+
     <!-- <div class="btn_box bottom_fixed">
       <i class="el-icon-arrow-up"></i>
     </div> -->
-    
+
   </div>
-  
+
 </template>
 
 <script>
 export default {
   data(){
     return{
-      
+
     }
   },
   props:['activeIndex'],
@@ -73,6 +73,6 @@ export default {
   }
 }
 </script>
-<style lang="less">
-@import "../../../css/documentForm.less";
+<style lang="scss">
+@import "@/assets/css/documentForm.scss";
 </style>

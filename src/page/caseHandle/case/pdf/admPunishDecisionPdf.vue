@@ -59,7 +59,7 @@
           </p>
           <p>你（单位）的行为<span class="pdf-line width555">&nbsp;</span>违反了<span class="pdf-line width245">&nbsp;</span>的规定，决定给予
           <span class="pdf-line width555">&nbsp;</span>的行政处罚。
-          
+
           <p>
             处以罚款的，自收到本决定书之日起十五日内缴至
             <span class="pdf-line width150">&nbsp;</span>，账号
@@ -76,9 +76,9 @@
 诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提
 起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
           </p>
-          
+
           <br><br>
-         
+
           <div class="pdf-wirte">
             <div class="pdf-seal">
               交通运输执法部门（印章）<br>
@@ -133,6 +133,6 @@ export default {
     }  }
 }
 </script>
-<style lang="less">
-@import "../../../../css/pdf.less";
+<style lang="scss">
+@import "@/assets/css/pdf.scss";
 </style>

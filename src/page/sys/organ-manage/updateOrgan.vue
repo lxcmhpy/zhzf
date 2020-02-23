@@ -160,7 +160,7 @@
   </el-dialog>
 </template>
 <script>
-import {BASIC_DATA_SYS} from '@/js/BASIC_DATA'
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA'
 export default {
   data() {
     return {

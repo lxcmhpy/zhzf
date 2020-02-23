@@ -108,6 +108,6 @@ export default {
 
 }
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/caseDocument.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/caseDocument.scss";
 </style>

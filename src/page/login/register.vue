@@ -2,14 +2,14 @@
   	<div class="login">
 
 	  	<transition name="form-fade" mode="in-out">
-	  		
+
 	  	</transition>
   	</div>
 </template>
 
 <script>
 
-import Cookies from "@/js/cookies";
+import Cookies from "@/common/js/cookies";
 
 export default {
   data() {
@@ -45,7 +45,7 @@ export default {
   },
 
   methods: {
-    
+
   },
   mounted() {
     this.showLogin = true;
@@ -53,8 +53,8 @@ export default {
 };
 </script>
 
-<style lang="less">
-@import "../../css/login.less";
+<style lang="scss">
+@import "@/assets/css/login.scss";
 </style>
 
 

@@ -256,7 +256,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-@import "../../../../css/caseHandle/caseDocument.less";
-@import "../../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/caseHandle/caseDocument.scss";
+@import "@/assets/css/documentForm.scss";
 </style>

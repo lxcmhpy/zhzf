@@ -17,7 +17,7 @@ export default {
     name:'personDetailPage',
     data(){
         return{
-            
+
         }
     },
     components:{
@@ -26,6 +26,6 @@ export default {
 }
 
 </script>
-<style lang="less" scoped>
-@import "../../../css/personManage.less";
+<style lang="scss" scoped>
+@import "@/assets/css/personManage.scss";
 </style>

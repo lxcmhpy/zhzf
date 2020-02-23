@@ -43,7 +43,7 @@
           勘验人：<el-form-item prop="staff1" style="width:80px">
             <!-- <el-input v-model="docData.staff1" :maxLength='maxLength' placeholder="\"></el-input> -->
             <el-select v-model="docData.staff1" :maxLength='maxLength'>
-              <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option> 
+              <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option>
             </el-select>
           </el-form-item>
           单位及职务：<el-form-item prop="staffUnitAndPosition1" style="width:140px">
@@ -56,7 +56,7 @@
         <p>
           勘验人：<el-form-item prop="staff2" style="width:80px">
             <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff">
-              <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option> 
+              <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
             </el-select>
           </el-form-item>
           单位及职务：<el-form-item prop="staffUnitAndPosition2" style="width:140px">
@@ -120,7 +120,7 @@
           记录人：<el-form-item prop="recorder">
             <!-- <el-autocomplete v-model="docData.recorder" :maxLength='maxLength' placeholder="\" :fetch-suggestions="queryStaff"  @select="handleSelect"></el-autocomplete> -->
             <el-select v-model="docData.recorder" :maxLength='maxLength'>
-              <el-option v-for="(item,index) in userList" :key="index" :value="item" :label="item"></el-option> 
+              <el-option v-for="(item,index) in userList" :key="index" :value="item" :label="item"></el-option>
             </el-select>
           </el-form-item>
           单位及职务：<el-form-item prop="recorderUnitAndPosition">
@@ -217,11 +217,11 @@
 </template>
 <script>
 import overflowInput from "../pdf/overflowInput";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // 验证规则
-import { validatePhone, validateIDNumber } from "@/js/validator";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 
 export default {
 
@@ -460,6 +460,6 @@ export default {
   },
 }
 </script>
-<style lang="less">
-@import "../../../../css/caseHandle/caseDocModle.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

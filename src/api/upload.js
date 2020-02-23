@@ -1,5 +1,5 @@
-import  request  from  "@/js/request";
-import  {setCancelSource}  from  "@/js/cancelToken";
+import  request  from  "@/common/js/request";
+import  {setCancelSource}  from  "@/common/js/cancelToken";
 // 文件上传
 export  function  upload(data)  {
   return  request({

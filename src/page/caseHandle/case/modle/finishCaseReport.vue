@@ -14,7 +14,7 @@
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td rowspan="5">
-              <p>当事人</p> 
+              <p>当事人</p>
               <p>基本情</p>
               <p class="center_similar">况</p>
             </td>
@@ -183,7 +183,7 @@ import approvalDialog from "../../components/approvalDialog";
 import overflowInput from "./overflowInput";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
   components: {
@@ -421,6 +421,6 @@ export default {
   }
 }
 </script>
-<style lang="less" >
-@import "../../../../css/caseHandle/caseDocModle.less";
+<style lang="scss" >
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

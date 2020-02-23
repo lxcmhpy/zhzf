@@ -1,7 +1,6 @@
-<template>
+<template v-if="caseInfo">
   <el-dialog
-    title="卷宗目录"
-    custom-class="leftDialog leftDialog2"
+    custom-class="leftDialog leftDialog2 archiveCatalogueBox"
     :visible.sync="visible"
     @close="closeDialog"
     top="60px"
@@ -9,13 +8,19 @@
     :modal="false"
     :show-close="false"
   >
+    <template slot="title">
+        <div class="catalogueTitle" @click="routerArchiveCatalogueDetail">
+            <!-- 卷宗目录 -->
+            案件：{{caseInfo.caseNumber}}
+        </div>
+    </template>
     <!-- <div class="haha" v-show="visible">
       <div class="archiveCatalogueHead">卷宗目录</div>
       <div class="archiveCatalogueCon"></div>
       <div class="archiveCatalogueFoot">排序管理</div>
 
     </div> -->
-    <div class="archiveCatalogueBox">
+    <div >
         <table border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
                 <td>序号</td>
@@ -24,7 +29,7 @@
             </tr>
             <tr v-for="(item,index) in caseList" :key="index">
                 <td>{{index+1}}</td>
-                <td>{{item.name}}</td>
+                <td>{{item.docName}}</td>
                 <td>{{item.page}}</td>
             </tr>
         </table>
@@ -39,6 +44,7 @@ export default {
   data() {
     return {
       visible: false,
+      caseId: this.caseInfo.id,
       caseList:[
           {name:"文书名称",page:1},
           {name:"文书名称",page:1},
@@ -56,6 +62,7 @@ export default {
     };
   },
   inject: ["reload"],
+  props: ["caseInfo"],
   methods: {
     showModal() {
       this.visible = true;
@@ -63,19 +70,51 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
+    },
+    getByMlCaseId(caseId) {
+         this.$store.dispatch("getByMlCaseId", caseId).then(
+         res=>{
+             this.caseList = res.data
+         },
+         err=>{
+           console.log(err)
+         }
+       )
+    },
+    routerArchiveCatalogueDetail () {
+        this.$router.push({name:'archiveCatalogueDatail',params: {
+           caseInfo: this.caseInfo,
+           caseList: this.caseList
+        }})
     }
-    
+  },
+  mounted () {
+      this.getByMlCaseId(this.caseId)
   }
 };
 </script>
-<style lang="less">
-// @import "../../../css/caseHandle/index.less";
+<style lang="scss">
+// @import "@/assets/css/caseHandle/index.scss";
 .archiveCatalogueBox{
+    background: #EAEDF4;
+    .el-dialog__header {
+        height: 64px;
+        background: #FFFFFF;
+        color: #20232B;
+        padding: 0 0 0 20px;
+        line-height: 64px;
+        .catalogueTitle {
+            font-size: 20px;
+            cursor: pointer;
+        }
+    }
     table{
         text-align: center;
+        background: #fdffff;
         td{
             padding: 10px 0;
-            border: 1px solid #000;
+            min-height: 38px;
+            border: 1px solid #7F8185;
         }
         tr{
             td:nth-child(1),td:nth-child(3){

@@ -14,7 +14,7 @@
     </div>
 </template>
 
-<style lang="less">
+<style lang="scss">
 .loading {
   position: fixed;
   z-index: 99999999;

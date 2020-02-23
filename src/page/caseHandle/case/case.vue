@@ -235,7 +235,7 @@ export default {
     },
     // 送达回证-表单
     goSendReprotForm() {
-       
+
     },
     // 送达回证-打印
     goSendReprot() {
@@ -369,7 +369,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="scss">
 .case {
   overflow: hidden;
   position: absolute;

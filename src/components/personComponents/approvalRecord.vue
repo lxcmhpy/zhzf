@@ -35,5 +35,5 @@
 </script>
 
 <style scoped>
-  @import "./../../css/personManage.less";
+  @import "@/assets/css/personManage.scss";
 </style>

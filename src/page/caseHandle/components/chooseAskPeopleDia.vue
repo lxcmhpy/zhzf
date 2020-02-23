@@ -22,8 +22,8 @@
   </el-dialog>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
-import iLocalStroage from "@/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   data() {
@@ -63,12 +63,12 @@ export default {
       this.visible = false;
     },
     showAskDoc(){
-       this.com_viewDoc(this.docData); 
+       this.com_viewDoc(this.docData);
     }
   }
 };
 </script>
-<style lang="less" scope>
+<style lang="scss" scope>
     .peopleTypeListBox{
         margin-top: 15px;
         display: flex;

@@ -65,7 +65,7 @@
 </template>
 <script>
 import chooseillegalAct from "./chooseillegalAct";
-import iLocalStroage from "@/js/localStroage";
+import iLocalStroage from "@/common/js/localStroage";
 import MainContent from "@/components/mainContent";
 import Layout from "@/page/lagout/mainLagout"; //Layout 是架构组件，不在后台返回，在文件里单独引入
 export default {
@@ -79,7 +79,7 @@ export default {
         illageAct: ""
       },
       illageActId: "", //违法行为id
-      rules: { 
+      rules: {
         cateId: [{ required: true, message: "请选择", trigger: "change" }],
         programType: [{ required: true, message: "请选择", trigger: "change" }],
         caseType: [{ required: true, message: "请选择", trigger: "change" }],
@@ -175,7 +175,7 @@ export default {
             if (item.cateId == this.caseRegisterForm.cateId) {
               cateName = item.cateName;
               return;
-            } 
+            }
           });
           let someCaseInfo = {
             illageAct: this.caseRegisterForm.illageAct,
@@ -187,7 +187,7 @@ export default {
             caseType: this.caseRegisterForm.caseType,
             caseTypeId:caseTypeId,
             cateId:this.caseRegisterForm.cateId,
-            cateName:cateName 
+            cateName:cateName
           };
           iLocalStroage.sets("someCaseInfo", someCaseInfo);
           this.$router.push({
@@ -200,6 +200,6 @@ export default {
   mounted() {}
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/index.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/index.scss";
 </style>

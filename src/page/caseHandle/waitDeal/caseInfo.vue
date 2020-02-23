@@ -161,7 +161,7 @@
       </div>
     </el-form>
     <!--快速入口 -->
-  
+
       <caseSlideMenu :activeIndex="'caseInfo'"></caseSlideMenu>
        <!-- 置顶 -->
     <el-backtop target="#caseInfoBox" :bottom="46" :right='8' :visibility-height='800'>
@@ -173,14 +173,14 @@
         </svg>
       </div>
     </el-backtop>
-    
+
   </div>
-  
+
 </template>
 <script>
 import caseSlideMenu from '../components/caseSlideMenu'
-import iLocalStroage from "@/js/localStroage";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 
 export default {
@@ -215,7 +215,7 @@ export default {
     caseSlideMenu
   },
   methods: {
-    //继续办理  跳转流程图  
+    //继续办理  跳转流程图
     continueHandle() {
       this.$store.dispatch('deleteTabs', 'caseInfo');
       this.$router.push({
@@ -276,7 +276,7 @@ export default {
   created() {}
 };
 </script>
-<style lang="less" scoped>
-@import "../../../css/caseHandle/index.less";
-@import "../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/caseHandle/index.scss";
+@import "@/assets/css/documentForm.scss";
 </style>

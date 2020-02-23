@@ -92,10 +92,10 @@
         <br>
         <p class="begin">
             被邀请人签名
-          <span class="pdf-line width555">&nbsp;</span> 
+          <span class="pdf-line width555">&nbsp;</span>
         </p>
         <br>
-        
+
         <!-- <div class="pdf-wirte">
           <div class="pdf-seal">
             交通运输执法部门（印章）
@@ -118,6 +118,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../../css/pdf.less";
+<style lang="scss">
+@import "@/assets/css/pdf.scss";
 </style>

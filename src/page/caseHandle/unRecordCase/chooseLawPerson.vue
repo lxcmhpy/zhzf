@@ -70,7 +70,7 @@
   </el-dialog>
 </template>
 <script>
-import iLocalStroage from "@/js/localStroage";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   data() {
@@ -216,6 +216,6 @@ export default {
   // }
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/index.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/index.scss";
 </style>

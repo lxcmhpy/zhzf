@@ -23,9 +23,9 @@
                             <el-button type="info" icon="el-icon-search" size="medium" @click="getPersonList">查询</el-button>
                             <el-button type="primary" icon="el-icon-plus" size="medium" @click="addPersonPersonComPage">新增</el-button>
                             <el-button type="warning" size="medium" @click="editPerson(scope.row)">修改</el-button>
-                            <el-button size="medium" class="commonBtn toogleBtn" 
-                                :title="isShow? '点击收缩':'点击展开'" 
-                                :icon="isShow? 'iconfont law-top': 'iconfont law-down'" 
+                            <el-button size="medium" class="commonBtn toogleBtn"
+                                :title="isShow? '点击收缩':'点击展开'"
+                                :icon="isShow? 'iconfont law-top': 'iconfont law-down'"
                                 @click="showSomeSearch" >
                             </el-button>
                         </el-form-item>
@@ -35,7 +35,7 @@
                         <div v-show="isShow">
                             <el-row style="height:40px;">
                                 <el-form-item label="所属机构" prop="oid">
-                                    <el-select v-model="personForm.oid" placeholder="选择机构" 
+                                    <el-select v-model="personForm.oid" placeholder="选择机构"
                                         remote  style="width:202px;"
                                         @focus="getDepatements('0a9499dd0612b0b2950acacedf47b97a')">
                                         <el-option
@@ -61,7 +61,7 @@
                             <el-row style="height:40px;">
                                 <el-form-item>
                                     <el-button type="primary" size="medium" @click="deletePerson">批量删除</el-button>
-                                    <el-button type="primary" size="medium" @click="applyAudit">申请审批</el-button> 
+                                    <el-button type="primary" size="medium" @click="applyAudit">申请审批</el-button>
                                     <el-button type="primary" size="medium" @click="applyDd">申请调动</el-button>
                                     <el-button type="primary" size="medium">申请退休</el-button>
                                     <el-button type="primary" size="medium">批量换证</el-button>
@@ -153,7 +153,7 @@ export default {
                 note:"",//备注
                 certStatus:"",//证件状态
                 personStatus:"",//人员状态
-                attachedUrl:"",//附件路径 
+                attachedUrl:"",//附件路径
                 attached:"",//附件
                 photoUrl:"",//照片路径
                 personType:"",//人员类型
@@ -320,7 +320,7 @@ export default {
     }
 }
 </script>
-<style  lang="less" >
-@import "../../../css/searchPage";
-@import "../../../css/personManage.less";
+<style  lang="scss" >
+@import "@/assets/css/searchPage";
+@import "@/assets/css/personManage.scss";
 </style>

@@ -1,10 +1,10 @@
-@import "./variables.less";
+@import "./basicStyles/variables.scss";
 
 .fullscreen {
   .login {}
 
   .el-aside {
-    background: @blackC2;
+    background: $blackC2;
   }
 
   .el-main {
@@ -32,14 +32,14 @@
   }
 
   .el-button--info {
-    background  : @greenC2;
-    border-color: @greenC2;
+    background  : $greenC2;
+    border-color: $greenC2;
     color       : #fff;
   }
 
   .el-button--primary {
-    background  : @blueC;
-    border-color: @blueC;
+    background  : $blueC;
+    border-color: $blueC;
   }
 
   .el-button--medium {

@@ -49,7 +49,7 @@
                   <!-- <el-input type='textarea' v-model="docData.inquiryStaff" v-bind:class="{ over_flow:docData.inquiryStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <!-- <el-input type='textarea' v-model="docData.inquiryStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <el-select v-model="docData.inquiryStaff" :maxLength='maxLength'>
-                    <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option> 
+                    <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option>
                   </el-select>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiryStaff}}</u></p>
@@ -59,7 +59,7 @@
                   <!-- <el-input type='textarea' v-model="docData.recordStaff" v-bind:class="{ over_flow:docData.recordStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <!-- <el-input type='textarea' v-model="docData.recordStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <el-select v-model="docData.recordStaff" :maxLength='maxLength'>
-                    <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option> 
+                    <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option>
                   </el-select>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.recordStaff}}</u>
@@ -78,7 +78,7 @@
             <el-col :span="12">
               <p>与案件关系：
                 <!-- <el-form-item v-if="!lineStyleFlag" prop="inquiriedRelation" class="width182">
-  
+
                   <el-input type='textarea' v-model="docData.inquiriedRelation" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item> -->
                 <el-form-item prop="inquiriedRelation" class="width182">
@@ -151,7 +151,7 @@
             <el-form-item v-if="!lineStyleFlag" prop="staff2" style="width:100px">
               <!-- <el-input type='textarea' v-model="docData.staff2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
               <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff2">
-                <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option> 
+                <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
               </el-select>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.staff2}}</u>，
@@ -246,10 +246,10 @@
 </template>
 <script>
 import QAModle from "./QAModle";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-import iLocalStroage from "@/js/localStroage";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   components: {
@@ -353,9 +353,9 @@ export default {
         certificateId2: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
-        
-        
-        
+
+
+
         // party: [
         //   { required: true, message: '请输入', trigger: 'blur' },
         // ],
@@ -454,7 +454,7 @@ export default {
       // this.docData.QAModleInfo = edit;
     },
     overFlowEdit() { },
-  
+
     //保存文书信息
     saveData(handleType) {
       this.com_addDocData(handleType, "docForm");
@@ -495,7 +495,7 @@ export default {
       this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
       console.log(staffIndex);
     },
-    setStaffAndCertificateId(){ 
+    setStaffAndCertificateId(){
       this.staffList=this.docData.staff.split(',');
       this.docData.staff1 =  this.staffList[0];
       this.docData.staff2 =  this.staffList[1];
@@ -522,8 +522,8 @@ export default {
   },
 }
 </script>
-<style lang="less" >
-@import "../../../../css/caseHandle/caseDocModle.less";
+<style lang="scss" >
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 #askRecordBox{
  .askRecordNumberBox{
    width: 100px;
@@ -538,7 +538,7 @@ export default {
  .inquiriedAddressBox{
    width: calc(100% - 80px);
  }
- 
+
 }
 </style>
 

@@ -2,7 +2,7 @@
 <div class="com_searchAndpageBoxPadding">
   <div
       :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'"
-      
+
     >
     <caseListSearch @showSomeSearch="showSomeSearch"  @searchCase="getApproveIngCase" :caseState="'approveIng'"></caseListSearch>
 
@@ -28,14 +28,14 @@
           :total="total"
         ></el-pagination>
       </div>
-  
+
   </div>
 </div>
 </template>
 <script>
 
-import iLocalStroage from "@/js/localStroage";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 
 export default {
@@ -53,7 +53,7 @@ export default {
     caseListSearch,
   },
   methods: {
-  
+
     //获取审批中的数据
     getApproveIngCase(searchData) {
       let data = searchData;
@@ -80,7 +80,7 @@ export default {
     },
     //跳转立案登记
     clickCase(row){
-      // this.$router.replace({ 
+      // this.$router.replace({
       //     name: 'filingApproval',
       //     params: {
       //       id: row.id,
@@ -93,6 +93,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/index.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/index.scss";
 </style>

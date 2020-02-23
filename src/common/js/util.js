@@ -1,4 +1,4 @@
-import Cookies from "@/js/cookies";
+import Cookies from "@/common/js/cookies";
 
 //公用方法
 let util = {};
@@ -312,28 +312,28 @@ util.getRandomString=function(len){
 util.transformNumberToJi =function(num){
   var numStr = '';
    switch (num){
-      case 1: 
+      case 1:
         numStr = "一级";
         break;
-      case 2: 
+      case 2:
         numStr = "二级";
         break;
-      case 3: 
+      case 3:
         numStr = "三级";
         break;
-      case 4: 
+      case 4:
         numStr = "四级";
         break;
-      case 5: 
+      case 5:
         numStr = "五级";
         break;
-      case 6: 
+      case 6:
         numStr = "六级";
         break;
-      case 7: 
+      case 7:
         numStr = "七级";
         break;
-      case 8: 
+      case 8:
         numStr = "八级";
         break;
       default:
@@ -348,9 +348,9 @@ util.openURL = function(pdfPath){
   var test = window.location.href;
   var string =test.split("/");
   // path = string[0]+"//"+string[2]+"/"+string[3];
-  // var ActivexURL=path + "/jsp/zfba/aztDzqz/iWebEditor.html?pdfPath="+pdfPath;  
-  var ActivexURL = './index.vue';  
-  
+  // var ActivexURL=path + "/jsp/zfba/aztDzqz/iWebEditor.html?pdfPath="+pdfPath;
+  var ActivexURL = './index.vue';
+
   //功能说明：创建AZTBrowser浏览器并打开URL地址
   //参数1：URL地址
   //参数2：是否置顶 1表示置顶，0表示不置顶

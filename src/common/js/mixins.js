@@ -1,5 +1,5 @@
 import { mapGetters } from "vuex";
-import { htmlExportPDF } from '@/js/htmlExportPDF'
+import { htmlExportPDF } from '@/common/js/htmlExportPDF'
 import {
   findCaseAllBindPropertyApi,
  } from "@/api/caseHandle";
@@ -63,7 +63,7 @@ export const mixinGetCaseApiList = {
               this.formData[key]=formData[key]
             }
             //对环节或文书中的一些字段做处理
-            this.setSelfData(this.formData,caseLinktypeId);  
+            this.setSelfData(this.formData,caseLinktypeId);
 
             console.log('this.formData',this.formData)
             this.setSomeData(this.formData);
@@ -125,7 +125,7 @@ export const mixinGetCaseApiList = {
             this.setSelfData(this.formData,formOrDocId);  //对环节或文书中的一些字段做处理
             this.setSomeData(this.formData);
           } else {
-            // this.docData = caseData; 
+            // this.docData = caseData;
             for( var key in caseData ){
               this.docData[key]=caseData[key]
             }
@@ -412,7 +412,7 @@ export const mixinGetCaseApiList = {
       if(caseLinktypeId == '2c90293b6c178b55016c17c255a4000d'){  //案件来源转数组
         this.setEstabishCaseSourceAndText();
       }
-      
+
       //现场笔录、勘验笔录、询问笔录中数据处理
       if(caseLinktypeId == '2c9029ca5b71f8a3015b71fc67ee0001' || caseLinktypeId == '2c9029ab655639600165564481f70001' || caseLinktypeId == '2c9029ca5b71686d015b71a86ead0032'){
         console.log('data.staff',data.staff);
