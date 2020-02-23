@@ -82,7 +82,7 @@ export default {
        )
     },
     routerArchiveCatalogueDetail () {
-        this.$router.push({name:'archiveCatalogueDatail',params: {
+        this.$router.push({name:'archiveCatalogueDetail',params: {
            caseInfo: this.caseInfo,
            caseList: this.caseList
         }})

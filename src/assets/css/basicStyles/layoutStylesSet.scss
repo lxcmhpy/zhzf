@@ -1,0 +1,19 @@
+@import "./variables.scss";
+* {
+    box-sizing: border-box;
+}
+.alignCenter {
+    text-align: center;
+}
+.tablePart {
+    .el-table {
+        .el-table__header {
+            border-top: 1px solid $tableHeaderC;
+            border-bottom: 1px solid $tableHeaderC;
+        }
+        th {
+            background: $tableHeaderBg !important;
+            padding: 4px 0;
+        }
+    }
+}

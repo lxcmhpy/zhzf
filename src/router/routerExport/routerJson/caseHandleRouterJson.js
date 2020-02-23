@@ -484,11 +484,11 @@ export default [
     component: () => import("@/page/caseHandle/waitArchive/archiveCover.vue")
   },
   {
-      path: "/archiveCatalogueDatail",
-      name: "archiveCatalogueDatail",
+      path: "/archiveCatalogueDetail",
+      name: "archiveCatalogueDetail",
       meta: {
           title: "卷宗目录详情"
       },
-      component: () => import("@/page/caseHandle/waitArchive/archiveCatalogueDatail.vue")
+      component: () => import("@/page/caseHandle/waitArchive/archiveCatalogueDetail.vue")
   }
 ]
