@@ -2,7 +2,10 @@ import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategory
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
     submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi,
-    findByMlCaseId,findByCondition
+    findByMlCaseId,findByCondition,
+    //-----------------长软start-----------
+    getHandleRecordApi,getEvidenceApi,saveOrUpdateEvidenceApi,getDocumentApi,getDeliverReceiptApi,saveOrUpdateDeliverReceiptApi,getDictionaryApi
+    //-----------------长软end------------
     } from "@/api/caseHandle";
 
 
@@ -308,7 +311,93 @@ const caseHandle = {
                         reject(error);
                     })
             })
-        }
+        },
+        //--------------------长软start--------------
+        //操作记录
+        getHandleRecord({ commit }, data) {
+            return new Promise((resolve, reject) => {
+            getHandleRecordApi(data).then(
+                res => {
+                resolve(res);
+                },
+                error => {
+                reject(error);
+                })
+            })
+        },
+        //证据目录
+        getEvidence({ commit }, data) {
+            return new Promise((resolve, reject) => {
+            getEvidenceApi(data).then(
+                res => {
+                resolve(res);
+                },
+                error => {
+                reject(error);
+                })
+            })
+        },
+        //插入修改证据目录
+        saveOrUpdateEvidence({ commit }, data){
+          return new Promise((resolve, reject) => {
+            saveOrUpdateEvidenceApi(data).then(
+              res => {
+                resolve(res);
+              },
+              error => {
+                reject(error);
+              })
+          })
+        },
+        //文书列表
+        getDocument({ commit }, data) {
+            return new Promise((resolve, reject) => {
+            getDocumentApi(data).then(
+                res => {
+                resolve(res);
+                },
+                error => {
+                reject(error);
+                })
+            })
+        },
+        //送达回证
+        getDeliverReceipt({ commit }, data) {
+            return new Promise((resolve, reject) => {
+            getDeliverReceiptApi(data).then(
+                res => {
+                resolve(res);
+                },
+                error => {
+                reject(error);
+                })
+            })
+        },
+        //添加修改送达回证
+        saveOrUpdateDeliverReceipt({ commit }, data) {
+          return new Promise((resolve, reject) => {
+            saveOrUpdateDeliverReceiptApi(data).then(
+              res => {
+                resolve(res);
+              },
+              error => {
+                reject(error);
+              })
+          })
+        },
+        //代码集
+        getDictionary({ commit }, data) {
+          return new Promise((resolve, reject) => {
+            getDictionaryApi(data).then(
+              res => {
+                resolve(res);
+              },
+              error => {
+                reject(error);
+              })
+          })
+        },
+        //------------------长软end---------------------
     }
 }
 export default caseHandle

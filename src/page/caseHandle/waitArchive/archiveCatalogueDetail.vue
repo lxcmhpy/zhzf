@@ -37,7 +37,7 @@
         title="附件关联"
         :visible.sync="relationFileVisible"
         @close="closeDialog1"
-        custom-class="searchPage"
+        custom-class="dialog1 searchPage"
         :close-on-click-modal="false"
          append-to-body>
          <div>

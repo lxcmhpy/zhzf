@@ -27,8 +27,11 @@
         background       : #ffffff;
         box-sizing       : border-box;
         /* 包含padding */
-
-
+        /*----------长软start--------*/
+        .p_begin {
+            text-indent: 0em !important;
+        }
+        /*----------长软end--------*/
         /*  标题 */
         .doc_topic {
             // margin-top     : 80px;
