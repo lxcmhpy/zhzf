@@ -10,6 +10,31 @@
         <li @click="goSampleEvidenceDoc">抽样取样凭证</li>
         <li @click="goSceneNotesDoc">现场笔录</li>
         <li @click="goInquiryNotesDoc">询问笔录</li>
+
+        <!----------长软start --------------->
+        <li @click="goEvidenceListDoc" style="color:blue">证据登记保存清单</li>
+        <li @click="goAdminCoerciveMeasureDoc" style="color:blue">行政强制措施决定书</li>
+        <li @click="goProlongAdminCompulsoryDoc" style="color:blue">延长行政强制措施期限通知书</li>
+        <li @click="goRemoveAdminCoerciveMeasureDoc" style="color:blue">解除行政强制措施决定书</li>
+
+        <li @click="goHearingNoticeDoc" style="color:blue">听证通知书</li>
+        <li @click="goHearingRecordDoc" style="color:blue">听证笔录</li>
+        <li @click="goPunishDecisionDoc2" style="color:blue">当场行政处罚决定书</li>
+
+        <li @click="goPayStageReprotDoc" style="color:blue">分期（延期）缴纳罚款通知书</li>
+        <li @click="goExecutAnnounceReprotDoc" style="color:blue">执行公告</li>
+        <li @click="goRemindLetterReprotDoc" style="color:blue">催告书</li>
+        <li @click="goEnforceDecideReprotDoc" style="color:blue">行政强制执行决定书</li>
+        <li @click="goEnforceInsteadReprotDoc" style="color:blue">代履行决定书</li>
+        <li @click="goEnforceReprotDoc" style="color:blue">中止（终结、恢复）行政强制执行通知书</li>
+        <li @click="goImportantCaseTeamDissDoc" style="color:blue">重大案件集体讨论记录</li>
+
+        <br>
+        <li @click="goHandleRecordForm"  style="color:blue">操作记录</li>
+        <li @click="goEvidenceForm"  style="color:blue">证据目录</li>
+        <li @click="goDocumentForm"  style="color:blue">文书列表</li>
+        <li @click="goDeliverReceiptForm" style="color:blue">送达回证</li>
+        <!----------长软end --------------->
       </ul>
     </div>
     <div>
@@ -342,6 +367,84 @@ export default {
     goModle() {
       this.$router.push({ name: 'modle' });
     },
+    //-------------------长软start--------------
+    goPunishDecisionDoc2(){
+      this.$router.push({ name: 'spotAdmPunishDecisionDoc' });
+    },
+    // 证据保存清单
+    goEvidenceListDoc() {
+      this.$router.push({ name: 'evidenceListDoc' });
+    },
+    //行政强制措施决定书
+    goAdminCoerciveMeasureDoc() {
+      this.$router.push({ name: 'adminCoerciveMeasureDoc' });
+    },
+    //延长行政强制措施期限通知书
+    goProlongAdminCompulsoryDoc() {
+      this.$router.push({ name: 'prolongAdminCompulsoryDoc' });
+    },
+    //解除行政强制措施决定书
+    goRemoveAdminCoerciveMeasureDoc() {
+      this.$router.push({ name: 'removeAdminCoerciveMeasureDoc' });
+    },
+     //听证通知书pdf
+    goHearingNoticeDoc() {
+      this.$router.push({ name: 'hearingNoticeDoc' });
+    },
+    //听证笔录pdf
+    goHearingRecordDoc(){
+      this.$router.push({ name: 'hearingRecordeDoc' });
+    },
+    //当场行政处罚决定书pdf
+    goSpotAdmPunishDecisionDoc(){
+      this.$router.push({ name: 'spotAdmPunishDecisionDoc' });
+    },
+    //  分期（延期）缴纳罚款通知书-打印
+    goPayStageReprotDoc() {
+      this.$router.push({ name: 'payStageDoc' });
+    },
+    //  执行公告-打印
+    goExecutAnnounceReprotDoc() {
+      this.$router.push({ name: 'executAnnounceDoc' });
+    },
+    //  催告书-打印
+    goRemindLetterReprotDoc() {
+      this.$router.push({ name: 'remindLetterDoc' });
+    },
+      //  行政强制执行决定书-打印
+    goEnforceDecideReprotDoc() {
+      this.$router.push({ name: 'enforceDecideDoc' });
+    },
+     //  代履行决定书-打印
+    goEnforceInsteadReprotDoc() {
+      this.$router.push({ name: 'enforceInsteadDoc' });
+    },
+     // 中止（终结、恢复）行政强制执行通知书-打印
+    goEnforceReprotDoc() {
+      this.$router.push({ name: 'enforceDoc' });
+    },
+     //重大案件集体讨论记录
+    goImportantCaseTeamDissDoc() {
+      this.$router.push({ name: 'importantCaseTeamDissDoc' });
+    },
+    //长软aaa start
+    // 操作记录
+    goHandleRecordForm() {
+        this.$router.push({ name: 'handleRecordForm' });
+    },
+    // 证据目录
+    goEvidenceForm() {
+        this.$router.push({ name: 'evidenceForm' });
+    },
+    // 文书列表
+    goDocumentForm() {
+        this.$router.push({ name: 'documentForm' });
+    },
+    // 送达回证
+    goDeliverReceiptForm() {
+        this.$router.push({ name: 'deliverReceiptForm' });
+    },
+    //--------------长软end-------------------
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
       //path不可以重复  name也不可以重复
       this.$router.addRoutes([

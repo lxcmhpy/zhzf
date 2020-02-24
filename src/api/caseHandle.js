@@ -346,7 +346,7 @@ export function findByCondition(data){
 }
 
 //添加/修改证据 （使用场景：当事人权利添加证据调用文件上传后拿到ID再调用该添加接口）
-export function saveOrUpdateEvdencenApi(data) { 
+export function saveOrUpdateEvdencenApi2(data) { 
   let data2 = vm.$qs.stringify(data);
   console.log(data2);
   return request({
@@ -357,3 +357,77 @@ export function saveOrUpdateEvdencenApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//-------------长软lv start------------
+//获取操作记录
+export function getHandleRecordApi(data) {
+    return request({
+      url: "/doc/caseFormLogs/queryCaseFormLogsListPage",
+      method: "GET",
+      params: data,
+      showloading: true,
+      cancelToken: setCancelSource()
+    });
+  }
+  //获取证据目录
+  export function getEvidenceApi(data) {
+    return request({
+      url: "/doc/evidence/findByCondition",
+      method: "POST",
+      params: data,
+      showloading: true,
+      cancelToken: setCancelSource()
+    });
+  }
+  //插入证据目录
+  export function saveOrUpdateEvidenceApi(data) {
+    return request({
+      url:"/doc/evidence/saveOrUpdateEvdencen",
+      method:"POST",
+      params:data,
+      showloading:true,
+      cancelToken:setCancelSource()
+    });
+  }
+  //获取文书列表
+  export function getDocumentApi(data) {
+    return request({
+      url: "/doc/data/findByCondition",
+      method: "GET",
+      params: data,
+      showloading: true,
+      cancelToken: setCancelSource()
+    });
+  }
+  //获取送达回证
+  export function getDeliverReceiptApi(data) {
+    return request({
+      url: "/doc/proof/findByCondition",
+      method: "POST",
+      params: data,
+      showloading: true,
+      cancelToken: setCancelSource()
+    });
+  }
+  //添加修改送达回证
+  export function saveOrUpdateDeliverReceiptApi(data) {
+    return request({
+      url: "/doc/proof/saveOrUpdateProof",
+      method: "POST",
+      params: data,
+      showloading: true,
+      cancelToken: setCancelSource()
+    });
+  }
+  //代码集
+  export function getDictionaryApi(data) {
+    return request({
+      url: "/sys/drawer/findAllDrawerById/"+data,
+      method: "GET",
+      showloading: false,
+      cancelToken: setCancelSource(),
+    });
+  }
+
+  //-----------------长软lv ends------------
+

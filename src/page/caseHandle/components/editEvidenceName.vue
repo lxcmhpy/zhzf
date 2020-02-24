@@ -23,7 +23,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
-import {saveOrUpdateEvdencenApi, } from "@/api/caseHandle";
+import {saveOrUpdateEvdencenApi2, } from "@/api/caseHandle";
 import {
  uploadEvApi,
  findFileByIdApi,
@@ -66,7 +66,7 @@ export default {
             status:1,
             fileId:id,
         }
-        saveOrUpdateEvdencenApi(data).then(
+        saveOrUpdateEvdencenApi2(data).then(
             res => {
               console.log(res);
             this.visible = false;

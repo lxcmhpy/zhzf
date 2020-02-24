@@ -514,3 +514,15 @@ export function deletePermissionApi(data) {
   });
 }
 
+/**------------长软start---------- */
+//根据用户id获取用户的机构id
+export  function  getOrganIdApi(data)  {
+    return  request({
+        url:  "/sys/user/findById/"  +  data.id,
+        method:  "get",
+        //  params:data,
+        showloading:  true,
+        cancelToken:  setCancelSource()
+    });
+}
+/**------------长软end---------- */
