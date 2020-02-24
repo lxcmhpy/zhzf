@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box">
+  <div class="print_box" >
     <el-form
       :rules="rules"
       ref="caseInvestiForm"
@@ -211,34 +211,30 @@
               <td colspan="2">规格</td>
               <td colspan="2">数量</td>
             </tr>
-            <tr>
-              <td>
-                <!-- <el-form-item>
-                  <el-input type="textarea" v-model="formData.w" v-bind:class="{ over_flow:formData.partyUnitTel.length>3?true:false }" :autosize="{ minRows: 1, maxRows: 1}" maxlength="3" placeholder="\"></el-input>
-                </el-form-item>-->
-              </td>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
+            <tr @click="showEvidence" v-for="(item,index) in formData.evidenceList" :key="index">
+              <td>{{item.name ? index+1 : ''}}</td>
+              <td colspan="2">{{item.name ? item.name : ''}}</td>
+              <td colspan="2">{{item.des ? item.des : ''}}</td>
+              <td colspan="2">{{item.num ? item.num : ''}}</td>
+            </tr>
+            <!-- <tr>
+              <td></td>
+              <td colspan="2">{{formData.evidenceList[1].name}}</td>
+              <td colspan="2">{{formData.evidenceList[1].des}}</td>
+              <td colspan="2">{{formData.evidenceList[1].num}}</td>
             </tr>
             <tr>
               <td></td>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
+              <td colspan="2">{{formData.evidenceList[2].name}}</td>
+              <td colspan="2">{{formData.evidenceList[2].des}}</td>
+              <td colspan="2">{{formData.evidenceList[2].num}}</td>
             </tr>
             <tr>
               <td></td>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
-              <td colspan="2"></td>
-            </tr>
+              <td colspan="2">{{formData.evidenceList[3].name}}</td>
+              <td colspan="2">{{formData.evidenceList[3].des}}</td>
+              <td colspan="2">{{formData.evidenceList[3].num}}</td>
+            </tr> -->
           </table>
         </div>
 
@@ -379,15 +375,19 @@
       @saveData="saveData"
       @showApproval="showApproval"
     ></casePageFloatBtns>
+    <!--  显示证据材料 -->
+    <investigRpEvidence ref="investigRpEvidenceRef" @sendToReportEmit="receiverEviden"></investigRpEvidence>
     <!-- 提交审批 -->
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <!-- 审批 -->
     <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
+  
   </div>
 </template>
 <script>
 import showApprovePeople from "../components/showApprovePeople";
 import approvalDialog from "../components/approvalDialog";
+import investigRpEvidence from "../components/investigRpEvidence";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
 import { mixinGetCaseApiList } from "@/js/mixins";
@@ -421,6 +421,7 @@ export default {
         thirdApproveOpinions:"",
         thirdApprovePeo:"",
         thirdApproveTime:"",
+        evidenceList:[], //证据材料
         // investigProcess: "",
         // caseCauseDescrib: "",
         // isMajorCase: "1",
@@ -437,26 +438,6 @@ export default {
         status: ""
       },
       handleType: 0,
-      tableDatas: [
-        {
-          index: "1",
-          name: "四川",
-          status: "-",
-          option: "1"
-        },
-        {
-          index: "2",
-          name: "四川",
-          status: "完成",
-          option: "2"
-        },
-        {
-          index: "3",
-          name: "四川",
-          status: "暂存",
-          option: "3"
-        }
-      ],
       rules: {
         partyUnitTel: [{ validator: validatePhone, trigger: "blur" }],
         illegalFact: [
@@ -486,7 +467,8 @@ export default {
       approvalOver: false, //审核完成
       nameLength: 10,
       sexLength: 2,
-      adressLength: 23
+      adressLength: 23,
+      isParty:true,
     };
   },
   computed: { ...mapGetters(["caseId"]) },
@@ -494,7 +476,8 @@ export default {
   components: {
     showApprovePeople,
     approvalDialog,
-    casePageFloatBtns
+    casePageFloatBtns,
+    investigRpEvidence,
   },
   methods: {
     //加载表单信息
@@ -671,6 +654,24 @@ export default {
           false,
           false
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
+    },
+    showEvidence(){
+      this.$refs.investigRpEvidenceRef.showModal(this.formData.evidenceList);
+    },
+    //证据列表弹窗传来的证据
+    receiverEviden(data){
+      console.log('data',data);
+      // data.forEach((item,index)=>{
+      //   this.formData.evidenceList[index] = item;
+      // })
+       this.formData.evidenceList = data;
+      // console.log(this.formData.evidenceList);
+    },
+    //对原始数据做一下处理
+    setEvidenceData(){
+      if(!this.formData.evidenceList[0].name){
+        this.formData.evidenceList = [{name:'',num:'',des:''},{name:'',num:'',des:''},{name:'',num:'',des:''},{name:'',num:'',des:''}]
       }
     }
   },

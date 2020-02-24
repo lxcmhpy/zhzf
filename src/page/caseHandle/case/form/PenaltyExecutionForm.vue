@@ -169,7 +169,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="payEvidence" label="缴纳凭证">
-                  <el-input
+                  <!-- <el-input
                     type="file"
                     ref="payEvidence"
                     clearable
@@ -177,7 +177,17 @@
                     v-model="formData.payEvidence"
                     size="small"
                     placeholder="请输入"
-                  ></el-input>
+                  ></el-input> -->
+                  <el-upload
+                    class="upload-demo"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :http-request="uploadPaymentVoucher" :show-file-list="false" >
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+                    <ul>
+                      <li v-for="item in alreadyLoadPayEvidence" :key="item.id">{{item.fileName}}</li>
+                    </ul>
+                  </el-upload>
                 </el-form-item>
               </div>
             </div>
@@ -296,7 +306,10 @@
 import { mixinGetCaseApiList } from "@/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from "../../components/checkDocFinish";
-
+import {
+ uploadEvApi,
+ findFileByIdApi,
+} from "@/api/upload";
 export default {
   components: {
     checkDocFinish
@@ -327,10 +340,11 @@ export default {
         toPayAmount:"",
         stepPay:"",
         note:"",
-        payEvidence:"",
+        payEvidence:"", //缴费凭证id
         payee:"",
         paymentTime:"",
       },
+      alreadyLoadPayEvidence:[], //已上传的缴费凭证
       //提交方式
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
@@ -443,8 +457,59 @@ export default {
       }
       this.formData.performWay = this.formData.performWay ? this.formData.performWay : 1;
       this.isOnlinePay = this.formData.performWay == 1 ? false : true;
-    
+      //显示已上传的缴费凭证
+      // this.alreadyLoadPayEvidence = this.formData.payEvidence  ? this.formData.payEvidence.split(',') : [];
+     if(this.formData.payEvidence){
+       let payEvidenceArr = this.formData.payEvidence.split(',');
+       payEvidenceArr.forEach(item=>{
+         this.findPaymentVoucher(item,false);
+       })
+     }
+     
       //分期延期缴纳单选按钮默认不选，  选中后列表中展示分期延期缴纳罚款通知书 执行情况为催告时  列表中展示催告书
+    },
+    //上传缴费凭证
+    uploadPaymentVoucher(param){
+      console.log(param);
+      var fd = new FormData()
+      fd.append("file", param.file);
+      fd.append('caseId',this.caseId)
+      fd.append('docId','2c9029e16c753a19016c755fe1340001');
+      uploadEvApi(fd).then(
+        res => {
+          console.log(res);
+          // this.formData.payEvidence = res.data;
+          this.findPaymentVoucher(res.data,true);
+          // this.formData.payEvidence.push(res.data);
+        },
+        error => {
+          console.log(error)
+        }
+      );
+    },
+    //通过缴费凭证id 查询缴费凭证file
+    findPaymentVoucher(id,isAdd){
+      findFileByIdApi(id).then(
+        res => {
+          console.log(res);
+          this.alreadyLoadPayEvidence.push(res.data);
+          if(isAdd){
+            if(this.formData.payEvidence){
+              let payEvidenceArr = this.formData.payEvidence.split(',');
+              payEvidenceArr.push(id);
+              this.formData.payEvidence = payEvidenceArr.join(',');
+            }else{
+              this.formData.payEvidence = id;
+            }
+          }
+          
+          console.log('this.formData.payEvidence',this.formData.payEvidence);
+
+        },
+        error => {
+          console.log(error)
+        }
+      );
     }
   },
 

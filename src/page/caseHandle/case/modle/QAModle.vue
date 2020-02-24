@@ -60,7 +60,7 @@
       </div>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="addDomain">新增</el-button>
+      <el-button @click="closeDialog">取消</el-button>
       <!-- <el-button type="primary" @click="submitForm('addBannerForm')">提交</el-button> -->
       <el-button type="primary" @click="overFloeEdit()">确定</el-button>
     </span>
@@ -109,23 +109,17 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.$refs["addBannerForm"].resetFields();
-      //this.errorOrganName = false;
-      this.pathData = [];
     },
     //确定
     overFloeEdit() {
       //将当前内容传到父组件
       this.$refs['addBannerForm'].validate((valid) => {
           if (valid) {
-            // console.log("模板", this.pathData);
             console.log(this.addBannerForm.domains)
             this.$emit("QAModleInfo", JSON.stringify(this.addBannerForm.domains));
             this.visible = false;
           }
       })
-      
-      //   this.reload();
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
@@ -153,9 +147,6 @@ export default {
         answer: "",
         key: Date.now()
       });
-      console.log("数组", this.addBannerForm.domains);
-      // this.pathData = this.addBannerForm.domains;
-      // console.log("传值", this.pathData);
     },
     //如果不使用模版则可以编辑 使用模版不可以编辑
     canEdit(index){
@@ -163,12 +154,11 @@ export default {
       if(this.addBannerForm.templateType == '0'){
 
       }else{
-        // console.log()
         this.$refs.templatQuestListRef.showModal();
       }
     },
     chooseQues(val){
-        this.addBannerForm.domains[this.editQuestIndex].question = val;
+      this.addBannerForm.domains[this.editQuestIndex].question = val;  
     }
   }
 };

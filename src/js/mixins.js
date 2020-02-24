@@ -418,6 +418,10 @@ export const mixinGetCaseApiList = {
         console.log('data.staff',data.staff);
         this.setStaffAndCertificateId();
       }
+      //调查类文书
+      if(caseLinktypeId == '2c9029ee6cac9281016caca7f38e0002'){
+        this.setEvidenceData();
+      }
 
       //决定执行的缴费金额
       console.log(data,caseLinktypeId);

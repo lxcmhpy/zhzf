@@ -300,3 +300,26 @@ export function findCaseAllBindPropertyApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//根据案件ID查询  （使用场景：案件调查报告->证据材料->文书）
+export function findByCaseBasicInfoIdApi(caseBasicInfoId) { 
+  return request({
+    url: "/doc/data/findByCaseBasicInfoId/"+caseBasicInfoId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过条件查询证据目录(不分页) （使用场景：案件调查报告->证据材料->照片材料）
+export function findEvidencePicApi(data) { 
+  let data2 = vm.$qs.stringify(data)
+  return request({
+    url: "doc/evidence/findListByCondition",
+    method: "post",
+    data:data2,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
