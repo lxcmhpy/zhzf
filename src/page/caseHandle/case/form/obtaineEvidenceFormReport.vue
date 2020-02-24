@@ -117,12 +117,37 @@
             <td>数量</td>
             <td>被抽样物品地点</td>
           </tr>
-          <tr v-for="item in docData.evdenceList" :key="item.id">
-            <td>{{item.index}}</td>
-            <td>{{item.sampleName}}</td>
-            <td>{{item.batchNumber}}</td>
-            <td>{{item.sampleNumber}}</td>
-            <td>{{item.samplePlace}}</td>
+          <tr v-for="item in evdenceList" :key="item.id">
+            <td class="color_DBE4EF">
+              <!-- {{item.index}} -->
+              <el-form-item>
+                <el-input class='text_indent10 overflow_lins_textarea' v-model="item.index" rows="3" maxLength='90' placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+            <td class="color_DBE4EF">
+              <!-- {{item.sampleName}} -->
+              <el-form-item>
+                <el-input class='text_indent10 overflow_lins_textarea' v-model="item.sampleName" rows="3" maxLength='90' placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+            <td class="color_DBE4EF">
+              <!-- {{item.batchNumber}} -->
+              <el-form-item>
+                <el-input class='text_indent10 overflow_lins_textarea' v-model="item.batchNumber" rows="3" maxLength='90' placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+            <td class="color_DBE4EF">
+              <!-- {{item.sampleNumber}} -->
+              <el-form-item>
+                <el-input class='text_indent10 overflow_lins_textarea' v-model="item.sampleNumber" rows="3" maxLength='90' placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+            <td class="color_DBE4EF">
+              <!-- {{item.samplePlace}} -->
+              <el-form-item>
+                <el-input class='text_indent10 overflow_lins_textarea' v-model="item.samplePlace" rows="3" maxLength='90' placeholder="\"></el-input>
+              </el-form-item>
+            </td>
           </tr>
           <!-- <span>+</span> -->
         </table>
@@ -187,8 +212,52 @@ export default {
         evidencePlace: '',
         evidenceDepartment: '',
         evidenceDepartmentPhone: '',
-        evdenceList: [],
+        evdenceList: [{
+          index: '',
+          sampleName: '',
+          batchNumber: '',
+          sampleNumber: '',
+          samplePlace: ''
+        }],
       },
+      // 下表格数据
+      evdenceList: [
+        {
+          index: '',
+          sampleName: '',
+          batchNumber: '',
+          sampleNumber: '',
+          samplePlace: ''
+        },
+        {
+          index1: '',
+          sampleName1: '',
+          batchNumber1: '',
+          sampleNumber1: '',
+          samplePlace1: ''
+        },
+        {
+          index2: '',
+          sampleName2: '',
+          batchNumber2: '',
+          sampleNumber2: '',
+          samplePlace2: ''
+        },
+        {
+          index3: '',
+          sampleName3: '',
+          batchNumber3: '',
+          sampleNumber3: '',
+          samplePlace3: ''
+        },
+        {
+          index4: '',
+          sampleName4: '',
+          batchNumber4: '',
+          sampleNumber4: '',
+          samplePlace4: ''
+        },
+      ],
       caseDocDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
@@ -197,13 +266,6 @@ export default {
         docData: "",
         status: "" //提交状态
       },
-      // CaseDocDataForm: {
-      //   caseBasicinfoId: "2c9029ca5b71686d015b71f5ac68004f",
-      //   caseDoctypeId: "123",
-      //   //表单数据
-      //   docData: "",
-      //   status: "",
-      // },
       rules: {
         caseNumber: [
           { required: true, message: '案号必须填写', trigger: 'blur' }
@@ -317,12 +379,7 @@ export default {
         docId: this.$route.params.docId
       };
       this.com_getDocDataByCaseIdAndDocId(data)
-
-      this.docData.qaList.push({
-        question: '',
-        answer: '',
-        key: ''
-      });
+      console.log('docData', this.docData.evdenceList)
 
     },
     addDocData(handleType) {
@@ -346,6 +403,8 @@ export default {
 
     //保存文书信息
     saveData(handleType) {
+      this.docData.evdenceList = this.evdenceList;
+
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -365,9 +424,9 @@ export default {
     }
   },
   mounted() {
-    this.getCaseBasicInfo();
-    this.getDocDataByCaseIdAndDocId();
-    this.isOverStatus();
+    // this.getCaseBasicInfo();
+    // this.getDocDataByCaseIdAndDocId();
+    // this.isOverStatus();
   },
 }
 </script>
