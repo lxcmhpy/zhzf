@@ -490,5 +490,160 @@ export default [
           title: "卷宗目录详情"
       },
       component: () => import("@/page/caseHandle/waitArchive/archiveCatalogueDetail.vue")
-  }
+  },
+  // -----------------长软start----------------
+  {
+    path: "/evidenceListDoc",
+    name: "evidenceListDoc",
+    meta: {
+      title: "证据登记保存清单"
+    },
+    component: () => import("@/page/caseHandle/case/modle/evidenceListDoc.vue")
+  },
+  {
+    path: "/adminCoerciveMeasureDoc",
+    name: "adminCoerciveMeasureDoc",
+    meta: {
+      title: "行政强制措施决定书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/adminCoerciveMeasureDoc.vue")
+  },
+  {
+    path: "/prolongAdminCompulsoryDoc",
+    name: "prolongAdminCompulsoryDoc",
+    meta: {
+      title: "延长行政强制措施期限通知书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/prolongAdminCompulsoryDoc.vue")
+  },
+  {
+    path: "/removeAdminCoerciveMeasureDoc",
+    name: "removeAdminCoerciveMeasureDoc",
+    meta: {
+      title: "解除行政强制措施决定书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/removeAdminCoerciveMeasureDoc.vue")
+  },
+  {
+    path: "/importantCaseTeamDissDoc",
+    name: "importantCaseTeamDissDoc",
+    meta: {
+      title: "重大案件集体讨论记录"
+    },
+    component: () => import("@/page/caseHandle/case/modle/importantCaseTeamDissDoc.vue")
+  },
+  {
+    path: "/hearingNoticeDoc",
+    name: "hearingNoticeDoc",
+    meta: {
+      title: "听证通知书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/hearingNoticeDoc.vue")
+  },
+  {
+    path: "/hearingRecordeDoc",
+    name: "hearingRecordeDoc",
+    meta: {
+      title: "听证笔录"
+    },
+    component: () => import("@/page/caseHandle/case/modle/hearingRecordDoc.vue")
+  },
+  {
+    path: "/spotAdmPunishDecisionDoc",
+    name: "spotAdmPunishDecisionDoc",
+    meta: {
+      title: "当场行政处罚决定书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/spotAdmPunishDecisionDoc.vue")
+  },
+  {
+    path: "/payStageDoc",
+    name: "payStageDoc",
+    meta: {
+      title: "分期（延期）缴纳罚款通知书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/payStageDoc.vue")
+  },
+  {
+    path: "/executAnnounceDoc",
+    name: "executAnnounceDoc",
+    meta: {
+      title: "执行公告"
+    },
+    component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
+  },
+  {
+    path: "/remindLetterDoc",
+    name: "remindLetterDoc",
+    meta: {
+      title: "催告书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/remindLetterDoc.vue")
+  },
+  {
+    path: "/enforceInsteadDoc",
+    name: "enforceInsteadDoc",
+    meta: {
+      title: "代履行决定书-pdf"
+    },
+    component: () => import("@/page/caseHandle/case/modle/enforceInsteadDoc.vue")
+  },
+  {
+    path: "/enforceDecideDoc",
+    name: "enforceDecideDoc",
+    meta: {
+      title: "行政强制执行决定书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/enforceDecideDoc.vue")
+  },
+  {
+    path: "/enforceDoc",
+    name: "enforceDoc",
+    meta: {
+      title: "中止（终结、恢复）行政强制执行通知书-pdf"
+    },
+    component: () => import("@/page/caseHandle/case/modle/enforceDoc.vue")
+  },
+  {
+    path: "/importantCaseTeamDissDoc",
+    name: "importantCaseTeamDissDoc",
+    meta: {
+      title: "重大案件集体讨论记录"
+    },
+    component: () => import("@/page/caseHandle/case/modle/importantCaseTeamDissDoc.vue")
+  },
+   //lv:start
+   {
+    path: "/handleRecordForm",
+    name: "handleRecordForm",
+    meta: {
+      title: "操作记录"
+    },
+    component: () => import("@/page/caseHandle/case/form/handleRecordForm.vue")
+  },
+  {
+    path: "/evidenceForm",
+    name: "evidenceForm",
+    meta: {
+      title: "证据目录"
+    },
+    component: () => import("@/page/caseHandle/case/form/evidenceForm.vue")
+  },
+  {
+    path: "/documentForm",
+    name: "documentForm",
+    meta: {
+      title: "文书列表"
+    },
+    component: () => import("@/page/caseHandle/case/form/documentForm.vue")
+  },
+  {
+    path: "/deliverReceiptForm",
+    name: "deliverReceiptForm",
+    meta: {
+      title: "送达回证"
+    },
+    component: () => import("@/page/caseHandle/case/form/deliverReceiptForm.vue")
+  },
+  //---------------长软end------------
 ]

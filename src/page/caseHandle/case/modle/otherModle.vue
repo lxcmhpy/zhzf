@@ -303,7 +303,7 @@ export default {
         askdataStart:"",
         askdataEnd:"",
       },
-      qaList: [{},{}],
+      qaList: [{question:'',answer:''},{question:'',answer:''}],
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
@@ -448,7 +448,7 @@ export default {
       console.log('回显', edit)
       this.qaList = JSON.parse(edit);
       if(this.qaList.length<2){
-        this.qaList.push({})
+        this.qaList.push({question:'',answer:''})
       }
 
       // this.docData.QAModleInfo = edit;

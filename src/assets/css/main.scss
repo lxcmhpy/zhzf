@@ -194,3 +194,20 @@
       }
   }
 }
+.caseAndEvidenceListDiaClass{
+    .el-dialog__body{
+            max-height: 400px;
+            overflow-y: auto;
+            .el-button-group{
+                width: 100%;
+                button{
+                    width: 50%;
+                }
+            }
+            ul{
+                li{
+                    margin: 10px 0;
+                }
+            }
+    }
+}

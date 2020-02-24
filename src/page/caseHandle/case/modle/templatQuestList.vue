@@ -29,16 +29,13 @@ export default {
   },
   methods: {
     showModal() {
-      
       this.visible = true;
-    
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
     },
     chooseQuesEmit(){
-        console.log(this.question);
          this.visible = false;
         this.$emit("chooseQues",this.question);
     }

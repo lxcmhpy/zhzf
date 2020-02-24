@@ -300,6 +300,30 @@ export function findCaseAllBindPropertyApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+
+//根据案件ID查询  （使用场景：案件调查报告->证据材料->文书）
+export function findByCaseBasicInfoIdApi(caseBasicInfoId) { 
+  return request({
+    url: "/doc/data/findByCaseBasicInfoId/"+caseBasicInfoId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过条件查询证据目录(不分页) （使用场景：案件调查报告->证据材料->照片材料）
+export function findEvidencePicApi(data) { 
+  let data2 = vm.$qs.stringify(data)
+  return request({
+    url: "doc/evidence/findListByCondition",
+    method: "post",
+    data:data2,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
 // 获取归档目录
 export function findByMlCaseId(caseId) {
     return request({
@@ -310,11 +334,100 @@ export function findByMlCaseId(caseId) {
       });
 }
 export function findByCondition(data){
+  let data2 = vm.$qs.stringify(data);
+  console.log('zhengju',data2);
     return request({
         url: "/doc/evidence/findByCondition",
         method: "post",
-        data:data,
+        data:data2,
         showloading: true,
         cancelToken: setCancelSource()
       });
 }
+
+//添加/修改证据 （使用场景：当事人权利添加证据调用文件上传后拿到ID再调用该添加接口）
+export function saveOrUpdateEvdencenApi2(data) { 
+  let data2 = vm.$qs.stringify(data);
+  console.log(data2);
+  return request({
+    url: "doc/evidence/saveOrUpdateEvdencen",
+    method: "post",
+    data:data2,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+//-------------长软lv start------------
+//获取操作记录
+export function getHandleRecordApi(data) {
+    return request({
+      url: "/doc/caseFormLogs/queryCaseFormLogsListPage",
+      method: "GET",
+      params: data,
+      showloading: true,
+      cancelToken: setCancelSource()
+    });
+  }
+  //获取证据目录
+  export function getEvidenceApi(data) {
+    return request({
+      url: "/doc/evidence/findByCondition",
+      method: "POST",
+      params: data,
+      showloading: true,
+      cancelToken: setCancelSource()
+    });
+  }
+  //插入证据目录
+  export function saveOrUpdateEvidenceApi(data) {
+    return request({
+      url:"/doc/evidence/saveOrUpdateEvdencen",
+      method:"POST",
+      params:data,
+      showloading:true,
+      cancelToken:setCancelSource()
+    });
+  }
+  //获取文书列表
+  export function getDocumentApi(data) {
+    return request({
+      url: "/doc/data/findByCondition",
+      method: "GET",
+      params: data,
+      showloading: true,
+      cancelToken: setCancelSource()
+    });
+  }
+  //获取送达回证
+  export function getDeliverReceiptApi(data) {
+    return request({
+      url: "/doc/proof/findByCondition",
+      method: "POST",
+      params: data,
+      showloading: true,
+      cancelToken: setCancelSource()
+    });
+  }
+  //添加修改送达回证
+  export function saveOrUpdateDeliverReceiptApi(data) {
+    return request({
+      url: "/doc/proof/saveOrUpdateProof",
+      method: "POST",
+      params: data,
+      showloading: true,
+      cancelToken: setCancelSource()
+    });
+  }
+  //代码集
+  export function getDictionaryApi(data) {
+    return request({
+      url: "/sys/drawer/findAllDrawerById/"+data,
+      method: "GET",
+      showloading: false,
+      cancelToken: setCancelSource(),
+    });
+  }
+
+  //-----------------长软lv ends------------
+

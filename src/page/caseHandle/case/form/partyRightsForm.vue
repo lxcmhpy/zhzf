@@ -148,24 +148,35 @@
             </el-col>
             <el-col :span="8">
               <div class="second_title_btns">
-                <el-button type="primary" size="small">上传附件</el-button>
+                <el-button type="primary" size="small" @click="showUploadEvi">上传附件</el-button>
               </div>
             </el-col>
           </el-row>
           <div class="table_form">
-            <el-table :data="evidenceTableDatas" stripe border style="width: 100%" height="100%">
-              <el-table-column prop="index" label="序号" align="center">
+            <el-table :data="evidenceTableDatas" stripe border style="width: 100%" height="100%" @current-change="handleEviNameChange">
+              <el-table-column type="index" label="序号" align="center">
               </el-table-column>
-              <el-table-column prop="name" label="证据名称" align="center">
+              <el-table-column prop="evName" label="证据名称" align="center">
               </el-table-column>
-              <el-table-column prop="status" label="时间" align="center">
+              <el-table-column prop="createTime" label="时间" align="center">
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <i type="primary" class="el-icon-view cell-icon" @click="evidenceOption(scope)"></i>
+                  <i type="primary" class="el-icon-view cell-icon" @click="showEvidence(scope)"></i>
                 </template>
               </el-table-column>
             </el-table>
+            <div class="paginationBox">
+              <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                background
+                :page-sizes="[10, 20, 30, 40]"
+                layout="prev, pager, next,sizes,jumper"
+                :total="total"
+              ></el-pagination>
+            </div>
           </div>
         </div>
 
@@ -190,16 +201,24 @@
       </div>
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
+    <partyRightsEvidence ref="partyRightsEvidenceRef" @findEvidenceEmit="findEvidence"></partyRightsEvidence>
+    <editEvidenceName ref="editEvidenceNameRef"></editEvidenceName>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from '../../components/checkDocFinish'
+import partyRightsEvidence from '@/page/caseHandle/components/partyRightsEvidence'
+import editEvidenceName from '@/page/caseHandle/components/editEvidenceName'
 
+import { findByCondition,
+    } from "@/api/caseHandle";
 export default {
   components: {
-    checkDocFinish
+    checkDocFinish,
+    partyRightsEvidence,
+    editEvidenceName,
   },
   data() {
     return {
@@ -245,6 +264,9 @@ export default {
         // }
       ],
       evidenceTableDatas: [],
+      currentPage: 1, //当前页
+      pageSize: 10, //pagesize
+      total: 0, //总数
       rules: {
         caseNumber: [
           { required: true, message: '案号必须填写', trigger: 'blur' }
@@ -328,6 +350,49 @@ export default {
         }
       );
     },
+    //上传证据弹窗
+    showUploadEvi(){
+      this.$refs.partyRightsEvidenceRef.showModal('2c9029ac6c26fd72016c27247b290003');
+    },
+    //查询证据材料列表
+    findEvidence(){
+      let data={
+        docId:'2c9029ac6c26fd72016c27247b290003',
+        caseId:this.caseId,
+
+      };
+      findByCondition(data).then(
+            res => {
+              console.log('证据',res);
+              this.evidenceTableDatas = res.data.records;
+              this.currentPage = res.data.current;
+              this.total = res.data.total;
+            },
+            error => {
+              console.log(error);
+            }
+          );
+    },
+    //更改证据每页显示的条数
+    handleSizeChange(val) {
+      console.log("每页显示的条数", val);
+      this.pageSize = val;
+      this.findEvidence();
+    },
+    //更换证据页码
+    handleCurrentChange(val) {
+      console.log("当前页", val);
+      this.currentPage = val;
+      this.findEvidence();
+    },
+    //修改证据名称
+    handleEviNameChange(row){
+      console.log(row);
+      this.$refs.editEvidenceNameRef.showModal(row);
+    },
+    showEvidence(){
+      
+    }
   },
   mounted() {
     // this.setFormData();
@@ -336,6 +401,8 @@ export default {
     this.setFormData();
     //通过案件id和表单类型Id查询已绑定文书
     this.getDocListByCaseIdAndFormId();
+    // 查询证据材料列表
+    this.findEvidence();
   }
 }
 </script>
