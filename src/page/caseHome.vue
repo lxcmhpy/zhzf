@@ -604,7 +604,7 @@ img {
 }
 
 .case_home /deep/ .el-radio-button__inner {
-  padding: 10px 16px;
+  padding: 9px 16px;
   background: #f6f8fd;
 }
 .tablebox /deep/ .el-table__header {

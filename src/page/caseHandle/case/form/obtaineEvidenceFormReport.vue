@@ -1,6 +1,6 @@
 <template>
   <div class="print_box" id='btnB'>
-    <div class="print_info">
+    <div class="print_info" id='obtanEvidence_print'>
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
         <div class="doc_topic">抽样取证凭证</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
@@ -124,7 +124,7 @@
             <td>{{item.sampleNumber}}</td>
             <td>{{item.samplePlace}}</td>
           </tr>
-          <span>+</span>
+          <!-- <span>+</span> -->
         </table>
         <el-row :gutter="20">
           <el-col :span="12">
@@ -149,7 +149,7 @@
       </el-form>
     </div>
     <!-- 悬浮按钮 -->
-    <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'obtanEvidence_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
     <!-- <el-alert title="错误提示的文案" type="error"  show-icon>
     </el-alert> -->
   </div>
@@ -229,7 +229,7 @@ export default {
       value: '',
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: 'subOutputRank-print',
+        pageDomId: 'obtanEvidence_print',
       },
       isPdf: '',
     }
@@ -361,7 +361,7 @@ export default {
       }
     },
     setStaffAndCertificateId() {
-      this.staffList = this.docData.staff.split(',')
+      console.log('this.docData', this.docData)
     }
   },
   mounted() {
