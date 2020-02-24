@@ -18,7 +18,6 @@
                 <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
                 <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
-
             </td>
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
@@ -88,12 +87,11 @@
           <el-date-picker width='509px' v-model="docData.getEvidence" type="datetimerange" range-separator="至" start-placeholder=" 年  月  日  时  分" end-placeholder=" 年  月  日  时  分" format="yyyy年MM月dd日HH时mm分">
           </el-date-picker>
         </p>
-        <div class="pager_input quzheng">抽样取证时间：
+        <div class="pager_input quzheng">抽样取证地点：
           <el-form-item>
-            <el-input class='text_indent10 overflow_lins_textarea' v-model="docData.evidencePlaCE" rows="3" maxLength='90' placeholder="\"></el-input>
+            <el-input class='text_indent10 overflow_lins_textarea' v-model="docData.evidencePlace" rows="3" maxLength='90' placeholder="\"></el-input>
           </el-form-item>
         </div>
-
         <el-row :gutter="10" class="pager_input">
           <el-col :span="12">抽样取证机关：
             <el-form-item>
@@ -119,13 +117,14 @@
             <td>数量</td>
             <td>被抽样物品地点</td>
           </tr>
-          <tr v-for="item in evdenceList" :key="item.id">
-            <td>{{item.name}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.name}}</td>
+          <tr v-for="item in docData.evdenceList" :key="item.id">
+            <td>{{item.index}}</td>
+            <td>{{item.sampleName}}</td>
+            <td>{{item.batchNumber}}</td>
+            <td>{{item.sampleNumber}}</td>
+            <td>{{item.samplePlace}}</td>
           </tr>
+          <span>+</span>
         </table>
         <el-row :gutter="20">
           <el-col :span="12">
@@ -170,20 +169,41 @@ export default {
   computed: { ...mapGetters(['caseId']) },
   data() {
     return {
-      evdenceList: [{}, {}, {}, {}, {}],
+
       docData: {
-        partyType: '个人',
-        dataEnd: '',
-        dataStart: '',
-        datasTotal: '0',
+        caseNumber: '',
+        // partyType: '',
+        party: '',
+        partyIdNo: '',
+        partyAddress: '',
+        partyTel: '',
+        partyName: '',
+        partyUnitAddress: '',
+        partyUnitTel: '',
+        partyManager: '',
+        socialCreditCode: '',
+
+        getEvidence: '',
+        evidencePlace: '',
+        evidenceDepartment: '',
+        evidenceDepartmentPhone: '',
+        evdenceList: [],
       },
-      CaseDocDataForm: {
-        caseBasicinfoId: "2c902ae66ae2acc4016ae376f6f1007f",
-        caseDoctypeId: "123",
-        //表单数据
+      caseDocDataForm: {
+        id: "", //修改的时候用
+        caseBasicinfoId: "", //案件ID
+        caseDoctypeId: this.$route.params.docId, //文书类型ID
+        //文书数据
         docData: "",
-        status: "",
+        status: "" //提交状态
       },
+      // CaseDocDataForm: {
+      //   caseBasicinfoId: "2c9029ca5b71686d015b71f5ac68004f",
+      //   caseDoctypeId: "123",
+      //   //表单数据
+      //   docData: "",
+      //   status: "",
+      // },
       rules: {
         caseNumber: [
           { required: true, message: '案号必须填写', trigger: 'blur' }
@@ -289,14 +309,50 @@ export default {
         name: this.$route.params.url
       });
     },
+    //根据案件ID和文书Id获取数据
+    getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      let data = {
+        caseId: this.caseId,
+        docId: this.$route.params.docId
+      };
+      this.com_getDocDataByCaseIdAndDocId(data)
+
+      this.docData.qaList.push({
+        question: '',
+        answer: '',
+        key: ''
+      });
+
+    },
+    addDocData(handleType) {
+      this.com_addDocData(handleType);
+      // this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+      // this.$router.push({
+      //   name: this.$route.params.url,
+      // });
+    },
+
+    // 获取问答内容
+    getQAModleInfo(edit) {
+      console.log('回显', edit)
+      this.qaList = JSON.parse(edit);
+      if (this.qaList.length < 2) {
+        this.qaList.push({})
+      }
+      // this.docData.QAModleInfo = edit;
+    },
+    overFlowEdit() { },
+
     //保存文书信息
     saveData(handleType) {
-      // 预览样式
-      this.isPdf = 'color_FFFFFF';
-      console.log('1')
-      setTimeout(() => {
-        this.com_addDocData(handleType, "docForm");
-      }, 3000);
+      this.com_addDocData(handleType, "docForm");
+    },
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
     },
     //是否是完成状态
     isOverStatus() {
@@ -304,9 +360,14 @@ export default {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
+    setStaffAndCertificateId() {
+      this.staffList = this.docData.staff.split(',')
+    }
   },
   mounted() {
     this.getCaseBasicInfo();
+    this.getDocDataByCaseIdAndDocId();
+    this.isOverStatus();
   },
 }
 </script>
