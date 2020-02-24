@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import overflowInput from "../modle/overflowInput";
 export default {
@@ -137,7 +137,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId:'', //案件id
-        caseLinktypeId: '', //表单类型ID           
+        caseLinktypeId: '', //表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -175,6 +175,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../../css/caseHandle/caseDocModle.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

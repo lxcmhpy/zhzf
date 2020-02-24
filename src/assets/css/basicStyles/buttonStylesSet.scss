@@ -1,0 +1,16 @@
+@import './variables.scss';
+.el-button  {
+    border-radius: 0px;
+}
+.btn-1 {
+    border: 1px solid $blueC;
+    background:$grayC;
+    &:hover {
+        background: auto;
+        color: auto;
+    }
+    &:active {
+        // background: $blueC;
+        // color: $grayC;
+    }
+}

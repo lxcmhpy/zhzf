@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-   
+
     <div class="content_box">
       <div class="content">
         <div class="content_title">
@@ -191,7 +191,7 @@
 import showApprovePeople from "../../components/showApprovePeople";
 import approvalDialog from "../../components/approvalDialog";
 
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 
 export default {
@@ -289,7 +289,7 @@ export default {
       }
       this.$refs.approvalDialogRef.showModal(caseData);
     },
-    
+
     // 暂存
     save() {
 
@@ -301,6 +301,6 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-@import "../../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/documentForm.scss";
 </style>

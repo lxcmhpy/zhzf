@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import { routers } from "./router";
-import Cookies from "@/js/cookies";
-import iLocalStroage from "@/js/localStroage";
+import Cookies from "@/common/js/cookies";
+import iLocalStroage from "@/common/js/localStroage";
 
 import Layout from '@/page/lagout/mainLagout' //Layout 是架构组件，不在后台返回，在文件里单独引入
 import MainContent from '@/components/mainContent'
@@ -39,7 +39,7 @@ router.beforeEach((to, from, next) => {
       }else{
         next();
       }
-      
+
 
       //next();
     }

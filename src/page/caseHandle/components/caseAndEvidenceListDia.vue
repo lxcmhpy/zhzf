@@ -49,8 +49,8 @@
   </el-dialog>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
-import iLocalStroage from "@/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
 import { findByCaseBasicInfoIdApi,findEvidencePicApi } from "@/api/caseHandle";
 export default {
@@ -136,5 +136,4 @@ export default {
   }
 };
 </script>
-<style lang="less" scope>
-</style>
+

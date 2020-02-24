@@ -222,14 +222,14 @@
 </template>
 <script>
 import overflowInput from "./overflowInput";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // import signture from "../../../../js/signture";
-import mySignture from "@/js/mySignture";
-// import {signture2} from "@/js/signture";
+import mySignture from "@/common/js/mySignture";
+// import {signture2} from "@/common/js/signture";
 // 验证规则
-import { validatePhone, validateIDNumber } from "@/js/validator";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 
 export default {
   components: {
@@ -415,7 +415,7 @@ export default {
       }
     },
     makeSeal() {
-      
+
     }
 
   },
@@ -428,6 +428,6 @@ export default {
   }
 }
 </script>
-<style lang="less" >
-@import "../../../../css/caseHandle/caseDocModle.less";
+<style lang="scss" >
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

@@ -86,8 +86,8 @@
                 <el-input class="pdf-line width603" v-model="samplePlace">&nbsp;</el-input>
             </p>
             <p>
-              抽样取证机关：             
-                <el-input class="pdf-line width330" v-model="sampleOrgan">&nbsp; </el-input>            
+              抽样取证机关：
+                <el-input class="pdf-line width330" v-model="sampleOrgan">&nbsp; </el-input>
               联系电话：
                 <el-input class="pdf-line width150" v-model="sampleOrganTel">&nbsp; </el-input>
             </p>
@@ -103,7 +103,7 @@
                   <td>规格及批号</td>
                   <td>数量</td>
                   <td>被抽样物品地点</td>
-              </tr>              
+              </tr>
           </table>
         </div>
         <br><br>
@@ -130,7 +130,7 @@
               <span class="pdf-line width635">
                 <el-input v-model="note" placeholder="请输入内容"></el-input>
               </span>
-            </p>            
+            </p>
             <p class="begin margin-top87">（本文书一式两份：一份存根，一份交被抽样取证人或其代理人。）</p>
         </div>
       </div>
@@ -239,6 +239,6 @@ export default {
   }
 }
 </script>
-<style lang="less">
-@import "../../../../css/pdf.less";
+<style lang="scss">
+@import "@/assets/css/pdf.scss";
 </style>

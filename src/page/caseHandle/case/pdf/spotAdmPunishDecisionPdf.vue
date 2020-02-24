@@ -232,6 +232,6 @@ export default {
   }
 }
 </script>
-<style lang="less">
-@import "../../../../css/pdf.less";
+<style lang="scss">
+@import "@/assets/css/pdf.scss";
 </style>

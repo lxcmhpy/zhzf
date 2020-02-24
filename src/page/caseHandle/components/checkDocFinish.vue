@@ -39,7 +39,7 @@
 
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 
 export default {
@@ -81,7 +81,7 @@ export default {
       this.visible = true;
       this.checkList = data
     },
-    //关闭弹窗的时候清除数据 
+    //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
       this.checkList = [];

@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import iLocalStroage from "@/js/localStroage";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   name: "",
   data() {
@@ -47,4 +47,4 @@ export default {
     }
   }
 };
-</script>  
+</script>

@@ -401,6 +401,6 @@
   };
 </script>
 
-<style lang="less">
-  @import "../../../css/systemManage.less";
+<style lang="scss">
+  @import "@/assets/css/systemManage.scss";
 </style>

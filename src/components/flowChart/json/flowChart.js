@@ -47,6 +47,43 @@ const stateColor = {
     unLock: '#20232B',// 已解锁
     lock: '#B8BBC2' //未解锁
   }
+  const legend = [{
+        name: '已解锁',
+        itemStyleColor: 'unLock',
+        // 强制设置图形为圆。
+        icon: 'circle',
+        // 设置文本为红色
+        textStyle: {
+            color: '#0074F5'
+        }
+    }, {
+        name: '进行中',
+        // 强制设置图形为圆。
+        itemStyleColor: 'doing',
+        icon: 'circle',
+        // 设置文本为红色
+        textStyle: {
+            color: '#F0AE11'
+        }
+    }, {
+        name: '已完成',
+        // 强制设置图形为圆。
+        itemStyleColor: 'complete',
+        icon: 'circle',
+        // 设置文本为红色
+        textStyle: {
+            color: '#00B93B'
+        }
+    }, {
+        name: '未解锁',
+        // 强制设置图形为圆。
+        itemStyleColor: 'lock',
+        icon: 'circle',
+        // 设置文本为红色
+        textStyle: {
+            color: '#B2B2B2'
+        }
+    }]
 // 线条颜色
 const lineStyle = {
   complete: {
@@ -81,7 +118,7 @@ const lineStyle = {
 }// 页面布局x轴平均分布数，以及每列平均宽度和高度设置
 const layoutCharts = {
   xMargin: 120,
-  yMargin: 140,
+  yMargin: 120,
   splitNumber: 8
 }
 
@@ -184,13 +221,13 @@ const mainLinkData = [{
 // 初始化节点位置
 const graphData = {
   nodes:[
-    {id:"1",source: '1',target:"2_1",linkID: '2c90293b6c178b55016c17c255a4000d',name:"立案登记",position:{x: 1, y: 1}, itemStyleColor: "", attributes:{modularity_class:'lct_01'}},
+    {id:"1",source: '1',target:"2_1",linkID: '2c90293b6c178b55016c17c255a4000d',name:"立案登记",preNodes:[],position:{x: 1, y: 1}, itemStyleColor: "", attributes:{modularity_class:'lct_01'}},
     {id:"temp1_1",source: '1',target:"temp1_1",linkID: 'temp1_1',name:"",position:{x: 1, y: 1.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     {id:"temp1_2",source: 'temp1_1',target:"temp1_2",linkID: 'temp1_2',name:"",position:{x: 2, y: 1.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     {id:"temp1_2_1",source: 'temp1_2',target:"2_2",linkID: 'temp1_2_1',name:"",position:{x: 1, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"2_1",source: "2_1",target:"3",linkID: '2c90293b6c178b55016c17c93326000f',name:"调查类\n文书",position:{x: 1, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
-    {id:"2_2",source: "2_2",target:"2_1",linkID: '2c90293b6c178b55016c17c7ae92000e',name:"行政强制\n措施",position:{x: 2, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_02'}},
-    {id:"3",source: "3",target:"4_1",linkID: '2c9029ee6cac9281016caca7f38e0002',name:"调查报告",position:{x: 1, y: 3},itemStyleColor: "",attributes:{modularity_class:'lct_04'}},
+    {id:"2_1",source: "2_1",target:"3",linkID: '2c90293b6c178b55016c17c93326000f',name:"调查类\n文书",preNodes:[],position:{x: 1, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
+    {id:"2_2",source: "2_2",target:"2_1",linkID: '2c90293b6c178b55016c17c7ae92000e',name:"行政强制\n措施",preNodes:[],position:{x: 2, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_02'}},
+    {id:"3",source: "3",target:"4_1",linkID: '2c9029ee6cac9281016caca7f38e0002',name:"调查报告",preNodes:[],position:{x: 1, y: 3},itemStyleColor: "",attributes:{modularity_class:'lct_04'}},
     {id:"temp3_1",source: '3',target:"temp3_1",linkID: 'temp3_1',name:"",position:{x: 1, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     {id:"temp3_2",source: 'temp3_1',target:"temp3_2",linkID: 'temp3_2',name:"",position:{x: 2, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     {id:"temp3_2_1",source: 'temp3_2',target:"4_2",linkID: 'temp3_2_1',name:"",position:{x: 2, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
@@ -198,31 +235,207 @@ const graphData = {
     {id:"temp3_3_1",source: 'temp3_3',target:"4_3",linkID: 'temp3_3_1',name:"",position:{x: 1, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     {id:"temp3_4",source: 'temp3_3',target:"temp3_4",linkID: 'temp3_4',name:"",position:{x: 4, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     {id:"temp3_4_1",source: 'temp3_4',target:"4_4",linkID: 'temp3_4_1',name:"",position:{x: 1, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"4_1",source: "4_1",target:"5",linkID: '2c9029ee6cac9281016caca8ea500003',name:"违法行为\n通知",position:{x: 1, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_06'}},
-    {id:"4_2",source: "4_2",target:"temp4_2_1",linkID: '2c9029ee6cac9281016caca9a0000004',name:"责令改正",position:{x: 2, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_07'}},
+    {id:"4_1",source: "4_1",target:"5",linkID: '2c9029ee6cac9281016caca8ea500003',name:"违法行为\n通知",preNodes:[],position:{x: 1, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_06'}},
+    {id:"4_2",source: "4_2",target:"temp4_2_1",linkID: '2c9029ee6cac9281016caca9a0000004',name:"责令改正",preNodes:[],position:{x: 2, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_07'}},
     {id:"temp4_2_1",source: 'temp4_2_1',target:"temp4_2_2",linkID: 'temp4_2_1',name:"",position:{x: 2, y: 6.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     {id:"temp4_2_2",source: 'temp4_2_2',target:"7_1",linkID: 'temp4_2_2',name:"",position:{x: 1, y: 6.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     // {id:"temp4_2_3",source: 'temp4_2_2',target:"7_1",linkID: 'temp4_2_3',name:"",position:{x: 1, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"4_3",source: "4_3",target:"temp4_3_1",linkID: 'a36b59bd27ff4b6fe96e1b06390d204f',name:"移交移送",position:{x: 3, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_08'}},
-    {id:"4_4",source: "4_4",target:"temp4_4_1",linkID: 'a36b59bd27ff4b6fe96e1b06390d204g',name:"不予处罚",position:{x: 4, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_09'}},
+    {id:"4_3",source: "4_3",target:"temp4_3_1",linkID: 'a36b59bd27ff4b6fe96e1b06390d204f',name:"移交移送",preNodes:[],position:{x: 3, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_08'}},
+    {id:"4_4",source: "4_4",target:"temp4_4_1",linkID: 'a36b59bd27ff4b6fe96e1b06390d204g',name:"不予处罚",preNodes:[],position:{x: 4, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_09'}},
     {id:"temp4_4_1",source: 'temp4_4_1',target:"temp4_3_1",linkID: 'temp4_4_1',name:"",position:{x: 4, y: 7},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp4_3_1",source: 'temp4_3_1',target:"temp4_3_2",linkID: 'temp4_3_1',name:"",position:{x: 3, y: 7},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp4_3_2",source: 'temp4_3_2',target:"8",linkID: 'temp4_3_1',name:"",position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"5",source: '5',target:"6",linkID: '2c9029ac6c26fd72016c27247b290003',name:"当事人\n权利",position:{x: 1, y: 5},itemStyleColor: "",attributes:{modularity_class:'lct_10'}},
-    {id:"6",source: '6',target:"7_1",linkID: '2c9029d56c8f7b66016c8f8043c90001',name:"处罚决定",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
-    {id:"7_1",source: '7_1',target:"7_2",linkID: '2c9029e16c753a19016c755fe1340001',name:"决定执行",position:{x: 1, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_12'}},
+    {id:"temp4_3_1",source: 'temp4_3_1',target:"temp7_2_1",linkID: 'temp4_3_1',name:"",position:{x: 3, y: 7},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+    // {id:"temp4_3_2",source: 'temp4_3_2',target:"8",linkID: 'temp4_3_1',name:"",position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+    {id:"5",source: '5',target:"6",linkID: '2c9029ac6c26fd72016c27247b290003',name:"当事人\n权利",preNodes:[],position:{x: 1, y: 5},itemStyleColor: "",attributes:{modularity_class:'lct_10'}},
+    {id:"6",source: '6',target:"7_1",linkID: '2c9029d56c8f7b66016c8f8043c90001',name:"处罚决定",preNodes:[],position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
+    {id:"7_1",source: '7_1',target:"7_2",linkID: '2c9029e16c753a19016c755fe1340001',name:"决定执行",preNodes:[],position:{x: 1, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_12'}},
     {id:"temp7_1_1",source: '7_1',target:"temp7_1_1",linkID: 'temp7_1_1',name:"",position:{x: 1, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"7_2",source: '7_2',target:"temp7_2_1",linkID: 'a36b59bd27ff4b6fe96e1b06390d204h',name:"强制执行",position:{x: 2, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_13'}},
-    {id:"temp7_1_2",source: 'temp7_1_1',target:"temp7_2_1",linkID: 'temp7_1_2',name:"",position:{x: 2, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp7_2_1",source: 'temp7_2_1',target:"temp4_3_2",linkID: 'temp7_2_1',name:"",position:{x: 2, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+    // {id:"temp7_1_1",source: '7_1',target:"temp7_1_1",linkID: 'temp7_1_1',name:"",position:{x: 2, y: 7},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+    {id:"temp7_1_2",source: 'temp7_1_1',target:"temp7_1_2",linkID: 'temp7_1_2',name:"",position:{x: 2, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+    {id:"7_2",source: '7_2',target:"temp7_1_2",linkID: 'a36b59bd27ff4b6fe96e1b06390d204h',name:"强制执行",preNodes:[],position:{x: 2, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_13'}},
+    // {id:"7_2",source: '7_2',target:"temp7_1_2",linkID: 'a36b59bd27ff4b6fe96e1b06390d204h',name:"强制执行",preNodes:[],position:{x: 1, y: 8},itemStyleColor: "",attributes:{modularity_class:'lct_13'}},
+    {id:"temp7_2_1",source: 'temp7_1_2',target:"temp7_2_1",linkID: 'temp7_2_1',name:"",position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+    // {id:"temp7_2_3",source: 'temp7_2_1',target:"8",linkID: 'temp7_2_1',name:"",position:{x: 4, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
     // {id:"temp7_2_2",source: 'temp7_2_1',target:"temp4_3_2",linkID: 'temp7_2_2',name:"",position:{x: 2, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"8",source: "8",target:"",linkID: '2c9029ee6cac9281016cacaadf990006',name:"结案登记",position:{x: 4, y: 8},itemStyleColor: "",attributes:{modularity_class:'lct_14'}}
+    {id:"8",source: "temp7_2_1",target:"8",linkID: '2c9029ee6cac9281016cacaadf990006',name:"结案登记",preNodes:["4_3","4_4","7_2","7_1"],position:{x: 4, y: 8},itemStyleColor: "",attributes:{modularity_class:'lct_14'}}
   ],
   links:[]
 }
+const linePosition = [
+    {
+        id: '2c9029ee6cac9281016cacaadf990006',
+        name: '结案登记',
+        type: 'line',
+        smooth: true,
+        symbolSize: 5,
+        symbol:'arrow',
+        data: [[1,4],[1,1]],// 列，行
+        lineStyle: {
+            width: 3,
+            type:'solid',
+            color: 'green'
+        },
+    }, {
+        id: 'a36b59bd27ff4b6fe96e1b06390d204h',
+        name: '强制执行',
+        type: 'line',
+        smooth: true,
+        symbolSize: 4,
+        symbol:'arrow',
+        data: [[2,3],[2,4]],
+        lineStyle: {
+            width: 3,
+            type:'solid',
+            color: 'blue'
+        },
+    }, {
+        id: '2c9029e16c753a19016c755fe1340001',
+        name:'决定执行',
+        type: 'line',
+        smooth: true,
+        symbolSize: 4,
+        symbol:'arrow',
+        data: [[1,4],[1,3.7]],
+        lineStyle: {
+            width: 2,
+            type:'solid',
+            color: 'red'
+        },
+    }
+    //  {
+    //     id: 'a36b59bd27ff4b6fe96e1b06390d204h',
+    //     name: '强制执行',
+    //     type: 'line',
+    //     smooth: true,
+    //     symbolSize: 4,
+    //     symbol:'triangle',
+    //     data: [[7.5,0.5],[7.5,4.5],[6.5,4.5]],
+    //     lineStyle: {
+    //         width: 1,
+    //         type:'solid',
+    //         color: '#b2b2b2'
+    //     },
+    // }
+    // }, {
+    //     id: 'a36b59bd27ff4b6fe96e1b06390d204h',
+    //     name: '强制执行',
+    //     type: 'line',
+    //     smooth: true,
+    //     symbolSize: 4,
+    //     symbol:'triangle',
+    //     data: [[7.5,0.5],[7.5,4.5],[6.5,4.5]],
+    //     lineStyle: {
+    //         width: 1,
+    //         type:'solid',
+    //         color: '#b2b2b2'
+    //     },
+    // }, {
+    //     id: 'a36b59bd27ff4b6fe96e1b06390d204h',
+    //     name: '强制执行',
+    //     type: 'line',
+    //     smooth: true,
+    //     symbolSize: 4,
+    //     symbol:'triangle',
+    //     data: [[7.5,0.5],[7.5,4.5],[6.5,4.5]],
+    //     lineStyle: {
+    //         width: 1,
+    //         type:'solid',
+    //         color: '#b2b2b2'
+    //     },
+    // }, {
+    //     id: 'a36b59bd27ff4b6fe96e1b06390d204h',
+    //     name: '强制执行',
+    //     type: 'line',
+    //     smooth: true,
+    //     symbolSize: 4,
+    //     symbol:'triangle',
+    //     data: [[7.5,0.5],[7.5,4.5],[6.5,4.5]],
+    //     lineStyle: {
+    //         width: 1,
+    //         type:'solid',
+    //         color: '#b2b2b2'
+    //     },
+    // }, {
+    //     id: 'a36b59bd27ff4b6fe96e1b06390d204h',
+    //     name: '强制执行',
+    //     type: 'line',
+    //     smooth: true,
+    //     symbolSize: 4,
+    //     symbol:'triangle',
+    //     data: [[7.5,0.5],[7.5,4.5],[6.5,4.5]],
+    //     lineStyle: {
+    //         width: 1,
+    //         type:'solid',
+    //         color: '#b2b2b2'
+    //     },
+    // }, {
+    //     id: 'a36b59bd27ff4b6fe96e1b06390d204h',
+    //     name: '强制执行',
+    //     type: 'line',
+    //     smooth: true,
+    //     symbolSize: 4,
+    //     symbol:'triangle',
+    //     data: [[7.5,0.5],[7.5,4.5],[6.5,4.5]],
+    //     lineStyle: {
+    //         width: 1,
+    //         type:'solid',
+    //         color: '#b2b2b2'
+    //     },
+    // }, {
+    //     id: 'a36b59bd27ff4b6fe96e1b06390d204h',
+    //     name: '强制执行',
+    //     type: 'line',
+    //     smooth: true,
+    //     symbolSize: 4,
+    //     symbol:'triangle',
+    //     data: [[7.5,0.5],[7.5,4.5],[6.5,4.5]],
+    //     lineStyle: {
+    //         width: 1,
+    //         type:'solid',
+    //         color: '#b2b2b2'
+    //     },
+    // }, {
+    //     id: 'a36b59bd27ff4b6fe96e1b06390d204h',
+    //     name: '强制执行',
+    //     type: 'line',
+    //     smooth: true,
+    //     symbolSize: 4,
+    //     symbol:'triangle',
+    //     data: [[7.5,0.5],[7.5,4.5],[6.5,4.5]],
+    //     lineStyle: {
+    //         width: 1,
+    //         type:'solid',
+    //         color: '#b2b2b2'
+    //     },
+    // }, {
+    //     id: 'a36b59bd27ff4b6fe96e1b06390d204h',
+    //     name: '强制执行',
+    //     type: 'line',
+    //     smooth: true,
+    //     symbolSize: 4,
+    //     symbol:'triangle',
+    //     data: [[7.5,0.5],[7.5,4.5],[6.5,4.5]],
+    //     lineStyle: {
+    //         width: 1,
+    //         type:'solid',
+    //         color: '#b2b2b2'
+    //     },
+    // }, {
+    //     id: 'a36b59bd27ff4b6fe96e1b06390d204h',
+    //     name: '强制执行',
+    //     type: 'line',
+    //     smooth: true,
+    //     symbolSize: 4,
+    //     symbol:'triangle',
+    //     data: [[7.5,0.5],[7.5,4.5],[6.5,4.5]],
+    //     lineStyle: {
+    //         width: 1,
+    //         type:'solid',
+    //         color: '#b2b2b2'
+    //     },
+    // }
+]
 
-
-export {svgData, imgList, stateColor, lineStyle, graphData, mainLinkData,layoutCharts}
+export {svgData, imgList, linePosition, stateColor, lineStyle, graphData, mainLinkData,layoutCharts, legend}
 
 
 

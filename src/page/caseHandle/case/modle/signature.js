@@ -1,5 +1,5 @@
 import { mapGetters } from "vuex";
-import Cookies from "@/js/cookies";
+import Cookies from "@/common/js/cookies";
 
 let signture2 = {};
 /**
@@ -316,7 +316,7 @@ function callBackWaitStatus(id, error, status, msg){
 			//成功
 			alert(status + "---" + msg);  //通过这里的数据进行刷新调用方页面等操作
 		}
-      
+
 		//继续循环监听
 		MultBrowser.waitStatus(id, "2", callBackWaitStatus);
 	}
@@ -330,7 +330,7 @@ signture.openURL = function(pdfPath){
 	var string =test.split("/");
     path = string[0]+"//"+string[2]+"/"+string[3];
     // src\page\caseHandle\case\modle\iWebEditor.vue
-	var ActivexURL=path + "/page/caseHandle/case//modle/iWebEditor.html?pdfPath="+pdfPath;  
+	var ActivexURL=path + "/page/caseHandle/case//modle/iWebEditor.html?pdfPath="+pdfPath;
 //   功能说明：创建AZTBrowser浏览器并打开URL地址
 // 	参数1：URL地址
 // 	参数2：是否置顶 1表示置顶，0表示不置顶

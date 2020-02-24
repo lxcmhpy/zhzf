@@ -20,65 +20,66 @@
                             <el-input v-model="personForm.branchId"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="info" icon="el-icon-search" size="medium" @click="getPersonList">查询</el-button>
-                            <el-button type="primary" icon="el-icon-plus" size="medium" @click="addPersonPersonComPage">新增</el-button>
-                            <el-button type="warning" size="medium" @click="editPerson(scope.row)">修改</el-button>
-                            <el-button size="medium" class="commonBtn toogleBtn" 
-                                :title="isShow? '点击收缩':'点击展开'" 
-                                :icon="isShow? 'iconfont law-top': 'iconfont law-down'" 
+
+                            <el-button type="primary" icon="el-icon-plus"   size="medium" @click="addPersonPersonComPage">新增</el-button>
+                            <el-button type="warning" icon="el-icon-edit"   size="medium" @click="editPerson(scope.row)">修改</el-button>
+                            <el-button type="info"    icon="el-icon-search" size="medium" @click="getPersonList">查询</el-button>
+                            <el-button size="medium"  class="commonBtn toogleBtn"
+                                :title="isShow? '点击收缩':'点击展开'"
+                                :icon="isShow? 'iconfont law-top': 'iconfont law-down'"
                                 @click="showSomeSearch" >
                             </el-button>
                         </el-form-item>
                     </el-row>
                      <transition name="MyFade">
-                    <el-collapse-transition>
-                        <div v-show="isShow">
-                            <el-row style="height:40px;">
-                                <el-form-item label="所属机构" prop="oid">
-                                    <el-select v-model="personForm.oid" placeholder="选择机构" 
-                                        remote  style="width:202px;"
-                                        @focus="getDepatements('0a9499dd0612b0b2950acacedf47b97a')">
-                                        <el-option
-                                            v-for="(value) in departments" :key="value.id" :label="value.name" :value="value.id">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                                <el-form-item label="证件状态" prop="certStatus">
-                                    <el-input v-model="personForm.certStatus"></el-input>
-                                </el-form-item>
-                                <el-form-item label="人员类型" prop="personType">
-                                    <el-input v-model="personForm.personType"></el-input>
-                                </el-form-item>
-                                <el-form-item label="职务名称" prop="idNo">
-                                    <el-input v-model="personForm.post"></el-input>
-                                </el-form-item>
-                                <el-form-item>
-                                    <el-button type="primary" size="medium" >导出</el-button>
-                                    <el-button type="primary" size="medium" >调离</el-button>
-                                    <el-button type="primary" size="medium" @click="resetLog">重置</el-button>
-                                </el-form-item>
-                            </el-row>
-                            <el-row style="height:40px;">
-                                <el-form-item>
-                                    <el-button type="primary" size="medium" @click="deletePerson">批量删除</el-button>
-                                    <el-button type="primary" size="medium" @click="applyAudit">申请审批</el-button> 
-                                    <el-button type="primary" size="medium" @click="applyDd">申请调动</el-button>
-                                    <el-button type="primary" size="medium">申请退休</el-button>
-                                    <el-button type="primary" size="medium">批量换证</el-button>
-                                    <el-button type="primary" size="medium">批量换证</el-button>
-                                    <el-button type="primary" size="medium" >导出所选人照片</el-button>
-                                </el-form-item>
-                            </el-row>
-                        </div>
-                    </el-collapse-transition>
+                        <el-collapse-transition>
+                            <div v-show="isShow">
+                                <el-row style="height:40px;">
+                                    <el-form-item label="所属机构" prop="oid">
+                                        <el-select v-model="personForm.oid" placeholder="选择机构"
+                                            remote  style="width:202px;"
+                                            @focus="getDepatements('0a9499dd0612b0b2950acacedf47b97a')">
+                                            <el-option
+                                                v-for="(value) in departments" :key="value.id" :label="value.name" :value="value.id">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item label="证件状态" prop="certStatus">
+                                        <el-input v-model="personForm.certStatus"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="人员类型" prop="personType">
+                                        <el-input v-model="personForm.personType"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="职务名称" prop="idNo">
+                                        <el-input v-model="personForm.post"></el-input>
+                                    </el-form-item>
+                                    <el-form-item>
+                                        <el-button type="primary" size="medium" icon="el-icon-top-right">导出</el-button>
+                                        <el-button type="success" size="medium" icon="el-icon-upload2">调离</el-button>
+                                        <el-button type="danger" size="medium" icon="el-icon-delete-solid" @click="resetLog">重置</el-button>
+                                    </el-form-item>
+                                </el-row>
+                                <el-row style="height:40px;">
+                                    <el-form-item>
+                                        <el-button type="primary" size="medium" @click="deletePerson">批量删除</el-button>
+                                        <el-button type="primary" size="medium" @click="applyAudit">申请审批</el-button>
+                                        <el-button type="primary" size="medium" @click="applyDd">申请调动</el-button>
+                                        <el-button type="primary" size="medium">申请退休</el-button>
+                                        <el-button type="primary" size="medium">批量换证</el-button>
+                                        <el-button type="primary" size="medium">批量换证</el-button>
+                                        <el-button type="primary" size="medium" >导出所选人照片</el-button>
+                                    </el-form-item>
+                                </el-row>
+                            </div>
+                        </el-collapse-transition>
                     </transition>
                 </el-form>
             </div>
             <div class="tablePart" :style="marginTopValue">
                 <el-table :data="tableData"
-                     stripe resizable border
-                     style="width: 100%;height:100%;"
-                     @selection-change="selectUser"
+                    stripe resizable border
+                    style="width: 100%;height:100%;"
+                    @selection-change="selectUser"
                 >
                     <el-table-column type="selection" align="center"></el-table-column>
                     <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
@@ -91,15 +92,15 @@
                     <el-table-column prop="branchId" label="执法门类" align="center"></el-table-column>
                     <el-table-column prop="certStatus" label="证件状态" align="center"></el-table-column>
                     <el-table-column prop="opt" label="操作项" align="center">
-                         <template slot-scope="scope">
+                        <template slot-scope="scope">
                             <el-button  @click="editPerson(scope.row)" type="text">修改</el-button>
                             <el-button type="text"  @click="deletePersonById(scope.row)">删除</el-button>
                             <el-button type="text"  @click="getDetailInfo(scope.row)">详情</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
-           </div>
-           <div class="paginationBox">
+            </div>
+            <div class="paginationBox">
                 <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
@@ -153,7 +154,7 @@ export default {
                 note:"",//备注
                 certStatus:"",//证件状态
                 personStatus:"",//人员状态
-                attachedUrl:"",//附件路径 
+                attachedUrl:"",//附件路径
                 attached:"",//附件
                 photoUrl:"",//照片路径
                 personType:"",//人员类型
@@ -320,7 +321,7 @@ export default {
     }
 }
 </script>
-<style  lang="less" >
-@import "../../../css/searchPage";
-@import "../../../css/personManage.less";
+<style  lang="scss" >
+@import "@/assets/css/searchPage.scss";
+@import "@/assets/css/personManage.scss";
 </style>

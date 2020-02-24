@@ -129,7 +129,7 @@
   </div>
 </div>
 </template>
-<style src="@/css/searchPage.less" lang="less" scoped></style>
+<style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
  <script>
 import addUser from "./addUser";
 import bindRole from "./bindRole";
@@ -373,7 +373,7 @@ export default {
 };
 </script>
 <!--
-<style lang="less">
-@import "../../../css/systemManage.less";
+<style lang="scss">
+@import "@/assets/css/systemManage.scss";
 </style>
 -->

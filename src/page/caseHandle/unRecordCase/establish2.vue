@@ -107,7 +107,7 @@
               <td colspan="4">\</td>
               <td>
                 经办机构
-                <br />负责人  
+                <br />负责人
                 <br />意见
               </td>
               <td colspan="3" class="pdf-wirte">
@@ -224,7 +224,7 @@
             fill="#FFFFFF"
           />
         </svg>
-        <br />提交审批 
+        <br />提交审批
       </el-button>
       <el-button type="primary" @click="addFormData(1)" v-if="!approval">
         <svg
@@ -274,7 +274,7 @@
 import showApprovePeople from "../components/showApprovePeople";
 import approvalDialog from "../components/approvalDialog";
 
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 
 export default {
@@ -285,7 +285,7 @@ export default {
       formData: {
         partyType: "个人"
       },
-      caseLinkDataForm: { 
+      caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '', //案件id
         caseLinktypeId: "2c90293b6c178b55016c17c255a4000d", //表单类型ID
@@ -319,7 +319,7 @@ export default {
     },
     // 提交表单
     addFormData(handleType) {
-      //参数  提交类型 、formRef  
+      //参数  提交类型 、formRef
       this.com_submitCaseForm(handleType,'docForm',true);
     },
     showApprovePeopleList(){
@@ -355,6 +355,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../css/pdf.less";
+<style lang="scss">
+@import "@/assets/css/pdf.scss";
 </style>

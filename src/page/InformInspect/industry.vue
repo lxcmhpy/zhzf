@@ -42,79 +42,91 @@
         <span class="titleflag">
         </span>
         <span class="title">查验结果</span>
+        <el-button @click="show(true)" v-if='showFlag' size="mini">&or;</el-button>
+        <el-button @click="show(false)" v-if='!showFlag' size="mini">&and;</el-button>
       </div>
       <div v-if="tableData.lenth>0">请在上方查验条件输入检索内容，显示结果</div>
-      <table>
+      <table v-for='item in searchList' :key="item.id">
         <tr>
           <td class="color_ff" valign="middle">
             经营业户名称
           </td>
-          <td :colspan="3">{{ownerName}}</td>
+          <td :colspan="3">{{item.OwnerName}}</td>
         </tr>
         <tr>
           <td class="color_ff" width='20%'>
             省份名称
           </td>
-          <td width='30%'>1</td>
+          <td width='30%'>{{item.ProvinceCode}}</td>
           <td class="color_ff" width='20%'>
             经营业户所在地行政区划代码
           </td>
-          <td width='30%'></td>
+          <td width='30%'>{{item.NativeAreaCode}}</td>
         </tr>
         <tr>
           <td class="color_ff">
             经营许可证字
           </td>
-          <td></td>
+          <td>{{item.LicenseWord}}</td>
           <td class="color_ff">经营许可证号</td>
-          <td>{{licenseCode}}</td>
+          <td>{{item.LicenseCode}}</td>
         </tr>
         <tr>
-          <td class="color_ff">经营范围</td>
-          <td :colspan="3">1</td>
+          <td class="color_ff" rowspan="2">经营范围</td>
+          <td :colspan="3" rowspan="2">
+            {{item.BusinessScopeCode}}
+          </td>
         </tr>
+        <tr></tr>
         <tr>
           <td class="color_ff">有效期起</td>
-          <td></td>
+          <td>{{item.ValidBeginDate}}</td>
           <td class="color_ff">有效期止</td>
-          <td></td>
+          <td>{{item.ExpireDate}}</td>
         </tr>
         <tr>
           <td class="color_ff">经营类型</td>
-          <td></td>
+          <td>{{item.EconType}}</td>
           <td class="color_ff">经营状态</td>
-          <td></td>
+          <td>{{item.OperatingStatus}}</td>
         </tr>
         <tr>
           <td class="color_ff">发证机关</td>
-          <td></td>
+          <td>{{item.LicenseIssueOrgan}}</td>
           <td class="color_ff">核发日期</td>
-          <td></td>
+          <td>{{item.LicenseIssueDate}}</td>
         </tr>
         <tr>
           <td class="color_ff">企业组织机构代码</td>
-          <td></td>
+          <td>{{item.OrganizationCode}}</td>
           <td class="color_ff">经营业户负责人姓名</td>
-          <td></td>
+          <td>{{item.PrincipalName}}</td>
         </tr>
       </table>
     </div>
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 export default {
   mixins: [mixinGetCaseApiList],
   data() {
     return {
       checkData: {
-        provinceCode: '',
-        ownerName: '',
-        licenseCode: ''
+        provinceCode: '110000',
+        ownerName: '北京京版物流有限责任公司',
+        licenseCode: '货备110115000169'
       },
+      // checkData: {
+      //   provinceCode: '',
+      //   ownerName: '',
+      //   licenseCode: ''
+      // },
       radio: '1',
       checkType: 1,
       tableData: [],
+      searchList: [{}],
+      showFlag: true,
     }
   },
   methods: {
@@ -129,10 +141,11 @@ export default {
     getYehuCheck() {
       this.$store.dispatch("yehuCheck", this.checkData).then(
         res => {
-          console.log(res);
-          res.data.forEach(item => {
-            this.selectRoleList.push(item.roleId);
-          });
+          console.log('返回', res)
+          this.searchList = res.data
+          if (this.searchList.length > 1) {
+            this.showFlag = false;
+          }
         },
         err => {
           console.log(err);
@@ -142,17 +155,19 @@ export default {
     changeType() {
       this.clearData()
     },
+    // 收起展开
+    show() {
+      this.showFlag = !this.showFlag;
+    },
     // 清空数据
     clearData() {
-      this.checkData = {
-        ownerName: '',
-        licenseCode: ''
-      }
+      this.checkData.ownerName = '';
+      this.checkData.licenseCode = '';
     }
 
   }
 }
 </script>
-<style lang='less' scoped>
-@import "../../css/industry.less";
+<style lang='scss' scoped>
+@import "@/assets/css/industry.scss";
 </style>

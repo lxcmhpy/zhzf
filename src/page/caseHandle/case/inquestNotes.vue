@@ -50,12 +50,12 @@
               <div class="col">
                 <el-form-item label="勘验人员1：">
                   <!-- <el-input clearable class="w-120" v-model="docData.staff1"></el-input> -->
-                
+
                   <el-select v-model="docData.staff1" >
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option>
                   </el-select>
-               
-                </el-form-item> 
+
+                </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="单位及职务：">
@@ -198,7 +198,7 @@
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 export default {
   data() {
     return {
@@ -281,6 +281,6 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-@import "../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/documentForm.scss";
 </style>

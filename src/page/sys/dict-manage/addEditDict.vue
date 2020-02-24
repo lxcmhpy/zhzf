@@ -56,8 +56,8 @@ export default {
       editId:'',
       // parentNode: "", //新增部门时的上级机构
       // departmentId: "" //部门id
-      dictData:"",  
-      formType:'', //字典还是字典值新增 
+      dictData:"",
+      formType:'', //字典还是字典值新增
       pid:'',  //字典id
     };
   },
@@ -125,7 +125,7 @@ export default {
     //       }else{
     //         this.addOrEditDepartmentSure();
     //       }
-         
+
     //     },
     //     err => {
     //       console.log(err);
@@ -171,6 +171,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../css/systemManage.less";
+<style lang="scss">
+@import "@/assets/css/systemManage.scss";
 </style>

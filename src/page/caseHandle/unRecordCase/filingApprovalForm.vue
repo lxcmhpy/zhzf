@@ -352,7 +352,7 @@
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 // import showApprovePeople from "./showApprovePeople";
 
 export default {
@@ -380,7 +380,7 @@ export default {
       partyTypeList: [{ id: "1", name: "个人" }, { id: "2", name: "企业" }],
       //提交方式
       handleType: 0, //0  暂存     1 提交
-      caseLinkDataForm: { 
+      caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: this.$route.params.id, //案件id
         caseLinktypeId: "2c90293b6c178b55016c17c255a4000d", //表单类型ID
@@ -388,7 +388,7 @@ export default {
         formData: "",
         status: ""
       },
-     
+
     };
   },
   components: {
@@ -400,10 +400,10 @@ export default {
     setFormData(){
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId,this.caseLinkDataForm.caseLinktypeId,'form');
     },
-    
+
     // 提交表单
     addFormData(handleType) {
-      //参数  提交类型 、formRef  
+      //参数  提交类型 、formRef
       this.com_submitCaseForm(handleType,'docForm',false);
     },
     showApprovePeopleList(){
@@ -421,7 +421,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-@import "../../../css/caseHandle/caseDocument.less";
-@import "../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/caseHandle/caseDocument.scss";
+@import "@/assets/css/documentForm.scss";
 </style>

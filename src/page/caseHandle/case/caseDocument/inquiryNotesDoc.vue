@@ -193,7 +193,7 @@
 </template>
 <script>
 import overflowInput from "../pdf/overflowInput";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -251,7 +251,7 @@ export default {
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       this.caseDocDataForm.caseDoctypeId = this.$route.params.docId;
-      
+
       let data = {
         caseId: this.caseId,
         docId: this.$route.params.docId
@@ -297,6 +297,6 @@ export default {
   },
 };
 </script>
-<style lang="less">
-@import "../../../../css/pdf.less";
+<style lang="scss">
+@import "@/assets/css/pdf.scss";
 </style>

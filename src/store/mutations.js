@@ -1,7 +1,7 @@
 import * as types from "./mutation-types";
-import Cookies from "@/js/cookies";
+import Cookies from "@/common/js/cookies";
 import Vue from "vue";
-import { getToken, setToken } from "@/js/auth";
+import { getToken, setToken } from "@/common/js/auth";
 /**
  * mutation是一个对象，封装多个mutation操作
  * 可以接收两个参数state和提交的payload
@@ -63,7 +63,7 @@ const mutations = {
   changeOneTabName(state,data){
     state.openTab[data.tabIndex].title = data.title;
   },
-  
+
 
 
 
@@ -74,7 +74,7 @@ const mutations = {
     state.username = name;
   },
 
-  
+
   [types.SET_IMGSRC](state, imgSrc) {
     state.imgSrc = imgSrc;
   },

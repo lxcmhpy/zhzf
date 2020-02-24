@@ -13,6 +13,7 @@ import uploadFile from './modules/uploadFile'
 
 //yyq:添加执法人员系统接口到store
 import person from './modules/person';
+// 信息查验
 import checkInfo from './modules/checkInfo';
 
 Vue.use(Vuex);

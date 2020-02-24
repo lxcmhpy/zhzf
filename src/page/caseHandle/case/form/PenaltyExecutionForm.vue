@@ -119,7 +119,7 @@
                     v-model.number="formData.paidAmount"
                     size="small"
                     placeholder="-"
-                  
+
                   ></el-input>
                 </el-form-item>
               </div>
@@ -303,7 +303,7 @@
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from "../../components/checkDocFinish";
 import {
@@ -336,7 +336,7 @@ export default {
         performWay:"",
         correct:"",
         performance:"",
-        paidAmount:"", 
+        paidAmount:"",
         toPayAmount:"",
         stepPay:"",
         note:"",
@@ -367,7 +367,7 @@ export default {
       isOnlinePay: false //是否为电子缴纳
     };
   },
-  computed: { 
+  computed: {
     ...mapGetters(["caseId"]) ,
   },
   mixins: [mixinGetCaseApiList],
@@ -541,6 +541,6 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-@import "../../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/documentForm.scss";
 </style>

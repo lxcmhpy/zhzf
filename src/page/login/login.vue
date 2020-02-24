@@ -2,9 +2,9 @@
   <div class="login">
     <transition name="form-fade" mode="in-out">
       <section class="form_contianer" v-show="showLogin">
-        <div class="login_logo"><img src="../../../src/assets/image/main/logo.png" alt=""><span>全国交通运输执法管理系统</span></div>
+        <div class="login_logo"><img :src="'./static/images/main/logo.png'" alt=""><span>全国交通运输执法管理系统</span></div>
         <div class="leftC">
-          <img src="../../../src/assets/image/login/pic1.png" alt="">
+          <img :src="'./static/images/img/login/pic1.png'" alt="">
         </div>
         <div class="rightC">
           <div class="formC1">
@@ -53,8 +53,8 @@
 <script>
 
 // import { mapGetters } from "vuex";
-import Cookies from "@/js/cookies";
-import iLocalStroage from "@/js/localStroage";
+import Cookies from "@/common/js/cookies";
+import iLocalStroage from "@/common/js/localStroage";
 import { drawCodeImage } from "@/api/login";
 export default {
   data() {
@@ -193,8 +193,8 @@ export default {
 };
 </script>
 
-<style lang="less">
-@import "../../css/login.less";
+<style lang="scss">
+@import "@/assets/css/login.scss";
 </style>
 
 

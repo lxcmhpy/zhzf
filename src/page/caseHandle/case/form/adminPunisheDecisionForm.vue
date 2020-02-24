@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-   
+
     <div class="content_box" id="adminPunish_print">
       <div class="content">
         <div class="content_title">行政处罚决定书</div>
@@ -203,12 +203,12 @@
                       <el-col :span="10">
                         <el-input v-model="formData.name3"></el-input>
                       </el-col>
-                    </el-row>                    
-                   
+                    </el-row>
+
                   </el-checkbox-group>
                 </el-form-item>
               </div>
-            </div>            
+            </div>
             <div class="row">
               <div class="col">
                 <el-form-item  label="行政诉讼：" >
@@ -228,11 +228,11 @@
                       <el-col :span="10">
                         <el-input v-model="formData.name5"></el-input>
                       </el-col>
-                    </el-row>                   
+                    </el-row>
                   </el-checkbox-group>
                 </el-form-item>
               </div>
-            </div>  
+            </div>
           </div>
         <casePageFloatBtns
       :pageDomId="'adminPunish_print'"
@@ -245,7 +245,7 @@
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
@@ -263,7 +263,7 @@ export default {
       },
       //提交方式
       handleType: 0, //0  暂存     1 提交
-      caseLinkDataForm: { 
+      caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '', //案件id
         caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型IDer
@@ -317,7 +317,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-@import "../../../../css/documentForm.less";
-// @import "../../../../css/caseHandle/caseDocument.less";
+<style lang="scss" scoped>
+@import "@/assets/css/documentForm.scss";
+// @import "@/assets/css/caseHandle/caseDocument.scss";
 </style>

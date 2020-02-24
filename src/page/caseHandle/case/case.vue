@@ -54,6 +54,7 @@
         <li @click="goQAreport">-询问笔录</li>
         <li @click="goFinishCaseReport">-结案报告</li>
         <li @click="goObtaineEvidenceReport" style="color:pink">抽样取样凭证</li>
+        <li @click="goDeliveryCertificate" style="color:pink">送达回证</li>
         <li @click="goside">侧边栏</li>
         <li @click="goDentail">案件总览</li>
         <li @click="goCaseInvestig">案件调查报告</li>
@@ -172,6 +173,10 @@ export default {
     goObtaineEvidenceReport() {
       this.$router.push({ name: 'obtaineEvidenceFormReport' });
     },
+    // 送达回证
+    goDeliveryCertificate() {
+      this.$router.push({ name: 'deliveryCertificate' });
+    },
     // 立案登记表-打印
     goEstablish() {
       this.$router.push({ name: 'establish' });
@@ -235,7 +240,7 @@ export default {
     },
     // 送达回证-表单
     goSendReprotForm() {
-       
+
     },
     // 送达回证-打印
     goSendReprot() {
@@ -369,7 +374,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="scss">
 .case {
   overflow: hidden;
   position: absolute;

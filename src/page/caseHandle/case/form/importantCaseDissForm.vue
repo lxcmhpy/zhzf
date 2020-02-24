@@ -29,7 +29,7 @@
                   <el-input ref="caseName" clearable class="w-120" v-model="docData.caseName" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
-            </div>            
+            </div>
 
           </div>
           <div class="border_blue"></div>
@@ -179,7 +179,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-@import "../../../../css/caseHandle/caseDocument.less";
-@import "../../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/caseHandle/caseDocument.scss";
+@import "@/assets/css/documentForm.scss";
 </style>

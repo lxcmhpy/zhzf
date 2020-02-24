@@ -17,7 +17,7 @@
             <center>
               <div style="margin-top: 15px;width:60%;">
                 <el-input placeholder="请输入案件关键字" v-model="waitDealSearch" @keyup.enter.native="search(0,waitDealSearch)">
-                  <el-button slot="append" icon="el-icon-search" @click="search(0,waitDealSearch)" ></el-button>
+                  <el-button slot="append" icon="el-icon-search" @click="search(0,waitDealSearch)"></el-button>
                 </el-input>
               </div>
             </center>
@@ -96,35 +96,35 @@
         <div class="icon_content">
           <ul>
             <li class="imgbox">
-              <img src="@/img/icon_lit_yyunc.png">营运车辆
+              <img :src="'./static/images/img/icon_lit_yyunc.png'">营运车辆
             </li>
             <li class="imgbox" @click="infoCheck(industry)">
-              <img src="@/img/icon_lit_jyyehu.png">经营业户
+              <img :src="'./static/images/img/icon_lit_jyyehu.png'">经营业户
             </li>
             <li class="imgbox">
-              <img src="@/img/icon_lit_kyxlu.png">客运线路<br />标志牌
-            </li>
-          </ul>
-          <ul>
-            <li class="imgbox">
-              <img src="@/img/icon_lit_jyyh.png">道路运输<br />从业人员
-            </li>
-            <li class="imgbox">
-              <img src="@/img/icon_lit_car.png">出租车
-            </li>
-            <li class="imgbox">
-              <img src="@/img/icon_lit_cbyyzheng.png">船舶营运证
+              <img :src="'./static/images/img/icon_lit_kyxlu.png'">客运线路<br />标志牌
             </li>
           </ul>
           <ul>
             <li class="imgbox">
-              <img src="@/img/icon_lit_cy.png">船员适应证
+              <img :src="'./static/images/img/icon_lit_jyyh.png'">道路运输<br />从业人员
             </li>
             <li class="imgbox">
-              <img src="@/img/icon_lit_slu.png">水路运输经<br />营许可证
+              <img :src="'./static/images/img/icon_lit_car.png'">出租车
             </li>
             <li class="imgbox">
-              <img src="@/img/icon_lit_zge.png">经营资格证<br />（企业）
+              <img :src="'./static/images/img/icon_lit_cbyyzheng.png'">船舶营运证
+            </li>
+          </ul>
+          <ul>
+            <li class="imgbox">
+              <img :src="'./static/images/img/icon_lit_cy.png'">船员适应证
+            </li>
+            <li class="imgbox">
+              <img :src="'./static/images/img/icon_lit_slu.png'">水路运输经<br />营许可证
+            </li>
+            <li class="imgbox">
+              <img :src="'./static/images/img/icon_lit_zge.png'">经营资格证<br />（企业）
             </li>
           </ul>
 
@@ -132,40 +132,47 @@
       </div>
 
       <div class="shadow case_home_bottom">
-        <div class="casehome_topic">立案登记
-          <div style="float:right;height:20px" class="programType">
-            <el-radio v-model="radio" label="1">简易程序</el-radio>
-            <el-radio v-model="radio" label="2">一般程序</el-radio>
+        <el-form ref="form" :model="caseForm" label-width="80px">
+          <div class="casehome_topic">立案登记
+            <div style="float:right;height:20px" class="programType">
+              <el-radio-group v-model="caseForm.programType" @change="getIllegaAct">
+                <el-radio :label='1'>简易程序</el-radio>
+                <el-radio :label='2'>一般程序</el-radio>
+              </el-radio-group>
+            </div>
           </div>
-        </div>
-        <el-tabs type="border-card">
-          <el-tab-pane label="公路路政"></el-tab-pane>
-          <el-tab-pane label="道路运政"></el-tab-pane>
-          <el-tab-pane label="水路运政"></el-tab-pane>
-          <el-tab-pane label="水路运政"></el-tab-pane>
-        </el-tabs>
-        <div class="casehome_topic">常见违法行为
-          <span class="casehome_topic_select">
-            <el-select v-model="value" placeholder="请选择" size='small'>
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </span>
-        </div>
+          <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back" @change="getIllegaAct">
+            <el-radio-button label="公路路政"></el-radio-button>
+            <el-radio-button label="道路运政"></el-radio-button>
+            <el-radio-button label="水路运政"></el-radio-button>
+            <el-radio-button label="更多"> <i class="el-icon-arrow-down"></i></el-radio-button>
+          </el-radio-group>
+          <div class="casehome_topic">常见违法行为
+            <span class="casehome_topic_select">
+              <el-select v-model="caseForm.value" placeholder="请选择" size='small'>
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </span>
+          </div>
+        </el-form>
         <ul v-for="item in caseList" :key="item.id">
-          <li @click="caseRecord"><span class="bull">&bull;</span>{{item.value}}</li>
+          <li @click="caseRecord(item)"><span class="bull">&bull;</span>{{item.strContent}}</li>
         </ul>
+
         <center>
           <el-button size="small" @click="router(unRecordCase)">查看更多</el-button>
         </center>
+
       </div>
+
     </div>
     <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
-import iLocalStroage from "@/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
 // 立案登记
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import caseRegisterDiag from "@/page/caseHandle/unRecordCase/caseRegisterDiag.vue";
@@ -183,48 +190,25 @@ export default {
       unRecordCaseSearch: '',
       waitArchiveSearch: '',
       approveIngSearch: '',
-      radio: '',
+      radio: 1,
       radio3: '',
       tableData: [],
       options: [{
-        value: '选项1',
+        value: '1',
         label: '不限类别'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
       }],
-      value: '选项1',
-      caseList: [{
-        value: '选项1选项1选项1选项1选项1选项1选项1选项1选项1选项1选项1选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
+      caseList: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       total: 0, //总数
       caseSearchForm: {
         caseNumber: "",
         caseCauseName: "",
+      },
+      caseForm: {
+        programType: 1,
+        wayType: '公路路政',
+        value: '不限类别',
       },
     };
   },
@@ -258,8 +242,9 @@ export default {
       this.$router.push({ name: path });
     },
     // 立案登记
-    caseRecord() {
-      this.$refs.caseRegisterDiagRef.showModal();
+    caseRecord(data) {
+      console.log(data)
+      this.$refs.caseRegisterDiagRef.showModal(data,this.caseForm);
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     // 查找
@@ -271,7 +256,26 @@ export default {
       };
       console.log('点击')
       this.getCaseList2(this.caseSearchForm)
-    }
+    },
+    //查询违法行为
+    getIllegaAct() {
+      var data = {
+        size: 5,
+        current: 1,
+        // categoryId: this.caseForm.programType,
+        // strNumber: this.caseForm.wayType,
+      }
+      this.$store.dispatch("getIllegaAct", data).then(
+        res => {
+          console.log('getIllegaAct', res)
+          this.caseList = res.data.records
+          console.log('caseList', this.caseList)
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
 
   },
   mounted() {
@@ -280,6 +284,8 @@ export default {
       flag: 0
     }
     this.getCaseList2(searchData);
+    this.getIllegaAct();
+
   }
 };
 </script>
@@ -457,5 +463,10 @@ img {
 }
 .casehome_topic_select /deep/.el-input__inner {
   border: 0;
+}
+
+.case_home /deep/ .el-radio-button__inner {
+  padding: 10px 16px;
+  background: #f6f8fd;
 }
 </style>

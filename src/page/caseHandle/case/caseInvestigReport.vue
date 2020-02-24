@@ -366,7 +366,7 @@
           </table>
         </div>
       </div>
-     
+
     </el-form>
 
     <casePageFloatBtns
@@ -390,9 +390,9 @@ import approvalDialog from "../components/approvalDialog";
 import investigRpEvidence from "../components/investigRpEvidence";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import { validatePhone, validateIDNumber } from "@/js/validator";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 
 export default {
   data() {
@@ -615,9 +615,9 @@ export default {
       if (ChineseStr == "") {
         //ChineseStr += cnNums[0]+cnIntLast+cnInteger;
         ChineseStr += cnNums[0] + cnIntLast;
-      } /* else if( DecimalNum == '' ){ 
-                ChineseStr += cnInteger; 
-                ChineseStr += cnInteger; 
+      } /* else if( DecimalNum == '' ){
+                ChineseStr += cnInteger;
+                ChineseStr += cnInteger;
             } */
       return ChineseStr;
     },
@@ -670,7 +670,8 @@ export default {
     },
     //对原始数据做一下处理
     setEvidenceData(){
-      if(!this.formData.evidenceList[0].name){
+      console.log(this.formData);
+      if(!this.formData.evidenceList.length){
         this.formData.evidenceList = [{name:'',num:'',des:''},{name:'',num:'',des:''},{name:'',num:'',des:''},{name:'',num:'',des:''}]
       }
     }
@@ -682,7 +683,7 @@ export default {
 };
 </script>
 
-<style lang="less">
-// @import "../../../css/documentForm.less";
-@import "../../../css/caseHandle/caseDocModle.less";
+<style lang="scss">
+// @import "@/assets/css/documentForm.scss";
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

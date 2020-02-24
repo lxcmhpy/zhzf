@@ -34,8 +34,8 @@
   </el-dialog>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
-import iLocalStroage from "@/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
 import caseAndEvidenceListDia from "./caseAndEvidenceListDia";
 import {
@@ -136,7 +136,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scope>
+<style lang="scss" scope>
 .handelBtn{
     margin-bottom: 15px;
     .localUpload{

@@ -572,7 +572,7 @@
     <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
     <punishDiag ref="punishDiagRef" @setIllegalLawAndPunishLaw="setIllegalLawAndPunishLaw"></punishDiag>
     <!--快速入口 -->
-    
+
       <caseSlideMenu :activeIndex="'inforCollect'" @fromSlide="fromSlide"></caseSlideMenu>
        <!-- 置顶 -->
     <el-backtop target="#inforCollectionBox" :bottom="46" :right='8' :visibility-height='800'>
@@ -590,8 +590,8 @@
 import chooseLawPerson from "./chooseLawPerson";
 import punishDiag from "./punishDiag";
 import caseSlideMenu from '../components/caseSlideMenu'
-import iLocalStroage from "@/js/localStroage";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -810,7 +810,7 @@ export default {
 
       this.alreadyChooseLawPerson.forEach(item => {
         this.lawPersonListId.push(item.id);
-        //给表单数据赋值 
+        //给表单数据赋值
         staffIdArr.push(item.id);
         staffArr.push(item.lawOfficerName);
         certificateIdArr.push(item.selectLawOfficerCard);
@@ -829,7 +829,7 @@ export default {
             let currentUserData = {};
             this.lawPersonListId = [];
             this.alreadyChooseLawPerson = [];
-            
+
             res.data.forEach(item => {
               if (
                 item.lawOfficerName == iLocalStroage.gets("userInfo").username
@@ -1117,6 +1117,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/index.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/index.scss";
 </style>

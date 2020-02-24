@@ -68,7 +68,7 @@
             </el-form-item>
           </span>的处罚决定。
         </p>
-        
+
         <p>
           &nbsp;&nbsp;
           <el-checkbox v-model="formData.checkLaw1"></el-checkbox> 根据《中华人民共和国行政处罚法》第三十一条、第三十二条的规定，你（单位）如对该处罚意见有异议，可向本机关提出陈述申辩，本机关将依法予以核实。
@@ -178,11 +178,11 @@
 
 
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import overflowInput from "../modle/overflowInput";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-import { validatePhone, validateZIP } from "@/js/validator";
+import { validatePhone, validateZIP } from "@/common/js/validator";
 import illegalActionPunishDecision from "./illegalActionPunishDecision";
 
 export default {
@@ -201,7 +201,7 @@ export default {
         checkBoxList: "",
         makeDate: "",
         checkLaw1:false,
-        checkLaw2:false, 
+        checkLaw2:false,
       },
       rules: {
         party: [
@@ -318,6 +318,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../../css/caseHandle/caseDocModle.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

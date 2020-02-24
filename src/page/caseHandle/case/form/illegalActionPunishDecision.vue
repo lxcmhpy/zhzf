@@ -33,7 +33,7 @@ export default {
             cont3:"",
             cont4:"",
             cont5:"",
-            cont6:"",  
+            cont6:"",
             fullDecision:"",
         }
     },
@@ -47,7 +47,7 @@ export default {
         },
         changeCheckDec(val){
             console.log(val);
-           
+
         },
         markPunishDecision(){
             // console.log('askdlsajdsja')
@@ -70,10 +70,10 @@ export default {
             this.visible = false;
 
         },
-        
+
     }
 }
 </script>
-<style lang="less">
-@import "../../../../css/caseHandle/caseDocModle.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

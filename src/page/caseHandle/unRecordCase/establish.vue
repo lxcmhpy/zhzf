@@ -406,9 +406,9 @@ import approvalDialog from "../components/approvalDialog";
 import overflowInput from "../case/modle/overflowInput";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import {validateIDNumber,validatePhone,validateZIP} from '@/js/validator'
+import {validateIDNumber,validatePhone,validateZIP} from '@/common/js/validator'
 
 export default {
   data() {
@@ -461,8 +461,8 @@ export default {
         partyUnitTel:[
           { validator: validatePhone, trigger: "blur" }
         ],
-        
-        
+
+
       },
       nameLength: 23,
       adressLength: 23,
@@ -616,7 +616,7 @@ export default {
   }
 };
 </script>
- <style lang="less">
-// @import "../../../css/pdf.less";
-@import "../../../css/caseHandle/caseDocModle.less"; 
+ <style lang="scss">
+// @import "@/assets/css/pdf.scss";
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

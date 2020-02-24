@@ -14,8 +14,8 @@
   </div>
 </template>
 <script>
-import Cookies from "@/js/cookies";
-import iLocalStroage from "@/js/localStroage";
+import Cookies from "@/common/js/cookies";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   name: "backSubmenu",
   data() {
@@ -72,6 +72,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../css/main.less";
+<style lang="scss">
+@import "@/assets/css/main.scss";
 </style>

@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import iLocalStroage from "@/js/localStroage";
+import iLocalStroage from "@/common/js/localStroage";
 import caseHome from '@/page/caseHome.vue';
 export default {
   components: {

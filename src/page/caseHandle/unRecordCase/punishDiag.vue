@@ -76,7 +76,7 @@ export default {
         }
       );
     },
-    handleSelectionChange(val){   
+    handleSelectionChange(val){
       console.log(val);
       this.selectData = val;
     },
@@ -88,6 +88,6 @@ export default {
   mounted() {}
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/index.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/index.scss";
 </style>

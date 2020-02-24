@@ -34,8 +34,8 @@
 </template>
 <script>
 
-import iLocalStroage from "@/js/localStroage";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 
 export default {
@@ -93,6 +93,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/index.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/index.scss";
 </style>

@@ -6,7 +6,7 @@
         <a href="javascript:void(0)" @click="viewPDF()">跳转到pdf</a> -->
 
         <el-button type="success" @click="printContent" v-if="formOrDocData.showBtn[3]">
-          
+
           <i class="iconfont law-print"></i>
           <br />打印
         </el-button>
@@ -62,8 +62,8 @@
 </template>
 <script>
 
-import {htmlExportPDF} from '@/js/htmlExportPDF'
-import { mixinGetCaseApiList } from "@/js/mixins";
+import {htmlExportPDF} from '@/common/js/htmlExportPDF'
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 
 export default {

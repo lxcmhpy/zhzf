@@ -73,7 +73,7 @@
                 </el-form-item>
               </div>
             </div>
-            
+
             <div class="row" v-if="!isParty">
               <div class="col">
                 <el-form-item label="单位">
@@ -170,7 +170,7 @@
             </svg>
             <br>
             下一<br>环节
-          </el-button> 
+          </el-button>
 
           <el-button type="primary" @click="submitCaseDoc(1)">
             <i class="iconfont law-save"></i>
@@ -185,12 +185,12 @@
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from '../components/checkDocFinish'
 import chooseAskPeopleDia from '@/page/caseHandle/components/chooseAskPeopleDia'
 
-import {validateIDNumber,validatePhone,validateZIP} from '@/js/validator'
+import {validateIDNumber,validatePhone,validateZIP} from '@/common/js/validator'
 export default {
   components: {
     checkDocFinish,
@@ -247,7 +247,7 @@ export default {
       // nextBtnDisab: true
       isParty:true,  //当事人类型为个人
       originalData:"",
-      
+
     }
   },
   computed: { ...mapGetters(['caseId']) },
@@ -337,6 +337,6 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-@import "../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/documentForm.scss";
 </style>

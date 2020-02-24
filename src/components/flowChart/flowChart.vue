@@ -1,13 +1,21 @@
 <template>
   <div class="com_searchAndpageBoxPadding chartBg">
-    <div class="searchAndpageBox " >
+    <div class="searchAndpageBox " style="padding:0px;padding-top: 20px">
       <div class="handlePart">
         <!-- <el-button type="primary" size="medium" icon="el-icon-plus">添加</el-button> -->
       </div>
       <div >
         <!-- <div id="aa"><?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="icon" width="200px" height="200.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#d81e06" d="M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z"  /></svg></div> -->
-          <div id="flowChart" style="width: 1041px;height:600px;margin:0 auto"></div>
+          <div id="flowChart" style="width: 1041x;height:550px;margin:0 auto"></div>
       </div>
+        <div >
+            <template  v-for="(item,index) in legend" >
+            <span :key="index">
+                <span  style="display:inline-block;width:12px;height:12px;border-radius:50%;margin:0 5px;" :style="'background:'+item.textStyle.color"></span>
+                <span style="display:inline-block;font-size: 12px;margin-right: 20px" :style="'color:'+item.textStyle.color">{{item.name}}</span>
+            </span>
+            </template>
+        </div>
     </div>
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'flowChart'" ></caseSlideMenu>
@@ -19,14 +27,15 @@ import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import echarts from 'echarts'
 import 'echarts/lib/chart/graph'
 import _ from 'lodash'
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import {svgData,imgList,stateColor,lineStyle,graphData,mainLinkData,layoutCharts} from './json/flowChart'
+import {svgData,imgList,linePosition,stateColor,lineStyle,graphData,mainLinkData,layoutCharts,legend} from './json/flowChart'
 export default {
   data() {
     return {
       stateColor: stateColor,
       lineStyle: lineStyle,
+      legend: legend,
       layoutCharts: layoutCharts,
       graphData: graphData,
       svgData: svgData,
@@ -70,26 +79,69 @@ export default {
             left: '40%'
         },
         legend: [{    //图例组件
-            data: graphTemp.nodes,
-            y: 'top',
+        //   data: graphTemp.nodes,
+            // data: [{
+            //     name: '已解锁',
+            //     itemStyleColor: 'unLock',
+            //     // 强制设置图形为圆。
+            //     icon: 'circle',
+            //     // 设置文本为红色
+            //     textStyle: {
+            //         color: '#0074F5'
+            //     }
+            // }, {
+            //     name: '进行中',
+            //     // 强制设置图形为圆。
+            //     itemStyleColor: 'doing',
+            //     icon: 'circle',
+            //     // 设置文本为红色
+            //     textStyle: {
+            //         color: '#F0AE11'
+            //     }
+            // }, {
+            //     name: '已完成',
+            //     // 强制设置图形为圆。
+            //     itemStyleColor: 'complete',
+            //     icon: 'circle',
+            //     // 设置文本为红色
+            //     textStyle: {
+            //         color: '#00B93B'
+            //     }
+            // }, {
+            //     name: '未解锁',
+            //     // 强制设置图形为圆。
+            //     itemStyleColor: 'lock',
+            //     icon: 'circle',
+            //     // 设置文本为红色
+            //     textStyle: {
+            //         color: '#B2B2B2'
+            //     }
+            // }].map(function (a) {
+            //     return a.itemStyleColor;
+            // }),
+            // zlevel: 110,
+            // show: true,
+            // type: 'plain',
+            // top: 'auto',
+            // left: 'auto'
         }],
         calculable : true,
         animationDurationUpdate: 1500,
         animationEasingUpdate: 'quinticInOut',
         grid: {
-            left: '5%',
-            top: '10%',
-            right: '5%',
-            bottom: '15%',
+            left: '1%',
+            top: '2%',
+            right: '1%',
+            bottom: '2%',
             containLabel: true,
         },
         xAxis: [
         {
-            position:'top',
-            type : 'value',
+        //     position:'top',
+            type : 'category',
             axisLine: {
                 lineStyle: {
-                    type: 'solid',
+                    type: 'none',
                     color:'white'
                 }
             }
@@ -149,10 +201,10 @@ export default {
         // }
         ],
         yAxis: {
-            type: 'value',
+            type: 'category',
             axisLine: {
                 lineStyle: {
-                    type: 'solid',
+                    type: 'none',
                     color:'white'
                 }
             }
@@ -177,8 +229,6 @@ export default {
 
       };
       flowChart.setOption(option)
-      // this.updatePosition(flowChart,option)
-      // initInvisibleGraphic(flowChart,option)
       let that = this;
       flowChart.off('click');
       flowChart.on('click', function(params){
@@ -218,41 +268,12 @@ export default {
                       offset: [0, 20],
                       color: node.itemStyleColor ?  stateColorTemp[node.itemStyleColor]:stateColorTemp.lock
                 },
-                // backgroundColor: {
-                //     // image: 'image://http://localhost:8075/static/images/chart/flowchart-dsrql.png'
-                //     image: 'image://http://localhsot:8075/static/images/chart/'+imgListTemp[node.attributes.modularity_class] + '_lock.png'
-                // },
-                // borderColor: 'black'
-                //    formatter: [
-                //         '{a|这段文本采用样式a}',
-                //         '{b|这段文本采用样式b}这段用默认样式{x|这段用样式x}'
-                //     ].join('\n'),
-                //     rich: {
-                //         a: {
-                //             color: 'red',
-                //             lineHeight: 10
-                //         },
-                //         b: {
-                //             backgroundColor: 'red',
-                //             height: 80
-                //         },
-                //         x: {
-                //             fontSize: 18,
-                //             fontFamily: 'Microsoft YaHei',
-                //             borderColor: '#449933',
-                //             borderRadius: 4
-                //         }
-                //     }
               };
               let curState = node.itemStyleColor ?  node.itemStyleColor: 'lock';
               let url = 'image://./static/images/chart/'+imgListTemp[node.attributes.modularity_class] + '_'+curState+'.png';
-            //   console.log(url)
               node.symbolSize=[98, 114];
-            //   node.sizeFlag=[23, 26];
               node.symbol = url;
             //   node.symbol = 'image://http://localhsot:8075/static/images/chart/'+imgListTemp[node.attributes.modularity_class] + '_lock.png'
-            //   node.zlevel = -1,
-                // node.symbol.borderRadius = 20;
             //   node.symbol = svgDataTemp[node.attributes.modularity_class];
               // node.symbol = 'path://M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z'
           } else {
@@ -266,7 +287,7 @@ export default {
       let mainLinkDataTemp = this.mainLinkData
       let graphDataTemp = this.graphData
       let _this = this
-      let unPassArray = []
+    //   let unPassArray = []
       // 初始顔色狀態
       mainLinkDataTemp.forEach((v,i)=> {
         v.textStyle.backgroundColor = this.stateColor.lock
@@ -350,132 +371,47 @@ export default {
       for (let k = graphDataTemp.nodes.length - 1;k>=0;k--){
         // 记录当前节点
         let curNode = graphDataTemp.nodes[k]
-        this.recursionTempLinkArray (graphDataTemp, curNode, unPassArray)
-        // if (curNode.curLinkState === 'lock') {
-        //   // 如果当前节点=='lock'说明其未解锁，不操作，
-        //   console.log(11111111111111)
-        //   console.log(curNode)
-        // } else {
-
-        // }
+        this.recursionTempLinkArray (graphDataTemp, curNode)
       }
-
-
- //-----old-----old--------old-------修改link连接线状态----//
-      // for (let k = graphDataTemp.nodes.length - 1;k>=0;k--){
-      //   debugger
-      //   let source = graphDataTemp.nodes[k].source
-      //   if (graphDataTemp.nodes[k].itemStyleColor!=="#b2b2b2") {
-      //     let jArray = []
-      //     let tempArray = graphDataTemp.links.filter((element, i)=>{
-      //       if(element.target === source) {
-      //         jArray.push(i)
-      //       }
-      //       return false
-      //     })
-      //     jArray.forEach((v,i)=>{
-      //       if(graphDataTemp.links[v].source.indexOf('temp')===-1){
-      //         graphDataTemp.links[v].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
-      //         if (graphDataTemp.links[v].source.indexOf('_')>-1 && graphDataTemp.links[v].target.indexOf('_')>-1){
-      //           unPassArray.push(graphDataTemp.nodes[k].source)
-      //         }
-      //       }
-      //     })
-      //   }
-      // }
- // 修改link连接线状态
-      // for (let k = graphDataTemp.nodes.length - 1;k>=0;k--){
-      //   let source = graphDataTemp.nodes[k].source
-      //   if (graphDataTemp.nodes[k].itemStyleColor!=="#b2b2b2") {
-      //     let jArray = []
-      //     let tempArray = graphDataTemp.links.filter((element, i)=>{
-      //       if(element.target === source) {
-      //         jArray.push(i)
-      //       }
-      //       return false
-      //     })
-      //     if(jArray.length === 1 ) {
-      //       if (unPassArray.indexOf(graphDataTemp.links[jArray[0]].source)=== -1) {
-      //         graphDataTemp.links[jArray[0]].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
-      //         if (graphDataTemp.links[jArray[0]].source.indexOf('temp')>-1) {
-
-      //            _this.recursion(graphDataTemp, jArray[0],unPassArray)
-      //         }
-      //       }
-      //     } else if(jArray.length>1){
-      //       let array = {}
-      //       jArray.forEach((v,i)=>{
-      //         if(graphDataTemp.links[v].source.indexOf('temp') > -1){
-      //           array[v] = {}
-      //           _this.recursion1(graphDataTemp, v,unPassArray,array)
-      //         }
-      //       })
-      //       let parentArray = []
-      //       let str =JSON.stringify(array)
-      //       let obj
-      //       let boo = true
-      //       while (boo){
-      //           str = str.replace(/((\")(\d+)(\")(:)(\{)(\})(,)?){1,}/g, '')
-      //           let newStr = str.replace(/((\")(\d+)(\")(:)(\{)(\})(,)?){1,}/g, '')
-      //         if(str.length == newStr.length) {
-      //           boo = false
-      //           obj = JSON.parse(str.replace(/((\})(,)(\})){1,}/g,'}}'))
-      //         } else {
-      //           str = newStr
-      //         }
-      //       }
-      //       for (var key in obj) {
-      //         if (Object.keys(obj[key]).length === 0) {
-      //           return
-      //         }
-      //         if(!isNaN(key)){
-      //           graphDataTemp.links[parseInt(key)].lineStyle.normal.color = graphDataTemp.nodes[k].itemStyleColor
-      //           this.recursion3(obj[key],graphDataTemp.links, graphDataTemp.nodes[k].itemStyleColor)
-      //         }
-      //       }
-      //     }
-
-      //   }
-      // }
-    },
-    findAdjacentIndexLinkArray (allArray, source) {
-      let array = new Array()
-      allArray.filter((v, i)=>{
-        if(source == v.target) {
-          array.push(i)
-          return true
-        }
-        return false
-      })
-      // debugger
-      return array
     },
     // 找到当前节点的所有前节点并返回array ,source为当前节点
     findAdjacentLinkArray (allArray, source) {
       let array = new Array()
-      allArray.filter((v, i)=>{
-        if(source == v.target) {
-          array.push(v)
-          return true
-        }
-        return false
-      })
+      if(source) {
+          allArray.filter((v, i)=>{
+            if(source == v.target) {
+              array.push(v)
+              return true
+            }
+            return false
+          })
+      }
       // debugger
       return array
     },
-    recursionTempLinkArray (graphDataTemp, curNode, unPassArray) {
-        // let filterPreSourceLinkArray = new Array()
-        // let filterPreTargetLinkArray = new Array()
+    // 找到当前节点的所有后节点并返回array ,source为当前节点
+    findNextLinkArray (allArray, source) {
+      let array = new Array()
+      if(source) {
+          allArray.filter((v, i)=>{
+            if(source == v.source) {
+              array.push(v)
+              return true
+            }
+            return false
+          })
+      }
+      // debugger
+      return array
+    },
+    recursionTempLinkArray (graphDataTemp, curNode) {
         // 寻找当前节点的前一节点
         // debugger
         let filterPreSourceLinkArray = this.findAdjacentLinkArray(graphDataTemp.links, curNode.source)
         // 寻找所有 -> 指向当前节点的target 的所有节点
-        let filterPreTargetLinkArray = this.findAdjacentLinkArray(graphDataTemp.links, curNode.target)
-         if (curNode.curLinkState === 'lock') {
+        // let filterPreTargetLinkArray = this.findAdjacentLinkArray(graphDataTemp.links, curNode.target)
+        if (curNode.curLinkState === 'lock') {
           // 如果当前节点=='lock'说明其未解锁，不操作，
-          if (curNode.source.indexOf('temp') == -1) {
-              // 当前节点非临时节点，
-          }
           return
         }
         let checkNumber = {
@@ -483,44 +419,42 @@ export default {
             parent: null,
             tempList: []
         }
-        // // 如果当前节点是已解锁节点，则他前面的都选中变为已解锁状态
-        // filterPreSourceLinkArray.forEach((v,i)=> {
-        //     if (v.source.indexOf('temp') > -1) {
-        //         v.lineStyle = this.lineStyle[curNode.curLinkState]
-        //         v.curLinkState = curNode.curLinkState
-        //         this.recursionTempLinkArray(graphDataTemp,v,unPassArray)
-        //     }
-        // })
         if (filterPreSourceLinkArray.length == 1) {
             // 如果数组集合元素为1，说明当前元素只有一个前节点，则前一节点的颜色，必然和当前节点颜色一致
             filterPreSourceLinkArray[0].lineStyle = this.lineStyle[curNode.curLinkState]
             filterPreSourceLinkArray[0].curLinkState = curNode.curLinkState
             if (filterPreSourceLinkArray[0].source.indexOf('temp') > -1) {
             // 前一节点不是临时节点，则默认选中
-            this.recursionTempLinkArray(graphDataTemp, filterPreSourceLinkArray[0], unPassArray)
+            this.recursionTempLinkArray(graphDataTemp, filterPreSourceLinkArray[0])
             }
         } else if (filterPreSourceLinkArray.length > 1) {
             // 如果有多个前节点，则找到前节点是否包含temp节点
             // 如果不包含temp 节点，再遍历前节点，同一列节点优先选中，分支横向节点不选中
             // let filterPresourcePassArray = new Array()
             for (let f = 0;f <filterPreSourceLinkArray.length;f++) {
-            // 正则表达式删选，除去最后一位的，节点111
-            let curFilterPreSourceLink = filterPreSourceLinkArray[f]
-            let str = curFilterPreSourceLink.source.substring(0, curFilterPreSourceLink.source.length - 1)
-            if(curFilterPreSourceLink.curLinkState == 'lock') {
-                // 过滤的节点curlinkstate为lock说明未解锁(也可能为temp节点)，此时，放入temp节点
-                if (curFilterPreSourceLink.source.indexOf('temp') > -1) {
-                checkNumber.tempList.push(curFilterPreSourceLink)
-                }// 前一节点为temp临时节点,并且当前状态是已解锁，则修改状态为已解锁
-            } else {
-                if (str !== '' && curNode.source.indexOf(str) > -1) {
-                // str不为空，并且source有相同部分，说明是相邻节点（状态不是“未解锁”） ，记录
-                checkNumber.hasSiblingsNumber = f
-                } else {
-                // 非相邻节点，记录
-                checkNumber.parent = f
+                // 正则表达式删选，除去最后一位的，节点111
+                let curFilterPreSourceLink = filterPreSourceLinkArray[f]
+                if (curNode.curLinkState === 'unLock' && curFilterPreSourceLink.curLinkState.indexOf('lock')===-1){
+                    curFilterPreSourceLink.lineStyle = this.lineStyle[curNode.curLinkState]
+                    curFilterPreSourceLink.curLinkState = curNode.curLinkState
                 }
-            }
+                let str = curFilterPreSourceLink.source.substring(0, curFilterPreSourceLink.source.length - 1)
+                if(curFilterPreSourceLink.curLinkState == 'lock') {
+                    // 过滤的节点curlinkstate为lock说明未解锁(也可能为temp节点)
+                    if (curFilterPreSourceLink.source.indexOf('temp') > -1) {
+                        // 如果是temp节点
+                        checkNumber.tempList.push(curFilterPreSourceLink)
+                    }
+                    // 前一节点为temp临时节点,并且当前状态是已解锁，则修改状态为已解锁
+                } else {
+                    if (str !== '' && curNode.source.indexOf(str) > -1) {
+                    // str不为空，并且source有相同部分，说明是相邻节点（状态不是“未解锁”） ，记录
+                    checkNumber.hasSiblingsNumber = f
+                    } else {
+                    // 非相邻节点，记录
+                    checkNumber.parent = f
+                    }
+                }
             }
 
             if (typeof checkNumber.hasSiblingsNumber == 'number') {
@@ -539,171 +473,83 @@ export default {
                     checkNumber.tempList[0].lineStyle = this.lineStyle[curNode.curLinkState]
                     checkNumber.tempList[0].curLinkState = curNode.curLinkState
 
-                    this.recursionTempLinkArray(graphDataTemp, checkNumber.tempList[0], unPassArray)
+                    this.recursionTempLinkArray(graphDataTemp, checkNumber.tempList[0])
+                } else {
+                    checkNumber.tempList.forEach((v,i)=>{
+                        this.updateTempLinkByNotTempArray(graphDataTemp, v.source, curNode)
+                    })
                 }
             }
-
         }
     },
-        // else {
-            //   // 有多个temp节点(待开发)
-            //     let that = this
-            //     for (let m = 0; m < checkNumber.tempList.length;m++) {
-            //       let touteTempList = {
-            //           current: checkNumber.tempList[m],
-            //           tempList: [],
-            //           contain: false
-            //       }
-            //       let source = checkNumber.tempList[m].source
-            //       if (source == 'temp7_2_1' || source=='temp4_3_1') {
-            //         // debugger
-            //       }
-            //       let boo = false
-            //       graphDataTemp.links.forEach((v, i)=>{
-            //       // for (let i = graphDataTemp.links.length -1; i >= 0; i--) {
-            //       //     let v = graphDataTemp.links[i]
-            //           if(v.target === source) {
-            //             // tempList.push(v)
-            //             // let tempIndexObj= {}
-            //             // tempIndexObj[i] = {}
-            //             // tempIndexObj[i].node = v
-            //             // let other = false
-            //             if (v.source.indexOf('temp')) {
-            //                 // 如果找到的节点包含temp节点，继续遍历
-            //                 touteTempList.tempList.push({
-            //                     current: v,
-            //                     tempList: [],
-            //                     contain: false
-            //                 })
-            //                 that.findTempIndexArray(graphDataTemp.links, v, touteTempList.tempList[touteTempList.tempList.length -1])
-            //             } else {
-            //                 //如果找到的节点不包含temp，判断当前节点的状态，如果是未解锁，进行更改
-            //                 if (v.curLinkState == 'lock') {
+    updateTempLinkByNotTempArray (graphDataTemp, source, curNode) {
+        let firstNodes = this.findAdjacentLinkArray(graphDataTemp.links, source)
+        // let isTrue = firstNodes.length === 1
+        firstNodes.forEach((v1,i1)=>{
+            // if (v1.target === v.source) {
+                if (v1.source.indexOf('temp') > -1) {
+                    if (v1.curLinkState !== 'lock') {
+                        if (firstNodes.length == 1) {
+                            v1.curLinkState = curNode.curLinkState
+                            v1.lineStyle = this.lineStyle[curNode.curLinkState]
+                            // this.updateTempLinkByNotTempArray(graphDataTemp,v1.source, curNode)
+                        }
+                    }
+                    if (v1.id == '7_1') {
+                        alert(1)
+                        debugger
+                    }
+                    this.updateTempLinkByNotTempArray(graphDataTemp,v1.source, curNode)
 
-            //                 } else {
-            //                     checkNumber.tempList[m].curLinkState = v.curLinkState
-            //                 }
-            //             }
-
-            //             // // console.log(tempIndexObj)
-            //             // let tempStr = JSON.stringify(tempIndexObj)
-            //             // if (tempStr.indexOf('"curLinkState":"complete"')  > -1 ||
-            //             // tempStr.indexOf('"curLinkState":"doing"')  > -1 ||
-            //             // tempStr.indexOf('"curLinkState":"unLock"')  > -1) {
-            //             //     alert(1)
-            //             //       v.lineStyle = this.lineStyle.complete
-            //             //       v.curLinkState = "complete"
-            //             //       boo = true
-            //             // }
-            //           }
-            //       })
-            //       if (boo) {
-            //         checkNumber.tempList[m].lineStyle = this.lineStyle.complete
-            //         checkNumber.tempList[m].curLinkState = "complete"
-            //       }
-
-
-            //       // graphDataTemp.links.forEach((v, i)=>{
-            //       //   if(v.target === source) {
-            //       //     let tempIndexObj= {}
-            //       //     let checkIndex = null
-            //       //     tempIndexObj[i] = {}
-            //       //     tempIndexObj[i].node = v
-            //       //     that.findTempIndexArray(graphDataTemp.links, tempIndexObj, i, checkIndex)
-            //       //     console.log(tempIndexObj)
-            //       //     debugger
-            //       //     let str = JSON.stringify(tempIndexObj[i])
-            //       //     if (str.indexOf('"curLinkState":"complete"')  > -1 ||
-            //       //         str.indexOf('"curLinkState":"doing"')  > -1 ||
-            //       //         str.indexOf('"curLinkState":"unLock"')  > -1) {
-            //       //           v.lineStyle = {
-            //       //                           normal: {
-            //       //                             color: '#f2a010',
-            //       //                             width: 2
-            //       //                           }
-            //       //                         }
-            //       //           v.curLinkState = "doing"
-            //       //     }
-            //       //   }
-            //       // })
-            //     }
-            //   }
-    findTempIndexArray(links, v, touteTempList) {
-      let source = v.source
-      let id = v.id
-    //   if (source.indexOf('temp') > -1) {
-        let that = this
-        for (let i = links.length -1; i>=0 ; i--) {
-            let v = links[i]
-            if(v.target === source) {
-                if (v.source.indexOf('temp')) {
-                // 如果找到的节点包含temp节点，继续遍历
-                    touteTempList.tempList.push({
-                        current: v,
-                        tempList: [],
-                        contain: false
-                    })
-                    that.findTempIndexArray(links, v, touteTempList.tempList[touteTempList.tempList.length -1])
                 } else {
-                    //如果找到的节点不包含temp，判断当前节点的状态，如果是未解锁，进行更改
-                    if (v.curLinkState == 'lock') {
+                    // 不是临时节点，判断节点状态
+                    if (v1.curLinkState === 'lock') {
+                        // 节点未解锁，暂不管
+                        // let result = this.updateTempLinkByNotTempArray(graphDataTemp,v1,curNode)
+                        // 判断当前节点id是否为temp，如果是temp，找到id=source的状态
+                        if (v1.id !== v1.source) {
+                            let _index = _.findIndex(graphDataTemp.links, (chr)=>{
+                                return chr.id === v1.source
+                            })
+                            if (_index > -1 && graphDataTemp.links[_index].curLinkState !== 'lock') {
+                                debugger
+                                let searchNodes = this.findNextLinkArray(graphDataTemp.links, graphDataTemp.links[_index].source)
+                                debugger
+                                searchNodes.forEach((v,i)=>{
+                                    if(v.curLinkState !== 'lock'){
+                                        let _index1 = _.findIndex(graphDataTemp.links, (chr)=>{
+                                            return chr.id === v.target
+                                        })
+                                        if (_index1 > -1 && graphDataTemp.links[_index1].curLinkState !== 'lock') {
 
+                                        } else {
+                                            v1.curLinkState = curNode.curLinkState
+                                            v1.lineStyle = this.lineStyle[curNode.curLinkState]
+                                            this.updateNextLinkByNotTempArray(graphDataTemp, v1, curNode)
+                                        }
+
+                                    }
+                                })
+                            }
+                        }
                     } else {
-                        // checkNumber.tempList[m].curLinkState = v.curLinkState
-                        console.log(222222222222)
-                        console.log(touteTempList)
-                        break
+                        v1.curLinkState = curNode.curLinkState
+                        v1.lineStyle = this.lineStyle[curNode.curLinkState]
+                        this.updateNextLinkByNotTempArray(graphDataTemp, v1, curNode)
                     }
                 }
-            }
-        }
-    //   }
+            // }
+            // }
+        })
     },
-    // findTempIndexArray(links, tempIndexObj, m) {
-
-    //   let tempObj = tempIndexObj[m]
-    //   let source = tempIndexObj[m].node.source
-    //   let id = tempIndexObj[m].node.id
-    //   let boo = false
-    //   let current = null
-    //   if (source.indexOf('temp') > -1) {
-    //     let that = this
-    //     for (let i = links.length -1; i>=0 ; i--) {
-    //       let v = links[i]
-    //       if(v.target === source) {
-    //         let checkIndex = null
-    //           tempObj[i] = {}
-    //           tempObj[i].node = v
-    //           that.findTempIndexArray(links, tempObj, i, false)
-    //         let str = JSON.stringify(tempIndexObj[m])
-
-    //         if (str.indexOf('"curLinkState":"complete"')  > -1 ||
-    //             str.indexOf('"curLinkState":"doing"')  > -1 ||
-    //             str.indexOf('"curLinkState":"unLock"')  > -1) {
-    //               v.lineStyle = this.lineStyle.complete
-    //               v.curLinkState = "complete"
-    //               boo = true
-    //               current = v
-    //         }
-    //       }
-    //     }
-
-    //     // if (boo && current.source.indexOf('temp') === -1) {
-    //     //   debugger
-    //     //     let s = v.source
-    //     //     let index = _.findIndex(links,(chr)=>{
-    //     //       return chr.target = s
-    //     //     })
-    //     //     links[index].lineStyle = {
-    //     //                                 normal: {
-    //     //                                   color: '#f2a010',
-    //     //                                   width: 2
-    //     //                                 }
-    //     //                               }
-    //     //     links[index].curLinkState = "doing"
-    //     //   }
-    //   }
-    // },
+    updateNextLinkByNotTempArray (graphDataTemp, v, curNode) {
+        let firstNodes = this.findNextLinkArray(graphDataTemp.links, v.target)
+        if (firstNodes.length == 1) {
+            firstNodes[0].lineStyle = this.lineStyle[curNode.curLinkState]
+            firstNodes[0].curLinkState = curNode.curLinkState
+            this.updateNextLinkByNotTempArray(graphDataTemp, firstNodes[0], curNode)
+        }
+    },
     async mountedInit() {
       this.getFlowStatusByCaseId(this.caseId);
     //   this.data = {
@@ -736,7 +582,34 @@ export default {
     //       this.data = {
     //     completeLink: 'a36b59bd27ff4b6fe96e1b06390d204h,2c9029ee6cac9281016caca8ea500003,2c9029d56c8f7b66016c8f8043c90001,2c9029e16c753a19016c755fe1340001,2c9029ac6c26fd72016c27247b290003,2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002',//已完成
     //     //责令改正2c9029ee6cac9281016caca9a0000004
+    //     doingLink: 'a',// 进行中
+    //     //决定执行
+    //     unLockLink: '2c9029ee6cac9281016cacaadf990006',// 已解锁
+    //     completeMainLink: '0,1,2',
+    //     doingMainLink: "3"
+    //   }
+    //   this.data = {
+    //     completeLink: '2c9029ee6cac9281016caca8ea500003,2c9029d56c8f7b66016c8f8043c90001,2c9029e16c753a19016c755fe1340001,2c9029ac6c26fd72016c27247b290003,2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002',//已完成
+    //     //责令改正2c9029ee6cac9281016caca9a0000004
     //     doingLink: '',// 进行中
+    //     //决定执行
+    //     unLockLink: '2c9029ee6cac9281016cacaadf990006',// 已解锁
+    //     completeMainLink: '0,1,2',
+    //     doingMainLink: "3"
+    //   }
+    // this.data = {
+    //     completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002',//已完成
+    //     //责令改正2c9029ee6cac9281016caca9a0000004
+    //     doingLink: 'a36b59bd27ff4b6fe96e1b06390d204f',// 进行中
+    //     //决定执行
+    //     unLockLink: '2c9029ee6cac9281016cacaadf990006',// 已解锁
+    //     completeMainLink: '0,1,2',
+    //     doingMainLink: "3"
+    //   }
+    //       this.data = {
+    //     completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002',//已完成
+    //     //责令改正2c9029ee6cac9281016caca9a0000004
+    //     doingLink: 'a36b59bd27ff4b6fe96e1b06390d204g',// 进行中
     //     //决定执行
     //     unLockLink: '2c9029ee6cac9281016cacaadf990006',// 已解锁
     //     completeMainLink: '0,1,2',
@@ -759,12 +632,12 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-// @import "../../../css/caseHandle/index.less";
-// @import "../../css/caseHandle/index.less";
-@import "../../css/documentForm.less";
+<style lang="scss" scoped>
+// @import "@/assets/css/caseHandle/index.scss";
+// @import "@/assets/css/caseHandle/index.scss";
+@import "@/assets/css/documentForm.scss";
 </style>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .chartBg {
     background-color: white;
     background-image: url('../../../static/images/chart/cross-line.png');

@@ -26,7 +26,7 @@
               <div class="col">
                 <el-form-item prop="tempNo" label="案号：">
                   <el-input
-                   
+
                     clearable
                     class="w-120"
                     v-model="formData.tempNo"
@@ -414,7 +414,7 @@ export default {
     // 提交表单
     addFormData(handleType) {
       this.caseLinkDataForm.formData = JSON.stringify(this.formData);
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;  
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
         //0暂存 1提交
         this.caseLinkDataForm.status = handleType;
         this.$refs["docForm"].validate(valid => {
@@ -428,7 +428,7 @@ export default {
                   message: "保存成功"
                 });
                 if(handleType == 1){ //保存成功 跳转 pdf
-                  this.$router.replace({ 
+                  this.$router.replace({
                     name: 'establish'
                   });
                 }
@@ -449,7 +449,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-@import "../../../../css/caseHandle/caseDocument.less";
-@import "../../../../css/documentForm.less";
+<style lang="scss" scoped>
+@import "@/assets/css/caseHandle/caseDocument.scss";
+@import "@/assets/css/documentForm.scss";
 </style>

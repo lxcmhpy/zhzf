@@ -6,11 +6,11 @@ import { router } from "./router/index";
 import store from "./store";
 import ElementUI from "element-ui";
 import 'element-ui/lib/theme-chalk/index.css';
-import "@/js/dateFormat";
-import util from "@/js/util";
+import "@/common/js/dateFormat";
+import util from "@/common/js/util";
 import qs from 'qs';
-import hasPermission from "@/js/hasPermission"
-// import mySignture from "@/js/mySignture";
+import hasPermission from "@/common/js/hasPermission"
+// import mySignture from "@/common/js/mySignture";
 
 
 Vue.use(ElementUI);

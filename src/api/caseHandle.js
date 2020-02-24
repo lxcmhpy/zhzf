@@ -1,5 +1,5 @@
-import request from "@/js/request";
-import { setCancelSource } from "@/js/cancelToken";
+import request from "@/common/js/request";
+import { setCancelSource } from "@/common/js/cancelToken";
 import Vue from "vue";
 let vm = new Vue();
 
@@ -28,7 +28,7 @@ export function getCaseTypeApi(data) {
   });
 }
 //获取行业类别
-export function getIndustryCategoryApi(data) { 
+export function getIndustryCategoryApi(data) {
     let params = {
       pid:data
     }
@@ -41,7 +41,7 @@ export function getIndustryCategoryApi(data) {
     });
 }
 //根据执法门类行业类别 查询违法行为
-export function getIllegaActApi(data) { 
+export function getIllegaActApi(data) {
     console.log(data);
     return request({
       url: "/sys/bnslawCause/findCaseCauseByPage",
@@ -53,9 +53,9 @@ export function getIllegaActApi(data) {
 }
 
 //添加或修改案件基本信息
-export function saveOrUpdateCaseBasicInfoApi(data) { 
+export function saveOrUpdateCaseBasicInfoApi(data) {
   console.log(data);
-  
+
   let  data2  =  vm.$qs.stringify(data);
   console.log(data2);
   return request({
@@ -68,7 +68,7 @@ export function saveOrUpdateCaseBasicInfoApi(data) {
 }
 
 //修改部分案件基本信息   把立案登记表的案由添加到案件信息里
-export function updatePartCaseBasicInfoApi(data) { 
+export function updatePartCaseBasicInfoApi(data) {
   let  data2  =  vm.$qs.stringify(data);
   console.log(data2);
   return request({
@@ -82,7 +82,7 @@ export function updatePartCaseBasicInfoApi(data) {
 
 
 //根据违法行为id查询绑定的法条
-export function findLawRegulationsByCauseIdApi(causeId) { 
+export function findLawRegulationsByCauseIdApi(causeId) {
   console.log(causeId);
   return request({
     url: "/sys/bnslawCause/findLawRegulationsByCauseId/"+causeId,
@@ -93,7 +93,7 @@ export function findLawRegulationsByCauseIdApi(causeId) {
 }
 
 //查询自由裁量标准
-export function findJudgFreedomListApi() { 
+export function findJudgFreedomListApi() {
   return request({
     url: "/sys/bnslawCause/findDiscretionListByForm",
     method: "get",
@@ -102,7 +102,7 @@ export function findJudgFreedomListApi() {
   });
 }
 //查询机构下的执法人员
-export function findLawOfficerListApi(organId) { 
+export function findLawOfficerListApi(organId) {
   let params={
     organId:organId
   }
@@ -116,7 +116,7 @@ export function findLawOfficerListApi(organId) {
 }
 
 //根据案件ID获取案件信息
-export function getCaseBasicInfoApi(data) { 
+export function getCaseBasicInfoApi(data) {
   return request({
     url: "/doc/caseBasicInfo/findById/"+data.id,
     method: "get",
@@ -127,7 +127,7 @@ export function getCaseBasicInfoApi(data) {
 }
 
 //保存文书
-export function addDocDataApi(data) { 
+export function addDocDataApi(data) {
   console.log(data);
   return request({
     url: "/doc/data/create",
@@ -139,7 +139,7 @@ export function addDocDataApi(data) {
 }
 
 //根据文书模板ID删除文书信息
-export function delDocDataByDocIdApi(data) { 
+export function delDocDataByDocIdApi(data) {
   console.log(data);
   return request({
     url: "/doc/data/findByCaseIdAndDocId/"+data.id,
@@ -150,7 +150,7 @@ export function delDocDataByDocIdApi(data) {
   });
 }
 //根据案件ID和文书模板ID查找文书信息
-export function getDocDataByCaseIdAndDocIdApi(data) { 
+export function getDocDataByCaseIdAndDocIdApi(data) {
   console.log(data);
   return request({
     url: "/doc/data/findByCaseIdAndDocId",
@@ -163,7 +163,7 @@ export function getDocDataByCaseIdAndDocIdApi(data) {
 }
 
 //根据案件ID和表单模板ID查找表单信息
-export function getFormDataByCaseIdAndFormIdApi(data) { 
+export function getFormDataByCaseIdAndFormIdApi(data) {
   console.log(data);
   return request({
     url: "/doc/linkData/findByCaseIdAndLinkTypeId/"+data.casebasicInfoId+"/"+data.caseLinktypeId,
@@ -178,7 +178,7 @@ export function getFormDataByCaseIdAndFormIdApi(data) {
 
 
 //保存或修改表单
-export function addFormDataApi(data) { 
+export function addFormDataApi(data) {
   console.log(data);
   return request({
     url: "/doc/linkData/saveOrUpdateLink",
@@ -189,7 +189,7 @@ export function addFormDataApi(data) {
   });
 }
 //案件列表
-export function queryCaseBasicInfoListPageApi(data) { 
+export function queryCaseBasicInfoListPageApi(data) {
   return request({
     url: "/doc/caseBasicInfo/queryCaseBasicInfoListPage",
     method: "get",
@@ -209,7 +209,7 @@ export function getDocListByCaseIdAndFormIdApi(data){
   });
 }
 //pdf页的提交
-export function submitPdfApi(data) { 
+export function submitPdfApi(data) {
   return request({
     url: "/doc/linkData/jumpNextLink",
     method: "post",
@@ -230,8 +230,8 @@ export function saveOrUpdateLinkApi(data){
   });
 }
 
-//pdf页的审批 
-export function approvalPdfApi(data) { 
+//pdf页的审批
+export function approvalPdfApi(data) {
   console.log(data);
   return request({
     url: "/doc/linkData/handleApprove",
@@ -242,7 +242,7 @@ export function approvalPdfApi(data) {
   });
 }
 //获取下一环节
-export function getNextLinkAPi(caseBasicInfoId) { 
+export function getNextLinkAPi(caseBasicInfoId) {
   return request({
     url: "doc/caseBasicInfo/findNextLinkUrlByCaseId/"+caseBasicInfoId,
     method: "get",
@@ -252,7 +252,7 @@ export function getNextLinkAPi(caseBasicInfoId) {
 }
 
 //点击下一环节  更改流程图状态
-export function setFlowStatusAPi(data) { 
+export function setFlowStatusAPi(data) {
   return request({
     url: "doc/linkData/jumpNextStep",
     method: "post",
@@ -262,8 +262,8 @@ export function setFlowStatusAPi(data) {
   });
 }
 
-//查询审批角色列表 
-export function getApprovePeopleApi(caseBasicInfoId) { 
+//查询审批角色列表
+export function getApprovePeopleApi(caseBasicInfoId) {
   return request({
     url: "/doc/linkData/findApproveRole/"+caseBasicInfoId,
     method: "get",
@@ -273,7 +273,7 @@ export function getApprovePeopleApi(caseBasicInfoId) {
 }
 
 //查询所有环节
-export function getQueryLinkListApi() { 
+export function getQueryLinkListApi() {
   return request({
     url: "/caseTemplate/linkType/queryLinkList",
     method: "get",
@@ -282,7 +282,7 @@ export function getQueryLinkListApi() {
   });
 }
 //查询所有案件类型
-export function getQueryCaseTypeListApi() { 
+export function getQueryCaseTypeListApi() {
   return request({
     url: "/sys/caseType/list",
     method: "get",
@@ -292,7 +292,7 @@ export function getQueryCaseTypeListApi() {
 }
 
 //通过表单（文书）类型Id查询表单（文书）绑定的案件基本信息属性
-export function findCaseAllBindPropertyApi(data) { 
+export function findCaseAllBindPropertyApi(data) {
   return request({
     url: "/doc/propertyBind/findAllBindProperty/"+data.typeId+"/"+data.caseBasicInfoId,
     method: "get",
@@ -300,6 +300,7 @@ export function findCaseAllBindPropertyApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
 
 //根据案件ID查询  （使用场景：案件调查报告->证据材料->文书）
 export function findByCaseBasicInfoIdApi(caseBasicInfoId) { 
@@ -323,3 +324,36 @@ export function findEvidencePicApi(data) {
   });
 }
 
+// 获取归档目录
+export function findByMlCaseId(caseId) {
+    return request({
+        url: "/sys/file/findByMlCaseId/"+caseId,
+        method: "get",
+        showloading: true,
+        cancelToken: setCancelSource()
+      });
+}
+export function findByCondition(data){
+  let data2 = vm.$qs.stringify(data);
+  console.log('zhengju',data2);
+    return request({
+        url: "/doc/evidence/findByCondition",
+        method: "post",
+        data:data2,
+        showloading: true,
+        cancelToken: setCancelSource()
+      });
+}
+
+//添加/修改证据 （使用场景：当事人权利添加证据调用文件上传后拿到ID再调用该添加接口）
+export function saveOrUpdateEvdencenApi(data) { 
+  let data2 = vm.$qs.stringify(data);
+  console.log(data2);
+  return request({
+    url: "doc/evidence/saveOrUpdateEvdencen",
+    method: "post",
+    data:data2,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}

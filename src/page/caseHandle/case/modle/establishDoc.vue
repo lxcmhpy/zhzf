@@ -1,6 +1,6 @@
 <template>
   <div class="print_box">
-    <div class="print_info"> 
+    <div class="print_info">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">立案登记表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
@@ -266,7 +266,7 @@
 </template>
 <script>
 import overflowInput from "./overflowInput";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
   components: {
@@ -432,6 +432,6 @@ export default {
   }
 }
 </script>
-<style lang="less" >
-@import "../../../../css/caseHandle/caseDocModle.less";
+<style lang="scss" >
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

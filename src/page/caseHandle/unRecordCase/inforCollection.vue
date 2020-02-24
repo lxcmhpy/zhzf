@@ -667,8 +667,8 @@
 import chooseLawPerson from "./chooseLawPerson";
 import punishDiag from "./punishDiag";
 import caseSlideMenu from '../components/caseSlideMenu'
-import iLocalStroage from "@/js/localStroage";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -899,7 +899,7 @@ export default {
 
       this.alreadyChooseLawPerson.forEach(item => {
         this.lawPersonListId.push(item.id);
-        //给表单数据赋值 
+        //给表单数据赋值
         staffIdArr.push(item.id);
         staffArr.push(item.lawOfficerName);
         certificateIdArr.push(item.selectLawOfficerCard);
@@ -1277,6 +1277,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/index.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/index.scss";
 </style>

@@ -1,0 +1,26 @@
+
+@import "./variables.scss";
+/*------------字体颜色设置------------字体颜色设置------------*/
+.blackC {
+    color: $blackC
+};
+.blackC2 {
+    color: $blackC2;
+}
+.blueC {
+    color: $blueC
+}
+
+
+
+/*------------背景颜色设置------------背景颜色设置------------*/
+.blackBg {
+    background: $blackC;
+}
+.blackBg2 {
+    background: $blackC2;
+}
+.blueBg {
+    background: $blueC;
+    color: #FFFFFF;
+}

@@ -20,7 +20,7 @@
   </el-dialog>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 export default {
   data() {
     return {
@@ -77,6 +77,6 @@ export default {
   mounted() {}
 };
 </script>
-<style lang="less">
-// @import "../../../css/caseHandle/index.less";
+<style lang="scss">
+// @import "@/assets/css/caseHandle/index.scss";
 </style>

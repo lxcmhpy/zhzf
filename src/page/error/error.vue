@@ -28,8 +28,8 @@ export default {
 };
 </script>
 
-<style lang="less">
-@import '../../css/variables.less';
+<style lang="scss">
+@import '@/assets/css/basicStyles/variables.scss';
 .error {
   width: 434px;
   height: 420px;
@@ -39,7 +39,7 @@ export default {
   position: relative;
   .text {
     font-family: "HYShuYuanHeiJ";
-    color: @mainC;
+    color: $mainC;
     font-size: 220px;
     display: flex;
     margin-top: 140px;

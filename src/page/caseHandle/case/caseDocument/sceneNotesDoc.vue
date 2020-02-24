@@ -47,7 +47,7 @@
                   ></el-date-picker>
                 </el-form-item>
                 <!-- <el-form-item prop="enforceEndTime" class="pdf_datapick">
-                  
+
                 </el-form-item>-->
               </td>
             </tr>
@@ -235,7 +235,7 @@
                       <br />救济途径，听取当事人陈述、申辩情况。）
                       <br />
                     </span>
-                    
+
                   </el-form-item>
                 </span>-->
                 <!-- 多行样式 -->
@@ -338,11 +338,11 @@
 </template>
 <script>
 import overflowInput from "../pdf/overflowInput";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // 验证规则
-import { validatePhone, validateIDNumber } from "@/js/validator";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 
 export default {
   components: {
@@ -460,7 +460,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "subOutputRank-print"
       },
-      
+
     };
   },
   computed: { ...mapGetters(["caseId"]) },
@@ -557,8 +557,8 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../../css/caseHandle/caseDocModle.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/caseDocModle.scss";
 .espacle {
   textarea {
     min-height: 114px !important;

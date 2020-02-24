@@ -45,8 +45,8 @@
 </template>
 <script>
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
-import iLocalStroage from "@/js/localStroage";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 
 export default {
   data() {
@@ -72,7 +72,7 @@ export default {
       });
     },
     //获取机构下数据
-    getCaseList2(searchData) {   
+    getCaseList2(searchData) {
       let data = searchData;
       data.flag = 0;
       data.userId = iLocalStroage.gets("userInfo").id;
@@ -117,6 +117,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/index.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/index.scss";
 </style>

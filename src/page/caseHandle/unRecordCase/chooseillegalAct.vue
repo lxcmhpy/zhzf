@@ -103,7 +103,7 @@ export default {
       console.log(this.cateName)
       this.visible = true;
       this.getIndustryCategory();
-      
+
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -165,6 +165,6 @@ export default {
   mounted() {}
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/index.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/index.scss";
 </style>

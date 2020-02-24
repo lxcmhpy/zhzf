@@ -16,7 +16,7 @@
             :model="caseSearchForm"
             ref="caseSearchForm"
             class="caseSearchForm"
-            label-width="90px" 
+            label-width="90px"
           >
             <div>
               <div class="item">
@@ -106,8 +106,8 @@
 <script>
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import caseRegisterDiag from "./caseRegisterDiag";
-import iLocalStroage from "@/js/localStroage";
-import { mixinGetCaseApiList } from "@/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 
 export default {
   data() {
@@ -178,6 +178,6 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../../css/caseHandle/index.less";
+<style lang="scss">
+@import "@/assets/css/caseHandle/index.scss";
 </style>

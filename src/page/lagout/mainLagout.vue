@@ -2,7 +2,7 @@
   <div class="fullscreen">
     <el-container id="fullscreenCon">
       <el-header id="mainHeader">
-        <div class="main_logo"><img src='../../../src/assets/image/main/logo.png' alt=""><span>全国交通运输执法管理系统</span></div>
+        <div class="main_logo"><img :src="'./static/images/main/logo.png'" alt=""><span>全国交通运输执法管理系统</span></div>
         <div class="headMenu"><headMenu @selectHeadMenu="getSelectHeadMenu"></headMenu></div>
         <div class="headerRight">
           <div>
@@ -39,8 +39,8 @@
   </div>
 </template>
 <script>
-import Cookies from "@/js/cookies";
-import iLocalStroage from "@/js/localStroage";
+import Cookies from "@/common/js/cookies";
+import iLocalStroage from "@/common/js/localStroage";
 import headMenu from "@/components/headMenu";
 import subLeftMenu from "@/components/subLeftMenu";
 import tabsMenu from "@/components/tabsMenu";
@@ -84,7 +84,7 @@ export default {
       iLocalStroage.removeAll();
       // this.$store.state.openTab = [];
       this.$store.dispatch('deleteAllTabs');
-      this.$router.push("/"); 
+      this.$router.push("/");
     },
     //个人设置  待完善
     goToUser() {
@@ -108,7 +108,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
-@import "../../css/main.less";
+<style lang="scss">
+@import "@/assets/css/main.scss";
 </style>
 
