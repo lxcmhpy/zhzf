@@ -306,41 +306,41 @@ div {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /deep/ .el-textarea {
+    ::v-deep .el-textarea {
       width: 100%;
     }
-    /deep/ .el-form {
+    ::v-deep .el-form {
       width: 100%;
-      /deep/ .el-form-item {
+      ::v-deep .el-form-item {
         margin-bottom: 10px !important;
-        /deep/ .el-input__inner {
+        ::v-deep .el-input__inner {
           border-radius: 2px;
         }
-        /deep/ .el-form-item__error {
+        ::v-deep .el-form-item__error {
           padding-top: 0;
         }
       }
     }
-    /deep/ .el-date-editor {
+    ::v-deep .el-date-editor {
       width: 100%;
       height: 32px !important;
       line-height: 32px !important;
-      /deep/ .el-range-input {
+      ::v-deep .el-range-input {
         width: 150px;
       }
-      /deep/ .el-range-input {
+      ::v-deep .el-range-input {
         width: 150px;
       }
-      /deep/ .el-range__icon {
+      ::v-deep .el-range__icon {
         position: absolute;
         right: 10px;
         top: 0;
       }
     }
-    /deep/ .el-select {
+    ::v-deep .el-select {
       width: 100%;
     }
-    /deep/ .el-input__inner {
+    ::v-deep .el-input__inner {
       padding-top: 0 !important;
       padding-bottom: 0 !important;
     }
