@@ -19,10 +19,10 @@
       <el-menu-item index="5">
         文书<br>列表
       </el-menu-item>
-      <el-menu-item index="6">
+      <el-menu-item index="6" @click="goTo('deliverReceiptForm')">
         送达<br>回证
       </el-menu-item>
-      <el-menu-item index="7">
+      <el-menu-item index="7" >
         证据<br>目录
       </el-menu-item>
       <!-- <el-menu-item index="8">

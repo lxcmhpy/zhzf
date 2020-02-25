@@ -1,11 +1,11 @@
 <template>
   <div class="print_box" id='btnB'>
     <div class="print_info">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf"> 
         <div class="doc_topic">送达回证</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <p>案由：
-          <el-form-item  prop="caseName" style="width:500px">
+          <el-form-item prop="caseName" style="width:500px">
             <el-input type='textarea' v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled></el-input>
           </el-form-item>
         </p>
@@ -15,8 +15,8 @@
               送达单位
             </td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item >
-                <el-input type='textarea' v-model="docData.sendUnit" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              <el-form-item prop="servedOrg">
+                <el-input type='textarea' v-model="docData.servedOrg" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
 
             </td>
@@ -26,7 +26,7 @@
               受送达人
             </td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item >
+              <el-form-item prop="recivePerson">
                 <el-input type='textarea' v-model="docData.recivePerson" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
 
@@ -36,9 +36,9 @@
             <td>
               代收人
             </td>
-            <td colspan="5" class="color_DBE4EF">
-              <el-form-item >
-                <el-input type='textarea' v-model="docData.recivePersonInstead" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <td colspan="5" class="color_DBE4EF" >
+              <el-form-item prop="recivePersonInstead">
+                <el-input type='textarea' v-model="docData.recivePersonInstead"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
 
             </td>
@@ -69,37 +69,38 @@
           </tr>
           <tr v-for="item in deliveryCertificatelist" :key="item.id">
             <td class="color_DBE4EF">
-              <el-form-item >
-                <el-input type='textarea' v-model="item.sendName" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              <el-form-item>
+                <el-input type='textarea' v-model="item.docName" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td class="color_DBE4EF">
-              <el-form-item >
+              <el-form-item>
               </el-form-item>
             </td>
             <td class="color_DBE4EF">
-              <el-form-item >
-                <el-input type='textarea' v-model="item.sendPlace"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              <el-form-item>
+                <el-input type='textarea' v-model="item.address" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td class="color_DBE4EF">
               <div class="pdf_data">
-                <el-form-item  class="pdf_datapick">
-                  <el-date-picker class="big_error" v-model="item.sendData" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                <el-form-item class="pdf_datapick">
+                  <el-date-picker class="big_error" v-model="item.servedDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
                   </el-date-picker>
                 </el-form-item>
               </div>
             </td>
             <td class="color_DBE4EF">
-              <el-form-item >
-                <el-select v-model="item.sendWay" placeholder="请选择">
+              <el-form-item>
+                <el-select v-model="item.servedType" placeholder="请选择">
                   <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
               </el-form-item>
             </td>
             <td class="color_DBE4EF">
-              <el-form-item >
+               <el-form-item>
+                <el-input type='textarea' v-model="item.receiver" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
 
@@ -119,7 +120,7 @@
           <tr>
             <td colspan="6" class="color_DBE4EF remark">
               <el-form-item label='备注'>
-                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.party"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
                 <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
@@ -129,9 +130,9 @@
       </el-form>
     </div>
 
-    <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData('docForm')" @backHuanjie="submitData"></casePageFloatBtns>
 
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
     <!-- <el-alert title="错误提示的文案" type="error"  show-icon>
     </el-alert> -->
   </div>
@@ -172,21 +173,16 @@ export default {
       isOverflow: false,
       isOverLine: false,
       docData: {
-        party: '',
-        partyIdNo: '',
-        partyAddress: "",
-        partyTel: "",
-        partyName: "",
-        partyUnitAddress: "",
-        partyUnitTel: "",
-        partyManager: "",
-        punishLaw: "",
-        illegalLaw: "",
-        tempPunishAmount: "",
-        socialCreditCode: "",
-        illegalFactsEvidence: "",
-        reconsiderationOrgan: "",
-        test: "",
+        caseName: "",
+        caseNumber: "",
+        servedOrg: "",
+        recivePerson: "",
+        recivePersonInstead: "",
+        docName: "",
+        address: "",
+        servedDate: "",
+        servedType: "",
+        receiver:''
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -202,57 +198,13 @@ export default {
         party: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
-        partyTel: [{ validator: validatePhone, trigger: "blur" }],
-        partyIdNo: [{ validator: validateIDNumber, trigger: "blur" }],
-        punishLaw: [
+        servedOrg: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
-        illegalLaw: [
+        recivePersonInstead: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
-        tempPunishAmount: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyIdNo: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        socialCreditCode: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyManager: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyUnitTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyUnitAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyName: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        illegalFactsEvidence: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        reconsiderationOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        bank: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        account: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        reconsiderationOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        litigationOrgan: [
+        recivePerson: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         makeDate: [
@@ -260,7 +212,7 @@ export default {
         ],
 
       },
-      deliveryCertificatelist: [{}, {}, {}, {}, {}],
+      deliveryCertificatelist: [{}, {}, {}],
       nameLength: 23,
       adressLength: 23,
       maxLengthOverLine: 122,
@@ -280,6 +232,10 @@ export default {
         value: '选项3',
         label: '邮寄送达'
       }],
+      changeableTable: [
+        { docName: '', address: '', servedDate: '', receiveType: '' },
+        { docName: '', address: '', servedDate: '', receiveType: '' },
+      ],
     }
   },
   methods: {
@@ -304,10 +260,6 @@ export default {
       this.com_getDocDataByCaseIdAndDocId(data);
 
     },
-    //保存文书信息
-    addDocData(handleType) {
-      this.com_addDocData(handleType, 'docForm');
-    },
     // 多行编辑
     overFlowEdit() {
       this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
@@ -325,13 +277,46 @@ export default {
       });
     },
     //保存文书信息
-    saveData(handleType) {
-      // 预览样式
-      this.isPdf = 'color_FFFFFF';
-      setTimeout(() => {
-        this.com_addDocData(handleType, "docForm");
-      }, 3000);
+    //插入证据
+    saveData(docForm) {
+      this.$refs[docForm].validate(valid => {
+        if (valid) {
+          let datetime = this.changeableTable[0].servedDate;
+          let data = {
+            id: this.randomString(32),
+            caseId: this.randomString(32),
+            servedDate: datetime == "" ? "2020-02-02 10:00:00" : this.formatDateStr(datetime),
+          };
+          this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(res => {
+            if (res.code == 200) {
+              console.log('添加成功！')
+              this.$message({
+                message: '添加成功！',
+                type: 'success'
+              });
+              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+              this.$store.dispatch("printContent"); //关闭当前页签
+              this.$router.push('deliverReceiptForm')
+            } else {
+              this.$message.error('出现异常，添加失败！');
+            }
+          });
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
 
+    },
+    randomString(e) {
+      e = e || 32;
+      const t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
+        a = t.length;
+      let res = "";
+      for (let i = 0; i < e; i++) {
+        res += t.charAt(Math.floor(Math.random() * a));
+      }
+      return res;
     },
     //是否是完成状态
     isOverStatus() {

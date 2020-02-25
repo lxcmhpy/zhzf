@@ -4,27 +4,20 @@
     <div class="searchAndpageBox">
       <div class="handlePart">
         <div class="search">
-          <el-form :inline="true" :model="deliverReForm"  ref="deliverReForm">
+          <el-form :inline="true" :model="deliverReForm" ref="deliverReForm">
             <el-form-item>
-              <el-button type="primary" icon="add" size="medium"  @click="handleAdd">新增送达回证</el-button>
+              <el-button type="primary" icon="add" size="medium" @click="handleAdd">新增送达回证</el-button>
             </el-form-item>
             <el-form-item label="送达文书名称" prop="docName">
               <el-input v-model="deliverReForm.docName"></el-input>
             </el-form-item>
-            <el-form-item label="送达日期" prop="servedDate" label-width="113px" >
-              <el-date-picker
-                v-model="deliverReForm.servedDate"
-                type="date"
-                placeholder="选择送达日期" style="width: 290px">
+            <el-form-item label="送达日期" prop="servedDate" label-width="113px">
+              <el-date-picker v-model="deliverReForm.servedDate" type="date" placeholder="选择送达日期" style="width: 290px">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="送达方式" prop="servedType">
               <el-select v-model="deliverReForm.servedType">
-                <el-option
-                  v-for="item in servedTypeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                <el-option v-for="item in servedTypeOptions" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -52,19 +45,11 @@
         </el-table>
       </div>
       <div class="paginationF">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          background
-          :page-sizes="[10, 20, 30, 40]"
-          layout="prev, pager, next,sizes,jumper"
-          :total="total"
-        ></el-pagination>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
       </div>
     </div>
     <!-- 添加弹出框 -->
-    <el-dialog title="新增送达回证" :visible.sync="addVisible" width="60%" v-loading="addLoading" :before-close="handleClose">
+    <!-- <el-dialog title="新增送达回证" :visible.sync="addVisible" width="60%" v-loading="addLoading" :before-close="handleClose">
       <div>
         <div>
           <el-form ref="form" :model="form" :rules="addrules">
@@ -88,15 +73,6 @@
               </el-select>
               <el-input v-model="form.servedUser" disabled style="width: 50%"></el-input>
             </el-form-item>
-
-            <!--<el-form-item label="记录时间" prop="createTime" label-width="113px" >
-              <el-date-picker
-                v-model="form.createTime"
-                type="datetime"
-                placeholder="选择日期时间" style="width: 100%">
-              </el-date-picker>
-            </el-form-item>-->
-
             <el-table :data="changeableTable" border style="margin-left: 80px;width: 90.5%">
               <el-table-column label="送达文书名称、案号">
                 <template slot-scope="scope">
@@ -151,199 +127,203 @@
             <el-button size="medium" @click="addVisible=false">取  消</el-button>
         </div>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
-        export default {
-        data() {
-            const isSelect = (rule, value, callback) => {
-                if (value == undefined) {
-                    return callback(new Error("请选择"));
-                } else {
-                    callback();
-                }
-            };
-            return {
-                changeableTable: [
-                    { docName: '', address: '',servedDate: '',receiveType: ''},
-                    { docName: '', address: '',servedDate: '',receiveType: ''},
-                ],
-                servedTypeOptions: [],
-                receiveTypeOptions:[],
-                currentPage: 1, //当前页
-                pageSize: 10, //pagesize
-                total: 0, //总数
-                tableData: [],
-                deliverReForm: {
-                    docName: "",
-                    servedDate: "",
-                    servedType: "",
-                },
-                form: {},
-                uForm: {},
-                addVisible:false,
-                editVisible: false,
-                addLoading: false,
-                addrules: {
-                    receiveType: [
-                        { required: true, message: '接收方式不能为空', trigger: 'blur' , validator: isSelect},
-                        { required: true, message: '接收方式不能为空', trigger: 'change' , validator: isSelect},
-                    ]
-                }
-            };
-        },
-        methods: {
-            handleRow(index, row) {
-                this.changeableTable.splice(index, 1)
-            },
-            addTableData(){
-                let addData = { tab1: '111', tab2: '2222',show:true};
-                this.changeableTable.push({ tab1: '111', tab2: '2222',show:true})
-            },
-            submitForm(formName){
-
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.insertDeliverR();
-                    }
-                });
-            },
-            handleClose(done) {
-                this.$confirm('确认关闭？')
-                    .then(_ => {
-                        done();
-                    })
-                    .catch(_ => {});
-            },
-            handleAdd(index, row) {
-                //带入表单值
-
-                this.form = {};
-                this.changeableTable=[
-                  { docName: '', address: '',servedDate: '',receiveType: ''},
-                  { docName: '', address: '',servedDate: '',receiveType: ''},
-                ];
-                this.addVisible = true;
-            },
-            handleEdit(index, row) {
-                const item = this.tableData[index];
-                this.uForm = {
-                    evName: item.evName,
-                    evType: item.evType,
-                    status: item.status
-                };
-                this.editVisible = true;
-            },
-            //表单筛选
-            getDeliverReList() {
-                let data = {
-                    docName:this.deliverReForm.docName,
-                    servedDate:this.deliverReForm.servedDate == "" ? "" : this.formatDateStr(this.deliverReForm.servedDate),
-                    //servedDate : "2019-11-11 00:00:00",
-                    servedType:this.deliverReForm.servedType,
-                    current: this.currentPage,
-                    size: this.pageSize
-                };
-                this.$store.dispatch("getDeliverReceipt", data).then(res => {
-                    this.tableData = res.data.records;
-                    this.total = res.data.total;
-                });
-            },
-            //插入证据
-            insertDeliverR(){
-              let datetime = this.changeableTable[0].servedDate;
-              let data = {
-                id:this.randomString(32),
-                caseId:this.randomString(32),
-                servedDate: datetime == "" ? "2020-02-02 10:00:00" : this.formatDateStr(datetime)
-              };
-              this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(res => {
-                if (res.code == 200){
-                  this.$message({
-                    message: '添加成功！',
-                    type: 'success'
-                  });
-                  this.addVisible = false;
-                  this.currentPage = 1;
-                  this.getDeliverReList();
-                }else{
-                  this.$message.error('出现异常，添加失败！');
-                }
-              });
-            },
-            // 重置
-            resetSearch() {
-                this.$refs["deliverReForm"].resetFields();
-            },
-
-            //更改每页显示的条数
-            handleSizeChange(val) {
-                this.pageSize = val;
-                this.getDeliverReList();
-            },
-            //更换页码
-            handleCurrentChange(val) {
-                this.currentPage = val;
-                this.getDeliverReList();
-            },
-            randomString(e){
-              e = e || 32;
-              const t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
-                a = t.length;
-              let res = "" ;
-              for (let i = 0; i < e; i++){
-                res += t.charAt(Math.floor(Math.random() * a));
-              }
-              return res;
-            },
-            formatDateStr(val) {
-              if(val == null){
-                return null;
-              }
-              let date = new Date(val);
-              let Y = date.getFullYear() + '-';
-              let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
-              let D = date.getDate() < 10 ? '0' + date.getDate() + ' ': date.getDate() + ' ';
-              let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
-              let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
-              let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-              return Y + M + D + h + m + s;
-            },
-        },
-        mounted() {
-            // this.setDepartTable(this.data)
-        },
-        created() {
-            this.getDeliverReList();
-            //初始化代码集
-          this.$store.dispatch("getDictionary", "61ac9ded9e0fab4a6626963e59e7ae6d").then(res => {
-            for(let item of res.data){
-              this.servedTypeOptions.push({value:item.name,label:item.notes});
-            }
-          });
-          this.$store.dispatch("getDictionary", "aae6cdcab4962c49752305ad1124fae2").then(res => {
-            for(let item of res.data){
-              this.receiveTypeOptions.push({value:item.name,label:item.notes});
-            }
-          });
-
-        }
+export default {
+  data() {
+    const isSelect = (rule, value, callback) => {
+      if (value == undefined) {
+        return callback(new Error("请选择"));
+      } else {
+        callback();
+      }
     };
+    return {
+      changeableTable: [
+        { docName: '', address: '', servedDate: '', receiveType: '' },
+        { docName: '', address: '', servedDate: '', receiveType: '' },
+      ],
+      servedTypeOptions: [],
+      receiveTypeOptions: [],
+      currentPage: 1, //当前页
+      pageSize: 10, //pagesize
+      total: 0, //总数
+      tableData: [],
+      deliverReForm: {
+        docName: "",
+        servedDate: "",
+        servedType: "",
+      },
+      form: {},
+      uForm: {},
+      addVisible: false,
+      editVisible: false,
+      addLoading: false,
+      addrules: {
+        receiveType: [
+          { required: true, message: '接收方式不能为空', trigger: 'blur', validator: isSelect },
+          { required: true, message: '接收方式不能为空', trigger: 'change', validator: isSelect },
+        ]
+      }
+    };
+  },
+  methods: {
+    handleRow(index, row) {
+      this.changeableTable.splice(index, 1)
+    },
+    addTableData() {
+      let addData = { tab1: '111', tab2: '2222', show: true };
+      this.changeableTable.push({ tab1: '111', tab2: '2222', show: true })
+    },
+    submitForm(formName) {
+
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.insertDeliverR();
+        }
+      });
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => { });
+    },
+    handleAdd(index, row) {
+      //带入表单值
+
+      this.form = {};
+      this.changeableTable = [
+        { docName: '', address: '', servedDate: '', receiveType: '' },
+        { docName: '', address: '', servedDate: '', receiveType: '' },
+      ];
+      // this.addVisible = true;
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push('deliveryCertificate');
+    },
+    handleEdit(index, row) {
+      const item = this.tableData[index];
+      this.uForm = {
+        evName: item.evName,
+        evType: item.evType,
+        status: item.status
+      };
+      this.editVisible = true;
+    },
+    //表单筛选
+    getDeliverReList() {
+      let data = {
+        docName: this.deliverReForm.docName,
+        servedDate: this.deliverReForm.servedDate == "" ? "" : this.formatDateStr(this.deliverReForm.servedDate),
+        //servedDate : "2019-11-11 00:00:00",
+        servedType: this.deliverReForm.servedType,
+        current: this.currentPage,
+        size: this.pageSize
+      };
+      this.$store.dispatch("getDeliverReceipt", data).then(res => {
+        this.tableData = res.data.records;
+        this.total = res.data.total;
+      });
+    },
+    //插入证据
+    insertDeliverR() {
+      console.log(this.changeableTable)
+      console.log(this.form)
+      let datetime = this.changeableTable[0].servedDate;
+      let data = {
+        id: this.randomString(32),
+        caseId: this.randomString(32),
+        servedDate: datetime == "" ? "2020-02-02 10:00:00" : this.formatDateStr(datetime)
+      };
+      this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(res => {
+        if (res.code == 200) {
+          this.$message({
+            message: '添加成功！',
+            type: 'success'
+          });
+          this.addVisible = false;
+          this.currentPage = 1;
+          this.getDeliverReList();
+        } else {
+          this.$message.error('出现异常，添加失败！');
+        }
+      });
+    },
+    // 重置
+    resetSearch() {
+      this.$refs["deliverReForm"].resetFields();
+    },
+
+    //更改每页显示的条数
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getDeliverReList();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getDeliverReList();
+    },
+    randomString(e) {
+      e = e || 32;
+      const t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
+        a = t.length;
+      let res = "";
+      for (let i = 0; i < e; i++) {
+        res += t.charAt(Math.floor(Math.random() * a));
+      }
+      return res;
+    },
+    formatDateStr(val) {
+      if (val == null) {
+        return null;
+      }
+      let date = new Date(val);
+      let Y = date.getFullYear() + '-';
+      let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+      let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+      let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+      let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+      let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+      return Y + M + D + h + m + s;
+    },
+  },
+  mounted() {
+    // this.setDepartTable(this.data)
+  },
+  created() {
+    this.getDeliverReList();
+    //初始化代码集
+    this.$store.dispatch("getDictionary", "61ac9ded9e0fab4a6626963e59e7ae6d").then(res => {
+      for (let item of res.data) {
+        this.servedTypeOptions.push({ value: item.name, label: item.notes });
+      }
+    });
+    this.$store.dispatch("getDictionary", "aae6cdcab4962c49752305ad1124fae2").then(res => {
+      for (let item of res.data) {
+        this.receiveTypeOptions.push({ value: item.name, label: item.notes });
+      }
+    });
+
+  }
+};
 </script>
 <style lang="scss">
-  @import "@/assets/css/systemManage.scss";
-  .paginationF{
-    position: absolute;
-    bottom: 10px;
-    right: 20px;
-    margin: auto;
-    text-align: center;
-  }
-  .tablePartF{
-    height: 100%;
-    overflow: auto;
-    box-sizing: border-box;
-    padding-top: 4%;
-  }
+@import "@/assets/css/systemManage.scss";
+.paginationF {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  margin: auto;
+  text-align: center;
+}
+.tablePartF {
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  padding-top: 4%;
+}
 </style>
