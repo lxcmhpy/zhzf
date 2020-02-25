@@ -1,4 +1,4 @@
-import { upload,getFile } from "@/api/upload";
+import { upload,getFile,uploadEvdence } from "@/api/upload";
 const uploadFile = {
   state:{
 
@@ -29,7 +29,18 @@ const uploadFile = {
                   reject(error);
               })
       })
-    }
+    },
+    // uploadEvdence({commit},data){
+    //     return new Promise((resolve, reject) => {
+    //         uploadEvdence(data).then(
+    //             res => {
+    //                 resolve(res);
+    //             },
+    //             error => {
+    //                 reject(error);
+    //             })
+    //     })
+    // }
   }
 }
 export default uploadFile

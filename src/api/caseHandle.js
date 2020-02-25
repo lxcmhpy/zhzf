@@ -303,7 +303,7 @@ export function findCaseAllBindPropertyApi(data) {
 
 
 //根据案件ID查询  （使用场景：案件调查报告->证据材料->文书）
-export function findByCaseBasicInfoIdApi(caseBasicInfoId) { 
+export function findByCaseBasicInfoIdApi(caseBasicInfoId) {
   return request({
     url: "/doc/data/findByCaseBasicInfoId/"+caseBasicInfoId,
     method: "get",
@@ -313,7 +313,7 @@ export function findByCaseBasicInfoIdApi(caseBasicInfoId) {
 }
 
 //通过条件查询证据目录(不分页) （使用场景：案件调查报告->证据材料->照片材料）
-export function findEvidencePicApi(data) { 
+export function findEvidencePicApi(data) {
   let data2 = vm.$qs.stringify(data)
   return request({
     url: "doc/evidence/findListByCondition",
@@ -331,8 +331,18 @@ export function findByMlCaseId(caseId) {
         method: "get",
         showloading: true,
         cancelToken: setCancelSource()
-      });
+    });
 }
+// 获取归档目录-new
+export function findByMlCaseIdNew(caseId) {
+    return request({
+        url: "/doc/list/findCatalogByCaseId/"+caseId,
+        method: "get",
+        showloading: true,
+        cancelToken: setCancelSource()
+    });
+}
+
 export function findByCondition(data){
   let data2 = vm.$qs.stringify(data);
   console.log('zhengju',data2);
@@ -346,7 +356,7 @@ export function findByCondition(data){
 }
 
 //添加/修改证据 （使用场景：当事人权利添加证据调用文件上传后拿到ID再调用该添加接口）
-export function saveOrUpdateEvdencenApi2(data) { 
+export function saveOrUpdateEvdencenApi2(data) {
   let data2 = vm.$qs.stringify(data);
   console.log(data2);
   return request({

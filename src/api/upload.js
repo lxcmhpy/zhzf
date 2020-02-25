@@ -44,3 +44,14 @@ export function findFileByIdApi(id) {
     cancelToken:  setCancelSource(),
   });
 }
+// 上传2020-2-25 上传-
+export function uploadEvdence(data) {
+    return  request({
+        url:  "/sys/file/uploadEvdence",
+        method:  "POST",
+        data: data,
+        contentType: 'multipart/form-data;',
+        showloading:  true,
+        cancelToken:  setCancelSource(),
+      });
+}

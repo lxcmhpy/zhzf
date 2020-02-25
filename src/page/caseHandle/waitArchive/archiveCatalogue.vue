@@ -29,7 +29,7 @@
             </tr>
             <tr v-for="(item,index) in caseList" :key="index">
                 <td>{{index+1}}</td>
-                <td>{{item.docName}}</td>
+                <td>{{item.name}}</td>
                 <td>{{item.page}}</td>
             </tr>
         </table>
@@ -45,20 +45,7 @@ export default {
     return {
       visible: false,
       caseId: this.caseInfo.id,
-      caseList:[
-          {name:"文书名称",page:1},
-          {name:"文书名称",page:1},
-          {name:"文书名称",page:1},
-          {name:"文书名称",page:1},
-          {name:"文书名称",page:1},
-          {name:"文书名称文书名称文书名称文书名称文书名称文书名称",page:1},
-          {name:"文书名称文书名称文书名称文书名称文书名称文书名称",page:1},
-          {name:"文书名称文书名称文书名称文书名称文书名称文书名称",page:1},
-          {name:"文书名称文书名称文书名称文书名称文书名称文书名称",page:1},
-          {name:"文书名称文书名称文书名称文书名称文书名称文书名称",page:1},
-          {name:"文书名称文书名称文书名称文书名称文书名称文书名称",page:1},
-          {name:"文书名称文书名称文书名称文书名称文书名称文书名称",page:1}
-         ]
+      caseList:[]
     };
   },
   inject: ["reload"],
@@ -72,7 +59,7 @@ export default {
       this.visible = false;
     },
     getByMlCaseId(caseId) {
-         this.$store.dispatch("getByMlCaseId", caseId).then(
+         this.$store.dispatch("getByMlCaseIdNew", caseId).then(
          res=>{
              this.caseList = res.data
          },
