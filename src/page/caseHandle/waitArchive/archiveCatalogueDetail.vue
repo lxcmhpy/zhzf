@@ -11,8 +11,13 @@
             <el-table-column width="50" type="index" label="序号" align="center"></el-table-column>
             <el-table-column prop="name" label="文书名称" align="center"></el-table-column>
             <el-table-column prop="page" label="起止页数" align="center"></el-table-column>
-            <el-table-column prop="num" label="顺序调整" align="center">
-                <template></template>
+            <el-table-column label="顺序调整" align="center">
+                <template>
+                    <div>
+                        <span class="iconfont law-desc blueC"></span>
+                        <span class="iconfont law-asc blueC"></span>
+                    </div>
+                </template>
             </el-table-column>
             <el-table-column label="附件关联" align="center">
                 <template slot-scope="scope">
@@ -147,11 +152,12 @@
             </div>
          </div>
     </el-dialog>
+    <!-- :direction="direction" -->
+    <!-- :before-close="handleClose" -->
     <el-drawer
     title="附件关联"
     :visible.sync="enclosureVisible"
-    :direction="direction"
-    :before-close="handleClose">
+    >
         <span>附件列表</span>
     </el-drawer>
     <!--快速入口 -->

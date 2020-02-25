@@ -103,9 +103,10 @@
   /* 表格行高-默认最小值*/
   .el-table__row {
     height: 53px;
+    cursor: pointer;
   }
   .tablePart {
-    height:calc(100% - 100px) !important;
+    // height:calc(100% - 100px) !important;
   }
   .el-table {
       height: 100%;
@@ -158,6 +159,7 @@
 }
 .fullscreen {
     .el-form-item__content {
+        overflow: hidden;
         .el-input{
             .el-input__inner{
                 width: 169px;
@@ -181,11 +183,14 @@
             right: 5px;
         }
         .el-input--prefix .el-input__inner {
-            padding-left: 15px;
+            padding-left: 30px;
         }
         .el-select {
             width: 169px;
             border-radius: 0px !important;
         }
+    }
+    .el-button  {
+        border-radius: 0px;
     }
 }
