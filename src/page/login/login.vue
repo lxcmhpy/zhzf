@@ -95,7 +95,7 @@
                   <el-input placeholder="执法证件号" v-model="resetForm.enforceNo">
                   </el-input>
                 </el-form-item>
-                
+
                 <div>
                   <el-button type="primary" @click="resetPwd('resetForm')">申请重置密码</el-button>
                 </div>
@@ -128,18 +128,18 @@ import { drawCodeImage } from "@/api/login";
 export default {
   data() {
     return {
-       formLayout: "vertical",
+      formLayout: "vertical",
       captchaId: '',   //验证码id
       captchaImg: '',   //验证码图片src
       loginForm: {
         username: "test",
         password: "123456",
-        code: ''       
+        code: ''
       },
       resetForm: {
         username: "",
         nickName: "",
-        enforceNo: ''     
+        enforceNo: ''
       },
       rules: {
         username: [
@@ -177,21 +177,21 @@ export default {
   methods: {
 
     //获取验证码
-    getCaptcha(){
-       this.$store.dispatch("getCaptcha").then(
-         res=>{
-           let captcha = res.data;
-           this.captchaId = captcha.split('::')[0];
+    getCaptcha() {
+      this.$store.dispatch("getCaptcha").then(
+        res => {
+          let captcha = res.data;
+          this.captchaId = captcha.split('::')[0];
 
           //  this.captchaImg = drawCodeImage + this.captchaId;
           this.getCaptchaImgsrc()
-         },
-         err=>{
-           console.log(err)
-         }
-       )
+        },
+        err => {
+          console.log(err)
+        }
+      )
     },
-  // 切换登录方式
+    // 切换登录方式
     changeType(type) {
       console.log(type)
       if (type == 1) {
@@ -239,7 +239,7 @@ export default {
                 // Cookies.set("openMenu","identityCheck");
                 //this.$router.push({ name: "index" });
                 this.getMenu();
-                this.success= false
+                this.success = false
               },
               error => {
                 console.log(error);
@@ -302,6 +302,14 @@ export default {
     // }
     pass() {
       this.success = true;
+      setTimeout(() => {
+        this.success = false;
+        this.$refs.verify.reset();
+        this.errorMessage = '验证失效,请重新验证，3秒后自动消失'
+            setTimeout(() => {
+              this.errorMessage = ""
+            }, 3000)
+      }, 300000);
       console.log('1111')
     },
     // 微信公众号
@@ -320,25 +328,25 @@ export default {
           console.log(this.resetForm)
           // 修改密码
 
-            this.$store.dispatch("resetPassword", this.resetForm).then(
-              res => {
-                this.$message({
-                  type: "success",
-                  message: "修改成功，请返回登录"
+          this.$store.dispatch("resetPassword", this.resetForm).then(
+            res => {
+              this.$message({
+                type: "success",
+                message: "修改成功，请返回登录"
 
-                });
-                console.log(res);
-               
-              },
-              error => {
-                console.log(error);
-              }
-            );
+              });
+              console.log(res);
+
+            },
+            error => {
+              console.log(error);
+            }
+          );
         }
       });
     },
-    test(){
-      console.log('12212',this.resetForm)
+    test() {
+      console.log('12212', this.resetForm)
     }
   },
   mounted() {
