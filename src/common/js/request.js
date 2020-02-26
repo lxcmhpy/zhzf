@@ -23,12 +23,12 @@ service({
 }).then(
   res => {
     BASEURL = res.data;
+    sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
     iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
   },
   error => {
     console.log(error)
  })
-
 // request interceptor
 service.interceptors.request.use(
   config => {
