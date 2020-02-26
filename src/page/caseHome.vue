@@ -13,6 +13,7 @@
                 <i class="iconfont law-approval"></i> 待办理
               </div>
               <div class="hideen">112</div>
+              <span class="borderLine"></span>
             </span>
             <center>
               <div style="margin-top: 15px;width:60%;">
@@ -27,6 +28,7 @@
               <div class="case_number">0</div>
               <div class="case_discribe"><i class="iconfont law-submit-o"></i> 未立案</div>
               <div class="hideen">112</div>
+              <span class="borderLine"></span>
             </span>
             <center>
               <div style="margin-top: 15px;width:60%">
@@ -43,6 +45,7 @@
               </div>
               <div class="case_discribe"><i class="iconfont law-save"></i> 待归档</div>
               <div class=" hideen">112</div>
+              <span class="borderLine"></span>
             </span>
             <center>
               <div style="margin-top: 15px;width:60%">
@@ -59,6 +62,7 @@
                 <i class="iconfont law-save"></i> 待审批
               </div>
               <div class="hideen">112</div>
+              <!-- <span class="borderLine"></span> -->
             </span>
 
             <center>
@@ -98,35 +102,44 @@
         <div class="icon_content">
           <ul>
             <li class="imgbox">
-              <img :src="'./static/images/img/icon_lit_yyunc.png'">营运车辆
+              <img :src="'./static/images/img/icon_lit_yyunc.png'">
+              <span>营运车辆</span>
             </li>
             <li class="imgbox" @click="infoCheck('industry')">
-              <img :src="'./static/images/img/icon_lit_jyyehu.png'">经营业户
+              <img :src="'./static/images/img/icon_lit_jyyehu.png'">
+              <span>经营业户</span>
             </li>
             <li class="imgbox">
-              <img :src="'./static/images/img/icon_lit_kyxlu.png'">客运线路<br />标志牌
-            </li>
-          </ul>
-          <ul>
-            <li class="imgbox">
-              <img :src="'./static/images/img/icon_lit_jyyh.png'">道路运输<br />从业人员
-            </li>
-            <li class="imgbox">
-              <img :src="'./static/images/img/icon_lit_car.png'">出租车
-            </li>
-            <li class="imgbox">
-              <img :src="'./static/images/img/icon_lit_cbyyzheng.png'">船舶营运证
+              <img :src="'./static/images/img/icon_lit_kyxlu.png'">
+              <span>客运线路<br />标志牌</span>
             </li>
           </ul>
           <ul>
             <li class="imgbox">
-              <img :src="'./static/images/img/icon_lit_cy.png'">船员适应证
+              <img :src="'./static/images/img/icon_lit_jyyh.png'">
+              <span>道路运输<br />从业人员</span>
             </li>
             <li class="imgbox">
-              <img :src="'./static/images/img/icon_lit_slu.png'">水路运输经<br />营许可证
+              <img :src="'./static/images/img/icon_lit_car.png'">
+              <span>出租车</span>
             </li>
             <li class="imgbox">
-              <img :src="'./static/images/img/icon_lit_zge.png'">经营资格证<br />（企业）
+              <img :src="'./static/images/img/icon_lit_cbyyzheng.png'">
+              <span>船舶营运证</span>
+            </li>
+          </ul>
+          <ul>
+            <li class="imgbox">
+              <img :src="'./static/images/img/icon_lit_cy.png'">
+              <span>船员适应证</span>
+            </li>
+            <li class="imgbox">
+              <img :src="'./static/images/img/icon_lit_slu.png'">
+              <span>水路运输经<br />营许可证</span>
+            </li>
+            <li class="imgbox">
+              <img :src="'./static/images/img/icon_lit_zge.png'">
+              <span>经营资格证<br />（企业）</span>
             </li>
           </ul>
 
@@ -149,18 +162,18 @@
             <el-radio-button label="道路运政"></el-radio-button>
             <el-radio-button label="更多"> <i class="el-icon-arrow-down"></i></el-radio-button>
           </el-radio-group>
-          <div class="casehome_topic magin_btm">常见违法行为
+          <div class="magin_btm">常见违法行为
             <span class="casehome_topic_select">
               <!-- <el-select v-model="caseForm.value" placeholder="请选择" size='small'>
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select> -->
-              <el-cascader v-model="caseForm.commenCase" :options="options" :props="{ expandTrigger: 'hover' }" @change="getIllegaAct"></el-cascader>
+              <el-cascader v-model="caseForm.commenCase" size="mini" aria-placeholder="不限类别" :options="options" :props="{ expandTrigger: 'hover' }" @change="getIllegaAct"></el-cascader>
             </span>
           </div>
         </el-form>
-        <ul v-for="item in caseList" :key="item.id">
-          <li @click="caseRecord(item)"><span class="bull">&bull;</span>{{item.strContent}}</li>
+        <ul class="wfxwList" >
+          <li v-for="item in caseList" :key="item.id" @click="caseRecord(item)"><span class="bull">&bull;</span>{{item.strContent}}</li>
         </ul>
 
         <center>
@@ -415,7 +428,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style lang="scss"  scoped>
 .case_home {
   width: 100%;
   height: 100%;
@@ -436,7 +449,7 @@ export default {
 .width816 {
   /* width: 816px;/*  */
   width: calc(100% - 378px);
-  height: 900px;
+  height: 764px;
   margin-right: 22px;
   box-sizing: border-box;
 
@@ -447,14 +460,14 @@ export default {
   box-sizing: border-box;
 }
 .padding22 {
-  padding: 22px;
+  /* padding: 0 22px; */
   /* box-sizing: border-box; */
 }
 .colorD8DBE0 {
   background: rgba(246, 248, 253, 1);
 }
 .case_home_bottom {
-  height: 546px;
+  height: 409px;
   padding: 0 20px;
   /* min-height: 400px; */
   overflow: auto;
@@ -462,28 +475,41 @@ export default {
 .case_home_top {
   height: 332px;
   margin-bottom: 22px;
-  padding: 0 20px;
+  padding: 0px;
 }
 .casehome_topic {
-  height: 50px;
-  line-height: 50px;
+  /* height: 50px; */
+  /* line-height: 50px; */
   font-size: 18px;
+  padding: 17px 20px 27px 20px;
   font-family: PingFang SC;
   font-weight: 550;
   color: rgba(43, 49, 62, 1);
+  position: relative;
 }
-.casehome_topic /deep/ span {
-  float: right;
-  font-size: 14px;
-  line-height: 50px;
-  font-weight: 400;
+.casehome_topic span {
+    position: absolute;
+    right:20px;
+    font-size: 14px;
+  /* line-height: 50px; */
+    font-weight: 400;
+}
+.case_home_bottom .casehome_topic {
+    padding-left:0px;
 }
 .case_number {
-  font-size: 38px;
+  font-size: 29px;
+  height: 29px;
+  line-height: 29px;
+  text-align: center;
+  color:#495164;
 }
 .case_discribe {
   font-size: 16px;
-  line-height: 50px;
+  height: 16px;
+  line-height: 16px;
+  padding: 17px 20px 15px 20px;
+  text-align: center;
 }
 ul {
   height: calc(15% - 20px);
@@ -514,13 +540,21 @@ li {
   text-align: center;
   font-size: 14px;
 }
-.icon_content /deep/ ul {
+.imgbox img {
+    height: 30px;
+}
+.imgbox span {
+    display: block;
+    margin:8px auto;
+    line-height: 15px;
+}
+.icon_content ul {
   margin-top: 10px;
   clear: both;
   height: 80px;
 }
 
-.icon_content /deep/ li {
+.icon_content li {
   cursor: pointer;
 }
 
@@ -529,90 +563,128 @@ img {
   margin: 0 auto;
 }
 .magin_btm{
-  margin-bottom: 20px;
+    font-size: 16px;
+    margin-top: 27px;
+    line-height: 16px;
+    height: 16px;
+  /* margin-bottom: 20px; */
 }
 .tablebox{
   overflow: auto;
-  height:calc(100% - 340px);
+  height: 470px;
+  padding: 0px 20px 15px 20px;
 }
-
+.wfxwList {
+    height: auto;
+    margin-bottom:20px;
+}
+.wfxwList li {
+    line-height: 33px;
+    height: 33px;
+}
 </style>
-<style   scoped>
+<style lang="scss">
 .el-select .el-input {
   width: 130px;
 }
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
 }
-.casehome_tag /deep/ .el-tabs__active-bar {
-  width: 25%;
+.casehome_tag .el-tabs__active-bar {
+  width: 25% !important;
 }
-.casehome_tag /deep/ .el-tabs__item {
-  width: 25%;
+.casehome_tag .el-tabs__item {
+  width: 25% !important;
   text-align: center;
-  border-right: 1px solid #d8dbe0;
+  /* border-right: 1px solid #d8dbe0; */
   color: #9fa3af;
+  height: auto;
+  padding: 0px !important;
 }
-.casehome_tag /deep/ .is-active {
+.casehome_tag .borderLine {
+    border-right: 1px solid #d8dbe0;
+    position: absolute;
+    top:10px;
+    right: 0px;
+    width: 0px;
+    height: 46px;
+}
+.casehome_tag .is-active {
   color: #409eff;
 }
-.casehome_tag /deep/ .is-active /deep/ .case_number {
-  font-size: 40px;
+.casehome_tag .is-active .case_number {
+  /* font-size: 40px; */
   font-weight: 540;
 }
-.casehome_tag /deep/ .is-active /deep/ .case_discribe {
-  font-size: 18px;
+.casehome_tag .el-tab-pane {
+    padding: 0 20px 20px 20px;
+}
+.casehome_tag .is-active .case_discribe {
+  /* font-size: 18px; */
+  line-height: 18px;
   font-weight: 540;
 }
-.casehome_tag /deep/ .el-tabs__nav {
+.casehome_tag .el-tabs__nav {
   width: 100%;
 }
-.casehome_tag /deep/ .el-tabs__header {
+.casehome_tag .el-tabs__header {
   margin: 0;
 }
-.case_home /deep/ .el-tabs__content {
+.case_home .el-tabs__content {
   background: #fff;
 }
-.casehome_tag /deep/ .el-radio-group {
+.casehome_tag .el-radio-group {
   float: right;
 }
-.case_home /deep/ .el-tabs--border-card > .el-tabs__content {
+.case_home .el-tabs--border-card > .el-tabs__content {
   padding: 0;
 }
 .case_home
-  /deep/
+
   .el-tabs--border-card
   > .el-tabs__header
   .el-tabs__item.is-active {
   background-color: rgba(230, 234, 242, 1);
 }
-.icon_content /deep/ .el-row {
+.icon_content .el-row {
   height: 60px;
   line-height: 50px;
   text-align: center;
 }
-.icon_content /deep/ .el-col {
+.icon_content .el-col {
   border: 1px solid red;
 }
-.programType /deep/ .el-radio__input {
+.programType .el-radio__input {
   display: none;
 }
 .casehome_topic_select {
-  display: inline-block;
+  float:right;
   width: 110px;
+  margin-top: -5px;
+  /* height: 16px; */
 }
-.casehome_topic_select /deep/.el-input__inner {
+.casehome_topic_select .el-input__inner {
+    border: 0px solid white;
+    /* height: 16px; */
+}
+.casehome_topic_select.el-input__inner {
   border: 0;
 }
-
-.case_home /deep/ .el-radio-button__inner {
-  padding: 9px 16px;
-  background: #f6f8fd;
-}
-.tablebox /deep/ .el-table__header {
+.tablebox .el-table__header {
   background: #e9edf6;
 }
-#tab-fourth /deep/ .el-tabs__item {
+#tab-fourth .el-tabs__item {
   border: 0 !important;
+}
+.case_home_bottom .el-radio-button {
+    width: 88px !important;
+}
+.case_home_bottom .el-radio-button:last-child {
+    /* width: */
+    width: 47px !important;
+}
+.case_home .el-radio-button__inner {
+  padding: 9px 16px;
+  background: #f6f8fd;
 }
 </style>

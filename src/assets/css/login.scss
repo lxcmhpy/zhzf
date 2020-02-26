@@ -46,6 +46,7 @@
   position     : absolute;
   text-align   : center;
   box-shadow   : 0 0 5px #ccc;
+  min-height   : 760px;
   // box-sizing: border-box;
 
 
@@ -58,7 +59,8 @@
 
 
     img {
-      height: 1080px;
+    //   height: 1080px;
+    width     : 100%;
     }
   }
 
@@ -70,7 +72,7 @@
     box-sizing: border-box;
     position  : relative;
     top       : 150px;
-    overflow  : auto;
+    overflow  : hidden;
 
     p {
       font-size: 18px;
