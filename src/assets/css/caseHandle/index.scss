@@ -63,7 +63,7 @@
                 }
             }
             .el-select{
-                width: 100%;
+                width: calc(100% - 17px);
             }
         }
 
@@ -388,6 +388,17 @@
     border-radius: 0px;
 }
 
+.fullscreen .el-select {
+    margin-right: -15px;
+    width: calc(100%);
+    .el-select__caret {
+        margin-right: 10px !important;
+    }
+}
+.fullscreen .el-date-editor {
+    height: 33px;
+    line-height: 33px;
+}
 @keyframes switchHeight
 {
 from {padding-top: 60px;}

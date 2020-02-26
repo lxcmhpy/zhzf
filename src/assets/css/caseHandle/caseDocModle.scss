@@ -26,11 +26,13 @@
         padding          : 81px 82px 0;
         background       : #ffffff;
         box-sizing       : border-box;
+
         /* 包含padding */
         /*----------长软start--------*/
         .p_begin {
             text-indent: 0em !important;
         }
+
         /*----------长软end--------*/
         /*  标题 */
         .doc_topic {
@@ -452,11 +454,12 @@
         }
 
         .print_table {
-            position: relative;
-            width: 100%;
+            position  : relative;
+            width     : 100%;
             box-sizing: border-box;
-            padding: 0px;
-            margin: 0px;
+            padding   : 0px;
+            margin    : 0px;
+
             .el-input .el-input__inner {
                 border: 0;
                 width : 100%;
@@ -585,57 +588,64 @@
     u {
         font-weight: 600;
     }
+
     .el-form-item__content {
-        .el-input{
-            .el-input__inner{
-                width: 169px;
+        .el-input {
+            .el-input__inner {
+                width        : 169px;
                 border-radius: 0px !important;
             }
         }
-        .el-date-editor.el-input__inner,.el-date-editor.el-input{
-            width: 169px;
+
+        .el-date-editor.el-input__inner,
+        .el-date-editor.el-input {
+            width        : 169px;
             border-radius: 0px !important;
+
             .el-input__prefix {
-                left: auto;
+                left : auto;
                 right: 5px;
             }
         }
+
         .el-input__suffix {
-            left: auto;
+            left : auto;
             right: 5px;
         }
+
         .el-input--prefix .el-input__inner {
             padding-left: 15px;
         }
 
         overflow: hidden;
+
         // .el-input{
         //     .el-input__inner{
-        //         width: 10%;
+        //         width        : 10%;
         //         border-radius: 0px !important;
         //     }
         // }
         // .el-textarea__inner{
-        //     width: 10%;
+        //     width        : 10%;
         //     border-radius: 0px !important;
         // }
         // .el-date-editor .el-input__inner,.el-date-editor .el-input{
-        //     width: 10%;
+        //     width        : 10%;
         //     border-radius: 0px !important;
         //     .el-input__prefix {
-        //         left: auto;
+        //         left : auto;
         //         right: 5px;
         //     }
         // }
         // .el-input__suffix {
-        //     left: auto;
+        //     left : auto;
         //     right: 5px;
         // }
         // .el-input--prefix .el-input__inner {
         //     padding-left: 30px;
         // }
         .el-select {
-            // width: 10%;
+            // width     : 10%;
             border-radius: 0px !important;
         }
     }
@@ -1000,7 +1010,7 @@
 
     .data_picker {
         .el-range-input {
-            background : #ffffff;
+            background   : #ffffff;
             border-bottom: 1px solid #000000 !important;
 
         }
@@ -1014,19 +1024,22 @@
 
 #establish-print {
     padding-top: 35px;
-    .el-checkbox__input.is-disabled+span.el-checkbox__label{
-        color:#606266;
+
+    .el-checkbox__input.is-disabled+span.el-checkbox__label {
+        color: #606266;
     }
-    .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner{
+
+    .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
         background-color: #409EFF;
-        border: 1px solid #000000;
+        border          : 1px solid #000000;
     }
-    .pdf_datapick{
-        .el-input__prefix{
+
+    .pdf_datapick {
+        .el-input__prefix {
             display: none;
         }
     }
-    
+
 }
 
 #illegalActionPunishDecisionBox {
@@ -1157,5 +1170,64 @@
 .quzheng {
     .el-form-item {
         width: 506px;
+    }
+}
+
+
+.first_page_box {
+    border    : 3px solid #060A13;
+    height    : 788px;
+    background: #D7D2BE;
+    box-sizing: border-box;
+
+    .title_img_box {
+        text-align: center;
+        margin-top: 60px;
+
+        img {
+            width : 110px;
+            height: 132px;
+        }
+    }
+
+    .first_title {
+        margin-top: 13px;
+        font-size : 33px;
+        text-align: center;
+    }
+
+    .first_casenumber {
+        margin-top: 13px;
+        text-align: center;
+
+        .case_number {
+            display      : inline-block;
+            padding      : 0 10px;
+            border-bottom: 1px solid black;
+        }
+    }
+
+    .table_box {
+        position: relative;
+        padding : 0 75px;
+        top     : 123px;
+
+        td {
+            font-size  : 15px !important;
+            white-space: normal !important;
+            word-wrap  : break-word;
+            word-break : break-all;
+        }
+
+        .text_left {
+            text-align     : left;
+            text-align-last: left;
+        }
+
+        .text_center {
+            text-align     : center;
+            text-align-last: center;
+            padding        : 0 4px;
+        }
     }
 }

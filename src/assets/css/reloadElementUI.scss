@@ -155,7 +155,13 @@
             border: 1px solid #f4f4f4 !important;
         }
     }
-
+    .el-date-editor {
+        height:33px;
+        line-height:33px;
+    }
+    .el-input__inner{
+        border-radius: 0px;
+    }
 }
 .fullscreen {
     // .el-form-item__content {

@@ -74,6 +74,7 @@
       <ul>
         <br><br>
         <!--  -->
+        <li @click="goFirstPage">归档首页</li>
         <li @click="goModle">标准文书模板-当场行政处罚决定书</li>
         <li @click="goEstablishDoc">-立案登记表</li>
         <li @click="goQAreport">-询问笔录</li>
@@ -130,6 +131,11 @@ export default {
   },
 
   methods: {
+    // 归档首页
+    goFirstPage(){
+      this.$router.push({ name: 'firstPdfPage' });
+
+    },
     // 立案登记表
     goEstablishDoc() {
       this.$router.push({ name: 'establishDoc' });

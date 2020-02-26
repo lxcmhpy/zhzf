@@ -157,7 +157,14 @@
     <el-drawer
     title="附件关联"
     :visible.sync="enclosureVisible"
+    custion-class="archiveCatalogueBox"
+    width="946px"
     >
+        <ul class="catalogueDrawerList">
+            <li v-for="(item,index) in multipleSelection" :key="index">
+                <img src=""></img>
+            </li>
+        </ul>
         <span>附件列表</span>
     </el-drawer>
     <!--快速入口 -->
@@ -225,7 +232,6 @@ export default {
     },
     methods: {
         handleSelectionChange (val) {
-            debugger
             this.multipleSelection = val;
         },
         showAddEvidence () {
@@ -234,7 +240,7 @@ export default {
         next () {
             this.enclosureVisible = true
             this.addEvidenceVisible = false
-            this.operateVisible = false
+            // this.operateVisible = false
         },
         uploadFile(param){
             console.log(param);

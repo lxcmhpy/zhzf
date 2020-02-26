@@ -26,7 +26,7 @@
               <el-time-picker
                 placeholder="时 分"
                 v-model="docData.askdataEnd"
-                format="HH时mm分"
+                format="HH时mm分" 
               >
               </el-time-picker>
             </el-form-item>
