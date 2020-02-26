@@ -309,7 +309,7 @@ export default {
             setTimeout(() => {
               this.errorMessage = ""
             }, 3000)
-      }, 300000);
+      }, 30000);
       console.log('1111')
     },
     // 微信公众号
