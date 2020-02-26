@@ -614,6 +614,7 @@ img {
 }
 .casehome_tag .is-active .case_number {
   /* font-size: 40px; */
+  color: #0074F5;
   font-weight: 540;
 }
 .casehome_tag .el-tab-pane {
