@@ -8,6 +8,14 @@ export default [
   //   component: () => import("@/page/caseHandle/case/side.vue")
   // },
   {
+    path: "/firstPdfPage",
+    name: "firstPdfPage",
+    meta: {
+      title: "pdf首页"
+    },
+    component: () => import("@/page/caseHandle/case/modle/firstPdfPage.vue")
+  },
+  {
     path: "/modle",
     name: "modle",
     meta: {

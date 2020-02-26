@@ -387,14 +387,17 @@
 .el-input__inner {
     border-radius: 0px;
 }
-.el-select {
-    width: calc(100% - 17px);
-    .el-input__inner {
-        // width: calc(100% - 17px);
-    }
+
+.fullscreen .el-select {
+    margin-right: -15px;
+    width: calc(100%);
     .el-select__caret {
-        // margin-right: 15px !important;
+        margin-right: 10px !important;
     }
+}
+.fullscreen .el-date-editor {
+    height: 33px;
+    line-height: 33px;
 }
 @keyframes switchHeight
 {
