@@ -479,7 +479,7 @@ export default {
   font-weight: 400;
 }
 .case_number {
-  font-size: 38px;
+  font-size: 29px;
 }
 .case_discribe {
   font-size: 16px;
@@ -555,10 +555,6 @@ img {
 }
 .casehome_tag /deep/ .is-active {
   color: #409eff;
-}
-.casehome_tag /deep/ .is-active /deep/ .case_number {
-  font-size: 40px;
-  font-weight: 540;
 }
 .casehome_tag /deep/ .is-active /deep/ .case_discribe {
   font-size: 18px;
