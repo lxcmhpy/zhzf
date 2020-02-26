@@ -79,6 +79,16 @@ export function validateZIP(rule, value, callback) {
     callback();
 }
 
+/* 当事人类型为个人是做非空验证 */
+export function validatePartyTelByPartType(rule, value, callback) {
+    var reg= /^\d{6}$/;
+    if (!reg.test(value) && value) {
+        callback(new Error('请输入正确的6位邮编'));
+    }
+    callback();
+}
+
+
 
 
 

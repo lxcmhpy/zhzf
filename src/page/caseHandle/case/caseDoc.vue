@@ -246,7 +246,7 @@ export default {
       },
       // nextBtnDisab: true
       isParty:true,  //当事人类型为个人
-      originalData:"",
+      originalData:"", 
 
     }
   },

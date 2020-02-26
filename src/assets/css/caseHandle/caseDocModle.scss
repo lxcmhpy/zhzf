@@ -956,6 +956,19 @@
 
 #establish-print {
     padding-top: 35px;
+    .el-checkbox__input.is-disabled+span.el-checkbox__label{
+        color:#606266;
+    }
+    .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner{
+        background-color: #409EFF;
+        border: 1px solid #000000;
+    }
+    .pdf_datapick{
+        .el-input__prefix{
+            display: none;
+        }
+    }
+    
 }
 
 #illegalActionPunishDecisionBox {

@@ -42,7 +42,7 @@
           <i class="iconfont law-save"></i>
           <br />保存
         </el-button>
-        <el-button type="primary" @click="submitDataBtn(0)" v-if="formOrDocData.showBtn[2]">
+        <el-button type="primary" @click="saveDataBtn(0)" v-if="formOrDocData.showBtn[2]">
           <i class="iconfont law-save"></i>
           <br />暂存
         </el-button>

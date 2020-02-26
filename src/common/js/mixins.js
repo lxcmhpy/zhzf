@@ -273,6 +273,7 @@ export const mixinGetCaseApiList = {
       this.caseDocDataForm.docData = JSON.stringify(this.docData);
       this.caseDocDataForm.status = handleType;
       console.log(this.caseDocDataForm);
+      if(handleType){
       this.$refs[docForm].validate(valid => {
         if (valid) {
           this.$store.dispatch("addDocData", this.caseDocDataForm).then(
@@ -296,6 +297,7 @@ export const mixinGetCaseApiList = {
         }
 
       });
+    }
     },
     //通过案件id和表单类型Id查询已绑定文书
     com_getDocListByCaseIdAndFormId(params) {
