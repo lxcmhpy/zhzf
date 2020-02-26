@@ -381,7 +381,7 @@
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <!-- 审批 -->
     <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
-  
+
   </div>
 </template>
 <script>
