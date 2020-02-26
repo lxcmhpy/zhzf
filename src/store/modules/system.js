@@ -2,7 +2,7 @@ import * as types from "../mutation-types";
 import Vue from "vue";
 const vm = new Vue(); //vm等同于this
 
-import { getCaptchaApi, loginInApi, getMenuApi, loginOutApi,getCapImgSrcApi } from "@/api/login";
+import { getCaptchaApi, loginInApi, resetPasswordApi, getMenuApi, loginOutApi,getCapImgSrcApi } from "@/api/login";
 import {
     getAllOrganApi, getSelectOrganApi, addOrganApi, getOrganDetailApi, deleteOrganApi, hasOrganNameApi, getCurrentAndNextOrganApi,
     getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getOrganBindRoleApi,
@@ -60,6 +60,26 @@ const system = {
                     .then(
                         response => {
                             console.log("loginIn response", response);
+                            commit(types.SET_AUTHTOKEN, response.data); //token
+                            // Cookies.set("menu", "customerService");
+                            resolve(response);
+                        },
+                        error => {
+                            reject(error);
+                        }
+                    )
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
+        },
+        // 修改密码
+        resetPassword({ commit }, userInfo) {
+            return new Promise((resolve, reject) => {
+                resetPasswordApi(userInfo)
+                    .then(
+                        response => {
+                            console.log(" resetPassword response", response);
                             commit(types.SET_AUTHTOKEN, response.data); //token
                             // Cookies.set("menu", "customerService");
                             resolve(response);

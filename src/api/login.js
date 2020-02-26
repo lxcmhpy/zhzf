@@ -27,6 +27,25 @@ export function loginInApi(params) {
     cancelToken: setCancelSource()
   });
 }
+//修改密码
+export function resetPasswordApi(params) {
+
+  let data = vm.$qs.stringify({
+    username: params.username,
+    nickName: params.nickName,
+    enforceNo: params.enforceNo,
+  })
+  console.log(data)
+  return request({
+    url: "/sys/user/resetPassWord",
+    method: "POST",
+    contentType: 'multipart/form-data',
+    data:data,
+    showloading: true,
+    baseUrlType:1,
+    cancelToken: setCancelSource()
+  });
+}
 
 //获取验证吗
 export function getCaptchaApi() {

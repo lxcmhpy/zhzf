@@ -84,17 +84,18 @@
 
               <el-form :model="resetForm" :rules="resetRules" ref="resetForm" class="demo-ruleForm">
                 <el-form-item prop="username">
-                  <el-input placeholder="账号名" v-model="resetForm.username" @change="test">
+                  <el-input placeholder="账号名" v-model="resetForm.username">
                   </el-input>
                 </el-form-item>
-                <el-form-item prop="workername">
-                  <el-input placeholder="执法人员名称" v-model="resetForm.workername" @change="test">
+                <el-form-item prop="nickName">
+                  <el-input placeholder="执法人员名称" v-model="resetForm.nickName">
                   </el-input>
                 </el-form-item>
-                <el-form-item prop="workernumber">
-                  <el-input placeholder="执法证件号" v-model="resetForm.workernumber" @change="test">
+                <el-form-item prop="enforceNo">
+                  <el-input placeholder="执法证件号" v-model="resetForm.enforceNo">
                   </el-input>
                 </el-form-item>
+                
                 <div>
                   <el-button type="primary" @click="resetPwd('resetForm')">申请重置密码</el-button>
                 </div>
@@ -137,8 +138,8 @@ export default {
       },
       resetForm: {
         username: "",
-        workername: "",
-        workernumber: ''     
+        nickName: "",
+        enforceNo: ''     
       },
       rules: {
         username: [
@@ -155,10 +156,10 @@ export default {
         username: [
           { required: true, message: '请输入账号名', trigger: 'blur' }
         ],
-        workername: [
+        nickName: [
           { required: true, message: '请输入执法人员名称', trigger: 'blur' }
         ],
-        workernumber: [
+        enforceNo: [
           { required: true, message: '请输入执法证件号', trigger: 'blur' }
         ]
       },
@@ -316,24 +317,23 @@ export default {
     resetPwd(resetForm) {
       this.$refs[resetForm].validate((valid) => {
         if (valid) {
-          // 验证码
-            // let values = this.loginForm;
-            // values.captchaId = this.captchaId;
+          console.log(this.resetForm)
+          // 修改密码
 
-            // this.$store.dispatch("loginIn", values).then(
-            //   res => {
-            //     this.$message({
-            //       type: "success",
-            //       message: "修改成功，请返回登录"
+            this.$store.dispatch("resetPassword", this.resetForm).then(
+              res => {
+                this.$message({
+                  type: "success",
+                  message: "修改成功，请返回登录"
 
-            //     });
-            //     console.log(res);
+                });
+                console.log(res);
                
-            //   },
-            //   error => {
-            //     console.log(error);
-            //   }
-            // );
+              },
+              error => {
+                console.log(error);
+              }
+            );
         }
       });
     },
