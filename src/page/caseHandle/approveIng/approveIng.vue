@@ -67,12 +67,12 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getUnRecordCase();
+      this.getApproveIngCase({});
     },
     //更换页码
     handlePageSizeChange(val) {
       this.currentPage = val;
-      this.getUnRecordCase();
+      this.getApproveIngCase({});
     },
     //展开
     showSomeSearch() {

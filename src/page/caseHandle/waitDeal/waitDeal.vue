@@ -15,9 +15,9 @@
           :data="tableData"
           stripe
           style="width: 100%"
-          height="100%"
           highlight-current-row
           @current-change="clickCase"
+          height="100%"
         >
           <el-table-column prop="caseNumber" label="案号" align="center"></el-table-column>
           <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
