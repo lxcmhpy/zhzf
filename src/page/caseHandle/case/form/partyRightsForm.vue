@@ -202,7 +202,7 @@
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <partyRightsEvidence ref="partyRightsEvidenceRef" @findEvidenceEmit="findEvidence"></partyRightsEvidence>
-    <editEvidenceName ref="editEvidenceNameRef"></editEvidenceName>
+    <editEvidenceName ref="editEvidenceNameRef" @findEvidenceEmit="findEvidence"></editEvidenceName>
   </div>
 </template>
 <script>
@@ -391,7 +391,7 @@ export default {
       this.$refs.editEvidenceNameRef.showModal(row);
     },
     showEvidence(){
-      
+
     }
   },
   mounted() {

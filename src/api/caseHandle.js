@@ -368,6 +368,18 @@ export function saveOrUpdateEvdencenApi2(data) {
   });
 }
 
+//修改证据名称
+export function updateEvdenceNameApi(data) { 
+  let data2 = vm.$qs.stringify(data);
+  console.log(data2);
+  return request({
+    url: "doc/evidence/updateEvdenceName",
+    method: "post",
+    data:data2,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
 //-------------长软lv start------------
 //获取操作记录
 export function getHandleRecordApi(data) {

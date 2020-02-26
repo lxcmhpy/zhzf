@@ -41,7 +41,6 @@ export default {
     getFile () {
       console.log('docId',this.$route.params.docId);
       console.log('caseId',this.caseId)
-
       this.$store.dispatch("getFile", {
           docId: this.$route.params.docId,
           caseId: this.caseId,
@@ -49,7 +48,9 @@ export default {
         res => {
           console.log(res[0].storageId)
           console.log(11111111)
-          this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST+res[0].storageId
+
+
+          this.storagePath = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[0].storageId
         },
         err => {
           console.log(err);

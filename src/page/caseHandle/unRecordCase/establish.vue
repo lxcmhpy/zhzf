@@ -20,7 +20,7 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <div class="text-left">
-                  <el-checkbox-group v-model="formData.checkBox">
+                  <el-checkbox-group v-model="formData.checkBox" :disabled="true">
                   <p>
                     <el-checkbox label="行政检查">1.在行政检查中发现的；</el-checkbox>
                   </p>
@@ -48,7 +48,7 @@
                         placeholder="\"
                         disabled
                       ></el-input>
-                    </el-form-item>报请查处的 </el-checkbox>
+                    </el-form-item>报请查处的；</el-checkbox>
                   </p>
                   <p>
                     <el-checkbox label="部门移送"> 5.有关部门
@@ -62,7 +62,7 @@
                     </el-form-item>移送的；</el-checkbox>
                   </p>
                   <p>
-                    <el-checkbox label="其他途径">6.其他途径发现的
+                    <el-checkbox label="其他途径">6.其他途径发现的：
                     <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
                       <el-input
                         v-model="caseSourceText6"
@@ -85,7 +85,7 @@
                   v-model="formData.caseName"
                   v-bind:class="{ over_flow:formData.caseName.length>14?true:false }"
                   :autosize="{ minRows: 2, maxRows: 3}"
-                  :maxlength="nameLength"
+                  maxlength="90"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -105,11 +105,13 @@
                   format="yyyy年MM月dd日"
                   placeholder="    年  月  日"
                 ></el-date-picker> -->
-                <el-input
+                <!-- <el-input
                   v-model="formData.acceptTime"
                   placeholder="\"
                   disabled
-                ></el-input>
+                ></el-input> -->
+                <el-date-picker v-model="formData.acceptTime" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd HH:mm" disabled></el-date-picker>
+
               </el-form-item>
             </td>
           </tr>
@@ -140,8 +142,8 @@
             </td>
             <td>性别</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partySex">
-                <el-input
+              <el-form-item :prop="isParty ? 'partySex' :''">
+                <!-- <el-input
                   type="textarea"
                   v-model="formData.partySex"
                   v-bind:class="{ over_flow:formData.partySex.length>14?true:false }"
@@ -149,19 +151,23 @@
                   maxlength="2"
                   placeholder="\"
                   :disabled="isParty ? false : true"
-                ></el-input>
+                ></el-input> -->
+                <el-select v-model="formData.partySex" :disabled="isParty && !originalData.partySex ? false : true" placeholder="\">
+                  <el-option value="0" label="男"></el-option>
+                  <el-option value="1" label="女"></el-option>
+                </el-select>
               </el-form-item>
             </td>
             <td>年龄</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyAge">
+              <el-form-item :prop="isParty ? 'partyAge' :''">
                 <el-input
                   type="textarea"
                   v-model="formData.partyAge"
                   v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   maxlength="3"
-                  :disabled="isParty ? false : true"
+                  :disabled="isParty && !originalData.partyAge ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -170,7 +176,7 @@
           <tr>
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyAddress">
+              <el-form-item :prop="isParty ? 'partyAddress' :''">
                 <el-input
                   type="textarea"
                   v-model="formData.partyAddress"
@@ -178,7 +184,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   placeholder="\"
-                  :disabled="isParty ? false : true"
+                  :disabled="isParty && !originalData.partyAddress ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -187,7 +193,7 @@
               <p>件号</p>
             </td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyIdNo">
+              <el-form-item :prop="isParty ? 'partyIdNo' :''">
                 <el-input
                   type="textarea"
                   v-model="formData.partyIdNo"
@@ -195,13 +201,13 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   placeholder="\"
-                  :disabled="isParty ? false : true"
+                  :disabled="isParty && !originalData.partyIdNo ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyTel">
+              <el-form-item :prop="isParty ? 'partyTel' :''">
                 <el-input
                   type="textarea"
                   v-model="formData.partyTel"
@@ -243,7 +249,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   maxlength="10"
                   placeholder="\"
-                  :disabled="isParty ? true : false"
+                  :disabled="!isParty && !originalData.partyManager ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -259,7 +265,7 @@
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="45"
                   placeholder="\"
-                  :disabled="isParty ? true : false"
+                  :disabled="!isParty && !originalData.partyUnitAddress ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -273,7 +279,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   placeholder="\"
-                  :disabled="isParty ? true : false"
+                  :disabled="!isParty && !originalData.partyUnitTel ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -289,7 +295,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   placeholder="\"
-                  :disabled="isParty ? true : false"
+                  :disabled="!isParty && !originalData.socialCreditCode ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -314,12 +320,13 @@
               <p class="center_similar">据</p>
             </td>
             <td colspan="4" class="color_DBE4EF">
-              <el-form-item prop="caseReplay">
+              <el-form-item prop="illegalLaw">
                 <!-- <el-input type='textarea' v-model="formData.caseReplay" v-bind:class="{ over_flow:formData.caseReplay.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input> -->
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 3, maxRows: 4}"
                   v-model="formData.illegalLaw"
+                  disabled
                 ></el-input>
               </el-form-item>
             </td>
@@ -333,7 +340,8 @@
               <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
                 <p>
-                  时间:{{formData.approveTime}}
+                  <span v-if="formData.approveTime">{{formData.approveTime}}</span>
+                  <span v-else>年  月  日</span>
                   <!-- <el-form-item prop="makeDate" class="pdf_datapick">
                     <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
                     </el-date-picker>
@@ -357,7 +365,8 @@
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
                 <p>
-                  时间:{{formData.secondApproveTime}}
+                  <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
+                  <span v-else>年  月  日</span>
                   <!-- <el-form-item prop="makeDate" class="pdf_datapick">
                     <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
                     </el-date-picker>
@@ -368,16 +377,17 @@
           </tr>
           <tr>
             <td>
-              <p class="center_similar">备</p>
-              <p class="center_similar">注</p>
+              <!-- <p class="center_similar">备</p>
+              <p class="center_similar">注</p> -->
+              <p>备注</p>
             </td>
             <td colspan="8" class="color_DBE4EF">
               <el-form-item prop="note">
                 <el-input
                   type="textarea"
                   v-model="formData.note"
-                  :autosize="{ minRows: 2, maxRows: 3}"
-                  :maxlength="nameLength"
+                  :autosize="{ minRows: 1, maxRows: 1}"
+                  maxlength="30"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -412,6 +422,15 @@ import {validateIDNumber,validatePhone,validateZIP} from '@/common/js/validator'
 
 export default {
   data() {
+    // partyManager partyUnitAddress  partyUnitTel. socialCreditCode
+    //当事人类型为公司时验证
+    var validateIfCom = (rule, value, callback) => {
+      if (!this.isParty && !value) {
+        return callback(new Error("请输入"));
+      }
+      callback();
+    };
+    
     return {
       caseNumber: "010-123456",
       // tableData: {},
@@ -452,15 +471,45 @@ export default {
         status: ""
       },
       rules: {
+        caseName: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
         partyIdNo:[
+          { required: true, message: "请输入", trigger: "blur" },
           { validator: validateIDNumber, trigger: "blur" }
         ],
         partyTel:[
+          { required: true, message: "请输入", trigger: "blur" },
           { validator: validatePhone, trigger: "blur" }
         ],
-        partyUnitTel:[
-          { validator: validatePhone, trigger: "blur" }
+        partyAddress:[
+          { required: true, message: "请输入", trigger: "blur" }
         ],
+        partyAge:[
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        partySex:[
+          
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        partyManager: [
+          { validator: validateIfCom, trigger: "blur" }
+        ],
+        partyUnitAddress: [
+          { validator: validateIfCom, trigger: "blur" }
+        ],
+        partyUnitTel: [
+          { validator: validateIfCom, trigger: "blur" },
+           { validator: validatePhone, trigger: "blur" }
+        ],
+        socialCreditCode: [
+          { validator: validateIfCom, trigger: "blur" }
+        ],
+        illegalLaw: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ]
+        
+        
 
 
       },
@@ -492,6 +541,7 @@ export default {
       caseSourceText5:"",
       caseSourceText6:"",
       caseSourceCheckBox:[],
+      originalData:"",
     };
   },
   components: {
