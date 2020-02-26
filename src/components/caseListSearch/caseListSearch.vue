@@ -8,7 +8,7 @@
         :model="caseSearchForm"
         ref="caseSearchForm"
         class="caseSearchForm"
-        label-width="90px"
+        label-width="100px"
       >
         <div :class="lineSearchSty">
           <div class="item" v-if="caseState != 'unRecordCase'">
@@ -27,26 +27,45 @@
               <el-input v-model="caseSearchForm.vehicleShipId"></el-input>
             </el-form-item>
           </div>
-          <div class="item">
-            <el-form-item label="案件类型">
-               <el-select
-                v-model="caseSearchForm.caseType"
-                placeholder="请选择"
-              >
-                <el-option
-                  v-for="item in caseTypeList"
-                  :key="item.id"
-                  :label="item.typeName"
-                  :value="item.typeName"
-                ></el-option>
-              </el-select>
+            <div class="item">&nbsp;
+                <el-button type="primary" size="medium" icon="el-icon-search" @click="searchCaseEmit"></el-button>
+                <el-button
+                type
+                size="medium"
+                :icon="hideSomeSearch ? 'el-icon-arrow-down':'el-icon-arrow-up'"
+                @click="showSomeSearchEmit"
+                ></el-button>
+            </div>
+        </div>
+
+        <!-- <div v-if="caseState == 'waitDeal'">
+          <div class="item item2">
+            <el-form-item label="当事人/单位">
+              <el-input v-model="caseSearchForm.caseId"></el-input>
             </el-form-item>
           </div>
-          <div class="item" v-if="caseState == 'unRecordCase' || caseState == 'waitDeal'">
-            <el-form-item label="案件状态">
-              <el-input v-model="caseSearchForm.caseStatus"></el-input>
-            </el-form-item>
-          </div>
+        </div>-->
+        <div :class="{hideSomeSearchClass:hideSomeSearch,lineTwoStyle:caseState == 'waitArchive'}">
+            <div class="item">
+                <el-form-item label="案件类型">
+                    <el-select
+                        v-model="caseSearchForm.caseType"
+                        placeholder="请选择"
+                    >
+                        <el-option
+                        v-for="item in caseTypeList"
+                        :key="item.id"
+                        :label="item.typeName"
+                        :value="item.typeName"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
+            </div>
+            <div class="item" v-if="caseState == 'unRecordCase' || caseState == 'waitDeal'">
+                <el-form-item label="案件状态">
+                    <el-input v-model="caseSearchForm.caseStatus"></el-input>
+                </el-form-item>
+            </div>
 
           <div class="item" v-if="caseState == 'waitDeal' || caseState == 'approveIng'">
             <el-form-item label="当前环节">
@@ -70,26 +89,6 @@
             </el-form-item>
           </div>
           <div class="item">
-            <el-button type="primary" size="medium" icon="el-icon-search" @click="searchCaseEmit"></el-button>
-            <el-button
-              type
-              size="medium"
-              :icon="hideSomeSearch ? 'el-icon-arrow-down':'el-icon-arrow-up'"
-              @click="showSomeSearchEmit"
-            ></el-button>
-          </div>
-        </div>
-
-        <!-- <div v-if="caseState == 'waitDeal'">
-          <div class="item item2">
-            <el-form-item label="当事人/单位">
-              <el-input v-model="caseSearchForm.caseId"></el-input>
-            </el-form-item>
-          </div>
-        </div>-->
-
-        <div :class="{hideSomeSearchClass:hideSomeSearch,lineTwoStyle:caseState == 'waitArchive'}">
-          <div class="item">
             <el-form-item label="违法行为">
               <el-input v-model="caseSearchForm.caseCauseName"></el-input>
             </el-form-item>
@@ -105,10 +104,9 @@
                 value-format="yyyy-MM-dd HH:mm:ss"
                 format="yyyy-MM-dd"
                 :default-time="['00:00:00', '23:59:59']">
-              ></el-date-picker>
+              </el-date-picker>
             </el-form-item>
           </div>
-
           <div class="item" v-if="caseState == 'waitArchive'">
             <el-form-item label="结案时间">
               <el-date-picker
@@ -120,10 +118,9 @@
                 value-format="yyyy-MM-dd HH:mm:ss"
                 format="yyyy-MM-dd"
                 :default-time="['00:00:00', '23:59:59']">
-              ></el-date-picker>
+              </el-date-picker>
             </el-form-item>
           </div>
-
           <div class="item" v-if="caseState == 'myApproval'" >
             <el-form-item label="申请时间">
               <el-date-picker
@@ -135,7 +132,7 @@
                 value-format="yyyy-MM-dd HH:mm:ss"
                 format="yyyy-MM-dd"
                 :default-time="['00:00:00', '23:59:59']">
-              ></el-date-picker>
+              </el-date-picker>
             </el-form-item>
           </div>
         </div>
