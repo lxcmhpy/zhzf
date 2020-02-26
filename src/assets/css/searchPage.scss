@@ -5,6 +5,9 @@
         position: relative;
         padding: 0px 7px;
     }
+    .el-input,.el-select {
+        width: 130px;
+    }
 }
 .searchPage {
     display: flex;

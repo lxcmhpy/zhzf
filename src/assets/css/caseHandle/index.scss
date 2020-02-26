@@ -63,7 +63,7 @@
                 }
             }
             .el-select{
-                width: 100%;
+                width: calc(100% - 17px);
             }
         }
 
@@ -387,7 +387,15 @@
 .el-input__inner {
     border-radius: 0px;
 }
-
+.el-select {
+    width: calc(100% - 17px);
+    .el-input__inner {
+        // width: calc(100% - 17px);
+    }
+    .el-select__caret {
+        // margin-right: 15px !important;
+    }
+}
 @keyframes switchHeight
 {
 from {padding-top: 60px;}
