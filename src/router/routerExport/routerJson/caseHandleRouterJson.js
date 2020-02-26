@@ -311,25 +311,25 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/pdf/illegalActionPdf.vue")
   },
-  //听证通知书PDF
+  //听证通知书(流程中)
   {
     path: "/hearingNoticePdf",
     name: "hearingNoticePdf",
     meta: {
-      title: "听证通知书-pdf",
+      title: "听证通知书",
       oneTab: true,
     },
-    component: () => import("@/page/caseHandle/case/pdf/hearingNoticePdf.vue")
+    component: () => import("@/page/caseHandle/case/modle/hearingNoticeDoc.vue")
   },
-  //听证笔录PDF
+  //听证笔录(流程中)
   {
     path: "/hearingRecordePdf",
     name: "hearingRecordePdf",
     meta: {
-      title: "听证笔录-pdf",
+      title: "听证笔录",
       oneTab: true,
     },
-    component: () => import("@/page/caseHandle/case/pdf/hearingRecordPdf.vue")
+    component: () => import("@/page/caseHandle/case/modle/hearingRecordDoc.vue")
   },
   //当场行政处罚决定书PDF
   {
@@ -617,7 +617,8 @@ export default [
     path: "/handleRecordForm",
     name: "handleRecordForm",
     meta: {
-      title: "操作记录"
+      title: "操作记录",
+      oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/handleRecordForm.vue")
   },
@@ -625,7 +626,8 @@ export default [
     path: "/evidenceForm",
     name: "evidenceForm",
     meta: {
-      title: "证据目录"
+      title: "证据目录",
+      oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/evidenceForm.vue")
   },
@@ -633,7 +635,8 @@ export default [
     path: "/documentForm",
     name: "documentForm",
     meta: {
-      title: "文书列表"
+      title: "文书列表",
+      oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/documentForm.vue")
   },
@@ -641,7 +644,8 @@ export default [
     path: "/deliverReceiptForm",
     name: "deliverReceiptForm",
     meta: {
-      title: "送达回证"
+      title: "送达回证",
+      oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/deliverReceiptForm.vue")
   },

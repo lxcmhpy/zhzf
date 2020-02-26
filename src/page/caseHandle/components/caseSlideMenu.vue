@@ -13,16 +13,16 @@
       <el-menu-item index="flowChart" @click="goTo('flowChart')">
         案件<br>流程
       </el-menu-item>
-      <el-menu-item index="4">
+      <el-menu-item index="handleRecordForm" @click="goTo('handleRecordForm')">
         操作<br>记录
       </el-menu-item>
-      <el-menu-item index="5">
+      <el-menu-item index="documentForm" @click="goTo('documentForm')">
         文书<br>列表
       </el-menu-item>
-      <el-menu-item index="6" @click="goTo('deliverReceiptForm')">
+      <el-menu-item index="deliverReceiptForm" @click="goTo('deliverReceiptForm')">
         送达<br>回证
       </el-menu-item>
-      <el-menu-item index="7" >
+      <el-menu-item index="evidenceForm" @click="goTo('evidenceForm')">
         证据<br>目录
       </el-menu-item>
       <!-- <el-menu-item index="8">
