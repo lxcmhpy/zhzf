@@ -2,7 +2,7 @@ import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategory
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
     submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi,
-    findByMlCaseId,findByCondition,
+    findByMlCaseId,findByCondition,findByMlCaseIdNew,
     //-----------------长软start-----------
     getHandleRecordApi,getEvidenceApi,saveOrUpdateEvidenceApi,getDocumentApi,getDeliverReceiptApi,saveOrUpdateDeliverReceiptApi,getDictionaryApi
     //-----------------长软end------------
@@ -292,6 +292,18 @@ const caseHandle = {
         getByMlCaseId ({ commit }, data) {
             return new Promise((resolve, reject) => {
                 findByMlCaseId(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        // 通过案件id查询归档目录列表
+        getByMlCaseIdNew ({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                findByMlCaseIdNew(data).then(
                     res => {
                         resolve(res);
                     },

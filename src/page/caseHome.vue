@@ -100,7 +100,7 @@
             <li class="imgbox">
               <img :src="'./static/images/img/icon_lit_yyunc.png'">营运车辆
             </li>
-            <li class="imgbox" @click="infoCheck(industry)">
+            <li class="imgbox" @click="infoCheck('industry')">
               <img :src="'./static/images/img/icon_lit_jyyehu.png'">经营业户
             </li>
             <li class="imgbox">
@@ -155,7 +155,7 @@
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select> -->
-              <el-cascader v-model="value" :options="options" :props="{ expandTrigger: 'hover' }" @change="handleChange"></el-cascader>
+              <el-cascader v-model="caseForm.commenCase" :options="options" :props="{ expandTrigger: 'hover' }" @change="getIllegaAct"></el-cascader>
             </span>
           </div>
         </el-form>
@@ -213,6 +213,7 @@ export default {
         programType: 1,
         wayType: '公路路政',
         value: '不限类别',
+        commenCase:'',
       },
       options: [
         {
@@ -360,7 +361,7 @@ export default {
     },
     // 信息查验
     infoCheck(path) {
-      this.$router.push({ name: 'industry' });
+      this.$router.push({ name: path });
     },
     // 查看更多
     router(path) {

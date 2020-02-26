@@ -2,7 +2,7 @@
 .el-button  {
     border-radius: 0px;
 }
-.btn-1 {
+.btn-1.el-button--default {
     border: 1px solid $blueC;
     background:$grayC;
     &:hover {

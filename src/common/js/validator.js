@@ -56,13 +56,13 @@ export function validatePhone(rule, value, callback) {
     if (!reg.test(value) && value) {
         // this.$message('手机号不正确')
         callback(new Error('手机号格式错误'));
-        // callback(alert('12')) 
+        // callback(alert('12'))
     }
     callback();
   }
 
 /* 是否是身份证号码   有值时验证*/
-export function validateIDNumber(rule, value, callback) { 
+export function validateIDNumber(rule, value, callback) {
     var reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
     if (!reg.test(value) && value) {
         callback(new Error('身份证格式错误'));
@@ -79,15 +79,16 @@ export function validateZIP(rule, value, callback) {
     callback();
 }
 
-/* 当事人类型为个人是做非空验证 */
-export function validatePartyTelByPartType(rule, value, callback) {
-    var reg= /^\d{6}$/;
-    if (!reg.test(value) && value) {
-        callback(new Error('请输入正确的6位邮编'));
+/* 必填 */
+export function validateRequire(rule, value, callback) {
+    if (value == undefined) {
+        return callback(new Error("必填"));
+    } else if (value == '') {
+        return callback(new Error("必填"));
+    } else {
+        callback();
     }
-    callback();
 }
-
 
 
 

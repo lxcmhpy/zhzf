@@ -111,32 +111,36 @@
       background: #fff;
   }
   .com_searchAndpageBoxPadding {
-    position: absolute;
-    left: 22px;
-    right: 22px;
-    top: 22px;
-    bottom: 22px;
+    // position: absolute;
+    position: relative;
+    margin: 22px;
+    // left: 22px;
+    // right: 22px;
+    // top: 22px;
+    // bottom: 22px;
     }
   .searchAndpageBox{
       box-sizing: border-box;
-      padding: 70px 20px 50px 20px;
+      padding: 20px;
       height: 100%;
       background: #fff;
       position: relative;
       .handlePart{
-        position: absolute;
-        top: 20px;
-        left: 20px;
+        // position: absolute;
+        // top: 20px;
+        // left: 20px;
+        position: relative;
+        margin: 20px 20px 0px 20px;
         .search{
             display: inline-block;
         }
       }
       .paginationBox{
-        position: absolute;
-        bottom: 10px;
-        left: 0;
-        right: 0;
-        margin: auto;
+        position: relative;
+        // bottom: 10px;
+        // left: 0;
+        // right: 0;
+        // margin: auto;
         text-align: center;
       }
       .tablePart{
