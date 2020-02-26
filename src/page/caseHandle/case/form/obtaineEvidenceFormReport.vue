@@ -168,6 +168,11 @@
             </el-date-picker>
           </el-form-item>
         </div>
+        <div class="pager_input quzheng">备注：
+          <el-form-item>
+            <el-input class='text_indent10 overflow_lins_textarea' v-model="docData.note" rows="3" maxLength='90' placeholder="\"></el-input>
+          </el-form-item>
+        </div>
         <div class="notice clear">
           <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
         </div>
@@ -426,7 +431,7 @@ export default {
   mounted() {
     // this.getCaseBasicInfo();
     this.getDocDataByCaseIdAndDocId();
-    this.isOverStatus(); 
+    this.isOverStatus();
   },
 }
 </script>
