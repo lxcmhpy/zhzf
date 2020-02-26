@@ -425,8 +425,8 @@ export default {
   },
   mounted() {
     // this.getCaseBasicInfo();
-    // this.getDocDataByCaseIdAndDocId();
-    // this.isOverStatus();
+    this.getDocDataByCaseIdAndDocId();
+    this.isOverStatus(); 
   },
 }
 </script>
