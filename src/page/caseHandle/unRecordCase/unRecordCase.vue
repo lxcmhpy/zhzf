@@ -75,7 +75,6 @@
           :data="tableData"
           stripe
           style="width: 100%"
-          height="100%"
           highlight-current-row
           @current-change="handleCurrentChange"
         >

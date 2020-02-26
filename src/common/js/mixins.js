@@ -144,6 +144,7 @@ export const mixinGetCaseApiList = {
       // this.caseLinkDataForm.caseBasicinfoId = caseId;
       //0暂存 1提交
       this.caseLinkDataForm.status = handleType;
+      if(handleType){
       this.$refs[docForm].validate(valid => {
         if (valid) {
           // console.log(this.caseLinkDataForm);
@@ -171,7 +172,20 @@ export const mixinGetCaseApiList = {
             }
           );
         }
-      });
+      })
+      }else{
+        this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
+          res => {
+            console.log("暂存表单", res);
+            this.$message({
+              type: "success",
+              message: "暂存成功"
+            });
+          },
+          err => {
+            console.log(err);
+          })
+      }
     },
     //点击下一环节和提交按钮都跳转流程图
     com_goToNextLinkTu(caseBasicinfoId, caseLinktypeId) {
@@ -297,6 +311,19 @@ export const mixinGetCaseApiList = {
         }
 
       });
+    }else{
+      this.$store.dispatch("addDocData", this.caseDocDataForm).then(
+        res => {
+          console.log("暂存文书", res);
+          this.$message({
+            type: "success",
+            message: "暂存成功"
+          });
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
     },
     //通过案件id和表单类型Id查询已绑定文书
