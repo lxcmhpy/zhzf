@@ -23,11 +23,8 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
-import {saveOrUpdateEvdencenApi2, } from "@/api/caseHandle";
-import {
- uploadEvApi,
- findFileByIdApi,
-} from "@/api/upload";
+import { updateEvdenceNameApi } from "@/api/caseHandle";
+
 
 export default {
   data() {
@@ -36,47 +33,66 @@ export default {
       evidenceForm: {
         evName: ""
       },
-      evfile:'',
+      evfile: "",
       rules: {
-        evName: [
-          { required: true, message: "请输入证据名称", trigger: "blur" }
-        ],
-      }
+        evName: [{ required: true, message: "请输入证据名称", trigger: "blur" }]
+      },
+      evId:'',
     };
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId"]) },
   methods: {
     showModal(data) {
+        console.log(data);
+        this.evId = data.id;
       this.visible = true;
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
     },
-    editEvi(){
-      this.visible = false;
-    },
-    //上传附件2
-    uploadEvidence2(id){
-        let data = {
-            caseId:this.caseId,
-            evName:this.evidenceForm.evName,
-            evType:'照片',
-            status:1,
-            fileId:id,
-        }
-        saveOrUpdateEvdencenApi2(data).then(
+    editEvi() {
+      this.$refs["evidenceForm"].validate(valid => {
+        if (valid) {
+            let data = {
+                id:this.evId,
+                evName:this.evidenceForm.evName
+            }
+          updateEvdenceNameApi(data).then(
             res => {
               console.log(res);
-            this.visible = false;
+              this.visible = false;
+              
             this.$emit('findEvidenceEmit');
-            //   this.findFile(res.data);
             },
             error => {
               console.log(error);
             }
           );
+        }
+      });
+    },
+    //上传附件2
+    uploadEvidence2(id) {
+      let data = {
+        caseId: this.caseId,
+        evName: this.evidenceForm.evName,
+        evType: "照片",
+        status: 1,
+        fileId: id
+      };
+      saveOrUpdateEvdencenApi2(data).then(
+        res => {
+          console.log(res);
+          this.visible = false;
+          this.$emit("findEvidenceEmit");
+          //   this.findFile(res.data);
+        },
+        error => {
+          console.log(error);
+        }
+      );
     }
   }
 };

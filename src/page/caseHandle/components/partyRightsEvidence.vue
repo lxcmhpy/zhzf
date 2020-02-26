@@ -91,6 +91,7 @@ export default {
           fd.append("file", this.evfile);
           fd.append("caseId", this.caseId);
           fd.append("docId", this.linkId);
+          fd.append("category", '证据');
 
           uploadEvApi(fd).then(
             res => {
