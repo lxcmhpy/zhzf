@@ -11,7 +11,12 @@ import util from "@/common/js/util";
 import qs from 'qs';
 import hasPermission from "@/common/js/hasPermission"
 // import mySignture from "@/common/js/mySignture";
+// 滑动验证
+import VueSimpleVerify from 'vue-simple-verify'
+import '../node_modules/vue-simple-verify/dist/vue-simple-verify.css'
 
+
+Vue.component('vue-simple-verify', VueSimpleVerify)
 
 Vue.use(ElementUI);
 Vue.use(hasPermission);

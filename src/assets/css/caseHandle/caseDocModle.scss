@@ -1,6 +1,6 @@
 .print_box {
-    width : 790px !important;
-    height: 1117px;
+    // width : 790px !important;
+    // height: 1117px;
     /* 默认属性 */
     font-family    : 'SimSun';
     font-size      : 16px;
@@ -452,7 +452,11 @@
         }
 
         .print_table {
-
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0px;
+            margin: 0px;
             .el-input .el-input__inner {
                 border: 0;
                 width : 100%;
@@ -580,6 +584,38 @@
 
     u {
         font-weight: 600;
+    }
+    .el-form-item__content {
+        overflow: hidden;
+        .el-input{
+            .el-input__inner{
+                width: 10%;
+                border-radius: 0px !important;
+            }
+        }
+        .el-textarea__inner{
+            width: 10%;
+            border-radius: 0px !important;
+        }
+        .el-date-editor .el-input__inner,.el-date-editor .el-input{
+            width: 10%;
+            border-radius: 0px !important;
+            .el-input__prefix {
+                left: auto;
+                right: 5px;
+            }
+        }
+        .el-input__suffix {
+            left: auto;
+            right: 5px;
+        }
+        .el-input--prefix .el-input__inner {
+            padding-left: 30px;
+        }
+        .el-select {
+            width: 10%;
+            border-radius: 0px !important;
+        }
     }
 }
 

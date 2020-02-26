@@ -121,15 +121,15 @@
         custom-class="dialog1 fullscreen"
         :close-on-click-modal="false"
         width="1000px"
-        height="auto"
          append-to-body>
-         <div style="position:relative;height:auto;">
+         <div style="position:relative;">
             <div class="">
                 <el-table
                     :data="evidenceList"
                     border
                     stripe
                     highlight-current-row
+                    @selection-change="handleSelectionChange"
                     style="width: 100%">
                     <el-table-column width="55" type="selection" label="选择" align="center"></el-table-column>
                     <el-table-column width="50" type="index" label="序号" align="center"></el-table-column>
@@ -218,11 +218,16 @@ export default {
                 ]
             },
             evTypeOptions: ['证据'], //'文书',
-            enclosureVisible: false
+            enclosureVisible: false,
+            multipleSelection: null
             // isTrue: false
         }
     },
     methods: {
+        handleSelectionChange (val) {
+            debugger
+            this.multipleSelection = val;
+        },
         showAddEvidence () {
             this.addEvidenceVisible = !this.addEvidenceVisible
         },

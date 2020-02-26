@@ -436,6 +436,7 @@ export default {
 .width816 {
   /* width: 816px;/*  */
   width: calc(100% - 378px);
+  height: 900px;
   margin-right: 22px;
   box-sizing: border-box;
 
@@ -453,7 +454,7 @@ export default {
   background: rgba(246, 248, 253, 1);
 }
 .case_home_bottom {
-  height: calc(100% - 354px);
+  height: 546px;
   padding: 0 20px;
   /* min-height: 400px; */
   overflow: auto;
