@@ -586,19 +586,14 @@
         font-weight: 600;
     }
     .el-form-item__content {
-        overflow: hidden;
         .el-input{
             .el-input__inner{
-                width: 10%;
+                width: 169px;
                 border-radius: 0px !important;
             }
         }
-        .el-textarea__inner{
-            width: 10%;
-            border-radius: 0px !important;
-        }
-        .el-date-editor .el-input__inner,.el-date-editor .el-input{
-            width: 10%;
+        .el-date-editor.el-input__inner,.el-date-editor.el-input{
+            width: 169px;
             border-radius: 0px !important;
             .el-input__prefix {
                 left: auto;
@@ -610,8 +605,35 @@
             right: 5px;
         }
         .el-input--prefix .el-input__inner {
-            padding-left: 30px;
+            padding-left: 15px;
         }
+
+        overflow: hidden;
+        // .el-input{
+        //     .el-input__inner{
+        //         width: 10%;
+        //         border-radius: 0px !important;
+        //     }
+        // }
+        // .el-textarea__inner{
+        //     width: 10%;
+        //     border-radius: 0px !important;
+        // }
+        // .el-date-editor .el-input__inner,.el-date-editor .el-input{
+        //     width: 10%;
+        //     border-radius: 0px !important;
+        //     .el-input__prefix {
+        //         left: auto;
+        //         right: 5px;
+        //     }
+        // }
+        // .el-input__suffix {
+        //     left: auto;
+        //     right: 5px;
+        // }
+        // .el-input--prefix .el-input__inner {
+        //     padding-left: 30px;
+        // }
         .el-select {
             width: 10%;
             border-radius: 0px !important;

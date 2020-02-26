@@ -50,7 +50,7 @@
                 <div>
                   <el-button type="primary" @click="submitLogin('loginForm')">登录</el-button>
                 </div>
-                <div>
+                <div class="login_btm">
                   <el-link type="primary" :underline="false" class="left_float">APP下载</el-link>
                   <el-link type="primary" :underline="false" class="left_float margin24 wechat_box">
                     <span @click="weChat">微信公众号</span>
