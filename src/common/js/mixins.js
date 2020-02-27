@@ -335,6 +335,7 @@ export const mixinGetCaseApiList = {
       this.$store.dispatch("getDocListByCaseIdAndFormId", data).then(
         res => {
           this.docTableDatas = res.data;
+          this.docTableDatasCopy = this.docTableDatasCopy ? this.docTableDatas : '';
           console.log('文书列表', this.docTableDatas)
         },
         err => {
@@ -450,6 +451,11 @@ export const mixinGetCaseApiList = {
       //调查类文书
       if(caseLinktypeId == '2c9029ee6cac9281016caca7f38e0002'){
         this.setEvidenceData(); 
+      }
+
+      //当事人权利
+      if(caseLinktypeId == '2c9029ac6c26fd72016c27247b290003'){
+        this.getDataAfter();
       }
 
       //决定执行的缴费金额

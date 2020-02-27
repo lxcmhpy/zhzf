@@ -84,15 +84,6 @@ export default [
     component: () => import("@/page/caseHandle/case/dentail.vue")
   },
   {
-    path: "/inquestNotes",
-    name: "inquestNotes",
-    meta: {
-      title: "勘验笔录",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/inquestNotes.vue")
-  },
-  {
     path: "/enforceForm",
     name: "enforceForm",
     meta: {
