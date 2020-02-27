@@ -29,10 +29,10 @@
         {{item.name}}
       </el-col>
     </el-row>
-    <p>是否确认进入下一环节？</p>
+    <p>无法进入下一环节！</p>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" :disabled="sureDisab"  @click="enterNext">确 定</el-button>
-      <el-button @click="visible = false">取 消</el-button>
+      <!-- <el-button type="primary" :disabled="sureDisab"  @click="enterNext">确 定</el-button> -->
+      <el-button type="primary" @click="closeDialog">确定</el-button>
     </span>
 
   </el-dialog>
@@ -47,7 +47,7 @@ export default {
     return {
       visible: false,
       checkList: [],
-      title: '进入下一环节',
+      title: '无法进入下一环节',
       sureDisab:false,
       caseLinkDataForm:{ //为了在公共方法中使用，所以这样组装
         caseBasicinfoId:'',
@@ -66,20 +66,25 @@ export default {
       console.log(data);
       this.caseLinkDataForm.caseLinktypeId = caseData.caseLinktypeId;
       this.caseLinkDataForm.caseBasicinfoId = caseData.caseBasicinfoId;
-      data.forEach(item=>{
-        if(item.status != 1){
-          this.title = ''
-        }
-      })
-      for(let i=0;i<data.length;i++){
-        if(data[i].status != 1 || data[i].status != "1"){
-          this.title = '无法进入下一环节';
-          this.sureDisab = true;
-          break;
-        }
-      }
+      // data.forEach(item=>{
+      //   if(item.status != 1){
+      //     this.title = ''
+      //   }
+      // })
+      // for(let i=0;i<data.length;i++){
+      //   if(data[i].status != 1 || data[i].status != "1"){
+      //     this.title = '无法进入下一环节';
+      //     this.sureDisab = true;
+      //     break;
+      //   }
+      // }
       this.visible = true;
-      this.checkList = data
+      data.forEach(item=>{
+        if(item.isRequired === 0) //后台数据原因 要写===0
+          this.checkList.push(item);
+      })
+      console.log('this.checkList',this.checkList);
+      // this.checkList = data
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

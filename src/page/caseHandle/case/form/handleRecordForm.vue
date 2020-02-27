@@ -1,6 +1,6 @@
 <!-------长软------->
 <template>
-  <div class="com_searchAndpageBoxPadding">
+  <div class="com_searchAndpageBoxPadding hasBigMarginRight">
     <div class="searchAndpageBox">
       <div class="handlePart">
         <div class="search">
@@ -89,9 +89,13 @@
         ></el-pagination>
       </div>
     </div>
+    <!--快速入口 -->
+    <caseSlideMenu :activeIndex="'evidenceForm'" ></caseSlideMenu>
   </div>
 </template>
 <script>
+import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
+import { mapGetters } from "vuex";
     export default {
         data() {
             return {
@@ -169,6 +173,10 @@
                 }
             };
         },
+        computed: { ...mapGetters(['caseId']) },
+        components: {
+          caseSlideMenu
+        },
         methods: {
             //表单筛选
             getRecordList() {
@@ -181,6 +189,7 @@
                     // createTime: this.recordForm.createTime2,
                     current: this.currentPage,
                     size: this.pageSize*/
+                    caseBasicInfoId:this.caseId,
                     linkName:this.recordForm.linkName,
                     operator:this.recordForm.operator,
                     operationl:this.recordForm.operationl,
@@ -247,5 +256,10 @@
     overflow: auto;
     box-sizing: border-box;
     padding-top: 4%;
+  }
+  .fullscreen {
+  .hasBigMarginRight{
+      margin-right: 65px;
+    }
   }
 </style>

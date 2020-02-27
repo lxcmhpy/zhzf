@@ -1,6 +1,6 @@
 <!-------长软------->
 <template>
-  <div class="com_searchAndpageBoxPadding">
+  <div class="com_searchAndpageBoxPadding hasBigMarginRight">
     <div class="searchAndpageBox">
       <div class="handlePart">
         <div class="search">
@@ -187,9 +187,13 @@
         <el-button size="medium" @click="editVisible=false">取  消</el-button>
       </div>
     </el-dialog>
+    <!--快速入口 -->
+    <caseSlideMenu :activeIndex="'evidenceForm'" ></caseSlideMenu>
   </div>
 </template>
 <script>
+import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
+import { mapGetters } from "vuex";
     export default {
         data() {
             const isSelect = (rule, value, callback) => {
@@ -257,6 +261,10 @@
                     ]
                 }
             };
+        },
+        computed: { ...mapGetters(['caseId']) },
+        components: {
+          caseSlideMenu
         },
         methods: {
             submitForm(formName){
@@ -450,4 +458,9 @@
     position: relative;
     overflow: hidden;
   }
+  .fullscreen {
+  .hasBigMarginRight{
+      margin-right: 65px;
+    }
+}
 </style>

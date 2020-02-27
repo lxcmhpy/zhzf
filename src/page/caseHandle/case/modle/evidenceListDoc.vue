@@ -268,8 +268,8 @@ export default {
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: '297708bcd8e80872febb61577329194f', //案件id--从流程进入删掉，先写死测试用
-        caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型IDer
+        caseBasicinfoId: '', //案件id--从流程进入删掉，先写死测试用
+        caseLinktypeId: this.$route.params.docId,    //文书类型ID
         //表单数据
         docData: "",
         status: ""
@@ -349,12 +349,12 @@ export default {
     },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
-        // caseId: this.caseId, //流程里的案件id
-        caseId: '297708bcd8e80872febb61577329194f', //先写死
-        docId: '2c9029ca5b716296015b716568040001'
+        caseId: this.caseId,
+        docId: this.$route.params.docId
       };
-      this.com_getDocDataByCaseIdAndDocId(data);
+      this.com_getDocDataByCaseIdAndDocId(data)
     },
     //保存文书信息
     addDocData(handleType) {

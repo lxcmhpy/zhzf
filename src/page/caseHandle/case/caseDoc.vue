@@ -269,9 +269,9 @@ export default {
         caseBasicinfoId:this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId:this.caseLinkDataForm.caseLinktypeId,
       }
-      let canGotoNext = true; //是否进入下一环节
+      let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
       for(let i=0;i<this.docTableDatas.length;i++){
-        if(this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1"){
+        if(!this.docTableDatas[i].isRequired && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
           canGotoNext = false
           break;
         }

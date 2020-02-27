@@ -1,6 +1,6 @@
 <!-------长软------->
 <template>
-  <div class="com_searchAndpageBoxPadding">
+  <div class="com_searchAndpageBoxPadding hasBigMarginRight">
     <div class="searchAndpageBox">
       <div class="handlePart">
         <div class="search">
@@ -128,9 +128,13 @@
         </div>
       </div>
     </el-dialog> -->
+    <!--快速入口 -->
+    <caseSlideMenu :activeIndex="'deliverReceiptForm'" ></caseSlideMenu>
   </div>
 </template>
 <script>
+import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
+import { mapGetters } from "vuex";
 export default {
   data() {
     const isSelect = (rule, value, callback) => {
@@ -168,6 +172,10 @@ export default {
         ]
       }
     };
+  },
+  computed: { ...mapGetters(['caseId']) },
+  components: {
+    caseSlideMenu
   },
   methods: {
     handleRow(index, row) {
@@ -216,6 +224,7 @@ export default {
     //表单筛选
     getDeliverReList() {
       let data = {
+        caseId:this.caseId,
         docName: this.deliverReForm.docName,
         servedDate: this.deliverReForm.servedDate == "" ? "" : this.formatDateStr(this.deliverReForm.servedDate),
         //servedDate : "2019-11-11 00:00:00",
@@ -325,5 +334,10 @@ export default {
   overflow: auto;
   box-sizing: border-box;
   padding-top: 4%;
+}
+.fullscreen {
+  .hasBigMarginRight{
+      margin-right: 65px;
+    }
 }
 </style>
