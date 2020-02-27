@@ -35,9 +35,9 @@
               </tr>
               <tr>
                 <td style="width:79px">立案时间</td>
-                <td style="width:145px" colspan="2" class="text_center">{{formData.createTime}}</td>
+                <td  colspan="2" class="text_center">{{formData.createTime}}</td>
                 <td>结案时间</td>
-                <td style="width:145px" colspan="2" class="text_center">{{formData.closeDate}}</td>
+                <td  colspan="2" class="text_center">{{formData.closeDate}}</td>
               </tr>
               <tr>
                 <td>立卷时间</td>
