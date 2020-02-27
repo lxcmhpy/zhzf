@@ -75,6 +75,8 @@
         <br><br>
         <!--  -->
         <li @click="goFirstPage">归档首页</li>
+        <li @click="goDeleteEvidence">解除证据登记保存决定书</li>
+        <li @click="goForceCorrect">责令改正违法行为通知书</li>
         <li @click="goModle">标准文书模板-当场行政处罚决定书</li>
         <li @click="goEstablishDoc">-立案登记表</li>
         <li @click="goQAreport">-询问笔录</li>
@@ -134,7 +136,14 @@ export default {
     // 归档首页
     goFirstPage(){
       this.$router.push({ name: 'firstPdfPage' });
-
+    },
+    // 解除证据登记保存决定书
+    goDeleteEvidence(){
+      this.$router.push({ name: 'deleteEvidence' });
+    },
+    // 责令改正违法行为通知书
+    goForceCorrect(){
+      this.$router.push({ name: 'forceCorrect' });
     },
     // 立案登记表
     goEstablishDoc() {

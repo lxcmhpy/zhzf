@@ -16,6 +16,22 @@ export default [
     component: () => import("@/page/caseHandle/case/modle/firstPdfPage.vue")
   },
   {
+    path: "/deleteEvidence",
+    name: "deleteEvidence",
+    meta: {
+      title: "解除证据登记保存决定书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/deleteEvidence.vue")
+  },
+  {
+    path: "/forceCorrect",
+    name: "forceCorrect",
+    meta: {
+      title: "责令改正违法行为通知书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/forceCorrect.vue")
+  },
+  {
     path: "/modle",
     name: "modle",
     meta: {

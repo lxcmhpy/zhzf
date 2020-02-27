@@ -172,6 +172,7 @@ export default {
       success: false,
       weChatFlag: false,
       resetFlag: false,
+      timeOutFlag: ""
     };
   },
   methods: {
@@ -233,6 +234,8 @@ export default {
             this.$store.dispatch("loginIn", values).then(
               res => {
                 console.log(res);
+                // 清除定时器
+                clearTimeout(this.timeOutFlag)
                 iLocalStroage.sets('userInfo', res.userInfo);
 
                 // Cookies.set("menu", "companyInfo");
@@ -301,14 +304,17 @@ export default {
     //   this.$router.push('/register');
     // }
     pass() {
+
       this.success = true;
-      setTimeout(() => {
+      this.errorMessage = ''
+      this.timeOutFlag = setTimeout(() => {
+        // var that =this;
+        let _that = this;
+        console.log('dhfaiudf', _that.$refs.verify)
+        debugger;
         this.success = false;
         this.$refs.verify.reset();
-        this.errorMessage = '验证失效,请重新验证，3秒后自动消失'
-            setTimeout(() => {
-              this.errorMessage = ""
-            }, 3000)
+        this.errorMessage = '验证失效,请重新验证'
       }, 30000);
       console.log('1111')
     },
