@@ -1,7 +1,7 @@
 <!-------长软------->
 <template>
   <div class="print_box">
-    <div class="print_info">
+    <div class="print_info" id="importantCaseTeamDissDoc-print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">重大案件集体讨论记录</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
@@ -157,7 +157,7 @@
       </el-button>
     </div> -->
     <!-- 悬浮按钮 -->
-    <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'importantCaseTeamDissDoc-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
     <overflowInput ref="overflowInputRef2" @overFloeEditInfo="getOverFloeEditInfo2"></overflowInput>
@@ -198,8 +198,8 @@ export default {
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: '297708bcd8e80872febb61577329194f', //案件id--从流程进入删掉，先写死测试用
-        caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型IDer
+        caseBasicinfoId: '', //
+        caseDoctypeId: this.$route.params.docId, //表单类型IDer
         //表单数据
         docData: "",
         status: ""
@@ -240,7 +240,7 @@ export default {
       lineStyleFlag: false,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: 'subOutputRank-print',
+        pageDomId: 'importantCaseTeamDissDoc-print',
       }
     }
   },
@@ -259,10 +259,10 @@ export default {
     },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
-        // caseId: this.caseId, //流程里的案件id
-        caseId: '297708bcd8e80872febb61577329194f', //先写死
-        docId: '2c902908696a1fc501696a754e3b0002'
+        caseId: this.caseId,
+        docId: this.$route.params.docId
       };
       this.com_getDocDataByCaseIdAndDocId(data);
 

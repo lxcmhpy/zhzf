@@ -69,7 +69,7 @@ export const mixinGetCaseApiList = {
             this.setSomeData(this.formData);
             this.isSaveLink = true;
             if (refreshDataForPdf) {
-              //提交pdf页
+              // 提交pdf页
               setTimeout(() => {
                 this.printContent();
               }, 3000)
@@ -377,7 +377,7 @@ export const mixinGetCaseApiList = {
       );
     },
     async printContent() {
-      console.log('this.formOrDocData.pageDomId', this.formOrDocData.pageDomId);
+      // console.log('this.formOrDocData.pageDomId', this.formOrDocData.pageDomId);
       htmlExportPDF(this.formOrDocData.pageDomId, this.uploadFile)
     },
     uploadFile(file, name) {
