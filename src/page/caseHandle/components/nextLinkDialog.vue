@@ -48,11 +48,11 @@ export default {
     //进入下一环节
     nextLink() {
       this.visible = false;
-      let nextLink = this.com_getCaseRouteName(this.myChooseNext);
+      let data = this.com_getCaseRouteName(this.myChooseNext);
       //更改流程图中的状态
       let setData = {
         caseId: this.caseId,
-        nextFlowChart: nextLink
+        nextFlowChart: data.nextLink
       };
       // this.$store.dispatch("setFlowStatus", setData).then(
       //   res => {

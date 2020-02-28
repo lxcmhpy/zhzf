@@ -41,7 +41,7 @@ export default {
     getFile () {
       console.log('docId',this.$route.params.docId);
       console.log('caseId',this.caseId)
-      this.$store.dispatch("getFile", {
+      this.$store.dispatch("getFile", { 
           docId: this.$route.params.docId,
           caseId: this.caseId,
         }).then(
@@ -118,6 +118,11 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.go(-1);
     },
+    // isCompete(){
+    //   if(this.$route.params.isComplete){
+    //     this.formOrDocData.showBtn = [false,false,false,false,false,false,false,false,false,true]
+    //   }
+    // },
 
     // 盖章
     makeSeal() {
@@ -135,6 +140,7 @@ export default {
   },
   created() {
     this.isApproval();
+    // this.isCompete();
   }
 };
 </script>
