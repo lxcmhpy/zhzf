@@ -31,12 +31,15 @@
             display       : flex;
             flex-direction: column;
             align-items   : center;
-            .el-form-item__content .el-input .el-input__inner{
+
+            .el-form-item__content .el-input .el-input__inner {
                 width: 100%;
             }
-            .el-form-item__content .el-textarea__inner{
+
+            .el-form-item__content .el-textarea__inner {
                 width: 100%;
             }
+
             & .el-form-item {
                 /* margin-bottom: 6px !important; */
                 width           : 100%;
@@ -167,6 +170,7 @@
         flex-direction: column;
         align-items   : center;
         box-shadow    : 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+
         .content {
             width         : 818px;
             height        : auto;
@@ -228,7 +232,9 @@
                     height: 16px;
                 }
             }
-            .el-date-editor.el-input, .el-date-editor.el-input__inner{
+
+            .el-date-editor.el-input,
+            .el-date-editor.el-input__inner {
                 width: 100%;
             }
         }
@@ -256,7 +262,7 @@
     & .el-button {
         border-radius: 1px;
         width        : 48px;
-        min-height       : 48px;
+        min-height   : 48px;
         padding      : 0;
         text-align   : center;
     }
@@ -272,8 +278,9 @@
         border-color    : #4AAFA7;
 
     }
-    .el-button i{
-        font-size: 22px;
+
+    .el-button i {
+        font-size   : 22px;
         margin-right: 0;
     }
 
@@ -309,9 +316,11 @@
     border-style: solid;
     border-color: transparent transparent #fff;
 }
+
 .height66 {
     height: 66px;
 }
+
 .height106 {
     height: 106px;
 }
@@ -365,14 +374,21 @@
     line-height: 28px;
 }
 
+.right_side_box::-webkit-scrollbar {
+    width: 0 !important
+}
+
 /* 侧边栏 */
 .right_side_box {
-    width     : 58px;
-    height    : 100%;
-    background: #545C64;
-    position  : fixed;
-    right     : 0;
-    top: 92px;
+    width        : 58px;
+    height       : 100%;
+    background   : #545C64;
+    position     : fixed;
+    right        : 0;
+    top          : 92px;
+    // overflow-y: scroll;
+    overflow-x   : hidden;
+    overflow-y   : auto;
 
     & .btn_box {
         width      : 58px;
@@ -382,7 +398,7 @@
 
         &>[class*=" el-icon-"],
         [class^=el-icon-] {
-            color : #BDBDBD;
+            color: #BDBDBD;
         }
     }
 
@@ -410,14 +426,14 @@
         width  : 30px;
     }
 
-    & .bottom_fixed{
+    & .bottom_fixed {
         position: fixed;
-        bottom: 0;
+        bottom  : 0;
     }
 }
 
-.tableHandelcase i{
-    color: #4573D0;
+.tableHandelcase i {
+    color    : #4573D0;
     font-size: 20px;
-    cursor: pointer;
+    cursor   : pointer;
 }
