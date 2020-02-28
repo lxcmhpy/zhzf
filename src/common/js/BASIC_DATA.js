@@ -4,5 +4,7 @@ export const BASIC_DATA_SYS = {
     // 机构性质
     organNature: 'c0fc1a801dca3a64bf9a90c09ee3b5e6',
     // 职权取得方式
-    accessToAuthority: '781d38e8833c01989fc644f996364a83'
+    accessToAuthority: '781d38e8833c01989fc644f996364a83',
+    // 归档环节id
+    archiveId:'2c9029ee6cac9281016cacab478e0007'
 }

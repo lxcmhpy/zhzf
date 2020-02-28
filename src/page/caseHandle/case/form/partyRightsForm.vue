@@ -71,19 +71,19 @@
                 <el-form-item label="执行方式">
                   <el-row>
                     <el-col :span="4">
-                      <el-checkbox label="是否重大案件" v-model="formData.isImportant"></el-checkbox>
+                      <el-checkbox label="是否重大案件" v-model="formData.isImportant" @change="changeImportant"></el-checkbox>
                     </el-col>
                   </el-row>
                 </el-form-item>
               </div>
-              <div class="col">
+              <!-- <div class="col">
                 <el-col :span="20">
                   <div align="right">
                     <el-button type="primary" size="small">上传记录</el-button>
                     <el-button type="success" size="small">线上记录</el-button>
                   </div>
                 </el-col>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -212,7 +212,7 @@ import checkDocFinish from '../../components/checkDocFinish'
 import partyRightsEvidence from '@/page/caseHandle/components/partyRightsEvidence'
 import editEvidenceName from '@/page/caseHandle/components/editEvidenceName'
 
-import { findByCondition,
+import { findByCondition,deleteDocByIdApi,
     } from "@/api/caseHandle";
 export default {
   components: {
@@ -230,7 +230,7 @@ export default {
         punishLaw:"",
         tempPunishAmount:"",
         checkList: "",
-        isImportant: ""
+        isImportant: true
       },
       //提交方式
       handleType: 0, //0  暂存     1 提交
@@ -242,27 +242,8 @@ export default {
         formData: "",
         status: ""
       },
-      docTableDatas: [
-        // {
-        //   index: '1',
-        //   name: '听证通知书',
-        //   status: '-',
-        //   option: '1',
-        //   url: 'hearingNoticePdf',
-        // }, {
-        //   index: '2',
-        //   name: '听证笔录',
-        //   status: '完成',
-        //   option: '2',
-        //   url: 'hearingRecordePdf',
-
-        // }, {
-        //   index: '3',
-        //   name: '陈述申辩书',
-        //   status: '未完成',
-        //   option: '3',
-        // }
-      ],
+      docTableDatas: [],
+      docTableDatasCopy:[], //最初的文书列表
       evidenceTableDatas: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -284,7 +265,7 @@ export default {
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, 'form');
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, false);
     },
     submitCaseDoc(handleType) {
       //参数  提交类型 、formRef、有无下一环节按
@@ -299,7 +280,7 @@ export default {
 
       let canGotoNext = true; //是否进入下一环节
       for(let i=0;i<this.docTableDatas.length;i++){
-        if(this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1"){
+        if(this.docTableDatas[i].isRequired===0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
           canGotoNext = false
           break;
         }
@@ -392,6 +373,38 @@ export default {
     },
     showEvidence(){
 
+    },
+    //更改 是否是重大案件
+    changeImportant(val){
+      console.log(val);
+      let docId = '2c9029ca5b716296015b716568050001';
+      if(!val){  //非重大案件
+        this.docTableDatas = this.docTableDatasCopy.filter(item => item.docId !== docId);
+        let docDataId = '';
+        this.docTableDatasCopy.forEach(item=>{
+          if(item.docId == docId)
+           docDataId = item.docDataId;
+        })
+        if(docDataId){   //重大案件文书状态为已完成时
+          deleteDocByIdApi(docDataId).then(res=>{
+            console.log('删除文书',res);
+          },error=>{
+            console.log(error);
+          })
+        }
+        
+      }else{
+        let importdoc = '';
+        this.docTableDatasCopy.forEach(item=>{
+          if(item.docId == docId){
+              importdoc = item;
+          }
+        })
+        this.docTableDatas.push(importdoc);
+      }
+    },
+    getDataAfter(){
+      this.formData.isImportant = true;
     }
   },
   mounted() {

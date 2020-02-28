@@ -106,7 +106,7 @@
     cursor: pointer;
   }
   .tablePart {
-    // height:calc(100% - 100px) !important;
+    height:calc(100% - 170px) !important;
   }
   .el-table {
       height: 100%;
@@ -162,6 +162,7 @@
     .el-input__inner{
         border-radius: 0px;
     }
+
 }
 .fullscreen {
     // .el-form-item__content {

@@ -84,15 +84,6 @@ export default [
     component: () => import("@/page/caseHandle/case/dentail.vue")
   },
   {
-    path: "/inquestNotes",
-    name: "inquestNotes",
-    meta: {
-      title: "勘验笔录",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/inquestNotes.vue")
-  },
-  {
     path: "/enforceForm",
     name: "enforceForm",
     meta: {
@@ -196,19 +187,19 @@ export default [
     path: "/payStage",
     name: "payStage",
     meta: {
-      title: "分期（延期）缴纳罚款通知书-pdf",
+      title: "分期（延期）缴纳罚款通知书",
       oneTab: true,
     },
-    component: () => import("@/page/caseHandle/case/pdf/payStage.vue")
+    component: () => import("@/page/caseHandle/case/modle/payStageDoc.vue")
   },
   {
     path: "/executAnnounce",
     name: "executAnnounce",
     meta: {
-      title: "执行公告-pdf",
+      title: "执行公告",
       oneTab: true,
     },
-    component: () => import("@/page/caseHandle/case/pdf/executAnnounce.vue")
+    component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
   },
   {
     path: "/remindLetter",

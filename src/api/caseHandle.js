@@ -380,6 +380,17 @@ export function updateEvdenceNameApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+// 根据id删除文书
+export function deleteDocByIdApi(docId) {
+  return request({
+      url: "/doc/data/deleteById/"+docId,
+      method: "get",
+      showloading: true,
+      cancelToken: setCancelSource()
+  });
+}
+
 //-------------长软lv start------------
 //获取操作记录
 export function getHandleRecordApi(data) {

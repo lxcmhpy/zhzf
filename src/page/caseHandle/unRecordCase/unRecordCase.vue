@@ -77,6 +77,7 @@
           style="width: 100%"
           highlight-current-row
           @current-change="handleCurrentChange"
+          height="100%"
         >
           <el-table-column prop="tempNo" label="编号" align="center"></el-table-column>
           <el-table-column prop="vehicleShipId" label="车/船号" align="center"></el-table-column>

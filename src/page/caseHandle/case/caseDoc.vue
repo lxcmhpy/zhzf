@@ -257,7 +257,7 @@ export default {
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, 'form');
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, false);
     },
     //保存表单数据
     submitCaseDoc(handleType) {
@@ -271,7 +271,7 @@ export default {
       }
       let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
       for(let i=0;i<this.docTableDatas.length;i++){
-        if(!this.docTableDatas[i].isRequired && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
+        if(this.docTableDatas[i].isRequired ===0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
           canGotoNext = false
           break;
         }

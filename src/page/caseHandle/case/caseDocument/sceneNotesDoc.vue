@@ -33,18 +33,18 @@
                 <el-form-item prop="enforceStartTime" class="pdf_datapick">
                   <el-date-picker
                     v-model="docData.enforceStartTime"
-                    type="date"
+                    type="datetime"
                     format="yyyy年MM月dd日HH时mm分"
                     placeholder="    年  月  日  时  分"
                   ></el-date-picker>
                   <br />至
-                  <el-date-picker
+                  <el-time-picker
                     v-model="docData.enforceEndTime"
                     type="date"
                     format="HH时mm分"
                     placeholder="    时  分"
                     style="width:200px"
-                  ></el-date-picker>
+                  ></el-time-picker>
                 </el-form-item>
                 <!-- <el-form-item prop="enforceEndTime" class="pdf_datapick">
 
@@ -55,27 +55,31 @@
               <td rowspan="2">执法人员</td>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="staff1">
-                  <el-input
+                  <!-- <el-input
                     type="textarea"
                     v-model="docData.staff1"
                     v-bind:class="{ over_flow:docData.staff1.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="adressLength"
                     placeholder="\"
-                  ></el-input>
+                  ></el-input> -->
+                  <el-select v-model="docData.staff1" :maxLength='maxLength'>
+                    <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option>
+                  </el-select>
                 </el-form-item>
               </td>
               <td rowspan="2">执法证号</td>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="certificateId1">
-                  <el-input
+                  <!-- <el-input
                     type="textarea"
                     v-model="docData.certificateId1"
                     v-bind:class="{ over_flow:docData.certificateId2.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="adressLength"
                     placeholder="\"
-                  ></el-input>
+                  ></el-input> -->
+                  <el-input ref="certificateId1" clearable class="w-120" v-model="docData.certificateId1" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </td>
               <td rowspan="2">记录人</td>
@@ -95,26 +99,23 @@
             <tr>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="staff2">
-                  <el-input
-                    type="textarea"
-                    v-model="docData.staff2"
-                    v-bind:class="{ over_flow:docData.staff2.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 3}"
-                    :maxlength="adressLength"
-                    placeholder="\"
-                  ></el-input>
+                  <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff">
+                    <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
+                  </el-select>
                 </el-form-item>
               </td>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="certificateId2">
-                  <el-input
+                  <!-- <el-input
                     type="textarea"
                     v-model="docData.certificateId2"
                     v-bind:class="{ over_flow:docData.certificateId2.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="adressLength"
                     placeholder="\"
-                  ></el-input>
+                  ></el-input> -->
+                  <el-input v-model="docData.certificateId2" :maxLength='maxLength' placeholder="\"></el-input>
+
                 </el-form-item>
               </td>
             </tr>
@@ -458,7 +459,9 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "subOutputRank-print"
+        pageDomId: "subOutputRank-print",
+        staffList:[],
+
       },
 
     };
@@ -540,15 +543,24 @@ export default {
       this.docData.illegalFactsEvidence = edit;
     },
     setStaffAndCertificateId() {
-      console.log('this.docData',this.docData)
-      let staffStr = this.docData.staff;
-      let staffArr = staffStr.split(",");
-      let staffcertificateIdArr = this.docData.certificateId.split(",");
-      this.docData.staff1 = staffArr[0];
-      this.docData.staff2 = staffArr[1];
-      this.docData.certificateId1 = staffcertificateIdArr[0];
-      this.docData.certificateId2 = staffcertificateIdArr[1];
-      this.docData.recorder = staffArr[0];
+      // console.log('this.docData',this.docData)
+      // let staffStr = this.docData.staff;
+      // let staffArr = staffStr.split(",");
+      // let staffcertificateIdArr = this.docData.certificateId.split(",");
+      // this.docData.staff1 = staffArr[0];
+      // this.docData.staff2 = staffArr[1];
+      // this.docData.certificateId1 = staffcertificateIdArr[0];
+      // this.docData.certificateId2 = staffcertificateIdArr[1];
+      // this.docData.recorder = staffArr[0];
+      this.staffList=this.docData.staff.split(',');
+      this.docData.staff1 = this.docData.staff.split(',')[0];
+      this.docData.certificateId1 = this.docData.certificateId.split(',')[0];
+    },
+    //修改人员
+    changeStaff(val){
+      let staffIndex = this.docData.staff.split(',').indexOf(val);
+      this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
+      console.log(staffIndex);
     }
   },
   mounted() {
