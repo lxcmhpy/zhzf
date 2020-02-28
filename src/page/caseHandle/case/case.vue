@@ -12,22 +12,22 @@
         <li @click="goInquiryNotesDoc">询问笔录</li>
 
         <!----------长软start --------------->
-        <li @click="goEvidenceListDoc" style="color:blue">证据登记保存清单</li>
+        <li @click="goEvidenceListDoc" style="color:blue">证据登记保存清单（已集成）</li>
         <li @click="goAdminCoerciveMeasureDoc" style="color:blue">行政强制措施决定书</li>
         <li @click="goProlongAdminCompulsoryDoc" style="color:blue">延长行政强制措施期限通知书</li>
         <li @click="goRemoveAdminCoerciveMeasureDoc" style="color:blue">解除行政强制措施决定书</li>
 
-        <li @click="goHearingNoticeDoc" style="color:blue">听证通知书</li>
-        <li @click="goHearingRecordDoc" style="color:blue">听证笔录</li>
+        <li @click="goHearingNoticeDoc" style="color:blue">听证通知书（已集成）</li>
+        <li @click="goHearingRecordDoc" style="color:blue">听证笔录（已集成）</li>
         <li @click="goPunishDecisionDoc2" style="color:blue">当场行政处罚决定书</li>
 
-        <li @click="goPayStageReprotDoc" style="color:blue">分期（延期）缴纳罚款通知书</li>
-        <li @click="goExecutAnnounceReprotDoc" style="color:blue">执行公告</li>
+        <li @click="goPayStageReprotDoc" style="color:blue">分期（延期）缴纳罚款通知书（已集成）</li>
+        <li @click="goExecutAnnounceReprotDoc" style="color:blue">执行公告（已集成）</li>
         <li @click="goRemindLetterReprotDoc" style="color:blue">催告书</li>
         <li @click="goEnforceDecideReprotDoc" style="color:blue">行政强制执行决定书</li>
         <li @click="goEnforceInsteadReprotDoc" style="color:blue">代履行决定书</li>
         <li @click="goEnforceReprotDoc" style="color:blue">中止（终结、恢复）行政强制执行通知书</li>
-        <li @click="goImportantCaseTeamDissDoc" style="color:blue">重大案件集体讨论记录</li>
+        <li @click="goImportantCaseTeamDissDoc" style="color:blue">重大案件集体讨论记录（已集成）</li>
 
         <br>
         <li @click="goHandleRecordForm"  style="color:blue">操作记录</li>
@@ -75,6 +75,8 @@
         <br><br>
         <!--  -->
         <li @click="goFirstPage">归档首页</li>
+        <li @click="goDeleteEvidence">解除证据登记保存决定书</li>
+        <li @click="goForceCorrect">责令改正违法行为通知书</li>
         <li @click="goModle">标准文书模板-当场行政处罚决定书</li>
         <li @click="goEstablishDoc">-立案登记表</li>
         <li @click="goQAreport">-询问笔录</li>
@@ -134,7 +136,14 @@ export default {
     // 归档首页
     goFirstPage(){
       this.$router.push({ name: 'firstPdfPage' });
-
+    },
+    // 解除证据登记保存决定书
+    goDeleteEvidence(){
+      this.$router.push({ name: 'deleteEvidence' });
+    },
+    // 责令改正违法行为通知书
+    goForceCorrect(){
+      this.$router.push({ name: 'forceCorrect' });
     },
     // 立案登记表
     goEstablishDoc() {

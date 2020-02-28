@@ -497,7 +497,7 @@ export default {
                     }
                     if (v1.id == '7_1') {
                         alert(1)
-                        debugger
+                        // debugger
                     }
                     this.updateTempLinkByNotTempArray(graphDataTemp,v1.source, curNode)
 
@@ -512,9 +512,9 @@ export default {
                                 return chr.id === v1.source
                             })
                             if (_index > -1 && graphDataTemp.links[_index].curLinkState !== 'lock') {
-                                debugger
+                                // debugger
                                 let searchNodes = this.findNextLinkArray(graphDataTemp.links, graphDataTemp.links[_index].source)
-                                debugger
+                                // debugger
                                 searchNodes.forEach((v,i)=>{
                                     if(v.curLinkState !== 'lock'){
                                         let _index1 = _.findIndex(graphDataTemp.links, (chr)=>{

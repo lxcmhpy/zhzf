@@ -114,6 +114,7 @@
     // position: absolute;
     position: relative;
     margin: 22px;
+    height: calc(100% - 44px);
     // left: 22px;
     // right: 22px;
     // top: 22px;
@@ -144,11 +145,11 @@
         text-align: center;
       }
       .tablePart{
-        height: 100%;
+        height: calc(100% - 170px);
         overflow: auto;
         /* margin-top: 15px; */
         padding-top: 15px;
-    box-sizing: border-box;
+        box-sizing: border-box;
       }
   }
   /* 左侧弹出框  */

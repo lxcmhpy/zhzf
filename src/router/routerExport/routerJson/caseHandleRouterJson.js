@@ -16,6 +16,22 @@ export default [
     component: () => import("@/page/caseHandle/case/modle/firstPdfPage.vue")
   },
   {
+    path: "/deleteEvidence",
+    name: "deleteEvidence",
+    meta: {
+      title: "解除证据登记保存决定书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/deleteEvidence.vue")
+  },
+  {
+    path: "/forceCorrect",
+    name: "forceCorrect",
+    meta: {
+      title: "责令改正违法行为通知书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/forceCorrect.vue")
+  },
+  {
     path: "/modle",
     name: "modle",
     meta: {
@@ -66,15 +82,6 @@ export default [
       title: "侧边条"
     },
     component: () => import("@/page/caseHandle/case/dentail.vue")
-  },
-  {
-    path: "/inquestNotes",
-    name: "inquestNotes",
-    meta: {
-      title: "勘验笔录",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/inquestNotes.vue")
   },
   {
     path: "/enforceForm",
@@ -180,19 +187,19 @@ export default [
     path: "/payStage",
     name: "payStage",
     meta: {
-      title: "分期（延期）缴纳罚款通知书-pdf",
+      title: "分期（延期）缴纳罚款通知书",
       oneTab: true,
     },
-    component: () => import("@/page/caseHandle/case/pdf/payStage.vue")
+    component: () => import("@/page/caseHandle/case/modle/payStageDoc.vue")
   },
   {
     path: "/executAnnounce",
     name: "executAnnounce",
     meta: {
-      title: "执行公告-pdf",
+      title: "执行公告",
       oneTab: true,
     },
-    component: () => import("@/page/caseHandle/case/pdf/executAnnounce.vue")
+    component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
   },
   {
     path: "/remindLetter",
