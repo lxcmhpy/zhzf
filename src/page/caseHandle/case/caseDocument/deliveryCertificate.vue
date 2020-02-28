@@ -1,12 +1,12 @@
 <template>
   <div class="print_box" id='btnB'>
     <div class="print_info">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf"> 
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
         <div class="doc_topic">送达回证</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <p>案由：
           <el-form-item prop="caseName" style="width:500px">
-            <el-input type='textarea' v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled></el-input>
+            <el-input type='textarea' v-model="docData.caseCauseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled></el-input>
           </el-form-item>
         </p>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -36,9 +36,9 @@
             <td>
               代收人
             </td>
-            <td colspan="5" class="color_DBE4EF" >
+            <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="recivePersonInstead">
-                <el-input type='textarea' v-model="docData.recivePersonInstead"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.recivePersonInstead" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
 
             </td>
@@ -99,7 +99,7 @@
               </el-form-item>
             </td>
             <td class="color_DBE4EF">
-               <el-form-item>
+              <el-form-item>
                 <el-input type='textarea' v-model="item.receiver" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -120,7 +120,7 @@
           <tr>
             <td colspan="6" class="color_DBE4EF remark">
               <el-form-item label='备注'>
-                <el-input type='textarea' v-model="docData.party"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.docNote" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
                 <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
@@ -182,7 +182,8 @@ export default {
         address: "",
         servedDate: "",
         servedType: "",
-        receiver:''
+        receiver: '',
+        docNote: '',
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -239,6 +240,22 @@ export default {
     }
   },
   methods: {
+     // 获取带入信息
+    getCaseBasicInfo() {
+      let data = {
+        id: "2c902ae66ae2acc4016ae376f6f1007f"
+        // id: this.$route.params.docId
+      };
+      this.$store.dispatch("getCaseBasicInfo", data).then(
+        res => {
+          this.docData = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+
     onSubmit(formName) {
       console.log('submit!');
       this.$refs[formName].validate((valid) => {
@@ -251,15 +268,15 @@ export default {
       });
     },
     //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
-      let data = {
-        // caseId: this.caseId, //流程里的案件id
-        caseId: '297708bcd8e80872febb61577329194f', //先写死
-        docId: '5cad5b54eb97a15250672a4c397cee56'
-      };
-      this.com_getDocDataByCaseIdAndDocId(data);
+    // getDocDataByCaseIdAndDocId() {
+    //   let data = {
+    //     caseId: this.caseId, //流程里的案件id
+    //     // caseId: '297708bcd8e80872febb61577329194f', //先写死
+    //     docId: '5cad5b54eb97a15250672a4c397cee56'
+    //   };
+    //   this.com_getDocDataByCaseIdAndDocId(data);
 
-    },
+    // },
     // 多行编辑
     overFlowEdit() {
       this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
@@ -279,14 +296,23 @@ export default {
     //保存文书信息
     //插入证据
     saveData(docForm) {
+
       this.$refs[docForm].validate(valid => {
         if (valid) {
           let datetime = this.changeableTable[0].servedDate;
           let data = {
             id: this.randomString(32),
-            caseId: this.randomString(32),
+            caseId: this.caseId, //流程里的案件id
             servedDate: datetime == "" ? "2020-02-02 10:00:00" : this.formatDateStr(datetime),
+            address: this.deliveryCertificatelist[0].address,
+            docName:this.deliveryCertificatelist[0].docName,
+            servedType:this.deliveryCertificatelist[0].servedType,
+            receiveType:this.deliveryCertificatelist[0].receiveType,
+            servedOrg:this.docData.servedOrg,
+            receiver:this.docData.receiver,
+            docNote:this.docData.docNote
           };
+          console.log('添加', data)
           this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(res => {
             if (res.code == 200) {
               console.log('添加成功！')
@@ -331,7 +357,8 @@ export default {
   },
 
   mounted() {
-    this.getDocDataByCaseIdAndDocId();
+    // this.getDocDataByCaseIdAndDocId();
+    this.getCaseBasicInfo();
   },
   created() {
     this.isOverStatus();

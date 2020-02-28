@@ -129,7 +129,7 @@
       </div>
     </el-dialog> -->
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'deliverReceiptForm'" ></caseSlideMenu>
+    <caseSlideMenu :activeIndex="'deliverReceiptForm'"></caseSlideMenu>
   </div>
 </template>
 <script>
@@ -223,8 +223,9 @@ export default {
     },
     //表单筛选
     getDeliverReList() {
+      console.log('caseId=',this.caseId)
       let data = {
-        caseId:this.caseId,
+        caseId: this.caseId,
         docName: this.deliverReForm.docName,
         servedDate: this.deliverReForm.servedDate == "" ? "" : this.formatDateStr(this.deliverReForm.servedDate),
         //servedDate : "2019-11-11 00:00:00",
@@ -336,8 +337,8 @@ export default {
   padding-top: 4%;
 }
 .fullscreen {
-  .hasBigMarginRight{
-      margin-right: 65px;
-    }
+  .hasBigMarginRight {
+    margin-right: 65px;
+  }
 }
 </style>
