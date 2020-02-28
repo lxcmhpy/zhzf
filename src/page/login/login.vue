@@ -304,19 +304,16 @@ export default {
     //   this.$router.push('/register');
     // }
     pass() {
-
       this.success = true;
       this.errorMessage = ''
       this.timeOutFlag = setTimeout(() => {
         // var that =this;
         let _that = this;
-        console.log('dhfaiudf', _that.$refs.verify)
-        debugger;
+        // debugger;
         this.success = false;
         this.$refs.verify.reset();
         this.errorMessage = '验证失效,请重新验证'
       }, 30000);
-      console.log('1111')
     },
     // 微信公众号
     weChat() {
@@ -351,17 +348,17 @@ export default {
         }
       });
     },
-    test() {
-      console.log('12212', this.resetForm)
-    }
+    // test() {
+    //   console.log('12212', this.resetForm)
+    // }
   },
   mounted() {
     this.showLogin = true;
-    this.test()
+    // this.test()
   },
-  created: function () {
-    this.getCaptcha();
-  }
+  // created: function () {
+  //   this.getCaptcha();
+  // }
 };
 </script>
 

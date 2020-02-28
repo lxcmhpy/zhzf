@@ -4,80 +4,31 @@
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
         <div class="doc_topic">解除证据登记保存决定书</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
-        <!-- 多行样式 -->
-        <div class="overflow_lins_style">
-          <div class="overflow_lins">
-            <el-form-item prop="illegalFactsEvidence">
-              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.illegalFactsEvidence" rows="3" maxLength='90' placeholder="\"></el-input>
-              <span class="overflow_describe">违法事实及依据：</span>
-              <span  class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-              <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span>
-            </el-form-item>
-          </div>
-
-        </div>
-        <!-- <p v-if="lineStyleFlag">
-          违法事实及依据：<u>{{docData.illegalFactsEvidence}}</u>
-        </p> -->
-        <p>你(单位)的行为违反了<span>
+        <p>当事人（个人姓名或单位名称）<span class="width_file">
             <el-form-item prop="illegalLaw">
               <el-input type='textarea' :rules="[
-      { required: true, trigger: 'blur' }]" v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.illegalLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+      { required: true, trigger: 'blur' }]" v-model="docData.party" v-bind:class="{ over_flow:docData.illegalLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
-          </span>的规定，依据
-          <span contenteditable="true">
-            <el-form-item prop="punishLaw">
-              <el-input type='textarea' class="big_error" v-bind:class="{ over_flow:docData.punishLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
-            </el-form-item>
-          </span>的规定，决定给予
-          <span>
-            <el-form-item prop="tempPunishAmount">
-              <el-input type='textarea' v-model="docData.tempPunishAmount" v-bind:class="{ over_flow:docData.tempPunishAmount.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
-              <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="\"></el-input> -->
-            </el-form-item>
-          </span>的行政处罚。
+          </span>
         </p>
         <p>
-          罚款的履行方式和期限(见打√处)：
-        </p>
-        <p>
-          <el-checkbox></el-checkbox>当场缴纳。
-        </p>
-        <p>
-          <el-checkbox></el-checkbox>自收到本决定书之日起十五日内缴至<span>
-            <el-form-item prop="bank">
-              <el-input v-model="docData.bank" :maxLength='maxLength' placeholder="\"></el-input>
+          本机关依法于<span class="p_datapick">
+            <el-form-item prop="makeDate" class="pdf_datapick">
+              <el-date-picker class="big_error" v-model="docData.saveDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              </el-date-picker>
             </el-form-item>
-          </span>，账号<span>
-            <el-form-item prop="account">
-              <el-input v-model="docData.account" :maxLength='maxLength' placeholder="\"></el-input>
+          </span>对你（单位）采取了证据登记保存，《证据登记保存清单》案号为：<span contenteditable="true">
+            <el-form-item prop="caseNumberCopy">
+              <el-input type='textarea' class="big_error" v-model="docData.caseNumberCopy" v-bind:class="{ over_flow:docData.caseNumberCopy.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
-          </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
-        </p>
-        <p>
-          如果不服本处罚决定，可以在六十日内依法向<span>
-            <el-form-item prop="reconsiderationOrgan">
-              <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
+          </span>。依照《中华人民共和国行政处罚法》第三十七条第二款的规定，本机关决定自<span class="p_datapick">
+            <el-form-item prop="makeDate" class="pdf_datapick">
+              <el-date-picker class="big_error" v-model="docData.relieveDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              </el-date-picker>
             </el-form-item>
-          </span>申请行政复议，或者在六个月内依法向<span>
-            <el-form-item prop="litigationOrgan">
-              <el-input v-model="docData.litigationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
-            </el-form-item>
-          </span>人民法院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
+          </span>起解除该证据登记保存。
         </p>
-        <p>
-          处罚前已口头告知当事人拟作出处罚的事实、理由和依据，并告知当事人依法享有的陈述权和申辩权。
-        </p>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            当事人或其代理人签名：
-            <span class="write_line width250"></span>
-          </el-col>
-          <el-col :span="12">
-            执法人员签名：
-            <span class="write_line width250"></span>
-          </el-col>
-        </el-row>
+
         <div class="pdf_seal">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
@@ -152,7 +103,7 @@ export default {
       if (!reg.test(value) && value) {
         // this.$alert('手机号格式错误')
         // this.$message('手机号格式错误')
-         this.$notify.error({
+        this.$notify.error({
           title: '错误',
           message: '手机号格式错误'
         });
@@ -161,7 +112,7 @@ export default {
       callback();
     };
     return {
-      overFlowEditList:[{},{}],
+      overFlowEditList: [{}, {}],
       isOverflow: false,
       isOverLine: false,
       docData: {
@@ -329,10 +280,10 @@ export default {
   },
 
   mounted() {
-    this.getDocDataByCaseIdAndDocId();
+    // this.getDocDataByCaseIdAndDocId();
   },
   created() {
-    this.isOverStatus();
+    // this.isOverStatus();
   }
 }
 </script>

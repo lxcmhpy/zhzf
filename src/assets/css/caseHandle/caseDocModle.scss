@@ -174,7 +174,6 @@
                 text-indent: 0;
             }
 
-
             .el-form-item {
                 width: 200px;
             }
@@ -209,6 +208,8 @@
                     line-height    : 16px;
                     text-align     : left;
                     text-align-last: left;
+                    /* 新增 */
+                    width: 100%;
                 }
 
                 .el-input__inner {
@@ -1229,5 +1230,24 @@
             text-align-last: center;
             padding        : 0 4px;
         }
+    }
+}
+
+
+
+/* 段落时间内选择*/
+.p_datapick {
+    .el-form-item {
+        width: 150px !important;
+    }
+
+    i {
+        display: none;
+    }
+}
+
+.width_file {
+    .el-form-item {
+        width: 367px !important;
     }
 }

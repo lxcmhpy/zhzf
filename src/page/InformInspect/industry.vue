@@ -9,7 +9,7 @@
       </div>
 
     </div>
-    <el-form :inline="true" :model="checkData" class="demo-form-inline">
+    <el-form :inline="true" :model="checkData">
       <div class="center shadow">
         <div class="center_content">
           <span class="titleflag">
