@@ -7,7 +7,9 @@
   .el-aside {
     background: $blackC2;
   }
-
+  .el-container{
+    height: calc(100vh - 60px) ;
+  }
   .el-main {
     background: #EAEDF4;
     padding   : 0;
