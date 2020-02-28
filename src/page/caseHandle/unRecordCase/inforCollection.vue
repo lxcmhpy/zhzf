@@ -59,7 +59,7 @@
         <div>
           <div class="itemOne">
             <el-form-item label="案发地点">
-              <el-input  v-model="inforForm.afdd"></el-input>
+              <el-input v-model="inforForm.afdd"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -118,7 +118,7 @@
           </div>
           <div class="itemThird">
             <el-form-item label="年龄">
-              <el-input v-model="inforForm.partyAge" type="number" :disabled='inforForm.partyIdNo?true:false'></el-input>
+              <el-input v-model="inforForm.partyAge" type="number" :disabled="inforForm.partyIdNo?true:false"></el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
@@ -671,7 +671,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 
-import {validateIDNumber} from '@/common/js/validator'
+import { validateIDNumber } from '@/common/js/validator'
 export default {
   data() {
     //选择个人试验证
@@ -782,8 +782,8 @@ export default {
         // relationWithCase: [
         //   { required: true, message: "请选择", trigger: "change" }
         // ],
-        idNumber:[
-          { validator: validateIDNumber,  trigger: "blur" }
+        idNumber: [
+          { validator: validateIDNumber, trigger: "blur" }
         ]
       },
       //案件类型
