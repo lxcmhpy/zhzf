@@ -98,7 +98,7 @@
             </el-form-item>
           </div>
           <div class="item appendSelect">
-            <el-form-item label="证件类型">
+            <el-form-item label="证件类型" prop="idNumber">
               <el-input placeholder="请输入内容" v-model="inforForm.partyIdNo" @change="changePartyIdType(inforForm.partyIdNo)" class="input-with-select hasMargintop">
                 <el-select slot="prepend" v-model="inforForm.partyIdType">
                   <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -227,7 +227,7 @@
               </el-form-item>
             </div>
             <div class="item appendSelect">
-              <el-form-item label="证件类型">
+              <el-form-item label="证件类型" prop="idNumber">
                 <el-input placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber" class="input-with-select hasMargintop" :disabled="relationWithPartyIsOne && index==0">
                   <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType">
                     <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -670,6 +670,8 @@ import caseSlideMenu from '../components/caseSlideMenu'
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
+
+import {validateIDNumber} from '@/common/js/validator'
 export default {
   data() {
     //选择个人试验证
@@ -779,7 +781,10 @@ export default {
         ],
         // relationWithCase: [
         //   { required: true, message: "请选择", trigger: "change" }
-        // ]
+        // ],
+        idNumber:[
+          { validator: validateIDNumber,  trigger: "blur" }
+        ]
       },
       //案件类型
       allcaseSource: [
@@ -793,7 +798,7 @@ export default {
       //证件类型
       credentialType: [
         { value: "0", label: "身份证" },
-        { value: "1", label: "护照" }
+        // { value: "1", label: "护照" }
       ],
       alreadyChooseLawPerson: [],
       partyTypePerson: "1", //判断要显示的部分
