@@ -81,7 +81,7 @@
     right: 0;
     z-index: 1001;
     // background: rgba(0, 0, 0, 0.7);
-    background: rgba(234, 237, 244, 0.9);
+    background: rgba(234, 237, 244, 1);
   }
     @keyframes turns2{
     from { background:url(../../static/images/gif/1.png)}
