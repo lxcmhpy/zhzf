@@ -99,19 +99,7 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <el-form-item prop="acceptTime" class="pdf_datapick">
-                <!-- <el-date-picker
-                  v-model="formData.acceptTime"
-                  type="date"
-                  format="yyyy年MM月dd日"
-                  placeholder="    年  月  日"
-                ></el-date-picker> -->
-                <!-- <el-input
-                  v-model="formData.acceptTime"
-                  placeholder="\"
-                  disabled
-                ></el-input> -->
                 <el-date-picker v-model="formData.acceptTime" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd HH:mm" disabled></el-date-picker>
-
               </el-form-item>
             </td>
           </tr>

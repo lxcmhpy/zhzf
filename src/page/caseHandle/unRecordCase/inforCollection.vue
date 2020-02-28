@@ -59,7 +59,7 @@
         <div>
           <div class="itemOne">
             <el-form-item label="案发地点">
-              <el-input></el-input>
+              <el-input  v-model="inforForm.afdd"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -99,7 +99,7 @@
           </div>
           <div class="item appendSelect">
             <el-form-item label="证件类型">
-              <el-input placeholder="请输入内容" v-model="inforForm.partyIdNo" class="input-with-select hasMargintop">
+              <el-input placeholder="请输入内容" v-model="inforForm.partyIdNo" @change="changePartyIdType(inforForm.partyIdNo)" class="input-with-select hasMargintop">
                 <el-select slot="prepend" v-model="inforForm.partyIdType">
                   <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
@@ -118,7 +118,7 @@
           </div>
           <div class="itemThird">
             <el-form-item label="年龄">
-              <el-input v-model="inforForm.partyAge" type="number"></el-input>
+              <el-input v-model="inforForm.partyAge" type="number" :disabled='inforForm.partyIdNo?true:false'></el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
@@ -772,10 +772,10 @@ export default {
           { validator: validateLawPersonNumber, trigger: "change" }
         ],
         checkTime: [
-          { required: true,message: "请输入检测时间", trigger: "change" }
+          { required: true, message: "请输入检测时间", trigger: "change" }
         ],
         vehiclefiledThing: [
-          { required: true,message: "请输入装载物",  trigger: "change" }
+          { required: true, message: "请输入装载物", trigger: "change" }
         ],
         // relationWithCase: [
         //   { required: true, message: "请选择", trigger: "change" }
@@ -1237,15 +1237,32 @@ export default {
         this.inforForm.weightLimit = 18;
       }
 
-       if (this.inforForm.weightLimit&& this.inforForm.allWeight)
-      inforForm.overWeight = this.inforForm.allWeight - this.inforForm.weightLimit
+      if (this.inforForm.weightLimit && this.inforForm.allWeight)
+        inforForm.overWeight = this.inforForm.allWeight - this.inforForm.weightLimit
     },
     // 计算超重
     concludeOverWeight() {
-      this.inforForm.overWeight='';
+      this.inforForm.overWeight = '';
       if (this.inforForm.weightLimit && this.inforForm.allWeight)
-      this.inforForm.overWeight = this.inforForm.allWeight - this.inforForm.weightLimit
-    }
+        this.inforForm.overWeight = this.inforForm.allWeight - this.inforForm.weightLimit
+    },
+    //自动计算年龄
+    changePartyIdType(idCard) {
+
+      let nowDate = new Date();
+      let year = nowDate.getFullYear();
+      let age = '';
+      console.log('year', year)
+      if (idCard != null && idCard != "") {
+        if (idCard.length == 15) {
+          age = year - ("19" + idCard.substr(6, 2));
+        } else if (idCard.length == 18) {
+          age = year - idCard.substr(6, 4);
+        }
+      }
+      console.log('年龄', age)
+      this.inforForm.partyAge = age;
+    },
   },
   mounted() {
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");

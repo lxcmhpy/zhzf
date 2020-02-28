@@ -224,13 +224,13 @@ export default {
       },
       isPdf: '',
       options: [{
-        value: '选项1',
+        value: '直接送达',
         label: '直接送达'
       }, {
-        value: '选项2',
+        value: '间接送达',
         label: '间接送达'
       }, {
-        value: '选项3',
+        value: '邮寄送达',
         label: '邮寄送达'
       }],
       changeableTable: [
@@ -240,7 +240,7 @@ export default {
     }
   },
   methods: {
-     // 获取带入信息
+    // 获取带入信息
     getCaseBasicInfo() {
       let data = {
         id: "2c902ae66ae2acc4016ae376f6f1007f"
@@ -305,12 +305,12 @@ export default {
             caseId: this.caseId, //流程里的案件id
             servedDate: datetime == "" ? "2020-02-02 10:00:00" : this.formatDateStr(datetime),
             address: this.deliveryCertificatelist[0].address,
-            docName:this.deliveryCertificatelist[0].docName,
-            servedType:this.deliveryCertificatelist[0].servedType,
-            receiveType:this.deliveryCertificatelist[0].receiveType,
-            servedOrg:this.docData.servedOrg,
-            receiver:this.docData.receiver,
-            docNote:this.docData.docNote
+            docName: this.deliveryCertificatelist[0].docName,
+            servedType: this.deliveryCertificatelist[0].servedType,
+            receiveType: this.deliveryCertificatelist[0].receiveType,
+            servedOrg: this.docData.servedOrg,
+            receiver: this.docData.receiver,
+            docNote: this.docData.docNote
           };
           console.log('添加', data)
           this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(res => {
@@ -367,4 +367,16 @@ export default {
 </script>
 <style lang="scss" >
 @import "@/assets/css/caseHandle/caseDocModle.scss";
+</style>
+<style scoped>
+.color_DBE4EF
+  /deep/
+  .el-form-item__content
+  /deep/
+  .el-input--prefix
+  /deep/
+  .el-input__inner {
+  padding-left: 0px;
+  width: 75%;
+}
 </style>
