@@ -4,7 +4,7 @@
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
-    width="60%"
+    width="550px"
   >
     <div id="illegalActionPunishDecisionBox">
       <el-checkbox-group v-model="checkDec" @change="changeCheckDec" :max="1">

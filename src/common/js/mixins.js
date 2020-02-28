@@ -209,56 +209,78 @@ export const mixinGetCaseApiList = {
     },
     //根据环节ID转路由name 跳转
     com_getCaseRouteName(caseLinkId) {
-      let nextLink = "";
+      // let nextLink = "";
+      // let docId = "";
+      let data ={
+        nextLink:'',
+        docId:''
+      }
       switch (caseLinkId) {
         case "2c90293b6c178b55016c17c255a4000d":   //立案登记
-          nextLink = "establish";
+          data.nextLink = "establish";
+          data.docId = "2c9029ae654210eb0165421564970001";
           break;
         case "2c90293b6c178b55016c17c93326000f":   //调查类文书
-          nextLink = "caseDoc";
+          data.nextLink = "caseDoc";
           break;
         case "2c90293b6c178b55016c17c7ae92000e":   //行政强制措施
-          nextLink = "";
+          data.nextLink = "";
           break;
         case "2c9029ee6cac9281016caca7f38e0002":   //调查报告
-          nextLink = "caseInvestig";
+          data.nextLink = "caseInvestig";
+          data.docId = "2c9029ca5b711f61015b71391c9e2420";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204e":   //案件审核
-          nextLink = "";
+          data.nextLink = "";
           break;
         case "2c9029ee6cac9281016caca8ea500003":   //违法行为通知
-          nextLink = "illegalActionForm";
+          data.nextLink = "illegalActionForm";
+          data.docId = "2c9029ca5b71686d015b719fe0900026";
           break;
         case "2c9029ee6cac9281016caca9a0000004":   //责令改正
-          nextLink = "order";
+          data.nextLink = "order";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204f":   //移交移送
-          nextLink = "";
+          data.nextLink = "";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204g":   //不予处罚
-          nextLink = "";
+          data.nextLink = "";
           break;
         case "2c9029ac6c26fd72016c27247b290003":   //当事人权利
-          nextLink = "partyRights";
+          data.nextLink = "partyRights";
           break;
         case "2c9029d56c8f7b66016c8f8043c90001":   //处罚决定
-          nextLink = "punishDecisionDoc";
+          data.nextLink = "punishDecisionDoc";
+          data.docId = "2c9029ca5b71686d015b71c8a0c10042";
           break;
         case "2c9029e16c753a19016c755fe1340001":   //决定执行
-          nextLink = "penaltyExecution";
+          data.nextLink = "penaltyExecution";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204h":   //强制执行
-          nextLink = "";
+          data.nextLink = "";
           break;
         case "2c9029ee6cac9281016cacaadf990006":   //结案登记
-          nextLink = "finishCaseReport";
+          data.nextLink = "finishCaseReport";
+          data.docId = "2c9029d2695c03fd01695c278e7a0001";
           break;
         case "2c9029ee6cac9281016cacab478e0007":   //归档
-          nextLink = "";
+          data.nextLink = "";
           break;
       }
-      return nextLink;
+      return data;
     },
+    //根据环节ID查询环节文书id 如：立案登记
+    // com_getHuanjieDocIdByHuanjie(caseLinkId) {
+    //   let docId = "";
+    //   switch (caseLinkId) {
+    //     case "2c90293b6c178b55016c17c255a4000d":   //立案登记
+    //       docId = "2c9029ae654210eb0165421564970001";
+    //       break;
+    //     case "2c90293b6c178b55016c17c255a4000d":   //案件调查报告
+    //       docId = "2c9029ca5b711f61015b71391c9e2420";
+    //       break;
+
+    // },
     //根据案件ID和文书Id获取数据   文书数据
     com_getDocDataByCaseIdAndDocId(params) {
       let data = {
@@ -481,9 +503,36 @@ export const mixinGetCaseApiList = {
             }
           );
         },
+        //环节已完成时只显示返回按钮（在流程图跳环节时）
+        isCompete(){
+          if(this.$route.params.isComplete && this.formOrDocData){
+            this.formOrDocData.showBtn = [false,false,false,false,false,false,false,false,false,true]
+          }
+        },
+        //判断流程图跳转pdf文书还是表单
+        flowShowPdfOrForm(data){
+          console.log(data);
+              //既是环节也是文书的
+              let isHuanjieDoc = false;
+              if(data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001"){
+                  isHuanjieDoc = true;
+              }
+              this.$store.dispatch('deleteTabs', 'flowChart');
+              let data2 = this.com_getCaseRouteName(data.linkID);
+              if(data.curLinkState == "complete"){    //已完成文书显示pdf
+                  if(!isHuanjieDoc){
+                    this.$router.push({name:'myPDF',params:{docId:data2.docId,isComplete:true}})
+                  }else{
+                    this.$router.push({name:data2.nextLink,params:{isComplete:true}})
+                  }
+              }else{
+                this.$router.push({name:data2.nextLink})
+              }
+        }
 
   },
   created() {
     // this.getApiList();
+    this.isCompete();
   }
 }

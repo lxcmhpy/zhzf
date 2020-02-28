@@ -268,7 +268,7 @@
         </div>
         <!-- 悬浮按钮 -->
         <div class="float-btns btn-height63">
-          <el-button type="primary" @click="continueHandle">
+          <el-button type="primary" @click="continueHandle" v-if="!this.$route.params.isComplete">
             <svg
               t="1577414377979"
               class="icon"
@@ -288,13 +288,17 @@
             <br />下一
             <br />环节
           </el-button>
-          <el-button type="primary" @click="submitCaseDoc(1)">
+          <el-button type="primary" @click="submitCaseDoc(1)" v-if="!this.$route.params.isComplete">
             <i class="iconfont law-save"></i>
             <br />保存
           </el-button>
-          <el-button type="success">
+          <el-button type="success" v-if="!this.$route.params.isComplete">
             <i class="iconfont law-save"></i>
             <br />暂存
+          </el-button>
+          <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete">
+            <i class="iconfont law-back"></i>
+            <br />返回
           </el-button>
         </div>
       </div>
@@ -510,6 +514,11 @@ export default {
           console.log(error)
         }
       );
+    },
+    //返回到流程图
+    backBtn(){
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.go(-1);
     }
   },
 
