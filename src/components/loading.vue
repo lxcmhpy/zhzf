@@ -6,15 +6,17 @@
 <template>
     <div class="loading">
         <div class="mask"></div>
+            <!-- <img  class="load" src="../../static/images/gif/loading1.gif"> -->
 			<div class="load">
 				<!-- <img src="../assets/image/main/logo.png" class="rotate"/> -->
-				<p>loading...</p>
+				<!-- <p>loading...</p> -->
 			</div>
 
     </div>
 </template>
 
 <style lang="scss">
+
 .loading {
   position: fixed;
   z-index: 99999999;
@@ -25,11 +27,15 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 235px;
-    height: 215px;
-    background: #fff;
+    width: 152px;
+    height: 90px;
+    // background: url(../../static/images/gif/loading1.gif) !important;
+    opacity: 1;
     z-index: 1003;
     border-radius: 10px;
+    /*设置关键帧的播放时间*/
+    animation:turns2 0.8s infinite linear;
+
     img {
       width: 100px;
       position: absolute;
@@ -74,8 +80,13 @@
     bottom: 0;
     right: 0;
     z-index: 1001;
-    background: rgba(0, 0, 0, 0.7);
+    // background: rgba(0, 0, 0, 0.7);
+    background: rgba(234, 237, 244, 0.9);
   }
+    @keyframes turns2{
+    from { background:url(../../static/images/gif/1.png)}
+    50% { background:url(../../static/images/gif/2.png)}
+    100% { background:url(../../static/images/gif/3.png) }
+    }
 }
-
 </style>

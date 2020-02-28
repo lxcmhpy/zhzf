@@ -147,7 +147,7 @@
                 </el-table>
             </div>
             <div style="text-align:right;margin-top:17px">
-                <el-button size="medium" type="primary" @click="submitForm('evidenceForm')">继续添加</el-button>
+                <el-button size="medium" type="primary" @click="relationFileVisible=false">取消</el-button>
                 <el-button size="medium" class="greenBg2" @click="next">确认</el-button>
             </div>
          </div>
@@ -158,14 +158,32 @@
     title="附件关联"
     :visible.sync="enclosureVisible"
     custion-class="archiveCatalogueBox"
-    width="946px"
+    size="900"
     >
         <ul class="catalogueDrawerList">
-            <li v-for="(item,index) in multipleSelection" :key="index">
-                <img src=""></img>
+            <li v-for="item in multipleSelection" :key="item">
+                <img :src="'./static/images/img/temp/tempImg.jpg'">
+                <div class="evidenceName">{{item.evName}}</div>
+                <div>
+                    <span><i class="el-icon-user"></i>{{item.userId}}</span>
+                    <span><i class="el-icon-time"></i>{{item.createTime}}</span>
+                </div>
+                <div><i class="el-icon-location-outline"></i>{{item.evPath}}</div>
+            </li>
+            <li v-for="item in multipleSelection" :key="item">
+                <img :src="'./static/images/img/temp/tempImg.jpg'">
+                <div class="evidenceName">{{item.evName}}</div>
+                <div>
+                    <span><i class="el-icon-user"></i>{{item.userId}}</span>
+                    <span><i class="el-icon-time"></i>{{item.createTime}}</span>
+                </div>
+                <div><i class="el-icon-location-outline"></i>{{item.evPath}}</div>
             </li>
         </ul>
-        <span>附件列表</span>
+        <div class="archiveCataloguebottom">
+            <el-button size="medium" type="primary" @click="enclosureVisible=false">继续添加</el-button>
+            <el-button size="medium" class="greenBg2" @click="next">确认</el-button>
+        </div>
     </el-drawer>
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'archiveCatalogue'" @showArchiveCatalogue="showArchiveCatalogue"></caseSlideMenu>
@@ -183,6 +201,7 @@ import {
 } from "@/api/upload";
 import iLocalStroage from "@/common/js/localStroage";
 import {validateRequire} from '@/common/js/validator'
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js'
 export default {
     data () {
         return {
@@ -245,13 +264,16 @@ export default {
         uploadFile(param){
             console.log(param);
             var fd = new FormData()
+            debugger
             fd.append("file", param.file);
-            fd.append('data', {
-                caseId: this.currentDocObj.caseId,
-                docId:  this.currentDocObj.docId,
+            let data = {
+                caseId: this.currentDocObj.id,
+                docId:  BASIC_DATA_SYS.archiveId,
                 category: '证据',
                 userId: iLocalStroage.get('userInfo').id
-            })
+            }
+            console.log(data)
+            fd.append('data', data)
             // fd.append('caseId',this.currentDocObj.caseId)
             // fd.append('docId', this.currentDocObj.docId);
             // let category = '证据'
@@ -329,4 +351,63 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/css/documentForm.scss";
 @import "@/assets/css/basicStyles/common.scss";
+
+.archiveCataloguebottom {
+    width: 100%;
+    background: #F9F9F9;
+    height: 85px;
+    line-height: 50px;
+    text-align: right;
+    position: absolute;
+    bottom: 0px;
+    padding:20px;
+}
+.el-drawer__body {
+    background: #F5F5F5;
+
+}
+.el-drawer__header {
+    span {
+        outline: none;
+    }
+}
+.catalogueDrawerList {
+    width: 920px;
+    overflow-y: auto;
+    height: calc(100%-80px) !important;
+    margin:20px 0px;
+    display: block;
+    li {
+        float: left;
+        margin: 20px;
+        background: white;
+        box-shadow:0px 1px 5px #f0eff2;
+        padding: 20px;
+        color: #556281;
+        font-size: 14px;
+        line-height: 30px;
+        img {
+            display: block;
+            width: 372px;
+            height: 200px;
+            margin-bottom: 22px;
+        }
+        .evidenceName {
+            font-size: 16px;
+            color: #2B313E;
+            font-weight: bolder;
+        }
+        div {
+            span {
+                width: 170px;
+                display: inline-block;
+                i {
+                    margin-right: 5px;
+                }
+            }
+        }
+
+    }
+
+}
 </style>
