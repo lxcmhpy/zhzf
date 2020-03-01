@@ -98,10 +98,10 @@
             <i class="iconfont law-save"></i>
             <br />归档
           </el-button>
-          <el-button type="primary" @click="showArchivePDF()">
+          <!-- <el-button type="primary" @click="showArchivePDF()">
             <i class="iconfont law-save"></i>
             <br />预览
-          </el-button>
+          </el-button> -->
           <el-button type="primary">
             <i class="iconfont law-save"></i>
             <br />暂存

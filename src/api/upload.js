@@ -7,7 +7,7 @@ export  function  upload(data)  {
     method:  "POST",
     data: data,
     contentType: 'multipart/form-data;',
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource(),
     // responseType: 'blob'
   });
@@ -18,7 +18,7 @@ export function getFile(data) {
     method:  "GET",
     params: data,
     // contentType: 'multipart/form-data;',
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource(),
     // responseType: 'blob'
   });
@@ -31,7 +31,7 @@ export  function  uploadEvApi(data)  {
     method:  "POST",
     data: data,
     contentType: 'multipart/form-data;',
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource(),
   });
 }
@@ -40,7 +40,7 @@ export function findFileByIdApi(id) {
   return  request({
     url:  "/sys/file/findById/"+id,
     method:  "GET",
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource(),
   });
 }
@@ -51,7 +51,8 @@ export function uploadEvdence(data) {
         method:  "POST",
         data: data,
         contentType: 'multipart/form-data;',
-        showloading:  true,
+        showloading: false,
+        responseType: 'blob',
         cancelToken:  setCancelSource(),
       });
 }

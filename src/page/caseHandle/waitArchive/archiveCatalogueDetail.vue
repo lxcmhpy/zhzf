@@ -53,7 +53,7 @@
                 <el-upload
                         class="upload-demo"
                         drag
-                        :http-request="uploadFile"
+                        :http-request="saveFile"
                         action="https://jsonplaceholder.typicode.com/posts/"
                         multiple>
                     <i class="el-icon-upload"></i>
@@ -62,26 +62,27 @@
                 </el-upload>
             </div>
             <div style="float:left;width:300px">
-                <el-form ref="evidenceForm" :model="uploadForm" :rules="addrules" label-width="100px">
-                    <el-form-item label="证据类型" prop="evType" >
-                        <el-select v-model="uploadForm.evType" >
+                <el-form ref="evidenceForm" :model="formUpload" :rules="addrules" label-width="100px">
+                    <el-form-item label="证据类型" prop="enType" >
+                        <el-select v-model="formUpload.enType" >
                             <el-option
                             v-for="item in evTypeOptions"
-                            :key="item"
-                            :label="item"
-                            :value="item">
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="证据名称" prop="evName" >
-                        <el-input v-model="uploadForm.evName" placeholder="请输入"></el-input>
+                        <el-input v-model="formUpload.evName" placeholder="请输入"></el-input>
                     </el-form-item>
                     <el-form-item label="记 录 人" prop="recordName" >
-                        <el-input v-model="uploadForm.recordName" placeholder="请输入"></el-input>
+                        <el-input v-model="formUpload.recordName" placeholder="请输入"></el-input>
                     </el-form-item>
                     <el-form-item label="记录时间" prop="createTime" >
                         <el-date-picker
-                            v-model="uploadForm.createTime"
+                            style="width: 200px"
+                            v-model="formUpload.createTime"
                             type="datetime"
                             value-format="yyyy-MM-dd HH:mm:ss"
                             format="yyyy-MM-dd HH:mm:ss"
@@ -90,10 +91,10 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="取证地点" prop="evPlace">
-                        <el-input v-model="uploadForm.evPlace" placeholder="请输入"></el-input>
+                        <el-input v-model="formUpload.evPlace" placeholder="请输入"></el-input>
                     </el-form-item>
                     <el-form-item label="状  态" prop="status">
-                        <el-radio-group v-model="uploadForm.status">
+                        <el-radio-group v-model="formUpload.status">
                             <el-radio label="0">有效</el-radio>
                             <el-radio label="1">无效</el-radio>
                         </el-radio-group>
@@ -103,7 +104,7 @@
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 4}"
                             placeholder="请输入"
-                            v-model="uploadForm.remark">
+                            v-model="formUpload.remark">
                         </el-input>
                     </el-form-item>
                 </el-form>
@@ -199,8 +200,8 @@ import {
  findFileByIdApi,
  uploadEvdence
 } from "@/api/upload";
-import iLocalStroage from "@/common/js/localStroage";
-import {validateRequire} from '@/common/js/validator'
+import iLocalStroage from "@/common/js/localStroage.js";
+import {validateRequire} from '@/common/js/validator.js'
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js'
 export default {
     data () {
@@ -212,18 +213,17 @@ export default {
             evidenceList: [],
             currentDocObj: [],
             addEvidenceVisible: false,
-            uploadForm: {
-                id: '',
-                caseId: '',
-                evName: '',
-                evType: '',
-                status: '',
-                fileId: '',
-                status: '',
-                remark: ''
-            },
+            // uploadForm: {
+            //     id: '',
+            //     caseId: '',
+            //     evName: '',
+            //     evType: '',
+            //     status: '',
+            //     fileId: '',
+            //     remark: ''
+            // },
             addrules: {
-                evType: [
+                category: [
                     { required: true, message: '证据类型不能为空', trigger: 'blur' , validator: validateRequire },
                     { required: true, message: '证据类型不能为空', trigger: 'change' , validator: validateRequire }
                 ],
@@ -243,9 +243,22 @@ export default {
                     { required: true, message: '状态不能为空', trigger: 'blur' },
                 ]
             },
-            evTypeOptions: ['证据'], //'文书',
+            evTypeOptions: [], //'文书',
             enclosureVisible: false,
-            multipleSelection: null
+            multipleSelection: null,
+            formUpload: {
+                id: '',
+                caseId: '',
+                evName: '',
+                evType: '',
+                status: '',
+                fileId: '',
+                remark: '',
+                file: null,
+                docId: '',
+                category: '',
+                userId: ''
+            }
             // isTrue: false
         }
     },
@@ -255,47 +268,63 @@ export default {
         },
         showAddEvidence () {
             this.addEvidenceVisible = !this.addEvidenceVisible
+            if (this.addEvidenceVisible) {
+                let _that = this
+                this.$store.dispatch('getDictListDetail', BASIC_DATA_SYS.enTypeId).then(
+                    res=>{
+                        _that.evTypeOptions = res.data
+                    },
+                    err => {
+                    console.log(err);
+                    }
+                )
+            }
         },
         next () {
             this.enclosureVisible = true
             this.addEvidenceVisible = false
             // this.operateVisible = false
         },
-        uploadFile(param){
+        saveFile(param){
             console.log(param);
-            var fd = new FormData()
-            debugger
-            fd.append("file", param.file);
-            let data = {
-                caseId: this.currentDocObj.id,
-                docId:  BASIC_DATA_SYS.archiveId,
-                category: '证据',
-                userId: iLocalStroage.get('userInfo').id
-            }
-            console.log(data)
-            fd.append('data', data)
-            // fd.append('caseId',this.currentDocObj.caseId)
-            // fd.append('docId', this.currentDocObj.docId);
-            // let category = '证据'
-            // fd.append('category', category);
-            // fd.append('userId', iLocalStroage.get('userInfo').id)
-            uploadEvdence(fd).then(
-                res => {
-                    debugger
-                    // this.addEvidence(res.data, param, category, 0)
-                // this.formData.payEvidence = res.data;
-                // this.formData.payEvidence.push(res.data);
-                },
-                error => {
-                console.log(error)
-                }
-            );
+            // this.formUpload = {
+            this.formUpload.file = param.file,
+            this.formUpload.caseId = this.caseInfo.id,
+            this.formUpload.docId = BASIC_DATA_SYS.archiveId,
+            this.formUpload.category = '证据',
+            this.formUpload.userId = iLocalStroage.gets('userInfo').id,
+            this.formUpload.evName = param.file.name
+            // }
         },
         submitForm(formName){
             let _that = this
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    _that.addEvidence(_that.uploadForm);
+                            // _that.addEvidence(_that.uploadForm);
+                    var fd = new FormData()
+                    fd.append("file", _that.formUpload.file)
+                    fd.append("caseId", _that.formUpload.caseId)
+                    fd.append("docId", _that.formUpload.docId)
+                    fd.append("category",  _that.formUpload.category)
+                    fd.append("userId", _that.formUpload.userId)
+                    fd.append("evName", _that.formUpload.evName)
+                    fd.append("evType", _that.formUpload.evType)
+                    fd.append("status", _that.formUpload.status)
+                    fd.append("remark", _that.formUpload.remark)
+                    fd.append("fileId", _that.formUpload.fileId)
+                    fd.append("id", _that.formUpload.id)
+
+                    uploadEvdence(fd).then(
+                        res => {
+                            debugger
+                            // this.addEvidence(res.data, param, category, 0)
+                        // this.formData.payEvidence = res.data;
+                        // this.formData.payEvidence.push(res.data);
+                        },
+                        error => {
+                        console.log(error)
+                        }
+                    );
                 }
             });
         },
@@ -303,7 +332,7 @@ export default {
         addEvidence(data) {
             this.$store.dispatch('saveOrUpdateEvidence', data).then(
                 res => {
-                    debugger;
+
                 },
                 error => {
                     console.log(error)
@@ -351,7 +380,8 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/css/documentForm.scss";
 @import "@/assets/css/basicStyles/common.scss";
-
+</style>
+<style lang="scss" >
 .archiveCataloguebottom {
     width: 100%;
     background: #F9F9F9;
@@ -409,5 +439,11 @@ export default {
 
     }
 
+}
+.upload-demo .el-upload-dragger{
+    height: 360px;
+    .el-icon-upload {
+        margin: 40% 16px 30px 16px;
+    }
 }
 </style>

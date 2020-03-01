@@ -32,7 +32,7 @@ export  function  getAllPersonApi(data)  {
       url:  "/person/personPageList",
       method:  "get",
       params: data,
-      showloading:  true,
+      showloading: false,
       cancelToken:  setCancelSource()
     });
 }
@@ -42,7 +42,7 @@ export  function  addPersonApi(data)  {
     url:  "/person/addPerson",
     method:  "get",
     params: data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -53,7 +53,7 @@ export  function  updatePersonApi(data)  {
     url:  "/person/updatePerson",
     method:  "get",
     params: data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -64,7 +64,7 @@ export  function  deletePersonApi(ids)  {
     url:  "/person/deletePerson/"+ids,
     method:  "get",
     data: vm.$qs.stringify(ids),
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -75,7 +75,7 @@ export  function  deletePersonByIdApi(personId)  {
     url:  "/person/deletePersonById/"+personId,
     method:  "get",
     data: vm.$qs.stringify(personId),
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -86,7 +86,7 @@ export  function  getAwardListApi(data)  {
     url:  "/award/awardPageList",
     method:  "get",
     params: data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -96,7 +96,7 @@ return  request({
   url:  "/award/addAward",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -107,7 +107,7 @@ return  request({
   url:  "/award/updateAward",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -118,7 +118,7 @@ return  request({
   url:  "/award/deleteAward/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -129,7 +129,7 @@ return  request({
   url:  "/award/deleteAwardById/"+awardId,
   method:  "get",
   data: vm.$qs.stringify(awardId),
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -139,7 +139,7 @@ export  function  getEducationListApi(data)  {
     url:  "/education/educationPageList",
     method:  "get",
     params: data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -148,7 +148,7 @@ return  request({
   url:  "/education/addEducation",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -157,7 +157,7 @@ return  request({
   url:  "/education/updateEducation",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -166,7 +166,7 @@ return  request({
   url:  "/education/deleteEducation/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -175,7 +175,7 @@ return  request({
   url:  "/education/deleteEducationById/"+educationId,
   method:  "get",
   data: vm.$qs.stringify(educationId),
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -185,7 +185,7 @@ export  function  getPerCertListApi(data)  {
       url:  "/perCert/perCertPageList",
       method:  "get",
       params: data,
-      showloading:  true,
+      showloading: false,
       cancelToken:  setCancelSource()
     });
 }
@@ -194,7 +194,7 @@ export  function  addPerCertApi(data)  {
     url:  "/perCert/addPerCert",
     method:  "get",
     params: data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -203,7 +203,7 @@ export  function  updatePerCertApi(data)  {
     url:  "/perCert/updatePerCert",
     method:  "get",
     params: data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -212,7 +212,7 @@ export  function  deletePerCertApi(ids)  {
     url:  "/perCert/deletePerCert/"+ids,
     method:  "get",
     data: vm.$qs.stringify(ids),
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -222,7 +222,7 @@ export  function  deletePerCertByIdApi(certId)  {
     url:  "/perCert/deletePerCertById/"+certId,
     method:  "get",
     data: vm.$qs.stringify(certId),
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -232,7 +232,7 @@ export  function  getTransferListApi(data)  {
     url:  "/transfer/transferPageList",
     method:  "get",
     params: data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -241,7 +241,7 @@ return  request({
   url:  "/transfer/addTransfer",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -250,7 +250,7 @@ return  request({
   url:  "/transfer/updateTransfer",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -259,7 +259,7 @@ return  request({
   url:  "/transfer/deleteTransfer/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -268,7 +268,7 @@ return  request({
   url:  "/transfer/deleteTransferById/"+transferId,
   method:  "get",
   data: vm.$qs.stringify(transferId),
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -278,7 +278,7 @@ export  function  getApproveListApi(data)  {
     url:  "/approve/approvePageList",
     method:  "get",
     params: data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -287,7 +287,7 @@ return  request({
   url:  "/approve/addApprove",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -296,7 +296,7 @@ return  request({
   url:  "/approve/updateApprove",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -305,7 +305,7 @@ return  request({
   url:  "/approve/deleteApprove/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -314,7 +314,7 @@ return  request({
   url:  "/approve/deleteApproveById/"+approveId,
   method:  "get",
   data: vm.$qs.stringify(approveId),
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -325,7 +325,7 @@ export  function  getAnnualreviewListApi(data)  {
     url:  "/annualreview/annualreviewPageList",
     method:  "get",
     params: data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -334,7 +334,7 @@ return  request({
   url:  "/annualreview/addAnnualreview",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -343,7 +343,7 @@ return  request({
   url:  "/annualreview/updateAnnualreview",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -352,7 +352,7 @@ return  request({
   url:  "/annualreview/deleteAnnualreview/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -361,7 +361,7 @@ return  request({
   url:  "/annualreview/deleteAnnualreviewById/"+reviewId,
   method:  "get",
   data: vm.$qs.stringify(reviewId),
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -371,7 +371,7 @@ export  function  getTrainListApi(data)  {
     url:  "/train/trainPageList",
     method:  "get",
     params: data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -380,7 +380,7 @@ return  request({
   url:  "/train/addTrain",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -389,7 +389,7 @@ return  request({
   url:  "/train/updateTrain",
   method:  "get",
   params: data,
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -398,7 +398,7 @@ return  request({
   url:  "/train/deleteTrain/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
-  showloading:  true,
+  showloading: false,
   cancelToken:  setCancelSource()
 });
 }
@@ -407,7 +407,7 @@ export  function  deleteTrainByIdApi(trainId)  {
     url:  "/train/deleteTrainById/"+trainId,
     method:  "get",
     data: vm.$qs.stringify(trainId),
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
     });
 }

@@ -10,7 +10,7 @@ export  function  getAllOrganApi()  {
   return  request({
     url:  "/sys/organ/organTreeByCurrUser",
     method:  "get",
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -21,7 +21,7 @@ export  function  getSelectOrganApi(data)  {
     url:  "/sys/organ/queryOrganPage",
     method:  "get",
     params:  data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -51,7 +51,7 @@ export  function  addOrganApi(data)  {
     url:  "/sys/organ/saveOrUpdateOrgan",
     method:  "post",
     data:  data2,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -62,7 +62,7 @@ export  function  getOrganDetailApi(data)  {
     url:  "/sys/organ/findById/"  +  data.id,
     method:  "get",
     //  params:data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -72,7 +72,7 @@ export  function  deleteOrganApi(data)  {
   return  request({
     url:  "/sys/organ/delete/"  +  data,
     method:  "get",
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -91,7 +91,7 @@ export  function  getCurrentAndNextOrganApi(data)  {
   return  request({
     url:  "/sys/organ/findAllSubListByOrgId/"+data,
     method:  "get",
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -108,7 +108,7 @@ export  function  getUserListApi(data)  {
     url:  "/sys/user/list",
     method:  "get",
     params:  data,
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -120,7 +120,7 @@ export  function  addUserApi(data)  {
     url:  "/sys/user/addUser",
     method:  "POST",
     data:vm.$qs.stringify(data),
-    showloading:  true,
+    showloading: false,
     cancelToken:  setCancelSource()
   });
 }
@@ -133,7 +133,7 @@ export function updateUserApi(data) {
     url: "/sys/user/updateUser",
     method: "POST",
     data: vm.$qs.stringify(data),
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -148,7 +148,7 @@ export function getUserdeleteApi(id) {
     url: "/sys/user/delete/" + id,
     method: "GET",
     data: vm.$qs.stringify(id),
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -160,7 +160,7 @@ export function getUserdeletesApi(id) {
     url: "/sys/user/deletes",
     method: "GET",
     data: vm.$qs.stringify(id),
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -173,7 +173,7 @@ export function getUserresetApi(id) {
     url: "/sys/user/reset/" + id,
     method: "GET",
     data: vm.$qs.stringify(id),
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -195,7 +195,7 @@ export function userBindRoleApi(data) {
     url: "/sys/user/bindRoles",
     method: "GET",
     params: data,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -206,7 +206,7 @@ export function getloglistApi(data) {
     url: "/sys/log/list",
     method: "GET",
     params: data,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -218,7 +218,7 @@ export function queryUserBindRoleApi(data) {
   return request({
     url: "/sys/user/findBindRolesByUserId/" + data,
     method: "GET",
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -231,7 +231,7 @@ export function getRolesApi(data) {
     url: "/sys/role/all",
     method: "get",
     params:data,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -243,7 +243,7 @@ export function addRoleApi(data) {
     url: "/sys/role/add",
     method: "post",
     data: data2,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -254,7 +254,7 @@ export function deleteRoleApi(data) {
     url: "/sys/role/delete/"+data,
     method: "get",
     // params: {id: data},
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -271,7 +271,7 @@ export function editRoleApi(data) {
     url: "/sys/role/update",
     method: "post",
     data: data2,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -282,7 +282,7 @@ export function getRoleBindMenuApi(data) {
   return request({
     url: "/sys/role/queryRoleMenu/" + data,
     method: "get",
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -292,7 +292,7 @@ export function getRoleBindOrganApi(data) {
   return request({
     url: "/sys/role/queryRoleOrgan/"+data,
     method: "get",
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -307,7 +307,7 @@ export function roleBindMenuApi(data) {
     url: "/sys/role/bindMenu",
     method: "get",
     params: params,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -323,7 +323,7 @@ export function roleBindOrganApi(data) {
     url: "/sys/role/bindOrgan",
     method: "get",
     params: params,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -334,7 +334,7 @@ export function getOrganBindRoleApi(data) {
   return request({
     url: "/sys/role/queryRoleByOrganId/" + data,
     method: "get",
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -346,7 +346,7 @@ export function getDepartmentsApi(data) {
     url: "/sys/department/list",
     method: "get",
     params: data,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -379,7 +379,7 @@ export function addDepartmentApi(data) {
     url: "/sys/department/saveOrUpdateDepartment",
     method: "post",
     data: data2,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -406,7 +406,7 @@ export function deleteDepartmentApi(data) {
   return request({
     url: "/sys/department/delete/" + data,
     method: "get",
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -416,7 +416,7 @@ export function getAllMenuListApi() {
   return request({
     url: "/sys/permission/getAllList",
     method: "get",
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
 
   });
@@ -428,7 +428,7 @@ export function getTreePermissionApi() {
   return request({
     url: "/sys/permission/getTreePermission",
     method: "get",
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
 
   });
@@ -441,7 +441,7 @@ export function getDictListApi(data) {
     url: "/sys/drawer/findAllByPage",
     method: "get",
     params: data,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -462,7 +462,7 @@ export function addDictApi(data) {
     url: "/sys/drawer/addOrUpdate",
     method: "post",
     data: data2,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -473,7 +473,7 @@ export function deleteDictApi(data) {
   return request({
     url: "/sys/drawer/delete/" + data,
     method: "get",
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -483,7 +483,7 @@ export function getDictListDetailApi(id) {
   return request({
     url: "/sys/drawer/findAllDrawerById/" + id,
     method: "get",
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -496,7 +496,7 @@ export function addPermissionApi(data) {
     url: "/sys/permission/add",
     method: "post",
     data: _data,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -509,7 +509,7 @@ export function deletePermissionApi(data) {
     // params: {
     //   id: data
     // },
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }
@@ -521,7 +521,7 @@ export  function  getOrganIdApi(data)  {
         url:  "/sys/user/findById/"  +  data.id,
         method:  "get",
         //  params:data,
-        showloading:  true,
+        showloading: false,
         cancelToken:  setCancelSource()
     });
 }

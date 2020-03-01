@@ -2,7 +2,7 @@ import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategory
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
     submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi,
-    findByMlCaseId,findByCondition,findByMlCaseIdNew,
+    findByCondition,findByMlCaseIdNew,
     //-----------------长软start-----------
     getHandleRecordApi,getEvidenceApi,saveOrUpdateEvidenceApi,getDocumentApi,getDeliverReceiptApi,saveOrUpdateDeliverReceiptApi,getDictionaryApi
     //-----------------长软end------------
@@ -289,17 +289,17 @@ const caseHandle = {
             })
         },
         // 获取归档目录
-        getByMlCaseId ({ commit }, data) {
-            return new Promise((resolve, reject) => {
-                findByMlCaseId(data).then(
-                    res => {
-                        resolve(res);
-                    },
-                    error => {
-                        reject(error);
-                    })
-            })
-        },
+        // getByMlCaseId ({ commit }, data) {
+            // return new Promise((resolve, reject) => {
+            //     findByMlCaseId(data).then(
+            //         res => {
+            //             resolve(res);
+            //         },
+            //         error => {
+            //             reject(error);
+            //         })
+            // })
+        // },
         // 通过案件id查询归档目录列表
         getByMlCaseIdNew ({ commit }, data) {
             return new Promise((resolve, reject) => {
