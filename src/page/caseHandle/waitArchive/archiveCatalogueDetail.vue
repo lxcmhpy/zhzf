@@ -1,6 +1,6 @@
 <template>
 <div class="containerBox box searchPage">
-    <div class="back"><i class="el-icon-arrow-left"></i>返回</div>
+    <div class="back" @click="router"><i class="el-icon-arrow-left"></i>前往卷宗页面</div>
     <div class="tablePart">
         <el-table
             :data="caseList"
@@ -14,8 +14,8 @@
             <el-table-column label="顺序调整" align="center">
                 <template>
                     <div>
-                        <span class="iconfont law-desc blueC"></span>
-                        <span class="iconfont law-asc blueC"></span>
+                        <span @click="byDesc" class="iconfont law-desc blueC"></span>
+                        <span @click="byAsc" class="iconfont law-asc blueC"></span>
                     </div>
                 </template>
             </el-table-column>
@@ -162,16 +162,7 @@
     size="900"
     >
         <ul class="catalogueDrawerList">
-            <li v-for="item in multipleSelection" :key="item">
-                <img :src="'./static/images/img/temp/tempImg.jpg'">
-                <div class="evidenceName">{{item.evName}}</div>
-                <div>
-                    <span><i class="el-icon-user"></i>{{item.userId}}</span>
-                    <span><i class="el-icon-time"></i>{{item.createTime}}</span>
-                </div>
-                <div><i class="el-icon-location-outline"></i>{{item.evPath}}</div>
-            </li>
-            <li v-for="item in multipleSelection" :key="item">
+            <li v-for="(item, i) in multipleSelection" :key="i">
                 <img :src="'./static/images/img/temp/tempImg.jpg'">
                 <div class="evidenceName">{{item.evName}}</div>
                 <div>
@@ -183,7 +174,7 @@
         </ul>
         <div class="archiveCataloguebottom">
             <el-button size="medium" type="primary" @click="enclosureVisible=false">继续添加</el-button>
-            <el-button size="medium" class="greenBg2" @click="next">确认</el-button>
+            <el-button size="medium" class="greenBg2" @click="addEnclosure">确认</el-button>
         </div>
     </el-drawer>
     <!--快速入口 -->
@@ -245,7 +236,7 @@ export default {
             },
             evTypeOptions: [], //'文书',
             enclosureVisible: false,
-            multipleSelection: null,
+            multipleSelection: [],
             formUpload: {
                 id: '',
                 caseId: '',
@@ -263,7 +254,28 @@ export default {
         }
     },
     methods: {
+        router () {
+          this.$router.push({
+                name: "archiveCover",
+                params: {
+                caseInfo: this.caseInfo
+                }
+            });
+        },
+        byDesc () {
+            this.$message({
+                type: "error",
+                message: "该功能暂未实现！",
+            });
+        },
+        byAsc () {
+            this.$message({
+                type: "success",
+                message: "该功能暂未实现！",
+            });
+        },
         handleSelectionChange (val) {
+            debugger
             this.multipleSelection = val;
         },
         showAddEvidence () {
@@ -284,6 +296,27 @@ export default {
             this.enclosureVisible = true
             this.addEvidenceVisible = false
             // this.operateVisible = false
+        },
+        addEnclosure() {
+            if (this.multipleSelection.length > 0) {
+                let _that = this
+                this.$store.dispatch('saveOrUpdateDocCatalogList', this.multipleSelection).then(
+                    res => {
+                        _that.archiveCatalogueBox = false
+                        _that.$message({
+                            type: "success",
+                            message: "绑定成功！",
+                        });
+                    },
+                    error => {
+                        _that.$message({
+                            type: "error",
+                            message: "绑定失败！",
+                        });
+                    }
+                )
+            }
+
         },
         saveFile(param){
             console.log(param);
@@ -316,7 +349,8 @@ export default {
 
                     uploadEvdence(fd).then(
                         res => {
-                            debugger
+                            _that.addEvidenceVisible = false
+                            _that.$refs[formName].reset()
                             // this.addEvidence(res.data, param, category, 0)
                         // this.formData.payEvidence = res.data;
                         // this.formData.payEvidence.push(res.data);
@@ -346,11 +380,13 @@ export default {
         // 绑定已有证据材料
         bindEvidence (row) {
             this.relationFileVisible = true
+
             this.$store.dispatch('getByCondition', {
                 caseId: this.currentDocObj.caseId
             }).then(
                 res=>{
                     this.evidenceList = res.data.records
+                    debugger
                 },
                 err=>{
                 console.log(err)

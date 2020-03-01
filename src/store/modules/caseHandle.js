@@ -2,7 +2,7 @@ import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategory
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
     submitPdfApi,approvalPdfApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi,
-    findByCondition,findByMlCaseIdNew,
+    findByCondition,findByMlCaseIdNew,saveOrUpdateDocCatalogList,
     //-----------------长软start-----------
     getHandleRecordApi,getEvidenceApi,saveOrUpdateEvidenceApi,getDocumentApi,getDeliverReceiptApi,saveOrUpdateDeliverReceiptApi,getDictionaryApi
     //-----------------长软end------------
@@ -288,6 +288,7 @@ const caseHandle = {
                     })
             })
         },
+        //
         // 获取归档目录
         // getByMlCaseId ({ commit }, data) {
             // return new Promise((resolve, reject) => {
@@ -348,6 +349,18 @@ const caseHandle = {
                 reject(error);
                 })
             })
+        },
+        // 关联绑定证据列表
+        saveOrUpdateDocCatalogList({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                saveOrUpdateDocCatalogList(data).then(
+                    res => {
+                    resolve(res);
+                    },
+                    error => {
+                    reject(error);
+                    })
+                })
         },
         //插入修改证据目录
         saveOrUpdateEvidence({ commit }, data){

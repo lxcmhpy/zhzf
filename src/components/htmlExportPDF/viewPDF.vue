@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box" style="height:100% !important">
+  <div class="print_box" :class="{'color_FFFFFF': updatePrintStyleBoo}" style="height:100% !important">
     <object >
       <embed class="print_info" style="padding:0px;width: 1000px;margin:0 auto;height:100% !important" name="plugin" id="plugin" :src="storagePath" type="application/pdf" internalinstanceid="29">
     </object>

@@ -414,13 +414,23 @@ export function getHandleRecordApi(data) {
   export function getEvidenceApi(data) {
     return request({
       url: "/doc/evidence/findByCondition",
-    //   url: "/doc/docCatalog/findBindingEvdinec",
       method: "POST",
       params: data,
       showloading: false,
       cancelToken: setCancelSource()
     });
   }
+  // 查询已经绑定证据
+  export function findBindingEvdinec(data) {
+    return request({
+        url: "/doc/docCatalog/findBindingEvdinec",
+        method: "GET",
+        params: data,
+        showloading: false,
+        cancelToken: setCancelSource()
+      });
+  }
+  //
   //插入证据目录
   export function saveOrUpdateEvidenceApi(data) {
     return request({
@@ -430,6 +440,17 @@ export function getHandleRecordApi(data) {
       showloading: false,
       cancelToken:setCancelSource()
     });
+  }
+  // 归档目录，绑定关联证据列表
+  export function saveOrUpdateDocCatalogList(data) {
+    let data2 = vm.$qs.stringify(data);
+    return request({
+        url:"/doc/docCatalog/saveOrUpdateDocCatalogList/",
+        method:"POST",
+        params:data2,
+        showloading: false,
+        cancelToken:setCancelSource()
+      });
   }
   //获取文书列表
   export function getDocumentApi(data) {
