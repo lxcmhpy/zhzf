@@ -35,7 +35,7 @@
         </table>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary">排序管理</el-button>
+      <el-button @click="routerArchiveCatalogueDetail" type="primary">排序管理</el-button>
     </span>
   </el-dialog>
 </template>

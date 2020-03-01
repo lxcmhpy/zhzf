@@ -24,7 +24,7 @@
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="个人">
+                <el-form-item label="姓名">
                   <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入" :disabled="originalData.party ? true : false"></el-input>
                 </el-form-item>
               </div>
@@ -56,7 +56,7 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="所在单位">
+                <el-form-item label="单位及职务">
                   <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
                 </el-form-item>
               </div>
@@ -67,11 +67,11 @@
                   <el-input ref="partyAddress" clearable class="w-120" v-model="formData.partyAddress" size="small" placeholder="请输入" :disabled="originalData.partyAddress ? true : false"></el-input>
                 </el-form-item>
               </div>
-              <div class="col">
+              <!-- <div class="col">
                 <el-form-item label="邮编" prop="partyZipCode">
                   <el-input ref="partyZipCode" clearable class="w-120" v-model="formData.partyZipCode" size="small" placeholder="请输入" :disabled="originalData.partyZipCode ? true : false"></el-input>
                 </el-form-item>
-              </div>
+              </div> -->
             </div>
 
             <div class="row" v-if="!isParty">

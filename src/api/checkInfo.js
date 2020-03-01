@@ -11,7 +11,7 @@ export function yehuCheckApi(data) {
     return request({
         url: "http://124.192.215.11:8086/cy/yuz/yh?licenseCode=" + data.licenseCode + "&ownerName=" + data.ownerName + "&provinceCode=" + data.provinceCode,
         method: "GET",
-        showloading: true,
+        showloading: false,
         cancelToken: setCancelSource()
     });
 }
