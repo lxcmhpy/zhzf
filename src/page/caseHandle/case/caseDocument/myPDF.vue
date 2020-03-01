@@ -46,6 +46,7 @@ export default {
           caseId: this.caseId,
         }).then(
         res => {
+          console.log(res);
           console.log(res[0].storageId)
           console.log(11111111)
 

@@ -232,30 +232,25 @@ export default {
     //案件审批
     approvalCase(){
       this.$store.dispatch('deleteTabs', 'caseInfo');
-      console.log(this.caseInfo)
-      // currentLinkName
+      console.log(this.caseInfo);
       let approvalLink = ''
-      //let docId = ""
+      let docId = ""
       switch(this.caseInfo.currentLinkName){
         case "立案登记":
           approvalLink = 'establish';
-          // docId="2c9029ae654210eb0165421564970001";
+          docId="2c9029ae654210eb0165421564970001";
           break;
         case "案件调查报告":
           approvalLink = 'caseInvestig';
-          // docId="2c9029ee6cac9281016cacb5a5b6000c";
+          docId="2c9029ca5b711f61015b71391c9e2420";
           break;
           case "结案报告":
           approvalLink = 'finishCaseReport';
-          // docId="2c9029d2695c03fd01695c278e7a0001";
+          docId="2c9029d2695c03fd01695c278e7a0001";
           break;
       }
-      this.$router.push({
-          name: approvalLink,
-          params:{
-            isApproval:true
-          }
-      })
+      this.getFileIdByDocId(docId,approvalLink);
+      
       //显示pdf页面
       // this.$router.push({
       //     name: 'myPDF',
