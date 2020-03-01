@@ -1,5 +1,6 @@
 import { mapGetters } from "vuex";
-import { htmlExportPDF } from '@/common/js/htmlExportPDF'
+import { htmlExportPDF } from '@/common/js/htmlExportPDF';
+import iLocalStroage from "@/common/js/localStroage";
 import {
   findCaseAllBindPropertyApi,
  } from "@/api/caseHandle";
@@ -418,13 +419,20 @@ export const mixinGetCaseApiList = {
         docId = this.huanjieAndDocId;
       }
       fd.append('docId', docId);
-
+      //已经上传过了，
+      if(iLocalStroage.gets("currrentPdfData")) {
+        fd.append('id', iLocalStroage.gets("currrentPdfData").id);
+        fd.append('storageId', iLocalStroage.gets("currrentPdfData").storageId);
+      }
       let caseLinktypeId = ""; //环节id
       if (this.caseLinkDataForm) {
         caseLinktypeId = this.caseLinkDataForm.caseLinktypeId
       }
 
       console.log('fd', fd.get('docId'));
+      console.log('currrentPdfId', fd.get('id'));
+      console.log('currrentPdfstorageId', fd.get('storageId'));
+
 
       this.$store.dispatch("uploadFile", fd).then(
         res => {
@@ -438,6 +446,36 @@ export const mixinGetCaseApiList = {
           }
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({ name: 'myPDF', params: routerData })
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    //通过文书id获取该文书pdf的id
+    getFileIdByDocId (docId,approvalLink) {
+      console.log(docId,approvalLink)
+      this.$store.dispatch("getFile", { 
+          docId: docId,
+          caseId: this.caseId,
+        }).then(
+        res => {
+          console.log('文书pdf ID',res);
+          let currrentPdfData={
+            id:res[0].id,
+            storageId:res[0].storageId
+          }
+          iLocalStroage.sets("currrentPdfData", currrentPdfData);
+
+          // this.currrentPdfId = res[0].id;
+          // currentLinkName
+          
+          this.$router.push({
+              name: approvalLink,
+              params:{
+                isApproval:true
+              }
+          })
         },
         err => {
           console.log(err);

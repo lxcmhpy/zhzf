@@ -2,6 +2,7 @@ import  request  from  "@/common/js/request";
 import  {setCancelSource}  from  "@/common/js/cancelToken";
 // 文件上传
 export  function  upload(data)  {
+  console.log('文件上传api',data);
   return  request({
     url:  "/sys/file/upload",
     method:  "POST",

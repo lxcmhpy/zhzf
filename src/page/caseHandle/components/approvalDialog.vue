@@ -144,7 +144,7 @@ export default {
             message: "审批通过"
           });
 
-          this.$emit("getNewData");
+          this.$emit("getNewData"); 
 
           this.visible = false;
         },
