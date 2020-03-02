@@ -49,7 +49,7 @@ export default {
           console.log(res);
           console.log(res[0].storageId)
           console.log(11111111)
-
+          debugger
 
           this.storagePath = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[0].storageId
         },

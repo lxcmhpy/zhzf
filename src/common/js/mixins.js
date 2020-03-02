@@ -142,6 +142,7 @@ export const mixinGetCaseApiList = {
     //提交文书表单信息，跳转到pdf文书
     com_submitCaseForm(handleType, docForm, hasNextBtn) {
       this.caseLinkDataForm.formData = JSON.stringify(this.formData);
+      debugger
       // this.caseLinkDataForm.caseBasicinfoId = caseId;
       //0暂存 1提交
       this.caseLinkDataForm.status = handleType;
@@ -455,7 +456,7 @@ export const mixinGetCaseApiList = {
     //通过文书id获取该文书pdf的id
     getFileIdByDocId (docId,approvalLink) {
       console.log(docId,approvalLink)
-      this.$store.dispatch("getFile", { 
+      this.$store.dispatch("getFile", {
           docId: docId,
           caseId: this.caseId,
         }).then(
@@ -469,7 +470,7 @@ export const mixinGetCaseApiList = {
 
           // this.currrentPdfId = res[0].id;
           // currentLinkName
-          
+
           this.$router.push({
               name: approvalLink,
               params:{
@@ -510,7 +511,7 @@ export const mixinGetCaseApiList = {
       }
       //调查类文书
       if(caseLinktypeId == '2c9029ee6cac9281016caca7f38e0002'){
-        this.setEvidenceData(); 
+        this.setEvidenceData();
       }
 
       //当事人权利
