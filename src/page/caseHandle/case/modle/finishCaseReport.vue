@@ -1,15 +1,18 @@
 <template>
-  <div class="print_box">
+  <div class="print_box ">
     <div class="print_info" id="finishCase_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">结案报告</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
-        <div class="doc_cause" >案由：
+        <div class="doc_cause" >
+         案由：
             <!-- {{formData.caseName}} -->
             <el-form-item prop="caseName" class="width500">
-                <el-input type='textarea'  v-model="formData.caseName" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea'  v-model="formData.caseName" v-bind:class="{ over_flow:formData.caseName.length>25?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="40" placeholder="\"></el-input>
               </el-form-item>
+               
         </div>
+      
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
@@ -31,9 +34,14 @@
               </el-form-item>
             </td>
             <td> 性别 </td>
-            <td class="color_DBE4EF width20" >
+            <td class="color_DBE4EF width20 " >
               <el-form-item prop="partySex">
-                <el-input  v-model="formData.partySex" maxlength="2" :disabled="isParty ? false : true" placeholder="\"></el-input>
+                <!-- <el-input  v-model="formData.partySex" maxlength="2" :disabled="isParty ? false : true" placeholder="\"></el-input> -->
+                <!-- 需要完善 -->
+                 <el-select v-model="formData.partySex" :disabled="isParty ? false : true" placeholder="\" class="select10">
+                  <el-option value="0" label="男"></el-option>
+                  <el-option value="1" label="女"></el-option>
+                </el-select>
               </el-form-item>
             </td>
           </tr>
