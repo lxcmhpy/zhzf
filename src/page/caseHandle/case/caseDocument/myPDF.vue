@@ -40,6 +40,10 @@ export default {
   computed:{...mapGetters(['caseId', 'docId'])},
   methods: {
     getFile () {
+        debugger;
+        if (this.$route.params && this.$route.params.docId) {
+            this.$store.commit('setDocId', this.$route.params.docId)
+        }
       console.log('docId',this.docId);
       console.log('caseId',this.caseId)
       let _that = this

@@ -159,7 +159,7 @@ export const mixinGetCaseApiList = {
                 type: "success",
                 message: "保存成功"
               });
-              
+
               if (handleType == 1) {
                 //保存成功
                 if (hasNextBtn) {    //有下一环节按钮
@@ -625,7 +625,8 @@ export const mixinGetCaseApiList = {
               }
               this.$store.dispatch('deleteTabs', 'flowChart');
               let data2 = this.com_getCaseRouteName(data.linkID);
-              this.$store.commit('setDocId', data2.docId)
+              debugger
+              this.$store.commit('setDocId', data.docId)
               if(data.curLinkState == "complete"){    //已完成文书显示pdf
                   if(!isHuanjieDoc){
                     debugger;
