@@ -231,7 +231,7 @@
               <p class="center_similar"></p>
               <p class="center_similar"></p> -->
             </td>
-            <td colspan="8" class="color_DBE4EF table_seal" @click="overFlowEdit">
+            <td colspan="8" class="color_DBE4EF table_seal" @click="overFlowEdit" >
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
