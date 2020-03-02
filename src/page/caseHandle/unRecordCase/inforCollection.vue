@@ -241,8 +241,8 @@
             <div class="itemThird">
               <el-form-item label="性别">
                 <el-select v-model="driverOrAgentInfo.sex" :disabled="relationWithPartyIsOne && index==0">
-                  <el-option value="0" label="男"></el-option>
-                  <el-option value="1" label="女"></el-option>
+                  <el-option :value="0" label="男"></el-option>
+                  <el-option :value="1" label="女"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -647,7 +647,7 @@
           </div>
         </div>
         <el-button class="caseSubmitBtn" icon="el-icon-plus" :disabled="disableBtn" @click="submitInfo(1)">提交</el-button>
-        <el-button class="caseSubmitBtn caseSubmitBtn2" icon="el-icon-plus" :disabled="disableBtn" @click="stageInfo">暂存</el-button>
+        <el-button class="caseSubmitBtn caseSubmitBtn2" icon="el-icon-plus" :disabled="disableBtn" @click="stageInfo(0)">暂存</el-button>
       </div>
     </el-form>
 
@@ -993,6 +993,7 @@ export default {
     changeRelationWithParty(val) {
       console.log( typeof(val));
       if (val == "0") {
+          debugger
         console.log(val);
         this.driverOrAgentInfoList[0].name = this.inforForm.party;
         this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
@@ -1182,7 +1183,30 @@ export default {
       this.allUserList = list;
       setTimeout(() => { }, 100);
     },
-    stageInfo() { },
+    stageInfo(state) {
+          this.inforForm.agentPartyEcertId = JSON.stringify(
+            this.driverOrAgentInfoList
+          );
+          console.log(this.inforForm)
+          this.inforForm.state = state;
+          this.inforForm.caseStatus = '未立案';
+          this.$store
+            .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
+            .then(
+              res => {
+                console.log(res);
+                this.$message({
+                  type: "success",
+                  message: "暂存成功!"
+                });
+                this.$store.dispatch("deleteTabs", this.$route.name);
+                this.$store.commit("setCaseId", res.data.id);
+              },
+              err => {
+                console.log(err);
+              }
+            );
+    },
     //右侧小导航进入的，则获取案件信息
     fromSlide() {
       console.log('fromSlide');
