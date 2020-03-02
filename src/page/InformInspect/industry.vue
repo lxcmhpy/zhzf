@@ -39,7 +39,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="getYehuCheck" size="medium">查询类型</el-button>
+          <el-button type="primary" @click="getYehuCheck" size="medium">查询</el-button>
         </el-form-item>
 
       </div>

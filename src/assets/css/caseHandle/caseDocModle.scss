@@ -965,7 +965,8 @@
         /* 多行 */
 
     }
-    th{
+
+    th {
         background: #fff !important;
     }
 
@@ -995,13 +996,21 @@
     }
 
     .el-checkbox__inner::after {
-        // content                 : "√";
+        // content                    : "√";
         // border                     : 1px solid #000 !important;
-        border-color: #000;
+        border-color                  : #000;
     }
+   .el-checkbox__inner::after {
+        border-color: #000 !important;
+    }
+
     /* 单选框 */
-    input[type="checkbox" i]{
+    input[type="checkbox"i] {
         background: #fff !important;
+    }
+
+    .el-checkbox__label {
+        color: #000 !important;
     }
 
     .is-error {

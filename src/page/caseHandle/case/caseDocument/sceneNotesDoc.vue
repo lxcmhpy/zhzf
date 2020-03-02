@@ -36,6 +36,7 @@
                     type="datetime"
                     format="yyyy年MM月dd日HH时mm分"
                     placeholder="    年  月  日  时  分"
+                    style="width:235px"
                   ></el-date-picker>
                   <br />至
                   <el-time-picker
@@ -63,7 +64,7 @@
                     :maxlength="adressLength"
                     placeholder="\"
                   ></el-input> -->
-                  <el-select v-model="docData.staff1" :maxLength='maxLength'>
+                  <el-select v-model="docData.staff1" prop="staff1" :maxLength='maxLength'>
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option>
                   </el-select>
                 </el-form-item>
@@ -99,7 +100,7 @@
             <tr>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="staff2">
-                  <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff">
+                  <el-select v-model="docData.staff2" :maxLength='maxLength'  @change="changeStaff">
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
                   </el-select>
                 </el-form-item>
@@ -159,13 +160,8 @@
                     :maxLength="maxLength"
                     placeholder="\"
                   ></el-input>-->
-                  <el-select v-model="docData.relation" :maxLength="maxLength" placeholder="\">
-                    <el-option
-                      v-for="item in options"
-                      :key="item.name"
-                      :label="item.label"
-                      :value="item.name"
-                    ></el-option>
+                  <el-select v-model="docData.relation" :maxLength="maxLength" placeholder="\" @change="changeRelationWithCase">
+                    <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option> 
                   </el-select>
                 </el-form-item>
               </td>
@@ -267,8 +263,8 @@
 
             <tr>
               <td colspan="7">
-                <input type="checkbox" />上述笔录我已看过。
-                <input type="checkbox" />或已向我宣读过，情况属实无误。
+                <el-checkbox >上述笔录我已看过。</el-checkbox>
+                <el-checkbox >或已向我宣读过，情况属实无误。</el-checkbox>
               </td>
             </tr>
             <tr>
@@ -406,18 +402,18 @@ export default {
         enforceEndTime: [
           { required: true, message: "请输入", trigger: "blur" }
         ],
-        // staff1: [
-        //   { required: true, message: "请输入", trigger: "blur" }
-        // ],
-        // certificateId11: [
-        //   { required: true, message: "请输入", trigger: "blur" }
-        // ],
-        // staff2: [
-        //   { required: true, message: "请输入", trigger: "blur" }
-        // ],
-        // certificateId12: [
-        //   { required: true, message: "请输入", trigger: "blur" }
-        // ],
+        staff1: [
+          { required: true, message: "请输入", trigger: "change" }
+        ],
+        certificateId11: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
+        staff2: [
+          { required: true, message: "请输入", trigger: "change" }
+        ],
+        certificateId12: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
         partyTel: [{ validator: validatePhone, trigger: "blur" }],
         partyIdNo: [{ validator: validateIDNumber, trigger: "blur" }],
         party: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -460,9 +456,17 @@ export default {
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "subOutputRank-print",
-        staffList:[],
-
       },
+      staffList:[],
+      allRelationWithCase: [
+        //与案件关系下拉框
+        { value: "0", label: "当事人" },
+        { value: "1", label: "驾驶人" },
+        { value: "2", label: "实际所有者" },
+        { value: "3", label: "证人" },
+        { value: "4", label: "承运人" },
+        { value: "5", label: "代理人" }
+      ],
 
     };
   },
@@ -555,12 +559,21 @@ export default {
       this.staffList=this.docData.staff.split(',');
       this.docData.staff1 = this.docData.staff.split(',')[0];
       this.docData.certificateId1 = this.docData.certificateId.split(',')[0];
+      this.docData.relation = "0";
     },
     //修改人员
     changeStaff(val){
       let staffIndex = this.docData.staff.split(',').indexOf(val);
       this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
       console.log(staffIndex);
+    },
+    changeRelationWithCase(val){
+      // if(val){
+      //   this.docData.party = '';
+      // }else{
+      //   this.docData.xianChangPeople = this.docData.party;
+      //   this.xianChangPeopleSex = this.docData.partySex
+      // }
     }
   },
   mounted() {
@@ -579,4 +592,7 @@ export default {
     text-indent: 0px !important;
   }
 }
+// #subOutputRank-print .el-date-editor--datetime{
+//   width: 200px;
+// }
 </style>

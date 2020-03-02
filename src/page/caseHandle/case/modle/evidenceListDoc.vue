@@ -1,6 +1,6 @@
 <!-------长软------->
 <template>
-  <div class="print_box">
+  <div class="print_box ">
     <div class="print_info" id="evidenceListDoc_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">证据登记保存清单</div>
