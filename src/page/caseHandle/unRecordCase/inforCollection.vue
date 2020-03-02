@@ -213,8 +213,9 @@
               </el-form-item>
             </div>
             <div class="item">
-              <el-form-item label="与案件关系">
-                <el-select v-model="driverOrAgentInfo.relationWithCase">
+              <!-- 需要完善验证 -->
+              <el-form-item label="与案件关系"  class="is-required">
+                <el-select v-model="driverOrAgentInfo.relationWithCase" >
                   <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
@@ -782,7 +783,7 @@ export default {
         vehiclefiledThing: [
           { required: true, message: "请输入装载物", trigger: "change" }
         ],
-        relationWithCase: [
+        'driverOrAgentInfo.relationWithCase': [
           { required: true, message: "请选择", trigger: "change" }
         ],
         illegalLaw: [

@@ -267,8 +267,8 @@
 
             <tr>
               <td colspan="7">
-                <input type="checkbox" />上述笔录我已看过。
-                <input type="checkbox" />或已向我宣读过，情况属实无误。
+                <el-checkbox >上述笔录我已看过。</el-checkbox>
+                <el-checkbox >或已向我宣读过，情况属实无误。</el-checkbox>
               </td>
             </tr>
             <tr>

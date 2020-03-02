@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box">
+  <div class="print_box ">
     <!-- sdmaskjdnsjdns -->
     <div class="print_info" id="establish-print">
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
