@@ -553,6 +553,7 @@ export const mixinGetCaseApiList = {
         //判断流程图跳转pdf文书还是表单
         flowShowPdfOrForm(data){
           console.log(data);
+          debugger
               //既是环节也是文书的
               let isHuanjieDoc = false;
               if(data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001"){
@@ -560,8 +561,10 @@ export const mixinGetCaseApiList = {
               }
               this.$store.dispatch('deleteTabs', 'flowChart');
               let data2 = this.com_getCaseRouteName(data.linkID);
+              this.$store.commit('setDocId', data2.docId)
               if(data.curLinkState == "complete"){    //已完成文书显示pdf
                   if(!isHuanjieDoc){
+                    debugger;
                     this.$router.push({name:'myPDF',params:{docId:data2.docId,isComplete:true}})
                   }else{
                     this.$router.push({name:data2.nextLink,params:{isComplete:true}})

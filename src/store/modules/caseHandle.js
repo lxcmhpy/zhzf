@@ -12,11 +12,15 @@ import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategory
 const caseHandle = {
     state:{
         caseId:'' ,  //案件id
+        docId: ''
     },
     mutations:{
         //设置caseId
         setCaseId(state,data){
             state.caseId = data;
+        },
+        setDocId(state,data) {
+            state.docId = data
         }
     },
     actions:{
