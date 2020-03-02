@@ -11,6 +11,7 @@ export const mixinGetCaseApiList = {
     }
   },
   computed: { ...mapGetters(['caseId']) },
+  inject: ['reload'],
   methods: {
     //获取列表中的数据  未立案 审批中  待办理
     getCaseList(params) {
