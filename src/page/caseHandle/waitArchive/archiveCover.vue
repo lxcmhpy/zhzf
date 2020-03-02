@@ -170,7 +170,7 @@ export default {
       },
     caseLinkDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: this.caseId, //案件ID
+        caseBasicinfoId: '', //案件ID
         caseLinktypeId: BASIC_DATA_SYS.archiveId, //表单类型ID
         //表单数据
         formData: "",
@@ -282,6 +282,7 @@ export default {
     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
     // this.getMl()
     this.getByMlCaseId(this.caseId)
+    this.caseLinkDataForm.caseBasicinfoId = this.caseId
   }
 };
 </script>
