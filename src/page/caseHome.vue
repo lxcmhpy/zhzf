@@ -86,7 +86,7 @@
           <!-- <el-table-column prop="acceptTime" label="受案时间" align="center"></el-table-column> -->
           <!-- <el-table-column prop="caseType" label="案件类型" align="center"></el-table-column> -->
           <el-table-column label="总处理时长" align="center">
-              <template></template>
+            <template></template>
           </el-table-column>
           <el-table-column prop="currentLinkName" label="当前环节" align="center"></el-table-column>
           <el-table-column prop="caseStatus" label="当前状态" align="center"></el-table-column>
@@ -175,18 +175,19 @@
             </span>
           </div>
         </el-form>
-        <ul class="wfxwList" >
+        <ul class="wfxwList">
           <li v-for="item in caseList" :key="item.id" @click="caseRecord(item)"><span class="bull">&bull;</span>{{item.strContent}}</li>
         </ul>
 
         <center>
-          <el-button size="small" @click="caseRecord()">查看更多</el-button>
+          <el-button size="small" @click="caseRecordMore()">查看更多</el-button>
         </center>
 
       </div>
 
     </div>
     <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
+    <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
   </div>
 </template>
 <script>
@@ -195,12 +196,13 @@ import iLocalStroage from "@/common/js/localStroage";
 // 立案登记
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import caseRegisterDiag from "@/page/caseHandle/unRecordCase/caseRegisterDiag.vue";
-
+import chooseillegalAct from "@/page/caseHandle/unRecordCase/chooseillegalAct";
 export default {
   mixins: [mixinGetCaseApiList],
   components: {
     caseListSearch,
-    caseRegisterDiag
+    caseRegisterDiag,
+    chooseillegalAct
   },
   data() {
     return {
@@ -229,7 +231,7 @@ export default {
         programType: 1,
         wayType: '公路路政',
         value: '不限类别',
-        commenCase:'',
+        commenCase: '',
       },
       options: [
         {
@@ -389,6 +391,12 @@ export default {
       this.$refs.caseRegisterDiagRef.showModal(data, this.caseForm);
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
+    // 查看更多违法行为
+    caseRecordMore() {
+      console.log()
+      this.$refs.chooseillegalActRef.showModal( this.caseForm);
+      // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
+    },
     // 查找
     search(index, name) {
       //搜索
@@ -491,21 +499,21 @@ export default {
   position: relative;
 }
 .casehome_topic span {
-    position: absolute;
-    right:20px;
-    font-size: 14px;
+  position: absolute;
+  right: 20px;
+  font-size: 14px;
   /* line-height: 50px; */
-    font-weight: 400;
+  font-weight: 400;
 }
 .case_home_bottom .casehome_topic {
-    padding-left:0px;
+  padding-left: 0px;
 }
 .case_number {
   font-size: 29px;
   height: 29px;
   line-height: 29px;
   text-align: center;
-  color:#495164;
+  color: #495164;
 }
 .case_discribe {
   font-size: 16px;
@@ -544,12 +552,12 @@ li {
   font-size: 14px;
 }
 .imgbox img {
-    height: 30px;
+  height: 30px;
 }
 .imgbox span {
-    display: block;
-    margin:8px auto;
-    line-height: 15px;
+  display: block;
+  margin: 8px auto;
+  line-height: 15px;
 }
 .icon_content ul {
   margin-top: 10px;
@@ -565,30 +573,30 @@ img {
   display: block;
   margin: 0 auto;
 }
-.magin_btm{
-    font-size: 16px;
-    margin-top: 27px;
-    line-height: 16px;
-    height: 16px;
+.magin_btm {
+  font-size: 16px;
+  margin-top: 27px;
+  line-height: 16px;
+  height: 16px;
   /* margin-bottom: 20px; */
 }
-.tablebox{
+.tablebox {
   overflow: auto;
   height: 470px;
   padding: 0px 20px 15px 20px;
 }
 .wfxwList {
-    height: auto;
-    margin-bottom:20px;
+  height: auto;
+  margin-bottom: 20px;
 }
 .wfxwList li {
-    line-height: 33px;
-    height: 33px;
+  line-height: 33px;
+  height: 33px;
 }
 </style>
 <style lang="scss">
 .el-select .el-input {
-//   width: 130px;
+  //   width: 130px;
 }
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
@@ -605,23 +613,23 @@ img {
   padding: 0px !important;
 }
 .casehome_tag .borderLine {
-    border-right: 1px solid #d8dbe0;
-    position: absolute;
-    top:10px;
-    right: 0px;
-    width: 0px;
-    height: 46px;
+  border-right: 1px solid #d8dbe0;
+  position: absolute;
+  top: 10px;
+  right: 0px;
+  width: 0px;
+  height: 46px;
 }
 .casehome_tag .is-active {
   color: #409eff;
 }
 .casehome_tag .is-active .case_number {
   /* font-size: 40px; */
-  color: #0074F5;
+  color: #0074f5;
   font-weight: 540;
 }
 .casehome_tag .el-tab-pane {
-    padding: 0 20px 20px 20px;
+  padding: 0 20px 20px 20px;
 }
 .casehome_tag .is-active .case_discribe {
   /* font-size: 18px; */
@@ -636,7 +644,7 @@ img {
 }
 .case_home .el-tabs__content {
   background: #fff;
-  margin-top:0px;
+  margin-top: 0px;
 }
 .casehome_tag .el-radio-group {
   float: right;
@@ -644,11 +652,7 @@ img {
 .case_home .el-tabs--border-card > .el-tabs__content {
   padding: 0;
 }
-.case_home
-
-  .el-tabs--border-card
-  > .el-tabs__header
-  .el-tabs__item.is-active {
+.case_home .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
   background-color: rgba(230, 234, 242, 1);
 }
 .icon_content .el-row {
@@ -663,14 +667,14 @@ img {
   display: none;
 }
 .casehome_topic_select {
-  float:right;
+  float: right;
   width: 110px;
   margin-top: -5px;
   /* height: 16px; */
 }
 .casehome_topic_select .el-input__inner {
-    border: 0px solid white;
-    /* height: 16px; */
+  border: 0px solid white;
+  /* height: 16px; */
 }
 .casehome_topic_select.el-input__inner {
   border: 0;
@@ -682,11 +686,11 @@ img {
   border: 0 !important;
 }
 .case_home_bottom .el-radio-button {
-    width: 88px !important;
+  width: 88px !important;
 }
 .case_home_bottom .el-radio-button:last-child {
-    /* width: */
-    width: 47px !important;
+  /* width: */
+  width: 47px !important;
 }
 .case_home .el-radio-button__inner {
   padding: 9px 16px;
