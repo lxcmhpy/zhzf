@@ -1,7 +1,6 @@
 <template>
   <div class="print_box" style="width:790px;margin:0 auto;">
       <!-- <div class="print_info"> -->
-
         <embed v-for="(item,index) in storagePath" :key="index" class="print_info" style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="item" type="application/pdf" internalinstanceid="29">
       <!-- </div>  -->
     <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @backHuanjie="backHuanjie" @showApprovePeopleList="showApprovePeopleList"></casePageFloatBtns>
@@ -39,6 +38,11 @@ export default {
   },
   computed:{...mapGetters(['caseId', 'docId'])},
   methods: {
+    print () {
+        for(var i =0;i<this.storagePath.length;i++){
+            // new PDFObject({ url: this.storagePath[i] }).embed();
+        }
+    },
     getFile () {
         // debugger;
         if (this.$route.params && this.$route.params.docId) {

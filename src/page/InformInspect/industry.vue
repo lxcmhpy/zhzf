@@ -21,14 +21,15 @@
           </el-radio-group>
         </div>
 
-        <el-form-item label="省份" class="margin28">
+        <el-form-item label="省份" class="margin28" >
           <el-select v-model="checkData.provinceCode" placeholder="请选择">
               <el-option
-                v-for="item in sfList"
-                :key="item.id"
+                v-for="(item,i) in sfList"
+                :key="i"
                 :label="item.value"
-                :value="item.lable"
-                ></el-option>
+                :value="item.label"
+                >
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="业户名称" v-if="checkType==1">
@@ -64,7 +65,7 @@
           <td class="color_ff" width='20%'>
             省份名称
           </td>
-          <td width='30%'>{{item.ProvinceCode}}</td>
+          <!-- <td width='30%'>{{item.ProvinceCode}}</td> -->
           <td class="color_ff" width='20%'>
             经营业户所在地行政区划代码
           </td>
@@ -137,139 +138,139 @@ export default {
       sfList: [
         {
           value: '北京市',
-          label: 110000
+          label: '110000'
         },
         {
           value: '天津市',
-          label: 120000
+          label: '120000'
         },
         {
           value: '河北省 ',
-          label: 130000
+          label: '130000'
         },
         {
           value: '山西省',
-          label: 140000
+          label: '140000'
         },
         {
           value: '内蒙古自治区',
-          label: 150000
+          label: '150000'
         },
         {
           value: '辽宁省',
-          label: 210000
+          label: '210000'
         },
         {
           value: '吉林省',
-          label: 220000
+          label: '220000'
         },
         {
           value: '黑龙江省',
-          label: 230000
+          label: '230000'
         },
         {
           value: '上海市 ',
-          label: 310000
+          label: '310000'
         },
         {
           value: '江苏省',
-          label: 320000
+          label: '320000'
         },
         {
           value: '浙江省',
-          label: 330000
+          label: '330000'
         },
         {
           value: '安徽省',
-          label: 340000
+          label: '340000'
         },
         {
           value: '福建省',
-          label: 350000
+          label: '350000'
         },
         {
           value: '江西省 ',
-          label: 360000
+          label: '360000'
         },
         {
           value: '山东省',
-          label: 370000
+          label: '370000'
         },
         {
           value: '河南省',
-          label: 410000
+          label: '410000'
         },
         {
           value: '湖北省',
-          label: 420000
+          label: '420000'
         },
         {
           value: '湖南省 ',
-          label: 430000
+          label: '430000'
         },
         {
           value: '广东省',
-          label: 440000
+          label: '440000'
         },
         {
           value: '广西壮族自治区',
-          label: 450000
+          label: '450000'
         },
         {
           value: '海南省',
-          label: 460000
+          label: '460000'
         },
         {
           value: '重庆市',
-          label: 500000
+          label: '500000'
         },
         {
           value: '四川省 ',
-          label: 510000
+          label: '510000'
         },
         {
           value: '贵州省',
-          label: 520000
+          label: '520000'
         },
         {
           value: '云南省',
-          label: 530000
+          label: '530000'
         },
         {
           value: '西藏自治区',
-          label: 540000
+          label: '540000'
         },
         {
           value: '陕西省',
-          label: 610000
+          label: '610000'
         },
         {
           value: '甘肃省 ',
-          label: 620000
+          label: '620000'
         },
         {
           value: '青海省',
-          label: 630000
+          label: '630000'
         },
         {
           value: '宁夏回族自治区',
-          label: 640000
+          label: '640000'
         },
         {
           value: '新疆维吾尔族自治区',
-          label: 650000
+          label: '650000'
         },
         {
           value: '台湾省',
-          label: 710000
+          label: '710000'
         },
         {
           value: '香港特别行政区',
-          label: 720000
+          label: '720000'
         },
         {
           value: '澳门特别行政区',
-          label: 730000
+          label: '730000'
         }
       ]
     }

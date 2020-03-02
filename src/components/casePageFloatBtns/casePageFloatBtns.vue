@@ -5,11 +5,11 @@
         <!-- <a target="_blank" href="javascript:void(0)" @click="getFile()">访问</a>
         <a href="javascript:void(0)" @click="viewPDF()">跳转到pdf</a> -->
 
-        <el-button type="success" @click="printContent" v-if="formOrDocData.showBtn[3]">
+        <!-- <el-button type="success" @click="printContent" v-if="formOrDocData.showBtn[3]">
 
           <i class="iconfont law-print"></i>
           <br />打印
-        </el-button>
+        </el-button> -->
         <!-- <el-button type="success" v-if="formOrDocData.showBtn[4]">
           <svg
             t="1577706400265"
@@ -81,7 +81,9 @@ export default {
   methods: {
     //   打印方法
     async printContent() {
-      htmlExportPDF(this.pageDomId, this.uploadFile)
+    //   htmlExportPDF(this.pageDomId, this.uploadFile)
+        // this.$emit('print')
+        // document.getElementsByTagName('embed')[0].contentWindow.print();
     },
     uploadFile (file, name) {
       var f = new File([file.output("blob")], name, {type: 'application/pdf'})
