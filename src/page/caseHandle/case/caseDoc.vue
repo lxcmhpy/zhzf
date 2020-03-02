@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="105px">
+    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="105px" >
       <div class="content_box">
         <div class="content">
           <div class="content_title">
@@ -113,7 +113,10 @@
               </div>
               <div class="col">
                 <el-form-item label="车辆类型">
-                  <el-input ref="vehicleShipType" clearable class="w-120" v-model="formData.vehicleShipType" size="small" placeholder="请输入" :disabled="originalData.vehicleShipType ? true : false"></el-input>
+                  <!-- <el-input ref="vehicleShipType" clearable class="w-120" v-model="formData.vehicleShipType" size="small" placeholder="请输入" :disabled="originalData.vehicleShipType ? true : false"></el-input> -->
+                  <el-select v-model="formData.vehicleShipType">
+                    <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.value" :disabled="originalData.vehicleShipType ? true : false"></el-option>
+                  </el-select>
                 </el-form-item>
               </div>
             </div>
@@ -251,10 +254,22 @@ export default {
       // nextBtnDisab: true
       isParty:true,  //当事人类型为个人
       originalData:"", 
-
+      allVehicleShipType: [
+        { value: "1", label: "中小客车" },
+        { value: "2", label: "大客车" },
+        { value: "3", label: "小型货车" },
+        { value: "4", label: "中型货车" },
+        { value: "5", label: "大型货车" },
+        { value: "6", label: "特大型货车" },
+        { value: "7", label: "集装箱车" },
+        { value: "8", label: "摩托车" },
+        { value: "9", label: "拖拉机" }
+      ],
     }
   },
-  computed: { ...mapGetters(['caseId']) },
+  computed: { 
+    ...mapGetters(['caseId']) 
+  },
   mixins: [mixinGetCaseApiList],
   inject: ['reload'],
   methods: {
@@ -265,7 +280,7 @@ export default {
     },
     //保存表单数据
     submitCaseDoc(handleType) {
-      this.com_submitCaseForm(handleType, 'caseDocForm', true);
+      this.com_submitCaseForm(handleType, 'caseDocForm', false);
     },
     //下一环节
     continueHandle() { 

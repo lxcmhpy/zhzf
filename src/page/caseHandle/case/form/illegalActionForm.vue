@@ -83,33 +83,33 @@
           <el-col :span="12">
             <p>
               联系地址：
-              <el-form-item v-if="!lineStyleFlag" prop="partyAddress" style="width:180px">
+              <el-form-item v-if="!lineStyleFlag" prop="organAddress" style="width:180px">
                 <el-input
                   type="textarea"
-                  v-model="formData.partyAddress"
-                  v-bind:class="{ over_flow:formData.partyAddress && formData.partyAddress.length>14?true:false }"
+                  v-model="formData.organAddress"
+                  v-bind:class="{ over_flow:formData.organAddress && formData.organAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
-              <u v-if="lineStyleFlag">{{formData.partyAddress}}</u>
+              <u v-if="lineStyleFlag">{{formData.organAddress}}</u>
             </p>
           </el-col>
           <el-col :span="12">
             <p>
               邮编：
-              <el-form-item v-if="!lineStyleFlag" prop="partyZipCode" style="width:210px">
+              <el-form-item v-if="!lineStyleFlag" prop="organZipCode" style="width:210px">
                 <el-input
                   type="textarea"
-                  v-model="formData.partyZipCode "
-                  v-bind:class="{ over_flow:formData.partyZipCode && formData.partyZipCode.length>14?true:false }"
+                  v-model="formData.organZipCode "
+                  v-bind:class="{ over_flow:formData.organZipCode && formData.organZipCode.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
-              <u v-if="lineStyleFlag">{{formData.partyZipCode }}</u>
+              <u v-if="lineStyleFlag">{{formData.organZipCode }}</u>
             </p>
           </el-col>
         </el-row>
@@ -117,28 +117,27 @@
           <el-col :span="12">
             <p>
               联系人：
-              <el-form-item v-if="!lineStyleFlag" prop="partyPeople" style="width:200px">
+              <el-form-item v-if="!lineStyleFlag" prop="organContactor" style="width:200px">
                 <el-input
                   type="textarea"
-                  v-model="formData.partyPeople"
-                  v-bind:class="{ over_flow:formData.partyPeople && formData.partyPeople.length>14?true:false }"
+                  v-model="formData.organContactor"
+                  v-bind:class="{ over_flow:formData.organContactor && formData.organContactor.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
-                  disabled
                 ></el-input>
               </el-form-item>
-              <u v-if="lineStyleFlag">{{formData.partyPeople}}</u>
+              <u v-if="lineStyleFlag">{{formData.organContactor}}</u>
             </p>
           </el-col>
           <el-col :span="12">
             <p>
               联系电话：
-              <el-form-item v-if="!lineStyleFlag" prop="partyTel" style="width:180px">
+              <el-form-item v-if="!lineStyleFlag" prop="organTel" style="width:180px">
                 <el-input
                   type="textarea"
-                  v-model="formData.partyTel"
-                  v-bind:class="{ over_flow:formData.partyTel && formData.partyTel.length>14?true:false }"
+                  v-model="formData.organTel"
+                  v-bind:class="{ over_flow:formData.organTel && formData.organTel.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
@@ -184,7 +183,7 @@ import overflowInput from "../modle/overflowInput";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateZIP } from "@/common/js/validator";
 import illegalActionPunishDecision from "./illegalActionPunishDecision";
-
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
@@ -195,13 +194,16 @@ export default {
         illegalBasis: "",
         punishLaw: "",
         punishDecision: "",
-        partyAddress: "",
-        partyZipCode: "",
-        partyTel: "",
         checkBoxList: "",
         makeDate: "",
         checkLaw1:false,
         checkLaw2:false,
+        organContactor:'',
+        organTel:'',
+        organZipCode:'',
+        organAddress:'',
+        punishType:'',
+        tempPunishAmount:'',
       },
       rules: {
         party: [
@@ -216,13 +218,20 @@ export default {
         punishLaw: [
           { required: true, message: "必须填写", trigger: "blur" }
         ],
-        // punishDecision: [
-        //   { required: true, message: "必须填写", trigger: "blur" }
-        // ],
-        partyTel:[
+        punishDecision: [
+          { required: true, message: "必须填写", trigger: "blur" }
+        ],
+        organContactor:[
+          { required: true, message: "必须填写", trigger: "blur" },
+        ],
+        organAddress:[
+          { required: true, message: "必须填写", trigger: "blur" }
+        ],
+        organTel:[
+          { required: true, message: "必须填写", trigger: "blur" },
           { validator: validatePhone, trigger: "blur" }
         ],
-        partyZipCode:[
+        organZipCode:[
           { validator: validateZIP, trigger: "blur" }
         ],
       },
@@ -309,8 +318,27 @@ export default {
     //设置拟处罚决定
     setPunishDecis(val){
       console.log('val',val);
-      console.log('this.formData.punishDecision ',this.formData.punishDecision)
-      this.formData.punishDecision = val;
+      // console.log('this.formData.punishDecision ',this.formData.punishDecision)
+      this.formData.punishDecision = val.fullDecision;
+      this.formData.tempPunishAmount = val.amount;
+      this.formData.punishType = val.checkDec;
+    },
+    getDataAfter(){
+      //获取机构详情
+      let params = { id: iLocalStroage.gets("userInfo").organId };
+      this.$store.dispatch("getOrganDetail", params).then(
+        res => {
+          console.log("机构", res);
+          let organData = res.data;
+          this.formData.organContactor = organData.contactor;
+          this.formData.organAddress = organData.address;
+          this.formData.organZipCode = organData.zipCode;
+          this.formData.organTel = organData.telephone;
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
   },
   created() {

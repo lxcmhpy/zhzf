@@ -141,6 +141,7 @@ export const mixinGetCaseApiList = {
     },
     //提交文书表单信息，跳转到pdf文书
     com_submitCaseForm(handleType, docForm, hasNextBtn) {
+      console.log(this.formData);
       this.caseLinkDataForm.formData = JSON.stringify(this.formData);
       debugger
       // this.caseLinkDataForm.caseBasicinfoId = caseId;
@@ -157,7 +158,7 @@ export const mixinGetCaseApiList = {
                 type: "success",
                 message: "保存成功"
               });
-
+              
               if (handleType == 1) {
                 //保存成功
                 if (hasNextBtn) {    //有下一环节按钮
@@ -166,6 +167,7 @@ export const mixinGetCaseApiList = {
                   this.isSaveLink = true;
                 } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
                   // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId)
+                  this.reload();
                 }
               } else if (handleType == 2) {
                 //归档
@@ -186,6 +188,8 @@ export const mixinGetCaseApiList = {
               type: "success",
               message: "暂存成功"
             });
+            //重新赋值
+            this.setData();
           },
           err => {
             console.log(err);
@@ -517,8 +521,16 @@ export const mixinGetCaseApiList = {
         this.setEvidenceData();
       }
 
+      //违法行为通知书
+      if(caseLinktypeId == '2c9029ee6cac9281016caca8ea500003'){
+        this.getDataAfter();
+      }
       //当事人权利
       if(caseLinktypeId == '2c9029ac6c26fd72016c27247b290003'){
+        this.getDataAfter();
+      }
+      //行政处罚决定书
+      if(caseLinktypeId == '2c9029d56c8f7b66016c8f8043c90001'){
         this.getDataAfter();
       }
 

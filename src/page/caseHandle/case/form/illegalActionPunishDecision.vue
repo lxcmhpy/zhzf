@@ -64,9 +64,14 @@ export default {
            }else if(this.checkDec[0] == '责令停产停业、暂扣或吊销许可整合执照'){
                this.fullDecision = this.checkDec[0] + this.cont6
            }
-           console.log(this.fullDecision)
+           console.log(this.fullDecision);
+           let punishDecisionData = {
+               checkDec:this.checkDec[0],
+               amount:this.checkDec[0] == '罚款' ? this.cont1 : '',
+               fullDecision:this.fullDecision,
+           }
             // this.visible = false;
-            this.$emit('sendPunishDecis',this.fullDecision);
+            this.$emit('sendPunishDecis',punishDecisionData);
             this.visible = false;
 
         },

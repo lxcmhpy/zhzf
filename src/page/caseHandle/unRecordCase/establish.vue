@@ -427,6 +427,7 @@ export default {
     //   });
     // },
     setData() {
+      console.log('setData');
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(
         this.caseLinkDataForm.caseBasicinfoId,

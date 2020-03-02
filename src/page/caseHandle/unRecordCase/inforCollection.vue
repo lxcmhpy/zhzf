@@ -22,7 +22,7 @@
             </el-form-item>
           </div>
           <div class="item hasMargintop">
-            <el-input v-model="inforForm.caseSourceText" v-if="caseSourceTextDisable"></el-input>
+            <el-input v-model="inforForm.caseSourceText" v-show="caseSourceTextDisable"></el-input>
           </div>
         </div>
         <div>
@@ -614,10 +614,11 @@
             </el-form-item>-->
             <p>自由裁量标准(违法程度/违法情节/建议处罚)</p>
             <ul>
-              <li v-for="(item,index) in judgFreedomList" :key="index" :class="{activeJudgli : activeJudgli==item.drawerName}" @click="selectJudgFreedom(item)">
+              <li v-for="(item,index) in judgFreedomList" :key="index" :class="{activeJudgli : activeJudgli==item.id}" @click="selectJudgFreedom(item)">
                 <div>{{item.drawerName}}</div>
                 <div>{{item.wfqj}}</div>
-                <div>{{item.jycf}}</div>
+                <div>{{item.lawerLimit}}</div>
+                <span class="selectIcon"><i class="el-icon-success"></i></span>
               </li>
             </ul>
             <!-- <el-table
@@ -895,9 +896,10 @@ export default {
     changeCaseSource(val) {
       console.log(val);
       if (val == "行政检查" || val == "投诉举报") {
-        this.caseSourceTextDisable = true;
-      } else {
         this.caseSourceTextDisable = false;
+        this.inforForm.caseSourceText = '';
+      } else {
+        this.caseSourceTextDisable = true;
       }
     },
     //选择执法人员
@@ -1066,13 +1068,14 @@ export default {
     //选中自由裁量
     selectJudgFreedom(item) {
       console.log(item);
-      if (this.activeJudgli == item.drawerName) {
+      if (this.activeJudgli == item.id) {
         this.activeJudgli = "";
         this.inforForm.discretionId = "";
       } else {
-        this.activeJudgli = item.drawerName;
+        this.activeJudgli = item.id;
         this.inforForm.discretionId = item.id;
       }
+      this.inforForm.tempPunishAmount = item.lawerLimit;
     },
     toNextPart() { },
     //点击滚动
