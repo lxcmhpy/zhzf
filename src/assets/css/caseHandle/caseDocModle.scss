@@ -949,8 +949,11 @@
     }
 
     /* 下拉框 */
-    i {
-        display: none;
+    .print_info {
+        i {
+            display: none;
+        }
+
     }
 
     P {
@@ -964,6 +967,13 @@
 
         /* 多行 */
 
+    }
+
+    .doc_cause {
+        .el-textarea__inner {
+            border-radius: 0 !important;
+            border-bottom: 1px solid #000000 !important;
+        }
     }
 
     th {
@@ -1000,7 +1010,8 @@
         // border                     : 1px solid #000 !important;
         border-color                  : #000;
     }
-   .el-checkbox__inner::after {
+
+    .el-checkbox__inner::after {
         border-color: #000 !important;
     }
 
@@ -1281,5 +1292,13 @@
 .width_file {
     .el-form-item {
         width: 367px !important;
+    }
+}
+
+.select10 {
+    .el-input__suffix-inner {
+        .el-select__caret {
+            margin-right: -12px !important;
+        }
     }
 }
