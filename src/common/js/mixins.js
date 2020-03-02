@@ -143,6 +143,7 @@ export const mixinGetCaseApiList = {
     com_submitCaseForm(handleType, docForm, hasNextBtn) {
       console.log(this.formData);
       this.caseLinkDataForm.formData = JSON.stringify(this.formData);
+      debugger
       // this.caseLinkDataForm.caseBasicinfoId = caseId;
       //0暂存 1提交
       this.caseLinkDataForm.status = handleType;
@@ -159,6 +160,7 @@ export const mixinGetCaseApiList = {
                 type: "success",
                 message: "保存成功"
               });
+              
               if (handleType == 1) {
                 //保存成功
                 if (hasNextBtn) {    //有下一环节按钮
@@ -167,6 +169,7 @@ export const mixinGetCaseApiList = {
                   this.isSaveLink = true;
                 } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
                   // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId)
+                  this.reload();
                 }
               }
             },
@@ -459,7 +462,7 @@ export const mixinGetCaseApiList = {
     //通过文书id获取该文书pdf的id
     getFileIdByDocId (docId,approvalLink) {
       console.log(docId,approvalLink)
-      this.$store.dispatch("getFile", { 
+      this.$store.dispatch("getFile", {
           docId: docId,
           caseId: this.caseId,
         }).then(
@@ -473,7 +476,7 @@ export const mixinGetCaseApiList = {
 
           // this.currrentPdfId = res[0].id;
           // currentLinkName
-          
+
           this.$router.push({
               name: approvalLink,
               params:{
@@ -514,11 +517,19 @@ export const mixinGetCaseApiList = {
       }
       //调查类文书
       if(caseLinktypeId == '2c9029ee6cac9281016caca7f38e0002'){
-        this.setEvidenceData(); 
+        this.setEvidenceData();
       }
 
+      //违法行为通知书
+      if(caseLinktypeId == '2c9029ee6cac9281016caca8ea500003'){
+        this.getDataAfter();
+      }
       //当事人权利
       if(caseLinktypeId == '2c9029ac6c26fd72016c27247b290003'){
+        this.getDataAfter();
+      }
+      //行政处罚决定书
+      if(caseLinktypeId == '2c9029d56c8f7b66016c8f8043c90001'){
         this.getDataAfter();
       }
 

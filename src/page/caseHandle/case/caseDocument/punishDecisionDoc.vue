@@ -343,6 +343,7 @@ import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import mySignture from "@/common/js/mySignture";
 import { validatePhone } from "@/common/js/validator";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   components: {
@@ -496,6 +497,21 @@ export default {
         this.caseLinkDataForm.caseBasicinfoId,
         this.caseLinkDataForm.caseLinktypeId,
         false
+      );
+    },
+    getDataAfter(){
+      //获取机构详情
+      let params = { id: iLocalStroage.gets("userInfo").organId };
+      this.$store.dispatch("getOrganDetail", params).then(
+        res => {
+          console.log("机构", res);
+          let organData = res.data;
+          this.formData.bank = organData.bank;
+          this.formData.account = organData.account;
+        },
+        err => {
+          console.log(err);
+        }
       );
     }
   },
