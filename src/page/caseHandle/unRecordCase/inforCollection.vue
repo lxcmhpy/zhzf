@@ -213,7 +213,7 @@
               </el-form-item>
             </div>
             <div class="item">
-              <el-form-item label="与案件关系" prop="relationWithCase">
+              <el-form-item label="与案件关系">
                 <el-select v-model="driverOrAgentInfo.relationWithCase">
                   <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
