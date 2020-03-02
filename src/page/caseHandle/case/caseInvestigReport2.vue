@@ -60,14 +60,18 @@
               </div>
               <div class="col">
                 <el-form-item label="性别">
-                  <el-input
+                   <el-select v-model="formData.partySex" placeholder="请选择" class="select10">
+                  <el-option value="0" label="男"></el-option>
+                  <el-option value="1" label="女"></el-option>
+                </el-select>
+                  <!-- <el-input
                     ref="partySex"
                     clearable
                     class="w-120"
                     v-model="formData.partySex"
                     size="small"
-                    placeholder="请输入"
-                  ></el-input>
+                    placeholder="请选择"
+                  ></el-input> -->
                 </el-form-item>
               </div>
               <div class="col">
