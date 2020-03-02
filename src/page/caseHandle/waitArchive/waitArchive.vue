@@ -80,6 +80,7 @@ export default {
     },
     clickCase(row){
       console.log(row);
+      this.$store.commit('setCaseId',row.id)
       this.$router.push({
         name: "archiveCover",
         params: {

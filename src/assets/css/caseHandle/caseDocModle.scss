@@ -9,7 +9,7 @@
     font-weight    : 200;
     /*  line-height: 24px; */
     /* 可解决模板页面多出一行问题 */
-    text-shadow: 1px 0px 0px black;
+    /* text-shadow: 1px 0px 0px black;  */
 
     /* a4盒子 */
     .print_info {
@@ -137,6 +137,12 @@
                     .el-input {
                         background: #DF5A5B !important;
 
+                    }
+                }
+
+                .el-date-editor {
+                    i {
+                        display: none;
                     }
                 }
             }
@@ -472,7 +478,7 @@
         .pdf_seal {
             margin-top   : 15px;
             margin-bottom: 11px;
-            width        : 176px;
+            width        : 180px;
             text-align   : center;
             font-size    : 16px;
             font-family  : SimSun;
@@ -616,7 +622,7 @@
 
         .el-input--prefix .el-input__inner {
             padding-left: 15px;
-            width: 100%;
+            width       : 100%;
         }
 
         overflow: hidden;
@@ -942,6 +948,11 @@
 
     }
 
+    /* 下拉框 */
+    i {
+        display: none;
+    }
+
     P {
 
         /* 下划线 */
@@ -950,6 +961,19 @@
             border-radius: 0 !important;
             border-bottom: 1px solid #000000 !important;
         }
+
+        /* 多行 */
+
+    }
+
+    th {
+        background: #fff !important;
+    }
+
+    .span_bg {
+        background   : #ffffff !important;
+        border-bottom: 1px solid #000000 !important;
+        box-sizing   : border-box;
     }
 
     .overflow_lins_textarea {
@@ -962,12 +986,7 @@
         }
     }
 
-    /* 多行 */
-    .span_bg {
-        background   : #ffffff;
-        border-bottom: 1px solid #000000 !important;
-        box-sizing   : border-box;
-    }
+
 
     /* 复选框 */
     // .is-checked {
@@ -977,9 +996,21 @@
     }
 
     .el-checkbox__inner::after {
-        // content                 : "√";
-        border                     : 1px solid #000 !important;
+        // content                    : "√";
+        // border                     : 1px solid #000 !important;
+        border-color                  : #000;
+    }
+   .el-checkbox__inner::after {
+        border-color: #000 !important;
+    }
 
+    /* 单选框 */
+    input[type="checkbox"i] {
+        background: #fff !important;
+    }
+
+    .el-checkbox__label {
+        color: #000 !important;
     }
 
     .is-error {

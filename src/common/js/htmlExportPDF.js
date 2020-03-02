@@ -5,6 +5,7 @@ export async function htmlExportPDF(id, callback) {
     debugger;
   let element = document.getElementById(id);
   element.className += ' color_FFFFFF';
+  debugger;
   let width = element.offsetWidth; //获取dom 宽度
   let height = element.offsetHeight; //获取dom 高度
 
