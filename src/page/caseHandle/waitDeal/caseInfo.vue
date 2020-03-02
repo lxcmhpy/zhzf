@@ -44,7 +44,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="案由">
-                  {{formData.caseCauseName}}
+                  {{formData.caseName}}
                   <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -76,7 +76,7 @@
               <div class="col">
                 <el-form-item label="基本情况">
                   {{formData.caseInfo}}
-                  南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。
+            
                   <!-- <el-input type="textarea" class="height106" v-model="formData.caseCauseDescrib" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>

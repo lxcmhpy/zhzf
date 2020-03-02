@@ -2,7 +2,7 @@ import { mapGetters } from "vuex";
 import { htmlExportPDF } from '@/common/js/htmlExportPDF';
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  findCaseAllBindPropertyApi,
+  findCaseAllBindPropertyApi,updatePartCaseBasicInfoApi
  } from "@/api/caseHandle";
 export const mixinGetCaseApiList = {
   data() {
@@ -159,6 +159,16 @@ export const mixinGetCaseApiList = {
                 type: "success",
                 message: "保存成功"
               });
+              //立案登记表提交之后调用更新案件信息的接口
+              if(this.caseLinkDataForm.caseLinktypeId == '2c90293b6c178b55016c17c255a4000d'){
+                let data = {
+                  caseName:this.formData.caseName,
+                  caseInfo:this.formData.caseSituation,
+                  id:this.caseLinkDataForm.caseBasicinfoId,
+                }
+                console.log('更新案件基本信息',data)
+                this.com_updatePartCaseBasicInfo(data)
+              }
 
               if (handleType == 1) {
                 //保存成功
@@ -401,7 +411,7 @@ export const mixinGetCaseApiList = {
         caseInfo: formData.caseInfo,
         id: formData.id,
       }
-      this.$store.dispatch("updatePartCaseBasicInfo", data).then(
+      updatePartCaseBasicInfoApi(data).then(
         res => {
           console.log('修改案件信息', res);
         },
