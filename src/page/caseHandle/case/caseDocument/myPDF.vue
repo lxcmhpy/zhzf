@@ -40,7 +40,7 @@ export default {
   computed:{...mapGetters(['caseId', 'docId'])},
   methods: {
     getFile () {
-        debugger;
+        // debugger;
         if (this.$route.params && this.$route.params.docId) {
             this.$store.commit('setDocId', this.$route.params.docId)
         }
@@ -54,11 +54,11 @@ export default {
         res => {
           console.log(res);
           console.log(11111111)
-          debugger
+          // debugger
 
           for(var i=0;i<res.length;i++) {
               if(i==0) {
-                  debugger
+                  // debugger
                 _that.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
               }
           }
