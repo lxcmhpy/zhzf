@@ -27,7 +27,7 @@
                 <td>文书名称</td>
                 <td>页码</td>
             </tr>
-            <tr v-for="(item,index) in caseList" :key="index">
+            <tr v-for="(item,index) in caseList" :key="index" @click="alertPDF(index)">
                 <td>{{index+1}}</td>
                 <td>{{item.name}}</td>
                 <td>{{item.page}}</td>
@@ -73,6 +73,9 @@ export default {
            caseInfo: this.caseInfo,
            caseList: this.caseList
         }})
+    },
+    alertPDF (index) {
+        this.$emit('alertPDF', index)
     }
   },
   mounted () {
