@@ -12,7 +12,7 @@
 <script>
 
 import pdf from 'vue-pdf'
-import iLocalStroage from "@/common/js/localStroage";
+// import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import casePageFloatBtns from '@/components/casePageFloatBtns/casePageFloatBtns.vue'
 import showApprovePeople from "../../components/showApprovePeople";
@@ -41,7 +41,7 @@ export default {
     getFile () {
       console.log('docId',this.$route.params.docId);
       console.log('caseId',this.caseId)
-      this.$store.dispatch("getFile", { 
+      this.$store.dispatch("getFile", {
           docId: this.$route.params.docId,
           caseId: this.caseId,
         }).then(
