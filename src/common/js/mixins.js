@@ -190,7 +190,8 @@ export const mixinGetCaseApiList = {
               message: "暂存成功"
             });
             //重新赋值
-            this.setData();
+            // this.setData();
+            this.reload();
           },
           err => {
             console.log(err);
