@@ -124,16 +124,15 @@
               <p>人意见</p>
             </td>
             <td colspan="6" class="color_DBE4EF">
-              <el-form-item prop="leadOpinion">
+              <!-- <el-form-item prop="leadOpinion">
                 <el-input type='textarea' v-model="formData.leadOpinion" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder=""></el-input>
-              </el-form-item>
+              </el-form-item> -->
+              {{formData.approveOpinions}}
               <div class="pdf_seal">
-                <p>签名：</p>
+                <p>签名：{{formData.approvePeo}}</p>
                 <p>
-                  时间:<el-form-item prop="makeDate" class="pdf_datapick">
-                    <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
-                    </el-date-picker>
-                  </el-form-item>
+                  <span v-if="formData.approveTime">{{formData.approveTime}}</span>
+                  <span v-else>年  月  日</span>
                 </p>
               </div>
             </td>
@@ -144,17 +143,16 @@
               <p>审批</p>
               <p>意见</p>
             </td>
-            <td colspan="6" class="color_DBE4EF">
-              <el-form-item prop="approvalOpinion">
+            <td colspan="6" class="color_DBE4EF"> 
+              <!-- <el-form-item prop="approvalOpinion">
                 <el-input type='textarea' v-model="formData.approvalOpinion"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder=""></el-input>
-              </el-form-item>
-              <div class="pdf_seal">
-                <p>签名：</p>
+              </el-form-item> -->
+              {{formData.secondApproveOpinions}} 
+              <div class="pdf_seal"> 
+                <p>签名：{{formData.secondApprovePeo}}</p>
                 <p>
-                  时间:<el-form-item prop="makeDate" class="pdf_datapick">
-                    <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
-                    </el-date-picker>
-                  </el-form-item>
+                  <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
+                  <span v-else>年  月  日</span>
                 </p>
               </div>
             </td>
@@ -229,9 +227,14 @@ export default {
         partyZipCode: "",
         partyManagerPositions: "",
         closeResult: "",
-        approvalOpinion: "",
         leadOpinion: "",
         closeSituation: "",
+        approveOpinions:"",
+        approvePeo:"",
+        approveTime:"",
+        secondApproveOpinions:"",
+        secondApprovePeo:"",
+        secondApproveTime:"",
       },
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {

@@ -22,7 +22,7 @@
             </el-form-item>
           </div>
           <div class="item hasMargintop">
-            <el-input v-model="inforForm.caseSourceText" :disabled="caseSourceTextDisable"></el-input>
+            <el-input v-model="inforForm.caseSourceText" v-if="caseSourceTextDisable"></el-input>
           </div>
         </div>
         <div>
@@ -81,7 +81,7 @@
         <p>当事人信息</p>
         <div>
           <div class="itemOne">
-            <el-form-item label="执法人员">
+            <el-form-item label="当事人类型">
               <!-- <el-radio v-model="inforForm.partyType" label="1">个人</el-radio>
               <el-radio v-model="inforForm.partyType" label="2">企业组织</el-radio>-->
               <el-radio-group v-model="inforForm.partyType" @change="changePartyType">
@@ -110,9 +110,9 @@
         <div v-show="partyTypePerson=='1'">
           <div class="itemThird">
             <el-form-item label="性别">
-              <el-select placeholder="请选择" v-model="inforForm.partySex">
-                <el-option value="0" label="男"></el-option>
-                <el-option value="1" label="女"></el-option>
+              <el-select placeholder="请选择" v-model="inforForm.partySex" :disabled="inforForm.partyIdNo?true:false">
+                <el-option :value="0" label="男"></el-option>
+                <el-option :value="1" label="女"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -637,7 +637,10 @@
         <div>
           <div class="itemOne">
             <el-form-item label="拟处罚金额">
-              <el-input v-model="inforForm.tempPunishAmount"></el-input>
+              <el-input v-model="inforForm.tempPunishAmount">
+                <span slot="append">元</span>
+
+              </el-input>
             </el-form-item>
           </div>
         </div>
@@ -820,6 +823,9 @@ export default {
           zigeNumber: ""
         }
       ],
+      driverOrAgentInfo: {
+        relationWithParty: '1',
+      },
       allRelationWithParty: [
         //与当事人关系下拉框
         { value: "0", label: "同一人" },
@@ -861,7 +867,7 @@ export default {
       showTrailer: false, //是否显示挂车信息
       judgFreedomList: [], //自由裁量列表
       caseSourceTextDisable: false,
-      relationWithPartyIsOne: false, //与当事人关系是否为同一人
+      relationWithPartyIsOne: true, //与当事人关系是否为同一人
       activeJudgli: "",
       showOverrun: false, //显示超限信息锚点
       lawPersonListId: "",
@@ -976,7 +982,7 @@ export default {
     },
     //更改与当事人关系   为同一人时自动赋值且不可编辑
     changeRelationWithParty(val) {
-      console.log(val);
+      console.log( typeof(val));
       if (val == "0") {
         console.log(val);
         this.driverOrAgentInfoList[0].name = this.inforForm.party;
@@ -1265,6 +1271,16 @@ export default {
           age = year - idCard.substr(6, 4);
         }
       }
+      // bug;
+      var sexData = idCard.substr(17, 1)
+      if (sexData % 2 == 0) {
+        this.inforForm.partySex = 1
+      }
+      if (sexData % 2 == 1) {
+        this.inforForm.partySex = 0
+      }
+      console.log('性别', sexData % 2)
+      // if()
       console.log('年龄', age)
       this.inforForm.partyAge = age;
     },
@@ -1284,6 +1300,8 @@ export default {
     this.showOverrun =
       someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
     console.log(this.showOverrun)
+
+    this.driverOrAgentInfo.relationWithParty= '1'
   },
   created() {
     this.findJudgFreedomList();
