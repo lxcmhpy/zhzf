@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="archiveCoverForm" :model="formData" :rules="rules" label-width="105px">
+    <el-form ref="archiveCoverForm" :model="formData" label-width="105px">
       <div class="content_box">
         <div class="content">
           <div class="content_title">全国道路运输执法案件</div>
@@ -36,14 +36,14 @@
               </div>
               <div class="col">
                 <el-form-item label="立卷人">
-                  <el-input class="w-120" v-model="formData.party2" size="small"></el-input>
+                  <el-input class="w-120" v-model="formData.nickName" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="执法机关">
-                  <el-input class="w-120" size="small"></el-input>
+                  <el-input v-model="formData.organName" class="w-120" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -123,21 +123,22 @@
         width="1000px"
          append-to-body>
         <div >
-    <div style="height:auto;">
-    <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
-        <div v-if="mlList.length > 0" lazy>
-            <object >
-                <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
-                :src="mlList[indexPdf]" type="application/pdf" internalinstanceid="29">
-            </object>
+        <div style="height:auto;">
+        <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
+            <div v-if="mlList.length > 0" lazy>
+                <object >
+                    <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
+                    :src="mlList[indexPdf]" type="application/pdf" internalinstanceid="29">
+                </object>
+            </div>
+            <div style="position:absolute;bottom:150px;right: 20px;width:100px;">
+            <el-button @click="updatePDF1">上一张</el-button><br><br>
+            <el-button @click="updatePDF2">下一张</el-button>
+            </div>
         </div>
-        <div style="position:absolute;bottom:150px;right: 20px;width:100px;">
-        <el-button @click="updatePDF1">上一张</el-button><br><br>
-        <el-button @click="updatePDF2">下一张</el-button>
-        </div>
-    </div>
         </div>
     </el-dialog>
+
             <!--@saveData="saveData" -->
     <casePageFloatBtns
         :pageDomId="'archiveCoverForm'"
@@ -195,7 +196,8 @@ export default {
       mlList: [],
       indexPdf: 0,
       host:'',
-      urlList: []
+      urlList: [],
+      caseList: []
     };
   },
   components: {
@@ -237,13 +239,18 @@ export default {
           type: 'warning'
         }).then(() => {
             this.com_submitCaseForm(handleType, "archiveCoverForm", true);
-            this.getMl()
+            this.$router.push({ name: 'firstPdfPage' ,params: {
+                caseId: this.caseId,
+                docId: this.docId
+            }});
+            // this.getMl()
         }).catch(() => {
 
         });
     },
     getMl() {
         this.pdfVisible = true
+        this.getByMlCaseId(this.caseId)
     },
     getByMlCaseId(caseId) {
          this.$store.dispatch("getByMlCaseIdNew", caseId).then(
@@ -266,6 +273,7 @@ export default {
     submitData(handleType) {
         if(handleType == 2) {
             this.submitArchive(handleType)
+
         } else {
             this.com_submitCaseForm(handleType, "archiveCoverForm", true);
         }
@@ -273,7 +281,17 @@ export default {
     //点击卷宗目录后 显示卷宗目录
     showArchiveCatalogue(){
         this.$refs.archiveCatalogueRef.showModal();
-    }
+    },
+    // getByMlCaseId(caseId) {
+    //      this.$store.dispatch("getByMlCaseIdNew", caseId).then(
+    //      res=>{
+    //          this.caseList = res.data
+    //      },
+    //      err=>{
+    //        console.log(err)
+    //      }
+    //    )
+    // }
   },
   mounted() {
     this.formData = this.caseInfo;
@@ -283,6 +301,7 @@ export default {
     // this.getMl()
     this.getByMlCaseId(this.caseId)
     this.caseLinkDataForm.caseBasicinfoId = this.caseId
+
   }
 };
 </script>

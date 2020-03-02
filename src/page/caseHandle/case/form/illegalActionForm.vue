@@ -219,7 +219,7 @@ export default {
           { required: true, message: "必须填写", trigger: "blur" }
         ],
         punishDecision: [
-          { required: true, message: "必须填写", trigger: "blur" }
+          { required: true, message: "必须填写", trigger: "change" }
         ],
         organContactor:[
           { required: true, message: "必须填写", trigger: "blur" },

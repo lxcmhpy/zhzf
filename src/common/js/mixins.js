@@ -11,6 +11,7 @@ export const mixinGetCaseApiList = {
     }
   },
   computed: { ...mapGetters(['caseId']) },
+  inject: ['reload'],
   methods: {
     //获取列表中的数据  未立案 审批中  待办理
     getCaseList(params) {
@@ -413,6 +414,7 @@ export const mixinGetCaseApiList = {
       htmlExportPDF(this.formOrDocData.pageDomId, this.uploadFile)
     },
     uploadFile(file, name) {
+        debugger;
       var f = new File([file.output("blob")], name, { type: 'application/pdf' })
       var fd = new FormData()
       fd.append("file", f)
@@ -454,6 +456,55 @@ export const mixinGetCaseApiList = {
           }
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({ name: 'myPDF', params: routerData })
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    uploadFileGD(file, name) {
+        debugger;
+      var f = new File([file.output("blob")], name, { type: 'application/pdf' })
+      var fd = new FormData()
+      fd.append("file", f)
+      fd.append('caseId', this.caseId);
+      let docId = '';  //文书 id
+
+      if (this.caseDocDataForm != undefined) {
+        // 只是文书
+        docId = this.caseDocDataForm.caseDoctypeId;
+      } else {
+        //即是环节也是文书
+        docId = this.huanjieAndDocId;
+      }
+      fd.append('docId', docId);
+      //已经上传过了，
+      if(iLocalStroage.gets("currrentPdfData")) {
+        fd.append('id', iLocalStroage.gets("currrentPdfData").id);
+        fd.append('storageId', iLocalStroage.gets("currrentPdfData").storageId);
+      }
+      let caseLinktypeId = ""; //环节id
+      if (this.caseLinkDataForm) {
+        caseLinktypeId = this.caseLinkDataForm.caseLinktypeId
+      }
+
+      console.log('fd', fd.get('docId'));
+      console.log('currrentPdfId', fd.get('id'));
+      console.log('currrentPdfstorageId', fd.get('storageId'));
+
+
+      this.$store.dispatch("uploadFile", fd).then(
+        res => {
+          console.log('上传', res);
+          //上传pdf之后显示pdf
+          let routerData = {
+            hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
+            docId: docId,
+            approvalOver: this.approvalOver ? true : false,
+            caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
+          }
+          this.$store.dispatch("deleteTabs", this.$route.name);
+        //   this.$router.push({ name: 'myPDF', params: routerData })
         },
         err => {
           console.log(err);

@@ -387,7 +387,7 @@ export default {
     },
     //保存表单数据
     submitCaseDoc(handleType) {
-      this.com_submitCaseForm(handleType, "penaltyExecutionForm", true);
+      this.com_submitCaseForm(handleType, "penaltyExecutionForm", false);
     },
     //下一环节
     continueHandle() {

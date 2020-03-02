@@ -42,6 +42,7 @@ export default {
     getFile () {
       console.log('docId',this.docId);
       console.log('caseId',this.caseId)
+      let _that = this
       this.$store.dispatch("getFile", {
           docId: this.docId,
           caseId: this.caseId,
@@ -53,7 +54,8 @@ export default {
 
           for(var i=0;i<res.length;i++) {
               if(i==0) {
-                this.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
+                  debugger
+                _that.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
               }
           }
         },
