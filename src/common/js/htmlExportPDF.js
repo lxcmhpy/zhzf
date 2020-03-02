@@ -2,7 +2,7 @@ import html2Canvas from 'html2canvas'
 import JsPDF from 'jspdf'
 
 export async function htmlExportPDF(id, callback) {
-    debugger;
+    // debugger;
   let element = document.getElementById(id);
   element.className += ' color_FFFFFF';
   debugger;
@@ -69,9 +69,9 @@ export async function htmlExportPDF(id, callback) {
         }
       }
 
-      let name = 'report_pdf_' + new Date().getTime() + '.pdf'
+      let name = 'report_pdf_' + new Date().getTime() + '.pdf';
+      callback(doc, name);
     //   doc.save(name); //保存为pdf文件
-      callback(doc, name)
     }
   })
 }

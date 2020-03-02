@@ -1,7 +1,7 @@
 <template>
-  <div class="print_box" id='btnB'>
-    <div class="print_info">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
+  <div class="print_box">
+    <div class="print_info"  id='firstPdfPage'>
+      <el-form ref="docForm" :inline-message="true" :inline="true" :model="formData" :class="isPdf">
         <div class="first_page_box">
           <div class="title_img_box">
             <img src="@/../static/images/img/main/logo.png" alt="">
@@ -17,7 +17,7 @@
               <tr>
                 <td colspan="2">案 由</td>
                 <td colspan="3" class="text_left">
-                  云曲运政罚[2018]年0001号云曲运政罚[2018]年0001号云曲运政罚
+                  <!-- 云曲运政罚[2018]年0001号云曲运政罚[2018]年0001号云曲运政罚 -->
                   {{formData.caseName}}
                 </td>
               </tr>
@@ -27,11 +27,11 @@
               </tr>
               <tr>
                 <td colspan="2">执法机关</td>
-                <td colspan="3" class="text_left"></td>
+                <td colspan="3" class="text_left">{{formData.organName}}</td>
               </tr>
               <tr>
                 <td colspan="2">立卷人</td>
-                <td colspan="3" class="text_left"></td>
+                <td colspan="3" class="text_left">{{formData.nickName}}</td>
               </tr>
               <tr>
                 <td style="width:79px">立案时间</td>
@@ -51,6 +51,30 @@
         </div>
       </el-form>
     </div>
+        <el-dialog
+        :visible.sync="pdfVisible"
+        @close="closeDialog"
+        :close-on-click-modal="false"
+        width="1000px"
+         append-to-body>
+        <div >
+        <div style="height:auto;">
+        <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
+            <div v-if="mlList.length > 0" lazy>
+                <object >
+                    <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
+                    :src="mlList[indexPdf]" type="application/pdf" internalinstanceid="29">
+                </object>
+            </div>
+            <div style="position:absolute;bottom:150px;right: 20px;width:100px;">
+            <el-button @click="updatePDF1">上一张</el-button><br><br>
+            <el-button @click="updatePDF2">下一张</el-button><br><br>
+            <el-button @click="updatePDF2">完成</el-button>
+
+            </div>
+        </div>
+        </div>
+    </el-dialog>
     <!-- 悬浮按钮 -->
     <!-- <div class="float-btns">
       <el-button type="success" @click="print">
@@ -89,7 +113,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import mySignture from "@/common/js/mySignture";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
-
+import {htmlExportPDF} from '@/common/js/htmlExportPDF.js'
 export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
@@ -122,6 +146,11 @@ export default {
         pageDomId: 'subOutputRank-print',
       },
       isPdf: '',
+      mlList: [],
+      host: '',
+      pdfVisible: false,
+      closeDialog: false,
+      indexPdf: 0
     }
   },
   methods: {
@@ -136,12 +165,36 @@ export default {
         }
       });
     },
+    updatePDF1 () {
+        if (this.indexPdf < this.mlList.length -1) {
+            this.indexPdf++
+        } else {
+            this.$message({
+                type: "success",
+                message: "没有数据！"
+            });
+        }
+    },
+    alertPDF(index) {
+        this.indexPdf = index
+    },
+    updatePDF2 () {
+        if (this.indexPdf > 0) {
+            this.indexPdf--
+        } else {
+            this.$message({
+                type: "success",
+                message: "没有数据！"
+            });
+        }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       let data = {
-        // caseId: this.caseId, //流程里的案件id
-        caseId: '297708bcd8e80872febb61577329194f', //先写死
-        docId: '5cad5b54eb97a15250672a4c397cee56'
+        caseId: this.caseId, //流程里的案件id
+        // caseId: '297708bcd8e80872febb61577329194f', //先写死
+        // docId: '5cad5b54eb97a15250672a4c397cee56'
+        docId: '2c9029ce6e9c680f016e9c6e2f3d0001'
       };
       this.com_getDocDataByCaseIdAndDocId(data);
 
@@ -183,10 +236,30 @@ export default {
     },
     makeSeal() {
 
-    }
-
+    },
+    router() {
+        this.getByMlCaseId(this.caseId)
+    },
+    getByMlCaseId(caseId) {
+         this.$store.dispatch("getByMlCaseIdNew", caseId).then(
+         res=>{
+             let _that = this
+             res.data.forEach((v)=>{
+                _that.mlList.push(_that.host + v.storageId)
+             })
+            _that.pdfVisible = true
+         },
+         err=>{
+           console.log(err)
+         }
+       )
+    },
   },
-
+  mounted () {
+      htmlExportPDF('firstPdfPage',this.uploadFileGD)
+      this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
+      this.router()
+  }
 }
 </script>
 <style lang="scss" >
