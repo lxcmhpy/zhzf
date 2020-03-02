@@ -8,7 +8,7 @@
           <!-- <div class="el-tab-pane" name="first">12121</div> -->
           <el-tab-pane name="first">
             <span slot="label">
-              <div class="case_number">0</div>
+              <div class="case_number">{{waitDeal}}</div>
               <div class="case_discribe">
                 <i class="iconfont law-approval"></i> 待办理
               </div>
@@ -25,7 +25,7 @@
           </el-tab-pane>
           <el-tab-pane label="未立案" name="second">
             <span slot="label">
-              <div class="case_number">0</div>
+              <div class="case_number">{{unRecord}}</div>
               <div class="case_discribe"><i class="iconfont law-submit-o"></i> 未立案</div>
               <div class="hideen">112</div>
               <span class="borderLine"></span>
@@ -41,7 +41,7 @@
           <el-tab-pane label="待归档" name="third">
             <span slot="label">
               <div class="case_number">
-                999+
+                {{waitArchive}}
               </div>
               <div class="case_discribe"><i class="iconfont law-save"></i> 待归档</div>
               <div class=" hideen">112</div>
@@ -57,7 +57,7 @@
           </el-tab-pane>
           <el-tab-pane label="待审批" name="fourth" class='no_border'>
             <span slot="label">
-              <div class="case_number">0</div>
+              <div class="case_number">{{approveIng}}</div>
               <div class="case_discribe">
                 <i class="iconfont law-save"></i> 待审批
               </div>
@@ -340,7 +340,11 @@ export default {
           value: '6',
           label: '工程质量监督',
         },
-      ]
+      ],
+      waitDeal:'10',
+      unRecord:'10',
+      waitArchive:'999+',
+      approveIng:'10',
     };
   },
   methods: {
@@ -351,17 +355,25 @@ export default {
       }
       this.getCaseList2(searchData)
       if (tab.index == 0) {
-        this.moreFlag = 'waitDeal'
+        this.moreFlag = 'waitDeal';
+        // this.waitDeal = this.tableData.length
       }
       if (tab.index == 1) {
-        this.moreFlag = 'unRecordCase'
+        this.moreFlag = 'unRecordCase';
+        // this.unRecord = this.tableData.length
+
       }
       if (tab.index == 2) {
-        this.moreFlag = 'waitArchive'
+        this.moreFlag = 'waitArchive';
+        // this.waitArchive = this.tableData.length
+
       }
       if (tab.index == 3) {
-        this.moreFlag = 'approveIng'
+        this.moreFlag = 'approveIng';
+        // this.approveIng = this.tableData.length
+
       }
+       console.log('点击',this.tableData)
 
     },
     clickCase() {
@@ -404,8 +416,8 @@ export default {
         flag: index,
         caseNumber: name
       };
-      console.log('点击')
       this.getCaseList2(this.caseSearchForm)
+     
     },
     //查询违法行为
     getIllegaAct() {

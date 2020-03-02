@@ -206,8 +206,8 @@
               <p>负责人</p>
               <p>意见</p>
             </td>
-            <td colspan="3" class="color_DBE4EF table_seal">
-              {{formData.approveOpinions}}
+            <td colspan="3" class="color_DBE4EF table_seal" @click="overFlowEdit1">
+              <div style="word-break:break-all">{{formData.approveOpinions}}</div>
               <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
                 <p>
@@ -231,7 +231,7 @@
               <p class="center_similar"></p>
               <p class="center_similar"></p> -->
             </td>
-            <td colspan="8" class="color_DBE4EF table_seal">
+            <td colspan="8" class="color_DBE4EF table_seal" @click="overFlowEdit">
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
@@ -265,6 +265,7 @@
     <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @saveData="saveData" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <overflowInput1 ref="overflowInputRef1" @overFloeEditInfo="getOverFloeEditInfo1"></overflowInput1>
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
   </div>
@@ -273,6 +274,7 @@
 import showApprovePeople from "../components/showApprovePeople";
 import approvalDialog from "../components/approvalDialog";
 import overflowInput from "../case/modle/overflowInput";
+import overflowInput1 from "../case/modle/overflowInput1";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
 import { mixinGetCaseApiList } from "@/common/js/mixins";
@@ -409,6 +411,7 @@ export default {
     showApprovePeople,
     approvalDialog,
     overflowInput,
+    overflowInput1,
     casePageFloatBtns
   },
   computed: { ...mapGetters(["caseId"]) },
@@ -466,7 +469,18 @@ export default {
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
-      this.formData.illegalFactsEvidence = edit;
+      this.formData.secondApproveOpinions = edit;
+
+
+    },
+    // 多行编辑
+    overFlowEdit1() {
+      this.$refs.overflowInputRef1.showModal(0, "");
+    },
+    // 获取多行编辑内容
+    getOverFloeEditInfo1(edit) {
+      this.formData.approveOpinions = edit;
+
     },
 
     goToPfd() {
