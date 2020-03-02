@@ -349,7 +349,7 @@
               <p class="center_similar"></p> -->
             </td>
             <td colspan="8" class="color_DBE4EF table_seal">
-              {{formData.secondApproveOpinions}}
+              {{formData.secondApproveOpinions}} 
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
                 <p>
