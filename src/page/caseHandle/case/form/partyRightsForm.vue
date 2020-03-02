@@ -273,7 +273,7 @@ export default {
     },
     submitCaseDoc(handleType) {
       //参数  提交类型 、formRef、有无下一环节按
-      this.com_submitCaseForm(handleType, 'docForm', true);
+      this.com_submitCaseForm(handleType, 'docForm', false);
     },
     //下一环节
     continueHandle() {

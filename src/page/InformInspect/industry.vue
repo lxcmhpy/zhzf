@@ -22,7 +22,7 @@
         </div>
 
         <el-form-item label="省份" class="margin28">
-          <el-select v-model="checkData.provinceCode" placeholder="输入省份缩写">
+          <el-select v-model="checkData.provinceCode" placeholder="请选择">
               <el-option
                 v-for="item in sfList"
                 :key="item.id"
