@@ -141,6 +141,7 @@ export const mixinGetCaseApiList = {
     },
     //提交文书表单信息，跳转到pdf文书
     com_submitCaseForm(handleType, docForm, hasNextBtn) {
+      console.log(this.formData);
       this.caseLinkDataForm.formData = JSON.stringify(this.formData);
       // this.caseLinkDataForm.caseBasicinfoId = caseId;
       //0暂存 1提交
@@ -156,7 +157,6 @@ export const mixinGetCaseApiList = {
                 type: "success",
                 message: "保存成功"
               });
-
               if (handleType == 1) {
                 //保存成功
                 if (hasNextBtn) {    //有下一环节按钮
@@ -182,6 +182,8 @@ export const mixinGetCaseApiList = {
               type: "success",
               message: "暂存成功"
             });
+            //重新赋值
+            this.setData();
           },
           err => {
             console.log(err);
@@ -557,15 +559,18 @@ export const mixinGetCaseApiList = {
               }
               this.$store.dispatch('deleteTabs', 'flowChart');
               let data2 = this.com_getCaseRouteName(data.linkID);
-              if(data.curLinkState == "complete"){    //已完成文书显示pdf
-                  if(!isHuanjieDoc){
-                    this.$router.push({name:'myPDF',params:{docId:data2.docId,isComplete:true}})
-                  }else{
-                    this.$router.push({name:data2.nextLink,params:{isComplete:true}})
-                  }
-              }else{
-                this.$router.push({name:data2.nextLink})
-              }
+              // if(data.curLinkState == "complete"){    //已完成文书显示pdf
+              //     if(!isHuanjieDoc){
+              //       this.$router.push({name:'myPDF',params:{docId:data2.docId,isComplete:true}})
+              //     }else{
+              //       this.$router.push({name:data2.nextLink,params:{isComplete:true}})
+              //     }
+              // }else{
+              //   this.$router.push({name:data2.nextLink})
+              // }
+
+              this.$router.push({name:data2.nextLink})
+
         }
 
   },
