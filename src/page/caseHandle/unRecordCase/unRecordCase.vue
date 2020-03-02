@@ -76,7 +76,7 @@
           stripe
           style="width: 100%"
           highlight-current-row
-          @current-change="handleCurrentChange"
+          @current-change="handleCase"
           height="100%"
         >
           <el-table-column prop="tempNo" label="编号" align="center"></el-table-column>
@@ -159,7 +159,7 @@ export default {
       this.getUnRecordCase({});
     },
     //跳转立案登记
-    handleCurrentChange(row) {
+    handleCase(row) {
       console.log(row);
       this.$store.commit("setCaseId", row.id);
       this.$router.replace({
