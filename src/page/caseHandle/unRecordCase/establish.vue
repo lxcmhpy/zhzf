@@ -562,6 +562,7 @@ export default {
     // 提交表单
     saveData(handleType) {
       //参数  提交类型 、formRef
+      
       this.com_submitCaseForm(handleType, "establishForm", true);
     },
     showApprovePeopleList() {
@@ -582,14 +583,6 @@ export default {
       };
       this.$refs.approvalDialogRef.showModal(caseData);
     },
-    // 盖章
-    makeSeal() {
-      console.log("盖章!");
-    },
-    // 打印
-    print() {
-      console.log("打印!");
-    },
     // 多行编辑
     overFlowEdit() {
       this.$refs.overflowInputRef.showModal(0, "");
@@ -598,14 +591,7 @@ export default {
     getOverFloeEditInfo(edit) {
       this.formData.illegalFactsEvidence = edit;
     },
-    // 下划线版本
-    changeLineStyle() {
-      this.lineStyleFlag = true;
-    },
-    // 下划线版本
-    edit() {
-      this.lineStyleFlag = false;
-    },
+
     goToPfd() {
       //提交pdf 显示pdf页
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;

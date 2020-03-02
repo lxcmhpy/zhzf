@@ -599,7 +599,7 @@
         </div>
         <div>
           <div class="itemOne">
-            <el-form-item label="处罚依据">
+            <el-form-item label="处罚依据" prop="punishLaw">
               <el-input v-model="inforForm.punishLaw">
                 <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
               </el-input>
@@ -768,14 +768,14 @@ export default {
         ],
         party: [
           // { required: true, message: "请输入", trigger: "blur" },
-          { validator: validatePart, trigger: "blur" }
+          {required: true, validator: validatePart, trigger: "blur" }
         ],
         partyName: [
           // { required: true, message: "请输入", trigger: "blur" },
-          { validator: validatePartName, trigger: "blur" }
+          { required: true,validator: validatePartName, trigger: "blur" }
         ],
         lawPersonListId: [
-          { validator: validateLawPersonNumber, trigger: "change" }
+          { required: true,validator: validateLawPersonNumber, trigger: "change" }
         ],
         checkTime: [
           { required: true, message: "请输入检测时间", trigger: "change" }
@@ -783,9 +783,15 @@ export default {
         vehiclefiledThing: [
           { required: true, message: "请输入装载物", trigger: "change" }
         ],
-        // relationWithCase: [
-        //   { required: true, message: "请选择", trigger: "change" }
-        // ],
+        relationWithCase: [
+          { required: true, message: "请选择", trigger: "change" }
+        ],
+        illegalLaw: [
+          { required: true, message: "请选择",  trigger: "blur" }
+        ],
+        punishLaw: [
+          { required: true, message: "请选择",  trigger: "blur" }
+        ],
         partyIdNo: [
           { validator: validateIDNumber, trigger: "blur" }
         ]
