@@ -145,9 +145,11 @@ export const mixinGetCaseApiList = {
       // this.caseLinkDataForm.caseBasicinfoId = caseId;
       //0暂存 1提交
       this.caseLinkDataForm.status = handleType;
+      debugger;
       if(handleType){
       this.$refs[docForm].validate(valid => {
         if (valid) {
+          debugger;
           // console.log(this.caseLinkDataForm);
           this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
             res => {
