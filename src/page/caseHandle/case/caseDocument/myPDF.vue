@@ -1,7 +1,8 @@
 <template>
-  <div class="print_box">
+  <div class="print_box" style="width:790px;margin:0 auto;">
       <!-- <div class="print_info"> -->
-        <embed class="print_info" style="padding:0px;width: 730px;height:100% !important" name="plugin" id="plugin" :src="storagePath" type="application/pdf" internalinstanceid="29">
+
+        <embed v-for="(item,index) in storagePath" :key="index" class="print_info" style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="item" type="application/pdf" internalinstanceid="29">
       <!-- </div>  -->
     <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @backHuanjie="backHuanjie" @showApprovePeopleList="showApprovePeopleList"></casePageFloatBtns>
 
@@ -22,7 +23,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      storagePath: null,
+      storagePath: [],
       formOrDocData:{
         showBtn:[true,false,false,true,false,true,true,false,false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId:"",
@@ -36,22 +37,25 @@ export default {
     casePageFloatBtns,
     pdf
   },
-  computed:{...mapGetters(['caseId'])},
+  computed:{...mapGetters(['caseId', 'docId'])},
   methods: {
     getFile () {
-      console.log('docId',this.$route.params.docId);
+      console.log('docId',this.docId);
       console.log('caseId',this.caseId)
       this.$store.dispatch("getFile", {
-          docId: this.$route.params.docId,
+          docId: this.docId,
           caseId: this.caseId,
         }).then(
         res => {
           console.log(res);
-          console.log(res[0].storageId)
           console.log(11111111)
+          debugger
 
-
-          this.storagePath = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[0].storageId
+          for(var i=0;i<res.length;i++) {
+              if(i==0) {
+                this.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
+              }
+          }
         },
         err => {
           console.log(err);

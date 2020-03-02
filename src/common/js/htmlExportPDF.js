@@ -2,8 +2,8 @@ import html2Canvas from 'html2canvas'
 import JsPDF from 'jspdf'
 
 export async function htmlExportPDF(id, callback) {
-    debugger
-  let element = document.getElementById(id)
+    debugger;
+  let element = document.getElementById(id);
   element.className += ' color_FFFFFF';
   debugger;
   let width = element.offsetWidth; //获取dom 宽度
@@ -61,18 +61,17 @@ export async function htmlExportPDF(id, callback) {
         while (leftHeight > 0) {
           doc.addImage(imgData, 'jpeg', 0, position, imgWidth, imgHeight)
           leftHeight -= (pageHeight+minus);
-          position -= 842;
+          position -= 841.49;
           //避免添加空白页
           if (leftHeight > minus) {
-
             doc.addPage();
           }
         }
       }
 
       let name = 'report_pdf_' + new Date().getTime() + '.pdf'
-      doc.save(name); //保存为pdf文件
-    //   callback(doc, name)
+    //   doc.save(name); //保存为pdf文件
+      callback(doc, name)
     }
   })
 }

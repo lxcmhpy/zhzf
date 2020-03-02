@@ -11,5 +11,6 @@ const getters = {
   imgIp: state => state.imgIp,
   listPage: state => state.listPage,
   caseId:state => state.caseHandle.caseId,
+  docId: state => state.caseHandle.docId
 };
 export default getters;
