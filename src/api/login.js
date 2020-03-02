@@ -41,7 +41,7 @@ export function resetPasswordApi(params) {
     method: "POST",
     contentType: 'multipart/form-data',
     data:data,
-    showloading: true,
+    showloading: false,
     baseUrlType:1,
     cancelToken: setCancelSource()
   });
@@ -52,7 +52,7 @@ export function getCaptchaApi() {
   return request({
     url: "/common/captcha/getcaptcha",
     method: "get",
-    showloading: true,
+    showloading: false,
     baseUrlType:1,
     cancelToken: setCancelSource()
   });
@@ -65,7 +65,7 @@ export function getCapImgSrcApi(captchaId) {
   return request({
     url: "/common/captcha/draw/"+captchaId,
     method: "get",
-    showloading: true,
+    showloading: false,
     baseUrlType:1,
     responseType: 'arraybuffer',
     cancelToken: setCancelSource()
@@ -78,7 +78,7 @@ export function getMenuApi() {
     url: "/sys/permission/getTreePermission",
     method: "get",
     baseUrlType:1,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
 
   });

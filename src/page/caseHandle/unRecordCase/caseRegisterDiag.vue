@@ -27,7 +27,7 @@
         <div class="item">
           <el-form-item label="案件类型" prop="caseType">
             <el-select v-model="caseRegisterForm.caseType" placeholder="请选择">
-              <el-option v-for="item in caseTypeList" :key="item.caseTypeName" :label="item.caseTypeName" :value="item.caseTypeName"></el-option>
+              <el-option v-for="(item,index) in caseTypeList" :key="index" :label="item.caseTypeName" :value="item.caseTypeName"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -97,8 +97,9 @@ export default {
         }
       );
       // 首页跳转代入
+      debugger
       this.caseRegisterForm.programType = caseForm.programType;
-      this.caseRegisterForm.illageAct = data.strContent;
+      this.caseRegisterForm.illageAct = data ? data.strContent : null;
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

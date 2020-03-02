@@ -39,7 +39,7 @@
                   </el-collapse-transition>
                 </div>
                 <el-form-item class="codeInputBox">
-                  <vue-simple-verify ref="verify" width='420' tips='向右滑动完成验证' @success="pass()" />
+                  <vue-simple-verify ref="verify" :width='420' tips='向右滑动完成验证' @success="pass()" />
                 </el-form-item>
                 <div class="forgetPass">
                   <el-collapse-transition>
@@ -72,6 +72,13 @@
               <div class="gray">执法App - 首页右上角加号 - 左下角扫一扫</div>
             </div>
           </div>
+          <div class="footer">
+            <center>
+                <span class="blue">使用教程</span>
+                |
+                <span class="blue">帮助中心</span>
+            </center>
+          </div>
         </div>
         <div class="rightC" v-if="resetFlag">
           <div class="form_box">
@@ -101,17 +108,16 @@
                 </div>
 
               </el-form>
+              <div class="footer">
+                <center>
+                    <span class="blue">使用教程</span>
+                    |
+                    <span class="blue">帮助中心</span>
+                </center>
+              </div>
             </div>
 
           </div>
-
-        </div>
-        <div class="footer">
-          <center>
-            <span class="blue">使用教程</span>
-            |
-            <span class="blue">帮助中心</span>
-          </center>
 
         </div>
       </section>

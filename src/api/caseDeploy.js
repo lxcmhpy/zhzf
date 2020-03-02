@@ -10,7 +10,7 @@ export  function  getLawCategoryListApi(data)  {
       url:  "",
       method:  "get",
       params: data,
-      showloading:  true,
+      showloading:  false,
       cancelToken:  setCancelSource()
     });
   }
@@ -22,7 +22,7 @@ export function getBannerListApi(data) {
     url: "/sys/link/queryLinkPage",
     method: "get",
     params: data,
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }

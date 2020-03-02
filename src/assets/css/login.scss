@@ -47,22 +47,24 @@
   text-align   : center;
   box-shadow   : 0 0 5px #ccc;
   min-height   : 760px;
+  display: flex;
   // box-sizing: border-box;
 
 
   .leftC {
     float     : left;
-    width     : 58%;
-    height    : calc(100% - 0px);
+    // width     : 58%;
+    height    : 100%;
     background: #12223d;
-    background: url('../../../static/images/img/login/login_bg.png') ;
-    background-size:100%;
+    background: url('../../../static/images/img/login/login_bg.png') no-repeat;
+    background-size:100% 100%;
     overflow  : hidden;
 
 
     img {
     //   height: 1080px;
-    width     : 100%;
+    // width     : 100%;
+    height: 100%;
     }
   }
 
@@ -70,10 +72,11 @@
     float     : right;
     width     : 42%;
     height    : 600px;
-    padding   : 30px 100px;
+    // padding   : 30px 100px;
+    margin: auto;
     box-sizing: border-box;
     position  : relative;
-    top       : 150px;
+    // top       : 150px;
     overflow  : hidden;
 
     p {
@@ -230,10 +233,11 @@
   }
 
   .footer {
-    width      : 42%;
-    position   : absolute;
-    right      : 0;
-    bottom     : 30px;
+    width      : 100%;
+    // position   : absolute;
+    // right      : 0;
+    // bottom     : 30px;
+    margin: 0 auto;
     text-align : center;
     clear      : both;
     font-size  : 14px;
