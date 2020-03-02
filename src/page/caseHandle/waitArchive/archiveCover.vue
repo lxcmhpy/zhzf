@@ -113,8 +113,31 @@
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'archiveCatalogue'" @showArchiveCatalogue="showArchiveCatalogue"></caseSlideMenu>
     <!-- 卷宗目录 -->
-    <archiveCatalogue ref="archiveCatalogueRef" :caseInfo="caseInfo"></archiveCatalogue>
+    <archiveCatalogue ref="archiveCatalogueRef" :caseInfo="caseInfo" @alertPDF="alertPDF"></archiveCatalogue>
     <!-- 引入buttn -->
+    <!-- <div @click="getMl">pdf</div> -->
+    <el-dialog
+        :visible.sync="pdfVisible"
+        @close="closeDialog"
+        :close-on-click-modal="false"
+        width="1000px"
+         append-to-body>
+        <div >
+    <div style="height:auto;">
+    <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
+        <div v-if="mlList.length > 0" lazy>
+            <object >
+                <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
+                :src="mlList[indexPdf]" type="application/pdf" internalinstanceid="29">
+            </object>
+        </div>
+        <div style="position:absolute;bottom:150px;right: 20px;width:100px;">
+        <el-button @click="updatePDF1">上一张</el-button><br><br>
+        <el-button @click="updatePDF2">下一张</el-button>
+        </div>
+    </div>
+        </div>
+    </el-dialog>
             <!--@saveData="saveData" -->
     <casePageFloatBtns
         :pageDomId="'archiveCoverForm'"
@@ -128,10 +151,13 @@ import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 import archiveCatalogue from "./archiveCatalogue";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
-import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js'
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      pdfVisible: false,
+      closeDialog: false,
       caseInfo: this.$route.params.caseInfo,
       formData: {
         caseNumber: "",
@@ -144,7 +170,7 @@ export default {
       },
     caseLinkDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: this.$route.params.caseInfo.id, //案件ID
+        caseBasicinfoId: '', //案件ID
         caseLinktypeId: BASIC_DATA_SYS.archiveId, //表单类型ID
         //表单数据
         formData: "",
@@ -165,7 +191,11 @@ export default {
           true
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回,归档
       },
-      rules: {}
+      rules: {},
+      mlList: [],
+      indexPdf: 0,
+      host:'',
+      urlList: []
     };
   },
   components: {
@@ -173,25 +203,72 @@ export default {
     archiveCatalogue,
     casePageFloatBtns
   },
+  computed: { ...mapGetters(['caseId']) },
   mixins: [mixinGetCaseApiList],
   methods: {
-    submitArchive() {
+    updatePDF1 () {
+        if (this.indexPdf < this.mlList.length -1) {
+            this.indexPdf++
+        } else {
+            this.$message({
+                type: "success",
+                message: "没有数据！"
+            });
+        }
+    },
+    alertPDF(index) {
+        this.indexPdf = index
+        this.pdfVisible = true
+    },
+    updatePDF2 () {
+        if (this.indexPdf > 0) {
+            this.indexPdf--
+        } else {
+            this.$message({
+                type: "success",
+                message: "没有数据！"
+            });
+        }
+    },
+    submitArchive(handleType) {
         this.$confirm('此操作将完成归档、生成电子卷宗，是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-
+            this.com_submitCaseForm(handleType, "archiveCoverForm", true);
+            this.getMl()
         }).catch(() => {
 
         });
+    },
+    getMl() {
+        this.pdfVisible = true
+    },
+    getByMlCaseId(caseId) {
+         this.$store.dispatch("getByMlCaseIdNew", caseId).then(
+         res=>{
+             let _that = this
+             res.data.forEach((v)=>{
+                _that.mlList.push(_that.host + v.storageId)
+             })
+
+         },
+         err=>{
+           console.log(err)
+         }
+       )
     },
     showArchivePDF () {
 
     },
     //保存文书信息
     submitData(handleType) {
-      this.com_submitCaseForm(handleType, "archiveCoverForm", true);
+        if(handleType == 2) {
+            this.submitArchive(handleType)
+        } else {
+            this.com_submitCaseForm(handleType, "archiveCoverForm", true);
+        }
     },
     //点击卷宗目录后 显示卷宗目录
     showArchiveCatalogue(){
@@ -202,6 +279,10 @@ export default {
     this.formData = this.caseInfo;
     console.log(JSON.stringify(this.caseInfo));
     this.$refs.archiveCatalogueRef.showModal();
+    this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
+    // this.getMl()
+    this.getByMlCaseId(this.caseId)
+    this.caseLinkDataForm.caseBasicinfoId = this.caseId
   }
 };
 </script>

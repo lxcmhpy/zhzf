@@ -167,6 +167,9 @@ export const mixinGetCaseApiList = {
                 } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
                   // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId)
                 }
+              } else if (handleType == 2) {
+                //归档
+                return true
               }
             },
             err => {

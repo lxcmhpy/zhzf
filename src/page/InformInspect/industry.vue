@@ -22,7 +22,14 @@
         </div>
 
         <el-form-item label="省份" class="margin28">
-          <el-input v-model="checkData.provinceCode" placeholder="输入省份缩写"></el-input>
+          <el-select v-model="checkData.provinceCode" placeholder="输入省份缩写">
+              <el-option
+                v-for="item in sfList"
+                :key="item.id"
+                :label="item.value"
+                :value="item.lable"
+                ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="业户名称" v-if="checkType==1">
           <el-input v-model="checkData.ownerName" placeholder="输入业户名称"></el-input>
@@ -127,6 +134,144 @@ export default {
       tableData: [],
       searchList: [{}],
       showFlag: true,
+      sfList: [
+        {
+          value: '北京市',
+          label: 110000
+        },
+        {
+          value: '天津市',
+          label: 120000
+        },
+        {
+          value: '河北省 ',
+          label: 130000
+        },
+        {
+          value: '山西省',
+          label: 140000
+        },
+        {
+          value: '内蒙古自治区',
+          label: 150000
+        },
+        {
+          value: '辽宁省',
+          label: 210000
+        },
+        {
+          value: '吉林省',
+          label: 220000
+        },
+        {
+          value: '黑龙江省',
+          label: 230000
+        },
+        {
+          value: '上海市 ',
+          label: 310000
+        },
+        {
+          value: '江苏省',
+          label: 320000
+        },
+        {
+          value: '浙江省',
+          label: 330000
+        },
+        {
+          value: '安徽省',
+          label: 340000
+        },
+        {
+          value: '福建省',
+          label: 350000
+        },
+        {
+          value: '江西省 ',
+          label: 360000
+        },
+        {
+          value: '山东省',
+          label: 370000
+        },
+        {
+          value: '河南省',
+          label: 410000
+        },
+        {
+          value: '湖北省',
+          label: 420000
+        },
+        {
+          value: '湖南省 ',
+          label: 430000
+        },
+        {
+          value: '广东省',
+          label: 440000
+        },
+        {
+          value: '广西壮族自治区',
+          label: 450000
+        },
+        {
+          value: '海南省',
+          label: 460000
+        },
+        {
+          value: '重庆市',
+          label: 500000
+        },
+        {
+          value: '四川省 ',
+          label: 510000
+        },
+        {
+          value: '贵州省',
+          label: 520000
+        },
+        {
+          value: '云南省',
+          label: 530000
+        },
+        {
+          value: '西藏自治区',
+          label: 540000
+        },
+        {
+          value: '陕西省',
+          label: 610000
+        },
+        {
+          value: '甘肃省 ',
+          label: 620000
+        },
+        {
+          value: '青海省',
+          label: 630000
+        },
+        {
+          value: '宁夏回族自治区',
+          label: 640000
+        },
+        {
+          value: '新疆维吾尔族自治区',
+          label: 650000
+        },
+        {
+          value: '台湾省',
+          label: 710000
+        },
+        {
+          value: '香港特别行政区',
+          label: 720000
+        },
+        {
+          value: '澳门特别行政区',
+          label: 730000
+        }
+      ]
     }
   },
   methods: {
