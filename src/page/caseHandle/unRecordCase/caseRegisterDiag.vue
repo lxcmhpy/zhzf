@@ -97,7 +97,7 @@ export default {
         }
       );
       // 首页跳转代入
-      debugger
+      // debugger
       this.caseRegisterForm.programType = caseForm.programType;
       this.caseRegisterForm.illageAct = data ? data.strContent : null;
     },

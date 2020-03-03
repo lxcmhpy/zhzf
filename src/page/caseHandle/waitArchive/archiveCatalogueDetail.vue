@@ -275,7 +275,7 @@ export default {
             });
         },
         handleSelectionChange (val) {
-            debugger
+            // debugger
             this.multipleSelection = val;
         },
         showAddEvidence () {
@@ -386,7 +386,7 @@ export default {
             }).then(
                 res=>{
                     this.evidenceList = res.data.records
-                    debugger
+                    // debugger
                 },
                 err=>{
                 console.log(err)
