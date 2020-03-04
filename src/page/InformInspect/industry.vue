@@ -65,7 +65,7 @@
           <td class="color_ff" width='20%'>
             省份名称
           </td>
-          <!-- <td width='30%'>{{item.ProvinceCode}}</td> -->
+          <td width='30%'>{{item.ProvinceCode}}</td>
           <td class="color_ff" width='20%'>
             经营业户所在地行政区划代码
           </td>

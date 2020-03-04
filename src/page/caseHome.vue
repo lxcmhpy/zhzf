@@ -341,10 +341,10 @@ export default {
           label: '工程质量监督',
         },
       ],
-      waitDeal:'10',
-      unRecord:'10',
-      waitArchive:'999+',
-      approveIng:'10',
+      waitDeal: '10',
+      unRecord: '10',
+      waitArchive: '999+',
+      approveIng: '10',
     };
   },
   methods: {
@@ -373,7 +373,7 @@ export default {
         // this.approveIng = this.tableData.length
 
       }
-       console.log('点击',this.tableData)
+      console.log('点击', this.tableData)
 
     },
     clickCase() {
@@ -406,7 +406,11 @@ export default {
     // 查看更多违法行为
     caseRecordMore() {
       console.log()
-      this.$refs.chooseillegalActRef.showModal( this.caseForm);
+      let lawCate = {
+        cateId: '',
+        cateName: this.caseForm.wayType,
+      };
+      this.$refs.chooseillegalActRef.showModal(lawCate);
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     // 查找
@@ -417,7 +421,7 @@ export default {
         caseNumber: name
       };
       this.getCaseList2(this.caseSearchForm)
-     
+
     },
     //查询违法行为
     getIllegaAct() {
