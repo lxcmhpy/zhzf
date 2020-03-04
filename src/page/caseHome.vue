@@ -341,10 +341,10 @@ export default {
           label: '工程质量监督',
         },
       ],
-      waitDeal: '10',
-      unRecord: '10',
-      waitArchive: '999+',
-      approveIng: '10',
+      waitDeal: '0',
+      unRecord: '0',
+      waitArchive: '0',
+      approveIng: '0',
     };
   },
   methods: {
@@ -356,25 +356,17 @@ export default {
       this.getCaseList2(searchData)
       if (tab.index == 0) {
         this.moreFlag = 'waitDeal';
-        // this.waitDeal = this.tableData.length
       }
       if (tab.index == 1) {
         this.moreFlag = 'unRecordCase';
-        // this.unRecord = this.tableData.length
-
       }
       if (tab.index == 2) {
         this.moreFlag = 'waitArchive';
-        // this.waitArchive = this.tableData.length
-
       }
       if (tab.index == 3) {
         this.moreFlag = 'approveIng';
-        // this.approveIng = this.tableData.length
-
       }
       console.log('点击', this.tableData)
-
     },
     clickCase() {
 
@@ -387,8 +379,9 @@ export default {
       data.userId = iLocalStroage.gets("userInfo").id;
       data.current = this.currentPage;
       data.size = this.pageSize;
-      this.getCaseList(data);
+      this.getCaseList(data)
     },
+
     // 信息查验
     infoCheck(path) {
       this.$router.push({ name: path });
@@ -442,6 +435,41 @@ export default {
         }
       );
     },
+    //设置违法行为
+    setIllegaAct(val) {
+      // this.caseRegisterForm.illageAct = val.strContent;
+      // this.illageActId = val.id;
+    },
+    // 获取带办理条数
+    getTotal(flag) {
+      let data = {
+        flag: flag
+      };
+      this.$store.dispatch("queryCaseBasicInfoListPage", data).then(
+        res => {
+          let total = res.data.total
+          if (total > 999) {
+            total = '999+'
+          }
+          if (flag == 0) {
+            this.waitDeal = total
+          }
+          if (flag == 1) {
+            this.unRecord = total
+          }
+          if (flag == 2) {
+            this.waitArchive = total
+          }
+          if (flag == 3) {
+            this.approveIng = total
+          }
+          this.waitDeal = res.data.total;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
 
   },
   mounted() {
@@ -451,7 +479,11 @@ export default {
     }
     this.getCaseList2(searchData);
     this.getIllegaAct();
-
+    // 获取带办理条数
+    this.getTotal('0');
+    this.getTotal('1');
+    this.getTotal('2');
+    this.getTotal('3');
   }
 };
 </script>

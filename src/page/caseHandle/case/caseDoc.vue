@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="105px" >
+    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="105px">
       <div class="content_box">
         <div class="content">
           <div class="content_title">
@@ -10,7 +10,7 @@
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseNumber" label="案号" >
+                <el-form-item prop="caseNumber" label="案号">
                   <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" :disabled="true"></el-input>
                 </el-form-item>
               </div>
@@ -39,14 +39,17 @@
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="身份证号码" prop="partyIdNo">
+                <el-form-item label="身份证件号" prop="partyIdNo">
                   <el-input clearable class="w-120" v-model="formData.partyIdNo" size="small" placeholder="请输入" :disabled="originalData.partyIdNo ? true : false"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="年龄">
-                  <el-input ref="partyAge" clearable class="w-120" type="number" v-model="formData.partyAge" size="small" placeholder="请输入" :disabled="originalData.partyAge ? true : false"></el-input>
-                </el-form-item>
+                  <!-- <el-input  clearable class="w-120" v-model="formData.relationWithCase" size="small" placeholder="请输入" :disabled="originalData.relationWithCase ? true : false"></el-input> -->
+                  <el-form-item label="与案件关系">
+                    <el-select ref="relationWithCase" v-model="formData.relationWithCase" :disabled="originalData.relationWithCase ? true : false">
+                      <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
@@ -149,7 +152,7 @@
                   <span v-if="scope.row.status == '1'" class="tableHandelcase">
                     <!-- 已完成 -->
                     <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
-                    <i  class="iconfont law-print"></i>
+                    <i class="iconfont law-print"></i>
                   </span>
                   <span v-if="scope.row.status == '0'" class="tableHandelcase">
                     <!-- 未完成 -->
@@ -167,7 +170,7 @@
         </div>
         <!-- 悬浮按钮 -->
         <div class="float-btns btn-height63">
-          <el-button type="primary"  @click="continueHandle" v-if="!this.$route.params.isComplete">
+          <el-button type="primary" @click="continueHandle" v-if="!this.$route.params.isComplete">
             <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2285" width="24" height="24">
               <path d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z" fill="#FFFFFF" p-id="2286"></path>
             </svg>
@@ -197,7 +200,7 @@ import { mapGetters } from "vuex";
 import checkDocFinish from '../components/checkDocFinish'
 import chooseAskPeopleDia from '@/page/caseHandle/components/chooseAskPeopleDia'
 
-import {validateIDNumber,validatePhone,validateZIP} from '@/common/js/validator'
+import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
 export default {
   components: {
     checkDocFinish,
@@ -207,22 +210,22 @@ export default {
     return {
       formData: {
         caseNumber: "",
-        caseCauseName:"",
-        party:"",
-        partySex:"",
-        partyIdNo:"",
-        partyAge:"",
-        partyTel:"",
-        partyUnitPosition:"",
-        partyAddress:"",
-        partyZipCode:"",
-        partyName:"",
-        partyUnitAddress:"",
-        partyManager:"",
-        partyUnitTel:"",
-        socialCreditCode:"",
-        vehicleShipId:"",
-        vehicleShipType:"",
+        caseCauseName: "",
+        party: "",
+        partySex: "",
+        partyIdNo: "",
+        partyAge: "",
+        partyTel: "",
+        partyUnitPosition: "",
+        partyAddress: "",
+        partyZipCode: "",
+        partyName: "",
+        partyUnitAddress: "",
+        partyManager: "",
+        partyUnitTel: "",
+        socialCreditCode: "",
+        vehicleShipId: "",
+        vehicleShipType: "",
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -235,13 +238,13 @@ export default {
       handleType: 0,
       docTableDatas: [],
       rules: {
-        partyIdNo:[
+        partyIdNo: [
           { validator: validateIDNumber, trigger: "blur" }
         ],
-        partyTel:[
+        partyTel: [
           { validator: validatePhone, trigger: "blur" }
         ],
-        partyZipCode:[
+        partyZipCode: [
           { validator: validateZIP, trigger: "blur" }
         ],
         closeResult: [
@@ -252,8 +255,8 @@ export default {
         ],
       },
       // nextBtnDisab: true
-      isParty:true,  //当事人类型为个人
-      originalData:"", 
+      isParty: true,  //当事人类型为个人
+      originalData: "",
       allVehicleShipType: [
         { value: "1", label: "中小客车" },
         { value: "2", label: "大客车" },
@@ -265,10 +268,19 @@ export default {
         { value: "8", label: "摩托车" },
         { value: "9", label: "拖拉机" }
       ],
+       allRelationWithCase: [
+        //与案件关系下拉框
+        { value: "0", label: "当事人" },
+        { value: "1", label: "驾驶人" },
+        { value: "2", label: "实际所有者" },
+        { value: "3", label: "证人" },
+        { value: "4", label: "承运人" },
+        { value: "5", label: "代理人" }
+      ],
     }
   },
-  computed: { 
-    ...mapGetters(['caseId']) 
+  computed: {
+    ...mapGetters(['caseId'])
   },
   mixins: [mixinGetCaseApiList],
   inject: ['reload'],
@@ -283,22 +295,22 @@ export default {
       this.com_submitCaseForm(handleType, 'caseDocForm', false);
     },
     //下一环节
-    continueHandle() { 
-      let caseData={
-        caseBasicinfoId:this.caseLinkDataForm.caseBasicinfoId,
-        caseLinktypeId:this.caseLinkDataForm.caseLinktypeId,
+    continueHandle() {
+      let caseData = {
+        caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
+        caseLinktypeId: this.caseLinkDataForm.caseLinktypeId,
       }
       let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
-      for(let i=0;i<this.docTableDatas.length;i++){
-        if(this.docTableDatas[i].isRequired ===0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
+      for (let i = 0; i < this.docTableDatas.length; i++) {
+        if (this.docTableDatas[i].isRequired === 0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")) {
           canGotoNext = false
           break;
         }
       }
-      if(canGotoNext){
-        this.com_goToNextLinkTu(this.caseId,this.caseLinkDataForm.caseLinktypeId);
-      }else{
-        this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
+      if (canGotoNext) {
+        this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
+      } else {
+        this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
       }
 
 
@@ -322,23 +334,23 @@ export default {
     //查看文书
     viewDoc(row) {
       //为询问笔录时弹出选择框
-      if(row.docId=="2c9029ca5b71686d015b71a86ead0032"){
-          this.$refs.chooseAskPeopleDiaRef.showModal(row,this.isSaveLink);
-      }else{
+      if (row.docId == "2c9029ca5b71686d015b71a86ead0032") {
+        this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
+      } else {
         this.com_viewDoc(row);
       }
 
     },
     //预览pdf
-    viewDocPdf(row){
+    viewDocPdf(row) {
       let routerData = {
-          hasApprovalBtn:false,
-          docId:row.docId,
-          approvalOver:false,
-          hasBack:true,
-        }
-        this.$store.dispatch("deleteTabs", this.$route.name);
-        this.$router.push({name:'myPDF',params:routerData})
+        hasApprovalBtn: false,
+        docId: row.docId,
+        approvalOver: false,
+        hasBack: true,
+      }
+      this.$store.dispatch("deleteTabs", this.$route.name);
+      this.$router.push({ name: 'myPDF', params: routerData })
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
@@ -348,7 +360,7 @@ export default {
       this.com_getDocListByCaseIdAndFormId(data);
     },
     //返回到流程图
-    backBtn(){
+    backBtn() {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.go(-1);
     }
