@@ -43,11 +43,11 @@ export function validatePassLenght(rule, value, callback) {
 
 /* 是否是邮箱*/
 export function validateUrl(rule, value, callback) {
-  var reg = /^((ht|f)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/;
-  if (!reg.test(value)) {
-      callback(new Error('url格式错误'));
-  }
-  callback();
+    var reg = /^((ht|f)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/;
+    if (!reg.test(value)) {
+        callback(new Error('url格式错误'));
+    }
+    callback();
 }
 
 /* 是否是手机号 有值时验证*/
@@ -59,7 +59,7 @@ export function validatePhone(rule, value, callback) {
         // callback(alert('12'))
     }
     callback();
-  }
+}
 
 /* 是否是身份证号码   有值时验证*/
 export function validateIDNumber(rule, value, callback) {
@@ -72,7 +72,7 @@ export function validateIDNumber(rule, value, callback) {
 
 /* 验证6位邮编   有值时验证*/
 export function validateZIP(rule, value, callback) {
-    var reg= /^\d{6}$/;
+    var reg = /^\d{6}$/;
     if (!reg.test(value) && value) {
         callback(new Error('请输入正确的6位邮编'));
     }
@@ -88,6 +88,17 @@ export function validateRequire(rule, value, callback) {
     } else {
         callback();
     }
+}
+
+/* 年龄 */
+export function validateAge(rule, value, callback) {
+    if (value) {
+        if (value < 0) {
+            callback(new Error('年龄不能为负'));
+        }
+
+    }
+    callback();
 }
 
 

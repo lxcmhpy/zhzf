@@ -15,14 +15,14 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party">
-                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
                 <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyIdNo">
-                <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.partyIdNo" :maxLength='18' placeholder="\" :autosize="{ minRows: 1, maxRows: 3}" :disabled="isParty ? false : true"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -30,13 +30,13 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyTel">
-                <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\" :disabled="isParty ? false : true"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -45,7 +45,7 @@
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="partyName">
-                <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.partyName" :maxLength='maxLength' :disabled="isParty ? true : false" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -53,7 +53,7 @@
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="partyUnitAddress">
-                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' :disabled="isParty ? true : false" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -61,13 +61,13 @@
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyUnitTel">
-                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' :disabled="isParty ? true : false" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td> 法定代表人 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager">
-                <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.partyManager" :maxLength='maxLength' :disabled="isParty ? true : false" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -77,14 +77,14 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode">
-                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' :disabled="isParty ? true : false" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
         </table>
         <p class="textindent0 data_picker">
           抽样取证时间：
-          <el-date-picker width='509px' v-model="docData.getEvidence" type="datetimerange" range-separator="至" start-placeholder=" 年  月  日  时  分" end-placeholder=" 年  月  日  时  分" format="yyyy年MM月dd日HH时mm分">
+          <el-date-picker style="width:430px"  v-model="docData.getEvidence" type="datetimerange" range-separator="至" start-placeholder=" 年  月  日  时  分" end-placeholder=" 年  月  日  时  分" format="yyyy年MM月dd日HH时mm分">
           </el-date-picker>
         </p>
         <div class="pager_input quzheng">抽样取证地点：
@@ -299,6 +299,7 @@ export default {
         pageDomId: 'obtanEvidence_print',
       },
       isPdf: '',
+      isParty: true, //当事人类型为个人
     }
   },
   methods: {
@@ -429,7 +430,7 @@ export default {
     }
   },
   mounted() {
-    // this.getCaseBasicInfo();
+    this.getCaseBasicInfo();
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
   },

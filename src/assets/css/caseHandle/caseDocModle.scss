@@ -1065,7 +1065,7 @@
         .el-range-input {
             background   : #ffffff;
             border-bottom: 1px solid #000000 !important;
-
+            font-weight: 500;
         }
     }
 
@@ -1199,6 +1199,7 @@
         width      : 48%;
         font-size  : 16px;
         font-weight: 600;
+        font-family    : 'SimSun';
         color      : #000000;
     }
 
@@ -1206,6 +1207,13 @@
         height    : 24px !important;
         background: transparent;
 
+    }
+    .el-range-separator{
+        font-size  : 16px;
+        font-weight: 600;
+        font-family    : 'SimSun';
+        color      : #000000;
+        line-height: 28px;
     }
 }
 
@@ -1221,8 +1229,13 @@
 }
 
 .quzheng {
+    clear: both;
     .el-form-item {
-        width: 506px;
+        width: 500px;
+        .el-input__inner,
+        .el-textarea__inner{
+            width: 100% !important;
+        }
     }
 }
 

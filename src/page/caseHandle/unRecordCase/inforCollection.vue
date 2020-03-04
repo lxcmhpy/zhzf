@@ -117,8 +117,8 @@
             </el-form-item>
           </div>
           <div class="itemThird">
-            <el-form-item label="年龄">
-              <el-input v-model="inforForm.partyAge" type="number" :disabled="inforForm.partyIdNo?true:false"></el-input>
+            <el-form-item label="年龄" prop="partyAge">
+              <el-input v-model="inforForm.partyAge" type="number" :disabled="inforForm.partyIdNo?true:false" @change="noFue('inforForm.partyAge',inforForm.partyAge)"></el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
@@ -214,8 +214,8 @@
             </div>
             <div class="item">
               <!-- 需要完善验证 -->
-              <el-form-item label="与案件关系"  class="is-required">
-                <el-select v-model="driverOrAgentInfo.relationWithCase" >
+              <el-form-item label="与案件关系" class="is-required">
+                <el-select v-model="driverOrAgentInfo.relationWithCase">
                   <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
@@ -248,7 +248,7 @@
             </div>
             <div class="itemThird">
               <el-form-item label="年龄">
-                <el-input v-model="driverOrAgentInfo.age" type="number" :disabled="relationWithPartyIsOne && index==0"></el-input>
+                <el-input v-model="driverOrAgentInfo.age" type="number" :disabled="relationWithPartyIsOne && index==0" @change="noFueA(driverOrAgentInfo.age)"></el-input>
               </el-form-item>
             </div>
             <div class="itemThird">
@@ -431,7 +431,7 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车辆轴数">
-              <el-select placeholder="请选择" v-model="inforForm.vehicleAxleNumber" @change="weightLimit">
+              <el-select placeholder="请选择" v-model="inforForm.vehicleAxleNumber" @change="weightLimit('车辆轴数')">
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
                 <el-option label="4" value="4"></el-option>
@@ -676,7 +676,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 
-import { validateIDNumber } from '@/common/js/validator'
+import { validateIDNumber, validateAge } from '@/common/js/validator'
 export default {
   data() {
     //选择个人试验证
@@ -769,14 +769,14 @@ export default {
         ],
         party: [
           // { required: true, message: "请输入", trigger: "blur" },
-          {required: true, validator: validatePart, trigger: "blur" }
+          { required: true, validator: validatePart, trigger: "blur" }
         ],
         partyName: [
           // { required: true, message: "请输入", trigger: "blur" },
-          { required: true,validator: validatePartName, trigger: "blur" }
+          { required: true, validator: validatePartName, trigger: "blur" }
         ],
         lawPersonListId: [
-          { required: true,validator: validateLawPersonNumber, trigger: "change" }
+          { required: true, validator: validateLawPersonNumber, trigger: "change" }
         ],
         checkTime: [
           { required: true, message: "请输入检测时间", trigger: "change" }
@@ -788,10 +788,13 @@ export default {
           { required: true, message: "请选择", trigger: "change" }
         ],
         illegalLaw: [
-          { required: true, message: "请选择",  trigger: "blur" }
+          { required: true, message: "请选择", trigger: "blur" }
         ],
         punishLaw: [
-          { required: true, message: "请选择",  trigger: "blur" }
+          { required: true, message: "请选择", trigger: "blur" }
+        ],
+        partyAge: [
+          { validator: validateAge, trigger: "blur" }
         ],
         partyIdNo: [
           { validator: validateIDNumber, trigger: "blur" }
@@ -833,6 +836,7 @@ export default {
       ],
       driverOrAgentInfo: {
         relationWithParty: '1',
+        age: '',
       },
       allRelationWithParty: [
         //与当事人关系下拉框
@@ -991,9 +995,9 @@ export default {
     },
     //更改与当事人关系   为同一人时自动赋值且不可编辑
     changeRelationWithParty(val) {
-      console.log( typeof(val));
+      console.log(typeof (val));
       if (val == "0") {
-          debugger
+        debugger
         console.log(val);
         this.driverOrAgentInfoList[0].name = this.inforForm.party;
         this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
@@ -1184,28 +1188,28 @@ export default {
       setTimeout(() => { }, 100);
     },
     stageInfo(state) {
-          this.inforForm.agentPartyEcertId = JSON.stringify(
-            this.driverOrAgentInfoList
-          );
-          console.log(this.inforForm)
-          this.inforForm.state = state;
-          this.inforForm.caseStatus = '未立案';
-          this.$store
-            .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
-            .then(
-              res => {
-                console.log(res);
-                this.$message({
-                  type: "success",
-                  message: "暂存成功!"
-                });
-                this.$store.dispatch("deleteTabs", this.$route.name);
-                this.$store.commit("setCaseId", res.data.id);
-              },
-              err => {
-                console.log(err);
-              }
-            );
+      this.inforForm.agentPartyEcertId = JSON.stringify(
+        this.driverOrAgentInfoList
+      );
+      console.log(this.inforForm)
+      this.inforForm.state = state;
+      this.inforForm.caseStatus = '未立案';
+      this.$store
+        .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
+        .then(
+          res => {
+            console.log(res);
+            this.$message({
+              type: "success",
+              message: "暂存成功!"
+            });
+            this.$store.dispatch("deleteTabs", this.$route.name);
+            this.$store.commit("setCaseId", res.data.id);
+          },
+          err => {
+            console.log(err);
+          }
+        );
     },
     //右侧小导航进入的，则获取案件信息
     fromSlide() {
@@ -1224,8 +1228,16 @@ export default {
       );
     },
     // 超重限制及抽屉表
-    weightLimit() {
+    weightLimit(type) {
       var inforForm = this.inforForm;
+      if (type == '车辆轴数') {
+
+        this.vehicleTypeList = [];
+        this.inforForm.vehicleType = '';
+        this.inforForm.vehicleAxlesType = '';
+        this.inforForm.vehiclePowerType = '';
+      }
+
       inforForm.weightLimit = '';
       if (inforForm.vehicleAxleNumber == 6) {
         this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
@@ -1279,7 +1291,8 @@ export default {
       if (inforForm.vehicleAxleNumber == 2) {
         this.vehicleTypeList = [{ label: '载货汽车', value: '载货汽车' }]
         this.vehicleAxlesTypeList = [{ label: '1+1', value: '1+1' }];
-        this.inforForm.weightLimit = 18;
+        if (inforForm.vehicleType && inforForm.vehicleAxlesType) {
+          this.inforForm.weightLimit = 18;        }
       }
 
       if (this.inforForm.weightLimit && this.inforForm.allWeight)
@@ -1318,6 +1331,14 @@ export default {
       console.log('年龄', age)
       this.inforForm.partyAge = age;
     },
+    noFue(val) {
+      this.inforForm.partyAge = val >= 0 ? val : 0;
+    },
+    noFueA(val) {
+      console.log('this.driverOrAgentInfo.age', this.driverOrAgentInfo.age)
+      // this.driverOrAgentInfo.age = 3;
+      this.driverOrAgentInfo.age = val >= 0 ? val : 0;
+    },
   },
   mounted() {
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
@@ -1335,7 +1356,7 @@ export default {
       someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
     console.log(this.showOverrun)
 
-    this.driverOrAgentInfo.relationWithParty= '1'
+    this.driverOrAgentInfo.relationWithParty = '1'
   },
   created() {
     this.findJudgFreedomList();
