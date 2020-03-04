@@ -118,26 +118,27 @@ export default {
                 trainResult:this.addTrainForm.trainResult,
                 note:this.addTrainForm.note,
             };
+            let _this = this
             if(this.handelType==1){
                 this.$store.dispatch("addTrainMoudle", this.addTrainForm).then(res => {
-                    this.$emit("getTrainList");
-                        this.$message({
+                    _this.$emit("getTrainList");
+                        _this.$message({
                             type: "success",
                             message:  "添加成功!",
                         });
-                        this.visible = false;
+                        _this.visible = false;
                     });
                     err => {
                         console.log(err);
                 };
             }else if(this.handelType==2){
                 this.$store.dispatch("updateTrainMoudle", this.addTrainForm).then(res => {
-                    this.$emit("getTrainList");
-                        this.$message({
+                    _this.$emit("getTrainList");
+                        _this.$message({
                             type: "success",
                             message:  "修改成功!",
                         });
-                        this.visible = false;
+                        _this.visible = false;
                     });
                     err => {
                         console.log(err);

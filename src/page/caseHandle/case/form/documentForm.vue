@@ -66,7 +66,7 @@
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'documentForm'" ></caseSlideMenu>
   </div>
-</template> 
+</template>
 <script>
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
@@ -134,9 +134,10 @@ import { mapGetters } from "vuex";
                     current: this.currentPage,
                     size: this.pageSize
                 };
+                let _this = this
                 this.$store.dispatch("getDocument", data).then(res => {
-                    this.tableData = res.data.records;
-                    this.total = res.data.total;
+                    _this.tableData = res.data.records;
+                    _this.total = res.data.total;
                 });
             },
 

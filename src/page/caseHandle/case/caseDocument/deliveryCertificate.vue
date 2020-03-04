@@ -246,9 +246,10 @@ export default {
         id: "2c902ae66ae2acc4016ae376f6f1007f"
         // id: this.$route.params.docId
       };
+       let _this = this
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
-          this.docData = res.data;
+          _this.docData = res.data;
         },
         err => {
           console.log(err);
@@ -313,18 +314,19 @@ export default {
             docNote: this.docData.docNote
           };
           console.log('添加', data)
+          let _this = this
           this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(res => {
             if (res.code == 200) {
               console.log('添加成功！')
-              this.$message({
+              _this.$message({
                 message: '添加成功！',
                 type: 'success'
               });
-              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-              this.$store.dispatch("printContent"); //关闭当前页签
-              this.$router.push('deliverReceiptForm')
+              _this.$store.dispatch("deleteTabs", _this.$route.name); //关闭当前页签
+              _this.$store.dispatch("printContent"); //关闭当前页签
+              _this.$router.push('deliverReceiptForm')
             } else {
-              this.$message.error('出现异常，添加失败！');
+              _this.$message.error('出现异常，添加失败！');
             }
           });
         } else {

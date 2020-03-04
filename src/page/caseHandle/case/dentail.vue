@@ -204,12 +204,13 @@ export default {
       let data = {
         id: "2c902ae66ae2acc4016ae376f6f1007f"
       };
+      let _this = this
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
-          this.caseLinkDataFor = res.data;
+          _this.caseLinkDataFor = res.data;
           // 多选需要数组
-          this.caseLinkDataFor.punishType = ['警告'];
-          this.caseLinkDataFor.dealOpinions = '';
+          _this.caseLinkDataFor.punishType = ['警告'];
+          _this.caseLinkDataFor.dealOpinions = '';
         },
         err => {
           console.log(err);
@@ -222,11 +223,12 @@ export default {
       console.log(this.CaseDocDataForm);
     //   this.$refs["docForm"].validate(valid => {
         // if (valid) {
+          let _this = this
           this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
             res => {
               console.log("保存文书", res);
               // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
+              _this.$message({
                 type: "success",
                 message: "保存成功"
 

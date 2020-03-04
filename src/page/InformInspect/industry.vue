@@ -285,12 +285,13 @@ export default {
     },
     //查询违法行为
     getYehuCheck() {
+        let _this = this
       this.$store.dispatch("yehuCheck", this.checkData).then(
         res => {
           console.log('返回', res)
-          this.searchList = res.data
-          if (this.searchList.length > 1) {
-            this.showFlag = false;
+          _this.searchList = res.data
+          if (_this.searchList.length > 1) {
+            _this.showFlag = false;
           }
         },
         err => {

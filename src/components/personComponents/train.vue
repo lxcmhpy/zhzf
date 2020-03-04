@@ -78,29 +78,31 @@
             size: this.pageSize,
             personId: this.$route.params.personInfo.personId,
           }
+          let _this = this
           this.$store.dispatch("getTrainListMoudle",paramsData)
             .then(res=>{
-                this.tableData = res.data.records;
-                this.totalPage = res.data.total;
+                _this.tableData = res.data.records;
+                _this.totalPage = res.data.total;
           });
           error=>{
             console.info(error);
           };
         },
         deleteTrain(row){
+            let _this = this
           this.$confirm("确定要删除所选的培训信息吗?", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: "warning"
           }).then(() => {
-            this.$store.dispatch("deleteEducationMoudle", this.multipleSelection).then(
+            _this.$store.dispatch("deleteEducationMoudle", _this.multipleSelection).then(
                 res => {
-                    this.$message({
+                    _this.$message({
                         type: "success",
                         message: "删除成功!"
                     });
                     //重新加载页面数据
-                    this.getPersonList();
+                    _this.getPersonList();
                 },
                 err => {
                 console.log(err);

@@ -81,8 +81,9 @@
               size: this.pageSize,
               personId: this.$route.params.personInfo.personId,
             }
+            let _this = this
             this.$store.dispatch("getApproveListMoudle",paramsData).then(res=>{
-                  this.tableData = res.data.records;
+                  _this.tableData = res.data.records;
             });
             error=>{
               console.info(error);

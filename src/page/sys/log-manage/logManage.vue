@@ -159,9 +159,10 @@ export default {
         current: this.currentPage,
         size: this.pageSize
       };
+      let _this = this
       this.$store.dispatch("getloglist", data).then(res => {
-        this.tableData = res.data.records;
-         this.totalPage = res.data.total;
+        _this.tableData = res.data.records;
+         _this.totalPage = res.data.total;
       });
       err => {
         console.log(err);

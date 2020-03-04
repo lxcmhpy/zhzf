@@ -220,13 +220,14 @@ export default {
     //失去焦点请求 名称是否重复
     blurOrganName() {
       if(this.addOrganForm.name){
+          let _this = this
         this.$store.dispatch("hasOrganName", this.addOrganForm.name).then(
         res => {
           console.log(res);
           if(res.data.id){
-            this.errorOrganName = true;
+            _this.errorOrganName = true;
           }else{
-            this.errorOrganName = false;
+            _this.errorOrganName = false;
           }
         },
         err => {
@@ -239,22 +240,23 @@ export default {
     },
     //新增机构 修改机构
     addOrgan(formName) {
+        let _this = this
       this.$refs[formName].validate(valid => {
         if (valid && !this.errorOrganName) {
-          this.addOrganForm.pid = this.parentNode.parentNodeId;
-          this.addOrganForm.id = this.handelType == 0 ? '' :  this.organId;
+          _this.addOrganForm.pid = _this.parentNode.parentNodeId;
+          _this.addOrganForm.id = _this.handelType == 0 ? '' :  _this.organId;
           console.log("数据", this.addOrganForm);
-          this.$store.dispatch("addOrgan", this.addOrganForm).then(
+          _this.$store.dispatch("addOrgan", _this.addOrganForm).then(
             res => {
-              console.log('this.organId',this.addOrganForm.pid);
-             this.$emit("getAllOrgan2",this.addOrganForm.pid);
+              console.log('this.organId',_this.addOrganForm.pid);
+             _this.$emit("getAllOrgan2",_this.addOrganForm.pid);
              // this.$emit("getSelectOrgan");
               console.log("新增机构", res);
-              this.$message({
+              _this.$message({
                 type: "success",
-                message: this.handelType == 0 ? "添加成功!" : "修改成功"
+                message: _this.handelType == 0 ? "添加成功!" : "修改成功"
               });
-              this.visible = false;
+              _this.visible = false;
             },
             err => {
               console.log(err);
@@ -267,10 +269,11 @@ export default {
     getOrganDetail(id) {
       console.log("id",id);
       let params = { id: id };
+       let _this = this
       this.$store.dispatch("getOrganDetail", params).then(
         res => {
           console.log("机构", res);
-          this.addOrganForm = res.data;
+          _this.addOrganForm = res.data;
         },
         err => {
           console.log(err);

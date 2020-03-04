@@ -50,10 +50,11 @@ export default {
     },
     //获取机构
     getOrgan() {
+      let _this = this
       this.$store.dispatch("getAllOrgan").then(
         res => {
-          this.organData = res.data;
-          this.getRoleBindOrgan();
+          _this.organData = res.data;
+          _this.getRoleBindOrgan();
         },
         err => {
           console.log(err);
@@ -62,6 +63,7 @@ export default {
     },
     //查询角色下绑定的机构
     getRoleBindOrgan() {
+      let _this = this
       this.$store.dispatch("getRoleBindOrgan", this.roleId).then(
         res => {
           console.log("角色下绑定的菜单权限", res);
@@ -69,7 +71,7 @@ export default {
           res.data.forEach(item => {
             organIds.push(item.organId);
           });
-          this.$refs.organTree.setCheckedKeys(organIds);
+          _this.$refs.organTree.setCheckedKeys(organIds);
         },
         err => {
           console.log(err);
@@ -83,11 +85,12 @@ export default {
         roleId: this.roleId,
         organIds: this.$refs.organTree.getCheckedKeys()
       };
+      let _this = this
       this.$store.dispatch("roleBindOrgan", data).then(
         res => {
           console.log("绑定", res);
-          this.visible = false;
-          this.$message({
+          _this.visible = false;
+          _this.$message({
             type: "success",
             message: "绑定成功"
           });

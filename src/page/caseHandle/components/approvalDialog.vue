@@ -136,17 +136,18 @@ export default {
 
 
       console.log(params);
+      let _this = this
       this.$store.dispatch("approvalPdf", params).then(
         res => {
           console.log(res);
-          this.$message({
+          _this.$message({
             type: "success",
             message: "审批通过"
           });
 
-          this.$emit("getNewData"); 
+          _this.$emit("getNewData");
 
-          this.visible = false;
+          _this.visible = false;
         },
         err => {
           console.log(err);

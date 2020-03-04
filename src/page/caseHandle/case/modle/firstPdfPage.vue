@@ -241,9 +241,9 @@ export default {
         this.getByMlCaseId(this.caseId)
     },
     getByMlCaseId(caseId) {
+        let _that = this
          this.$store.dispatch("getByMlCaseIdNew", caseId).then(
          res=>{
-             let _that = this
              res.data.forEach((v)=>{
                 _that.mlList.push(_that.host + v.storageId)
              })

@@ -59,8 +59,9 @@ import addRewardComp from './../../page/person/person-award/AddAward'
       methods:{
         handleSelectionChange(val) {
           this.multipleSelection = [];
+           let _this = this
            val.forEach((item,val) => {
-                  this.multipleSelection.push(item.awardId);
+                  _this.multipleSelection.push(item.awardId);
            });
         },
         //更改每页显示的条数
@@ -80,16 +81,18 @@ import addRewardComp from './../../page/person/person-award/AddAward'
             personId: this.$route.params.personInfo.personId,
             dataType:'0',//惩罚类型
           }
+          let _this = this
           this.$store.dispatch("getAwardListMoudle",paramsData)
             .then(res=>{
-                this.tableData = res.data.records;
-                this.totalPage = res.data.total;
+                _this.tableData = res.data.records;
+                _this.totalPage = res.data.total;
           });
           error=>{
             console.info(error);
           };
         },
         deleteReward(row){
+            let _this = this
           if(this.multipleSelection.length==0){
               this.$message({message:'请选择需要删除的信息',type: 'warning'});
           }else{
@@ -98,14 +101,14 @@ import addRewardComp from './../../page/person/person-award/AddAward'
               cancelButtonText: "取消",
               type: "warning"
             }).then(() => {
-              this.$store.dispatch("deleteAwardModudle", this.multipleSelection).then(
+              _this.$store.dispatch("deleteAwardModudle", _this.multipleSelection).then(
                   res => {
-                      this.$message({
+                      _this.$message({
                           type: "success",
                           message: "删除成功!"
                       });
                       //重新加载页面数据
-                      this.getReward();
+                      _this.getReward();
                   },
                   err => {
                   console.log(err);

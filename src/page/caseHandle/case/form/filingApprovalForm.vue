@@ -379,16 +379,17 @@ export default {
         casebasicInfoId: this.caseId,
         caseLinktypeId: "2c90293b6c178b55016c17c255a4000d"
       };
+      let _this = this
       this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
         res => {
           console.log("获取表单详情", res);
           //如果为空，则加载案件信息
           if (res.data == "") {
-            this.getCaseBasicInfo();
+            _this.getCaseBasicInfo();
           } else {
             console.log(res.data);
-            this.caseLinkDataForm.id = res.data.id;
-            this.formData = JSON.parse(res.data.formData);
+            _this.caseLinkDataForm.id = res.data.id;
+            _this.formData = JSON.parse(res.data.formData);
           }
         },
         err => {
@@ -402,9 +403,10 @@ export default {
       let data = {
         id: this.caseId,
       };
+      let _this = this
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
-          this.formData = res.data;
+          _this.formData = res.data;
         },
         err => {
           console.log(err);
@@ -416,19 +418,20 @@ export default {
       this.caseLinkDataForm.formData = JSON.stringify(this.formData);
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
         //0暂存 1提交
-        this.caseLinkDataForm.status = handleType;
+      this.caseLinkDataForm.status = handleType;
+      let _this = this
         this.$refs["docForm"].validate(valid => {
           if (valid) {
-            console.log(this.caseLinkDataForm)
-            this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
+            console.log(_this.caseLinkDataForm)
+            _this.$store.dispatch("addFormData", _this.caseLinkDataForm).then(
               res => {
                 console.log("保存表单", res);
-                this.$message({
+                _this.$message({
                   type: "success",
                   message: "保存成功"
                 });
                 if(handleType == 1){ //保存成功 跳转 pdf
-                  this.$router.replace({
+                  _this.$router.replace({
                     name: 'establish'
                   });
                 }

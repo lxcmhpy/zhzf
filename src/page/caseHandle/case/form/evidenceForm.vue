@@ -268,16 +268,18 @@ import { mapGetters } from "vuex";
         },
         methods: {
             submitForm(formName){
+                let _this = this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                      this.insertEvi();
+                      _this.insertEvi();
                     }
                 });
             },
             submitUForm(formName){
+                let _this = this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                      this.updateEvi();
+                      _this.updateEvi();
                     }
                 });
             },
@@ -316,9 +318,10 @@ import { mapGetters } from "vuex";
                     current: this.currentPage,
                     size: this.pageSize
                 };
+                let _this = this
                 this.$store.dispatch("getEvidence", data).then(res => {
-                    this.tableData = res.data.records;
-                    this.total = res.data.total;
+                    _this.tableData = res.data.records;
+                    _this.total = res.data.total;
                 });
 
             },
@@ -332,17 +335,18 @@ import { mapGetters } from "vuex";
                   status:this.form.status,
                   createTime:this.formatDateStr(this.form.createTime)
                 };
+                let _this = this
                 this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
                   if (res.code == 200){
-                    this.$message({
+                    _this.$message({
                       message: '添加成功！',
                       type: 'success'
                     });
-                    this.addVisible = false;
-                    this.currentPage = 1;
-                    this.getEviList();
+                    _this.addVisible = false;
+                    _this.currentPage = 1;
+                    _this.getEviList();
                   }else{
-                    this.$message.error('出现异常，添加失败！');
+                    _this.$message.error('出现异常，添加失败！');
                   }
                 });
             },
@@ -360,17 +364,18 @@ import { mapGetters } from "vuex";
                 status: this.uForm.status,
                 remark: this.uForm.remark
               };
+               let _this = this
               this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
                 if (res.code == 200){
-                  this.$message({
+                  _this.$message({
                     message: '编辑成功！',
                     type: 'success'
                   });
-                  this.editVisible = false;
-                  this.currentPage = 1;
-                  this.getEviList();
+                  _this.editVisible = false;
+                  _this.currentPage = 1;
+                  _this.getEviList();
                 }else{
-                  this.$message.error('出现异常，添加失败！');
+                  _this.$message.error('出现异常，添加失败！');
                 }
               });
             },
@@ -417,15 +422,16 @@ import { mapGetters } from "vuex";
         },
         created() {
             this.getEviList();
+            let _this = this
             //初始化代码集
             this.$store.dispatch("getDictionary", "574a5a05d004e32fe5d7f73c4b6a22ef").then(res => {
               for(let item of res.data){
-                this.evTypeOptions.push({value:item.name,label:item.notes});
+                _this.evTypeOptions.push({value:item.name,label:item.notes});
               }
             });
             this.$store.dispatch("getDictionary", "02204fe639c86edbae51e3dfccad36d9").then(res => {
               for(let item of res.data){
-                this.statusOptions.push({value:item.name,label:item.notes});
+                _this.statusOptions.push({value:item.name,label:item.notes});
               }
             });
         }

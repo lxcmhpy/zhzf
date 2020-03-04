@@ -346,12 +346,13 @@ export default {
         caseId:this.caseId,
 
       };
+      let _this = this
       findByCondition(data).then(
             res => {
               console.log('证据',res);
-              this.evidenceTableDatas = res.data.records;
-              this.currentPage = res.data.current;
-              this.total = res.data.total;
+              _this.evidenceTableDatas = res.data.records;
+              _this.currentPage = res.data.current;
+              _this.total = res.data.total;
             },
             error => {
               console.log(error);
@@ -396,7 +397,7 @@ export default {
             console.log(error);
           })
         }
-        
+
       }else{
         let importdoc = '';
         this.docTableDatasCopy.forEach(item=>{

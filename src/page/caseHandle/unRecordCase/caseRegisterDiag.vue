@@ -75,21 +75,22 @@ export default {
     showModal(data, caseForm) {
       this.visible = true;
       // this.getEnforceLawType();
+       let _this = this
       this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
-          this.lawCateList = res.data;
-          this.lawCateList.forEach(element => {
+          _this.lawCateList = res.data;
+          _this.lawCateList.forEach(element => {
             console.log('循环', caseForm.wayType, element.cateName)
             if (element.cateName == caseForm.wayType) {
-              this.caseRegisterForm.cateId = element.cateId;
+              _this.caseRegisterForm.cateId = element.cateId;
             }
             if (element.cateName == caseForm.wayType) {
-              this.caseRegisterForm.cateId = element.cateId;
+              _this.caseRegisterForm.cateId = element.cateId;
             }
             if (element.cateName == caseForm.wayType) {
-              this.caseRegisterForm.cateId = element.cateId;
+              _this.caseRegisterForm.cateId = element.cateId;
             }
-            this.getCaseType();
+            _this.getCaseType();
           });
         },
         err => {
@@ -113,8 +114,9 @@ export default {
     chooseIllegalAct() {
       if (this.caseRegisterForm.cateId) {
         let cateName = "";
+        let _this = this
         this.lawCateList.forEach(item => {
-          if (item.cateId == this.caseRegisterForm.cateId) {
+          if (item.cateId == _this.caseRegisterForm.cateId) {
             cateName = item.cateName;
             return;
           }
@@ -130,10 +132,11 @@ export default {
     },
     //获取执法门类
     getEnforceLawType() {
+      let _this = this
       this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
-          this.lawCateList = res.data;
-          console.log('列表121', this.lawCateList)
+          _this.lawCateList = res.data;
+          console.log('列表121', _this.lawCateList)
         },
         err => {
           console.log(err);
@@ -146,10 +149,11 @@ export default {
         programType: this.caseRegisterForm.programType,
         cateId: this.caseRegisterForm.cateId
       };
+      let _this = this
       this.$store.dispatch("getCaseType", data).then(
         res => {
           console.log("案件类型", res);
-          this.caseTypeList = res.data;
+          _this.caseTypeList = res.data;
         },
         err => {
           console.log(err);
@@ -166,35 +170,36 @@ export default {
       this.illageActId = val.id;
     },
     goToInforCollect() {
+      let _this = this
       this.$refs["caseRegisterForm"].validate(valid => {
         if (valid) {
           let caseTypeId = "";
-          this.caseTypeList.forEach(item => {
-            if (item.caseTypeName == this.caseRegisterForm.caseType) {
+          _this.caseTypeList.forEach(item => {
+            if (item.caseTypeName == _this.caseRegisterForm.caseType) {
               caseTypeId = item.caseTypeId;
             }
           })
           let cateName = ''; //执法门类name
-          this.lawCateList.forEach(item => {
-            if (item.cateId == this.caseRegisterForm.cateId) {
+          _this.lawCateList.forEach(item => {
+            if (item.cateId == _this.caseRegisterForm.cateId) {
               cateName = item.cateName;
               return;
             }
           });
           let someCaseInfo = {
-            illageAct: this.caseRegisterForm.illageAct,
-            illageActId: this.illageActId,
+            illageAct: _this.caseRegisterForm.illageAct,
+            illageActId: _this.illageActId,
             programType:
-              this.caseRegisterForm.programType == "0"
+              _this.caseRegisterForm.programType == "0"
                 ? "一般程序"
                 : "简易程序",
-            caseType: this.caseRegisterForm.caseType,
+            caseType: _this.caseRegisterForm.caseType,
             caseTypeId: caseTypeId,
-            cateId: this.caseRegisterForm.cateId,
+            cateId: _this.caseRegisterForm.cateId,
             cateName: cateName
           };
           iLocalStroage.sets("someCaseInfo", someCaseInfo);
-          this.$router.push({
+          _this.$router.push({
             name: 'inforCollect',
           });
         }

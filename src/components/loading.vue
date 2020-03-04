@@ -1,7 +1,7 @@
 
 // 使用方法：
-//1.接口调用前：this.$store.dispatch('setLoadingState', true)
-//2.接口成功调用后： this.$store.dispatch('setLoadingState', false)
+// 1.接口调用前：this.$store.dispatch('setLoadingState', true)
+// 2.接口成功调用后： this.$store.dispatch('setLoadingState', false)
 
 <template>
     <div class="loading">

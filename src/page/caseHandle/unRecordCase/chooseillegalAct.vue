@@ -122,11 +122,11 @@ export default {
     },
     //获取行业类别 根据执法门类
     getIndustryCategory(){
-
+      let _this = this
       this.$store.dispatch("getIndustryCategory",this.illegalActSearchForm.categoryId).then(
         res => {
-         this.industryCategoryList = res.data;
-         this.getIllegaAct();
+         _this.industryCategoryList = res.data;
+         _this.getIllegaAct();
         },
         err => {
           console.log(err);
@@ -137,10 +137,11 @@ export default {
     getIllegaAct(){
       this.illegalActSearchForm.size = this.pageSize;
       this.illegalActSearchForm.current = this.currentPage;
+      let _this = this
       this.$store.dispatch("getIllegaAct",this.illegalActSearchForm).then(
         res => {
-         this.tableData = res.data.records;
-         this.totalPage=res.data.total
+         _this.tableData = res.data.records;
+         _this.totalPage=res.data.total
         },
         err => {
           console.log(err);

@@ -113,11 +113,12 @@ export default {
     //确定
     overFloeEdit() {
       //将当前内容传到父组件
+       let _this = this
       this.$refs['addBannerForm'].validate((valid) => {
           if (valid) {
-            console.log(this.addBannerForm.domains)
-            this.$emit("QAModleInfo", JSON.stringify(this.addBannerForm.domains));
-            this.visible = false;
+            console.log(_this.addBannerForm.domains)
+            _this.$emit("QAModleInfo", JSON.stringify(_this.addBannerForm.domains));
+            _this.visible = false;
           }
       })
     },
@@ -129,7 +130,7 @@ export default {
       if (index !== -1) {
         this.addBannerForm.domains.splice(index, 1);
       }
-      
+
     },
     //选择问答模版
     changeChoose(val) {
@@ -158,7 +159,7 @@ export default {
       }
     },
     chooseQues(val){
-      this.addBannerForm.domains[this.editQuestIndex].question = val;  
+      this.addBannerForm.domains[this.editQuestIndex].question = val;
     }
   }
 };

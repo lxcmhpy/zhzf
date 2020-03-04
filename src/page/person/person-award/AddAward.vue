@@ -16,7 +16,7 @@
                 <el-option label="demo1" value="1"></el-option>
             </el-select>
         </el-form-item>
-      
+
       <el-form-item label="奖励日期:" prop="awardDate">
         <el-date-picker v-model="addAwardForm.awardDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
           style="width:320px;" placeholder="请选择奖励日期时间" clearable></el-date-picker>
@@ -75,26 +75,27 @@ export default {
                 personId:this.addAwardForm.personId,
                 awardId:this.addAwardForm.awardId
             };
+            let _this = this
             if(this.handelType==1){
                 this.$store.dispatch("addAwardMoudle", this.addAwardForm).then(res => {
-                    this.$emit("getAllReward");
-                        this.$message({
+                    _this.$emit("getAllReward");
+                        _this.$message({
                             type: "success",
                             message:  "添加成功!",
                         });
-                        this.visible = false;
+                        _this.visible = false;
                     });
                     err => {
                         console.log(err);
                 };
             }else if(this.handelType==2){
                 this.$store.dispatch("updateAwardMoudle", this.addAwardForm).then(res => {
-                    this.$emit("getAllReward");
-                        this.$message({
+                    _this.$emit("getAllReward");
+                        _this.$message({
                             type: "success",
                             message:  "修改成功!",
                         });
-                        this.visible = false;
+                        _this.visible = false;
                     });
                     err => {
                         console.log(err);

@@ -231,26 +231,27 @@ export default {
                 ssjg:this.addPersonForm.ssjg,
                 prof:this.addPersonForm.prof
             };
+            let _this = this
             if(this.handelType==1){
                 this.$store.dispatch("addPersonInfo", this.addPersonForm).then(res => {
-                    this.$emit("getAllPersons");
-                        this.$message({
+                    _this.$emit("getAllPersons");
+                        _this.$message({
                             type: "success",
                             message:  "添加成功!",
                         });
-                        this.visible = false;
+                        _this.visible = false;
                     });
                     err => {
                         console.log(err);
                 };
             }else if(this.handelType==2){
                 this.$store.dispatch("updatePersonInfo", this.addPersonForm).then(res => {
-                    this.$emit("getAllPersons");
-                        this.$message({
+                    _this.$emit("getAllPersons");
+                        _this.$message({
                             type: "success",
                             message:  "修改成功!",
                         });
-                        this.visible = false;
+                        _this.visible = false;
                     });
                     err => {
                         console.log(err);

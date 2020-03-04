@@ -186,10 +186,10 @@ export default {
       this.changeableTable.push({ tab1: '111', tab2: '2222', show: true })
     },
     submitForm(formName) {
-
+      let _this = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.insertDeliverR();
+          _this.insertDeliverR();
         }
       });
     },
@@ -233,9 +233,10 @@ export default {
         current: this.currentPage,
         size: this.pageSize
       };
+      let _this = this
       this.$store.dispatch("getDeliverReceipt", data).then(res => {
-        this.tableData = res.data.records;
-        this.total = res.data.total;
+        _this.tableData = res.data.records;
+        _this.total = res.data.total;
       });
     },
     //插入证据
@@ -248,17 +249,18 @@ export default {
         caseId: this.randomString(32),
         servedDate: datetime == "" ? "2020-02-02 10:00:00" : this.formatDateStr(datetime)
       };
+      let _this = this
       this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(res => {
         if (res.code == 200) {
-          this.$message({
+          _this.$message({
             message: '添加成功！',
             type: 'success'
           });
-          this.addVisible = false;
-          this.currentPage = 1;
-          this.getDeliverReList();
+          _this.addVisible = false;
+          _this.currentPage = 1;
+          _this.getDeliverReList();
         } else {
-          this.$message.error('出现异常，添加失败！');
+          _this.$message.error('出现异常，添加失败！');
         }
       });
     },
@@ -306,15 +308,16 @@ export default {
   },
   created() {
     this.getDeliverReList();
+    let _this = this
     //初始化代码集
     this.$store.dispatch("getDictionary", "61ac9ded9e0fab4a6626963e59e7ae6d").then(res => {
       for (let item of res.data) {
-        this.servedTypeOptions.push({ value: item.name, label: item.notes });
+        _this.servedTypeOptions.push({ value: item.name, label: item.notes });
       }
     });
     this.$store.dispatch("getDictionary", "aae6cdcab4962c49752305ad1124fae2").then(res => {
       for (let item of res.data) {
-        this.receiveTypeOptions.push({ value: item.name, label: item.notes });
+        _this.receiveTypeOptions.push({ value: item.name, label: item.notes });
       }
     });
 

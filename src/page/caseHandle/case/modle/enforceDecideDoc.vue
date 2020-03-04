@@ -345,10 +345,10 @@ export default {
           let orgData = {
             id: res.data.organId
           };
-
+          let _this = this
           getOrganDetailApi(orgData).then(
             orgRes => {
-                this.reconsiderationOptions = [
+                _this.reconsiderationOptions = [
                   {
                     value: 'reconsiderationOrgan1',
                     label: orgRes.data.reconsiderationOrgan1
@@ -358,7 +358,7 @@ export default {
                     label: orgRes.data.reconsiderationOrgan2
                   }
                 ];
-                this.enforcementOptions = [
+                _this.enforcementOptions = [
                   {
                     value: 'enforcementOrgan1',
                     label: orgRes.data.enforcementOrgan1
