@@ -127,20 +127,21 @@ export default {
     },
      //保存文书信息
      addDocData(handleType){
+      let _this = this
       this.com_addDocData(handleType,'docForm').then(
         res => {
-          this.$message({
+          _this.$message({
             type: "success",
             message: "保存成功",
           });
-          this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-          this.$router.push({
+          _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+          _this.$router.push({
             name: 'caseDoc',
             // name: row.url,
             params: {
               // id: row.id,
               // //案件ID
-              // caseBasicinfoId: this.caseBasicinfoId,
+              // caseBasicinfoId: _this.caseBasicinfoId,
             }
           });
         },

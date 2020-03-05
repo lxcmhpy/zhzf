@@ -22,10 +22,11 @@ export default {
         caseLinktypeId:'2c90293b6c178b55016c17c255a4000d',
         jsonApproveData:JSON.stringify({'a':1})
       }
+      let _this = this
       this.$store.dispatch("approvalPdf", params).then(
         res => {
           console.log(res);
-          this.$message({
+          _this.$message({
             type: "success",
             message: "审批通过"
           });

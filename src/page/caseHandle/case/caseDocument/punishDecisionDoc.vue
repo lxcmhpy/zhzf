@@ -502,12 +502,13 @@ export default {
     getDataAfter(){
       //获取机构详情
       let params = { id: iLocalStroage.gets("userInfo").organId };
+       let _this = this
       this.$store.dispatch("getOrganDetail", params).then(
         res => {
           console.log("机构", res);
           let organData = res.data;
-          this.formData.bank = organData.bank;
-          this.formData.account = organData.account;
+          _this.formData.bank = organData.bank;
+          _this.formData.account = organData.account;
         },
         err => {
           console.log(err);

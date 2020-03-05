@@ -19,12 +19,12 @@
           <el-checkbox-group v-model="checkList" @change="changeCheck" v-show="primary1=='primary'">
             <li v-for="(item,index) in evidencesList" :key="index">
                 <!-- <template v-if="item.name">
-                    <el-checkbox :label="item.name" >{{item.name}}</el-checkbox>  
-                </template> 
+                    <el-checkbox :label="item.name" >{{item.name}}</el-checkbox>
+                </template>
                 <template v-else>
-                    <el-checkbox :label="item.evName" >{{item.evName}}</el-checkbox>  
+                    <el-checkbox :label="item.evName" >{{item.evName}}</el-checkbox>
                 </template>     -->
-                    <el-checkbox :label="item.name" >{{item.name}}</el-checkbox>  
+                    <el-checkbox :label="item.name" >{{item.name}}</el-checkbox>
 
             </li>
           </el-checkbox-group>
@@ -32,12 +32,12 @@
           <el-checkbox-group v-model="checkListPic" @change="changeCheckPic" v-show="primary2=='primary'">
             <li v-for="(item,index) in picList" :key="index">
                 <!-- <template v-if="item.name">
-                    <el-checkbox :label="item.name" >{{item.name}}</el-checkbox>  
-                </template> 
+                    <el-checkbox :label="item.name" >{{item.name}}</el-checkbox>
+                </template>
                 <template v-else>
-                    <el-checkbox :label="item.evName" >{{item.evName}}</el-checkbox>  
+                    <el-checkbox :label="item.evName" >{{item.evName}}</el-checkbox>
                 </template>     -->
-                    <el-checkbox :label="item.evName" >{{item.evName}}</el-checkbox>  
+                    <el-checkbox :label="item.evName" >{{item.evName}}</el-checkbox>
 
             </li>
           </el-checkbox-group>
@@ -74,8 +74,8 @@ export default {
   methods: {
     showModal(tableData) {
       this.visible = true;
-      this.getCaseList(); 
-      this.getPicList(false); 
+      this.getCaseList();
+      this.getPicList(false);
       console.log(tableData);
     },
     //关闭弹窗的时候清除数据
@@ -86,12 +86,12 @@ export default {
     getCaseList() {
         this.primary1="primary";
         this.primary2="";
-
+      let _this = this
       findByCaseBasicInfoIdApi(this.caseId).then(
         res => {
           console.log(res);
-          this.evidencesList = res.data;
-          this.totalNum1 = this.evidencesList.length;
+          _this.evidencesList = res.data;
+          _this.totalNum1 = _this.evidencesList.length;
         },
         error => {
           console.log(error);
@@ -104,16 +104,17 @@ export default {
             this.primary1="";
             this.primary2="primary";
         }
-       
+
         let data={
             caseId:this.caseId,
             evType:"视频"
         }
+        let _this = this
         findEvidencePicApi(data).then(
         res => {
           console.log(res);
-          this.picList = res.data;
-          this.totalNum2 = this.picList.length;
+          _this.picList = res.data;
+          _this.totalNum2 = _this.picList.length;
         },
         error => {
           console.log(error);

@@ -74,14 +74,15 @@ export default {
                 personId:this.addPunishmentForm.personId,
                 awardId:this.addPunishmentForm.awardId
             };
+            let _this = this
             if(this.handelType==1){
                 this.$store.dispatch("addAwardMoudle", this.addPunishmentForm).then(res => {
-                    this.$emit("getAllPunishment");
-                        this.$message({
+                    _this.$emit("getAllPunishment");
+                        _this.$message({
                             type: "success",
                             message:  "添加成功!",
                         });
-                        this.visible = false;
+                        _this.visible = false;
                     });
                     err => {
                         console.log(err);
@@ -89,12 +90,12 @@ export default {
             }else if(this.handelType==2){
                 console.info(this.addPunishmentForm.awardId);
                 this.$store.dispatch("updateAwardMoudle", this.addPunishmentForm).then(res => {
-                    this.$emit("getAllPunishment");
-                        this.$message({
+                    _this.$emit("getAllPunishment");
+                        _this.$message({
                             type: "success",
                             message:  "修改成功!",
                         });
-                        this.visible = false;
+                        _this.visible = false;
                     });
                     err => {
                         console.log(err);

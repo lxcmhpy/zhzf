@@ -48,11 +48,12 @@ export default {
     getSlideMenu(val) {
       console.log(val);
       this.currentSlideMenu = [];
+      let _this = this
       this.allMenuList.forEach(item => {
         if (item.name == val) {
           if (item.children && item.children.length) {
             item.children.forEach(item2 => {
-              this.currentSlideMenu.push(item2);
+              _this.currentSlideMenu.push(item2);
             })
           }
         }

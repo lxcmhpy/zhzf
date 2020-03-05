@@ -935,14 +935,15 @@ export default {
     },
     //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
     setLawPersonCurrentP() {
+        let _this = this
       this.$store
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
         .then(
           res => {
-            this.userList = res.data;
+            _this.userList = res.data;
             let currentUserData = {};
-            this.lawPersonListId = [];
-            this.alreadyChooseLawPerson = [];
+            _this.lawPersonListId = [];
+            _this.alreadyChooseLawPerson = [];
 
             res.data.forEach(item => {
               if (
@@ -951,9 +952,9 @@ export default {
                 currentUserData.id = item.id;
                 currentUserData.lawOfficerName = item.lawOfficerName;
                 currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
-                this.lawPersonListId.push(currentUserData.id);
-                this.alreadyChooseLawPerson.push(currentUserData);
-                this.currentUserLawId = currentUserData.id;
+                _this.lawPersonListId.push(currentUserData.id);
+                _this.alreadyChooseLawPerson.push(currentUserData);
+                _this.currentUserLawId = currentUserData.id;
               }
             });
           },
@@ -1105,7 +1106,7 @@ export default {
       // console.log('searchLawPerson', this.allUserList)
       // console.log("lawPersonList", this.lawPersonList)
       console.log("表单数据", this.inforForm)
-
+      let _this = this
       this.$refs["inforForm"].validate(valid => {
         if (valid) {
           // let submitData = {
@@ -1153,24 +1154,24 @@ export default {
           //   agentPartyEcertId:JSON.stringify(this.driverOrAgentInfoList),
           //   discretionId:this.inforForm.discretionId
           // };
-          this.inforForm.agentPartyEcertId = JSON.stringify(
-            this.driverOrAgentInfoList
+          _this.inforForm.agentPartyEcertId = JSON.stringify(
+            _this.driverOrAgentInfoList
           );
-          console.log(this.inforForm)
-          this.inforForm.state = state;
-          this.inforForm.caseStatus = '未立案';
-          this.$store
-            .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
+          console.log(_this.inforForm)
+          _this.inforForm.state = state;
+          _this.inforForm.caseStatus = '未立案';
+          _this.$store
+            .dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm)
             .then(
               res => {
                 console.log(res);
-                this.$message({
+                _this.$message({
                   type: "success",
                   message: "提交成功!"
                 });
-                this.$store.dispatch("deleteTabs", this.$route.name);
-                this.$store.commit("setCaseId", res.data.id);
-                this.$router.replace({
+                _this.$store.dispatch("deleteTabs", _this.$route.name);
+                _this.$store.commit("setCaseId", res.data.id);
+                _this.$router.replace({
                   name: "establish"
                 });
               },
@@ -1194,17 +1195,18 @@ export default {
       console.log(this.inforForm)
       this.inforForm.state = state;
       this.inforForm.caseStatus = '未立案';
+      let _this = this
       this.$store
         .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
         .then(
           res => {
             console.log(res);
-            this.$message({
+            _this.$message({
               type: "success",
               message: "暂存成功!"
             });
-            this.$store.dispatch("deleteTabs", this.$route.name);
-            this.$store.commit("setCaseId", res.data.id);
+            _this.$store.dispatch("deleteTabs", _this.$route.name);
+            _this.$store.commit("setCaseId", res.data.id);
           },
           err => {
             console.log(err);
@@ -1217,10 +1219,11 @@ export default {
       let data = {
         id: this.caseId
       };
+      let _this = this
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
           console.log('获取案件信息', res)
-          this.inforForm = res.data;
+          _this.inforForm = res.data;
         },
         err => {
           console.log(err);

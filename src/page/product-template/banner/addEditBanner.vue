@@ -134,13 +134,14 @@ export default {
     //失去焦点请求 名称是否重复
     blurOrganName() {
       if (this.addOrganForm.name) {
+          let _this = this
         this.$store.dispatch("hasOrganName", this.addOrganForm.name).then(
           res => {
             console.log(res);
             if (res.data.id) {
-              this.errorOrganName = true;
+              _this.errorOrganName = true;
             } else {
-              this.errorOrganName = false;
+              _this.errorOrganName = false;
             }
           },
           err => {
@@ -151,38 +152,39 @@ export default {
     },
     //新增环节 修改环节
     addOrEditBanner(formName) {
+        let _this = this
       this.$refs[formName].validate(valid => {
-        if (valid && !this.errorOrganName) {
-          // this.addOrganForm.pid = this.parentNode.parentNodeId;
-          // this.addOrganForm.id = this.handelType == 0 ? "" : this.organId;
-          // console.log("数据", this.addOrganForm);
-          if (this.handelType) {
+        if (valid && !_this.errorOrganName) {
+          // _this.addOrganForm.pid = _this.parentNode.parentNodeId;
+          // _this.addOrganForm.id = _this.handelType == 0 ? "" : _this.organId;
+          // console.log("数据", _this.addOrganForm);
+          if (_this.handelType) {
             //修改
-            this.addBannerForm.id = this.editRoleId;
-            this.$store.dispatch("editRole", this.addBannerForm).then(
+            _this.addBannerForm.id = _this.editRoleId;
+            _this.$store.dispatch("editRole", _this.addBannerForm).then(
               res => {
                 console.log("环节", res);
-                this.$message({
+                _this.$message({
                   type: "success",
                   message: "修改成功"
                 });
-                this.visible = false;
-                this.reload();
+                _this.visible = false;
+                _this.reload();
               },
               err => {
                 console.log(err);
               }
             );
           } else {
-            this.$store.dispatch("addRole", this.addBannerForm).then(
+            _this.$store.dispatch("addRole", _this.addBannerForm).then(
               res => {
                 console.log("环节", res);
-                this.$message({
+                _this.$message({
                   type: "success",
                   message: "添加成功!"
                 });
-                this.visible = false;
-                this.reload();
+                _this.visible = false;
+                _this.reload();
               },
               err => {
                 console.log(err);

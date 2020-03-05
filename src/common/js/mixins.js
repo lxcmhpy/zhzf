@@ -25,14 +25,15 @@ export const mixinGetCaseApiList = {
       // };
       let data = params;
       console.log(data);
+      let _this = this
       this.$store.dispatch("queryCaseBasicInfoListPage", data).then(
         res => {
           console.log(res);
-          this.tableData = res.data.records;
-          this.tableData.forEach(item => {
+          _this.tableData = res.data.records;
+          _this.tableData.forEach(item => {
             item.name = item.party ? item.party : item.partyName;
           })
-          this.total = res.data.total;
+          _this.total = res.data.total;
         },
         err => {
           console.log(err);
@@ -46,15 +47,16 @@ export const mixinGetCaseApiList = {
         casebasicInfoId: caseId,
         caseLinktypeId: caseLinktypeId
       };
+      let _this = this
       this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
         res => {
           console.log("获取表单详情", res);
           //如果为空，则加载案件信息
           if (res.data == "") {
-            this.com_getCaseBasicInfo(caseId,caseLinktypeId);
+            _this.com_getCaseBasicInfo(caseId,caseLinktypeId);
           } else {
             console.log(res.data);
-            this.caseLinkDataForm.id = res.data.id;
+            _this.caseLinkDataForm.id = res.data.id;
             // this.formData = JSON.parse(res.data.formData);
             // if(this.formData.checkBox){  //案件来源转数组
             //   this.setEstabishCaseSourceAndText();
@@ -62,18 +64,18 @@ export const mixinGetCaseApiList = {
             //利用属性给this.formData赋值
             let formData = JSON.parse(res.data.formData);
             for( var key in formData ){
-              this.formData[key]=formData[key]
+                _this.formData[key]=formData[key]
             }
             //对环节或文书中的一些字段做处理
-            this.setSelfData(this.formData,caseLinktypeId);
+            _this.setSelfData(_this.formData,caseLinktypeId);
 
-            console.log('this.formData',this.formData)
-            this.setSomeData(this.formData);
-            this.isSaveLink = true;
+            console.log('this.formData',_this.formData)
+            _this.setSomeData(_this.formData);
+            _this.isSaveLink = true;
             if (refreshDataForPdf) {
               // 提交pdf页
               setTimeout(() => {
-                this.printContent();
+                _this.printContent();
               }, 3000)
             }
 
@@ -109,6 +111,7 @@ export const mixinGetCaseApiList = {
         caseBasicInfoId: caseId,
         typeId:formOrDocId
       };
+      let _this = this
       console.log('xinxi',data)
       findCaseAllBindPropertyApi(data).then(
         res => {
@@ -116,22 +119,22 @@ export const mixinGetCaseApiList = {
           let caseData = JSON.parse(res.data.propertyData);
 
           console.log('获取案件信息2', caseData);
-          if (this.formData) {
+          if (_this.formData) {
             // this.formData = caseData;
             for( var key in caseData ){
-              this.formData[key]=caseData[key]
+                _this.formData[key]=caseData[key]
             }
             // if(this.formData.checkBox){  //案件来源转数组
             //   this.setEstabishCaseSourceAndText();
             // }
-            this.setSelfData(this.formData,formOrDocId);  //对环节或文书中的一些字段做处理
-            this.setSomeData(this.formData);
+            _this.setSelfData(_this.formData,formOrDocId);  //对环节或文书中的一些字段做处理
+            _this.setSomeData(_this.formData);
           } else {
             // this.docData = caseData;
             for( var key in caseData ){
-              this.docData[key]=caseData[key]
+              _this.docData[key]=caseData[key]
             }
-            this.setSelfData(this.docData,formOrDocId);  //对环节或文书中的一些字段做处理
+            _this.setSelfData(_this.docData,formOrDocId);  //对环节或文书中的一些字段做处理
 
           }
         },
@@ -142,6 +145,7 @@ export const mixinGetCaseApiList = {
     },
     //提交文书表单信息，跳转到pdf文书
     com_submitCaseForm(handleType, docForm, hasNextBtn) {
+      let _this = this
       console.log(this.formData);
       this.caseLinkDataForm.formData = JSON.stringify(this.formData);
       debugger
@@ -152,33 +156,33 @@ export const mixinGetCaseApiList = {
       this.$refs[docForm].validate(valid => {
         if (valid) {
           // console.log(this.caseLinkDataForm);
-          this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
+          _this.$store.dispatch("addFormData", _this.caseLinkDataForm).then(
             res => {
               console.log("保存表单", res);
-              this.$message({
+              _this.$message({
                 type: "success",
                 message: "保存成功"
               });
               //立案登记表提交之后调用更新案件信息的接口
-              if(this.caseLinkDataForm.caseLinktypeId == '2c90293b6c178b55016c17c255a4000d'){
+              if(_this.caseLinkDataForm.caseLinktypeId == '2c90293b6c178b55016c17c255a4000d'){
                 let data = {
-                  caseName:this.formData.caseName,
-                  caseInfo:this.formData.caseSituation,
-                  id:this.caseLinkDataForm.caseBasicinfoId,
+                  caseName:_this.formData.caseName,
+                  caseInfo:_this.formData.caseSituation,
+                  id:_this.caseLinkDataForm.caseBasicinfoId,
                 }
                 console.log('更新案件基本信息',data)
-                this.com_updatePartCaseBasicInfo(data)
+                _this.com_updatePartCaseBasicInfo(data)
               }
 
               if (handleType == 1) {
                 //保存成功
                 if (hasNextBtn) {    //有下一环节按钮
                   //提交pdf 显示pdf页
-                  this.printContent();
-                  this.isSaveLink = true;
+                  _this.printContent();
+                  _this.isSaveLink = true;
                 } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
-                  // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId)
-                  this.reload();
+                  // _this.com_goToNextLinkTu(_this.caseLinkDataForm.caseLinktypeId)
+                  _this.reload();
                 }
               } else if (handleType == 2) {
                 //归档
@@ -195,13 +199,13 @@ export const mixinGetCaseApiList = {
         this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
           res => {
             console.log("暂存表单", res);
-            this.$message({
+            _this.$message({
               type: "success",
               message: "暂存成功"
             });
             //重新赋值
-            // this.setData();
-            this.reload();
+            // _this.setData();
+            _this.reload();
           },
           err => {
             console.log(err);
@@ -214,12 +218,13 @@ export const mixinGetCaseApiList = {
         caseId: caseBasicinfoId,
         caseLinktypeId: caseLinktypeId
       };
+      let _this = this
       console.log(data);
       this.$store.dispatch("submitPdf", data).then(
         res => {
           console.log("更改流程图中的状态", res);
-          this.$store.dispatch("deleteTabs", this.$route.name);
-          this.$router.push({
+          _this.$store.dispatch("deleteTabs", _this.$route.name);
+          _this.$router.push({
             name: 'flowChart'
           });
         },
@@ -308,16 +313,17 @@ export const mixinGetCaseApiList = {
         caseId: params.caseId,
         docId: params.docId
       };
+      let _this = this
       this.$store.dispatch("getDocDataByCaseIdAndDocId", data).then(
         res => {
           console.log("获取文书详情", res);
           //如果为空，则加载案件信息
           if (res.data.length == 0) {
-            this.com_getCaseBasicInfo(params.caseId,params.docId);
+            _this.com_getCaseBasicInfo(params.caseId,params.docId);
           } else {
             console.log(res.data[0]);
-            this.caseDocDataForm.id = res.data[0].id;
-            this.docData = JSON.parse(res.data[0].docData);
+            _this.caseDocDataForm.id = res.data[0].id;
+            _this.docData = JSON.parse(res.data[0].docData);
           }
         },
         err => {
@@ -327,22 +333,23 @@ export const mixinGetCaseApiList = {
     },
     // 提交文书表单
     com_addDocData(handleType, docForm) {
+      let _this = this
       this.caseDocDataForm.docData = JSON.stringify(this.docData);
       this.caseDocDataForm.status = handleType;
       console.log(this.caseDocDataForm);
       if(handleType){
       this.$refs[docForm].validate(valid => {
         if (valid) {
-          this.$store.dispatch("addDocData", this.caseDocDataForm).then(
+          _this.$store.dispatch("addDocData", _this.caseDocDataForm).then(
             res => {
               console.log("保存文书", res);
-              this.$message({
+              _this.$message({
                 type: "success",
                 message: "提交成功"
               });
-              this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+              _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
               //提交成功后提交pdf到服务器，后打开pdf
-              this.printContent();
+              _this.printContent();
             },
             err => {
               console.log(err);
@@ -358,7 +365,7 @@ export const mixinGetCaseApiList = {
       this.$store.dispatch("addDocData", this.caseDocDataForm).then(
         res => {
           console.log("暂存文书", res);
-          this.$message({
+          _this.$message({
             type: "success",
             message: "暂存成功"
           });
@@ -375,11 +382,12 @@ export const mixinGetCaseApiList = {
         casebasicInfoId: this.caseId,
         linkTypeId: params.linkTypeId
       };
+      let _this = this
       this.$store.dispatch("getDocListByCaseIdAndFormId", data).then(
         res => {
-          this.docTableDatas = res.data;
-          this.docTableDatasCopy = this.docTableDatasCopy ? this.docTableDatas : '';
-          console.log('文书列表', this.docTableDatas)
+          _this.docTableDatas = res.data;
+          _this.docTableDatasCopy = _this.docTableDatasCopy ? _this.docTableDatas : '';
+          console.log('文书列表', _this.docTableDatas)
         },
         err => {
           console.log(err);
@@ -453,7 +461,7 @@ export const mixinGetCaseApiList = {
       console.log('fd', fd.get('docId'));
       console.log('currrentPdfId', fd.get('id'));
       console.log('currrentPdfstorageId', fd.get('storageId'));
-
+      let _this = this
 
       this.$store.dispatch("uploadFile", fd).then(
         res => {
@@ -462,11 +470,11 @@ export const mixinGetCaseApiList = {
           let routerData = {
             hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
             docId: docId,
-            approvalOver: this.approvalOver ? true : false,
+            approvalOver: _this.approvalOver ? true : false,
             caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
           }
-          this.$store.dispatch("deleteTabs", this.$route.name);
-          this.$router.push({ name: 'myPDF', params: routerData })
+          _this.$store.dispatch("deleteTabs", _this.$route.name);
+          _this.$router.push({ name: 'myPDF', params: routerData })
         },
         err => {
           console.log(err);
@@ -503,7 +511,7 @@ export const mixinGetCaseApiList = {
       console.log('currrentPdfId', fd.get('id'));
       console.log('currrentPdfstorageId', fd.get('storageId'));
 
-
+      let _this = this
       this.$store.dispatch("uploadFile", fd).then(
         res => {
           console.log('上传', res);
@@ -511,10 +519,10 @@ export const mixinGetCaseApiList = {
           let routerData = {
             hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
             docId: docId,
-            approvalOver: this.approvalOver ? true : false,
+            approvalOver: _this.approvalOver ? true : false,
             caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
           }
-          this.$store.dispatch("deleteTabs", this.$route.name);
+          _this.$store.dispatch("deleteTabs", _this.$route.name);
         //   this.$router.push({ name: 'myPDF', params: routerData })
         },
         err => {
@@ -525,9 +533,10 @@ export const mixinGetCaseApiList = {
     //通过文书id获取该文书pdf的id
     getFileIdByDocId (docId,approvalLink) {
       console.log(docId,approvalLink)
+      let _this = this
       this.$store.dispatch("getFile", {
           docId: docId,
-          caseId: this.caseId,
+          caseId: _this.caseId,
         }).then(
         res => {
           console.log('文书pdf ID',res);
@@ -537,10 +546,10 @@ export const mixinGetCaseApiList = {
           }
           iLocalStroage.sets("currrentPdfData", currrentPdfData);
 
-          // this.currrentPdfId = res[0].id;
+          // _this.currrentPdfId = res[0].id;
           // currentLinkName
 
-          this.$router.push({
+          _this.$router.push({
               name: approvalLink,
               params:{
                 isApproval:true
@@ -609,10 +618,11 @@ export const mixinGetCaseApiList = {
             casebasicInfoId: this.caseId,
             linkTypeId: params.linkTypeId
           };
+          let _this = this
           this.$store.dispatch("yehuCheck", data).then(
             res => {
-              this.docTableDatas = res.data;
-              console.log('文书列表', this.docTableDatas)
+              _this.docTableDatas = res.data;
+              console.log('文书列表', _this.docTableDatas)
             },
             err => {
               console.log(err);
@@ -637,13 +647,14 @@ export const mixinGetCaseApiList = {
               this.$store.dispatch('deleteTabs', 'flowChart');
               let data2 = this.com_getCaseRouteName(data.linkID);
               debugger
+              let _this = this
               this.$store.commit('setDocId', data.docId)
               if(data.curLinkState == "complete"){    //已完成文书显示pdf
                   if(!isHuanjieDoc){
                     debugger;
-                    this.$router.push({name:'myPDF',params:{docId:data2.docId,isComplete:true}})
+                    _this.$router.push({name:'myPDF',params:{docId:data2.docId,isComplete:true}})
                   }else{
-                    this.$router.push({name:data2.nextLink,params:{isComplete:true}})
+                    _this.$router.push({name:data2.nextLink,params:{isComplete:true}})
                   }
               }else{
                 this.$router.push({name:data2.nextLink})

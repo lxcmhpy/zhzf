@@ -203,22 +203,23 @@ export default {
     },
     //获取机构
     getAllOrgan() {
+      let _this = this
       this.$store.dispatch("getAllOrgan").then(
         res => {
           console.log("机构", res);
 
-          this.defaultExpandedKeys.push(res.data[0].id);
+          _this.defaultExpandedKeys.push(res.data[0].id);
           if (res.data[0].children && res.data[0].children.length > 0) {
             res.data[0].children.forEach(item => {
-              this.defaultExpandedKeys.push(item.id);
+              _this.defaultExpandedKeys.push(item.id);
             });
           }
-          this.organData = res.data;
-          console.log(this.defaultExpandedKeys);
-          console.log(this.organData);
-          this.currentOrganId = res.data[0].id;
-          this.selectCurrentTreeName = res.data[0].label;
-          this.getUserList(1);
+          _this.organData = res.data;
+          console.log(_this.defaultExpandedKeys);
+          console.log(_this.organData);
+          _this.currentOrganId = res.data[0].id;
+          _this.selectCurrentTreeName = res.data[0].label;
+          _this.getUserList(1);
           //this.getDepartment();
         },
         err => {
@@ -241,9 +242,10 @@ export default {
         status: this.formInline.region
       };
       console.log("用户", data);
+      let _this = this
       this.$store.dispatch("getUserList", data).then(res => {
         console.log(res);
-        this.totalPage = res.data.ipageList.total;
+        _this.totalPage = res.data.ipageList.total;
         let userData1 = res.data.ipageList.records;
         let userRoleData = res.data.userOtherInfoList;
         userData1.forEach(item => {
@@ -262,7 +264,7 @@ export default {
           item.userOrgan = userOrgan;
         });
         console.log("userData1", userData1);
-        this.tableData = userData1;
+        _this.tableData = userData1;
       });
       err => {
         console.log(err);
@@ -287,16 +289,17 @@ export default {
     },
     // 表格id删除
     handleDelete(row) {
+      let _this = this
       this.$confirm("确认删除该用户?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.$store.dispatch("getUserdelete", row.id).then(
+          _this.$store.dispatch("getUserdelete", row.id).then(
             res => {
-              this.getAllOrgan(this.$refs.addUserRef.id);
-              this.$message({
+              _this.getAllOrgan(_this.$refs.addUserRef.id);
+              _this.$message({
                 type: "success",
                 message: "删除成功!"
               });
@@ -311,16 +314,17 @@ export default {
 
     // 密码初始化
     Initialization(row) {
+      let _this = this
       this.$confirm("确认初始化密码?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.$store.dispatch("getUserreset", row.id).then(
+          _this.$store.dispatch("getUserreset", row.id).then(
             res => {
-              this.getAllOrgan(this.$refs.addUserRef.id);
-              this.$message({
+              _this.getAllOrgan(_this.$refs.addUserRef.id);
+              _this.$message({
                 type: "success",
                 message: "密码初始化成功!"
               });
@@ -358,9 +362,10 @@ export default {
     selectUser(val) {
       console.log(val);
       this.selectUserIdList = [];
+       let _this = this
       val.forEach(item => {
-        this.selectUserIdList.push(item.id);
-        console.log(this.selectUserIdList);
+        _this.selectUserIdList.push(item.id);
+        console.log(_this.selectUserIdList);
       });
     }
   },

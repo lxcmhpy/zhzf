@@ -156,19 +156,20 @@ export default {
         },
         //根据id删除单个人员信息
         deleteAwardById(row){
+            let _this = this
             this.$confirm("确定要删除该人员吗?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
             }).then(() => {
-                this.$store.dispatch("deleteAwardByIdModudle", row.awardId).then(
+                _this.$store.dispatch("deleteAwardByIdModudle", row.awardId).then(
                     res => {
-                        this.$message({
+                        _this.$message({
                             type: "success",
                             message: "删除成功!"
                         });
                         //重新加载页面数据
-                        this.getAward();
+                        _this.getAward();
                     },
                     err => {
                     console.log(err);
@@ -178,19 +179,20 @@ export default {
         },
         //删除所选择的用户信息
         deleteAward(){
+            let _this = this
             this.$confirm("确定要删除所选的人员吗?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
             }).then(() => {
-                this.$store.dispatch("deleteAwardModudle", this.selectDataIdList).then(
+                _this.$store.dispatch("deleteAwardModudle", _this.selectDataIdList).then(
                     res => {
-                        this.$message({
+                        _this.$message({
                             type: "success",
                             message: "删除成功!"
                         });
                         //重新加载页面数据
-                        this.getAward();
+                        _this.getAward();
                     },
                     err => {
                     console.log(err);
@@ -212,9 +214,10 @@ export default {
 				current: this.currentPage,
                 size: this.pageSize
             };
+            let _this = this
             this.$store.dispatch("getAwardListMoudle", data).then(res => {
-                this.tableData = res.data.records;
-                this.totalPage = res.data.total;
+                _this.tableData = res.data.records;
+                _this.totalPage = res.data.total;
             });
             err => {
                 console.log(err);
@@ -237,8 +240,9 @@ export default {
          //获取选中的user
         selectUser(val) {
             this.selectDataIdList = [];
+            let _this = this
             val.forEach((item,index) => {
-                this.selectDataIdList.push(item.awardId);
+                _this.selectDataIdList.push(item.awardId);
             });
         }
     },

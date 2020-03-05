@@ -51,13 +51,14 @@ export default {
   methods: {
     async getFlowStatusByCaseId(id) {
     //   console.log(id)
+      let _this = this
       this.$store.dispatch("getFlowStatusByCaseId", id).then(
         res => {
         //   console.log('流程图',res)
-          this.data = res.data;
-          this.updateLinkData()
-          this.updateGraphData()
-          this.drawFlowChart()
+          _this.data = res.data;
+          _this.updateLinkData()
+          _this.updateGraphData()
+          _this.drawFlowChart()
         },
         err => {
         //   console.log(err);

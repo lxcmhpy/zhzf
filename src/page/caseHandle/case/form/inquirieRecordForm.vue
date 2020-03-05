@@ -312,9 +312,10 @@ export default {
         id: "2c902ae66ae2acc4016ae376f6f1007f"
         // id: this.$route.params.docId
       };
+      let _this = this
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
-          this.docData = res.data;
+          _this.docData = res.data;
         },
         err => {
           console.log(err);
@@ -327,19 +328,20 @@ export default {
       this.docData.inquireQA = this.dynamicValidateForm.domains;
       console.log('dynamicValidateForm', this.docData.inquireQA)
       console.log(this.CaseDocDataForm);
+      let _this = this
       this.$refs["docForm"].validate(valid => {
         if (valid) {
-          this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
+          _this.$store.dispatch("addDocData", _this.CaseDocDataForm).then(
             res => {
               console.log("保存文书", res);
               // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
+              _this.$message({
                 type: "success",
                 message: "保存成功",
               });
-              this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-              this.$router.push({
-                name: this.$route.params.url,
+              _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+              _this.$router.push({
+                name: _this.$route.params.url,
                 params: {
                   // id: row.id,
                   // //案件ID

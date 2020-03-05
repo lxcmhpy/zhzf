@@ -44,10 +44,11 @@ export default {
     //根据机构获取角色列表
     getRoleList(organId) {
       console.log("organId",organId);
+      let _this = this
       this.$store.dispatch("getOrganBindRole",organId).then(
         res => {
           console.log(res.data);
-          this.roleList = res.data;
+          _this.roleList = res.data;
           //this.findBindRole();
         },
         err => {
@@ -61,17 +62,17 @@ export default {
         userIds: this.userIds.join(','),
         roleIds: this.selectRoleList.join(",")
       };
-
+      let _this = this
       this.$store.dispatch("userBindRole", data).then(
         res => {
           console.log(res);
-          this.$message({
+          _this.$message({
             showClose: true,
             message: "绑定成功",
             type: "success"
           });
-          this.visible = false;
-          this.reload();
+          _this.visible = false;
+          _this.reload();
         },
         err => {
           console.log(err);
@@ -80,11 +81,12 @@ export default {
     },
     //查询绑定的角色
     findBindRole(id) {
+      let _this = this
       this.$store.dispatch("queryUserBindRole", this.userId).then(
         res => {
           console.log(res);
           res.data.forEach(item => {
-            this.selectRoleList.push(item.roleId);
+            _this.selectRoleList.push(item.roleId);
           });
         },
         err => {

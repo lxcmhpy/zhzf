@@ -53,18 +53,19 @@ export default {
       this.visible = false;
     },
     editEvi() {
+      let _this = this
       this.$refs["evidenceForm"].validate(valid => {
         if (valid) {
             let data = {
-                id:this.evId,
-                evName:this.evidenceForm.evName
+                id:_this.evId,
+                evName:_this.evidenceForm.evName
             }
           updateEvdenceNameApi(data).then(
             res => {
               console.log(res);
-              this.visible = false;
-              
-            this.$emit('findEvidenceEmit');
+              _this.visible = false;
+
+            _this.$emit('findEvidenceEmit');
             },
             error => {
               console.log(error);
@@ -82,11 +83,12 @@ export default {
         status: 1,
         fileId: id
       };
+      let _this = this
       saveOrUpdateEvdencenApi2(data).then(
         res => {
           console.log(res);
-          this.visible = false;
-          this.$emit("findEvidenceEmit");
+          _this.visible = false;
+          _this.$emit("findEvidenceEmit");
           //   this.findFile(res.data);
         },
         error => {

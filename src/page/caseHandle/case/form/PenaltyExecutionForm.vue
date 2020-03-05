@@ -292,7 +292,7 @@
             <i class="iconfont law-save"></i>
             <br />保存
           </el-button>
-          <el-button type="success" v-if="!this.$route.params.isComplete">
+          <el-button type="success" @click="submitCaseDoc(0)" v-if="!this.$route.params.isComplete">
             <i class="iconfont law-save"></i>
             <br />暂存
           </el-button>

@@ -233,15 +233,16 @@ export default {
         }
     },
     submitArchive(handleType) {
+        let _this = this
         this.$confirm('此操作将完成归档、生成电子卷宗，是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-            this.com_submitCaseForm(handleType, "archiveCoverForm", true);
-            this.$router.push({ name: 'firstPdfPage' ,params: {
-                caseId: this.caseId,
-                docId: this.docId
+            _this.com_submitCaseForm(handleType, "archiveCoverForm", true);
+            _this.$router.push({ name: 'firstPdfPage' ,params: {
+                caseId: _this.caseId,
+                docId: _this.docId
             }});
             // this.getMl()
         }).catch(() => {
@@ -253,9 +254,9 @@ export default {
         this.getByMlCaseId(this.caseId)
     },
     getByMlCaseId(caseId) {
+        let _that = this
          this.$store.dispatch("getByMlCaseIdNew", caseId).then(
          res=>{
-             let _that = this
              res.data.forEach((v)=>{
                 _that.mlList.push(_that.host + v.storageId)
              })

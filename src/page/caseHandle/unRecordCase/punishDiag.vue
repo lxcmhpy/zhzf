@@ -41,6 +41,7 @@ export default {
     //获取违法条款及处罚条款
     findLawRegulationsByCauseId() {
       this.tableData = [];
+      let _this = this
       this.$store.dispatch("findLawRegulationsByCauseId", this.caseCauseId).then(
         res => {
           console.log(res);
@@ -54,7 +55,7 @@ export default {
               illageClause: "《" + item.bnslawNameCog + "》第" + item.itemCog + "条" + xiang1,
               punishClause: "《" + item.bnslawNamePun + "》第" + item.itemPun + "条" + xiang2
             }
-            this.tableData.push(clause);
+            _this.tableData.push(clause);
 
           })
         },

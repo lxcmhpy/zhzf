@@ -79,19 +79,20 @@ export default {
     },
     //删除角色
     deleteRole(id) {
+      let _this = this
       this.$confirm("确认删除该角色?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.$store.dispatch("deleteRole", id).then(
+          _this.$store.dispatch("deleteRole", id).then(
             res => {
-              this.$message({
+              _this.$message({
                 type: "success",
                 message: "删除成功!"
               });
-              this.reload();
+              _this.reload();
             },
             err => {
               console.log(err);
@@ -118,11 +119,12 @@ export default {
         size: this.pageSize,
         name: this.dicSearchForm.name
       };
+      let _this = this
       this.$store.dispatch("getRoles", data).then(
         res => {
           console.log("角色列表", res);
-          this.tableData = res.data.records;
-          this.totalPage = res.data.total;
+          _this.tableData = res.data.records;
+          _this.totalPage = res.data.total;
         },
         err => {
           console.log(err);

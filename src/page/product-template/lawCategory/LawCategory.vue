@@ -59,11 +59,12 @@ export default {
                 size: this.pageSize,
                 // name:this.lawCategorySearchForm.name
             };
+            let _this = this
             this.$store.dispatch("getLawCategoryList",data).then(
                 res => {
                 console.log("执法门类管理列表", res);
-                this.tableData = res.data.records;
-                this.totalPage = res.data.total;
+                _this.tableData = res.data.records;
+                _this.totalPage = res.data.total;
                 },
                 err => {
                 console.log(err);

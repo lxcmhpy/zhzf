@@ -30,8 +30,9 @@ export default {
     //刷新页面
     reload() {
       this.isRouterAlive = false;
+      let _this = this
       this.$nextTick(() => {
-        this.isRouterAlive = true;
+        _this.isRouterAlive = true;
       });
     }
   }

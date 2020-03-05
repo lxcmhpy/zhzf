@@ -79,24 +79,25 @@ export default {
     },
     //上传附件
     uploadEvidence() {
+      let _this = this
       this.$refs["evidenceForm"].validate(valid => {
         if (valid) {
           var fd = new FormData();
-          console.log('fileName',this.evidenceForm.evName);
-          console.log('file',this.evfile);
-          console.log('caseId', this.caseId);
-          console.log('docId',this.linkId);
+          console.log('fileName',_this.evidenceForm.evName);
+          console.log('file',_this.evfile);
+          console.log('caseId', _this.caseId);
+          console.log('docId',_this.linkId);
 
-          fd.append("fileName", this.evidenceForm.evName);
-          fd.append("file", this.evfile);
-          fd.append("caseId", this.caseId);
-          fd.append("docId", this.linkId);
+          fd.append("fileName", _this.evidenceForm.evName);
+          fd.append("file", _this.evfile);
+          fd.append("caseId", _this.caseId);
+          fd.append("docId", _this.linkId);
           fd.append("category", '证据');
 
           uploadEvApi(fd).then(
             res => {
               console.log(res);
-              this.uploadEvidence2(res.data)
+              _this.uploadEvidence2(res.data)
             // this.visible = false;
             // this.$emit('findEvidenceEmit')
             //   this.findFile(res.data);
@@ -117,11 +118,12 @@ export default {
             status:1,
             fileId:id,
         }
+        let _this = this
         saveOrUpdateEvdencenApi2(data).then(
             res => {
               console.log(res);
-            this.visible = false;
-            this.$emit('findEvidenceEmit');
+            _this.visible = false;
+            _this.$emit('findEvidenceEmit');
             //   this.findFile(res.data);
             },
             error => {

@@ -160,9 +160,10 @@ export default {
       let data = {
         id: "2c902ae66ae2acc4016ae376f6f1007f"
       };
+      let _this = this
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
-          this.docData = res.data;
+          _this.docData = res.data;
         },
         err => {
           console.log(err);
@@ -173,13 +174,14 @@ export default {
     // 提交表单
     addIllegalAction() {
       console.log(this.CaseDocDataForm);
+      let _this = this
       this.$refs["docForm"].validate(valid => {
         if (valid) {
-          this.$store.dispatch("addDocData", this.CaseDocDataForm).then(
+          _this.$store.dispatch("addDocData", _this.CaseDocDataForm).then(
             res => {
               console.log("保存文书", res);
               // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
+              _this.$message({
                 type: "success",
                 message: "保存成功"
 

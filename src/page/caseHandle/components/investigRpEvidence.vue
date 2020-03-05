@@ -16,9 +16,9 @@
             :http-request="chooseLocalEvidence" :show-file-list="false" >
             <el-button size="small" type="primary">本地上传</el-button>
             <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-        
+
         </el-upload>
-      </p>  
+      </p>
       <el-table :data="tableData" style="width: 100%" height="250">
         <el-table-column type="index" label="序号" align="center"></el-table-column>
         <el-table-column prop="name" label="证据名称" align="center"></el-table-column>
@@ -71,11 +71,12 @@ export default {
     receiverEviden(list){
         // this.tableData.length = list.length;
         this.tableData = [];
+        let _this = this
         list.forEach((element,index) => {
             console.log('element',element);
             let evi={'name':element,'des':'份','num':1}
-        
-            this.tableData.push(evi);
+
+            _this.tableData.push(evi);
         });
     },
     //本地上传
@@ -84,10 +85,11 @@ export default {
       fd.append("file", param.file);
       fd.append('caseId',this.caseId)
       fd.append('docId','2c9029ee6cac9281016caca7f38e0002');
+      let _this = this
       uploadEvApi(fd).then(
         res => {
           console.log(res);
-          this.findFile(res.data);
+          _this.findFile(res.data);
         },
         error => {
           console.log(error)
@@ -95,10 +97,11 @@ export default {
       );
     },
     findFile(id){
+      let _this = this
       findFileByIdApi(id).then(
         res => {
           console.log(res);
-          this.tableData.push({'name':res.data.fileName,'num':1,'des':'份'});
+          _this.tableData.push({'name':res.data.fileName,'num':1,'des':'份'});
         //   this.alreadyLoadPayEvidence.push(res.data);
         //   if(isAdd){
         //     if(this.formData.payEvidence){

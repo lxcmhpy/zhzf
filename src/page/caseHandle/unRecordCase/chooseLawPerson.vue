@@ -120,12 +120,13 @@ export default {
     handleCheckedUserChange(val) {
       console.log(val);
       this.checkedUser = [];
+       let _this = this
       val.forEach(item => {
-        this.userList.forEach(item2 => {
+        _this.userList.forEach(item2 => {
           if (item == item2.id) {
             //更新tag
             console.log('更新tag',item2);
-            this.checkedUser.push(item2);
+            _this.checkedUser.push(item2);
             return;
           }
         });
@@ -165,12 +166,13 @@ export default {
     },
     //查询执法人员
     searchLawPerson(alreadyChooseLawPersonId, inforCollectLawPerson) {
+      let _this = this
       this.$store
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
         .then(
           res => {
-            this.userList = res.data;
-            this.userList.forEach(item => {
+            _this.userList = res.data;
+            _this.userList.forEach(item => {
               //执法证号下拉框
               item.lawOfficerCardsAndId = {
                 id: item.id,
@@ -187,14 +189,14 @@ export default {
                 }
               });
               if (hasChangeCard) {
-                this.selectedNumber.push(
+                _this.selectedNumber.push(
                   inforCollectLawPerson2.selectLawOfficerCard
                 );
                 //userList新增字段 选中的执法证号
                 item.selectLawOfficerCard =
                   inforCollectLawPerson2.selectLawOfficerCard;
               } else {
-                this.selectedNumber.push(
+                _this.selectedNumber.push(
                   item.lawOfficerCardsAndId.lawOfficerCards[0]
                 );
                 //userList新增字段 选中的执法证号
@@ -203,7 +205,7 @@ export default {
               }
             });
             //  this.checkedUser = this.alreadyChooseLawPerson;
-            this.handleCheckedUserChange(alreadyChooseLawPersonId);
+            _this.handleCheckedUserChange(alreadyChooseLawPersonId);
           },
           err => {
             console.log(err);

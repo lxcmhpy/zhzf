@@ -196,11 +196,12 @@
     inject: ["reload"],
     methods: {
       searchTable() {
+        let _this = this
         this.$store.dispatch("getTreePermission").then(
           res => {
             console.log(res);
-            this.tableData = res.data;
-            this.total = res.data.length
+            _this.tableData = res.data;
+            _this.total = res.data.length
           },
           err => {
             console.log(err);
@@ -211,16 +212,18 @@
         this.dialogTitle = '新增'
         this.isShowDialog = true
         this.addItemObj.parentId = row.id
+        let _this = this
         setTimeout(() => {
-          this.$refs.elSelectTreeObj.valueTitle = row.title
-          this.$refs.elSelectTreeObj.valueId = row.id
+          _this.$refs.elSelectTreeObj.valueTitle = row.title
+          _this.$refs.elSelectTreeObj.valueId = row.id
         })
       },
       addItem() {
         this.dialogTitle = '新增'
         this.isShowDialog = true
+        let _this = this
         setTimeout(() => {
-          this.$refs.elSelectTreeObj.clearHandle()
+          _this.$refs.elSelectTreeObj.clearHandle()
         })
       },
       editItem(row) {
@@ -263,7 +266,7 @@
             res => {
               if (res.code === 200) {
                 that.isShowDialog = false
-                this.$message({
+                that.$message({
                   type: "success",
                   message: that.dialogTitle + '成功！'
                 });
@@ -271,7 +274,7 @@
               }
             },
             err => {
-              this.$message({
+              that.$message({
                 type: "error",
                 message: err
               });
@@ -284,7 +287,7 @@
         this.$store.dispatch("deletePermission", row.id).then(
           res => {
             if (res.code === 200) {
-              this.$message({
+              that.$message({
                 type: "success",
                 message: '删除成功！'
               });

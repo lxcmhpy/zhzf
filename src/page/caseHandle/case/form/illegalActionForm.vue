@@ -326,14 +326,15 @@ export default {
     getDataAfter(){
       //获取机构详情
       let params = { id: iLocalStroage.gets("userInfo").organId };
+      let _this = this
       this.$store.dispatch("getOrganDetail", params).then(
         res => {
           console.log("机构", res);
           let organData = res.data;
-          this.formData.organContactor = organData.contactor;
-          this.formData.organAddress = organData.address;
-          this.formData.organZipCode = organData.zipCode;
-          this.formData.organTel = organData.telephone;
+          _this.formData.organContactor = organData.contactor;
+          _this.formData.organAddress = organData.address;
+          _this.formData.organZipCode = organData.zipCode;
+          _this.formData.organTel = organData.telephone;
         },
         err => {
           console.log(err);

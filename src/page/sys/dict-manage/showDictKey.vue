@@ -58,10 +58,11 @@ export default {
     },
     //获取字典值
     getDictKeyList(){
+        let _this = this
         this.$store.dispatch("getDictListDetail",this.dictId).then(
         res => {
           console.log("字典值列表", res);
-          this.tableData = res.data;
+          _this.tableData = res.data;
           // this.tableData.forEach(item=>{
           //     item.pName = this.dictName
           // })
@@ -90,19 +91,20 @@ export default {
     },
     //删除字典
     deleteDictKey(id){
+         let _this = this
       this.$confirm("确认删除?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.$store.dispatch("deleteDict", id).then(
+          _this.$store.dispatch("deleteDict", id).then(
             res => {
-              this.$message({
+              _this.$message({
                 type: "success",
                 message: "删除成功!"
               });
-              this.getDictKeyList();
+              _this.getDictKeyList();
             },
             err => {
               console.log(err);

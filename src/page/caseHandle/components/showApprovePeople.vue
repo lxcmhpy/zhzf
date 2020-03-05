@@ -61,12 +61,13 @@ export default {
     //获取审核人员
     getApprovePeople() {
       console.log(this.caseInfo);
+      let _this = this
       this.$store.dispatch("getApprovePeople", this.caseInfo.caseId).then(
         res => {
           console.log(res);
            let data = res.data;
           data.splice(0,1);
-          this.approvalPeopleList = data;
+          _this.approvalPeopleList = data;
         },
         err => {
           console.log(err);
@@ -86,16 +87,17 @@ export default {
       //   caseLinktypeId:this.caseInfo.caseLinktypeId,
 
       //   }
+      let _this = this
       this.$store.dispatch("submitPdf", this.caseInfo).then(
         res => {
           console.log("pdf提交", res);
-          this.$message({
+          _this.$message({
             type: "success",
             message: "提交成功"
           });
-          this.$store.dispatch("deleteTabs", this.$route.name);
-          this.$store.commit("setCaseId", this.caseInfo.caseId);
-          this.$router.push({
+          _this.$store.dispatch("deleteTabs", _this.$route.name);
+          _this.$store.commit("setCaseId", _this.caseInfo.caseId);
+          _this.$router.push({
             name: "flowChart"
           });
         },

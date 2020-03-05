@@ -199,9 +199,10 @@ import { mapGetters } from "vuex";
                     current: this.currentPage,
                     size: this.pageSize
                 };
+                let _this = this
                 this.$store.dispatch("getHandleRecord", data).then(res => {
-                    this.tableData = res.data.records;
-                    this.total = res.data.total;
+                    _this.tableData = res.data.records;
+                    _this.total = res.data.total;
                 });
             },
 
