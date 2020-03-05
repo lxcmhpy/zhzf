@@ -35,41 +35,41 @@
               <div class="row">
                 <div class="col">
                   <el-form-item label="姓名">
-                    <el-input ref="party" clearable class="w-120" v-model="docData.party" size="small" placeholder="请输入"></el-input>
+                    <el-input ref="party" clearable class="w-120" v-model="docData.party" :disabled="isParty ? false : true" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
                   <el-form-item label="性别">
-                    <el-input ref="partySex" clearable class="w-120" v-model="docData.partySex" size="small" placeholder="请输入"></el-input>
+                    <el-input ref="partySex" clearable class="w-120" v-model="docData.partySex" :disabled="isParty ? false : true" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
                   <el-form-item label="年龄">
-                    <el-input ref="partyAge" clearable class="w-120" v-model="docData.partyAge" size="small" placeholder="请输入"></el-input>
+                    <el-input ref="partyAge" clearable class="w-120" v-model="docData.partyAge" :disabled="isParty ? false : true" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
                   <el-form-item label="所在单位">
-                    <el-input ref="partyUnitPosition" clearable class="w-120" v-model="docData.partyUnitPosition" size="small" placeholder="请输入"></el-input>
+                    <el-input ref="partyUnitPosition" clearable class="w-120" v-model="docData.partyUnitPosition" :disabled="isParty ? false : true" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
                   <el-form-item label="联系地址">
-                    <el-input ref="partyAddress" clearable class="w-120" v-model="docData.partyAddress" size="small" placeholder="请输入"></el-input>
+                    <el-input ref="partyAddress" clearable class="w-120" v-model="docData.partyAddress" :disabled="isParty ? false : true" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
                   <el-form-item label="联系电话">
-                    <el-input ref="partyTel" clearable class="w-120" v-model="docData.partyTel" size="small" placeholder="请输入"></el-input>
+                    <el-input ref="partyTel" clearable class="w-120" v-model="docData.partyTel" :disabled="isParty ? false : true" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
                   <el-form-item label="邮编">
-                    <el-input ref="partyZipCode" clearable class="w-120" v-model="docData.partyZipCode" size="small" placeholder="请输入"></el-input>
+                    <el-input ref="partyZipCode" clearable class="w-120" v-model="docData.partyZipCode" :disabled="isParty ? false : true" size="small" placeholder="请输入"></el-input>
                   </el-form-item>
                 </div>
               </div>
@@ -78,31 +78,31 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="单位">
-                  <el-input ref="partyName" clearable class="w-120" v-model="docData.partyName" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyName" clearable class="w-120" v-model="docData.partyName" :disabled="isParty ? true : false" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="地址">
-                  <el-input ref="partyUnitAddress" clearable class="w-120" v-model="docData.partyUnitAddress" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyUnitAddress" clearable class="w-120" v-model="docData.partyUnitAddress" :disabled="isParty ? true : false" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="法定代表人">
-                  <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" :disabled="isParty ? true : false" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="职务">
-                  <el-input ref="partyManagerPositions" clearable class="w-120" v-model="docData.partyManagerPositions" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyManagerPositions" clearable class="w-120" v-model="docData.partyManagerPositions" :disabled="isParty ? true : false" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item label="统一社会信用代码" class="line-height13">
-                  <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyManager" clearable class="w-120" v-model="docData.partyManager" :disabled="isParty ? true : false" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -158,7 +158,7 @@
         </el-form>
       </div>
       <!-- 悬浮按钮 -->
-      <div class="float-btns">
+      <!-- <div class="float-btns">
         <el-button type="primary" @click="addIllegalAction">
           <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
             <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF"></path>
@@ -171,12 +171,18 @@
           </svg>
           <br>
           暂存</el-button>
-      </div>
+      </div> -->
+
+      <!-- 悬浮按钮 -->
+    <casePageFloatBtns :pageDomId="'obtanEvidence_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    
     </div>
 
   </div>
 </template>
 <script>
+import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 export default {
   data() {
     return {
@@ -261,7 +267,7 @@ export default {
     },
 
     // 提交表单
-    addIllegalAction() {
+    saveData() {
       console.log(this.CaseDocDataForm);
       console.log('11')
       this.$refs["docForm"].validate(valid => {
@@ -322,6 +328,9 @@ export default {
       let length = this.tableDatas.length;
       this.tableDatas.push({'index': Number(this.tableDatas[length - 1].index) + 1});
     }
+  },
+  components: {
+    casePageFloatBtns
   },
   mounted() {
     this.getCaseBasicInfo();
