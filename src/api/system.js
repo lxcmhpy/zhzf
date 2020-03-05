@@ -514,6 +514,16 @@ export function deletePermissionApi(data) {
   });
 }
 
+//获取本机构下的所有用户（不分页）
+export  function  queryUserListByOrganIdApi(organId)  {
+  return  request({
+      url:  "/sys/user/queryUserListByOrganId/"+organId,
+      method:  "get",
+      showloading: false,
+      cancelToken:  setCancelSource()
+  });
+}
+
 /**------------长软start---------- */
 //根据用户id获取用户的机构id
 export  function  getOrganIdApi(data)  {

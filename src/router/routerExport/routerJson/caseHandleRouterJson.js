@@ -446,16 +446,6 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/caseDocument/sceneNotesDoc.vue")
   },
-  //询问笔录-doc
-  {
-    path: "/inquiryNotesDoc",
-    name: "inquiryNotesDoc",
-    meta: {
-      title: "询问笔录-doc",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/caseDocument/inquiryNotesDoc.vue")
-  },
   {
     path: "/inforCollect",
     name: "inforCollect",
