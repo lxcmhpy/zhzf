@@ -1,6 +1,6 @@
 <template>
   <div class="check yehu">
-     <div class="top shadow">
+    <div class="top shadow">
       <div class="title_content">
         <div class="title_back float" @click="goBack">&lt;返回
         </div>
@@ -123,7 +123,7 @@ export default {
       this.$store.dispatch("crewCheck", this.checkData).then(
         res => {
           _this.searchList = res;
-
+          _this.searchList[0].SEX = '';
           var sexData = _this.searchList[0].ID_CARD_NO.substr(17, 1)
           if (sexData % 2 == 0) {
             _this.searchList[0].SEX = '男'
