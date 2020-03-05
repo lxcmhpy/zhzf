@@ -1,6 +1,6 @@
 <template>
   <div class="check yehu">
-    <div class="top shadow">
+     <div class="top shadow">
       <div class="title_content">
         <div class="title_back float" @click="goBack">&lt;返回
         </div>

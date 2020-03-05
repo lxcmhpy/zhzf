@@ -1,12 +1,12 @@
 .check {
     height : 100%;
-    padding: 0 22px;
+    padding: 22px;
+    box-sizing: border-box;
     .shadow {
         margin-top: 22px;
         box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
         background: #fff;
         box-sizing: border-box;
-
     }
     .title_content {
         line-height: 65px;
@@ -73,8 +73,9 @@
 
     .bottom {
         padding: 22px;
-        height: calc(100% - 300px);
-        overflow:auto
+        height: calc(100% - 254px);
+        overflow:auto;
+
     }
    
 }
