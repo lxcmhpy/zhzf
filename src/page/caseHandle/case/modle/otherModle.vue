@@ -408,6 +408,7 @@ export default {
         { value: "5", label: "代理人" }
       ],
       staffList:[],
+      needDealData:true,
 
     }
   },
@@ -495,7 +496,7 @@ export default {
       this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
       console.log(staffIndex);
     },
-    setStaffAndCertificateId(){
+    getDataAfter(){
       this.staffList=this.docData.staff.split(',');
       this.docData.staff1 =  this.staffList[0];
       this.docData.staff2 =  this.staffList[1];

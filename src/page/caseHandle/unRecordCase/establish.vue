@@ -262,7 +262,7 @@
       </el-form>
     </div>
 
-    <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @saveData="saveData" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
+    <casePageFloatBtns :formOrDocData="formOrDocData" @saveData="saveData" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
     <overflowInput1 ref="overflowInputRef1" @overFloeEditInfo="getOverFloeEditInfo1"></overflowInput1>
@@ -392,7 +392,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "establish-print"
+        pageDomId:'establish-print'
       },
       huanjieAndDocId: "2c9029ae654210eb0165421564970001", //立案登记表的文书id
       approvalOver: false,//审核完成
@@ -405,6 +405,7 @@ export default {
       originalData: "",
       // 是否带入电话
       isPartyPhone: false,
+      needDealData:true,
     };
   },
   components: {
@@ -511,8 +512,8 @@ export default {
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    //案件来源
-    setEstabishCaseSourceAndText() {
+    //设置案件来源
+    getDataAfter() {
       if (this.formData.checkBox == '上级交办') {
         this.caseSourceText3 = this.formData.caseSourceText;
       } else if (this.formData.checkBox == '下级报请') {

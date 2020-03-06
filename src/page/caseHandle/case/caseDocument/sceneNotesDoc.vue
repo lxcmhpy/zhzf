@@ -272,7 +272,6 @@
         </el-form>
       </div>
       <casePageFloatBtns
-        :pageDomId="'subOutputRank-print'"
         :formOrDocData="formOrDocData"
         @submitData="submitData"
         @saveData="saveData"
@@ -414,7 +413,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "subOutputRank-print",
+        pageDomId:'subOutputRank-print'
       },
       staffList:[],
       allRelationWithCase: [
@@ -448,7 +447,8 @@ export default {
         disabledDate(time){
           return (time.getTime() + 24 * 3600 * 1000) > Date.now()
         }
-      }
+      },
+      needDealData:true,
     };
   },
   computed: { 
@@ -544,7 +544,7 @@ export default {
     getOverFloeEditInfo(edit) {
       this.docData.illegalFactsEvidence = edit;
     },
-    setStaffAndCertificateId() {
+    getDataAfter() {
       this.staffList=this.docData.staff.split(',');
       this.docData.staff1 = this.docData.staff.split(',')[0];
       this.docData.certificateId1 = this.docData.certificateId.split(',')[0];

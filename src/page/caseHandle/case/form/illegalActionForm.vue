@@ -262,14 +262,7 @@ export default {
         isHuanjie: true
       },
       huanjieAndDocId: "2c9029ca5b71686d015b719fe0900026", //违法行为通知书的文书id
-      // punishDecisionOptions:[
-      //   {id:1,value:'罚款'},
-      //   {id:2,value:'责令整改'},
-      //   {id:3,value:'警告'},
-      //   {id:4,value:'没收违法所得'},
-      //   {id:5,value:'没收非法财产'},
-      //   {id:6,value:'责令停产停业、暂扣或吊销'},
-      // ]
+      needDealData:true,
     };
   },
   mixins: [mixinGetCaseApiList],

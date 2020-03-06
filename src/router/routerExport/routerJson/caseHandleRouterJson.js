@@ -376,16 +376,6 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/pdf/orderCorrectIllegalActPdf.vue")
   },
-  //勘验笔录pdf
-  {
-    path: "/inquestNotesPdf",
-    name: "inquestNotesPdf",
-    meta: {
-      title: "勘验笔录-pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/pdf/inquestNotesPdf.vue")
-  },
   //案件总览
   {
     path: "/caseInfo",

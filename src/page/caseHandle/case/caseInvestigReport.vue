@@ -384,6 +384,7 @@ export default {
       sexLength: 2,
       adressLength: 23,
       isParty: true,
+      needDealData:true,
     };
   },
   computed: { ...mapGetters(["caseId"]) },
@@ -584,7 +585,7 @@ export default {
       // console.log(this.formData.evidenceList);
     },
     //对原始数据做一下处理
-    setEvidenceData() {
+    getDataAfter() {
       console.log(this.formData);
       if (!this.formData.evidenceList.length) {
         this.formData.evidenceList = [{ name: '', num: '', des: '' }, { name: '', num: '', des: '' }, { name: '', num: '', des: '' }, { name: '', num: '', des: '' }]

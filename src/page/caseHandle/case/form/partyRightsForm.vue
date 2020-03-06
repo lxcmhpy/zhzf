@@ -260,6 +260,7 @@ export default {
         //   { required: true, message: '案由必须填写', trigger: 'blur' }
         // ],
       },
+      needDealData:true,
     }
   },
   mixins: [mixinGetCaseApiList],

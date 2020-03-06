@@ -321,9 +321,7 @@
     <casePageFloatBtns
       :pageDomId="'subOutputRank-print'"
       :formOrDocData="formOrDocData"
-      @submitData="submitData"
       @saveData="saveData"
-      @backHuanjie="submitData"
     ></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
@@ -440,7 +438,8 @@ export default {
       huanjieAndDocId: "2c9029ca5b71686d015b71c8a0c10042", //行政处罚决定书的文书id
       isParty: true, //当事人类型为个人
       isPdf: "",
-      overFlowEditList: [{}, {}]
+      overFlowEditList: [{}, {}],
+      needDealData:true,
     };
   },
 
@@ -462,9 +461,6 @@ export default {
     getOverFloeEditInfo(edit) {
       console.log("回显", edit);
       this.formData.illegalFactsEvidence = edit;
-    },
-    submitData(){
-
     },
     saveData(handleType) {
       // this.com_submitCaseForm(handleType, "docForm", true);
