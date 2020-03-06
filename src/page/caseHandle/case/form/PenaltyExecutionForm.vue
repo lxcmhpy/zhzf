@@ -368,7 +368,8 @@ export default {
           { validator: validatePaid, trigger: 'blur'}
         ]
       },
-      isOnlinePay: false //是否为电子缴纳
+      isOnlinePay: false, //是否为电子缴纳
+      needDealData:true,
     };
   },
   computed: {
@@ -456,7 +457,7 @@ export default {
         this.isOnlinePay = false;
       }
     },
-    setPunishAmount(){
+    getDataAfter(){
       if(this.formData.tempPunishAmount){
         this.formData.paidAmount = this.formData.paidAmount ? this.formData.paidAmount : 0;
       }

@@ -167,7 +167,7 @@
         </el-row>
       </el-form>
     </div>
-    <casePageFloatBtns :pageDomId="'inquestNote_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
@@ -228,6 +228,7 @@ export default {
         recorderSign: "",
         overWidthFlag: false,
         inquestResult: '',//多行编辑内容
+        needDealData:true,
       },
       rules: {
         partyPeople:[{ required: true, message: "请输入", trigger: "blur" }],
@@ -259,11 +260,12 @@ export default {
       length: "",
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: 'inquestNote_print',
+        pageDomId:'inquestNote_print'
       },
       staffList:[],
       // userList:['papas'], //机构下的人员
       userData:[],
+      needDealData:true,
     }
 
   },
@@ -344,7 +346,7 @@ export default {
     print() {
       console.log('打印!');
     },
-    setStaffAndCertificateId() {
+    getDataAfter() {
       this.staffList=this.docData.staff.split(',');
       this.docData.staff1 = this.docData.staff.split(',')[0];
       this.docData.certificateId1 = this.docData.certificateId.split(',')[0];

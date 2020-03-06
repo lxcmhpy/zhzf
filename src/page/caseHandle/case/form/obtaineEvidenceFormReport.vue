@@ -300,6 +300,7 @@ export default {
       },
       isPdf: '',
       isParty: true, //当事人类型为个人
+      needDealData:true,
     }
   },
   methods: {
@@ -427,7 +428,7 @@ export default {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    setStaffAndCertificateId() {
+    getDataAfter() {
       console.log('this.docData', this.docData)
     }
   },
