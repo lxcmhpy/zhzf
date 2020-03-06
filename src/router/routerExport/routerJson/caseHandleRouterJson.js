@@ -466,9 +466,17 @@ export default [
     path: "/industry",
     name: "industry",
     meta: {
-      title: "信息查验-业户查验"
+      title: "业户查验"
     },
-    component: () => import("@/page/InformInspect/industry.vue")
+    component: () => import("@/page/checkInfo/industry.vue")
+  },
+  {
+    path: "/crewCertificates",
+    name: "crewCertificates",
+    meta: {
+      title: "船员适任证查验"
+    },
+    component: () => import("@/page/checkInfo/crewCertificates.vue")
   },
   {
     path: "/archiveCover",

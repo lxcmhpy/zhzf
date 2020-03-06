@@ -1,4 +1,4 @@
-import { yehuCheckApi } from "@/api/checkInfo";
+import { yehuCheckApi, crewCheckApiIdcard, crewCheckApiCertificates } from "@/api/checkInfo";
 
 const person = {
     state: {
@@ -11,12 +11,36 @@ const person = {
         // }
     },
     actions: {
-        //查询用户绑定角色
+        //业户查验
         yehuCheck({ commit }, data) {
             return new Promise((resolve, reject) => {
                 yehuCheckApi(data).then(
                     res => {
                         resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //船员适任证查验
+        crewCheck({ commit }, data) {
+            console.log('查验', data)
+            return new Promise((resolve, reject) => {
+                crewCheckApiCertificates(data).then(
+                    res => {
+                        if (res.data.length != 0) {
+                            resolve(res.data);
+                        }
+                        else {
+                            crewCheckApiIdcard(data).then(
+                                res => {
+                                    resolve(res.data);
+                                },
+                                error => {
+                                    reject(error);
+                                })
+                        }
                     },
                     error => {
                         reject(error);

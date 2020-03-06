@@ -132,9 +132,9 @@
             </li>
           </ul>
           <ul>
-            <li class="imgbox">
+            <li class="imgbox" @click="infoCheck('crewCertificates')">
               <img :src="'./static/images/img/icon_lit_cy.png'">
-              <span>船员适应证</span>
+              <span>船员适任证</span>
             </li>
             <li class="imgbox">
               <img :src="'./static/images/img/icon_lit_slu.png'">

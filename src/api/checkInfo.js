@@ -3,13 +3,33 @@ import { setCancelSource } from "@/common/js/cancelToken";
 import Vue from "vue";
 
 let vm = new Vue();
-//   url: "/yuz/yh?1/2/" + data,
-// url: "http://124.192.215.11:8086/cy/yuz/yh?licenseCode=&provinceCode=&provinceCode=",
-//获取用户绑定的角色
+
+let CHECK_API='http://124.192.215.11:8086/cy';//信息查验
+//业户查验
 export function yehuCheckApi(data) {
     console.log(data);
     return request({
-        url: "http://124.192.215.11:8086/cy/yuz/yh?licenseCode=" + data.licenseCode + "&ownerName=" + data.ownerName + "&provinceCode=" + data.provinceCode,
+        url: CHECK_API + "/yuz/yh?licenseCode=" + data.licenseCode + "&ownerName=" + data.ownerName + "&provinceCode=" + data.provinceCode,
+        method: "GET",
+        showloading: false,
+        cancelToken: setCancelSource()
+    });
+}
+//船员适任证查验-身份证
+export function crewCheckApiIdcard(data) {
+    console.log(data);
+    return request({
+        url: CHECK_API +"/ship/shipInfoSrzSfz?idCardNo=" + data.idCardNo ,
+        method: "GET",
+        showloading: false,
+        cancelToken: setCancelSource()
+    });
+}
+//船员适任证查验-证书号码
+export function crewCheckApiCertificates(data) {
+    console.log(data);
+    return request({
+        url: CHECK_API +"/ship/shipInfoZsh?certNo=" + data.certNo ,
         method: "GET",
         showloading: false,
         cancelToken: setCancelSource()

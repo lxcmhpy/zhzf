@@ -40,7 +40,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="getYehuCheck" size="medium">查询</el-button>
+          <el-button type="primary" @click="getCheck" size="medium">查询</el-button>
         </el-form-item>
 
       </div>
@@ -119,17 +119,15 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 export default {
   mixins: [mixinGetCaseApiList],
   data() {
+//     OwnerName:北京京版物流有限责任公司
+// LicenseCode:货备110115000169
+// ProvinceCode:110000
     return {
       checkData: {
         provinceCode: '',
         ownerName: '',
         licenseCode: ''
       },
-      // checkData: {
-      //   provinceCode: '',
-      //   ownerName: '',
-      //   licenseCode: ''
-      // },
       radio: '1',
       checkType: 1,
       tableData: [],
@@ -284,7 +282,7 @@ export default {
       this.$router.go(-1);//返回上一层
     },
     //查询违法行为
-    getYehuCheck() {
+    getCheck() {
         let _this = this
       this.$store.dispatch("yehuCheck", this.checkData).then(
         res => {
@@ -316,5 +314,5 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-@import "@/assets/css/industry.scss";
+@import "@/assets/css/checkInfo.scss";
 </style>

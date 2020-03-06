@@ -134,7 +134,7 @@
             </el-form-item>
           </div>
           <div class="itemSmall">
-            <el-form-item label="邮编">
+            <el-form-item label="邮编" prop="partyZipCode">
               <el-input v-model="inforForm.partyZipCode"></el-input>
             </el-form-item>
           </div>
@@ -676,7 +676,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 
-import { validateIDNumber, validateAge } from '@/common/js/validator'
+import { validateIDNumber, validateAge ,validateZIP} from '@/common/js/validator'
 export default {
   data() {
     //选择个人试验证
@@ -798,7 +798,10 @@ export default {
         ],
         partyIdNo: [
           { validator: validateIDNumber, trigger: "blur" }
-        ]
+        ],
+        partyZipCode:[
+          { validator: validateZIP, trigger: "blur" }
+        ],
       },
       //案件类型
       allcaseSource: [
