@@ -34,61 +34,71 @@
         </span>
         <span class="title">查验结果</span>
       </div>
-      <div class="check_result_text">相关的1个搜索结果</div>
-      <div v-if="tableData.lenth>0">请在上方查验条件输入检索内容，显示结果</div>
-      <table v-for='item in searchList' :key="item.id">
-        <tr>
-          <td class="color_ff" width='20%'>
-            姓名
-          </td>
-          <td width='30%'>{{item.ANAME}}</td>
-          <td class="color_ff" width='20%'>
-            性别
-          </td>
-          <td width='30%'>{{item.SEX}}</td>
-        </tr>
-        <tr>
-          <td class="color_ff">
-            身份证件号码
-          </td>
-          <td>{{item.ID_CARD_NO}}</td>
-          <td class="color_ff">
-            年龄
-          </td>
-          <td>{{item.CERT_POSI}}</td>
-        </tr>
-        <tr>
-          <td class="color_ff">
-            船员证号码
-          </td>
-          <td>{{item.CERT_NO}}</td>
-          <td class="color_ff">
-            证书状态
-          </td>
-          <td>{{item.CERT_STATUS}}</td>
-        </tr>
-        <tr>
-          <td class="color_ff">
-            证书有效期开始日期
-          </td>
-          <td>{{item.ISSU_DATE}}</td>
-          <td class="color_ff">
-            证书有效期截止日期
-          </td>
-          <td>{{item.EXPIRY_DATE}}</td>
-        </tr>
-        <tr>
-          <td class="color_ff">
-            签发机关
-          </td>
-          <td>{{item.ISSU_ORG_CODE}}</td>
-          <td class="color_ff">
-            证书签发日期
-          </td>
-          <td>{{item.ISSU_DATE}}</td>
-        </tr>
+      <div class="empty" v-if="(checkData.certNo==''&&checkData.idCardNo=='')||!checkFlag">
+        <img src="../../../static/images/img/check/pic_zhishi.svg" alt="">
+        <p class="check_result_text">请在上方查验条件输入检索内容，显示结果</p>
+      </div>
+      <div v-if="(checkData.certNo!=''||checkData.idCardNo!='')" class="check_result_text">相关的{{searchList.length}}个搜索结果</div>
+      <div class="empty" v-if="searchList==[{}]&&(checkData.certNo!=''||checkData.idCardNo!='')">
+        <img src="../../../static/images/img/check/pic_kong.svg" alt="">
+        <p class="check_result_text">正在查询</p>
+      </div>
 
-      </table>
+      <span v-if="searchList.length!=0 &&(checkData.certNo!=''||checkData.idCardNo!='')">
+        <table v-for='item in searchList' :key="item.id">
+          <tr>
+            <td class="color_ff" width='20%'>
+              姓名
+            </td>
+            <td width='30%'>{{item.ANAME}}</td>
+            <td class="color_ff" width='20%'>
+              性别
+            </td>
+            <td width='30%'>{{item.SEX}}</td>
+          </tr>
+          <tr>
+            <td class="color_ff">
+              身份证件号码
+            </td>
+            <td>{{item.ID_CARD_NO}}</td>
+            <td class="color_ff">
+              年龄
+            </td>
+            <td>{{item.CERT_POSI}}</td>
+          </tr>
+          <tr>
+            <td class="color_ff">
+              船员证号码
+            </td>
+            <td>{{item.CERT_NO}}</td>
+            <td class="color_ff">
+              证书状态
+            </td>
+            <td>{{item.CERT_STATUS}}</td>
+          </tr>
+          <tr>
+            <td class="color_ff">
+              证书有效期开始日期
+            </td>
+            <td>{{item.ISSU_DATE}}</td>
+            <td class="color_ff">
+              证书有效期截止日期
+            </td>
+            <td>{{item.EXPIRY_DATE}}</td>
+          </tr>
+          <tr>
+            <td class="color_ff">
+              签发机关
+            </td>
+            <td>{{item.ISSU_ORG_CODE}}</td>
+            <td class="color_ff">
+              证书签发日期
+            </td>
+            <td>{{item.ISSU_DATE}}</td>
+          </tr>
+
+        </table>
+      </span>
     </div>
   </div>
 </template>
@@ -105,8 +115,10 @@ export default {
       radio: '1',
       checkType: 1,
       tableData: [],
-      searchList: [{}],
+      searchList: [],
       showFlag: true,
+      checkFlag: false,
+      // loading: true,
     }
   },
   methods: {
@@ -119,6 +131,8 @@ export default {
     },
     //查询违法行为
     getCheck() {
+      this.searchList = [];
+      this.checkFlag = true;
       let _this = this
       this.$store.dispatch("crewCheck", this.checkData).then(
         res => {
@@ -132,7 +146,6 @@ export default {
             _this.searchList[0].SEX = '女'
           }
           console.log('返回', _this.searchList)
-
           if (_this.searchList.length > 1) {
             _this.showFlag = false;
           }

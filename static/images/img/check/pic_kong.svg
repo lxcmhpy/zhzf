@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="78px" height="78px" viewBox="0 0 78 78" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.1 (89650) - https://sketch.com -->
+    <title>pic_kong</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#DCDFE3" offset="0%"></stop>
+            <stop stop-color="#EBECF0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="97.5510015%" y1="50%" x2="-15.5383085%" y2="50%" id="linearGradient-2">
+            <stop stop-color="#EEEEEE" offset="0%"></stop>
+            <stop stop-color="#AFB7C0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="30.930817%" x2="87.4533377%" y2="74.2277197%" id="linearGradient-3">
+            <stop stop-color="#A6B0BA" offset="0%"></stop>
+            <stop stop-color="#F4F4F4" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#BEC2CC" offset="0%"></stop>
+            <stop stop-color="#F0F1F3" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="pic_kong" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="pic_wuneir" transform="translate(1.000000, 1.000000)">
+            <circle id="椭圆形" fill="#F7F7F7" cx="38" cy="38" r="38"></circle>
+            <polygon id="路径" stroke="#C2C7CD" points="38.7782961 7 19 25 58 25"></polygon>
+            <ellipse id="椭圆形" fill="#C2C7CD" cx="38.5" cy="7" rx="2.5" ry="3"></ellipse>
+            <g id="图背" transform="translate(4.000000, 18.000000)">
+                <rect id="矩形" fill="url(#linearGradient-1)" x="0" y="0" width="67" height="44"></rect>
+                <rect id="矩形" fill="#FFFFFF" x="7" y="10" width="22" height="3"></rect>
+                <rect id="矩形备份" fill="#FFFFFF" x="7" y="17" width="22" height="3"></rect>
+                <rect id="矩形备份-2" fill="#FFFFFF" x="7" y="24" width="53" height="3"></rect>
+                <rect id="矩形备份-3" fill="#FFFFFF" x="7" y="30" width="53" height="3"></rect>
+            </g>
+            <g id="放大" transform="translate(18.000000, 24.000000)">
+                <polygon id="矩形" fill="url(#linearGradient-2)" transform="translate(32.276596, 27.025641) rotate(35.000000) translate(-32.276596, -27.025641) " points="23.555499 25.2842556 40.9987178 25.2791291 40.9976925 28.7670265 23.5544737 28.772153"></polygon>
+                <circle id="椭圆形" fill="url(#linearGradient-3)" cx="15.5" cy="15.5" r="15.5"></circle>
+                <circle id="椭圆形" fill="#F9FAFC" cx="16" cy="16" r="12"></circle>
+                <circle id="椭圆形" fill="url(#linearGradient-4)" cx="9" cy="16" r="2"></circle>
+                <circle id="椭圆形备份" fill="url(#linearGradient-4)" cx="16" cy="16" r="2"></circle>
+                <circle id="椭圆形备份-2" fill="url(#linearGradient-4)" cx="23" cy="16" r="2"></circle>
+            </g>
+        </g>
+    </g>
+</svg>
