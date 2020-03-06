@@ -3,6 +3,28 @@
     padding   : 22px;
     box-sizing: border-box;
 
+    .top {
+        height: 64px;
+    }
+
+    .center {
+        height : 146px;
+        padding: 22px;
+    }
+
+    .center_content {
+        margin-bottom: 23px;
+
+    }
+
+    .bottom {
+        padding       : 22px;
+        padding-bottom: 0;
+        height        : calc(100% - 254px);
+        overflow      : auto;
+
+    }
+
     .shadow {
         margin-top: 22px;
         box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
@@ -64,33 +86,91 @@
         padding-left : 20px;
     }
 
+    .emty_result_text {
+        font-size: 14px;
+        color    : #7B7B7B;
+    }
+
     /*空数据  */
-    .empty{
+    .empty {
         margin-top: 148px;
         text-align: center;
     }
 }
 
-.yehu {
-    .top {
-        height: 64px;
+.yehu {}
+
+.check_home {
+    box-sizing: border-box;
+
+    .home_top {
+        padding   : 22px;
+        box-sizing: border-box;
+        height    : 252px;
+        margin-top: 0;
+
+        .history {
+            margin-top: 37px !important;
+        }
     }
 
-    .center {
-        height : 146px;
-        padding: 22px;
-    }
 
-    .center_content {
-        margin-bottom: 23px;
-
-    }
-
-    .bottom {
-        padding : 22px;
+    .home_bottom {
+        padding       : 22px;
         padding-bottom: 0;
-        height  : calc(100% - 254px);
-        overflow: auto;
+        height        : calc(100% - 274px);
+        overflow      : auto;
+
+        .search_box {
+            margin-bottom: 27px;
+            width  : 300px;
+            display: inline-block;
+            float  : right;
+        }
+
+        ul {
+            clear: both;
+            li {
+                margin-left  : 117px;
+                margin-bottom: 50px;
+                width        : 112px;
+                text-align   : center;
+                float        : left;
+                cursor       : pointer;
+                // display   : flex;
+
+                div {
+                    width : 98px;
+                    height: 98px;
+                    margin: 0 auto;
+
+                    border-radius    : 50px;
+                    background       : #F2F3F5;
+                    text-align       : center;
+                    display          : flex;
+                    align-items      : center;
+                    justify-content: center;
+                    img{
+                        width: 44px;
+                        height: 44px;
+                    }
+
+                }
+
+                span {
+                    margin-top : 14px;
+                    display    : block;
+                    text-align : center;
+                    height     : 20px;
+                    line-height: 20px;
+                    font-size  : 14px;
+                    color      : #20232B;
+                    font-family: PingFangSC-Medium, PingFang SC;
+                    font-weight: 500;
+                }
+            }
+        }
+
 
     }
 

@@ -100,7 +100,7 @@
     <div class="float_left width356">
       <div class="shadow case_home_top">
         <div class="casehome_topic">信息查验
-          <span>查看更多</span>
+          <span @click="infoCheck('checkHome')">查看更多</span>
         </div>
         <div class="icon_content">
           <ul>

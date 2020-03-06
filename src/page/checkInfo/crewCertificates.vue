@@ -1,5 +1,5 @@
 <template>
-  <div class="check yehu">
+  <div class="check">
     <div class="top shadow">
       <div class="title_content">
         <div class="title_back float" @click="goBack">&lt;返回
@@ -36,12 +36,12 @@
       </div>
       <div class="empty" v-if="(checkData.certNo==''&&checkData.idCardNo=='')||!checkFlag">
         <img src="../../../static/images/img/check/pic_zhishi.svg" alt="">
-        <p class="check_result_text">请在上方查验条件输入检索内容，显示结果</p>
+        <p class="emty_result_text">请在上方查验条件输入检索内容，显示结果</p>
       </div>
       <div v-if="(checkData.certNo!=''||checkData.idCardNo!='')" class="check_result_text">相关的{{searchList.length}}个搜索结果</div>
       <div class="empty" v-if="searchList==[{}]&&(checkData.certNo!=''||checkData.idCardNo!='')">
         <img src="../../../static/images/img/check/pic_kong.svg" alt="">
-        <p class="check_result_text">正在查询</p>
+        <p class="emty_result_text">正在查询</p>
       </div>
 
       <span v-if="searchList.length!=0 &&(checkData.certNo!=''||checkData.idCardNo!='')">

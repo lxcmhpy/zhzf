@@ -472,13 +472,46 @@ export default [
     },
     component: () => import("@/components/htmlExportPDF/viewPDF.vue")
   },
+   // -----------------信息查验start----------------
+  {
+    path: "/checkHome",
+    name: "checkHome",
+    meta: {
+      title: "信息查验首页"
+    },
+    component: () => import("@/page/checkInfo/checkHome.vue")
+  },
+  {
+    path: "/transportWorker",
+    name: "transportWorker",
+    meta: {
+      title: "道路运输从业人员"
+    },
+    component: () => import("@/page/checkInfo/transportWorker.vue")
+  },
+  {
+    path: "/commercialVehicle",
+    name: "commercialVehicle",
+    meta: {
+      title: "营运车辆"
+    },
+    component: () => import("@/page/checkInfo/commercialVehicle.vue")
+  },
   {
     path: "/industry",
     name: "industry",
     meta: {
-      title: "业户查验"
+      title: "经营业户"
     },
     component: () => import("@/page/checkInfo/industry.vue")
+  },
+  {
+    path: "/vehicleLine",
+    name: "vehicleLine",
+    meta: {
+      title: "客运线路标志牌"
+    },
+    component: () => import("@/page/checkInfo/vehicleLine.vue")
   },
   {
     path: "/crewCertificates",
@@ -488,6 +521,16 @@ export default [
     },
     component: () => import("@/page/checkInfo/crewCertificates.vue")
   },
+  
+  {
+    path: "/shipCertificates",
+    name: "shipCertificates",
+    meta: {
+      title: "船舶营运证"
+    },
+    component: () => import("@/page/checkInfo/shipCertificates.vue")
+  },
+   // -----------------信息查验end----------------
   {
     path: "/archiveCover",
     name: "archiveCover",
