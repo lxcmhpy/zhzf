@@ -386,16 +386,6 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/pdf/orderCorrectIllegalActPdf.vue")
   },
-  //勘验笔录pdf
-  {
-    path: "/inquestNotesPdf",
-    name: "inquestNotesPdf",
-    meta: {
-      title: "勘验笔录-pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/pdf/inquestNotesPdf.vue")
-  },
   //案件总览
   {
     path: "/caseInfo",
@@ -482,13 +472,46 @@ export default [
     },
     component: () => import("@/components/htmlExportPDF/viewPDF.vue")
   },
+   // -----------------信息查验start----------------
+  {
+    path: "/checkHome",
+    name: "checkHome",
+    meta: {
+      title: "信息查验首页"
+    },
+    component: () => import("@/page/checkInfo/checkHome.vue")
+  },
+  {
+    path: "/transportWorker",
+    name: "transportWorker",
+    meta: {
+      title: "道路运输从业人员"
+    },
+    component: () => import("@/page/checkInfo/transportWorker.vue")
+  },
+  {
+    path: "/commercialVehicle",
+    name: "commercialVehicle",
+    meta: {
+      title: "营运车辆"
+    },
+    component: () => import("@/page/checkInfo/commercialVehicle.vue")
+  },
   {
     path: "/industry",
     name: "industry",
     meta: {
-      title: "业户查验"
+      title: "经营业户"
     },
     component: () => import("@/page/checkInfo/industry.vue")
+  },
+  {
+    path: "/vehicleLine",
+    name: "vehicleLine",
+    meta: {
+      title: "客运线路标志牌"
+    },
+    component: () => import("@/page/checkInfo/vehicleLine.vue")
   },
   {
     path: "/crewCertificates",
@@ -498,6 +521,16 @@ export default [
     },
     component: () => import("@/page/checkInfo/crewCertificates.vue")
   },
+  
+  {
+    path: "/shipCertificates",
+    name: "shipCertificates",
+    meta: {
+      title: "船舶营运证"
+    },
+    component: () => import("@/page/checkInfo/shipCertificates.vue")
+  },
+   // -----------------信息查验end----------------
   {
     path: "/archiveCover",
     name: "archiveCover",
@@ -579,22 +612,22 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/spotAdmPunishDecisionDoc.vue")
   },
-  {
-    path: "/payStageDoc",
-    name: "payStageDoc",
-    meta: {
-      title: "分期（延期）缴纳罚款通知书"
-    },
-    component: () => import("@/page/caseHandle/case/modle/payStageDoc.vue")
-  },
-  {
-    path: "/executAnnounceDoc",
-    name: "executAnnounceDoc",
-    meta: {
-      title: "执行公告"
-    },
-    component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
-  },
+  // {
+  //   path: "/payStageDoc",
+  //   name: "payStageDoc",
+  //   meta: {
+  //     title: "分期（延期）缴纳罚款通知书"
+  //   },
+  //   component: () => import("@/page/caseHandle/case/modle/payStageDoc.vue")
+  // },
+  // {
+  //   path: "/executAnnounceDoc",
+  //   name: "executAnnounceDoc",
+  //   meta: {
+  //     title: "执行公告"
+  //   },
+  //   component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
+  // },
   {
     path: "/remindLetterDoc",
     name: "remindLetterDoc",
