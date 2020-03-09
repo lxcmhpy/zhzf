@@ -339,6 +339,7 @@ export default {
     },
     click() {
       // this.clearData()
+      console.log('this.checknames',this.checknames)
       if (this.checknames.length > 1) {
         this.checknames.shift();
       }
@@ -375,6 +376,23 @@ export default {
   mounted() {
     this.getDocDataByCaseIdAndDocId();
     this.docData.fine = this.convertCurrency(this.docData.fine);
+    console.log('parm',this.$route.params.approvalForm)
+    if(this.$route.params.approvalForm.executeHandle==0){
+      拒绝
+      this.checknames.push("3")
+    }
+    else{
+      if(this.$route.params.approvalForm.executeType==1){
+        // 分期
+        this.checknames.push("2")
+      }
+      if(this.$route.params.approvalForm.executeType==0){
+        // 延期
+        this.checknames.push("1")
+      }
+    }
+    this.click()
+
   },
   created() {
     this.isOverStatus();
