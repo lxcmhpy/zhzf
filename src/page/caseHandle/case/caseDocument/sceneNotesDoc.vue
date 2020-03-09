@@ -56,7 +56,7 @@
               <td rowspan="2">执法人员</td>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="staff1">
-                  <el-select v-model="docData.staff1" prop="staff1" :maxLength='maxLength'>
+                  <el-select v-model="docData.staff1" prop="staff1" :maxLength='maxLength' @change="changeStaff1">
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff2==item"></el-option>
                   </el-select>
                 </el-form-item>
@@ -84,7 +84,7 @@
             <tr>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="staff2">
-                  <el-select v-model="docData.staff2" :maxLength='maxLength'  @change="changeStaff">
+                  <el-select v-model="docData.staff2" :maxLength='maxLength'  @change="changeStaff2">
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
                   </el-select>
                 </el-form-item>
@@ -445,7 +445,7 @@ export default {
       daiRuscenePeopeAddress: false,
       pickerOptionsStart:{
         disabledDate(time){
-          return (time.getTime() + 24 * 3600 * 1000) > Date.now()
+          // return (time.getTime() + 24 * 3600 * 1000) >= Date.now()
         }
       },
       needDealData:true,
@@ -580,7 +580,11 @@ export default {
 
     },
     //修改人员
-    changeStaff(val){
+    changeStaff1(val){
+      let staffIndex = this.docData.staff.split(',').indexOf(val);
+      this.docData.certificateId1 = this.docData.certificateId.split(',')[staffIndex];
+    },
+    changeStaff2(val){
       let staffIndex = this.docData.staff.split(',').indexOf(val);
       this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
       console.log(staffIndex);

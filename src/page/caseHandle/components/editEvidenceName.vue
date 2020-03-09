@@ -46,7 +46,8 @@ export default {
     showModal(data) {
         console.log(data);
         this.evId = data.id;
-      this.visible = true;
+        this.evidenceForm.evName = data.evName;
+        this.visible = true;
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

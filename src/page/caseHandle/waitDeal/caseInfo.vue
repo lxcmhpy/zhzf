@@ -178,7 +178,7 @@
 
 </template>
 <script>
-import caseSlideMenu from '../components/caseSlideMenu'
+import caseSlideMenu from '../components/caseSlideMenu' 
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";

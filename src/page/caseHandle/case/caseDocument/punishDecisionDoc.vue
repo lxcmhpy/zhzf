@@ -39,10 +39,13 @@
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyIdNo">
                 <el-input
+                  type="textarea"
                   v-model="formData.partyIdNo"
-                  :maxLength="maxLength"
-                  disabled
+                  v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 2}"
+                  maxlength="18"
                   placeholder="\"
+                  :disabled="isParty && !originalData.partyIdNo ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -57,7 +60,7 @@
                   v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="isParty && !originalData.partyAddress ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -68,7 +71,7 @@
                 <el-input
                   v-model="formData.partyTel"
                   :maxLength="maxLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="isParty && !originalData.partyTel ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -95,7 +98,7 @@
                 <el-input
                   v-model="formData.partyUnitAddress"
                   :maxLength="maxLength"
-                  :disabled="isParty ? true : false"
+                  :disabled="!isParty && !originalData.partyUnitAddress ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -109,7 +112,7 @@
                   v-model="formData.partyUnitTel"
                   minlength="11"
                   :maxLength="maxLength"
-                  :disabled="isParty ? true : false"
+                  :disabled="!isParty && !originalData.partyUnitTel ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -120,7 +123,7 @@
                 <el-input
                   v-model="formData.partyManager"
                   :maxLength="maxLength"
-                  :disabled="isParty ? true : false"
+                  :disabled="!isParty && !originalData.partyManager ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -133,7 +136,7 @@
                 <el-input
                   v-model="formData.socialCreditCode"
                   :maxLength="maxLength"
-                  :disabled="isParty ? true : false"
+                  :disabled="!isParty && !originalData.socialCreditCode ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -257,7 +260,7 @@
                 maxlength="90"
                 placeholder="\"
               ></el-input>
-              <span class="overflow_describe">其他执行方式：</span>
+              <span class="overflow_describe">其他执行方式和期限：</span>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span
                 v-for="item in overFlowEditList"
@@ -272,24 +275,30 @@
           如果不服本处罚决定，可以在六十日内依法向
           <span>
             <el-form-item prop="reconsiderationOrgan">
-              <el-input
+              <!-- <el-input
                 type="textarea"
                 v-model="formData.reconsiderationOrgan"
                 v-bind:class="{ over_flow:formData.reconsiderationOrgan && formData.reconsiderationOrgan.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
                 placeholder="\"
-              ></el-input>
+              ></el-input> -->
+              <el-select v-model="formData.reconsiderationOrgan">
+                <el-option v-for="(item,index) in reconsiderationOrganList" :key="index" :value="item" :label="item"></el-option>
+              </el-select>
             </el-form-item>
           </span>申请行政复议，或者在六个月内依法向
 
           <span>
             <el-form-item prop="litigationOrgan">
-              <el-input type="textarea" v-model="formData.litigationOrgan" v-bind:class="{ over_flow:formData.litigationOrgan && formData.litigationOrgan.length>12?true:false }" :maxLength="maxLength" :autosize="{ minRows: 1, maxRows: 3}"  placeholder="\"></el-input>
+              <!-- <el-input type="textarea" v-model="formData.litigationOrgan" v-bind:class="{ over_flow:formData.litigationOrgan && formData.litigationOrgan.length>12?true:false }" :maxLength="maxLength" :autosize="{ minRows: 1, maxRows: 3}"  placeholder="\"></el-input> -->
+              <el-select v-model="formData.litigationOrgan">
+                <el-option v-for="(item,index) in enforcementOrganList" :key="index" :value="item" :label="item"></el-option>
+              </el-select>
             </el-form-item>
           </span>人民法院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
         </p>
-        <p>处罚前已口头告知当事人拟作出处罚的事实、理由和依据，并告知当事人依法享有的陈述权和申辩权。</p>
+        <!-- <p>处罚前已口头告知当事人拟作出处罚的事实、理由和依据，并告知当事人依法享有的陈述权和申辩权。</p>
         <el-row :gutter="20">
           <el-col :span="12">
             当事人或其代理人签名：
@@ -299,7 +308,7 @@
             执法人员签名：
             <span class="write_line width250"></span>
           </el-col>
-        </el-row>
+        </el-row> -->
         <div class="pdf_seal">
           <span @click="makeSeal">交通运输执法部门(印章)</span>
           <br />
@@ -403,6 +412,13 @@ export default {
          illegalFact: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
+        litigationOrgan: [
+          { required: true, message: '请选择', trigger: 'change' },
+        ],
+        reconsiderationOrgan: [
+          { required: true, message: '请选择', trigger: 'change' },
+        ],
+        
 
         // socialCreditCode: [
         //   { required: true, message: '请输入', trigger: 'blur' },
@@ -440,6 +456,9 @@ export default {
       isPdf: "",
       overFlowEditList: [{}, {}],
       needDealData:true,
+      reconsiderationOrganList:[], //复议机构列表
+      enforcementOrganList:[], //诉讼机构列表
+      originalData:"",
     };
   },
 
@@ -505,6 +524,20 @@ export default {
           let organData = res.data;
           _this.formData.bank = organData.bank;
           _this.formData.account = organData.account;
+          //复议机构 
+          if(organData.reconsiderationOrgan1){
+             _this.reconsiderationOrganList.push(organData.reconsiderationOrgan1)
+          }
+          if(organData.reconsiderationOrgan2){
+             _this.reconsiderationOrganList.push(organData.reconsiderationOrgan2)
+          }
+          //诉说机构
+          if(organData.enforcementOrgan1){
+             _this.enforcementOrganList.push(organData.enforcementOrgan1)
+          }
+          if(organData.enforcementOrgan2){
+             _this.enforcementOrganList.push(organData.enforcementOrgan2)
+          }
         },
         err => {
           console.log(err);
