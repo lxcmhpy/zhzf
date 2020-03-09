@@ -398,6 +398,15 @@ export function deleteDocByIdApi(docId) {
       cancelToken: setCancelSource()
   });
 }
+//根据id获取文书信息 （使用场景:询问笔录查看详情）
+export function getDocDetailByIdApi(id) {
+  return request({
+    url: "/doc/data/findById/"+id,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
 
 //-------------长软lv start------------
 //获取操作记录

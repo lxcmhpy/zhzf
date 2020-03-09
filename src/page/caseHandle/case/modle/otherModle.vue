@@ -423,8 +423,14 @@ export default {
         caseId: this.caseId,
         docId: this.$route.params.docId
       };
-      this.com_getDocDataByCaseIdAndDocId(data)
 
+      //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+      if(this.$route.params.handelType == 'isAddMore'){
+        this.com_getCaseBasicInfo(data.caseId,data.docId);
+      }else{
+        // this.com_getDocDataByCaseIdAndDocId(data)
+        this.getDocDetailById(this.$route.params.docDataId)
+      }
       this.docData.qaList.push({
         question: '',
         answer: '',
