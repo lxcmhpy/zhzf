@@ -9,7 +9,7 @@
     <div>
       <el-form ref="approvalForm" :model="approvalForm" label-width="90px">
         <el-form-item label="审批意见">
-          <el-radio-group v-model="approvalForm.executeHandle" @change="changeOpion">
+          <el-radio-group v-model="approvalForm.executeHandle">
             <el-radio :label="1">同意</el-radio>
             <el-radio :label="0">不同意</el-radio>
           </el-radio-group>
@@ -49,8 +49,8 @@ export default {
       //   caseId: "" //案件id
       approvalForm: {
         executeHandle: 1,
-        approveOpinions: "同意",
-        approvalTime: new Date().format('yyyy年MM月dd日'),
+        approveOpinions: "",
+        approvalTime: ""
       },
       caseData: ""
     };
@@ -66,14 +66,6 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-    },
-    changeOpion(val){
-        console.log(val);
-        if(val){
-            this.approvalForm.approveOpinions = "同意"
-        }else{
-            this.approvalForm.approveOpinions = "不同意"
-        }
     },
     //审批
     approvalSure() {
@@ -94,7 +86,8 @@ export default {
             //二级审批过  此时为三级审批
             console.log('此时为三级审批')
             params.jsonApproveData = JSON.stringify({
-              thirdApproveOpinions:this.approvalForm.approveOpinions,
+              thirdApproveOpinions:
+                this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
               thirdApprovePeo: iLocalStroage.gets("userInfo").username,
               thirdApproveTime: this.approvalForm.approvalTime
             });
@@ -103,7 +96,8 @@ export default {
             console.log('此时为2级审批')
 
             params.jsonApproveData = JSON.stringify({
-              secondApproveOpinions:this.approvalForm.approveOpinions,
+              secondApproveOpinions:
+                this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
               secondApprovePeo: iLocalStroage.gets("userInfo").username,
               secondApproveTime: this.approvalForm.approvalTime
             });
@@ -113,7 +107,8 @@ export default {
             console.log('此时为一级审批')
 
           params.jsonApproveData = JSON.stringify({
-            approveOpinions:this.approvalForm.approveOpinions,
+            approveOpinions:
+              this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
             approvePeo: iLocalStroage.gets("userInfo").username,
             approveTime: this.approvalForm.approvalTime
           });
@@ -123,14 +118,16 @@ export default {
         if (this.caseData.firstApproval) {
           // 此时为二级审批
           params.jsonApproveData = JSON.stringify({
-            secondApproveOpinions:this.approvalForm.approveOpinions,
+            secondApproveOpinions:
+              this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
             secondApprovePeo: iLocalStroage.gets("userInfo").username,
             secondApproveTime: this.approvalForm.approvalTime
           });
         } else {
           //此时为一级审批
           params.jsonApproveData = JSON.stringify({
-            approveOpinions:this.approvalForm.approveOpinions,
+            approveOpinions:
+              this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
             approvePeo: iLocalStroage.gets("userInfo").username,
             approveTime: this.approvalForm.approvalTime
           });

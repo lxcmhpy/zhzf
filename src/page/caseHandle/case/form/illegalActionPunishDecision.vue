@@ -8,12 +8,12 @@
   >
     <div id="illegalActionPunishDecisionBox">
       <el-checkbox-group v-model="checkDec" @change="changeCheckDec" :max="1">
-        <p><el-checkbox label="罚款">罚款</el-checkbox><el-input placeholder="请输入罚款金额" v-model="cont1"></el-input></p>
-        <p><el-checkbox label="责令整改">责令整改</el-checkbox><el-input placeholder="请输入责令整改要求" v-model="cont2"></el-input></p>
-        <p><el-checkbox label="警告">警告</el-checkbox><el-input placeholder="请输入警告内容" v-model="cont3"></el-input></p>
-        <p><el-checkbox label="没收违法所得">没收违法所得</el-checkbox><el-input placeholder="请输入罚款金额" v-model="cont4"></el-input></p>
-        <p><el-checkbox label="没收非法财产">没收非法财产</el-checkbox><el-input placeholder="请输入非法财产内容" v-model="cont5"></el-input></p>
-        <p><el-checkbox label="责令停产停业、暂扣或吊销许可整合执照">责令停产停业、暂扣或吊销许可整合执照</el-checkbox><el-input placeholder="非必填" v-model="cont6"></el-input></p>
+        <p><el-checkbox label="罚款">罚款</el-checkbox><el-input placeholder="请输入罚款金额" v-model="cont1" :disabled="checkDec.length==0 || checkDec[0]=='罚款'?false:true"></el-input></p>
+        <p><el-checkbox label="责令整改">责令整改</el-checkbox><el-input placeholder="请输入责令整改要求" v-model="cont2" :disabled="checkDec.length==0 || checkDec[0]=='责令整改'?false:true"></el-input></p>
+        <p><el-checkbox label="警告">警告</el-checkbox><el-input placeholder="请输入警告内容" v-model="cont3" :disabled="checkDec.length==0 || checkDec[0]=='警告'?false:true"></el-input></p>
+        <p><el-checkbox label="没收违法所得">没收违法所得</el-checkbox><el-input placeholder="请输入罚款金额" v-model="cont4" :disabled="checkDec.length==0 || checkDec[0]=='没收违法所得'?false:true"></el-input></p>
+        <p><el-checkbox label="没收非法财产">没收非法财产</el-checkbox><el-input placeholder="请输入非法财产内容" v-model="cont5" :disabled="checkDec.length==0 || checkDec[0]=='没收非法财产'?false:true"></el-input></p>
+        <p><el-checkbox label="责令停产停业、暂扣或吊销许可整合执照">责令停产停业、暂扣或吊销许可整合执照</el-checkbox><el-input placeholder="非必填" v-model="cont6" :disabled="checkDec.length==0 || checkDec[0]=='责令停产停业、暂扣或吊销许可整合执照'?false:true"></el-input></p>
       </el-checkbox-group>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -35,6 +35,7 @@ export default {
             cont5:"",
             cont6:"",
             fullDecision:"",
+
         }
     },
     methods:{
@@ -47,7 +48,12 @@ export default {
         },
         changeCheckDec(val){
             console.log(val);
-
+            this.cont1 = '';
+            this.cont2 = '';
+            this.cont3 = '';
+            this.cont4 = '';
+            this.cont5 = '';
+            this.cont6 = '';
         },
         markPunishDecision(){
             // console.log('askdlsajdsja')

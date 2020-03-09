@@ -181,7 +181,8 @@ export default {
   data() {
     return {
       docData: {
-        caseName: '',
+        caseNumber: '',
+        caseName:'',
         discussionStartTime: '',
         discussionEndTime: '',
         discussionPlace: '',
@@ -246,17 +247,6 @@ export default {
   },
 
    methods: {
-    onSubmit(formName) {
-      console.log('submit!');
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;

@@ -75,15 +75,12 @@ export default {
       // docId
     }
   },
-  props: ['pageDomId','formOrDocData'],
+  props: ['formOrDocData'],
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   methods: {
     //   打印方法
     async printContent() {
-    //   htmlExportPDF(this.pageDomId, this.uploadFile)
-        // this.$emit('print')
-        // document.getElementsByTagName('embed')[0].contentWindow.print();
     },
     uploadFile (file, name) {
       var f = new File([file.output("blob")], name, {type: 'application/pdf'})
@@ -111,6 +108,13 @@ export default {
     },
     saveDataBtn(handleType){
       this.$emit('saveData',handleType);
+      // //当前环节为文书时
+      // if(this.formOrDocData.isHuanjie){
+      //   this.com_submitCaseForm(handleType, this.formOrDocData.formRef, this.formOrDocData.nextShowPdf);
+      // }else{ 
+      //   //文书保存
+      //   this.com_addDocData(handleType, this.formOrDocData.formRef);
+      // }
     },
     getFile () {
       this.$store.dispatch("getFile", {
@@ -126,30 +130,28 @@ export default {
       );
     },
      //保存文书信息
-     addDocData(handleType){
-      let _this = this
-      this.com_addDocData(handleType,'docForm').then(
-        res => {
-          _this.$message({
-            type: "success",
-            message: "保存成功",
-          });
-          _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
-          _this.$router.push({
-            name: 'caseDoc',
-            // name: row.url,
-            params: {
-              // id: row.id,
-              // //案件ID
-              // caseBasicinfoId: _this.caseBasicinfoId,
-            }
-          });
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
+    //  addDocData(handleType){
+    //   let _this = this
+    //   this.com_addDocData(handleType,'docForm').then(
+    //     res => {
+    //       _this.$message({
+    //         type: "success",
+    //         message: "保存成功",
+    //       });
+    //       _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+    //       _this.$router.push({
+    //         name: 'caseDoc',
+           
+    //         params: {
+            
+    //         }
+    //       });
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     }
+    //   );
+    // },
     // 跳转到pdf页面
     viewPDF () {
       this.$router.push({name: "viewPDF"})

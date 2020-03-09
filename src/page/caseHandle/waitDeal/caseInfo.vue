@@ -52,7 +52,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="当事人">
-                  {{formData.party}}
+                  {{formData.party ? formData.party : formData.partyName}}
                   <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -117,7 +117,7 @@
               <div class="col">
                 <el-form-item label="处罚金额">
                   <!-- 字段名 -->
-                  ￥{{formData.punishAmount}}
+                  ￥{{formData.tempPunishAmount}}
                   <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入">
                        <span slot="prefix" >￥</span>
                   </el-input> -->
@@ -178,7 +178,7 @@
 
 </template>
 <script>
-import caseSlideMenu from '../components/caseSlideMenu'
+import caseSlideMenu from '../components/caseSlideMenu' 
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
@@ -199,12 +199,14 @@ export default {
         partyAge: "",
         party: "",
         partySex: "",
+        partyName:"",
         investigProcess: "",
         caseCauseDescrib: "",
         isMajorCase: "1",
         punishType: ['警告'],
         investigResult: '',
         dealOpinions: '1212121',
+        tempPunishAmount:"",
       },
       approval:this.$route.params.isApproval ? true : false,
     };

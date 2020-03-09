@@ -3,7 +3,7 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="docForm" :model="formData" label-width="105px">
+    <el-form ref="docForm" :model="formData" label-width="120px">
 
       <!-- <div class="header-case">
         <div class="header_left">
@@ -30,8 +30,8 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="案由">
-                  <el-input :disabled="true" clearable class="w-120" v-model="formData.caseName" size="small"></el-input>
+                <el-form-item prop="caseCauseName" label="案由">
+                  <el-input :disabled="true" clearable class="w-120" v-model="formData.caseCauseName" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -68,7 +68,7 @@
           <div class="content_form bottom_form">
             <div class="row">
               <div class="col">
-                <el-form-item label="执行方式">
+                <el-form-item label="是否重大案件">
                   <el-row>
                     <el-col :span="4">
                       <el-checkbox label="是否重大案件" v-model="formData.isImportant" @change="changeImportant"></el-checkbox>
@@ -153,10 +153,10 @@
             </el-col>
           </el-row>
           <div class="table_form">
-            <el-table :data="evidenceTableDatas" stripe border style="width: 100%" height="100%" @current-change="handleEviNameChange">
+            <el-table :data="evidenceTableDatas" stripe border style="width: 100%" height="100%" @cell-click="handleEviNameChange">
               <el-table-column type="index" label="序号" align="center">
               </el-table-column>
-              <el-table-column prop="evName" label="证据名称" align="center">
+              <el-table-column prop="evName" label="证据名称" align="center" >
               </el-table-column>
               <el-table-column prop="createTime" label="时间" align="center">
               </el-table-column>
@@ -207,6 +207,8 @@
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <partyRightsEvidence ref="partyRightsEvidenceRef" @findEvidenceEmit="findEvidence"></partyRightsEvidence>
     <editEvidenceName ref="editEvidenceNameRef" @findEvidenceEmit="findEvidence"></editEvidenceName>
+    <showEvidenDia ref="showEvidenDiaRef"></showEvidenDia>
+
   </div>
 </template>
 <script>
@@ -215,6 +217,7 @@ import { mapGetters } from "vuex";
 import checkDocFinish from '../../components/checkDocFinish'
 import partyRightsEvidence from '@/page/caseHandle/components/partyRightsEvidence'
 import editEvidenceName from '@/page/caseHandle/components/editEvidenceName'
+import showEvidenDia from '@/page/caseHandle/components/showEvidenDia'
 
 import { findByCondition,deleteDocByIdApi,
     } from "@/api/caseHandle";
@@ -223,12 +226,13 @@ export default {
     checkDocFinish,
     partyRightsEvidence,
     editEvidenceName,
+    showEvidenDia,
   },
   data() {
     return {
       formData: {
         caseNumber:"",
-        caseName:"",
+        caseCauseName:"",
         illegalFact:"",
         illegalLaw:"",
         punishLaw:"",
@@ -253,13 +257,8 @@ export default {
       pageSize: 10, //pagesize
       total: 0, //总数
       rules: {
-        caseNumber: [
-          { required: true, message: '案号必须填写', trigger: 'blur' }
-        ],
-        // caseName: [
-        //   { required: true, message: '案由必须填写', trigger: 'blur' }
-        // ],
       },
+      needDealData:true,
     }
   },
   mixins: [mixinGetCaseApiList],
@@ -372,12 +371,14 @@ export default {
       this.findEvidence();
     },
     //修改证据名称
-    handleEviNameChange(row){
-      console.log(row);
-      this.$refs.editEvidenceNameRef.showModal(row);
+    handleEviNameChange(row,column){
+      console.log(row,column);
+      if(column.property == "evName"){
+        this.$refs.editEvidenceNameRef.showModal(row);
+      }
     },
-    showEvidence(){
-
+    showEvidence(data){
+        this.$refs.showEvidenDiaRef.showModal(data.row);
     },
     //更改 是否是重大案件
     changeImportant(val){
