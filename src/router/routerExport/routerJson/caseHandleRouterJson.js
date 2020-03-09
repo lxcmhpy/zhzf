@@ -602,22 +602,22 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/spotAdmPunishDecisionDoc.vue")
   },
-  {
-    path: "/payStageDoc",
-    name: "payStageDoc",
-    meta: {
-      title: "分期（延期）缴纳罚款通知书"
-    },
-    component: () => import("@/page/caseHandle/case/modle/payStageDoc.vue")
-  },
-  {
-    path: "/executAnnounceDoc",
-    name: "executAnnounceDoc",
-    meta: {
-      title: "执行公告"
-    },
-    component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
-  },
+  // {
+  //   path: "/payStageDoc",
+  //   name: "payStageDoc",
+  //   meta: {
+  //     title: "分期（延期）缴纳罚款通知书"
+  //   },
+  //   component: () => import("@/page/caseHandle/case/modle/payStageDoc.vue")
+  // },
+  // {
+  //   path: "/executAnnounceDoc",
+  //   name: "executAnnounceDoc",
+  //   meta: {
+  //     title: "执行公告"
+  //   },
+  //   component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
+  // },
   {
     path: "/remindLetterDoc",
     name: "remindLetterDoc",
