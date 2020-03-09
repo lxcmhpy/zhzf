@@ -143,12 +143,12 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getSelectOrgan();
+      this.getDictList();
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getSelectOrgan();
+      this.getDictList();
     },
   },
   created() {
