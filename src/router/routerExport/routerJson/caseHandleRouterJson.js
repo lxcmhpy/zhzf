@@ -296,6 +296,16 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/orderCorrectIllegalAct.vue")
   },
+  //不予处罚
+  {
+    path: "/noPenalty",
+    name: "noPenalty",
+    meta: {
+      title: "不予处罚",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/modle/noPenalty.vue")
+  },
   //当事人权利
   {
     path: "/partyRights",

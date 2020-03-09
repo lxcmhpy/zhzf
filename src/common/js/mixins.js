@@ -259,13 +259,14 @@ export const mixinGetCaseApiList = {
           data.docId = "2c9029ca5b71686d015b719fe0900026";
           break;
         case "2c9029ee6cac9281016caca9a0000004":   //责令改正
-          data.nextLink = "order";
+          data.nextLink = "forceCorrect";
+          data.docId = "2c9029cc6a901fbe016a911e2dae000b";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204f":   //移交移送
           data.nextLink = "";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204g":   //不予处罚
-          data.nextLink = "";
+          data.nextLink = "noPenalty";
           break;
         case "2c9029ac6c26fd72016c27247b290003":   //当事人权利
           data.nextLink = "partyRights";

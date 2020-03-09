@@ -1,0 +1,236 @@
+<template>
+  <div class="box">
+    <el-form ref="caseLinkDataForm">
+      <el-input ref="id" type="hidden"></el-input>
+    </el-form>
+    <el-form ref="docForm" :model="formData" label-width="105px">
+      <div class="content_box">
+        <div class="content">
+          <div class="content_title">
+            不予处罚 
+          </div>
+          <div class="border_blue"></div>
+
+          <div class="content_form">
+            
+            <div class="row">
+              <div class="col">
+                <el-form-item label="原因">
+                  <el-radio-group v-model="formData.reason">
+                    <el-radio :label="0">违法行为轻微</el-radio>
+                    <el-radio :label="1">违法事实不能成立</el-radio>
+                    <br>
+                    <el-radio :label="2">其他原因</el-radio>
+                    <el-form-item prop="otherReason" style="margin-top:-8px">
+                      <el-input v-model="formData.otherReason" :maxLength="maxLength" placeholder="\"></el-input>
+                    </el-form-item>
+                  </el-radio-group>
+                </el-form-item>
+              </div>
+            </div>
+            <el-row :gutter="20">
+              <el-col :span="16">
+                <el-form-item label="附件">
+                  <el-input v-model="formData.fileName"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <div class="second_title_btns">
+                  <el-upload
+                      class="upload-demo"
+                      action
+                      :show-file-list="true"
+                      :auto-upload="false"
+                      :on-change="fileChange" >
+                      <el-button size="small" type="primary">上传附件</el-button>
+                  </el-upload>
+                </div>
+              </el-col>
+            </el-row>
+            <div class="row">
+              <div class="col">
+                <el-form-item prop="notes" label="备注">
+                  <el-input type="textarea" ref="notes" clearable class="height106" v-model="formData.notes" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+            </div>
+          </div>
+          <div class="border_blue"></div>
+        </div>
+      </div>
+      <div class="content_box">
+
+        <!-- 悬浮按钮 -->
+        <div class="float-btns ">
+
+          <el-button type="primary" @click="continueHandle" v-if="!this.$route.params.isComplete">
+           <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2285" width="24" height="24">
+              <path d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z" fill="#FFFFFF" p-id="2286"></path>
+            </svg><br>
+            下一<br>环节</el-button>
+          <el-button type="primary" @click="submitCaseDoc(1)" v-if="!this.$route.params.isComplete">
+            <i class="iconfont law-save"></i>
+            <br>
+            保存</el-button>
+        </div>
+      </div>
+    </el-form>
+  </div>
+</template>
+<script>
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import { mapGetters } from "vuex";
+import checkDocFinish from '../../components/checkDocFinish'
+import partyRightsEvidence from '@/page/caseHandle/components/partyRightsEvidence'
+import editEvidenceName from '@/page/caseHandle/components/editEvidenceName'
+
+import { findByCondition,deleteDocByIdApi,
+    } from "@/api/caseHandle";
+export default {
+  data() {
+    return {
+      formData: {
+        caseNumber:"",
+        caseName:"",
+        illegalFact:"",
+        illegalLaw:"",
+        punishLaw:"",
+        tempPunishAmount:"",
+        checkList: "",
+        isImportant: true
+      },
+      //提交方式
+      handleType: 0, //0  暂存     1 提交
+      caseLinkDataForm: {
+        id: "", //修改的时候用
+        caseBasicinfoId: '', //案件id
+        caseLinktypeId: "a36b59bd27ff4b6fe96e1b06390d204g", //不予处罚的表单ID
+        //表单数据
+        formData: "",
+        status: ""
+      },
+      evfile:'',
+      rules: {
+        reason: [
+          { required: true, message: '原因必须填写', trigger: 'blur' }
+        ],
+      },
+    }
+  },
+  mixins: [mixinGetCaseApiList],
+  computed: { ...mapGetters(['caseId']) },
+  inject: ['reload'],
+  methods: {
+    //加载表单信息
+    setFormData() {
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, false);
+    },
+    submitCaseDoc(handleType) {
+      //参数  提交类型 、formRef、有无下一环节按
+      this.com_submitCaseForm(handleType, 'docForm', false);
+    },
+    //下一环节
+    continueHandle() {
+      let caseData={
+        caseBasicinfoId:this.caseLinkDataForm.caseBasicinfoId,
+        caseLinktypeId:this.caseLinkDataForm.caseLinktypeId,
+      }
+
+      let canGotoNext = true; //是否进入下一环节
+      for(let i=0;i<this.docTableDatas.length;i++){
+        if(this.docTableDatas[i].isRequired===0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
+          canGotoNext = false
+          break;
+        }
+      }
+      if(canGotoNext){
+        this.com_goToNextLinkTu(this.caseId,this.caseLinkDataForm.caseLinktypeId);
+      }else{
+        this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
+      }
+    },
+    
+    //查询证据材料列表
+    findEvidence(){
+      let data={
+        docId:'2c9029ac6c26fd72016c27247b290003',
+        caseId:this.caseId,
+
+      };
+      let _this = this
+      findByCondition(data).then(
+            res => {
+              console.log('证据',res);
+              // _this.evidenceTableDatas = res.data.records;
+              // _this.currentPage = res.data.current;
+              // _this.total = res.data.total;
+            },
+            error => {
+              console.log(error);
+            }
+          );
+    },
+    
+    //选取文件
+    uploadEvidence() {
+      let _this = this
+      var fd = new FormData();
+          console.log('fileName',_this.formData.fileName);
+          console.log('file',_this.evfile);
+          console.log('caseId', _this.caseId);
+          // console.log('docId',_this.linkId);
+
+          fd.append("fileName", _this.formData.fileName);
+          fd.append("file", _this.evfile);
+          fd.append("caseId", _this.caseId);
+          // fd.append("docId", _this.linkId);
+          fd.append("category", '附件');
+
+          uploadEvApi(fd).then(
+            res => {
+              console.log(res);
+              _this.uploadEvidence2(res.data)
+            },
+            error => {
+              console.log(error);
+            }
+          );
+    },
+    //上传附件2
+    uploadEvidence2(id){
+        let data = {
+            caseId:this.caseId,
+            // evName:this.evidenceForm.evName,
+            evType:'照片',
+            status:1,
+            fileId:id,
+        }
+        let _this = this
+        saveOrUpdateEvdencenApi2(data).then(
+            res => {
+              console.log(res);
+            _this.visible = false;
+            // _this.$emit('findEvidenceEmit');
+            //   this.findFile(res.data);
+            },
+            error => {
+              console.log(error);
+            }
+          );
+    }
+  },
+  mounted() {
+    // this.setFormData();
+  },
+  created() {
+    this.setFormData();
+    // 查询证据材料列表
+    this.findEvidence();
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import "@/assets/css/documentForm.scss";
+</style>
