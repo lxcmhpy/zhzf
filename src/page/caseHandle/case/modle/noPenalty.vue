@@ -3,7 +3,7 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="docForm" :model="formData" label-width="105px">
+    <el-form ref="docForm" :model="formData" label-width="105px" :rules="rules">
       <div class="content_box">
         <div class="content">
           <div class="content_title">
@@ -15,37 +15,41 @@
             
             <div class="row">
               <div class="col">
-                <el-form-item label="原因">
-                  <el-radio-group v-model="formData.reason">
-                    <el-radio :label="0">违法行为轻微</el-radio>
-                    <el-radio :label="1">违法事实不能成立</el-radio>
-                    <br>
-                    <el-radio :label="2">其他原因</el-radio>
-                    <el-form-item prop="otherReason" style="margin-top:-8px">
-                      <el-input v-model="formData.otherReason" :maxLength="maxLength" placeholder="\"></el-input>
-                    </el-form-item>
-                  </el-radio-group>
+                <el-form-item label="原因" prop="reason">
+                  <p>
+                    <input type="radio" value="0" v-model="radios" @change="click"/>违法行为轻微
+                    
+                  </p>
+                  <p>
+                    <input type="radio" value="1" v-model="radios" @change="click"/>违法事实不能成立
+                  </p>
+                  <p>
+                    <input type="radio" value="2" v-model="radios" @change="click"/>其他原因<span><el-form-item prop="otherReason">
+                      <el-input v-model="formData.otherReason" v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="\" style= "float :left;width:100px;"></el-input>
+                    </el-form-item></span>
+                  </p>
                 </el-form-item>
               </div>
             </div>
             <el-row :gutter="20">
-              <el-col :span="16">
+              <!-- <el-col :span="16"> -->
                 <el-form-item label="附件">
-                  <el-input v-model="formData.fileName"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <div class="second_title_btns">
                   <el-upload
                       class="upload-demo"
-                      action
+                      action="https://jsonplaceholder.typicode.com/posts/" 
+                      :http-request="uploadFile"
+                      :limit="3"
                       :show-file-list="true"
-                      :auto-upload="false"
-                      :on-change="fileChange" >
+                      :file-list="fileList"
+                      >
                       <el-button size="small" type="primary">上传附件</el-button>
+
+                    <!-- <div slot="tip" class="el-upload__tip">最多上传3个附件</div> -->
+                    <ul>
+                      <li v-for="item in fileListArr" :key="item.id">{{item.fileName}}</li>
+                    </ul>
                   </el-upload>
-                </div>
-              </el-col>
+                </el-form-item>
             </el-row>
             <div class="row">
               <div class="col">
@@ -55,7 +59,7 @@
               </div>
             </div>
           </div>
-          <div class="border_blue"></div>
+          <!-- <div class="border_blue"></div> -->
         </div>
       </div>
       <div class="content_box">
@@ -72,6 +76,10 @@
             <i class="iconfont law-save"></i>
             <br>
             保存</el-button>
+          <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete">
+            <i class="iconfont law-back"></i>
+            <br />返回
+          </el-button>
         </div>
       </div>
     </el-form>
@@ -86,19 +94,24 @@ import editEvidenceName from '@/page/caseHandle/components/editEvidenceName'
 
 import { findByCondition,deleteDocByIdApi,
     } from "@/api/caseHandle";
+import {
+  uploadEvApi,
+  findFileByIdApi,
+  getFile,
+} from "@/api/upload";
 export default {
   data() {
     return {
       formData: {
-        caseNumber:"",
-        caseName:"",
-        illegalFact:"",
-        illegalLaw:"",
-        punishLaw:"",
-        tempPunishAmount:"",
-        checkList: "",
-        isImportant: true
-      },
+        reaason:"",
+        otherReason:"",
+        // fileList:[],
+        notes:"",
+      },  
+      fileList:[], 
+      fileListArr:[],
+      radios:[],
+      disabledOne: true,   
       //提交方式
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
@@ -109,11 +122,12 @@ export default {
         formData: "",
         status: ""
       },
-      evfile:'',
+      lineStyleFlag:false,
+      maxLength:23,
       rules: {
-        reason: [
-          { required: true, message: '原因必须填写', trigger: 'blur' }
-        ],
+        // reason: [
+        //   { required: true, message: '原因必须填写', trigger: 'blur' }
+        // ],
       },
     }
   },
@@ -138,95 +152,79 @@ export default {
       }
 
       let canGotoNext = true; //是否进入下一环节
-      for(let i=0;i<this.docTableDatas.length;i++){
-        if(this.docTableDatas[i].isRequired===0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
-          canGotoNext = false
-          break;
-        }
-      }
+      // for(let i=0;i<this.docTableDatas.length;i++){
+      //   if(this.docTableDatas[i].isRequired===0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
+      //     canGotoNext = false
+      //     break;
+      //   }
+      // }
       if(canGotoNext){
         this.com_goToNextLinkTu(this.caseId,this.caseLinkDataForm.caseLinktypeId);
       }else{
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
       }
     },
-    
-    //查询证据材料列表
-    findEvidence(){
-      let data={
-        docId:'2c9029ac6c26fd72016c27247b290003',
-        caseId:this.caseId,
-
-      };
-      let _this = this
-      findByCondition(data).then(
-            res => {
-              console.log('证据',res);
-              // _this.evidenceTableDatas = res.data.records;
-              // _this.currentPage = res.data.current;
-              // _this.total = res.data.total;
-            },
-            error => {
-              console.log(error);
-            }
-          );
+    handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
-    
-    //选取文件
-    uploadEvidence() {
-      let _this = this
-      var fd = new FormData();
-          console.log('fileName',_this.formData.fileName);
-          console.log('file',_this.evfile);
-          console.log('caseId', _this.caseId);
-          // console.log('docId',_this.linkId);
-
-          fd.append("fileName", _this.formData.fileName);
-          fd.append("file", _this.evfile);
-          fd.append("caseId", _this.caseId);
-          // fd.append("docId", _this.linkId);
-          fd.append("category", '附件');
-
-          uploadEvApi(fd).then(
-            res => {
-              console.log(res);
-              _this.uploadEvidence2(res.data)
-            },
-            error => {
-              console.log(error);
-            }
-          );
-    },
-    //上传附件2
-    uploadEvidence2(id){
-        let data = {
-            caseId:this.caseId,
-            // evName:this.evidenceForm.evName,
-            evType:'照片',
-            status:1,
-            fileId:id,
+    //上传附件
+    uploadFile(param) {
+      console.log(param);
+      var fd = new FormData()
+      fd.append("file", param.file);
+      fd.append('caseId', this.caseId)
+      fd.append('docId', 'a36b59bd27ff4b6fe96e1b06390d204g');
+      uploadEvApi(fd).then(
+        res => {
+          console.log(res);
+          // console.log(this.fileList);
+        },
+        error => {
+          console.log(error)
         }
-        let _this = this
-        saveOrUpdateEvdencenApi2(data).then(
-            res => {
-              console.log(res);
-            _this.visible = false;
-            // _this.$emit('findEvidenceEmit');
-            //   this.findFile(res.data);
-            },
-            error => {
-              console.log(error);
-            }
-          );
+      );
+    },
+    //通过案件ID和文书ID查询附件
+    findFileList(){
+      let data =  {
+        caseId: this.caseId,
+        docId :"a36b59bd27ff4b6fe96e1b06390d204g"
+      }
+      console.log(data);
+      getFile(data).then(
+        res => {
+          console.log("附件列表",res);
+          this.fileListArr = res.data;
+
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    },
+    //返回到流程图
+    backBtn(){
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.go(-1);
+    },
+    click(){
+      if (this.radios.length > 1) {
+        this.radios.shift();
+      }
+      if (this.radios == '0' || this.radios == '1') {
+        this.disabledOne = false;
+      } else if(this.radios == '2'){
+        this.disabledOne = true;
+      } 
     }
   },
+  
   mounted() {
     // this.setFormData();
   },
   created() {
     this.setFormData();
-    // 查询证据材料列表
-    this.findEvidence();
+    this.findFileList();
   }
 }
 </script>
