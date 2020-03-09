@@ -74,9 +74,9 @@
           </div>
           <div class="footer">
             <center>
-                <span class="blue">使用教程</span>
-                |
-                <span class="blue">帮助中心</span>
+              <span class="blue">使用教程</span>
+              |
+              <span class="blue">帮助中心</span>
             </center>
           </div>
         </div>
@@ -108,17 +108,17 @@
                 </div>
 
               </el-form>
-              <div class="footer">
-                <center>
-                    <span class="blue">使用教程</span>
-                    |
-                    <span class="blue">帮助中心</span>
-                </center>
-              </div>
+
             </div>
 
           </div>
-
+          <div class="footer">
+            <center>
+              <span class="blue">使用教程</span>
+              |
+              <span class="blue">帮助中心</span>
+            </center>
+          </div>
         </div>
       </section>
     </transition>
@@ -185,7 +185,7 @@ export default {
 
     //获取验证码
     getCaptcha() {
-        let _this = this
+      let _this = this
       this.$store.dispatch("getCaptcha").then(
         res => {
           let captcha = res.data;
@@ -289,7 +289,7 @@ export default {
 
     //获取菜单
     getMenu() {
-        let _this = this
+      let _this = this
       this.$store.dispatch("getMenu").then(
         res => {
           console.log('获取菜单', res);
@@ -335,7 +335,7 @@ export default {
     },
     //修改密码
     resetPwd(resetForm) {
-        let _this = this
+      let _this = this
       this.$refs[resetForm].validate((valid) => {
         if (valid) {
           console.log(_this.resetForm)

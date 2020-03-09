@@ -238,6 +238,18 @@
                 width: 100%;
             }
         }
+        .upload-demo{
+            .el-upload {
+                width: 100%;
+              }
+              .el-button{
+                  float: right;
+              }
+              li{
+                  float: left;
+                  margin-right: 22px;
+              }
+        }
     }
 
     .el-button-remind {
@@ -438,6 +450,7 @@
     cursor   : pointer;
 }
 
+
 .myhide-expand .el-table__expand-column .cell{
     display: none;
 }
@@ -461,3 +474,4 @@
         }
     }
 }
+
