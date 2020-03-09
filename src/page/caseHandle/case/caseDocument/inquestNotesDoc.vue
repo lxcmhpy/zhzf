@@ -44,7 +44,7 @@
         <p>
           勘验人：<el-form-item prop="staff1" style="width:80px">
             <!-- <el-input v-model="docData.staff1" :maxLength='maxLength' placeholder="\"></el-input> -->
-            <el-select v-model="docData.staff1" :maxLength='maxLength'>
+            <el-select v-model="docData.staff1" :maxLength='maxLength' @change="changeStaff1">
               <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff2==item"></el-option>
             </el-select>
           </el-form-item>
@@ -58,7 +58,7 @@
         </p>
         <p>
           勘验人：<el-form-item prop="staff2" style="width:80px">
-            <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff">
+            <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff2">
               <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
             </el-select>
           </el-form-item>
@@ -371,7 +371,12 @@ export default {
       this.setDataForPelple(dailiData);
     },
     //修改勘验人员
-    changeStaff(val){
+    changeStaff1(val){
+      let staffIndex = this.docData.staff.split(',').indexOf(val);
+      this.docData.certificateId1 = this.docData.certificateId.split(',')[staffIndex];
+      console.log(staffIndex);
+    },
+    changeStaff2(val){
       let staffIndex = this.docData.staff.split(',').indexOf(val);
       this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
       console.log(staffIndex);

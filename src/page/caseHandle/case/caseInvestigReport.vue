@@ -172,12 +172,10 @@
                     <p>理意</p>
                     <p>见</p>
                 </td>
-                <td rowspan="6" colspan="6">
-                   <el-form-item prop="investResult">
-                      <el-input type="textarea" v-model="formData.investResult" v-bind:class="{ over_flow:formData.investResult && formData.investResult.length>100?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="300" placeholder="\"></el-input>
-                    </el-form-item>
+                <td rowspan="6" colspan="6" @click="showLawOfficeOpion">
+                    <p class="approveDiv">{{formData.lawOfficeOpinions}}</p>
                     <div class="pdf_seal">
-                    <p>执法人员签名：{{formData.staff}}</p>
+                    <!-- <p>执法人员签名：</p>
                     <p>
                         时间:
                         <el-form-item prop="makeDate" class="pdf_datapick">
@@ -370,9 +368,6 @@ export default {
       rules: {
         partyUnitTel: [{ validator: validatePhone, trigger: "blur" }],
         illegalFact: [
-          { required: true, message: "请输入", trigger: "blur" }
-        ],
-        investResult : [
           { required: true, message: "请输入", trigger: "blur" }
         ]
       },
