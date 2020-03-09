@@ -144,4 +144,5 @@
 
 <style lang="scss" scoped>
   @import "@/assets/css/personManage.scss";
+  
 </style>
