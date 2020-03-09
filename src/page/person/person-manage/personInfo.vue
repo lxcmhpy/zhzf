@@ -325,7 +325,7 @@ export default {
     }
 }
 </script>
-<style  lang="scss" >
+<style  lang="scss" scoped>
 @import "@/assets/css/searchPage.scss";
 @import "@/assets/css/personManage.scss";
 </style>
