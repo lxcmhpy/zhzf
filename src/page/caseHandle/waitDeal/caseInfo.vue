@@ -21,7 +21,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  {{formData.caseNumber}}
+                  {{formData.caseNumber ? formData.caseNumber : formData.tempNo}}
                   <!-- <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -103,7 +103,7 @@
               <div class="col">
                 <el-form-item label="处罚类型">
                   <!-- 字段名 -->
-                  {{formData.party}}
+                  <!-- {{formData.party}} -->
                   <!-- <el-select v-model="formData.party" placeholder="请选择">
                     <el-option label="行政处罚" value="shanghai"></el-option>
                     <el-option label="处罚类型二" value="beijing"></el-option>
