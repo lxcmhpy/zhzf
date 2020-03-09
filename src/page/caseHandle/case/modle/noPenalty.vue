@@ -17,16 +17,16 @@
               <div class="col">
                 <el-form-item label="原因" prop="reason">
                   <p>
-                    <input type="radio"/>违法行为轻微
+                    <input type="radio" value="0" v-model="radios" @change="click"/>违法行为轻微
                     
                   </p>
                   <p>
-                    <input type="radio"/>违法事实不能成立
+                    <input type="radio" value="1" v-model="radios" @change="click"/>违法事实不能成立
                   </p>
                   <p>
-                    <input type="radio"/>其他原因<el-form-item v-if="!lineStyleFlag" prop="otherReason">
-                      <el-input v-model="formData.otherReason" :maxLength='maxLength' placeholder="\" style= "width:300px;"></el-input>
-                    </el-form-item>
+                    <input type="radio" value="2" v-model="radios" @change="click"/>其他原因<span><el-form-item prop="otherReason">
+                      <el-input v-model="formData.otherReason" v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="\" style= "float :left;width:100px;"></el-input>
+                    </el-form-item></span>
                   </p>
                 </el-form-item>
               </div>
@@ -76,6 +76,10 @@
             <i class="iconfont law-save"></i>
             <br>
             保存</el-button>
+          <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete">
+            <i class="iconfont law-back"></i>
+            <br />返回
+          </el-button>
         </div>
       </div>
     </el-form>
@@ -105,7 +109,9 @@ export default {
         notes:"",
       },  
       fileList:[], 
-      fileListArr:[],   
+      fileListArr:[],
+      radios:[],
+      disabledOne: true,   
       //提交方式
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
@@ -135,10 +141,8 @@ export default {
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, false);
     },
     submitCaseDoc(handleType) {
-      this.formData.fileList = this.fileList;
       //参数  提交类型 、formRef、有无下一环节按
       this.com_submitCaseForm(handleType, 'docForm', false);
-      console.log(this.fileList);
     },
     //下一环节
     continueHandle() {
@@ -194,9 +198,24 @@ export default {
 
         },
         error => {
-          console.log(error)
+          console.log(error);
         }
       )
+    },
+    //返回到流程图
+    backBtn(){
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.go(-1);
+    },
+    click(){
+      if (this.radios.length > 1) {
+        this.radios.shift();
+      }
+      if (this.radios == '0' || this.radios == '1') {
+        this.disabledOne = false;
+      } else if(this.radios == '2'){
+        this.disabledOne = true;
+      } 
     }
   },
   
