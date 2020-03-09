@@ -50,7 +50,7 @@ export const mixinGetCaseApiList = {
               this.formData[key] = formData[key]
             }
             //对环节或文书中的一些字段做处理
-            if(this.needDealData){
+            if (this.needDealData) {
               this.getDataAfter();
             }
             console.log('this.formData', this.formData)
@@ -85,15 +85,15 @@ export const mixinGetCaseApiList = {
             for (var key in caseData) {
               this.formData[key] = caseData[key]
             }
-           this.setSomeData(this.formData);
+            this.setSomeData(this.formData);
           } else {
             for (var key in caseData) {
               this.docData[key] = caseData[key]
             }
           }
-          if(this.needDealData){
+          if (this.needDealData) {
             this.getDataAfter();
-          } 
+          }
         },
         error => {
           console.log(error)
@@ -260,6 +260,13 @@ export const mixinGetCaseApiList = {
             console.log(res.data[0]);
             this.caseDocDataForm.id = res.data[0].id;
             this.docData = JSON.parse(res.data[0].docData);
+          }
+          //判断当事人类型
+          // console.log("docData",this.docData)
+          if (this.docData.party) {
+            this.isParty = true;
+          } else {
+            this.isParty = false;
           }
         },
         err => {
