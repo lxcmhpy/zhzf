@@ -8,38 +8,31 @@
     <div style="width:1000px;height:650px;left:18%;border:1px solid #e4e7ed;">
         <template >
             <keep-alive>
-                <el-tabs v-model="activeName" @tab-click="handleClick">
-                  <el-tab-pane label="审批信息" name="one">
-                    <approval/>
+              <el-tabs v-model="activeName" @tab-click="handleClick" >
+                <el-tab-pane label="基本信息" name="one" style="width:1500px;margin-left:25px;margin-top:25px;">
+                    <personDetailInfo/>
                   </el-tab-pane>
-                  <el-tab-pane label="教育信息" name="two" lazy>
+                  <el-tab-pane label="教育调动" name="two" lazy style="width:1500px;margin-left:25px;margin-top:25px;">
                     <education/>
-                  </el-tab-pane>
-                  <el-tab-pane label="培训信息" name="three" lazy>
-                    <train/>
-                  </el-tab-pane>
-                  <el-tab-pane label="考试信息" name="four" lazy>
-                    <exam/>
-                  </el-tab-pane>
-                  <el-tab-pane label="奖励信息" name="five" lazy>
-                    <reward/>
-                  </el-tab-pane>
-                  <el-tab-pane label="惩罚信息" name="six" lazy>
-                    <punishment/>
-                  </el-tab-pane>
-                  <el-tab-pane label="年审信息" name="seven" lazy>
-                    <annualReview/>
-                  </el-tab-pane>
-                  <el-tab-pane label="审批记录" name="night" lazy>
-                    <approvalRecord/>
-                  </el-tab-pane>
-                  <el-tab-pane label="调岗信息" name="nine" lazy>
                     <adjustingPosts/>
                   </el-tab-pane>
-                  <el-tab-pane label="证件信息" name="ten" lazy>
-                    <certificates/>
+                  <el-tab-pane label="培训考试" name="three" lazy style="width:1500px;margin-left:25px;margin-top:25px;">
+                    <train/>
+                    <exam/>
                   </el-tab-pane>
-                </el-tabs>
+                  <el-tab-pane label="奖励惩罚" name="four" lazy style="width:1500px;margin-left:25px;margin-top:25px;">
+                    <reward/>
+                    <punishment/>
+                  </el-tab-pane>
+                  <el-tab-pane label="证明材料" name="five" lazy style="width:1500px;margin-left:25px;margin-top:25px;">
+                    <material/>
+                  </el-tab-pane>
+                  <el-tab-pane label="证件信息" name="six" lazy style="width:1500px;margin-left:25px;margin-top:25px;">
+                    <approval/>
+                    <certificates/>
+                    <annualReview/>
+                  </el-tab-pane>
+              </el-tabs>
             </keep-alive>
         </template>
       </div>
@@ -58,7 +51,8 @@
     import annualReview from './annualReview'
     import adjustingPosts from './adjustingPosts'
     import approvalRecord from './approvalRecord'
-
+    import material from './material'
+    
     export default {
         name: "personInfo",//人员详情总页面
         data(){
@@ -79,6 +73,7 @@
           approvalRecord,
           adjustingPosts,
           certificates,
+          material
         },
         methods:{
           handleClick(tab, event) {
