@@ -98,6 +98,11 @@
             <el-input ref="title" v-model="addItemObj.title"></el-input>
           </el-form-item>
         </div>
+        <div class="item">
+          <el-form-item label="接口地址" prop="url">
+            <el-input v-model="addItemObj.url"></el-input>
+          </el-form-item>
+        </div>
         <div class="item" v-if="addItemObj.type !== -1">
           <el-form-item label="上级菜单" prop="parentId">
             <elSelectTree
