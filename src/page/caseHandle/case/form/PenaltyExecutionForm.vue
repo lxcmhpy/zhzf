@@ -156,8 +156,8 @@
         <div class="content">
           <div class="table_form">
             <el-table :data="docTableDatas" row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" default-expand-all stripe border style="width: 100%" max-height="250">
-              <el-table-column prop="name" label="序号" align="center"></el-table-column>
-              <el-table-column prop="isApproval" label="材料名称" align="center"></el-table-column>
+              <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
+              <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
                   <span v-if="scope.row.status == '1'">已完成</span>
@@ -348,7 +348,14 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      this.com_viewDoc(row);
+      if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false) {
+        console.log("弹窗")
+        this.$refs.addDialogRef.showModal(row,this.isSaveLink);
+      }
+      else{
+        this.com_viewDoc(row);
+      }
+      
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
@@ -356,23 +363,6 @@ export default {
         linkTypeId: "2c9029e16c753a19016c755fe1340001" //环节ID
       };
       this.com_getDocListByCaseIdAndFormId(data);
-      // this.docTableDatas.push({
-      //     id: 3,
-      //     date: '2016-05-01',
-      //     name: '王小虎',
-      //     isApproval: '上海市普陀区金沙江路 1519 弄',
-      //     children: [{
-      //         id: 31,
-      //         date: '2016-05-01',
-      //         name: '王小虎',
-      //         isApproval: '上海市普陀区金沙江路 1519 弄'
-      //       }, {
-      //         id: 32,
-      //         date: '2016-05-01',
-      //         name: '王小虎',
-      //         isApproval: '上海市普陀区金沙江路 1519 弄'
-      //     }]
-      //   })
     },
     //预览pdf
     viewDocPdf(row) {
