@@ -2,7 +2,7 @@ import { mapGetters } from "vuex";
 import { htmlExportPDF } from '@/common/js/htmlExportPDF';
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi
+  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi,getDocDetailByIdApi
 } from "@/api/caseHandle";
 export const mixinGetCaseApiList = {
   data() {
@@ -76,6 +76,7 @@ export const mixinGetCaseApiList = {
         caseBasicInfoId: caseId,
         typeId: formOrDocId
       };
+      console.log('data',data);
       findCaseAllBindPropertyApi(data).then(
         res => {
           console.log('获取案件信息', res)
@@ -321,16 +322,19 @@ export const mixinGetCaseApiList = {
       this.$store.dispatch("getDocListByCaseIdAndFormId", data).then(
         res => {
           this.docTableDatas = res.data;
-          this.docTableDatasCopy = this.docTableDatasCopy ? this.docTableDatas : '';
-          console.log('文书列表', this.docTableDatas)
+          this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
+          console.log('文书列表', this.docTableDatas);
+          if(params.linkTypeId == '2c90293b6c178b55016c17c93326000f'){ //调查类文书
+            this.setMoreDocTableTitle();
+          }
         },
         err => {
           console.log(err);
         }
       );
     },
-    //查看环节下的文书
-    com_viewDoc(row) {
+    //查看或新增环节下的文书
+    com_viewDoc(row,handelType='') {
       console.log(row);
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
@@ -340,13 +344,16 @@ export const mixinGetCaseApiList = {
           params: {
             id: row.id,
             docId: row.docId,
-            url: this.$route.name
+            url: this.$route.name,
+            handelType:handelType,
+            docDataId:row.docDataId
           }
         });
       } else {
         this.$message('请先保存该环节表单');
       }
     },
+
     //立案登记表提交之后调用  更新案由等信息到案件基本信息中
     com_updatePartCaseBasicInfo(formData) {
       let data = {
@@ -527,6 +534,16 @@ export const mixinGetCaseApiList = {
       } else {
         this.$router.push({ name: data2.nextLink })
       }
+    },
+    //根据id获取文书信息(使用场景:询问笔录查看详情）
+    getDocDetailById(id){
+      getDocDetailByIdApi(id).then(res=>{
+        console.log(res);
+        this.caseDocDataForm.id = res.data.id;
+        this.docData = JSON.parse(res.data.docData);
+      },err=>{
+        console.log(err)
+      })
     }
 
   },
