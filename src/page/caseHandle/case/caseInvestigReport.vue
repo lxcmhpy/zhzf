@@ -172,14 +172,19 @@
                     <p>理意</p>
                     <p>见</p>
                 </td>
-                <td rowspan="6" colspan="6">
+                <td rowspan="6" colspan="6" @click="showLawOfficeOpion">
+                    <p class="approveDiv">{{formData.lawOfficeOpinions}}</p>
                     <div class="pdf_seal">
-                    <p>执法人员签名：</p>
+                    <!-- <p>执法人员签名：</p>
                     <p>
                         时间:
                         <el-form-item prop="makeDate" class="pdf_datapick">
                         <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon="el-icon-circle-close"></el-date-picker>
                         </el-form-item>
+                    </p> -->
+                    <p>执法人员签名：{{formData.lawOfficeName}}</p>
+                    <p>
+                        {{formData.lawOfficeApprovalTime}}
                     </p>
                     </div>
                 </td>
@@ -297,17 +302,21 @@
     <!-- 审批 -->
     <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
+    <!-- 执法人员意见弹窗 -->
+    <showLawOfficerOpion ref="showLawOfficerOpionRef" @sendLawOfficeOpionEmit="getLawOfficeOpion"></showLawOfficerOpion>
   </div>
 </template>
 <script>
 import showApprovePeople from "../components/showApprovePeople";
 import approvalDialog from "../components/approvalDialog";
+import showLawOfficerOpion from "../components/showLawOfficerOpion";
 import investigRpEvidence from "../components/investigRpEvidence";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   data() {
@@ -337,6 +346,9 @@ export default {
         thirdApprovePeo: "",
         thirdApproveTime: "",
         evidenceList: [], //证据材料
+        lawOfficeOpinions:'',
+        lawOfficeName:'',
+        lawOfficeApprovalTime:'',
         // investigProcess: "",
         // caseCauseDescrib: "",
         // isMajorCase: "1",
@@ -396,6 +408,7 @@ export default {
     casePageFloatBtns,
     investigRpEvidence,
     caseSlideMenu,
+    showLawOfficerOpion,
   },
   methods: {
     //加载表单信息
@@ -576,6 +589,16 @@ export default {
     },
     showEvidence() {
       this.$refs.investigRpEvidenceRef.showModal(this.formData.evidenceList);
+    },
+    //执法人员审核意见带入
+    showLawOfficeOpion(){
+      this.$refs.showLawOfficerOpionRef.showModal();
+    },
+    getLawOfficeOpion(lawOfficeOpionData){
+      console.log(lawOfficeOpionData);
+      this.formData.lawOfficeOpinions = lawOfficeOpionData.lawOfficeOpinions;
+      this.formData. lawOfficeName = iLocalStroage.gets('userInfo').username;
+      this.formData.lawOfficeApprovalTime = lawOfficeOpionData.lawOfficeApprovalTime;
     },
     //证据列表弹窗传来的证据
     receiverEviden(data) {
