@@ -493,8 +493,3 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/css/documentForm.scss";
 </style>
-<style scoped>
-.upload-demo /deep/ .el-upload {
-  float: right;
-}
-</style>

@@ -238,6 +238,18 @@
                 width: 100%;
             }
         }
+        .upload-demo{
+            .el-upload {
+                width: 100%;
+              }
+              .el-button{
+                  float: right;
+              }
+              li{
+                  float: left;
+                  margin-right: 22px;
+              }
+        }
     }
 
     .el-button-remind {
@@ -437,3 +449,4 @@
     font-size: 20px;
     cursor   : pointer;
 }
+
