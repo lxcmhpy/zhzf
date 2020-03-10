@@ -37,9 +37,9 @@
     <div class="departTable">
       <p>
         {{selectCurrentTreeName}}
-        <span class="editSelectNode" @click="editSelectNode">
+        <!-- <span class="editSelectNode" @click="editSelectNode">
           <i class="iconfont law-btn_bianji"></i>
-        </span>
+        </span> -->
       </p>
       <div class="handelBtn">
         <div>子机构列表</div>
