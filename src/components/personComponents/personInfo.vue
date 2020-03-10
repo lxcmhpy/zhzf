@@ -1,11 +1,5 @@
 <template>
-  <div style="left: 18%">
-    <div style="width:1000px;height: 38%;text-align: center">
-      <template>
-        <personDetailInfo/>
-      </template>
-    </div>
-    <div style="width:1000px;height:650px;left:18%;border:1px solid #e4e7ed;">
+    <div style="margin-top:-120px;">
         <template >
             <keep-alive>
               <el-tabs v-model="activeName" @tab-click="handleClick" >
@@ -36,7 +30,6 @@
             </keep-alive>
         </template>
       </div>
-    </div>
 </template>
 
 <script>
@@ -58,7 +51,6 @@
         data(){
           return {
             activeName:'one',
-            divStyle:"divStyle",
           }
         },
         components:{
@@ -85,4 +77,7 @@
 
 <style lang="scss" scoped>
  @import "@/assets/css/personManage.scss";
+ .el-tabs__nav is-top{
+   transform: translateX(400px);
+ }
 </style>

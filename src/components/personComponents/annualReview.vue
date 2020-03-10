@@ -1,10 +1,12 @@
 <template>
   <div>
     <div>
+        <div style="margin-top:50px;margin-bottom:50px;">
+            <font style="font-size:42px;">年审信息</font> 
+        </div>
         <el-table
           :data="tableData"
-          border
-          style="width: 100%;height:610px">
+          resizable >
           <el-table-column prop="reviewYear" label="年审年份"></el-table-column>
           <el-table-column prop="reviewDate" label="年审日期"></el-table-column>
           <el-table-column prop="reviewScore" label="年审成绩"></el-table-column>
