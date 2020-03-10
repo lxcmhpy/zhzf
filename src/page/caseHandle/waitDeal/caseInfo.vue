@@ -182,7 +182,9 @@ import caseSlideMenu from '../components/caseSlideMenu'
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-
+import {
+  getCaseBasicInfoApi
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -265,7 +267,16 @@ export default {
   },
   mounted(){
     if(this.$route.params.fromSlide){
-      this.com_getCaseBasicInfo(this.caseId);
+      let data ={id:this.caseId}
+      getCaseBasicInfoApi(data).then(res=>{
+        console.log(res);
+        let caseData = res.data;
+         for (var key in caseData) {
+            this.formData[key] = caseData[key]
+          }
+      },err=>{
+        console.log(err);
+      })
     }else{
       this.formData = this.caseInfo;
     }

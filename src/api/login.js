@@ -8,25 +8,55 @@ let vm = new Vue();
  * @param {*} params.account  必填 账号
  * @param {*} params.password  必填  密码
  */
+// export function loginInApi(params) {
+
+//   let data = vm.$qs.stringify({
+//     username: params.username,
+//     password: params.password,
+//     code: params.code,
+//     captchaId: params.captchaId
+//   })
+//   console.log(data)
+//   return request({
+//     url: "/login",
+//     method: "POST",
+//     contentType: 'multipart/form-data',
+//     data:data,
+//     showloading: true,
+//     baseUrlType:1,
+//     cancelToken: setCancelSource()
+//   });
+// }
+
 export function loginInApi(params) {
 
   let data = vm.$qs.stringify({
     username: params.username,
     password: params.password,
-    code: params.code,
-    captchaId: params.captchaId
+    grant_type:'password'
   })
   console.log(data)
   return request({
-    url: "/login",
+    url: "/auth/oauth/token",
     method: "POST",
-    contentType: 'multipart/form-data',
     data:data,
+    // auth:{
+    //   username: 'catsic',
+    //   password: 'catsic'
+    // },
+    headers: {
+      'Authorization': 'Basic Y2F0c2ljOmNhdHNpYw=='
+    },
     showloading: true,
     baseUrlType:1,
     cancelToken: setCancelSource()
   });
 }
+
+
+
+
+
 //修改密码
 export function resetPasswordApi(params) {
 
