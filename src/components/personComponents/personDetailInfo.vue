@@ -1,6 +1,217 @@
 <template>
-  <div>
-    <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition" v-show="!isShowAddPerson">
+  <div class="dentail_info_box">
+    <el-form ref="form" :model="personInfoDetailForm" label-width="112px">
+
+      <el-button class="edit_btn" type="primary">修改</el-button>
+      <!--基本信息 -->
+      <div class="info_box">
+        <hr class="line" />
+        <div class="info_content float">
+          <div class="center_content">
+            <span class="titleflag">
+            </span>
+            <span class="title">历史查验</span>
+          </div>
+          <div class="info_body">
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="姓名：" prop="name">
+                  {{personInfoDetailForm.personName}}
+                  <!-- <el-input v-model="personInfoDetailForm.name"></el-input> -->
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="身份证号：" prop="name">
+                  {{personInfoDetailForm.idNo}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="性别：" prop="name">
+                  {{personInfoDetailForm.sexName}}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="出生日期：" prop="name">
+                  {{personInfoDetailForm.birthDate}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="民族：" prop="name">
+                  {{personInfoDetailForm.nationName}}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="参加工作日期：" prop="name">
+                  {{personInfoDetailForm.workDate}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="政治面貌：" prop="name">
+                  {{personInfoDetailForm.politicalStatusName}}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="入党日期：" prop="name">
+                  {{personInfoDetailForm.admissionDate}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+        <!-- 照片 -->
+        <div class="img_box float">
+          <img :src="imageUrl" alt="">
+        </div>
+
+      </div>
+      <!-- 学历信息 -->
+      <div class="info_box">
+        <hr class="line" />
+        <div class="info_content">
+          <div class="center_content">
+            <span class="titleflag">
+            </span>
+            <span class="title">学历信息</span>
+          </div>
+          <div class="info_body">
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="学历：" prop="name">
+                  {{personInfoDetailForm.degreeName}}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="毕业学校：" prop="name">
+                  {{personInfoDetailForm.school}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="毕业专业：" prop="name">
+                  {{personInfoDetailForm.majorName}}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="毕业证书编号：" prop="name">
+                  {{personInfoDetailForm.graduationNo}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="分配渠道：" prop="name">
+                  {{personInfoDetailForm.disChannelName}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+
+      </div>
+      <!-- 工作信息 -->
+      <div class="info_box">
+        <hr class="line" />
+
+        <div class="info_content">
+          <div class="center_content">
+            <span class="titleflag">
+            </span>
+            <span class="title">工作信息</span>
+          </div>
+          <div class="info_body">
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="所属机构：" prop="name">
+                  {{personInfoDetailForm.oidName}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="岗位：" prop="name">
+
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="岗位状态：" prop="name">
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="职务：" prop="name">
+                  {{personInfoDetailForm.oidName}}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="人员编制：" prop="name">
+                  {{personInfoDetailForm.staffingName}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="执法领域：" prop="name">
+                  {{personInfoDetailForm.certNo}}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="执法区域：" prop="name">
+                  {{personInfoDetailForm.area}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="省内执法证号：" prop="name">
+                  {{personInfoDetailForm.provinceNo}}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="海事执法证号：" prop="name">
+                  {{personInfoDetailForm.maritimeNo}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="部级执法证号：" prop="name">
+                  {{personInfoDetailForm.ministerialNo}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="证件办理状态：" prop="name">
+                  {{personInfoDetailForm.certStatusName}}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="当前证件状态：" prop="name">
+                  {{personInfoDetailForm.certStatusName}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="备注：" prop="name">
+                  {{personInfoDetailForm.note}}
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition" v-show="!isShowAddPerson">
       <div class="el-table__body-wrapper is-scrolling-none">
         <table class="el-table__body">
             <tr class="el-table__row">
@@ -32,10 +243,10 @@
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>*&nbsp;民&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族：</font></td>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.nationName}}</font></td>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>分配渠道：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.disChannelName}}</font></td>
-              <!--<td class="el-table_column_center" style="font-weight:bold;"><font size=4>*参加工作日期：</font></td>
+              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.disChannelName}}</font></td> -->
+      <!--<td class="el-table_column_center" style="font-weight:bold;"><font size=4>*参加工作日期：</font></td>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.workDate}}</font></td>-->
-            </tr>
+      <!-- </tr>
             <tr class="el-table__row">
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>*政治面貌：</font></td>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.politicalStatusName}}</font></td>
@@ -65,14 +276,14 @@
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.majorName}}</font></td>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>毕业证书编号：</font></td>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.graduationNo}}</font></td>
-            </tr>
-            <!--<tr>
+            </tr> -->
+      <!--<tr>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>岗位状态：</font></td>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>待确定</font></td>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>分配渠道：</font></td>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.disChannelName}}</font></td>
             </tr>-->
-            <tr class="el-table__row">
+      <!-- <tr class="el-table__row">
             <td class="el-table_column_center" style="font-weight:bold;"><font size=4>执法领域(门类)：</font></td>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.certNo}}</font></td>
               <td class="el-table_column_center" style="font-weight:bold;"><font size=4>执法区域：</font></td>
@@ -98,21 +309,21 @@
             </tr>
         </table>
       </div>
-    </div>
-    <!--  修改页面 -->
-    <div v-show="isShowAddPerson" style="margin-left:-20px;">
+    </div> -->
+      <!--  修改页面 -->
+      <!-- <div v-show="isShowAddPerson" style="margin-left:-20px;">
         <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition">
           <div class="el-table__body-wrapper is-scrolling-none">
             <table class="el-table__body">
                 <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*&nbsp;姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <!--<td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.personName}}</font></td>-->
-                  <td class="el-table_column_left" style="font-weight:bold;text-align:left" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.personName"/></td>
+                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*&nbsp;姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td> -->
+      <!--<td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.personName}}</font></td>-->
+      <!-- <td class="el-table_column_left" style="font-weight:bold;text-align:left" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.personName"/></td>
                   <td class="el-table_column_center" style="font-weight:bold;text-align:right" rowspan="4"><font size=4>人员照片：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
                   <td class="el-table_column" style="text-align:center" rowspan="4">
-                    <div class="block">
-                      <!--<el-avatar shape="square" :size="200" :src="url"></el-avatar>-->
-                      <el-upload
+                    <div class="block"> -->
+      <!--<el-avatar shape="square" :size="200" :src="url"></el-avatar>-->
+      <!-- <el-upload
                           class="avatar-uploader"
                           action="https://jsonplaceholder.typicode.com/posts/"
                           :show-file-list="false"
@@ -153,21 +364,21 @@
                   <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.disChannelName"/>
                     </font>
-                  </td>
-                  <!--<td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*参加工作日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
+                  </td> -->
+      <!--<td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*参加工作日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
                   <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.workDate"/>
                     </font></td>-->
-                </tr>
+      <!-- </tr>
                 <tr class="el-table__row">
                   <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*政治面貌：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
                   <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.politicalStatusName"/>
                     </font></td>
                   <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>入党日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!--<input class="el-input__inner" v-model="personInfoDetailForm.admissionDate"/>-->
-                    <el-date-picker v-model="personInfoDetailForm.admissionDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4> -->
+      <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.admissionDate"/>-->
+      <!-- <el-date-picker v-model="personInfoDetailForm.admissionDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
                         style="width: 320px;" placeholder="请选择入党日期" :disabled='isDisabled' clearable >
                     </el-date-picker>
                     </font></td>
@@ -211,8 +422,8 @@
                   <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.graduationNo"/>
                    </font></td>
-                </tr>
-                <!--<tr>
+                </tr> -->
+      <!--<tr>
                   <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>岗位状态：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
                   <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>待确定</font></td>
                   <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>分配渠道：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
@@ -220,7 +431,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.disChannelName"/>
                     </font></td>
                 </tr>-->
-                <tr class="el-table__row">
+      <!-- <tr class="el-table__row">
                 <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>执法领域(门类)：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
                   <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.certNo"/>
@@ -261,166 +472,192 @@
                     </font></td>
                 </tr>
             </table>
-          </div>
+          </div> 
         </div>
-    </div>
+    </div>-->
+    </el-form>
   </div>
 </template>
 <script>
-    export default {
-        name: "personDetailInfo",//人员基本信息组件
-        data(){
-          return {
-            imageUrl:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            isDisabled:true,
-            isShowAddPerson:this.$route.params.pageStatus=='0'?false:true,
-            personInfoDetailForm:{
-              personId:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.personId:'',
-              orgName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.orgName:'',
-              school:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.school:'',
-              branchName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.branchName:'',
-              branchIdName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.branchIdName:'',
-              personName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.personName:'',
-              sex:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.sex:'',
-              sexName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.sexName:'',
-              nation:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.nation:'',
-              degree:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.degree:'',
-              idNo:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.idNo:'',
-              birthDate:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.birthDate:'',
-              workDate:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.workDate:'',
-              enfoceDate:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.enfoceDate:'',
-              major:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.major:'',
-              graduationNo:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.graduationNo:'',
-              disChannel:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.disChannel:'',
-              post:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.post:'',
-              area:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.area:'',
-              provinceNo:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.provinceNo:'',
-              ministerialNo:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.ministerialNo:'',
-              maritimeNo:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.maritimeNo:'',
-              staffing:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.staffing:'',
-              certNo:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.certNo:'',
-              qualificationNo:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.qualificationNo:'',
-              politicalStatus:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.politicalStatus:'',
-              admissionDate:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.admissionDate:'',
-              certStatus:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.certStatus:'',
-              personStatus:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.personStatus:'',
-              note:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.note:'',
-              attached:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.attached:'',
-              nationName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.nationName:'',
-              degreeName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.degreeName:'',
-              oidName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.oidName:'',
-              branchIdName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.branchIdName:'',
-              politicalStatusName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.politicalStatusName:'',
-              staffingName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.staffingName:'',
-              postName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.postName:'',
-              certStatusName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.certStatusName:'',
-              disChannelName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.disChannelName:'',
-              personStatusName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.personStatusName:'',
-              majorName:this.$route.params.pageStatus=='0'?this.$route.params.personInfo.majorName:'',
-            },
-          }
-        },
-        methods:{
-          editPersonPage(){
-            this.isShowAddPerson=true;
-          },
-          savePersonPage(){
-              //修改
-              this.$store.dispatch("updatePersonInfo", this.personInfoDetailForm).then(res => {
-                  this.$emit("getAllPersons");
-                      this.$message({
-                          type: "success",
-                          message:  "修改成功!",
-                      });
-                      //this.$refs["addPersonForm"].resetFields();
-                      //this.visible = false;
-                      this.isShowAddPerson=false;
-                  });
-                  err => {
-                      console.log(err);
-              };
-          },
-          handleAvatarSuccess(res, file) {
-            this.imageUrl = URL.createObjectURL(file.raw);
-          },
-          beforeAvatarUpload(file) {
-              const isJPG = file.type === 'image/jpeg';
-              const isLt2M = file.size / 1024 / 1024 < 2;
-
-              if (!isJPG) {
-              this.$message.error('上传头像图片只能是 JPG 格式!');
-              }
-              if (!isLt2M) {
-              this.$message.error('上传头像图片大小不能超过 2MB!');
-              }
-              return isJPG && isLt2M;
-          },
-        }
+export default {
+  name: "personDetailInfo",//人员基本信息组件
+  data() {
+    return {
+      imageUrl: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+      isDisabled: true,
+      isShowAddPerson: this.$route.params.pageStatus == '0' ? false : true,
+      personInfoDetailForm: {
+        personId: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.personId : '',
+        orgName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.orgName : '',
+        school: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.school : '',
+        branchName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.branchName : '',
+        branchIdName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.branchIdName : '',
+        personName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.personName : '',
+        sex: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.sex : '',
+        sexName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.sexName : '',
+        nation: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.nation : '',
+        degree: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.degree : '',
+        idNo: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.idNo : '',
+        birthDate: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.birthDate : '',
+        workDate: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.workDate : '',
+        enfoceDate: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.enfoceDate : '',
+        major: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.major : '',
+        graduationNo: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.graduationNo : '',
+        disChannel: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.disChannel : '',
+        post: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.post : '',
+        area: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.area : '',
+        provinceNo: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.provinceNo : '',
+        ministerialNo: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.ministerialNo : '',
+        maritimeNo: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.maritimeNo : '',
+        staffing: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.staffing : '',
+        certNo: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.certNo : '',
+        qualificationNo: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.qualificationNo : '',
+        politicalStatus: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.politicalStatus : '',
+        admissionDate: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.admissionDate : '',
+        certStatus: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.certStatus : '',
+        personStatus: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.personStatus : '',
+        note: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.note : '',
+        attached: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.attached : '',
+        nationName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.nationName : '',
+        degreeName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.degreeName : '',
+        oidName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.oidName : '',
+        branchIdName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.branchIdName : '',
+        politicalStatusName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.politicalStatusName : '',
+        staffingName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.staffingName : '',
+        postName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.postName : '',
+        certStatusName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.certStatusName : '',
+        disChannelName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.disChannelName : '',
+        personStatusName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.personStatusName : '',
+        majorName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.majorName : '',
+      },
     }
+  },
+  methods: {
+    editPersonPage() {
+      this.isShowAddPerson = true;
+    },
+    savePersonPage() {
+      //修改
+      this.$store.dispatch("updatePersonInfo", this.personInfoDetailForm).then(res => {
+        this.$emit("getAllPersons");
+        this.$message({
+          type: "success",
+          message: "修改成功!",
+        });
+        //this.$refs["addPersonForm"].resetFields();
+        //this.visible = false;
+        this.isShowAddPerson = false;
+      });
+      err => {
+        console.log(err);
+      };
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/personManage.scss";
-   .el-table td {
-    width:320px;
-    height: 60px;
-    border:0px solid #e4e7ed;
+@import "@/assets/css/personManageTitle.scss";
+.el-table td {
+  width: 320px;
+  height: 60px;
+  border: 0px solid #e4e7ed;
+}
+.fullscreen .el-input .el-input__inner {
+  height: 45px;
+}
+.el-input__inner:hover {
+  border-color: #c0c4cc;
+}
+.el-input__inner {
+  -webkit-appearance: none;
+  background-color: #fff;
+  background-image: none;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  border-top-color: rgb(220, 223, 230);
+  border-right-color: rgb(220, 223, 230);
+  border-bottom-color: rgb(220, 223, 230);
+  border-left-color: rgb(220, 223, 230);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #606266;
+  display: inline-block;
+  font-size: inherit;
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  padding: 0 15px;
+  -webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  width: 100%;
+}
+input {
+  border-radius: 0px !important;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 260px;
+  height: 220px;
+  line-height: 220px;
+  text-align: center;
+}
+.avatar {
+  width: 260px;
+  height: 220px;
+  display: block;
+}
+
+.el-row {
+  margin-bottom: 20px;
+  &:last-child {
+    margin-bottom: 0;
   }
-  .fullscreen .el-input .el-input__inner {
-    height: 45px;
-  }
-  .el-input__inner:hover {
-      border-color: 
-      #C0C4CC;
-  }
-  .el-input__inner {
-    -webkit-appearance: none;
-    background-color: #FFF;
-    background-image: none;
-    border-radius: 4px;
-    border: 1px solid #DCDFE6;
-    border-top-color: rgb(220, 223, 230);
-    border-right-color: rgb(220, 223, 230);
-    border-bottom-color: rgb(220, 223, 230);
-    border-left-color: rgb(220, 223, 230);
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    color:
-        #606266;
-        display: inline-block;
-        font-size: inherit;
-        height: 40px;
-        line-height: 40px;
-        outline: 0;
-        padding: 0 15px;
-        -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-        transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-        width: 100%;
-    }
-    input {
-        border-radius: 0px !important;
-    }
-    .avatar-uploader .el-upload {
-      border: 1px dashed #d9d9d9;
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .avatar-uploader .el-upload:hover {
-      border-color: #409EFF;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: 260px;
-      height: 220px;
-      line-height: 220px;
-      text-align: center;
-    }
-    .avatar {
-      width: 260px;
-      height: 220px;
-      display: block;
-    }
+}
+.el-col {
+  border-radius: 4px;
+}
+.bg-purple-dark {
+  background: #99a9bf;
+}
+.bg-purple {
+  background: #d3dce6;
+}
+.bg-purple-light {
+  background: #e5e9f2;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
 </style>
