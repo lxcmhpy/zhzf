@@ -1,5 +1,5 @@
 <template>
-    <div style="background:red">
+    <div class="top_title shadow">
         <template >
             <keep-alive>
               <el-tabs v-model="activeName" @tab-click="handleClick" >

@@ -9,19 +9,27 @@ let vm = new Vue();
  * @param {*} params.password  必填  密码
  */
 export function loginInApi(params) {
-
   let data = vm.$qs.stringify({
     username: params.username,
     password: params.password,
-    code: params.code,
-    captchaId: params.captchaId
+    // code: params.code,
+    // captchaId: params.captchaId,
+    grant_type:'password'
   })
   console.log(data)
   return request({
-    url: "/login",
+    url: "/auth/oauth/token",
+    // url: "/login",
     method: "POST",
     contentType: 'multipart/form-data',
     data:data,
+    headers: {
+      'Authorization': 'Basic Y2F0c2ljOmNhdHNpYw=='
+    },
+    auth:{
+      username: 'catsic',
+      password: 'catsic'
+    },
     showloading: true,
     baseUrlType:1,
     cancelToken: setCancelSource()
@@ -40,9 +48,9 @@ export function resetPasswordApi(params) {
     url: "/sys/user/resetPassWord",
     method: "POST",
     contentType: 'multipart/form-data',
-    data:data,
+    data: data,
     showloading: false,
-    baseUrlType:1,
+    baseUrlType: 1,
     cancelToken: setCancelSource()
   });
 }
@@ -53,7 +61,7 @@ export function getCaptchaApi() {
     url: "/common/captcha/getcaptcha",
     method: "get",
     showloading: false,
-    baseUrlType:1,
+    baseUrlType: 1,
     cancelToken: setCancelSource()
   });
 }
@@ -61,12 +69,12 @@ export function getCaptchaApi() {
 // 验证码渲染图片接口
 // export const drawCodeImage = "/catsic/common/captcha/draw/"
 export function getCapImgSrcApi(captchaId) {
-  console.log('captchaId',captchaId)
+  console.log('captchaId', captchaId)
   return request({
-    url: "/common/captcha/draw/"+captchaId,
+    url: "/common/captcha/draw/" + captchaId,
     method: "get",
     showloading: false,
-    baseUrlType:1,
+    baseUrlType: 1,
     responseType: 'arraybuffer',
     cancelToken: setCancelSource()
   });
@@ -77,7 +85,7 @@ export function getMenuApi() {
   return request({
     url: "/sys/permission/getTreePermission",
     method: "get",
-    baseUrlType:1,
+    baseUrlType: 1,
     showloading: false,
     cancelToken: setCancelSource()
 
