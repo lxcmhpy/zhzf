@@ -1,14 +1,18 @@
 <template>
-  <el-table
-    :data="tableData"
-    border
-    style="width: 100%;height:610px">
-    <el-table-column prop="personId"  label="姓名"></el-table-column>
-    <el-table-column prop="certStatus"  label="证件状态"></el-table-column>
-    <el-table-column prop="modifyId" label="操作用户"></el-table-column>
-    <el-table-column prop="modifyTime" label="操作日期"></el-table-column>
-    <el-table-column prop="modifyReason" label="变化原因"></el-table-column>
-  </el-table>
+  <div>
+    <div style="margin-top:50px;margin-bottom:50px;">
+          <font style="font-size:42px;">证件信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+    <el-table
+      :data="tableData"
+      resizable >
+      <el-table-column prop="personId"  label="姓名"></el-table-column>
+      <el-table-column prop="certStatus"  label="证件状态"></el-table-column>
+      <el-table-column prop="modifyId" label="操作用户"></el-table-column>
+      <el-table-column prop="modifyTime" label="操作日期"></el-table-column>
+      <el-table-column prop="modifyReason" label="变化原因"></el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>
