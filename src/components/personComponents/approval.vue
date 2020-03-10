@@ -1,69 +1,38 @@
 <template>
-  <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition">
-    <div class="el-table__body-wrapper is-scrolling-none">
-      <table class="el-table__body">
-        <tr class="el-table__row">
-          <td class="el-table_column_center"><p>年龄≧18周岁</p></td>
-          <td class="el-table_column_center">44</td>
-          <td class="el-table_column_center">符合</td>
-          <td class="el-table_column_center"><p>身份证</p></td>
-          <td class="el-table_column_center">{{this.$route.params.personInfo.idNo}}</td>
-          <td class="el-table_column_center">未上传</td>
-        </tr>
-        <tr class="el-table__row">
-          <td class="el-table_column_center"><p>学历大专以上</p></td>
-          <td class="el-table_column_center">大学本科</td>
-          <td class="el-table_column_center">不符合</td>
-          <td class="el-table_column_center"><p>编制证明 </p></td>
-          <td class="el-table_column_center">未上传</td>
-          <td class="el-table_column_center"><span style="color:red">不符合</span></td>
-        </tr>
-        <tr class="el-table__row">
-          <td class="el-table_column_center"><p>培训成绩</p></td>
-          <td class="el-table_column_center">无成绩</td>
-          <td class="el-table_column_center">不符合</td>
-          <td class="el-table_column_center"><p>学历证明 </p></td>
-          <td class="el-table_column_center">未上传</td>
-          <td class="el-table_column_center"><span style="color:red">不符合</span></td>
-        </tr>
-        <tr class="el-table__row">
-          <td class="el-table_column_center"><p>考试成绩</p></td>
-          <td class="el-table_column_center">无成绩</td>
-          <td class="el-table_column_center">符合</td>
-          <td class="el-table_column_center" colspan="3"></td>
-        </tr>
-        <tr class="el-table__row">
-          <td class="el-table_column_center" colspan="2"><p>曾经是否持有证件</p></td>
-          <td class="el-table_column_center">是</td>
-          <td class="el-table_column_center" colspan="2">旧证件状态</td>
-          <td class="el-table_column_center"><p>正常</p></td>
-        </tr>
-        <tr class="el-table__row">
-          <td class="el-table_column_center" colspan="6"><p><i class="el-icon-caret-right"></i>审批进程<i class="el-icon-caret-left"></i></p></td>
-        </tr>
-        <tr class="el-table__row">
-          <td class="el-table_column_center" colspan="3"><p>当前审批单位</p></td>
-          <td class="el-table_column_center" colspan="3"><p>无审批单位</p></td>
-        </tr>
-        <tr class="el-table__row">
-          <td class="el-table_column_center" colspan="3"><p>审批流</p></td>
-          <td class="el-table_column_center" colspan="3"><p>无</p></td>
-        </tr>
-      </table>
-      <el-table
-        :data="tableData"
-        align="center"
-        style="width: 100%;height:315px;">
-        <el-table-column prop="oid" label="审批单位"></el-table-column>
-        <el-table-column prop="approveStatus" label="审批状态"></el-table-column>
-        <el-table-column prop="userId" label="审批人"></el-table-column>
-        <el-table-column prop="approveInfo" label="审批信息"></el-table-column>
-        <el-table-column prop="operationDate" label="操作审批时间"></el-table-column>
-      </el-table>
+  <div>
+    <div style="margin-top:50px;margin-bottom:50px;">
+      <font style="font-size:42px;">审批信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
+      <el-button type="primary" round style="font-size:22px;">审批历史</el-button>
     </div>
+    <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition">
+      <div class="el-table__body-wrapper is-scrolling-none">
+        <table class="el-table__body" style="width:1500px;border: 1px solid #e4e7ed">
+          <tr class="el-table__row" style = "border: 1px solid #e4e7ed">
+            <td class="el-table_column_center" style="width:30%;border: 1px solid #e4e7ed"><p>审批流</p></td>
+            <td class="el-table_column_center" style="width:70%;border: 1px solid #e4e7ed"><p>无审批单位</p></td>
+          </tr>
+          <tr class="el-table__row">
+            <td class="el-table_column_center" style="width:30%;border: 1px solid #e4e7ed"><p>审批单位</p></td>
+            <td class="el-table_column_center" style="width:70%;border: 1px solid #e4e7ed"><p>无</p></td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <el-table
+          :data="tableData"
+          resizable
+          align="center" >
+          <el-table-column prop="oid" label="审批单位"></el-table-column>
+          <el-table-column prop="approveStatus" label="审批状态"></el-table-column>
+          <el-table-column prop="userId" label="审批人"></el-table-column>
+          <el-table-column prop="approveInfo" label="审批信息"></el-table-column>
+          <el-table-column prop="operationDate" label="操作审批时间"></el-table-column>
+        </el-table>
+    </div>
+    </div>
+    
   </div>
 </template>
-
 <script>
     export default {
         name: "approval",//审批记录组件
@@ -98,5 +67,6 @@
 
 <style lang="scss" scoped>
   @import "@/assets/css/personManage.scss";
+
 </style>
 

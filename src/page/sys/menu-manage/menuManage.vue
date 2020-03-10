@@ -306,9 +306,12 @@
       },
       handleSizeChange(val) {
         this.pageSize = val;
+        this.currentPage = 1;
+        this.searchTable();
       },
       handleCurrentChange(val) {
         this.currentPage = val;
+        this.searchTable();
       },
       hindleChanged(val) {
         this.addItemObj.parentId = val

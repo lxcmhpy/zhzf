@@ -1,10 +1,12 @@
 <template>
   <div>
     <div>
+      <div style="margin-top:25px;margin-bottom:25px;">
+        <font style="font-size:42px;">调动信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
       <el-table
         :data="tableData"
-        border
-        style="width: 100%;height:610px">
+        resizable>
         <el-table-column prop="date" label="转出单位"></el-table-column>
         <el-table-column prop="name" label="转出时间"></el-table-column>
         <el-table-column prop="address" label="转出执法门类"></el-table-column>

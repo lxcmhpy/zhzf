@@ -343,7 +343,7 @@
           </div>
           <div class="item">
             <el-form-item label="车牌颜色">
-              <el-select v-model="inforForm.trailerColor">
+              <el-select v-model="inforForm.trailerColor" disabled>
                 <el-option v-for="item in allVehicleIdColor" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
@@ -497,21 +497,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总长">
-              <el-input v-model="inforForm.allLength">
+              <el-input v-model="inforForm.allLength" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="长度限值">
-              <el-input v-model="inforForm.lengthLimit">
+              <el-input v-model="inforForm.lengthLimit" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超长">
-              <el-input v-model="inforForm.overLength">
+              <el-input v-model="inforForm.overLength" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -519,22 +519,22 @@
         </div>
         <div>
           <div class="itemThird">
-            <el-form-item label="车货总宽">
-              <el-input v-model="inforForm.allWidth">
+            <el-form-item label="车货总宽" >
+              <el-input v-model="inforForm.allWidth" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="宽度限值">
-              <el-input v-model="inforForm.widthLimit">
+              <el-input v-model="inforForm.widthLimit" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超宽">
-              <el-input v-model="inforForm.overWidth">
+              <el-input v-model="inforForm.overWidth" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -543,21 +543,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货高度">
-              <el-input v-model="inforForm.allHeight">
+              <el-input v-model="inforForm.allHeight" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="高度限值">
-              <el-input v-model="inforForm.heightLimit">
+              <el-input v-model="inforForm.heightLimit" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超高">
-              <el-input v-model="inforForm.overHeight">
+              <el-input v-model="inforForm.overHeight" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -934,7 +934,7 @@ export default {
       this.inforForm.staffId = staffIdArr.join(',');
       this.inforForm.staff = staffArr.join(',');
       this.inforForm.certificateId = certificateIdArr.join(',');
-      this.inforForm.checkResult = '1'
+      
     },
     //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
     setLawPersonCurrentP() {
@@ -1362,7 +1362,9 @@ export default {
       someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
     console.log(this.showOverrun)
 
-    this.driverOrAgentInfo.relationWithParty = '1'
+    this.driverOrAgentInfo.relationWithParty = '1';
+    this.inforForm.checkResult = '1'
+    this.inforForm.trailerColor = '1'
   },
   created() {
     this.findJudgFreedomList();

@@ -559,7 +559,8 @@ export default {
         }
       })
       
-
+ console.log('this.docTableDatas', this.docTableDatas)
+      console.log('this.allAskDocList', this.allAskDocList)
     }
   },
   created() {

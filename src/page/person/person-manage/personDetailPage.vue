@@ -1,13 +1,9 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
-    <div class="searchAndpageBox" id="logBox" style="height:1400px;">
-      <div class="handlePart" style="margin-left:15%;">
-        <div class="search">
+    <div class="searchAndpageBox" id="logBox" style="height:1200px;">
           <template>
             <personInfoPage/>
           </template>
-        </div>
-      </div>
     </div>
   </div>
 </template>

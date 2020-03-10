@@ -155,7 +155,34 @@
       <div class="content_box">
         <div class="content">
           <div class="table_form">
-            <el-table :data="docTableDatas" row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" default-expand-all stripe border style="width: 100%" max-height="250">
+            <el-table :data="docTableDatas" stripe border style="width: 100%" max-height="250" :row-class-name="getRowClass">
+              <!-- 折叠 -->
+              <el-table-column type="expand" expand-change>
+                <template>
+                  <ul class="moreDocList">
+                    <li v-for="(item,index) in allAskDocList" :key="index">
+                      <div>{{item.name}}</div>
+                      <div>
+                        <span v-if="item.status == '1'">已完成</span>
+                        <span v-if="item.status == '0'">未完成</span>
+                      </div>
+                      <div>
+                        <span v-if="item.status == '1'" class="tableHandelcase">
+                          <!-- 已完成 -->
+                          <i class="iconfont law-eye" @click="viewDocPdf(item)"></i>
+                          <i class="iconfont law-print"></i>
+                        </span>
+                        <span v-if="item.status == '0'" class="tableHandelcase">
+                          <!-- 未完成 -->
+                          <i class="iconfont law-edit" @click="viewDoc(item)"></i>
+                          <i class="iconfont law-delete" @click="delDocDataByDocId(item)"></i>
+                        </span>
+                      </div>
+                    </li>
+                  </ul>
+                </template>
+              </el-table-column>
+
               <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
               <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
               <el-table-column prop="status" label="状态" align="center">
@@ -166,11 +193,12 @@
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
-                <template slot-scope="scope">
+                <template slot-scope="scope" v-show="!scope.row.openRow">
                   <span v-if="scope.row.status == '1'" class="tableHandelcase">
                     <!-- 已完成 -->
                     <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
-                    <i class="iconfont law-print"></i>
+                    <!-- <i class="iconfont law-print"></i> -->
+                    <i class="el-icon-delete"></i> 
                   </span>
                   <span v-if="scope.row.status == '0'" class="tableHandelcase">
                     <!-- 未完成 -->
@@ -179,6 +207,11 @@
                   </span>
                   <span v-if="scope.row.status === ''" class="tableHandelcase">
                     <!-- 无状态 -->
+                    <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
+                  </span>
+                </template>
+                <template slot-scope="scope" v-show="scope.row.openRow">
+                  <span class="tableHandelcase">
                     <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
                   </span>
                 </template>
@@ -280,6 +313,8 @@ export default {
       },
       isOnlinePay: false, //是否为电子缴纳
       needDealData: true,
+      docTableDatasCopy: [],
+      allAskDocList: [],  //分期延期
     };
   },
   computed: {
@@ -334,7 +369,7 @@ export default {
     // 进入文书
     enterDoc(row) {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      console.log("row", row);
+      // console.log("row", row);
       this.$router.push({
         name: row.url,
         params: {
@@ -350,12 +385,12 @@ export default {
     viewDoc(row) {
       if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false) {
         console.log("弹窗")
-        this.$refs.addDialogRef.showModal(row,this.isSaveLink);
+        this.$refs.addDialogRef.showModal(row, this.isSaveLink);
       }
-      else{
+      else {
         this.com_viewDoc(row);
       }
-      
+
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
@@ -460,7 +495,38 @@ export default {
         this.caseLinkDataForm.caseLinktypeId,
         true
       );
+      // this.setMoreDocTableTitle()
     },
+    getRowClass: function (row, index) {
+      console.log("row!!!!!!!!!!!!", row);
+      if (row.row.openRow) {
+        console.log("显示");
+        return "";
+      } else {
+        return "myhide-expand";
+      }
+    },
+    setMoreDocTableTitle() {
+      console.log("djhafiufh执行方法")
+      this.docTableDatas = [];
+      this.allAskDocList = [];
+      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, url: "payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001" });
+
+      this.docTableDatasCopy.forEach(item => {
+        console.log('名字啊啊啊',item.name)
+        if (item.name != '分期（延期）缴纳罚款通知书【2016】') {
+          this.docTableDatas.push(item);
+        } else {
+          this.allAskDocList.push(item);
+        }
+        console.log('1111', this.docTableDatas)
+
+        console.log('22222,', this.allAskDocList)
+
+      })
+      console.log('this.docTableDatas', this.docTableDatas)
+      console.log('this.allAskDocList', this.allAskDocList)
+    }
   },
 
   mounted() {
