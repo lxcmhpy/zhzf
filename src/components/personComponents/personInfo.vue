@@ -1,27 +1,27 @@
 <template>
-    <div style="margin-top:-120px;">
+    <div style="background:red">
         <template >
             <keep-alive>
               <el-tabs v-model="activeName" @tab-click="handleClick" >
-                <el-tab-pane label="基本信息" name="one" style="width:1500px;margin-left:25px;margin-top:25px;">
+                <el-tab-pane label="基本信息" name="one" >
                     <personDetailInfo/>
                   </el-tab-pane>
-                  <el-tab-pane label="教育调动" name="two" lazy style="width:1500px;margin-left:25px;margin-top:25px;">
+                  <el-tab-pane label="教育调动" name="two" lazy >
                     <education/>
                     <adjustingPosts/>
                   </el-tab-pane>
-                  <el-tab-pane label="培训考试" name="three" lazy style="width:1500px;margin-left:25px;margin-top:25px;">
+                  <el-tab-pane label="培训考试" name="three" lazy >
                     <train/>
                     <exam/>
                   </el-tab-pane>
-                  <el-tab-pane label="奖励惩罚" name="four" lazy style="width:1500px;margin-left:25px;margin-top:25px;">
+                  <el-tab-pane label="奖励惩罚" name="four" lazy >
                     <reward/>
                     <punishment/>
                   </el-tab-pane>
-                  <el-tab-pane label="证明材料" name="five" lazy style="width:1500px;margin-left:25px;margin-top:25px;">
+                  <el-tab-pane label="证明材料" name="five" lazy >
                     <material/>
                   </el-tab-pane>
-                  <el-tab-pane label="证件信息" name="six" lazy style="width:1500px;margin-left:25px;margin-top:25px;">
+                  <el-tab-pane label="证件信息" name="six" lazy >
                     <approval/>
                     <certificates/>
                     <annualReview/>
