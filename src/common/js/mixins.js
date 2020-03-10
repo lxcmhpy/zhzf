@@ -2,7 +2,7 @@ import { mapGetters } from "vuex";
 import { htmlExportPDF } from '@/common/js/htmlExportPDF';
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi,getDocDetailByIdApi
+  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi, getDocDetailByIdApi
 } from "@/api/caseHandle";
 export const mixinGetCaseApiList = {
   data() {
@@ -31,7 +31,7 @@ export const mixinGetCaseApiList = {
     },
     //进入文书先是否保存过 保存过就直接带入信息，未保存择获取案件信息
     com_getFormDataByCaseIdAndFormId(caseId, caseLinktypeId, refreshDataForPdf) {
-      debugger
+      // debugger
       let data = {
         casebasicInfoId: caseId,
         caseLinktypeId: caseLinktypeId
@@ -77,7 +77,7 @@ export const mixinGetCaseApiList = {
         caseBasicInfoId: caseId,
         typeId: formOrDocId
       };
-      console.log('data',data);
+      console.log('data', data);
       findCaseAllBindPropertyApi(data).then(
         res => {
           console.log('获取案件信息', res)
@@ -332,7 +332,7 @@ export const mixinGetCaseApiList = {
           this.docTableDatas = res.data;
           this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
           console.log('文书列表', this.docTableDatas);
-          if(params.linkTypeId == '2c90293b6c178b55016c17c93326000f'){ //调查类文书
+          if (params.linkTypeId == '2c90293b6c178b55016c17c93326000f' || params.linkTypeId == '2c9029e16c753a19016c755fe1340001') { //调查类文书和分期延期缴纳
             this.setMoreDocTableTitle();
           }
         },
@@ -342,7 +342,7 @@ export const mixinGetCaseApiList = {
       );
     },
     //查看或新增环节下的文书
-    com_viewDoc(row,handelType='') {
+    com_viewDoc(row, handelType = '') {
       console.log(row);
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
@@ -353,8 +353,8 @@ export const mixinGetCaseApiList = {
             id: row.id,
             docId: row.docId,
             url: this.$route.name,
-            handelType:handelType,
-            docDataId:row.docDataId
+            handelType: handelType,
+            docDataId: row.docDataId
           }
         });
       } else {
@@ -544,12 +544,12 @@ export const mixinGetCaseApiList = {
       }
     },
     //根据id获取文书信息(使用场景:询问笔录查看详情）
-    getDocDetailById(id){
-      getDocDetailByIdApi(id).then(res=>{
+    getDocDetailById(id) {
+      getDocDetailByIdApi(id).then(res => {
         console.log(res);
         this.caseDocDataForm.id = res.data.id;
         this.docData = JSON.parse(res.data.docData);
-      },err=>{
+      }, err => {
         console.log(err)
       })
     }

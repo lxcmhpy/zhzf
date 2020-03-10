@@ -463,7 +463,6 @@ export default {
           if (flag == 3) {
             this.approveIng = total
           }
-          this.waitDeal = res.data.total;
         },
         err => {
           console.log(err);

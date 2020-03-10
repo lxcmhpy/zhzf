@@ -343,7 +343,7 @@
           </div>
           <div class="item">
             <el-form-item label="车牌颜色">
-              <el-select v-model="inforForm.trailerColor">
+              <el-select v-model="inforForm.trailerColor" disabled>
                 <el-option v-for="item in allVehicleIdColor" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
@@ -1364,6 +1364,7 @@ export default {
 
     this.driverOrAgentInfo.relationWithParty = '1';
     this.inforForm.checkResult = '1'
+    this.inforForm.trailerColor = '1'
   },
   created() {
     this.findJudgFreedomList();
