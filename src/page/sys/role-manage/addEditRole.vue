@@ -42,6 +42,7 @@ export default {
       visible: false,
       addRoleForm: {
         name: "",
+        roleGroup:"",
         description: ""
       },
       rules: {
@@ -70,6 +71,7 @@ export default {
         this.dialogTitle = "修改角色";
         this.addRoleForm.name = data.name;
         this.addRoleForm.description = data.description;
+        this.addRoleForm.roleGroup = data.roleGroup;
         this.editRoleId = data.id;
         // this.organId = data.id;
         // this.parentNode = data.parentNode;
@@ -117,9 +119,10 @@ export default {
           if (_this.handelType) {
             //修改
             _this.addRoleForm.id= this.editRoleId;
+            console.log("要修改的角色",_this.addRoleForm);
             _this.$store.dispatch("editRole", _this.addRoleForm).then(
               res => {
-                console.log("角色", res);
+                console.log("修改后的角色", res);
                 _this.$message({
                   type: "success",
                   message: "修改成功"

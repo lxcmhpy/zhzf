@@ -24,8 +24,8 @@
                     <input type="radio" value="1" v-model="radios" @change="click"/>违法事实不能成立
                   </p>
                   <p>
-                    <input type="radio" value="2" v-model="radios" @change="click"/>其他原因<span><el-form-item prop="otherReason">
-                      <el-input v-model="formData.otherReason" v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="\" style= "float :left;width:100px;"></el-input>
+                    <input type="radio" value="2" v-model="radios" @change="click"/>其他原因<span style= "float:right"><el-form-item prop="otherReason">
+                      <el-input v-model="formData.otherReason" v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="\" style= "width:600px;"></el-input>
                     </el-form-item></span>
                   </p>
                 </el-form-item>
@@ -212,9 +212,9 @@ export default {
         this.radios.shift();
       }
       if (this.radios == '0' || this.radios == '1') {
-        this.disabledOne = false;
-      } else if(this.radios == '2'){
         this.disabledOne = true;
+      } else if(this.radios == '2'){
+        this.disabledOne = false;
       } 
     }
   },

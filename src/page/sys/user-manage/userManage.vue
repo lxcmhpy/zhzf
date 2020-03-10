@@ -39,7 +39,7 @@
                             ></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="用户名">
+                    <el-form-item label="用户名" prop="username">
                         <el-input v-model="formInline.username" placeholder="回车可直接查询"></el-input>
                     </el-form-item>
                     <el-form-item label=" " label-width="13px">
@@ -51,13 +51,13 @@
                     </el-form-item>
                     <el-collapse-transition>
                          <div v-show="isShow" :class="{'ransition-box':true}">
-                            <el-form-item label="姓名">
+                            <el-form-item label="姓名" prop="nickName">
                                 <el-input v-model="formInline.nickName" placeholder="回车可直接查询"></el-input>
                             </el-form-item>
-                            <el-form-item label="证件号">
+                            <el-form-item label="证件号" prop="enforceNo">
                             <el-input v-model="formInline.enforceNo" placeholder="回车可直接查询"></el-input>
                             </el-form-item>
-                            <el-form-item label="账户状态">
+                            <el-form-item label="账户状态" prop="region">
                             <el-select v-model="formInline.region">
                                 <el-option
                                     v-for="item in region"
@@ -69,7 +69,7 @@
                             </el-form-item>
                             <!-- <el-button type="primary" size="medium" @click="addUser">新增用户</el-button>
                             <el-button type="primary" size="medium" @click="bindRole">角色绑定</el-button> -->
-                            <el-form-item label="联系电话">
+                            <el-form-item label="联系电话" prop="mobile">
                                 <el-input v-model="formInline.mobile" placeholder="回车可直接查询"></el-input>
                             </el-form-item>
                          </div>
