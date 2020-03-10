@@ -43,7 +43,7 @@ export function resetPasswordApi(params) {
     nickName: params.nickName,
     enforceNo: params.enforceNo,
   })
-  console.log(data)
+  console.log(data) 
   return request({
     url: "/sys/user/resetPassWord",
     method: "POST",
