@@ -79,7 +79,7 @@
             </div>
 
           <div class="item" v-if="caseState == 'waitDeal' || caseState == 'approveIng'">
-            <el-form-item label="当前环节">
+            <el-form-item label="当前环节" v-if="caseState == 'waitDeal'">
                 <el-select
                 v-model="caseSearchForm.currentLinkName"
                 placeholder="请选择"
@@ -93,7 +93,22 @@
               </el-select>
 
             </el-form-item>
+            <el-form-item label="当前环节" v-if="caseState == 'approveIng'">
+                <el-select
+                v-model="caseSearchForm.currentLinkName"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="(item,index) in approvalInglinkList"
+                  :key="index"
+                  :label="item"
+                  :value="item"
+                ></el-option>
+              </el-select>
+
+            </el-form-item>
           </div>
+         
           <div class="item" v-if="caseState == 'myApproval'">
             <el-form-item label="申请人">
               <el-input v-model="caseSearchForm.applicant"></el-input>
@@ -185,7 +200,8 @@ export default {
       linkList:[], //环节
       caseTypeList:[],//类型
       caseStateList:[],//状态
-      dictId: this.caseState=="waitDeal" ?  "ef38274ddea12be26e9a8c1bf23cd401" : "324701f1633dd65ca79a28fbc79c1628"
+      dictId: this.caseState=="waitDeal" ?  "ef38274ddea12be26e9a8c1bf23cd401" : "324701f1633dd65ca79a28fbc79c1628",
+      approvalInglinkList:['立案登记','案件调查报告','结案报告']
     };
   },
   computed: {

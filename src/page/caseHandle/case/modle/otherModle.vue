@@ -96,7 +96,11 @@
               <p>
                 性别：<el-form-item v-if="!lineStyleFlag" prop="inquiriedSex" class="width228">
                   <!-- <el-input type='textarea' v-model="docData.inquiriedSex" v-bind:class="{ over_flow:docData.inquiriedSex.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <el-input type='textarea' v-model="docData.inquiriedSex" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                  <!-- <el-input type='textarea' v-model="docData.inquiriedSex" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <el-select v-model="docData.inquiriedSex" :maxLength="maxLength" placeholder="\">
+                    <el-option :value="0" label="男"></el-option>
+                    <el-option :value="1" label="女"></el-option>
+                  </el-select>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedSex}}</u>
 
@@ -482,7 +486,7 @@ export default {
     changeRelationWithCase(val){
       if(val == '0'){//为当事人
         this.docData.inquiried = this.docData.party;
-        this.docData.inquiriedSex = this.docData.partySex;
+        this.docData.inquiriedSex = Number(this.docData.partySex);
         this.docData.inquiriedAge = this.docData.partyAge;
         this.docData.inquiriedIdNo = this.docData.partyIdNo;
         this.docData.inquiriedTel = this.docData.partyTel;
@@ -514,7 +518,7 @@ export default {
       //与案件关系默认为当事人
       this.docData.inquiriedRelation = "0";
       this.docData.inquiried = this.docData.party;
-      this.docData.inquiriedSex = this.docData.partySex;
+      this.docData.inquiriedSex = Number(this.docData.partySex);
       this.docData.inquiriedAge = this.docData.partyAge;
       this.docData.inquiriedIdNo = this.docData.partyIdNo;
       this.docData.inquiriedTel = this.docData.partyTel;

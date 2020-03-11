@@ -9,32 +9,53 @@ let vm = new Vue();
  * @param {*} params.password  必填  密码
  */
 export function loginInApi(params) {
+
   let data = vm.$qs.stringify({
     username: params.username,
     password: params.password,
     code: params.code,
-    captchaId: params.captchaId,
-    // grant_type:'password'
+    captchaId: params.captchaId
   })
   console.log(data)
   return request({
-    // url: "/auth/oauth/token",
     url: "/login",
     method: "POST",
     contentType: 'multipart/form-data',
     data:data,
-    // headers: {
-    //   'Authorization': 'Basic Y2F0c2ljOmNhdHNpYw=='
-    // },
-    // auth:{
-    //   username: 'catsic',
-    //   password: 'catsic'
-    // },
     showloading: true,
     baseUrlType:1,
     cancelToken: setCancelSource()
   });
 }
+
+// export function loginInApi(params) {
+//   let data = vm.$qs.stringify({
+//     username: params.username,
+//     password: params.password,
+//     grant_type:'password'
+//   })
+//   console.log(data)
+//   return request({
+//     url: "/auth/oauth/token",
+//     method: "POST",
+//     data:data,
+//     headers: {
+//       'Authorization': 'Basic Y2F0c2ljOmNhdHNpYw=='
+//     },
+//     auth:{
+//       username: 'catsic',
+//       password: 'catsic'
+//     },
+//     showloading: true,
+//     // baseUrlType:1,
+//     cancelToken: setCancelSource()
+//   });
+// }
+
+
+
+
+
 //修改密码
 export function resetPasswordApi(params) {
 
@@ -43,7 +64,7 @@ export function resetPasswordApi(params) {
     nickName: params.nickName,
     enforceNo: params.enforceNo,
   })
-  console.log(data) 
+  console.log(data)
   return request({
     url: "/sys/user/resetPassWord",
     method: "POST",

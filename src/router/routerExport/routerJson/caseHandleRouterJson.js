@@ -286,6 +286,16 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/adminPunisheDecisionForm.vue")
   },
+  //行政强制措施决定书
+  {
+    path: "/adminCoerciveMeasure",
+    name: "adminCoerciveMeasure",
+    meta: {
+      title: "行政强制措施决定书",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/form/adminCoerciveMeasureForm.vue")
+  },
   //责令改正违法行为通知书
   {
     path: "/order",
@@ -585,7 +595,7 @@ export default [
     path: "/removeOrPrelong",
     name: "removeOrPrelong",
     meta: {
-      title: "解除行政强制措施决定书"
+      title: "解除（延长）行政强制措施决定"
     },
     component: () => import("@/page/caseHandle/case/form/removeOrPrelongAdminCoerciveMeasureDoc.vue")
   },
