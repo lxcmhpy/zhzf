@@ -366,9 +366,10 @@ export default {
         socialCreditCode: [
           { validator: validateIfCom, trigger: "blur" }
         ],
-        illegalLaw: [
+        caseSituation: [
           { required: true, message: "请输入", trigger: "blur" }
-        ]
+        ],
+        
 
 
 

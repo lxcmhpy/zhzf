@@ -200,7 +200,7 @@ export const mixinGetCaseApiList = {
           data.nextLink = "caseDoc";
           break;
         case "2c90293b6c178b55016c17c7ae92000e":   //行政强制措施
-          data.nextLink = "";
+          data.nextLink = "adminPunishe";
           break;
         case "2c9029ee6cac9281016caca7f38e0002":   //调查报告
           data.nextLink = "caseInvestig";
