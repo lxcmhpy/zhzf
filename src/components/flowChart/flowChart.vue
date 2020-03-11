@@ -619,7 +619,7 @@ export default {
       this.updateGraphData()
       this.drawFlowChart()
 
-    }
+    },
   },
   created () {
   },

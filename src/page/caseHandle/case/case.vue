@@ -46,11 +46,12 @@
         <li class="text-red">听证通知书</li>
         <li class="text-red">听证笔录</li>
         <li class="text-red">当场行政处罚决定书</li>
-
+        
         <br><br>
 
         表单：
         <li @click="goFilingApprovalForm">立案审批表</li>
+        <li @click="goRemoveOrPrelong">解除（延长）强制行政措施</li>
         <li @click="goIllegalAction">违法行为通知书</li>
         <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
         <li @click="goAdminPunisheDecision">行政处罚决定书</li>
@@ -345,7 +346,10 @@ export default {
     goFilingApprovalForm() {
       this.$router.push({ name: 'filingApproval' });
     },
-
+    // 解除（延长）行政强制措施
+    goRemoveOrPrelong(){
+      this.$router.push({ name: 'removeOrPrelong' });
+    },
     goImportantCaseDissForm() {
       this.makeRoute(
         "/important",
