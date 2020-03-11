@@ -706,13 +706,4 @@ export default [
     component: () => import("@/page/caseHandle/case/form/deliverReceiptForm.vue")
   },
   //---------------长软end------------
-  {
-    path: "/newCss",
-    name: "newCss",
-    meta: {
-      title: "布局",
-      oneTab: true,
-    },
-    component: () => import("@/page/person/person-manage/newCss.vue")
-  },
 ]
