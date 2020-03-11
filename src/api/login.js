@@ -33,7 +33,6 @@ export function loginInApi(params) {
 //     username: params.username,
 //     password: params.password,
 //     grant_type:'password',
-//     client_id:"catsic",client_secret:"catsic"
 //   })
 //   console.log(data)
 //   return request({
