@@ -263,8 +263,8 @@
                         <span v-if="item.status == '1'">已完成</span>
                         <span v-if="item.status == '0'">未完成</span>
                       </div>
-                       <div>
-                         <span v-if="item.status == '1'" class="tableHandelcase">
+                      <div>
+                        <span v-if="item.status == '1'" class="tableHandelcase">
                           <!-- 已完成 -->
                           <i class="iconfont law-eye" @click="viewDocPdf(item)"></i>
                           <i class="iconfont law-print"></i>
@@ -274,7 +274,7 @@
                           <i class="iconfont law-edit" @click="viewDoc(item)"></i>
                           <i class="iconfont law-delete" @click="delDocDataByDocId(item)"></i>
                         </span>
-                       </div>
+                      </div>
                     </li>
                   </ul>
                 </template>
@@ -290,26 +290,28 @@
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
-                <template slot-scope="scope" v-show="!scope.row.openRow">
-                  <span v-if="scope.row.status == '1'" class="tableHandelcase">
-                    <!-- 已完成 -->
-                    <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
-                    <i class="iconfont law-print"></i>
-                  </span>
-                  <span v-if="scope.row.status == '0'" class="tableHandelcase">
-                    <!-- 未完成 -->
-                    <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
-                    <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
-                  </span>
-                  <span v-if="scope.row.status === ''" class="tableHandelcase">
-                    <!-- 无状态 -->
-                    <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
-                  </span>
-                </template>
-                <template slot-scope="scope" v-show="scope.row.openRow">
-                  <span class="tableHandelcase">
-                    <i class="iconfont law-add" @click="addMoreDoc(scope.row)"></i>
-                  </span>
+                <template slot-scope="scope">
+                  <div v-if="scope.row.openRow">
+                    <span>
+                      <i class="iconfont law-add" @click="addMoreDoc(scope.row)"></i>
+                    </span>
+                  </div>
+                  <div v-if="!scope.row.openRow">
+                    <span v-if="scope.row.status == '1'" class="tableHandelcase">
+                      <!-- 已完成 -->
+                      <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
+                      <i class="iconfont law-print"></i>
+                    </span>
+                    <span v-if="scope.row.status == '0'" class="tableHandelcase">
+                      <!-- 未完成 -->
+                      <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
+                      <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
+                    </span>
+                    <span v-if="scope.row.status === ''" class="tableHandelcase">
+                      <!-- 无状态 -->
+                      <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
+                    </span>
+                  </div>
                 </template>
               </el-table-column>
             </el-table>
@@ -434,8 +436,8 @@ export default {
         { value: "4", label: "承运人" },
         { value: "5", label: "代理人" }
       ],
-      docTableDatasCopy:[],
-      allAskDocList:[],  //询问笔录
+      docTableDatasCopy: [],
+      allAskDocList: [] //询问笔录
     };
   },
   computed: {
@@ -508,10 +510,12 @@ export default {
       // } else {
       //   this.com_viewDoc(row);
       // }
-        this.com_viewDoc(row);
-
+      console.log("查看");
+      this.com_viewDoc(row);
     },
-    addMoreDoc(row){
+    addMoreDoc(row) {
+      console.log("添加");
+
       this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
     },
     //预览pdf
@@ -546,21 +550,27 @@ export default {
         return "myhide-expand";
       }
     },
-    setMoreDocTableTitle(){
-       this.docTableDatas = [];
-       this.allAskDocList = [];
-      this.docTableDatas.push({name:'询问笔录',status:'询问',openRow:true,url:"othermodle",docId:"2c9029ca5b71686d015b71a86ead0032"});
-      
-      this.docTableDatasCopy.forEach(item=>{
-        if(item.name != '询问笔录'){
-            this.docTableDatas.push(item);
-        }else{
+    setMoreDocTableTitle() {
+      this.docTableDatas = [];
+      this.allAskDocList = [];
+      this.docTableDatas.push({
+        name: "询问笔录",
+        status: "询问",
+        openRow: true,
+        url: "othermodle",
+        docId: "2c9029ca5b71686d015b71a86ead0032"
+      });
+
+      this.docTableDatasCopy.forEach(item => {
+        if (item.name != "询问笔录") {
+          this.docTableDatas.push(item);
+        } else {
           this.allAskDocList.push(item);
         }
-      })
-      
- console.log('this.docTableDatas', this.docTableDatas)
-      console.log('this.allAskDocList', this.allAskDocList)
+      });
+
+      console.log("this.docTableDatas", this.docTableDatas);
+      console.log("this.allAskDocList", this.allAskDocList);
     }
   },
   created() {

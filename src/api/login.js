@@ -27,6 +27,35 @@ export function loginInApi(params) {
     cancelToken: setCancelSource()
   });
 }
+
+// export function loginInApi(params) {
+//   let data = vm.$qs.stringify({
+//     username: params.username,
+//     password: params.password,
+//     grant_type:'password'
+//   })
+//   console.log(data)
+//   return request({
+//     url: "/auth/oauth/token",
+//     method: "POST",
+//     data:data,
+//     headers: {
+//       'Authorization': 'Basic Y2F0c2ljOmNhdHNpYw=='
+//     },
+//     auth:{
+//       username: 'catsic',
+//       password: 'catsic'
+//     },
+//     showloading: true,
+//     // baseUrlType:1,
+//     cancelToken: setCancelSource()
+//   });
+// }
+
+
+
+
+
 //修改密码
 export function resetPasswordApi(params) {
 

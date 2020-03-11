@@ -50,7 +50,9 @@ service.interceptors.request.use(
     if (getToken("TokenKey")) {
       // config.headers["accessToken"] = "CATSIC_TOKEN_PRE:" + getToken("TokenKey");
       config.headers["accessToken"] = getToken("TokenKey");
+      
     }
+    console.log('config',config)
     return config;
   },
   error => {
