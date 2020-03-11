@@ -8,9 +8,9 @@
 }
 
 .n_searchAndpageBox {
-    box-sizing: border-box;
-    height    : 100%;
-    overflow: auto;
+    box-sizing   : border-box;
+    height       : 100%;
+    // overflow  : auto;
 
 }
 
@@ -63,11 +63,17 @@
 
 }
 
+.el-form {
+    width : 100%;
+    height: 100%;
+}
 
 .dentail_info_box {
-    // height    : calc(100% - 54px);
+    height    : calc(100% - 74px);
     background: #fff;
     overflow  : auto;
+
+
 
     .edit_btn {
         margin     : 30px 35px 23px;
@@ -78,7 +84,7 @@
     }
 
     .info_box {
-        width     : 100%;
+        width: 100%;
 
         /* padding: 22px; */
         .info_content {
@@ -141,6 +147,31 @@
 
     }
 
+
+    /* 左右布局 */
+    .css_left {
+        width       : 217px;
+        height      : 100%;
+        border-right: 1px solid #DDDDDD;
+    }
+
+    .css_right {
+        width : calc(100% - 218px);
+        height: 100%;
+    }
+
+}
+
+.new_css {
+    width: 100%;
+    height:  100%;
+    .info_content {
+        width: 100% !important;
+    }
+    .el-form-item{
+        margin-right: 60px;
+        margin-bottom: 24px !important;
+    }
 }
 
 .float {

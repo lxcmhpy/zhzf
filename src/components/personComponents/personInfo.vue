@@ -8,6 +8,7 @@
         <el-menu-item index="4">奖励惩罚</el-menu-item>
         <el-menu-item index="5">证明材料</el-menu-item>
         <el-menu-item index="6">证件信息</el-menu-item>
+        <el-menu-item index="7">布局</el-menu-item>
       </el-menu>
     </div>
     <div class="dentail_info_box shadow">
@@ -32,6 +33,9 @@
         <certificates />
         <annualReview />
       </span>
+      <span v-if="key==7">
+        <newCss />
+      </span>
 
     </div>
   </div>
@@ -50,6 +54,7 @@ import annualReview from './annualReview'
 import adjustingPosts from './adjustingPosts'
 import approvalRecord from './approvalRecord'
 import material from './material'
+import newCss from '@/page/person/person-manage/newCss.vue'
 
 export default {
   name: "personInfo",//人员详情总页面
@@ -72,7 +77,8 @@ export default {
     approvalRecord,
     adjustingPosts,
     certificates,
-    material
+    material,
+    newCss
   },
   methods: {
 
