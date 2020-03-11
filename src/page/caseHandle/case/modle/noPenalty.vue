@@ -16,6 +16,14 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="原因" prop="reason">
+                  <!-- <el-radio-group>
+                    <el-radio :label="0">违法行为轻微</el-radio>
+                    <br/>
+                    <el-radio :label="1">违法事实不能成立</el-radio>
+                    <br>
+                    <el-radio :label="2">其他原因</el-radio>
+
+                  </el-radio-group> -->
                   <p>
                     <input type="radio" value="0" v-model="radios" @change="click"/>违法行为轻微
                     

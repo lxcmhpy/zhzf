@@ -12,24 +12,24 @@ export function loginInApi(params) {
   let data = vm.$qs.stringify({
     username: params.username,
     password: params.password,
-    // code: params.code,
-    // captchaId: params.captchaId,
-    grant_type:'password'
+    code: params.code,
+    captchaId: params.captchaId,
+    // grant_type:'password'
   })
   console.log(data)
   return request({
-    url: "/auth/oauth/token",
-    // url: "/login",
+    // url: "/auth/oauth/token",
+    url: "/login",
     method: "POST",
     contentType: 'multipart/form-data',
     data:data,
-    headers: {
-      'Authorization': 'Basic Y2F0c2ljOmNhdHNpYw=='
-    },
-    auth:{
-      username: 'catsic',
-      password: 'catsic'
-    },
+    // headers: {
+    //   'Authorization': 'Basic Y2F0c2ljOmNhdHNpYw=='
+    // },
+    // auth:{
+    //   username: 'catsic',
+    //   password: 'catsic'
+    // },
     showloading: true,
     baseUrlType:1,
     cancelToken: setCancelSource()

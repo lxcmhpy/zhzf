@@ -580,6 +580,15 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/removeAdminCoerciveMeasureDoc.vue")
   },
+  //解除（延长）行政强制措施
+  {
+    path: "/removeOrPrelong",
+    name: "removeOrPrelong",
+    meta: {
+      title: "解除行政强制措施决定书"
+    },
+    component: () => import("@/page/caseHandle/case/form/removeOrPrelongAdminCoerciveMeasureDoc.vue")
+  },
   {
     path: "/importantCaseTeamDissDoc",
     name: "importantCaseTeamDissDoc",
