@@ -19,17 +19,18 @@ export function loginInApi(params) {
     method: "POST",
     data:data,
     headers: {
-      'Authorization': 'Basic Y2F0c2ljOmNhdHNpYw=='
+      "Authorization": "Basic Y2F0c2ljOmNhdHNpYw==",
+      "Content-Type": "multipart/form-data"
     },
     auth:{
       username: 'catsic',
       password: 'catsic'
     },
     showloading: true,
-    // mimeType: "multipart/form-data",
-    // processData: false,
-    // showloading: true,
-    // contentType: false,
+    mimeType: "multipart/form-data",
+    processData: false,
+    showloading: true,
+    contentType: false,
     baseUrlType:1,
     cancelToken: setCancelSource()
   });
