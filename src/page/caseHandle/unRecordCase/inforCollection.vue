@@ -1269,7 +1269,7 @@ export default {
       }
       if (inforForm.vehicleAxleNumber == 4) {
         this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '全挂汽车列车', value: '全挂汽车列车' }, { label: '载货汽车', value: '载货汽车' }]
-        this.vehicleAxlesTypeList = [{ label: '2+1+2', value: '2+1+2' }, { label: '1+1+2', value: '1+1+2' }, { label: '1+1+1+1', value: '1+1+1+1' }, { label: '2+2', value: '2+2' }];
+        this.vehicleAxlesTypeList = [{ label: '1+2+1', value: '1+2+1' }, { label: '1+1+2', value: '1+1+2' }, { label: '1+1+1+1', value: '1+1+1+1' }, { label: '2+2', value: '2+2' }];
         if (inforForm.vehicleAxleNumber && inforForm.vehiclePowerType && inforForm.vehicleType && inforForm.vehicleAxlesType) {
           this.inforForm.weightLimit = 36;
           if (inforForm.vehicleType == '中置轴挂车列车') {
