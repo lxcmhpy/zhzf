@@ -3,7 +3,7 @@
     <div class="print_box">
       <div class="print_info" id="hearingNoticeDoc_print">
         <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
-          <div class="doc_topic">听证通知书</div>
+          <div class="doc_topic">听证通知书11</div>
           <div class="doc_number">案号：{{docData.caseNumber}}</div>
           <p class="p_begin">
             当事人（个人姓名或单位名称）
@@ -21,7 +21,7 @@
               </el-form-item>
             </span>一案，现定于
             <span>
-              <el-form-item prop="hearingTime" class="pdf_datapick">
+              <el-form-item prop="hearingTime" class="pdf_datapick listen_data">
                 <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日HH时" placeholder="    年  月  日  时">
                 </el-date-picker>
               </el-form-item>

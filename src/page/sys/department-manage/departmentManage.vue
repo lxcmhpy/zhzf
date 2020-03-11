@@ -55,7 +55,7 @@
       >
         <!-- <el-table-column prop="code" label="部门编码" align="center"></el-table-column> -->
         <el-table-column prop="name" label="部门名称" align="center"></el-table-column>
-        <el-table-column prop="status" label="状态" align="center">
+        <el-table-column prop="status" label="状态" align="center">          
           <span slot-scope="scope">
             <span>{{scope.row.status == 0 ? '正常': '注销'}}</span>
           </span>

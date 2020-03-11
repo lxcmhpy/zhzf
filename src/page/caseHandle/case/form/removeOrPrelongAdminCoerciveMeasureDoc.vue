@@ -3,7 +3,7 @@
     <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="105px">
       <div class="content_box">
         <div class="content">
-          <div class="content_title">调查类文书</div>
+          <div class="content_title">解除（延长）行政强制措施</div>
           <div class="border_blue"></div>
           <div class="content_form">
             <div class="row">
@@ -36,7 +36,7 @@
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="姓名">
+                <el-form-item label="个人姓名">
                   <el-input
                     ref="party"
                     clearable
@@ -49,20 +49,6 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="性别">
-                  <el-select
-                    placeholder="请选择"
-                    v-model="formData.partySex"
-                    :disabled="originalData.partySex ? true : false"
-                  >
-                    <el-option value="0" label="男"></el-option>
-                    <el-option value="1" label="女"></el-option>
-                  </el-select>
-                </el-form-item>
-              </div>
-            </div>
-            <div class="row" v-if="isParty">
-              <div class="col">
                 <el-form-item label="身份证件号" prop="partyIdNo">
                   <el-input
                     clearable
@@ -74,9 +60,19 @@
                   ></el-input>
                 </el-form-item>
               </div>
+            </div>
+            <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="年龄" prop="partyAge">
-                  <el-input ref="partyAge" clearable class="w-120" type="number" v-model="formData.partyAge" size="small" placeholder="请输入" :disabled="originalData.partyAge ? true : false"></el-input>
+                <el-form-item label="联系地址">
+                  <el-input
+                    ref="partyAddress"
+                    clearable
+                    class="w-120"
+                    v-model="formData.partyAddress"
+                    size="small"
+                    placeholder="请输入"
+                    :disabled="originalData.partyAddress ? true : false"
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -95,29 +91,43 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="所在单位">
-                  <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
+                <el-form-item label="案发日期">
+                  <el-date-picker v-model="formData.acceptTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"></el-date-picker>            
                 </el-form-item>
               </div>
             </div>
-            <div class="row" v-if="isParty">
+            <div class="row">
               <div class="col">
-                <el-form-item label="联系地址">
-                  <el-input
-                    ref="partyAddress"
-                    clearable
-                    class="w-120"
-                    v-model="formData.partyAddress"
-                    size="small"
-                    placeholder="请输入"
-                    :disabled="originalData.partyAddress ? true : false"
-                  ></el-input>
+                <el-form-item prop="illegalFacts" label="违法事实">
+                  <el-input type="textarea" ref="illegalFacts" clearable class="height106" v-model="formData.illegalFacts" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <el-form-item prop="measureStartDate" label="措施起止日期">
+                    <el-date-picker
+                      v-model="formData.measureStartDate"
+                      type="datetime"
+                      format="yyyy年MM月dd日"
+                      value-format="yyyy-MM-dd"
+                      placeholder="    年  月  日"
+                      
+                    ></el-date-picker>
+                  
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="邮编" prop="partyZipCode">
-                  <el-input ref="partyZipCode" clearable class="w-120" v-model="formData.partyZipCode" size="small" placeholder="请输入" :disabled="originalData.partyZipCode ? true : false"></el-input>
+                <el-form-item prop="measureEndDate" label="至">
+                    <el-date-picker
+                      v-model="formData.measureEndDate"
+                      type="datetime"
+                      format="yyyy年MM月dd日"
+                      value-format="yyyy-MM-dd"
+                      placeholder="    年  月  日"
+                    ></el-date-picker>
                 </el-form-item>
+                
               </div>
             </div>
 
@@ -177,7 +187,7 @@
                 </el-form-item>
               </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="!isParty">
               <div class="col">
                 <el-form-item label="统一社会信用代码" class="line-height13">
                   <el-input
@@ -192,99 +202,53 @@
                 </el-form-item>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item label="车牌号码">
-                  <el-input
-                    ref="vehicleShipId"
-                    clearable
-                    class="w-120"
-                    v-model="formData.vehicleShipId"
-                    size="small"
-                    placeholder="请输入"
-                    :disabled="originalData.vehicleShipId ? true : false"
-                  ></el-input>
-                </el-form-item>
-              </div>
-              <div class="col">
-                <el-form-item label="车辆类型">
-                  <!-- <el-input ref="vehicleShipType" clearable class="w-120" v-model="formData.vehicleShipType" size="small" placeholder="请输入" :disabled="originalData.vehicleShipType ? true : false"></el-input> -->
-                  <el-select v-model="formData.vehicleShipType">
-                    <el-option
-                      v-for="item in allVehicleShipType"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                      :disabled="originalData.vehicleShipType ? true : false"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </div>
-            </div>
           </div>
         </div>
       </div>
       <div class="content_box">
         <div class="content">
+            <el-row :gutter="20">
+            <el-col :span="16">
+              <div class="second_title">
+                文书列表
+              </div>
+            </el-col>
+          </el-row>
           <div class="table_form">
-            <el-table
-              :data="docTableDatas"
-              stripe
-              border
-              style="width: 100%"
-              :row-class-name="getRowClass"
-            >
-              <el-table-column type="expand" expand-change>
-                <template>
-                  <ul class="moreDocList">
-                    <li v-for="(item,index) in allAskDocList" :key="index">
-                      <div>{{item.name}}</div>
-                      <div>
-                        <span v-if="item.status == '1'">已完成</span>
-                        <span v-if="item.status == '0'">未完成</span>
-                      </div>
-                      <div>
-                        <span v-if="item.status == '1'" class="tableHandelcase">
-                          <!-- 已完成 -->
-                          <i class="iconfont law-eye" @click="viewDocPdf(item)"></i>
-                          <i class="iconfont law-print"></i>
-                        </span>
-                        <span v-if="item.status == '0'" class="tableHandelcase">
-                          <!-- 未完成 -->
-                          <i class="iconfont law-edit" @click="viewDoc(item)"></i>
-                          <i class="iconfont law-delete" @click="delDocDataByDocId(item)"></i>
-                        </span>
-                      </div>
-                    </li>
-                  </ul>
-                </template>
+            <el-table :data="docTableDatas" stripe border style="width: 100%">
+              <el-table-column type="index" label="序号" align="center" width="100px">
               </el-table-column>
-
-              <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-              <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
+              <el-table-column prop="name" label="材料名称" align="center">
+              </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
-                <template slot-scope="scope" v-show="scope.row.name != '询问笔录'">
-                  <span v-if="scope.row.status == '1'">已完成</span>
-                  <span v-if="scope.row.status == '0'">未完成</span>
-                  <span v-if="scope.row.status == ''">-</span>
+                <template slot-scope="scope">
+                  <span v-if="scope.row.status == '1'">
+                    已完成
+                  </span>
+                  <span v-if="scope.row.status == '0'">
+                    未完成
+                  </span>
+                  <span v-if="scope.row.status == ''">
+                    -
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <div v-if="scope.row.openRow">
-                    <span @click="addMoreDoc(scope.row)">添加</span>
-                  </div>
-                  <div v-if="!scope.row.openRow">
+                  <span v-if="scope.row.status == '1'" class="tableHandelcase">
                     <!-- 已完成 -->
-                    <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
-                    <!-- 未完成 暂存 -->
-                    <span v-if="scope.row.status == '0'" class="tableHandelcase">
-                      <span @click="viewDoc(scope.row)">编辑</span>  
-                      <span @click="delDocDataByDocId(scope.row)">清空</span>  
-                    </span>
+                    <i  class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
+                    <i  class="iconfont law-print"></i>
+                  </span>
+                  <span v-if="scope.row.status == '0'" class="tableHandelcase">
+                    <!-- 未完成 -->
+                    <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
+                    <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
+                  </span>
+                  <span v-if="scope.row.status === ''" class="tableHandelcase">
                     <!-- 无状态 -->
-                    <span v-if="scope.row.status === ''" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
-                  </div>
+                    <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
+                  </span>
                 </template>
               </el-table-column>
             </el-table>
@@ -324,15 +288,11 @@
         </div>
       </div>
     </el-form>
-    <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
-    <chooseAskPeopleDia ref="chooseAskPeopleDiaRef"></chooseAskPeopleDia>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import checkDocFinish from "../components/checkDocFinish";
-import chooseAskPeopleDia from "@/page/caseHandle/components/chooseAskPeopleDia";
 
 import {
   validateIDNumber,
@@ -340,10 +300,6 @@ import {
   validateZIP
 } from "@/common/js/validator";
 export default {
-  components: {
-    checkDocFinish,
-    chooseAskPeopleDia
-  },
   data() {
     return {
       formData: {
@@ -362,13 +318,13 @@ export default {
         partyManager: "",
         partyUnitTel: "",
         socialCreditCode: "",
-        vehicleShipId: "",
-        vehicleShipType: ""
+        startEndTime:""
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: "", //案件ID
-        caseLinktypeId: "2c90293b6c178b55016c17c93326000f", //表单类型ID
+        // caseBasicinfoId: "b693ad3b175d6efd315a6c82add6a5f4", //案件ID
+        caseBasicinfoId:"",
+        caseLinktypeId: "2c9029ee6cac9281016cacaa28760005", //表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -379,38 +335,13 @@ export default {
         partyIdNo: [{ validator: validateIDNumber, trigger: "blur" }],
         partyTel: [{ validator: validatePhone, trigger: "blur" }],
         partyZipCode: [{ validator: validateZIP, trigger: "blur" }],
-        closeResult: [
-          { required: true, message: "处理结果必须填写", trigger: "blur" }
-        ],
-        closeSituation: [
-          { required: true, message: "执行情况必须填写", trigger: "blur" }
-        ]
+        // startEndTime: [
+        //   { required: true, message: "措施起止日期必须填写", trigger: "blur" }
+        // ],        
       },
       // nextBtnDisab: true
       isParty: true, //当事人类型为个人
       originalData: "",
-      allVehicleShipType: [
-        { value: "1", label: "中小客车" },
-        { value: "2", label: "大客车" },
-        { value: "3", label: "小型货车" },
-        { value: "4", label: "中型货车" },
-        { value: "5", label: "大型货车" },
-        { value: "6", label: "特大型货车" },
-        { value: "7", label: "集装箱车" },
-        { value: "8", label: "摩托车" },
-        { value: "9", label: "拖拉机" }
-      ],
-      allRelationWithCase: [
-        //与案件关系下拉框
-        { value: "0", label: "当事人" },
-        { value: "1", label: "驾驶人" },
-        { value: "2", label: "实际所有者" },
-        { value: "3", label: "证人" },
-        { value: "4", label: "承运人" },
-        { value: "5", label: "代理人" }
-      ],
-      docTableDatasCopy: [],
-      allAskDocList: [] //询问笔录
     };
   },
   computed: {
@@ -455,7 +386,7 @@ export default {
           this.caseLinkDataForm.caseLinktypeId
         );
       } else {
-        this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+        // this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
       }
 
       // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
@@ -477,19 +408,7 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      //为询问笔录时弹出选择框
-      // if (row.docId == "2c9029ca5b71686d015b71a86ead0032") {
-      //   this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
-      // } else {
-      //   this.com_viewDoc(row);
-      // }
-      console.log("查看");
-      this.com_viewDoc(row);
-    },
-    addMoreDoc(row) {
-      console.log("添加");
-
-      this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
+        this.com_viewDoc(row);
     },
     //预览pdf
     viewDocPdf(row) {
@@ -505,7 +424,7 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        linkTypeId: "2c90293b6c178b55016c17c93326000f" //环节ID
+        linkTypeId: "2c9029ee6cac9281016cacaa28760005" //环节ID
       };
       this.com_getDocListByCaseIdAndFormId(data);
     },
@@ -514,37 +433,6 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.go(-1);
     },
-    getRowClass: function(row, index) {
-      console.log("row", row);
-      if (row.row.openRow) {
-        console.log("显示");
-        return "";
-      } else {
-        return "myhide-expand";
-      }
-    },
-    setMoreDocTableTitle() {
-      this.docTableDatas = [];
-      this.allAskDocList = [];
-      this.docTableDatas.push({
-        name: "询问笔录",
-        status: "询问",
-        openRow: true,
-        url: "othermodle",
-        docId: "2c9029ca5b71686d015b71a86ead0032"
-      });
-
-      this.docTableDatasCopy.forEach(item => {
-        if (item.name != "询问笔录") {
-          this.docTableDatas.push(item);
-        } else {
-          this.allAskDocList.push(item);
-        }
-      });
-
-      console.log("this.docTableDatas", this.docTableDatas);
-      console.log("this.allAskDocList", this.allAskDocList);
-    }
   },
   created() {
     this.setFormData();

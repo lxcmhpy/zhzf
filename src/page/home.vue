@@ -1,12 +1,12 @@
 <template>
   <div class="full">
-    <div v-if="currentHome == 'xboot'" class="full">
+    <!-- <div v-if="currentHome == 'xboot'" class="full">
       系统管理首页
     </div>
     <div v-if="currentHome == 'caseHandle'" class="full">
-      <!-- 案件办理首页 -->
       <caseHome></caseHome>
-    </div>
+    </div> -->
+    <caseHome></caseHome>
   </div>
 </template>
 <script>

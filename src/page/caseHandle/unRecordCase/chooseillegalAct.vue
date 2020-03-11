@@ -46,7 +46,7 @@
             </el-form-item>
           </div>
           <div class="itemSmall">
-            <el-button type="primary" @click="getIllegaAct">确 定</el-button>
+            <el-button type="primary" @click="getIllegaAct">查 询</el-button>
           </div>
         </div>
       </el-form>

@@ -57,3 +57,13 @@ export function uploadEvdence(data) {
         cancelToken:  setCancelSource(),
       });
 }
+
+//根据主键ID删除附件
+export function deleteFileByIdApi(fileId) {
+  return  request({
+    url:  "/sys/file/delete/"+fileId,
+    method:  "GET",
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
