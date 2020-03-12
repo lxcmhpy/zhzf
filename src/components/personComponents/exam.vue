@@ -1,17 +1,19 @@
 <template>
   <div>
     <div>
-      <div style="margin-top:20px;margin-bottom:20px;">
-        <font style="font-size:42px;">考试信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
-        <el-button type="primary"  round style="font-size:22px;">新增</el-button>
+      <div style="margin-top:35px;margin-bottom:20px;margin-left:25px;">
+        <font style="font-size:25px;"><span class="titleflag"></span>考试信息</font> 
+        <el-button type="primary"  round style="margin-right:25px;float:right;" icon="el-icon-plus" size="medium">新增考试</el-button>
       </div>
       <!--<el-row>
         <el-button type="primary" icon="el-icon-plus"  size="mini" round>新增</el-button>
         <el-button type="danger" icon="el-icon-delete" size="mini" round>删除</el-button>
       </el-row>-->
       <el-table
+        style="margin-left:25px;width:97%;margin-bottom:35px;"
         :data="tableData"
         resizable 
+        stripe
         @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="date" label="考试类型"></el-table-column>
@@ -68,4 +70,11 @@
 
 <style lang="scss">
   @import "@/assets/css/personManage.scss";
+  .titleflag {
+                width      : 4px;
+                height     : 22px;
+                margin-right: 8px;
+                display    : inline-block;
+                background : #4573D0;
+            }
 </style>
