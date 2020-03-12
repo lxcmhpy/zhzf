@@ -1,7 +1,7 @@
 <!-------长软------->
 <template>
   <div class="print_box">
-      <div class="print_info">
+      <div class="print_info"  id="adminCoerciveMeasure-print">
         <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
           <div class="doc_topic">行政强制措施决定书</div>
           <div class="doc_number">案号：{{formData.caseNumber}}</div>
@@ -239,7 +239,7 @@
               </div>
             </div>
           </el-dialog>
-          <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+          <casePageFloatBtns :pageDomId="'adminCoerciveMeasure-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
           <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
     </div>
@@ -286,7 +286,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '', //案件id--从流程进入删掉，先写死测试用
-        caseLinktypeId: "a36b59bd27ff4b6fe96e1b06390d209j", //表单类型IDer
+        caseLinktypeId: "2c90293b6c178b55016c17c7ae92000e", //表单类型IDer
         //表单数据
         formData: "",
         status: ""
@@ -358,7 +358,7 @@ export default {
       tableData: [],
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: 'subOutputRank-print',
+        pageDomId: 'adminCoerciveMeasure-print',
       },
       addVisible: false,
       addLoading: false,
@@ -412,10 +412,6 @@ export default {
         this.caseLinkDataForm.caseLinktypeId,
         false
       );
-    },
-    //保存文书信息
-    addDocData(handleType) {
-      this.com_addDocData(handleType, 'docForm');
     },
     // 盖章
     makeSeal() {
