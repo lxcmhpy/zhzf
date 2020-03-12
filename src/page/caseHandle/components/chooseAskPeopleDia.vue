@@ -11,14 +11,15 @@
       <el-form ref="askPeopleForm" :model="formData" :rules="rules">
         <el-form-item>
           <p>请选择被询问人及其与案件关系</p>
-          <el-radio-group v-model="formData.peopleType" class="peopleTypeRadio" @change="changeType">
+          <el-radio-group v-model="formData.peopleAndRelationType" class="peopleTypeRadio" @change="changeType">
             <div class="peopleTypeListBox">
-                <div v-for="(item,index) in peopleTypeList" :key="index"><el-radio :label="item.relation">{{item.all}}</el-radio></div>
+                <div v-for="(item,index) in peopleTypeList" :key="index"><el-radio :label="item.all">{{item.all}}</el-radio></div>
             </div>
           </el-radio-group>
         </el-form-item>
-        <el-form-item  label="与案件关系" label-width="115px" v-if="formData.peopleType == 'none'" prop="otherPeopleRelation">  
+        <el-form-item  label="与案件关系" label-width="115px" v-if="formData.peopleAndRelationType == '以上均不是'" prop="otherPeopleRelation">  
           <el-select placeholder="请选择" v-model="formData.otherPeopleRelation">
+              <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>  
           </el-select>
         </el-form-item>
         <el-form-item  label="询问次数" label-width="105px" prop="askNum">    
@@ -42,7 +43,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     var isOther = (rule, value, callback) => {
-      if (this.formData.peopleType == 4) {
+      if (this.formData.peopleAndRelationType == '以上均不是' && !value) {
         return callback(new Error("请选择"));
       }
       callback();
@@ -51,28 +52,12 @@ export default {
       visible: false,
       docData:"",
       formData:{
-        peopleType:'当事人',
+        peopleType:'',
         otherPeopleRelation:"",
-        askNum:""
+        askNum:"",
+        peopleAndRelationType:'',
       },
-      peopleTypeList:[
-          // {
-          //     value:0,
-          //     label:'当事人'
-          // },
-          // {
-          //     value:1,
-          //     label:'与案件的关系是'
-          // },
-          // {
-          //     value:2,
-          //     label:'代理人'
-          // },
-          // {
-          //     value:3,
-          //     label:'以上均不是'
-          // }
-      ],
+      peopleTypeList:[],
       rules:{
         askNum:[
           { required: true, message: '请填写询问次数', trigger: 'blur' }
@@ -81,6 +66,15 @@ export default {
           { required: true, validator: isOther, trigger: "change" }
         ],
       },
+      allRelationWithCase: [
+        //与案件关系下拉框
+        { value: "0", label: "当事人" },
+        { value: "1", label: "驾驶人" },
+        { value: "2", label: "实际所有者" },
+        { value: "3", label: "证人" },
+        { value: "4", label: "承运人" },
+        { value: "5", label: "代理人" }
+      ],
       handleType:"",
     };
     
@@ -100,14 +94,21 @@ export default {
       this.visible = false;
     },
     showAskDoc(){
-      let addMoreData ={
-        handelType:'isAddMore',
-        askData:{
-          peopleType:this.formData.peopleType,
-          askNum:this.formData.askNum
+      this.$refs["askPeopleForm"].validate(valid => {
+        if (valid) {
+          let addMoreData ={
+            handelType:'isAddMore',
+            askData:{
+              peopleType:this.formData.peopleType,
+              askNum:this.formData.askNum,
+              peopleAndRelationType:this.formData.peopleAndRelationType
+            }
+          }
+          console.log('addMoreData',addMoreData);
+          this.com_viewDoc(this.docData,addMoreData);
         }
-      }
-       this.com_viewDoc(this.docData,addMoreData);
+      })
+      
     },
     //通过案件id获取询问笔录被询问人及其与案件关系
     findPersonAndRelationByCaseId(){
@@ -123,6 +124,9 @@ export default {
         });
         this.peopleTypeList.push({name:'',relation:'none',all:'以上均不是'})
         console.log('peopleTypeList',this.peopleTypeList);
+        //设置默认值
+        this.formData.peopleType = this.peopleTypeList[0].relation;
+        this.formData.peopleAndRelationType = this.peopleTypeList[0].all;
         this.findAskNum(this.peopleTypeList[0].name);
       },err=>{
         console.log(err)
@@ -171,8 +175,10 @@ export default {
     //更改询问人及与案件关系
     changeType(val){
       console.log(val);
-      if(val !='none'){
-        this.findAskNum();
+      if(val !='以上均不是'){
+        let name = this.peopleTypeList.find(item => item.all === val).name;
+        this.formData.peopleType = this.peopleTypeList.find(item => item.all === val).relation;
+        this.findAskNum(name);
       }else{
         this.formData.askNum =1;
       }
