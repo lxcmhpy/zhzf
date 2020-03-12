@@ -238,7 +238,7 @@
                 <template>
                   <ul class="moreDocList">
                     <li v-for="(item,index) in allAskDocList" :key="index">
-                      <div>{{item.name}}</div>
+                      <div>{{item.note}}</div>
                       <div>
                         <span v-if="item.status == '1'">已完成</span>
                         <span v-if="item.status == '0'">未完成</span>
@@ -538,6 +538,7 @@ export default {
         if (item.name != "询问笔录") {
           this.docTableDatas.push(item);
         } else {
+          if(item.status === 0 || item.status === 1)
           this.allAskDocList.push(item);
         }
       });

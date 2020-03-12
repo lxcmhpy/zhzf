@@ -6,7 +6,7 @@ import { showFullScreenLoading, tryHideFullScreenLoading } from "./loading";
 import iLocalStroage from '@/common/js/localStroage'
 
 var vue = new Vue();
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true
 // create an axios instance
 // axiosObj.headers = { 'Content-Type': 'application/x-www-form-urlencoded' };charset=GB2312
 const service = axios.create({
@@ -32,27 +32,30 @@ service({
 // request interceptor
 service.interceptors.request.use(
   config => {
-     if(config.baseUrlType == 1){
-       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
-     }else{
-      config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
-     }
-     if (config.responseType) {
-       config["responseType"] = config.responseType
-     }
-
-     config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
-
-    //token一天后过期
-    if (config.showloading != false) {
-      showFullScreenLoading();
+    if(config.baseUrlType == 1){
+      config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
+    }else{
+     config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
     }
-    if (getToken("TokenKey")) {
-      // config.headers["accessToken"] = "CATSIC_TOKEN_PRE:" + getToken("TokenKey");
-      config.headers["accessToken"] = getToken("TokenKey");
+    if (config.responseType) {
+      config["responseType"] = config.responseType
     }
-    console.log('config',config)
-    return config;
+
+    config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
+
+   //token一天后过期
+   if (config.showloading != false) {
+     showFullScreenLoading();
+   }
+   if (getToken("TokenKey")) {
+     // config.headers["accessToken"] = "CATSIC_TOKEN_PRE:" + getToken("TokenKey");
+     config.headers["accessToken"] = getToken("TokenKey");
+     // config.headers["Authorization"] = getToken("TokenKey");
+     
+   }
+   console.log('config',config)
+   return config;
+
   },
   error => {
     return Promise.reject(error);

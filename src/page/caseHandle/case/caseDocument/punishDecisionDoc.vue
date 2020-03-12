@@ -166,7 +166,6 @@
                 v-model="formData.illegalFact"
                 rows="3"
                 maxlength="90"
-                placeholder="\"
               ></el-input>
               <span class="overflow_describe">违法事实及依据：</span>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
@@ -189,19 +188,17 @@
                 v-bind:class="{ over_flow:formData.illegalLaw.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
               ></el-input>
             </el-form-item>
           </span>的规定，依据
           <span contenteditable="true">
-            <el-form-item prop="punishLaw">
+            <el-form-item prop="punishLaw" class="width120">
               <el-input
                 type="textarea"
                 v-model="formData.punishLaw"
                 v-bind:class="{ over_flow:formData.punishLaw.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
               ></el-input>
             </el-form-item>
           </span>的规定，决定给予
@@ -213,7 +210,6 @@
                 v-bind:class="{ over_flow:formData.tempPunishAmount.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
               ></el-input>
               <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="\"></el-input> -->
             </el-form-item>
@@ -224,13 +220,13 @@
           <span>
             <el-form-item prop="bank">
               <el-input type="textarea" v-model="formData.bank" v-bind:class="{ over_flow:formData.bank && formData.bank.length>12?true:false }"
-                :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength" placeholder="\"></el-input>
+                :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength" ></el-input>
             </el-form-item>
           </span>，账号
           <span>
             <el-form-item prop="account">
               <el-input type="textarea" v-model="formData.account" v-bind:class="{ over_flow:formData.account && formData.account.length>12?true:false }"
-                :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength" placeholder="\"></el-input>
+                :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
             </el-form-item>
           </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
         </p>
@@ -258,7 +254,6 @@
                 v-model="formData.otherWay"
                 rows="3"
                 maxlength="90"
-                placeholder="\"
               ></el-input>
               <span class="overflow_describe">其他执行方式和期限：</span>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>

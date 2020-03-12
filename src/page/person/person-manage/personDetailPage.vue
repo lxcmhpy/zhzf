@@ -1,6 +1,6 @@
 <template>
-  <div class="com_searchAndpageBoxPadding">
-    <div class="n_searchAndpageBox">
+  <div class="com_searchAndpageBoxPadding" >
+    <div class="n_searchAndpageBox" style="height:1060px;">
       <personInfoPage />
     </div>
   </div>

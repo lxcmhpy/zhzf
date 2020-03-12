@@ -1,17 +1,19 @@
 <template>
   <div>
     <div>
-      <div style="margin-top:20px;margin-bottom:20px;">
-          <font style="font-size:42px;">奖励信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
-          <el-button type="primary"  @click="addReward"  round style="font-size:22px;">新增</el-button>
+      <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
+          <font style="font-size:25px;"><span class="titleflag"></span>奖励信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
+          <el-button type="primary"  @click="addReward"  round style="margin-right:25px;float:right;" icon="el-icon-plus" size="medium">新增奖励</el-button>
       </div>
       <!--<el-row>
         <el-button type="primary" icon="el-icon-plus"  @click="addReward" size="mini" round>新增</el-button>
         <el-button type="danger" icon="el-icon-delete" @click="deleteReward" size="mini" round>删除</el-button>
       </el-row>-->
       <el-table
+        style="margin-left:25px;width:97%;margin-bottom:35px;"
         :data="tableData"
         resizable 
+        stripe
         @selection-change="handleSelectionChange">
         <el-table-column prop="awardId" type="selection" width="55"></el-table-column>
         <el-table-column prop="personId" label="姓名"></el-table-column>
@@ -125,4 +127,11 @@ import addRewardComp from './../../page/person/person-award/AddAward'
 
 <style lang="scss" scoped>
   @import "@/assets/css/personManage.scss";
+  .titleflag {
+                width      : 4px;
+                height     : 22px;
+                margin-right: 8px;
+                display    : inline-block;
+                background : #4573D0;
+            }
 </style>

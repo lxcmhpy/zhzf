@@ -1,12 +1,14 @@
 <template>
   <div>
     <div>
-      <div style="margin-top:25px;margin-bottom:25px;">
-        <font style="font-size:42px;">调动信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
+      <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
+        <font style="font-size:25px;"><span class="titleflag"></span>调动信息</font> 
       </div>
       <el-table
+        style="margin-left:25px; width:97%;margin-bottom:35px;"
         :data="tableData"
-        resizable>
+        resizable
+        stripe>
         <el-table-column prop="date" label="转出单位"></el-table-column>
         <el-table-column prop="name" label="转出时间"></el-table-column>
         <el-table-column prop="address" label="转出执法门类"></el-table-column>
@@ -56,4 +58,11 @@
 
 <style lang="scss" scoped>
   @import "@/assets/css/personManage.scss";
+  .titleflag {
+                width      : 4px;
+                height     : 22px;
+                margin-right: 8px;
+                display    : inline-block;
+                background : #4573D0;
+            }
 </style>

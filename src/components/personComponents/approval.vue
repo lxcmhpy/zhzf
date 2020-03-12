@@ -1,36 +1,42 @@
 <template>
   <div>
-    <div style="margin-top:50px;margin-bottom:50px;">
-      <font style="font-size:42px;">审批信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
-      <el-button type="primary" round style="font-size:22px;">审批历史</el-button>
+    <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
+      <font style="font-size:25px;"><span class="titleflag"></span>审批信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
+      <el-button type="text" round style="margin-right:25px;float:right;" icon="el-icon-time" size="medium">审批历史</el-button>
     </div>
-    <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition">
-      <div class="el-table__body-wrapper is-scrolling-none">
-        <table class="el-table__body" style="width:1500px;border: 1px solid #e4e7ed">
-          <tr class="el-table__row" style = "border: 1px solid #e4e7ed">
-            <td class="el-table_column_center" style="width:30%;border: 1px solid #e4e7ed"><p>审批流</p></td>
-            <td class="el-table_column_center" style="width:70%;border: 1px solid #e4e7ed"><p>无审批单位</p></td>
-          </tr>
-          <tr class="el-table__row">
-            <td class="el-table_column_center" style="width:30%;border: 1px solid #e4e7ed"><p>审批单位</p></td>
-            <td class="el-table_column_center" style="width:70%;border: 1px solid #e4e7ed"><p>无</p></td>
-          </tr>
-        </table>
+    <div >
+      <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
+        
+        <el-steps :active="3" style="width:65%">
+           <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin: 0px 5px; background:#228B22 none repeat scroll 0% 0%;margin-top:4px;"></span>
+           审批流 
+          <el-step style="margin-left:85px;"></el-step>&nbsp;&nbsp;&nbsp;&nbsp;
+          <el-step></el-step>
+          <el-step></el-step>
+        </el-steps>
       </div>
-      <div>
-        <el-table
-          :data="tableData"
-          resizable
-          align="center" >
-          <el-table-column prop="oid" label="审批单位"></el-table-column>
-          <el-table-column prop="approveStatus" label="审批状态"></el-table-column>
-          <el-table-column prop="userId" label="审批人"></el-table-column>
-          <el-table-column prop="approveInfo" label="审批信息"></el-table-column>
-          <el-table-column prop="operationDate" label="操作审批时间"></el-table-column>
-        </el-table>
+      <div style="margin-top:20px;margin-bottom:30px;margin-left:25px;">
+       <el-steps :active="1">
+         <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin: 0px 5px; background:#228B22  none repeat scroll 0% 0%;margin-top:4px;"></span>
+         当前审批单位
+        <el-step  style="margin-left:35px;"></el-step>&nbsp;&nbsp;&nbsp;&nbsp;紧急医学救援队
+      </el-steps>
+      </div>
     </div>
-    </div>
-    
+    <div>
+      <el-table
+        style="margin-left:25px;width:97%;margin-bottom:35px;"
+        :data="tableData"
+        resizable
+        align="center" 
+        stripe>
+        <el-table-column prop="oid" label="审批单位"></el-table-column>
+        <el-table-column prop="approveStatus" label="审批状态"></el-table-column>
+        <el-table-column prop="userId" label="审批人"></el-table-column>
+        <el-table-column prop="approveInfo" label="审批信息"></el-table-column>
+        <el-table-column prop="operationDate" label="操作审批时间"></el-table-column>
+      </el-table>
+  </div>
   </div>
 </template>
 <script>
