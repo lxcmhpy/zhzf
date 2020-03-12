@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box" id="noPenaltyBox">
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
@@ -15,19 +15,19 @@
             
             <div class="row">
               <div class="col">
-                <el-form-item label="原因" prop="reason">
-                  <p>
-                    <input type="radio" value="0" v-model="radios" @change="click"/>违法行为轻微
-                    
-                  </p>
-                  <p>
-                    <input type="radio" value="1" v-model="radios" @change="click"/>违法事实不能成立
-                  </p>
-                  <p>
-                    <input type="radio" value="2" v-model="radios" @change="click"/>其他原因<span style= "float:right"><el-form-item prop="otherReason">
-                      <el-input v-model="formData.otherReason" v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="\" style= "width:600px;"></el-input>
-                    </el-form-item></span>
-                  </p>
+                <el-form-item label="原因" prop="reason" class="reasonCon">
+                  <el-radio-group v-model="formData.reason" @change="changeReason">
+                    <p><el-radio :label="0">违法行为轻微</el-radio></p>
+                    <p><el-radio :label="1">违法事实不能成立</el-radio></p>
+                    <p>
+                      <el-radio :label="2">其他原因
+                        <el-form-item prop="otherReason" class="otherReasonCon">
+                          <el-input  v-model="formData.otherReason" :disabled="disabledOne" :maxLength='maxLength' placeholder="\"></el-input>
+                        </el-form-item>
+                      </el-radio>
+                    </p>
+                  </el-radio-group>
+                 
                 </el-form-item>
               </div>
             </div>
@@ -35,26 +35,25 @@
               <!-- <el-col :span="16"> -->
                 <el-form-item label="附件">
                   <el-upload
-                      class="upload-demo"
                       action="https://jsonplaceholder.typicode.com/posts/" 
                       :http-request="uploadFile"
                       :limit="3"
-                      :show-file-list="true"
-                      :file-list="fileList"
+                      :show-file-list="false"
                       >
-                      <el-button size="small" type="primary">上传附件</el-button>
+                      <el-button size="small" type="primary">上传附件</el-button> <span class="upLoadNumSpan">最多上传3个附件</span>
 
                     <!-- <div slot="tip" class="el-upload__tip">最多上传3个附件</div> -->
-                    <ul>
-                      <li v-for="item in fileListArr" :key="item.id">{{item.fileName}}</li>
-                    </ul>
+                    
                   </el-upload>
+                  <ul>
+                      <li v-for="item in fileListArr" :key="item.id" class="fileLiCon"><span>{{item.fileName}}</span><span @click="deleteFile(item)"><i class="iconfont law-delete"></i></span></li>
+                    </ul>
                 </el-form-item>
             </el-row>
             <div class="row">
               <div class="col">
                 <el-form-item prop="notes" label="备注">
-                  <el-input type="textarea" ref="notes" clearable class="height106" v-model="formData.notes" size="small" placeholder="请输入"></el-input>
+                  <el-input type="textarea" ref="notes" clearable :rows="4" v-model="formData.notes" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -98,12 +97,13 @@ import {
   uploadEvApi,
   findFileByIdApi,
   getFile,
+  deleteFileByIdApi,
 } from "@/api/upload";
 export default {
   data() {
     return {
       formData: {
-        reaason:"",
+        reason:"",
         otherReason:"",
         // fileList:[],
         notes:"",
@@ -125,9 +125,9 @@ export default {
       lineStyleFlag:false,
       maxLength:23,
       rules: {
-        // reason: [
-        //   { required: true, message: '原因必须填写', trigger: 'blur' }
-        // ],
+        reason: [
+          { required: true, message: '原因必须填写', trigger: 'change' }
+        ],
       },
     }
   },
@@ -169,6 +169,10 @@ export default {
     },
     //上传附件
     uploadFile(param) {
+      if(this.fileListArr.length >=3){
+        this.$message.warning('最多选择3个文件！');
+        return;
+      }
       console.log(param);
       var fd = new FormData()
       fd.append("file", param.file);
@@ -178,12 +182,37 @@ export default {
         res => {
           console.log(res);
           // console.log(this.fileList);
+          this.findFileList();
         },
         error => {
           console.log(error)
         }
       );
     },
+    //通过文件ID查询文件
+    // findFileById(id, isAdd) {
+    //   findFileByIdApi(id).then(
+    //     res => {
+    //       console.log(res);
+    //       this.alreadyLoadPayEvidence.push(res.data);
+    //       if (isAdd) {
+    //         if (this.formData.payEvidence) {
+    //           let payEvidenceArr = this.formData.payEvidence.split(',');
+    //           payEvidenceArr.push(id);
+    //           this.formData.payEvidence = payEvidenceArr.join(',');
+    //         } else {
+    //           this.formData.payEvidence = id;
+    //         }
+    //       }
+
+    //       console.log('this.formData.payEvidence', this.formData.payEvidence);
+
+    //     },
+    //     error => {
+    //       console.log(error)
+    //     }
+    //   );
+    // },
     //通过案件ID和文书ID查询附件
     findFileList(){
       let data =  {
@@ -207,15 +236,25 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.go(-1);
     },
-    click(){
-      if (this.radios.length > 1) {
-        this.radios.shift();
-      }
-      if (this.radios == '0' || this.radios == '1') {
-        this.disabledOne = true;
-      } else if(this.radios == '2'){
+    //更改原因
+    changeReason(val){
+      console.log(val);
+      if(val == 2){
         this.disabledOne = false;
-      } 
+      }else{
+        this.disabledOne = true;
+        this.formData.otherReason = '';
+      }
+    },
+    //删除附件
+    deleteFile(data){
+      console.log('删除',data);
+      deleteFileByIdApi(data.id).then(res=>{
+        console.log(res);
+        this.findFileList();
+      },err=>{
+         console.log(err)
+      })
     }
   },
   
@@ -231,4 +270,33 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/css/documentForm.scss";
+#noPenaltyBox{
+  .reasonCon{
+    p{
+      margin: 14px 0;
+    }
+    .otherReasonCon{
+      display: inline-block;
+      width: 600px;
+    }
+  }
+  .upLoadNumSpan{
+    color: #A5A5A5;
+    font-size: 12px;
+    vertical-align: sub;
+  }
+  .fileLiCon{
+    &>span:nth-child(1){
+      min-width: 150px;
+      overflow-x: auto;
+      margin-right: 10px;
+      display: inline-block;
+      height: 20px;
+      line-height: 20px;
+    }
+    &>span:nth-child(2){
+      cursor: pointer;
+    }
+  }
+}
 </style>

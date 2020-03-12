@@ -1,12 +1,207 @@
 <template>
-  <div class="dentail_info_box">
+<div>
+  <div class="new_css" v-show="isShowAddPerson">
+    <el-form ref="form" :model="personInfoDetailForm" label-width="110px" :rules="rules">
+      <div class="float css_left" style="position: absolute;height:965px;"><!-- 左侧内容 -->
+        <div class="block" style="margin-top:50px;">
+            <el-upload
+              style="margin-left:20px;width:178px;height:178px;"
+              class="avatar-uploader"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload">
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </div>
+      </div>
+      <div class="float css_right" style="float:right;"><!-- 右侧表格 -->
+        <!--基本信息 -->
+        <div class="info_box">
+          <div class="info_content float">
+            <div class="center_content">
+              <span class="titleflag">
+              </span>
+              <span class="title">基本信息</span>
+            </div>
+            <div class="info_body">
+              <el-row>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="真实姓名" prop="personName" class="form_class">
+                    <el-input v-model="personInfoDetailForm.personName"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="身份证号" prop="idNo" class="form_class">
+                    <el-input v-model="personInfoDetailForm.idNo"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="性别" prop="sex" class="form_class">
+                     <el-select v-model="personInfoDetailForm.sex" placeholder="性别" style="width:435px;">
+                          <el-option :value='0' label="男"></el-option>
+                          <el-option :value='1' label='女'></el-option>
+                      </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="出生日期" prop="birthDate" class="form_class">
+                    <el-input v-model="personInfoDetailForm.birthDate"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="民族" prop="nationName" class="form_class">
+                    <el-input v-model="personInfoDetailForm.nationName"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="参加工作日期" prop="workDate" class="form_class">
+                    <el-date-picker v-model="personInfoDetailForm.workDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                        style="width: 430px;" placeholder="请选择参加工作日期"  clearable >
+                    </el-date-picker>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="政治面貌" prop="politicalStatusName" class="form_class">
+                    <el-input v-model="personInfoDetailForm.politicalStatusName"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="入党日期" prop="admissionDate" class="form_class">
+                    <el-date-picker v-model="personInfoDetailForm.admissionDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                        style="width: 430px;" placeholder="请选择入党日期" :disabled='isDisabled' clearable >
+                    </el-date-picker>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </div>
+        <!-- 学历 -->
+        <div class="info_box">
+          <div class="info_content float">
+            <div class="center_content">
+              <span class="titleflag">
+              </span>
+              <span class="title">学历信息</span>
+            </div>
+            <div class="info_body">
+              <el-row>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="学历" prop="degree" class="form_class">
+                    <el-input v-model="personInfoDetailForm.degree"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="毕业学校" prop="school" class="form_class">
+                    <el-input v-model="personInfoDetailForm.school"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="毕业专业" prop="major" class="form_class">
+                     <el-select v-model="personInfoDetailForm.major" placeholder="毕业专业" style="width:435px;">
+                          <el-option :value='0' label="男"></el-option>
+                          <el-option :value='1' label='女'></el-option>
+                      </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="毕业证书编号" prop="graduationNo" class="form_class">
+                    <el-input v-model="personInfoDetailForm.graduationNo"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="分配渠道" prop="disChannelName" class="form_class">
+                    <el-input v-model="personInfoDetailForm.disChannelName"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </div>
+        <!--  工作信息 -->
+        <div class="info_box">
+          <div class="info_content float">
+            <div class="center_content">
+              <span class="titleflag">
+              </span>
+              <span class="title">工作信息</span>
+            </div>
+            <div class="info_body">
+              <el-row>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="岗位" prop="personName" class="form_class">
+                    <el-input v-model="personInfoDetailForm.personName"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="职务" prop="post" class="form_class">
+                    <el-input v-model="personInfoDetailForm.post"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="执法领域" prop="sex" class="form_class">
+                     <el-select v-model="personInfoDetailForm.sex" placeholder="请选择执法领域" style="width:435px;">
+                          <el-option :value='0' label="男"></el-option>
+                          <el-option :value='1' label='女'></el-option>
+                      </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="执法区域" prop="area" class="form_class">
+                    <el-input v-model="personInfoDetailForm.area"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="省内执法证号" prop="provinceNo" class="form_class">
+                    <el-input v-model="personInfoDetailForm.provinceNo"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="海事执法证号" prop="maritimeNo" class="form_class">
+                     <el-input v-model="personInfoDetailForm.maritimeNo"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="form_class">
+                  <el-form-item label="部级执法证号" prop="ministerialNo" class="form_class">
+                    <el-input v-model="personInfoDetailForm.ministerialNo"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row style="margin-left:950px;"> 
+                 <el-button class="edit_save" type="primary">保存</el-button>
+              </el-row>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-form>
+  </div>
+  <div class="dentail_info_box" v-show="!isShowAddPerson">
     <el-form ref="form" :model="personInfoDetailForm" label-width="112px">
-
       <el-button class="edit_btn" type="primary">修改</el-button>
       <!--基本信息 -->
+      <el-row>
       <div class="info_box">
         <hr class="line" />
-        <div class="info_content float">
+        <div class="info_content float" style="float:left">
           <div class="center_content">
             <span class="titleflag">
             </span>
@@ -70,7 +265,9 @@
         </div>
 
       </div>
+      </el-row>
       <!-- 学历信息 -->
+      <el-row>
       <div class="info_box">
         <hr class="line" />
         <div class="info_content">
@@ -113,8 +310,8 @@
             </el-row>
           </div>
         </div>
-
       </div>
+      </el-row>
       <!-- 工作信息 -->
       <div class="info_box">
         <hr class="line" />
@@ -208,274 +405,9 @@
             </el-row>
           </div>
         </div>
-
       </div>
-
-      <!-- <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition" v-show="!isShowAddPerson">
-      <div class="el-table__body-wrapper is-scrolling-none">
-        <table class="el-table__body">
-            <tr class="el-table__row">
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>*&nbsp;姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.personName}}</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;" rowspan="4"><font size=4>人员照片：</font></td>
-              <td class="el-table_column" style="text-align:center" rowspan="4">
-                <div class="block">
-                  <el-avatar shape="square" :size="260" :src="imageUrl"></el-avatar>
-                </div>
-              </td>
-              <td class="el-table_column_center" style="font-weight:bold;width:200px;" rowspan="15">
-                  <el-button type="primary" round  @click="editPersonPage">修改</el-button>
-              </td>
-            </tr>
-            <tr class="el-table__row">
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4 >*身份证号：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.idNo}}</font></td>
-            </tr>
-            <tr class="el-table__row">
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>*&nbsp;性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.sexName}}</font></td>
-            </tr>
-            <tr>
-            <td class="el-table_column_center" style="font-weight:bold;"><font size=4>出生日期：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.birthDate}}</font></td>
-            </tr>
-            <tr class="el-table__row">
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>*&nbsp;民&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.nationName}}</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>分配渠道：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.disChannelName}}</font></td> -->
-      <!--<td class="el-table_column_center" style="font-weight:bold;"><font size=4>*参加工作日期：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.workDate}}</font></td>-->
-      <!-- </tr>
-            <tr class="el-table__row">
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>*政治面貌：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.politicalStatusName}}</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>入党日期：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.admissionDate}}</font></td>
-            </tr>
-            <tr>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>*所属机构：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.oidName}}</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>*人员编制：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.staffingName}}</font></td>
-            </tr>
-            <tr class="el-table__row">
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>*&nbsp;岗&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.branchIdName}}</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>*&nbsp;职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.postName}}</font></td>
-            </tr>
-            <tr class="el-table__row">
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>*&nbsp;学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;历：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.degreeName}}</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>毕业学校：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.school}}</font></td>
-            </tr>
-            <tr class="el-table__row">
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>毕业专业：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.majorName}}</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>毕业证书编号：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.graduationNo}}</font></td>
-            </tr> -->
-      <!--<tr>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>岗位状态：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>待确定</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>分配渠道：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.disChannelName}}</font></td>
-            </tr>-->
-      <!-- <tr class="el-table__row">
-            <td class="el-table_column_center" style="font-weight:bold;"><font size=4>执法领域(门类)：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.certNo}}</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>执法区域：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.area}}</font></td>
-            </tr>
-            <tr class="el-table__row">
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>省内执法证号：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.provinceNo}}</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>海事执法证号：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.maritimeNo}}</font></td>
-            </tr>
-            <tr class="el-table__row">
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>证件办理状态：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.certStatusName}}</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>当前证件状态：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.personStatusName}}</font></td>
-            </tr>
-            <tr class="el-table__row">
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>部级执法证号：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.ministerialNo}}</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</font></td>
-              <td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.note}}</font></td>
-            </tr>
-        </table>
-      </div>
-    </div> -->
-      <!--  修改页面 -->
-      <!-- <div v-show="isShowAddPerson" style="margin-left:-20px;">
-        <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition">
-          <div class="el-table__body-wrapper is-scrolling-none">
-            <table class="el-table__body">
-                <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*&nbsp;姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td> -->
-      <!--<td class="el-table_column_center" style="font-weight:bold;"><font size=4>{{personInfoDetailForm.personName}}</font></td>-->
-      <!-- <td class="el-table_column_left" style="font-weight:bold;text-align:left" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.personName"/></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right" rowspan="4"><font size=4>人员照片：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column" style="text-align:center" rowspan="4">
-                    <div class="block"> -->
-      <!--<el-avatar shape="square" :size="200" :src="url"></el-avatar>-->
-      <!-- <el-upload
-                          class="avatar-uploader"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :show-file-list="false"
-                          :on-success="handleAvatarSuccess"
-                          :before-upload="beforeAvatarUpload">
-                          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                      </el-upload>
-                    </div>
-                  </td>
-                  <td class="el-table_column_center" style="font-weight:bold;width:200px;" rowspan="15">
-                      <el-button type="primary" round  @click="savePersonPage">保存</el-button>
-                  </td>
-                </tr>
-                <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4 >*身份证号：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.idNo"/></font>
-                    </td>
-                </tr>
-                <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*&nbsp;性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.sexName"/>
-                    </font></td>
-                </tr>
-                <tr>
-                <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>出生日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.birthDate"/>
-                    </font></td>
-                </tr>
-                <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*&nbsp;民&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.nationName"/></font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>分配渠道：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.disChannelName"/>
-                    </font>
-                  </td> -->
-      <!--<td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*参加工作日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.workDate"/>
-                    </font></td>-->
-      <!-- </tr>
-                <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*政治面貌：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.politicalStatusName"/>
-                    </font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>入党日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4> -->
-      <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.admissionDate"/>-->
-      <!-- <el-date-picker v-model="personInfoDetailForm.admissionDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
-                        style="width: 320px;" placeholder="请选择入党日期" :disabled='isDisabled' clearable >
-                    </el-date-picker>
-                    </font></td>
-                </tr>
-                <tr>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*所属机构：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.oidName"/>
-                    </font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*人员编制：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.staffingName"/>
-                    </font></td>
-                </tr>
-                <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*&nbsp;岗&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.branchIdName"/>
-                    </font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*&nbsp;职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.postName"/>
-                    </font></td>
-                </tr>
-                <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>*&nbsp;学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;历：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.degreeName"/>
-                    </font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>毕业学校：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.school"/>
-                   </font></td>
-                </tr>
-                <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>毕业专业：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.majorName"/>
-                    </font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>毕业证书编号：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.graduationNo"/>
-                   </font></td>
-                </tr> -->
-      <!--<tr>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>岗位状态：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>待确定</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>分配渠道：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.disChannelName"/>
-                    </font></td>
-                </tr>-->
-      <!-- <tr class="el-table__row">
-                <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>执法领域(门类)：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.certNo"/>
-                    </font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>执法区域：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.area"/>
-                    </font></td>
-                </tr>
-                <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>省内执法证号：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.provinceNo"/>
-                   </font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>海事执法证号：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.maritimeNo"/>
-                    </font></td>
-                </tr>
-                <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>证件办理状态：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.certStatusName"/>
-                    </font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>当前证件状态：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.personStatusName"/>
-                    </font></td>
-                </tr>
-                <tr class="el-table__row">
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>部级执法证号：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.ministerialNo"/>
-                   </font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:right"><font size=4>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
-                  <td class="el-table_column_center" style="font-weight:bold;text-align:left"><font size=4> 
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="el-input__inner" v-model="personInfoDetailForm.note"/>
-                    </font></td>
-                </tr>
-            </table>
-          </div> 
-        </div>
-    </div>-->
     </el-form>
+  </div>
   </div>
 </template>
 <script>
@@ -530,6 +462,16 @@ export default {
         personStatusName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.personStatusName : '',
         majorName: this.$route.params.pageStatus == '0' ? this.$route.params.personInfo.majorName : '',
       },
+      rules: {
+        personName: [{ required: true, message: "姓名必须填写", trigger: "blur" }],
+        idNo: [{ required: true, message: "身份证号必须填写", trigger: "blur" }],
+        nationName: [{ required: true, message: "民族必须填写", trigger: "blur" }],
+        workDate: [{ required: true, message: "参加工作时间必须填写", trigger: "blur" }],
+        politicalStatus: [{ required: true, message: "政治面貌必须填写", trigger: "blur" }],
+        degree: [{ required: true, message: "学历必须填写", trigger: "blur" }],
+        post: [{ required: true, message: "职务必须填写", trigger: "blur" }],
+        certNo: [{ required: true, message: "岗位必须填写", trigger: "blur" }],
+      },
     }
   },
   methods: {
@@ -573,91 +515,30 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/css/personManageTitle.scss";
-.el-table td {
-  width: 320px;
-  height: 60px;
-  border: 0px solid #e4e7ed;
-}
-.fullscreen .el-input .el-input__inner {
-  height: 45px;
-}
-.el-input__inner:hover {
-  border-color: #c0c4cc;
-}
-.el-input__inner {
-  -webkit-appearance: none;
-  background-color: #fff;
-  background-image: none;
-  border-radius: 4px;
-  border: 1px solid #dcdfe6;
-  border-top-color: rgb(220, 223, 230);
-  border-right-color: rgb(220, 223, 230);
-  border-bottom-color: rgb(220, 223, 230);
-  border-left-color: rgb(220, 223, 230);
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  color: #606266;
-  display: inline-block;
-  font-size: inherit;
-  height: 40px;
-  line-height: 40px;
-  outline: 0;
-  padding: 0 15px;
-  -webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-  width: 100%;
-}
-input {
-  border-radius: 0px !important;
-}
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 260px;
-  height: 220px;
-  line-height: 220px;
-  text-align: center;
-}
-.avatar {
-  width: 260px;
-  height: 220px;
-  display: block;
-}
-
-.el-row {
-  margin-bottom: 20px;
-  &:last-child {
-    margin-bottom: 0;
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
   }
-}
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+  .el-input{
+    width:80%;
+  }
 </style>

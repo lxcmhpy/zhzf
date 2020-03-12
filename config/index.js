@@ -10,15 +10,6 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    // proxyTable: {
-    //   '/': {
-    //     target: 'http://124.192.215.4:9000',
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       '^/dev': ''
-    //     }
-    //   }
-    // },
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8075, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined

@@ -1,11 +1,13 @@
 <template>
   <div>
-    <div style="margin-top:50px;margin-bottom:50px;">
-          <font style="font-size:42px;">证件信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
+    <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
+          <font style="font-size:25px;"><span class="titleflag"></span>证件信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
     </div>
     <el-table
+      style="margin-left:25px;width:97%;margin-bottom:35px;"
       :data="tableData"
-      resizable >
+      resizable 
+      stripe>
       <el-table-column prop="personId"  label="姓名"></el-table-column>
       <el-table-column prop="certStatus"  label="证件状态"></el-table-column>
       <el-table-column prop="modifyId" label="操作用户"></el-table-column>

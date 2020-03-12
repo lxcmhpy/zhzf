@@ -75,20 +75,8 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <!-- <el-input  clearable class="w-120" v-model="formData.relationWithCase" size="small" placeholder="请输入" :disabled="originalData.relationWithCase ? true : false"></el-input> -->
-                <el-form-item label="与案件关系">
-                  <el-select
-                    ref="relationWithCase"
-                    v-model="formData.relationWithCase"
-                    :disabled="originalData.relationWithCase ? true : false"
-                  >
-                    <el-option
-                      v-for="item in allRelationWithCase"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    ></el-option>
-                  </el-select>
+                <el-form-item label="年龄" prop="partyAge">
+                  <el-input ref="partyAge" clearable class="w-120" type="number" v-model="formData.partyAge" size="small" placeholder="请输入" :disabled="originalData.partyAge ? true : false"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -107,16 +95,8 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="单位及职务">
-                  <el-input
-                    ref="partyUnitPosition"
-                    clearable
-                    class="w-120"
-                    v-model="formData.partyUnitPosition"
-                    size="small"
-                    placeholder="请输入"
-                    :disabled="originalData.partyUnitPosition ? true : false"
-                  ></el-input>
+                <el-form-item label="所在单位">
+                  <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -134,11 +114,11 @@
                   ></el-input>
                 </el-form-item>
               </div>
-              <!-- <div class="col">
+              <div class="col">
                 <el-form-item label="邮编" prop="partyZipCode">
                   <el-input ref="partyZipCode" clearable class="w-120" v-model="formData.partyZipCode" size="small" placeholder="请输入" :disabled="originalData.partyZipCode ? true : false"></el-input>
                 </el-form-item>
-              </div>-->
+              </div>
             </div>
 
             <div class="row" v-if="!isParty">
@@ -258,7 +238,7 @@
                 <template>
                   <ul class="moreDocList">
                     <li v-for="(item,index) in allAskDocList" :key="index">
-                      <div>{{item.name}}</div>
+                      <div>{{item.note}}</div>
                       <div>
                         <span v-if="item.status == '1'">已完成</span>
                         <span v-if="item.status == '0'">未完成</span>
@@ -292,25 +272,18 @@
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                   <div v-if="scope.row.openRow">
-                    <span>
-                      <i class="iconfont law-add" @click="addMoreDoc(scope.row)"></i>
-                    </span>
+                    <span @click="addMoreDoc(scope.row)">添加</span>
                   </div>
                   <div v-if="!scope.row.openRow">
-                    <span v-if="scope.row.status == '1'" class="tableHandelcase">
-                      <!-- 已完成 -->
-                      <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
-                      <i class="iconfont law-print"></i>
-                    </span>
+                    <!-- 已完成 -->
+                    <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
+                    <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">
-                      <!-- 未完成 -->
-                      <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
-                      <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
+                      <span @click="viewDoc(scope.row)">编辑</span>  
+                      <span @click="delDocDataByDocId(scope.row)">清空</span>  
                     </span>
-                    <span v-if="scope.row.status === ''" class="tableHandelcase">
-                      <!-- 无状态 -->
-                      <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
-                    </span>
+                    <!-- 无状态 -->
+                    <span v-if="scope.row.status === ''" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
                   </div>
                 </template>
               </el-table-column>
@@ -565,6 +538,7 @@ export default {
         if (item.name != "询问笔录") {
           this.docTableDatas.push(item);
         } else {
+          if(item.status === 0 || item.status === 1)
           this.allAskDocList.push(item);
         }
       });

@@ -408,6 +408,37 @@ export function getDocDetailByIdApi(id) {
   });
 }
 
+//通过案件id获取询问笔录被询问人及其与案件关系
+export function findPersonAndRelationByCaseIdApi(params) {
+  return request({
+    url: "doc/data/findPersonAndRelationByCaseId/"+params.caseBasicInfoId,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过案件id和被询问人姓名查询询问次数
+export function findAskNumApi(params) {
+  let data = {
+      caseId:params.caseId,
+      name:params.name
+  }
+  return request({
+    url: "doc/data/findByCaseIdAndName",
+    method: "get",
+    params:data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+
+
+
+
+
+
 //-------------长软lv start------------
 //获取操作记录
 export function getHandleRecordApi(data) {

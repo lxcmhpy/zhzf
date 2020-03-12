@@ -21,7 +21,7 @@
       </div>
       <div class="item">
         <el-form-item label="序号" prop="sort">
-          <el-input v-model="addDictForm.sort"></el-input>
+          <el-input v-model="addDictForm.sort" disabled></el-input>
         </el-form-item>
       </div>
       <div class="item">

@@ -426,7 +426,7 @@ export function getAllMenuListApi() {
 //获取权限树
 export function getTreePermissionApi() {
   return request({
-    url: "/sys/permission/getTreePermission",
+    url: "/system/sys/permission/getTreePermission",
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
