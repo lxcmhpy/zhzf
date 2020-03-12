@@ -25,30 +25,35 @@ const whiteList = ["/login", "/register", "/service", "/user",'/flowChart','/mod
 
 let getRouter ;
 router.beforeEach((to, from, next) => {
-  console.log(Cookies.get("TokenKey"));
-  console.log('localStroage menu',iLocalStroage.gets('menu'))
-  if (Cookies.get("TokenKey")) {
-    //判断是否登录
-    if (to.path == "/login") {
-      next({ name: "home_index" });
-    } else {
-      if(!getRouter){
-        if(iLocalStroage.get('menu')){
-          routerGo(to, next)//执行路由跳转方法
-        }
-      }else{
-        next();
-      }
-      //next();
-    }
-  } else {
-    //未登录  进入登录页面
     if (whiteList.indexOf(to.path) !== -1) {
-      next();
+        next();
     } else {
-      next({ name: "login" });
+        next({ name: "login" });
     }
-  }
+//   console.log(Cookies.get("TokenKey"));
+//   console.log('localStroage menu',iLocalStroage.gets('menu'))
+//   if (Cookies.get("TokenKey")) {
+//     //判断是否登录
+//     if (to.path == "/login") {
+//       next({ name: "home_index" });
+//     } else {
+//       if(!getRouter){
+//           routerGo(to, next)//执行路由跳转方法
+//         // if(iLocalStroage.get('menu')){
+//         // }
+//       }else{
+//         next();
+//       }
+//       //next();
+//     }
+//   } else {
+//     //未登录  进入登录页面
+//     if (whiteList.indexOf(to.path) !== -1) {
+//       next();
+//     } else {
+//       next({ name: "login" });
+//     }
+//   }
 });
 router.afterEach(to => {
   window.scrollTo(0, 0);

@@ -14,7 +14,7 @@
                         <el-button size="medium" class="commonBtn searchBtn" icon="iconfont law-link" title="绑定权限" @click="bindRole"></el-button>
                         <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="showSomeSearch" ></el-button> -->
                         <el-button size="medium" class="commonBtn searchBtn" icon="iconfont law-adduser" title="添加用户" @click="addUser"></el-button>
-                        
+
                     </el-form-item>
                     <!-- <el-collapse-transition>
                          <div v-show="isShow" :class="{'ransition-box':true}">
@@ -24,8 +24,8 @@
                             <el-form-item label="证件号">
                             <el-input v-model="formInline.enforceNo" placeholder="回车可直接查询"></el-input>
                             </el-form-item>
-                            
-                            
+
+
                             <el-form-item label="联系电话">
                                 <el-input v-model="formInline.mobile" placeholder="回车可直接查询"></el-input>
                             </el-form-item>
@@ -120,7 +120,7 @@ export default {
       };
       let _this = this
       return request({
-          url: "/sys/user/list",
+          url: "/system/sys/user/list",
           method: "get",
           params: data,
           showloading: false,
@@ -165,7 +165,7 @@ export default {
         })
         .then(() => {
           return request({
-              url: "/sys/user/delete/" + row.id,
+              url: "/system/sys/user/delete/" + row.id,
               method: "get",
               showloading: false,
               cancelToken: setCancelSource()
