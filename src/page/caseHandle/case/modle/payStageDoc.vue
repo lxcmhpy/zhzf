@@ -206,6 +206,8 @@ export default {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      console.log("this.caseId,this.caseId", this.caseId)
+      console.log("this.caseId,this.caseId", this.caseDocDataForm.caseBasicinfoId)
       let data = {
         caseId: this.caseId,
         docId: this.$route.params.docId
@@ -242,6 +244,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      console.log('caseBasicinfoId', this.caseDocDataForm.caseBasicinfoId)
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
@@ -339,7 +342,7 @@ export default {
     },
     click() {
       // this.clearData()
-      console.log('this.checknames',this.checknames)
+      console.log('this.checknames', this.checknames)
       if (this.checknames.length > 1) {
         this.checknames.shift();
       }
@@ -368,25 +371,38 @@ export default {
         instalmentNum: '',
         instalmentDate: '',
         payFine: '',
-        debtFine:'',
+        debtFine: '',
         reason: '',
       }
     }
   },
   mounted() {
-    this.getDocDataByCaseIdAndDocId();
+    // this.getDocDataByCaseIdAndDocId();
+    // console.log('parm', this.$route.params.approvalForm)
+    // console.log("this.caseId,this.caseId", this.caseId)
+    this.caseDocDataForm.caseBasicinfoId = this.caseId;
+    let data = {
+      caseId: this.caseId,
+      docId: this.$route.params.docId
+    };
+    //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+    if (this.$route.params.handelType == 'isAddMore') {
+      this.com_getCaseBasicInfo(data.caseId, data.docId);
+    } else {
+      this.getDocDetailById(this.$route.params.docDataId)
+    }
     this.docData.fine = this.convertCurrency(this.docData.fine);
-    console.log('parm',this.$route.params.approvalForm)
-    if(this.$route.params.approvalForm.executeHandle==0){
-      拒绝
+
+    if (this.$route.params.approvalForm.executeHandle == 0) {
+      // 拒绝
       this.checknames.push("3")
     }
-    else{
-      if(this.$route.params.approvalForm.executeType==1){
+    else {
+      if (this.$route.params.approvalForm.executeType == 1) {
         // 分期
         this.checknames.push("2")
       }
-      if(this.$route.params.approvalForm.executeType==0){
+      if (this.$route.params.approvalForm.executeType == 0) {
         // 延期
         this.checknames.push("1")
       }

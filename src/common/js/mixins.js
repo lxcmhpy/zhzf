@@ -280,7 +280,7 @@ export const mixinGetCaseApiList = {
     com_addDocData(handleType, docForm) {
       this.caseDocDataForm.docData = JSON.stringify(this.docData);
       this.caseDocDataForm.status = handleType;
-      console.log(this.caseDocDataForm);
+      console.log('caseDocDataForm',this.caseDocDataForm);
       if (handleType) {
         this.$refs[docForm].validate(valid => {
           if (valid) {

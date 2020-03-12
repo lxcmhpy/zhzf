@@ -193,26 +193,26 @@
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
-                <template slot-scope="scope" v-show="!scope.row.openRow">
-                  <span v-if="scope.row.status == '1'" class="tableHandelcase">
-                    <!-- 已完成 -->
-                    <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
-                    <!-- <i class="iconfont law-print"></i> -->
-                    <i class="el-icon-delete"></i> 
-                  </span>
-                  <span v-if="scope.row.status == '0'" class="tableHandelcase">
-                    <!-- 未完成 -->
-                    <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
-                    <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
-                  </span>
-                  <span v-if="scope.row.status === ''" class="tableHandelcase">
-                    <!-- 无状态 -->
+                <template slot-scope="scope">
+                  <span class="tableHandelcase" v-if="scope.row.openRow">
                     <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
                   </span>
-                </template>
-                <template slot-scope="scope" v-show="scope.row.openRow">
-                  <span class="tableHandelcase">
-                    <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
+                  <span v-if="!scope.row.openRow">
+                    <span v-if="scope.row.status == '1'" class="tableHandelcase">
+                      <!-- 已完成 -->
+                      <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
+                      <i class="iconfont law-print"></i>
+                      <!-- <i class="el-icon-delete"></i> -->
+                    </span>
+                    <span v-if="scope.row.status == '0'" class="tableHandelcase">
+                      <!-- 未完成 -->
+                      <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
+                      <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
+                    </span>
+                    <span v-if="scope.row.status === ''" class="tableHandelcase">
+                      <!-- 无状态 -->
+                      <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
+                    </span>
                   </span>
                 </template>
               </el-table-column>
@@ -334,37 +334,71 @@ export default {
     //保存表单数据
     submitCaseDoc(handleType) {
       console.log("分期", this.formData.stepPay)
-      if (this.formData.stepPay) {
-        // 分期延期缴纳通知书必做
-
-      }
-
-      if (this.formData.performance == '催告') {
-        // 催告书必做
-
-      }
-
       // console.log(this.formData)
       this.com_submitCaseForm(handleType, "penaltyExecutionForm", false);
     },
-    //下一环节
-    continueHandle() {
-      let caseData = {
-        caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
-        caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
-      };
-      let canGotoNext = true; //是否进入下一环节
-      for (let i = 0; i < this.docTableDatas.length; i++) {
-        if (this.docTableDatas[i].isRequired === 0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")) {
-          canGotoNext = false
-          break;
+    // 判断文书是否完成
+    isComplete() {
+      console.log('分期延期:', this.formData.stepPay, '，催告：', this.formData.performance)
+      if (this.formData.stepPay) {
+        // 分期延期缴纳通知书必做
+        console.log(this.allAskDocList)
+        this.allAskDocList.forEach(element => {
+          if (element.name.indexOf('分期（延期）缴纳罚款通知书') != -1) {
+            console.log('111', element.status)
+            if (element.status != 1) {
+              return false;
+              console.log('执行')
+            }
+          }
+        });
+      }
+      else {
+        if (this.formData.performance == '催告') {
+          // 催告书必做
+          console.log(this.docTableDatas)
+          this.docTableDatas.forEach(element => {
+            if (element.name == '催告书') {
+              if (element.status != 1) {
+                return false;
+              }
+            }
+          });
+        }
+        else {
+          return true;
         }
       }
-      if (canGotoNext) {
-        this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
-      } else {
-        this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+
+
+    },
+    //下一环节
+    continueHandle() {
+
+      // var a = this.isComplete();
+      // console.log(a)
+      if (this.isComplete()) {
+        let caseData = {
+          caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
+          caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
+        };
+        let canGotoNext = true; //是否进入下一环节
+        for (let i = 0; i < this.docTableDatas.length; i++) {
+          if (this.docTableDatas[i].isRequired === 0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")) {
+            canGotoNext = false
+            break;
+          }
+        }
+        if (canGotoNext) {
+          this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
+        } else {
+          this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+        }
       }
+      else {
+        this.$message({ message: '请完成对应文书', type: 'error' });
+      }
+
     },
     // 进入文书
     enterDoc(row) {
@@ -513,16 +547,12 @@ export default {
       this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, url: "payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001" });
 
       this.docTableDatasCopy.forEach(item => {
-        console.log('名字啊啊啊',item.name)
+        console.log('名字啊啊啊', item.name)
         if (item.name != '分期（延期）缴纳罚款通知书【2016】') {
           this.docTableDatas.push(item);
         } else {
           this.allAskDocList.push(item);
         }
-        console.log('1111', this.docTableDatas)
-
-        console.log('22222,', this.allAskDocList)
-
       })
       console.log('this.docTableDatas', this.docTableDatas)
       console.log('this.allAskDocList', this.allAskDocList)

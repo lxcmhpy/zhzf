@@ -1001,7 +1001,6 @@ export default {
     changeRelationWithParty(val) {
       console.log(typeof (val));
       if (val == "0") {
-        debugger
         console.log(val);
         this.driverOrAgentInfoList[0].name = this.inforForm.party;
         this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
@@ -1307,8 +1306,13 @@ export default {
     // 计算超重
     concludeOverWeight() {
       this.inforForm.overWeight = '';
-      if (this.inforForm.weightLimit && this.inforForm.allWeight)
+      if (this.inforForm.weightLimit && this.inforForm.allWeight) {
         this.inforForm.overWeight = this.inforForm.allWeight - this.inforForm.weightLimit
+      }
+      if (this.inforForm.overWeight < 0) {
+        this.inforForm.overWeight = 0
+      }
+
     },
     //自动计算年龄
     changePartyIdType(idCard) {
