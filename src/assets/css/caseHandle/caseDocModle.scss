@@ -79,6 +79,11 @@
 
         }
 
+        .el-input__inner,
+        .el-textarea__inner {
+            border-radius: 0;
+        }
+
         /* 表格 */
         & tr {
             height    : 42px;
@@ -143,6 +148,32 @@
                 .el-date-editor {
                     i {
                         display: none;
+                    }
+                }
+
+                .el-input__inner::-webkit-input-placeholder,
+                .el-textarea__inner::-webkit-input-placeholder {
+                    color      : transparent;
+                    text-align : center;
+                    font-size  : 16px;
+                    font-family: SimSun;
+                }
+
+                /* 不可编辑的表格 */
+                .is-disabled {
+
+                    .el-input__inner,
+                    .el-textarea__inner {
+                        text-align     : center;
+                        text-align-last: center;
+                    }
+
+                    .el-input__inner::-webkit-input-placeholder,
+                    .el-textarea__inner::-webkit-input-placeholder {
+                        color      : #000000;
+                        text-align : center;
+                        font-size  : 16px;
+                        font-family: SimSun;
                     }
                 }
             }
@@ -361,7 +392,7 @@
         }
 
         /* 验证提示 */
-        .is-error {
+        .is-required {
 
             .el-input__inner,
             .el-input__inner:focus,
@@ -382,7 +413,7 @@
         }
 
         td {
-            .is-error {
+            .is-required {
                 .el-form-item__content {
                     background: #F7C9CB !important;
                 }
@@ -396,7 +427,7 @@
                 background: transparent !important;
             }
 
-            .is-error {
+            .is-required {
 
                 .span_bg {
                     background: #F7C9CB !important;
@@ -889,7 +920,9 @@
     width: 20px;
 
 }
-
+.width120{
+    width: 120px;
+}
 .width212 {
     width: 212px;
 }
@@ -1033,7 +1066,7 @@
         color: #000 !important;
     }
 
-    .is-error {
+    .is-required {
 
         .el-input__inner,
         .el-input__inner:focus,
