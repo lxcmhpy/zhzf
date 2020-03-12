@@ -90,7 +90,7 @@
         .info_content {
             // width      : 930px;
             width         : calc(100% - 266px);
-            padding-bottom: 40px;
+            padding-bottom: 20px;
         }
 
         /* border-top: 1px dashed #5E89B5; */
@@ -122,6 +122,7 @@
             .title {
                 font-size  : 20px;
                 line-height: 28px;
+                font-weight: bold;
             }
 
         }
@@ -136,7 +137,7 @@
         }
 
         .img_box {
-            margin-top: 66px;
+            margin-top: 50px;
 
             img {
                 width : 136px;
@@ -174,6 +175,9 @@
     }
 }
 
-.float {
-    float: left;
+.form_class{
+    height:56px;width:650px;
+}
+.fullscreen .el-input .el-input__inner {
+    height: 36px;
 }
