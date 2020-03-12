@@ -344,6 +344,10 @@ export default {
           if(organData.enforcementOrgan2){
              _this.enforcementOptions.push(organData.enforcementOrgan2)
           }
+          //默认显示
+          _this.formData.reconsiderationOrgan = _this.reconsiderationOptions[0];
+          _this.formData.litigationOrgan = _this.enforcementOptions[0];
+
         },
         err => {
           console.log(err);

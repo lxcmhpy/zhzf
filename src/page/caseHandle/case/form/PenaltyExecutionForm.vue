@@ -51,7 +51,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚金额">
-                  <el-input clearable class="w-120" v-model.number="formData.tempPunishAmount" size="small" placeholder="-"></el-input>
+                  <el-input clearable class="w-120" v-model.number="formData.tempPunishAmount" size="small" placeholder="-" disabled></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -78,7 +78,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="toPayAmount" label="待缴金额">
-                  <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-"></el-input>
+                  <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" disabled></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -526,8 +526,27 @@ export default {
       })
       console.log('this.docTableDatas', this.docTableDatas)
       console.log('this.allAskDocList', this.allAskDocList)
-    }
+    },
+    //通过案件ID和文书ID查询附件
+    findFileList(){
+      let data =  {
+        caseId: this.caseId,
+        docId :"2c9029e16c753a19016c755fe1340001"
+      }
+      console.log(data);
+      getFile(data).then(
+        res => {
+          console.log("附件列表",res);
+          // this.fileListArr = res.data;
+
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    },
   },
+
 
   mounted() {
     // this.getCaseBasicInfo();
@@ -537,6 +556,7 @@ export default {
     this.setFormData();
     //通过案件id和表单类型Id查询已绑定文书
     this.getDocListByCaseIdAndFormId();
+    // this.findFileList();
   },
   watch: {
     //代缴金额为0时,执行情况为已完成

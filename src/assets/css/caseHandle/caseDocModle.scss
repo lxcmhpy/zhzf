@@ -1065,7 +1065,7 @@
         .el-range-input {
             background   : #ffffff;
             border-bottom: 1px solid #000000 !important;
-            font-weight: 500;
+            font-weight  : 500;
         }
     }
 
@@ -1199,7 +1199,7 @@
         width      : 48%;
         font-size  : 16px;
         font-weight: 600;
-        font-family    : 'SimSun';
+        font-family: 'SimSun';
         color      : #000000;
     }
 
@@ -1208,10 +1208,11 @@
         background: transparent;
 
     }
-    .el-range-separator{
+
+    .el-range-separator {
         font-size  : 16px;
         font-weight: 600;
-        font-family    : 'SimSun';
+        font-family: 'SimSun';
         color      : #000000;
         line-height: 28px;
     }
@@ -1230,10 +1231,12 @@
 
 .quzheng {
     clear: both;
+
     .el-form-item {
         width: 500px;
+
         .el-input__inner,
-        .el-textarea__inner{
+        .el-textarea__inner {
             width: 100% !important;
         }
     }
@@ -1322,5 +1325,12 @@
         .el-select__caret {
             margin-right: -12px !important;
         }
+    }
+}
+
+/* 听证笔录 */
+.listen_data {
+    .el-date-editor {
+        width: 100% !important;
     }
 }

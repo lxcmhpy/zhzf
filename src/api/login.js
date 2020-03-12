@@ -8,53 +8,33 @@ let vm = new Vue();
  * @param {*} params.account  必填 账号
  * @param {*} params.password  必填  密码
  */
-export function loginInApi(params) {
 
-  let data = vm.$qs.stringify({
-    username: params.username,
-    password: params.password,
-    code: params.code,
-    captchaId: params.captchaId
-  })
-  console.log(data)
+export function loginInApi(params) {
+  var data = new FormData();
+  data.append("username", params.username);
+  data.append("password", params.password);
+  data.append("grant_type", "password");
   return request({
-    url: "/login",
+    url: "/auth/oauth/token",
     method: "POST",
-    contentType: 'multipart/form-data',
     data:data,
+    headers: {
+      "Authorization": "Basic Y2F0c2ljOmNhdHNpYw==",
+      "Content-Type": "multipart/form-data"
+    },
+    auth:{
+      username: 'catsic',
+      password: 'catsic'
+    },
     showloading: true,
+    mimeType: "multipart/form-data",
+    processData: false,
+    showloading: true,
+    contentType: false,
     baseUrlType:1,
     cancelToken: setCancelSource()
   });
 }
-
-// export function loginInApi(params) {
-//   let data = vm.$qs.stringify({
-//     username: params.username,
-//     password: params.password,
-//     grant_type:'password'
-//   })
-//   console.log(data)
-//   return request({
-//     url: "/auth/oauth/token",
-//     method: "POST",
-//     data:data,
-//     headers: {
-//       'Authorization': 'Basic Y2F0c2ljOmNhdHNpYw=='
-//     },
-//     auth:{
-//       username: 'catsic',
-//       password: 'catsic'
-//     },
-//     showloading: true,
-//     // baseUrlType:1,
-//     cancelToken: setCancelSource()
-//   });
-// }
-
-
-
-
 
 //修改密码
 export function resetPasswordApi(params) {
