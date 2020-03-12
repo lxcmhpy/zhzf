@@ -15,7 +15,6 @@
             
             <div class="row">
               <div class="col">
-<<<<<<< HEAD
                 <el-form-item label="原因" prop="reason" class="reasonCon">
                   <el-radio-group v-model="formData.reason" @change="changeReason">
                     <p><el-radio :label="0">违法行为轻微</el-radio></p>
@@ -28,31 +27,7 @@
                       </el-radio>
                     </p>
                   </el-radio-group>
-                  <!-- <p>
-=======
-                <el-form-item label="原因" prop="reason">
-                  <!-- <el-radio-group>
-                    <el-radio :label="0">违法行为轻微</el-radio>
-                    <br/>
-                    <el-radio :label="1">违法事实不能成立</el-radio>
-                    <br>
-                    <el-radio :label="2">其他原因</el-radio>
-
-                  </el-radio-group> -->
-                  <p>
->>>>>>> 8a01c31967696e6dedec71d970ca7f2e61942e9d
-                    <input type="radio" value="0" v-model="radios" @change="click"/>违法行为轻微
-                    
-                  </p>
-                  <p>
-                    <input type="radio" value="1" v-model="radios" @change="click"/>违法事实不能成立
-                  </p>
-                  <p>
-                    <input type="radio" value="2" v-model="radios" @change="click"/>其他原因
-                    <span style= "float:right"><el-form-item prop="otherReason">
-                      <el-input v-model="formData.otherReason" v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="\" style= "width:600px;"></el-input>
-                    </el-form-item></span>
-                  </p> -->
+                 
                 </el-form-item>
               </div>
             </div>

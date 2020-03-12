@@ -305,7 +305,7 @@ export default {
         askTime: 1,
         qaList: [{},{}],//弹出框问答数组，如请求时未返回即数组未定义，可能回显失败，刷新即可查看效果
         askdataStart:"",
-        askdataEnd:"",
+        askdataEnd:""
       },
       qaList: [{question:'',answer:''},{question:'',answer:''}],
       caseDocDataForm: {
@@ -315,6 +315,7 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
+        note:"",//文书名字
       },
       num4: 1,
       lineStyleFlag: false,
@@ -340,7 +341,7 @@ export default {
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         recordStaff: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入', trigger: 'change' },
         ],
         inquiried: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -357,46 +358,6 @@ export default {
         certificateId2: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
-
-
-
-        // party: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyIdNo: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyAddress: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyTel: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyName: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyUnitAddress: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyUnitTel: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyManager: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // punishLaw: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // socialCreditCode: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // illegalFactsEvidence: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // reconsiderationOrgan: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-
       },
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
@@ -427,12 +388,14 @@ export default {
         caseId: this.caseId,
         docId: this.$route.params.docId
       };
-
       //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
-      if(this.$route.params.handelType == 'isAddMore'){
+      let addMoreData = JSON.parse(this.$route.params.addMoreData);
+      //设置询问笔录名称
+      this.caseDocDataForm.note = "询问笔录（"+addMoreData.askData.peopleType+")(第"+addMoreData.askData.askNum +"次)";
+      
+      if(addMoreData.handelType == 'isAddMore'){
         this.com_getCaseBasicInfo(data.caseId,data.docId);
       }else{
-        // this.com_getDocDataByCaseIdAndDocId(data)
         this.getDocDetailById(this.$route.params.docDataId)
       }
       this.docData.qaList.push({
@@ -524,7 +487,8 @@ export default {
       this.docData.inquiriedTel = this.docData.partyTel;
       this.docData.inquiriedUnitPosition = this.docData.partyUnitPosition;
       //默认第一次询问
-      this.docData.askRecordNumber = 1;
+      this.docData.askRecordNumber = JSON.parse(this.$route.params.addMoreData).askData.askNum ? JSON.parse(this.$route.params.addMoreData).askData.askNum : 1;
+      console.log('this.docData.askRecordNumber',this.docData.askRecordNumber);
     }
   },
   mounted() {

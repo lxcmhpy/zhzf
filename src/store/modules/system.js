@@ -60,8 +60,9 @@ const system = {
                     .then(
                         response => {
                             console.log("loginIn response", response);
+                            // commit(types.SET_AUTHTOKEN, response.access_token); //token
                             commit(types.SET_AUTHTOKEN, response.data); //token
-                            // Cookies.set("menu", "customerService");
+                            
                             resolve(response);
                         },
                         error => {

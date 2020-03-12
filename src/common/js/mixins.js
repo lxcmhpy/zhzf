@@ -343,7 +343,7 @@ export const mixinGetCaseApiList = {
       );
     },
     //查看或新增环节下的文书
-    com_viewDoc(row, handelType = '') {
+    com_viewDoc(row, addMoreData = {}) {
       console.log(row);
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
@@ -354,7 +354,7 @@ export const mixinGetCaseApiList = {
             id: row.id,
             docId: row.docId,
             url: this.$route.name,
-            handelType: handelType,
+            addMoreData: JSON.stringify(addMoreData),
             docDataId: row.docDataId
           }
         });
