@@ -6,7 +6,7 @@ let vm = new Vue();
 //获取执法门类
 export function getEnforceLawTypeApi(organId) {
   return request({
-    url: "/case/caseTemplate/lawCategory/findLawCateByOrganId/" + organId,
+    url: "/sys/lawCategory/findLawCateByOrganId/" + organId,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -20,7 +20,7 @@ export function getCaseTypeApi(data) {
     cateId: data.cateId
   }
   return request({
-    url: "/case/caseTemplate/lawCategory/queryLawCateOrganType",
+    url: "/sys/lawCategory/queryLawCateOrganType",
     method: "get",
     params: params,
     showloading: false,
@@ -33,7 +33,7 @@ export function getIndustryCategoryApi(data) {
       pid:data
     }
     return request({
-      url: "/case/caseTemplate/lawCategory/getLawCategoryListVo",
+      url: "/sys/lawCategory/getLawCategoryListVo",
       method: "get",
       showloading: false,
       params:params,
@@ -44,7 +44,7 @@ export function getIndustryCategoryApi(data) {
 export function getIllegaActApi(data) {
     console.log(data);
     return request({
-      url: "/bnslaw/sys/bnslawCause/findCaseCauseByPage",
+      url: "/sys/bnslawCause/findCaseCauseByPage",
       method: "get",
       params:data,
       showloading: false,
@@ -59,7 +59,7 @@ export function saveOrUpdateCaseBasicInfoApi(data) {
   let  data2  =  vm.$qs.stringify(data);
   console.log(data2);
   return request({
-    url: "/case/doc/caseBasicInfo/saveOrUpdateCaseBasicInfo",
+    url: "/doc/caseBasicInfo/saveOrUpdateCaseBasicInfo",
     method: "post",
     data:data2,
     showloading: false,
@@ -72,7 +72,7 @@ export function updatePartCaseBasicInfoApi(data) {
   let  data2  =  vm.$qs.stringify(data);
   console.log(data2);
   return request({
-    url: "/case/doc/caseBasicInfo/updatePartCaseBasicInfo",
+    url: "/doc/caseBasicInfo/updatePartCaseBasicInfo",
     method: "post",
     data:data2,
     showloading: false,
@@ -85,7 +85,7 @@ export function updatePartCaseBasicInfoApi(data) {
 export function findLawRegulationsByCauseIdApi(causeId) {
   console.log(causeId);
   return request({
-    url: "/bnslaw/sys/bnslawCause/findLawRegulationsByCauseId/"+causeId,
+    url: "/sys/bnslawCause/findLawRegulationsByCauseId/"+causeId,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -95,7 +95,7 @@ export function findLawRegulationsByCauseIdApi(causeId) {
 //查询自由裁量标准
 export function findJudgFreedomListApi() {
   return request({
-    url: "/bnslaw/sys/bnslawCause/findDiscretionListByForm",
+    url: "/sys/bnslawCause/findDiscretionListByForm",
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -107,7 +107,7 @@ export function findLawOfficerListApi(organId) {
     organId:organId
   }
   return request({
-    url: "/case/caseTemplate/lawOfficer/listLawOfficer",
+    url: "/sys/lawOfficer/listLawOfficer",
     method: "get",
     params:params,
     showloading: false,
@@ -118,7 +118,7 @@ export function findLawOfficerListApi(organId) {
 //根据案件ID获取案件信息
 export function getCaseBasicInfoApi(data) {
   return request({
-    url: "/case/doc/caseBasicInfo/findById/"+data.id,
+    url: "/doc/caseBasicInfo/findById/"+data.id,
     method: "get",
     // params:params,
     showloading: false,
@@ -130,7 +130,7 @@ export function getCaseBasicInfoApi(data) {
 export function addDocDataApi(data) {
   console.log(data);
   return request({
-    url: "/case/doc/data/create",
+    url: "/doc/data/create",
     method: "post",
     data:vm.$qs.stringify(data),
     showloading: false,
@@ -142,7 +142,7 @@ export function addDocDataApi(data) {
 export function delDocDataByDocIdApi(data) {
   console.log(data);
   return request({
-    url: "/case/doc/data/findByCaseIdAndDocId/"+data.id,
+    url: "/doc/data/findByCaseIdAndDocId/"+data.id,
     method: "get",
     // params:data,
     showloading: false,
@@ -153,7 +153,7 @@ export function delDocDataByDocIdApi(data) {
 export function getDocDataByCaseIdAndDocIdApi(data) {
   console.log(data);
   return request({
-    url: "/case/doc/data/findByCaseIdAndDocId",
+    url: "/doc/data/findByCaseIdAndDocId",
     method: "get",
     // data:vm.$qs.stringify(data),
     params:data,
@@ -166,8 +166,8 @@ export function getDocDataByCaseIdAndDocIdApi(data) {
 export function getFormDataByCaseIdAndFormIdApi(data) {
   console.log(data);
   return request({
-    url: "/case/doc/linkData/findByCaseIdAndLinkTypeId/"+data.casebasicInfoId+"/"+data.caseLinktypeId,
-    // url: "/case/doc/linkData/findByCaseIdAndLinkTypeId",
+    url: "/doc/linkData/findByCaseIdAndLinkTypeId/"+data.casebasicInfoId+"/"+data.caseLinktypeId,
+    // url: "/doc/linkData/findByCaseIdAndLinkTypeId",
     method: "get",
     // data:vm.$qs.stringify(data),
     // params:data,
@@ -181,7 +181,7 @@ export function getFormDataByCaseIdAndFormIdApi(data) {
 export function addFormDataApi(data) {
   console.log(data);
   return request({
-    url: "/case/doc/linkData/saveOrUpdateLink",
+    url: "/doc/linkData/saveOrUpdateLink",
     method: "post",
     data:vm.$qs.stringify(data),
     showloading: false,
@@ -191,7 +191,7 @@ export function addFormDataApi(data) {
 //案件列表
 export function queryCaseBasicInfoListPageApi(data) {
   return request({
-    url: "/case/doc/caseBasicInfo/queryCaseBasicInfoListPage",
+    url: "/doc/caseBasicInfo/queryCaseBasicInfoListPage",
     method: "get",
     params:data,
     showloading: false,
@@ -201,7 +201,7 @@ export function queryCaseBasicInfoListPageApi(data) {
 //通过案件id和表单类型Id查询已绑定文书
 export function getDocListByCaseIdAndFormIdApi(data){
   return request({
-    url: "/case/doc/caseLinkDoc/findListByCaseIdAndLinkTypeId/"+data.casebasicInfoId+"/"+data.linkTypeId,
+    url: "/doc/caseLinkDoc/findListByCaseIdAndLinkTypeId/"+data.casebasicInfoId+"/"+data.linkTypeId,
     method: "get",
     // params:data,
     showloading: false,
@@ -211,7 +211,7 @@ export function getDocListByCaseIdAndFormIdApi(data){
 //pdf页的提交
 export function submitPdfApi(data) {
   return request({
-    url: "/case/doc/linkData/jumpNextLink",
+    url: "/doc/linkData/jumpNextLink",
     method: "post",
     data:vm.$qs.stringify(data),
     showloading: false,
@@ -234,7 +234,7 @@ export function saveOrUpdateLinkApi(data){
 export function approvalPdfApi(data) {
   console.log(data);
   return request({
-    url: "/case/doc/linkData/handleApprove",
+    url: "/doc/linkData/handleApprove",
     method: "post",
     data:vm.$qs.stringify(data),
     showloading: false,
@@ -265,7 +265,7 @@ export function setFlowStatusAPi(data) {
 //查询审批角色列表
 export function getApprovePeopleApi(caseBasicInfoId) {
   return request({
-    url: "/case/doc/linkData/findApproveRole/"+caseBasicInfoId,
+    url: "/doc/linkData/findApproveRole/"+caseBasicInfoId,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -275,7 +275,7 @@ export function getApprovePeopleApi(caseBasicInfoId) {
 //查询所有环节
 export function getQueryLinkListApi() {
   return request({
-    url: "/case/caseTemplate/linkType/queryLinkList",
+    url: "/caseTemplate/linkType/queryLinkList",
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -284,7 +284,7 @@ export function getQueryLinkListApi() {
 //查询所有案件类型
 export function getQueryCaseTypeListApi() {
   return request({
-    url: "/case/caseTemplate/caseType/list",
+    url: "/sys/caseType/list",
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -294,7 +294,7 @@ export function getQueryCaseTypeListApi() {
 //通过表单（文书）类型Id查询表单（文书）绑定的案件基本信息属性
 export function findCaseAllBindPropertyApi(data) {
   return request({
-    url: "/case/doc/propertyBind/findAllBindProperty/"+data.typeId+"/"+data.caseBasicInfoId,
+    url: "/doc/propertyBind/findAllBindProperty/"+data.typeId+"/"+data.caseBasicInfoId,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -305,7 +305,7 @@ export function findCaseAllBindPropertyApi(data) {
 //根据案件ID查询  （使用场景：案件调查报告->证据材料->文书）
 export function findByCaseBasicInfoIdApi(caseBasicInfoId) {
   return request({
-    url: "/case/doc/data/findByCaseBasicInfoId/"+caseBasicInfoId,
+    url: "/doc/data/findByCaseBasicInfoId/"+caseBasicInfoId,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -327,7 +327,7 @@ export function findEvidencePicApi(data) {
 // // 获取归档目录
 // export function findByMlCaseId(caseId) {
 //     return request({
-//         url: "/case/sys/file/findByMlCaseId/"+caseId,
+//         url: "/sys/file/findByMlCaseId/"+caseId,
 //         method: "get",
 //         showloading: false,
 //         cancelToken: setCancelSource()
@@ -345,7 +345,7 @@ export function findEvidencePicApi(data) {
 export function findByMlCaseIdNew(caseId) {
 
     return request({
-            url: "/case/doc/docCatalog/findCatalogByCaseId/"+caseId,
+            url: "/doc/docCatalog/findCatalogByCaseId/"+caseId,
             method: "get",
             showloading: false,
             cancelToken: setCancelSource()
@@ -355,7 +355,7 @@ export function findByCondition(data){
   let data2 = vm.$qs.stringify(data);
   console.log('zhengju',data2);
     return request({
-        url: "/case/doc/evidence/findByCondition",
+        url: "/doc/evidence/findByCondition",
         method: "post",
         data:data2,
         showloading: false,
@@ -392,7 +392,7 @@ export function updateEvdenceNameApi(data) {
 // 根据id删除文书
 export function deleteDocByIdApi(docId) {
   return request({
-      url: "/case/doc/data/deleteById/"+docId,
+      url: "/doc/data/deleteById/"+docId,
       method: "get",
       showloading: false,
       cancelToken: setCancelSource()
@@ -401,7 +401,7 @@ export function deleteDocByIdApi(docId) {
 //根据id获取文书信息 （使用场景:询问笔录查看详情）
 export function getDocDetailByIdApi(id) {
   return request({
-    url: "/case/doc/data/findById/"+id,
+    url: "/doc/data/findById/"+id,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -434,16 +434,11 @@ export function findAskNumApi(params) {
 }
 
 
-
-
-
-
-
 //-------------长软lv start------------
 //获取操作记录
 export function getHandleRecordApi(data) {
     return request({
-      url: "/case/doc/caseFormLogs/queryCaseFormLogsListPage",
+      url: "/doc/caseFormLogs/queryCaseFormLogsListPage",
       method: "GET",
       params: data,
       showloading: false,
@@ -453,7 +448,7 @@ export function getHandleRecordApi(data) {
   //获取证据目录
   export function getEvidenceApi(data) {
     return request({
-      url: "/case/doc/evidence/findByCondition",
+      url: "/doc/evidence/findByCondition",
       method: "POST",
       params: data,
       showloading: false,
@@ -463,7 +458,7 @@ export function getHandleRecordApi(data) {
   // 查询已经绑定证据
   export function findBindingEvdinec(data) {
     return request({
-        url: "/case/doc/docCatalog/findBindingEvdinec",
+        url: "/doc/docCatalog/findBindingEvdinec",
         method: "GET",
         params: data,
         showloading: false,
@@ -474,7 +469,7 @@ export function getHandleRecordApi(data) {
   //插入证据目录
   export function saveOrUpdateEvidenceApi(data) {
     return request({
-      url:"/case/doc/evidence/saveOrUpdateEvdencen",
+      url:"/doc/evidence/saveOrUpdateEvdencen",
       method:"POST",
       params:data,
       showloading: false,
@@ -485,7 +480,7 @@ export function getHandleRecordApi(data) {
   export function saveOrUpdateDocCatalogList(data) {
     let data2 = vm.$qs.stringify(data);
     return request({
-        url:"/case/doc/docCatalog/saveOrUpdateDocCatalogList/",
+        url:"/doc/docCatalog/saveOrUpdateDocCatalogList/",
         method:"POST",
         params:data2,
         showloading: false,
@@ -495,7 +490,7 @@ export function getHandleRecordApi(data) {
   //获取文书列表
   export function getDocumentApi(data) {
     return request({
-      url: "/case/doc/data/findByCondition",
+      url: "/doc/data/findByCondition",
       method: "GET",
       params: data,
       showloading: false,
@@ -505,7 +500,7 @@ export function getHandleRecordApi(data) {
   //获取送达回证
   export function getDeliverReceiptApi(data) {
     return request({
-      url: "/case/doc/proof/findByCondition",
+      url: "/doc/proof/findByCondition",
       method: "POST",
       params: data,
       showloading: false,
@@ -515,7 +510,7 @@ export function getHandleRecordApi(data) {
   //添加修改送达回证
   export function saveOrUpdateDeliverReceiptApi(data) {
     return request({
-      url: "/case/doc/proof/saveOrUpdateProof",
+      url: "/doc/proof/saveOrUpdateProof",
       method: "POST",
       params: data,
       showloading: false,
@@ -525,7 +520,7 @@ export function getHandleRecordApi(data) {
   //代码集\数据字典接口
   export function getDictionaryApi(data) {
     return request({
-      url: "/system/sys/drawer/findAllDrawerById/"+data,
+      url: "/sys/drawer/findAllDrawerById/"+data,
       method: "GET",
       showloading: false,
       cancelToken: setCancelSource(),

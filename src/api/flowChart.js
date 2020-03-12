@@ -5,7 +5,7 @@ let vm = new Vue();
 // 案件id
 export function getFlowStatusByCaseIdApi(id) {
   return request({
-    url: "/case/doc/caseBasicInfo/findFlowStatusByCaseId/" + id,
+    url: "/doc/caseBasicInfo/findFlowStatusByCaseId/" + id,
     method: "get",
     showloading: true,
     cancelToken: setCancelSource()

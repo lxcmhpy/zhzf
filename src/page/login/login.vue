@@ -243,7 +243,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 验证码
-          // if (_this.success) {
+          if (_this.success) {
             let values = _this.loginForm;
             values.captchaId = _this.captchaId;
 
@@ -252,8 +252,8 @@ export default {
                 console.log(res);
                 // 清除定时器
                 clearTimeout(_this.timeOutFlag)
-                // iLocalStroage.sets('userInfo', res.userInfo);
-                _this.getCurrentUser();
+                iLocalStroage.sets('userInfo', res.userInfo);
+                // _this.getCurrentUser();
                 _this.getMenu();
                 _this.success = false
               },
@@ -261,13 +261,13 @@ export default {
                 console.log(error);
               }
             );
-          // }
-          // else {
-          //   _this.errorMessage = '验证错误,请重试，3秒后自动消失'
-          //   setTimeout(() => {
-          //     _this.errorMessage = ""
-          //   }, 3000)
-          // }
+          }
+          else {
+            _this.errorMessage = '验证错误,请重试，3秒后自动消失'
+            setTimeout(() => {
+              _this.errorMessage = ""
+            }, 3000)
+          }
         }
         else {
           this.errorPwd = '用户名或密码错误，请重新输入，3秒后自动消失'

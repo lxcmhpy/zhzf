@@ -46,11 +46,9 @@ service.interceptors.request.use(
      showFullScreenLoading();
    }
    if (getToken("TokenKey")) {
-    //  config.headers["accessToken"] = getToken("TokenKey");
-     config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
+     config.headers["accessToken"] = getToken("TokenKey");
+    //  config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
      
-    //  config.headers["Access-Control-Allow-Origin"] = "*";
-    //  config.headers['Accept'] = 'application/x-www-form-urlencoded'
      
    }
    console.log('config',config)

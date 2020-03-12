@@ -8,7 +8,7 @@ let  vm  =  new  Vue();
 //获取用户下的所有机构
 export  function  getAllOrganApi()  {
   return  request({
-    url:  "/system/sys/organ/organTreeByCurrUser",
+    url:  "/sys/organ/organTreeByCurrUser",
     method:  "get",
     showloading: false,
     cancelToken:  setCancelSource()
@@ -18,7 +18,7 @@ export  function  getAllOrganApi()  {
 //获取选中机构下的机构
 export  function  getSelectOrganApi(data)  {
   return  request({
-    url:  "/system/sys/organ/queryOrganPage",
+    url:  "/sys/organ/queryOrganPage",
     method:  "get",
     params:  data,
     showloading: false,
@@ -48,7 +48,7 @@ export  function  addOrganApi(data)  {
   };
   let  data2  =  vm.$qs.stringify(addOrganForm);
   return  request({
-    url:  "/system/sys/organ/saveOrUpdateOrgan",
+    url:  "/sys/organ/saveOrUpdateOrgan",
     method:  "post",
     data:  data2,
     showloading: false,
@@ -59,7 +59,7 @@ export  function  addOrganApi(data)  {
 //机构详情
 export  function  getOrganDetailApi(data)  {
   return  request({
-    url:  "/system/sys/organ/findById/"  +  data.id,
+    url:  "/sys/organ/findById/"  +  data.id,
     method:  "get",
     //  params:data,
     showloading: false,
@@ -70,7 +70,7 @@ export  function  getOrganDetailApi(data)  {
 //删除机构
 export  function  deleteOrganApi(data)  {
   return  request({
-    url:  "/system/sys/organ/delete/"  +  data,
+    url:  "/sys/organ/delete/"  +  data,
     method:  "get",
     showloading: false,
     cancelToken:  setCancelSource()
@@ -80,7 +80,7 @@ export  function  deleteOrganApi(data)  {
 //验证机构名称是否重复
 export  function  hasOrganNameApi(name)  {
   return  request({
-    url:  "/system/sys/organ/findByName/"  +  name,
+    url:  "/sys/organ/findByName/"  +  name,
     method:  "get",
     showloading:  false,
     cancelToken:  setCancelSource()
@@ -89,7 +89,7 @@ export  function  hasOrganNameApi(name)  {
 //获取本机构及下级机构
 export  function  getCurrentAndNextOrganApi(data)  {
   return  request({
-    url:  "/system/sys/organ/findAllSubListByOrgId/"+data,
+    url:  "/sys/organ/findAllSubListByOrgId/"+data,
     method:  "get",
     showloading: false,
     cancelToken:  setCancelSource()
@@ -105,7 +105,7 @@ export  function  getCurrentAndNextOrganApi(data)  {
 export  function  getUserListApi(data)  {
   console.log('用户',  data);
   return  request({
-    url:  "/system/sys/user/list",
+    url:  "/sys/user/list",
     method:  "get",
     params:  data,
     showloading: false,
@@ -117,7 +117,7 @@ export  function  addUserApi(data)  {
   console.log('用户',  vm.$qs.stringify(data));
   console.log(data)
   return  request({
-    url:  "/system/sys/user/addUser",
+    url:  "/sys/user/addUser",
     method:  "POST",
     data:vm.$qs.stringify(data),
     showloading: false,
@@ -130,7 +130,7 @@ export function updateUserApi(data) {
   console.log(data);
 
   return request({
-    url: "/system/sys/user/updateUser",
+    url: "/sys/user/updateUser",
     method: "POST",
     data: vm.$qs.stringify(data),
     showloading: false,
@@ -145,7 +145,7 @@ export function updateUserApi(data) {
 export function getUserdeleteApi(id) {
   console.log(id)
   return request({
-    url: "/system/sys/user/delete/" + id,
+    url: "/sys/user/delete/" + id,
     method: "GET",
     data: vm.$qs.stringify(id),
     showloading: false,
@@ -157,7 +157,7 @@ export function getUserdeleteApi(id) {
 export function getUserdeletesApi(id) {
   console.log(id)
   return request({
-    url: "/system/sys/user/deletes",
+    url: "/sys/user/deletes",
     method: "GET",
     data: vm.$qs.stringify(id),
     showloading: false,
@@ -170,7 +170,7 @@ export function getUserdeletesApi(id) {
 export function getUserresetApi(id) {
   console.log(id)
   return request({
-    url: "/system/sys/user/reset/" + id,
+    url: "/sys/user/reset/" + id,
     method: "GET",
     data: vm.$qs.stringify(id),
     showloading: false,
@@ -180,7 +180,7 @@ export function getUserresetApi(id) {
 //验证用户名是否重复
 export  function  hasUsernameApi(name)  {
   return request({
-    url: "/system/sys/user/findExistByUserName/" + name,
+    url: "/sys/user/findExistByUserName/" + name,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -192,7 +192,7 @@ export  function  hasUsernameApi(name)  {
 export function userBindRoleApi(data) {
   console.log(data);
   return request({
-    url: "/system/sys/user/bindRoles",
+    url: "/sys/user/bindRoles",
     method: "GET",
     params: data,
     showloading: false,
@@ -203,7 +203,7 @@ export function userBindRoleApi(data) {
 //日志管理
 export function getloglistApi(data) {
   return request({
-    url: "/system/sys/log/list",
+    url: "/sys/log/list",
     method: "GET",
     params: data,
     showloading: false,
@@ -216,7 +216,7 @@ export function getloglistApi(data) {
 export function queryUserBindRoleApi(data) {
   console.log(data);
   return request({
-    url: "/system/sys/user/findBindRolesByUserId/" + data,
+    url: "/sys/user/findBindRolesByUserId/" + data,
     method: "GET",
     showloading: false,
     cancelToken: setCancelSource()
@@ -228,7 +228,7 @@ export function queryUserBindRoleApi(data) {
 export function getRolesApi(data) {
   console.log(data);
   return request({
-    url: "/system/sys/role/all",
+    url: "/sys/role/all",
     method: "get",
     params:data,
     showloading: false,
@@ -240,7 +240,7 @@ export function getRolesApi(data) {
 export function addRoleApi(data) {
   let data2 = vm.$qs.stringify(data);
   return request({
-    url: "/system/sys/role/add",
+    url: "/sys/role/add",
     method: "post",
     data: data2,
     showloading: false,
@@ -251,7 +251,7 @@ export function addRoleApi(data) {
 //删除角色
 export function deleteRoleApi(data) {
   return request({
-    url: "/system/sys/role/delete/"+data,
+    url: "/sys/role/delete/"+data,
     method: "get",
     // params: {id: data},
     showloading: false,
@@ -268,7 +268,7 @@ export function editRoleApi(data) {
   }
   let data2 = vm.$qs.stringify(params);
   return request({
-    url: "/system/sys/role/update",
+    url: "/sys/role/update",
     method: "post",
     data: data2,
     showloading: false,
@@ -280,7 +280,7 @@ export function editRoleApi(data) {
 export function getRoleBindMenuApi(data) {
   console.log(data);
   return request({
-    url: "/system/sys/role/queryRoleMenu/" + data,
+    url: "/sys/role/queryRoleMenu/" + data,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -290,7 +290,7 @@ export function getRoleBindMenuApi(data) {
 //获取角色下已经绑定的机构
 export function getRoleBindOrganApi(data) {
   return request({
-    url: "/system/sys/role/queryRoleOrgan/"+data,
+    url: "/sys/role/queryRoleOrgan/"+data,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -304,7 +304,7 @@ export function roleBindMenuApi(data) {
     permissionIds: data.permissionIds.join(',')
   }
   return request({
-    url: "/system/sys/role/bindMenu",
+    url: "/sys/role/bindMenu",
     method: "get",
     params: params,
     showloading: false,
@@ -320,7 +320,7 @@ export function roleBindOrganApi(data) {
   }
   console.log(params);
   return request({
-    url: "/system/sys/role/bindOrgan",
+    url: "/sys/role/bindOrgan",
     method: "get",
     params: params,
     showloading: false,
@@ -332,7 +332,7 @@ export function roleBindOrganApi(data) {
 //获取机构下绑定的角色
 export function getOrganBindRoleApi(data) {
   return request({
-    url: "/system/sys/role/queryRoleByOrganId/" + data,
+    url: "/sys/role/queryRoleByOrganId/" + data,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -343,7 +343,7 @@ export function getOrganBindRoleApi(data) {
 export function getDepartmentsApi(data) {
   console.log('部门', data);
   return request({
-    url: "/system/sys/department/list",
+    url: "/sys/department/list",
     method: "get",
     params: data,
     showloading: false,
@@ -356,7 +356,7 @@ export function getDepartmentsApi(data) {
 export function getDepartmentsNoPageApi(data) {
   console.log('部门', data);
   return request({
-    url: "/system/sys/department/all",
+    url: "/sys/department/all",
     method: "get",
     params: data,
     showloading: false,
@@ -376,7 +376,7 @@ export function addDepartmentApi(data) {
   console.log(departmentForm)
   let data2 = vm.$qs.stringify(departmentForm);
   return request({
-    url: "/system/sys/department/saveOrUpdateDepartment",
+    url: "/sys/department/saveOrUpdateDepartment",
     method: "post",
     data: data2,
     showloading: false,
@@ -392,7 +392,7 @@ export function hasDepartmentNameApi(data) {
   }
   console.log(params);
   return request({
-    url: "/system/sys/department/findDepartmentByName/" + data.oid + "/" + data.name,
+    url: "/sys/department/findDepartmentByName/" + data.oid + "/" + data.name,
     method: "get",
     // params:params,
     showloading: false,
@@ -404,7 +404,7 @@ export function hasDepartmentNameApi(data) {
 export function deleteDepartmentApi(data) {
   console.log('删除部门', data);
   return request({
-    url: "/system/sys/department/delete/" + data,
+    url: "/sys/department/delete/" + data,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -414,7 +414,7 @@ export function deleteDepartmentApi(data) {
 //获取菜单列表
 export function getAllMenuListApi() {
   return request({
-    url: "/system/sys/permission/getAllList",
+    url: "/sys/permission/getAllList",
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -426,7 +426,7 @@ export function getAllMenuListApi() {
 //获取权限树
 export function getTreePermissionApi() {
   return request({
-    url: "/system/sys/permission/getTreePermission",
+    url: "/sys/permission/getTreePermission",
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -438,7 +438,7 @@ export function getTreePermissionApi() {
 export function getDictListApi(data) {
   console.log(data);
   return request({
-    url: "/system/sys/drawer/findAllByPage",
+    url: "/sys/drawer/findAllByPage",
     method: "get",
     params: data,
     showloading: false,
@@ -459,7 +459,7 @@ export function addDictApi(data) {
   console.log('添加字典', dictForm)
   let data2 = vm.$qs.stringify(dictForm);
   return request({
-    url: "/system/sys/drawer/addOrUpdate",
+    url: "/sys/drawer/addOrUpdate",
     method: "post",
     data: data2,
     showloading: false,
@@ -471,7 +471,7 @@ export function addDictApi(data) {
 export function deleteDictApi(data) {
   console.log('删除部门', data);
   return request({
-    url: "/system/sys/drawer/delete/" + data,
+    url: "/sys/drawer/delete/" + data,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -481,7 +481,7 @@ export function deleteDictApi(data) {
 //获取字典详情  字典值
 export function getDictListDetailApi(id) {
   return request({
-    url: "/system/sys/drawer/findAllDrawerById/" + id,
+    url: "/sys/drawer/findAllDrawerById/" + id,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
@@ -493,7 +493,7 @@ export function getDictListDetailApi(id) {
 export function addPermissionApi(data) {
   let _data = vm.$qs.stringify(data);
   return request({
-    url: "/system/sys/permission/add",
+    url: "/sys/permission/add",
     method: "post",
     data: _data,
     showloading: false,
@@ -504,7 +504,7 @@ export function addPermissionApi(data) {
 //删除菜单
 export function deletePermissionApi(data) {
   return request({
-    url: "/system/sys/permission/deleteById/"+data,
+    url: "/sys/permission/deleteById/"+data,
     method: "get",
     // params: {
     //   id: data
@@ -517,7 +517,7 @@ export function deletePermissionApi(data) {
 //获取本机构下的所有用户（不分页）
 export  function  queryUserListByOrganIdApi(organId)  {
   return  request({
-      url:  "/system/sys/user/queryUserListByOrganId/"+organId,
+      url:  "/sys/user/queryUserListByOrganId/"+organId,
       method:  "get",
       showloading: false,
       cancelToken:  setCancelSource()
@@ -528,7 +528,7 @@ export  function  queryUserListByOrganIdApi(organId)  {
 //根据用户id获取用户的机构id
 export  function  getOrganIdApi(data)  {
     return  request({
-        url:  "/system/sys/user/findById/"  +  data.id,
+        url:  "/sys/user/findById/"  +  data.id,
         method:  "get",
         //  params:data,
         showloading: false,
