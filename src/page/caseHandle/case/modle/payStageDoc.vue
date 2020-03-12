@@ -8,14 +8,14 @@
         <p class="p_begin">
           当事人（个人姓名或单位名称）
           <span>
-            <el-form-item prop="casepartyName">
+            <el-form-item prop="casepartyName" style="width:300px">
               <el-input v-model="docData.party" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>:
         </p>
         <p>
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick">
+            <el-form-item prop="serviceTime" class="pdf_datapick listen_data" >
               <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>

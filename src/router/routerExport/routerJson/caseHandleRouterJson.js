@@ -597,7 +597,7 @@ export default [
     meta: {
       title: "解除（延长）行政强制措施决定"
     },
-    component: () => import("@/page/caseHandle/case/form/removeOrPrelongAdminCoerciveMeasureDoc.vue")
+    component: () => import("@/page/caseHandle/case/coerciveMeasureDoc.vue")
   },
   {
     path: "/importantCaseTeamDissDoc",
