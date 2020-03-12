@@ -43,7 +43,7 @@ export default {
         }
     },
    methods: {
-        LoadPage() 
+        LoadPage()
 			{
             	let url  = getParam("path");
 				let divobj = document.createElement("div");
@@ -54,9 +54,9 @@ export default {
 			    document.getElementById('myDiv').appendChild(divobj);
                 this.PDFReader = document.getElementById("PDF");
                 //打开网络文档
-                this.PDFReader.OpenFile(2,url,"", ""); 
+                this.PDFReader.OpenFile(2,url,"", "");
             },
-        getParam(paramName) 
+        getParam(paramName)
             {
            	    paramValue = "", isFound = !1;
            	    if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
@@ -67,12 +67,12 @@ export default {
            		 //alert(paramValue);
            	},
          /*设置应用接口*/
-        SetSafeKey() 
+        SetSafeKey()
             {
 				this.PDFReader.SetSafeKey("660456855e0d40ca96a8a7d93b0f7894","a4b5f7427d10471197126369d38827a6","MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAK8T1lXrwP4xcVHVJnXe0+HHKrxid+sqbnFxFf2SJ0ufYUiorvAWzBnb/5lhE6yLz9ivykz1mliOr4FzuqxMH/sCAwEAAQ==","MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEArxPWVevA/jFxUdUmdd7T4ccqvGJ36ypucXEV/ZInS59hSKiu8BbMGdv/mWETrIvP2K/KTPWaWI6vgXO6rEwf+wIDAQABAkBW18Qtgm+MpwHK0avuM8Vt7Nkp8L4DDF0UMD/0M5cCTwzo3bvdiQbxB0fGWFUS+GhKdZ0pWPPo0T/4zIlwPBeBAiEA7s/hxI8Xk65V1UYE1zTGqQztKr/j6yc7RqwJ/yN7/AsCIQC7raUEDp4aMgTqLc/AROLUjvtbjQVbpBIquytodofx0QIhAKQSSshijw41fl8SxgydA8ftS5xNTeengoAhfpS96lbVAiBqPM9OTp/8oBfcH/acFeJ5BD8RAfDogSWvfqgByCcIIQIhAKoBy2f3NmtF3NZ/Jze6pGyFqCyqZhJ+K9WAdZHl3vFR","mFDuULIPoSAcXxEyfV6AAQ==","");
             },
         //软证书签章
-        SoftSign() 
+        SoftSign()
             {
 			    this.PDFReader.SetSignImage(7, "", "");				//设置印章图片
 				this.PDFReader.SetSignCert(3,"","","");              //设置证书
@@ -81,18 +81,18 @@ export default {
         /*文档操作接口类*/
         //获取控件版本
         GetOCXVersion() {
-                alert(this.PDFReader.GetOCXVersion());                                    
+                alert(this.PDFReader.GetOCXVersion());
             },
-         //打开本地文档   
+         //打开本地文档
         OpenFile() {
                 var url="";
-                alert("正在打开本地文档："+url); 
-                this.PDFReader.OpenFile(1,"C:\\Users\\admin\\Desktop\\test.pdf","",""); 
+                alert("正在打开本地文档："+url);
+                this.PDFReader.OpenFile(1,"C:\\Users\\admin\\Desktop\\test.pdf","","");
             },
         //打开网络文档
         OpenWebFile() {
                 var url="";
-                this.PDFReader.OpenFile(2,url,"", "");                   
+                this.PDFReader.OpenFile(2,url,"", "");
             },
         //保存文档到本地
         SaveFile() {
@@ -100,13 +100,13 @@ export default {
                 this.PDFReader.SaveFile(2, "D:\\test.pdf", "");           //保存文档到本地
             },
         //保存文档到服务器
-        SaveWebFile() {  
+        SaveWebFile() {
             	var href = window.location.href;
             	var spstr = href.split("/");
             	var hrefPost = spstr[2]+"/"+spstr[3];
             	var fileName = getParam(fileName).split("/");
             	var pdfname = fileName[fileName.length-1];
-            	var url  = "http://"+hrefPost+"/sys/file/update?fileName="+pdfname;
+            	var url  = "http://"+hrefPost+"/case/sys/file/update?fileName="+pdfname;
             	//var url  = "http://"+window.location.host+"/zhzf/fileDocUpload/uploadAZT?fileName="+pdfname;
             	//alert("正在保存文档："+url);
             	if(this.PDFReader.GetSignCount(0, 0, "") == 0){
@@ -118,23 +118,23 @@ export default {
             },
         //关闭当前打开的文档
         CloseFile() {
-                this.PDFReader.CloseFile(0);                    
+                this.PDFReader.CloseFile(0);
             },
         //打印当前文档
         PrintFile() {
-                this.PDFReader.PrintFile(1, "", 0, "","");      
+                this.PDFReader.PrintFile(1, "", 0, "","");
             },
         //获取文档总页数
         GetPageCount() {
-                alert(this.PDFReader.GetPageCount()); 
+                alert(this.PDFReader.GetPageCount());
             },
         //开始普通印章
         AddNormalSign() {
-                this.PDFReader.AddNormalSign(1, "", "");						
+                this.PDFReader.AddNormalSign(1, "", "");
             },
         //设置印章宽度和高度（可选）
         SetSignWidthHeight() {
-                this.PDFReader.SetSignWidthHeight(100, 200);					
+                this.PDFReader.SetSignWidthHeight(100, 200);
             },
         //获取电子签章个数
         GetSignCount() {

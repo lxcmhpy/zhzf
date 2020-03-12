@@ -132,6 +132,9 @@ import Cookies from "@/common/js/cookies";
 import iLocalStroage from "@/common/js/localStroage";
 import { drawCodeImage } from "@/api/login";
 import * as types from "@/store/mutation-types";
+import {
+  getCurrentUserApi
+} from "@/api/login";
 export default {
   data() {
     return {
@@ -240,7 +243,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 验证码
-          if (_this.success) {
+          // if (_this.success) {
             let values = _this.loginForm;
             values.captchaId = _this.captchaId;
 
@@ -249,8 +252,8 @@ export default {
                 console.log(res);
                 // 清除定时器
                 clearTimeout(_this.timeOutFlag)
-                iLocalStroage.sets('userInfo', res.userInfo);
-
+                // iLocalStroage.sets('userInfo', res.userInfo);
+                _this.getCurrentUser();
                 _this.getMenu();
                 _this.success = false
               },
@@ -258,13 +261,13 @@ export default {
                 console.log(error);
               }
             );
-          }
-          else {
-            _this.errorMessage = '验证错误,请重试，3秒后自动消失'
-            setTimeout(() => {
-              _this.errorMessage = ""
-            }, 3000)
-          }
+          // }
+          // else {
+          //   _this.errorMessage = '验证错误,请重试，3秒后自动消失'
+          //   setTimeout(() => {
+          //     _this.errorMessage = ""
+          //   }, 3000)
+          // }
         }
         else {
           this.errorPwd = '用户名或密码错误，请重新输入，3秒后自动消失'
@@ -288,6 +291,16 @@ export default {
           console.log(err);
         }
       )
+    },
+    //获取当前登录用户的信息
+    getCurrentUser(){
+      getCurrentUserApi().then(res=>{
+        console.log(res);
+        iLocalStroage.sets('userInfo', res.data);
+
+      },err=>{
+        console.log(err);
+      })
     },
 
 

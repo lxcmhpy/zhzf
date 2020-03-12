@@ -77,6 +77,7 @@ export default {
             id: row.id,
             docId: row.docId,
             url: this.$route.name,
+            handelType: 'isAddMore',
             approvalForm:this.approvalForm
           }
         });

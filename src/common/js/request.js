@@ -6,9 +6,7 @@ import { showFullScreenLoading, tryHideFullScreenLoading } from "./loading";
 import iLocalStroage from '@/common/js/localStroage'
 
 var vue = new Vue();
-// axios.defaults.withCredentials = true
-// create an axios instance
-// axiosObj.headers = { 'Content-Type': 'application/x-www-form-urlencoded' };charset=GB2312
+
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api的base_url
   timeout: 15000, // request timeout
@@ -48,9 +46,11 @@ service.interceptors.request.use(
      showFullScreenLoading();
    }
    if (getToken("TokenKey")) {
-     // config.headers["accessToken"] = "CATSIC_TOKEN_PRE:" + getToken("TokenKey");
-     config.headers["accessToken"] = getToken("TokenKey");
-    //  config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
+    //  config.headers["accessToken"] = getToken("TokenKey");
+     config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
+     
+    //  config.headers["Access-Control-Allow-Origin"] = "*";
+    //  config.headers['Accept'] = 'application/x-www-form-urlencoded'
      
    }
    console.log('config',config)

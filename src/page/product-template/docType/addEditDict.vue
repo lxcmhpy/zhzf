@@ -97,7 +97,7 @@ export default {
         // this.addUserForm.password = data.password;
         this.addUserForm.mobile = data.mobile;
         this.addUserForm.departmentId = data.departmentId;
-        
+
       }
     },
     //关闭弹窗的时候清除数据
@@ -128,7 +128,7 @@ export default {
       console.log(user);
       if(_this.handelType==="0"){
           return request({
-            url: "/sys/user/addUser",
+            url: "/system/sys/user/addUser",
             method: "POST",
             data: user,
             showloading: false,
@@ -148,7 +148,7 @@ export default {
         );
       }else{
         return request({
-            url: "/sys/user/updateUser",
+            url: "/system/sys/user/updateUser",
             method: "POST",
             data: user,
             showloading: false,
@@ -167,7 +167,7 @@ export default {
               }
         );
       }
-      
+
     },
     edit(row){
       console.log(data);
