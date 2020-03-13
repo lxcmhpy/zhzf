@@ -161,22 +161,22 @@
                 <template>
                   <ul class="moreDocList">
                     <li v-for="(item,index) in allAskDocList" :key="index">
-                      <div>{{item.name}}</div>
+                      <div>{{item.note}}</div>
                       <div>
                         <span v-if="item.status == '1'">已完成</span>
                         <span v-if="item.status == '0'">未完成</span>
                       </div>
                       <div>
-                        <span v-if="item.status == '1'" class="tableHandelcase">
-                          <!-- 已完成 -->
-                          <i class="iconfont law-eye" @click="viewDocPdf(item)"></i>
-                          <i class="iconfont law-print"></i>
-                        </span>
+                        <!-- 已完成 -->
+                        <span v-if="item.status == '1'" class="tableHandelcase" @click="viewDocPdf(item)">查看</span>
+
                         <span v-if="item.status == '0'" class="tableHandelcase">
                           <!-- 未完成 -->
-                          <i class="iconfont law-edit" @click="viewDoc(item)"></i>
-                          <i class="iconfont law-delete" @click="delDocDataByDocId(item)"></i>
+                          <span @click="viewDoc(item)">编辑</span>
+                          <span @click="delDocDataByDocId(item)">清空</span>
                         </span>
+                        <!-- 无状态 -->
+                        <span v-if="item.status === ''" class="tableHandelcase" @click="viewDoc(item)">添加</span>
                       </div>
                     </li>
                   </ul>
@@ -184,7 +184,12 @@
               </el-table-column>
 
               <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
-              <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
+              <el-table-column prop="name" label="材料名称" align="center">
+                <template slot-scope="scope">
+                  <span style="color:red">*</span>
+                  {{scope.row.name}}
+                </template>
+              </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
                   <span v-if="scope.row.status == '1'">已完成</span>
@@ -195,24 +200,19 @@
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                   <span class="tableHandelcase" v-if="scope.row.openRow">
-                    <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
+                    <!-- <i class="iconfont law-add" @click="viewDoc(scope.row)"></i> -->
+                    <span @click="viewDoc(scope.row)">添加</span>
                   </span>
                   <span v-if="!scope.row.openRow">
-                    <span v-if="scope.row.status == '1'" class="tableHandelcase">
-                      <!-- 已完成 -->
-                      <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
-                      <i class="iconfont law-print"></i>
-                      <!-- <i class="el-icon-delete"></i> -->
-                    </span>
+                    <!-- 已完成 -->
+                    <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
+                    <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">
-                      <!-- 未完成 -->
-                      <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
-                      <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
+                      <span @click="viewDoc(scope.row)">编辑</span>
+                      <span @click="delDocDataByDocId(scope.row)">清空</span>
                     </span>
-                    <span v-if="scope.row.status === ''" class="tableHandelcase">
-                      <!-- 无状态 -->
-                      <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
-                    </span>
+                    <!-- 无状态 -->
+                    <span v-if="scope.row.status === ''" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
                   </span>
                 </template>
               </el-table-column>
@@ -250,7 +250,7 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import checkDocFinish from "../../components/checkDocFinish";
+import checkDocFinish from "./PenaltyExecutionFormDocFinish";
 import addDialog from './PenaltyExecutionFormDialog'
 import {
   uploadEvApi,
@@ -315,6 +315,8 @@ export default {
       needDealData: true,
       docTableDatasCopy: [],
       allAskDocList: [],  //分期延期
+      unfinishFlag: '',
+      isfinishFlag: true,
     };
   },
   computed: {
@@ -339,66 +341,79 @@ export default {
     },
     // 判断文书是否完成
     isComplete() {
+      this.unfinishFlag = '';
       console.log('分期延期:', this.formData.stepPay, '，催告：', this.formData.performance)
       if (this.formData.stepPay) {
         // 分期延期缴纳通知书必做
         console.log(this.allAskDocList)
+        let flag = true
         this.allAskDocList.forEach(element => {
-          if (element.name.indexOf('分期（延期）缴纳罚款通知书') != -1) {
-            console.log('111', element.status)
+          if (element.name == '分期（延期）缴纳罚款通知书【2016】') {
+            this.unfinishFlag = '分期（延期）缴纳罚款通知书';
+            console.log('lement.status,element.status', element.status)
             if (element.status != 1) {
-              return false;
+              this.unfinishFlag = '分期（延期）缴纳罚款通知书';
               console.log('执行')
+              let caseData = {}
+              this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+              flag = false;
+              return false;
             }
           }
+          else
+            return flag;
         });
+        return flag;
       }
-      else {
-        if (this.formData.performance == '催告') {
-          // 催告书必做
-          console.log(this.docTableDatas)
-          this.docTableDatas.forEach(element => {
-            if (element.name == '催告书') {
-              if (element.status != 1) {
-                return false;
-              }
+    },
+    isComplete2() {
+      this.unfinishFlag = '';
+      console.log('分期延期:', this.formData.stepPay, '，催告：', this.formData.performance)
+      if (this.formData.performance == '催告') {
+        // 催告书必做
+        let flag2 = true;
+        console.log(this.docTableDatas)
+        this.docTableDatas.forEach(element => {
+          if (element.name == '催告书') {
+            if (element.status != 1) {
+              this.unfinishFlag = ' 催告书';
+              console.log('this.unfinishFlag', this.unfinishFlag)
+              let caseData = {}
+              this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+
+              flag2 = false;
+              return flag2;
             }
-          });
-        }
-        else {
-          return true;
-        }
+            else
+              return flag2;
+          }
+          else
+            return flag2;
+        });
+        return flag2;
       }
-
-
     },
     //下一环节
     continueHandle() {
-
-      // var a = this.isComplete();
-      // console.log(a)
-      if (this.isComplete()) {
-        let caseData = {
-          caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
-          caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
-        };
-        let canGotoNext = true; //是否进入下一环节
-        for (let i = 0; i < this.docTableDatas.length; i++) {
-          if (this.docTableDatas[i].isRequired === 0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")) {
-            canGotoNext = false
-            break;
-          }
-        }
-        if (canGotoNext) {
+      console.log('this.unfinishFlag', this.unfinishFlag)
+      console.log('分期文书', this.isComplete())
+      console.log('催告书', this.isComplete2())
+      console.log('this.unfinishFlag', this.unfinishFlag)
+      let caseData = {
+        caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
+        caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
+      };
+      if ((this.isComplete()!=false) && (this.isComplete2()!=false)) {
+       
           this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
-        } else {
-          this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
-        }
       }
       else {
-        this.$message({ message: '请完成对应文书', type: 'error' });
-      }
+        // this.$message({ message: '请完成对应文书', type: 'error' });
+        console.log(this.unfinishFlag)
+        let unfinishFlag = this.unfinishFlag || ""
+        this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
 
+      }
     },
     // 进入文书
     enterDoc(row) {
@@ -505,9 +520,7 @@ export default {
               this.formData.payEvidence = id;
             }
           }
-
           console.log('this.formData.payEvidence', this.formData.payEvidence);
-
         },
         error => {
           console.log(error)
@@ -558,15 +571,15 @@ export default {
       console.log('this.allAskDocList', this.allAskDocList)
     },
     //通过案件ID和文书ID查询附件
-    findFileList(){
-      let data =  {
+    findFileList() {
+      let data = {
         caseId: this.caseId,
-        docId :"2c9029e16c753a19016c755fe1340001"
+        docId: "2c9029e16c753a19016c755fe1340001"
       }
       console.log(data);
       getFile(data).then(
         res => {
-          console.log("附件列表",res);
+          console.log("附件列表", res);
           // this.fileListArr = res.data;
 
         },

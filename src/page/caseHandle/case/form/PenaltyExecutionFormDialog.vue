@@ -3,22 +3,20 @@
     <div>
       <el-form ref="approvalForm" :model="approvalForm" label-width="90px">
         <el-form-item label="申请决定">
-          <el-radio-group v-model="approvalForm.executeHandle">
-            <el-radio :label="1">同意</el-radio>
-            <el-radio :label="0">不同意</el-radio>
-          </el-radio-group>
-
+          <el-select v-model="approvalForm.executeHandle">
+            <el-option :value='1' label="同意"></el-option>
+            <el-option :value='0' label='不同意'></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="执行方式" v-if="approvalForm.executeHandle==1">
-          <el-radio-group v-model="approvalForm.executeType">
-            <el-radio :label="1">分期（第N期）</el-radio>
-            <el-radio :label="0">延期</el-radio>
-          </el-radio-group>
+           <el-select v-model="approvalForm.executeType">
+            <el-option :value='1' label="分期（第N期）"></el-option>
+            <el-option :value='0' label='延期'></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="拒绝原因" v-if="approvalForm.executeHandle==0">
-          <el-input type="textarea" :rows="2" v-model="approvalForm.approveOpinions"></el-input>
+          <el-input type="textarea" :rows="3" v-model="approvalForm.approveOpinions"></el-input>
         </el-form-item>
-
       </el-form>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -65,9 +63,9 @@ export default {
       console.log('文书信息', this.caseData)
       // 进入文书
       console.log('代入信息', this.approvalForm)
-    //   this.com_viewDoc(this.caseData, this.approvalForm);
+      //   this.com_viewDoc(this.caseData, this.approvalForm);
       console.log(row);
-      let row=this.caseData
+      let row = this.caseData
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
         console.log('row:', row)
@@ -78,7 +76,7 @@ export default {
             docId: row.docId,
             url: this.$route.name,
             handelType: 'isAddMore',
-            approvalForm:this.approvalForm
+            approvalForm: this.approvalForm
           }
         });
       } else {

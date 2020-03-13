@@ -434,6 +434,7 @@ export default {
     },
     //下一环节
     continueHandle() {
+      console.log(this.docTableDatas)
       let caseData = {
         caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId

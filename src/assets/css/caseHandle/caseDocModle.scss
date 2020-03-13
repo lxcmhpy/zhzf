@@ -212,7 +212,7 @@
             }
 
             .el-form-item {
-                width: 200px;
+                /* width: 200px; */
             }
 
             .el-form-item__content {
@@ -923,6 +923,9 @@
 .width120{
     width: 120px;
 }
+.width151{
+    width: 151px;
+}
 .width212 {
     width: 212px;
 }
@@ -938,7 +941,10 @@
 .width182 {
     width: 182px;
 }
+.width220{
+    width: 220px;
 
+}
 .width228 {
     width: 228px;
 }
@@ -993,7 +999,7 @@
     /* 下拉框 */
     .print_info {
         i {
-            display: none;
+            display: none !important;
         }
 
     }
