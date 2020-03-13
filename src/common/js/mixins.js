@@ -37,7 +37,6 @@ export const mixinGetCaseApiList = {
       };
       this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
         res => {
-          debugger
           console.log("获取表单详情", res.data);
           //如果为空，则加载案件信息
           if (res.data == "") {

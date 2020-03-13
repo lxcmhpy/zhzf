@@ -567,14 +567,6 @@ export default [
     component: () => import("@/page/caseHandle/case/modle/evidenceListDoc.vue")
   },
   {
-    path: "/adminCoerciveMeasureDoc",
-    name: "adminCoerciveMeasureDoc",
-    meta: {
-      title: "行政强制措施决定书"
-    },
-    component: () => import("@/page/caseHandle/case/modle/adminCoerciveMeasureDoc.vue")
-  },
-  {
     path: "/prolongAdminCompulsoryDoc",
     name: "prolongAdminCompulsoryDoc",
     meta: {

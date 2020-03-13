@@ -87,6 +87,7 @@ function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符
 
     return true
   })
+  console.log('accessedRouters',accessedRouters);
   return accessedRouters
 }
 

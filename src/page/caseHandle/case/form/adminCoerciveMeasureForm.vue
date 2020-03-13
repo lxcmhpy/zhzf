@@ -393,23 +393,12 @@ export default {
   },
 
   methods: {
-    onSubmit(formName) {
-      console.log('submit!');
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(
         this.caseLinkDataForm.caseBasicinfoId,
-        this.caseLinkDataForm.caseLinktypeId,
+        this.caseLinkDataForm.caseLinktypeId, 
         false
       );
     },
@@ -438,7 +427,7 @@ export default {
     },
      //保存文书信息
     saveData(handleType) {
-      this.com_submitCaseForm(handleType, "docForm",true);
+      this.com_submitCaseForm(handleType, "docForm",true); 
     },
     //是否是完成状态
     isOverStatus() {
