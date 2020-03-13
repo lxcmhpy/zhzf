@@ -1,7 +1,7 @@
 <!-------长软------->
 <template>
   <div class="print_box">
-    <div class="print_info">
+    <div class="print_info" id="enforceInsteadDoc-print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">代履行决定书</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
@@ -239,7 +239,7 @@
       </el-button>
     </div> -->
     <!-- 悬浮按钮 -->
-    <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'enforceInsteadDoc-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
@@ -295,11 +295,11 @@ export default {
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: '297708bcd8e80872febb61577329194f', //案件id--从流程进入删掉，先写死测试用
-        caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型IDer
-        //表单数据
+        caseBasicinfoId: "", //案件ID
+        caseDoctypeId: this.$route.params.docId, //文书类型ID
+        //文书数据
         docData: "",
-        status: ""
+        status: "" //提交状态
       },
       name: '',
       inputInfo: '',
@@ -313,9 +313,9 @@ export default {
         punishBasisOne: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
-        punishBasisTwo: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
+        // punishBasisTwo: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
         impleIndex: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
@@ -348,7 +348,7 @@ export default {
       maxLengthOverLine: 122,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: 'subOutputRank-print',
+        pageDomId: 'enforceInsteadDoc-print',
       },
       checknames: [],
       disabledOne: true,
@@ -360,32 +360,31 @@ export default {
     }
   },
    methods: {
-    onSubmit(formName) {
-      console.log('submit!');
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
+    // onSubmit(formName) {
+    //   console.log('submit!');
+    //   this.$refs[formName].validate((valid) => {
+    //     if (valid) {
+    //       alert('submit!');
+    //     } else {
+    //       console.log('error submit!!');
+    //       return false;
+    //     }
+    //   });
+    // },
     //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
-      let data = {
-        // caseId: this.caseId, //流程里的案件id
-        caseId: '297708bcd8e80872febb61577329194f', //先写死
-        docId: '2c9028ac696b8acd01696b93c8fb0001'
-      };
-      this.com_getDocDataByCaseIdAndDocId(data);
-
-    },
+     getDocDataByCaseIdAndDocId() {
+       this.caseDocDataForm.caseBasicinfoId = this.caseId;
+       let data = {
+         caseId: this.caseId,
+         docId: this.$route.params.docId
+       };
+       this.com_getDocDataByCaseIdAndDocId(data)
+     },
     //保存文书信息
-    addDocData(handleType) {
+    // addDocData(handleType) {
 
-      this.com_addDocData(handleType, 'docForm');
-    },
+    //   this.com_addDocData(handleType, 'docForm');
+    // },
     // 盖章
     makeSeal() {
       console.log('盖章!');
