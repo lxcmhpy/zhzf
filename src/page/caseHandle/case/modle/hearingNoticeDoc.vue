@@ -21,7 +21,7 @@
               </el-form-item>
             </span>一案，现定于
             <span>
-              <el-form-item prop="hearingTime" class="pdf_datapick">
+              <el-form-item prop="hearingTime" class="pdf_datapick listen_data">
                 <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日HH时" placeholder="    年  月  日  时">
                 </el-date-picker>
               </el-form-item>

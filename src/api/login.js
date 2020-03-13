@@ -1,3 +1,4 @@
+
 import request from "@/common/js/request";
 import { setCancelSource } from "@/common/js/cancelToken";
 import Vue from "vue";
@@ -8,6 +9,34 @@ let vm = new Vue();
  * @param {*} params.account  必填 账号
  * @param {*} params.password  必填  密码
  */
+
+// export function loginInApi(params) {
+//   var data = new FormData();
+//   data.append("username", params.username);
+//   data.append("password", params.password);
+//   data.append("grant_type", "password");
+//   return request({
+//     url: "/auth/oauth/token",
+//     method: "POST",
+//     data:data,
+//     headers: {
+//       "Authorization": "Basic Y2F0c2ljOmNhdHNpYw==",
+//       "Content-Type": "multipart/form-data"
+//     },
+//     auth:{
+//       username: 'catsic',
+//       password: 'catsic'
+//     },
+//     showloading: true,
+//     mimeType: "multipart/form-data",
+//     processData: false,
+//     showloading: true,
+//     contentType: false,
+//     // baseUrlType:1,
+//     cancelToken: setCancelSource()
+//   });
+// }
+
 export function loginInApi(params) {
 
   let data = vm.$qs.stringify({
@@ -20,13 +49,14 @@ export function loginInApi(params) {
   return request({
     url: "/login",
     method: "POST",
-    contentType: 'multipart/form-data',
+    // contentType: 'multipart/form-data',
     data:data,
     showloading: true,
     baseUrlType:1,
     cancelToken: setCancelSource()
   });
 }
+
 //修改密码
 export function resetPasswordApi(params) {
 
@@ -84,7 +114,16 @@ export function getMenuApi() {
   });
 }
 
+//获取当前登录用户的信息
+export function getCurrentUserApi() {
+  return request({
+    url: "/case/doc/caseBasicInfo/findCurrentUser",
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
 
+  });
+}
 // 退出
 export function loginOutApi() {
   return request({

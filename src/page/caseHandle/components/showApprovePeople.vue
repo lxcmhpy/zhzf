@@ -67,6 +67,9 @@ export default {
           console.log(res);
            let data = res.data;
           data.splice(0,1);
+          // let swap = data[1];
+          // data[1] = data[2];
+          // data[2] = swap;
           _this.approvalPeopleList = data;
         },
         err => {

@@ -79,7 +79,7 @@
       </div>
       <div class="padding22 tablebox">
         <el-table :data="tableData" stripe height="100%" highlight-current-row @current-change="clickCase">
-          <el-table-column prop="caseNumber" label="案号" align="center"></el-table-column>
+          <el-table-column :prop="moreFlag != 'unRecordCase' ? 'caseNumber'  :'tempNo' " label="案号" align="center" ></el-table-column>
           <el-table-column prop="name" label="当事人" align="center"></el-table-column>
           <!-- <el-table-column prop="vehicleShipId" label="车/船号" align="center"></el-table-column> -->
           <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
@@ -316,15 +316,15 @@ export default {
           children: [
             {
               value: '31',
-              label: '港口行政'
-            },
-            {
-              value: '32',
               label: '港口建设'
             },
             {
-              value: '33',
+              value: '32',
               label: '港口经营'
+            },
+            {
+              value: '33',
+              label: '港口危贷'
             },
           ]
         },
@@ -463,7 +463,6 @@ export default {
           if (flag == 3) {
             this.approveIng = total
           }
-          this.waitDeal = res.data.total;
         },
         err => {
           console.log(err);

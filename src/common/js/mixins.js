@@ -2,7 +2,7 @@ import { mapGetters } from "vuex";
 import { htmlExportPDF } from '@/common/js/htmlExportPDF';
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi
+  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi, getDocDetailByIdApi
 } from "@/api/caseHandle";
 export const mixinGetCaseApiList = {
   data() {
@@ -37,7 +37,8 @@ export const mixinGetCaseApiList = {
       };
       this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
         res => {
-          console.log("获取表单详情", res);
+          debugger
+          console.log("获取表单详情", res.data);
           //如果为空，则加载案件信息
           if (res.data == "") {
             this.com_getCaseBasicInfo(caseId, caseLinktypeId);
@@ -50,7 +51,7 @@ export const mixinGetCaseApiList = {
               this.formData[key] = formData[key]
             }
             //对环节或文书中的一些字段做处理
-            if(this.needDealData){
+            if (this.needDealData) {
               this.getDataAfter();
             }
             console.log('this.formData', this.formData)
@@ -76,6 +77,7 @@ export const mixinGetCaseApiList = {
         caseBasicInfoId: caseId,
         typeId: formOrDocId
       };
+      console.log('data', data);
       findCaseAllBindPropertyApi(data).then(
         res => {
           console.log('获取案件信息', res)
@@ -85,15 +87,15 @@ export const mixinGetCaseApiList = {
             for (var key in caseData) {
               this.formData[key] = caseData[key]
             }
-           this.setSomeData(this.formData);
+            this.setSomeData(this.formData);
           } else {
             for (var key in caseData) {
               this.docData[key] = caseData[key]
             }
           }
-          if(this.needDealData){
+          if (this.needDealData) {
             this.getDataAfter();
-          } 
+          }
         },
         error => {
           console.log(error)
@@ -198,7 +200,8 @@ export const mixinGetCaseApiList = {
           data.nextLink = "caseDoc";
           break;
         case "2c90293b6c178b55016c17c7ae92000e":   //行政强制措施
-          data.nextLink = "";
+          data.nextLink = "adminCoerciveMeasure";
+          data.docId = "4028e4ef63683cd00163684359a10001";
           break;
         case "2c9029ee6cac9281016caca7f38e0002":   //调查报告
           data.nextLink = "caseInvestig";
@@ -212,13 +215,14 @@ export const mixinGetCaseApiList = {
           data.docId = "2c9029ca5b71686d015b719fe0900026";
           break;
         case "2c9029ee6cac9281016caca9a0000004":   //责令改正
-          data.nextLink = "order";
+          data.nextLink = "forceCorrect";
+          data.docId = "2c9029cc6a901fbe016a911e2dae000b";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204f":   //移交移送
           data.nextLink = "";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204g":   //不予处罚
-          data.nextLink = "";
+          data.nextLink = "noPenalty";
           break;
         case "2c9029ac6c26fd72016c27247b290003":   //当事人权利
           data.nextLink = "partyRights";
@@ -260,6 +264,13 @@ export const mixinGetCaseApiList = {
             this.caseDocDataForm.id = res.data[0].id;
             this.docData = JSON.parse(res.data[0].docData);
           }
+          //判断当事人类型
+          // console.log("docData",this.docData)
+          if (this.docData.party) {
+            this.isParty = true;
+          } else {
+            this.isParty = false;
+          }
         },
         err => {
           console.log(err);
@@ -270,7 +281,7 @@ export const mixinGetCaseApiList = {
     com_addDocData(handleType, docForm) {
       this.caseDocDataForm.docData = JSON.stringify(this.docData);
       this.caseDocDataForm.status = handleType;
-      console.log(this.caseDocDataForm);
+      console.log('caseDocDataForm',this.caseDocDataForm);
       if (handleType) {
         this.$refs[docForm].validate(valid => {
           if (valid) {
@@ -320,16 +331,19 @@ export const mixinGetCaseApiList = {
       this.$store.dispatch("getDocListByCaseIdAndFormId", data).then(
         res => {
           this.docTableDatas = res.data;
-          this.docTableDatasCopy = this.docTableDatasCopy ? this.docTableDatas : '';
-          console.log('文书列表', this.docTableDatas)
+          this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
+          console.log('文书列表', this.docTableDatas);
+          if (params.linkTypeId == '2c90293b6c178b55016c17c93326000f' || params.linkTypeId == '2c9029e16c753a19016c755fe1340001') { //调查类文书和分期延期缴纳
+            this.setMoreDocTableTitle();
+          }
         },
         err => {
           console.log(err);
         }
       );
     },
-    //查看环节下的文书
-    com_viewDoc(row) {
+    //查看或新增环节下的文书
+    com_viewDoc(row, addMoreData = {}) {
       console.log(row);
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
@@ -339,13 +353,16 @@ export const mixinGetCaseApiList = {
           params: {
             id: row.id,
             docId: row.docId,
-            url: this.$route.name
+            url: this.$route.name,
+            addMoreData: JSON.stringify(addMoreData),
+            docDataId: row.docDataId
           }
         });
       } else {
         this.$message('请先保存该环节表单');
       }
     },
+
     //立案登记表提交之后调用  更新案由等信息到案件基本信息中
     com_updatePartCaseBasicInfo(formData) {
       let data = {
@@ -511,7 +528,7 @@ export const mixinGetCaseApiList = {
       console.log(data);
       //既是环节也是文书的
       let isHuanjieDoc = false;
-      if (data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001") {
+      if (data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204g") {
         isHuanjieDoc = true;
       }
       this.$store.dispatch('deleteTabs', 'flowChart');
@@ -526,6 +543,16 @@ export const mixinGetCaseApiList = {
       } else {
         this.$router.push({ name: data2.nextLink })
       }
+    },
+    //根据id获取文书信息(使用场景:询问笔录查看详情）
+    getDocDetailById(id) {
+      getDocDetailByIdApi(id).then(res => {
+        console.log(res);
+        this.caseDocDataForm.id = res.data.id;
+        this.docData = JSON.parse(res.data.docData);
+      }, err => {
+        console.log(err)
+      })
     }
 
   },

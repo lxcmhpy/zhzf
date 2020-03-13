@@ -1,6 +1,6 @@
 <!-------长软------->
 <template>
-   <div class="print_box">
+  <div class="print_box">
     <div class="print_info" id="payStageDoc_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic"> 分期（延期）缴纳罚款通知书</div>
@@ -8,31 +8,31 @@
         <p class="p_begin">
           当事人（个人姓名或单位名称）
           <span>
-            <el-form-item prop="casepartyName">
-              <el-input v-model="docData.party"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="casepartyName" style="width:300px">
+              <el-input v-model="docData.party" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>:
         </p>
         <p>
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick">
+            <el-form-item prop="serviceTime" class="pdf_datapick listen_data" >
               <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
           </span> ，本机关对你（单位）送达了
           <span>
             <el-form-item prop="caseNumber">
-              <el-input v-model="docData.caseNumber" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.caseNumber" :maxLength='maxLength' placeholder="\" disabled></el-input>
             </el-form-item>
           </span>（案号）《行政处罚决定书》，作出了对你（单位）罚款
           <span>
             <el-form-item prop="fine">
-              <el-input v-model="docData.fine"  :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.fine" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>（大写）的行政处罚决定，根据你（单位）的申请，本机关依据《中华人民共和国行政处罚法》第五十二条的规定，现决定：
         </p>
         <p>
-          <input type="checkbox"  name="measure" value="1" v-model="checknames" @change="click">同意你（单位）延期缴纳罚款。延长至
+          <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">同意你（单位）延期缴纳罚款。延长至
           <span>
             <el-form-item prop="delayDate" class="pdf_datapick">
               <el-date-picker v-model="docData.delayDate" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
@@ -41,11 +41,19 @@
           </span>
         </p>
         <p>
-          <input type="checkbox"  name="measure" value="2" v-model="checknames" @change="click">同意你（单位）分期缴纳罚款。第
+          <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">同意你（单位）分期缴纳罚款。第
           <span>
             <el-form-item prop="instalmentNum">
-              <el-input v-model="docData.instalmentNum" v-bind:disabled="disabledTwo" :maxLength='maxLength' placeholder="\"></el-input>
+              <!-- <el-input v-model="docData.instalmentNum"></el-input> -->
+              <el-select v-model="docData.instalmentNum" v-bind:disabled="disabledTwo" :maxLength='maxLength' placeholder="\">
+                <el-option label="1" value="1"></el-option>
+                <el-option label="2" value="2"></el-option>
+                <el-option label="3" value="3"></el-option>
+                <el-option label="4" value="4"></el-option>
+                <el-option label="5" value="5"></el-option>
+              </el-select>
             </el-form-item>
+
           </span>期至
           <span>
             <el-form-item prop="instalmentDate" class="pdf_datapick">
@@ -59,13 +67,13 @@
             </el-form-item>
           </span>元（大写）（每期均应当单独开具本文书）。此外，尚有未缴纳的罚款
           <span>
-            <el-form-item prop="payFine">
-              <el-input v-model="docData.payFine" v-bind:disabled="disabledTwo" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="debtFine">
+              <el-input v-model="docData.debtFine" v-bind:disabled="disabledTwo" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>元（大写）。
         </p>
         <p>
-          <input type="checkbox"  name="measure" value="3" v-model="checknames" @change="click">由于
+          <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">由于
           <span>
             <el-form-item prop="reason">
               <el-input v-model="docData.reason" v-bind:disabled="disabledThree" :maxLength='maxLength' placeholder="\"></el-input>
@@ -118,7 +126,7 @@
         提交
       </el-button>
     </div> -->
-      <!-- 悬浮按钮 -->
+    <!-- 悬浮按钮 -->
     <casePageFloatBtns :pageDomId="'payStageDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
@@ -194,16 +202,17 @@ export default {
     }
   },
 
- methods: {
+  methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      console.log("this.caseId,this.caseId", this.caseId)
+      console.log("this.caseId,this.caseId", this.caseDocDataForm.caseBasicinfoId)
       let data = {
         caseId: this.caseId,
         docId: this.$route.params.docId
       };
       this.com_getDocDataByCaseIdAndDocId(data)
-
     },
     //保存文书信息
     addDocData(handleType) {
@@ -235,6 +244,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      console.log('caseBasicinfoId', this.caseDocDataForm.caseBasicinfoId)
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
@@ -327,35 +337,78 @@ export default {
       } else if (decimalNum == '') {
         chineseStr += cnInteger;
       }
-      console.log('chineseStr='+chineseStr)
+      console.log('chineseStr=' + chineseStr)
       return chineseStr;
     },
-    click(){
-      if(this.checknames.length > 1){
+    click() {
+      // this.clearData()
+      console.log('this.checknames', this.checknames)
+      if (this.checknames.length > 1) {
         this.checknames.shift();
       }
-      if(this.checknames == '1'){
+      if (this.checknames == '1') {
         this.disabledOne = false;
         this.disabledTwo = true;
         this.disabledThree = true;
-      }else if(this.checknames == '2'){
+      } else if (this.checknames == '2') {
         this.disabledOne = true;
         this.disabledTwo = false;
         this.disabledThree = true;
-      }else if(this.checknames == '3'){
+        this.docData.instalmentNum = '1'
+      } else if (this.checknames == '3') {
         this.disabledOne = true;
         this.disabledTwo = true;
         this.disabledThree = false;
-      }else{
+      } else {
         this.disabledOne = true;
         this.disabledTwo = true;
         this.disabledThree = true;
+      }
+    },
+    clearData() {
+      this.docData = {
+        delayDate: '',
+        instalmentNum: '',
+        instalmentDate: '',
+        payFine: '',
+        debtFine: '',
+        reason: '',
       }
     }
   },
   mounted() {
-    this.getDocDataByCaseIdAndDocId();
+    // this.getDocDataByCaseIdAndDocId();
+    // console.log('parm', this.$route.params.approvalForm)
+    // console.log("this.caseId,this.caseId", this.caseId)
+    this.caseDocDataForm.caseBasicinfoId = this.caseId;
+    let data = {
+      caseId: this.caseId,
+      docId: this.$route.params.docId
+    };
+    //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+    if (this.$route.params.handelType == 'isAddMore') {
+      this.com_getCaseBasicInfo(data.caseId, data.docId);
+    } else {
+      this.getDocDetailById(this.$route.params.docDataId)
+    }
     this.docData.fine = this.convertCurrency(this.docData.fine);
+
+    if (this.$route.params.approvalForm.executeHandle == 0) {
+      // 拒绝
+      this.checknames.push("3")
+    }
+    else {
+      if (this.$route.params.approvalForm.executeType == 1) {
+        // 分期
+        this.checknames.push("2")
+      }
+      if (this.$route.params.approvalForm.executeType == 0) {
+        // 延期
+        this.checknames.push("1")
+      }
+    }
+    this.click()
+
   },
   created() {
     this.isOverStatus();

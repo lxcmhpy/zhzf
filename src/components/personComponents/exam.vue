@@ -1,14 +1,19 @@
 <template>
   <div>
     <div>
-      <el-row>
+      <div style="margin-top:35px;margin-bottom:20px;margin-left:25px;">
+        <font style="font-size:25px;"><span class="titleflag"></span>考试信息</font> 
+        <el-button type="primary"  round style="margin-right:25px;float:right;" icon="el-icon-plus" size="medium">新增考试</el-button>
+      </div>
+      <!--<el-row>
         <el-button type="primary" icon="el-icon-plus"  size="mini" round>新增</el-button>
         <el-button type="danger" icon="el-icon-delete" size="mini" round>删除</el-button>
-      </el-row>
+      </el-row>-->
       <el-table
+        style="margin-left:25px;width:97%;margin-bottom:35px;"
         :data="tableData"
-        border
-        style="width: 100%;height:582px"
+        resizable 
+        stripe
         @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="date" label="考试类型"></el-table-column>
@@ -17,18 +22,6 @@
         <el-table-column prop="address" label="通过状态"></el-table-column>
         <el-table-column prop="address" label="备注"></el-table-column>
       </el-table>
-    </div>
-    <div class="paginationBox">
-      <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          background
-          :page-sizes="[10, 20, 30, 40, 50]"
-          layout="prev, pager, next,sizes,jumper"
-          :total="totalPage"
-        >
-      </el-pagination>
     </div>
   </div>
 </template>
@@ -75,6 +68,13 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "@/assets/css/personManage.scss";
+  .titleflag {
+                width      : 4px;
+                height     : 22px;
+                margin-right: 8px;
+                display    : inline-block;
+                background : #4573D0;
+            }
 </style>

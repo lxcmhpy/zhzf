@@ -7,8 +7,8 @@
         <div class="doc_cause" >
          案由：
             <!-- {{formData.caseName}} -->
-            <el-form-item prop="caseName" class="width500">
-                <el-input type='textarea'  v-model="formData.caseName" v-bind:class="{ over_flow:formData.caseName.length>25?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="40" placeholder="\"></el-input>
+            <el-form-item prop="caseName" class="width500" >
+                <el-input type='textarea'  v-model="formData.caseName" v-bind:class="{ over_flow:formData.caseName.length>25?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="40" placeholder="\" disabled></el-input>
               </el-form-item>
                
         </div>

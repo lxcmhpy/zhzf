@@ -113,8 +113,10 @@
   .com_searchAndpageBoxPadding {
     // position: absolute;
     position: relative;
-    margin: 22px;
-    height: calc(100% - 44px);
+    padding: 22px;
+    // height: calc(100% - 44px);
+    height: 100%;
+    box-sizing: border-box;
     // width: calc(100% - 44px);
     // left: 22px;
     // right: 22px;

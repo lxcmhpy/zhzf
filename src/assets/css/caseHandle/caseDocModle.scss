@@ -79,6 +79,11 @@
 
         }
 
+        .el-input__inner,
+        .el-textarea__inner {
+            border-radius: 0;
+        }
+
         /* 表格 */
         & tr {
             height    : 42px;
@@ -143,6 +148,32 @@
                 .el-date-editor {
                     i {
                         display: none;
+                    }
+                }
+
+                .el-input__inner::-webkit-input-placeholder,
+                .el-textarea__inner::-webkit-input-placeholder {
+                    color      : transparent;
+                    text-align : center;
+                    font-size  : 16px;
+                    font-family: SimSun;
+                }
+
+                /* 不可编辑的表格 */
+                .is-disabled {
+
+                    .el-input__inner,
+                    .el-textarea__inner {
+                        text-align     : center;
+                        text-align-last: center;
+                    }
+
+                    .el-input__inner::-webkit-input-placeholder,
+                    .el-textarea__inner::-webkit-input-placeholder {
+                        color      : #000000;
+                        text-align : center;
+                        font-size  : 16px;
+                        font-family: SimSun;
                     }
                 }
             }
@@ -361,7 +392,7 @@
         }
 
         /* 验证提示 */
-        .is-error {
+        .is-required {
 
             .el-input__inner,
             .el-input__inner:focus,
@@ -382,7 +413,7 @@
         }
 
         td {
-            .is-error {
+            .is-required {
                 .el-form-item__content {
                     background: #F7C9CB !important;
                 }
@@ -396,7 +427,7 @@
                 background: transparent !important;
             }
 
-            .is-error {
+            .is-required {
 
                 .span_bg {
                     background: #F7C9CB !important;
@@ -556,7 +587,7 @@
         width   : 48px;
         height  : 100px;
         position: fixed;
-        right   : 27px;
+        right   : 70px;
         bottom  : 167px;
 
         &.float-btns .el-button {
@@ -889,7 +920,9 @@
     width: 20px;
 
 }
-
+.width120{
+    width: 120px;
+}
 .width212 {
     width: 212px;
 }
@@ -1033,7 +1066,7 @@
         color: #000 !important;
     }
 
-    .is-error {
+    .is-required {
 
         .el-input__inner,
         .el-input__inner:focus,
@@ -1065,7 +1098,7 @@
         .el-range-input {
             background   : #ffffff;
             border-bottom: 1px solid #000000 !important;
-            font-weight: 500;
+            font-weight  : 500;
         }
     }
 
@@ -1199,7 +1232,7 @@
         width      : 48%;
         font-size  : 16px;
         font-weight: 600;
-        font-family    : 'SimSun';
+        font-family: 'SimSun';
         color      : #000000;
     }
 
@@ -1208,10 +1241,11 @@
         background: transparent;
 
     }
-    .el-range-separator{
+
+    .el-range-separator {
         font-size  : 16px;
         font-weight: 600;
-        font-family    : 'SimSun';
+        font-family: 'SimSun';
         color      : #000000;
         line-height: 28px;
     }
@@ -1230,10 +1264,12 @@
 
 .quzheng {
     clear: both;
+
     .el-form-item {
         width: 500px;
+
         .el-input__inner,
-        .el-textarea__inner{
+        .el-textarea__inner {
             width: 100% !important;
         }
     }
@@ -1322,5 +1358,12 @@
         .el-select__caret {
             margin-right: -12px !important;
         }
+    }
+}
+
+/* 听证笔录 */
+.listen_data {
+    .el-date-editor {
+        width: 100% !important;
     }
 }

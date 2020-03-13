@@ -20,7 +20,7 @@
       </div>
       <div class="item">
         <el-form-item label="序号" prop="sortOrder">
-          <el-input v-model="addDepartmentForm.sortOrder"></el-input>
+          <el-input v-model="addDepartmentForm.sortOrder" disabled></el-input>
         </el-form-item>
         <!-- <span class="errorInput" v-if="errorOrganName">该机构名称已存在</span> -->
       </div>

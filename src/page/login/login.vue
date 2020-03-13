@@ -74,9 +74,9 @@
           </div>
           <div class="footer">
             <center>
-                <span class="blue">使用教程</span>
-                |
-                <span class="blue">帮助中心</span>
+              <span class="blue">使用教程</span>
+              |
+              <span class="blue">帮助中心</span>
             </center>
           </div>
         </div>
@@ -108,17 +108,17 @@
                 </div>
 
               </el-form>
-              <div class="footer">
-                <center>
-                    <span class="blue">使用教程</span>
-                    |
-                    <span class="blue">帮助中心</span>
-                </center>
-              </div>
+
             </div>
 
           </div>
-
+          <div class="footer">
+            <center>
+              <span class="blue">使用教程</span>
+              |
+              <span class="blue">帮助中心</span>
+            </center>
+          </div>
         </div>
       </section>
     </transition>
@@ -131,6 +131,10 @@
 import Cookies from "@/common/js/cookies";
 import iLocalStroage from "@/common/js/localStroage";
 import { drawCodeImage } from "@/api/login";
+import * as types from "@/store/mutation-types";
+import {
+  getCurrentUserApi
+} from "@/api/login";
 export default {
   data() {
     return {
@@ -185,7 +189,7 @@ export default {
 
     //获取验证码
     getCaptcha() {
-        let _this = this
+      let _this = this
       this.$store.dispatch("getCaptcha").then(
         res => {
           let captcha = res.data;
@@ -233,6 +237,9 @@ export default {
     //登录
     submitLogin(formName) {
       let _this = this
+      // this.$store.commit(types.SET_AUTHTOKEN, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWNlbnNlIjoiTWFkZSBCeSBDQVRTSUMiLCJ1c2VyX25hbWUiOiJ7XCJhdmF0YXJcIjpcImh0dHBzOi8vaS5sb2xpLm5ldC8yMDE5LzA0LzI4LzVjYzVhNzFhNmUzYjYucG5nXCIsXCJkZXBhcnRtZW50SWRcIjpcIjJcIixcImlkXCI6XCI2ODIyNjU2MzM4ODYyMDhcIixcIm1vYmlsZVwiOlwiMTg3ODIwNTkwMzhcIixcIm5pY2tOYW1lXCI6XCJnZmhkZ2huZmdqXCIsXCJvcmdhbklkXCI6XCIxXCIsXCJwYXNzd29yZFwiOlwiJDJhJDEwJHNzR0YuT0dQMTJDcldGMlJUVWNOZGUwZzUxSGgwckc2eTlHZTVGejZDd25rRWhreHV6Um95XCIsXCJwYXNzd29yZFN0YXR1c1wiOjAsXCJzZXhcIjpcIueUt1wiLFwic3RhdHVzXCI6MCxcInR5cGVcIjoxLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9Iiwic2NvcGUiOlsic2VydmVyIl0sImV4cCI6MTU4MzkzMzIyMCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdLCJqdGkiOiIwNjQzOWRkOC0yZWQ3LTQzNzUtODgzZC04ZTI3ODJhNjBmNWIiLCJjbGllbnRfaWQiOiJjYXRzaWMifQ.Btlg5kx2xQY7xCbHuODly-hNICluoD-SbrA0S7lHBEE'); //token
+      // _this.getMenu();
+
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 验证码
@@ -246,27 +253,12 @@ export default {
                 // 清除定时器
                 clearTimeout(_this.timeOutFlag)
                 iLocalStroage.sets('userInfo', res.userInfo);
-
-                // Cookies.set("menu", "companyInfo");
-                // Cookies.set("openMenu","identityCheck");
-                //_this.$router.push({ name: "index" });
+                // _this.getCurrentUser();
                 _this.getMenu();
                 _this.success = false
               },
               error => {
                 console.log(error);
-                // _this.errorMessage = error.message
-                // setTimeout(() => {
-                //   _this.errorMessage = ""
-                // }, 30000)
-                //   if(error.code == 500){  //验证码错误
-                //     _this.$message({
-                //         showClose: true,
-                //         message: '验证码错误',
-                //         type: 'error'
-                //     })
-                //     _this.getCaptcha()
-                //   }
               }
             );
           }
@@ -276,7 +268,6 @@ export default {
               _this.errorMessage = ""
             }, 3000)
           }
-          //this.$router.push({ name: "index" });
         }
         else {
           this.errorPwd = '用户名或密码错误，请重新输入，3秒后自动消失'
@@ -289,7 +280,7 @@ export default {
 
     //获取菜单
     getMenu() {
-        let _this = this
+      let _this = this
       this.$store.dispatch("getMenu").then(
         res => {
           console.log('获取菜单', res);
@@ -300,6 +291,16 @@ export default {
           console.log(err);
         }
       )
+    },
+    //获取当前登录用户的信息
+    getCurrentUser(){
+      getCurrentUserApi().then(res=>{
+        console.log(res);
+        iLocalStroage.sets('userInfo', res.data);
+
+      },err=>{
+        console.log(err);
+      })
     },
 
 
@@ -335,7 +336,7 @@ export default {
     },
     //修改密码
     resetPwd(resetForm) {
-        let _this = this
+      let _this = this
       this.$refs[resetForm].validate((valid) => {
         if (valid) {
           console.log(_this.resetForm)

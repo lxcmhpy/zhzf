@@ -44,7 +44,7 @@
                         placeholder="\"
                         :disabled="isParty ? false : true"
                     ></el-input> -->
-                    <el-select v-model="formData.partySex" :disabled="isParty ? false : true" placeholder="\">
+                    <el-select v-model="formData.partySex"  :disabled="isParty && !originalData.partySex ? false : true" placeholder="\">
                         <el-option value="0" label="男"></el-option>
                         <el-option value="1" label="女"></el-option>
                     </el-select>
@@ -53,7 +53,7 @@
                 <td>年龄</td>
                 <td colspan="2" class="color_DBE4EF">
                     <el-form-item>
-                    <el-input v-model="formData.partyAge" maxlength="3" placeholder="\" :disabled="isParty ? false : true"></el-input>
+                    <el-input v-model="formData.partyAge" maxlength="3" placeholder="\" :disabled="isParty && !originalData.partyAge ? false : true"></el-input>
                     </el-form-item>
                 </td>
                 </tr>
@@ -61,13 +61,13 @@
                 <td>住址</td>
                 <td colspan="3" class="color_DBE4EF">
                     <el-form-item>
-                    <el-input type="textarea" v-model="formData.partyAddress" v-bind:class="{ over_flow:formData.partyAddress && formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
+                    <el-input type="textarea" v-model="formData.partyAddress" v-bind:class="{ over_flow:formData.partyAddress && formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" :disabled="isParty && !originalData.partyAddress ? false : true" placeholder="\"></el-input>
                     </el-form-item>
                 </td>
                 <td>职业</td>
                 <td colspan="2" class="color_DBE4EF">
                     <el-form-item>
-                    <el-input type="textarea" v-model="formData.occupation" v-bind:class="{ over_flow:formData.occupation && formData.occupation.length>4?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="20" placeholder="\" :disabled="isParty ? false : true"></el-input>
+                    <el-input type="textarea" v-model="formData.occupation" v-bind:class="{ over_flow:formData.occupation && formData.occupation.length>4?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="20" placeholder="\" :disabled="isParty && !originalData.occupation ? false : true"></el-input>
                     </el-form-item>
                 </td>
                 </tr>
@@ -84,7 +84,7 @@
                 <td>法定代表人</td>
                 <td colspan="6" class="color_DBE4EF">
                     <el-form-item>
-                    <el-input type="textarea" v-model="formData.partyManager" v-bind:class="{ over_flow:formData.partyManager && formData.partyManager.length>25?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\" :disabled="isParty ? true : false"></el-input>
+                    <el-input type="textarea" v-model="formData.partyManager" v-bind:class="{ over_flow:formData.partyManager && formData.partyManager.length>25?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\" :disabled="!isParty && !originalData.partyManager ? false : true"></el-input>
                     </el-form-item>
                 </td>
                 </tr>
@@ -92,7 +92,7 @@
                 <td>地址</td>
                 <td colspan="6" class="color_DBE4EF">
                     <el-form-item>
-                    <el-input type="textarea" v-model="formData.partyUnitAddress" v-bind:class="{ over_flow:formData.partyUnitAddress && formData.partyUnitAddress.length>25?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+                    <el-input type="textarea" v-model="formData.partyUnitAddress" v-bind:class="{ over_flow:formData.partyUnitAddress && formData.partyUnitAddress.length>25?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\" :disabled="!isParty && !originalData.partyUnitAddress ? false : true"></el-input>
                     </el-form-item>
                 </td>
                 </tr>
@@ -100,7 +100,7 @@
                 <td>联系电话</td>
                 <td colspan="6" class="color_DBE4EF">
                     <el-form-item prop="partyUnitTel">
-                    <el-input type="textarea" v-model="formData.partyUnitTel" v-bind:class="{ over_flow:formData.partyUnitTel && formData.partyUnitTel.length>25?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="11" placeholder="\" :disabled="isParty ? true : false"></el-input>
+                    <el-input type="textarea" v-model="formData.partyUnitTel" v-bind:class="{ over_flow:formData.partyUnitTel && formData.partyUnitTel.length>25?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="11" placeholder="\" :disabled="!isParty && !originalData.partyUnitTel ? false : true"></el-input>
                     </el-form-item>
                 </td>
                 </tr>
@@ -172,14 +172,19 @@
                     <p>理意</p>
                     <p>见</p>
                 </td>
-                <td rowspan="6" colspan="6">
+                <td rowspan="6" colspan="6" @click="showLawOfficeOpion">
+                    <p class="approveDiv">{{formData.lawOfficeOpinions}}</p>
                     <div class="pdf_seal">
-                    <p>执法人员签名：</p>
+                    <!-- <p>执法人员签名：</p>
                     <p>
                         时间:
                         <el-form-item prop="makeDate" class="pdf_datapick">
                         <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon="el-icon-circle-close"></el-date-picker>
                         </el-form-item>
+                    </p> -->
+                    <p>执法人员签名：{{formData.lawOfficeName}}</p>
+                    <p>
+                        {{formData.lawOfficeApprovalTime}}
                     </p>
                     </div>
                 </td>
@@ -296,18 +301,22 @@
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <!-- 审批 -->
     <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
-
+    <caseSlideMenu :activeIndex="''"></caseSlideMenu>
+    <!-- 执法人员意见弹窗 -->
+    <showLawOfficerOpion ref="showLawOfficerOpionRef" @sendLawOfficeOpionEmit="getLawOfficeOpion"></showLawOfficerOpion>
   </div>
 </template>
 <script>
 import showApprovePeople from "../components/showApprovePeople";
 import approvalDialog from "../components/approvalDialog";
+import showLawOfficerOpion from "../components/showLawOfficerOpion";
 import investigRpEvidence from "../components/investigRpEvidence";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-
+import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   data() {
@@ -337,6 +346,9 @@ export default {
         thirdApprovePeo: "",
         thirdApproveTime: "",
         evidenceList: [], //证据材料
+        lawOfficeOpinions:'',
+        lawOfficeName:'',
+        lawOfficeApprovalTime:'',
         // investigProcess: "",
         // caseCauseDescrib: "",
         // isMajorCase: "1",
@@ -384,6 +396,7 @@ export default {
       sexLength: 2,
       adressLength: 23,
       isParty: true,
+      originalData: "",
       needDealData:true,
     };
   },
@@ -394,6 +407,8 @@ export default {
     approvalDialog,
     casePageFloatBtns,
     investigRpEvidence,
+    caseSlideMenu,
+    showLawOfficerOpion,
   },
   methods: {
     //加载表单信息
@@ -574,6 +589,16 @@ export default {
     },
     showEvidence() {
       this.$refs.investigRpEvidenceRef.showModal(this.formData.evidenceList);
+    },
+    //执法人员审核意见带入
+    showLawOfficeOpion(){
+      this.$refs.showLawOfficerOpionRef.showModal();
+    },
+    getLawOfficeOpion(lawOfficeOpionData){
+      console.log(lawOfficeOpionData);
+      this.formData.lawOfficeOpinions = lawOfficeOpionData.lawOfficeOpinions;
+      this.formData. lawOfficeName = iLocalStroage.gets('userInfo').username;
+      this.formData.lawOfficeApprovalTime = lawOfficeOpionData.lawOfficeApprovalTime;
     },
     //证据列表弹窗传来的证据
     receiverEviden(data) {

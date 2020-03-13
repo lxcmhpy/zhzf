@@ -238,6 +238,18 @@
                 width: 100%;
             }
         }
+        .upload-demo{
+            .el-upload {
+                width: 100%;
+              }
+              .el-button{
+                  float: right;
+              }
+              li{
+                  float: left;
+                  margin-right: 22px;
+              }
+        }
     }
 
     .el-button-remind {
@@ -437,3 +449,29 @@
     font-size: 20px;
     cursor   : pointer;
 }
+
+
+.myhide-expand .el-table__expand-column .cell{
+    display: none;
+}
+.moreDocList{
+    li{
+        display: flex;
+        padding-left: 10%;
+        width: 100%;
+        margin: 10px;
+        &>div:nth-child(1){
+            width: 30%;
+            text-align: center;
+        }
+        &>div:nth-child(2){
+            width: 30%;
+            text-align: center;
+        }
+        &>div:nth-child(3){
+            width: 30%;
+            text-align: center;
+        }
+    }
+}
+

@@ -1,44 +1,33 @@
 <template>
-  <div>
     <div>
-      <el-row>
-        <el-button type="primary" icon="el-icon-plus"  @click="addEducation" size="mini" round>新增</el-button>
-        <el-button type="danger" icon="el-icon-delete" @click="deleteEducation" size="mini" round>删除</el-button>
-      </el-row>
-      <el-table
-        :data="tableData"
-        border
-        style="width: 100%;height:582px"
-        @selection-change="handleSelectionChange">
-        <el-table-column prop="educationId" type="selection" width="55"></el-table-column>
-        <el-table-column prop="personName" label="姓名"></el-table-column>
-        <el-table-column prop="degree" label="学历"></el-table-column>
-        <el-table-column prop="school" label="毕业学校"></el-table-column>
-        <el-table-column prop="major" label="毕业专业"></el-table-column>
-        <el-table-column prop="graduationDate" label="毕业时间"></el-table-column>
-        <el-table-column prop="opt" label="操作项">
-          <template slot-scope="scope">
-              <el-button type="text"  @click="editEducation(scope.row)" >修改</el-button>
-              <el-button type="text"  @click="educationInfo(scope.row)">详情</el-button>
-          </template>
-        </el-table-column>
-        <el-table-column prop="modifyId" label="操作人" v-if="flag"></el-table-column>
-        <el-table-column prop="modifyTime" label="操作时间" v-if="flag"></el-table-column>
-        <el-table-column prop="note" label="备注" v-if="flag"></el-table-column>
+      <div>
+        <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
+          <font style="font-size:25px;"><span class="titleflag"></span>教育信息</font>
+          <el-button type="primary" @click="addEducation"  round style="margin-right:25px;float:right;" icon="el-icon-plus" size="medium">新增学历</el-button>
+        </div>
+        <el-table
+          style="margin-left:25px;width:97%;margin-bottom:35px;"
+          :data="tableData"
+          stripe
+          resizable 
+          @selection-change="handleSelectionChange" >
+          <el-table-column prop="educationId" type="selection" width="55"></el-table-column>
+          <el-table-column prop="graduationDate" label="毕业时间"></el-table-column>
+          <el-table-column prop="school" label="毕业学校"></el-table-column>
+          <el-table-column prop="major" label="毕业专业"></el-table-column>
+          <el-table-column prop="degree" label="学历"></el-table-column>
+          <el-table-column prop="opt" label="操作">
+            <template slot-scope="scope">
+                <el-button type="text"  @click="editEducation(scope.row)" >修改</el-button>
+                <!--<el-button type="text"  @click="educationInfo(scope.row)">详情</el-button>-->
+                <el-button type="text"  @click="deleteEducation(scope.row)" >删除</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column prop="modifyId" label="操作人" v-if="flag"></el-table-column>
+          <el-table-column prop="modifyTime" label="操作时间" v-if="flag"></el-table-column>
+          <el-table-column prop="note" label="备注" v-if="flag"></el-table-column>
       </el-table>
     </div>
-    <div class="paginationBox">
-      <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          background
-          :page-sizes="[10, 20, 30, 40, 50]"
-          layout="prev, pager, next,sizes,jumper"
-          :total="totalPage"
-      ></el-pagination>
-    </div>
-
     <!-- 新增、修改、查看页面 -->
     <addEducationComp ref="addEducationCompRef" @getAllEducation="getEducation"></addEducationComp>
   </div>
@@ -98,12 +87,12 @@
           },
           deleteEducation(row){
               let _this = this
-             this.$confirm("确定要删除所选的教育信息吗?", "提示", {
+              this.$confirm("确定要删除所选的教育信息吗?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
             }).then(() => {
-                _this.$store.dispatch("deleteEducationMoudle", _this.multipleSelection).then(
+              _this.$store.dispatch("deleteEducationMoudle", _this.multipleSelection).then(
                     res => {
                         _this.$message({
                             type: "success",
@@ -137,4 +126,11 @@
 
 <style lang="scss" scoped>
   @import "@/assets/css/personManage.scss";
+  .titleflag {
+                width      : 4px;
+                height     : 22px;
+                margin-right: 8px;
+                display    : inline-block;
+                background : #4573D0;
+            }
 </style>

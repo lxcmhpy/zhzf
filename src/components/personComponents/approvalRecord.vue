@@ -1,10 +1,15 @@
 <template>
   <div>
     <div>
+        <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
+            <font style="font-size:25px;"><span class="titleflag"></span>审批记录</font> &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
         <el-table
+          style="margin-left:25px;width:97%;margin-bottom:35px;"
           :data="tableData"
-          align="center"
-          style="width: 100%;height:610px">
+          resizable
+          align="center" >
+          stripe
           <el-table-column prop="oid" label="审批单位"></el-table-column>
           <el-table-column prop="approveStatus" label="审批状态"></el-table-column>
           <el-table-column prop="userId" label="审批人"></el-table-column>

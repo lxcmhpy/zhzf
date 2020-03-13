@@ -21,7 +21,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  {{formData.caseNumber}}
+                  {{formData.caseNumber ? formData.caseNumber : formData.tempNo}}
                   <!-- <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -52,7 +52,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="当事人">
-                  {{formData.party}}
+                  {{formData.party ? formData.party : formData.partyName}}
                   <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -103,7 +103,7 @@
               <div class="col">
                 <el-form-item label="处罚类型">
                   <!-- 字段名 -->
-                  {{formData.party}}
+                  <!-- {{formData.party}} -->
                   <!-- <el-select v-model="formData.party" placeholder="请选择">
                     <el-option label="行政处罚" value="shanghai"></el-option>
                     <el-option label="处罚类型二" value="beijing"></el-option>
@@ -117,7 +117,7 @@
               <div class="col">
                 <el-form-item label="处罚金额">
                   <!-- 字段名 -->
-                  ￥{{formData.punishAmount}}
+                  ￥{{formData.tempPunishAmount}}
                   <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入">
                        <span slot="prefix" >￥</span>
                   </el-input> -->
@@ -178,11 +178,13 @@
 
 </template>
 <script>
-import caseSlideMenu from '../components/caseSlideMenu'
+import caseSlideMenu from '../components/caseSlideMenu' 
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-
+import {
+  getCaseBasicInfoApi
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -199,12 +201,14 @@ export default {
         partyAge: "",
         party: "",
         partySex: "",
+        partyName:"",
         investigProcess: "",
         caseCauseDescrib: "",
         isMajorCase: "1",
         punishType: ['警告'],
         investigResult: '',
         dealOpinions: '1212121',
+        tempPunishAmount:"",
       },
       approval:this.$route.params.isApproval ? true : false,
     };
@@ -263,7 +267,16 @@ export default {
   },
   mounted(){
     if(this.$route.params.fromSlide){
-      this.com_getCaseBasicInfo(this.caseId);
+      let data ={id:this.caseId}
+      getCaseBasicInfoApi(data).then(res=>{
+        console.log(res);
+        let caseData = res.data;
+         for (var key in caseData) {
+            this.formData[key] = caseData[key]
+          }
+      },err=>{
+        console.log(err);
+      })
     }else{
       this.formData = this.caseInfo;
     }

@@ -286,6 +286,16 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/adminPunisheDecisionForm.vue")
   },
+  //行政强制措施决定书
+  {
+    path: "/adminCoerciveMeasure",
+    name: "adminCoerciveMeasure",
+    meta: {
+      title: "行政强制措施决定书",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/form/adminCoerciveMeasureForm.vue")
+  },
   //责令改正违法行为通知书
   {
     path: "/order",
@@ -295,6 +305,16 @@ export default [
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/orderCorrectIllegalAct.vue")
+  },
+  //不予处罚
+  {
+    path: "/noPenalty",
+    name: "noPenalty",
+    meta: {
+      title: "不予处罚",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/modle/noPenalty.vue")
   },
   //当事人权利
   {
@@ -580,6 +600,15 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/removeAdminCoerciveMeasureDoc.vue")
   },
+  //解除（延长）行政强制措施
+  {
+    path: "/removeOrPrelong",
+    name: "removeOrPrelong",
+    meta: {
+      title: "解除（延长）行政强制措施决定"
+    },
+    component: () => import("@/page/caseHandle/case/coerciveMeasureDoc.vue")
+  },
   {
     path: "/importantCaseTeamDissDoc",
     name: "importantCaseTeamDissDoc",
@@ -612,22 +641,22 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/spotAdmPunishDecisionDoc.vue")
   },
-  {
-    path: "/payStageDoc",
-    name: "payStageDoc",
-    meta: {
-      title: "分期（延期）缴纳罚款通知书"
-    },
-    component: () => import("@/page/caseHandle/case/modle/payStageDoc.vue")
-  },
-  {
-    path: "/executAnnounceDoc",
-    name: "executAnnounceDoc",
-    meta: {
-      title: "执行公告"
-    },
-    component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
-  },
+  // {
+  //   path: "/payStageDoc",
+  //   name: "payStageDoc",
+  //   meta: {
+  //     title: "分期（延期）缴纳罚款通知书"
+  //   },
+  //   component: () => import("@/page/caseHandle/case/modle/payStageDoc.vue")
+  // },
+  // {
+  //   path: "/executAnnounceDoc",
+  //   name: "executAnnounceDoc",
+  //   meta: {
+  //     title: "执行公告"
+  //   },
+  //   component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
+  // },
   {
     path: "/remindLetterDoc",
     name: "remindLetterDoc",

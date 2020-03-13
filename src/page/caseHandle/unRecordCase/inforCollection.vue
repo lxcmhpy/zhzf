@@ -85,8 +85,8 @@
               <!-- <el-radio v-model="inforForm.partyType" label="1">个人</el-radio>
               <el-radio v-model="inforForm.partyType" label="2">企业组织</el-radio>-->
               <el-radio-group v-model="inforForm.partyType" @change="changePartyType">
-                <el-radio :label="1">个人</el-radio>
-                <el-radio :label="2">企业组织</el-radio>
+                <el-radio label="1">个人</el-radio>
+                <el-radio label="2">企业组织</el-radio>
               </el-radio-group>
             </el-form-item>
           </div>
@@ -343,7 +343,7 @@
           </div>
           <div class="item">
             <el-form-item label="车牌颜色">
-              <el-select v-model="inforForm.trailerColor">
+              <el-select v-model="inforForm.trailerColor" disabled>
                 <el-option v-for="item in allVehicleIdColor" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
@@ -497,21 +497,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总长">
-              <el-input v-model="inforForm.allLength">
+              <el-input v-model="inforForm.allLength" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="长度限值">
-              <el-input v-model="inforForm.lengthLimit">
+              <el-input v-model="inforForm.lengthLimit" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超长">
-              <el-input v-model="inforForm.overLength">
+              <el-input v-model="inforForm.overLength" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -520,21 +520,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总宽">
-              <el-input v-model="inforForm.allWidth">
+              <el-input v-model="inforForm.allWidth" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="宽度限值">
-              <el-input v-model="inforForm.widthLimit">
+              <el-input v-model="inforForm.widthLimit" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超宽">
-              <el-input v-model="inforForm.overWidth">
+              <el-input v-model="inforForm.overWidth" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -543,21 +543,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货高度">
-              <el-input v-model="inforForm.allHeight">
+              <el-input v-model="inforForm.allHeight" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="高度限值">
-              <el-input v-model="inforForm.heightLimit">
+              <el-input v-model="inforForm.heightLimit" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超高">
-              <el-input v-model="inforForm.overHeight">
+              <el-input v-model="inforForm.overHeight" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -676,7 +676,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 
-import { validateIDNumber, validateAge ,validateZIP} from '@/common/js/validator'
+import { validateIDNumber, validateAge, validateZIP } from '@/common/js/validator'
 export default {
   data() {
     //选择个人试验证
@@ -799,7 +799,7 @@ export default {
         partyIdNo: [
           { validator: validateIDNumber, trigger: "blur" }
         ],
-        partyZipCode:[
+        partyZipCode: [
           { validator: validateZIP, trigger: "blur" }
         ],
       },
@@ -934,11 +934,11 @@ export default {
       this.inforForm.staffId = staffIdArr.join(',');
       this.inforForm.staff = staffArr.join(',');
       this.inforForm.certificateId = certificateIdArr.join(',');
-      this.inforForm.checkResult = '1'
+
     },
     //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
     setLawPersonCurrentP() {
-        let _this = this
+      let _this = this
       this.$store
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
         .then(
@@ -1001,7 +1001,6 @@ export default {
     changeRelationWithParty(val) {
       console.log(typeof (val));
       if (val == "0") {
-        debugger
         console.log(val);
         this.driverOrAgentInfoList[0].name = this.inforForm.party;
         this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
@@ -1259,7 +1258,7 @@ export default {
       if (inforForm.vehicleAxleNumber == 5) {
         this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
         this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' }, { label: '2+1+2', value: '2+1+2' }, { label: '1+1+3', value: '1+1+3' }];
-        if (inforForm.vehicleAxleNumber && inforForm.vehiclePowerType && inforForm.vehicleType && inforForm.vehicleAxlesType) {
+        if (inforForm.vehicleAxleNumber && inforForm.vehicleType && inforForm.vehicleAxlesType) {
           this.inforForm.weightLimit = 43;
           if (inforForm.vehicleAxlesType == '1+1+3') {
             inforForm.weightLimit = 42;
@@ -1269,8 +1268,8 @@ export default {
       }
       if (inforForm.vehicleAxleNumber == 4) {
         this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '全挂汽车列车', value: '全挂汽车列车' }, { label: '载货汽车', value: '载货汽车' }]
-        this.vehicleAxlesTypeList = [{ label: '2+1+2', value: '2+1+2' }, { label: '1+1+2', value: '1+1+2' }, { label: '1+1+1+1', value: '1+1+1+1' }, { label: '2+2', value: '2+2' }];
-        if (inforForm.vehicleAxleNumber && inforForm.vehiclePowerType && inforForm.vehicleType && inforForm.vehicleAxlesType) {
+        this.vehicleAxlesTypeList = [{ label: '1+2+1', value: '1+2+1' }, { label: '1+1+2', value: '1+1+2' }, { label: '1+1+1+1', value: '1+1+1+1' }, { label: '2+2', value: '2+2' }];
+        if (inforForm.vehicleAxleNumber && inforForm.vehicleType && inforForm.vehicleAxlesType) {
           this.inforForm.weightLimit = 36;
           if (inforForm.vehicleType == '中置轴挂车列车') {
             if (inforForm.vehicleAxlesType == '1+2+1') {
@@ -1286,7 +1285,7 @@ export default {
       if (inforForm.vehicleAxleNumber == 3) {
         this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '载货汽车', value: '载货汽车' }]
         this.vehicleAxlesTypeList = [{ label: '1+1+1', value: '1+1+1' }];
-        if (inforForm.vehicleAxleNumber && inforForm.vehiclePowerType && inforForm.vehicleType && inforForm.vehicleAxlesType) {
+        if (inforForm.vehicleAxleNumber && inforForm.vehicleType && inforForm.vehicleAxlesType) {
           this.inforForm.weightLimit = 27;
           if (inforForm.vehicleType == '载货汽车') {
             inforForm.weightLimit = 25;
@@ -1307,8 +1306,13 @@ export default {
     // 计算超重
     concludeOverWeight() {
       this.inforForm.overWeight = '';
-      if (this.inforForm.weightLimit && this.inforForm.allWeight)
+      if (this.inforForm.weightLimit && this.inforForm.allWeight) {
         this.inforForm.overWeight = this.inforForm.allWeight - this.inforForm.weightLimit
+      }
+      if (this.inforForm.overWeight < 0) {
+        this.inforForm.overWeight = 0
+      }
+
     },
     //自动计算年龄
     changePartyIdType(idCard) {
@@ -1362,7 +1366,9 @@ export default {
       someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
     console.log(this.showOverrun)
 
-    this.driverOrAgentInfo.relationWithParty = '1'
+    this.driverOrAgentInfo.relationWithParty = '1';
+    this.inforForm.checkResult = '1'
+    this.inforForm.trailerColor = '1'
   },
   created() {
     this.findJudgFreedomList();

@@ -19,14 +19,21 @@
           @current-change="clickCase"
           height="100%"
         >
-          <el-table-column prop="caseNumber" label="案号" align="center"></el-table-column>
-          <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
-          <el-table-column prop="vehicleShipId" label="车/船号" align="center"></el-table-column>
-          <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
-          <el-table-column prop="acceptTime" label="受案时间" align="center"></el-table-column>
-          <el-table-column prop="caseType" label="案件类型" align="center"></el-table-column>
-          <el-table-column prop="currentLinkName" label="当前环节" align="center"></el-table-column>
-          <el-table-column prop="caseStatus" label="案件状态" align="center"></el-table-column>
+          <el-table-column prop="caseNumber" label="案号" align="center" width="200"></el-table-column>
+          <el-table-column prop="name" label="当事人/单位" align="center" width="150"></el-table-column>
+          <el-table-column prop="vehicleShipId" label="车/船号" align="center" width="100"></el-table-column>
+          <el-table-column prop="caseCauseName" label="违法行为" align="center">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" placement="top-start">
+                  <div slot="content" style="max-width:200px">{{scope.row.caseCauseName}}</div>
+                  <span>{{scope.row.caseCauseName}}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column prop="acceptTime" label="受案时间" align="center" width="150"></el-table-column>
+          <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
+          <el-table-column prop="currentLinkName" label="当前环节" align="center" width="100"></el-table-column>
+          <el-table-column prop="caseStatus" label="案件状态" align="center" width="100"></el-table-column>
         </el-table>
       </div>
       <div class="paginationBox">

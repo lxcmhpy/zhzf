@@ -11,11 +11,13 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
 const person = {
   state:{
       personInfo:{},//人员id
+      pageStatus:'',//区分页面状态
   },
   mutations:{
       //设置人员id
-      setPersonInfo(state,data){
+      setPersonInfo(state,data,param){
         state.personInfo = data;
+        state.pageStatus = param;
     }
   },
   actions:{
