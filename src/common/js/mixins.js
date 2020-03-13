@@ -234,7 +234,7 @@ export const mixinGetCaseApiList = {
           data.nextLink = "penaltyExecution";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204h":   //强制执行
-          data.nextLink = "";
+          data.nextLink = "forceExecute";
           break;
         case "2c9029ee6cac9281016cacaadf990006":   //结案登记
           data.nextLink = "finishCaseReport";

@@ -326,6 +326,16 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/partyRightsForm.vue")
   },
+  //强制执行
+  {
+    path: "/forceExecute",
+    name: "forceExecute",
+    meta: {
+      title: "强制执行",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/form/forceExecuteForm.vue")
+  },
   //违法行为通知书
   {
     path: "/illegalActionForm",
@@ -531,7 +541,7 @@ export default [
     },
     component: () => import("@/page/checkInfo/crewCertificates.vue")
   },
-  
+
   {
     path: "/shipCertificates",
     name: "shipCertificates",
@@ -565,14 +575,6 @@ export default [
       title: "证据登记保存清单"
     },
     component: () => import("@/page/caseHandle/case/modle/evidenceListDoc.vue")
-  },
-  {
-    path: "/adminCoerciveMeasureDoc",
-    name: "adminCoerciveMeasureDoc",
-    meta: {
-      title: "行政强制措施决定书"
-    },
-    component: () => import("@/page/caseHandle/case/modle/adminCoerciveMeasureDoc.vue")
   },
   {
     path: "/prolongAdminCompulsoryDoc",

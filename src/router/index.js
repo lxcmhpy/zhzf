@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import { routers } from "./router";
-import Cookies from "@/common/js/cookies";
 import iLocalStroage from "@/common/js/localStroage";
 
 import Layout from '@/page/lagout/mainLagout' //Layout 是架构组件，不在后台返回，在文件里单独引入
@@ -25,9 +24,10 @@ const whiteList = ["/login", "/register", "/service", "/user",'/flowChart','/mod
 
 let getRouter ;
 router.beforeEach((to, from, next) => {
-  console.log(Cookies.get("TokenKey"));
-  console.log('localStroage menu',iLocalStroage.gets('menu'))
-  if (Cookies.get("TokenKey")) {
+  // console.log(Cookies.get("TokenKey"));
+  // console.log('localStroage menu',iLocalStroage.gets('menu'))
+  let tokenObj= iLocalStroage.getExpired('TokenKey');
+  if (tokenObj) {
     //判断是否登录
     if (to.path == "/login") {
       next({ name: "home_index" });
@@ -87,6 +87,7 @@ function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符
 
     return true
   })
+  console.log('accessedRouters',accessedRouters);
   return accessedRouters
 }
 

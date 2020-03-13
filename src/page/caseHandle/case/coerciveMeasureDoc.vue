@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="105px">
+    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="118px">
       <div class="content_box">
         <div class="content">
           <div class="content_title">
@@ -24,26 +24,26 @@
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="*个人姓名">
+                <el-form-item label="个人姓名" :prop="isParty ? 'party' :''">
                   <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入" :disabled="originalData.party ? true : false"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="身份证号" prop="partyIdNo">
+                <el-form-item label="身份证号" :prop="isParty ? 'partyIdNo' :''">
                   <el-input clearable class="w-120" v-model="formData.partyIdNo" size="small" placeholder="请输入" :disabled="originalData.partyIdNo ? true : false"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="联系电话" prop="partyTel">
+                <el-form-item label="联系电话" :prop="isParty ? 'partyTel' :''">
                   <el-input ref="partyTel" clearable class="w-120" v-model="formData.partyTel" size="small" placeholder="请输入" :disabled="originalData.partyTel ? true : false"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="联系地址">
+                <el-form-item label="联系地址" :prop="isParty ? 'partyAddress' :''">
                   <el-input ref="partyAddress" clearable class="w-120" v-model="formData.partyAddress" size="small" placeholder="请输入" :disabled="originalData.partyAddress ? true : false"></el-input>
                 </el-form-item>
               </div>
@@ -92,7 +92,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="违法事实">
-                  <el-input ref="caseCauseName" clearable class="w-120" v-model="formData.caseCauseName" size="small" placeholder="请输入" :disabled="true"></el-input>
+                  <el-input disabled ref="caseCauseName" clearable class="w-120" v-model="formData.caseCauseName" size="small" placeholder="请输入" ></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -159,7 +159,7 @@
               <path d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z" fill="#FFFFFF" p-id="2286"></path>
             </svg>
             <br>
-            下一<br>环节
+            提交
           </el-button>
 
           <el-button type="primary" @click="submitCaseDoc(1)" v-if="!this.$route.params.isComplete">
@@ -175,22 +175,33 @@
       </div>
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
-    <chooseAskPeopleDia ref="chooseAskPeopleDiaRef"></chooseAskPeopleDia>
+   
+    <!--快速入口 -->
+    <caseSlideMenu :activeIndex="''" ></caseSlideMenu>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from '../components/checkDocFinish'
-import chooseAskPeopleDia from '@/page/caseHandle/components/chooseAskPeopleDia'
+import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
+
 
 import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
 export default {
   components: {
     checkDocFinish,
-    chooseAskPeopleDia
+    caseSlideMenu
   },
   data() {
+
+    //当事人类型为公司时验证
+    var validateIfCom = (rule, value, callback) => {
+      if (!this.isParty && !value) {
+        return callback(new Error("请输入"));
+      }
+      callback();
+    };
     return {
       formData: {
         caseNumber: '',
@@ -230,27 +241,29 @@ export default {
         ],
         partyIdNo: [
           { required: true, message: '请输入', trigger: 'blur' },
+          { validator: validateIDNumber, trigger: "blur" }
         ],
         partyAddress: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         partyTel: [
           { required: true, message: '请输入', trigger: 'blur' },
+          { validator: validatePhone, trigger: "blur" }
         ],
         partyName: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { validator: validateIfCom, trigger: "blur" },
         ],
         partyUnitAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { validator: validateIfCom, trigger: "blur" },
         ],
         partyUnitTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { validator: validateIfCom, trigger: "blur" },
         ],
         partyManager: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { validator: validateIfCom, trigger: "blur" },
         ],
         socialCreditCode: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { validator: validateIfCom, trigger: "blur" },
         ],
         afsj: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -301,7 +314,11 @@ export default {
         }
       }
       if (canGotoNext) {
-        this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
+        // this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
+         this.$store.dispatch("deleteTabs", this.$route.name);
+          this.$router.push({
+            name: 'flowChart'
+          });
       } else {
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
       }
@@ -327,11 +344,13 @@ export default {
     //查看文书
     viewDoc(row) {
       //为询问笔录时弹出选择框
-      if (row.docId == "2c9029ca5b71686d015b71a86ead0032") {
-        this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
-      } else {
+      // if (row.docId == "2c9029ca5b71686d015b71a86ead0032") {
+      //   this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
+      // } else {
+      //   this.com_viewDoc(row);
+      // }
         this.com_viewDoc(row);
-      }
+
 
     },
     //预览pdf
