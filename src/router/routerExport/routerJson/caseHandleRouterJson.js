@@ -326,6 +326,16 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/partyRightsForm.vue")
   },
+  //强制执行
+  {
+    path: "/forceExecute",
+    name: "forceExecute",
+    meta: {
+      title: "强制执行",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/form/forceExecuteForm.vue")
+  },
   //违法行为通知书
   {
     path: "/illegalActionForm",
@@ -531,7 +541,7 @@ export default [
     },
     component: () => import("@/page/checkInfo/crewCertificates.vue")
   },
-  
+
   {
     path: "/shipCertificates",
     name: "shipCertificates",

@@ -1,10 +1,8 @@
-// import Cookies from 'js-cookie'
-import Cookies from "@/common/js/cookies";
-
+import iLocalStroage from '@/common/js/localStroage'
 const TokenKey = "TokenKey";
 
 export function getToken(tokenName) {
-  return Cookies.get(tokenName);
+  return iLocalStroage.getExpired(tokenName);
 }
 
 /**
@@ -13,12 +11,13 @@ export function getToken(tokenName) {
  * @param {*} value
  * @param {*} expires 如果传入Number，那么单位为天，你也可以传入一个Date对象，表示有效期至Date指定时间
  */
-export function setToken(tokenName, tokenVal, expires = 60 * 60 * 24 * 7) {
-  var date = new Date();
-  date.setTime(date.getTime() + expires * 60 * 1000); //10表示10秒钟
-  return Cookies.set(tokenName, tokenVal, { expires: date });
+export function setToken(tokenName, tokenVal, expires = 1) {
+  let date = new Date()
+  date.setDate(date.getDate()+1)//1表示1天
+  return iLocalStroage.setExpired(tokenName, tokenVal, date.getTime().toString());
 }
 
 export function removeToken() {
-  return Cookies.remove(TokenKey);
+  return iLocalStroage.removeExpired(TokenKey);
 }
+
