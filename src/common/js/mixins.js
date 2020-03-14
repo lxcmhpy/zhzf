@@ -147,6 +147,8 @@ export const mixinGetCaseApiList = {
                 console.log(err);
               }
             );
+          }else{
+            console.log('验证未通过')
           }
         })
       } else {
@@ -523,8 +525,11 @@ export const mixinGetCaseApiList = {
       }
     },
     //判断流程图跳转pdf文书还是表单
-    flowShowPdfOrForm(data) {
+    flowShowPdfOrForm(data,flowChartData) {
       console.log(data);
+      console.log('flowChartData',flowChartData);
+      let completeLinkArr = flowChartData.completeLink.split(',');
+      
       //既是环节也是文书的
       let isHuanjieDoc = false;
       if (data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204g") {
@@ -532,7 +537,8 @@ export const mixinGetCaseApiList = {
       }
       this.$store.dispatch('deleteTabs', 'flowChart');
       let data2 = this.com_getCaseRouteName(data.linkID);
-      this.$store.commit('setDocId', data.docId)
+      this.$store.commit('setDocId', data.docId);
+      
       if (data.curLinkState == "complete") {    //已完成文书显示pdf
         if (!isHuanjieDoc) {
           this.$router.push({ name: 'myPDF', params: { docId: data2.docId, isComplete: true } })
@@ -540,6 +546,11 @@ export const mixinGetCaseApiList = {
           this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
         }
       } else {
+        // 行政强制措施即将到期，请前往解除行政强制措施
+        if(completeLinkArr.indexOf('2c90293b6c178b55016c17c7ae92000e') >=0 && completeLinkArr.indexOf('2c9029ee6cac9281016cacaa28760005') == -1){
+          this.$refs.pleaseRemoveMDiaRef.showModal();
+          return
+        }
         this.$router.push({ name: data2.nextLink })
       }
     },
