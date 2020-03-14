@@ -9,7 +9,7 @@
             当事人（个人姓名或单位名称）
             <span>
               <el-form-item prop="party">
-                <el-input  v-model="docData.party"  :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input  v-model="docData.party"  :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>:
           </p>
@@ -17,7 +17,7 @@
             因你（单位）
             <span>
               <el-form-item prop="caseCauseName">
-                <el-input v-model="docData.caseCauseName"  type='textarea'  v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"   :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.caseCauseName"  type='textarea'  v-bind:class="{ over_flow:docData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"   :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>，本机关依法于
             <span>
@@ -28,12 +28,12 @@
             </span>对你（单位）采取了
             <span>
               <el-form-item prop="enforceMeasure">
-                <el-input v-model="docData.enforceMeasure" type='textarea'  v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"   :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.enforceMeasure" type='textarea'  v-bind:class="{ over_flow:docData.enforceMeasure.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"></el-input>
               </el-form-item>
             </span>的行政强制措施，行政强制措施决定书案号：
             <span>
               <el-form-item prop="caseNumberCopy">
-                <el-input  v-model="docData.caseNumberCopy"  :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input  v-model="docData.caseNumberCopy"  :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>。
           </p>
@@ -68,7 +68,7 @@
           <div @click="handleAdd">
             <el-table :data="tableData" border stripe style="width: 100%">
               <el-table-column prop="evidenceNo" label="序号" width="120" align="center"></el-table-column>
-              <el-table-column prop="returnItemsName" label="退还名称" align="center"></el-table-column>
+              <el-table-column prop="returnItemsName" label="退还财物名称" align="center"></el-table-column>
               <el-table-column prop="spec" label="规格" :formatter="formatSpec" width="120" align="center"></el-table-column>
               <el-table-column prop="amount" label="数量" width="120" align="center"></el-table-column>
               <el-table-column prop="remark" label="备注" align="center"> </el-table-column>
@@ -93,7 +93,7 @@
                     <el-table-column  prop="evidenceNo" label="序号" align="center"  width="120">
                     </el-table-column>
 
-                    <el-table-column label="退还名称" align="center">
+                    <el-table-column label="退还财物名称" align="center">
                       <template slot-scope="scope">
                         <el-input v-model="scope.row.returnItemsName"></el-input>
                       </template>
@@ -102,7 +102,7 @@
                     <el-table-column prop="spec" label="规格"  width="120" align="center">
                       <template slot-scope="scope">
                         <el-select v-model="scope.row.spec" placeholder="请选择">
-                          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                          <el-option v-for="item in returnItemOptions" :key="item.value" :label="item.label" :value="item.value">
                           </el-option>
                         </el-select>
                       </template>
@@ -210,7 +210,21 @@ export default {
         docData: "",
         status: ""
       },
-      options: [{
+      returnItemOptions: [{
+          value: '1',
+          label: '份'
+        }, {
+          value: '2',
+          label: '套'
+        }, {
+          value: '3',
+          label: '个'
+        }, {
+          value: '4',
+          label: '件'
+        }
+        ],
+        options: [{
           value: '1',
           label: '一'
         }, {
@@ -222,10 +236,11 @@ export default {
         }, {
           value: '4',
           label: '四'
-        }, {
+        },{
           value: '5',
           label: '五'
-        }],
+        }
+        ],
       rules: {
         clause: [
           { required: true, message: '请输入', trigger: 'blur' },

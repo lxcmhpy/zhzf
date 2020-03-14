@@ -445,14 +445,18 @@ export default {
           value: '3',
           label: '个'
         },
+        {
+          value: '4',
+          label: '件'
+        }
       ],
       measurOptions: [
         {
-          value: '1',
+          value: '查封',
           label: '查封'
         },
         {
-          value: '2',
+          value: '查封',
           label: '扣押'
         }
       ],
