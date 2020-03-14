@@ -359,7 +359,7 @@ export default {
       return chineseStr;
     },
     click() {
-      // this.clearData()
+      this.clearData()
       console.log('this.checknames', this.checknames)
       if (this.checknames.length > 1) {
         this.checknames.shift();

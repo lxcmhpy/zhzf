@@ -65,7 +65,7 @@
                     <el-radio :label="1">线下缴费</el-radio>
                     <el-radio :label="2">电子缴纳</el-radio>
                   </el-radio-group>
-                  <el-checkbox v-model="formData.correct"></el-checkbox> 责令改正
+                  <el-checkbox v-model="formData.correct" style="magin-left:20px"></el-checkbox> 责令改正
                   <!-- <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -256,6 +256,7 @@ import {
   uploadEvApi,
   findFileByIdApi,
 } from "@/api/upload";
+import { findIsOrderApi } from "@/api/caseHandle";
 export default {
   components: {
     checkDocFinish,
@@ -403,9 +404,9 @@ export default {
         caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
       };
-      if ((this.isComplete()!=false) && (this.isComplete2()!=false)) {
-       
-          this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
+      if ((this.isComplete() != false) && (this.isComplete2() != false)) {
+
+        this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
       }
       else {
         // this.$message({ message: '请完成对应文书', type: 'error' });
@@ -588,11 +589,35 @@ export default {
         }
       )
     },
+    //通过案件id获取询问笔录被询问人及其与案件关系
+    findIsOrder() {
+      let data = {
+        caseBasicInfoId: this.caseId
+      }
+      findIsOrderApi(data).then(res => {
+        console.log('责令更正啊啊啊', res);
+        this.formData.correct = res.data
+        // this.peopleTypeList = res.data;
+        // this.peopleTypeList.forEach(item => {
+        //   item.relation = this.switchRelate(item.relation);
+        //   item.all = item.name+ '-' +item.relation
+        // });
+        // this.peopleTypeList.push({name:'',relation:'none',all:'以上均不是'})
+        // console.log('peopleTypeList',this.peopleTypeList);
+        // //设置默认值
+        // this.formData.peopleType = this.peopleTypeList[0].relation;
+        // this.formData.peopleAndRelationType = this.peopleTypeList[0].all;
+        // this.findAskNum(this.peopleTypeList[0].name);
+      }, err => {
+        console.log(err)
+      })
+    },
   },
 
 
   mounted() {
     // this.getCaseBasicInfo();
+    this.findIsOrder()
   },
   created() {
     //获取表单数据

@@ -434,6 +434,15 @@ export function findAskNumApi(params) {
 }
 
 
+//通过案件id获取上下环节
+export function findIsOrderApi(params) {
+  return request({
+    url: "doc/linkData/findIsOrder/"+params.caseBasicInfoId,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
 //-------------长软lv start------------
 //获取操作记录
 export function getHandleRecordApi(data) {
