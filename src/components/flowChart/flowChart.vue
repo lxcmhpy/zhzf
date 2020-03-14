@@ -2,8 +2,13 @@
   <div class="com_searchAndpageBoxPadding chartBg">
     <div class="searchAndpageBox " style="padding:0px;padding-top: 20px">
       <div class="handlePart" style="text-align:right;margin-right:50px">
-        <el-button type="primary" size="medium" v-if="showREBtn" @click="showRemoveOrExtend">解除（延长）强制措施</el-button>
-        <el-button type="primary" size="medium" v-if="!showREBtn">已解除强制措施</el-button>
+        <!-- <div> -->
+        <el-tooltip class="item" effect="dark" v-if="showREBtn && !alReadyFinishCoerciveM" placement="top-start">
+          <div slot="content">措施起止期限：<br/>{{measureDate}}</div>
+          <el-button type="primary" size="medium"  @click="showRemoveOrExtend">解除（延长）强制措施</el-button>
+        </el-tooltip>
+        <!-- </div> -->
+        <el-button type="primary" size="medium" v-if="alReadyFinishCoerciveM">已解除强制措施</el-button>
       </div>
       <div style="overflow-y:auto;">
         <!-- <div id="aa"><?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="icon" width="200px" height="200.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#d81e06" d="M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z"  /></svg></div> -->
@@ -20,7 +25,7 @@
     </div>
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'flowChart'" ></caseSlideMenu>
-
+    <pleaseRemoveMDia ref="pleaseRemoveMDiaRef"></pleaseRemoveMDia>
   </div>
 </template>
 <script>
@@ -31,6 +36,8 @@ import _ from 'lodash'
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import {svgData,imgList,linePosition,stateColor,lineStyle,graphData,mainLinkData,layoutCharts,legend} from './json/flowChart'
+import pleaseRemoveMDia from '@/page/caseHandle/components/pleaseRemoveMDia'
+
 export default {
   data() {
     return {
@@ -46,6 +53,8 @@ export default {
       data: {},
       stateLinkArray: ['complete','doing','unLock'],
       showREBtn:false,
+      measureDate:"",
+      alReadyFinishCoerciveM:false, //解除（延长）强制措施已完成
     }
   },
   mixins:[mixinGetCaseApiList],
@@ -63,6 +72,9 @@ export default {
           _this.drawFlowChart()
           //是否显示解除（延长）强制措施按钮
           _this.showRemoveOrExtendBtn(res.data.completeLink);
+          //显示强制时间
+          _this.getMeasuerTime();
+
         },
         err => {
         //   console.log(err);
@@ -241,7 +253,7 @@ export default {
             // complete: '#0174f5',//已完成  doing: '#f2a010',// 进行中  unLock: '#52c2b6',// 已解锁  lock: '#b2b2b2' //未解锁
             if (that.stateLinkArray.indexOf(params.data.curLinkState) >-1){
               //跳转
-              that.flowShowPdfOrForm(params.data);
+              that.flowShowPdfOrForm(params.data,that.data);
             }
           }
 
@@ -622,7 +634,6 @@ export default {
       this.updateLinkData()
       this.updateGraphData()
       this.drawFlowChart()
-
     },
     //解除或延长强制措施跳转
     showRemoveOrExtend(){
@@ -636,6 +647,31 @@ export default {
        this.showREBtn = false
       else
        this.showREBtn = true
+
+      if(linkArr.indexOf('2c9029ee6cac9281016cacaa28760005') == -1)
+       this.alReadyFinishCoerciveM = false
+      else
+       this.alReadyFinishCoerciveM = true
+      
+    },
+    //获取强制措施时间
+    getMeasuerTime(){
+      if(!this.showREBtn) return
+      let data={
+        casebasicInfoId: this.caseId,
+        caseLinktypeId: '2c90293b6c178b55016c17c7ae92000e'
+      }
+      this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
+        res => {
+          console.log('获取强制措施时间',res);
+          let formData= JSON.parse(res.data.formData);
+          console.log('formData',formData);
+          this.measureDate = formData.measureStartDate + " 至 "+ formData.measureEndDate;
+          
+        },err=>{
+
+        }
+      )
     }
   },
   created () {
@@ -645,7 +681,8 @@ export default {
   },
   components: {
         echarts,
-        caseSlideMenu
+        caseSlideMenu,
+        pleaseRemoveMDia,
   }
 }
 </script>

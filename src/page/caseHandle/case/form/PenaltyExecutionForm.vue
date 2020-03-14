@@ -65,7 +65,7 @@
                     <el-radio :label="1">线下缴费</el-radio>
                     <el-radio :label="2">电子缴纳</el-radio>
                   </el-radio-group>
-                  <el-checkbox v-model="formData.correct"></el-checkbox> 责令改正
+                  <el-checkbox v-model="formData.correct" style="magin-left:20px"></el-checkbox> 责令改正
                   <!-- <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -256,6 +256,7 @@ import {
   uploadEvApi,
   findFileByIdApi,
 } from "@/api/upload";
+import { findIsOrderApi } from "@/api/caseHandle";
 export default {
   components: {
     checkDocFinish,
@@ -403,9 +404,9 @@ export default {
         caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
       };
-      if ((this.isComplete()!=false) && (this.isComplete2()!=false)) {
-       
-          this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
+      if ((this.isComplete() != false) && (this.isComplete2() != false)) {
+
+        this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
       }
       else {
         // this.$message({ message: '请完成对应文书', type: 'error' });
@@ -432,7 +433,7 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false) {
+      if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false && row.note=='') {
         console.log("弹窗")
         this.$refs.addDialogRef.showModal(row, this.isSaveLink);
       }
@@ -440,6 +441,20 @@ export default {
         this.com_viewDoc(row);
       }
 
+    },
+     //删除
+    delDocDataByDocId(data) {
+      this.$store.dispatch("delDocDataByDocId", data).then(
+        res => {
+          console.log('删除', res)
+
+          // this.docTableDatas = res.data;
+          // console.log('文书列表', this.docTableDatas)
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
@@ -557,7 +572,7 @@ export default {
       console.log("djhafiufh执行方法")
       this.docTableDatas = [];
       this.allAskDocList = [];
-      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, url: "payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001" });
+      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, url: "payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001",note:'' });
 
       this.docTableDatasCopy.forEach(item => {
         console.log('名字啊啊啊', item.name)
@@ -588,11 +603,35 @@ export default {
         }
       )
     },
+    //通过案件id获取询问笔录被询问人及其与案件关系
+    findIsOrder() {
+      let data = {
+        caseBasicInfoId: this.caseId
+      }
+      findIsOrderApi(data).then(res => {
+        console.log('责令更正啊啊啊', res);
+        this.formData.correct = res.data
+        // this.peopleTypeList = res.data;
+        // this.peopleTypeList.forEach(item => {
+        //   item.relation = this.switchRelate(item.relation);
+        //   item.all = item.name+ '-' +item.relation
+        // });
+        // this.peopleTypeList.push({name:'',relation:'none',all:'以上均不是'})
+        // console.log('peopleTypeList',this.peopleTypeList);
+        // //设置默认值
+        // this.formData.peopleType = this.peopleTypeList[0].relation;
+        // this.formData.peopleAndRelationType = this.peopleTypeList[0].all;
+        // this.findAskNum(this.peopleTypeList[0].name);
+      }, err => {
+        console.log(err)
+      })
+    },
   },
 
 
   mounted() {
     // this.getCaseBasicInfo();
+    this.findIsOrder()
   },
   created() {
     //获取表单数据
