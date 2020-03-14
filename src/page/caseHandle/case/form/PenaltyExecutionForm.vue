@@ -157,7 +157,7 @@
           <div class="table_form">
             <el-table :data="docTableDatas" stripe border style="width: 100%" max-height="250" :row-class-name="getRowClass">
               <!-- 折叠 -->
-              <el-table-column type="expand" expand-change>
+              <el-table-column type="expand" expand-change v-if="allAskDocList.length>0">
                 <template>
                   <ul class="moreDocList">
                     <li v-for="(item,index) in allAskDocList" :key="index">
@@ -183,18 +183,22 @@
                 </template>
               </el-table-column>
 
-              <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
+              <el-table-column type="index" label="序号" align="center"></el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
                 <template slot-scope="scope">
                   <span style="color:red">*</span>
                   {{scope.row.name}}
+                  <span v-if="scope.row.name=='分期（延期）缴纳罚款通知书'">
+                    （{{finishDocCount}}/{{allDocCount}}）
+                  </span>
+
                 </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
                   <span v-if="scope.row.status == '1'">已完成</span>
                   <span v-if="scope.row.status == '0'">未完成</span>
-                  <span v-if="scope.row.status == ''">-</span>
+                  <span v-if="scope.row.status == ''"></span>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
@@ -318,6 +322,8 @@ export default {
       allAskDocList: [],  //分期延期
       unfinishFlag: '',
       isfinishFlag: true,
+      finishDocCount: 0,//完成文书数
+      allDocCount: 0,
     };
   },
   computed: {
@@ -433,7 +439,7 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false && row.note=='') {
+      if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false && row.note == '') {
         console.log("弹窗")
         this.$refs.addDialogRef.showModal(row, this.isSaveLink);
       }
@@ -442,7 +448,7 @@ export default {
       }
 
     },
-     //删除
+    //删除
     delDocDataByDocId(data) {
       this.$store.dispatch("delDocDataByDocId", data).then(
         res => {
@@ -572,16 +578,25 @@ export default {
       console.log("djhafiufh执行方法")
       this.docTableDatas = [];
       this.allAskDocList = [];
-      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, url: "payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001",note:'' });
+      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, url: "payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001", note: '' });
 
       this.docTableDatasCopy.forEach(item => {
         console.log('名字啊啊啊', item.name)
         if (item.name != '分期（延期）缴纳罚款通知书【2016】') {
           this.docTableDatas.push(item);
         } else {
-          this.allAskDocList.push(item);
+          if (item.note != '') {
+            this.allAskDocList.push(item);
+
+          }
         }
       })
+      this.allAskDocList.forEach(element => {
+        if (element.name == '分期（延期）缴纳罚款通知书【2016】' && element.status=='1') {
+          this.finishDocCount += 1;
+        }
+      });
+      this.allDocCount = this.allAskDocList.length
       console.log('this.docTableDatas', this.docTableDatas)
       console.log('this.allAskDocList', this.allAskDocList)
     },

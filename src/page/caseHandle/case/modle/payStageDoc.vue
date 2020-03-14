@@ -359,7 +359,7 @@ export default {
       return chineseStr;
     },
     click() {
-      this.clearData()
+      // this.clearData()
       console.log('this.checknames', this.checknames)
       if (this.checknames.length > 1) {
         this.checknames.shift();
@@ -384,14 +384,13 @@ export default {
       }
     },
     clearData() {
-      this.docData = {
-        delayDate: '',
-        instalmentNum: '',
-        instalmentDate: '',
-        payFine: '',
-        debtFine: '',
-        reason: '',
-      }
+      this.docData.delayDate = '';
+      this.docData.instalmentNum = '';
+      this.docData.instalmentDate = '';
+      this.docData.payFine = '';
+      this.docData.debtFine = '';
+      this.docData.reason = '';
+
     }
   },
   mounted() {
@@ -413,24 +412,24 @@ export default {
       this.getDocDetailById(this.$route.params.docDataId)
     }
     this.docData.fine = this.convertCurrency(this.docData.fine);
-var flag=this.$route.params.approvalForm.executeHandle
+    var flag = this.$route.params.approvalForm.executeHandle || ''
     if (flag) {
       if (this.$route.params.approvalForm.executeHandle == 0) {
         // 拒绝
         this.checknames.push("3")
-        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书(拒绝)";
+        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
       }
       else {
         if (this.$route.params.approvalForm.executeType == 1) {
           // 分期
           this.checknames.push("2")
-          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书(分期)";
+          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
 
         }
         if (this.$route.params.approvalForm.executeType == 0) {
           // 延期
           this.checknames.push("1")
-          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书(延期)";
+          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
 
         }
       }
