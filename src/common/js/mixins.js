@@ -548,18 +548,27 @@ export const mixinGetCaseApiList = {
         }
       } else {
         // 行政强制措施即将到期，请前往解除行政强制措施
-        if(completeLinkArr.indexOf('2c90293b6c178b55016c17c7ae92000e') >=0 && completeLinkArr.indexOf('2c9029ee6cac9281016cacaa28760005') == -1){
-          this.$refs.pleaseRemoveMDiaRef.showModal();
-          return
+        if(data.linkID !='a36b59bd27ff4b6fe96e1b06390d204h' &&  data.linkID !='2c9029ee6cac9281016cacaadf990006')
+        { 
+          this.$router.push({ name: data2.nextLink })
+        }else{
+          if(completeLinkArr.indexOf('2c90293b6c178b55016c17c7ae92000e') >=0 && completeLinkArr.indexOf('2c9029ee6cac9281016cacaa28760005') == -1){
+            this.$refs.pleaseRemoveMDiaRef.showModal();
+          }else{
+            this.$router.push({ name: data2.nextLink })
+          }
         }
-        this.$router.push({ name: data2.nextLink })
+        
+        
       }
     },
     //根据id获取文书信息(使用场景:询问笔录查看详情）
     getDocDetailById(id) {
+      console.log('id',id);
       getDocDetailByIdApi(id).then(res => {
         console.log(res);
         this.caseDocDataForm.id = res.data.id;
+        this.caseDocDataForm.note = res.data.note;
         this.docData = JSON.parse(res.data.docData);
       }, err => {
         console.log(err)

@@ -158,7 +158,7 @@
               <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
                 <template slot-scope="scope">
-                  <span style="color:red">*</span>
+                  <!-- <span style="color:red">*</span> -->
                   {{scope.row.name}}
                 </template>
               </el-table-column>
@@ -433,8 +433,9 @@
           if (item.name != '中止（终结、恢复）行政强制执行通知书') {
             this.docTableDatas.push(item);
           } else {
+            if(item.status === 0 || item.status === 1)
             this.allAskDocList.push(item);
-          }
+        }
         })
         console.log('this.docTableDatas', this.docTableDatas)
         console.log('this.allAskDocList', this.allAskDocList)

@@ -186,7 +186,7 @@ import { mapGetters } from "vuex";
 import checkDocFinish from '../components/checkDocFinish'
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import {
-  submitRelieveApi,
+  submitRelieveApi,getDocDataByCaseIdAndDocIdApi
 } from "@/api/caseHandle";
 import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
 export default {
@@ -394,12 +394,27 @@ export default {
     backBtn() {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.go(-1);
-    }
+    },
+    // isComplete(){
+    //   if(this.docTableDatas[i].name=='延长行政强制措施期限通知书【2016】'){
+    //     if(this.docTableDatas[i].status=='1'){
+    //       //通过案件ID和文书ID查找延长延长行政强制措施期限通知书
+    //       let data = {
+    //         caseBasicinfoId : this.caseId,
+    //         caseDoctypeId : "2c902934699a6ef801699a7426750001"
+    //       }
+    //       getDocDataByCaseIdAndDocIdApi(data).then();
+    //     }
+    //   }
+    // }
+      
   },
   created() {
     this.setFormData();
     //通过案件id和表单类型Id查询已绑定文书
     this.getDocListByCaseIdAndFormId();
+    //判断延长行政强制措施期限通知书
+    // this.isComplete();
   }
 }
 </script>

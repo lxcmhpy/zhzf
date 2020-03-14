@@ -38,7 +38,7 @@
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
                   placeholder="\"
-                  :disabled="isParty && !originalData.partyIdNo ? false : true"
+                  :disabled="isParty ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -53,7 +53,7 @@
                   v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
-                  :disabled="isParty && !originalData.partyAddress ? false : true"
+                  :disabled="isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -64,7 +64,7 @@
                 <el-input
                   v-model="formData.partyTel"
                   :maxLength="maxLength"
-                  :disabled="isParty && !originalData.partyTel ? false : true"
+                  :disabled="isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -91,7 +91,7 @@
                 <el-input
                   v-model="formData.partyUnitAddress"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyUnitAddress ? false : true"
+                  :disabled="!isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -105,7 +105,7 @@
                   v-model="formData.partyUnitTel"
                   minlength="11"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyUnitTel ? false : true"
+                  :disabled="!isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -116,7 +116,7 @@
                 <el-input
                   v-model="formData.partyManager"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyManager ? false : true"
+                  :disabled="!isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -129,7 +129,7 @@
                 <el-input
                   v-model="formData.socialCreditCode"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.socialCreditCode ? false : true"
+                  :disabled="!isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -208,7 +208,7 @@
           <div class="pdf_seal">
             <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
             <el-form-item prop="makeDate" class="pdf_datapick">
-              <el-date-picker v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日">
               </el-date-picker>
             </el-form-item>
           </div>
@@ -292,7 +292,7 @@
               </div>
             </div>
           </el-dialog>
-          <casePageFloatBtns :pageDomId="'adminCoerciveMeasure-print'" :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
+          <casePageFloatBtns :pageDomId="'adminCoerciveMeasure-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
           <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
     </div>
@@ -357,19 +357,11 @@ export default {
       isParty: true,
       huanjieAndDocId: "4028e4ef63683cd00163684359a10001",  //行政强制措施决定书ID
       rules: {
-        caseName: [
-          { required: true, message: "请输入", trigger: "blur" }
-        ],
         partyIdNo: [
-          { required: true, message: "请输入", trigger: "blur" },
           { validator: validateIDNumber, trigger: "blur" }
         ],
         partyTel: [
-          { required: true, message: "请输入", trigger: "blur" },
           { validator: validatePhone, trigger: "blur" }
-        ],
-        partyAddress: [
-          { required: true, message: "请输入", trigger: "blur" }
         ],
         partyManager: [
           { validator: validateIfCom, trigger: "blur" }
@@ -410,9 +402,6 @@ export default {
         ],
         lawsuitOrgan: [
           { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        makeDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
         ]
       },
       nameLength: 23,
@@ -445,14 +434,18 @@ export default {
           value: '3',
           label: '个'
         },
+        {
+          value: '4',
+          label: '件'
+        }
       ],
       measurOptions: [
         {
-          value: '1',
+          value: '查封',
           label: '查封'
         },
         {
-          value: '2',
+          value: '查封',
           label: '扣押'
         }
       ],
@@ -552,11 +545,13 @@ export default {
         return "套";
       }else if( cellValue == '3'){
         return "个";
+      }else if( cellValue == '4'){
+        return "件";
       }
     },
     startTime(){
       if (this.formData.measureStartDate){
-        this.$set(this.formData, 'measureEndDate', new Date(this.formData.measureStartDate.getTime() + 29 * 24 * 3600 * 1000));
+        this.$set(this.formData, 'measureEndDate', new Date(new Date(this.formData.measureStartDate).getTime() + 29 * 24 * 3600 * 1000));
       }
     },
     //根据用户的组织机构ID获取复议机构和诉讼机构

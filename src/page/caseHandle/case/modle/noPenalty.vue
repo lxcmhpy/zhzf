@@ -249,7 +249,7 @@ export default {
     //删除附件
     deleteFile(data){
       console.log('删除',data);
-      deleteFileByIdApi(data.id).then(res=>{
+      deleteFileByIdApi(data.storageId).then(res=>{
         console.log(res);
         this.findFileList();
       },err=>{
