@@ -1,7 +1,7 @@
 <!-------长软------->
 <template>
    <div class="print_box">
-    <div class="print_info">
+    <div class="print_info" id="remindLetter_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">催告书</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
@@ -152,7 +152,7 @@
       </el-button>
     </div> -->
      <!-- 悬浮按钮 -->
-    <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'remindLetter_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
@@ -249,7 +249,7 @@ export default {
       maxLengthOverLine: 122,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: 'subOutputRank-print',
+        pageDomId: 'remindLetter_print',
       },
       checknames: [],
       wtInfoDisabled: true,
@@ -308,6 +308,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      console.log()
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
@@ -317,8 +318,8 @@ export default {
       }
     },
     click(){
-      this.wtInfo='';
-      this.otherRemindWay='';
+      this.docData.wtInfo='';
+      this.docData.otherRemindWay='';
       if(this.checknames.length > 1){
         this.checknames.shift();
       }

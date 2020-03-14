@@ -430,7 +430,7 @@
             .is-required {
 
                 .span_bg {
-                    background: #F7C9CB !important;
+                    background: #F7C9CB ;
                 }
             }
         }
@@ -920,12 +920,15 @@
     width: 20px;
 
 }
-.width120{
+
+.width120 {
     width: 120px;
 }
-.width151{
+
+.width151 {
     width: 151px;
 }
+
 .width212 {
     width: 212px;
 }
@@ -941,10 +944,12 @@
 .width182 {
     width: 182px;
 }
-.width220{
+
+.width220 {
     width: 220px;
 
 }
+
 .width228 {
     width: 228px;
 }
@@ -989,6 +994,30 @@
         background-color: #ffffff !important;
     }
 
+    /* 验证提示 */
+    .is-required {
+        .el-input {
+
+            .el-input__inner,
+            .el-input__inner:focus {
+                background: #ffffff !important;
+            }
+        }
+
+        .el-textarea {
+
+            .el-textarea__inner,
+            .el-textarea__inner:focus {
+                background: transparent !important;
+            }
+        }
+        .span_bg{
+            background: #ffffff !important;
+        }
+
+
+    }
+
     /* 输入框 */
     .el-input__inner,
     .el-textarea__inner {
@@ -1014,6 +1043,10 @@
         }
 
         /* 多行 */
+
+        i{
+            display: none !important;
+        }
 
     }
 
