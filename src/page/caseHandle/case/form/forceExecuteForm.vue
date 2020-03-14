@@ -30,7 +30,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="punishDecision" label="处罚决定">
-                  <el-input type="textarea" ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
+                  <el-input :disabled="originalData.punishDecision ? true : false" type="textarea" ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -46,8 +46,8 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="强制类型">
-                  <el-select v-model="formData.forceType" clearable>
-                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                  <el-select v-model="formData.forceType" clearable @change="updateMethod">
+                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" >
                     </el-option>
                   </el-select>
                 </el-form-item>
@@ -90,7 +90,7 @@
       <div class="content_box">
         <div class="content">
           <div class="table_form">
-            <el-table :data="docTableDatas" stripe border style="width: 100%">
+            <!-- <el-table :data="docTableDatas" stripe border style="width: 100%">
               <el-table-column type="index" label="序号" align="center" width="100px">
               </el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
@@ -111,18 +111,80 @@
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                   <span v-if="scope.row.status == '1'" class="tableHandelcase">
-                    <!-- 已完成 -->
+                   
                     <i  class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
                     <i  class="iconfont law-print"></i>
                   </span>
                   <span v-if="scope.row.status == '0'" class="tableHandelcase">
-                    <!-- 未完成 -->
+                   
                     <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
                     <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
                   </span>
                   <span v-if="scope.row.status === ''" class="tableHandelcase">
-                    <!-- 无状态 -->
+                   
                     <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
+                  </span>
+                </template>
+              </el-table-column>
+            </el-table> -->
+            <el-table :data="docTableDatas" stripe border style="width: 100%" max-height="250" :row-class-name="getRowClass">
+              <!-- 折叠 -->
+              <el-table-column type="expand" expand-change>
+                <template>
+                  <ul class="moreDocList">
+                    <li v-for="(item,index) in allAskDocList" :key="index">
+                      <div>{{item.note}}</div>
+                      <div>
+                        <span v-if="item.status == '1'">已完成</span>
+                        <span v-if="item.status == '0'">未完成</span>
+                      </div>
+                      <div>
+                        <!-- 已完成 -->
+                        <span v-if="item.status == '1'" class="tableHandelcase" @click="viewDocPdf(item)">查看</span>
+
+                        <span v-if="item.status == '0'" class="tableHandelcase">
+                          <!-- 未完成 -->
+                          <span @click="viewDoc(item)">编辑</span>
+                          <span @click="delDocDataByDocId(item)">清空</span>
+                        </span>
+                        <!-- 无状态 -->
+                        <span v-if="item.status === ''" class="tableHandelcase" @click="viewDoc(item)">添加</span>
+                      </div>
+                    </li>
+                  </ul>
+                </template>
+              </el-table-column>
+
+              <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
+              <el-table-column prop="name" label="材料名称" align="center">
+                <template slot-scope="scope">
+                  <span style="color:red">*</span>
+                  {{scope.row.name}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="status" label="状态" align="center">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.status == '1'">已完成</span>
+                  <span v-if="scope.row.status == '0'">未完成</span>
+                  <span v-if="scope.row.status == ''">-</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                  <span class="tableHandelcase" v-if="scope.row.openRow">
+                    <!-- <i class="iconfont law-add" @click="viewDoc(scope.row)"></i> -->
+                    <span @click="viewDoc(scope.row)">添加</span>
+                  </span>
+                  <span v-if="!scope.row.openRow">
+                    <!-- 已完成 -->
+                    <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
+                    <!-- 未完成 暂存 -->
+                    <span v-if="scope.row.status == '0'" class="tableHandelcase">
+                      <span @click="viewDoc(scope.row)">编辑</span>
+                      <span @click="delDocDataByDocId(scope.row)">清空</span>
+                    </span>
+                    <!-- 无状态 -->
+                    <span v-if="scope.row.status === ''" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
                   </span>
                 </template>
               </el-table-column>
@@ -214,6 +276,7 @@
           formData: "",
           status: ""
         },
+        originalData:"",
         docTableDatas: [],
         rules: {
           paidAmount:[
@@ -225,6 +288,8 @@
         },
         isOnlinePay: false, //是否为电子缴纳
         needDealData:true,
+        allAskDocList: [] ,//中止（终结、恢复）行政强制执行通知书
+        docTableDatasCopy: []
       };
     },
     computed: {
@@ -232,6 +297,19 @@
     },
     mixins: [mixinGetCaseApiList],
     methods: {
+      updateMethod(){
+        if(this.formData.forceType=='强制执行'){
+          console.log('444');
+          if(this.docTableDatas[i].name=='行政强制执行决定书【2016】'){
+            this.docTableDatas[i].isRequired = '0';
+          }
+        }else{
+          console.log('333');
+          if(this.docTableDatas[i].name=='代履行决定书【2016】'){
+            this.docTableDatas[i].isRequired = '0';
+          }
+        }
+      },
       //加载表单信息
       setFormData() {
         this.caseLinkDataForm.caseBasicinfoId = this.caseId;
@@ -333,7 +411,34 @@
       backBtn(){
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.go(-1);
-      }
+      },
+      getRowClass: function (row, index) {
+        console.log("row!!!!!!!!!!!!", row);
+        if (row.row.openRow) {
+          console.log("显示");
+          return "";
+        } else {
+          return "myhide-expand";
+        }
+      },
+      setMoreDocTableTitle() {
+        debugger
+        console.log("djhafiufh执行方法")
+        this.docTableDatas = [];
+        this.allAskDocList = [];
+        this.docTableDatas.push({ name: '中止（终结、恢复）行政强制执行通知书', status: '中止', openRow: true, url: "enforceDoc", docId: "2c902908696a1fc501696a754e3b0002" });
+
+        this.docTableDatasCopy.forEach(item => {
+          console.log('名字啊啊啊', item.name)
+          if (item.name != '中止（终结、恢复）行政强制执行通知书') {
+            this.docTableDatas.push(item);
+          } else {
+            this.allAskDocList.push(item);
+          }
+        })
+        console.log('this.docTableDatas', this.docTableDatas)
+        console.log('this.allAskDocList', this.allAskDocList)
+      },
     },
     mounted() {
       // this.getCaseBasicInfo();

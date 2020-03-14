@@ -5,7 +5,7 @@
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">行政强制执行决定书</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+       <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td rowspan="6">
               当<br>
@@ -16,14 +16,33 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party">
-                <el-input  v-model="docData.party"  :maxlength="nameLength" placeholder="\"></el-input>
+                <!-- <el-input type="textarea" v-model="docData.party"  :maxlength="nameLength" placeholder="\"></el-input> -->
+                <el-input
+                  type="textarea"
+                  v-model="docData.party"
+                  v-bind:class="{ over_flow:docData.party.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 3}"
+                  :maxlength="nameLength"
+                  disabled
+                  placeholder="\"
+                ></el-input>
               </el-form-item>
 
             </td>
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyIdNo">
-                <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input>
+                <!-- <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input> -->
+
+                <el-input
+                  type="textarea"
+                  v-model="docData.partyIdNo"
+                  v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 2}"
+                  maxlength="18"
+                  placeholder="\"
+                  :disabled="!isParty && !originalData.partyIdNo ? false : true"
+                ></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -31,13 +50,30 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress">
-                <el-input v-model="docData.partyAddress"  :maxlength="adressLength" placeholder="\"></el-input>
+                <!-- <el-input v-model="docData.partyAddress"  :maxlength="adressLength" placeholder="\"></el-input> -->
+
+                <el-input
+                  type="textarea"
+                  v-model="docData.partyAddress"
+                  v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 3}"
+                  :maxlength="adressLength"
+                  :disabled="!isParty && !originalData.partyAddress ? false : true"
+                  placeholder="\"
+                ></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyTel">
-                <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\"></el-input>
+                <!-- <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\"></el-input> -->
+
+                <el-input
+                  v-model="docData.partyTel"
+                  :maxLength="maxLength"
+                  :disabled="!isParty && !originalData.partyTel ? false : true"
+                  placeholder="\"
+                ></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -46,7 +82,14 @@
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="partyName">
-                <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="\"></el-input>
+                <!-- <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="\"></el-input> -->
+
+                 <el-input
+                  v-model="docData.partyName"
+                  :maxLength="maxLength"
+                  disabled
+                  placeholder="\"
+                ></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -54,7 +97,14 @@
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="partyUnitAddress">
-                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="\"></el-input>
+                <!-- <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="\"></el-input> -->
+
+                 <el-input
+                  v-model="docData.partyUnitAddress"
+                  :maxLength="maxLength"
+                  :disabled="isParty && !originalData.partyUnitAddress ? false : true"
+                  placeholder="\"
+                ></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -62,13 +112,28 @@
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyUnitTel">
-                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="\"></el-input>
+                <!-- <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="\"></el-input> -->
+
+                <el-input
+                  v-model="docData.partyUnitTel"
+                  minlength="11"
+                  :maxLength="maxLength"
+                  :disabled="isParty && !originalData.partyUnitTel ? false : true"
+                  placeholder="\"
+                ></el-input>
               </el-form-item>
             </td>
             <td> 法定代表人 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager">
-                <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="\"></el-input>
+                <!-- <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="\"></el-input> -->
+
+                <el-input
+                  v-model="docData.partyManager"
+                  :maxLength="maxLength"
+                  :disabled="isParty && !originalData.partyManager ? false : true"
+                  placeholder="\"
+                ></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -78,7 +143,14 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode">
-                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="\"></el-input>
+                <!-- <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="\"></el-input> -->
+
+                <el-input
+                  v-model="docData.socialCreditCode"
+                  :maxLength="maxLength"
+                  :disabled="isParty && !originalData.socialCreditCode ? false : true"
+                  placeholder="\"
+                ></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -92,18 +164,18 @@
             </el-form-item>
           </span>作出的
           <span>
-            <el-form-item prop="punishContent">
-              <el-input  v-model="docData.punishContent" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="punishContent"  class="width120">
+              <el-input  v-model="docData.punishContent" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>决定，决定书案号为
           <span>
             <el-form-item prop="caseNumberCopy">
-              <el-input  v-model="docData.caseNumberCopy" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input  v-model="docData.caseNumberCopy" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>。经本机关催告后，你（单位）在催告期间有转移或隐匿财物迹象的，仍未履行且无正当理由。依据
           <span>
-            <el-form-item prop="punishmentBasis">
-              <el-input  v-model="docData.punishmentBasis" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="punishmentBasis"  class="width120">
+              <el-input  v-model="docData.punishmentBasis" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>的规定，本机关将立即于
           <span>
@@ -113,15 +185,15 @@
             </el-form-item>
           </span>强制执行：
           <span>
-            <el-form-item prop="measureAction">
-              <el-input  v-model="docData.measureAction"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="measureAction"  class="width120">
+              <el-input  v-model="docData.measureAction"  :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>（强制执行方式）。
         </p>
         <p>
           如不服本决定，可以在收到本决定书之日起六十日内向<span>
             <el-form-item prop="reconsiderationOrgan">
-              <el-select v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\">
+              <el-select v-model="docData.reconsiderationOrgan" :maxLength='maxLength'>
                   <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
@@ -129,7 +201,7 @@
             </el-form-item>
           </span>申请行政复议或者在六个月内依法向<span>
             <el-form-item prop="enforcementOrgan">
-              <el-select v-model="docData.enforcementOrgan" :maxLength='maxLength' placeholder="\">
+              <el-select v-model="docData.enforcementOrgan" :maxLength='maxLength'>
                   <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
@@ -267,6 +339,8 @@ export default {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'enforceDecideDoc-print',
       },
+      isParty: true, //当事人类型为个人
+      originalData:"",
       reconsiderationOptions : [],
       enforcementOptions : [],
     }
