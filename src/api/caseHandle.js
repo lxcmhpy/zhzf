@@ -433,6 +433,22 @@ export function findAskNumApi(params) {
   });
 }
 
+//解除（延长）强制措施的提交
+export function submitRelieveApi(params) {
+  let data = {
+      caseId:params.caseId,
+      caseLinktypeId:params.caseLinktypeId
+  }
+  let data2 = vm.$qs.stringify(data);
+  console.log(data2);
+  return request({
+    url: "doc/linkData/submitRelieve",
+    method: "post",
+    data:data2,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
 
 //通过案件id获取上下环节
 export function findIsOrderApi(params) {

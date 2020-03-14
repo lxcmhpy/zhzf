@@ -185,8 +185,9 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from '../components/checkDocFinish'
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
-
-
+import {
+  submitRelieveApi,getDocDataByCaseIdAndDocIdApi
+} from "@/api/caseHandle";
 import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
 export default {
   components: {
@@ -300,7 +301,7 @@ export default {
     submitCaseDoc(handleType) {
       this.com_submitCaseForm(handleType, 'caseDocForm', false);
     },
-    //下一环节
+    //提交
     continueHandle() {
       let caseData = {
         caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
@@ -315,16 +316,34 @@ export default {
       }
       if (canGotoNext) {
         // this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
-         this.$store.dispatch("deleteTabs", this.$route.name);
-          this.$router.push({
-            name: 'flowChart'
-          });
+        //  this.$store.dispatch("deleteTabs", this.$route.name);
+        //   this.$router.push({
+        //     name: 'flowChart'
+        //   });
+        this.submitCoerciveMeasuer();
+        
       } else {
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
       }
 
 
       // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
+    },
+    //提交
+    submitCoerciveMeasuer(){
+      let params = {
+        caseId:this.caseId,
+        caseLinktypeId:'2c9029ee6cac9281016cacaa28760005'
+      }
+        submitRelieveApi(params).then(res=>{
+          console.log('提交解除或延长表单',res);
+          this.$store.dispatch("deleteTabs", this.$route.name);
+          this.$router.push({
+            name: 'flowChart'
+          });
+        },err=>{
+          console.log(err);
+        })
     },
     // 进入文书
     enterDoc(row) {
@@ -375,12 +394,27 @@ export default {
     backBtn() {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.go(-1);
-    }
+    },
+    // isComplete(){
+    //   if(this.docTableDatas[i].name=='延长行政强制措施期限通知书【2016】'){
+    //     if(this.docTableDatas[i].status=='1'){
+    //       //通过案件ID和文书ID查找延长延长行政强制措施期限通知书
+    //       let data = {
+    //         caseBasicinfoId : this.caseId,
+    //         caseDoctypeId : "2c902934699a6ef801699a7426750001"
+    //       }
+    //       getDocDataByCaseIdAndDocIdApi(data).then();
+    //     }
+    //   }
+    // }
+      
   },
   created() {
     this.setFormData();
     //通过案件id和表单类型Id查询已绑定文书
     this.getDocListByCaseIdAndFormId();
+    //判断延长行政强制措施期限通知书
+    // this.isComplete();
   }
 }
 </script>

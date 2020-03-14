@@ -13,7 +13,6 @@ let iLocalStroage = {
         window.localStorage.setItem(`${key}_expired`, expired)
     },
     getExpired (key) {
-        // debugger
         let expired = window.localStorage.getItem(`${key}_expired`)
         let now = Date.now();
         if ( now > expired) {
