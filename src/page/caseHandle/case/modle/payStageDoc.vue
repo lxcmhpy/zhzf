@@ -413,26 +413,29 @@ export default {
       this.getDocDetailById(this.$route.params.docDataId)
     }
     this.docData.fine = this.convertCurrency(this.docData.fine);
-
-    if (this.$route.params.approvalForm.executeHandle == 0) {
-      // 拒绝
-      this.checknames.push("3")
-      this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书(拒绝)";
-    }
-    else {
-      if (this.$route.params.approvalForm.executeType == 1) {
-        // 分期
-        this.checknames.push("2")
-      this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书(分期)";
-
+var flag=this.$route.params.approvalForm.executeHandle
+    if (flag) {
+      if (this.$route.params.approvalForm.executeHandle == 0) {
+        // 拒绝
+        this.checknames.push("3")
+        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书(拒绝)";
       }
-      if (this.$route.params.approvalForm.executeType == 0) {
-        // 延期
-        this.checknames.push("1")
-      this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书(延期)";
+      else {
+        if (this.$route.params.approvalForm.executeType == 1) {
+          // 分期
+          this.checknames.push("2")
+          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书(分期)";
 
+        }
+        if (this.$route.params.approvalForm.executeType == 0) {
+          // 延期
+          this.checknames.push("1")
+          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书(延期)";
+
+        }
       }
     }
+
     this.click()
 
   },

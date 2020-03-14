@@ -433,7 +433,7 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false) {
+      if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false && row.note=='') {
         console.log("弹窗")
         this.$refs.addDialogRef.showModal(row, this.isSaveLink);
       }
@@ -441,6 +441,20 @@ export default {
         this.com_viewDoc(row);
       }
 
+    },
+     //删除
+    delDocDataByDocId(data) {
+      this.$store.dispatch("delDocDataByDocId", data).then(
+        res => {
+          console.log('删除', res)
+
+          // this.docTableDatas = res.data;
+          // console.log('文书列表', this.docTableDatas)
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
@@ -558,7 +572,7 @@ export default {
       console.log("djhafiufh执行方法")
       this.docTableDatas = [];
       this.allAskDocList = [];
-      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, url: "payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001" });
+      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, url: "payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001",note:'' });
 
       this.docTableDatasCopy.forEach(item => {
         console.log('名字啊啊啊', item.name)
