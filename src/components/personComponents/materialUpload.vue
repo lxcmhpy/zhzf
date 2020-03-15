@@ -1,52 +1,26 @@
 <template>
-    <div>
-        <div style="width:100%;float:left;margin-top:30px;margin-bottom:30px;">
-            <div style="margin-top:20px;margin-bottom:20px;margin-left:25px;margin-bottom:30px;">
-                <font style="font-size:25px;"><span class="titleflag"></span>身份证</font>
+    <div class="block" style="margin-left:20px;float:left">
+        <el-upload
+            action="#"
+            multiple
+            list-type="picture-card"
+            :limit="2"
+            :auto-upload="false"
+            :on-exceed="handleExceed"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :on-change="handleChange">
+            <div size="small" type="button" >点击上传</div>
+            <div slot="tip" class="el-upload__tip" style="margin-left:160px;margin-top:25px;width:100%">
+                只能上传jpg/png文件，且不超过500kb
             </div>
-            <div ref="idNoXX" class="block" style="margin-left:20px;float:left">
-                <el-upload
-                    action="#"
-                    multiple
-                    list-type="picture-card"
-                    :limit="2"
-                    :auto-upload="false"
-                    :on-exceed="handleExceed"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove"
-                    :on-change="handleChange">
-                    <div size="small" type="button" >点击上传</div>
-                    <div slot="tip" class="el-upload__tip" style="margin-left:160px;margin-top:25px;width:100%">
-                        只能上传jpg/png文件，且不超过500kb
-                    </div>
-                </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
-                        <img width="100%" :src="dialogImageUrl" alt="">
-                </el-dialog>
-            </div>
-        </div>
-        <div style="width:100%;float:left;margin-top:30px;margin-bottom:30px;">
-            <div style="margin-top:20px;margin-bottom:20px;margin-left:25px;margin-bottom:30px;">
-                <font style="font-size:25px;"><span class="titleflag"></span>学历证明</font> 
-            </div>
-            <materialUpload ref="degreeXX"></materialUpload>
-        </div>
-        <div style="width:100%;float:left;margin-top:30px;margin-bottom:30px;">
-            <div style="margin-top:20px;margin-bottom:20px;margin-left:25px;margin-bottom:30px;">
-                <font style="font-size:25px;"><span class="titleflag"></span>编制证明</font> 
-            </div>
-            <materialUpload ref="staffXX"></materialUpload>
-        </div>
-        <div style="width:100%;float:left;margin-top:30px;margin-bottom:30px;">
-            <div style="margin-top:20px;margin-bottom:20px;margin-left:25px;margin-bottom:30px;">
-                <font style="font-size:25px;"><span class="titleflag"></span>其他证明</font>
-            </div>
-            <materialUpload ref="otherXX"></materialUpload>
-        </div>
+        </el-upload>
+        <el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
     </div>
 </template>
 <script>
-import materialUpload from './materialUpload'
 export default {
     name:'material',//证明材料
     data(){
@@ -57,9 +31,6 @@ export default {
             dialogVisible: false,
             disabled: false
         }
-    },
-    components:{
-        materialUpload
     },
     methods:{
         handleChange(file,fileList){
