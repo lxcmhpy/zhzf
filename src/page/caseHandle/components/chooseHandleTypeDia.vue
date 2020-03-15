@@ -10,7 +10,7 @@
       <el-radio-group v-model="handleType">
         <div>
             <div v-for="(item,index) in handleTypeList" :key="index">
-              <el-radio :label="item.value">{{item.label}}</el-radio>
+              <el-radio :label="item.value" v-model="status" :value="item.value">{{item.label}}</el-radio>
             </div>
         </div>
       </el-radio-group>
@@ -30,7 +30,9 @@ export default {
     return {
       visible: false,
       handleType:0,
-      docData:"",
+      caseData:"",
+      isSaveLink:"",
+      status:"",
       handleTypeList:[
           {
               value:0,
@@ -56,14 +58,38 @@ export default {
     showModal(data,isSaveLink) {
       this.visible = true;
       this.isSaveLink = isSaveLink;
-      this.docData = data;
+      this.caseData = data;
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
     },
     showAskDoc(){
-       this.com_viewDoc(this.docData);
+      //  this.com_viewDoc(this.docData);
+      console.log('文书信息', this.caseData)
+      // // 进入文书
+      // console.log('代入信息', this.approvalForm)
+      
+      console.log(row);
+      let row = this.caseData
+      if (this.isSaveLink) {
+        this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+        console.log('row:', row)
+        this.$router.push({
+          name: row.url,
+          params: {
+            id: row.id,
+            docId: row.docId,
+            url: this.$route.name,
+            handelType: 'isAddMore',
+            status: this.handleType
+          }
+        });
+      } else {
+        this.$message('请先保存该环节表单');
+      }
+
+      //   this.com_viewDoc(this.caseData, this.approvalForm);
     }
   }
 };

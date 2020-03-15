@@ -410,7 +410,9 @@ export default {
         { value: "5", label: "代理人" }
       ],
       docTableDatasCopy: [],
-      allAskDocList: [] //询问笔录
+      allAskDocList: [], //询问笔录
+      askDocListNum:0,  //询问笔录次数
+      askDocListFinishNum:0,//已完成询问笔录次数
     };
   },
   computed: {
@@ -434,6 +436,7 @@ export default {
     },
     //下一环节
     continueHandle() {
+      console.log(this.docTableDatas)
       let caseData = {
         caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
@@ -515,9 +518,7 @@ export default {
       this.$router.go(-1);
     },
     getRowClass: function(row, index) {
-      console.log("row", row);
       if (row.row.openRow) {
-        console.log("显示");
         return "";
       } else {
         return "myhide-expand";
@@ -526,6 +527,9 @@ export default {
     setMoreDocTableTitle() {
       this.docTableDatas = [];
       this.allAskDocList = [];
+      // askDocListNum:0,  
+      // askDocListFinishNum:0,
+
       this.docTableDatas.push({
         name: "询问笔录",
         status: "询问",
@@ -533,15 +537,22 @@ export default {
         url: "othermodle",
         docId: "2c9029ca5b71686d015b71a86ead0032"
       });
-
+      let askDocListFinishNum = 0;
       this.docTableDatasCopy.forEach(item => {
         if (item.name != "询问笔录") {
           this.docTableDatas.push(item);
         } else {
           if(item.status === 0 || item.status === 1)
           this.allAskDocList.push(item);
+
+          if(item.status === 1) askDocListFinishNum++
         }
       });
+      if(this.allAskDocList.length>0){
+        let askDocAllNumAndFinishTitle = '询问笔录'+'（'+ askDocListFinishNum +'/'+this.allAskDocList.length+')';
+        this.docTableDatas[0].name = askDocAllNumAndFinishTitle;
+      }
+
 
       console.log("this.docTableDatas", this.docTableDatas);
       console.log("this.allAskDocList", this.allAskDocList);

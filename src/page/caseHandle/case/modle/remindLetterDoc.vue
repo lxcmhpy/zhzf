@@ -1,15 +1,15 @@
 <!-------长软------->
 <template>
    <div class="print_box">
-    <div class="print_info">
+    <div class="print_info" id="remindLetter_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">催告书</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <p>
           当事人（个人姓名或单位名称）
           <span>
-            <el-form-item prop="party">
-              <el-input  v-model="docData.party"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="party" class="width228">
+              <el-input  v-model="docData.party"  :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>:
         </p>
@@ -17,63 +17,63 @@
           因你（单位）
           <span>
             <el-form-item prop="caseName">
-              <el-input  v-model="docData.caseName" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input  v-model="docData.caseName" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>，本机关于
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick">
+            <el-form-item prop="serviceTime" class="pdf_datapick width151" >
               <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
           </span>作出了
           <span>
             <el-form-item prop="punishContent">
-              <el-input  v-model="docData.punishContent"  :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input  v-model="docData.punishContent"  :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>的决定，决定书案号为
           <span>
-            <el-form-item prop="caseNmuberCopy">
-              <el-input  v-model="docData.caseNmuberCopy"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="caseNmuberCopy" >
+              <el-input  v-model="docData.caseNumber"  :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>。你（单位）逾期未履行义务，根据《中华人民共和国行政强制法》第三十五条和第五十四条的规定，现就有关事项催告如下，请你（单位）按要求履行：
         </p>
         <p>
           1.履行标的：
           <span>
-            <el-form-item prop="fulfillSub">
-              <el-input v-model="docData.fulfillSub"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="fulfillSub" class="width476">
+              <el-input v-model="docData.fulfillSub"  :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
         </p>
         <p>
           2.履行期限：
           <span>
-            <el-form-item prop="fulfillLimit">
-              <el-input v-model="docData.fulfillLimit"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="fulfillLimit" class="width476">
+              <el-input v-model="docData.fulfillLimit"  :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
         </p>
         <p>
           3.履行方式：
           <span>
-            <el-form-item prop="fulfillWay">
-              <el-input v-model="docData.fulfillWay"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="fulfillWay" class="width476">
+              <el-input v-model="docData.fulfillWay"  :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
         </p>
         <p>
           4.履行要求：
           <span>
-            <el-form-item prop="fulfillDemand">
-              <el-input v-model="docData.fulfillDemand"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="fulfillDemand" class="width476">
+              <el-input v-model="docData.fulfillDemand"  :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
         </p>
         <p>
           5.其他事项：
           <span>
-            <el-form-item prop="otherMatter">
-              <el-input  v-model="docData.otherMatter"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="otherMatter" class="width476">
+              <el-input  v-model="docData.otherMatter"  :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
         </p>
@@ -92,16 +92,16 @@
         <p>
           <input type="checkbox" name="measure" value="4" v-model="checknames" @change="click">4.依法代履行或者委托第三人：
           <span>
-            <el-form-item prop="wtInfo">
-              <el-input v-model="docData.wtInfo" v-bind:disabled="wtInfoDisabled" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item :prop="wtInfoDisabled?'':'wtInfo'">
+              <el-input v-model="docData.wtInfo" v-bind:disabled="wtInfoDisabled" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>代履行。
         </p>
         <p>
           <input type="checkbox"  name="measure" value="5" v-model="checknames" @change="click">5.其他强制执行方式：
           <span>
-            <el-form-item prop="otherRemindWay">
-              <el-input v-model="docData.otherRemindWay" v-bind:disabled="otherRemindWayDisabled" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item :prop="otherRemindWayDisabled?'':'otherRemindWay'">
+              <el-input v-model="docData.otherRemindWay" v-bind:disabled="otherRemindWayDisabled" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>。
         </p>
@@ -152,7 +152,7 @@
       </el-button>
     </div> -->
      <!-- 悬浮按钮 -->
-    <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'remindLetter_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
@@ -209,6 +209,39 @@ export default {
         serviceTime: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
+        party: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        caseName: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        punishContent: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        serviceTime: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        fulfillLimit: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        fulfillSub: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        fulfillWay: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        fulfillDemand: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        otherMatter: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        wtInfo: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        otherRemindWay: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
       },
       nameLength: 23,
       adressLength: 23,
@@ -216,7 +249,7 @@ export default {
       maxLengthOverLine: 122,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: 'subOutputRank-print',
+        pageDomId: 'remindLetter_print',
       },
       checknames: [],
       wtInfoDisabled: true,
@@ -275,6 +308,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      console.log()
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
@@ -284,6 +318,8 @@ export default {
       }
     },
     click(){
+      this.docData.wtInfo='';
+      this.docData.otherRemindWay='';
       if(this.checknames.length > 1){
         this.checknames.shift();
       }

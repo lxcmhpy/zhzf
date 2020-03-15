@@ -8,44 +8,44 @@
         <p class="p_begin">
           当事人（个人姓名或单位名称）
           <span>
-            <el-form-item prop="casepartyName" style="width:300px">
-              <el-input v-model="docData.party" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="casepartyName" class="width220">
+              <el-input v-model="docData.party" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>:
         </p>
         <p>
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick listen_data" >
+            <el-form-item prop="serviceTime" class="pdf_datapick listen_data width151">
               <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
           </span> ，本机关对你（单位）送达了
           <span>
-            <el-form-item prop="caseNumber">
-              <el-input v-model="docData.caseNumber" :maxLength='maxLength' placeholder="\" disabled></el-input>
+            <el-form-item prop="caseNumber" style="width:165px">
+              <el-input v-model="docData.caseNumber" :maxLength='maxLength' disabled></el-input>
             </el-form-item>
           </span>（案号）《行政处罚决定书》，作出了对你（单位）罚款
           <span>
             <el-form-item prop="fine">
-              <el-input v-model="docData.fine" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.fine" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>（大写）的行政处罚决定，根据你（单位）的申请，本机关依据《中华人民共和国行政处罚法》第五十二条的规定，现决定：
         </p>
         <p>
           <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">同意你（单位）延期缴纳罚款。延长至
           <span>
-            <el-form-item prop="delayDate" class="pdf_datapick">
+            <el-form-item :prop="disabledOne?'':'delayDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.delayDate" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
-          </span>
+          </span>。
         </p>
         <p>
           <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">同意你（单位）分期缴纳罚款。第
           <span>
-            <el-form-item prop="instalmentNum">
+            <el-form-item :prop="disabledTwo?'':'instalmentNum'" style="width:46px">
               <!-- <el-input v-model="docData.instalmentNum"></el-input> -->
-              <el-select v-model="docData.instalmentNum" v-bind:disabled="disabledTwo" :maxLength='maxLength' placeholder="\">
+              <el-select v-model="docData.instalmentNum" v-bind:disabled="disabledTwo" :maxLength='maxLength' placeholder=" ">
                 <el-option label="1" value="1"></el-option>
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
@@ -56,27 +56,27 @@
 
           </span>期至
           <span>
-            <el-form-item prop="instalmentDate" class="pdf_datapick">
+            <el-form-item :prop="disabledTwo?'':'instalmentDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.instalmentDate" v-bind:disabled="disabledTwo" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
           </span>前，缴纳罚款
           <span>
-            <el-form-item prop="payFine">
-              <el-input v-model="docData.payFine" v-bind:disabled="disabledTwo" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item :prop="disabledTwo?'':'payFine'">
+              <el-input v-model="docData.payFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>元（大写）（每期均应当单独开具本文书）。此外，尚有未缴纳的罚款
           <span>
-            <el-form-item prop="debtFine">
-              <el-input v-model="docData.debtFine" v-bind:disabled="disabledTwo" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item :prop="disabledTwo?'':'debtFine'">
+              <el-input v-model="docData.debtFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>元（大写）。
         </p>
         <p>
           <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">由于
           <span>
-            <el-form-item prop="reason">
-              <el-input v-model="docData.reason" v-bind:disabled="disabledThree" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item :prop="disabledThree?'':'reason'" style="width:500px">
+              <el-input v-model="docData.reason" v-bind:disabled="disabledThree" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>，因此，本机关认为你的申请不符合《中华人民共和国行政处罚法》第五十二条的规定，不同意你（单位）分期（延期）缴纳罚款。
         </p>
@@ -84,7 +84,7 @@
           代收机构以本通知书为据，办理收款手续。
         </p>
 
-        <div class="pdf_seal">
+        <div class="pdf_seal" style="margin-top:60px">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="stampTime" class="pdf_datapick">
             <el-date-picker v-model="docData.stampTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
@@ -183,6 +183,24 @@ export default {
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         fine: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        delayDate: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        instalmentNum: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        payFine: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        debtFine: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        instalmentDate: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        reason: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
 
@@ -366,14 +384,13 @@ export default {
       }
     },
     clearData() {
-      this.docData = {
-        delayDate: '',
-        instalmentNum: '',
-        instalmentDate: '',
-        payFine: '',
-        debtFine: '',
-        reason: '',
-      }
+      this.docData.delayDate = '';
+      this.docData.instalmentNum = '';
+      this.docData.instalmentDate = '';
+      this.docData.payFine = '';
+      this.docData.debtFine = '';
+      this.docData.reason = '';
+
     }
   },
   mounted() {
@@ -385,28 +402,39 @@ export default {
       caseId: this.caseId,
       docId: this.$route.params.docId
     };
+
+
     //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
     if (this.$route.params.handelType == 'isAddMore') {
+      console.log('多份文书', this.$route.params.handelType)
       this.com_getCaseBasicInfo(data.caseId, data.docId);
     } else {
       this.getDocDetailById(this.$route.params.docDataId)
     }
     this.docData.fine = this.convertCurrency(this.docData.fine);
+    var flag = this.$route.params.approvalForm.executeHandle || ''
+    if (flag) {
+      if (this.$route.params.approvalForm.executeHandle == 0) {
+        // 拒绝
+        this.checknames.push("3")
+        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
+      }
+      else {
+        if (this.$route.params.approvalForm.executeType == 1) {
+          // 分期
+          this.checknames.push("2")
+          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
 
-    if (this.$route.params.approvalForm.executeHandle == 0) {
-      // 拒绝
-      this.checknames.push("3")
-    }
-    else {
-      if (this.$route.params.approvalForm.executeType == 1) {
-        // 分期
-        this.checknames.push("2")
-      }
-      if (this.$route.params.approvalForm.executeType == 0) {
-        // 延期
-        this.checknames.push("1")
+        }
+        if (this.$route.params.approvalForm.executeType == 0) {
+          // 延期
+          this.checknames.push("1")
+          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
+
+        }
       }
     }
+
     this.click()
 
   },
