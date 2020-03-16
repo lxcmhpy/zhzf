@@ -336,18 +336,15 @@
         //     break;
         //   }
         // }
-        debugger
-        console.log(this.docTableDatas)
-        console.log(this.formData)
-        for(let j=0;j<this.docTableDatas.length;j++){
-           debugger
+
+        for(let i=0;i<this.docTableDatas.length;i++){
           if(this.formData.forceType==='强制执行'){
-             if(this.docTableDatas[j].docId==='2c9029f9697acbbd01697ae091af0001' && (this.docTableDatas[j].status != 1 || this.docTableDatas[j].status != "1")){
+             if(this.docTableDatas[i].docId==='2c9029f9697acbbd01697ae091af0001' && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
                  canGotoNext = false
                  break;
              }
           }else if(this.formData.forceType==='代履行'){
-              if(this.docTableDatas[j].docId==='2c9028ac696b8acd01696b93c8fb0001' && (this.docTableDatas[j].status != 1 || this.docTableDatas[j].status != "1")){
+              if(this.docTableDatas[i].docId==='2c9028ac696b8acd01696b93c8fb0001' && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
                  canGotoNext = false
                  break;
              }

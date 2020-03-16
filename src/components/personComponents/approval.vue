@@ -8,7 +8,7 @@
       <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
         
         <el-steps :active="3" style="width:65%">
-           <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin: 0px 5px; background:#228B22 none repeat scroll 0% 0%;margin-top:4px;"></span>
+           <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin: 0px 5px; background:#228B22  none repeat scroll 0% 0%;margin-top:4px;"></span>
            审批流 
           <el-step style="margin-left:85px;"></el-step>&nbsp;&nbsp;&nbsp;&nbsp;
           <el-step></el-step>

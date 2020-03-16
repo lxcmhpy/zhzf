@@ -296,16 +296,6 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/adminCoerciveMeasureForm.vue")
   },
-  //责令改正违法行为通知书
-  {
-    path: "/order",
-    name: "order",
-    meta: {
-      title: "责令改正违法行为通知书",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/form/orderCorrectIllegalAct.vue")
-  },
   //不予处罚
   {
     path: "/noPenalty",
