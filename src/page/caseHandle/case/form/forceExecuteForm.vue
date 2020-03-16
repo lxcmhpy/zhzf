@@ -353,7 +353,6 @@
 
 
 
-
         if(canGotoNext){
           this.com_goToNextLinkTu(this.caseId,this.caseLinkDataForm.caseLinktypeId);
         }else{
