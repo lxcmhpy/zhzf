@@ -532,7 +532,7 @@ export const mixinGetCaseApiList = {
       
       //既是环节也是文书的
       let isHuanjieDoc = false;
-      if (data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204g") {
+      if (data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204g" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204h") {
         isHuanjieDoc = true;
       }
       this.$store.dispatch('deleteTabs', 'flowChart');
