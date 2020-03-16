@@ -950,7 +950,7 @@ export default {
 
             res.data.forEach(item => {
               if (
-                item.lawOfficerName == iLocalStroage.gets("userInfo").username
+                item.userId == iLocalStroage.gets("userInfo").id
               ) {
                 currentUserData.id = item.id;
                 currentUserData.lawOfficerName = item.lawOfficerName;

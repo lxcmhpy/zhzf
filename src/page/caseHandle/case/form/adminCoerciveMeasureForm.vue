@@ -22,7 +22,7 @@
                   v-bind:class="{ over_flow:formData.party.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  disabled
+                  :disabled="isParty ? false : true"
                   placeholder="\"
                 ></el-input>
                 <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
@@ -78,7 +78,7 @@
                 <el-input
                   v-model="formData.partyName"
                   :maxLength="maxLength"
-                  disabled
+                  :disabled="!isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -216,7 +216,7 @@
           <br><br><br><br>
           <p class="p_begin">查封、扣押场所、设施、财物清单如下：</p>
           <div @click="handleAdd">
-            <el-table :data="tableData" border stripe style="width: 100%">
+            <el-table :data="formData.tableData" border stripe style="width: 100%">
               <el-table-column prop="sort" label="序号" width="120"  align="center"></el-table-column>
               <el-table-column prop="itemName" label="查封、扣押场所、设施、财物名称"  align="center"></el-table-column>
               <el-table-column prop="spec" label="规格" width="120" :formatter="formatSpec"  align="center"></el-table-column>
@@ -245,7 +245,7 @@
           <el-dialog title="查封、扣押场所、设施、财物清单" :visible.sync="addVisible" width="60%" v-loading="addLoading" :before-close="handleClose">
             <div>
               <div>
-                <el-form ref="docForm">
+                <el-form>
                   <el-table :data="tableDatas" stripe border style="width: 100%">
                     <el-table-column  prop="sort" label="序号" align="center"  width="120">
                     </el-table-column>
@@ -342,6 +342,7 @@ export default {
         reconsiderationOrgan: '',
         lawsuitOrgan: '',
         makeDate: '2019',
+        tableData: [],
       },
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
@@ -362,19 +363,6 @@ export default {
         ],
         partyTel: [
           { validator: validatePhone, trigger: "blur" }
-        ],
-        partyManager: [
-          { validator: validateIfCom, trigger: "blur" }
-        ],
-        partyUnitAddress: [
-          { validator: validateIfCom, trigger: "blur" }
-        ],
-        partyUnitTel: [
-          { validator: validateIfCom, trigger: "blur" },
-          { validator: validatePhone, trigger: "blur" }
-        ],
-        socialCreditCode: [
-          { validator: validateIfCom, trigger: "blur" }
         ],
         afsj: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -407,7 +395,6 @@ export default {
       nameLength: 23,
       adressLength: 23,
       maxLength: 23,
-      tableData: [],
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'adminCoerciveMeasure-print',
@@ -507,7 +494,7 @@ export default {
       }
     },
     handleAdd(sort, row) {
-        this.tableDatas = this.tableData;
+        this.tableDatas = this.formData.tableData;
         this.addVisible = true;
     },
     handleClose(done) {
@@ -535,7 +522,7 @@ export default {
             return;
           }
         }
-      this.tableData = this.tableDatas;
+      this.formData.tableData = this.tableDatas;
       this.addVisible = false;
     },
     formatSpec: function(row, column, cellValue) {
