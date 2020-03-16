@@ -215,17 +215,20 @@
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <chooseHandleTypeDia ref="chooseHandleTypeDiaRef"></chooseHandleTypeDia>
+    <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
   </div>
 </template>
 <script>
   import { mixinGetCaseApiList } from "@/common/js/mixins";
   import { mapGetters } from "vuex";
   import checkDocFinish from "../../components/checkDocFinish";
-  import chooseHandleTypeDia from '@/page/caseHandle/components/chooseHandleTypeDia'
+  import chooseHandleTypeDia from '@/page/caseHandle/components/chooseHandleTypeDia';
+  import resetDocDia from '@/page/caseHandle/components/resetDocDia'
   export default {
     components: {
       checkDocFinish,
-      chooseHandleTypeDia
+      chooseHandleTypeDia,
+      resetDocDia
     },
     data() {
       var validatePaid = (rule, value, callback) => {
@@ -383,6 +386,11 @@
           this.com_viewDoc(row);
         }
 
+      },
+      //清空文书
+      delDocDataByDocId(data){
+        console.log("清空文书",data);
+        this.$refs.resetDocDiaRef.showModal(data);
       },
       //通过案件id和表单类型Id查询已绑定文书
       getDocListByCaseIdAndFormId() {
