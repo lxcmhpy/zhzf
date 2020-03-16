@@ -47,6 +47,8 @@ export default {
     return {
       visible: false,
       tableData:[],
+      //本地上传的文件
+      fileTableData:[]
     };
   },
   mixins: [mixinGetCaseApiList],
@@ -70,8 +72,12 @@ export default {
     //证据列表传来的数据
     receiverEviden(list){
         // this.tableData.length = list.length;
-        this.tableData = [];
         let _this = this
+        _this.tableData = [];
+        _this.fileTableData.forEach(item=>{
+          console.log("123",item);
+          _this.tableData.push({'name':item.name,'num':1,'des':'份'});
+        })       
         list.forEach((element,index) => {
             console.log('element',element);
             let evi={'name':element,'des':'份','num':1}
@@ -101,6 +107,7 @@ export default {
       findFileByIdApi(id).then(
         res => {
           console.log(res);
+          _this.fileTableData.push({'name':res.data.fileName,'num':1,'des':'份'});
           _this.tableData.push({'name':res.data.fileName,'num':1,'des':'份'});
         //   this.alreadyLoadPayEvidence.push(res.data);
         //   if(isAdd){

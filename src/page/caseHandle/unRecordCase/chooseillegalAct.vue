@@ -17,12 +17,12 @@
         <div>
           <div class="item">
             <el-input v-model="illegalActSearchForm.categoryId" v-if="showcateId"></el-input>
-            <el-form-item label="执法门类">
+            <el-form-item label="执法门类" prop="cateName">
               <el-input v-model="cateName" disabled></el-input>
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="行业类别">
+            <el-form-item label="行业类别" prop="hyTypeId">
               <el-select v-model="illegalActSearchForm.hyTypeId" placeholder="请选择" @change="changehyType">
               <el-option
                 v-for="item in industryCategoryList"
@@ -34,14 +34,14 @@
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="行为代码">
+            <el-form-item label="行为代码" prop="strNumber">
               <el-input v-model="illegalActSearchForm.strNumber"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="itemBig">
-            <el-form-item label="违法行为">
+            <el-form-item label="违法行为" prop="strContent">
               <el-input v-model="illegalActSearchForm.strContent"></el-input>
             </el-form-item>
           </div>
@@ -108,6 +108,9 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
+      this.$nextTick(() => {
+        this.$refs['illegalActSearchForm'].resetFields()
+      })
     },
     //更改每页显示的条数
     handleSizeChange(val) {

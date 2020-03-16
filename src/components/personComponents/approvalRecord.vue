@@ -8,8 +8,8 @@
           style="margin-left:25px;width:97%;margin-bottom:35px;"
           :data="tableData"
           resizable
-          align="center" >
           stripe
+          align="center" >
           <el-table-column prop="oid" label="审批单位"></el-table-column>
           <el-table-column prop="approveStatus" label="审批状态"></el-table-column>
           <el-table-column prop="userId" label="审批人"></el-table-column>

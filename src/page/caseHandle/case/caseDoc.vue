@@ -269,10 +269,10 @@
                   <span v-if="scope.row.status == ''">-</span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" align="center">
-                <template slot-scope="scope">
+              <el-table-column label="操作" align="center" >
+                <template slot-scope="scope" class="docListHandleClass">
                   <div v-if="scope.row.openRow">
-                    <span @click="addMoreDoc(scope.row)">添加</span>
+                    <span @click="addMoreDoc(scope.row)" class="tableHandelcase">添加</span>
                   </div>
                   <div v-if="!scope.row.openRow">
                     <!-- 已完成 -->

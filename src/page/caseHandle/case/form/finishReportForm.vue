@@ -35,24 +35,24 @@
               <div class="row">
                 <div class="col">
                   <el-form-item label="姓名：">
-                    <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input>
+                    <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="\"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
                   <el-form-item label="性别：">
-                    <el-input ref="partySex" clearable class="w-120" v-model="formData.partySex" size="small" placeholder="请输入"></el-input>
+                    <el-input ref="partySex" clearable class="w-120" v-model="formData.partySex" size="small" placeholder="\"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
                   <el-form-item label="年龄：">
-                    <el-input ref="partyAge" clearable class="w-120" v-model="formData.partyAge" size="small" placeholder="请输入"></el-input>
+                    <el-input ref="partyAge" clearable class="w-120" v-model="formData.partyAge" size="small" placeholder="\"></el-input>
                   </el-form-item>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
                   <el-form-item label="所在单位：">
-                    <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入"></el-input>
+                    <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="\"></el-input>
                   </el-form-item>
                 </div>
                 <div class="col">
