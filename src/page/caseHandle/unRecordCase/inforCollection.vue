@@ -85,8 +85,8 @@
               <!-- <el-radio v-model="inforForm.partyType" label="1">个人</el-radio>
               <el-radio v-model="inforForm.partyType" label="2">企业组织</el-radio>-->
               <el-radio-group v-model="inforForm.partyType" @change="changePartyType">
-                <el-radio label="1">个人</el-radio>
-                <el-radio label="2">企业组织</el-radio>
+                <el-radio :label="1">个人</el-radio>
+                <el-radio :label="2">企业组织</el-radio>
               </el-radio-group>
             </el-form-item>
           </div>

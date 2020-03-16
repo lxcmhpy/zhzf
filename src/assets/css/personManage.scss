@@ -321,3 +321,34 @@
     height: 260px;
     display: block;
   }
+
+  .titleflag {
+    width      : 4px;
+    height     : 22px;
+    margin-right: 8px;
+    display    : inline-block;
+    background : #4573D0;
+}
+.el-upload--picture-card {
+    background-color: #fbfdff;
+    border: 1px dashed    #c0ccda;
+    border-radius: 6px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 320px;
+    height: 200px;
+    line-height: 146px;
+    vertical-align: top;
+}
+.el-upload-list--picture-card .el-upload-list__item {
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid #c0ccda;
+    border-radius: 6px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 320px;
+    height: 200px;
+    margin: 0 8px 8px 0;
+    display: inline-block;
+}               
