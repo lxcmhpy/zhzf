@@ -158,7 +158,7 @@
               <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
                 <template slot-scope="scope">
-                  <span style="color:red">*</span>
+                  <!-- <span style="color:red">*</span> -->
                   {{scope.row.name}}
                 </template>
               </el-table-column>
@@ -336,15 +336,18 @@
         //     break;
         //   }
         // }
-
-        for(let i=0;i<this.docTableDatas.length;i++){
+        debugger
+        console.log(this.docTableDatas)
+        console.log(this.formData)
+        for(let j=0;j<this.docTableDatas.length;j++){
+           debugger
           if(this.formData.forceType==='强制执行'){
-             if(this.docTableDatas[i].docId==='2c9029f9697acbbd01697ae091af0001' && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
+             if(this.docTableDatas[j].docId==='2c9029f9697acbbd01697ae091af0001' && (this.docTableDatas[j].status != 1 || this.docTableDatas[j].status != "1")){
                  canGotoNext = false
                  break;
              }
           }else if(this.formData.forceType==='代履行'){
-              if(this.docTableDatas[i].docId==='2c9028ac696b8acd01696b93c8fb0001' && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
+              if(this.docTableDatas[j].docId==='2c9028ac696b8acd01696b93c8fb0001' && (this.docTableDatas[j].status != 1 || this.docTableDatas[j].status != "1")){
                  canGotoNext = false
                  break;
              }
@@ -433,8 +436,9 @@
           if (item.name != '中止（终结、恢复）行政强制执行通知书') {
             this.docTableDatas.push(item);
           } else {
+            if(item.status === 0 || item.status === 1)
             this.allAskDocList.push(item);
-          }
+        }
         })
         console.log('this.docTableDatas', this.docTableDatas)
         console.log('this.allAskDocList', this.allAskDocList)
