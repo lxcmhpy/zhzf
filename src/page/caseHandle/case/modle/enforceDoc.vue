@@ -211,9 +211,9 @@ export default {
      },
 
     //保存文书信息
-    // addDocData(handleType) {
-    //   this.com_addDocData(handleType, 'docForm');
-    // },
+    addDocData(handleType) {
+      this.com_addDocData(handleType, 'docForm');
+    },
     // 盖章
     makeSeal() {
       console.log('盖章!');
@@ -277,53 +277,50 @@ export default {
         this.disabledThree = true;
         this.disabledFour = true;
       }
+    },
+     clearData() {
+      this.docData.decisionTime = '';
+      
     }
   },
   mounted() {
-    // this.getDocDataByCaseIdAndDocId();
-    //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+   
     this.caseDocDataForm.caseBasicinfoId = this.caseId;
     let data = {
       caseId: this.caseId,
       docId: this.$route.params.docId
     };
+
+
+    //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
     if (this.$route.params.handelType == 'isAddMore') {
       console.log('多份文书', this.$route.params.handelType)
       this.com_getCaseBasicInfo(data.caseId, data.docId);
     } else {
       this.getDocDetailById(this.$route.params.docDataId)
     }
-    var flag=this.$route.params.status;
-    console.log("11110",flag);
-    debugger
-    // if (flag) {
-      if (this.$route.params.status == '0') {
+
+    debugger;
+
+      if (this.$route.params.approvalForm.executeHandle == 0) {
         // 拒绝
         this.checknames.push("1")
-        this.caseDocDataForm.note = "中止（终结、恢复）行政强制执行通知书(中止)";
+        this.caseDocDataForm.note = "中止行政强制执行通知书";
+      }else if(this.$route.params.approvalForm.executeHandle == 1){
+        this.checknames.push("2")
+        this.caseDocDataForm.note = "终结行政强制执行通知书";
+      }else if(this.$route.params.approvalForm.executeHandle == 2){
+         this.checknames.push("3")
+        this.caseDocDataForm.note = "恢复行政强制执行通知书";
+      }else if(this.$route.params.approvalForm.executeHandle == 3){
+         this.checknames.push("4")
+        this.caseDocDataForm.note = "恢复行政强制执行通知书";
       }
-      else {
-        if (this.$route.params.status == '1') {
-          // 分期
-          this.checknames.push("2")
-          this.caseDocDataForm.note = "中止（终结、恢复）行政强制执行通知书(终结)";
+      
 
-        }
-        if (this.$route.params.status == '2') {
-          // 延期
-          this.checknames.push("3")
-          this.caseDocDataForm.note = "中止（终结、恢复）行政强制执行通知书(恢复执行,中止情形消失)";
 
-        }
-        if (this.$route.params.status == '3') {
-          // 延期
-          this.checknames.push("4")
-          this.caseDocDataForm.note = "中止（终结、恢复）行政强制执行通知书(恢复执行,当事人(单位)不履行执行协议)";
+    this.click()
 
-        }
-      // }
-      this.click()
-    }
   },
   created() {
     this.isOverStatus();

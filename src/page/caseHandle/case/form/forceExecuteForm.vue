@@ -129,7 +129,7 @@
             </el-table> -->
             <el-table :data="docTableDatas" stripe border style="width: 100%" max-height="250" :row-class-name="getRowClass">
               <!-- 折叠 -->
-              <el-table-column type="expand" expand-change>
+              <el-table-column type="expand" expand-change v-if="allAskDocList.length>0">
                 <template>
                   <ul class="moreDocList">
                     <li v-for="(item,index) in allAskDocList" :key="index">
@@ -157,9 +157,13 @@
 
               <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
-                <template slot-scope="scope">
-                  <!-- <span style="color:red">*</span> -->
+                 <template slot-scope="scope">
+                  <span style="color:red">*</span>
                   {{scope.row.name}}
+                  <span v-if="scope.row.name=='中止（终结、恢复）行政强制执行通知书'">
+                    （{{finishDocCount}}/{{allDocCount}}）
+                  </span>
+
                 </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
@@ -214,13 +218,13 @@
       </div>
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
-    <chooseHandleTypeDia ref="chooseHandleTypeDiaRef"></chooseHandleTypeDia>
+    <chooseHandleTypeDia ref="chooseHandleTypeDiaRef" @getNewData="goAddPdf"></chooseHandleTypeDia>
   </div>
 </template>
 <script>
   import { mixinGetCaseApiList } from "@/common/js/mixins";
   import { mapGetters } from "vuex";
-  import checkDocFinish from "../../components/checkDocFinish";
+  import checkDocFinish from "./forceExecuteFormDocFinish";
   import chooseHandleTypeDia from '@/page/caseHandle/components/chooseHandleTypeDia'
   export default {
     components: {
@@ -288,8 +292,12 @@
         },
         isOnlinePay: false, //是否为电子缴纳
         needDealData:true,
+        docTableDatasCopy: [],
         allAskDocList: [] ,//中止（终结、恢复）行政强制执行通知书
-        docTableDatasCopy: []
+        unfinishFlag: '',
+        isfinishFlag: true,
+        finishDocCount: 0,//完成文书数
+        allDocCount: 0,
       };
     },
     computed: {
@@ -297,20 +305,21 @@
     },
     mixins: [mixinGetCaseApiList],
     methods: {
-      updateMethod(){
-        if(this.formData.forceType=='强制执行'){
-          console.log('444');
-          if(this.docTableDatas[i].name=='行政强制执行决定书【2016】'){
-            this.docTableDatas[i].isRequired = '0';
-          }
-        }else{
-          console.log('333');
-          if(this.docTableDatas[i].name=='代履行决定书【2016】'){
-            this.docTableDatas[i].isRequired = '0';
-          }
-        }
+        updateMethod(){
+        // if(this.formData.forceType=='强制执行'){
+        //   console.log('444');
+        //   if(this.docTableDatas[i].name=='行政强制执行决定书【2016】'){
+        //     this.docTableDatas[i].isRequired = '0';
+        //   }
+        // }else{
+        //   console.log('333');
+        //   if(this.docTableDatas[i].name=='代履行决定书【2016】'){
+        //     this.docTableDatas[i].isRequired = '0';
+        //   }
+        // }
       },
-      //加载表单信息
+
+      	  //加载表单信息
       setFormData() {
         this.caseLinkDataForm.caseBasicinfoId = this.caseId;
         this.com_getFormDataByCaseIdAndFormId(
@@ -318,48 +327,99 @@
           this.caseLinkDataForm.caseLinktypeId,
           false);
       },
-      //保存表单数据
+
+       //保存表单数据
       submitCaseDoc(handleType) {
         console.log(this.formData)
         this.com_submitCaseForm(handleType, "forceExecuteForm", false);
       },
-      //下一环节
+
+      // 判断文书是否完成
+      isComplete() {
+        debugger
+        this.unfinishFlag = '';
+        console.log('强制类型:', this.formData.forceType)
+        if (this.formData.forceType==='强制执行') {
+          // 强制执行书必做
+           debugger
+          console.log(this.docTableDatas)
+          let flag = true
+          this.docTableDatas.forEach(element => {
+            if (element.name == '行政强制执行决定书【2016】') {
+               debugger
+              this.unfinishFlag = '行政强制执行决定书';
+              console.log('lement.status,element.status', element.status)
+              if (element.status != 1) {
+                 debugger
+                this.unfinishFlag = '行政强制执行决定书';
+                console.log('执行')
+                let caseData = {}
+                this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+                flag = false;
+                return false;
+              }
+            }
+            else
+              return flag;
+            });
+             return flag;
+        }
+      },
+      
+      isComplete2(){
+        debugger
+        this.unfinishFlag = '';
+        console.log('强制类型:', this.formData.forceType)
+        if (this.formData.forceType==='代履行') {
+          // 代履行必做
+          let flag2 = true;
+          console.log(this.docTableDatas)
+          this.docTableDatas.forEach(element => {
+            if (element.name == '代履行决定书【2016】') {
+               debugger
+              if (element.status != 1) {
+                 debugger
+                this.unfinishFlag = '代履行决定书';
+                console.log('this.unfinishFlag', this.unfinishFlag)
+                let caseData = {}
+                this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+                flag2 = false;
+                return flag2;
+              }
+              else
+                return flag2;
+            }
+            else
+              return flag2;
+          });
+          return flag2;
+        }
+      },
+      
+       //下一环节
       continueHandle() {
+        debugger
+        console.log('this.unfinishFlag', this.unfinishFlag)
+        console.log('行政强制执行决定书', this.isComplete())
+        console.log('代履行决定书', this.isComplete2())
+        console.log('this.unfinishFlag', this.unfinishFlag)
         let caseData = {
           caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
           caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
         };
-        let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
-        // for(let i=0;i<this.docTableDatas.length;i++){
-        //   if(this.docTableDatas[i].isRequired===0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
-        //     canGotoNext = false
-        //     break;
-        //   }
-        // }
+        if ((this.isComplete() != false) && (this.isComplete2() != false)) {
 
-        for(let i=0;i<this.docTableDatas.length;i++){
-          if(this.formData.forceType==='强制执行'){
-             if(this.docTableDatas[i].docId==='2c9029f9697acbbd01697ae091af0001' && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
-                 canGotoNext = false
-                 break;
-             }
-          }else if(this.formData.forceType==='代履行'){
-              if(this.docTableDatas[i].docId==='2c9028ac696b8acd01696b93c8fb0001' && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")){
-                 canGotoNext = false
-                 break;
-             }
-          }
+          this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
         }
+        else {
+          // this.$message({ message: '请完成对应文书', type: 'error' });
+          console.log(this.unfinishFlag)
+          let unfinishFlag = this.unfinishFlag || ""
+          this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
 
-
-
-
-        if(canGotoNext){
-          this.com_goToNextLinkTu(this.caseId,this.caseLinkDataForm.caseLinktypeId);
-        }else{
-          this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
         }
       },
+
       // 进入文书
       enterDoc(row) {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
@@ -375,6 +435,7 @@
           }
         });
       },
+
       //查看文书
       viewDoc(row) {
         //为'中止（终结、恢复）强制执行'时弹出选择框
@@ -385,14 +446,28 @@
         }
 
       },
-      //通过案件id和表单类型Id查询已绑定文书
+
+      //删除
+      delDocDataByDocId(data) {
+        this.$store.dispatch("delDocDataByDocId", data).then(
+          res => {
+            console.log('删除', res)
+          },
+          err => {
+            console.log(err);
+            }
+          );
+      },
+
+       //通过案件id和表单类型Id查询已绑定文书
       getDocListByCaseIdAndFormId() {
         let data = {
           linkTypeId: "a36b59bd27ff4b6fe96e1b06390d204h" //环节ID
         };
         this.com_getDocListByCaseIdAndFormId(data);
       },
-      //预览pdf
+
+       //预览pdf
       viewDocPdf(row) {
         let routerData = {
           hasApprovalBtn: false,
@@ -403,15 +478,33 @@
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.push({ name: "myPDF", params: routerData });
       },
+
       getDataAfter(){
         this.formData.forceType = this.formData.forceType ? this.formData.forceType : '强制执行';
         this.formData.executeState = this.formData.executeState ? this.formData.executeState : '未完成';
       },
-      //返回到流程图
+
+       //返回到流程图
       backBtn(){
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.go(-1);
       },
+
+
+       // 添加文书
+      goAddPdf() {
+        //提交pdf 显示pdf页
+        this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+        this.approvalOver = true;
+        this.com_getFormDataByCaseIdAndFormId(
+          this.caseLinkDataForm.caseBasicinfoId,
+          this.caseLinkDataForm.caseLinktypeId,
+          true
+        );
+        // this.setMoreDocTableTitle()
+      },
+
+
       getRowClass: function (row, index) {
         console.log("row!!!!!!!!!!!!", row);
         if (row.row.openRow) {
@@ -421,26 +514,37 @@
           return "myhide-expand";
         }
       },
+
+
       setMoreDocTableTitle() {
         debugger
         console.log("djhafiufh执行方法")
         this.docTableDatas = [];
         this.allAskDocList = [];
-        this.docTableDatas.push({ name: '中止（终结、恢复）行政强制执行通知书', status: '中止', openRow: true, url: "enforceDoc", docId: "2c902908696a1fc501696a754e3b0002" });
+        this.docTableDatas.push({ name: '中止（终结、恢复）行政强制执行通知书', status: '中止', openRow: true, url: "enforceDoc", docId: "2c902908696a1fc501696a754e3b0002" , note: '' });
 
         this.docTableDatasCopy.forEach(item => {
           console.log('名字啊啊啊', item.name)
           if (item.name != '中止（终结、恢复）行政强制执行通知书') {
             this.docTableDatas.push(item);
           } else {
-            if(item.status === 0 || item.status === 1)
+            if (item.note != '') {
             this.allAskDocList.push(item);
-        }
+
+            }
+          }
         })
+         this.allAskDocList.forEach(element => {
+        if (element.name == '中止（终结、恢复）行政强制执行通知书' && element.status=='1') {
+          this.finishDocCount += 1;
+          }
+        });
+        this.allDocCount = this.allAskDocList.length
         console.log('this.docTableDatas', this.docTableDatas)
         console.log('this.allAskDocList', this.allAskDocList)
-      },
+      }
     },
+
     mounted() {
       // this.getCaseBasicInfo();
     },
@@ -458,6 +562,7 @@
 
       }
     }
+    
   };
 </script>
 
