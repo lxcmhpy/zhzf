@@ -159,7 +159,12 @@
               <el-table-column prop="name" label="材料名称" align="center">
                 <template slot-scope="scope">
                   <!-- <span style="color:red">*</span> -->
+                  <!-- {{scope.row.name}} -->
+                  <span style="color:red">*</span>
                   {{scope.row.name}}
+                  <span v-if="scope.row.name=='中止（终结、恢复）行政强制执行通知书'">
+                    （{{finishDocCount}}/{{allDocCount}}）
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
@@ -292,7 +297,9 @@
         isOnlinePay: false, //是否为电子缴纳
         needDealData:true,
         allAskDocList: [] ,//中止（终结、恢复）行政强制执行通知书
-        docTableDatasCopy: []
+        docTableDatasCopy: [],
+        finishDocCount: 0,//完成文书数
+        allDocCount: 0,
       };
     },
     computed: {
@@ -443,9 +450,15 @@
             if(item.status === 0 || item.status === 1)
             this.allAskDocList.push(item);
         }
-        })
-        console.log('this.docTableDatas', this.docTableDatas)
-        console.log('this.allAskDocList', this.allAskDocList)
+        }),
+        this.allAskDocList.forEach(element => {
+        if (element.name == '中止（终结、恢复）行政强制执行通知书' && element.status=='1') {
+          this.finishDocCount += 1;
+        }
+      });
+        this.allDocCount = this.allAskDocList.length;
+        console.log('this.docTableDatas', this.docTableDatas);
+        console.log('this.allAskDocList', this.allAskDocList);
       },
     },
     mounted() {

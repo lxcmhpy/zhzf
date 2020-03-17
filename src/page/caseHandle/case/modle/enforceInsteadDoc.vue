@@ -41,7 +41,7 @@
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
                   placeholder="\"
-                  :disabled="!isParty && !originalData.partyIdNo ? false : true"
+                  :disabled="!isParty ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -58,7 +58,7 @@
                   v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
-                  :disabled="!isParty && !originalData.partyAddress ? false : true"
+                  :disabled="!isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -71,7 +71,7 @@
                 <el-input
                   v-model="docData.partyTel"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyTel ? false : true"
+                  :disabled="!isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -102,7 +102,7 @@
                  <el-input
                   v-model="docData.partyUnitAddress"
                   :maxLength="maxLength"
-                  :disabled="isParty && !originalData.partyUnitAddress ? false : true"
+                  :disabled="isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -118,7 +118,7 @@
                   v-model="docData.partyUnitTel"
                   minlength="11"
                   :maxLength="maxLength"
-                  :disabled="isParty && !originalData.partyUnitTel ? false : true"
+                  :disabled="isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -131,7 +131,7 @@
                 <el-input
                   v-model="docData.partyManager"
                   :maxLength="maxLength"
-                  :disabled="isParty && !originalData.partyManager ? false : true"
+                  :disabled="isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -148,7 +148,7 @@
                 <el-input
                   v-model="docData.socialCreditCode"
                   :maxLength="maxLength"
-                  :disabled="isParty && !originalData.socialCreditCode ? false : true"
+                  :disabled="isParty ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -166,7 +166,7 @@
         <p>
           <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">1.本机关于
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick">
+            <el-form-item :prop="disabledOne?'':'serviceTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.serviceTime" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
@@ -182,7 +182,7 @@
             </el-form-item>
           </span>。经本机关催告后仍不履行，因其后果已经或者将危害交通安全、造成环境污染或者破坏自然资源。依据《中华人民共和国行政强制法》第五十条以及
           <span>
-            <el-form-item prop="punishBasisOne">
+            <el-form-item :prop="disabledOne?'':'punishBasisOne'">
               <el-input v-model="docData.punishBasisOne" v-bind:disabled="disabledOne" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>的规定，
@@ -190,7 +190,7 @@
         <p>
           <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">2.需要立即清除道路、河道、航道或者公共场所的遗洒物、障碍物或者污染物，因你（单位）不能清除，依据《中华人民共和国行政强制法》第五十二条以及
           <span>
-            <el-form-item prop="punishBasisTwo"  class="width120">
+            <el-form-item :prop="disabledTwo?'':'punishBasisTwo'"  class="width120">
               <el-input v-model="docData.punishBasisTwo" v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>的规定，
@@ -202,7 +202,7 @@
           1.代履行人 ：<input type="checkbox" name="people" value="1" v-model="peoples" @change="clickPeople">本机关
                       <input type="checkbox" name="people" value="2" v-model="peoples" @change="clickPeople">第三人：
           <span>
-            <el-form-item prop="impleAgent">
+            <el-form-item :prop="disabledThree?'':'impleAgent'">
               <el-input v-model="docData.impleAgent"  v-bind:disabled="disabledThree" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
@@ -378,8 +378,8 @@ export default {
       inputInfos: '',
       illegalFactsEvidence: '',
       value1: '',
-       isParty: true, //当事人类型为个人
-      originalData:"",
+      isParty: true, //当事人类型为个人
+      // originalData:"",
       rules: {
         serviceTime: [
           { required: true, message: '请输入', trigger: 'blur' },
@@ -387,9 +387,9 @@ export default {
         punishBasisOne: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
-        // punishBasisTwo: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
+        punishBasisTwo: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
         impleIndex: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
@@ -414,7 +414,9 @@ export default {
         enforceOrgan: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
-
+        impleAgent: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
       },
       nameLength: 23,
       adressLength: 23,
