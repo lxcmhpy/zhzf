@@ -1,23 +1,19 @@
 <template>
-  <el-dialog
-    title="添加中止（终结、恢复）强制执行"
-    :visible.sync="visible"
-    @close="closeDialog"
-    :close-on-click-modal="false"
-    width="30%"
-  >
+  <el-dialog title="添加中止（终结、恢复）强制执行" :visible.sync="visible" @close="closeDialog" :close-on-click-modal="false" width="30%">
     <div>
-      <el-radio-group v-model="handleType">
-        <div>
-            <div v-for="(item,index) in handleTypeList" :key="index">
-              <el-radio :label="item.value" v-model="status" :value="item.value">{{item.label}}</el-radio>
+       <el-form ref="approvalForm" :model="approvalForm" label-width="90px">
+        <el-form-item>
+          <el-radio-group v-model="approvalForm.executeHandle">
+            <div>
+              <div v-for="(item,index) in handleTypeList" :key="index"><el-radio :label="item.value">{{item.label}}</el-radio></div>
             </div>
-        </div>
-      </el-radio-group>
+          </el-radio-group>
+        </el-form-item> 
+      </el-form>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取 消</el-button>
-      <el-button type="primary" @click="showAskDoc">确 定</el-button>
+      <el-button type="primary" @click="approvalSure()">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -30,9 +26,12 @@ export default {
     return {
       visible: false,
       handleType:0,
-      caseData:"",
-      isSaveLink:"",
-      status:"",
+      docData:"",
+      approvalForm: {
+        executeHandle: "",
+      },
+      caseData: "",
+      isSaveLink: '',
       handleTypeList:[
           {
               value:0,
@@ -53,23 +52,25 @@ export default {
       ]
     };
   },
+  inject: ["reload"],
   mixins: [mixinGetCaseApiList],
   methods: {
     showModal(data,isSaveLink) {
       this.visible = true;
       this.isSaveLink = isSaveLink;
+      // this.docData = data;
       this.caseData = data;
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
     },
-    showAskDoc(){
-      //  this.com_viewDoc(this.docData);
+    approvalSure() {
+      debugger
       console.log('文书信息', this.caseData)
-      // // 进入文书
-      // console.log('代入信息', this.approvalForm)
-      
+      // 进入文书
+      console.log('代入信息', this.approvalForm)
+      //   this.com_viewDoc(this.caseData, this.approvalForm);
       console.log(row);
       let row = this.caseData
       if (this.isSaveLink) {
@@ -82,14 +83,12 @@ export default {
             docId: row.docId,
             url: this.$route.name,
             handelType: 'isAddMore',
-            status: this.handleType
+            approvalForm: this.approvalForm
           }
         });
       } else {
         this.$message('请先保存该环节表单');
       }
-
-      //   this.com_viewDoc(this.caseData, this.approvalForm);
     }
   }
 };
