@@ -28,6 +28,7 @@
                 v-bind:class="{ over_flow:formData.caseCauseNameCopy && formData.caseCauseNameCopy.length>14?true:false }"
                 :autosize="{ minRows: 1, maxRows: 2}"
                 :maxLength="maxLength"
+                disabled
               ></el-input>
             </el-form-item>
           </span>行为，违反了
@@ -196,8 +197,8 @@ export default {
         punishDecision: "",
         checkBoxList: "",
         makeDate: "",
-        checkLaw1:false,
-        checkLaw2:false,
+        checkLaw1:true,
+        checkLaw2:true,
         organContactor:'',
         organTel:'',
         organZipCode:'',
