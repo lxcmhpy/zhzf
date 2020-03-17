@@ -1,6 +1,8 @@
 //common
 export const COM_LOADING_STATUS = "COM_LOADING_STATUS";
 export const COM_LOADINGTIME = "COM_LOADINGTIME";
+export const COM_LOADING_TYPE = "COM_LOADING_TYPE";
+
 export const SET_AUTHTOKEN = "SET_AUTHTOKEN";
 
 export const SET_SLIDEMENU = "SET_SLIDEMENU";

@@ -239,16 +239,16 @@ export default {
       console.log(this.caseInfo);
       let approvalLink = ''
       let docId = ""
-      switch(this.caseInfo.currentLinkName){
-        case "立案登记":
+      switch(this.caseInfo.currentLinkId){
+        case "2c90293b6c178b55016c17c255a4000d":
           approvalLink = 'establish';
           docId="2c9029ae654210eb0165421564970001";
           break;
-        case "案件调查报告":
+        case "2c9029ee6cac9281016caca7f38e0002":
           approvalLink = 'caseInvestig';
           docId="2c9029ca5b711f61015b71391c9e2420";
           break;
-          case "结案报告":
+          case "2c9029ee6cac9281016cacaadf990006":
           approvalLink = 'finishCaseReport';
           docId="2c9029d2695c03fd01695c278e7a0001";
           break;

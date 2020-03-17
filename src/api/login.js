@@ -52,6 +52,7 @@ export function loginInApi(params) {
     // contentType: 'multipart/form-data',
     data:data,
     showloading: true,
+    loadingType:'loadFull',
     baseUrlType:1,
     cancelToken: setCancelSource()
   });

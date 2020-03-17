@@ -219,3 +219,7 @@
             }
     }
 }
+
+.el-message.el-message--error.validateErrorTip{
+    left: calc(50% + 100px);
+}

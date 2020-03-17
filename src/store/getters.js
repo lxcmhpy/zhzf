@@ -4,6 +4,7 @@ const getters = {
   // common
   loading: state => state.loading,
   loadingTime: state => state.loadingTime,
+  loadingType: state => state.loadingType,
   token: state => state.authToken,
   message: state => state.message,
   imgSrc: state => state.imgSrc,

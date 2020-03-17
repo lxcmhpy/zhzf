@@ -194,7 +194,8 @@ export function queryCaseBasicInfoListPageApi(data) {
     url: "/doc/caseBasicInfo/queryCaseBasicInfoListPage",
     method: "get",
     params:data,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
