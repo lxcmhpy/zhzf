@@ -23,6 +23,7 @@
                     v-bind:class="{ over_flow:docData.afdd.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="nameLength"
+                    error
                     placeholder="\"
                   ></el-input>
                   <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
@@ -344,46 +345,36 @@ export default {
         readState:[],
       },
       rules: {
-        afdd: [{ required: true, message: "请输入", trigger: "blur" }],
+        afdd: [{ required: true, message: '执法地点不能为空', trigger: "blur" }],
         enforceStartTime: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "执法开始时间不能为空", trigger: "blur" }
         ],
         enforceEndTime: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "执法结束时间不能为空", trigger: "blur" }
         ],
         staff1: [
-          { required: true, message: "请输入", trigger: "change" }
+          { required: true, message: "执法人员不能为空", trigger: "change" }
         ],
         certificateId11: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "执法证号不能为空", trigger: "blur" }
         ],
         staff2: [
-          { required: true, message: "请输入", trigger: "change" }
+          { required: true, message: "执法人员不能为空", trigger: "change" }
         ],
         certificateId12: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "执法证号不能为空", trigger: "blur" }
         ],
         scenePeopeTel: [{ validator: validatePhone, trigger: "blur" }],
         scenePeopelIdNo: [{ validator: validateIDNumber, trigger: "blur" }],
-        party: [{ required: true, message: "请输入", trigger: "blur" }],
-        punishLaw: [{ required: true, message: "请输入", trigger: "blur" }],
-        socialCreditCode: [
-          { required: true, message: "请输入", trigger: "blur" }
-        ],
-        illegalFactsEvidence: [
-          { required: true, message: "请输入", trigger: "blur" }
-        ],
-        reconsiderationOrgan: [
-          { required: true, message: "请输入", trigger: "blur" }
-        ],
+        party: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
         recorder: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "记录人不能为空", trigger: "blur" }
         ],
         illegalFacts: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "现场情况不能为空", trigger: "blur" }
         ],
         readState: [
-          { required: true, message: "请选择", trigger: "change" }
+          { required: true, message: "请选择是否看过上述笔录", trigger: "change" }
         ]
       },
       caseDocDataForm: {
@@ -626,6 +617,9 @@ export default {
         this.docData.scenePeopeAddress = this.daiRuscenePeopeAddress ? '' : this.docData.scenePeopeAddress;
         this.docData.scenePeopeTel = this.daiRuscenePeopeTel ? '' : this.docData.scenePeopeTel;
       }
+    },
+    showTip(){
+      // alert(111111);
     }
   },
   mounted() {

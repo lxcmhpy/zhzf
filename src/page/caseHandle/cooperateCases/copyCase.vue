@@ -1,3 +1,3 @@
 <template>
-    <div>案件抄告</div>
+    <div>copy</div>
 </template>

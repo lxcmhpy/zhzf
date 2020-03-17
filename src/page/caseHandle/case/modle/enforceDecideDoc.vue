@@ -41,7 +41,7 @@
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
                   placeholder="\"
-                  :disabled="!isParty && !originalData.partyIdNo ? false : true"
+                  :disabled="isParty && !originalData.partyIdNo ? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -58,7 +58,7 @@
                   v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
-                  :disabled="!isParty && !originalData.partyAddress ? false : true"
+                  :disabled="isParty && !originalData.partyAddress ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -71,7 +71,7 @@
                 <el-input
                   v-model="docData.partyTel"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyTel ? false : true"
+                  :disabled="isParty && !originalData.partyTel ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -165,12 +165,12 @@
           </span>作出的
           <span>
             <el-form-item prop="punishContent"  class="width120">
-              <el-input  v-model="docData.punishContent" :maxLength='maxLength'></el-input>
+              <el-input  v-model="docData.punishContent" :maxLength='maxLength' disabled></el-input>
             </el-form-item>
           </span>决定，决定书案号为
           <span>
             <el-form-item prop="caseNumberCopy">
-              <el-input  v-model="docData.caseNumberCopy" :maxLength='maxLength'></el-input>
+              <el-input  v-model="docData.caseNumberCopy" :maxLength='maxLength' disabled></el-input>
             </el-form-item>
           </span>。经本机关催告后，你（单位）在催告期间有转移或隐匿财物迹象的，仍未履行且无正当理由。依据
           <span>
