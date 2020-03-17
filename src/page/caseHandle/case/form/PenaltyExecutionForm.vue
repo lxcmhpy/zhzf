@@ -249,13 +249,15 @@
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <addDialog ref="addDialogRef" @getNewData="goAddPdf"></addDialog>
+    <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from "./PenaltyExecutionFormDocFinish";
-import addDialog from './PenaltyExecutionFormDialog'
+import addDialog from './PenaltyExecutionFormDialog';
+import resetDocDia from '@/page/caseHandle/components/resetDocDia'
 import {
   uploadEvApi,
   findFileByIdApi,
@@ -264,7 +266,8 @@ import { findIsOrderApi } from "@/api/caseHandle";
 export default {
   components: {
     checkDocFinish,
-    addDialog
+    addDialog,
+    resetDocDia
   },
   data() {
     var validatePaid = (rule, value, callback) => {
@@ -448,19 +451,10 @@ export default {
       }
 
     },
-    //删除
-    delDocDataByDocId(data) {
-      this.$store.dispatch("delDocDataByDocId", data).then(
-        res => {
-          console.log('删除', res)
-
-          // this.docTableDatas = res.data;
-          // console.log('文书列表', this.docTableDatas)
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    //清空文书
+    delDocDataByDocId(data){
+      console.log("清空文书",data);
+      this.$refs.resetDocDiaRef.showModal(data);
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {

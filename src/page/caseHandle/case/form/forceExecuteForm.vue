@@ -219,17 +219,21 @@
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <chooseHandleTypeDia ref="chooseHandleTypeDiaRef" @getNewData="goAddPdf"></chooseHandleTypeDia>
+    <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
+
   </div>
 </template>
 <script>
   import { mixinGetCaseApiList } from "@/common/js/mixins";
   import { mapGetters } from "vuex";
-  import checkDocFinish from "./forceExecuteFormDocFinish";
-  import chooseHandleTypeDia from '@/page/caseHandle/components/chooseHandleTypeDia'
+  import checkDocFinish from "../../components/checkDocFinish";
+  import chooseHandleTypeDia from '@/page/caseHandle/components/chooseHandleTypeDia';
+  import resetDocDia from '@/page/caseHandle/components/resetDocDia'
   export default {
     components: {
       checkDocFinish,
-      chooseHandleTypeDia
+      chooseHandleTypeDia,
+      resetDocDia
     },
     data() {
       var validatePaid = (rule, value, callback) => {
@@ -416,7 +420,6 @@
           console.log(this.unfinishFlag)
           let unfinishFlag = this.unfinishFlag || ""
           this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
-
         }
       },
 
@@ -446,20 +449,12 @@
         }
 
       },
-
-      //删除
-      delDocDataByDocId(data) {
-        this.$store.dispatch("delDocDataByDocId", data).then(
-          res => {
-            console.log('删除', res)
-          },
-          err => {
-            console.log(err);
-            }
-          );
+      //清空文书
+      delDocDataByDocId(data){
+        console.log("清空文书",data);
+        this.$refs.resetDocDiaRef.showModal(data);
       },
-
-       //通过案件id和表单类型Id查询已绑定文书
+      //通过案件id和表单类型Id查询已绑定文书
       getDocListByCaseIdAndFormId() {
         let data = {
           linkTypeId: "a36b59bd27ff4b6fe96e1b06390d204h" //环节ID

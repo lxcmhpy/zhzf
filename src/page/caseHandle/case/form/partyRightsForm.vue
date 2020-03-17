@@ -208,7 +208,7 @@
     <partyRightsEvidence ref="partyRightsEvidenceRef" @findEvidenceEmit="findEvidence"></partyRightsEvidence>
     <editEvidenceName ref="editEvidenceNameRef" @findEvidenceEmit="findEvidence"></editEvidenceName>
     <showEvidenDia ref="showEvidenDiaRef"></showEvidenDia>
-
+    <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
   </div>
 </template>
 <script>
@@ -218,7 +218,7 @@ import checkDocFinish from '../../components/checkDocFinish'
 import partyRightsEvidence from '@/page/caseHandle/components/partyRightsEvidence'
 import editEvidenceName from '@/page/caseHandle/components/editEvidenceName'
 import showEvidenDia from '@/page/caseHandle/components/showEvidenDia'
-
+import resetDocDia from '@/page/caseHandle/components/resetDocDia'
 import { findByCondition,deleteDocByIdApi,
     } from "@/api/caseHandle";
 export default {
@@ -227,6 +227,7 @@ export default {
     partyRightsEvidence,
     editEvidenceName,
     showEvidenDia,
+    resetDocDia
   },
   data() {
     return {
@@ -301,6 +302,11 @@ export default {
     //查看文书
     viewDoc(row) {
       this.com_viewDoc(row);
+    },
+    //清空文书
+    delDocDataByDocId(data){
+      console.log("清空文书",data);
+      this.$refs.resetDocDiaRef.showModal(data);
     },
     //预览pdf
     viewDocPdf(row){

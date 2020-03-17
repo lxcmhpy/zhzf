@@ -334,7 +334,7 @@ export const mixinGetCaseApiList = {
           this.docTableDatas = res.data;
           this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
           console.log('文书列表', this.docTableDatas);
-          if (params.linkTypeId == '2c90293b6c178b55016c17c93326000f' || params.linkTypeId == '2c9029e16c753a19016c755fe1340001'  || params.linkTypeId == 'a36b59bd27ff4b6fe96e1b06390d204h') { //调查类文书和分期延期缴纳
+          if (params.linkTypeId == '2c90293b6c178b55016c17c93326000f' || params.linkTypeId == '2c9029e16c753a19016c755fe1340001'  || params.linkTypeId == 'a36b59bd27ff4b6fe96e1b06390d204h') { //调查类文书和分期延期缴纳、强制执行
             this.setMoreDocTableTitle();
           }
         },
@@ -532,14 +532,13 @@ export const mixinGetCaseApiList = {
       
       //既是环节也是文书的
       let isHuanjieDoc = false;
-      debugger
       if (data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204g" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204h") {
         isHuanjieDoc = true;
       }
       this.$store.dispatch('deleteTabs', 'flowChart');
       let data2 = this.com_getCaseRouteName(data.linkID);
       this.$store.commit('setDocId', data.docId);
-      
+      debugger
       if (data.curLinkState == "complete") {    //已完成文书显示pdf
         if (!isHuanjieDoc) {
           this.$router.push({ name: 'myPDF', params: { docId: data2.docId, isComplete: true } })

@@ -326,6 +326,7 @@
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <chooseAskPeopleDia ref="chooseAskPeopleDiaRef"></chooseAskPeopleDia>
+    <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
   </div>
 </template>
 <script>
@@ -333,7 +334,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from "../components/checkDocFinish";
 import chooseAskPeopleDia from "@/page/caseHandle/components/chooseAskPeopleDia";
-
+import resetDocDia from '@/page/caseHandle/components/resetDocDia'
 import {
   validateIDNumber,
   validatePhone,
@@ -342,7 +343,8 @@ import {
 export default {
   components: {
     checkDocFinish,
-    chooseAskPeopleDia
+    chooseAskPeopleDia,
+    resetDocDia
   },
   data() {
     return {
@@ -493,6 +495,11 @@ export default {
       console.log("添加");
 
       this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
+    },
+    //清空文书
+    delDocDataByDocId(data){
+      console.log("清空文书",data);
+      this.$refs.resetDocDiaRef.showModal(data);
     },
     //预览pdf
     viewDocPdf(row) {
