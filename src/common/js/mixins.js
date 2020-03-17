@@ -284,7 +284,11 @@ export const mixinGetCaseApiList = {
       this.caseDocDataForm.status = handleType;
       console.log('caseDocDataForm',this.caseDocDataForm);
       if (handleType) {
-        this.$refs[docForm].validate(valid => {
+        // this.$refs[docForm].validate();
+        this.$refs[docForm].validate((valid,noPass) => {
+          console.log('valid',valid);
+          console.log('noPass',noPass);
+          
           if (valid) {
             this.$store.dispatch("addDocData", this.caseDocDataForm).then(
               res => {
@@ -302,7 +306,16 @@ export const mixinGetCaseApiList = {
               }
             );
           } else {
-            console.log('error submit!!');
+            // noPass[Object.keys(v)[0]]
+            let a = Object.values(noPass)[0];
+            console.log(a);
+            this.$message({
+              showClose: true,
+              message: a[0].message,
+              type: 'error',
+              offset:100,
+              customClass:'validateErrorTip'
+            });
             return false;
           }
 

@@ -2,23 +2,30 @@ import store from "@/store";
 
 let needLoadingRequestCount = 0
 
-export function showFullScreenLoading() {
+export function showFullScreenLoading(type) {
  if (needLoadingRequestCount === 0) {
-  startLoading()
+  startLoading(type)
  }
  needLoadingRequestCount++
 }
 
-export function tryHideFullScreenLoading() {
+export function tryHideFullScreenLoading() { 
   if (needLoadingRequestCount <= 0) return
   needLoadingRequestCount--
   if (needLoadingRequestCount === 0) {
    endLoading()
   }
  }
- function startLoading() {
-  store.dispatch("setLoadingState", true);
+ function startLoading(type) {
+   let data = {
+     flag:true,
+     type:type
+   }
+  store.dispatch("setLoadingState", data);
  }
  function endLoading() {
-  store.dispatch("setLoadingState", false);
+  let data = {
+    flag:true,
+  }
+  store.dispatch("setLoadingState", data);
  }

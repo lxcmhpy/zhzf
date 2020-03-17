@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-loading v-show="loading"></v-loading>
-    <router-view v-if="isRouterAlive"/>
+    <router-view v-if="isRouterAlive"/> 
   </div>
 </template>
 

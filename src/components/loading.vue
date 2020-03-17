@@ -4,17 +4,38 @@
 // 2.接口成功调用后： this.$store.dispatch('setLoadingState', false)
 
 <template>
-    <div class="loading">
-        <div class="mask"></div>
-            <!-- <img  class="load" src="../../static/images/gif/loading1.gif"> -->
-			<div class="load">
-				<!-- <img src="../assets/image/main/logo.png" class="rotate"/> -->
-				<!-- <p>loading...</p> -->
-			</div>
-
+    <div>
+      <!-- <div class="loading" v-show="loadingType != 'loadMain'">
+        <div class="mask"></div> 
+			  <div class="load"></div>
+      </div> -->
+      <div class="loading" v-show="loadingType == 'loadFull'">
+        <div class="mask"></div> 
+        <div class="load"></div>
+      </div>
+      <div class="loadingMain" v-show="loadingType == 'loadMain'">
+        <div class="load"></div>
+      </div>
+      <div class="loadingPart" v-show="loadingType == 'loadPart'">
+        <div class="load"></div>
+      </div>
     </div>
+    
 </template>
+<script>
 
+import { mapGetters } from "vuex";
+export default {
+  data() {
+    return {
+     
+    };
+  },
+  computed: {
+    ...mapGetters(["loadingType"])
+  }
+};
+</script>
 <style lang="scss">
 
 .loading {
@@ -88,5 +109,77 @@
     50% { background:url(../../static/images/gif/2.png)}
     100% { background:url(../../static/images/gif/3.png) }
     }
+}
+.loadingMain{
+  position: fixed;
+  z-index: 99999998;
+  width: calc(100% - 200px);
+  height: calc(100% - 92px);
+  left: 200px;
+  top:92px;
+   background: rgba(234, 237, 244, 1);
+  .load {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 152px;
+    height: 90px;
+    // background: url(../../static/images/gif/loading1.gif) !important;
+    opacity: 1;
+    z-index: 1003;
+    border-radius: 10px;
+    /*设置关键帧的播放时间*/
+    animation:turns2 0.8s infinite linear;
+
+    img {
+      width: 100px;
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      margin-left: -50px;
+      // animation: spin1 1s linear infinite ;
+      // transform-origin: center;
+    }
+    
+    
+  }
+}
+
+.loadingPart{
+  position: fixed;
+  z-index: 99999997;
+  width: calc(100% - 200px);
+  height: calc(100% - 92px);
+  left: 200px;
+  top:92px;
+  background: rgba(234, 237, 244, 1);
+  opacity: 0.7;
+  .load {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 152px;
+    height: 90px;
+    // background: url(../../static/images/gif/loading1.gif) !important;
+    opacity: 1;
+    z-index: 1003;
+    border-radius: 10px;
+    /*设置关键帧的播放时间*/
+    animation:turns2 0.8s infinite linear;
+
+    img {
+      width: 100px;
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      margin-left: -50px;
+      // animation: spin1 1s linear infinite ;
+      // transform-origin: center;
+    }
+    
+    
+  }
 }
 </style>
