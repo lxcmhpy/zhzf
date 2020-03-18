@@ -138,7 +138,7 @@ import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // import signture from "../../../../js/signture";
 import mySignture from "@/common/js/mySignture";
-
+  import iLocalStroage from "@/common/js/localStroage"
 export default {
   components: {
     overflowInput,
@@ -170,7 +170,9 @@ export default {
         caseDoctypeId: this.$route.params.docId, //文书类型ID
         //文书数据
         docData: "",
-        status: "" //提交状态
+        status: "", //提交状态
+        //多份文书的docDataId
+        docDataId:""
       },
       name: '',
       inputInfo: '',
@@ -306,13 +308,20 @@ export default {
       docId: this.$route.params.docId
     };
 
-
+    debugger;
     //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
     if (this.$route.params.handelType == 'isAddMore') {
       console.log('多份文书', this.$route.params.handelType)
       this.com_getCaseBasicInfo(data.caseId, data.docId);
     } else {
-      this.getDocDetailById(this.$route.params.docDataId)
+      debugger
+      // this.getDocDetailById(this.$route.params.docDataId)
+      let currentDocDataId = iLocalStroage.get("currentDocDataId");
+      if(currentDocDataId){
+        this.getDocDetailById(currentDocDataId)
+      }else{
+        this.getDocDetailById(this.$route.params.docDataId)
+      }
     }
     // var flag=this.$route.params.status;
     // console.log("11110",flag);
@@ -342,8 +351,6 @@ export default {
     //     }     
     // }
     // this.click()
-
-    debugger;
 
     if (this.$route.params.approvalForm.executeHandle == 0) {
       // 拒绝

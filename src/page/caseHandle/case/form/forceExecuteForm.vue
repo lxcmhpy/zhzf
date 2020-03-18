@@ -227,7 +227,8 @@
   import { mapGetters } from "vuex";
   import checkDocFinish from "../../components/checkDocFinish";
   import chooseHandleTypeDia from '@/page/caseHandle/components/chooseHandleTypeDia';
-  import resetDocDia from '@/page/caseHandle/components/resetDocDia'
+  import resetDocDia from '@/page/caseHandle/components/resetDocDia';
+  import iLocalStroage from "@/common/js/localStroage"
   export default {
     components: {
       checkDocFinish,
@@ -442,6 +443,7 @@
       viewDoc(row) {
         //为'中止（终结、恢复）强制执行'时弹出选择框
         if (row.docId == "2c902908696a1fc501696a754e3b0002") {
+          iLocalStroage.removeItem("currentDocDataId");
           this.$refs.chooseHandleTypeDiaRef.showModal(row, this.isSaveLink);
         } else {
           this.com_viewDoc(row);
@@ -467,7 +469,8 @@
           hasApprovalBtn: false,
           docId: row.docId,
           approvalOver: false,
-          hasBack: true
+          hasBack: true,
+          docDataId:row.docDataId
         };
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.push({ name: "myPDF", params: routerData });
