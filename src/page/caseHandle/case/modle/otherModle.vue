@@ -286,6 +286,7 @@ export default {
         docData: "",
         status: "",   //提交状态
         note:"",//文书名字
+        docDataId:"", //多份文书的id
       },
       num4: 1,
       lineStyleFlag: false,
@@ -360,17 +361,23 @@ export default {
       };
       //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
       let addMoreData = JSON.parse(this.$route.params.addMoreData);
-      
-      
-      if(addMoreData.handelType == 'isAddMore'){
+    
+      if(addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")){
         //设置询问笔录名称
         console.log('添加')
         this.caseDocDataForm.note = "询问笔录（"+addMoreData.askData.peopleType+")(第"+addMoreData.askData.askNum +"次)";
         this.com_getCaseBasicInfo(data.caseId,data.docId);
       }else{
         console.log('修改')
-        this.getDocDetailById(this.$route.params.docDataId)
+        let currentDocDataId = iLocalStroage.get("currentDocDataId");
+        if(currentDocDataId){
+          this.getDocDetailById(currentDocDataId)
+        }else{
+          this.getDocDetailById(this.$route.params.docDataId)
+        }
       }
+      // this.getDocDetailById(this.$route.params.docDataId)
+
       this.docData.qaList.push({
         question: '',
         answer: '',
