@@ -712,7 +712,7 @@ export default {
         caseSource: "", //案件来源
         caseSourceText: "", //案件来源后的
         afsj: "", //案发时间
-        acceptTime: "", //受案时间
+        acceptTime: new Date().format('yyyy-MM-dd HH:mm'), //受案时间
         caseCauseId: "", //违法行为id
         caseCauseName: "", //违法行为
         zfmlId: "", //执法门类ID
@@ -1004,6 +1004,7 @@ export default {
         console.log(val);
         this.driverOrAgentInfoList[0].name = this.inforForm.party;
         this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
+        this.driverOrAgentInfoList[0].zhengjianNumber = this.inforForm.partyIdNo;
         this.driverOrAgentInfoList[0].sex = this.inforForm.partySex;
         this.driverOrAgentInfoList[0].age = this.inforForm.partyAge;
         this.driverOrAgentInfoList[0].tel = this.inforForm.partyTel;
@@ -1226,11 +1227,30 @@ export default {
         res => {
           console.log('获取案件信息', res)
           _this.inforForm = res.data;
+          this.handleCaseData(res.data);
         },
         err => {
           console.log(err);
         }
       );
+    },
+    //处理数据回显问题
+    handleCaseData(data){
+      console.log('handleCaseData方法',data);
+      //使当事人类型选中
+      if(data.partyType=="1"){
+        this.inforForm.partyType=1;
+      }else{
+        this.inforForm.partyType=2;
+      }
+      if(data.partySex=="1"){
+        this.inforForm.partySex=1;
+      }else{
+        this.inforForm.partySex=0;
+      }
+      //驾驶人或代理人
+      this.driverOrAgentInfoList=JSON.parse(data.agentPartyEcertId);
+      console.log('驾驶人或代理人',JSON.parse(data.agentPartyEcertId));
     },
     // 超重限制及抽屉表
     weightLimit(type) {
