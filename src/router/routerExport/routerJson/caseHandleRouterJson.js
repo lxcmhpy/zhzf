@@ -120,24 +120,6 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/caseDoc.vue")
   },
-  //违法行为通知书
-  // {
-  //   path: "/illegalAction",
-  //   name: "illegalAction",
-  //   meta: {
-  //     title: "违法行为通知书"
-  //   },
-  //   component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
-  // },
-  {
-    path: "/inquirieForm",
-    name: "inquirieForm",
-    meta: {
-      title: "询问笔录",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/form/inquirieRecordForm.vue")
-  },
   {
     path: "/evidenceListForm",
     name: "evidenceListForm",
@@ -146,15 +128,6 @@ export default [
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/evidenceListForm.vue")
-  },
-  {
-    path: "/obtaineEvidenceForms",
-    name: "obtaineEvidenceForms",
-    meta: {
-      title: "抽样取样凭证",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/form/obtaineEvidenceForm.vue")
   },
   {
     path: "/obtaineEvidenceForm",

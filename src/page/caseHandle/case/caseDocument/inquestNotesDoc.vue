@@ -73,36 +73,36 @@
         <p>
           当事人（当事人代理人）姓名：<el-form-item prop="partyPeople" style="width:80px">
             <el-input type='textarea' v-model="docData.partyPeople" v-bind:class="{ over_flow:docData.partyPeople.length>4?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="10"></el-input>
+                    :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="10" :disabled="!partyOriginalData.partyPeople ? false : true"></el-input>
           </el-form-item>
           性别：<el-form-item prop="partyPeopleSex" style="width:70px">
             <!-- <el-input v-model="docData.partyPeopleSex" :maxLength='maxLength' placeholder="\"></el-input> -->
-            <el-select v-model="docData.partyPeopleSex" :maxLength="maxLength" placeholder="\">
+            <el-select v-model="docData.partyPeopleSex" :maxLength="maxLength" placeholder="\" :disabled="!partyOriginalData.partyPeopleSex ? false : true">
               <el-option :value="0" label="男"></el-option>
               <el-option :value="1" label="女"></el-option>
             </el-select>
           </el-form-item>
           年龄：<el-form-item prop="partyPeopleAge" style="width:60px">
-            <el-input v-model="docData.partyPeopleAge" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-input v-model="docData.partyPeopleAge" :maxLength='maxLength' placeholder="\" :disabled="!partyOriginalData.partyPeopleAge ? false : true"></el-input>
           </el-form-item>
         </p>
     
         <p>
           身份证号：<el-form-item prop="partyPeopleIdNo" style="width:180px">
-            <el-input v-model="docData.partyPeopleIdNo" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-input v-model="docData.partyPeopleIdNo" :maxLength='maxLength' placeholder="\" :disabled="!partyOriginalData.partyPeopleIdNo ? false : true"></el-input>
           </el-form-item>
           单位及职务：<el-form-item prop="partyPeopleUnitAndPosition" style="width180">
             <el-input type='textarea' v-model="docData.partyPeopleUnitAndPosition" v-bind:class="{ over_flow:docData.partyPeopleUnitAndPosition.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35"></el-input>
+                    :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="!partyOriginalData.partyPeopleUnitAndPosition.trim() ? false : true"></el-input>
           </el-form-item>
         </p>
         <p>
           住址：<el-form-item prop="partyPeopleAddress" style="width:200px">
             <el-input  type="textarea" v-model="docData.partyPeopleAddress" maxLength='40' placeholder="\" v-bind:class="{ over_flow:docData.partyPeopleAddress.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                    :autosize="{ minRows: 1, maxRows: 2}" :disabled="!partyOriginalData.partyPeopleAddress ? false : true"></el-input>
           </el-form-item>
           联系电话：<el-form-item prop="partyPeopleTel" style="width:200px">
-            <el-input v-model="docData.partyPeopleTel" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-input v-model="docData.partyPeopleTel" :maxLength='maxLength' placeholder="\" :disabled="!partyOriginalData.partyPeopleTel ? false : true"></el-input>
           </el-form-item>
         </p>
         <p>
@@ -180,6 +180,9 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { queryUserListByOrganIdApi } from "@/api/system";
 import iLocalStroage from "@/common/js/localStroage";
+import {
+  findCaseAllBindPropertyApi,
+} from "@/api/caseHandle";
 export default {
 
   data() {
@@ -231,18 +234,18 @@ export default {
         needDealData:true,
       },
       rules: {
-        partyPeople:[{ required: true, message: "请输入", trigger: "blur" }],
+        partyPeople:[{ required: true, message: "当事人姓名不能为空", trigger: "blur" }],
         partyPeopleTel:[{ validator:validatePhone , trigger: "blur" }],
         partyPeopleIdNo:[{ validator:validateIDNumber , trigger: "blur"}],
-        inquestAddress:[{ required: true, message: "请输入", trigger: "blur" }],
-        staff1:[{ required: true, message: "请输入", trigger: "blur" }],
-        staffUnitAndPosition1:[{ required: true, message: "请输入", trigger: "blur" }],
-        certificateId1:[{ required: true, message: "请输入", trigger: "blur" }],
-        staff2:[{ required: true, message: "请输入", trigger: "blur" }],
-        staffUnitAndPosition2:[{ required: true, message: "请输入", trigger: "blur" }],
-        certificateId2:[{ required: true, message: "请输入", trigger: "blur" }],
-        recorder:[{ required: true, message: "请输入", trigger: "blur" }],
-        inquestResult:[{ required: true, message: "请输入", trigger: "blur" }],
+        inquestAddress:[{ required: true, message: "勘验场所不能为空", trigger: "blur" }],
+        staff1:[{ required: true, message: "勘验人不能为空", trigger: "blur" }],
+        staffUnitAndPosition1:[{ required: true, message: "勘验人单位及职务不能为空", trigger: "blur" }],
+        certificateId1:[{ required: true, message: "执法证号不能为空", trigger: "blur" }],
+        staff2:[{ required: true, message: "勘验人不能为空", trigger: "blur" }],
+        staffUnitAndPosition2:[{ required: true, message: "勘验人单位及职务不能为空", trigger: "blur" }],
+        certificateId2:[{ required: true, message: "执法证号不能为空", trigger: "blur" }],
+        recorder:[{ required: true, message: "记录人不能为空", trigger: "blur" }],
+        inquestResult:[{ required: true, message: "勘验情况及结果不能为空", trigger: "blur" }],
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
@@ -266,6 +269,8 @@ export default {
       // userList:['papas'], //机构下的人员
       userData:[],
       needDealData:true,
+      needSetDisabled:true,
+      partyOriginalData:"",
     }
 
   },
@@ -370,6 +375,10 @@ export default {
       }
       this.setDataForPelple(dailiData);
     },
+    //设置禁用
+    setDataDisable(){
+
+    },
     //修改勘验人员
     changeStaff1(val){
       let staffIndex = this.docData.staff.split(',').indexOf(val);
@@ -415,7 +424,37 @@ export default {
         this.docData.partyPeopleUnitAndPosition = dailiData.company + " " + dailiData.position;
         this.docData.partyPeopleAddress = dailiData.adress;
         this.docData.partyPeopleTel = dailiData.tel;
-    }
+        //设置禁用
+        this.partyOriginalData =JSON.parse(JSON.stringify(this.docData));
+        console.log('this.partyOriginalData',this.partyOriginalData);
+    },
+    setDisabledData(){
+      let data = {
+        caseBasicInfoId: this.caseId,
+        typeId: this.$route.params.docId
+      };
+      console.log('data', data);
+      findCaseAllBindPropertyApi(data).then(
+        res => {
+          console.log('获取案件信息', res);
+          let caseOriData = JSON.parse(res.data.propertyData);
+          let agentPartyEcert = JSON.parse(caseOriData.agentPartyEcertId)[0];
+          this.partyOriginalData ={
+            partyPeople:caseOriData.partyType == '1' ? caseOriData.party : agentPartyEcert.name,
+            partyPeopleSex:caseOriData.partyType == '1' ? caseOriData.partySex : agentPartyEcert.sex,
+            partyPeopleIdNo:caseOriData.partyType == '1' ? caseOriData.partyIdNo : agentPartyEcert.zhengjianNumber,
+            partyPeopleAge:caseOriData.partyType == '1' ? caseOriData.partyAge : agentPartyEcert.age,
+            partyPeopleUnitAndPosition:caseOriData.partyType == '1' ? caseOriData.partyUnitPosition + " " + caseOriData.occupation : agentPartyEcert.company + " " + agentPartyEcert.position,
+            partyPeopleAddress:caseOriData.partyType == '1' ? caseOriData.partyAddress : agentPartyEcert.adress,
+            partyPeopleTel:caseOriData.partyType == '1' ? caseOriData.partyTel : agentPartyEcert.tel,
+          }   
+
+        },
+        error => {
+          console.log(error)
+        }
+      );
+    },
   },
   created() {
     this.getDocDataByCaseIdAndDocId(); 

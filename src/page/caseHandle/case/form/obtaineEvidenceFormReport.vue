@@ -2,7 +2,7 @@
   <div class="print_box" id='btnB'>
     <div class="print_info" id='obtanEvidence_print'>
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
-        <div class="doc_topic">抽样取证凭证</div>
+        <div class="doc_topic">抽样取证凭证1</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
@@ -15,14 +15,14 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party">
-                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" disabled placeholder="\"></el-input>
                 <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyIdNo">
-                <el-input type='textarea' v-model="docData.partyIdNo" :maxLength='18' placeholder="\" :autosize="{ minRows: 1, maxRows: 3}" :disabled="isParty ? false : true"></el-input>
+                <el-input type='textarea' v-model="docData.partyIdNo" :maxLength='18' placeholder="\" :autosize="{ minRows: 1, maxRows: 3}" :disabled="isParty && !originalData.partyIdNo ? false : true"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -30,13 +30,13 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" :disabled="isParty && !originalData.partyAddress ? false : true" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyTel">
-                <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\" :disabled="isParty ? false : true"></el-input>
+                <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\" :disabled="isParty && !originalData.partyTel ? false : true"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -301,60 +301,11 @@ export default {
       isPdf: '',
       isParty: true, //当事人类型为个人
       needDealData:true,
+      originalData:'',
     }
   },
   methods: {
-    // 获取带入信息
-    getCaseBasicInfo() {
-      let data = {
-        id: "2c902ae66ae2acc4016ae376f6f1007f"
-      };
-      let _this = this
-      this.$store.dispatch("getCaseBasicInfo", data).then(
-        res => {
-          _this.docData = res.data;
-          _this.docData.datasTotal = 0;
 
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
-
-    // 提交表单
-    addIllegalAction() {
-      console.log(this.CaseDocDataForm);
-      console.log('11')
-      let _this = this
-      this.$refs["docForm"].validate(valid => {
-        if (valid) {
-          _this.$store.dispatch("addDocData", _this.CaseDocDataForm).then(
-            res => {
-              console.log("保存文书", res);
-              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              _this.$message({
-                type: "success",
-                message: "保存成功"
-
-              });
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-
-      });
-
-    },
-    // 暂存
-    save() {
-
-    },
     // 日期变化
     dataChange() {
       if (this.docData.dataEnd && this.docData.dataStart) {
@@ -433,7 +384,6 @@ export default {
     }
   },
   mounted() {
-    this.getCaseBasicInfo();
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
   },
