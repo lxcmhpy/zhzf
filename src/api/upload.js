@@ -8,7 +8,8 @@ export  function  upload(data)  {
     method:  "POST",
     data: data,
     contentType: 'multipart/form-data;',
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken:  setCancelSource(),
     // responseType: 'blob'
   });
@@ -19,7 +20,8 @@ export function getFile(data) {
     method:  "GET",
     params: data,
     // contentType: 'multipart/form-data;',
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken:  setCancelSource(),
     // responseType: 'blob'
   });
@@ -32,7 +34,8 @@ export  function  uploadEvApi(data)  {
     method:  "POST",
     data: data,
     contentType: 'multipart/form-data;',
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken:  setCancelSource(),
   });
 }
@@ -41,7 +44,8 @@ export function findFileByIdApi(id) {
   return  request({
     url:  "/sys/file/findById/"+id,
     method:  "GET",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken:  setCancelSource(),
   });
 }
@@ -52,7 +56,8 @@ export function uploadEvdence(data) {
         method:  "POST",
         data: data,
         contentType: 'multipart/form-data;',
-        showloading: false,
+        showloading: true,
+        loadingType:'loadPart',
         responseType: 'blob',
         cancelToken:  setCancelSource(),
       });
@@ -63,7 +68,8 @@ export function deleteFileByIdApi(fileId) {
   return  request({
     url:  "/sys/file/delete/"+fileId,
     method:  "GET",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken:  setCancelSource(),
   });
 }

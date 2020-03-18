@@ -109,7 +109,7 @@ export const mixinGetCaseApiList = {
       //0暂存 1提交
       this.caseLinkDataForm.status = handleType;
       if (handleType) {
-        this.$refs[docForm].validate(valid => {
+        this.$refs[docForm].validate((valid,noPass) => {
           if (valid) {
             this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
               res => {
@@ -148,7 +148,16 @@ export const mixinGetCaseApiList = {
               }
             );
           }else{
-            console.log('验证未通过')
+            let a = Object.values(noPass)[0];
+            console.log(a);
+            this.$message({
+              showClose: true,
+              message: a[0].message,
+              type: 'error',
+              offset:100,
+              customClass:'validateErrorTip'
+            });
+            return false;
           }
         })
       } else {
