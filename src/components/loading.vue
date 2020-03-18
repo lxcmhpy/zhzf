@@ -17,7 +17,11 @@
         <div class="load"></div>
       </div>
       <div class="loadingPart" v-show="loadingType == 'loadPart'">
-        <div class="load"></div>
+        <div class="mask"></div> 
+        <div class="load">
+          <img src="../../static/images/img/car.svg"/>
+				  <p>加载中...</p>
+        </div>
       </div>
     </div>
     
@@ -143,6 +147,7 @@ export default {
     }
     
     
+    
   }
 }
 
@@ -153,8 +158,18 @@ export default {
   height: calc(100% - 92px);
   left: 200px;
   top:92px;
-  background: rgba(234, 237, 244, 1);
-  opacity: 0.7;
+  // background: rgba(234, 237, 244, 1);
+  // juopacity: 0.7;
+  .mask{
+    z-index: 1001;
+    position: fixed;
+    width: calc(100% - 200px);
+    height: calc(100% - 92px);
+    left: 200px;
+    top:92px;
+    opacity: 0.7;
+    background: rgba(234, 237, 244, 1);
+  }
   .load {
     position: fixed;
     left: 50%;
@@ -167,19 +182,28 @@ export default {
     z-index: 1003;
     border-radius: 10px;
     /*设置关键帧的播放时间*/
-    animation:turns2 0.8s infinite linear;
-
-    img {
-      width: 100px;
+    // animation:turns2 0.8s infinite linear;
+    text-align: center;
+    img{
+      animation:changeCar 2s infinite linear;
+    }
+    p{
+      color:#4573D0;
+      font-size: 13px;
       position: absolute;
       top: 50px;
-      left: 50%;
-      margin-left: -50px;
-      // animation: spin1 1s linear infinite ;
-      // transform-origin: center;
+      left: 0;
+      right: 0;
     }
     
-    
+  }
+  @keyframes changeCar{
+      0% {width: 0px;height: 0px;opacity: 0;}
+      10% {width: 11px;height: 8px;opacity: 0.2;}
+      20% {width: 22px;height: 16px;opacity: 0.2;}
+      40% {width: 33px;height: 24px;opacity: 0.6;}
+      70% {width: 44px;height: 32px;opacity: 0.8;}
+      100% {width: 55px;height: 40px;opacity: 1;}
   }
 }
 </style>

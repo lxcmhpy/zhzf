@@ -287,7 +287,7 @@ export default {
     //当事人类型为公司时验证
     var validateIfCom = (rule, value, callback) => {
       if (!this.isParty && !value) {
-        return callback(new Error("请输入"));
+        return callback(new Error("法定代表人、地址、联系电话、信用代码不能为空"));
       }
       callback();
     };
@@ -333,25 +333,24 @@ export default {
       },
       rules: {
         caseName: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "案由不能为空", trigger: "blur" }
         ],
         partyIdNo: [
-          { required: true, message: "请输入", trigger: "blur" },
+          { required: true, message: "身份证号不能为空", trigger: "blur" },
           { validator: validateIDNumber, trigger: "blur" }
         ],
         partyTel: [
-          { required: true, message: "请输入", trigger: "blur" },
+          { required: true, message: "联系电话不能为空", trigger: "blur" },
           { validator: validatePhone, trigger: "blur" }
         ],
         partyAddress: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "住址不能为空", trigger: "blur" }
         ],
         partyAge: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "年龄不能为空", trigger: "blur" }
         ],
         partySex: [
-
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "请选择性别", trigger: "change" }
         ],
         partyManager: [
           { validator: validateIfCom, trigger: "blur" }
@@ -367,7 +366,7 @@ export default {
           { validator: validateIfCom, trigger: "blur" }
         ],
         caseSituation: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "案件基本情况不能为空", trigger: "blur" }
         ],
         
 

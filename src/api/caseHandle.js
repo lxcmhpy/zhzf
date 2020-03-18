@@ -8,7 +8,8 @@ export function getEnforceLawTypeApi(organId) {
   return request({
     url: "/sys/lawCategory/findLawCateByOrganId/" + organId,
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -23,7 +24,8 @@ export function getCaseTypeApi(data) {
     url: "/sys/lawCategory/queryLawCateOrganType",
     method: "get",
     params: params,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -35,7 +37,8 @@ export function getIndustryCategoryApi(data) {
     return request({
       url: "/sys/lawCategory/getLawCategoryListVo",
       method: "get",
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       params:params,
       cancelToken: setCancelSource()
     });
@@ -47,7 +50,8 @@ export function getIllegaActApi(data) {
       url: "/sys/bnslawCause/findCaseCauseByPage",
       method: "get",
       params:data,
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       cancelToken: setCancelSource()
     });
 }
@@ -62,7 +66,8 @@ export function saveOrUpdateCaseBasicInfoApi(data) {
     url: "/doc/caseBasicInfo/saveOrUpdateCaseBasicInfo",
     method: "post",
     data:data2,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -75,7 +80,8 @@ export function updatePartCaseBasicInfoApi(data) {
     url: "/doc/caseBasicInfo/updatePartCaseBasicInfo",
     method: "post",
     data:data2,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -87,7 +93,8 @@ export function findLawRegulationsByCauseIdApi(causeId) {
   return request({
     url: "/sys/bnslawCause/findLawRegulationsByCauseId/"+causeId,
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -97,7 +104,8 @@ export function findJudgFreedomListApi() {
   return request({
     url: "/sys/bnslawCause/findDiscretionListByForm",
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -110,7 +118,8 @@ export function findLawOfficerListApi(organId) {
     url: "/sys/lawOfficer/listLawOfficer",
     method: "get",
     params:params,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -121,7 +130,8 @@ export function getCaseBasicInfoApi(data) {
     url: "/doc/caseBasicInfo/findById/"+data.id,
     method: "get",
     // params:params,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -133,7 +143,8 @@ export function addDocDataApi(data) {
     url: "/doc/data/create",
     method: "post",
     data:vm.$qs.stringify(data),
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -145,7 +156,8 @@ export function delDocDataByDocIdApi(data) {
     url: "/doc/data/findByCaseIdAndDocId/"+data.id,
     method: "get",
     // params:data,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -157,7 +169,8 @@ export function getDocDataByCaseIdAndDocIdApi(data) {
     method: "get",
     // data:vm.$qs.stringify(data),
     params:data,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -171,7 +184,8 @@ export function getFormDataByCaseIdAndFormIdApi(data) {
     method: "get",
     // data:vm.$qs.stringify(data),
     // params:data,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -184,7 +198,8 @@ export function addFormDataApi(data) {
     url: "/doc/linkData/saveOrUpdateLink",
     method: "post",
     data:vm.$qs.stringify(data),
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -205,7 +220,8 @@ export function getDocListByCaseIdAndFormIdApi(data){
     url: "/doc/caseLinkDoc/findListByCaseIdAndLinkTypeId/"+data.casebasicInfoId+"/"+data.linkTypeId,
     method: "get",
     // params:data,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -215,7 +231,8 @@ export function submitPdfApi(data) {
     url: "/doc/linkData/jumpNextLink",
     method: "post",
     data:vm.$qs.stringify(data),
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -226,7 +243,8 @@ export function saveOrUpdateLinkApi(data){
     method: "post",
     // params:data,
     data: vm.$qs.stringify(data),
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -238,7 +256,8 @@ export function approvalPdfApi(data) {
     url: "/doc/linkData/handleApprove",
     method: "post",
     data:vm.$qs.stringify(data),
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -247,7 +266,8 @@ export function getNextLinkAPi(caseBasicInfoId) {
   return request({
     url: "doc/caseBasicInfo/findNextLinkUrlByCaseId/"+caseBasicInfoId,
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -258,7 +278,8 @@ export function setFlowStatusAPi(data) {
     url: "doc/linkData/jumpNextStep",
     method: "post",
     data:data,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -268,7 +289,8 @@ export function getApprovePeopleApi(caseBasicInfoId) {
   return request({
     url: "/doc/linkData/findApproveRole/"+caseBasicInfoId,
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -278,7 +300,8 @@ export function getQueryLinkListApi() {
   return request({
     url: "/caseTemplate/linkType/queryLinkList",
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -287,7 +310,8 @@ export function getQueryCaseTypeListApi() {
   return request({
     url: "/sys/caseType/list",
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -297,7 +321,8 @@ export function findCaseAllBindPropertyApi(data) {
   return request({
     url: "/doc/propertyBind/findAllBindProperty/"+data.typeId+"/"+data.caseBasicInfoId,
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -308,7 +333,8 @@ export function findByCaseBasicInfoIdApi(caseBasicInfoId) {
   return request({
     url: "/doc/data/findByCaseBasicInfoId/"+caseBasicInfoId,
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -320,7 +346,8 @@ export function findEvidencePicApi(data) {
     url: "doc/evidence/findListByCondition",
     method: "post",
     data:data2,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -348,7 +375,8 @@ export function findByMlCaseIdNew(caseId) {
     return request({
             url: "/doc/docCatalog/findCatalogByCaseId/"+caseId,
             method: "get",
-            showloading: false,
+            showloading: true,
+            loadingType:'loadPart',
             cancelToken: setCancelSource()
         });
 }
@@ -359,7 +387,8 @@ export function findByCondition(data){
         url: "/doc/evidence/findByCondition",
         method: "post",
         data:data2,
-        showloading: false,
+        showloading: true,
+        loadingType:'loadPart',
         cancelToken: setCancelSource()
       });
 }
@@ -372,7 +401,8 @@ export function saveOrUpdateEvdencenApi2(data) {
     url: "doc/evidence/saveOrUpdateEvdencen",
     method: "post",
     data:data2,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -385,7 +415,8 @@ export function updateEvdenceNameApi(data) {
     url: "doc/evidence/updateEvdenceName",
     method: "post",
     data:data2,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -395,7 +426,8 @@ export function deleteDocByIdApi(docId) {
   return request({
       url: "/doc/data/deleteById/"+docId,
       method: "get",
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       cancelToken: setCancelSource()
   });
 }
@@ -404,7 +436,8 @@ export function getDocDetailByIdApi(id) {
   return request({
     url: "/doc/data/findById/"+id,
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -414,7 +447,8 @@ export function findPersonAndRelationByCaseIdApi(params) {
   return request({
     url: "doc/data/findPersonAndRelationByCaseId/"+params.caseBasicInfoId,
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -429,7 +463,8 @@ export function findAskNumApi(params) {
     url: "doc/data/findByCaseIdAndName",
     method: "get",
     params:data,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -446,7 +481,8 @@ export function submitRelieveApi(params) {
     url: "doc/linkData/submitRelieve",
     method: "post",
     data:data2,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -456,7 +492,8 @@ export function findIsOrderApi(params) {
   return request({
     url: "doc/linkData/findIsOrder/"+params.caseBasicInfoId,
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -467,7 +504,8 @@ export function getHandleRecordApi(data) {
       url: "/doc/caseFormLogs/queryCaseFormLogsListPage",
       method: "GET",
       params: data,
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       cancelToken: setCancelSource()
     });
   }
@@ -477,7 +515,8 @@ export function getHandleRecordApi(data) {
       url: "/doc/evidence/findByCondition",
       method: "POST",
       params: data,
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       cancelToken: setCancelSource()
     });
   }
@@ -487,7 +526,8 @@ export function getHandleRecordApi(data) {
         url: "/doc/docCatalog/findBindingEvdinec",
         method: "GET",
         params: data,
-        showloading: false,
+        showloading: true,
+        loadingType:'loadPart',
         cancelToken: setCancelSource()
       });
   }
@@ -498,7 +538,8 @@ export function getHandleRecordApi(data) {
       url:"/doc/evidence/saveOrUpdateEvdencen",
       method:"POST",
       params:data,
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       cancelToken:setCancelSource()
     });
   }
@@ -509,7 +550,8 @@ export function getHandleRecordApi(data) {
         url:"/doc/docCatalog/saveOrUpdateDocCatalogList/",
         method:"POST",
         params:data2,
-        showloading: false,
+        showloading: true,
+        loadingType:'loadPart',
         cancelToken:setCancelSource()
       });
   }
@@ -519,7 +561,8 @@ export function getHandleRecordApi(data) {
       url: "/doc/data/findByCondition",
       method: "GET",
       params: data,
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       cancelToken: setCancelSource()
     });
   }
@@ -529,7 +572,8 @@ export function getHandleRecordApi(data) {
       url: "/doc/proof/findByCondition",
       method: "POST",
       params: data,
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       cancelToken: setCancelSource()
     });
   }
@@ -539,7 +583,8 @@ export function getHandleRecordApi(data) {
       url: "/doc/proof/saveOrUpdateProof",
       method: "POST",
       params: data,
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       cancelToken: setCancelSource()
     });
   }
@@ -548,7 +593,8 @@ export function getHandleRecordApi(data) {
     return request({
       url: "/sys/drawer/findAllDrawerById/"+data,
       method: "GET",
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       cancelToken: setCancelSource(),
     });
   }

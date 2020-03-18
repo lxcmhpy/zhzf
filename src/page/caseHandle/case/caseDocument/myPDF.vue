@@ -60,11 +60,20 @@ export default {
           console.log(11111111)
           // debugger
 
+          //多份文书按照docDataId取地址
           for(var i=0;i<res.length;i++) {
-              if(i==0) {
-                  // debugger
+              // if(i==0) {
+              //   _that.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
+              // }
+              if(this.$route.params.docDataId && this.$route.params.docDataId == res[i].docDataId){
+                console.log('res[i].storageId',res[i].storageId);
                 _that.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
-              }
+                break;
+             }
+          }
+          //单份文书取一个
+          if(_that.storagePath.length==0){
+            _that.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[0].storageId)
           }
         },
         err => {
