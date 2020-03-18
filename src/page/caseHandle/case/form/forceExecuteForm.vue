@@ -163,7 +163,6 @@
                   <span v-if="scope.row.name=='中止（终结、恢复）行政强制执行通知书'">
                     （{{finishDocCount}}/{{allDocCount}}）
                   </span>
-
                 </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">

@@ -414,8 +414,15 @@
 
         td {
             .is-required {
-                .el-form-item__content {
+                /* .el-form-item__content {
                     background: #F7C9CB !important;
+                } */
+
+                .el-input__inner,
+                .el-input__inner:focus,
+                .el-textarea__inner,
+                .el-textarea__inner:focus {
+                    background: transparent !important;
                 }
             }
         }
@@ -430,7 +437,7 @@
             .is-required {
 
                 .span_bg {
-                    background: #F7C9CB ;
+                    background: #F7C9CB;
                 }
             }
         }
@@ -1011,7 +1018,8 @@
                 background: transparent !important;
             }
         }
-        .span_bg{
+
+        .span_bg {
             background: #ffffff !important;
         }
 
@@ -1044,7 +1052,7 @@
 
         /* 多行 */
 
-        i{
+        i {
             display: none !important;
         }
 

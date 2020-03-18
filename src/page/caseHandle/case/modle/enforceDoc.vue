@@ -16,7 +16,7 @@
 
         <p>
           <span>
-            <el-form-item prop="caseName">
+            <el-form-item prop="caseName" class="width120">
               <el-input v-model="docData.caseName" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>一案，本机关于
@@ -36,12 +36,12 @@
         <p>
           <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">1.现因
           <span>
-            <el-form-item prop="stopReason">
+            <el-form-item :prop="disabledOne?'':'stopReason'" class="width120">
               <el-input v-model="docData.stopReason"  v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>，根据《中华人民共和国行政强制法》第三十九条第一款的规定，本机关决定自
           <span>
-            <el-form-item prop="executeTime" class="pdf_datapick">
+            <el-form-item :prop="disabledOne?'':'executeTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.executeTime" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
@@ -51,7 +51,7 @@
         <p>
           <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">2.现因
           <span>
-            <el-form-item prop="endReason">
+            <el-form-item :prop="disabledTwo?'':'endReason'" class="width120">
               <el-input v-model="docData.endReason" v-bind:disabled="disabledTwo" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>，根据《中华人民共和国行政强制法》第四十条的规定，本机关决定终结执行。
@@ -59,12 +59,12 @@
         <p>
           <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">3.你(单位)
           <span>
-            <el-form-item prop="caseName2">
-              <el-input v-model="docData.caseName2" v-bind:disabled="disabledThree" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="caseName2" class="width120">
+              <el-input  v-model="docData.caseName" v-bind:disabled="disabledThree" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>一案，本机关于
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick">
+            <el-form-item :prop="disabledThree?'':'serviceTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.serviceTime" v-bind:disabled="disabledThree" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
@@ -73,7 +73,7 @@
         <p>
           <input type="checkbox" name="measure" value="4" v-model="checknames" @change="click">4.本机关于
           <span>
-            <el-form-item prop="agreeTime" class="pdf_datapick">
+            <el-form-item :prop="disabledFour?'':'agreeTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.agreeTime" v-bind:disabled="disabledFour" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
@@ -180,7 +180,22 @@ export default {
       rules: {
         decisionTime: [
           { required: true, message: '请输入', trigger: 'blur' },
-        ]
+        ],
+        stopReason: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        executeTime: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        endReason: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        serviceTime: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        agreeTime: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
       },
       nameLength: 23,
       adressLength: 23,
@@ -299,23 +314,51 @@ export default {
     } else {
       this.getDocDetailById(this.$route.params.docDataId)
     }
+    // var flag=this.$route.params.status;
+    // console.log("11110",flag);
+    //   if (this.$route.params.status == '0') {
+    //     // 中止
+    //     this.checknames.push("1")
+    //     this.caseDocDataForm.note = "中止行政强制执行通知书";
+    //   }
+    //   else {
+    //     if (this.$route.params.status == '1') {
+    //       // 终结
+    //       this.checknames.push("2")
+    //       this.caseDocDataForm.note = "终结行政强制执行通知书";
+
+    //     }
+    //     if (this.$route.params.status == '2') {
+    //       // 恢复
+    //       this.checknames.push("3")
+    //       this.caseDocDataForm.note = "恢复行政强制执行通知书";
+
+    //     }
+    //     if (this.$route.params.status == '3') {
+    //       // 恢复
+    //       this.checknames.push("4")
+    //       this.caseDocDataForm.note = "恢复行政强制执行通知书";
+
+    //     }     
+    // }
+    // this.click()
 
     debugger;
 
-      if (this.$route.params.approvalForm.executeHandle == 0) {
-        // 拒绝
-        this.checknames.push("1")
-        this.caseDocDataForm.note = "中止行政强制执行通知书";
-      }else if(this.$route.params.approvalForm.executeHandle == 1){
-        this.checknames.push("2")
-        this.caseDocDataForm.note = "终结行政强制执行通知书";
-      }else if(this.$route.params.approvalForm.executeHandle == 2){
-         this.checknames.push("3")
-        this.caseDocDataForm.note = "恢复行政强制执行通知书";
-      }else if(this.$route.params.approvalForm.executeHandle == 3){
-         this.checknames.push("4")
-        this.caseDocDataForm.note = "恢复行政强制执行通知书";
-      }
+    if (this.$route.params.approvalForm.executeHandle == 0) {
+      // 拒绝
+      this.checknames.push("1")
+      this.caseDocDataForm.note = "中止行政强制执行通知书";
+    }else if(this.$route.params.approvalForm.executeHandle == 1){
+      this.checknames.push("2")
+      this.caseDocDataForm.note = "终结行政强制执行通知书";
+    }else if(this.$route.params.approvalForm.executeHandle == 2){
+        this.checknames.push("3")
+      this.caseDocDataForm.note = "恢复行政强制执行通知书";
+    }else if(this.$route.params.approvalForm.executeHandle == 3){
+        this.checknames.push("4")
+      this.caseDocDataForm.note = "恢复行政强制执行通知书";
+    }
       
 
 

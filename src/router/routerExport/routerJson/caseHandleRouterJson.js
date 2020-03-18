@@ -557,6 +557,14 @@ export default [
       },
       component: () => import("@/page/caseHandle/waitArchive/archiveCatalogueDetail.vue")
   },
+  {
+      path: "/addTransfer",
+      name: "addTransfer",
+      meta: {
+          title: "新增抄送"
+      },
+      component: () => import("@/page/caseHandle/cooperateCases/addPage.vue")
+  },
   // -----------------长软start----------------
   {
     path: "/evidenceListDoc",
