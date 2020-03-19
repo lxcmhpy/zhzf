@@ -122,7 +122,7 @@
             </el-form-item>
           </div>
           <div class="itemThird">
-            <el-form-item label="联系电话">
+            <el-form-item label="联系电话" prop="partyTel">
               <el-input v-model="inforForm.partyTel"></el-input>
             </el-form-item>
           </div>
@@ -161,11 +161,11 @@
         <div v-show="partyTypePerson!='1'">
           <div class="itemBig">
             <el-form-item label="单位名称" prop="partyName">
-              <el-input v-model="inforForm.partyName" maxlength="40" show-word-limit></el-input>
+              <el-input v-model="inforForm.partyName" maxlength="40"></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
-            <el-form-item label="联系电话">
+            <el-form-item label="联系电话" prop="partyUnitTel">
               <el-input v-model="inforForm.partyUnitTel"></el-input>
             </el-form-item>
           </div>
@@ -184,20 +184,20 @@
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemSmall">
-            <el-form-item label="法定代表人">
-              <el-input v-model="inforForm.partyManager"></el-input>
+            <el-form-item label="职务">
+              <el-input v-model="inforForm.partyManagerPositions" maxlength="20"></el-input>
             </el-form-item>
           </div>
           <div class="itemBig">
-            <el-form-item label="职务">
-              <el-input v-model="inforForm.partyManagerPositions"></el-input>
+            <el-form-item label="法定代表人">
+              <el-input v-model="inforForm.partyManager" maxlength="20"></el-input>
             </el-form-item>
           </div>
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemOne">
             <el-form-item label="地址">
-              <el-input v-model="inforForm.partyUnitAddress"></el-input>
+              <el-input v-model="inforForm.partyUnitAddress" maxlength="40"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -229,7 +229,7 @@
             </div>
             <div class="item appendSelect">
               <el-form-item label="证件类型" prop="partyIdNo">
-                <el-input placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber" class="input-with-select hasMargintop" :disabled="relationWithPartyIsOne && index==0">
+                <el-input placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber" @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)" class="input-with-select hasMargintop" :disabled="relationWithPartyIsOne && index==0">
                   <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType">
                     <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
@@ -252,7 +252,7 @@
               </el-form-item>
             </div>
             <div class="itemThird">
-              <el-form-item label="联系电话">
+              <el-form-item label="联系电话" prop="partyTel">
                 <el-input v-model="driverOrAgentInfo.tel" :disabled="relationWithPartyIsOne && index==0"></el-input>
               </el-form-item>
             </div>
@@ -592,8 +592,8 @@
         <div>
           <div class="itemOne">
             <el-form-item label="违法条款" prop="illegalLaw">
-              <el-input v-model="inforForm.illegalLaw">
-                <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
+              <el-input v-model="inforForm.illegalLaw" :disabled="true">
+                <el-button slot="append" icon="el-icon-search"  @click="showPunishDiag"></el-button>
               </el-input>
             </el-form-item>
           </div>
@@ -601,7 +601,7 @@
         <div>
           <div class="itemOne">
             <el-form-item label="处罚依据" prop="punishLaw">
-              <el-input v-model="inforForm.punishLaw">
+              <el-input v-model="inforForm.punishLaw" :disabled="true">
                 <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
               </el-input>
             </el-form-item>
@@ -675,8 +675,7 @@ import caseSlideMenu from '../components/caseSlideMenu'
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-
-import { validateIDNumber, validateAge, validateZIP } from '@/common/js/validator'
+import { validateIDNumber, validateAge, validateZIP, validatePhone } from '@/common/js/validator'
 export default {
   data() {
     //选择个人试验证
@@ -801,6 +800,12 @@ export default {
         ],
         partyZipCode: [
           { validator: validateZIP, trigger: "blur" }
+        ],
+        partyTel: [
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        partyUnitTel: [
+          { validator: validatePhone, trigger: "blur" }
         ],
       },
       //案件类型
@@ -1015,7 +1020,7 @@ export default {
         this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
         this.relationWithPartyIsOne = true;
       } else {
-        this.relationWithPartyIsOne = false;
+        this.relationWithPartyIsOne = true;
       }
     },
     //添加其他人信息
@@ -1236,7 +1241,9 @@ export default {
     },
     //处理数据回显问题
     handleCaseData(data){
+      let currentUserId = null;
       console.log('handleCaseData方法',data);
+      console.log('data.createId',data.createId);
       //使当事人类型选中
       if(data.partyType=="1"){
         this.inforForm.partyType=1;
@@ -1250,7 +1257,13 @@ export default {
       }
       //驾驶人或代理人
       this.driverOrAgentInfoList=JSON.parse(data.agentPartyEcertId);
-      console.log('驾驶人或代理人',JSON.parse(data.agentPartyEcertId));
+      //当前用户不是创建案件者，输入框设置为只读
+      // currentUserId = iLocalStroage.gets("userInfo").id;
+      // if(currentUserId!=data.createId){
+      //    let allInput = document.querySelectorAll('.el-input');
+        
+      // };
+      
     },
     // 超重限制及抽屉表
     weightLimit(type) {
@@ -1336,30 +1349,87 @@ export default {
     },
     //自动计算年龄
     changePartyIdType(idCard) {
-
-      let nowDate = new Date();
-      let year = nowDate.getFullYear();
-      let age = '';
-      console.log('year', year)
-      if (idCard != null && idCard != "") {
-        if (idCard.length == 15) {
-          age = year - ("19" + idCard.substr(6, 2));
-        } else if (idCard.length == 18) {
-          age = year - idCard.substr(6, 4);
+        let iden = idCard;
+        let val = idCard.length;
+        let sex = null;
+        let myDate = new Date();
+        let month = myDate.getMonth() + 1;
+        let day = myDate.getDate();
+        let age = 0;
+        if(val===18){
+          age = myDate.getFullYear() - iden.substring(6, 10) - 1;
+          sex = iden.substring(16,17);
+          if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
+ 
         }
-      }
-      // bug;
-      var sexData = idCard.substr(17, 1)
-      if (sexData % 2 == 0) {
-        this.inforForm.partySex = 1
-      }
-      if (sexData % 2 == 1) {
-        this.inforForm.partySex = 0
-      }
-      console.log('性别', sexData % 2)
-      // if()
-      console.log('年龄', age)
-      this.inforForm.partyAge = age;
+        if(val===15){
+          age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
+          sex = iden.substring(13,14);
+          if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
+        }
+ 
+        if(sex%2 === 0){
+          sex = 1;
+		    }else{
+          sex = 0;
+		    };
+        this.inforForm.partyAge = age;
+        this.inforForm.partySex = sex;
+      // let nowDate = new Date();
+      // let year = nowDate.getFullYear();
+      // let age = '';
+      // console.log('year', year)
+      // if (idCard != null && idCard != "") {
+      //   if (idCard.length == 15) {
+      //     age = year - ("19" + idCard.substr(6, 2));
+      //   } else if (idCard.length == 18) {
+      //     age = year - idCard.substr(6, 4);
+      //   }
+      // }
+      // // bug;
+      // var sexData = idCard.substr(17, 1)
+      // if (sexData % 2 == 0) {
+      //   this.inforForm.partySex = 1
+      // }
+      // if (sexData % 2 == 1) {
+      //   this.inforForm.partySex = 0
+      // }
+      // console.log('性别', sexData % 2)
+      // // if()
+      // console.log('年龄', age)
+      // this.inforForm.partyAge = age;
+    },
+    //自动计算年龄
+    changePartyIdType2(idCard,index) {
+        if(idCard==this.driverOrAgentInfoList[0].zhengjianNumber){
+          this.$message('省份证号不能相同');
+        }
+        let iden = idCard;
+        let val = idCard.length;
+        let sex = null;
+        let myDate = new Date();
+        let month = myDate.getMonth() + 1;
+        let day = myDate.getDate();
+        let age = 0;
+        if(val===18){
+          age = myDate.getFullYear() - iden.substring(6, 10) - 1;
+          sex = iden.substring(16,17);
+          if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
+ 
+        }
+        if(val===15){
+          age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
+          sex = iden.substring(13,14);
+          if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
+        }
+ 
+        if(sex%2 === 0){
+          sex = 1;
+		    }else{
+          sex = 0;
+		    };
+        this.driverOrAgentInfoList[index].age = age;
+        this.driverOrAgentInfoList[index].sex = sex;
     },
     noFue(val) {
       this.inforForm.partyAge = val >= 0 ? val : 0;

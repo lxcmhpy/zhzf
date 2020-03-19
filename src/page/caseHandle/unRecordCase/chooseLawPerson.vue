@@ -11,7 +11,7 @@
       <div class="choosed">
         <p>
           <span>已选人员</span>
-          <span>4</span>
+          <span>{{this.checkedUser.length}}</span>
         </p>
         <div>
           <el-tag
@@ -26,7 +26,7 @@
       <div class="choose">
         <p>
           <span>本机构人员</span>
-          <span>20</span>
+          <span>{{this.userList.length}}</span>
         </p>
         <el-input placeholder="请输入姓名或执法证号" class="input-with-select">
           <el-button slot="append" icon="el-icon-search"></el-button>
