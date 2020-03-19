@@ -510,9 +510,11 @@
     }
 
     .content_bg {
-        background: #FCFCFC;
-        padding   : 35px 36px 18px;
-        box-sizing: border-box;
+        background   : #FCFCFC;
+        padding      : 35px 36px 18px;
+        margin-bottom: 35px;
+        border       : 1px solid #EEEEEE;
+        box-sizing   : border-box;
 
     }
 
@@ -550,7 +552,7 @@
 
         .list {
             margin-top: 48px;
-            overflow: auto;
+            overflow  : auto;
 
         }
 
@@ -561,15 +563,93 @@
         }
 
         .el-checkbox {
-            margin-top: 18px;
-            display         : block;
-            padding-left : 23px;
-            white-space     : normal;
-            box-sizing      : border-box;
+            margin-top  : 18px;
+            display     : block;
+            padding-left: 23px;
+            white-space : normal;
+            box-sizing  : border-box;
 
-           
+
         }
     }
 
+    .times_info {
+        width         : 100%;
+        height        : auto;
+        border-bottom : 1px solid #D8DDE7;
+        padding-bottom: 26px;
+        color         : #20232B;
+        box-sizing    : border-box;
+        line-height   : 40px;
+    }
 
+
+}
+
+/* 协同办案详情 */
+.dentail_box {
+    height    : calc(100% - 44px);
+    background: #eaedf4;
+    box-sizing: border-box;
+
+    .el-form {
+        height: 100%;
+    }
+
+    .top {
+        height       : 413px;
+        background   : #fff;
+        margin-bottom: 22px;
+        -webkit-box-shadow: 0 6px 4px 0 rgba(94,137,181,.1);
+        box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+    }
+
+    .btm {
+        height    : calc(100% - 435px);
+        background: #fff;
+        overflow  : auto;
+        -webkit-box-shadow: 0 6px 4px 0 rgba(94,137,181,.1);
+        box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+    }
+
+    .tans_box {
+        display      : inline-block;
+        padding      : 0 17px;
+        width        : 299px;
+        height       : 44px;
+        line-height  : 44px;
+        background   : rgba(233, 236, 243, 1);
+        border-radius: 6px;
+        opacity      : 0.53;
+        font-size    : 16px;
+        font-weight  : 500;
+        color        : black;
+        text-align   : center;
+        box-sizing   : border-box;
+
+    }
+
+    .record_text {
+    
+        margin     : 24px 0;
+        font-size  : 18px;
+        font-weight: 500;
+        color      : rgba(32, 35, 43, 1);
+    }
+
+    .document_list {
+        ul {
+            min-height: 40px;
+        }
+
+        li {
+            margin-right: 32px;
+            float       : left;
+        }
+    }
+
+}
+
+.color_7B7B7B {
+    color: #7B7B7B;
 }

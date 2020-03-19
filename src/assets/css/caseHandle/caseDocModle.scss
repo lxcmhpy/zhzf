@@ -927,7 +927,15 @@
     width: 20px;
 
 }
-
+.width38 {
+    width: 38px;
+}
+.width100{
+    width: 100px;
+}
+.width96{
+    width: 96px;
+}
 .width120 {
     width: 120px;
 }
@@ -983,6 +991,14 @@
 
 .width476 {
     width: 476px;
+}
+
+.width537 {
+    width: 537px;
+}
+
+.width505 {
+    width: 505px;
 }
 
 .text_indent10 {
@@ -1410,7 +1426,12 @@
 
 /* 听证笔录 */
 .listen_data {
-    .el-date-editor {
-        width: 100% !important;
+
+    .el-date-editor.el-input__inner,
+    .el-date-editor.el-input {
+        width: 210px !important;
+
     }
+
+
 }

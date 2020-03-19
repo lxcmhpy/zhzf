@@ -1,7 +1,7 @@
 <template>
   <div class="handlePart caseHandleSearchPart">
     <div v-if="caseState == 'transfer'">
-      <el-button type="primary" size="medium" icon="el-icon-plus" @click="caseRecordEmit">新增移送</el-button>
+      <el-button type="primary" size="medium" icon="el-icon-plus" @click="newAdd">新增移送</el-button>
     </div>
     <div :class="caseState != 'transfer' ? 'fullWid' : '' ">
       <el-form :model="caseSearchForm" ref="caseSearchForm" class="caseSearchForm" label-width="100px">
@@ -114,8 +114,14 @@ export default {
       this.$emit("showSomeSearch");
       this.hideSomeSearch = !this.hideSomeSearch;
     },
-    caseRecordEmit() {
-      this.$emit("caseRecord");
+    newAdd() {
+    //   this.$emit("caseRecord");
+       this.$router.push({
+          name: 'addSelect',
+          params:{
+            fromSlide: true
+          }
+      })
     },
     //查询所以环节
     getAllLinkList() {

@@ -15,11 +15,13 @@
         <el-form-item label="证据附件" prop="hasfile">
           <el-input v-model="evidenceForm.hasfile" v-show="false"></el-input>
           <el-upload
+          ref="upload"
                     class="upload-demo"
                     action
                     :show-file-list="true"
                     :auto-upload="false"
-                    :on-change="fileChange" >
+                    :on-change="fileChange" 
+                    >
                     <el-button size="small" type="primary">选择文件</el-button>
           </el-upload>
         </el-form-item>
@@ -68,6 +70,12 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
+      this.evidenceForm={
+        evName: "",
+        hasfile: '',
+        linkId:'',
+      };
+      this.$refs.upload.clearFiles()
     },
     fileChange(file){
         console.log(file);

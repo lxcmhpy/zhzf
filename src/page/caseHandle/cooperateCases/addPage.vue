@@ -58,10 +58,6 @@
         <el-form-item label="备注" prop="desc">
           <el-input type="textarea" v-model="ruleForm.desc"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
-        </el-form-item>
         <div class="send_message">
           <div class="left margin_right_66">
             <div class="title">
@@ -187,6 +183,21 @@ export default {
   font-size: 18px;
   width: 42px !important;
   height: 42px;
+}
+.steps /deep/ .is-process /deep/.el-step__icon {
+  background: #4573d0;
+  color: #ffffff;
+  border-color: #4573d0;
+}
+.steps /deep/ .el-step__head.is-success {
+  color: #4573d0;
+  border-color: #4573d0;
+}
+.steps /deep/ .el-step__title.is-success {
+  color: #B2B2B2;
+}
+.steps /deep/ .el-step__icon /deep/.el-step__icon-inner {
+    font-weight: 400;
 }
 .steps /deep/ .el-step__main {
   white-space: normal;
