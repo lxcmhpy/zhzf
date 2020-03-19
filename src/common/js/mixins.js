@@ -275,6 +275,10 @@ export const mixinGetCaseApiList = {
             console.log(res.data[0]);
             this.caseDocDataForm.id = res.data[0].id;
             this.docData = JSON.parse(res.data[0].docData);
+            //设置禁用
+            if(this.needSetDisabled){
+              this.setDisabledData();
+            }
           }
           //判断当事人类型
           // console.log("docData",this.docData)
@@ -422,15 +426,16 @@ export const mixinGetCaseApiList = {
       if (this.caseDocDataForm != undefined) {
         // 只是文书
         docId = this.caseDocDataForm.caseDoctypeId;
+        //涉及到多份文书时，需要多加一个docDataId
+        if (this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) {
+          fd.append('docDataId', this.caseDocDataForm.docDataId);
+        }
       } else {
         //即是环节也是文书
         docId = this.huanjieAndDocId;
       }
       fd.append('docId', docId);
-      //涉及到多份文书时，需要多加一个docDataId
-      if (this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) {
-        fd.append('docDataId', this.caseDocDataForm.docDataId);
-      }
+      
       
       //已经上传过了，
       if (iLocalStroage.gets("currrentPdfData")) {
@@ -457,7 +462,7 @@ export const mixinGetCaseApiList = {
             docId: docId,
             approvalOver: this.approvalOver ? true : false,
             caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
-            docDataId:(this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : ''
+            docDataId:(this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : ''
           }
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({ name: 'myPDF', params: routerData })

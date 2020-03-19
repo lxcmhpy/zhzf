@@ -30,7 +30,7 @@
                 </el-form-item>
               </td>
               <td>执法时间</td>
-              <td colspan="3">
+              <td colspan="3" id="scenetimeBox">
                 <el-form-item prop="enforceStartTime" class="pdf_datapick">
                   <el-date-picker
                     v-model="docData.enforceStartTime"
@@ -287,6 +287,9 @@ import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+import {
+  findCaseAllBindPropertyApi,
+} from "@/api/caseHandle";
 // 验证规则
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 
@@ -618,13 +621,25 @@ export default {
         this.docData.scenePeopeTel = this.daiRuscenePeopeTel ? '' : this.docData.scenePeopeTel;
       }
     },
-    showTip(){
-      // alert(111111);
+    //获取执法人员
+    getLawOfficer(){
+      let data = {
+        caseBasicInfoId: this.caseId,
+        typeId: this.$route.params.docId
+      };
+        findCaseAllBindPropertyApi(data).then(res=>{
+          console.log(res);
+          let data2 = JSON.parse(res.data.propertyData);
+          this.staffList = data2.staff.split(',');
+        },err=>{
+          console.length(err);
+        })
     }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
+    this.getLawOfficer();
   }
 };
 </script>
@@ -651,6 +666,9 @@ export default {
   }
   .illegalFactsTip{
     text-align-last:auto;
+  }
+  #scenetimeBox .is-required .el-input__inner::-webkit-input-placeholder{
+    color: #000;
   }
 }
 </style>
