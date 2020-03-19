@@ -9,37 +9,37 @@
   >
     <el-form :model="addBannerForm" ref="addBannerForm" label-width="50px" class="addQuestForm">
       <el-form-item label="问：">你是否申请回避？</el-form-item>
-      <el-form-item label="答：">
-        <el-select v-model="region" placeholder="请选择">
-          <el-option label="不认识执法人员，不需要回避" value="no"></el-option>
-          <el-option label="认识执法人员，需要回避" value="yes"></el-option>
+      <el-form-item label="答：" class="questBox1">
+        <el-select v-model="huibi" placeholder="请选择">
+          <el-option label="不认识执法人员，不需要回避" value="不认识执法人员，不需要回避"></el-option>
+          <el-option label="认识执法人员，需要回避" value="认识执法人员，需要回避"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="选择问答模板" label-width="100px">
-        <el-row>
-          <el-col :span="8">
+      <el-form-item label="选择问答模板" label-width="100px" class="questBox1">
+        <el-row :gutter="20">
+          <el-col :span="8" >
             <el-select
               v-model="addBannerForm.templateType"
               placeholder="请选择"
               @change="changeChoose"
             >
               <el-option label="不使用" value="0"></el-option>
-              <el-option label="标准模板" value="1"></el-option>
-              <el-option label="通用模板" value="2"></el-option>
-              <el-option label="自定义模板" value="3"></el-option>
+              <el-option label="标准模板" value="11"></el-option>
+              <el-option label="通用模板" value="22"></el-option>
+              <el-option label="自定义模板" value="33"></el-option>
             </el-select>
           </el-col>
-          <el-col :span="16" v-if="chooseCustomTemplate">
-            <el-select v-model="addBannerForm.template" placeholder="请选择">
-              <el-option label="行业模版" value="1"></el-option>
-              <el-option label="门类模版" value="2"></el-option>
-              <!-- <option v-for="(item,index) in templateList" :key="index" :label="item" :value="item"></option> -->
+          <el-col :span="16" v-if="chooseCustomTemplate" >
+            <el-select v-model="addBannerForm.template" placeholder="请选择" >
+              <!-- <el-option label="行业模版" value="1"></el-option>
+              <el-option label="门类模版" value="2"></el-option> -->
+              <el-option v-for="(item,index) in modelList" :key="index" :label="item.modelName" :value="item.id"></el-option>
             </el-select>
           </el-col>
         </el-row>
       </el-form-item>
 
-      <div v-for="(domain, index) in addBannerForm.domains" :key="domain.key" style="margin-right:50px">
+      <div v-for="(domain, index) in addBannerForm.domains" :key="domain.key" >
         <el-form-item :label="'问' + (index +1)" :prop="'domains.' + index+ '.question'" class="domainsBox">
           <el-input type="textarea" :autosize="{ minRows: 2,}" v-model="domain.question" @focus="canEdit(index)"></el-input>
           <span class="handleBtn"><i class="el-icon-remove" type="primary" @click.prevent="removeDomain(domain)"></i><i type="primary" v-show="index == addBannerForm.domains.length-1" class="el-icon-circle-plus" @click="addDomain"></i></span>
@@ -70,13 +70,15 @@
 </template>
 <script>
 import templatQuestList from "./templatQuestList";
-
+import {
+  findModelListByModelTypeIdApi,findRequestListByModelIdApi,
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
       visible: false,
       dialogTitle: "填写问答",
-      region: "no",
+      huibi: "不认识执法人员，不需要回避",
       addBannerForm: {
         templateType: "0",
         template: "",
@@ -91,8 +93,10 @@ export default {
       },
       pathData: [], //传值
       chooseCustomTemplate: false, //是否选则自定义模版
-      templateList: ['行业模版','门类模版'],
+      // templateList: ['行业模版','门类模版'],
       editQuestIndex:0,
+      modelList:[],
+      modelId:'',
     };
   },
   components: {
@@ -104,7 +108,15 @@ export default {
       this.visible = true;
       this.dialogTitle = "问答编辑";
       console.log(data);
-      this.addBannerForm.domains = data;
+      if(data[0].question =='你是否申请回避？'){
+        this.huibi = data[0].answer;
+        let myQs = data.splice(0,1);
+        console.log('myQs',myQs);
+        this.addBannerForm.domains = myQs;
+      }else{
+        this.addBannerForm.domains = data;
+      }
+      
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -116,7 +128,16 @@ export default {
        let _this = this
       this.$refs['addBannerForm'].validate((valid) => {
           if (valid) {
-            console.log(_this.addBannerForm.domains)
+            console.log(_this.addBannerForm.domains);
+            // let data = {
+            //   askList:JSON.stringify(_this.addBannerForm.domains),
+            //   huiBi:this.huibi
+            // }
+            _this.addBannerForm.domains.unshift({
+              question: "你是否申请回避？",
+              answer: this.huibi,
+              key: Date.now()
+            })
             _this.$emit("QAModleInfo", JSON.stringify(_this.addBannerForm.domains));
             _this.visible = false;
           }
@@ -134,12 +155,14 @@ export default {
     },
     //选择问答模版
     changeChoose(val) {
-      if (val == "0" || val == "2") {
+      if (val == "0" || val == "22") {
         //不使用 通用模版
         this.chooseCustomTemplate = false;
       }else {
         //标准模版 自定义模版
         this.chooseCustomTemplate = true;
+
+        this.findModelList(val)
       }
     },
     addDomain() {
@@ -155,13 +178,29 @@ export default {
       if(this.addBannerForm.templateType == '0'){
 
       }else{
-        this.$refs.templatQuestListRef.showModal();
+        this.$refs.templatQuestListRef.showModal(this.addBannerForm.template);
       }
     },
     chooseQues(val){
       this.addBannerForm.domains[this.editQuestIndex].question = val;
-    }
+    },
+    //通过问答模板类型id查询问答模板
+    findModelList(modelTypeId){
+      findModelListByModelTypeIdApi(modelTypeId).then(res=>{
+        console.log(res);
+        this.modelList = res.data;
+      },err=>{
+        console.log(err);
+      })
+    },
+    
+    
   }
 };
 </script>
+<style lang="scss" >
+  .print_box .questBox1 .el-form-item__content .el-input .el-input__inner{
+    width: 100%;
+  }
+</style>
 

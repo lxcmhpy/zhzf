@@ -455,6 +455,20 @@ export default {
         }
       );
     },
+    //获取执法人员
+    getLawOfficer(){
+      let data = {
+        caseBasicInfoId: this.caseId,
+        typeId: this.$route.params.docId
+      };
+        findCaseAllBindPropertyApi(data).then(res=>{
+          console.log(res);
+          let data2 = JSON.parse(res.data.propertyData);
+          this.staffList = data2.staff.split(',');
+        },err=>{
+          console.length(err);
+        })
+    }
   },
   created() {
     this.getDocDataByCaseIdAndDocId(); 
@@ -464,6 +478,8 @@ export default {
     this.getDictKeyList();
     //加载记录人
     this.findUserByOrgan();
+    //获取执法人员
+    this.getLawOfficer();
   },
 }
 </script>

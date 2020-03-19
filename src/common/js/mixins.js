@@ -276,7 +276,7 @@ export const mixinGetCaseApiList = {
             this.caseDocDataForm.id = res.data[0].id;
             this.docData = JSON.parse(res.data[0].docData);
             //设置禁用
-            if(needSetDisabled){
+            if(this.needSetDisabled){
               this.setDisabledData();
             }
           }
