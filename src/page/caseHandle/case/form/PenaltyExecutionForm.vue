@@ -24,7 +24,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="punishType" label="处罚类型">
-                  <el-input ref="punishType" clearable class="w-120" v-model="formData.punishType" size="small" disabled></el-input>
+                  <el-input ref="punishType" clearable class="w-120" v-model="formData.punishType" size="small" disabled placeholder="-"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -78,7 +78,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="toPayAmount" label="待缴金额">
-                  <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" disabled></el-input>
+                  <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" disabled @change="isFinish"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -452,8 +452,8 @@ export default {
 
     },
     //清空文书
-    delDocDataByDocId(data){
-      console.log("清空文书",data);
+    delDocDataByDocId(data) {
+      console.log("清空文书", data);
       this.$refs.resetDocDiaRef.showModal(data);
     },
     //通过案件id和表单类型Id查询已绑定文书
@@ -586,7 +586,7 @@ export default {
         }
       })
       this.allAskDocList.forEach(element => {
-        if (element.name == '分期（延期）缴纳罚款通知书【2016】' && element.status=='1') {
+        if (element.name == '分期（延期）缴纳罚款通知书【2016】' && element.status == '1') {
           this.finishDocCount += 1;
         }
       });
@@ -635,6 +635,12 @@ export default {
         console.log(err)
       })
     },
+    // // 是否已完成缴费
+    isFinish() {
+    //   if (this.formData.toPayAmount == 0) {
+    //     this.formData.performance = '已完成'
+    //   }
+    }
   },
 
 
