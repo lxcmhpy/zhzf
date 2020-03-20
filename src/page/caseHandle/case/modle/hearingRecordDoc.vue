@@ -9,7 +9,7 @@
           案件名称：
           <span>
             <el-form-item prop="caseName" class="width537">
-              <el-input v-model="docData.caseName" :maxLength='maxLength' placeholder="\" type='textarea' :autosize="{ minRows: 1, maxRows: 3}"  v-bind:class="{ over_flow:docData.caseName.length>31?true:false }" ></el-input>
+              <el-input v-model="docData.caseName" :maxLength='maxLength' placeholder="\" type='textarea' :autosize="{ minRows: 1, maxRows: 3}"  v-bind:class="{ over_flow:docData.caseName.length>31?true:false }" disabled></el-input>
             </el-form-item>
           </span>
         </p>
@@ -345,34 +345,25 @@ export default {
       },
       rules: {
         caseNumber: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        party: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyName: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        hearingTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入案号', trigger: 'blur' },
         ],
         hearingOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入主持听证机关', trigger: 'blur' },
         ],
         hearingStartTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证开始时间', trigger: 'blur' },
         ],
         hearingEndTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证结束时间', trigger: 'blur' },
         ],
         persidingHearer: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入主持人姓名', trigger: 'blur' },
         ],
         hearingOfficer: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证员', trigger: 'blur' },
         ],
         hearingClerks: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入记录员', trigger: 'blur' },
         ],
         staff1: [
           { required: true, message: '请输入执法人员1', trigger: 'blur' },
@@ -387,13 +378,13 @@ export default {
           { required: true, message: '请输入执法人员2证件号', trigger: 'blur' },
         ],
         partyManager: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入法定代表人', trigger: 'blur' },
         ],
         partyTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入法定代表人联系电话', trigger: 'blur' },
         ],
         hearingRecord: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证记录', trigger: 'blur' },
         ],
       },
       options: [{

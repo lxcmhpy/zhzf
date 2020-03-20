@@ -22,7 +22,7 @@
             </span>一案，现定于
             <span>
               <el-form-item prop="hearingTime" class="pdf_datapick listen_data">
-                <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日HH时" placeholder="    年  月  日  时">
+                <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日 HH时" placeholder="    年  月  日  时">
                 </el-date-picker>
               </el-form-item>
             </span>在
@@ -45,7 +45,7 @@
             </span>
             职务：
             <span>
-              <el-form-item prop="presidingHearerPosition">
+              <el-form-item prop="presidingHearerPosition" class="width235">
                 <el-input v-model="docData.presidingHearerPosition"  :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>
@@ -53,13 +53,13 @@
           <p class="p_begin">
             听证员姓名：
             <span>
-              <el-form-item prop="hearingOfficer">
+              <el-form-item prop="hearingOfficer" class="width220">
                 <el-input  v-model="docData.hearingOfficer"  :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>
             职务：
             <span>
-              <el-form-item prop="hearingOfficerPosition">
+              <el-form-item prop="hearingOfficerPosition" class="width235">
                 <el-input v-model="docData.hearingOfficerPosition"  :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>
@@ -67,13 +67,13 @@
           <p class="p_begin">
             记录员姓名：
             <span>
-              <el-form-item prop="recorderSix">
+              <el-form-item prop="recorderSix" class="width220">
                 <el-input  v-model="docData.recorderSix"  :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>
             职务：
             <span>
-              <el-form-item prop="recorderPositionSix">
+              <el-form-item prop="recorderPositionSix" class="width235">
                 <el-input  v-model="docData.recorderPositionSix" :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>
@@ -103,13 +103,13 @@
           <p class="p_begin">
             联系地址：
             <span>
-              <el-form-item prop="organAddress">
+              <el-form-item prop="organAddress" style='width:220px'>
                 <el-input v-model="docData.organAddress"  :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>
             邮编：
             <span>
-              <el-form-item prop="organZipCode">
+              <el-form-item prop="organZipCode" style='width:250px'>
                 <el-input v-model="docData.organZipCode"  :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>
@@ -117,13 +117,13 @@
           <p class="p_begin">
             联系人：
             <span>
-              <el-form-item prop="organContactor">
+              <el-form-item prop="organContactor" style='width:235px'>
                 <el-input  v-model="docData.organContactor"  :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>
             联系电话：
             <span>
-              <el-form-item prop="organTel">
+              <el-form-item prop="organTel" style='width:220px'>
                 <el-input  v-model="docData.organTel"  :maxLength='maxLength' placeholder="\"></el-input>
               </el-form-item>
             </span>
