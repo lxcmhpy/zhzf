@@ -41,7 +41,7 @@
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
                   placeholder="\"
-                  :disabled="!isParty ? false : true"
+                  :disabled="isParty &&!originalData.partyIdNo? false : true"
                 ></el-input>
               </el-form-item>
             </td>
@@ -58,7 +58,7 @@
                   v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
-                  :disabled="!isParty ? false : true"
+                  :disabled="isParty  && !originalData.partyAddress ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -71,7 +71,7 @@
                 <el-input
                   v-model="docData.partyTel"
                   :maxLength="maxLength"
-                  :disabled="!isParty ? false : true"
+                  :disabled="isParty && !originalData.partyTel ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -102,7 +102,7 @@
                  <el-input
                   v-model="docData.partyUnitAddress"
                   :maxLength="maxLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="!isParty && !originalData.partyUnitAddress ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -118,7 +118,7 @@
                   v-model="docData.partyUnitTel"
                   minlength="11"
                   :maxLength="maxLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="!isParty && !originalData.partyUnitTel ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -131,7 +131,7 @@
                 <el-input
                   v-model="docData.partyManager"
                   :maxLength="maxLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="!isParty && !originalData.partyManager ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -148,7 +148,7 @@
                 <el-input
                   v-model="docData.socialCreditCode"
                   :maxLength="maxLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="!isParty && !originalData.socialCreditCode ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -379,43 +379,43 @@ export default {
       illegalFactsEvidence: '',
       value1: '',
       isParty: true, //当事人类型为个人
-      // originalData:"",
+      originalData:"",
       rules: {
         serviceTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入决定时间', trigger: 'blur' },
         ],
         punishBasisOne: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入处罚依据', trigger: 'blur' },
         ],
         punishBasisTwo: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入处罚依据', trigger: 'blur' },
         ],
         impleIndex: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入代履行标的', trigger: 'blur' },
         ],
         impleTimeAndWay: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入代履行方式和时间', trigger: 'blur' },
         ],
         impleFee: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入代履行费用', trigger: 'blur' },
         ],
         noticeTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入履行期限', trigger: 'blur' },
         ],
         bank: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入开户行', trigger: 'blur' },
         ],
         bankAccount: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入银行账号', trigger: 'blur' },
         ],
         reconsiderOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入行政复议机构', trigger: 'blur' },
         ],
         enforceOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入行政诉讼机构', trigger: 'blur' },
         ],
         impleAgent: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入代履行人', trigger: 'blur' },
         ],
       },
       nameLength: 23,
