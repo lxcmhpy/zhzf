@@ -24,7 +24,7 @@
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item :prop="isParty?'partyIdNo':''">
-                <el-input v-model="docData.partyIdNo" :maxLength='maxLength' :disabled="isParty ? false : true" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.partyIdNo" maxLength='18' v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" :disabled="isParty ? false : true" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -32,13 +32,13 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress">
-                <el-input v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" :disabled="isParty ? false : true" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item :prop="isParty?'partyTel':''">
-                <el-input v-model="docData.partyTel" :maxLength='maxLength' :disabled="isParty ? false : true" placeholder="\"></el-input>
+                <el-input v-model="docData.partyTel" maxLength='11' :disabled="isParty ? false : true" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -63,13 +63,13 @@
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item :prop="isParty?'':'partyUnitTel'">
-                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' :disabled="isParty ? true : false" placeholder="\"></el-input>
+                <el-input v-model="docData.partyUnitTel"  :maxLength='11' :disabled="isParty ? true : false" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td> 法定代表人 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager">
-                <el-input v-model="docData.partyManager" :maxLength='maxLength' :disabled="isParty ? true : false" placeholder="\"></el-input>
+                <el-input v-model="docData.partyManager" maxLength='10' :disabled="isParty ? true : false" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -79,7 +79,7 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode">
-                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' :disabled="isParty ? true : false" placeholder="\"></el-input>
+                <el-input v-model="docData.socialCreditCode" maxLength='22' :disabled="isParty ? true : false" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -87,12 +87,12 @@
 
         <p>因调查
           <span>
-            <el-form-item prop="caseName">
-              <el-input v-model="docData.caseName" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="caseName" style="width:220px">
+              <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength' placeholder="\" v-bind:class="{ over_flow:docData.caseName.length>12?true:false }"></el-input>
             </el-form-item>
           </span>一案，根据《中华人民共和国行政处罚法》第三十七条第二款的规定，对你（单位）下列物品予以先行登记保存
           <span>
-            <el-form-item prop="acceptTreatmentNumber">
+            <el-form-item prop="acceptTreatmentNumber" style="width:120px">
               <el-input v-model="docData.acceptTreatmentNumber" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>日（自
@@ -111,14 +111,35 @@
         </p>
 
         <div @click="handleAdd">
-          <el-table :data="tableData" border stripe  style="width: 100%">
+          <!-- <el-table :data="tableData" border stripe  style="width: 100%">
             <el-table-column prop="evidenceNo" label="序号" width="120"  align="center"></el-table-column>
             <el-table-column prop="evidenceName" label="证据名称"  align="center"></el-table-column>
             <el-table-column prop="spec" label="规格" width="120" :formatter="formatSpec" align="center"></el-table-column>
             <el-table-column prop="amount" label="数量" width="120" align="center"></el-table-column>
             <el-table-column prop="savePlace" label="登记保存地点"  align="center"> </el-table-column>
-          </el-table>
+          </el-table> -->
+
+         <table class="evidencetable" border="1" bordercolor="black" width="100%" cellspacing="0">
+            <tr>
+              <td width="10%">序号</td>
+              <td width="30%">证据名称</td>
+              <td width="10%">规格</td>
+              <td width="10%">数量</td>
+              <td width="40%">登记保存地点</td>
+            </tr>
+            <tr v-for="(item,index) in docData.tableData" :key="index">
+              <td>{{item.evidenceNo}}</td>
+              <td >{{item.evidenceName}}</td>
+              <td>{{item.spec}}</td>
+              <td>{{item.amount}}</td>
+              <td ><div style="">{{item.savePlace}}</div></td>
+            </tr>
+         </table>
+
         </div>
+        <el-form-item  prop="evidenceLength" style="visibility:hidden">
+          <el-input v-model="docData.evidenceLength"></el-input>
+        </el-form-item>
         <br>
 
         <el-row :gutter="20">
@@ -148,7 +169,7 @@
     <el-dialog title="登记保存物品" :visible.sync="addVisible" width="60%" v-loading="addLoading" :before-close="handleClose">
       <div>
         <div>
-          <el-form ref="docForm">
+          <el-form ref="addEvidenceFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <el-table-column  prop="evidenceNo" label="序号" align="center">
               </el-table-column>
@@ -182,7 +203,7 @@
 
               <el-table-column width="52%" >
                 <template slot-scope="scope">
-                  <el-button size="mini" icon="el-icon-circle-close" circle @click="handleRow(scope.$evidenceNo, scope.row)"></el-button>
+                  <el-button size="mini" icon="el-icon-circle-close" circle @click="handleRow(scope.row)"></el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -190,41 +211,12 @@
           </el-form>
         </div>
         <div style="margin-left: 45%;margin-top: 10px">
-            <el-button size="medium" type="primary" @click="submitForm('form')">确 定</el-button>
+            <el-button size="medium" type="primary" @click="submitForm('addEvidenceFormRef')">确 定</el-button>
             <el-button size="medium" @click="addVisible=false">取  消</el-button>
         </div>
       </div>
     </el-dialog>
-        <!-- 悬浮按钮 -->
-        <!-- <div class="float-btns">
-          <el-button type="success" @click="print">
-            <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
-              <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
-            </svg>
-            <br>
-            打印
-          </el-button>
-          <el-button type="success">
-            <svg t="1577706400265" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3033" width="16" height="16">
-              <path d="M946.176 896a34.304 34.304 0 0 1 0 68.608H77.824a34.304 34.304 0 0 1 0-68.608h868.352z m0-622.08L401.92 818.176 189.44 839.68l21.504-211.968 473.088-473.088 71.168-71.168c31.744-31.744 87.552-31.744 119.296 0l71.168 71.168c15.872 15.872 24.576 37.376 24.576 59.904 0.512 22.016-8.192 43.52-24.064 59.392zM266.24 762.88l103.936-10.752 431.616-431.616-93.696-93.696L276.48 658.432 266.24 762.88zM815.104 127.488c-4.096 0-8.192 1.536-11.264 4.608l-46.592 46.592 93.696 93.696 46.592-46.592c6.144-6.144 6.144-16.384 0-22.528l-71.168-71.168c-3.072-3.072-7.168-4.608-11.264-4.608z" p-id="3034" fill="#FFFFFF"></path>
-            </svg>
-            <br>
-            编辑
-          </el-button>
-          <el-button type="success" @click="makeSeal">
-            <svg t="1577706320726" class="icon" viewBox="0 0 1052 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1274" width="16" height="16">
-              <path d="M615.822222 597.674667c-20.48-18.744889-33.194667-48.981333-33.194666-77.539556 0-27.107556 11.52-51.683556 30.208-70.115555a1.905778 1.905778 0 0 1 0.483555-0.227556c6.314667-6.229333 13.454222-11.776 21.248-16.412444a162.872889 162.872889 0 0 0 54.812445-121.571556c0-91.079111-75.121778-164.892444-167.822223-164.892444-92.728889 0-167.879111 73.813333-167.879111 164.892444 0 48.184889 21.219556 91.477333 54.840889 121.571556 7.822222 4.636444 14.904889 10.183111 21.276445 16.412444a0.995556 0.995556 0 0 1 0.341333 0.170667c18.830222 18.488889 30.293333 43.064889 30.293333 70.172444 0 28.558222-12.714667 58.794667-33.166222 77.539556h-246.613333c-13.368889 0-24.206222 10.609778-24.206223 23.665777v152.092445h730.168889v-152.092445a23.893333 23.893333 0 0 0-24.177777-23.665777h-246.613334z m-407.210666 227.271111H834.56v52.138666H208.611556v-52.138666z" fill="#FFFFFF" p-id="1275"></path>
-            </svg>
-            <br>
-            签章
-          </el-button>
-          <el-button type="primary" @click="addDocData(1)">
-            <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
-              <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF"></path>
-            </svg><br>
-            提交
-          </el-button>
-        </div> -->
+        
          <!-- 悬浮按钮 -->
         <casePageFloatBtns :pageDomId="'evidenceListDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
@@ -237,6 +229,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import mySignture from "@/common/js/mySignture";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 export default {
   components: {
     overflowInput,
@@ -245,6 +238,20 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   data() {
+    //当事人类型为公司时验证
+    var validateIfCom = (rule, value, callback) => {
+      if (!this.isParty && !value) {
+        return callback(new Error("单位名称、联系电话不能为空"));
+      }
+      callback();
+    };
+    //验证是否填写证据
+    var validateEvidencLength = (rule, value, callback) => {
+      if (this.docData.tableData.length == 0) {
+        return callback(new Error("至少填写一个证据物品"));
+      }
+      callback();
+    };
     return {
       docData: {
         caseNumber: '',
@@ -264,6 +271,8 @@ export default {
         signtureSign: '',
         staff: '',
         makeDate: '',
+        tableData:[], //证据清单
+        evidenceLength:0, //证据清单长度
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -276,37 +285,43 @@ export default {
       },
       rules: {
         party: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '当事人姓名不能为空', trigger: 'blur' },
         ],
         partyIdNo: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '身份证号码不能为空', trigger: 'blur' },
+          { validator:validateIDNumber , trigger: "blur"}
         ],
         partyTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '当事人联系电话不能为空', trigger: 'blur' },
+          { validator:validatePhone , trigger: "blur" }
         ],
         partyName: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { validator: validateIfCom, trigger: "blur" }
         ],
         partyUnitTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { validator: validateIfCom, trigger: "blur" },
+          { validator:validatePhone , trigger: "blur" }
         ],
         caseName: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '案件名称不能为空', trigger: 'blur' },
         ],
         acceptTreatmentNumber: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '保存时间不能为空', trigger: 'blur' },
         ],
         acceptTreatmentStartDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '保存开始时间不能为空', trigger: 'blur' },
         ],
         acceptTreatmentEndDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '保存结束时间不能为空', trigger: 'blur' },
+        ],
+        evidenceLength: [
+           { validator: validateEvidencLength,trigger: "blur" }
         ],
       },
       nameLength: 23,
       adressLength: 23,
       maxLength: 23,
-      tableData: [],
+      // tableData: [],
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'evidenceListDoc_print',
@@ -316,19 +331,19 @@ export default {
       tableDatas: [],
       options: [
         {
-          value: '1',
+          value: '份',
           label: '份'
         },
         {
-          value: '2',
+          value: '套',
           label: '套'
         },
         {
-          value: '3',
+          value: '件',
           label: '件'
         },
         {
-          value: '4',
+          value: '其他待定',
           label: '其他待定'
         },
       ],
@@ -442,7 +457,7 @@ export default {
     },
 
     handleAdd(evidenceNo, row) {
-        this.tableDatas = this.tableData;
+        this.tableDatas = JSON.parse(JSON.stringify(this.docData.tableData));
         this.addVisible = true;
     },
     handleClose(done) {
@@ -453,27 +468,32 @@ export default {
             .catch(_ => {});
     },
 
-    handleRow(evidenceNo, row) {
-        this.tableDatas.splice(evidenceNo, 1)
+    handleRow(row) {
         for(let i=0; i<this.tableDatas.length; i++){
-          if(this.tableDatas[i].evidenceNo > evidenceNo){
+          if(this.tableDatas[i].evidenceNo > row.evidenceNo){
             this.tableDatas[i].evidenceNo = this.tableDatas[i].evidenceNo - 1;
           }
         }
+        this.tableDatas.splice(row.evidenceNo-1, 1)
     },
 
     submitForm(formName){
+      let canAdd = true;
       for(let i=0; i<this.tableDatas.length; i++){
-          if(!this.tableDatas[i].evidenceName && !this.tableDatas[i].spec && !this.tableDatas[i].amount && !this.tableDatas[i].savePlace){
+          if(!this.tableDatas[i].evidenceName || !this.tableDatas[i].spec || !this.tableDatas[i].amount || !this.tableDatas[i].savePlace){
             this.$message({
               message: '数据至少有一项不为空！',
               type: 'warning'
             });
-            return;
+            canAdd = false;
+            break;
           }
         }
-      this.tableData = this.tableDatas;
-      this.addVisible = false;
+        if(canAdd){
+          this.docData.tableData = this.tableDatas;
+          this.addVisible = false;
+        }
+    
     },
 
     formatSpec: function(row, column, cellValue) {
@@ -498,4 +518,7 @@ export default {
 </script>
 <style lang="scss">
 @import "@/assets/css/caseHandle/caseDocModle.scss";
+.print_box .print_info .evidencetable tr td{
+  white-space: inherit;
+}
 </style>

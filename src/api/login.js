@@ -45,7 +45,7 @@ export function loginInApi(params) {
     code: params.code,
     captchaId: params.captchaId
   })
-  console.log(data)
+  // console.log('apt',data)
   return request({
     url: "/login",
     method: "POST",

@@ -497,6 +497,35 @@ export function findIsOrderApi(params) {
     cancelToken: setCancelSource()
   });
 }
+
+//通过问答模板类型id查询问答模板
+export function findModelListByModelTypeIdApi(modelTypeId) {
+  let data = vm.$qs.stringify({modelTypeId:modelTypeId})
+  return request({
+    url: "doc/caseRequestModel/findModelListByModelTypeId/"+modelTypeId,
+    method: "post",
+    data:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+export function findRequestListByModelIdApi(modelId) {
+  let data = vm.$qs.stringify({modelId:modelId})
+  return request({
+    url: "doc/caseRequestModel/findRequestListByModelId/"+modelId,
+    method: "post",
+    data:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+
+
+
 //-------------长软lv start------------
 //获取操作记录
 export function getHandleRecordApi(data) {

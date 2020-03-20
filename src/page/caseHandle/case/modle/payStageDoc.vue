@@ -177,22 +177,22 @@ export default {
       value1: '',
       rules: {
         serviceTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入送达日期', trigger: 'blur' },
         ],
         caseNumber: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入案号', trigger: 'blur' },
         ],
         fine: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         delayDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入延长缴纳日期', trigger: 'blur' },
         ],
         instalmentNum: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         payFine: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入本期缴纳金额  ', trigger: 'blur' },
         ],
         debtFine: [
           { required: true, message: '请输入', trigger: 'blur' },

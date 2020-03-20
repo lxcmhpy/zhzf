@@ -31,14 +31,14 @@
               </el-time-picker>
             </el-form-item>
 
-            第
+            <span style="margin-left:50px">第</span>
             <el-form-item class="askRecordNumberBox" prop="askRecordNumber">
               <el-input v-model="docData.askRecordNumber" maxLength='2' placeholder="\"></el-input>
             </el-form-item>次询问
 
           </p>
           <p>地点：
-            <el-form-item v-if="!lineStyleFlag" prop="inquiryAddress" class="inquiryAddressBox">
+            <el-form-item v-if="!lineStyleFlag" prop="inquiryAddress" class="inquiryAddressBox" style="width:570px">
               <el-input v-model="docData.inquiryAddress" maxLength='40' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiryAddress}}</u>
@@ -55,7 +55,7 @@
                 <u v-if="lineStyleFlag">{{docData.inquiryStaff}}</u></p>
             </el-col>
             <el-col :span="12">
-              <p>记录人：<el-form-item v-if="!lineStyleFlag" prop="recordStaff" class="width213">
+              <p>记录人：<el-form-item v-if="!lineStyleFlag" prop="recordStaff" style="width:246px">
                   <!-- <el-input type='textarea' v-model="docData.recordStaff" v-bind:class="{ over_flow:docData.recordStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <!-- <el-input type='textarea' v-model="docData.recordStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <el-select v-model="docData.recordStaff" :maxLength='maxLength'>
@@ -81,7 +81,7 @@
 
                   <el-input type='textarea' v-model="docData.inquiriedRelation" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item> -->
-                <el-form-item prop="inquiriedRelation" class="width182">
+                <el-form-item prop="inquiriedRelation" style="width:209px">
                 <el-select v-model="docData.inquiriedRelation" @change="changeRelationWithCase">
                   <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
@@ -108,7 +108,7 @@
             </el-col>
             <el-col :span="12">
               <p>
-                年龄：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAge" class="width230">
+                年龄：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAge" style="width:262px">
                   <!-- <el-input type='textarea' v-model="docData.inquiriedAge" v-bind:class="{ over_flow:docData.inquiriedAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <el-input type='textarea' v-model="docData.inquiriedAge" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
@@ -127,7 +127,7 @@
             </el-col>
             <el-col :span="12">
               <p>
-                联系电话：<el-form-item v-if="!lineStyleFlag" prop="inquiriedTel" class="width198">
+                联系电话：<el-form-item v-if="!lineStyleFlag" prop="inquiriedTel" style="width:230px">
                   <el-input type='textarea' v-model="docData.inquiriedTel" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedTel}}</u>
@@ -223,7 +223,7 @@ import QAModle from "./QAModle";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-import iLocalStroage from "@/common/js/localStroage";
+import iLocalStroage from "@/common/js/localStroage"; 
 
 export default {
   components: {
@@ -297,37 +297,37 @@ export default {
       value1: '',
       rules: {
         askdataStart: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '开始时间不能为空', trigger: 'blur' },
         ],
         askdataEnd: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '结束时间不能为空', trigger: 'blur' },
         ],
         askRecordNumber: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '询问次数不能为空', trigger: 'blur' },
         ],
         inquiryAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '地点不能为空', trigger: 'blur' },
         ],
         inquiryStaff: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '询问人不能为空', trigger: 'blur' },
         ],
         recordStaff: [
-          { required: true, message: '请输入', trigger: 'change' },
+          { required: true, message: '记录人不能为空', trigger: 'change' },
         ],
         inquiried: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '被询问人不能为空', trigger: 'blur' },
         ],
         staff1: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '执法人员不能为空', trigger: 'blur' },
         ],
         staff2: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '执法人员不能为空', trigger: 'blur' },
         ],
         certificateId1: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '执法证号不能为空', trigger: 'blur' },
         ],
         certificateId2: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '执法证号不能为空', trigger: 'blur' },
         ],
       },
       formOrDocData: {
@@ -401,6 +401,7 @@ export default {
     getQAModleInfo(edit) {
       console.log('回显', edit)
       this.qaList = JSON.parse(edit);
+    
       if(this.qaList.length<2){
         this.qaList.push({question:'',answer:''})
       }
@@ -578,7 +579,7 @@ export default {
    width: 100px;
  }
  .inquiryAddressBox{
-   width: calc(100% - 60px);
+  //  width: calc(100% - 60px);
   // width: 500px;
  }
  .inquiriedUnitPositionBox{
