@@ -102,6 +102,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚类型">
+                  {{formData.punishType}}
                   <!-- 字段名 -->
                   <!-- {{formData.party}} -->
                   <!-- <el-select v-model="formData.party" placeholder="请选择">
