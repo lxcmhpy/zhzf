@@ -523,7 +523,17 @@ export function findRequestListByModelIdApi(modelId) {
   });
 }
 
-
+//案件移送列表
+export function TransferCaseApi(data) {
+  return request({
+    url: "/case/transfer/findByCondition",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
 
 //-------------长软lv start------------
