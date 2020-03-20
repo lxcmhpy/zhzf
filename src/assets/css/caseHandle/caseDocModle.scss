@@ -927,15 +927,19 @@
     width: 20px;
 
 }
+
 .width38 {
     width: 38px;
 }
-.width100{
+
+.width100 {
     width: 100px;
 }
-.width96{
+
+.width96 {
     width: 96px;
 }
+
 .width120 {
     width: 120px;
 }
@@ -951,6 +955,7 @@
 .width213 {
     width: 213px;
 }
+
 .width235 {
     width: 235px;
 }
@@ -1436,5 +1441,20 @@
 
     }
 
+}
 
+.single_check {
+    .is-checked+ {
+        color: black;
+
+    }
+    .el-radio__inner:hover {
+        border-color: black;
+    }
+    .is-checked {
+        .el-radio__inner {
+            border-color: black;
+            background  : black;
+        }
+    }
 }

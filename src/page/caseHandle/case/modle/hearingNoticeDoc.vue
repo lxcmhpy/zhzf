@@ -1,151 +1,152 @@
 <!-------长软------->
 <template>
-    <div class="print_box">
-      <div class="print_info" id="hearingNoticeDoc_print">
-        <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
-          <div class="doc_topic">听证通知书</div>
-          <div class="doc_number">案号：{{docData.caseNumber}}</div>
-          <p class="p_begin">
-            当事人（个人姓名或单位名称）
-            <span>
-              <el-form-item prop="party">
-                <el-input v-model="docData.party"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>:
-          </p>
-          <p>
-            根据你（单位）申请，关于
-            <span>
-              <el-form-item prop="caseName">
-                <el-input v-model="docData.caseName"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>一案，现定于
-            <span>
-              <el-form-item prop="hearingTime" class="pdf_datapick listen_data">
-                <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日 HH时" placeholder="    年  月  日  时">
-                </el-date-picker>
-              </el-form-item>
-            </span>在
-            <span>
-              <el-form-item prop="hearingPlace">
-                <el-input v-model="docData.hearingPlace" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>（
-            <span>
-              <el-radio v-model="radio" label="1">公开</el-radio>
-              <el-radio v-model="radio" label="2">不公开</el-radio>
-            </span>）举行听证会议，请准时出席。
-          </p>
-          <p class="p_begin">
-            听证主持人姓名：
-            <span>
-              <el-form-item prop="presidingHearer">
-                <el-input v-model="docData.presidingHearer"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            职务：
-            <span>
-              <el-form-item prop="presidingHearerPosition" class="width235">
-                <el-input v-model="docData.presidingHearerPosition"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </P>
-          <p class="p_begin">
-            听证员姓名：
-            <span>
-              <el-form-item prop="hearingOfficer" class="width220">
-                <el-input  v-model="docData.hearingOfficer"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            职务：
-            <span>
-              <el-form-item prop="hearingOfficerPosition" class="width235">
-                <el-input v-model="docData.hearingOfficerPosition"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </P>
-          <p class="p_begin">
-            记录员姓名：
-            <span>
-              <el-form-item prop="recorderSix" class="width220">
-                <el-input  v-model="docData.recorderSix"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            职务：
-            <span>
-              <el-form-item prop="recorderPositionSix" class="width235">
-                <el-input  v-model="docData.recorderPositionSix" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </P>
-          <p>
-            根据《中华人民共和国行政处罚法》第四十二条规定，你（单位）可以申请听证主持人、听证员、记录员回避。
-          </p>
-          <p>
-            注意事项如下：
-          </p>
-          <p>
-            1.请事先准备相关证据，通知证人和委托代理人准时参加。
-          </p>
-          <p>
-            2.委托代理人参加听证的，应当在听证会前向本机关提交授权委托书等有关证明。
-          </p>
-          <p>
-            3.申请延期举行的，应当在举行听证会前向本行政机关提出，由本机关决定是否延期。
-          </p>
-          <p>
-            4.不按时参加听证会且未事先说明理由的，视为放弃听证权利。
-          </p>
-          <p>
-            特此通知。
-          </p>
-          <br>
-          <p class="p_begin">
-            联系地址：
-            <span>
-              <el-form-item prop="organAddress" style='width:220px'>
-                <el-input v-model="docData.organAddress"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            邮编：
-            <span>
-              <el-form-item prop="organZipCode" style='width:250px'>
-                <el-input v-model="docData.organZipCode"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </P>
-          <p class="p_begin">
-            联系人：
-            <span>
-              <el-form-item prop="organContactor" style='width:235px'>
-                <el-input  v-model="docData.organContactor"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            联系电话：
-            <span>
-              <el-form-item prop="organTel" style='width:220px'>
-                <el-input  v-model="docData.organTel"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </P>
-
-          <div class="pdf_seal">
-            <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
-            <el-form-item prop="signatureDate" class="pdf_datapick">
-              <el-date-picker v-model="docData.signatureDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+  <div class="print_box">
+    <div class="print_info" id="hearingNoticeDoc_print">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
+        <div class="doc_topic">听证通知书</div>
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <p class="p_begin">
+          当事人（个人姓名或单位名称）
+          <span>
+            <el-form-item prop="party">
+              <el-input v-model="docData.party" :maxLength='maxLength'  disabled></el-input>
+            </el-form-item>
+          </span>:
+        </p>
+        <p>
+          根据你（单位）申请，关于
+          <span>
+            <el-form-item style="width:329px" prop="caseName" >
+              <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength' v-bind:class="{ over_flow:docData.caseName.length>30?true:false }"
+                    :autosize="{ minRows: 1, maxRows: 3}" disabled></el-input>
+            </el-form-item>
+          </span>一案，现定于
+          <span>
+            <el-form-item style="width:136px" prop="hearingTime" class="pdf_datapick listen_data" >
+              <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日 HH时" placeholder="    年  月  日  时">
               </el-date-picker>
             </el-form-item>
-          </div>
+          </span>在
+          <span>
+            <el-form-item prop="hearingPlace" style="width:329px">
+              <el-input v-model="docData.hearingPlace" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>（
+          <span class="single_check">
+            <el-radio v-model="docData.radio" label="1">公开</el-radio>
+            <el-radio v-model="docData.radio" label="2">不公开</el-radio>
+          </span>）举行听证会议，请准时出席。
+        </p>
+        <p class="p_begin">
+          听证主持人姓名：
+          <span>
+            <el-form-item prop="presidingHearer">
+              <el-input v-model="docData.presidingHearer" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          职务：
+          <span>
+            <el-form-item prop="presidingHearerPosition" class="width235">
+              <el-input v-model="docData.presidingHearerPosition" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </P>
+        <p class="p_begin">
+          听证员姓名：
+          <span>
+            <el-form-item prop="hearingOfficer" class="width220">
+              <el-input v-model="docData.hearingOfficer" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          职务：
+          <span>
+            <el-form-item prop="hearingOfficerPosition" class="width235">
+              <el-input v-model="docData.hearingOfficerPosition" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </P>
+        <p class="p_begin">
+          记录员姓名：
+          <span>
+            <el-form-item prop="recorderSix" class="width220">
+              <el-input v-model="docData.recorderSix" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          职务：
+          <span>
+            <el-form-item prop="recorderPositionSix" class="width235">
+              <el-input v-model="docData.recorderPositionSix" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </P>
+        <p>
+          根据《中华人民共和国行政处罚法》第四十二条规定，你（单位）可以申请听证主持人、听证员、记录员回避。
+        </p>
+        <p>
+          注意事项如下：
+        </p>
+        <p>
+          1.请事先准备相关证据，通知证人和委托代理人准时参加。
+        </p>
+        <p>
+          2.委托代理人参加听证的，应当在听证会前向本机关提交授权委托书等有关证明。
+        </p>
+        <p>
+          3.申请延期举行的，应当在举行听证会前向本行政机关提出，由本机关决定是否延期。
+        </p>
+        <p>
+          4.不按时参加听证会且未事先说明理由的，视为放弃听证权利。
+        </p>
+        <p>
+          特此通知。
+        </p>
+        <br>
+        <p class="p_begin">
+          联系地址：
+          <span>
+            <el-form-item prop="organAddress" style='width:220px'>
+              <el-input v-model="docData.organAddress" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          邮编：
+          <span>
+            <el-form-item prop="organZipCode" style='width:250px'>
+              <el-input v-model="docData.organZipCode" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </P>
+        <p class="p_begin">
+          联系人：
+          <span>
+            <el-form-item prop="organContactor" style='width:235px'>
+              <el-input v-model="docData.organContactor" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          联系电话：
+          <span>
+            <el-form-item prop="organTel" style='width:220px'>
+              <el-input v-model="docData.organTel" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </P>
 
-          <br>
-          <div class="notice clear">
-            <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
-          </div>
-        </el-form>
-      </div>
+        <div class="pdf_seal">
+          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+          <el-form-item prop="signatureDate" class="pdf_datapick">
+            <el-date-picker v-model="docData.signatureDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            </el-date-picker>
+          </el-form-item>
+        </div>
 
-          <!-- 悬浮按钮 -->
-          <!-- <div class="float-btns">
+        <br>
+        <div class="notice clear">
+          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
+        </div>
+      </el-form>
+    </div>
+
+    <!-- 悬浮按钮 -->
+    <!-- <div class="float-btns">
             <el-button type="success" @click="print">
               <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
                 <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
@@ -174,10 +175,10 @@
               提交
             </el-button>
           </div> -->
-          <!-- 悬浮按钮 -->
-          <casePageFloatBtns :pageDomId="'hearingNoticeDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <!-- 悬浮按钮 -->
+    <casePageFloatBtns :pageDomId="'hearingNoticeDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
-          <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
 <script>
@@ -228,49 +229,46 @@ export default {
       },
       rules: {
         caseNumber: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入案号', trigger: 'blur' },
         ],
         party: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyName: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入当事人（个人姓名或单位名称）', trigger: 'blur' },
         ],
         caseName: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入案由', trigger: 'blur' },
         ],
         hearingTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证时间', trigger: 'blur' },
         ],
         hearingPlace: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证地点', trigger: 'blur' },
         ],
         presidingHearer: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证主持人姓名', trigger: 'blur' },
         ],
         presidingHearerPosition: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证主持人职务', trigger: 'blur' },
         ],
         hearingOfficer: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证员姓名', trigger: 'blur' },
         ],
         hearingOfficerPosition: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证员职务', trigger: 'blur' },
         ],
         recorderSix: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入记录员姓名', trigger: 'blur' },
         ],
         recorderPositionSix: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入记录员职务', trigger: 'blur' },
         ],
         organAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入联系地址', trigger: 'blur' },
         ],
         organContactor: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入联系人', trigger: 'blur' },
         ],
         organTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入联系电话', trigger: 'blur' },
         ],
       },
       nameLength: 23,
@@ -284,7 +282,7 @@ export default {
     };
   },
   methods: {
-    
+
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
