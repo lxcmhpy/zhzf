@@ -135,13 +135,17 @@
                     <li v-for="(item,index) in allAskDocList" :key="index">
                       <div>{{item.note}}</div>
                       <div>
-                        <span v-if="item.status == '1'">已完成</span>
-                        <span v-if="item.status == '0'">未完成</span>
+                        <span v-if="item.status == '1'">完成</span>
+                        <span v-if="item.status == '0'">暂存</span>
                       </div>
                       <div>
                         <!-- 已完成 -->
-                        <span v-if="item.status == '1'" class="tableHandelcase" @click="viewDocPdf(item)">查看</span>
-
+                        <!-- <span v-if="item.status == '1'" class="tableHandelcase" @click="viewDocPdf(item)">查看</span> -->
+                        <span v-if="item.status == '1'" class="tableHandelcase">
+                          <!-- 已完成 -->
+                          <span @click="viewDocPdf(item)">查看</span>
+                          <span >打印</span>
+                        </span>
                         <span v-if="item.status == '0'" class="tableHandelcase">
                           <!-- 未完成 -->
                           <span @click="viewDoc(item)">编辑</span>
@@ -167,8 +171,8 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'">已完成</span>
-                  <span v-if="scope.row.status == '0'">未完成</span>
+                  <span v-if="scope.row.status == '1'">完成</span>
+                  <span v-if="scope.row.status == '0'">暂存</span>
                   <span v-if="scope.row.status == ''">-</span>
                 </template>
               </el-table-column>
@@ -176,11 +180,16 @@
                 <template slot-scope="scope">
                   <span class="tableHandelcase" v-if="scope.row.openRow">
                     <!-- <i class="iconfont law-add" @click="viewDoc(scope.row)"></i> -->
-                    <span @click="viewDoc(scope.row)">添加</span>
+                    <span @click="addMoreDoc(scope.row)">添加</span>
                   </span>
                   <span v-if="!scope.row.openRow">
                     <!-- 已完成 -->
-                    <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
+                    <!-- <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span> -->
+                    <span v-if="scope.row.status == '1'" class="tableHandelcase">
+                      <!-- 已完成 -->
+                      <span @click="viewDocPdf(item)">查看</span>
+                      <span >打印</span>
+                    </span>
                     <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">
                       <span @click="viewDoc(scope.row)">编辑</span>
@@ -402,11 +411,11 @@
       
        //下一环节
       continueHandle() {
-        debugger
-        console.log('this.unfinishFlag', this.unfinishFlag)
-        console.log('行政强制执行决定书', this.isComplete())
-        console.log('代履行决定书', this.isComplete2())
-        console.log('this.unfinishFlag', this.unfinishFlag)
+        // debugger
+        // console.log('this.unfinishFlag', this.unfinishFlag)
+        // console.log('行政强制执行决定书', this.isComplete())
+        // console.log('代履行决定书', this.isComplete2())
+        // console.log('this.unfinishFlag', this.unfinishFlag)
         let caseData = {
           caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
           caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
@@ -440,19 +449,17 @@
       },
 
       //查看文书
-      viewDoc(row) {
-        //为'中止（终结、恢复）强制执行'时弹出选择框
-        if (row.docId == "2c902908696a1fc501696a754e3b0002") {
-          iLocalStroage.removeItem("currentDocDataId");
-          this.$refs.chooseHandleTypeDiaRef.showModal(row, this.isSaveLink);
-        } else {
+      viewDoc(row) {      
           this.com_viewDoc(row);
-        }
-
+      },
+      addMoreDoc(row) {
+        console.log("添加");
+        iLocalStroage.removeItem("currentDocDataId");
+        this.$refs.chooseHandleTypeDiaRef.showModal(row, this.isSaveLink);
       },
       //清空文书
       delDocDataByDocId(data){
-        console.log("清空文书",data);
+        console.log("清空文书",data);       
         this.$refs.resetDocDiaRef.showModal(data);
       },
       //通过案件id和表单类型Id查询已绑定文书
