@@ -2,7 +2,7 @@
   <div class="print_box">
     <!-- sdmaskjdnsjdns -->
     <div class="print_info" id="establish-print">
-      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
+      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
         <div class="doc_topic">立案登记表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
 
@@ -406,6 +406,7 @@ export default {
       // 是否带入电话
       isPartyPhone: false,
       needDealData:true,
+      disableWhenApproval:false,
     };
   },
   components: {
@@ -510,6 +511,7 @@ export default {
           false,
           false
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        this.disableWhenApproval = true;
       }
     },
     //设置案件来源

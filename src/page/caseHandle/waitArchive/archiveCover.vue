@@ -144,6 +144,7 @@
         :pageDomId="'archiveCoverForm'"
         :formOrDocData="formOrDocData"
         @submitData="submitData"
+        @saveData="submitData(0)"
       ></casePageFloatBtns>
   </div>
 </template>
@@ -274,7 +275,6 @@ export default {
     submitData(handleType) {
         if(handleType == 2) {
             this.submitArchive(handleType)
-
         } else {
             this.com_submitCaseForm(handleType, "archiveCoverForm", true);
         }
@@ -283,20 +283,20 @@ export default {
     showArchiveCatalogue(){
         this.$refs.archiveCatalogueRef.showModal();
     },
-    // getByMlCaseId(caseId) {
-    //      this.$store.dispatch("getByMlCaseIdNew", caseId).then(
-    //      res=>{
-    //          this.caseList = res.data
-    //      },
-    //      err=>{
-    //        console.log(err)
-    //      }
-    //    )
-    // }
+    //加载表单信息
+    setFormData() {
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.com_getFormDataByCaseIdAndFormId(
+        this.caseLinkDataForm.caseBasicinfoId,
+        this.caseLinkDataForm.caseLinktypeId,
+        false
+      );
+    },
   },
   mounted() {
-    this.formData = this.caseInfo;
-    console.log(JSON.stringify(this.caseInfo));
+    // this.formData = this.caseInfo;
+    // console.log(JSON.stringify(this.caseInfo));
+    this.setFormData();
     this.$refs.archiveCatalogueRef.showModal();
     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
     // this.getMl()

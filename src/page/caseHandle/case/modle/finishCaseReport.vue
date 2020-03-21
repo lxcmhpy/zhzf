@@ -1,7 +1,7 @@
 <template>
   <div class="print_box ">
     <div class="print_info" id="finishCase_print">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
         <div class="doc_topic">结案报告</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <div class="doc_cause" >
@@ -319,7 +319,8 @@ export default {
         pageDomId: "finishCase_print"
       },
       huanjieAndDocId: "2c9029d2695c03fd01695c278e7a0001", //结案报告的文书id
-      approvalOver: false //审核完成
+      approvalOver: false, //审核完成
+      disableWhenApproval:false
     }
   },
   methods: {
@@ -423,6 +424,7 @@ export default {
           false,
           false
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        this.disableWhenApproval = true;
       }
     }
   },

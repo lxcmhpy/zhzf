@@ -12,7 +12,7 @@
         <div class="doc_topic">责令改正违法行为通知书</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <p class="partyBox">
-          当事人（个人姓名或单位名称） ：
+          当事人（个人姓名或单位名称）
           <span class="width_file">
             <el-form-item prop="party">
               <el-input
@@ -23,7 +23,7 @@
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
               ></el-input>
-            </el-form-item>
+            </el-form-item> ：
           </span>
         </p>
         <!-- 多行样式 -->
@@ -56,7 +56,6 @@
             <el-form-item prop="punishLaw" style="width:300px">
               <el-input
                 type="textarea"
-                class="big_error"
                 v-model="formData.punishLaw"
                 v-bind:class="{ over_flow:formData.punishLaw.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
@@ -78,6 +77,7 @@
                     <el-date-picker
                       v-model="formData.correctTime"
                       type="date"
+                      :disabled=" formData.correctWay == 1 ?true : false"
                       format="yyyy年MM月dd日"
                       placeholder="    年  月  日"
                     ></el-date-picker>
@@ -204,6 +204,7 @@ export default {
         reconsiderationOrgan: "",
         test: "",
         correctWay: [],
+        correctTime:"",
         // correctWay1:"",
         // correctWay2:"",
         litigationOrgan: "",
@@ -227,16 +228,16 @@ export default {
         // makeDate: [
         //   { required: true, message: '请输入', trigger: 'blur' },
         // ],
+        punishLaw: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
         reconsiderationOrgan: [
           { required: true, message: "请输入", trigger: "blur" }
         ],
         litigationOrgan: [
           { required: true, message: "请输入", trigger: "blur" }
         ],
-        correctWay: [{ required: true, message: "请选择", trigger: "change" }],
-        correctTime:[
-          { validator: validateBycorrectWay, trigger: "blur" }
-        ]
+        correctWay: [{ required: true, message: "请选择", trigger: "change" }]
       },
       nameLength: 23,
       adressLength: 23,
@@ -341,11 +342,10 @@ export default {
       
     },
     changeCorrectWay(val){
-      console.log(val);
-      if(val == "1"){
+      if(val == '1'){
       this.formData.correctTime = '';
       }
-    }
+    },
   },
 
   mounted() {

@@ -1,6 +1,6 @@
 <template>
   <div class="print_box">
-    <div class="print_info" id="adminPunish_print">
+    <div class="print_info" id="test_print">
       <el-form
         :rules="rules"
         ref="docForm"
@@ -11,152 +11,7 @@
       >
         <div class="doc_topic">行政处罚决定书</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
-        <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
-          <tr>
-            <td rowspan="6">
-              当
-              <br />事
-              <br />人
-            </td>
-            <td rowspan="2">个人</td>
-            <td>姓名</td>
-            <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="party">
-                <el-input
-                  type="textarea"
-                  v-model="formData.party"
-                  v-bind:class="{ over_flow:formData.party.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
-                  :maxlength="nameLength"
-                  disabled
-                  placeholder="\"
-                ></el-input>
-                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
-              </el-form-item>
-            </td>
-            <td>身份证件号</td>
-            <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyIdNo">
-                <el-input
-                  type="textarea"
-                  v-model="formData.partyIdNo"
-                  v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 2}"
-                  maxlength="18"
-                  placeholder="\"
-                  :disabled="isParty && !originalData.partyIdNo ? false : true"
-                ></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-          <tr>
-            <td>住址</td>
-            <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyAddress">
-                <el-input
-                  type="textarea"
-                  v-model="formData.partyAddress"
-                  v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
-                  :maxlength="adressLength"
-                  :disabled="isParty && !originalData.partyAddress ? false : true"
-                  placeholder="\"
-                ></el-input>
-              </el-form-item>
-            </td>
-            <td>联系电话</td>
-            <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyTel">
-                <el-input
-                  v-model="formData.partyTel"
-                  :maxLength="maxLength"
-                  :disabled="isParty && !originalData.partyTel ? false : true"
-                  placeholder="\"
-                ></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-          <tr>
-            <td rowspan="4">单位</td>
-            <td>名称</td>
-            <td colspan="5" class="color_DBE4EF">
-              <el-form-item prop="partyName">
-                <el-input
-                  v-model="formData.partyName"
-                  :maxLength="maxLength"
-                  disabled
-                  placeholder="\"
-                ></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-          <tr>
-            <td>地址</td>
-            <td colspan="4" class="color_DBE4EF">
-              <el-form-item prop="partyUnitAddress">
-                <el-input
-                  v-model="formData.partyUnitAddress"
-                  :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyUnitAddress ? false : true"
-                  placeholder="\"
-                ></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-          <tr>
-            <td>联系电话</td>
-            <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyUnitTel">
-                <el-input
-                  v-model="formData.partyUnitTel"
-                  minlength="11"
-                  :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyUnitTel ? false : true"
-                  placeholder="\"
-                ></el-input>
-              </el-form-item>
-            </td>
-            <td>法定代表人</td>
-            <td class="color_DBE4EF">
-              <el-form-item prop="partyManager">
-                <el-input
-                  v-model="formData.partyManager"
-                  :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyManager ? false : true"
-                  placeholder="\"
-                ></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">统一社会信用代码</td>
-            <td colspan="3" class="color_DBE4EF">
-              <el-form-item prop="socialCreditCode">
-                <el-input
-                  v-model="formData.socialCreditCode"
-                  :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.socialCreditCode ? false : true"
-                  placeholder="\"
-                ></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-        </table>
-        <!-- <p class="side_right_indent">
-          <span class="side_right" @click="overFlowEdit">
-            <el-form-item prop="illegalFactsEvidence">
-              <span class="over_topic">违法事实及依据：</span>
-              {{formData.illegalFactsEvidence}}
-            </el-form-item>
-          </span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-        </p>-->
-        <!-- <p  v-if="lineStyleFlag">
-          违法事实及依据：<u>{{formData.illegalFactsEvidence}}</u>
-        </p>-->
+       
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="illegalFact">
@@ -180,16 +35,21 @@
         </div>
         <p>
           你(单位)的行为违反了
-          <span>
-            <el-form-item prop="illegalLaw">
+          <span style="width:160px;display:inline-block;">
+            <el-form-item prop="illegalLaw" style="width:160px;display:inline-block;">
               <el-input
                 type="textarea"
                 v-model="formData.illegalLaw"
                 v-bind:class="{ over_flow:formData.illegalLaw.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
+                v-show="hidePart"
               ></el-input>
+              <span v-show="hidePar2"  v-bind:class="{ over_flow:formData.illegalLaw.length>12?true:false }" style="display:inline-block;width:100%;position: absolute;left: 0;top: 0;line-height: 15px;">{{formData.illegalLaw}}</span>
             </el-form-item>
+           
+           
+            <!-- <p style="width:158px;height: 50px;overflow: auto;line-height: 20px;display: inline-block;">撒娇的开始撒娇的开始撒娇的开始撒娇的开始撒娇的开始撒娇的开始</p> -->
           </span>的规定，依据
           <span contenteditable="true">
             <el-form-item prop="punishLaw" class="width120">
@@ -200,6 +60,7 @@
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
               ></el-input>
+              
             </el-form-item>
           </span>的规定，决定给予
           <span>
@@ -255,8 +116,8 @@
                 rows="3"
                 maxlength="90"
               ></el-input>
-              <span class="overflow_describe" style="text-indent:0em">其他执行方式和期限：</span>
-              <span class="span_bg span_bg_top"  @click="overFlowEdit" style="padding-left:20px;">&nbsp;</span>
+              <span class="overflow_describe">其他执行方式和期限：</span>
+              <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span
                 v-for="item in overFlowEditList"
                 :key="item.id"
@@ -305,7 +166,7 @@
           </el-col>
         </el-row> -->
         <div class="pdf_seal">
-          <span @click="makeSeal">交通运输执法部门(印章)</span>
+          <!-- <span @click="makeSeal">交通运输执法部门(印章)</span> -->
           <br />
           <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker
@@ -319,43 +180,36 @@
         <div class="notice clear">
           <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
         </div>
+         <el-button @click="test" >测试</el-button>
       </el-form>
     </div>
 
     <casePageFloatBtns
       :pageDomId="'subOutputRank-print'"
-      :formOrDocData="formOrDocData"
-      @saveData="saveData"
     ></casePageFloatBtns>
-
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+   
+  
   </div>
 </template>
 <script>
-// import overflowInput from "./overflowInput";
-// import { mixinGetCaseApiList } from "@/common/js/mixins";
-// import { mapGetters } from "vuex";
-// import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-// // import signture from "../../../../js/signture";
-// import mySignture from "@/common/js/mySignture";
-// // import {signture2} from "@/common/js/signture";
-import overflowInput from "../pdf/overflowInput";
+
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import mySignture from "@/common/js/mySignture";
 import { validatePhone } from "@/common/js/validator";
 import iLocalStroage from "@/common/js/localStroage";
-
+import { htmlExportPDF } from '@/common/js/htmlExportPDF';
 export default {
   components: {
-    overflowInput,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId"]) },
   data() {
     return {
+        hidePart:true,
+        hidePar2:false,
       isOverflow: false,
       isOverLine: false,
       formData: {
@@ -458,15 +312,7 @@ export default {
   },
 
   methods: {
-    // 盖章
-    makeSeal() {
-      mySignture.openURL("oeder");
-      // this.$util.openURL('a');
-    },
-    // 打印
-    print() {
-      console.log("打印!");
-    },
+    
     // 多行编辑
     overFlowEdit() {
       this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
@@ -480,9 +326,9 @@ export default {
       // this.com_submitCaseForm(handleType, "docForm", true);
       // 预览样式
       this.isPdf = "color_FFFFFF";
-      setTimeout(() => {
-        this.com_submitCaseForm(handleType, "docForm", true);
-      }, 3000);
+    //   setTimeout(() => {
+    //     this.com_submitCaseForm(handleType, "docForm", true);
+    //   }, 3000);
     },
     //是否是完成状态
     isOverStatus() {
@@ -509,39 +355,17 @@ export default {
         false
       );
     },
-    getDataAfter(){
-      //获取机构详情
-      let params = { id: iLocalStroage.gets("userInfo").organId };
-       let _this = this
-      this.$store.dispatch("getOrganDetail", params).then(
-        res => {
-          console.log("机构", res);
-          let organData = res.data;
-          _this.formData.bank = organData.bank;
-          _this.formData.account = organData.account;
-          //复议机构 
-          if(organData.reconsiderationOrgan1){
-             _this.reconsiderationOrganList.push(organData.reconsiderationOrgan1)
-          }
-          if(organData.reconsiderationOrgan2){
-             _this.reconsiderationOrganList.push(organData.reconsiderationOrgan2)
-          }
-          //诉说机构
-          if(organData.enforcementOrgan1){
-             _this.enforcementOrganList.push(organData.enforcementOrgan1)
-          }
-          if(organData.enforcementOrgan2){
-             _this.enforcementOrganList.push(organData.enforcementOrgan2)
-          }
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    test(){
+        this.hidePart=false;
+        this.hidePar2=true;
+        setTimeout(() => {
+            htmlExportPDF('test_print',function(){})
+        }, 1000)
+       
     }
   },
   created() {
-    this.setData();
+    // this.setData();
   }
 };
 </script>
