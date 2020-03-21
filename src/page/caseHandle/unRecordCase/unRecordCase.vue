@@ -169,6 +169,8 @@ export default {
     handleCase(row) {
       console.log(row);
       this.$store.commit("setCaseId", row.id);
+      //设置案件状态不为审批中
+      this.$store.commit("setCaseApproval", false);
       this.$router.replace({
         name: "establish"
       });

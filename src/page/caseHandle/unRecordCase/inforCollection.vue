@@ -888,7 +888,8 @@ export default {
       lawPersonListId: "",
       currentUserLawId: "",
       disableBtn: false, //提交暂存按钮的禁用
-      activeA: [true, false, false, false, false]
+      activeA: [true, false, false, false, false],
+      autoSava:true, //自动暂存
     };
   },
   components: {
@@ -1174,6 +1175,8 @@ export default {
                 });
                 _this.$store.dispatch("deleteTabs", _this.$route.name);
                 _this.$store.commit("setCaseId", res.data.id);
+                iLocalStroage.removeItem("stageCaseId");
+                this.autoSava = false;
                 _this.$router.replace({
                   name: "establish"
                 });
@@ -1208,8 +1211,9 @@ export default {
               type: "success",
               message: "暂存成功!"
             });
-            _this.$store.dispatch("deleteTabs", _this.$route.name);
+            // _this.$store.dispatch("deleteTabs", _this.$route.name);
             _this.$store.commit("setCaseId", res.data.id);
+           
           },
           err => {
             console.log(err);
@@ -1400,7 +1404,24 @@ export default {
     if (this.$route.params.fromSlide) {
       this.fromSlide();
       this.disableBtn = true;
+      this.autoSava = false;
     }
+    //暂存数据后从其他页面回到信息采集页
+    if(iLocalStroage.get("stageCaseId")){
+      this.fromSlide();
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log('to',to)
+    console.log('from',from)
+    console.log('next',next);
+    if(this.autoSava){
+      this.stageInfo(0);
+      iLocalStroage.set("stageCaseId",this.caseId);
+    }
+    
+    next(vm=>{console.log(vm)})
+
   }
 };
 </script>

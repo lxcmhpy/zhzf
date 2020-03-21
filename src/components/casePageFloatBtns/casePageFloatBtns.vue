@@ -55,7 +55,7 @@
       </el-button>
       <el-button type="primary" @click="approvalBtn" v-if="formOrDocData.showBtn[7]">
         <i class="iconfont law-edit"></i>
-        <br />审批
+        <br />审批 
       </el-button>
       <el-button type="primary" @click="backHuanjieBtn" v-if="formOrDocData.showBtn[9]">
         <i class="iconfont law-back"></i>

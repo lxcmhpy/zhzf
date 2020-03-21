@@ -60,7 +60,8 @@ export const mixinGetCaseApiList = {
               // 提交pdf页
               setTimeout(() => {
                 this.printContent();
-              }, 3000)
+              }, 1500)
+              // this.printContent();
             }
 
           }

@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import iLocalStroage from "@/common/js/localStroage";
+import { mapGetters } from "vuex";
 export default {
   data(){
     return{
@@ -52,15 +54,21 @@ export default {
     }
   },
   props:['activeIndex'],
+  computed: { ...mapGetters(["caseApproval"]) },
   methods: {
     goTo(name){
-      this.$store.dispatch('deleteTabs', 'caseInfo');
-      this.$router.push({
-          name: name,
-          params:{
-            fromSlide: true
-          }
-      })
+      if(this.caseApproval) {
+        this.$message('暂不支持审批人员查看');
+      }else{
+        this.$store.dispatch('deleteTabs', 'caseInfo');
+        this.$router.push({
+            name: name,
+            params:{
+              fromSlide: true
+            }
+        })
+      }
+      
     },
     scrollToTop() {
         let scrollId = this.$route.meta.scrollId;
