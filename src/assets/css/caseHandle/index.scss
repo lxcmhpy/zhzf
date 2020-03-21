@@ -55,7 +55,7 @@
                 width: 90px;
 
                 .el-select__caret {
-                    line-height : 100%;
+                    line-height: 100%;
                 }
             }
 
@@ -193,24 +193,27 @@
                 float       : left;
                 margin-right: 10px;
             }
-            &>div:nth-child(2){
-                min-width: 400px;
+
+            &>div:nth-child(2) {
+                min-width  : 400px;
                 margin-left: 100px;
             }
-            span.selectIcon{
+
+            span.selectIcon {
                 display: none;
             }
         }
 
         .activeJudgli {
             background: #EAEDF4;
-            border: 1px solid #4573D0;
-            color: #4573D0;
-            position: relative;
-            span.selectIcon{
-                display: inline-block;
+            border    : 1px solid #4573D0;
+            color     : #4573D0;
+            position  : relative;
+
+            span.selectIcon {
+                display : inline-block;
                 position: absolute;
-                right: 10px;
+                right   : 10px;
             }
 
         }
@@ -611,4 +614,17 @@
     background-color  : transparent;
     -webkit-box-shadow: none;
     box-shadow        : none;
+}
+
+.next_btn {
+    width: 118px;
+    float: right;
+}
+.tablePart_select{
+        height: calc(100% - 235px);
+        overflow: auto;
+        padding-top: 3px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    
 }

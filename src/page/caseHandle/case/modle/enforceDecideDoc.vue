@@ -102,7 +102,7 @@
                  <el-input
                   v-model="docData.partyUnitAddress"
                   :maxLength="maxLength"
-                  :disabled="isParty && !originalData.partyUnitAddress ? false : true"
+                  :disabled="!isParty && !originalData.partyUnitAddress ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -118,7 +118,7 @@
                   v-model="docData.partyUnitTel"
                   minlength="11"
                   :maxLength="maxLength"
-                  :disabled="isParty && !originalData.partyUnitTel ? false : true"
+                  :disabled="!isParty && !originalData.partyUnitTel ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -131,7 +131,7 @@
                 <el-input
                   v-model="docData.partyManager"
                   :maxLength="maxLength"
-                  :disabled="isParty && !originalData.partyManager ? false : true"
+                  :disabled="!isParty && !originalData.partyManager ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -148,7 +148,7 @@
                 <el-input
                   v-model="docData.socialCreditCode"
                   :maxLength="maxLength"
-                  :disabled="isParty && !originalData.socialCreditCode ? false : true"
+                  :disabled="!isParty && !originalData.socialCreditCode ? false : true"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
