@@ -13,19 +13,19 @@
             <el-col :span="9">
               <el-form-item style="width:520px">
                 <el-input v-model="formLabelAlign.caseNumber" placeholder="请输入移送案件的案号">
-                  <el-button slot="append" icon="el-icon-search"></el-button>
+                  <el-button slot="append" icon="el-icon-search" @click="getUnRecordCase"></el-button>
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="9" :offset="6">
-              <el-button type="primary" class="next_btn" size="small" @click="nextStep">下一步</el-button>
+            <el-col :span="9" :offset="6" v-bind:class="{ disabled_btn:nextStepFlag?false:true }">
+              <el-button type="primary" class="next_btn" size="small" @click="nextStep" :disabled='!nextStepFlag'>下一步</el-button>
             </el-col>
           </el-row>
         </el-form>
 
       </div>
       <div class="tablePart_select">
-        <el-table :data="tableData" stripe style="width: 100%" highlight-current-row @current-change="handleCase" height="100%">
+        <el-table :data="tableData" stripe style="width: 100%" highlight-current-row @current-change="chexkCase" height="100%">
           <el-table-column prop="tempNo" label="编号" align="center" width="200"></el-table-column>
           <el-table-column prop="vehicleShipId" label="车/船号" align="center" width="100"></el-table-column>
           <el-table-column prop="name" label="当事人/单位" align="center" width="150"></el-table-column>
@@ -43,7 +43,7 @@
         </el-table>
       </div>
       <div class="paginationBox">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[5]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
       </div>
       <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
     </div>
@@ -54,6 +54,7 @@ import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import caseRegisterDiag from "../../caseHandle/unRecordCase/caseRegisterDiag";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
+import { selectTransferCaseApi } from "@/api/caseHandle";
 
 export default {
   data() {
@@ -68,12 +69,14 @@ export default {
       // },
       tableData: [],
       currentPage: 1, //当前页
-      pageSize: 10, //pagesize
+      pageSize: 5, //pagesize
       total: 0, //总页数
       hideSomeSearch: true,
       formLabelAlign: {
         caseNumber: ''
-      }
+      },
+      nextStepFlag: false,
+      caseData:{},
     };
   },
   mixins: [mixinGetCaseApiList],
@@ -89,12 +92,16 @@ export default {
     //获取机构下的未立案数据
     getUnRecordCase(searchData) {
       let data = searchData;
-      data.flag = 1;
-      data.userId = iLocalStroage.gets("userInfo").id;
+      data.caseNumber = this.formLabelAlign.caseNumber
       data.current = this.currentPage;
       data.size = this.pageSize;
       console.log(data);
-      this.getCaseList(data);
+      selectTransferCaseApi(data).then(
+        res => {
+          console.log('可移送列表', res)
+          this.tableData = res.data.records
+          this.total=res.data.total
+        });
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -107,16 +114,6 @@ export default {
       this.currentPage = val;
       this.getUnRecordCase({});
     },
-    //跳转立案登记
-    handleCase(row) {
-      console.log(row);
-      this.$store.commit("setCaseId", row.id);
-      this.$router.replace({
-        name: "establish"
-      });
-      let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
-      this.$store.commit("setCaseNumber", setCaseNumber);
-    },
     //展开
     showSomeSearch() {
       this.hideSomeSearch = !this.hideSomeSearch;
@@ -125,8 +122,17 @@ export default {
     nextStep() {
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.replace({
-        name: "addTransfer"
+        name: "addTransfer",
+        params: {
+            caseData:this.caseData
+         }
+        
       });
+    },
+    chexkCase(caseData) {
+      console.log(caseData)
+      this.caseData=caseData;
+      this.nextStepFlag = true;
     }
   },
   created() {

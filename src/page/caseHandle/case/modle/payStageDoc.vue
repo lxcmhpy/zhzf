@@ -183,25 +183,25 @@ export default {
           { required: true, message: '请输入案号', trigger: 'blur' },
         ],
         fine: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入罚款', trigger: 'blur' },
         ],
         delayDate: [
           { required: true, message: '请输入延长缴纳日期', trigger: 'blur' },
         ],
         instalmentNum: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入当前分期数', trigger: 'blur' },
         ],
         payFine: [
           { required: true, message: '请输入本期缴纳金额  ', trigger: 'blur' },
         ],
         debtFine: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入未缴纳的罚款', trigger: 'blur' },
         ],
         instalmentDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入本期缴纳时间', trigger: 'blur' },
         ],
         reason: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入拒绝原因', trigger: 'blur' },
         ],
 
       },

@@ -3,7 +3,7 @@
     <div v-if="caseState == 'transfer'">
       <el-button type="primary" size="medium" icon="el-icon-plus" @click="newAdd">新增移送</el-button>
     </div>
-    <div >
+    <div>
       <el-form :model="caseSearchForm" ref="caseSearchForm" class="caseSearchForm" label-width="100px">
         <div :class="lineSearchSty">
           <div class="item" v-if="caseState == 'transfer'">
@@ -43,13 +43,13 @@
           </div>
           <div class="item">
             <el-form-item label="申请人">
-              <el-input v-model="caseSearchForm.records[0].person"></el-input>
+              <el-input v-model="caseSearchForm.person"></el-input>
             </el-form-item>
           </div>
 
           <div class="item">
             <el-form-item label="发起时间">
-              <el-date-picker v-model="caseSearchForm.records[0].createTime" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']">
+              <el-date-picker v-model="caseSearchForm.createTime" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']">
               </el-date-picker>
             </el-form-item>
           </div>
@@ -71,28 +71,12 @@ export default {
     return {
       caseSearchForm: {
         caseNumber: "",
+        person: '',
+        createTime: '',
         party: "",
-        vehicleShipId: "",
-        caseType: "",
-        caseCauseName: "",
-        caseStatus: "",
-        currentLinkName: "",
-        acceptStartTime: "",
-        acceptEndTime: "",
-        applicant: "",
-        applyStartTime: "",
-        applyEndTime: "",
-        endCaseStartTime: "",
         organMb: "",
         wfxw: "",
-        records:[{
-          person:'',
-          createTime:'',
-        }]
       },
-      acceptTimeArray: [],
-      endCaseTimeArray: [],
-      applyTimeArray: [],
       hideSomeSearch: true,
       linkList: [], //环节
       caseTypeList: [],//类型
@@ -120,12 +104,12 @@ export default {
       this.hideSomeSearch = !this.hideSomeSearch;
     },
     newAdd() {
-    //   this.$emit("caseRecord");
-       this.$router.push({
-          name: 'addSelect',
-          params:{
-            fromSlide: true
-          }
+      //   this.$emit("caseRecord");
+      this.$router.push({
+        name: 'addSelect',
+        params: {
+          fromSlide: true
+        }
       })
     },
     //查询所以环节
@@ -154,15 +138,7 @@ export default {
     //搜索
     searchCaseEmit() {
       console.log('点击')
-      this.caseSearchForm.applyStartTime = this.applyTimeArray[0]
-      this.caseSearchForm.applyEndTime = this.applyTimeArray[1]
-
-      this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0]
-      this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1]
-
-      this.caseSearchForm.endCaseStartTime = this.endCaseTimeArray[0]
-      this.caseSearchForm.endCaseEndTime = this.endCaseTimeArray[1]
-
+      this.caseSearchForm.records = JSON.stringify(this.caseSearchForm.records)
       this.$emit('searchCase', this.caseSearchForm);
     },
     //查询案件状态
