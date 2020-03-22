@@ -236,6 +236,17 @@ export function submitPdfApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//选择审批人员后提交
+export function submitPdfByPersonApi(data) {
+  return request({
+    url: "/doc/linkData/jumpNextLinkByPerson",
+    method: "post",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //修改文书状态
 export function saveOrUpdateLinkApi(data){
   return request({
@@ -297,10 +308,12 @@ export function getApprovePeopleApi(caseBasicInfoId) {
 
 //查询所有环节
 export function getQueryLinkListApi() {
+  let data={tag:1}
   return request({
     url: "/caseTemplate/linkType/queryLinkList",
     method: "get",
     showloading: true,
+    params:data,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });

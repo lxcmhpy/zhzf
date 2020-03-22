@@ -39,7 +39,7 @@
         </el-row>
       </el-form-item>
 
-      <div v-for="(domain, index) in addBannerForm.domains" :key="domain.key" >
+      <div v-for="(domain, index) in addBannerForm.domains" :key="domain.key" class="askAndquestionCon">
         <el-form-item :label="'问' + (index +1)" :prop="'domains.' + index+ '.question'" class="domainsBox">
           <el-input type="textarea" :autosize="{ minRows: 2,}" v-model="domain.question" @focus="canEdit(index)"></el-input>
           <span class="handleBtn"><i class="el-icon-remove" type="primary" @click.prevent="removeDomain(domain)"></i><i type="primary" v-show="index == addBannerForm.domains.length-1" class="el-icon-circle-plus" @click="addDomain"></i></span>
@@ -201,6 +201,9 @@ export default {
 <style lang="scss" >
   .print_box .questBox1 .el-form-item__content .el-input .el-input__inner{
     width: 100%;
+  }
+  .questDialog .askAndquestionCon .el-textarea{
+    width:90%;
   }
 </style>
 

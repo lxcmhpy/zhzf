@@ -39,6 +39,9 @@
   </el-dialog>
 </template>
 <script>
+import {
+  submitPdfApi,submitPdfByPersonApi
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -64,7 +67,7 @@ export default {
       let _this = this
       this.$store.dispatch("getApprovePeople", this.caseInfo.caseId).then(
         res => {
-          console.log(res);
+          console.log('审批人员',res);
            let data = res.data;
           data.splice(0,1);
           // let swap = data[1];
@@ -91,7 +94,17 @@ export default {
 
       //   }
       let _this = this
-      this.$store.dispatch("submitPdf", this.caseInfo).then(
+      let a={
+        approve1:"987964a3772e74aecc173479473f5cf3",
+        approve2:"13475aa147aa5766e574b07ddb2b768d"
+      }
+      // let data = {
+      //   caseId:_this.caseId,
+      //   handlePerson:JSON.stringify(a)
+      // }
+      // this.caseInfo.handlePerson = JSON.stringify(a)
+      console.log('传的参数',this.caseInfo)
+      submitPdfApi(this.caseInfo).then(
         res => {
           console.log("pdf提交", res);
           _this.$message({
