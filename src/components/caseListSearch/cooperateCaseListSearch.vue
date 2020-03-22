@@ -25,7 +25,7 @@
           <div class="item">
             <el-form-item label="处理状态">
               <!-- <el-input v-model="caseSearchForm.caseStatus"></el-input> -->
-              <el-select v-model="caseSearchForm.state" placeholder="全部">
+              <el-select v-model="caseSearchForm.caseType" placeholder="全部">
                 <el-option v-for="item in caseStateList" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>

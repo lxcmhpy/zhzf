@@ -26,9 +26,9 @@
       </div>
       <div class="tablePart_select">
         <el-table :data="tableData" stripe style="width: 100%" highlight-current-row @current-change="chexkCase" height="100%">
-          <el-table-column prop="tempNo" label="编号" align="center" width="200"></el-table-column>
+          <el-table-column prop="caseNumber" label="编号" align="center" width="200"></el-table-column>
           <el-table-column prop="vehicleShipId" label="车/船号" align="center" width="100"></el-table-column>
-          <el-table-column prop="name" label="当事人/单位" align="center" width="150"></el-table-column>
+          <el-table-column prop="party" label="当事人/单位" align="center" width="150"></el-table-column>
           <el-table-column prop="caseCauseName" label="违法行为" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="top-start">
