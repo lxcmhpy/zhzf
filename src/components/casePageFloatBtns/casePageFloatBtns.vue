@@ -88,6 +88,7 @@ export default {
       fd.append("file", f)
       fd.append('caseId',this.caseId)
       fd.append('docId','5cad5b54eb97a15250672a4c397cee56')
+      fd.append('category', '文书');
 
       this.$store.dispatch("uploadFile", fd).then(
         res => {

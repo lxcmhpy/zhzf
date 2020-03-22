@@ -124,6 +124,17 @@ export function findLawOfficerListApi(organId) {
   });
 }
 
+//通过姓名或执法证号查询执法人员列表
+export function findStaffListApi(inputValue) {
+  return request({
+    url: "/sys/lawOfficer/findLawOfficerList/"+inputValue,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //根据案件ID获取案件信息
 export function getCaseBasicInfoApi(data) {
   return request({
@@ -236,6 +247,17 @@ export function submitPdfApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//选择审批人员后提交
+export function submitPdfByPersonApi(data) {
+  return request({
+    url: "/doc/linkData/jumpNextLinkByPerson",
+    method: "post",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //修改文书状态
 export function saveOrUpdateLinkApi(data){
   return request({
@@ -297,10 +319,12 @@ export function getApprovePeopleApi(caseBasicInfoId) {
 
 //查询所有环节
 export function getQueryLinkListApi() {
+  let data={tag:1}
   return request({
     url: "/caseTemplate/linkType/queryLinkList",
     method: "get",
     showloading: true,
+    params:data,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });

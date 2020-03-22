@@ -28,8 +28,8 @@
           <span>本机构人员</span>
           <span>{{this.userList.length}}</span>
         </p>
-        <el-input placeholder="请输入姓名或执法证号" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入姓名或执法证号" class="input-with-select" v-model="staffNameOrCode">
+          <el-button slot="append" icon="el-icon-search" @click="findStallByCondition()"></el-button>
         </el-input>
         <div class="userList">
           <el-checkbox
@@ -71,7 +71,7 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-
+import { findStaffListApi } from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -83,11 +83,29 @@ export default {
       selectedNumber: [],
       alreadyChooseLawPerson: [], //信息采集页传来的
       currentUserName: iLocalStroage.gets("userInfo").username, //当前登录用户的username
-      checkedUserId: []
+      checkedUserId: [],
+      staffNameOrCode: "",
     };
   },
   inject: ["reload"],
   methods: {
+    findStallByCondition(){
+        // findStaffListApi(this.staffNameOrCode);
+        let _this = this
+        findStaffListApi(this.staffNameOrCode).then(res=>{
+            _this.userList = res.data;
+            _this.userList.forEach(item => {
+              //执法证号下拉框
+              item.lawOfficerCardsAndId = {
+                id: item.id,
+                lawOfficerCards: item.lawOfficerCards.split(",")
+              };
+            });
+      },err=>{
+        console.log(err);
+      })
+
+    },
     showModal(alreadyChooseLawPersonId, inforCollectLawPerson) {
       this.visible = true;
       // this.alreadyChooseLawPerson = alreadyChooseLawPerson;

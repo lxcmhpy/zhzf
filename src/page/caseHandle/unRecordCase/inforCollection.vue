@@ -10,7 +10,7 @@
         <a :class="activeA[4]? 'activeA' :''" @click="jump(5)">违法事实</a>
       </div>
     </div>
-    <el-form :model="inforForm" :rules="rules" ref="inforForm" class="caseInfoForm" label-width="100px">
+    <el-form :model="inforForm" :rules="rules" ref="inforForm" class="caseInfoForm" label-width="100px" :disabled="isHandleCase">
       <div class="caseFormBac" id="link_1">
         <p>案件情况</p>
         <div>
@@ -890,6 +890,7 @@ export default {
       judgFreedomList: [], //自由裁量列表
       caseSourceTextDisable: false,
       relationWithPartyIsOne: true, //与当事人关系是否为同一人
+      isHandleCase: false,
       activeJudgli: "",
       showOverrun: false, //显示超限信息锚点
       lawPersonListId: "",
@@ -1251,14 +1252,14 @@ export default {
     },
     //处理数据回显问题
     handleCaseData(data) {
-      let currentUserId = null;
       console.log('handleCaseData方法', data);
-      console.log('data.createId', data.createId);
       //使当事人类型选中
       if (data.partyType == "1") {
         this.inforForm.partyType = 1;
+        this.partyTypePerson = 1;
       } else {
         this.inforForm.partyType = 2;
+        this.partyTypePerson = 2;
       }
       if (data.partySex == "1") {
         this.inforForm.partySex = 1;
@@ -1267,6 +1268,17 @@ export default {
       }
       //驾驶人或代理人
       this.driverOrAgentInfoList = JSON.parse(data.agentPartyEcertId);
+      //超限信息
+      if(data.otherInfo!=""){
+        this.inforForm.otherInfo = JSON.parse(data.otherInfo);
+      }
+      if(data.caseCauseName=='车辆在公路上擅自超限行驶'){
+          this.showOverrun =true;
+      };
+      debugger
+      if(data.caseStatus=='待审批'){
+        this.isHandleCase=true;
+      };
       //当前用户不是创建案件者，输入框设置为只读
       // currentUserId = iLocalStroage.gets("userInfo").id;
       // if(currentUserId!=data.createId){
@@ -1452,6 +1464,7 @@ export default {
     },
   },
   mounted() {
+    debugger
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
     console.log(someCaseInfo);
     this.inforForm.caseCauseName = someCaseInfo.illageAct;
@@ -1465,7 +1478,7 @@ export default {
     console.log("标志", someCaseInfo.illageAct)
     this.showOverrun =
       someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
-    console.log(this.showOverrun)
+    console.log('showOverrun',this.showOverrun)
 
     this.driverOrAgentInfo.relationWithParty = '1';
     this.inforForm.otherInfo.checkResult = '1'
