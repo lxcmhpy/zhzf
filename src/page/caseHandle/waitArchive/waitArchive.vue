@@ -8,7 +8,7 @@
 
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="clickCase">
-        <el-table-column prop="tempNo" label="案号" align="center" width="200"></el-table-column>
+        <el-table-column prop="caseNumber" label="案号" align="center" width="200"></el-table-column>
         <el-table-column prop="vehicleShipId" label="车/船号" align="center" width="100"></el-table-column>
         <el-table-column prop="name" label="当事人/单位" align="center" width="150"></el-table-column>
         <el-table-column prop="caseCauseName" label="违法行为" align="center">
@@ -87,7 +87,9 @@ export default {
     },
     clickCase(row){
       console.log(row);
-      this.$store.commit('setCaseId',row.id)
+      this.$store.commit('setCaseId',row.id);
+      //设置案件状态不为审批中
+      this.$store.commit("setCaseApproval", false);
       this.$router.push({
         name: "archiveCover",
         params: {

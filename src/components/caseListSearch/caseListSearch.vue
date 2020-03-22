@@ -226,7 +226,7 @@ export default {
     caseRecordEmit() {
       this.$emit("caseRecord");
     },
-    //查询所以环节
+    //查询所有环节
     getAllLinkList() {
       getQueryLinkListApi().then(
         res => {

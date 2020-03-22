@@ -1,7 +1,7 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'">
-      <caseListSearch @showSomeSearch="showSomeSearch" @caseRecord="caseRecord" @searchCase="getUnRecordCase" :caseState="'transfer'"></caseListSearch>
+      <caseListSearch @showSomeSearch="showSomeSearch" @caseRecord="caseRecord" @searchCase="getTransferCase" :caseState="'transfer'"></caseListSearch>
       <div class="tablePart">
         <!-- <el-table :data="tableData" stripe style="width: 100%" highlight-current-row @current-change="handleCase" height="100%"> -->
         <el-table :data="tableData" stripe style="width: 100%" highlight-current-row height="100%">
@@ -43,7 +43,7 @@ import caseListSearch from "@/components/caseListSearch/cooperateCaseListSearch"
 import caseRegisterDiag from "../../caseHandle/unRecordCase/caseRegisterDiag";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
-
+import { TransferCaseApi } from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -72,26 +72,29 @@ export default {
       this.$refs.caseRegisterDiagRef.showModal();
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
-    //获取机构下的未立案数据
-    getUnRecordCase(searchData) {
+    //获取机构下的移送数据
+    getTransferCase(searchData) {
       let data = searchData;
-      data.flag = 0;
-      data.userId = iLocalStroage.gets("userInfo").id;
+      // data.userId = iLocalStroage.gets("userInfo").id;
       data.current = this.currentPage;
       data.size = this.pageSize;
       console.log(data);
-      this.getCaseList(data);
+      TransferCaseApi(data).then(
+        res => {
+          console.log('移送列表', res)
+          this.tableData = res.records
+        });
     },
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getUnRecordCase({});
+      this.getTransferCase({});
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getUnRecordCase({});
+      this.getTransferCase({});
     },
     //跳转立案登记
     handleCase(row) {
@@ -114,13 +117,13 @@ export default {
         name: "cooperateDentails",
         params: {
           caseInfo: row,
-          isApproval:true
+          isApproval: true
         }
       });
     }
   },
   created() {
-    this.getUnRecordCase({});
+    this.getTransferCase({});
   }
 };
 </script>

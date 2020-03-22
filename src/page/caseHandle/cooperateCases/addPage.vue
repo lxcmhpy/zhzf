@@ -9,65 +9,81 @@
       </div>
 
       <div class="border_blue"></div>
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form :model="caseData" :rules="rules" ref="caseData" label-width="100px" class="demo-ruleForm">
         <div class="content_bg">
-          <el-form-item label="案号" prop="name">
-            <el-input v-model="ruleForm.name"></el-input>
+
+          <el-form-item label="案号">
+            {{caseData.tempNo}}
+            <el-button class="re_select" size="small" @click="reSelect" plain>重新选择</el-button>
           </el-form-item>
-          <el-form-item label="案由" prop="name">
-            <el-input v-model="ruleForm.name"></el-input>
+          <el-form-item label="案由">
+            {{caseData.caseCauseName}}
           </el-form-item>
         </div>
-        <el-form-item label="目标机构" prop="region">
+        <el-form-item label="目标机构" class="is-required">
           <el-row :gutter="20">
             <el-col :span="5">
-              <el-form-item prop="date1">
-                <el-select v-model="ruleForm.region" placeholder="机构类型">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
+              <el-form-item prop="organType">
+                <el-select v-model="caseData.organType" placeholder="机构类型">
+                  <el-option label="执法机构" value="执法机构"></el-option>
+                  <el-option label="公安机关" value="公安机关"></el-option>
+                  <el-option label="司法机关" value="司法机关"></el-option>
+                  <el-option label="其他部门" value="其他部门"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="17">
-              <el-form-item prop="date2">
-                <el-input v-model="ruleForm.name"></el-input>
+              <el-form-item prop="organMb">
+                <el-input v-model="caseData.organMb"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form-item>
-        <el-form-item label="移送原因" prop="resource">
-          <el-form-item prop="resource">
-            <el-radio v-model="ruleForm.resource" label="重大、疑难案件"></el-radio>
+        <el-form-item label="移送原因" prop="copyReason" class="is-required">
+          <el-form-item>
+            <el-radio v-model="caseData.copyReason" label="重大、疑难案件"></el-radio>
           </el-form-item>
-          <el-form-item prop="resource">
-            <el-radio v-model="ruleForm.resource" label="违法行为涉嫌犯罪"></el-radio>
+          <el-form-item>
+            <el-radio v-model="caseData.copyReason" label="违法行为涉嫌犯罪"></el-radio>
           </el-form-item>
-          <el-form-item prop="resource">
-            <el-radio v-model="ruleForm.resource" label="其他原因"></el-radio>
-          </el-form-item>
-          <el-form-item prop="resource">
-            <el-input v-model="ruleForm.name"></el-input>
-          </el-form-item>
+          <el-row>
+            <el-col :span="6">
+              <el-form-item>
+                <el-radio v-model="caseData.copyReason" label="其他原因"></el-radio>
+              </el-form-item>
+            </el-col>
+            <el-col :span="18">
+              <el-form-item :prop="caseData.copyReason == '其他原因' ? 'otherReason' :''">
+                <el-input v-model="caseData.otherReason"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form-item>
-        <el-form-item label="附件" prop="delivery">
-          <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
+
+        <el-form-item label="附件">
+          <!-- zjfj -->
+          <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="uploadFileList">
             <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            <div slot="tip" class="el-upload__tip">最多上传3个附件</div>
           </el-upload>
         </el-form-item>
-        <el-form-item label="备注" prop="desc">
-          <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+        <el-form-item label="备注">
+          <el-input type="textarea" v-model="caseData.notes"></el-input>
         </el-form-item>
         <div class="send_message">
           <div class="left margin_right_66">
             <div class="title">
               <div class="list_icon"> <img src="../../../../static/images/img/personInfo/icon_wenshu.svg" alt=""></div>
-              <center class="list_name">文书（0/21）</center>
+              <center class="list_name">文书（{{checkedFiles.length}}/{{fileList.length}}）</center>
+              <!-- docs -->
             </div>
             <div class="list">
               <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-              <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+              <el-checkbox-group v-model="checkedFiles" @change="handleCheckedFilesChange">
+                <el-checkbox v-for="(item,index) in fileList" :label="item.docName" :key="index">{{item.docName}}
+                  <!-- {{item.docNote}}
+                  <span v-if="item.docNote==''">{{item.docName}}</span> -->
+                </el-checkbox>
               </el-checkbox-group>
             </div>
           </div>
@@ -75,40 +91,59 @@
             <div class="title">
               <div class="list_icon"> <img src="../../../../static/images/img/personInfo/icon_zhengju.svg" alt=""></div>
               <center class="list_name">证据附件（0/9）</center>
+              <!-- zjfj -->
             </div>
             <div class="list">
-              <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-              <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+              <el-checkbox :indeterminate="isIndeterminate2" v-model="checkAll2" @change="handleCheckAllChange2">全选</el-checkbox>
+              <el-checkbox-group v-model="checkedFiles2" @change="handleCheckedFilesChange2">
+                <el-checkbox v-for="(item,index) in evdenceList" :label="index" :key="index">{{item.fileName}}
+                  <!-- {{item.docNote}}
+                  <span v-if="item.docNote==''">{{item.docName}}</span> -->
+                </el-checkbox>
               </el-checkbox-group>
             </div>
           </div>
         </div>
+        <center>
+          <el-button type="primary" @click="submitForm('caseData')" style="width:174px;margin-bottom:74px;margin-top:70px">提交</el-button>
+        </center>
       </el-form>
     </div>
 
   </div>
 </template>
 <script>
-const cityOptions = ['上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊', '北京', '广州', '深圳'];
+import { AddEditTransferCaseApi, getFinishDocByIdApi, getFinishEvdenceByIdApi } from "@/api/caseHandle";
+import {
+  uploadEvApi,
+  findFileByIdApi,
+} from "@/api/upload";
+// const fileOptions = ['上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊', '北京', '广州', '深圳'];
 export default {
   data() {
     return {
-      ruleForm: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: '',
+      caseData: {
+        tempNo: '',
+        caseCauseName: '',
+        organType: '',
+        organMb: '',
+        copyReason: '',
+        otherReason: '',
+        docs: '',
+        zjfj: '',
       },
       checkAll: false,
-      checkedCities: [],
-      cities: cityOptions,
+      checkAll2: false,
+      checkedFiles: [],
+      checkedFiles2: [],
+      files: [],
+      fileOptions: [],
+      evdenceOptions: [],
       isIndeterminate: true,
-      fileList: [{ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }, { name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],
+      isIndeterminate2: true,
+      uploadFileList: [],
+      fileList: [],
+      evdenceList: [],
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
@@ -117,31 +152,48 @@ export default {
         region: [
           { required: true, message: '请选择活动区域', trigger: 'change' }
         ],
-        date1: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+        organType: [
+          { required: true, message: '请选择机构类型', trigger: 'blur' }
         ],
-        date2: [
-          { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+        organMb: [
+          { required: true, message: '请输入目标机构', trigger: 'blur' }
         ],
-        type: [
-          { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+        copyReason: [
+          { required: true, message: '请选择移送原因', trigger: 'blur' }
         ],
         resource: [
           { required: true, message: '请选择活动资源', trigger: 'change' }
         ],
         desc: [
           { required: true, message: '请填写活动形式', trigger: 'blur' }
+        ],
+        otherReason: [
+          { required: true, message: '请填写原因', trigger: 'blur' }
         ]
       }
     };
   },
   methods: {
+    reSelect() {
+      this.$store.dispatch("deleteTabs", this.$route.name);
+      this.$router.replace({
+        name: "addSelect",
+      });
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          AddEditTransferCaseApi(this.caseData).then(res => {
+            console.log(res);
+            this.modelList = res.data;
+          }, err => {
+            console.log(err);
+          })
         } else {
-          console.log('error submit!!');
+          this.$message({
+            type: "error",
+            message: "请完善表单信息"
+          });
           return false;
         }
       });
@@ -150,13 +202,22 @@ export default {
       this.$refs[formName].resetFields();
     },
     handleCheckAllChange(val) {
-      this.checkedCities = val ? cityOptions : [];
+      this.checkedFiles = val ? this.fileOptions : [];
       this.isIndeterminate = false;
     },
-    handleCheckedCitiesChange(value) {
+    handleCheckAllChange2(val) {
+      this.checkedFiles2 = val ? this.evdenceOptions : [];
+      this.isIndeterminate2 = false;
+    },
+    handleCheckedFilesChange(value) {
       let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+      this.checkAll = checkedCount === this.fileList.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.fileList.length;
+    },
+    handleCheckedFilesChange2(value) {
+      let checkedCount = value.length;
+      this.checkAll2 = checkedCount === this.evdenceList.length;
+      this.isIndeterminate2 = checkedCount > 0 && checkedCount < this.evdenceList.length;
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -170,6 +231,42 @@ export default {
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     }
+  },
+  mounted() {
+    console.log('选择的案件', this.$route.params)
+    this.caseData.tempNo = this.$route.params.caseData.tempNo
+    this.caseData.caseCauseName = this.$route.params.caseData.caseCauseName
+    this.caseData.caseId = this.$route.params.caseData.id
+    console.log('表单', this.caseData)
+    getFinishDocByIdApi(this.caseData.caseId).then(res => {
+      console.log('文书列表', res.data);
+      this.fileList = res.data;
+      this.fileOptions = res.data;
+      // this.files=res.data;
+
+      // let hash = {};
+      // res.data.forEach(curVal => {
+      //    hash[curVal.docName] ? '' : hash[curVal.docName] = true && this.fileList.push(curVal); 
+      //     console.log(' this.fileList', this.fileList)
+      // });
+      // let flag = 1;
+      // this.fileList.forEach(element => {
+      //   element.flag = flag
+      //   flag += 1;
+      //   console.log(' this.fileList', this.fileList)
+      // });
+
+    }, err => {
+      console.log(err);
+    })
+    getFinishEvdenceByIdApi(this.caseData.caseId).then(res => {
+      console.log('zhengju', res);
+      this.evdenceList = res.data
+      this.evdenceOptions = res.data
+
+    }, err => {
+      console.log(err);
+    })
   }
 }
 </script>
@@ -194,10 +291,10 @@ export default {
   border-color: #4573d0;
 }
 .steps /deep/ .el-step__title.is-success {
-  color: #B2B2B2;
+  color: #b2b2b2;
 }
 .steps /deep/ .el-step__icon /deep/.el-step__icon-inner {
-    font-weight: 400;
+  font-weight: 400;
 }
 .steps /deep/ .el-step__main {
   white-space: normal;

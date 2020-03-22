@@ -1,6 +1,6 @@
 <template>
   <div class="print_box">
-    <el-form :rules="rules" ref="caseInvestiForm" :inline-message="true" :inline="true" :model="formData">
+    <el-form :rules="rules" ref="caseInvestiForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
       <div class="printNumbers_box" >
           <div id="caseInvest-print" class="print_info" style="height:auto;padding:0px;">
             <div class="print_info" >
@@ -398,6 +398,7 @@ export default {
       isParty: true,
       originalData: "",
       needDealData:true,
+      disableWhenApproval:false
     };
   },
   computed: { ...mapGetters(["caseId"]) },
@@ -585,13 +586,16 @@ export default {
           false,
           false
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        this.disableWhenApproval = true;
       }
     },
     showEvidence() {
+      if(!this.disableWhenApproval)
       this.$refs.investigRpEvidenceRef.showModal(this.formData.evidenceList);
     },
     //执法人员审核意见带入
     showLawOfficeOpion(){
+      if(!this.disableWhenApproval)
       this.$refs.showLawOfficerOpionRef.showModal();
     },
     getLawOfficeOpion(lawOfficeOpionData){

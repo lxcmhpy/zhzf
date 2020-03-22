@@ -537,10 +537,11 @@
 
             }
           }
-        })
-         this.allAskDocList.forEach(element => {
-        if (element.name == '中止（终结、恢复）行政强制执行通知书' && element.status=='1') {
-          this.finishDocCount += 1;
+        });
+        this.finishDocCount = 0;
+        this.allAskDocList.forEach(element => {
+          if (element.name == '中止（终结、恢复）行政强制执行通知书' && element.status=='1') {
+            this.finishDocCount += 1;
           }
         });
         this.allDocCount = this.allAskDocList.length

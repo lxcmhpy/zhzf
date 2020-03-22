@@ -247,6 +247,17 @@ export function submitPdfApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//选择审批人员后提交
+export function submitPdfByPersonApi(data) {
+  return request({
+    url: "/doc/linkData/jumpNextLinkByPerson",
+    method: "post",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //修改文书状态
 export function saveOrUpdateLinkApi(data){
   return request({
@@ -308,10 +319,12 @@ export function getApprovePeopleApi(caseBasicInfoId) {
 
 //查询所有环节
 export function getQueryLinkListApi() {
+  let data={tag:1}
   return request({
     url: "/caseTemplate/linkType/queryLinkList",
     method: "get",
     showloading: true,
+    params:data,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
@@ -534,8 +547,65 @@ export function findRequestListByModelIdApi(modelId) {
   });
 }
 
+//案件移送列表
+export function TransferCaseApi(data) {
+  return request({
+    url: "/case/transfer/findByCondition",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//案件移送可选案件列表
+export function selectTransferCaseApi(data) {
+  return request({
+    url: "/doc/caseBasicInfo/queryPageByTransferCaseNumber",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
+//添加修改移送
+export function AddEditTransferCaseApi(modelId) {
+  let data= modelId;
+  console.log('添加',data)
+  // data = vm.$qs.stringify({data})
+  return request({
+    url: "/case/transfer/saveOrUpdate",
+    method: "post",
+    data:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//根据案件id查询案件相关联的文书
+export function getFinishDocByIdApi(data) {
+  return request({
+    url: "sys/file/findVoByDocCaseId/"+data,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
+//根据案件id查询案件相关联的附件
+export function getFinishEvdenceByIdApi(data) {
+  console.log('chaxun',data)
+  return request({
+    url: "sys/file/findVoByEvidenceCaseId/"+data,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
 //-------------长软lv start------------
 //获取操作记录

@@ -7,12 +7,13 @@ import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategory
     getHandleRecordApi,getEvidenceApi,saveOrUpdateEvidenceApi,getDocumentApi,getDeliverReceiptApi,saveOrUpdateDeliverReceiptApi,getDictionaryApi
     //-----------------长软end------------
     } from "@/api/caseHandle";
-
+import iLocalStroage from "@/common/js/localStroage";
 
 const caseHandle = {
     state:{
         caseId:'' ,  //案件id
-        docId: ''
+        docId: '',
+        caseApproval:'', //案件是否为审批状态
     },
     mutations:{
         //设置caseId
@@ -21,6 +22,10 @@ const caseHandle = {
         },
         setDocId(state,data) {
             state.docId = data
+        },
+        setCaseApproval(state,data){
+            iLocalStroage.set('caseApproval',data)
+            state.caseApproval = data;
         }
     },
     actions:{

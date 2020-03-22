@@ -552,6 +552,7 @@
 
         .list {
             margin-top: 48px;
+            height    : 410px;
             overflow  : auto;
 
         }
@@ -583,6 +584,17 @@
         line-height   : 40px;
     }
 
+    .re_select {
+        margin-left: 30px;
+
+    }
+
+    .re_select.el-button--default：hover {
+        border-color: #0074F5 !important;
+        color       : #0074F5 !important;
+        background  : #fff !important;
+
+    }
 
 }
 
@@ -597,19 +609,19 @@
     }
 
     .top {
-        height       : 413px;
-        background   : #fff;
-        margin-bottom: 22px;
-        -webkit-box-shadow: 0 6px 4px 0 rgba(94,137,181,.1);
-        box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+        height            : 413px;
+        background        : #fff;
+        margin-bottom     : 22px;
+        -webkit-box-shadow: 0 6px 4px 0 rgba(94, 137, 181, .1);
+        box-shadow        : 0 6px 4px 0 rgba(94, 137, 181, 0.1);
     }
 
     .btm {
-        height    : calc(100% - 435px);
-        background: #fff;
-        overflow  : auto;
-        -webkit-box-shadow: 0 6px 4px 0 rgba(94,137,181,.1);
-        box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+        height            : calc(100% - 435px);
+        background        : #fff;
+        overflow          : auto;
+        -webkit-box-shadow: 0 6px 4px 0 rgba(94, 137, 181, .1);
+        box-shadow        : 0 6px 4px 0 rgba(94, 137, 181, 0.1);
     }
 
     .tans_box {
@@ -630,7 +642,7 @@
     }
 
     .record_text {
-    
+
         margin     : 24px 0;
         font-size  : 18px;
         font-weight: 500;

@@ -96,6 +96,9 @@ export default {
       console.log(row)
       this.$store.commit("setCaseId", row.id);
       // console.log(this.$store.state.caseId)
+      //设置案件状态为审批中
+      this.$store.commit("setCaseApproval", true);
+
       this.$router.replace({
         name: 'caseInfo',
         params: {
