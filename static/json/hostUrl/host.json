@@ -24,6 +24,7 @@
     "//": "http://172.16.169.83:8888/catsic",
     "HOST": "http://124.192.215.4:8088/catsic",
     "CAPTCHA_HOST": "http://124.192.215.4:8088/catsic",
-    "PDF_HOST": "http://124.192.215.10:9332/"
-  } 
+    "PDF_HOST": "http://124.192.215.10:9332/",
+    "LAW_SUPERVISE_HOST": "http://124.192.215.4:8090/"
+  }
 }

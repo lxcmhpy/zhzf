@@ -1,4 +1,24 @@
 export const mixinsCommon = {
+    data () {
+        return {
+            errorObj: {
+                error: 'iconfont law-error',
+                success: 'iconfont law-success'
+            }
+        }
+    },
+    methods: {
+        errorMsg (msg, type) {
+            // type: error错误
+            this.$message({
+                iconClass: this.errorObj[type],
+                customClass: type+'Msg',
+                dangerouslyUseHTMLString: true,
+                message: `${type}：${msg}`
+            });
+            return
+        }
+    }
 }
 // 综合监管
 export const lawSuperviseMixins = {
@@ -17,8 +37,53 @@ export const lawSuperviseMixins = {
                 name: '冀C12345',
                 num: '89'
             }],
-            style: 'amap://styles/whitesmok',
+            tabList: [{
+                name: '队伍力量',
+                children: [{
+                    name: '执法人员',
+                    icon: 'iconfont law-people',
+                    code: 0
+                },{
+                    name: '执法机构',
+                    icon: 'iconfont law-zfj',
+                    code: 1
+                },{
+                    name: '执法车辆',
+                    icon: 'iconfont law-car',
+                    code: 2
+                },{
+                    name: '执法船舶',
+                    icon: 'iconfont law-ship',
+                    code: 3
+                }]
+            },{
+                name: '应用场景',
+                children: [{
+                    name: '非现场站点',
+                    icon: 'iconfont law-jiankong',
+                    code: 4
+                },{
+                    name: '视频监控',
+                    icon: 'iconfont law-shipin',
+                    code: 7
+                },{
+                    name: '固定站点',
+                    icon: 'iconfont law-gdzd',
+                    code: null
+                },{
+                    name: '卫星影像',
+                    icon: 'iconfont law-wx',
+                    code: null
+                },{
+                    name: '黑名单车辆',
+                    icon: 'iconfont law-blackCar',
+                    code: null
+                }]
+            }],
+            style: "amap://styles/whitesmoke",
+            styleIndexNumher: 1,
             loading: false,
+            styleListNumber: ['标准', '远山黛', '马卡龙', '涂鸦','极夜蓝','靛青蓝','草色青','幻影黑','月光银','雅士灰'],
             styleList: [
                 "amap://styles/normal", // 标准
                 "amap://styles/whitesmoke", // 远山黛
@@ -63,6 +128,11 @@ export const lawSuperviseMixins = {
             setTimeout(function(){
                 _this.loading = !_this.loading
             },500)
+        }
+    },
+    watch: {
+        styleIndexNumher (newVal, oldVal) {
+            this.style = this.styleList[newVal];
         }
     },
     mounted () {

@@ -19,9 +19,9 @@
           <el-table-column prop="organMb" label="目标机构" align="center" width="150"></el-table-column>
           <el-table-column prop="createTime" label="发起时间" align="center" width="150"></el-table-column>
           <el-table-column prop="person" label="申请人" align="center" width="100"></el-table-column>
-          <el-table-column prop="caseType" label="处理状态" align="center" width="100">
+          <el-table-column label="处理状态" align="center" width="100">
             <template slot-scope="scope">
-              <div :style="{'color':scope.row.caseType=='已完成'?'#22C058':''}">{{scope.row.status}}</div>
+              <div :style="{'color':scope.row.state=='已完成'?'#22C058':''}">{{scope.row.state}}</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" width="100">
@@ -120,6 +120,8 @@ export default {
           caseInfo: row
         }
       });
+      let setCaseNumber = "移送 : " + row.caseNumber;
+      this.$store.commit("setCaseNumber", setCaseNumber);
     }
   },
   created() {

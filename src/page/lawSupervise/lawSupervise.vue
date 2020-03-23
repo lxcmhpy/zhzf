@@ -15,10 +15,12 @@
             <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events">
             </el-amap-marker>
             <el-amap-info-window v-if="curWindow" :visible="curWindow.visible" :position="curWindow.position">
-                 <div :class="slotStyle" >
+                 <div :class="'lawWindowStyle'+curWindow.category" >
                      <!-- 0执法人员 -->
                      <div v-if="curWindow.category == 0">
-                        <div>{{curWindow.other.nickName}}
+                        <div>
+                            <i class="iconfont law-people"></i>
+                            {{curWindow.other.nickName}}
                             <div class="right">{{curWindow.other.enforceNo}}</div>
                         </div>
                         <div class="flexBox">
@@ -41,19 +43,179 @@
                         </div>
                      </div>
                      <!-- 1执法机构 -->
-                     <div v-else-if="curWindow.category == 1"></div>
-                     <!-- 2执法车辆 -->
-                     <div v-else-if="curWindow.category == 2"></div>
-                     <!-- 3执法船舶 -->
-                     <div v-else-if="curWindow.category == 3"></div>
-                     <!-- 4非现场治超检测 -->
-                     <div v-else-if="curWindow.category == 4"></div>
-                     <!-- 5监管企业 -->
-                     <div v-else-if="curWindow.category == 5"></div>
-                     <!-- 6监管车辆 -->
-                     <div v-else-if="curWindow.category == 6"></div>
-                     <div v-else></div>
+                     <div  v-else-if="curWindow.category == 1">
+                        <div>
+                            <i class="iconfont law-zfj"></i>
+                            {{curWindow.other.name}}
+                            <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
+                        </div>
+                        <div class="flexBox">
+                            <div class="con">
+                                <p>{{curWindow.other.address}}</p>
+                                <p>{{curWindow.other.contact}}&nbsp;&nbsp;{{curWindow.other.phone}}</p>
+                            </div>
+                            <div class="status">
+                                    <i class="iconfont law-mobile-phone"></i>
+                                    <p>{{curWindow.other.status}}</p>
+                            </div>
+                        </div>
 
+                        <div class="btns">
+                            <div class="flexBox">
+                                <div class="con">
+                                    <p>{{curWindow.other.address}}</p>
+                                    <p>{{curWindow.other.contact}}&nbsp;&nbsp;{{curWindow.other.phone}}</p>
+                                </div>
+                            </div>
+                            <div class="flexBox">
+                                <div class="con">
+                                    <i class="el-icon-location"></i>
+                                    <span>{{curWindow.other.position}}</span>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                     <!-- 2执法车辆 -->
+                     <div v-else-if="curWindow.category == 2">
+                        <div class="flexBox">
+                            <div class="con">
+                                <p>
+                                    <i class="iconfont law-car"></i>
+                                    {{curWindow.other.vehicleNumber}}</p>
+                                <p>{{curWindow.other.organName}}</p>
+                                <!-- <p>{{curWindow.other.mobile}}</p> -->
+                            </div>
+                            <div class="status">
+                                <i class="iconfont law-mobile-phone"></i>
+                                <p>在线</p>
+                            </div>
+                        </div>
+
+                        <div class="btns">
+                            <i class="iconfont law-mobile"></i>
+                            <i class="iconfont law-shipin"></i>
+                            <i class="iconfont law-jiankong"></i>
+                            <i class="iconfont law-msg-box"></i>
+                            <i class="iconfont law-xianlu"></i>
+                        </div>
+                     </div>
+                     <!-- 3执法船舶 -->
+                     <div v-else-if="curWindow.category == 3">
+                        <!-- <div>
+                            <i class="iconfont law-ship"></i>
+                            {{curWindow.other.shipNumber}}<br>
+                            {{curWindow.other.organName}}
+                        </div> -->
+                        <div class="flexBox">
+                            <div class="con">
+                                <i class="iconfont law-ship"></i>
+                                {{curWindow.other.shipNumber}}<br>
+                                {{curWindow.other.organName}}
+                            </div>
+                            <div class="status">
+                                <i class="iconfont law-mobile-phone"></i>
+                                <p>在线</p>
+                            </div>
+                        </div>
+
+                        <div class="btns">
+                            <i class="iconfont law-mobile"></i>
+                            <i class="iconfont law-shipin"></i>
+                            <i class="iconfont law-jiankong"></i>
+                            <i class="iconfont law-msg-box"></i>
+                            <i class="iconfont law-xianlu"></i>
+                        </div>
+                     </div>
+                     <!-- 4非现场治超检测 -->
+                     <div v-else-if="curWindow.category == 4">
+                        <div>
+                            <i class="iconfont law-jiankong"></i>
+                            {{curWindow.other.name}}
+                            <div class="right">{{curWindow.other.status == 0? '正常': '异常'}}</div>
+                        </div>
+                        <div class="flexBox">
+                            <div class="con">
+                                <p>{{curWindow.other.address}}</p>
+                            </div>
+                            <div class="status">
+                                <i class="iconfont law-mobile-phone"></i>
+                                <p>在线</p>
+                            </div>
+                        </div>
+                        <div>
+                                <p>{{curWindow.other.createTime}} &nbsp;
+                                    超限{{curWindow.other.cxchl}} &nbsp;
+                                    黑名单{{curWindow.other.blackList}}</p>
+                        </div>
+                        <div class="btns">
+                            <i class="iconfont law-mobile"></i>
+                            <i class="iconfont law-shipin"></i>
+                            <i class="iconfont law-jiankong"></i>
+                            <i class="iconfont law-msg-box"></i>
+                            <i class="iconfont law-xianlu"></i>
+                        </div>
+                     </div>
+                     <!-- 5监管企业 -->
+                     <div v-else-if="curWindow.category == 5">
+                        <div>
+                            <i class="iconfont law-zfj"></i>
+                            {{curWindow.other.nickName}}
+                            <div class="right">{{curWindow.other.enforceNo}}</div>
+                        </div>
+                        <div class="flexBox">
+                            <div class="con">
+                                <p>{{curWindow.other.address}}</p>
+                                <p>{{curWindow.other.mobile}}</p>
+                            </div>
+                            <div class="status">
+                                <i class="iconfont law-mobile-phone"></i>
+                                <p>在线</p>
+                            </div>
+                        </div>
+
+                        <div class="btns">
+                            <i class="iconfont law-mobile"></i>
+                            <i class="iconfont law-shipin"></i>
+                            <i class="iconfont law-jiankong"></i>
+                            <i class="iconfont law-msg-box"></i>
+                            <i class="iconfont law-xianlu"></i>
+                        </div>
+                     </div>
+                     <!-- 6监管车辆 -->
+                     <div v-else-if="curWindow.category == 6">
+                        <div>
+                             <i class="iconfont law-car"></i>
+                            {{curWindow.other.nickName}}
+                            <div class="right">{{curWindow.other.enforceNo}}</div>
+                        </div>
+                        <div class="flexBox">
+                            <div class="con">
+                                <p>{{curWindow.other.address}}</p>
+                                <p>{{curWindow.other.mobile}}</p>
+                            </div>
+                            <div class="status">
+                                <i class="iconfont law-mobile-phone"></i>
+                                <p>在线</p>
+                            </div>
+                        </div>
+
+                        <div class="btns">
+                            <i class="iconfont law-mobile"></i>
+                            <i class="iconfont law-shipin"></i>
+                            <i class="iconfont law-jiankong"></i>
+                            <i class="iconfont law-msg-box"></i>
+                            <i class="iconfont law-xianlu"></i>
+                        </div>
+                     </div>
+                     <!-- -1搜索地图 -->
+                     <div v-else-if="curWindow.category == -1">
+                        <div>
+                            当前位置：{{curWindow.other.address}}<br>
+                            当前坐标：[{{curWindow.other.lng}},{{curWindow.other.lat}}]<br>
+                            类型：{{curWindow.other.type}}
+                        </div>
+                     </div>
+                     <!-- <div v-else></div> -->
                 </div>
             </el-amap-info-window>
         </el-amap>
@@ -65,6 +227,16 @@
         </div>
     </div>
     <div class="amap-search">
+        <el-select
+            v-model="styleIndexNumher"
+            placeholder="样式切换">
+            <el-option
+            v-for="(item,index) in styleListNumber"
+            :key="index"
+            :label="item"
+            :value="index"
+            ></el-option>
+        </el-select>
         <el-select
             v-model="category"
             placeholder="请选择">
@@ -94,7 +266,7 @@
                     <i class="el-icon-caret-top"></i>
                     <ul>
                         <li v-for="subItem in item.children" :key="subItem.name" @click="searchByTab(subItem)">
-                            <i class="iconfont law-guanli"></i>
+                            <i :class="subItem.icon"></i>
                             <p>{{subItem.name}}</p>
                         </li>
                     </ul>
@@ -162,7 +334,7 @@ import echarts from 'echarts';
 import 'echarts/lib/chart/graph';
 import {lawSuperviseObj,yjObj} from './echarts/echartsJson';
 import {getZfjgLawSupervise} from '@/api/lawSupervise.js';
-import { lawSuperviseMixins } from "@/common/js/mixinsCommon";
+import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 
 import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
@@ -203,6 +375,12 @@ export default {
             curWindow: null,
             default: '',
             slotStyle: 'lawWindowStyle1',
+            slotStyleList: [
+                '',
+                'greenBg2',
+                'orangeBg',
+                'redBg'
+            ],
             status1: true,
             status2: true,
             status3: true,
@@ -210,49 +388,6 @@ export default {
             yjObj,
             currentTabIndex: null,
             category: -1,
-            tabList: [{
-                name: '队伍力量',
-                children: [{
-                    name: '执法人员',
-                    icon: '',
-                    code: 0
-                },{
-                    name: '执法机构',
-                    icon: '',
-                    code: 1
-                },{
-                    name: '执法车辆',
-                    icon: '',
-                    code: 2
-                },{
-                    name: '执法船舶',
-                    icon: '',
-                    code: 3
-                }]
-            },{
-                name: '应用场景',
-                children: [{
-                    name: '非现场站点',
-                    icon: '',
-                    code: 4
-                },{
-                    name: '视频监控',
-                    icon: '',
-                    code: 7
-                },{
-                    name: '固定站点',
-                    icon: '',
-                    code: null
-                },{
-                    name: '卫星影像',
-                    icon: '',
-                    code: null
-                },{
-                    name: '黑名单车辆',
-                    icon: '',
-                    code: null
-                }]
-            }],
             categoryList: [{
                 show: '地图位置',
                 code: -1,
@@ -389,11 +524,13 @@ export default {
                     _this.markers.push({
                         position: [poi.lng, poi.lat],
                         visible: false,
+                        other: poi,
                         // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
-                        content: null,
+                        // content: null,
                         iconStyle: 'red',
                         events: {
                             click() {
+                                debugger;
                                 that.windows.forEach(window => {
                                     window.visible = false;
                                 });
@@ -410,7 +547,7 @@ export default {
                 windows.push({
                     position: [poi.lng, poi.lat],
                     category: category,
-                    other: poi.other,
+                    other: poi.other ? poi.other : poi,
                     visible: false
                 });
             });
@@ -438,6 +575,7 @@ export default {
         searchAll (pois) {
             this.markers.splice(0, this.markers.length)
             if (this.category == -1) {
+                this.errorMsg(`总计${pois.length}条数据`, 'success');
                 this.onSearchResult(pois, this.category);
                 // 搜索地图位置
             } else {
@@ -459,6 +597,12 @@ export default {
                         res => {
                             // resolve(res);
                             let resultList = []
+                            if (res.data && res.data.records.length == 0) {
+                                _this.errorMsg('暂无数据', 'error');
+                                // return
+                            } else {
+                                _this.errorMsg(`总计${res.data.records.length}条数据`, 'success');
+                            }
                             res.data.records.forEach((item,i)=>{
                                 let position = item.position.split(',');
                                 let lng = parseFloat(position[0]);
@@ -486,7 +630,8 @@ export default {
                             _this.onSearchResult(resultList, _this.category)
                         },
                         error => {
-                            reject(error);
+                            //  _this.errorMsg(error.toString(), 'error')
+                             return
                         })
                 })
         }
@@ -499,7 +644,7 @@ export default {
         this.getRealTimeDataByLawSupervise()
     },
     mixins: [
-        lawSuperviseMixins
+        lawSuperviseMixins, mixinsCommon
     ],
     components: {
         // echarts,

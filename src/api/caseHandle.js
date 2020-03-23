@@ -624,6 +624,41 @@ export function getFinishEvdenceByIdApi(data) {
   });
 }
 
+//案件抄告列表
+export function queryCaseCopyListPageApi(data) {
+  return request({
+    url: "/case/send/findByCondition",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//案件抄告可选案件列表
+export function selectCopyCaseApi(data) {
+  return request({
+    url: "/doc/caseBasicInfo/queryCaseBasicInfoPageByCaseNumber",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//添加修改抄告
+export function addEditCopyCaseApi(modelId) {
+  let data= modelId;
+  console.log('添加',data)
+  return request({
+    url: "/case/send/saveOrUpdate",
+    method: "post",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //-------------长软lv start------------
 //获取操作记录
 export function getHandleRecordApi(data) {
@@ -673,13 +708,16 @@ export function getHandleRecordApi(data) {
   }
   // 归档目录，绑定关联证据列表
   export function saveOrUpdateDocCatalogList(data) {
-    let data2 = vm.$qs.stringify(data);
+    console.log('data',data)
+    // let data2 = vm.$qs.stringify(data);
+    
     return request({
-        url:"/doc/docCatalog/saveOrUpdateDocCatalogList/",
+        url:"/doc/docCatalog/saveOrUpdateDocCatalogList",
         method:"POST",
-        params:data2,
+        data:data,
         showloading: true,
         loadingType:'loadPart',
+        contentType:'application/json',
         cancelToken:setCancelSource()
       });
   }
