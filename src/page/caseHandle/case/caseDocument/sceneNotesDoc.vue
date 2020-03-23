@@ -303,19 +303,6 @@ export default {
     casePageFloatBtns
   },
   data() {
-    var validatePhone = (rule, value, callback) => {
-      var reg = /^1(3|4|5|6|7|8)\d{9}$/;
-      if (!reg.test(value) && value) {
-        // this.$alert('手机号格式错误')
-        // this.$message('手机号格式错误')
-        this.$notify.error({
-          title: "错误",
-          message: "手机号格式错误"
-        });
-        // callback(new Error('手机号格式错误'));
-      }
-      callback();
-    };
     return {
       // overFlowEditList:[{},{}],
       isOverflow: false,

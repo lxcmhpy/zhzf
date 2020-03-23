@@ -1,6 +1,6 @@
 <template>
 <div class="containerBox box searchPage">
-    <div class="back" @click="router"><i class="el-icon-arrow-left"></i>前往卷宗页面</div>
+    <div class="back" @click="router"><i class="el-icon-arrow-left"></i>返回</div>
     <div class="tablePart">
         <el-table
             :data="caseList"

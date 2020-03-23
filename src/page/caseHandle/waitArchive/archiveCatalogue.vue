@@ -7,11 +7,12 @@
     width="405px"
     :modal="false"
     :show-close="false"
+    :append-to-body="true"
   >
     <template slot="title">
-        <div class="catalogueTitle" @click="routerArchiveCatalogueDetail">
-            <!-- 卷宗目录 -->
-            案件：{{caseInfo.caseNumber}}
+        <div class="catalogueTitle">
+            卷宗目录
+            <!-- 案件：{{caseInfo.caseNumber}} -->
         </div>
     </template>
     <!-- <div class="haha" v-show="visible">
@@ -52,7 +53,11 @@ export default {
   props: ["caseInfo"],
   methods: {
     showModal() {
+      console.log('show');
+
       this.visible = true;
+      console.log(this.visible);
+
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
