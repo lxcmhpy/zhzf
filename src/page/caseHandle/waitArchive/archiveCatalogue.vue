@@ -7,7 +7,6 @@
     width="405px"
     :modal="false"
     :show-close="false"
-    :append-to-body="true"
   >
     <template slot="title">
         <div class="catalogueTitle">
@@ -41,16 +40,17 @@
   </el-dialog>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       visible: false,
-      caseId: this.caseInfo.id,
       caseList:[]
     };
   },
   inject: ["reload"],
-  props: ["caseInfo"],
+  // props: ["caseInfo"],
+  computed: { ...mapGetters(["caseId"]) },
   methods: {
     showModal() {
       console.log('show');
@@ -63,8 +63,8 @@ export default {
     closeDialog() {
       this.visible = false;
     },
-    getByMlCaseId(caseId) {
-         this.$store.dispatch("getByMlCaseIdNew", caseId).then(
+    getByMlCaseId() {
+         this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
          res=>{
              this.caseList = res.data
          },
@@ -74,17 +74,19 @@ export default {
        )
     },
     routerArchiveCatalogueDetail () {
-        this.$router.push({name:'archiveCatalogueDetail',params: {
-           caseInfo: this.caseInfo,
-           caseList: this.caseList
-        }})
+        this.$router.push({name:'archiveCatalogueDetail'})
     },
     alertPDF (index) {
         this.$emit('alertPDF', index)
     }
   },
   mounted () {
-      this.getByMlCaseId(this.caseId)
+    this.getByMlCaseId();
+     var class1 =  document.getElementsByClassName("archiveCatalogueBox");
+     console.log('class',class1)
+     var class2 = class1[0].parentNode;
+     console.log('class',class2)
+     class2.style.right = '60px';
   }
 };
 </script>

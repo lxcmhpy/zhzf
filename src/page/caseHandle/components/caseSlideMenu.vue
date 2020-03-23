@@ -34,7 +34,6 @@
     </el-menu>
        
 
-        <div @mouseenter="mouseenterShowEmit('archiveCatalogue')"  @click="goTo('archiveCatalogueDetail')">卷宗<br>目录</div>
 
     <!-- <div class="btn_box bottom_fixed">
       <i class="el-icon-arrow-up"></i>

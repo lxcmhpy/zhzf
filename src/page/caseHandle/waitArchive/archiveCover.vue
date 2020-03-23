@@ -100,7 +100,7 @@
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'archiveCatalogue'" @showArchiveCatalogue="showArchiveCatalogue"></caseSlideMenu>
     <!-- 卷宗目录 -->
-    <archiveCatalogue ref="archiveCatalogueRef" :caseInfo="caseInfo" @alertPDF="alertPDF"></archiveCatalogue>
+    <archiveCatalogue ref="archiveCatalogueRef"  @alertPDF="alertPDF"></archiveCatalogue>
     <!-- 引入buttn -->
     <!-- <div @click="getMl">pdf</div> -->
     <el-dialog
@@ -134,8 +134,8 @@
         @saveData="submitData(0)"
       ></casePageFloatBtns>
     
-    <button style="z-index:2005;position:fixed;bottom:50px"   @mouseenter.stop.prevent="a($event,'hover')">
-      <span @click="a($event,'click')">卷宗<br>目录</span></button>
+    <!-- <button style="z-index:2005;position:fixed;bottom:50px"   @mouseenter.stop.prevent="a($event,'hover')">
+      <span @click="a($event,'click')">卷宗<br>目录</span></button> -->
 
   </div>
 </template>
@@ -151,7 +151,6 @@ export default {
     return {
       pdfVisible: false,
       closeDialog: false,
-      caseInfo: this.$route.params.caseInfo,
       formData: {
         caseNumber: "",
         caseName: "",
@@ -290,19 +289,11 @@ export default {
     },
     a(e,b){
       console.log(e,b);
-      // const {button} = e;
-      // console.log(button)
-        // this.$refs.archiveCatalogueRef.closeDialog();
-      // if(button ===2){
-      //   this.$refs.archiveCatalogueRef.showModal();
-      // }else{
-      //   this.$refs.archiveCatalogueRef.closeDialog();
-      //   this.$router.push({name:'archiveCatalogueDetail'})
-      // }
+      var fu = e.currentTarget.parentElement;
+      console.log('fu',fu);
       if(b=='hover'){
         console.log(this.$refs)
         this.$refs.archiveCatalogueRef.showModal();
-        // console.log('hove')
       }else{
         this.$refs.archiveCatalogueRef.closeDialog();
         this.$router.push({name:'archiveCatalogueDetail'})
@@ -313,6 +304,7 @@ export default {
     // this.formData = this.caseInfo;
     // console.log(JSON.stringify(this.caseInfo));
     this.setFormData();
+    console.log()
     this.$refs.archiveCatalogueRef.showModal();
     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
     // this.getMl()
