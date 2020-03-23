@@ -644,6 +644,7 @@ export function getHandleRecordApi(data) {
   //
   //插入证据目录
   export function saveOrUpdateEvidenceApi(data) {
+    console.log("证据目录",data);
     return request({
       url:"/doc/evidence/saveOrUpdateEvdencen",
       method:"POST",
