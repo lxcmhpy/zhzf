@@ -1,6 +1,7 @@
 
 @import "../basicStyles/fontOrBgColorStylesSet.scss";
 @import "./lawSuperviseFunc.scss";
+@import "../basicStyles/error.scss";
 .flexBox {
     display: flex;
 }
@@ -144,7 +145,50 @@
     background:rgba(255, 255, 255, 0.7);
     border:0px;
     padding: 5px;
+    .lawWindowStyle0 {
+        background: rgba(0,155,255,0.9);
+        padding: 10px 17px 10px 17px;
+        color:white;
+        line-height:35px;
+    }
     .lawWindowStyle1 {
+        background: rgba($greenC2,0.9);
+        padding: 10px 17px 10px 17px;
+        color:white;
+        line-height:35px;
+        white-space: nowrap;
+    }
+    .lawWindowStyle2 {
+        background: rgba($redC,0.9);
+        padding: 10px 17px 10px 17px;
+        color:white;
+        line-height:35px;
+    }
+    .lawWindowStyle3 {
+        background: rgba(0,155,255,0.9);
+        padding: 10px 17px 10px 17px;
+        color:white;
+        line-height:35px;
+    }
+    .lawWindowStyle4 {
+        background: rgba($greenC2,0.9);
+        padding: 10px 17px 10px 17px;
+        color:white;
+        line-height:35px;
+    }
+    .lawWindowStyle5 {
+        background: rgba(0,155,255,0.9);
+        padding: 10px 17px 10px 17px;
+        color:white;
+        line-height:35px;
+    }
+    .lawWindowStyle6 {
+        background: rgba(0,155,255,0.9);
+        padding: 10px 17px 10px 17px;
+        color:white;
+        line-height:35px;
+    }
+    .lawWindowStyle7 {
         background: rgba(0,155,255,0.9);
         padding: 10px 17px 10px 17px;
         color:white;
@@ -165,11 +209,11 @@
         }
     }
     .con {
-        flex: 0.7;
+        flex: 1;
     }
    .status {
        flex: 0.3;
-       margin: 10px 10px 0 35px;
+       margin: 10px 10px 0 18px;
        line-height: 25px;
        text-align: center;
        i {

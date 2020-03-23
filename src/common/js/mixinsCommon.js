@@ -1,4 +1,24 @@
 export const mixinsCommon = {
+    data () {
+        return {
+            errorObj: {
+                error: 'iconfont law-error',
+                success: 'iconfont law-success'
+            }
+        }
+    },
+    methods: {
+        errorMsg (msg, type) {
+            // type: error错误
+            this.$message({
+                iconClass: this.errorObj[type],
+                customClass: type+'Msg',
+                dangerouslyUseHTMLString: true,
+                message: `${type}：${msg}`
+            });
+            return
+        }
+    }
 }
 // 综合监管
 export const lawSuperviseMixins = {
@@ -17,8 +37,10 @@ export const lawSuperviseMixins = {
                 name: '冀C12345',
                 num: '89'
             }],
-            style: 'amap://styles/whitesmok',
+            style: "amap://styles/whitesmoke",
+            styleIndexNumher: 1,
             loading: false,
+            styleListNumber: ['标准', '远山黛', '马卡龙', '涂鸦','极夜蓝','靛青蓝','草色青','幻影黑','月光银','雅士灰'],
             styleList: [
                 "amap://styles/normal", // 标准
                 "amap://styles/whitesmoke", // 远山黛
@@ -63,6 +85,11 @@ export const lawSuperviseMixins = {
             setTimeout(function(){
                 _this.loading = !_this.loading
             },500)
+        }
+    },
+    watch: {
+        styleIndexNumher (newVal, oldVal) {
+            this.style = this.styleList[newVal];
         }
     },
     mounted () {
