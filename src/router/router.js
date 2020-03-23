@@ -1,5 +1,5 @@
 import {loginRouter, registRouter,redirectRouter,homeRouter,lagoutOneRouter} from './routerExport/common'
-
+import lawSuperviseJson from './routerExport/routerJson/lawSuperviseJson'
 
 //通用基础router（全国）
 const routersCommon = [
@@ -7,7 +7,8 @@ const routersCommon = [
   registRouter,
   homeRouter,
   // ...lagoutOneRouter,
-  redirectRouter
+  redirectRouter,
+  ...lawSuperviseJson
 ]
 
 

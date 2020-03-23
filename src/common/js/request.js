@@ -32,7 +32,9 @@ service.interceptors.request.use(
   config => {
     if(config.baseUrlType == 1){
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
-    }else{
+    } else if(config.baseUrlType == 2){
+      config.baseURL = BASEURL[BASEURL.CURRENT].LAW_SUPERVISE_HOST
+    } else {
      config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
     }
     if (config.responseType) {
@@ -48,8 +50,8 @@ service.interceptors.request.use(
    if (getToken("TokenKey")) {
      config.headers["accessToken"] = getToken("TokenKey");
     //  config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
-     
-     
+
+
    }
    console.log('config',config)
    return config;
