@@ -1,0 +1,196 @@
+
+@import "../basicStyles/fontOrBgColorStylesSet.scss";
+@import "./lawSuperviseFunc.scss";
+.flexBox {
+    display: flex;
+}
+.amap-demo {
+    position: relative;
+    width: 500px;
+    height: 300px;
+}
+.mainBox {
+    position: relative;
+    margin: 22px;
+    padding: 10px;
+    overflow:hidden;
+    height: calc(100% - 110px);
+    border: 20px solid white;
+    box-shadow:0px 6px 4px 0px rgba(94,137,181,0.1)
+ }
+ .amap-search {
+     position: absolute;
+     right: 68px;
+     top: 10px;
+     width: 400px;
+     z-index: 1500;
+     display: flex;
+    //  height: 40px;
+    .el-select {
+        // width: 120px;
+        flex: 0.4;
+        margin-right: -1px;
+        margin-top: 1px;
+    }
+    .el-input {
+        flex: 0.6;
+        height: 40px;
+        line-height: 40px;
+        // margin-right: -1px;
+        .el-input__inner {
+            height: 40px;
+            line-height: 40px;
+        }
+    }
+    .el-input__inner:focus{
+        border-color: #DCDFE6 !important;
+    }
+    .el-button {
+        margin-top: 1px;
+        background: rgb(2, 118, 250,0.9);
+        height: 40px;
+        border: none;
+        &:hover{
+            background: rgb(2, 118, 250,0.9);
+        }
+        .el-icon-search {
+            font-size: 20px;
+            color:white;
+        }
+    }
+    .search-box {
+        height: 39px;
+        border-top: 1px solid #DCDFE6;
+        border-left: 1px solid #DCDFE6;
+        border-bottom: 1px solid #DCDFE6;
+        box-shadow: none;
+        border-radius: 0px;
+    }
+ }
+ .el-vue-search-box-container {
+     flex: 0.8;
+    .search-box-wrapper .search-btn {
+        background:rgb(2, 118, 250,0.9) !important;
+        font-family: 'element-icons';
+        color:transparent !important;
+        &:before{
+            content: "\e778" !important;
+            color: white !important;
+            font-size: 18px;
+            margin-left: 12px;
+        }
+    }
+    .search-tips {
+        width: calc(100% - 45px);
+        border-top: 1px solid #dbdbdb;
+        border-bottom: 0px;
+    }
+ }
+ .amap-tool {
+     position: absolute;
+     right: 68px;
+     top: 63px;
+     z-index: 1300;
+     display: flex;
+     .el-icon-caret-top {
+         color: rgba(29, 121, 214, 0.9);
+         position: absolute;
+         top: -14px;
+         margin-left: -12px;
+         font-size: 22px;
+     }
+     .el-button{
+         height: 35px;
+         line-height: 8px;
+         border-radius: 4px;
+         background: rgba(29, 121, 214, 0.9);
+         color: $white;
+         position:relative;
+         &:hover {
+             background: rgba(29, 121, 214, 0.9);
+             color: $white;
+         }
+     }
+     .drop-down-menu {
+        background: rgba(29, 121, 214, 0.9);
+        color: $white;
+        width: 100px;
+        position: absolute;
+        left: 10px;
+        top: 40px;
+        border-radius: 4px;
+        // z-index: 1500;
+        li {
+            height: 80px;
+            line-height: 22px;
+            // border-bottom: 1px solid rgb(52, 110, 177);
+            box-shadow: 0px 2px 1px rgba(196, 222, 248, 0.2);
+            i {
+                font-size: 30px;
+                margin-top: 20px;
+                display:inline-block;
+            }
+        }
+     }
+ }
+ .amap-main-content {
+    position: absolute;
+    left: 0px;
+    top:0px;
+    @include echartsStyle();
+ }
+ .amap-info-content {
+    // background: transparent;
+    background:rgba(255, 255, 255, 0.7);
+    border:0px;
+    padding: 5px;
+    .lawWindowStyle1 {
+        background: rgba(0,155,255,0.9);
+        padding: 10px 17px 10px 17px;
+        color:white;
+        line-height:35px;
+    }
+    .amap-info-close {
+        top: 10px;
+        right: 10px;
+        color: white;
+    }
+    .btns {
+        margin-top: 10px;
+        border-top: 2px solid white;
+        padding-top: 10px;
+        i{
+            font-size: 25px;
+            margin: 5px 12px;
+        }
+    }
+    .con {
+        flex: 0.7;
+    }
+   .status {
+       flex: 0.3;
+       margin: 10px 10px 0 35px;
+       line-height: 25px;
+       text-align: center;
+       i {
+           font-size: 25px;
+       }
+   }
+   .right {
+       float:right;
+   }
+ }
+ .amap-info-sharp {
+    //  background: transparent;
+ }
+ .mapPointBox {
+     width: 280px;
+
+ }
+.amap-right-position {
+    position: absolute;
+    right: 65px;
+    bottom: 20px;
+    @include echartsStyle();
+ }
+

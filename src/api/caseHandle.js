@@ -573,12 +573,13 @@ export function selectTransferCaseApi(data) {
 //添加修改移送
 export function AddEditTransferCaseApi(modelId) {
   let data= modelId;
+  // let data = vm.$qs.stringify({CaseTransferForm:modelId})
   console.log('添加',data)
   // data = vm.$qs.stringify({data})
   return request({
     url: "/case/transfer/saveOrUpdate",
     method: "post",
-    data:data,
+    data:vm.$qs.stringify(data),
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -644,6 +645,7 @@ export function getHandleRecordApi(data) {
   //
   //插入证据目录
   export function saveOrUpdateEvidenceApi(data) {
+    console.log("证据目录",data);
     return request({
       url:"/doc/evidence/saveOrUpdateEvdencen",
       method:"POST",

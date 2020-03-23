@@ -186,7 +186,7 @@
                 </el-col>
               </el-row>
               <el-row style="margin-left:950px;"> 
-                 <el-button class="edit_save" type="primary">保存</el-button>
+                 <el-button class="edit_save" type="primary" @click="savePersonPage">保存</el-button>
               </el-row>
             </div>
           </div>
@@ -196,7 +196,7 @@
   </div>
   <div class="dentail_info_box" v-show="!isShowAddPerson">
     <el-form ref="form" :model="personInfoDetailForm" label-width="112px">
-      <el-button class="edit_btn" type="primary">修改</el-button>
+      <el-button class="edit_btn" type="primary" @click="editPersonPage">修改</el-button>
       <!--基本信息 -->
       <el-row>
       <div class="info_box">
@@ -263,7 +263,6 @@
         <div class="img_box float">
           <img :src="imageUrl" alt="">
         </div>
-
       </div>
       </el-row>
       <!-- 学历信息 -->
