@@ -27,8 +27,18 @@
                 <td>文书名称</td>
                 <td>页码</td>
             </tr>
-            <tr v-for="(item,index) in caseList" :key="index" @click="alertPDF(index)">
-                <td>{{index+1}}</td>
+            <tr @click="showCover">
+                <td>1</td>
+                <td>卷宗封面</td>
+                <td>1</td>
+            </tr>
+            <tr @click="showCover">
+                <td>2</td>
+                <td>卷内目录</td>
+                <td>2</td>
+            </tr>
+            <tr v-for="(item,index) in caseList" :key="index" @click="alertPDF(item)">
+                <td>{{index+3}}</td>
                 <td>{{item.name}}</td>
                 <td>{{item.page}}</td>
             </tr>
@@ -66,7 +76,7 @@ export default {
     getByMlCaseId() {
          this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
          res=>{
-             this.caseList = res.data
+             this.caseList = res.data;
          },
          err=>{
            console.log(err)
@@ -76,8 +86,22 @@ export default {
     routerArchiveCatalogueDetail () {
         this.$router.push({name:'archiveCatalogueDetail'})
     },
-    alertPDF (index) {
-        this.$emit('alertPDF', index)
+    alertPDF (item) {
+      console.log(this.$route.name)
+      if(this.$route.name!='archiveCover'){
+        this.$router.push({name:'archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
+        return;
+      }
+      this.$emit('alertPDF', item)
+    },
+    //显示封面
+    showCover(){
+      if(this.$route.name!='archiveCover'){
+        let item={name:'cover'}
+        this.$router.push({name:'archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
+        return;
+      }
+      this.$emit('showCoverEmit')
     }
   },
   mounted () {
@@ -92,8 +116,9 @@ export default {
 </script>
 <style lang="scss">
 // @import "@/assets/css/caseHandle/index.scss";
-.archiveCatalogueBox{
+.fullscreen .archiveCatalogueBox{
     background: #EAEDF4;
+    margin-right: 0;
     .el-dialog__header {
         height: 64px;
         background: #FFFFFF;

@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="archiveCoverForm" :model="formData" label-width="105px">
+    <el-form ref="archiveCoverForm" :model="formData" label-width="105px" v-show="showCover">
       <div class="content_box">
         <div class="content">
           <div class="content_title">全国道路运输执法案件</div>
@@ -97,10 +97,17 @@
        
       </div>
     </el-form>
+    <div v-show="!showCover" style="margin:0 auto;width:790px">
+        <object >
+            <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
+            :src="docSrc" type="application/pdf" internalinstanceid="29">
+        </object>
+  
+    </div>
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'archiveCatalogue'" @showArchiveCatalogue="showArchiveCatalogue"></caseSlideMenu>
     <!-- 卷宗目录 -->
-    <archiveCatalogue ref="archiveCatalogueRef"  @alertPDF="alertPDF"></archiveCatalogue>
+    <archiveCatalogue ref="archiveCatalogueRef"  @alertPDF="alertPDF" @showCoverEmit="showCoverEvent"></archiveCatalogue>
     <!-- 引入buttn -->
     <!-- <div @click="getMl">pdf</div> -->
     <el-dialog
@@ -189,7 +196,9 @@ export default {
       indexPdf: 0,
       host:'',
       urlList: [],
-      caseList: []
+      caseList: [],
+      showCover:true, //显示pdf还是封面form
+      docSrc:'', //文书的pdf地址
     };
   },
   components: {
@@ -210,9 +219,13 @@ export default {
             });
         }
     },
-    alertPDF(index) {
-        this.indexPdf = index
-        this.pdfVisible = true
+    alertPDF(item) {
+        console.log('item',item);
+        this.docSrc = this.host + item.storageId;
+        this.showCover = false;
+    },
+    showCoverEvent(){
+        this.showCover = true;
     },
     updatePDF2 () {
         if (this.indexPdf > 0) {
@@ -249,6 +262,7 @@ export default {
         let _that = this
          this.$store.dispatch("getByMlCaseIdNew", caseId).then(
          res=>{
+           console.log('getByMlCaseId',res)
              res.data.forEach((v)=>{
                 _that.mlList.push(_that.host + v.storageId)
              })
@@ -286,30 +300,31 @@ export default {
         this.caseLinkDataForm.caseLinktypeId,
         false
       );
-    },
-    a(e,b){
-      console.log(e,b);
-      var fu = e.currentTarget.parentElement;
-      console.log('fu',fu);
-      if(b=='hover'){
-        console.log(this.$refs)
-        this.$refs.archiveCatalogueRef.showModal();
-      }else{
-        this.$refs.archiveCatalogueRef.closeDialog();
-        this.$router.push({name:'archiveCatalogueDetail'})
-      }
     }
   },
   mounted() {
-    // this.formData = this.caseInfo;
-    // console.log(JSON.stringify(this.caseInfo));
-    this.setFormData();
     console.log()
     this.$refs.archiveCatalogueRef.showModal();
     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
-    // this.getMl()
     this.getByMlCaseId(this.caseId)
     this.caseLinkDataForm.caseBasicinfoId = this.caseId
+  
+    //在目录排序页面点击弹窗数据后返回的
+    if(this.$route.params && this.$route.params.clickIsDoc){
+      console.log('this.$route.params',this.$route.params)
+      let data = JSON.parse(this.$route.params.clickIsDoc);
+      if(data.name == 'cover'){
+        this.showCover = true;
+      }else{
+        this.docSrc = this.host + data.storageId;
+        this.showCover = false;
+      }
+      
+    }else{
+      this.setFormData();
+    }
+    
+    
 
   }
 };

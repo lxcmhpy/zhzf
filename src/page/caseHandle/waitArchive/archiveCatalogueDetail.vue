@@ -1,18 +1,21 @@
 <template>
   <div class="containerBox box searchPage">
-    <div class="back" @click="router">
-      <i class="el-icon-arrow-left"></i>返回
+    <div class="back" >
+      <span @click="router"><i class="el-icon-arrow-left"></i>返回</span>
+      <el-button type="primary" size="small" @click="editOrder">确认</el-button>
     </div>
     <div class="tablePart">
       <el-table :data="caseList" border stripe highlight-current-row style="width: 100%">
         <el-table-column width="50" type="index" label="序号" align="center"></el-table-column>
         <el-table-column prop="name" label="文书名称" align="center"></el-table-column>
         <el-table-column prop="page" label="起止页数" align="center"></el-table-column>
-        <el-table-column label="顺序调整" align="center">
-          <template>
+        <el-table-column label="顺序调整" align="center" >
+          <template slot-scope="scope">
             <div>
-              <span @click="byDesc" class="iconfont law-desc blueC"></span>
-              <span @click="byAsc" class="iconfont law-asc blueC"></span>
+                <span v-show="!scope.$index" class="iconfont law-desc"></span> 
+                <span v-show="scope.$index" @click="byAsc(scope.row,scope.$index)" class="iconfont law-desc blueC"></span>
+                <span v-show="scope.$index == caseList.length-1" class="iconfont law-asc"></span> 
+                <span v-show="scope.$index != caseList.length-1" @click="byDesc(scope.row,scope.$index)" class="iconfont law-asc blueC"></span>
             </div>
           </template>
         </el-table-column>
@@ -210,6 +213,9 @@ import iLocalStroage from "@/common/js/localStroage.js";
 import { validateRequire } from "@/common/js/validator.js";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
+import {
+  saveOrUpdateDocCatalogList
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -274,17 +280,23 @@ export default {
         name: "archiveCover"
       });
     },
-    byDesc() {
-      this.$message({
-        type: "error",
-        message: "该功能暂未实现！"
-      });
+    byDesc(row,rowIndx) {
+        console.log(row);
+        let a = JSON.parse(JSON.stringify(this.caseList)) 
+        let temp =  a[rowIndx];
+        a[rowIndx] = a[rowIndx+1]
+        a[rowIndx+1] = temp;
+        this.caseList = a;
+        console.log('this.caseList',this.caseList)
     },
-    byAsc() {
-      this.$message({
-        type: "success",
-        message: "该功能暂未实现！"
-      });
+    byAsc(row,rowIndx) {
+        console.log(row);
+        let a = JSON.parse(JSON.stringify(this.caseList)) 
+        let temp =  a[rowIndx];
+        a[rowIndx] = a[rowIndx-1]
+        a[rowIndx-1] = temp;
+        this.caseList = a;
+        console.log('this.caseList',this.caseList)
     },
     handleSelectionChange(val) {
       // debugger
@@ -419,12 +431,35 @@ export default {
     getByMlCaseId(caseId) {
       this.$store.dispatch("getByMlCaseIdNew", caseId).then(
         res => {
+            console.log('文书列表',res)
           this.caseList = res.data;
         },
         err => {
           console.log(err);
         }
       );
+    },
+    //修改目录排序
+    editOrder(){
+        console.log(this.caseList);
+        let data = [];
+        this.caseList.forEach((item,index)=>{
+            let param={
+                caseBasicInfoId:item.caseBasicInfoId,
+                fid:item.fid,
+                id:item.id,
+                num:index+1,
+                page:item.page
+            }
+            data.push(param)
+        })
+        let data2={docCatalogFormList:data}
+        console.log(data);
+        saveOrUpdateDocCatalogList(data).then(res=>{
+            console.log(res);
+        },err=>{
+            console.log(err)
+        })
     }
   },
   mounted() {
@@ -443,6 +478,22 @@ export default {
 @import "@/assets/css/basicStyles/common.scss";
 </style>
 <style lang="scss" >
+.containerBox{
+    .back{
+        display: flex;
+        cursor: default;
+        justify-content: space-between;
+        &>span{
+            display: inline-block;
+            height: 100%;
+            width: 100px;
+            cursor: pointer;
+        }
+        &>button{
+
+        }
+    }
+}
 .archiveCataloguebottom {
   width: 100%;
   background: #f9f9f9;
