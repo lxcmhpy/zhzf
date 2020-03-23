@@ -36,6 +36,7 @@ router.beforeEach((to, from, next) => {
         if(iLocalStroage.get('menu')){
           routerGo(to, next)//执行路由跳转方法
         }
+        
       }else{
         next();
       }
@@ -56,8 +57,7 @@ router.afterEach(to => {
 
 
 function routerGo(to, next) {
-  getRouter = iLocalStroage.gets('menu')//后台拿到路由
-
+  getRouter = iLocalStroage.gets('menu')//后台拿到路W由
   getRouter = filterAsyncRouter(getRouter) //过滤路由
   router.addRoutes(getRouter) //动态添加路由
   //global.antRouter = getRouter //将路由数据传递给全局变量，做侧边栏菜单渲染工作
@@ -73,7 +73,7 @@ function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符
       }else if(route.component == 'Main'){
         route.component = MainContent;
       }
-       else {
+      else {
         route.meta ={ title:route.title ,permTypes:route.permTypes ? route.permTypes : ''};
         route.component = loadView(route.component)
       }

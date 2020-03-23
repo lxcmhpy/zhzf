@@ -181,22 +181,22 @@ export default {
       value1: '',
       rules: {
         decisionTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入决定时间', trigger: 'blur' },
         ],
         stopReason: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入中止理由', trigger: 'blur' },
         ],
         executeTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入中止时间', trigger: 'blur' },
         ],
         endReason: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入终结原因', trigger: 'blur' },
         ],
         serviceTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入恢复执行时间', trigger: 'blur' },
         ],
         agreeTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入恢复执行时间', trigger: 'blur' },
         ],
       },
       nameLength: 23,

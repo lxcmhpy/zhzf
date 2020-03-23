@@ -22,9 +22,8 @@
                 v-bind:class="{ over_flow:formData.party.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
               ></el-input>
-            </el-form-item>
+            </el-form-item> ：
           </span>
         </p>
         <!-- 多行样式 -->
@@ -39,7 +38,6 @@
                 v-model="formData.caseName"
                 rows="3"
                 maxlength="90"
-                placeholder="\"
               ></el-input>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span
@@ -53,65 +51,52 @@
         </div>
 
         <p>
-          依据
+          根据
           <span contenteditable="true">
             <el-form-item prop="punishLaw" style="width:300px">
               <el-input
                 type="textarea"
-                class="big_error"
                 v-model="formData.punishLaw"
                 v-bind:class="{ over_flow:formData.punishLaw.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
               ></el-input>
             </el-form-item>
           </span>的规定，现责令你（单位）
         </p>
         <el-form-item prop="correctWay">
-          <el-checkbox-group v-model="formData.correctWay" :max="1" @change="changeCorrectWay">
+          <el-radio-group v-model="formData.correctWay" @change="changeCorrectWay">
             <p>
-              <el-checkbox label="1">立即予以改正。</el-checkbox>
+              <el-radio label="1">立即予以改正。</el-radio>
             </p>
             <p>
-              <el-checkbox label="2">
+              <el-radio label="2">
                 <span>在</span>
                 <span class="p_datapick">
                   <el-form-item v-if="!lineStyleFlag" prop="correctTime" style="margin-top:-6px">
                     <el-date-picker
-                      
                       v-model="formData.correctTime"
                       type="date"
+                      :disabled=" formData.correctWay == 1 ?true : false"
                       format="yyyy年MM月dd日"
                       placeholder="    年  月  日"
                     ></el-date-picker>
                   </el-form-item>
                 </span>
                 <span>前改正或者整改完毕。</span>
-              </el-checkbox>
+              </el-radio>
             </p>
-          </el-checkbox-group>
+          </el-radio-group>
         </el-form-item>
-        <!-- <p>
-          
-        </p>
         <p>
-          <el-checkbox v-model="formData.correctWay2"></el-checkbox>在<span class="p_datapick">
-            <el-form-item v-if="!lineStyleFlag" prop="correctTime" class="pdf_datapick">
-              <el-date-picker  class="big_error" v-model="formData.correctTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
-              </el-date-picker>
-            </el-form-item>
-          </span>前改正或者整改完毕。
-        </p>-->
-        <p>
-          如果不服本处罚决定，可以在六十日内依法向
+          如不服本决定，可以在六十日内依法向
           <span>
             <el-form-item prop="reconsiderationOrgan">
-              <!-- <el-input v-model="formData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input> -->
+              <!-- <el-input v-model="formData.reconsiderationOrgan" :maxLength='maxLength' ></el-input> -->
               <el-select
                 v-model="formData.reconsiderationOrgan"
                 :maxLength="maxLength"
-                placeholder="\"
+                
               >
                 <el-option
                   v-for="(item,index) in reconsiderationOptions"
@@ -124,8 +109,8 @@
           </span>申请行政复议，或者在六个月内依法向
           <span>
             <el-form-item prop="litigationOrgan">
-              <!-- <el-input v-model="formData.litigationOrgan" :maxLength='maxLength' placeholder="\"></el-input> -->
-              <el-select v-model="formData.litigationOrgan" :maxLength="maxLength" placeholder="\">
+              <!-- <el-input v-model="formData.litigationOrgan" :maxLength='maxLength' ></el-input> -->
+              <el-select v-model="formData.litigationOrgan" :maxLength="maxLength" >
                 <el-option
                   v-for="(item,index) in enforcementOptions"
                   :key="index"
@@ -219,6 +204,7 @@ export default {
         reconsiderationOrgan: "",
         test: "",
         correctWay: [],
+        correctTime:"",
         // correctWay1:"",
         // correctWay2:"",
         litigationOrgan: "",
@@ -242,16 +228,16 @@ export default {
         // makeDate: [
         //   { required: true, message: '请输入', trigger: 'blur' },
         // ],
+        punishLaw: [
+          { required: true, message: "请输入", trigger: "blur" }
+        ],
         reconsiderationOrgan: [
           { required: true, message: "请输入", trigger: "blur" }
         ],
         litigationOrgan: [
           { required: true, message: "请输入", trigger: "blur" }
         ],
-        correctWay: [{ required: true, message: "请选择", trigger: "change" }],
-        correctTime:[
-          { validator: validateBycorrectWay, trigger: "blur" }
-        ]
+        correctWay: [{ required: true, message: "请选择", trigger: "change" }]
       },
       nameLength: 23,
       adressLength: 23,
@@ -356,9 +342,10 @@ export default {
       
     },
     changeCorrectWay(val){
-      console.log(val);
+      if(val == '1'){
       this.formData.correctTime = '';
-    }
+      }
+    },
   },
 
   mounted() {
@@ -376,14 +363,14 @@ export default {
   .partyBox {
     text-indent: 0;
   }
-  label.el-checkbox {
+  label.el-radio {
     margin-left: 2em;
   }
-  .el-checkbox__label {
+  .el-radio__label {
     font-size: 16px;
     color: #000;
   }
-  .is-error .el-checkbox-group{
+  .is-error .el-radio-group{
     background: #f7c9cb;
   }
 }

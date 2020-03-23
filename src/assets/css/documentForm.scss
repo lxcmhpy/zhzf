@@ -491,7 +491,7 @@
 
 /* 协同办案 */
 .add_dialog {
-    margin   : 22px;
+    margin    : 22px;
     width     : calc(100% - 44px);
     height    : calc(100% - 44px);
     overflow  : auto;
@@ -503,41 +503,214 @@
         margin: 0 auto;
     }
 
+    .step_content {
+        height    : 103px;
+        padding   : 30px 0;
+        box-sizing: border-box;
+    }
+
     .content_bg {
-        background: #EEEEEE;
+        background   : #FCFCFC;
+        padding      : 35px 36px 18px;
+        margin-bottom: 32px;
+        border       : 1px solid #EEEEEE;
+        box-sizing   : border-box;
+
+    }
+
+    .elform_padding {
+        .el-form-item {
+            margin-bottom: 0;
+        }
     }
 
     .steps {
-        width: 670px;
+        width : 670px;
         margin: 0 auto;
-
-        .el-step__main {
-            white-space: normal;
-            text-align : left;
-            margin-top : -31px;
-            margin-left: 30px;
-            width      : 66px;
-            background : #fff;
-            z-index    : 1;
-            position   : relative;
-        }
-        .el-step__icon {
-            font-size: 18px;
-            width: 42px;
-            height: 42px;
-        }
     }
-    .send_message{
-        .left{
-            width: 376px;
-            height: 641px;
-            border: 1px solid #979797;
-            float: left;
+
+    .send_message {
+        .left {
+            width     : 376px;
+            height    : 641px;
+            border    : 1px solid #979797;
+            float     : left;
             box-sizing: border-box;
         }
-        .margin_right_66{
+
+        .margin_right_66 {
             margin-right: 66px;
+
+        }
+
+        .list_icon {
+            margin       : 49px auto 18px;
+            width        : 74px;
+            height       : 74px;
+            border-radius: 50px;
+            background   : #F0F4FD;
+
+            img {
+                margin        : 18px 21px;
+                vertical-align: middle;
+            }
+        }
+
+        .list {
+            margin-top: 48px;
+            height    : 410px;
+            overflow  : auto;
+
+        }
+
+        .list_name {
+            font-size  : 24px;
+            font-weight: 500;
+            color      : #20232C;
+        }
+
+        .el-checkbox {
+            margin-top  : 18px;
+            display     : block;
+            padding-left: 23px;
+            white-space : normal;
+            box-sizing  : border-box;
+
+
         }
     }
 
+    .times_info {
+        width         : 100%;
+        height        : auto;
+        border-bottom : 1px solid #D8DDE7;
+        padding-bottom: 26px;
+        color         : #20232B;
+        box-sizing    : border-box;
+        line-height   : 40px;
+
+
+    }
+
+    .re_select {
+        margin-left: 30px;
+
+    }
+
+    .re_select.el-button--default：hover {
+        border-color: #0074F5 !important;
+        color       : #0074F5 !important;
+        background  : #fff !important;
+
+    }
+
+}
+
+/* 协同办案详情 */
+.dentail_box {
+    height    : calc(100% - 44px);
+    background: #eaedf4;
+    box-sizing: border-box;
+
+    .el-form {
+        height: 100%;
+    }
+
+    .top {
+        height            : 413px;
+        background        : #fff;
+        margin-bottom     : 22px;
+        -webkit-box-shadow: 0 6px 4px 0 rgba(94, 137, 181, .1);
+        box-shadow        : 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+        overflow          : auto;
+    }
+
+    .btm {
+        height            : calc(100% - 435px);
+        min-height        : 300px;
+        background        : #fff;
+        overflow          : auto;
+        -webkit-box-shadow: 0 6px 4px 0 rgba(94, 137, 181, .1);
+        box-shadow        : 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+    }
+
+    .tans_box {
+        margin       : 6px 0 10px;
+        padding      : 0 17px;
+        display      : inline-block;
+        width        : auto;
+        height       : 44px;
+        line-height  : 44px;
+        background   : rgba(233, 236, 243, 1);
+        border-radius: 6px;
+        opacity      : 0.53;
+        font-size    : 16px;
+        font-weight  : 500;
+        color        : black;
+        text-align   : center;
+        box-sizing   : border-box;
+
+        .times_info_content {
+            margin-bottom: 22px;
+            margin-top   : 6px;
+        }
+
+        .i_box_apply {
+            display       : inline-block;
+            vertical-align: middle;
+            margin-right: -20px;
+            width        : 24px;
+            height       : 24px;
+            border-radius: 50px;
+            background   : #4AAFA7;
+            color        : #fff;
+
+        }
+
+        .i_box_org {
+            display       : inline-block;
+            vertical-align: middle;
+            margin-right: -20px;
+
+            width         : 24px;
+            height        : 24px;
+            border-radius : 50px;
+            background    : #4573D0;
+            color         : #fff;
+
+        }
+    }
+
+    .record_text {
+
+        margin     : 24px 0 23px;
+        font-size  : 18px;
+        font-weight: 500;
+        font-family: PingFangSC-Medium, PingFang SC;
+        color      : rgba(32, 35, 43, 1);
+    }
+
+    .document_list {
+        ul {
+            min-height: 40px;
+        }
+
+        li {
+            margin-right: 32px;
+            float       : left;
+            color       : #4573D0;
+        }
+    }
+
+    .el-timeline-item {
+        padding-top: 10px;
+    }
+
+   
+
+
+}
+
+.color_7B7B7B {
+    color: #7B7B7B;
 }

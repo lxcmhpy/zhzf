@@ -39,9 +39,9 @@
         </el-row>
       </el-form-item>
 
-      <div v-for="(domain, index) in addBannerForm.domains" :key="domain.key" >
+      <div v-for="(domain, index) in addBannerForm.domains" :key="domain.key" class="askAndquestionCon">
         <el-form-item :label="'问' + (index +1)" :prop="'domains.' + index+ '.question'" class="domainsBox">
-          <el-input type="textarea" :autosize="{ minRows: 2,}" v-model="domain.question" @focus="canEdit(index)"></el-input>
+          <el-input type="textarea" :autosize="{ minRows: 2,}" v-model="domain.question" @focus="canEdit(index)" :disabled="cantEditQues"></el-input>
           <span class="handleBtn"><i class="el-icon-remove" type="primary" @click.prevent="removeDomain(domain)"></i><i type="primary" v-show="index == addBannerForm.domains.length-1" class="el-icon-circle-plus" @click="addDomain"></i></span>
         </el-form-item>
         <el-form-item
@@ -97,6 +97,7 @@ export default {
       editQuestIndex:0,
       modelList:[],
       modelId:'',
+      cantEditQues:false, //不能编辑问题
     };
   },
   components: {
@@ -155,9 +156,29 @@ export default {
     },
     //选择问答模版
     changeChoose(val) {
-      if (val == "0" || val == "22") {
+      if (val == "0" ) {
         //不使用 通用模版
         this.chooseCustomTemplate = false;
+        // if(val == "22"){
+        //   let data=[
+        //     {
+        //       question: "你",
+        //       answer: "我怎么了",
+        //       key: 1
+        //     },
+        //     {
+        //       question: "我",
+        //       answer: "啦啦啦",
+        //       key: 2
+        //     },
+        //     {
+        //       question: "他",
+        //       answer: "他是谁",
+        //       key: 3
+        //     },
+        //   ]
+        //    this.addBannerForm.domains = data;
+        // }
       }else {
         //标准模版 自定义模版
         this.chooseCustomTemplate = true;
@@ -176,8 +197,9 @@ export default {
     canEdit(index){
       this.editQuestIndex = index
       if(this.addBannerForm.templateType == '0'){
-
+        
       }else{
+        
         this.$refs.templatQuestListRef.showModal(this.addBannerForm.template);
       }
     },
@@ -201,6 +223,9 @@ export default {
 <style lang="scss" >
   .print_box .questBox1 .el-form-item__content .el-input .el-input__inner{
     width: 100%;
+  }
+  .questDialog .askAndquestionCon .el-textarea{
+    width:90%;
   }
 </style>
 

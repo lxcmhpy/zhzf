@@ -60,7 +60,8 @@ export const mixinGetCaseApiList = {
               // 提交pdf页
               setTimeout(() => {
                 this.printContent();
-              }, 3000)
+              }, 1500)
+              // this.printContent();
             }
 
           }
@@ -421,6 +422,8 @@ export const mixinGetCaseApiList = {
       var fd = new FormData()
       fd.append("file", f)
       fd.append('caseId', this.caseId);
+      fd.append('category', '文书');
+      
       let docId = '';  //文书 id
 
       if (this.caseDocDataForm != undefined) {
@@ -477,6 +480,8 @@ export const mixinGetCaseApiList = {
       var fd = new FormData()
       fd.append("file", f)
       fd.append('caseId', this.caseId);
+      fd.append('category', '文书');
+
       let docId = '';  //文书 id
 
       if (this.caseDocDataForm != undefined) {

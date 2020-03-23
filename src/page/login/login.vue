@@ -182,7 +182,124 @@ export default {
       success: false,
       weChatFlag: false,
       resetFlag: false,
-      timeOutFlag: ""
+      timeOutFlag: "",
+      zfjgObj: {
+           id:"316",
+           createTime:"2019-04-04 00:50:22",
+           name:"lawSupervise",
+           showAlways:true,
+           type:-1,
+           title:"执法监管",
+           path:"",
+           component:"",
+           icon:"md-home1",
+           buttonType:"",
+           parentId:"",
+           description:"",
+           sortOrder:0,
+           status:0,
+           url:"",
+           menuGroup:"系统",
+           children: [{
+                id:"31601",
+                createTime:"2020-03-09 04:15:19",
+                name:"lawSupervise",
+                showAlways:true,
+                type:0,
+                title:"执法监管",
+                path:"lawSupervise",
+                component:"lawSupervise/lawSupervise",
+                icon:"md-home1",
+                buttonType:"",
+                parentId:"316",
+                description:"",
+                sortOrder:1,
+                status:0,
+                url:"",
+                menuGroup:"系统",
+                children:[{
+                    id:"3160103",
+                    createTime:"2020-03-09 04:15:19",
+                    name:"lawSupervise",
+                    showAlways:true,
+                    type:0,
+                    title:"执法监管首页",
+                    path:"lawSupervise",
+                    component:"lawSupervise/lawSupervise",
+                    icon:"md-home1",
+                    buttonType:"",
+                    parentId:"31601",
+                    description:"",
+                    sortOrder:2,
+                    status:0,
+                    url:"",
+                    menuGroup:"",
+                    children:[
+
+                    ],
+                    permTypes:"",
+                    expand:true,
+                    checked:false,
+                    selected:false,
+                    plevel:""
+                },{
+                    id:"3160101",
+                    createTime:"2020-03-09 04:15:19",
+                    name:"teamStrength",
+                    showAlways:true,
+                    type:0,
+                    title:"队伍力量",
+                    path:"teamStrength",
+                    component:"lawSupervise/teamStrength",
+                    icon:"md-home1",
+                    buttonType:"",
+                    parentId:"31601",
+                    description:"",
+                    sortOrder:2,
+                    status:0,
+                    url:"",
+                    menuGroup:"",
+                    children:[
+
+                    ],
+                    permTypes:"",
+                    expand:true,
+                    checked:false,
+                    selected:false,
+                    plevel:""
+                },{
+                    id:"3160102",
+                    createTime:"2020-03-09 04:15:19",
+                    name:"offSiteDetectionOverload",
+                    showAlways:true,
+                    type:0,
+                    title:"非现场治超检测",
+                    path:"offSiteDetectionOverload",
+                    component:"lawSupervise/offSiteDetectionOverload",
+                    icon:"md-home1",
+                    buttonType:"",
+                    parentId:"31601",
+                    description:"",
+                    sortOrder:2,
+                    status:0,
+                    url:"",
+                    menuGroup:"",
+                    children:[
+
+                    ],
+                    permTypes:"",
+                    expand:true,
+                    checked:false,
+                    selected:false,
+                    plevel:""
+                }],
+                permTypes:"",
+                expand:true,
+                checked:false,
+                selected:false,
+                plevel:""
+            }]
+        }
     };
   },
   methods: {
@@ -239,7 +356,6 @@ export default {
       let _this = this
       // this.$store.commit(types.SET_AUTHTOKEN, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWNlbnNlIjoiTWFkZSBCeSBDQVRTSUMiLCJ1c2VyX25hbWUiOiJ7XCJhdmF0YXJcIjpcImh0dHBzOi8vaS5sb2xpLm5ldC8yMDE5LzA0LzI4LzVjYzVhNzFhNmUzYjYucG5nXCIsXCJkZXBhcnRtZW50SWRcIjpcIjJcIixcImlkXCI6XCI2ODIyNjU2MzM4ODYyMDhcIixcIm1vYmlsZVwiOlwiMTg3ODIwNTkwMzhcIixcIm5pY2tOYW1lXCI6XCJnZmhkZ2huZmdqXCIsXCJvcmdhbklkXCI6XCIxXCIsXCJwYXNzd29yZFwiOlwiJDJhJDEwJHNzR0YuT0dQMTJDcldGMlJUVWNOZGUwZzUxSGgwckc2eTlHZTVGejZDd25rRWhreHV6Um95XCIsXCJwYXNzd29yZFN0YXR1c1wiOjAsXCJzZXhcIjpcIueUt1wiLFwic3RhdHVzXCI6MCxcInR5cGVcIjoxLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9Iiwic2NvcGUiOlsic2VydmVyIl0sImV4cCI6MTU4MzkzMzIyMCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdLCJqdGkiOiIwNjQzOWRkOC0yZWQ3LTQzNzUtODgzZC04ZTI3ODJhNjBmNWIiLCJjbGllbnRfaWQiOiJjYXRzaWMifQ.Btlg5kx2xQY7xCbHuODly-hNICluoD-SbrA0S7lHBEE'); //token
       // _this.getMenu();
-
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 验证码
@@ -249,13 +365,13 @@ export default {
 
             _this.$store.dispatch("loginIn", values).then(
               res => {
-                console.log(res);
-                // 清除定时器
-                clearTimeout(_this.timeOutFlag)
-                iLocalStroage.sets('userInfo', res.userInfo);
-                // _this.getCurrentUser();
-                _this.getMenu();
-                _this.success = false
+                // 登录成功
+                  // 清除定时器
+                  clearTimeout(_this.timeOutFlag)
+                  iLocalStroage.sets('userInfo', res.userInfo);
+                  // _this.getCurrentUser();
+                  _this.getMenu();
+                  _this.success = false
               },
               error => {
                 console.log(error);
@@ -283,8 +399,9 @@ export default {
       let _this = this
       this.$store.dispatch("getMenu").then(
         res => {
-          console.log('获取菜单', res);
-          iLocalStroage.sets('menu', res.data);
+          let menuList = res.data
+          menuList.push(_this.zfjgObj)
+          iLocalStroage.sets('menu', menuList);
           _this.$router.push({ name: "home_index" });
         },
         err => {
@@ -293,12 +410,12 @@ export default {
       )
     },
     //获取当前登录用户的信息
-    getCurrentUser(){
-      getCurrentUserApi().then(res=>{
+    getCurrentUser() {
+      getCurrentUserApi().then(res => {
         console.log(res);
         iLocalStroage.sets('userInfo', res.data);
 
-      },err=>{
+      }, err => {
         console.log(err);
       })
     },
@@ -341,7 +458,6 @@ export default {
         if (valid) {
           console.log(_this.resetForm)
           // 修改密码
-
           _this.$store.dispatch("resetPassword", _this.resetForm).then(
             res => {
               _this.$message({

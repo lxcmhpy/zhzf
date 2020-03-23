@@ -87,27 +87,14 @@
               </div>
               <div class="col">
                 <el-form-item label="保管期限">
-                  <el-input class="w-120" size="small"></el-input>
+                  <el-input v-model="formData.period" class="w-120" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- <div class="float-btns btn-height63">
-          <el-button type="primary" @click="submitArchive()">
-            <i class="iconfont law-save"></i>
-            <br />归档
-          </el-button> -->
-          <!-- <el-button type="primary" @click="showArchivePDF()">
-            <i class="iconfont law-save"></i>
-            <br />预览
-          </el-button> -->
-          <!-- <el-button type="primary">
-            <i class="iconfont law-save"></i>
-            <br />暂存
-          </el-button>
-        </div> -->
+       
       </div>
     </el-form>
     <!--快速入口 -->
@@ -144,7 +131,12 @@
         :pageDomId="'archiveCoverForm'"
         :formOrDocData="formOrDocData"
         @submitData="submitData"
+        @saveData="submitData(0)"
       ></casePageFloatBtns>
+    
+    <button style="z-index:2005;position:fixed;bottom:50px"   @mouseenter.stop.prevent="a($event,'hover')">
+      <span @click="a($event,'click')">卷宗<br>目录</span></button>
+
   </div>
 </template>
 <script>
@@ -167,7 +159,8 @@ export default {
         lyTime: "",
         finishTime: "",
         party: "",
-        party2: ""
+        party2: "",
+        period:""
       },
     caseLinkDataForm: {
         id: "", //修改的时候用
@@ -274,29 +267,52 @@ export default {
     submitData(handleType) {
         if(handleType == 2) {
             this.submitArchive(handleType)
-
         } else {
             this.com_submitCaseForm(handleType, "archiveCoverForm", true);
         }
     },
-    //点击卷宗目录后 显示卷宗目录
+    //鼠标hover卷宗目录后 显示卷宗目录
     showArchiveCatalogue(){
-        this.$refs.archiveCatalogueRef.showModal();
+      this.$refs.archiveCatalogueRef.showModal();
     },
-    // getByMlCaseId(caseId) {
-    //      this.$store.dispatch("getByMlCaseIdNew", caseId).then(
-    //      res=>{
-    //          this.caseList = res.data
-    //      },
-    //      err=>{
-    //        console.log(err)
-    //      }
-    //    )
-    // }
+    //关闭卷宗目录
+    hideArchiveCatalogue(){
+      this.$refs.archiveCatalogueRef.closeDialog();
+    },
+    //加载表单信息
+    setFormData() {
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.com_getFormDataByCaseIdAndFormId(
+        this.caseLinkDataForm.caseBasicinfoId,
+        this.caseLinkDataForm.caseLinktypeId,
+        false
+      );
+    },
+    a(e,b){
+      console.log(e,b);
+      // const {button} = e;
+      // console.log(button)
+        // this.$refs.archiveCatalogueRef.closeDialog();
+      // if(button ===2){
+      //   this.$refs.archiveCatalogueRef.showModal();
+      // }else{
+      //   this.$refs.archiveCatalogueRef.closeDialog();
+      //   this.$router.push({name:'archiveCatalogueDetail'})
+      // }
+      if(b=='hover'){
+        console.log(this.$refs)
+        this.$refs.archiveCatalogueRef.showModal();
+        // console.log('hove')
+      }else{
+        this.$refs.archiveCatalogueRef.closeDialog();
+        this.$router.push({name:'archiveCatalogueDetail'})
+      }
+    }
   },
   mounted() {
-    this.formData = this.caseInfo;
-    console.log(JSON.stringify(this.caseInfo));
+    // this.formData = this.caseInfo;
+    // console.log(JSON.stringify(this.caseInfo));
+    this.setFormData();
     this.$refs.archiveCatalogueRef.showModal();
     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
     // this.getMl()

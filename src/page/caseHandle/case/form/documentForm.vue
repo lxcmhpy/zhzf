@@ -137,6 +137,7 @@ import { mapGetters } from "vuex";
                 let _this = this
                 this.$store.dispatch("getDocument", data).then(res => {
                     _this.tableData = res.data.records;
+                    debugger
                     _this.total = res.data.total;
                 });
             },

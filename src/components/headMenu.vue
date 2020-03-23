@@ -42,7 +42,7 @@ export default {
       iLocalStroage.set("headActiveNav", key);
       this.$store.commit("setHeadActiveNav", key);
       //删除之前的tab页签
-      this.$store.dispatch("deleteAllTabs");
+      // this.$store.dispatch("deleteAllTabs");
       this.$router.push({ name: "home_index" });
     }
   }

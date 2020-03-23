@@ -206,41 +206,38 @@ export default {
       illegalFactsEvidence: '',
       value1: '',
       rules: {
-        serviceTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
         party: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入当事人姓名', trigger: 'blur' },
         ],
         caseName: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入案由', trigger: 'blur' },
         ],
         punishContent: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入处罚结果', trigger: 'blur' },
         ],
         serviceTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入处罚时间', trigger: 'blur' },
         ],
         fulfillLimit: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入履行期限', trigger: 'blur' },
         ],
         fulfillSub: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入履行标的', trigger: 'blur' },
         ],
         fulfillWay: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入履行方式', trigger: 'blur' },
         ],
         fulfillDemand: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入履行要求', trigger: 'blur' },
         ],
         otherMatter: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入其他事项', trigger: 'blur' },
         ],
         wtInfo: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入代履行人', trigger: 'blur' },
         ],
         otherRemindWay: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入其他强制执行方式', trigger: 'blur' },
         ],
       },
       nameLength: 23,

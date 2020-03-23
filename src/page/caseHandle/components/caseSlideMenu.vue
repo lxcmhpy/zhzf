@@ -23,18 +23,18 @@
         送达<br>回证
       </el-menu-item>
       <el-menu-item index="evidenceForm" @click="goTo('evidenceForm')">
-        证据<br>目录
+        <div @mouseenter="mouseenterShowEmit('evidenceForm')">证据<br>目录</div>
       </el-menu-item>
-      <!-- <el-menu-item index="8">
-        审核<br>流程
-      </el-menu-item> -->
-      <el-menu-item index="archiveCatalogue" @click="showArchiveCatalogueEmit()">
-        卷宗<br>目录
-      </el-menu-item>
+      <el-menu-item index="archiveCatalogue" > 
+        <div @mouseenter="mouseenterShowEmit('archiveCatalogue')"  @click="goTo('archiveCatalogueDetail')">卷宗<br>目录</div>
+       </el-menu-item>
       <!-- <el-menu-item index="10" class="top" @click="scrollToTop">
         置顶
       </el-menu-item> -->
     </el-menu>
+       
+
+        <div @mouseenter="mouseenterShowEmit('archiveCatalogue')"  @click="goTo('archiveCatalogueDetail')">卷宗<br>目录</div>
 
     <!-- <div class="btn_box bottom_fixed">
       <i class="el-icon-arrow-up"></i>
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import iLocalStroage from "@/common/js/localStroage";
+import { mapGetters } from "vuex";
 export default {
   data(){
     return{
@@ -52,24 +54,36 @@ export default {
     }
   },
   props:['activeIndex'],
+  computed: { ...mapGetters(["caseApproval"]) },
   methods: {
     goTo(name){
-      this.$store.dispatch('deleteTabs', 'caseInfo');
-      this.$router.push({
-          name: name,
-          params:{
-            fromSlide: true
-          }
-      })
+      console.log('name',name)
+      if(this.caseApproval) {
+        this.$message('暂不支持审批人员查看');
+      }else{
+        this.$store.dispatch('deleteTabs', 'caseInfo');
+        this.$router.push({
+            name: name,
+            params:{
+              fromSlide: true
+            }
+        })
+      }
+      
     },
     scrollToTop() {
         let scrollId = this.$route.meta.scrollId;
         $("#" + scrollId + "").find(".el-scrollbar__wrap").animate({ scrollTop: 0 }, "slow");
     },
-    //显示卷宗目录
-    showArchiveCatalogueEmit(){
-      this.$emit('showArchiveCatalogue');
-    }
+    //鼠标移入显示
+    mouseenterShowEmit(type){
+      console.log('hover')
+      if(type == 'archiveCatalogue'){
+         this.$emit('showArchiveCatalogue');
+      }
+     
+    },
+    
   }
 }
 </script>

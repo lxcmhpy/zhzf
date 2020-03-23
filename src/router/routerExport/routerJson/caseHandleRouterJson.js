@@ -538,6 +538,22 @@ export default [
       },
       component: () => import("@/page/caseHandle/cooperateCases/addPage.vue")
   },
+  {
+      path: "/addSelect",
+      name: "addSelect",
+      meta: {
+          title: "新增抄送"
+      },
+      component: () => import("@/page/caseHandle/cooperateCases/selectPage.vue")
+  },
+  {
+      path: "/cooperateDentails",
+      name: "cooperateDentails",
+      meta: {
+          title: "移送：案号"
+      },
+      component: () => import("@/page/caseHandle/cooperateCases/cooperateDentails.vue")
+  },
   // -----------------长软start----------------
   {
     path: "/evidenceListDoc",
@@ -697,5 +713,15 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/deliverReceiptForm.vue")
   },
+  {
+    path: "/testPdf",
+    name: "testPdf",
+    meta: {
+      title: "测试pdf",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/form/testPdf.vue")
+  }
+  
   //---------------长软end------------
 ]
