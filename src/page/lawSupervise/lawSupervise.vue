@@ -101,15 +101,16 @@
                      </div>
                      <!-- 3执法船舶 -->
                      <div v-else-if="curWindow.category == 3">
-                        <div>
+                        <!-- <div>
                             <i class="iconfont law-ship"></i>
                             {{curWindow.other.shipNumber}}<br>
                             {{curWindow.other.organName}}
-                        </div>
+                        </div> -->
                         <div class="flexBox">
                             <div class="con">
-                                <p>{{curWindow.other.address}}</p>
-                                <p>{{curWindow.other.mobile}}</p>
+                                <i class="iconfont law-ship"></i>
+                                {{curWindow.other.shipNumber}}<br>
+                                {{curWindow.other.organName}}
                             </div>
                             <div class="status">
                                 <i class="iconfont law-mobile-phone"></i>

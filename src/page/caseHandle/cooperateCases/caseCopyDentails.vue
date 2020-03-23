@@ -1,10 +1,9 @@
 <template>
-  <div class="add_dialog dentail_box">
+  <div class="add_dialog dentail_box" style="height:auto;">
     <el-form :model="caseData" ref="caseData" label-width="90px" class="demo-ruleForm">
-      <div class="top">
+      <div class="top" style="height:480px;">
         <div class="add_dialog_content" style="padding-top:36px">
           <div class="border_blue"></div>
-
           <div class="content_bg elform_padding">
             <el-row>
               <el-col :span="12">
@@ -13,8 +12,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="处理状态">
-                  {{caseData.state}}
+                <el-form-item label="处理状态" prop="status">
+                  {{caseData.state == 1?'已发送':'已完成'}}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -26,12 +25,12 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="涉案车/船号">
-                  {{caseData.sacch}}
+                  {{caseData.vehicleShipId}}
                 </el-form-item>
               </el-col>
             </el-row>
             <el-form-item label="违法事实">
-              {{caseData.wfxw}}
+              {{caseData.wfss}}
             </el-form-item>
             <el-form-item label="案发时间">
               {{caseData.afsj}}
@@ -46,7 +45,7 @@
         </div>
 
       </div>
-      <div class="btm">
+      <div class="btm" style="height:auto;">
         <div class="add_dialog_content">
           <div class='record_text'>流转记录</div>
           <div class="block">
@@ -95,29 +94,35 @@
         </div>
       </div>
     </el-form>
-
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
+import iLocalStroage from "@/common/js/localStroage";
+import { getCaseBasicInfoApi } from "@/api/caseHandle";
 export default {
+  computed: { ...mapGetters(['caseId']) },
   data() {
     return {
-      caseData: {
-        name: ''
-      },
-      appendixList: []
+      caseData: {},
+      appendixList: [],
     }
   },
   methods: {
-
+    getCaseInfo(){
+      let data ={id:this.caseId}
+      getCaseBasicInfoApi(data).then(res=>{
+        console.log(res);
+         this.caseData = res.data;
+         console.log("案件信息",this.caseData)
+      },err=>{
+        console.log(err);
+      })
+    },
   },
   mounted() {
-    console.log(this.$route.params.caseInfo)
-    this.caseData = this.$route.params.caseInfo
-    if (this.caseData.appendix != '') {
-      this.appendixList = this.caseData.appendix.split(",")
-
-    }
+    this.caseData = this.$route.params.caseInfo,
+    console.log(this.caseData);
   }
 }
 </script>
@@ -146,10 +151,6 @@ export default {
 .dentail_box /deep/ .el-timeline-item__tail {
   top: -10px;
 }
-.dentail_box /deep/ .el-timeline-item:last-child /deep/.el-timeline-item__tail {
-  display: inherit;
-}
-
 .dentail_box /deep/ .el-timeline-item__timestamp {
   color: #7b7b7b;
   line-height: 22px;

@@ -1,0 +1,182 @@
+<template>
+  <div class="handlePart caseHandleSearchPart">
+    <div v-if="caseState == 'copy'">
+      <el-button type="primary" size="medium" icon="el-icon-plus" @click="newAdd">新增抄告</el-button>
+    </div>
+    <div :class="caseState != 'copy' ? 'fullWid' : '' ">
+      <el-form :model="caseSearchForm" ref="caseSearchForm" class="caseSearchForm" label-width="100px">
+        <div :class="lineSearchSty">
+          <div class="item" v-if="caseState == 'copy'">
+            <el-form-item label="案号">
+              <el-input v-model="caseSearchForm.caseNumber"></el-input>
+            </el-form-item>
+          </div>
+
+          <div class="item">
+            <el-form-item label="当事人/单位">
+              <el-input v-model="caseSearchForm.party"></el-input>
+            </el-form-item>
+          </div>
+          <div class="item">
+            <el-form-item label="目标机构">
+              <el-input v-model="caseSearchForm.vehicleShipId"></el-input>
+            </el-form-item>
+          </div>
+          <div class="item" v-if="caseState == 'copy' || caseState == 'waitDeal'">
+            <el-form-item label="处理状态">
+              <!-- <el-input v-model="caseSearchForm.caseStatus"></el-input> -->
+              <el-select v-model="caseSearchForm.caseStatus" placeholder="全部">
+                <el-option v-for="item in caseStateList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div class="item">&nbsp;
+            <el-button type="primary" size="medium" icon="el-icon-search" @click="searchCaseEmit"></el-button>
+            <el-button type size="medium" :icon="hideSomeSearch ? 'el-icon-arrow-down':'el-icon-arrow-up'" @click="showSomeSearchEmit"></el-button>
+          </div>
+        </div>
+        <div :class="{hideSomeSearchClass:hideSomeSearch,lineTwoStyle:caseState == 'waitArchive'}">
+          <div class="item">
+            <el-form-item label="违法行为">
+              <el-input v-model="caseSearchForm.caseCauseName"></el-input>
+            </el-form-item>
+          </div>
+          <div class="item">
+            <el-form-item label="申请人">
+              <el-input v-model="caseSearchForm.applicant"></el-input>
+            </el-form-item>
+          </div>
+
+          <div class="item">
+            <el-form-item label="发起时间">
+              <el-date-picker v-model="acceptTimeArray" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']">
+              </el-date-picker>
+            </el-form-item>
+          </div>
+        </div>
+      </el-form>
+    </div>
+  </div>
+</template>
+<script>
+import {
+  getQueryLinkListApi,
+  getQueryCaseTypeListApi,
+} from "@/api/caseHandle";
+import {
+  getDictListDetailApi
+} from "@/api/system";
+export default {
+  data() {
+    return {
+      caseSearchForm: {
+        caseNumber: "",
+        party: "",
+        vehicleShipId: "",
+        caseType: "",
+        caseCauseName: "",
+        caseStatus: "",
+        currentLinkName: "",
+        acceptStartTime: "",
+        acceptEndTime: "",
+        applicant: "",
+        applyStartTime: "",
+        applyEndTime: "",
+        endCaseStartTime: "",
+        endCaseEndTime: ""
+      },
+      acceptTimeArray: [],
+      endCaseTimeArray: [],
+      applyTimeArray: [],
+      hideSomeSearch: true,
+      linkList: [], //环节
+      caseTypeList: [],//类型
+      caseStateList: [],//状态
+      dictId: this.caseState == "waitDeal" ? "ef38274ddea12be26e9a8c1bf23cd401" : "324701f1633dd65ca79a28fbc79c1628",
+    };
+  },
+  computed: {
+    lineSearchSty() {
+      if (this.caseState == "copy") {
+        return "unRecordCaseStyle";
+      } else if (this.caseState == "waitDeal") {
+        return "waitDealStyle";
+      } else if (this.caseState == "approveIng") {
+        return "approveIngStyle";
+      }
+    }
+  },
+  props: ["caseState"],
+  methods: {
+    caseRecord() { },
+    //展开
+    showSomeSearchEmit() {
+      this.$emit("showSomeSearch");
+      this.hideSomeSearch = !this.hideSomeSearch;
+    },
+    newAdd() {
+       this.$router.push({
+          name: 'addCopyOne',
+          params:{
+            fromSlide: true
+          }
+      })
+    },
+    //查询所以环节
+    getAllLinkList() {
+      getQueryLinkListApi().then(
+        res => {
+          this.linkList = res.data;
+        },
+        error => {
+          console.log(error)
+        }
+      );
+    },
+    //查询所有案件类型
+    getQueryCaseTypeList() {
+      getQueryCaseTypeListApi().then(
+        res => {
+          console.log('类型', res);
+          this.caseTypeList = res.data.records;
+        },
+        error => {
+          console.log(error)
+        }
+      );
+    },
+    //搜索
+    searchCaseEmit() {
+      console.log('点击')
+      this.caseSearchForm.applyStartTime = this.applyTimeArray[0]
+      this.caseSearchForm.applyEndTime = this.applyTimeArray[1]
+
+      this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0]
+      this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1]
+
+      this.caseSearchForm.endCaseStartTime = this.endCaseTimeArray[0]
+      this.caseSearchForm.endCaseEndTime = this.endCaseTimeArray[1]
+
+      this.$emit('searchCase', this.caseSearchForm);
+    },
+    //查询案件状态
+    getQueryCaseStateList() {
+      getDictListDetailApi(this.dictId).then(
+        res => {
+          console.log("状态", res);
+          // this.options = res.data;
+          this.caseStateList = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
+  },
+  created() {
+    this.getAllLinkList();
+    this.getQueryCaseTypeList();
+    this.getQueryCaseStateList();
+  }
+};
+</script>
