@@ -75,7 +75,7 @@
       </div>
     </div>
     <!-- 添加弹出框 -->
-    <el-dialog title="上传证据" :visible.sync="addVisible" width="50%" v-loading="addLoading" :before-close="handleClose">
+    <el-dialog title="上传证据" :visible.sync="addVisible" width="60%" v-loading="addLoading" :before-close="handleClose">
       <div>
         <div style="float: left;width: 45%">
           <el-upload
@@ -103,8 +103,8 @@
             <el-form-item label="证据名称" prop="evName" label-width="113px">
               <el-input v-model="form.evName" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="记 录 人" prop="recordName" label-width="113px">
-              <el-input v-model="form.recordName" placeholder="请输入"></el-input>
+            <el-form-item label="记 录 人" prop="userName" label-width="113px">
+              <el-input v-model="form.userName" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="记录时间" prop="createTime" label-width="113px" >
               <el-date-picker
@@ -113,8 +113,8 @@
                 placeholder="选择日期时间" style="width: 100%">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="取证地点" prop="evPlace" label-width="113px">
-              <el-input v-model="form.evPlace" placeholder="请输入"></el-input>
+            <el-form-item label="取证地点" prop="recordPlace" label-width="113px">
+              <el-input v-model="form.recordPlace" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="状  态" prop="status" label-width="113px">
               <el-radio-group v-model="form.status">
@@ -122,12 +122,12 @@
                 <el-radio label="1">无效</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="备  注" prop="remark" label-width="113px">
+            <el-form-item label="备  注" prop="note" label-width="113px">
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4}"
                 placeholder="请输入"
-                v-model="form.remark">
+                v-model="form.note">
               </el-input>
             </el-form-item>
           </el-form>
@@ -154,8 +154,8 @@
         <el-form-item label="证据名称" prop="evName" label-width="113px">
           <el-input v-model="uForm.evName" placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="记 录 人" prop="recordName" label-width="113px">
-          <el-input v-model="uForm.recordName" placeholder="请输入"></el-input>
+        <el-form-item label="记 录 人" prop="userName" label-width="113px">
+          <el-input v-model="uForm.userName" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="记录时间" prop="createTime" label-width="113px" >
           <el-date-picker
@@ -164,8 +164,8 @@
             placeholder="选择日期时间" style="width: 100%">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="取证地点" prop="evPlace" label-width="113px">
-          <el-input v-model="uForm.evPlace" placeholder="请输入"></el-input>
+        <el-form-item label="取证地点" prop="recordPlace" label-width="113px">
+          <el-input v-model="uForm.recordPlace" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="状  态" prop="status" label-width="113px">
           <el-radio-group v-model="uForm.status">
@@ -173,12 +173,12 @@
             <el-radio :label="1">无效</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="备  注" prop="remark" label-width="113px">
+        <el-form-item label="备  注" prop="note" label-width="113px">
           <el-input
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 4}"
             placeholder="请输入"
-            v-model="uForm.remark">
+            v-model="uForm.note">
           </el-input>
         </el-form-item>
       </el-form>
@@ -194,6 +194,7 @@
 <script>
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
+// import { getEviByCaseIdApi } from "@api/caseHandle";
     export default {
         data() {
             const isSelect = (rule, value, callback) => {
@@ -206,22 +207,6 @@ import { mapGetters } from "vuex";
             return {
                 evTypeOptions : [],
                 statusOptions : [],
-                /*evTypeOptions : [{
-                    value: '视频',
-                    label: '视频'
-                }, {
-                    value: '照片',
-                    label: '照片'
-
-                }],
-                statusOptions : [{
-                    value: 0,
-                    label: '有效'
-                }, {
-                    value: 1,
-                    label: '无效'
-
-                }],*/
                 value: '',
                 //activeName: '1',
                 currentPage: 1, //当前页
@@ -247,13 +232,13 @@ import { mapGetters } from "vuex";
                     evName: [
                         { required: true, message: '证据名称不能为空', trigger: 'blur' },
                     ],
-                    recordName: [
+                    userName: [
                         { required: true, message: '记录人不能为空', trigger: 'blur' },
                     ],
                     createTime: [
                         { required: true, message: '记录时间不能为空', trigger: 'blur' },
                     ],
-                    evPlace: [
+                    recordPlace: [
                         { required: true, message: '取证地点不能为空', trigger: 'blur' },
                     ],
                     status: [
@@ -296,28 +281,31 @@ import { mapGetters } from "vuex";
             },
             handleEdit(index, row) {
                 const item = this.tableData[index];
+                console.log("编辑证据",item)
                 this.uForm = {
                     id: item.id,
                     caseId: item.caseId,
                     evName: item.evName,
                     evType: item.evType,
-                    recordName: item.recordName,
+                    userName: item.userName,
                     createTime: item.createTime,
-                    evPlace: item.evPlace,
+                    recordPlace: item.recordPlace,
                     status: item.status,
-                    remark: item.remark
+                    note: item.note
                 };
                 this.editVisible = true;
             },
             //表单筛选
             getEviList() {
                 let data = {
+                    caseId:this.caseId,
                     evName:this.evidenceForm.evName,
                     evType:this.evidenceForm.evType,
                     status:this.evidenceForm.status,
                     current: this.currentPage,
                     size: this.pageSize
                 };
+                console.log("证据目录参数",data);
                 let _this = this
                 this.$store.dispatch("getEvidence", data).then(res => {
                     _this.tableData = res.data.records;
@@ -329,10 +317,14 @@ import { mapGetters } from "vuex";
             insertEvi(){
                 let data = {
                   id:this.randomString(32),
-                  caseId:this.randomString(32),
+                  // caseId:this.randomString(32),
+                  caseId:this.caseId,
                   evName:this.form.evName,
                   evType:this.form.evType,
+                  userName:this.form.userName,
+                  recordPlace:this.form.recordPlace,
                   status:this.form.status,
+                  note:this.form.note,
                   createTime:this.formatDateStr(this.form.createTime)
                 };
                 let _this = this
@@ -358,11 +350,11 @@ import { mapGetters } from "vuex";
                 caseId: this.uForm.caseId,
                 evName: this.uForm.evName,
                 evType: this.uForm.evType,
-                recordName: this.uForm.recordName,
+                userName: this.uForm.userName,
                 createTime: this.formatDateStr(this.uForm.createTime),
-                evPlace: this.uForm.evPlace,
+                recordPlace: this.uForm.recordPlace,
                 status: this.uForm.status,
-                remark: this.uForm.remark
+                note: this.uForm.note
               };
                let _this = this
               this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {

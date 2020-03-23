@@ -91,10 +91,7 @@ export default {
       //设置案件状态不为审批中
       this.$store.commit("setCaseApproval", false);
       this.$router.push({
-        name: "archiveCover",
-        params: {
-          caseInfo: row
-        }
+        name: "archiveCover"
       });
     }
   },
