@@ -5,23 +5,23 @@
       <div class="tablePart">
         <!-- <el-table :data="tableData" stripe style="width: 100%" highlight-current-row @current-change="handleCase" height="100%"> -->
         <el-table :data="tableData" stripe style="width: 100%" highlight-current-row height="100%">
-          <el-table-column prop="tempNo" label="案号" align="center" width="200"></el-table-column>
+          <el-table-column prop="caseNumber" label="案号" align="center" width="200"></el-table-column>
           <!-- <el-table-column prop="vehicleShipId" label="车/船号" align="center" width="100"></el-table-column> -->
-          <el-table-column prop="name" label="当事人/单位" align="center" width="150"></el-table-column>
-          <el-table-column prop="caseCauseName" label="违法行为" align="center">
+          <el-table-column prop="party" label="当事人/单位" align="center" width="150"></el-table-column>
+          <el-table-column prop="wfxw" label="违法行为" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="top-start">
-                <div slot="content" style="max-width:200px">{{scope.row.caseCauseName}}</div>
-                <span>{{scope.row.caseCauseName}}</span>
+                <div slot="content" style="max-width:200px">{{scope.row.wfxw}}</div>
+                <span>{{scope.row.wfxw}}</span>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="caseType" label="目标机构" align="center" width="150"></el-table-column>
-          <el-table-column prop="acceptTime" label="发起时间" align="center" width="150"></el-table-column>
-          <el-table-column prop="caseType" label="申请人" align="center" width="100"></el-table-column>
-          <el-table-column prop="currentLinkName" label="处理状态" align="center" width="100">
+          <el-table-column prop="organMb" label="目标机构" align="center" width="150"></el-table-column>
+          <el-table-column prop="createTime" label="发起时间" align="center" width="150"></el-table-column>
+          <el-table-column prop="person" label="申请人" align="center" width="100"></el-table-column>
+          <el-table-column prop="caseType" label="处理状态" align="center" width="100">
             <template slot-scope="scope">
-              <div :style="{'color':scope.row.currentLinkName=='已完成'?'#22C058':''}">{{scope.row.currentLinkName}}</div>
+              <div :style="{'color':scope.row.caseType=='已完成'?'#22C058':''}">{{scope.row.status}}</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" width="100">
@@ -82,7 +82,8 @@ export default {
       TransferCaseApi(data).then(
         res => {
           console.log('移送列表', res)
-          this.tableData = res.records
+          this.tableData = res.data.records
+          this.total = res.data.total
         });
     },
     //更改每页显示的条数
@@ -116,8 +117,7 @@ export default {
       this.$router.replace({
         name: "cooperateDentails",
         params: {
-          caseInfo: row,
-          isApproval: true
+          caseInfo: row
         }
       });
     }

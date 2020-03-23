@@ -925,7 +925,7 @@ export default {
     },
     //设置执法人员
     setLawPerson(userlist) {
-      console.log(userlist);
+      console.log('选择的执法人员',userlist);
       // this.lawPersonList = userlist;
       this.alreadyChooseLawPerson = userlist;
       this.lawPersonListId = [];
@@ -1285,6 +1285,20 @@ export default {
       //    let allInput = document.querySelectorAll('.el-input');
 
       // };
+      //设置执法人员
+      this.alreadyChooseLawPerson = [];
+      let staffNameList = data.staff.split(',');
+      let staffIdList = data.staffId.split(',');
+      let staffCertificateIdList = data.certificateId.split(',');
+      this.lawPersonListId = staffIdList;
+      staffIdList.forEach((item,index) => {
+        let newlaw = {
+          id:item,
+          lawOfficerName:staffNameList[index],
+          lawOfficerCards:staffCertificateIdList[index]
+        }
+        this.alreadyChooseLawPerson.push(newlaw);
+     });
 
     },
     // 超重限制及抽屉表

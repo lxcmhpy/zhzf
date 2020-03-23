@@ -176,31 +176,31 @@ export default {
       },
       rules: {
         caseName: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入案件名称', trigger: 'blur' },
         ],
         discussionStartTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入开始讨论时间', trigger: 'blur' },
         ],
         discussionEndTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入结束讨论时间', trigger: 'blur' },
         ],
         discussionPlace: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入地点', trigger: 'blur' },
         ],
         presidingHearer: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入主持人', trigger: 'blur' },
         ],
         reporter: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入汇报人', trigger: 'blur' },
         ],
         recorder: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入记录人', trigger: 'blur' },
         ],
         presentMembersName: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入出席人员姓名', trigger: 'blur' },
         ],
         discussionRecord: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入讨论记录', trigger: 'blur' },
         ]
       },
       nameLength: 23,

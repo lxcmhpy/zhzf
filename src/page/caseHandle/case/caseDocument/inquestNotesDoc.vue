@@ -186,16 +186,6 @@ import {
 export default {
 
   data() {
-    var  validatePhone = (rule, value, callback) => {
-      var reg = /^1(3|4|5|6|7|8)\d{9}$/;
-      if (!reg.test(value) && value) {
-         this.$notify.error({
-          title: '错误',
-          message: '手机号格式错误'
-        });
-      }
-      callback();
-    };
     return {
       // inquestResult:'',
       restaurants: [],

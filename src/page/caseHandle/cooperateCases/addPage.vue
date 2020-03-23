@@ -13,11 +13,11 @@
         <div class="content_bg">
 
           <el-form-item label="案号">
-            {{caseData.tempNo}}
+            {{caseData.caseNumber||'-'}}
             <el-button class="re_select" size="small" @click="reSelect" plain>重新选择</el-button>
           </el-form-item>
           <el-form-item label="案由">
-            {{caseData.caseCauseName}}
+            {{caseData.caseCauseName||'-'}}
           </el-form-item>
         </div>
         <el-form-item label="目标机构" class="is-required">
@@ -49,19 +49,19 @@
           <el-row>
             <el-col :span="6">
               <el-form-item>
-                <el-radio v-model="caseData.copyReason" label="其他原因"></el-radio>
+                <el-radio v-model="caseData.copyReason" label="其他原因" ></el-radio>
               </el-form-item>
             </el-col>
             <el-col :span="18">
-              <el-form-item :prop="caseData.copyReason == '其他原因' ? 'otherReason' :''">
-                <el-input v-model="caseData.otherReason"></el-input>
+              <el-form-item :prop="caseData.copyReason == '其他原因' ? 'otherReason' :''" >
+                <el-input v-model="caseData.otherReason" :disabled="caseData.copyReason == '其他原因' ? false :true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form-item>
 
         <el-form-item label="附件">
-          <!-- zjfj -->
+          <!-- appendix -->
           <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="uploadFileList">
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">最多上传3个附件</div>
@@ -80,7 +80,7 @@
             <div class="list">
               <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
               <el-checkbox-group v-model="checkedFiles" @change="handleCheckedFilesChange">
-                <el-checkbox v-for="(item,index) in fileList" :label="item.docName" :key="index">{{item.docName}}
+                <el-checkbox v-for="(item,index) in fileList" :label="item.storageId" :key="index">{{item.docName}}
                   <!-- {{item.docNote}}
                   <span v-if="item.docNote==''">{{item.docName}}</span> -->
                 </el-checkbox>
@@ -96,7 +96,7 @@
             <div class="list">
               <el-checkbox :indeterminate="isIndeterminate2" v-model="checkAll2" @change="handleCheckAllChange2">全选</el-checkbox>
               <el-checkbox-group v-model="checkedFiles2" @change="handleCheckedFilesChange2">
-                <el-checkbox v-for="(item,index) in evdenceList" :label="index" :key="index">{{item.fileName}}
+                <el-checkbox v-for="(item,index) in evdenceList" :label="item.storageId" :key="index">{{item.fileName}}
                   <!-- {{item.docNote}}
                   <span v-if="item.docNote==''">{{item.docName}}</span> -->
                 </el-checkbox>
@@ -113,6 +113,7 @@
   </div>
 </template>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
 import { AddEditTransferCaseApi, getFinishDocByIdApi, getFinishEvdenceByIdApi } from "@/api/caseHandle";
 import {
   uploadEvApi,
@@ -123,14 +124,18 @@ export default {
   data() {
     return {
       caseData: {
-        tempNo: '',
+        person: 'ceshiyixia',
+        caseNumber: '',
         caseCauseName: '',
         organType: '',
         organMb: '',
+        appendix: '',
         copyReason: '',
         otherReason: '',
         docs: '',
         zjfj: '',
+        notes: '',
+        // createTime: new Date()
       },
       checkAll: false,
       checkAll2: false,
@@ -144,6 +149,7 @@ export default {
       uploadFileList: [],
       fileList: [],
       evdenceList: [],
+      userInfo: iLocalStroage.gets('userInfo'),
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
@@ -183,9 +189,24 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          // this.caseData.caseId = 'c25b5f4a55ef9f5f952390016453ca83';
+          this.caseData.docs = this.checkedFiles.join('@');
+          this.caseData.zjfj = this.checkedFiles2.join('@');
+          console.log(this.caseData)
           AddEditTransferCaseApi(this.caseData).then(res => {
             console.log(res);
-            this.modelList = res.data;
+            if (res.code == 200) {
+              this.$store.dispatch("deleteTabs", this.$route.name);
+              this.$router.replace({
+                name: "caseTransfer",
+              });
+            }
+            else {
+              this.$message({
+                type: "error",
+                message: "添加失败"
+              });
+            }
           }, err => {
             console.log(err);
           })
@@ -204,20 +225,27 @@ export default {
     handleCheckAllChange(val) {
       this.checkedFiles = val ? this.fileOptions : [];
       this.isIndeterminate = false;
+      console.log('checkedFiles', this.checkedFiles)
+
     },
     handleCheckAllChange2(val) {
       this.checkedFiles2 = val ? this.evdenceOptions : [];
       this.isIndeterminate2 = false;
+      console.log('checkedFiles2', this.checkedFiles2)
     },
     handleCheckedFilesChange(value) {
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.fileList.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.fileList.length;
+      console.log('checkedFiles', this.checkedFiles)
+
     },
     handleCheckedFilesChange2(value) {
       let checkedCount = value.length;
       this.checkAll2 = checkedCount === this.evdenceList.length;
       this.isIndeterminate2 = checkedCount > 0 && checkedCount < this.evdenceList.length;
+      console.log('checkedFiles2', this.checkedFiles2)
+
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -234,9 +262,17 @@ export default {
   },
   mounted() {
     console.log('选择的案件', this.$route.params)
-    this.caseData.tempNo = this.$route.params.caseData.tempNo
-    this.caseData.caseCauseName = this.$route.params.caseData.caseCauseName
+        this.caseData = this.$route.params.caseData
+    // this.caseData.caseNumber = this.$route.params.caseData.caseNumber
+    // this.caseData.caseCauseName = this.$route.params.caseData.caseCauseName
     this.caseData.caseId = this.$route.params.caseData.id
+    // this.caseData.createTime = this.$route.params.caseData.createTime
+    // this.caseData.acceptTime = this.$route.params.caseData.acceptTime
+    // this.caseData.caseStatus = this.$route.params.caseData.caseStatus
+    // this.caseData.vehicleShipId = this.$route.params.caseData.vehicleShipId
+    // this.caseData.caseType = this.$route.params.caseData.caseType
+    this.caseData.wfxw = this.$route.params.caseData.caseCauseName
+    this.caseData.person = this.userInfo.organName.username;
     console.log('表单', this.caseData)
     getFinishDocByIdApi(this.caseData.caseId).then(res => {
       console.log('文书列表', res.data);
@@ -267,6 +303,7 @@ export default {
     }, err => {
       console.log(err);
     })
+    console.log('userInfo', this.userInfo)
   }
 }
 </script>
