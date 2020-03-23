@@ -512,10 +512,16 @@
     .content_bg {
         background   : #FCFCFC;
         padding      : 35px 36px 18px;
-        margin-bottom: 35px;
+        margin-bottom: 32px;
         border       : 1px solid #EEEEEE;
         box-sizing   : border-box;
 
+    }
+
+    .elform_padding {
+        .el-form-item {
+            margin-bottom: 0;
+        }
     }
 
     .steps {
@@ -582,6 +588,8 @@
         color         : #20232B;
         box-sizing    : border-box;
         line-height   : 40px;
+
+
     }
 
     .re_select {
@@ -614,10 +622,12 @@
         margin-bottom     : 22px;
         -webkit-box-shadow: 0 6px 4px 0 rgba(94, 137, 181, .1);
         box-shadow        : 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+        overflow          : auto;
     }
 
     .btm {
         height            : calc(100% - 435px);
+        min-height        : 300px;
         background        : #fff;
         overflow          : auto;
         -webkit-box-shadow: 0 6px 4px 0 rgba(94, 137, 181, .1);
@@ -625,9 +635,10 @@
     }
 
     .tans_box {
-        display      : inline-block;
+        margin       : 6px 0 10px;
         padding      : 0 17px;
-        width        : 299px;
+        display      : inline-block;
+        width        : auto;
         height       : 44px;
         line-height  : 44px;
         background   : rgba(233, 236, 243, 1);
@@ -639,13 +650,43 @@
         text-align   : center;
         box-sizing   : border-box;
 
+        .times_info_content {
+            margin-bottom: 22px;
+            margin-top   : 6px;
+        }
+
+        .i_box_apply {
+            display       : inline-block;
+            vertical-align: middle;
+            margin-right: -20px;
+            width        : 24px;
+            height       : 24px;
+            border-radius: 50px;
+            background   : #4AAFA7;
+            color        : #fff;
+
+        }
+
+        .i_box_org {
+            display       : inline-block;
+            vertical-align: middle;
+            margin-right: -20px;
+
+            width         : 24px;
+            height        : 24px;
+            border-radius : 50px;
+            background    : #4573D0;
+            color         : #fff;
+
+        }
     }
 
     .record_text {
 
-        margin     : 24px 0;
+        margin     : 24px 0 23px;
         font-size  : 18px;
         font-weight: 500;
+        font-family: PingFangSC-Medium, PingFang SC;
         color      : rgba(32, 35, 43, 1);
     }
 
@@ -657,8 +698,16 @@
         li {
             margin-right: 32px;
             float       : left;
+            color       : #4573D0;
         }
     }
+
+    .el-timeline-item {
+        padding-top: 10px;
+    }
+
+   
+
 
 }
 
