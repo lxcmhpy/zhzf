@@ -608,6 +608,41 @@ export function getFinishEvdenceByIdApi(data) {
   });
 }
 
+//案件抄告列表
+export function queryCaseCopyListPageApi(data) {
+  return request({
+    url: "/case/send/findByCondition",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//案件抄告可选案件列表
+export function selectCopyCaseApi(data) {
+  return request({
+    url: "/doc/caseBasicInfo/queryCaseBasicInfoPageByCaseNumber",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//添加修改抄告
+export function addEditCopyCaseApi(modelId) {
+  let data= modelId;
+  console.log('添加',data)
+  return request({
+    url: "/case/send/saveOrUpdate",
+    method: "post",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //-------------长软lv start------------
 //获取操作记录
 export function getHandleRecordApi(data) {
@@ -645,6 +680,7 @@ export function getHandleRecordApi(data) {
   //
   //插入证据目录
   export function saveOrUpdateEvidenceApi(data) {
+    console.log("证据目录",data);
     return request({
       url:"/doc/evidence/saveOrUpdateEvdencen",
       method:"POST",

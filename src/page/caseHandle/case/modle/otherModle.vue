@@ -224,7 +224,9 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import iLocalStroage from "@/common/js/localStroage"; 
-
+import {
+  findCaseAllBindPropertyApi,
+} from "@/api/caseHandle";
 export default {
   components: {
     QAModle,
@@ -565,10 +567,25 @@ export default {
       }
       return realRelation;
     },
+    //获取执法人员
+    getLawOfficer(){
+      let data = {
+        caseBasicInfoId: this.caseId,
+        typeId: this.$route.params.docId
+      };
+        findCaseAllBindPropertyApi(data).then(res=>{
+          console.log(res);
+          let data2 = JSON.parse(res.data.propertyData);
+          this.staffList = data2.staff.split(',');
+        },err=>{
+          console.length(err);
+        })
+    }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
      this.isOverStatus();
+     this.getLawOfficer();
   },
 }
 </script>

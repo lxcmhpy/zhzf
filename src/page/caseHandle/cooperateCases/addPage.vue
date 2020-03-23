@@ -46,25 +46,35 @@
           <el-form-item>
             <el-radio v-model="caseData.copyReason" label="违法行为涉嫌犯罪"></el-radio>
           </el-form-item>
-          <el-row>
-            <el-col :span="6">
-              <el-form-item>
-                <el-radio v-model="caseData.copyReason" label="其他原因"></el-radio>
-              </el-form-item>
-            </el-col>
-            <el-col :span="18">
-              <el-form-item :prop="caseData.copyReason == '其他原因' ? 'otherReason' :''">
-                <el-input v-model="caseData.otherReason" :disabled="caseData.copyReason == '其他原因' ? false :true"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
+          <el-form-item>
+            <el-row :gutter="20">
+              <el-col :span="3">
+                <el-form-item>
+                  <el-radio v-model="caseData.copyReason" label="其他原因"></el-radio>
+                </el-form-item>
+              </el-col>
+              <el-col :span="19">
+                <el-form-item :prop="caseData.copyReason == '其他原因' ? 'otherReason' :''">
+                  <el-input v-model="caseData.otherReason" :disabled="caseData.copyReason == '其他原因' ? false :true"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form-item>
+
         </el-form-item>
 
         <el-form-item label="附件">
           <!-- appendix -->
-          <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="uploadFileList">
+          <!-- <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="uploadFileList">
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">最多上传3个附件</div>
+          </el-upload> -->
+          <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadPaymentVoucher" :show-file-list="false">
+            <el-button size="small" type="primary">点击上传</el-button>
+            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+            <ul>
+              <li v-for="item in alreadyLoadPayEvidence" :key="item.id">{{item.fileName}}</li>
+            </ul>
           </el-upload>
         </el-form-item>
         <el-form-item label="备注">
@@ -150,6 +160,7 @@ export default {
       fileList: [],
       evdenceList: [],
       userInfo: iLocalStroage.gets('userInfo'),
+      alreadyLoadPayEvidence: [], //已上传的附件
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
@@ -187,11 +198,19 @@ export default {
       });
     },
     submitForm(formName) {
+      console.log(this.caseData)
+      // 附件
+      let appendixList= []
+      this.alreadyLoadPayEvidence.forEach(element => {
+        appendixList.push(element.fileName)
+      });
+      this.caseData.appendix=appendixList.join(',')
+      console.log(this.caseData)
+
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.caseData.docs = '';
           this.caseData.zjfj = '';
-          this.caseData.caseId = '123';
           // 文书列表
           let docsList = [];
           this.checkedFiles.forEach(element => {
@@ -269,7 +288,36 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
-    }
+    },
+    //上传附件
+    uploadPaymentVoucher(param) {
+      console.log(param);
+      var fd = new FormData()
+      fd.append("file", param.file);
+      fd.append('caseId', this.caseData.caseId)
+      fd.append('docId', '2c9029e16c753a19016c755fe1340001');
+      uploadEvApi(fd).then(
+        res => {
+          console.log(res);
+          this.findPaymentVoucher(res.data, true);
+        },
+        error => {
+          console.log(error)
+        }
+      );
+    },
+     //通过缴费凭证id 查询缴费凭证file
+    findPaymentVoucher(id, isAdd) {
+      findFileByIdApi(id).then(
+        res => {
+          console.log(res);
+          this.alreadyLoadPayEvidence.push(res.data);
+        },
+        error => {
+          console.log(error)
+        }
+      );
+    },
   },
   mounted() {
     console.log('选择的案件', this.$route.params)
@@ -283,7 +331,7 @@ export default {
     // this.caseData.vehicleShipId = this.$route.params.caseData.vehicleShipId
     // this.caseData.caseType = this.$route.params.caseData.caseType
     this.caseData.wfxw = this.$route.params.caseData.caseCauseName
-    this.caseData.person = this.userInfo.organName.username;
+    this.caseData.person = this.userInfo.organName + '-' + this.userInfo.username;
     console.log('表单', this.caseData)
     getFinishDocByIdApi(this.caseData.caseId).then(res => {
       console.log('文书列表', res.data);

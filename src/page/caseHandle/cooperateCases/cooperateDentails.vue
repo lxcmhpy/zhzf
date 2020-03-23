@@ -14,7 +14,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="处理状态">
-                  {{caseData.caseType}}
+                  {{caseData.state}}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -26,7 +26,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="涉案车/船号">
-                  {{caseData.vehicleShipId}}
+                  {{caseData.sacch}}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -51,14 +51,13 @@
           <div class='record_text'>流转记录</div>
           <div class="block">
             <el-timeline class="times_content">
-              <el-timeline-item timestamp="2018-4-12" placement="top" icon="el-icon-time">
+              <el-timeline-item :timestamp="caseData.createTime" placement="top" icon="el-icon-time">
                 <div class="times_info">
                   <div class="times_info_content">
                     <span class="tans_box">
                       <span class="i_box_apply">
-                        
                       </span><i class="el-icon-user-solid"></i>
-                      <span style="color:#20232B">广东省湛江市执法大队 - {{caseData.person}}</span>
+                      <span style="color:#20232B">{{caseData.person}}</span>
                     </span>
                     <span>移送至</span>
                     <span>
@@ -68,31 +67,23 @@
                     </span>
                     <span class="tans_box">
                       <span class="i_box_org">
-                        
+
                       </span><i class="el-icon-user-solid"></i>
                       <span style="color:#20232B">{{caseData.organMb}}</span>
                     </span>
                   </div>
                   <div>
                     <span class="times_text">备注：</span>
-                    <span class="color_7B7B7B">湖是位于南澳洲芒特甘比尔一座死火山低平火山口的一个火山湖。湖是位于南澳洲芒特甘比尔一座死火山低平火山口的一个火山湖。湖是位于南澳洲芒特甘比尔一座死火山低平火山口的一个火山湖。湖是位于南澳洲芒特甘比尔一座死火山低平火山口的一个火山湖。</span>
+                    <span class="color_7B7B7B">{{caseData.notes}}</span>
                   </div>
                   <div>
-                    <span class="times_text">附件（3）</span>
+                    <span class="times_text">附件（{{appendixList.length}}）</span>
                   </div>
                   <div class="document_list">
                     <ul>
-                      <li>
+                      <li v-for="(item,index) in appendixList" :key="index">
                         <i class="el-icon-document-checked"></i>
-                        文件名称
-                      </li>
-                      <li>
-                        <i class="el-icon-document-checked"></i>
-                        文件名称
-                      </li>
-                      <li>
-                        <i class="el-icon-document-checked"></i>
-                        文件名称
+                        {{item}}
                       </li>
                     </ul>
                   </div>
@@ -114,6 +105,7 @@ export default {
       caseData: {
         name: ''
       },
+      appendixList: []
     }
   },
   methods: {
@@ -122,6 +114,10 @@ export default {
   mounted() {
     console.log(this.$route.params.caseInfo)
     this.caseData = this.$route.params.caseInfo
+    if (this.caseData.appendix != '') {
+      this.appendixList = this.caseData.appendix.split(",")
+
+    }
   }
 }
 </script>
@@ -160,5 +156,4 @@ export default {
   font-size: 14px;
   font-weight: 500;
 }
-
 </style>

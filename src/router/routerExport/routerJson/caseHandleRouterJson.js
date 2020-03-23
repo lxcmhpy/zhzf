@@ -554,6 +554,30 @@ export default [
       },
       component: () => import("@/page/caseHandle/cooperateCases/cooperateDentails.vue")
   },
+  {
+    path: "/addCopyTwo",
+    name: "addCopyTwo",
+    meta: {
+        title: "新增抄告"
+    },
+    component: () => import("@/page/caseHandle/cooperateCases/addCopyTwo.vue")
+},
+{
+    path: "/addCopyOne",
+    name: "addCopyOne",
+    meta: {
+        title: "新增抄告"
+    },
+    component: () => import("@/page/caseHandle/cooperateCases/addCopyOne.vue")
+},
+  {
+    path: "/caseCopyDentails",
+    name: "caseCopyDentails",
+    meta: {
+        title: "抄告：案号"
+    },
+    component: () => import("@/page/caseHandle/cooperateCases/caseCopyDentails.vue")
+},
   // -----------------长软start----------------
   {
     path: "/evidenceListDoc",
