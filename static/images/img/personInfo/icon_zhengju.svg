@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="38px" viewBox="0 0 32 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.1 (89650) - https://sketch.com -->
+    <title>icon_zhengju</title>
+    <desc>Created with Sketch.</desc>
+    <g id="30协同办案" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="30.2新增移送2" transform="translate(-1026.000000, -898.000000)">
+            <g id="编组-6备份-3" transform="translate(854.000000, 831.000000)">
+                <g id="icon_zhengju" transform="translate(151.000000, 49.000000)">
+                    <g transform="translate(21.000000, 18.000000)">
+                        <polygon id="Fill-1" fill="#FFFFFF" points="1.81818182 36.5098039 29.4545455 36.5098039 29.4545455 2.23529412 1.81818182 2.23529412"></polygon>
+                        <path d="M0.363636364,38 L31.6363636,38 L31.6363636,0 L0.363636364,0 L0.363636364,38 Z M2.20727675,1.70146471 L29.7899933,1.70146471 L29.7899933,36.2994676 L29.7890833,36.2994676 L2.20727675,36.2994676 L2.20727675,1.70146471 Z" id="Fill-2" fill="#000000"></path>
+                        <polygon id="Fill-3" fill="#000000" points="4 25.3333333 27.2727273 25.3333333 27.2727273 24.5882353 4 24.5882353"></polygon>
+                        <polygon id="三角形" fill="#296DF6" points="10.1463415 9.5 15.6097561 17.4166667 4.68292683 17.4166667"></polygon>
+                        <polygon id="三角形备份" fill="#296DF6" points="20.2926829 6.33333333 27.3170732 17.4166667 13.2682927 17.4166667"></polygon>
+                        <polygon id="Fill-5" fill="#000000" points="4 28.3137255 27.2727273 28.3137255 27.2727273 27.5686275 4 27.5686275"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -16,6 +16,9 @@ const mutations = {
   [types.COM_LOADINGTIME](state, time) {
     state.loadingTime = time;
   },
+  [types.COM_LOADING_TYPE](state, type) {
+    state.loadingType = type;
+  },
   //设置token
   [types.SET_AUTHTOKEN](state, token) {
     setToken("TokenKey", token, 110);

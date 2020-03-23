@@ -23,13 +23,14 @@
                     v-bind:class="{ over_flow:docData.afdd.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="nameLength"
+                    error
                     placeholder="\"
                   ></el-input>
                   <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
                 </el-form-item>
               </td>
               <td>执法时间</td>
-              <td colspan="3">
+              <td colspan="3" id="scenetimeBox">
                 <el-form-item prop="enforceStartTime" class="pdf_datapick">
                   <el-date-picker
                     v-model="docData.enforceStartTime"
@@ -286,6 +287,9 @@ import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+import {
+  findCaseAllBindPropertyApi,
+} from "@/api/caseHandle";
 // 验证规则
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 
@@ -344,46 +348,36 @@ export default {
         readState:[],
       },
       rules: {
-        afdd: [{ required: true, message: "请输入", trigger: "blur" }],
+        afdd: [{ required: true, message: '执法地点不能为空', trigger: "blur" }],
         enforceStartTime: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "执法开始时间不能为空", trigger: "blur" }
         ],
         enforceEndTime: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "执法结束时间不能为空", trigger: "blur" }
         ],
         staff1: [
-          { required: true, message: "请输入", trigger: "change" }
+          { required: true, message: "执法人员不能为空", trigger: "change" }
         ],
         certificateId11: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "执法证号不能为空", trigger: "blur" }
         ],
         staff2: [
-          { required: true, message: "请输入", trigger: "change" }
+          { required: true, message: "执法人员不能为空", trigger: "change" }
         ],
         certificateId12: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "执法证号不能为空", trigger: "blur" }
         ],
         scenePeopeTel: [{ validator: validatePhone, trigger: "blur" }],
         scenePeopelIdNo: [{ validator: validateIDNumber, trigger: "blur" }],
-        party: [{ required: true, message: "请输入", trigger: "blur" }],
-        punishLaw: [{ required: true, message: "请输入", trigger: "blur" }],
-        socialCreditCode: [
-          { required: true, message: "请输入", trigger: "blur" }
-        ],
-        illegalFactsEvidence: [
-          { required: true, message: "请输入", trigger: "blur" }
-        ],
-        reconsiderationOrgan: [
-          { required: true, message: "请输入", trigger: "blur" }
-        ],
+        party: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
         recorder: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "记录人不能为空", trigger: "blur" }
         ],
         illegalFacts: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "现场情况不能为空", trigger: "blur" }
         ],
         readState: [
-          { required: true, message: "请选择", trigger: "change" }
+          { required: true, message: "请选择是否看过上述笔录", trigger: "change" }
         ]
       },
       caseDocDataForm: {
@@ -626,11 +620,26 @@ export default {
         this.docData.scenePeopeAddress = this.daiRuscenePeopeAddress ? '' : this.docData.scenePeopeAddress;
         this.docData.scenePeopeTel = this.daiRuscenePeopeTel ? '' : this.docData.scenePeopeTel;
       }
+    },
+    //获取执法人员
+    getLawOfficer(){
+      let data = {
+        caseBasicInfoId: this.caseId,
+        typeId: this.$route.params.docId
+      };
+        findCaseAllBindPropertyApi(data).then(res=>{
+          console.log(res);
+          let data2 = JSON.parse(res.data.propertyData);
+          this.staffList = data2.staff.split(',');
+        },err=>{
+          console.length(err);
+        })
     }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
+    this.getLawOfficer();
   }
 };
 </script>
@@ -657,6 +666,9 @@ export default {
   }
   .illegalFactsTip{
     text-align-last:auto;
+  }
+  #scenetimeBox .is-required .el-input__inner::-webkit-input-placeholder{
+    color: #000;
   }
 }
 </style>

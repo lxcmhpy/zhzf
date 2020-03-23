@@ -21,9 +21,9 @@
     "CAPTCHA_HOST": "http://172.16.169.83:8888/catsic"
   },
   "WW": {
-    "//": "http://172.16.169.83:8888/catsic",
-    "HOST": "http://124.192.215.4:8088/catsic",
-    "CAPTCHA_HOST": "http://124.192.215.4:8088/catsic",
+    "//": "http://49.234.17.95:9001/catsic",
+    "HOST": "http://49.234.17.95:9001/catsic",
+    "CAPTCHA_HOST": "http://49.234.17.95:9001/catsic",
     "PDF_HOST": "http://124.192.215.10:9332/",
     "LAW_SUPERVISE_HOST": "http://localhost:8088/"
   }

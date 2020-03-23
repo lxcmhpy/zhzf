@@ -28,20 +28,22 @@ const store = new Vuex.Store({
         setLoadingState({ commit, state }, status) {
             let clearTime;
             let time = new Date().getTime();
-            if (status) {
+            if (status.flag) {
                 commit(types.COM_LOADINGTIME, time);
-                commit(types.COM_LOADING_STATUS, status);
+                commit(types.COM_LOADING_STATUS, status.flag);
+                commit(types.COM_LOADING_TYPE, status.type);
                 clearTimeout(clearTime);
             } else {
                 var b = time - state.loadingTime;
                 if (b < 1000) {
                     clearTime = setInterval(function () {
-                        commit(types.COM_LOADING_STATUS, status);
+                        commit(types.COM_LOADING_STATUS, status.flag);
                         commit(types.COM_LOADINGTIME, 0);
+                        commit(types.COM_LOADING_TYPE, status.type);
                         clearTimeout(clearTime);
                     }, 1000 - b);
                 } else {
-                    commit(types.COM_LOADING_STATUS, status);
+                    commit(types.COM_LOADING_STATUS, status.flag);
                     commit(types.COM_LOADINGTIME, 0);
                     clearTimeout(clearTime);
                 }

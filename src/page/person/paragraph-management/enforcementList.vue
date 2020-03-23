@@ -10,10 +10,10 @@
                         <el-input v-model="formInline.organNp" placeholder="回车可直接查询"></el-input>
                     </el-form-item>
                     <el-form-item label="" label-width="13px">
-                        <el-button type="primary" icon="el-icon-search" size="medium">查询</el-button>
-                        <el-button type="success"  icon="el-icon-refresh" size="medium"  @click="reset">重置</el-button>
-                        <el-button type="info" icon="el-icon-plus" size="medium" @click="addOrgApply(0)">新增</el-button>
-                        <el-button type="danger" icon="el-icon-delete" size="medium" >删除</el-button>
+                         <el-button title="搜索" class="commonBtn searchBtn" size="medium" icon="iconfont law-sousuo"></el-button>
+                        <el-button title="重置" class="commonBtn searchBtn" size="medium" icon="iconfont law-zhongzhi" @click="reset"></el-button>
+                        <el-button title="新增"  class="commonBtn searchBtn" icon="iconfont law-adduser" size="medium"   @click="addOrgApply(0)"></el-button>
+                        <el-button title="删除" class="commonBtn searchBtn" icon="el-icon-delete" size="medium"></el-button>
                     </el-form-item>
 
             </el-form>

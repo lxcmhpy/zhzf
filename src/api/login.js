@@ -45,13 +45,14 @@ export function loginInApi(params) {
     code: params.code,
     captchaId: params.captchaId
   })
-  console.log(data)
+  // console.log('apt',data)
   return request({
     url: "/login",
     method: "POST",
     // contentType: 'multipart/form-data',
     data:data,
     showloading: true,
+    loadingType:'loadFull',
     baseUrlType:1,
     cancelToken: setCancelSource()
   });

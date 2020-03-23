@@ -4,14 +4,6 @@
     <div class="searchPage toggleBox">
         <div class="handlePart">
             <el-form :inline="true" ref="userForm"  label-width="70px">
-                <el-row>
-                    <el-form-item label=" " label-width="13px">
-                        <el-button type="success" icon="el-icon-success" size="medium">调动接收</el-button>
-                        <el-button type="danger" icon="el-icon-error" size="medium">拒绝接收</el-button>
-                        <el-button type="info"  icon="el-icon-refresh" size="medium"  @click="reset">重置查询项</el-button>
-                        <el-button type="primary" icon="el-icon-search" size="medium">查询</el-button>
-                    </el-form-item>
-                </el-row> 
                 <el-row>  
                      <el-form-item label="姓名" >
                         <el-input v-model="formInline.organCl"></el-input>
@@ -37,6 +29,14 @@
                         <el-option label="党委书记" value="2"></el-option>
                         <el-option label="党委委员" value="3"></el-option>
                     </el-select>
+                    </el-form-item>
+                    <el-form-item label=" " label-width="13px">
+                         <el-button title="搜索" class="commonBtn searchBtn" size="medium" icon="iconfont law-sousuo"></el-button>
+                        <el-button title="重置" class="commonBtn searchBtn" size="medium" icon="iconfont law-zhongzhi" @click="reset"></el-button>
+                    </el-form-item>
+                    <el-form-item label=" " label-width="13px" style="float:right">
+                        <el-button type="success" icon="el-icon-success" size="medium">调动接收</el-button>
+                        <el-button type="danger" icon="el-icon-error" size="medium">拒绝接收</el-button>
                     </el-form-item>
                 </el-row>
             </el-form>

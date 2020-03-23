@@ -52,10 +52,11 @@ export function validateUrl(rule, value, callback) {
 
 /* 是否是手机号 有值时验证*/
 export function validatePhone(rule, value, callback) {
-    var reg = /^1(3|4|5|6|7|8)\d{9}$/;
+    // var reg = /^1(3|4|5|6|7|8)\d{9}$/;
+    var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[358]\d{9})$)/;
     if (!reg.test(value) && value) {
         // this.$message('手机号不正确')
-        callback(new Error('手机号格式错误'));
+        callback(new Error('联系电话格式错误'));
         // callback(alert('12'))
     }
     callback();

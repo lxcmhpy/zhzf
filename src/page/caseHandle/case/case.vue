@@ -10,7 +10,8 @@
         <li @click="goSampleEvidenceDoc">抽样取样凭证</li>
         <li @click="goSceneNotesDoc">现场笔录</li>
         <li @click="goInquiryNotesDoc">询问笔录</li>
-
+        
+        <li @click="testPdf">pdf测试</li>
         <!----------长软start --------------->
         <li @click="goEvidenceListDoc" style="color:blue">证据登记保存清单（已集成）</li>
         <li @click="goAdminCoerciveMeasureDoc" style="color:blue">行政强制措施决定书</li>
@@ -92,7 +93,7 @@
 
         表单：
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
-        <li @click="goInquirieRecordForm">询问笔录</li>
+       
         <li @click="goEvidenceListForm">证据保存清单</li>
         <li @click="goObtaineEvidenceForm">抽样取样凭证</li>
         <li class="text-red">表单十七 ： 分期（延期）缴纳罚款通知书(未做-无样式图)</li>
@@ -199,17 +200,12 @@ export default {
       this.$router.push({ name: 'caseDoc' });
     },
     // 询问笔录
-    goInquirieRecordForm() {
-      this.$router.push({ name: 'inquirieForm' });
-    },
+  
     // 证据保存清单
     goEvidenceListForm() {
       this.$router.push({ name: 'evidenceListForm' });
     },
-    // 抽样取样凭证
-    goObtaineEvidenceForm() {
-      this.$router.push({ name: 'obtaineEvidenceForms' });
-    },
+   
     // 抽样取样凭证
     goObtaineEvidenceReport() {
       this.$router.push({ name: 'obtaineEvidenceForm' });
@@ -462,6 +458,10 @@ export default {
     // 送达回证
     goDeliverReceiptForm() {
         this.$router.push({ name: 'deliverReceiptForm' });
+    },
+
+    testPdf() {
+      this.$router.push({ name: 'testPdf' });
     },
     //--------------长软end-------------------
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {

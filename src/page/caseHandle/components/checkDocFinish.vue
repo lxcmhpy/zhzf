@@ -82,7 +82,14 @@ export default {
       data.forEach(item=>{
         if(item.isRequired === 0) //后台数据原因 要写===0
           this.checkList.push(item);
-      })
+      });
+      //强制执行后台数据原因
+      if(this.caseLinkDataForm.caseLinktypeId=='a36b59bd27ff4b6fe96e1b06390d204h'){
+        data.forEach(item=>{
+        if(item.isRequired == "") 
+          this.checkList.push(item);
+      });
+      }
       console.log('this.checkList',this.checkList);
       // this.checkList = data
     },

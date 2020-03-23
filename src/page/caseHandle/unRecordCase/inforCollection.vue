@@ -10,7 +10,7 @@
         <a :class="activeA[4]? 'activeA' :''" @click="jump(5)">违法事实</a>
       </div>
     </div>
-    <el-form :model="inforForm" :rules="rules" ref="inforForm" class="caseInfoForm" label-width="100px">
+    <el-form :model="inforForm" :rules="rules" ref="inforForm" class="caseInfoForm" label-width="100px" :disabled="isHandleCase">
       <div class="caseFormBac" id="link_1">
         <p>案件情况</p>
         <div>
@@ -122,7 +122,7 @@
             </el-form-item>
           </div>
           <div class="itemThird">
-            <el-form-item label="联系电话">
+            <el-form-item label="联系电话" prop="partyTel">
               <el-input v-model="inforForm.partyTel"></el-input>
             </el-form-item>
           </div>
@@ -161,11 +161,11 @@
         <div v-show="partyTypePerson!='1'">
           <div class="itemBig">
             <el-form-item label="单位名称" prop="partyName">
-              <el-input v-model="inforForm.partyName" maxlength="40" show-word-limit></el-input>
+              <el-input v-model="inforForm.partyName" maxlength="40"></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
-            <el-form-item label="联系电话">
+            <el-form-item label="联系电话" prop="partyUnitTel">
               <el-input v-model="inforForm.partyUnitTel"></el-input>
             </el-form-item>
           </div>
@@ -184,20 +184,20 @@
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemSmall">
-            <el-form-item label="法定代表人">
-              <el-input v-model="inforForm.partyManager"></el-input>
+            <el-form-item label="职务">
+              <el-input v-model="inforForm.partyManagerPositions" maxlength="20"></el-input>
             </el-form-item>
           </div>
           <div class="itemBig">
-            <el-form-item label="职务">
-              <el-input v-model="inforForm.partyManagerPositions"></el-input>
+            <el-form-item label="法定代表人">
+              <el-input v-model="inforForm.partyManager" maxlength="20"></el-input>
             </el-form-item>
           </div>
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemOne">
             <el-form-item label="地址">
-              <el-input v-model="inforForm.partyUnitAddress"></el-input>
+              <el-input v-model="inforForm.partyUnitAddress" maxlength="40"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -229,7 +229,7 @@
             </div>
             <div class="item appendSelect">
               <el-form-item label="证件类型" prop="partyIdNo">
-                <el-input placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber" class="input-with-select hasMargintop" :disabled="relationWithPartyIsOne && index==0">
+                <el-input placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber" @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)" class="input-with-select hasMargintop" :disabled="relationWithPartyIsOne && index==0">
                   <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType">
                     <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
@@ -252,7 +252,7 @@
               </el-form-item>
             </div>
             <div class="itemThird">
-              <el-form-item label="联系电话">
+              <el-form-item label="联系电话" prop="partyTel">
                 <el-input v-model="driverOrAgentInfo.tel" :disabled="relationWithPartyIsOne && index==0"></el-input>
               </el-form-item>
             </div>
@@ -384,15 +384,15 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测站">
-              <el-select v-model="inforForm.checkStastions">
+              <el-select v-model="inforForm.otherInfo.checkStastions">
                 <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
-              <!-- <el-input v-model="inforForm.checkStastions"></el-input> -->
+              <!-- <el-input v-model="inforForm.otherInfo.checkStastions"></el-input> -->
             </el-form-item>
           </div>
           <div class="itemSmall">
             <el-form-item label="检测单号">
-              <el-input v-model="inforForm.checkNumber">
+              <el-input v-model="inforForm.otherInfo.checkNumber">
                 <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
               </el-input>
             </el-form-item>
@@ -401,27 +401,27 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测人员">
-              <el-select v-model="inforForm.checkWorker">
+              <el-select v-model="inforForm.otherInfo.checkWorker">
                 <el-option v-for="item in RecentCheckWorkers" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
-              <!-- <el-input v-model="inforForm.checkWorker"></el-input> -->
+              <!-- <el-input v-model="inforForm.otherInfo.checkWorker"></el-input> -->
             </el-form-item>
           </div>
           <div class="itemSmall">
             <el-form-item label="检测时间" prop="checkTime">
-              <el-date-picker v-model="inforForm.checkTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+              <el-date-picker v-model="inforForm.otherInfo.checkTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="itemBig">
             <el-form-item label="装载物" prop="vehiclefiledThing">
-              <el-input v-model="inforForm.vehiclefiledThing"></el-input>
+              <el-input v-model="inforForm.otherInfo.vehiclefiledThing"></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
             <el-form-item label="是否为大件运输" label-width="110px">
-              <el-radio-group v-model="inforForm.isBigTransfer">
+              <el-radio-group v-model="inforForm.otherInfo.isBigTransfer">
                 <el-radio label="是"></el-radio>
                 <el-radio label="否"></el-radio>
               </el-radio-group>
@@ -431,7 +431,7 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车辆轴数">
-              <el-select placeholder="请选择" v-model="inforForm.vehicleAxleNumber" @change="weightLimit('车辆轴数')">
+              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxleNumber" @change="weightLimit('车辆轴数')">
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
                 <el-option label="4" value="4"></el-option>
@@ -443,7 +443,7 @@
           </div>
           <div class="itemThird">
             <el-form-item label="车型">
-              <el-select placeholder="请选择" v-model="inforForm.vehicleType" @change="weightLimit">
+              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
                 <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="中置轴挂车列车"></el-option>
                 <el-option label="铰列车"></el-option>
@@ -453,7 +453,7 @@
           </div>
           <div class="itemThird">
             <el-form-item label="轴数分布">
-              <el-select placeholder="请选择" v-model="inforForm.vehicleAxlesType" @change="weightLimit">
+              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxlesType" @change="weightLimit">
                 <el-option v-for="item in vehicleAxlesTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="1+2+3"></el-option>
                 <el-option label="2+2+2"></el-option> -->
@@ -464,14 +464,14 @@
         <div>
           <div class="item">
             <el-form-item label="车货总重">
-              <el-input v-model="inforForm.allWeight" @change="concludeOverWeight">
+              <el-input v-model="inforForm.otherInfo.allWeight" @change="concludeOverWeight">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="驱动轴" v-show="inforForm.vehicleAxleNumber==6">
-              <el-radio-group v-model="inforForm.vehiclePowerType" @change="weightLimit">
+            <el-form-item label="驱动轴" v-show="inforForm.otherInfo.vehicleAxleNumber==6">
+              <el-radio-group v-model="inforForm.otherInfo.vehiclePowerType" @change="weightLimit">
                 <el-radio label="单轴"></el-radio>
                 <el-radio label="双轴"></el-radio>
               </el-radio-group>
@@ -481,14 +481,14 @@
         <div>
           <div class="item">
             <el-form-item label="总质量限值">
-              <el-input v-model="inforForm.weightLimit" @change="concludeOverWeight">
+              <el-input v-model="inforForm.otherInfo.weightLimit" @change="concludeOverWeight">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="超限">
-              <el-input v-model="inforForm.overWeight">
+              <el-input v-model="inforForm.otherInfo.overWeight">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -497,21 +497,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总长">
-              <el-input v-model="inforForm.allLength" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.allLength" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="长度限值">
-              <el-input v-model="inforForm.lengthLimit" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.lengthLimit" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超长">
-              <el-input v-model="inforForm.overLength" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.overLength" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -520,21 +520,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总宽">
-              <el-input v-model="inforForm.allWidth" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.allWidth" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="宽度限值">
-              <el-input v-model="inforForm.widthLimit" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.widthLimit" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超宽">
-              <el-input v-model="inforForm.overWidth" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.overWidth" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -543,21 +543,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货高度">
-              <el-input v-model="inforForm.allHeight" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.allHeight" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="高度限值">
-              <el-input v-model="inforForm.heightLimit" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.heightLimit" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="超高">
-              <el-input v-model="inforForm.overHeight" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.overHeight" placeholder="/">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -566,7 +566,7 @@
         <div>
           <div class="item">
             <el-form-item label="检测结果">
-              <el-select placeholder="请选择" v-model="inforForm.checkResult">
+              <el-select placeholder="请选择" v-model="inforForm.otherInfo.checkResult">
                 <el-option value="0" label="超限"></el-option>
                 <el-option value="1" label="未超限"></el-option>
               </el-select>
@@ -574,7 +574,7 @@
           </div>
           <div class="item">
             <el-form-item label="备注">
-              <el-input v-model="inforForm.overLimitRemark">
+              <el-input v-model="inforForm.otherInfo.overLimitRemark">
               </el-input>
             </el-form-item>
           </div>
@@ -592,7 +592,7 @@
         <div>
           <div class="itemOne">
             <el-form-item label="违法条款" prop="illegalLaw">
-              <el-input v-model="inforForm.illegalLaw">
+              <el-input v-model="inforForm.illegalLaw" :disabled="true">
                 <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
               </el-input>
             </el-form-item>
@@ -601,7 +601,7 @@
         <div>
           <div class="itemOne">
             <el-form-item label="处罚依据" prop="punishLaw">
-              <el-input v-model="inforForm.punishLaw">
+              <el-input v-model="inforForm.punishLaw" :disabled="true">
                 <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
               </el-input>
             </el-form-item>
@@ -675,8 +675,7 @@ import caseSlideMenu from '../components/caseSlideMenu'
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-
-import { validateIDNumber, validateAge, validateZIP } from '@/common/js/validator'
+import { validateIDNumber, validateAge, validateZIP, validatePhone } from '@/common/js/validator'
 export default {
   data() {
     //选择个人试验证
@@ -712,7 +711,7 @@ export default {
         caseSource: "", //案件来源
         caseSourceText: "", //案件来源后的
         afsj: "", //案发时间
-        acceptTime: "", //受案时间
+        acceptTime: new Date().format('yyyy-MM-dd HH:mm'), //受案时间
         caseCauseId: "", //违法行为id
         caseCauseName: "", //违法行为
         zfmlId: "", //执法门类ID
@@ -758,7 +757,9 @@ export default {
         staffId: "",
         staff: "",
         certificateId: "",
-        isBigTransfer: '0',
+        otherInfo: {
+          isBigTransfer: '0',
+        },
         weightLimit: '',
         overWeight: '',
       },
@@ -778,10 +779,10 @@ export default {
         lawPersonListId: [
           { required: true, validator: validateLawPersonNumber, trigger: "change" }
         ],
-        checkTime: [
+        'otherInfo.checkTime': [
           { required: true, message: "请输入检测时间", trigger: "change" }
         ],
-        vehiclefiledThing: [
+        'otherInfo.vehiclefiledThing': [
           { required: true, message: "请输入装载物", trigger: "change" }
         ],
         'driverOrAgentInfo.relationWithCase': [
@@ -801,6 +802,12 @@ export default {
         ],
         partyZipCode: [
           { validator: validateZIP, trigger: "blur" }
+        ],
+        partyTel: [
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        partyUnitTel: [
+          { validator: validatePhone, trigger: "blur" }
         ],
       },
       //案件类型
@@ -883,12 +890,14 @@ export default {
       judgFreedomList: [], //自由裁量列表
       caseSourceTextDisable: false,
       relationWithPartyIsOne: true, //与当事人关系是否为同一人
+      isHandleCase: false,
       activeJudgli: "",
       showOverrun: false, //显示超限信息锚点
       lawPersonListId: "",
       currentUserLawId: "",
       disableBtn: false, //提交暂存按钮的禁用
-      activeA: [true, false, false, false, false]
+      activeA: [true, false, false, false, false],
+      autoSava:true, //自动暂存
     };
   },
   components: {
@@ -1004,6 +1013,7 @@ export default {
         console.log(val);
         this.driverOrAgentInfoList[0].name = this.inforForm.party;
         this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
+        this.driverOrAgentInfoList[0].zhengjianNumber = this.inforForm.partyIdNo;
         this.driverOrAgentInfoList[0].sex = this.inforForm.partySex;
         this.driverOrAgentInfoList[0].age = this.inforForm.partyAge;
         this.driverOrAgentInfoList[0].tel = this.inforForm.partyTel;
@@ -1014,7 +1024,7 @@ export default {
         this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
         this.relationWithPartyIsOne = true;
       } else {
-        this.relationWithPartyIsOne = false;
+        this.relationWithPartyIsOne = true;
       }
     },
     //添加其他人信息
@@ -1159,6 +1169,10 @@ export default {
           _this.inforForm.agentPartyEcertId = JSON.stringify(
             _this.driverOrAgentInfoList
           );
+          // 超限
+          _this.inforForm.otherInfo = JSON.stringify(
+            _this.inforForm.otherInfo
+          );
           console.log(_this.inforForm)
           _this.inforForm.state = state;
           _this.inforForm.caseStatus = '未立案';
@@ -1173,6 +1187,8 @@ export default {
                 });
                 _this.$store.dispatch("deleteTabs", _this.$route.name);
                 _this.$store.commit("setCaseId", res.data.id);
+                iLocalStroage.removeItem("stageCaseId");
+                this.autoSava = false;
                 _this.$router.replace({
                   name: "establish"
                 });
@@ -1207,8 +1223,9 @@ export default {
               type: "success",
               message: "暂存成功!"
             });
-            _this.$store.dispatch("deleteTabs", _this.$route.name);
+            // _this.$store.dispatch("deleteTabs", _this.$route.name);
             _this.$store.commit("setCaseId", res.data.id);
+           
           },
           err => {
             console.log(err);
@@ -1226,11 +1243,49 @@ export default {
         res => {
           console.log('获取案件信息', res)
           _this.inforForm = res.data;
+          this.handleCaseData(res.data);
         },
         err => {
           console.log(err);
         }
       );
+    },
+    //处理数据回显问题
+    handleCaseData(data) {
+      console.log('handleCaseData方法', data);
+      //使当事人类型选中
+      if (data.partyType == "1") {
+        this.inforForm.partyType = 1;
+        this.partyTypePerson = 1;
+      } else {
+        this.inforForm.partyType = 2;
+        this.partyTypePerson = 2;
+      }
+      if (data.partySex == "1") {
+        this.inforForm.partySex = 1;
+      } else {
+        this.inforForm.partySex = 0;
+      }
+      //驾驶人或代理人
+      this.driverOrAgentInfoList = JSON.parse(data.agentPartyEcertId);
+      //超限信息
+      if(data.otherInfo!=""){
+        this.inforForm.otherInfo = JSON.parse(data.otherInfo);
+      }
+      if(data.caseCauseName=='车辆在公路上擅自超限行驶'){
+          this.showOverrun =true;
+      };
+      debugger
+      if(data.caseStatus=='待审批'){
+        this.isHandleCase=true;
+      };
+      //当前用户不是创建案件者，输入框设置为只读
+      // currentUserId = iLocalStroage.gets("userInfo").id;
+      // if(currentUserId!=data.createId){
+      //    let allInput = document.querySelectorAll('.el-input');
+
+      // };
+
     },
     // 超重限制及抽屉表
     weightLimit(type) {
@@ -1238,108 +1293,166 @@ export default {
       if (type == '车辆轴数') {
 
         this.vehicleTypeList = [];
-        this.inforForm.vehicleType = '';
-        this.inforForm.vehicleAxlesType = '';
-        this.inforForm.vehiclePowerType = '';
+        this.vehicleAxlesTypeList = [];
+        this.inforForm.otherInfo.vehicleType = '';
+        this.inforForm.otherInfo.vehicleAxlesType = '';
+        this.inforForm.otherInfo.vehiclePowerType = '';
       }
 
-      inforForm.weightLimit = '';
-      if (inforForm.vehicleAxleNumber == 6) {
+      inforForm.otherInfo.weightLimit = '';
+      if (inforForm.otherInfo.vehicleAxleNumber == 6) {
         this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
         this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }, { label: '2+2+2', value: '2+2+2' }];
-        if (inforForm.vehiclePowerType) {
-          inforForm.weightLimit = 46;
-          if (inforForm.vehiclePowerType == '双轴') {
-            inforForm.weightLimit = 49;
+        if (inforForm.otherInfo.vehiclePowerType) {
+          inforForm.otherInfo.weightLimit = 46;
+          if (inforForm.otherInfo.vehiclePowerType == '双轴') {
+            inforForm.otherInfo.weightLimit = 49;
           }
         }
 
       }
-      if (inforForm.vehicleAxleNumber == 5) {
+      if (inforForm.otherInfo.vehicleAxleNumber == 5) {
         this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
         this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' }, { label: '2+1+2', value: '2+1+2' }, { label: '1+1+3', value: '1+1+3' }];
-        if (inforForm.vehicleAxleNumber && inforForm.vehicleType && inforForm.vehicleAxlesType) {
-          this.inforForm.weightLimit = 43;
-          if (inforForm.vehicleAxlesType == '1+1+3') {
-            inforForm.weightLimit = 42;
+        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
+          this.inforForm.otherInfo.weightLimit = 43;
+          if (inforForm.otherInfo.vehicleAxlesType == '1+1+3') {
+            inforForm.otherInfo.weightLimit = 42;
           }
         }
 
       }
-      if (inforForm.vehicleAxleNumber == 4) {
+      if (inforForm.otherInfo.vehicleAxleNumber == 4) {
         this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '全挂汽车列车', value: '全挂汽车列车' }, { label: '载货汽车', value: '载货汽车' }]
         this.vehicleAxlesTypeList = [{ label: '1+2+1', value: '1+2+1' }, { label: '1+1+2', value: '1+1+2' }, { label: '1+1+1+1', value: '1+1+1+1' }, { label: '2+2', value: '2+2' }];
-        if (inforForm.vehicleAxleNumber && inforForm.vehicleType && inforForm.vehicleAxlesType) {
-          this.inforForm.weightLimit = 36;
-          if (inforForm.vehicleType == '中置轴挂车列车') {
-            if (inforForm.vehicleAxlesType == '1+2+1') {
-              inforForm.weightLimit = 35;
+        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
+          this.inforForm.otherInfo.weightLimit = 36;
+          if (inforForm.otherInfo.vehicleType == '中置轴挂车列车') {
+            if (inforForm.otherInfo.vehicleAxlesType == '1+2+1') {
+              inforForm.otherInfo.weightLimit = 35;
             }
           }
-          if (inforForm.vehicleType == '载货汽车') {
-            inforForm.weightLimit = 31;
+          if (inforForm.otherInfo.vehicleType == '载货汽车') {
+            inforForm.otherInfo.weightLimit = 31;
           }
         }
 
       }
-      if (inforForm.vehicleAxleNumber == 3) {
+      if (inforForm.otherInfo.vehicleAxleNumber == 3) {
         this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, { label: '载货汽车', value: '载货汽车' }]
         this.vehicleAxlesTypeList = [{ label: '1+1+1', value: '1+1+1' }];
-        if (inforForm.vehicleAxleNumber && inforForm.vehicleType && inforForm.vehicleAxlesType) {
-          this.inforForm.weightLimit = 27;
-          if (inforForm.vehicleType == '载货汽车') {
-            inforForm.weightLimit = 25;
+        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
+          this.inforForm.otherInfo.weightLimit = 27;
+          if (inforForm.otherInfo.vehicleType == '载货汽车') {
+            inforForm.otherInfo.weightLimit = 25;
           }
         }
 
       }
-      if (inforForm.vehicleAxleNumber == 2) {
+      if (inforForm.otherInfo.vehicleAxleNumber == 2) {
         this.vehicleTypeList = [{ label: '载货汽车', value: '载货汽车' }]
         this.vehicleAxlesTypeList = [{ label: '1+1', value: '1+1' }];
-        if (inforForm.vehicleType && inforForm.vehicleAxlesType) {
-          this.inforForm.weightLimit = 18;        }
+        if (inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
+          this.inforForm.otherInfo.weightLimit = 18;        }
       }
 
-      if (this.inforForm.weightLimit && this.inforForm.allWeight)
-        inforForm.overWeight = this.inforForm.allWeight - this.inforForm.weightLimit
+      if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight)
+        inforForm.otherInfo.overWeight = this.inforForm.otherInfo.allWeight - this.inforForm.otherInfo.weightLimit
     },
     // 计算超重
     concludeOverWeight() {
-      this.inforForm.overWeight = '';
-      if (this.inforForm.weightLimit && this.inforForm.allWeight) {
-        this.inforForm.overWeight = this.inforForm.allWeight - this.inforForm.weightLimit
+      this.inforForm.otherInfo.overWeight = '';
+      if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight) {
+        this.inforForm.otherInfo.overWeight = this.inforForm.otherInfo.allWeight - this.inforForm.otherInfo.weightLimit
       }
-      if (this.inforForm.overWeight < 0) {
-        this.inforForm.overWeight = 0
+      if (this.inforForm.otherInfo.overWeight < 0) {
+        this.inforForm.otherInfo.overWeight = 0
       }
 
     },
     //自动计算年龄
     changePartyIdType(idCard) {
+      let iden = idCard;
+      let val = idCard.length;
+      let sex = null;
+      let myDate = new Date();
+      let month = myDate.getMonth() + 1;
+      let day = myDate.getDate();
+      let age = 0;
+      if (val === 18) {
+        age = myDate.getFullYear() - iden.substring(6, 10) - 1;
+        sex = iden.substring(16, 17);
+        if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
 
-      let nowDate = new Date();
-      let year = nowDate.getFullYear();
-      let age = '';
-      console.log('year', year)
-      if (idCard != null && idCard != "") {
-        if (idCard.length == 15) {
-          age = year - ("19" + idCard.substr(6, 2));
-        } else if (idCard.length == 18) {
-          age = year - idCard.substr(6, 4);
-        }
       }
-      // bug;
-      var sexData = idCard.substr(17, 1)
-      if (sexData % 2 == 0) {
-        this.inforForm.partySex = 1
+      if (val === 15) {
+        age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
+        sex = iden.substring(13, 14);
+        if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
       }
-      if (sexData % 2 == 1) {
-        this.inforForm.partySex = 0
-      }
-      console.log('性别', sexData % 2)
-      // if()
-      console.log('年龄', age)
+
+      if (sex % 2 === 0) {
+        sex = 1;
+      } else {
+        sex = 0;
+      };
       this.inforForm.partyAge = age;
+      this.inforForm.partySex = sex;
+      // let nowDate = new Date();
+      // let year = nowDate.getFullYear();
+      // let age = '';
+      // console.log('year', year)
+      // if (idCard != null && idCard != "") {
+      //   if (idCard.length == 15) {
+      //     age = year - ("19" + idCard.substr(6, 2));
+      //   } else if (idCard.length == 18) {
+      //     age = year - idCard.substr(6, 4);
+      //   }
+      // }
+      // // bug;
+      // var sexData = idCard.substr(17, 1)
+      // if (sexData % 2 == 0) {
+      //   this.inforForm.partySex = 1
+      // }
+      // if (sexData % 2 == 1) {
+      //   this.inforForm.partySex = 0
+      // }
+      // console.log('性别', sexData % 2)
+      // // if()
+      // console.log('年龄', age)
+      // this.inforForm.partyAge = age;
+    },
+    //自动计算年龄
+    changePartyIdType2(idCard, index) {
+      if (idCard == this.driverOrAgentInfoList[0].zhengjianNumber) {
+        this.$message('省份证号不能相同');
+      }
+      let iden = idCard;
+      let val = idCard.length;
+      let sex = null;
+      let myDate = new Date();
+      let month = myDate.getMonth() + 1;
+      let day = myDate.getDate();
+      let age = 0;
+      if (val === 18) {
+        age = myDate.getFullYear() - iden.substring(6, 10) - 1;
+        sex = iden.substring(16, 17);
+        if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
+
+      }
+      if (val === 15) {
+        age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
+        sex = iden.substring(13, 14);
+        if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
+      }
+
+      if (sex % 2 === 0) {
+        sex = 1;
+      } else {
+        sex = 0;
+      };
+      this.driverOrAgentInfoList[index].age = age;
+      this.driverOrAgentInfoList[index].sex = sex;
     },
     noFue(val) {
       this.inforForm.partyAge = val >= 0 ? val : 0;
@@ -1351,6 +1464,7 @@ export default {
     },
   },
   mounted() {
+    debugger
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
     console.log(someCaseInfo);
     this.inforForm.caseCauseName = someCaseInfo.illageAct;
@@ -1364,10 +1478,10 @@ export default {
     console.log("标志", someCaseInfo.illageAct)
     this.showOverrun =
       someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
-    console.log(this.showOverrun)
+    console.log('showOverrun',this.showOverrun)
 
     this.driverOrAgentInfo.relationWithParty = '1';
-    this.inforForm.checkResult = '1'
+    this.inforForm.otherInfo.checkResult = '1'
     this.inforForm.trailerColor = '1'
   },
   created() {
@@ -1380,7 +1494,24 @@ export default {
     if (this.$route.params.fromSlide) {
       this.fromSlide();
       this.disableBtn = true;
+      this.autoSava = false;
     }
+    //暂存数据后从其他页面回到信息采集页
+    if(iLocalStroage.get("stageCaseId")){
+      this.fromSlide();
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log('to',to)
+    console.log('from',from)
+    console.log('next',next);
+    if(this.autoSava){
+      this.stageInfo(0);
+      iLocalStroage.set("stageCaseId",this.caseId);
+    }
+    
+    next(vm=>{console.log(vm)})
+
   }
 };
 </script>

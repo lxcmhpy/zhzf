@@ -335,6 +335,7 @@ import { mapGetters } from "vuex";
 import checkDocFinish from "../components/checkDocFinish";
 import chooseAskPeopleDia from "@/page/caseHandle/components/chooseAskPeopleDia";
 import resetDocDia from '@/page/caseHandle/components/resetDocDia'
+import iLocalStroage from "@/common/js/localStroage";
 import {
   validateIDNumber,
   validatePhone,
@@ -493,7 +494,7 @@ export default {
     },
     addMoreDoc(row) {
       console.log("添加");
-
+      iLocalStroage.removeItem("currentDocDataId");
       this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
     },
     //清空文书
@@ -503,11 +504,13 @@ export default {
     },
     //预览pdf
     viewDocPdf(row) {
+      console.log('row',row) 
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,
         approvalOver: false,
-        hasBack: true
+        hasBack: true,
+        docDataId:row.docDataId
       };
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: "myPDF", params: routerData });

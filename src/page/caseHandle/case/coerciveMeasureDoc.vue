@@ -175,7 +175,7 @@
       </div>
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
-   
+    <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="''" ></caseSlideMenu>
   </div>
@@ -188,11 +188,13 @@ import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import {
   submitRelieveApi,getDocDataByCaseIdAndDocIdApi
 } from "@/api/caseHandle";
-import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
+import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator';
+import resetDocDia from '@/page/caseHandle/components/resetDocDia'
 export default {
   components: {
     checkDocFinish,
-    caseSlideMenu
+    caseSlideMenu,
+    resetDocDia
   },
   data() {
 
@@ -382,6 +384,11 @@ export default {
       }
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: 'myPDF', params: routerData })
+    },
+    //清空文书
+    delDocDataByDocId(data){
+      console.log("清空文书",data);
+      this.$refs.resetDocDiaRef.showModal(data);
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {

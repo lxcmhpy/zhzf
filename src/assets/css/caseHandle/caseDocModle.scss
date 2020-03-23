@@ -414,8 +414,15 @@
 
         td {
             .is-required {
-                .el-form-item__content {
+                /* .el-form-item__content {
                     background: #F7C9CB !important;
+                } */
+
+                .el-input__inner,
+                .el-input__inner:focus,
+                .el-textarea__inner,
+                .el-textarea__inner:focus {
+                    background: transparent !important;
                 }
             }
         }
@@ -430,7 +437,7 @@
             .is-required {
 
                 .span_bg {
-                    background: #F7C9CB ;
+                    background: #F7C9CB;
                 }
             }
         }
@@ -921,6 +928,18 @@
 
 }
 
+.width38 {
+    width: 38px;
+}
+
+.width100 {
+    width: 100px;
+}
+
+.width96 {
+    width: 96px;
+}
+
 .width120 {
     width: 120px;
 }
@@ -935,6 +954,10 @@
 
 .width213 {
     width: 213px;
+}
+
+.width235 {
+    width: 235px;
 }
 
 .width188 {
@@ -978,6 +1001,14 @@
     width: 476px;
 }
 
+.width537 {
+    width: 537px;
+}
+
+.width505 {
+    width: 505px;
+}
+
 .text_indent10 {
     .el-textarea__inner {
         text-indent: 10em;
@@ -1011,7 +1042,8 @@
                 background: transparent !important;
             }
         }
-        .span_bg{
+
+        .span_bg {
             background: #ffffff !important;
         }
 
@@ -1044,7 +1076,7 @@
 
         /* 多行 */
 
-        i{
+        i {
             display: none !important;
         }
 
@@ -1402,7 +1434,27 @@
 
 /* 听证笔录 */
 .listen_data {
-    .el-date-editor {
-        width: 100% !important;
+
+    .el-date-editor.el-input__inner,
+    .el-date-editor.el-input {
+        width: 210px !important;
+
+    }
+
+}
+
+.single_check {
+    .is-checked+ {
+        color: black;
+
+    }
+    .el-radio__inner:hover {
+        border-color: black;
+    }
+    .is-checked {
+        .el-radio__inner {
+            border-color: black;
+            background  : black;
+        }
     }
 }

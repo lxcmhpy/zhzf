@@ -29,7 +29,7 @@ export const mixinGetCaseApiList = {
         }
       );
     },
-    //进入文书先是否保存过 保存过就直接带入信息，未保存择获取案件信息
+    //进入环节表单查看是否保存过 保存过就直接带入信息，未保存择获取案件信息
     com_getFormDataByCaseIdAndFormId(caseId, caseLinktypeId, refreshDataForPdf) {
       let data = {
         casebasicInfoId: caseId,
@@ -60,7 +60,8 @@ export const mixinGetCaseApiList = {
               // 提交pdf页
               setTimeout(() => {
                 this.printContent();
-              }, 3000)
+              }, 1500)
+              // this.printContent();
             }
 
           }
@@ -91,6 +92,7 @@ export const mixinGetCaseApiList = {
             for (var key in caseData) {
               this.docData[key] = caseData[key]
             }
+            this.setSomeData(this.docData);
           }
           if (this.needDealData) {
             this.getDataAfter();
@@ -109,7 +111,7 @@ export const mixinGetCaseApiList = {
       //0暂存 1提交
       this.caseLinkDataForm.status = handleType;
       if (handleType) {
-        this.$refs[docForm].validate(valid => {
+        this.$refs[docForm].validate((valid,noPass) => {
           if (valid) {
             this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
               res => {
@@ -148,7 +150,16 @@ export const mixinGetCaseApiList = {
               }
             );
           }else{
-            console.log('验证未通过')
+            let a = Object.values(noPass)[0];
+            console.log(a);
+            this.$message({
+              showClose: true,
+              message: a[0].message,
+              type: 'error',
+              offset:100,
+              customClass:'validateErrorTip'
+            });
+            return false;
           }
         })
       } else {
@@ -160,6 +171,7 @@ export const mixinGetCaseApiList = {
               message: "暂存成功"
             });
             this.reload();
+
           },
           err => {
             console.log(err);
@@ -264,6 +276,10 @@ export const mixinGetCaseApiList = {
             console.log(res.data[0]);
             this.caseDocDataForm.id = res.data[0].id;
             this.docData = JSON.parse(res.data[0].docData);
+            //设置禁用
+            if(this.needSetDisabled){
+              this.setDisabledData();
+            }
           }
           //判断当事人类型
           // console.log("docData",this.docData)
@@ -284,7 +300,8 @@ export const mixinGetCaseApiList = {
       this.caseDocDataForm.status = handleType;
       console.log('caseDocDataForm',this.caseDocDataForm);
       if (handleType) {
-        this.$refs[docForm].validate(valid => {
+        this.$refs[docForm].validate((valid,noPass) => {
+        
           if (valid) {
             this.$store.dispatch("addDocData", this.caseDocDataForm).then(
               res => {
@@ -293,6 +310,12 @@ export const mixinGetCaseApiList = {
                   type: "success",
                   message: "提交成功"
                 });
+                //为多份文书赋值id，提交多份文书的pdf时需要用到
+                if(this.caseDocDataForm.docDataId != undefined){
+                  this.caseDocDataForm.docDataId = res.data.id;
+                }
+               
+                console.log('this.caseDocDataForm.docDataId',this.caseDocDataForm.docDataId)
                 this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
                 //提交成功后提交pdf到服务器，后打开pdf
                 this.printContent();
@@ -302,7 +325,16 @@ export const mixinGetCaseApiList = {
               }
             );
           } else {
-            console.log('error submit!!');
+            // noPass[Object.keys(v)[0]]
+            let a = Object.values(noPass)[0];
+            console.log(a);
+            this.$message({
+              showClose: true,
+              message: a[0].message,
+              type: 'error',
+              offset:100,
+              customClass:'validateErrorTip'
+            });
             return false;
           }
 
@@ -315,6 +347,8 @@ export const mixinGetCaseApiList = {
               type: "success",
               message: "暂存成功"
             });
+            //多份文书查询信息需要用到id，先把id保存起来
+            iLocalStroage.set("currentDocDataId",res.data.id);
             this.reload();
           },
           err => {
@@ -388,16 +422,24 @@ export const mixinGetCaseApiList = {
       var fd = new FormData()
       fd.append("file", f)
       fd.append('caseId', this.caseId);
+      fd.append('category', '文书');
+      
       let docId = '';  //文书 id
 
       if (this.caseDocDataForm != undefined) {
         // 只是文书
         docId = this.caseDocDataForm.caseDoctypeId;
+        //涉及到多份文书时，需要多加一个docDataId
+        if (this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) {
+          fd.append('docDataId', this.caseDocDataForm.docDataId);
+        }
       } else {
         //即是环节也是文书
         docId = this.huanjieAndDocId;
       }
       fd.append('docId', docId);
+      
+      
       //已经上传过了，
       if (iLocalStroage.gets("currrentPdfData")) {
         fd.append('id', iLocalStroage.gets("currrentPdfData").id);
@@ -411,6 +453,7 @@ export const mixinGetCaseApiList = {
       console.log('fd', fd.get('docId'));
       console.log('currrentPdfId', fd.get('id'));
       console.log('currrentPdfstorageId', fd.get('storageId'));
+      console.log('docDataId', fd.get('docDataId'));
 
 
       this.$store.dispatch("uploadFile", fd).then(
@@ -422,6 +465,7 @@ export const mixinGetCaseApiList = {
             docId: docId,
             approvalOver: this.approvalOver ? true : false,
             caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
+            docDataId:(this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : ''
           }
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({ name: 'myPDF', params: routerData })
@@ -436,6 +480,8 @@ export const mixinGetCaseApiList = {
       var fd = new FormData()
       fd.append("file", f)
       fd.append('caseId', this.caseId);
+      fd.append('category', '文书');
+
       let docId = '';  //文书 id
 
       if (this.caseDocDataForm != undefined) {
@@ -573,6 +619,8 @@ export const mixinGetCaseApiList = {
         console.log(err)
       })
     }
+
+    //
 
   },
   created() {

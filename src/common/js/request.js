@@ -16,7 +16,7 @@ const service = axios.create({
 var BASEURL
 service({
   url: '/static/json/hostUrl/host.json',
-  method: "get",
+  method: "get", 
   params: {},
 }).then(
   res => {
@@ -45,7 +45,8 @@ service.interceptors.request.use(
 
    //token一天后过期
    if (config.showloading != false) {
-     showFullScreenLoading();
+      let loadingType = config.loadingType ? config.loadingType : '';
+     showFullScreenLoading(loadingType);
    }
    if (getToken("TokenKey")) {
      config.headers["accessToken"] = getToken("TokenKey");

@@ -1,207 +1,198 @@
 <!-------长软------->
 <template>
   <div class="print_box">
-      <div class="print_info" id="hearingRecordDoc_print">
-        <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
-          <div class="doc_topic">听证笔录</div>
-          <div class="doc_number">案号：{{docData.caseNumber}}</div>
-          <p class="p_begin">
-            案件名称：
-            <span>
-              <el-form-item prop="caseName">
-                <el-input v-model="docData.caseName" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </p>
-          <p class="p_begin">
-            主持听证机关：
-            <span>
-              <el-form-item prop="hearingOrgan">
-                <el-input v-model="docData.hearingOrgan" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </p>
-          <p class="p_begin">
-            听证地点：
-            <span>
-              <el-form-item prop="hearingPlace">
-                <el-input  v-model="docData.hearingPlace" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </p>
-          <p class="p_begin">
-            听证时间：
-            <span>
-              <el-form-item prop="hearingStartTime" class="pdf_datapick">
-                <el-date-picker v-model="docData.hearingStartTime" type="datetime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分">
-                </el-date-picker>
-              </el-form-item>
-            </span>至
-            <span>
-              <el-form-item prop="hearingEndTime" class="pdf_datapick">
-                <el-date-picker v-model="docData.hearingEndTime" type="datetime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分">
-                </el-date-picker>
-              </el-form-item>
-            </span>
-          </p>
-          <p class="p_begin">
-            主持人：
-            <span>
-              <el-form-item prop="persidingHearer">
-                <el-input  v-model="docData.persidingHearer" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            听证员：
-            <span>
-              <el-form-item prop="hearingOfficer">
-                <el-input v-model="docData.hearingOfficer"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </p>
-          <p class="p_begin">
-            记录员：
-            <span>
-              <el-form-item prop="hearingClerks">
-                <el-input  v-model="docData.hearingClerks" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </p>
-          <p class="p_begin">
-            执法人员：
-            <span>
-              <el-form-item prop="staff">
-                <el-input v-model="docData.staff" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            执法证号：
-            <span>
-              <el-form-item prop="staffId1">
-                <el-input  v-model="docData.staffId"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </p>
-          <p class="p_begin">
-            执法人员：
-            <span>
-              <el-form-item prop="staff2">
-                <el-input  v-model="docData.staff2"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            执法证号：
-            <span>
-              <el-form-item prop="staffId2">
-                <el-input  v-model="docData.staffId2"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </p>
-          <p class="p_begin">
-            当事人：
-            <span>
-              <el-form-item prop="party">
-                <el-input  v-model="docData.party" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            法定代表人：
-            <span>
-              <el-form-item prop="partyManager">
-                <el-input v-model="docData.partyManager"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            联系电话：
-            <span>
-              <el-form-item prop="partyTel">
-                <el-input  v-model="docData.partyTel"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </p>
-          <p class="p_begin">
-            委托代理人：
-            <span>
-              <el-form-item prop="proxy">
-                <el-input v-model="docData.proxy"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            性别：
-            <span>
-              <el-form-item prop="proxySex" style="width:140px">
-                <el-select v-model="docData.proxySex" :maxLength='maxLength' placeholder="\">
-                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </span>
-            年龄：
-            <span>
-              <el-form-item prop="proxyAge">
-                <el-input v-model="docData.proxyAge"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            工作单位及职务：
-            <span>
-              <el-form-item prop="proxyUnitPosition">
-                <el-input  v-model="docData.proxyUnitPosition"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </p>
-          <p class="p_begin">
-            第三人：
-            <span>
-              <el-form-item prop="thirdParty">
-                <el-input  v-model="docData.thirdParty" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            性别：
-            <span>
-              <el-form-item prop="thirdPartySex" style="width:140px">
-                <el-select v-model="docData.thirdPartySex" :maxLength='maxLength' placeholder="\">
-                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </span>
-            年龄：
-            <span>
-              <el-form-item prop="thirdPartyAge">
-                <el-input  v-model="docData.thirdPartyAge" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            工作单位及职务：
-            <span>
-              <el-form-item prop="thirdPartyUnitPosition">
-                <el-input  v-model="docData.thirdPartyUnitPosition"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </p>
-          <p class="p_begin">
-            其他参与人员：
-            <span>
-              <el-form-item prop="otherPariticipants">
-                <el-input  v-model="docData.otherPariticipants"  :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            性别：
-            <span>
-              <el-form-item prop="otherPariticipantsSex" style="width:140px">
-                <el-select v-model="docData.otherPariticipantsSex" :maxLength='maxLength' placeholder="\">
-                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </span>
-            年龄：
-            <span>
-              <el-form-item prop="otherPariticipantsAge">
-                <el-input v-model="docData.otherPariticipantsAge"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-            工作单位及职务：
-            <span>
-              <el-form-item prop="otherPariticipantsPosition">
-                <el-input v-model="docData.otherPariticipantsPosition"  :maxLength='maxLength' placeholder="\"></el-input>
-              </el-form-item>
-            </span>
-          </p>
-          <!-- <p class="side_right_indent">
+    <div class="print_info" id="hearingRecordDoc_print">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
+        <div class="doc_topic">听证笔录</div>
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <p class="p_begin">
+          案件名称：
+          <span>
+            <el-form-item prop="caseName" class="width537">
+              <el-input v-model="docData.caseName" :maxLength='maxLength'  type='textarea' :autosize="{ minRows: 1, maxRows: 3}"  v-bind:class="{ over_flow:docData.caseName.length>31?true:false }" disabled></el-input>
+            </el-form-item>
+          </span>
+        </p>
+        <p class="p_begin">
+          主持听证机关：
+          <span>
+            <el-form-item prop="hearingOrgan" class="width505">
+              <el-input v-model="docData.hearingOrgan" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </p>
+        <p class="p_begin">
+          听证地点：
+          <span>
+            <el-form-item prop="hearingPlace" class="width537">
+              <el-input v-model="docData.hearingPlace" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </p>
+        <p class="p_begin">
+          听证时间：
+          <span class="listen_data">
+            <el-form-item prop="hearingStartTime" class="pdf_datapick">
+              <el-date-picker v-model="docData.hearingStartTime" type="datetime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分">
+              </el-date-picker>
+            </el-form-item>
+          </span>至
+          <span class="listen_data">
+            <el-form-item prop="hearingEndTime" class="pdf_datapick">
+              <el-date-picker v-model="docData.hearingEndTime" type="datetime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分">
+              </el-date-picker>
+            </el-form-item>
+          </span>
+        </p>
+        <p class="p_begin">
+          主持人：
+          <span>
+            <el-form-item prop="persidingHearer" style="width:235px">
+              <el-input v-model="docData.persidingHearer" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          听证员：
+          <span>
+            <el-form-item prop="hearingOfficer" style="width:236px">
+              <el-input v-model="docData.hearingOfficer" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </p>
+        <p class="p_begin">
+          记录员：
+          <span>
+            <el-form-item prop="hearingClerks" style="width:553px">
+              <el-input v-model="docData.hearingClerks" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </p>
+        <p class="p_begin">
+          执法人员：
+          <span>
+            <el-form-item prop="staff" style="width:254px">
+              <el-input v-model="docData.staff" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          执法证号：
+          <span>
+            <el-form-item prop="staffId">
+              <el-input v-model="docData.staffId" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </p>
+        <p class="p_begin">
+          执法人员：
+          <span>
+            <el-form-item prop="staff2" style="width:254px">
+              <el-input v-model="docData.staff2" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          执法证号：
+          <span>
+            <el-form-item prop="staffId2">
+              <el-input v-model="docData.staffId2" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </p>
+        <p class="p_begin">
+          当事人：
+          <span>
+            <el-form-item prop="party" style="width:106px">
+              <el-input v-model="docData.party" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          法定代表人：
+          <span>
+            <el-form-item prop="partyManager" style="width:106px">
+              <el-input v-model="docData.partyManager" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          联系电话：
+          <span>
+            <el-form-item prop="partyTel" style="width:132px">
+              <el-input v-model="docData.partyTel" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </p>
+        <p class="p_begin">
+          委托代理人：<span>
+            <el-form-item prop="proxy" class="width96">
+              <el-input v-model="docData.proxy" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          性别：<span>
+            <el-form-item prop="proxySex" class="width38">
+              <el-select v-model="docData.proxySex" :maxLength='maxLength' placeholder="">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </span>
+          年龄：<span>
+            <el-form-item prop="proxyAge" class="width38">
+              <el-input v-model="docData.proxyAge" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          工作单位及职务：
+          <span>
+            <el-form-item prop="proxyUnitPosition" class="width100">
+              <el-input v-model="docData.proxyUnitPosition" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </p>
+        <p class="p_begin">
+          第三人：<span>
+            <el-form-item prop="thirdParty" style="width:127px">
+              <el-input v-model="docData.thirdParty" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          性别：<span>
+            <el-form-item prop="thirdPartySex" class="width38">
+              <el-select v-model="docData.thirdPartySex" :maxLength='maxLength' placeholder="">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </span>
+          年龄：<span>
+            <el-form-item prop="thirdPartyAge" class="width38">
+              <el-input v-model="docData.thirdPartyAge" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          工作单位及职务：
+          <span>
+            <el-form-item prop="thirdPartyUnitPosition" class="width100">
+              <el-input v-model="docData.thirdPartyUnitPosition" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </p>
+        <p class="p_begin">
+          其他参与人员：<span>
+            <el-form-item prop="otherPariticipants" style="width:80px">
+              <el-input v-model="docData.otherPariticipants" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          性别：<span>
+            <el-form-item prop="otherPariticipantsSex" class="width38">
+              <el-select v-model="docData.otherPariticipantsSex" :maxLength='maxLength' placeholder="">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </span>
+          年龄：<span>
+            <el-form-item prop="otherPariticipantsAge" class="width38">
+              <el-input v-model="docData.otherPariticipantsAge" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+          工作单位及职务：
+          <span>
+            <el-form-item prop="otherPariticipantsPosition" class="width100">
+              <el-input v-model="docData.otherPariticipantsPosition" :maxLength='maxLength' ></el-input>
+            </el-form-item>
+          </span>
+        </p>
+        <!-- <p class="side_right_indent">
             <span class="side_right" @click="overFlowEdit">
               <el-form-item prop="hearingRecord">
                 <span class="over_topic">听证记录：</span>
@@ -213,49 +204,51 @@
             <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           </p> -->
 
-          <!-- 多行样式 -->
-          <div class="overflow_lins_style">
-            <div class="overflow_lins_textarea">
-              <el-form-item prop="hearingRecord">
-                <el-input class='text_indent10' type='textarea' v-model="docData.hearingRecord" rows="3" maxLength='90' placeholder="\"></el-input>
-              </el-form-item>
-            </div>
-            <span class="overflow_describe">听证笔录：</span>
-            <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-            <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-            <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+        <!-- 多行样式 -->
+        <div class="overflow_lins_style">
+          <div class="overflow_lins">
+            <el-form-item prop="hearingRecord">
+              <el-input class='overflow_lins_textarea' style="text-indent:5em" type='textarea' v-model="docData.hearingRecord" rows="3" maxLength='90' ></el-input>
+              <span class="overflow_describe" style="text-indent:0 !important">听证记录：</span>
+              <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+            </el-form-item>
           </div>
-          <p v-if="lineStyleFlag">
-            听证笔录：<u>{{docData.hearingRecord}}</u>
-          </p>
 
-          <el-row :gutter="20">
-            <el-col :span="12">
-              当事人或其代理人签名：
-              <span class="write_line width250"></span>
-            </el-col>
-            <el-col :span="12">
-              主持人及听证员签名：
-              <span class="write_line width250"></span>
-            </el-col>
-          </el-row>
+        </div>
 
-          <el-row :gutter="20">
-            <el-col :span="12">
-              记录员签名：
-              <span class="write_line width250"></span>
-            </el-col>
-            <el-col :span="12">
-              其他听证参加人签名：
-              <span class="write_line width250"></span>
-            </el-col>
-          </el-row>
-        </el-form>
-      </div>
+        <p v-if="lineStyleFlag">
+          听证记录：<u>{{docData.hearingRecord}}</u>
+        </p>
 
+        <el-row :gutter="20">
+          <el-col :span="12">
+            当事人或其代理人签名：
+            <span class="write_line width250"></span>
+          </el-col>
+          <el-col :span="12">
+            主持人及听证员签名：
+            <span class="write_line" style="width: 134px;"></span>
+          </el-col>
+        </el-row>
 
-          <!-- 悬浮按钮 -->
-          <!-- <div class="float-btns">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            记录员签名：
+            <span class="write_line width250"></span>
+          </el-col>
+          <el-col :span="12">
+            其他听证参加人签名：
+            <span class="write_line" style="width: 134px;"></span>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+
+    <!-- 悬浮按钮 -->
+    <!-- <div class="float-btns">
             <el-button type="success" @click="print">
               <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
                 <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
@@ -284,9 +277,9 @@
               提交
             </el-button>
           </div> -->
-        <!-- 悬浮按钮 -->
-        <casePageFloatBtns :pageDomId="'hearingRecordDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
-        <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <!-- 悬浮按钮 -->
+    <casePageFloatBtns :pageDomId="'hearingRecordDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
 <script>
@@ -341,7 +334,7 @@ export default {
         hearingOtherSign: "",
         hearingRecord: "" //听证记录
       },
-       handleType: 0, //0  暂存     1 提交
+      handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
@@ -352,63 +345,54 @@ export default {
       },
       rules: {
         caseNumber: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        party: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        partyName: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        hearingTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入案号', trigger: 'blur' },
         ],
         hearingOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入主持听证机关', trigger: 'blur' },
         ],
         hearingStartTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证开始时间', trigger: 'blur' },
         ],
         hearingEndTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证结束时间', trigger: 'blur' },
         ],
         persidingHearer: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入主持人姓名', trigger: 'blur' },
         ],
         hearingOfficer: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证员', trigger: 'blur' },
         ],
         hearingClerks: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入记录员', trigger: 'blur' },
         ],
         staff: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入执法人员1', trigger: 'blur' },
         ],
         staffId: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入执法人员1证件号', trigger: 'blur' },
         ],
         staff2: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入执法人员2', trigger: 'blur' },
         ],
         staffId2: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入执法人员2证件号', trigger: 'blur' },
         ],
         partyManager: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入法定代表人', trigger: 'blur' },
         ],
         partyTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入法定代表人联系电话', trigger: 'blur' },
         ],
         hearingRecord: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请输入听证记录', trigger: 'blur' },
         ],
       },
       options: [{
-          value: '1',
-          label: '男'
-        }, {
-          value: '2',
-          label: '女'
+        value: '1',
+        label: '男'
+      }, {
+        value: '2',
+        label: '女'
       }],
       nameLength: 23,
       adressLength: 23,
@@ -422,7 +406,7 @@ export default {
     };
   },
   methods: {
-    
+
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
