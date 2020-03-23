@@ -49,11 +49,11 @@
           <el-row>
             <el-col :span="6">
               <el-form-item>
-                <el-radio v-model="caseData.copyReason" label="其他原因" ></el-radio>
+                <el-radio v-model="caseData.copyReason" label="其他原因"></el-radio>
               </el-form-item>
             </el-col>
             <el-col :span="18">
-              <el-form-item :prop="caseData.copyReason == '其他原因' ? 'otherReason' :''" >
+              <el-form-item :prop="caseData.copyReason == '其他原因' ? 'otherReason' :''">
                 <el-input v-model="caseData.otherReason" :disabled="caseData.copyReason == '其他原因' ? false :true"></el-input>
               </el-form-item>
             </el-col>
@@ -80,7 +80,7 @@
             <div class="list">
               <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
               <el-checkbox-group v-model="checkedFiles" @change="handleCheckedFilesChange">
-                <el-checkbox v-for="(item,index) in fileList" :label="item.storageId" :key="index">{{item.docName}}
+                <el-checkbox v-for="(item,index) in fileList" :label="item" :key="index">{{item.docName}}
                   <!-- {{item.docNote}}
                   <span v-if="item.docNote==''">{{item.docName}}</span> -->
                 </el-checkbox>
@@ -189,10 +189,21 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // this.caseData.caseId = 'c25b5f4a55ef9f5f952390016453ca83';
-          this.caseData.docs = this.checkedFiles.join('@');
-          this.caseData.zjfj = this.checkedFiles2.join('@');
-          console.log(this.caseData)
+          this.caseData.docs = '';
+          this.caseData.zjfj = '';
+          this.caseData.caseId = '123';
+          // 文书列表
+          let docsList = [];
+          this.checkedFiles.forEach(element => {
+            docsList.push(element.id);
+          });
+          this.caseData.docs = docsList.join('@');
+          // 证据列表
+          let zjfjList = [];
+          this.checkedFiles.forEach(element => {
+            zjfjList.push(element.id);
+          });
+          this.caseData.zjfj = zjfjList.join('@');
           AddEditTransferCaseApi(this.caseData).then(res => {
             console.log(res);
             if (res.code == 200) {
@@ -262,7 +273,7 @@ export default {
   },
   mounted() {
     console.log('选择的案件', this.$route.params)
-        this.caseData = this.$route.params.caseData
+    this.caseData = this.$route.params.caseData
     // this.caseData.caseNumber = this.$route.params.caseData.caseNumber
     // this.caseData.caseCauseName = this.$route.params.caseData.caseCauseName
     this.caseData.caseId = this.$route.params.caseData.id
