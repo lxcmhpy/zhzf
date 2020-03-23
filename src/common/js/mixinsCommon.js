@@ -37,6 +37,49 @@ export const lawSuperviseMixins = {
                 name: '冀C12345',
                 num: '89'
             }],
+            tabList: [{
+                name: '队伍力量',
+                children: [{
+                    name: '执法人员',
+                    icon: 'iconfont law-people',
+                    code: 0
+                },{
+                    name: '执法机构',
+                    icon: 'iconfont law-zfj',
+                    code: 1
+                },{
+                    name: '执法车辆',
+                    icon: 'iconfont law-car',
+                    code: 2
+                },{
+                    name: '执法船舶',
+                    icon: 'iconfont law-ship',
+                    code: 3
+                }]
+            },{
+                name: '应用场景',
+                children: [{
+                    name: '非现场站点',
+                    icon: 'iconfont law-jiankong',
+                    code: 4
+                },{
+                    name: '视频监控',
+                    icon: 'iconfont law-shipin',
+                    code: 7
+                },{
+                    name: '固定站点',
+                    icon: 'iconfont law-gdzd',
+                    code: null
+                },{
+                    name: '卫星影像',
+                    icon: 'iconfont law-wx',
+                    code: null
+                },{
+                    name: '黑名单车辆',
+                    icon: 'iconfont law-blackCar',
+                    code: null
+                }]
+            }],
             style: "amap://styles/whitesmoke",
             styleIndexNumher: 1,
             loading: false,

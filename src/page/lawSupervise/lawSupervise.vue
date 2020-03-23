@@ -265,7 +265,7 @@
                     <i class="el-icon-caret-top"></i>
                     <ul>
                         <li v-for="subItem in item.children" :key="subItem.name" @click="searchByTab(subItem)">
-                            <i class="iconfont law-guanli"></i>
+                            <i :class="subItem.icon"></i>
                             <p>{{subItem.name}}</p>
                         </li>
                     </ul>
@@ -387,49 +387,6 @@ export default {
             yjObj,
             currentTabIndex: null,
             category: -1,
-            tabList: [{
-                name: '队伍力量',
-                children: [{
-                    name: '执法人员',
-                    icon: '',
-                    code: 0
-                },{
-                    name: '执法机构',
-                    icon: '',
-                    code: 1
-                },{
-                    name: '执法车辆',
-                    icon: '',
-                    code: 2
-                },{
-                    name: '执法船舶',
-                    icon: '',
-                    code: 3
-                }]
-            },{
-                name: '应用场景',
-                children: [{
-                    name: '非现场站点',
-                    icon: '',
-                    code: 4
-                },{
-                    name: '视频监控',
-                    icon: '',
-                    code: 7
-                },{
-                    name: '固定站点',
-                    icon: '',
-                    code: null
-                },{
-                    name: '卫星影像',
-                    icon: '',
-                    code: null
-                },{
-                    name: '黑名单车辆',
-                    icon: '',
-                    code: null
-                }]
-            }],
             categoryList: [{
                 show: '地图位置',
                 code: -1,
