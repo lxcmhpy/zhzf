@@ -376,6 +376,22 @@ export function findEvidencePicApi(data) {
   });
 }
 
+//通过案件ID和文书Id查询案件附件
+export function findByCaseIdAndDocIdApi(data) {
+  let params = {
+    caseId: data.caseId,
+    docId: data.docId
+  }
+  return request({
+    url: "/sys/file/findByCaseIdAndDocId",
+    method: "get",
+    params: params,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 // // 获取归档目录
 // export function findByMlCaseId(caseId) {
 //     return request({

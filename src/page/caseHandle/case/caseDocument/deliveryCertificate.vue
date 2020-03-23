@@ -1,6 +1,6 @@
 <template>
   <div class="print_box" id='btnB'>
-    <div class="print_info">
+    <div class="print_info" id="subOutputRank-print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
         <div class="doc_topic">送达回证</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
@@ -175,8 +175,8 @@ export default {
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: '297708bcd8e80872febb61577329194f', //案件id--从流程进入删掉，先写死测试用
-        caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型IDer
+        caseBasicinfoId: '', //案件id--从流程进入删掉，先写死测试用
+        caseDoctypeId: '2c9029cf6931aa5c01693381ac690018', //表单类型IDer
         //表单数据
         docData: "",
         status: ""
@@ -228,22 +228,17 @@ export default {
   },
   methods: {
     // 获取带入信息
-    getCaseBasicInfo() {
+  //根据案件ID和文书Id获取数据
+    getDocDataByCaseIdAndDocId() {
+      debugger
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
-        id: "2c902ae66ae2acc4016ae376f6f1007f"
-        // id: this.$route.params.docId
+        caseId: this.caseId,
+        docId: '2c9029cf6931aa5c01693381ac690018'
       };
-       let _this = this
-      this.$store.dispatch("getCaseBasicInfo", data).then(
-        res => {
-          _this.docData = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      console.log(data);
+      this.com_getDocDataByCaseIdAndDocId(data);
     },
-
     onSubmit(formName) {
       console.log('submit!');
       this.$refs[formName].validate((valid) => {
@@ -284,7 +279,7 @@ export default {
     //保存文书信息
     //插入证据
     saveData(docForm) {
-
+      debugger
       this.$refs[docForm].validate(valid => {
         if (valid) {
           let datetime = this.changeableTable[0].servedDate;
@@ -302,6 +297,7 @@ export default {
           };
           console.log('添加', data)
           let _this = this
+          debugger
           this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(res => {
             if (res.code == 200) {
               console.log('添加成功！')
@@ -346,8 +342,8 @@ export default {
   },
 
   mounted() {
-    // this.getDocDataByCaseIdAndDocId();
-    this.getCaseBasicInfo();
+    this.getDocDataByCaseIdAndDocId();
+    // this.getCaseBasicInfo();
   },
   created() {
     this.isOverStatus();
