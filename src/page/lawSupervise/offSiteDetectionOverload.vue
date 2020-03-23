@@ -690,10 +690,10 @@ export default {
         }
     },
     mounted () {
-        var flowChart = echarts.init(document.getElementById('echartsBox1'))
-        flowChart.setOption(this.lawSuperviseObj.option)
-        var flowChart1 = echarts.init(document.getElementById('echartsBox2'))
-        flowChart1.setOption(this.yjObj)
+        // var flowChart = echarts.init(document.getElementById('echartsBox1'))
+        // flowChart.setOption(this.lawSuperviseObj.option)
+        // var flowChart1 = echarts.init(document.getElementById('echartsBox2'))
+        // flowChart1.setOption(this.yjObj)
         this.getRealTimeDataByLawSupervise()
     },
     mixins: [
