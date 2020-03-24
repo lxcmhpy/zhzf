@@ -65,30 +65,41 @@
     </div>
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'documentForm'" ></caseSlideMenu>
+     <el-dialog
+        :visible.sync="pdfVisible"
+        @close="closeDialog"
+        :close-on-click-modal="false"
+        width="1000px"
+         >
+        <div >
+        <div style="height:auto;">
+        <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
+            <div lazy>
+                <object >
+                    <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
+                    :src="mlList" type="application/pdf" internalinstanceid="29">
+                </object>
+            </div>
+            <!-- <div style="position:absolute;bottom:150px;right: 20px;width:100px;">
+            <el-button @click="updatePDF1">上一张</el-button><br><br>
+            <el-button @click="updatePDF2">下一张</el-button>
+            </div> -->
+        </div>
+        </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
+import {
+  findByCaseIdAndDocIdApi
+} from "@/api/caseHandle";
     export default {
         data() {
             return {
-                evTypeOptions : [{
-                    value: '123',
-                    label: '123'
-                }, {
-                    value: '照片',
-                    label: '照片'
-
-                }],
-                statusOptions : [{
-                    value: '1',
-                    label: '有效'
-                }, {
-                    value: '2',
-                    label: '无效'
-
-                }],
+                pdfVisible: false,
+                closeDialog: false,
                 value: '',
                 //activeName: '1',
                 currentPage: 1, //当前页
@@ -103,11 +114,13 @@ import { mapGetters } from "vuex";
                 form: {},
                 uForm: {},
                 addVisible:false,
-                editVisible: false
+                editVisible: false,
+                mlList: "",
+                indexPdf: 0,
             };
         },
         components: {
-          caseSlideMenu
+          caseSlideMenu,
         },
         computed: { ...mapGetters(['caseId']) },
         methods: {
@@ -118,17 +131,34 @@ import { mapGetters } from "vuex";
                     })
                     .catch(_ => {});
             },
+            //查看  打印方法
             handleEdit(index, row) {
-                const item = this.tableData[index];
-                this.uForm = {
-                    evName: item.evName,
-                    evType: item.evType,
-                    status: item.status
+              debugger
+              let data = {
+                    caseId:this.caseId,
+                    docId: this.tableData[index].caseDoctypeId,
                 };
-                this.editVisible = true;
+                let _that = this
+              findByCaseIdAndDocIdApi(data).then(res=>{
+                debugger
+                _that.mlList = _that.host + res.data[0].storageId;
+                // _that.mlList.push(_that.host + res.data[0].storageId)
+                //   res.data.forEach((v)=>{
+                //     debugger
+                //   _that.mlList.push(_that.host + v.storageId)
+                // })
+              },err=>{
+                console.log(err);
+              })
+               debugger
+               console.log(_that.mlList);
+              this.indexPdf = 0;
+              this.pdfVisible = true
+
             },
             //表单筛选
             getDocList() {
+              debugger
                 let data = {
                     caseBasicinfoId:this.caseId,
                     current: this.currentPage,
@@ -160,6 +190,7 @@ import { mapGetters } from "vuex";
         },
         mounted() {
             // this.setDepartTable(this.data)
+            this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
         },
         created() {
             this.getDocList();

@@ -64,8 +64,8 @@
           </el-form>
         </div>
       </div>
-      <div class="tablePartF">
-        <el-table :data="tableData" stripe height="100%">
+      <div class="tablePart table_tr_overflow">
+        <el-table :data="tableData" stripe style="width: 100%" highlight-current-row height="100%">
           <!-- <el-table-column type="selection" width="55" align="center"></el-table-column>-->
           <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
           <!--<el-table-column prop="id" label="序号" align="center"></el-table-column>-->
@@ -90,7 +90,7 @@
       </div>
     </div>
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'evidenceForm'" ></caseSlideMenu>
+    <caseSlideMenu :activeIndex="'handleRecordForm'" ></caseSlideMenu>
   </div>
 </template>
 <script>
@@ -243,7 +243,7 @@ import { mapGetters } from "vuex";
         }
     };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   @import "@/assets/css/systemManage.scss";
   .paginationF{
     position: absolute;
@@ -256,7 +256,10 @@ import { mapGetters } from "vuex";
     height: 100%;
     overflow: auto;
     box-sizing: border-box;
-    padding-top: 4%;
+    padding-top: 0px;
+  }
+  .searchAndpageBox {
+    padding: 5px 20px 50px 20px;
   }
   .fullscreen {
   .hasBigMarginRight{

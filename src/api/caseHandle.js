@@ -376,6 +376,22 @@ export function findEvidencePicApi(data) {
   });
 }
 
+//通过案件ID和文书Id查询案件附件
+export function findByCaseIdAndDocIdApi(data) {
+  let params = {
+    caseId: data.caseId,
+    docId: data.docId
+  }
+  return request({
+    url: "/sys/file/findByCaseIdAndDocId",
+    method: "get",
+    params: params,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 // // 获取归档目录
 // export function findByMlCaseId(caseId) {
 //     return request({
@@ -692,13 +708,16 @@ export function getHandleRecordApi(data) {
   }
   // 归档目录，绑定关联证据列表
   export function saveOrUpdateDocCatalogList(data) {
-    let data2 = vm.$qs.stringify(data);
+    console.log('data',data)
+    // let data2 = vm.$qs.stringify(data);
+    
     return request({
-        url:"/doc/docCatalog/saveOrUpdateDocCatalogList/",
+        url:"/doc/docCatalog/saveOrUpdateDocCatalogList",
         method:"POST",
-        params:data2,
+        data:data,
         showloading: true,
         loadingType:'loadPart',
+        contentType:'application/json',
         cancelToken:setCancelSource()
       });
   }
