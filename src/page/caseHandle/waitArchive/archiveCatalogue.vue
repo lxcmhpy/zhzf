@@ -39,7 +39,7 @@
             </tr>
             <tr v-for="(item,index) in caseList" :key="index" @click="alertPDF(item)">
                 <td>{{index+3}}</td>
-                <td>{{item.name}}</td>
+                <td>{{item.name ? item.name :item.evName}}</td>
                 <td>{{item.page}}</td>
             </tr>
         </table>

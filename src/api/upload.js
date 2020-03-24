@@ -58,7 +58,7 @@ export function uploadEvdence(data) {
         contentType: 'multipart/form-data;',
         showloading: true,
         loadingType:'loadPart',
-        responseType: 'blob',
+        // responseType: 'blob',
         cancelToken:  setCancelSource(),
       });
 }
