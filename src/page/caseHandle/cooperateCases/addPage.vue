@@ -17,7 +17,7 @@
             <el-button class="re_select" size="small" @click="reSelect" plain>重新选择</el-button>
           </el-form-item>
           <el-form-item label="案由">
-            {{caseData.caseCauseName||'-'}}
+            {{(caseData.party||caseData.partyName)+(caseData.caseCauseName||'-')}}
           </el-form-item>
         </div>
         <el-form-item label="目标机构" class="is-required">

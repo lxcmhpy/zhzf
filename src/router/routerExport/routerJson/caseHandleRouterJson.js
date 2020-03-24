@@ -534,7 +534,7 @@ export default [
       path: "/addTransfer",
       name: "addTransfer",
       meta: {
-          title: "新增抄送"
+          title: "新增移送"
       },
       component: () => import("@/page/caseHandle/cooperateCases/addPage.vue")
   },
@@ -542,7 +542,7 @@ export default [
       path: "/addSelect",
       name: "addSelect",
       meta: {
-          title: "新增抄送"
+          title: "新增移送"
       },
       component: () => import("@/page/caseHandle/cooperateCases/selectPage.vue")
   },
