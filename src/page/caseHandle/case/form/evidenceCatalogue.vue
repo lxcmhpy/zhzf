@@ -18,7 +18,7 @@
         <el-table bordercolor="black" width="100%" cellspacing="0" :data="eviList">
             <el-table-column prop="evPath" align="center">
               <template slot-scope="scope">
-          　　　　<img :src="host+scope.row.evPath" width="70" height="50" @click="evidenceDetail(scope.row)"/>
+          　　　　<img :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"/>
           　　</template>
             </el-table-column>
         </el-table>
