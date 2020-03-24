@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="tablePartF">
-        <el-table :data="tableData" stripe height="100%" @row-click="evidenceDetail">
+        <el-table :data="tableData" stripe height="100%">
           <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
           <el-table-column prop="evName" label="证据名称" align="center"></el-table-column>
           <el-table-column prop="evType" label="证据类型" align="center"></el-table-column>
