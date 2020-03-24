@@ -54,7 +54,11 @@
               </el-switch>
             </template>
           </el-table-column>
-          <el-table-column prop="evPath" label="附件" align="center"></el-table-column>
+          <el-table-column prop="evPath" label="附件" align="center">
+            <template slot-scope="scope">
+        　　　　<img :src="host+scope.row.evPath" width="40" height="40"/>
+        　　</template>
+          </el-table-column>
           <el-table-column label="操作" align="center" fixed="right">
             <template slot-scope="scope">
               <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -81,8 +85,10 @@
           <el-upload
           class="upload-demo"
           drag
+          :http-request="saveFile"
           action="https://jsonplaceholder.typicode.com/posts/"
-          multiple>
+          multiple
+          >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text"><em>点击上传附件</em></div>
           <div class="el-upload__tip" slot="tip" style="text-align: center">只能上传jpg/png文件，且不超过500kb</div>
@@ -188,12 +194,24 @@
       </div>
     </el-dialog>
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'evidenceForm'" ></caseSlideMenu>
+    <caseSlideMenu :activeIndex="'evidenceForm'" @showEvidenceCatalogue="showEvidenceCatalogue"></caseSlideMenu>
+
+    <!-- 证据目录 -->
+    <evidenceCatalogue ref="evidenceCatalogueRef"></evidenceCatalogue>
+    
   </div>
 </template>
 <script>
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
+import evidenceCatalogue from "./evidenceCatalogue";
+import {
+ uploadEvApi,
+ findFileByIdApi,
+ uploadEvdence
+} from "@/api/upload";
+import iLocalStroage from "@/common/js/localStroage.js";
+// import {saveOrUpdateEvdencenApi2, } from "@/api/caseHandle";
 // import { getEviByCaseIdApi } from "@api/caseHandle";
     export default {
         data() {
@@ -205,6 +223,8 @@ import { mapGetters } from "vuex";
                 }
             };
             return {
+                host:"",
+                evfile:'',
                 evTypeOptions : [],
                 statusOptions : [],
                 value: '',
@@ -213,12 +233,25 @@ import { mapGetters } from "vuex";
                 pageSize: 10, //pagesize
                 total: 0, //总数
                 tableData: [],
+                srcImgList:[],
                 evidenceForm: {
                     evName: "",
                     evType: "",
                     status: ""
                 },
-                form: {},
+                form: {
+                  id: "",
+                  caseId: "",
+                  evName: "",
+                  evType: "",
+                  status: "",
+                  fileId: "",
+                  remark: "",
+                  file: null,
+                  docId: "",
+                  category: "",
+                  userId: ""
+                },
                 uForm: {},
                 addVisible:false,
                 editVisible: false,
@@ -249,7 +282,8 @@ import { mapGetters } from "vuex";
         },
         computed: { ...mapGetters(['caseId']) },
         components: {
-          caseSlideMenu
+          caseSlideMenu,
+          evidenceCatalogue
         },
         methods: {
             submitForm(formName){
@@ -309,40 +343,51 @@ import { mapGetters } from "vuex";
                 let _this = this
                 this.$store.dispatch("getEvidence", data).then(res => {
                     _this.tableData = res.data.records;
-                    _this.total = res.data.total;
                 });
 
             },
-            //插入证据
+            saveFile(param) {
+              console.log(param);
+              // this.formUpload = {
+              (this.form.file = param.file),
+              (this.form.caseId = this.caseId),
+              (this.form.docId = "000"),
+              (this.form.category = "证据"),
+              (this.form.userId = iLocalStroage.gets("userInfo").id),
+              (this.form.evName = param.file.name);
+              // }
+            },
+            //插入证据表
             insertEvi(){
-                let data = {
-                  id:this.randomString(32),
-                  // caseId:this.randomString(32),
-                  caseId:this.caseId,
-                  evName:this.form.evName,
-                  evType:this.form.evType,
-                  userName:this.form.userName,
-                  recordPlace:this.form.recordPlace,
-                  status:this.form.status,
-                  note:this.form.note,
-                  createTime:this.formatDateStr(this.form.createTime)
-                };
-                let _this = this
-                this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
-                  if (res.code == 200){
-                    _this.$message({
-                      message: '添加成功！',
-                      type: 'success'
-                    });
-                    _this.addVisible = false;
-                    _this.currentPage = 1;
-                    _this.getEviList();
-                  }else{
-                    _this.$message.error('出现异常，添加失败！');
-                  }
-                });
+              var fd = new FormData();
+              fd.append("file", this.form.file);
+              fd.append("caseId", this.form.caseId);
+              fd.append("docId", this.form.docId);
+              fd.append("category", this.form.category);
+              fd.append("userId", this.form.userId);
+              fd.append("evName", this.form.evName);
+              fd.append("evType", this.form.evType);
+              fd.append("status", this.form.status);
+              fd.append("remark", this.form.remark);
+              fd.append("fileId", this.form.fileId);
+              // fd.append("id", this.form.id);
+              let _this = this
+              // this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
+              uploadEvdence(fd).then(res => {
+                console.log("1111111",res);
+                if (res.code == 200){
+                  _this.$message({
+                    message: '添加成功！',
+                    type: 'success'
+                  });
+                  _this.addVisible = false;
+                  _this.currentPage = 1;
+                  _this.getEviList();
+                }else{
+                  _this.$message.error('出现异常，添加失败！');
+                }
+              });
             },
-
             //修改证据
             updateEvi(){
               let data = {
@@ -409,8 +454,29 @@ import { mapGetters } from "vuex";
               let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
               return Y + M + D + h + m + s;
             },
+            //鼠标hover证据目录后 显示证据目录
+            showEvidenceCatalogue(){
+                this.$refs.evidenceCatalogueRef.showModal();
+            },
+            fileChange(file){
+                console.log(file);
+                this.evfile = file.raw;
+            },
+            //根据ID查询附件
+            findFileById(id){
+                findFileByIdApi(id).then(
+                res => {
+                  console.log("获取证据详情",res);
+                  
+                },
+                error => {
+                  console.log(error);
+                }
+              );
+            }
         },
         mounted() {
+          this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
         },
         created() {
             this.getEviList();

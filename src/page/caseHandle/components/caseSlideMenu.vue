@@ -22,8 +22,8 @@
       <el-menu-item index="deliverReceiptForm" @click="goTo('deliverReceiptForm')">
         送达<br>回证
       </el-menu-item>
-      <el-menu-item index="evidenceForm" @click="goTo('evidenceForm')">
-        <div @mouseenter="mouseenterShowEmit('evidenceForm')">证据<br>目录</div>
+      <el-menu-item index="evidenceForm" >
+        <div @mouseenter="mouseenterShowEmit('evidenceForm')" @click="goTo('evidenceForm')">证据<br>目录</div>
       </el-menu-item>
       <el-menu-item index="archiveCatalogue" > 
         <div @mouseenter="mouseenterShowEmit('archiveCatalogue')"  @click="goTo('archiveCatalogueDetail')">卷宗<br>目录</div>
@@ -79,6 +79,9 @@ export default {
       console.log('hover')
       if(type == 'archiveCatalogue'){
          this.$emit('showArchiveCatalogue');
+      }
+      if(type == 'evidenceForm'){
+        this.$emit('showEvidenceCatalogue');
       }
      
     },

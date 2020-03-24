@@ -9,7 +9,7 @@
             当事人（个人姓名或单位名称）
             <span>
               <el-form-item prop="party">
-                <el-input  v-model="docData.party"  :maxLength='maxLength'></el-input>
+                <el-input disabled v-model="docData.party"  :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>:
           </p>
@@ -17,23 +17,23 @@
             因你（单位）
             <span>
               <el-form-item prop="caseCauseName">
-                <el-input v-model="docData.caseCauseName"  type='textarea'  v-bind:class="{ over_flow:docData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"   :maxLength='maxLength'></el-input>
+                <el-input disabled v-model="docData.caseCauseName"  type='textarea'  v-bind:class="{ over_flow:docData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"   :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>，本机关依法于
             <span>
               <el-form-item prop="dateTime" class="pdf_datapick">
-                <el-date-picker v-model="docData.dateTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                <el-date-picker disabled v-model="docData.dateTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
                 </el-date-picker>
               </el-form-item>
             </span>对你（单位）采取了
             <span>
               <el-form-item prop="enforceMeasure">
-                <el-input v-model="docData.enforceMeasure" type='textarea'  v-bind:class="{ over_flow:docData.enforceMeasure.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"></el-input>
+                <el-input disabled v-model="docData.enforceMeasure" type='textarea'  v-bind:class="{ over_flow:docData.enforceMeasure.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"></el-input>
               </el-form-item>
             </span>的行政强制措施，行政强制措施决定书案号：
             <span>
               <el-form-item prop="caseNumberCopy">
-                <el-input  v-model="docData.caseNumberCopy"  :maxLength='maxLength'></el-input>
+                <el-input disabled v-model="docData.caseNumberCopy"  :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>。
           </p>
@@ -66,7 +66,7 @@
           <p class="p_begin">退还财物清单如下：
           <br>
           <div @click="handleAdd">
-            <el-table :data="tableData" border stripe style="width: 100%">
+            <el-table :data="docData.tableData" border stripe style="width: 100%">
               <el-table-column prop="evidenceNo" label="序号" width="120" align="center"></el-table-column>
               <el-table-column prop="returnItemsName" label="退还财物名称" align="center"></el-table-column>
               <el-table-column prop="spec" label="规格" :formatter="formatSpec" width="120" align="center"></el-table-column>
@@ -200,6 +200,7 @@ export default {
         clause: '',
         removeDate: '',
         signatureDate: '',
+        tableData: [],
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -252,7 +253,6 @@ export default {
       nameLength: 23,
       adressLength: 23,
       maxLength: 23,
-      tableData: [],
       maxLengthOverLine: 122,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
