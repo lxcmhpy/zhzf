@@ -8,7 +8,7 @@
         <p class="p_begin">
           案件名称：
           <span>
-            <el-form-item prop="caseName">
+            <el-form-item prop="caseName" style="width: 535px;">
               <el-input v-model="docData.caseName" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>
@@ -16,13 +16,13 @@
         <p class="p_begin">
           讨论时间：
           <span>
-            <el-form-item prop="discussionStartTime" class="pdf_datapick">
+            <el-form-item prop="discussionStartTime" class="pdf_datapick inputwidth" style="width:210px">
               <el-date-picker v-model="docData.discussionStartTime" type="datetime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分">
               </el-date-picker>
             </el-form-item>
           </span>至
           <span>
-            <el-form-item prop="discussionEndTime" class="pdf_datapick">
+            <el-form-item prop="discussionEndTime" class="pdf_datapick inputwidth" style="width:210px">
               <el-date-picker v-model="docData.discussionEndTime" type="datetime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分">
               </el-date-picker>
             </el-form-item>
@@ -31,7 +31,7 @@
         <p class="p_begin">
           地点：
           <span>
-            <el-form-item prop="discussionPlace">
+            <el-form-item prop="discussionPlace" style="width:566px">
               <el-input v-model="docData.discussionPlace" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>
@@ -39,19 +39,19 @@
         <p class="p_begin">
           主持人：
           <span>
-            <el-form-item prop="presidingHearer">
+            <el-form-item prop="presidingHearer" class='width130'>
               <el-input v-model="docData.presidingHearer" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>
           汇报人：
           <span>
-            <el-form-item prop="reporter">
+            <el-form-item prop="reporter" class='width130'>
               <el-input v-model="docData.reporter" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>
           记录人：
           <span>
-            <el-form-item prop="recorder">
+            <el-form-item prop="recorder" class='width130'>
               <el-input v-model="docData.recorder" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>
@@ -59,7 +59,7 @@
         <p class="p_begin">
           出席人员姓名：
           <span>
-            <el-form-item prop="presentMembersName">
+            <el-form-item prop="presentMembersName" style="width: 503px;">
               <el-input v-model="docData.presentMembersName" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>
@@ -77,20 +77,26 @@
         </p> -->
         <!-- 多行样式 -->
         <div class="overflow_lins_style">
+          <div class="overflow_lins">
+            <el-form-item prop="illegalFactsEvidence">
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90' placeholder="\"></el-input>
+              <span class="overflow_describe">讨论记录：</span>
+              <span class="span_bg" @click="overFlowEdit" style="margin-top: 8px;">&nbsp;</span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+            </el-form-item>
+          </div>
+        </div>
+        <!-- <div class="overflow_lins_style">
           <div class="overflow_lins_textarea">
             <el-form-item prop="discussionRecord">
               <el-input class='text_indent10' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90' placeholder="\"></el-input>
             </el-form-item>
           </div>
-          <span class="overflow_describe">讨论记录：</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-        </div>
-        <p v-if="lineStyleFlag">
-          讨论记录：<u>{{docData.discussionRecord}}</u>
-        </p>
-
+        </div> -->
         <!-- <p class="side_right_indent">
           <span class="side_right" @click="overFlowEdit2">
             <el-form-item prop="illegalFactsEvidence2">
@@ -104,19 +110,16 @@
         </p> -->
         <!-- 多行样式 -->
         <div class="overflow_lins_style">
-          <div class="overflow_lins_textarea">
-            <el-form-item prop="conclussionOpinion">
-              <el-input class='text_indent10' type='textarea' v-model="docData.conclussionOpinion" rows="3" maxLength='90' placeholder="\"></el-input>
+          <div class="overflow_lins">
+            <el-form-item prop="illegalFactsEvidence">
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.conclussionOpinion" rows="3" maxLength='90'></el-input>
+              <span class="overflow_describe">结论性意见：</span>
+              <span class="span_bg" @click="overFlowEdit" style="margin-top: 8px;">&nbsp;</span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
             </el-form-item>
           </div>
-          <span class="overflow_describe"> 结论性意见：</span>
-          <span class="span_bg" @click="overFlowEdit2">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit2">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit2">&nbsp;</span>
         </div>
-        <p v-if="lineStyleFlag">
-          结论性意见：<u>{{docData.conclussionOpinion}}</u>
-        </p>
 
         <el-row :gutter="20">
           <el-col :span="12">
@@ -151,7 +154,7 @@ export default {
     return {
       docData: {
         caseNumber: '',
-        caseName:'',
+        caseName: '',
         discussionStartTime: '',
         discussionEndTime: '',
         discussionPlace: '',
@@ -215,7 +218,7 @@ export default {
     }
   },
 
-   methods: {
+  methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;

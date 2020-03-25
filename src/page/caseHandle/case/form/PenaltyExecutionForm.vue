@@ -469,8 +469,10 @@ export default {
         hasApprovalBtn: false,
         docId: row.docId,
         approvalOver: false,
-        hasBack: true
+        hasBack: true,
+        docDataId:row.docDataId
       };
+      console.log('routerData,routerData',routerData)
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: "myPDF", params: routerData });
     },

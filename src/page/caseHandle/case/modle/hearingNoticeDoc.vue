@@ -188,7 +188,9 @@ import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // import signture from "../../../../js/signture";
 import mySignture from "@/common/js/mySignture";
-
+import {
+  validatePhone,
+} from "@/common/js/validator";
 export default {
   components: {
     overflowInput,
@@ -268,7 +270,7 @@ export default {
           { required: true, message: '请输入联系人', trigger: 'blur' },
         ],
         organTel: [
-          { required: true, message: '请输入联系电话', trigger: 'blur' },
+          { validator: validatePhone,required: true, message: '请输入联系电话', trigger: 'blur' },
         ],
       },
       nameLength: 23,

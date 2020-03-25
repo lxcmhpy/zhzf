@@ -943,6 +943,9 @@
 .width120 {
     width: 120px;
 }
+.width130 {
+    width: 130px;
+}
 
 .width151 {
     width: 151px;
@@ -1456,5 +1459,12 @@
             border-color: black;
             background  : black;
         }
+    }
+}
+.inputwidth{
+
+        .el-input{
+            width: 100% !important;
+
     }
 }
