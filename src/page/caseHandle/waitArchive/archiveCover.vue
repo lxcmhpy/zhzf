@@ -413,6 +413,8 @@ export default {
             res.data = res.data.sort(function(a,b){
               return a.num - b.num;
             });
+           console.log('getByMlCaseId2',res.data)
+
              this.caseList = res.data;
               this.showCover = 'pdf';
               this.docSrc = this.host + this.caseList[0].storageId;
