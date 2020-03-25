@@ -125,7 +125,7 @@
                             <i class="iconfont law-xianlu"></i>
                         </div>
                      </div>
-                     <!-- 4非现场治超检测 -->
+                    <!-- 4非现场治超检测 -->
                      <div v-else-if="curWindow.category == 4">
                         <div>
                             <i class="iconfont law-jiankong"></i>
@@ -135,23 +135,34 @@
                         <div class="flexBox">
                             <div class="con">
                                 <p>{{curWindow.other.address}}</p>
+                                <div>
+                                    <p>{{curWindow.other.createTime}} &nbsp;
+                                        超限{{curWindow.other.cxchl}} &nbsp;
+                                        黑名单{{curWindow.other.blackList}}
+                                    </p>
+                                </div>
                             </div>
                             <div class="status">
                                 <i class="iconfont law-mobile-phone"></i>
                                 <p>在线</p>
                             </div>
                         </div>
-                        <div>
-                                <p>{{curWindow.other.createTime}} &nbsp;
-                                    超限{{curWindow.other.cxchl}} &nbsp;
-                                    黑名单{{curWindow.other.blackList}}</p>
-                        </div>
                         <div class="btns">
-                            <i class="iconfont law-mobile"></i>
-                            <i class="iconfont law-shipin"></i>
-                            <i class="iconfont law-jiankong"></i>
-                            <i class="iconfont law-msg-box"></i>
-                            <i class="iconfont law-xianlu"></i>
+                            <el-table v-if="curWindow.other.list"
+                                style="width: 100%;"
+                                :data="curWindow.other.list"
+                                resizable
+                                stripe>
+                                <el-table-column width="100" prop="checkTime" label="过检时间">
+
+                                </el-table-column>
+                                <el-table-column width="100" prop="vehicleNumber" label="车牌号"></el-table-column>
+                                <el-table-column width="70" prop="overload" label="超载率"></el-table-column>
+                                <el-table-column width="100" prop="area" label="车属地"></el-table-column>
+                                <el-table-column width="80" label="重点监管">
+                                    <template><span>是</span></template>
+                                </el-table-column>
+                            </el-table>
                         </div>
                      </div>
                      <!-- 5监管企业 -->
@@ -182,15 +193,13 @@
                      </div>
                      <!-- 6监管车辆 -->
                      <div v-else-if="curWindow.category == 6">
-                        <div>
-                             <i class="iconfont law-car"></i>
-                            {{curWindow.other.nickName}}
-                            <div class="right">{{curWindow.other.enforceNo}}</div>
-                        </div>
-                        <div class="flexBox">
+                         <div class="flexBox">
                             <div class="con">
-                                <p>{{curWindow.other.address}}</p>
-                                <p>{{curWindow.other.mobile}}</p>
+                                <p>
+                                    <i class="iconfont law-car"></i>
+                                    {{curWindow.other.vehicleNumber}}</p>
+                                <p>{{curWindow.other.organName}}</p>
+                                <!-- <p>{{curWindow.other.mobile}}</p> -->
                             </div>
                             <div class="status">
                                 <i class="iconfont law-mobile-phone"></i>
@@ -281,37 +290,39 @@
                 <div class="amap-chart">
                     <el-table
                     v-loading="loading"
-                        :data="tableData"
+                        @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
+                        :data="zfdList"
                         style="width: 100%">
                         <el-table-column
-                            type="index"
+                            prop="name"
                             label="站点名称"
                             width="80">
                         </el-table-column>
                         <el-table-column
-                            prop="name"
+                            prop="cxchl"
                             label="超限查处量"
                             width="100"
                             >
                         </el-table-column>
                         <el-table-column
-                            prop="num"
-                            label="黑名单"
-                            width="70"
+                            prop="blackList"
+                            label="重点监管"
+                            width="80"
                             >
                         </el-table-column>
                         <el-table-column
-                            prop="num"
+                            prop="gjzl"
                             label="过检总量"
                             width="80"
                             >
                         </el-table-column>
                         <el-table-column
+                            prop="status"
                             label="状态"
                             width="50"
                             >
                             <template>
-                                <circle style="background: green;"></circle>
+                                <div class="orangeBg circle" ></div>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -325,45 +336,49 @@
                 <div class="amap-chart">
                     <el-table
                     v-loading="loading"
-                        :data="tableData"
+                        @row-click="(row, column, event)=>positionEvent(row, column, event, 6)"
+                        :data="gjclList"
                         style="width: 100%">
                         <el-table-column
-                            type="index"
+                            prop="checkTime"
                             label="过检时间"
                             width="80">
                         </el-table-column>
                         <el-table-column
-                            prop="name"
+                            prop="vehicleNumber"
                             label="车牌号"
                             width="90"
                             >
                         </el-table-column>
                         <el-table-column
-                            prop="num"
+                            prop="overload"
                             label="超载率"
                             width="70"
                             >
                         </el-table-column>
                          <el-table-column
-                            prop="num"
+                            prop="area"
                             label="车属地"
                             width="70"
                             >
                         </el-table-column>
+                            <!-- prop="blackList" -->
                          <el-table-column
-                            prop="num"
-                            label="黑名单"
-                            width="70"
+                            label="重点监管"
+                            width="80"
                             >
+                            <template>
+                                <div><i class="iconfont law-star orangeC"></i></div>
+                            </template>
                         </el-table-column>
                          <el-table-column
-                            prop="num"
+                            prop="lscc"
                             label="历史查处"
                             width="80"
                             >
                         </el-table-column>
                          <el-table-column
-                            prop="num"
+                            prop="siteName"
                             label="站点名称"
                             width="80"
                             >
@@ -386,7 +401,7 @@ import Vue from "vue";
 import echarts from 'echarts';
 import 'echarts/lib/chart/graph';
 import {lawSuperviseObj,yjObj} from './echarts/echartsJson';
-import {getZfjgLawSupervise} from '@/api/lawSupervise.js';
+import {getZfjgLawSupervise,getBySiteId,getById} from '@/api/lawSupervise.js';
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 
 import AMap from 'vue-amap';
@@ -532,13 +547,19 @@ export default {
                 },
             }
             ],
-            markers: []
+            markers: [],
+            zfdList: null,
+            gjclList: null
         }
     },
     methods: {
-        eve(marker) {
-            debugger
-            marker.visible = true
+        positionEvent (row, column, event, category) {
+            // debugger;
+            this.markers.splice(0, this.markers.length);
+            if (this.curWindow) {
+                this.curWindow.visible = false;
+            }
+            this.getById(category, row.id);
         },
         onSearchResult(pois, category) {
           let latSum = 0;
@@ -567,6 +588,9 @@ export default {
 
                                 that.curWindow = that.windows[i];
                                 console.log(that.curWindow);
+                                if (category == 4) {
+                                    that.getBySiteId(that.curWindow.other.id,that.curWindow.other)
+                                }
                                 that.$nextTick(() => {
                                     that.curWindow.visible = true;
                                 });
@@ -583,7 +607,6 @@ export default {
                         iconStyle: 'red',
                         events: {
                             click() {
-                                debugger;
                                 that.windows.forEach(window => {
                                     window.visible = false;
                                 });
@@ -614,7 +637,11 @@ export default {
           }
         },
         searchByTab (item) {
-            this.category = item.code
+            this.markers.splice(0, this.markers.length);
+            if (this.curWindow) {
+                this.curWindow.visible = false;
+            }
+            this.category = item.code;
             let data = {
                     // area: this.currentAddressObj.province + this.currentAddressObj.district,
                     area: '东城区',
@@ -626,7 +653,10 @@ export default {
             this.getZfjgLawSupervise(data)
         },
         searchAll (pois) {
-            this.markers.splice(0, this.markers.length)
+            this.markers.splice(0, this.markers.length);
+            if (this.curWindow) {
+                this.curWindow.visible = false;
+            }
             if (this.category == -1) {
                 this.errorMsg(`总计${pois.length}条数据`, 'success');
                 this.onSearchResult(pois, this.category);
@@ -639,9 +669,68 @@ export default {
                     key: this.$refs.searchAmapBox.keyword,
                     size: 0,
                     type: this.category
-                }
-                this.getZfjgLawSupervise(data)
+                };
+                this.getZfjgLawSupervise(data);
             }
+        },
+        getBySiteId (id,obj) {
+            let _this = this
+            new Promise((resolve, reject) => {
+                getBySiteId(id).then(
+                    res => {
+                        resolve(res)
+                        obj.list = res.data
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
+        getById (type,id) {
+            let _this = this
+            new Promise((resolve, reject) => {
+                    getById(type,id).then(
+                        res => {
+                            // resolve(res);
+                            let resultList = []
+                            if (res.data) {
+                                _this.errorMsg(`总计1条数据`, 'success');
+                                let position = res.data.position.split(',');
+                                let lng = parseFloat(position[0]);
+                                let lat = parseFloat(position[1]);
+                                _this.category = type;
+                                resultList.push({
+                                    address: res.data.area,
+                                    distance: null,
+                                    id: res.data.id,
+                                    lat: lat,
+                                    lng: lng,
+                                    location: {
+                                        O: lng,
+                                        P: lat,
+                                        lat: lat,
+                                        lng: lng
+                                    },
+                                    name: res.data.vehicleNumber,
+                                    shopinfo: '',
+                                    tel: '',
+                                    type: type,
+                                    other: res.data
+                                })
+                            } else {
+                                _this.errorMsg('暂无数据', 'error');
+                            }
+
+
+                            _this.onSearchResult(resultList, _this.category)
+                        },
+                        error => {
+                            //  _this.errorMsg(error.toString(), 'error')
+                             return
+                        })
+                })
         },
         getZfjgLawSupervise (data) {
             let _this = this
@@ -687,6 +776,34 @@ export default {
                              return
                         })
                 })
+       },
+        searchPageAll (code, obj) {
+            this.markers.splice(0, this.markers.length);
+            if (this.curWindow) {
+                this.curWindow.visible = false;
+            }
+            // 进入页面加载查询所有初始数据
+            let data = {
+                    // area: this.currentAddressObj.province + this.currentAddressObj.district,
+                    area: '',
+                    current: 1,
+                    key: '',
+                    size: 0,
+                    type: code
+                };
+            let that = this;
+            new Promise((resolve, reject) => {
+                    getZfjgLawSupervise(data).then(
+                        res => {
+                            // resolve(res);
+                            let resultList = [];
+                            that[obj] = res.data.records;
+                        },
+                        error => {
+                            //  _this.errorMsg(error.toString(), 'error')
+                             return
+                        })
+                })
         }
     },
     mounted () {
@@ -695,6 +812,9 @@ export default {
         // var flowChart1 = echarts.init(document.getElementById('echartsBox2'))
         // flowChart1.setOption(this.yjObj)
         this.getRealTimeDataByLawSupervise()
+        this.searchPageAll(4, 'zfdList')
+        this.searchPageAll(6, 'gjclList')
+
     },
     mixins: [
         lawSuperviseMixins, mixinsCommon
