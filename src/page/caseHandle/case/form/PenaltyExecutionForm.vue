@@ -44,7 +44,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="punishDecision" label="处罚决定">
-                  <el-input ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="请输入" disabled></el-input>
+                  <el-input ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="-" disabled></el-input>
                 </el-form-item>
               </div>
             </div>

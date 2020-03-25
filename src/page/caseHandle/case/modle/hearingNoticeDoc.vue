@@ -191,6 +191,8 @@ import mySignture from "@/common/js/mySignture";
 import {
   validatePhone,
 } from "@/common/js/validator";
+import iLocalStroage from "@/common/js/localStroage";
+
 export default {
   components: {
     overflowInput,
@@ -335,6 +337,7 @@ export default {
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
+    
   },
   created() {
     this.isOverStatus();

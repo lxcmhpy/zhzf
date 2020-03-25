@@ -9,7 +9,7 @@
           案件名称：
           <span>
             <el-form-item prop="caseName" style="width: 535px;">
-              <el-input v-model="docData.caseName" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.caseName" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
         </p>
@@ -32,7 +32,7 @@
           地点：
           <span>
             <el-form-item prop="discussionPlace" style="width:566px">
-              <el-input v-model="docData.discussionPlace" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.discussionPlace" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
         </p>
@@ -40,19 +40,19 @@
           主持人：
           <span>
             <el-form-item prop="presidingHearer" class='width130'>
-              <el-input v-model="docData.presidingHearer" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.presidingHearer" maxLength='7'></el-input>
             </el-form-item>
           </span>
           汇报人：
           <span>
             <el-form-item prop="reporter" class='width130'>
-              <el-input v-model="docData.reporter" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.reporter" maxLength='7'></el-input>
             </el-form-item>
           </span>
           记录人：
           <span>
             <el-form-item prop="recorder" class='width130'>
-              <el-input v-model="docData.recorder" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.recorder" maxLength='7'></el-input>
             </el-form-item>
           </span>
         </p>
@@ -60,7 +60,7 @@
           出席人员姓名：
           <span>
             <el-form-item prop="presentMembersName" style="width: 503px;">
-              <el-input v-model="docData.presentMembersName" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.presentMembersName" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
         </p>
@@ -79,7 +79,7 @@
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="illegalFactsEvidence">
-              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90' placeholder="\"></el-input>
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90'></el-input>
               <span class="overflow_describe">讨论记录：</span>
               <span class="span_bg" @click="overFlowEdit" style="margin-top: 8px;">&nbsp;</span>
               <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
