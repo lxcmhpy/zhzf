@@ -189,7 +189,7 @@
         </el-form>
         <ul class="wfxwList">
           <li v-for="item in caseList" :key="item.id" @click="caseRecord(item)">
-              <span class="bull">&bull;</span>
+            <span class="bull">&bull;</span>
             <el-tooltip class="item" effect="light" placement="top-start">
               <div slot="content" style="max-width:250px">{{item.strContent}}</div>
               <span>{{item.strContent}}</span>
@@ -199,21 +199,17 @@
         </ul>
 
         <center>
-          <el-button size="small" @click="caseRecordMore()">查看更多</el-button>
+          <!-- <el-button size="small" @click="caseRecordMore()">查看更多</el-button> -->
         </center>
-        <el-button type="text" @click="table = true">打开嵌套表格的 Drawer</el-button>
+        <el-button type="text" @click="caseRecordMore()">打开嵌套表格的 Drawer</el-button>
         <el-drawer title="我嵌套了表格!" :visible.sync="table" direction="rtl" size="50%">
-          <el-table :data="gridData">
-            <el-table-column property="date" label="日期" width="150"></el-table-column>
-            <el-table-column property="name" label="姓名" width="200"></el-table-column>
-            <el-table-column property="address" label="地址"></el-table-column>
-          </el-table>
+         <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
         </el-drawer>
 
       </div>
 
     </div>
-    <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
+    
     <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
   </div>
 </template>
@@ -222,7 +218,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 // 立案登记
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
-import caseRegisterDiag from "@/page/caseHandle/unRecordCase/caseRegisterDiag.vue";
+import caseRegisterDiag from "./chooseIllegegaDialog.vue";
 import chooseillegalAct from "@/page/caseHandle/unRecordCase/chooseillegalAct";
 export default {
   mixins: [mixinGetCaseApiList],
@@ -451,6 +447,7 @@ export default {
     },
     // 查看更多违法行为
     caseRecordMore() {
+      this.table = true
       console.log()
       let lawCate = {
         cateId: '',
@@ -526,18 +523,6 @@ export default {
   },
   mounted() {
     // let data = {};
-    let searchData = {
-      flag: 0
-    }
-    this.getCaseList2(searchData);
-    this.getIllegaAct();
-    // 获取带办理条数
-    this.getTotal('0');
-    this.getTotal('1');
-    this.getTotal('2');
-    this.getTotal('3');
-    console.log('userinfo', iLocalStroage.gets("userInfo").roles[0].name)
-
     let role = iLocalStroage.gets("userInfo").roles[0].name
     if (role.indexOf("负责人") != -1) {
       console.log('yes')
@@ -546,7 +531,21 @@ export default {
         flag: 3
       }
       this.getCaseList2(searchData);
+    } else {
+      let searchData = {
+        flag: 0
+      }
+      this.getCaseList2(searchData);
     }
+    this.getIllegaAct();
+    // 获取带办理条数
+    this.getTotal('0');
+    this.getTotal('1');
+    this.getTotal('2');
+    this.getTotal('3');
+    console.log('userinfo', iLocalStroage.gets("userInfo").roles[0].name)
+
+
   }
 };
 </script>

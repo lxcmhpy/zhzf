@@ -322,7 +322,7 @@ export default {
   mounted() {
     console.log('选择的案件', this.$route.params)
     this.caseData = this.$route.params.caseData
-    // this.caseData.caseNumber = this.$route.params.caseData.caseNumber
+    this.caseData.caseNumber = this.$route.params.caseData.caseNumber||this.$route.params.caseData.tempNo
     // this.caseData.caseCauseName = this.$route.params.caseData.caseCauseName
     this.caseData.caseId = this.$route.params.caseData.id
     // this.caseData.createTime = this.$route.params.caseData.createTime
