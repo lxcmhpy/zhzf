@@ -21,7 +21,7 @@
         <el-form-item label="目标机构" class="is-required">
           <el-row :gutter="20">
             <el-col :span="5">
-              <el-form-item prop="organType" @change="queryState">
+              <el-form-item prop="organType">
                 <el-select v-model="caseData.organType" placeholder="机构类型">
                   <el-option label="执法机构" value="执法机构"></el-option>
                   <el-option label="公安机关" value="公安机关"></el-option>
@@ -71,6 +71,7 @@ export default {
         person: '',
         caseNumber: '',
         caseCauseName: '',
+        organSend: '',
         organType: '',
         organMb: '',
         appendix: '',
@@ -93,7 +94,7 @@ export default {
           { required: true, message: '请输入目标机构', trigger: 'blur' }
         ],
         copyReason: [
-          { required: true, message: '请选择抄告原因', trigger: 'blur' }
+          { required: true,max: 10, message: '请选择抄告原因,且最多10个汉字', trigger: 'blur' }
         ]
       }
     };
@@ -111,15 +112,20 @@ export default {
         appendixList.push(element.fileName)
       });
       this.caseData.appendix=appendixList.join(',')
+      if(this.caseData.organType == "执法机构"){
+        this.caseData.state = "1";
+      }else{
+        this.caseData.state = "2";
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.caseData)
+          console.log("添加",this.caseData)
           addEditCopyCaseApi(this.caseData).then(res => {
             console.log(res);
             if (res.code == 200) {
               this.$store.dispatch("deleteTabs", this.$route.name);
               this.$router.replace({
-                name: "copyCase",
+                name: "copyCase"
               });
             }
           }, err => {
@@ -136,13 +142,6 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    },
-    queryState(val){
-      if(val == "执法机构"){
-        caseData.state = 1;
-      }else{
-        caseData.state = 2;
-      }
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -190,21 +189,14 @@ export default {
     console.log('选择的案件', this.$route.params)
     let datas = this.$route.params.caseData;
     let caseData = this.caseData;
-    console.log('数据', datas)
+    console.log('用户信息', iLocalStroage.gets("userInfo"))
     for (var key in caseData) {
+      if(key != 'state')
       this.caseData[key] = datas[key]
     }
     this.caseData.caseId = this.$route.params.caseData.id
     this.caseData.person = iLocalStroage.gets("userInfo").username
-    // this.caseData.caseNumber = this.$route.params.caseData.caseNumber
-    // this.caseData.caseCauseName = this.$route.params.caseData.caseCauseName
-    // this.caseData.caseId = this.$route.params.caseData.id
-    // this.caseData.createTime = this.$route.params.caseData.createTime
-    // this.caseData.acceptTime = this.$route.params.caseData.acceptTime
-    // this.caseData.caseStatus = this.$route.params.caseData.caseStatus
-    // this.caseData.vehicleShipId = this.$route.params.caseData.vehicleShipId
-    // this.caseData.wfxw = this.$route.params.caseData.caseCauseName
-    // 
+    this.caseData.organSend = iLocalStroage.gets("userInfo").organName
     console.log('表单', this.caseData)
   }
 }

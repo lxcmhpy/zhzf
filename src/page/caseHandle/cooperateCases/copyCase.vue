@@ -77,12 +77,10 @@ export default {
     },
     //获取当前人的案件抄告列表
     getCaseCopy(searchData) {
-      let data = searchData;
-      data.person = iLocalStroage.gets("userInfo").username;
-      data.current = this.currentPage;
-      data.size = this.pageSize;
-      console.log("查询",iLocalStroage.gets("userInfo"));
-      queryCaseCopyListPageApi(data).then(
+      let copyData = searchData;
+      copyData.current = this.currentPage;
+      copyData.size = this.pageSize;
+      queryCaseCopyListPageApi(copyData).then(
         res => {
           console.log('抄告列表', res)
           this.tableData = res.data.records

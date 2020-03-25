@@ -12,7 +12,7 @@
           <el-row>
             <el-col :span="9">
               <el-form-item style="width:520px">
-                <el-input v-model="formLabelAlign.caseNumber" placeholder="请输入移送案件的案号">
+                <el-input v-model="formLabelAlign.caseNumber" @keyup.enter.native="getUnRecordCase" placeholder="请输入移送案件的案号">
                   <el-button slot="append" icon="el-icon-search" @click="getUnRecordCase"></el-button>
                 </el-input>
               </el-form-item>
