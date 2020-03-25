@@ -48,13 +48,13 @@
           主持人：
           <span>
             <el-form-item prop="persidingHearer" style="width:235px">
-              <el-input v-model="docData.persidingHearer" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.persidingHearer" maxLength='13'></el-input>
             </el-form-item>
           </span>
           听证员：
           <span>
             <el-form-item prop="hearingOfficer" style="width:236px">
-              <el-input v-model="docData.hearingOfficer" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.hearingOfficer" maxLength='13'></el-input>
             </el-form-item>
           </span>
         </p>
@@ -70,7 +70,7 @@
           执法人员：
           <span>
             <el-form-item prop="staff" style="width:254px">
-               <el-select v-model="docData.staff1" placeholder="">
+               <el-select v-model="docData.staff1" placeholder="" @change="changeStaff1">
                 <el-option v-for="item in staffList" :key="item" :label="item" :value="item">
                 </el-option>
               </el-select>
@@ -91,7 +91,7 @@
           执法人员：
           <span>
             <el-form-item prop="staff2" style="width:254px">
-               <el-select v-model="docData.staff2" placeholder="">
+               <el-select v-model="docData.staff2" placeholder="" @change="changeStaff2">
                 <el-option v-for="item in staffList" :key="item" :label="item" :value="item">
                 </el-option>
               </el-select>
@@ -100,7 +100,7 @@
           执法证号：
           <span>
             <el-form-item prop="staffId2">
-               <el-select v-model="docData.staffId1" placeholder="">
+               <el-select v-model="docData.staffId2" placeholder="">
                 <el-option v-for="item in staffIdList" :key="item" :label="item" :value="item">
                 </el-option>
               </el-select>
@@ -112,13 +112,13 @@
           当事人：
           <span>
             <el-form-item prop="party" style="width:106px">
-              <el-input v-model="docData.party" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.party" maxLength='6'></el-input>
             </el-form-item>
           </span>
           法定代表人：
           <span>
             <el-form-item prop="partyManager" style="width:106px">
-              <el-input v-model="docData.partyManager" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.partyManager" maxLength='6'></el-input>
             </el-form-item>
           </span>
           联系电话：
@@ -131,7 +131,7 @@
         <p class="p_begin">
           委托代理人：<span>
             <el-form-item prop="proxy" class="width96">
-              <el-input v-model="docData.proxy" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.proxy" maxLength='6'></el-input>
             </el-form-item>
           </span>
           性别：<span>
@@ -150,14 +150,14 @@
           工作单位及职务：
           <span>
             <el-form-item prop="proxyUnitPosition" class="width100">
-              <el-input v-model="docData.proxyUnitPosition" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.proxyUnitPosition"  maxLength='6'></el-input>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
           第三人：<span>
             <el-form-item prop="thirdParty" style="width:127px">
-              <el-input v-model="docData.thirdParty" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.thirdParty" maxLength='6'></el-input>
             </el-form-item>
           </span>
           性别：<span>
@@ -170,25 +170,25 @@
           </span>
           年龄：<span>
             <el-form-item prop="thirdPartyAge" class="width38">
-              <el-input v-model="docData.thirdPartyAge" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.thirdPartyAge"  maxLength='6'></el-input>
             </el-form-item>
           </span>
           工作单位及职务：
           <span>
             <el-form-item prop="thirdPartyUnitPosition" class="width100">
-              <el-input v-model="docData.thirdPartyUnitPosition" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.thirdPartyUnitPosition"  maxLength='6'></el-input>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
           其他参与人员：<span>
             <el-form-item prop="otherPariticipants" style="width:80px">
-              <el-input v-model="docData.otherPariticipants" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.otherPariticipants" :autosize="{ minRows: 1, maxRows: 3}"  maxLength='6'></el-input>
             </el-form-item>
           </span>
           性别：<span>
             <el-form-item prop="otherPariticipantsSex" class="width38">
-              <el-select v-model="docData.otherPariticipantsSex" :maxLength='maxLength' placeholder="">
+              <el-select v-model="docData.otherPariticipantsSex"  maxLength='6' placeholder="">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
@@ -196,13 +196,13 @@
           </span>
           年龄：<span>
             <el-form-item prop="otherPariticipantsAge" class="width38">
-              <el-input v-model="docData.otherPariticipantsAge" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.otherPariticipantsAge"  maxLength='6'></el-input>
             </el-form-item>
           </span>
           工作单位及职务：
           <span>
             <el-form-item prop="otherPariticipantsPosition" class="width100">
-              <el-input v-model="docData.otherPariticipantsPosition" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.otherPariticipantsPosition"  maxLength='6'></el-input>
             </el-form-item>
           </span>
         </p>
@@ -438,7 +438,7 @@ export default {
       this.staffList = this.docData.staff.split(',');
       this.staffIdList = this.docData.staffId.split(',');
       console.log(iLocalStroage.gets("userInfo"))
-      this.docData.staff1 = iLocalStroage.gets("userInfo").username||'';
+      // this.docData.staff1 = iLocalStroage.gets("userInfo").username||'';
       // this.docData.certificateId1 = this.docData.certificateId.split(',')[0];
       console.log('staffList', this.staffList);
 
@@ -480,6 +480,17 @@ export default {
       if (this.$route.params.docStatus == '1') {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
+    },
+     //修改勘验人员
+    changeStaff1(val){
+      let staffIndex = this.docData.staff.split(',').indexOf(val);
+      this.docData.staffId1 = this.docData.staffId.split(',')[staffIndex];
+      console.log(staffIndex);
+    },
+    changeStaff2(val){
+      let staffIndex = this.docData.staff.split(',').indexOf(val);
+      this.docData.staffId2 = this.docData.staffId.split(',')[staffIndex];
+      console.log(staffIndex);
     },
 
   },

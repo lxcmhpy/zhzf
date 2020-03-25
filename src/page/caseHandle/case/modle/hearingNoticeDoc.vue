@@ -27,13 +27,16 @@
             </el-form-item>
           </span>在
           <span>
-            <el-form-item prop="hearingPlace" style="width:329px">
+            <el-form-item prop="hearingPlace" style="width:379px" >
               <el-input v-model="docData.hearingPlace" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>（
           <span class="single_check">
-            <el-radio v-model="docData.radio" label="1">公开</el-radio>
-            <el-radio v-model="docData.radio" label="2">不公开</el-radio>
+            <el-form-item prop="radio" >
+              <el-radio v-model="docData.radio" label="1">公开</el-radio>
+              <el-radio v-model="docData.radio" label="2">不公开</el-radio>
+            </el-form-item>
+
           </span>）举行听证会议，请准时出席。
         </p>
         <p class="p_begin">
@@ -219,7 +222,8 @@ export default {
         organZipCode: '',
         organContactor: '',
         organTel: '',
-        signatureDate: ''
+        signatureDate: '',
+        radio: ''
       },
       radio: '1',
       handleType: 0, //0  暂存     1 提交
@@ -275,6 +279,9 @@ export default {
         organTel: [
           { validator: validatePhone, required: true, message: '请输入联系电话', trigger: 'blur' },
         ],
+        radio: [
+          { required: true, message: '请选择公开方式', trigger: 'blur' },
+        ],
       },
       nameLength: 23,
       adressLength: 23,
@@ -303,17 +310,17 @@ export default {
       };
       getOrganDetailApi(orgData).then(
         res => {
-          console.log("机构信息",res.data)
+          console.log("机构信息", res.data)
           this.docData.organAddress = res.data.address;
           this.docData.organTel = res.data.telephone;
           this.docData.organZipCode = res.data.zipCode;
           this.docData.organContactor = res.data.contactor;
-         })
+        })
 
     },
     //保存文书信息
     addDocData(handleType) {
-      this.com_addDocData(handleType, 'docForm');
+      // this.com_addDocData(handleType, 'docForm');
     },
     // 盖章
     makeSeal() {
