@@ -3,7 +3,7 @@
     <div>
       <el-form :model="caseRegisterForm" :rules="rules" ref="caseRegisterForm" class="caseRegisterForm" label-width="100px">
         <div class="item">
-          <el-form-item label="执法门类" prop="cateId">
+          <el-form-item label="业务领域" prop="cateId">
             <el-select v-model="caseRegisterForm.cateId" placeholder="请选择" @change="changeLawCate">
               <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateId"></el-option>
             </el-select>

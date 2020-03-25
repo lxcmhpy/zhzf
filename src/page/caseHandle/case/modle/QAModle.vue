@@ -111,9 +111,9 @@ export default {
       console.log(data);
       if(data[0].question =='你是否申请回避？'){
         this.huibi = data[0].answer;
-        let myQs = data.splice(0,1);
-        console.log('myQs',myQs);
-        this.addBannerForm.domains = myQs;
+        data.splice(0,1);
+        console.log('myQs',data);
+        this.addBannerForm.domains = data;
       }else{
         this.addBannerForm.domains = data;
       }

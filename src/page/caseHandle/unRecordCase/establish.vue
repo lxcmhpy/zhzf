@@ -150,7 +150,7 @@
             </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager">
-                <el-input type="textarea" v-model="formData.partyManager" v-bind:class="{ over_flow:formData.partyManager.length>3?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="10" placeholder="\" :disabled="!isParty && !originalData.partyManager ? false : true"></el-input>
+                <el-input type="textarea" v-model="formData.partyManager" v-bind:class="{ over_flow:formData.partyManager.length>3?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="10" placeholder="\" :disabled="!isParty && !originalData.partyManager ? false : true"></el-input>
               </el-form-item>
             </td>
           </tr>
