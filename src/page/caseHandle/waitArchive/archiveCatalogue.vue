@@ -80,7 +80,7 @@ export default {
     getByMlCaseId() {
          this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
          res=>{
-           
+           console.log('res.data',res.data)
             res.data.forEach(item=>{
               if(item.name == "卷宗封面"){
                 if(!item.num){
@@ -107,7 +107,7 @@ export default {
             // })
             //加入备考表
             // res.data.push({name:'备考表',page:1})
-            console.log('res.data',res.data)
+            console.log('res.data2',res.data)
              this.caseList = res.data;
          },
          err=>{
