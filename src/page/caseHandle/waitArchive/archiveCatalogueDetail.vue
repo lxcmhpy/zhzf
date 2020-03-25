@@ -468,7 +468,7 @@ export default {
     },
     //点击卷宗目录后 显示卷宗目录
     showArchiveCatalogue() {
-      this.$refs.archiveCatalogueRef.showModal();
+      this.$refs.archiveCatalogueRef.showModal(true);
     },
     // 绑定已有证据材料
     bindEvidence(row) {
@@ -505,6 +505,24 @@ export default {
       this.$store.dispatch("getByMlCaseIdNew", caseId).then(
         res => {
             console.log('文书列表',res)
+          res.data.forEach(item=>{
+              if(item.name == "卷宗封面"){
+                if(!item.num){
+                  item.num = -1;
+                }
+                item.page = 1;
+              }else if(item.name == "卷内目录"){
+                if(!item.num){
+                  item.num = 0;
+                }
+                item.page = 1;
+              }else if(item.name == "备考表"){
+                if(!item.num){
+                  item.num = 1000;
+                }    //先这样写，之后再改
+                item.page = 1;
+              }
+            })
           res.data = res.data.sort(function(a,b){
             return a.num - b.num;
           });
@@ -565,7 +583,7 @@ export default {
     currentPages(scope){
       let rowIndex = scope.$index;
       let tempPage = '';
-      let qianPage = 2;
+      let qianPage = 0;
       let pageStart=0;
       let pageEnd=0;
       this.caseList.forEach((item,index)=>{

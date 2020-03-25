@@ -244,10 +244,10 @@ export default {
         ],
       rules: {
         clause: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '请解除依据不能为空', trigger: 'blur' },
         ],
         removeDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '解除日期不能为空', trigger: 'blur' },
         ]
       },
       nameLength: 23,

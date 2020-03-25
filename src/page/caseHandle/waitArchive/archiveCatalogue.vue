@@ -28,18 +28,18 @@
                 <td>材料名称</td>
                 <td>页码</td>
             </tr>
-            <tr @click="showCover">
+            <!-- <tr @click="showCover">
                 <td>1</td>
-                <td :class="this.$route.name == 'archiveCover' ? 'activeCatalogue' : ''">卷宗封面</td>
+                <td>卷宗封面</td>
                 <td>1</td>
             </tr>
             <tr @click="showCover">
                 <td>2</td>
                 <td>卷内目录</td>
                 <td>2</td>
-            </tr>
+            </tr> -->
             <tr v-for="(item,index) in caseList" :key="index" @click="alertPDF(item)">
-                <td>{{index+3}}</td>
+                <td>{{index+1}}</td>
                 <td>{{item.name ? item.name :item.evName}}</td>
                 <td>{{currentPages(item,index)}}</td>
             </tr>
@@ -63,12 +63,15 @@ export default {
   // props: ["caseInfo"],
   computed: { ...mapGetters(["caseId"]) },
   methods: {
-    showModal() {
+    showModal(refresh) {
       console.log('show');
 
       this.visible = true;
       console.log(this.visible);
-      this.getByMlCaseId();
+      // if(!this.caseList.length){
+      //   this.getByMlCaseId();
+      // }
+      if(refresh) this.getByMlCaseId();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -77,11 +80,33 @@ export default {
     getByMlCaseId() {
          this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
          res=>{
+           
+            res.data.forEach(item=>{
+              if(item.name == "卷宗封面"){
+                if(!item.num){
+                  item.num = -1;
+                }
+                item.page = 1;
+              }else if(item.name == "卷内目录"){
+                if(!item.num){
+                  item.num = 0;
+                }
+                item.page = 1;
+              }else if(item.name == "备考表"){
+                if(!item.num){
+                  item.num = 1000;
+                }    //先这样写，之后再改
+                item.page = 1;
+              }
+            })
             res.data = res.data.sort(function(a,b){
               return a.num - b.num;
             });
+            // res.data.forEach(item=>{
+            //   if(item.name)
+            // })
             //加入备考表
-            res.data.push({name:'备考表',page:1})
+            // res.data.push({name:'备考表',page:1})
             console.log('res.data',res.data)
              this.caseList = res.data;
          },
@@ -96,9 +121,10 @@ export default {
     alertPDF (item) {
       console.log(this.$route.name)
       if(this.$route.name!='archiveCover'){
-        this.$router.push({name:'archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
+        this.$router.push({name:'archiveCover',params:{clickData:JSON.stringify(item)}});
         return;
       }
+      
       this.$emit('alertPDF', item)
     },
     //显示封面
@@ -113,7 +139,7 @@ export default {
     currentPages(row,index){
       var rowIndex = index;
       let tempPage = '';
-      let qianPage = 2;
+      let qianPage = 0;
       let pageStart=0;
       let pageEnd=0;
       this.caseList.forEach((item,index)=>{

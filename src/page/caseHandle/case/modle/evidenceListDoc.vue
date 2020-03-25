@@ -520,5 +520,7 @@ export default {
 @import "@/assets/css/caseHandle/caseDocModle.scss";
 .print_box .print_info .evidencetable tr td{
   white-space: inherit;
+  text-align-last: center;
 }
+
 </style>
