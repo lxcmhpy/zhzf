@@ -1,6 +1,6 @@
 <template>
   <div class="print_box" id='btnB'>
-    <div class="print_info" id="subOutputRank-print">
+    <div class="print_info" id="deliveryOutputRank-print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
         <div class="doc_topic">送达回证</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
@@ -130,7 +130,7 @@
       </el-form>
     </div>
 
-    <casePageFloatBtns :pageDomId="'subOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData('docForm')" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'deliveryOutputRank-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData('docForm')" @backHuanjie="submitData"></casePageFloatBtns>
 
     <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
     <!-- <el-alert title="错误提示的文案" type="error"  show-icon>
@@ -207,7 +207,7 @@ export default {
       maxLength: 23,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: 'subOutputRank-print',
+        pageDomId: 'deliveryOutputRank-print',
       },
       isPdf: '',
       options: [{

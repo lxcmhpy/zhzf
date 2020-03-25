@@ -38,10 +38,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
 import caseAndEvidenceListDia from "./caseAndEvidenceListDia";
-import {
- uploadEvApi,
- findFileByIdApi,
-} from "@/api/upload";
+import { uploadEvApi,findFileByIdApi,uploadEvdence } from "@/api/upload";
 export default {
   data() {
     return {
@@ -86,16 +83,41 @@ export default {
         });
     },
     //本地上传
+    // chooseLocalEvidence(param){
+    //     var fd = new FormData()
+    //   fd.append("file", param.file);
+    //   fd.append('caseId',this.caseId)
+    //   fd.append('docId','2c9029ee6cac9281016caca7f38e0002');
+    //   let _this = this
+    //   uploadEvApi(fd).then(
+    //     res => {
+    //       console.log(res);
+    //       _this.findFile(res.data);
+    //     },
+    //     error => {
+    //       console.log(error)
+    //     }
+    //   );
+    // },
+    //本地上传，并且上传到证据目录
     chooseLocalEvidence(param){
-        var fd = new FormData()
+      console.log(param);
+      var fd = new FormData()
       fd.append("file", param.file);
       fd.append('caseId',this.caseId)
-      fd.append('docId','2c9029ee6cac9281016caca7f38e0002');
+      fd.append('docId',"2c9029ee6cac9281016caca7f38e0002");
+      fd.append("category", "证据");
+      fd.append("userId", iLocalStroage.gets("userInfo").id);
+      fd.append("evName", param.file.name);
+      fd.append("evType", param.file.type);
+      fd.append("status", 0);//默认有效
+      fd.append("remark", "");
+      fd.append("fileId", "");
       let _this = this
-      uploadEvApi(fd).then(
+      uploadEvdence(fd).then(
         res => {
           console.log(res);
-          _this.findFile(res.data);
+          _this.findFile(res.data.id);
         },
         error => {
           console.log(error)
