@@ -26,9 +26,13 @@
       </div>
       <div class="tablePart_select">
         <el-table :data="tableData" stripe style="width: 100%" highlight-current-row @current-change="chexkCase" height="100%">
-          <el-table-column prop="caseNumber" label="编号" align="center" width="200"></el-table-column>
+          <el-table-column prop="caseNumber" label="案号" align="center" width="200">
+            <template slot-scope="scope">
+            {{scope.row.caseNumber||scope.row.tempNo}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="party" label="当事人" align="center" width="150"></el-table-column>
           <el-table-column prop="vehicleShipId" label="车/船号" align="center" width="100"></el-table-column>
-          <el-table-column prop="party" label="当事人/单位" align="center" width="150"></el-table-column>
           <el-table-column prop="caseCauseName" label="违法行为" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="top-start">
@@ -39,11 +43,11 @@
           </el-table-column>
           <el-table-column prop="acceptTime" label="受案时间" align="center" width="150"></el-table-column>
           <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
-          <el-table-column prop="caseStatus" label="案件状态" align="center" width="100"></el-table-column>
+          <el-table-column prop="caseStatus" label="当前环节" align="center" width="100"></el-table-column>
         </el-table>
       </div>
       <div class="paginationBox">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[5]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
       </div>
       <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
     </div>
@@ -69,7 +73,7 @@ export default {
       // },
       tableData: [],
       currentPage: 1, //当前页
-      pageSize: 5, //pagesize
+      pageSize: 10, //pagesize
       total: 0, //总页数
       hideSomeSearch: true,
       formLabelAlign: {

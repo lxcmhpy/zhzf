@@ -79,17 +79,29 @@
       </div>
       <div class="padding22 tablebox">
         <el-table :data="tableData" stripe height="100%" highlight-current-row @current-change="clickCase">
-          <el-table-column :prop="moreFlag != 'unRecordCase' ? 'caseNumber'  :'tempNo' " label="案号" align="center" ></el-table-column>
+          <el-table-column :prop="moreFlag != 'unRecordCase' ? 'caseNumber'  :'tempNo' " label="案号" align="center"></el-table-column>
           <el-table-column prop="name" label="当事人" align="center"></el-table-column>
           <!-- <el-table-column prop="vehicleShipId" label="车/船号" align="center"></el-table-column> -->
           <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
           <!-- <el-table-column prop="acceptTime" label="受案时间" align="center"></el-table-column> -->
           <!-- <el-table-column prop="caseType" label="案件类型" align="center"></el-table-column> -->
           <el-table-column label="总处理时长" align="center">
-            <template></template>
+            <template slot-scope="scope">
+              <div>{{scope.row.caseDealTime||"-"}}</div>
+            </template>
           </el-table-column>
           <el-table-column prop="currentLinkName" label="当前环节" align="center"></el-table-column>
-          <el-table-column prop="caseStatus" label="当前状态" align="center"></el-table-column>
+          <el-table-column prop="caseStatus" label="当前状态" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.caseStatus=='办理中'" style="color:#2B313E">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='待归档'" style="color:#2B313E">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='待审批'" style="color:#00B4A1">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='待审核'" style="color:#00B4A1">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='审核中'" style="color:#00B4A1">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='未立案'" style="color:#E84241">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='审批中'" style="color:#0074F5">{{scope.row.caseStatus}}</div>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
 
@@ -176,17 +188,28 @@
           </div>
         </el-form>
         <ul class="wfxwList">
-          <li v-for="item in caseList" :key="item.id" @click="caseRecord(item)"><span class="bull">&bull;</span>{{item.strContent}}</li>
+          <li v-for="item in caseList" :key="item.id" @click="caseRecord(item)">
+            <span class="bull">&bull;</span>
+            <el-tooltip class="item" effect="light" placement="top-start">
+              <div slot="content" style="max-width:250px">{{item.strContent}}</div>
+              <span>{{item.strContent}}</span>
+            </el-tooltip>
+          </li>
+
         </ul>
 
         <center>
-          <el-button size="small" @click="caseRecordMore()">查看更多</el-button>
+          <!-- <el-button size="small" @click="caseRecordMore()">查看更多</el-button> -->
         </center>
+        <el-button type="text" @click="caseRecordMore()">打开嵌套表格的 Drawer</el-button>
+        <el-drawer title="我嵌套了表格!" :visible.sync="table" direction="rtl" size="50%">
+         <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
+        </el-drawer>
 
       </div>
 
     </div>
-    <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
+    
     <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
   </div>
 </template>
@@ -195,7 +218,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 // 立案登记
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
-import caseRegisterDiag from "@/page/caseHandle/unRecordCase/caseRegisterDiag.vue";
+import caseRegisterDiag from "./chooseIllegegaDialog.vue";
 import chooseillegalAct from "@/page/caseHandle/unRecordCase/chooseillegalAct";
 export default {
   mixins: [mixinGetCaseApiList],
@@ -206,6 +229,24 @@ export default {
   },
   data() {
     return {
+      gridData: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }],
+      table: false,
       activeName: 'first',
       waitDealSearch: '',
       unRecordCaseSearch: '',
@@ -380,6 +421,14 @@ export default {
       data.current = this.currentPage;
       data.size = this.pageSize;
       this.getCaseList(data)
+      this.tableData.forEach(element => {
+        let nd = 1000 * 24 * 60 * 60;
+        let endTime = element.closeDate || new Date()
+        element.caseDealTime = endTime - new Date(element.acceptTime);
+        let day = element.caseDealTime / nd;
+        day = Math.floor(day)
+        console.log(day, '天', endTime, element.acceptTime, element.caseDealTime)
+      });
     },
 
     // 信息查验
@@ -398,6 +447,7 @@ export default {
     },
     // 查看更多违法行为
     caseRecordMore() {
+      this.table = true
       console.log()
       let lawCate = {
         cateId: '',
@@ -473,16 +523,29 @@ export default {
   },
   mounted() {
     // let data = {};
-    let searchData = {
-      flag: 0
+    let role = iLocalStroage.gets("userInfo").roles[0].name
+    if (role.indexOf("负责人") != -1) {
+      console.log('yes')
+      this.activeName = 'fourth';
+      let searchData = {
+        flag: 3
+      }
+      this.getCaseList2(searchData);
+    } else {
+      let searchData = {
+        flag: 0
+      }
+      this.getCaseList2(searchData);
     }
-    this.getCaseList2(searchData);
     this.getIllegaAct();
     // 获取带办理条数
     this.getTotal('0');
     this.getTotal('1');
     this.getTotal('2');
     this.getTotal('3');
+    console.log('userinfo', iLocalStroage.gets("userInfo").roles[0].name)
+
+
   }
 };
 </script>

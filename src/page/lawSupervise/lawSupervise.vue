@@ -14,7 +14,7 @@
             class="amap-demo">
             <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events">
             </el-amap-marker>
-            <el-amap-info-window v-if="curWindow" :visible="curWindow.visible" :position="curWindow.position">
+            <el-amap-info-window v-if="curWindow" :visible="curWindow&&curWindow.visible" :position="curWindow.position">
                  <div :class="'lawWindowStyle'+curWindow.category" >
                      <!-- 0执法人员 -->
                      <div v-if="curWindow.category == 0">
@@ -136,23 +136,32 @@
                         <div class="flexBox">
                             <div class="con">
                                 <p>{{curWindow.other.address}}</p>
+                                <div>
+                                    <p>{{curWindow.other.createTime}} &nbsp;
+                                        超限{{curWindow.other.cxchl}} &nbsp;
+                                        黑名单{{curWindow.other.blackList}}
+                                    </p>
+                                </div>
                             </div>
                             <div class="status">
                                 <i class="iconfont law-mobile-phone"></i>
                                 <p>在线</p>
                             </div>
                         </div>
-                        <div>
-                                <p>{{curWindow.other.createTime}} &nbsp;
-                                    超限{{curWindow.other.cxchl}} &nbsp;
-                                    黑名单{{curWindow.other.blackList}}</p>
-                        </div>
                         <div class="btns">
-                            <i class="iconfont law-mobile"></i>
-                            <i class="iconfont law-shipin"></i>
-                            <i class="iconfont law-jiankong"></i>
-                            <i class="iconfont law-msg-box"></i>
-                            <i class="iconfont law-xianlu"></i>
+                            <el-table v-if="curWindow.other.list"
+                                style="width: 100%;"
+                                :data="curWindow.other.list"
+                                resizable
+                                stripe>
+                                <el-table-column width="100" prop="checkTime" label="过检时间"></el-table-column>
+                                <el-table-column width="100" prop="vehicleNumber" label="车牌号"></el-table-column>
+                                <el-table-column width="70" prop="overload" label="超载率"></el-table-column>
+                                <el-table-column width="100" prop="area" label="车属地"></el-table-column>
+                                <el-table-column width="80" label="重点监管">
+                                    <template><span>是</span></template>
+                                </el-table-column>
+                            </el-table>
                         </div>
                      </div>
                      <!-- 5监管企业 -->
@@ -183,15 +192,13 @@
                      </div>
                      <!-- 6监管车辆 -->
                      <div v-else-if="curWindow.category == 6">
-                        <div>
-                             <i class="iconfont law-car"></i>
-                            {{curWindow.other.nickName}}
-                            <div class="right">{{curWindow.other.enforceNo}}</div>
-                        </div>
-                        <div class="flexBox">
+                         <div class="flexBox">
                             <div class="con">
-                                <p>{{curWindow.other.address}}</p>
-                                <p>{{curWindow.other.mobile}}</p>
+                                <p>
+                                    <i class="iconfont law-car"></i>
+                                    {{curWindow.other.vehicleNumber}}</p>
+                                <p>{{curWindow.other.organName}}</p>
+                                <!-- <p>{{curWindow.other.mobile}}</p> -->
                             </div>
                             <div class="status">
                                 <i class="iconfont law-mobile-phone"></i>
@@ -333,7 +340,7 @@ import Vue from "vue";
 import echarts from 'echarts';
 import 'echarts/lib/chart/graph';
 import {lawSuperviseObj,yjObj} from './echarts/echartsJson';
-import {getZfjgLawSupervise} from '@/api/lawSupervise.js';
+import {getZfjgLawSupervise,getBySiteId} from '@/api/lawSupervise.js';
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 
 import AMap from 'vue-amap';
@@ -483,10 +490,6 @@ export default {
         }
     },
     methods: {
-        eve(marker) {
-            debugger
-            marker.visible = true
-        },
         onSearchResult(pois, category) {
           let latSum = 0;
           let lngSum = 0;
@@ -513,6 +516,9 @@ export default {
                                 });
 
                                 that.curWindow = that.windows[i];
+                                if (category == 4) {
+                                    that.getBySiteId(that.curWindow.other.id,that.curWindow.other)
+                                }
                                 console.log(that.curWindow);
                                 that.$nextTick(() => {
                                     that.curWindow.visible = true;
@@ -530,12 +536,12 @@ export default {
                         iconStyle: 'red',
                         events: {
                             click() {
-                                debugger;
                                 that.windows.forEach(window => {
                                     window.visible = false;
                                 });
 
                                 that.curWindow = that.windows[i];
+
                                 console.log(that.curWindow);
                                 that.$nextTick(() => {
                                     that.curWindow.visible = true;
@@ -543,6 +549,7 @@ export default {
                             }
                         }
                     })
+
                 }
                 windows.push({
                     position: [poi.lng, poi.lat],
@@ -560,8 +567,28 @@ export default {
             this.center = [center.lng, center.lat];
           }
         },
+        getBySiteId (id,obj) {
+            let _this = this
+            new Promise((resolve, reject) => {
+                getBySiteId(id).then(
+                    res => {
+                        resolve(res)
+                        obj.list = res.data
+
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
         searchByTab (item) {
-            this.category = item.code
+            this.markers.splice(0, this.markers.length);
+            if (this.curWindow) {
+                this.curWindow.visible = false;
+            }
+            this.category = item.code;
             let data = {
                     // area: this.currentAddressObj.province + this.currentAddressObj.district,
                     area: '东城区',
@@ -570,10 +597,13 @@ export default {
                     size: 0,
                     type: item.code
                 }
-            this.getZfjgLawSupervise(data)
+            this.getZfjgLawSupervise(data);
         },
         searchAll (pois) {
-            this.markers.splice(0, this.markers.length)
+            this.markers.splice(0, this.markers.length);
+            if (this.curWindow) {
+                this.curWindow.visible = false;
+            }
             if (this.category == -1) {
                 this.errorMsg(`总计${pois.length}条数据`, 'success');
                 this.onSearchResult(pois, this.category);
@@ -593,47 +623,47 @@ export default {
         getZfjgLawSupervise (data) {
             let _this = this
             new Promise((resolve, reject) => {
-                    getZfjgLawSupervise(data).then(
-                        res => {
-                            // resolve(res);
-                            let resultList = []
-                            if (res.data && res.data.records.length == 0) {
-                                _this.errorMsg('暂无数据', 'error');
-                                // return
-                            } else {
-                                _this.errorMsg(`总计${res.data.records.length}条数据`, 'success');
-                            }
-                            res.data.records.forEach((item,i)=>{
-                                let position = item.position.split(',');
-                                let lng = parseFloat(position[0]);
-                                let lat = parseFloat(position[1]);
-                                resultList.push({
-                                    address: item.address,
-                                    distance: null,
-                                    id: item.id,
+                getZfjgLawSupervise(data).then(
+                    res => {
+                        // resolve(res);
+                        let resultList = []
+                        if (res.data && res.data.records.length == 0) {
+                            _this.errorMsg('暂无数据', 'error');
+                            // return
+                        } else {
+                            _this.errorMsg(`总计${res.data.records.length}条数据`, 'success');
+                        }
+                        res.data.records.forEach((item,i)=>{
+                            let position = item.position.split(',');
+                            let lng = parseFloat(position[0]);
+                            let lat = parseFloat(position[1]);
+                            resultList.push({
+                                address: item.address,
+                                distance: null,
+                                id: item.id,
+                                lat: lat,
+                                lng: lng,
+                                location: {
+                                    O: lng,
+                                    P: lat,
                                     lat: lat,
-                                    lng: lng,
-                                    location: {
-                                        O: lng,
-                                        P: lat,
-                                        lat: lat,
-                                        lng: lng
-                                    },
-                                    name: item.nickName,
-                                    shopinfo: '',
-                                    tel: '',
-                                    type: _this.category,
-                                    other: item
-                                })
+                                    lng: lng
+                                },
+                                name: item.nickName,
+                                shopinfo: '',
+                                tel: '',
+                                type: _this.category,
+                                other: item
                             })
-
-                            _this.onSearchResult(resultList, _this.category)
-                        },
-                        error => {
-                            //  _this.errorMsg(error.toString(), 'error')
-                             return
                         })
-                })
+
+                        _this.onSearchResult(resultList, _this.category)
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    })
+            })
         }
     },
     mounted () {

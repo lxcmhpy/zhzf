@@ -21,6 +21,21 @@ export const mixinGetCaseApiList = {
           this.tableData = res.data.records;
           this.tableData.forEach(item => {
             item.name = item.party ? item.party : item.partyName;
+
+            // 处理时间
+            let nd = 1000 * 24 * 60 * 60;
+            let endTime
+            if(item.closeDate){
+              endTime = new Date(item.closeDate)
+            }
+            else{
+              endTime = new Date()
+            }
+            
+            let day = (endTime - new Date(item.acceptTime)) / nd;
+            day = Math.ceil(day)
+            item.caseDealTime = day+'天';
+            // console.log(item.closeDate,'item.closeDate',day, '天', endTime, item.acceptTime, item.caseDealTime)
           })
           this.total = res.data.total;
         },
@@ -111,7 +126,7 @@ export const mixinGetCaseApiList = {
       //0暂存 1提交
       this.caseLinkDataForm.status = handleType;
       if (handleType) {
-        this.$refs[docForm].validate((valid,noPass) => {
+        this.$refs[docForm].validate((valid, noPass) => {
           if (valid) {
             this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
               res => {
@@ -149,15 +164,15 @@ export const mixinGetCaseApiList = {
                 console.log(err);
               }
             );
-          }else{
+          } else {
             let a = Object.values(noPass)[0];
             console.log(a);
             this.$message({
               showClose: true,
               message: a[0].message,
               type: 'error',
-              offset:100,
-              customClass:'validateErrorTip'
+              offset: 100,
+              customClass: 'validateErrorTip'
             });
             return false;
           }
@@ -277,7 +292,7 @@ export const mixinGetCaseApiList = {
             this.caseDocDataForm.id = res.data[0].id;
             this.docData = JSON.parse(res.data[0].docData);
             //设置禁用
-            if(this.needSetDisabled){
+            if (this.needSetDisabled) {
               this.setDisabledData();
             }
           }
@@ -298,10 +313,10 @@ export const mixinGetCaseApiList = {
     com_addDocData(handleType, docForm) {
       this.caseDocDataForm.docData = JSON.stringify(this.docData);
       this.caseDocDataForm.status = handleType;
-      console.log('caseDocDataForm',this.caseDocDataForm);
+      console.log('caseDocDataForm', this.caseDocDataForm);
       if (handleType) {
-        this.$refs[docForm].validate((valid,noPass) => {
-        
+        this.$refs[docForm].validate((valid, noPass) => {
+
           if (valid) {
             this.$store.dispatch("addDocData", this.caseDocDataForm).then(
               res => {
@@ -311,11 +326,11 @@ export const mixinGetCaseApiList = {
                   message: "提交成功"
                 });
                 //为多份文书赋值id，提交多份文书的pdf时需要用到
-                if(this.caseDocDataForm.docDataId != undefined){
+                if (this.caseDocDataForm.docDataId != undefined) {
                   this.caseDocDataForm.docDataId = res.data.id;
                 }
-               
-                console.log('this.caseDocDataForm.docDataId',this.caseDocDataForm.docDataId)
+
+                console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
                 this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
                 //提交成功后提交pdf到服务器，后打开pdf
                 this.printContent();
@@ -332,8 +347,8 @@ export const mixinGetCaseApiList = {
               showClose: true,
               message: a[0].message,
               type: 'error',
-              offset:100,
-              customClass:'validateErrorTip'
+              offset: 100,
+              customClass: 'validateErrorTip'
             });
             return false;
           }
@@ -348,7 +363,7 @@ export const mixinGetCaseApiList = {
               message: "暂存成功"
             });
             //多份文书查询信息需要用到id，先把id保存起来
-            iLocalStroage.set("currentDocDataId",res.data.id);
+            iLocalStroage.set("currentDocDataId", res.data.id);
             this.reload();
           },
           err => {
@@ -368,7 +383,7 @@ export const mixinGetCaseApiList = {
           this.docTableDatas = res.data;
           this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
           console.log('文书列表', this.docTableDatas);
-          if (params.linkTypeId == '2c90293b6c178b55016c17c93326000f' || params.linkTypeId == '2c9029e16c753a19016c755fe1340001'  || params.linkTypeId == 'a36b59bd27ff4b6fe96e1b06390d204h') { //调查类文书和分期延期缴纳、强制执行
+          if (params.linkTypeId == '2c90293b6c178b55016c17c93326000f' || params.linkTypeId == '2c9029e16c753a19016c755fe1340001' || params.linkTypeId == 'a36b59bd27ff4b6fe96e1b06390d204h') { //调查类文书和分期延期缴纳、强制执行
             this.setMoreDocTableTitle();
           }
         },
@@ -423,7 +438,7 @@ export const mixinGetCaseApiList = {
       fd.append("file", f)
       fd.append('caseId', this.caseId);
       fd.append('category', '文书');
-      
+
       let docId = '';  //文书 id
 
       if (this.caseDocDataForm != undefined) {
@@ -438,8 +453,8 @@ export const mixinGetCaseApiList = {
         docId = this.huanjieAndDocId;
       }
       fd.append('docId', docId);
-      
-      
+
+
       //已经上传过了，
       if (iLocalStroage.gets("currrentPdfData")) {
         fd.append('id', iLocalStroage.gets("currrentPdfData").id);
@@ -465,7 +480,7 @@ export const mixinGetCaseApiList = {
             docId: docId,
             approvalOver: this.approvalOver ? true : false,
             caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
-            docDataId:(this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : ''
+            docDataId: (this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : ''
           }
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({ name: 'myPDF', params: routerData })
@@ -571,11 +586,11 @@ export const mixinGetCaseApiList = {
       }
     },
     //判断流程图跳转pdf文书还是表单
-    flowShowPdfOrForm(data,flowChartData) {
+    flowShowPdfOrForm(data, flowChartData) {
       console.log(data);
-      console.log('flowChartData',flowChartData);
+      console.log('flowChartData', flowChartData);
       let completeLinkArr = flowChartData.completeLink.split(',');
-      
+
       //既是环节也是文书的
       let isHuanjieDoc = false;
       if (data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204g" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204h") {
@@ -593,23 +608,22 @@ export const mixinGetCaseApiList = {
         }
       } else {
         // 行政强制措施即将到期，请前往解除行政强制措施
-        if(data.linkID !='a36b59bd27ff4b6fe96e1b06390d204h' &&  data.linkID !='2c9029ee6cac9281016cacaadf990006')
-        { 
+        if (data.linkID != 'a36b59bd27ff4b6fe96e1b06390d204h' && data.linkID != '2c9029ee6cac9281016cacaadf990006') {
           this.$router.push({ name: data2.nextLink })
-        }else{
-          if(completeLinkArr.indexOf('2c90293b6c178b55016c17c7ae92000e') >=0 && completeLinkArr.indexOf('2c9029ee6cac9281016cacaa28760005') == -1){
+        } else {
+          if (completeLinkArr.indexOf('2c90293b6c178b55016c17c7ae92000e') >= 0 && completeLinkArr.indexOf('2c9029ee6cac9281016cacaa28760005') == -1) {
             this.$refs.pleaseRemoveMDiaRef.showModal();
-          }else{
+          } else {
             this.$router.push({ name: data2.nextLink })
           }
         }
-        
-        
+
+
       }
     },
     //根据id获取文书信息(使用场景:询问笔录查看详情）
     getDocDetailById(id) {
-      console.log('id',id);
+      console.log('id', id);
       getDocDetailByIdApi(id).then(res => {
         console.log(res);
         this.caseDocDataForm.id = res.data.id;

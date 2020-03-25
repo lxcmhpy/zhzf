@@ -10,6 +10,7 @@
   >
     <template slot="title">
         <div class="catalogueTitle">
+            <img src="../../../../static/images/img/caseList.svg">
             卷宗目录
             <!-- 案件：{{caseInfo.caseNumber}} -->
         </div>
@@ -24,12 +25,12 @@
         <table border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
                 <td>序号</td>
-                <td>文书名称</td>
+                <td>材料名称</td>
                 <td>页码</td>
             </tr>
             <tr @click="showCover">
                 <td>1</td>
-                <td>卷宗封面</td>
+                <td :class="this.$route.name == 'archiveCover' ? 'activeCatalogue' : ''">卷宗封面</td>
                 <td>1</td>
             </tr>
             <tr @click="showCover">
@@ -39,8 +40,8 @@
             </tr>
             <tr v-for="(item,index) in caseList" :key="index" @click="alertPDF(item)">
                 <td>{{index+3}}</td>
-                <td>{{item.name}}</td>
-                <td>{{item.page}}</td>
+                <td>{{item.name ? item.name :item.evName}}</td>
+                <td>{{currentPages(item,index)}}</td>
             </tr>
         </table>
     </div>
@@ -67,7 +68,7 @@ export default {
 
       this.visible = true;
       console.log(this.visible);
-
+      this.getByMlCaseId();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -76,6 +77,12 @@ export default {
     getByMlCaseId() {
          this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
          res=>{
+            res.data = res.data.sort(function(a,b){
+              return a.num - b.num;
+            });
+            //加入备考表
+            res.data.push({name:'备考表',page:1})
+            console.log('res.data',res.data)
              this.caseList = res.data;
          },
          err=>{
@@ -102,14 +109,34 @@ export default {
         return;
       }
       this.$emit('showCoverEmit')
+    },
+    currentPages(row,index){
+      var rowIndex = index;
+      let tempPage = '';
+      let qianPage = 2;
+      let pageStart=0;
+      let pageEnd=0;
+      this.caseList.forEach((item,index)=>{
+        if(rowIndex > index){
+          qianPage = qianPage + Number(item.page);
+        }
+      })
+      if(row.page>1){
+        pageStart = qianPage+1;
+        pageEnd = qianPage+ Number(row.page);
+        tempPage = pageStart + '~' + pageEnd
+      }else{
+        pageStart = qianPage+1;
+        tempPage = pageStart;
+      }
+      return tempPage
     }
   },
   mounted () {
-    this.getByMlCaseId();
+    // this.getByMlCaseId();
+    //设置弹窗遮罩层不要遮到右侧快捷菜单
      var class1 =  document.getElementsByClassName("archiveCatalogueBox");
-     console.log('class',class1)
      var class2 = class1[0].parentNode;
-     console.log('class',class2)
      class2.style.right = '60px';
   }
 };
@@ -128,6 +155,10 @@ export default {
         .catalogueTitle {
             font-size: 20px;
             cursor: pointer;
+            img{
+              height: 30px;
+              vertical-align: middle;
+            }
         }
     }
     table{

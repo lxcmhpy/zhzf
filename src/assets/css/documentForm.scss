@@ -658,20 +658,19 @@
         .i_box_apply {
             display       : inline-block;
             vertical-align: middle;
-            margin-right: -20px;
-            width        : 24px;
-            height       : 24px;
-            border-radius: 50px;
-            background   : #4AAFA7;
-            color        : #fff;
+            margin-right  : -20px;
+            width         : 24px;
+            height        : 24px;
+            border-radius : 50px;
+            background    : #4AAFA7;
+            color         : #fff;
 
         }
 
         .i_box_org {
             display       : inline-block;
             vertical-align: middle;
-            margin-right: -20px;
-
+            margin-right  : -20px;
             width         : 24px;
             height        : 24px;
             border-radius : 50px;
@@ -699,8 +698,8 @@
             margin-right: 32px;
             float       : left;
             color       : #4573D0;
-            cursor:pointer;
-            
+            cursor      : pointer;
+
         }
     }
 
@@ -708,7 +707,7 @@
         padding-top: 10px;
     }
 
-   
+
 
 
 }
