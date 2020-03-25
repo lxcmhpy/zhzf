@@ -175,7 +175,10 @@
           </span>。经本机关催告后，你（单位）在催告期间有转移或隐匿财物迹象的，仍未履行且无正当理由。依据
           <span>
             <el-form-item prop="punishmentBasis"  class="width120">
-              <el-input  v-model="docData.punishmentBasis" :maxLength='maxLength'></el-input>
+              <el-input type="textarea" v-model="docData.punishmentBasis" 
+              v-bind:class="{ over_flow:docData.punishmentBasis.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>的规定，本机关将立即于
           <span>
@@ -186,7 +189,10 @@
           </span>强制执行：
           <span>
             <el-form-item prop="measureAction"  class="width120">
-              <el-input  v-model="docData.measureAction"  :maxLength='maxLength'></el-input>
+              <el-input type="textarea" v-model="docData.measureAction"  :maxLength='maxLength'
+              v-bind:class="{ over_flow:docData.measureAction.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              ></el-input>
             </el-form-item>
           </span>（强制执行方式）。
         </p>
@@ -313,22 +319,22 @@ export default {
       value1: '',
       rules: {
         serviceTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '决定时间必须填写', trigger: 'blur' },
         ],
         punishmentBasis: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '违法条款必须输入', trigger: 'blur' },
         ],
         forceTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '强制执行时间必须填写', trigger: 'blur' },
         ],
         measureAction: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '强制执行方式必须填写', trigger: 'blur' },
         ],
         reconsiderationOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '行政复议机构必须填写', trigger: 'blur' },
         ],
         enforcementOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '行政诉讼机构必须填写', trigger: 'blur' },
         ],
 
       },
