@@ -239,17 +239,17 @@ export default {
       console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
     },
-    onSubmit(formName) {
-      console.log('submit!');
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
+    // onSubmit(formName) {
+    //   console.log('submit!');
+    //   this.$refs[formName].validate((valid) => {
+    //     if (valid) {
+    //       alert('submit!');
+    //     } else {
+    //       console.log('error submit!!');
+    //       return false;
+    //     }
+    //   });
+    // },
     //根据案件ID和文书Id获取数据
     // getDocDataByCaseIdAndDocId() {
     //   let data = {
@@ -271,6 +271,7 @@ export default {
     },
     //提交
     submitData(handleType) {
+       debugger
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
         name: this.$route.params.url
@@ -281,6 +282,7 @@ export default {
     saveData(docForm) {
       debugger
       this.$refs[docForm].validate(valid => {
+        debugger
         if (valid) {
           let datetime = this.changeableTable[0].servedDate;
           let data = {
@@ -334,6 +336,19 @@ export default {
       if (this.$route.params.docStatus == '1') {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
+    },
+    formatDateStr(val) {
+      if (val == null) {
+        return null;
+      }
+      let date = new Date(val);
+      let Y = date.getFullYear() + '-';
+      let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+      let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+      let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+      let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+      let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+      return Y + M + D + h + m + s;
     },
     makeSeal() {
 

@@ -743,6 +743,16 @@ export function getHandleRecordApi(data) {
       cancelToken: setCancelSource()
     });
   }
+    //获取送达回证
+  export function getDeliverReceiptByCaseIdApi(data) {
+      return request({
+        url: "/doc/proof/findByCaseId/"+data.caseId,
+        method: "GET",
+        showloading: true,
+        loadingType:'loadPart',
+        cancelToken: setCancelSource()
+      });
+    }
   //添加修改送达回证
   export function saveOrUpdateDeliverReceiptApi(data) {
     return request({
