@@ -80,19 +80,16 @@ export default {
       if(type == 'archiveCatalogue'){
          this.$emit('showArchiveCatalogue');
       }
-<<<<<<< HEAD
       if(type == 'documentForm'){
          this.$emit('showdocumentForm');
       }
       if(type == 'deliverReceiptForm'){
          this.$emit('showdeliverReceiptForm');
       }
-=======
       if(type == 'evidenceForm'){
         this.$emit('showEvidenceCatalogue');
       }
      
->>>>>>> e5d38267f29c973e16e5b4e0d30b05ae59c91216
     },
     
   }
