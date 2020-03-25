@@ -394,3 +394,9 @@
 .el-message.el-message--error.validateErrorTip {
     left: calc(50% + 100px);
 }
+
+#catalogueUpload{
+    .el-upload-dragger{
+        height: 380px;
+    }
+}

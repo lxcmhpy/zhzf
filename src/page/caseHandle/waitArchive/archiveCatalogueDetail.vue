@@ -7,8 +7,12 @@
     <div class="tablePart">
       <el-table :data="caseList" border stripe highlight-current-row style="width: 100%">
         <el-table-column width="50" type="index" label="序号" align="center"></el-table-column>
-        <el-table-column prop="name" label="文书名称" align="center"></el-table-column>
-        <el-table-column prop="page" label="起止页数" align="center"></el-table-column>
+        <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
+        <el-table-column prop="page" label="起止页数" align="center">
+          <template slot-scope="scope">
+              <span>{{currentPages(scope)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="顺序调整" align="center" >
           <template slot-scope="scope">
             <div>
@@ -56,9 +60,10 @@
       :close-on-click-modal="false"
     >
       <div>
-        <div style="float: left;width: 370px">
+        <div style="float: left;width: 370px;">
           <el-upload
             class="upload-demo"
+            id="catalogueUpload"
             drag
             :http-request="saveFile"
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -68,22 +73,22 @@
             <div class="el-upload__text">
               <em>点击上传附件</em>
             </div>
-            <div
+            <!-- <div
               class="el-upload__tip"
               slot="tip"
               style="text-align: center"
-            >只能上传jpg/png文件，且不超过500kb</div>
+            >只能上传jpg/png文件，且不超过500kb</div> -->
           </el-upload>
         </div>
         <div style="float:left;width:300px">
           <el-form ref="evidenceForm" :model="formUpload" :rules="addrules" label-width="100px">
-            <el-form-item label="证据类型" prop="enType">
-              <el-select v-model="formUpload.enType">
+            <el-form-item label="证据类型" prop="evType">
+              <el-select v-model="formUpload.evType">
                 <el-option
                   v-for="item in evTypeOptions"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id"
+                  :value="item.name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -136,7 +141,7 @@
       size="900px"
      
     >
-      <div style="position:relative;height:100%">
+      <div style="height:100%">
         <div class="relationFileVisibleBox">
           <el-table
             :data="evidenceList"
@@ -144,12 +149,19 @@
             stripe
             highlight-current-row
             @selection-change="handleSelectionChange"
-            style="width: 100%"
+            style="width: 100%;height:100%"
           >
             <el-table-column width="55" type="selection" label="选择" align="center" :selectable="selectable"></el-table-column>
             <el-table-column width="50" type="index" label="序号" align="center"></el-table-column>
             <el-table-column prop="evName" label="证据名称" align="center"></el-table-column>
-            <el-table-column prop="evType" label="证据类型" align="center"></el-table-column>
+            <el-table-column prop="evType" label="证据类型" align="center">
+              <template slot-scope="scope">
+                  <span v-if="scope.row.evType == '照片'"><img src="../../../../static/images/img/icon_tupian.png"></span>
+                  <span v-if="scope.row.evType == '文件'"><img src="../../../../static/images/img/icon_qita.png"></span>
+                  <span v-if="scope.row.evType == '视频'"><img src="../../../../static/images/img/icon_shipin.png"></span>
+                  <span v-if="scope.row.evType == '音频'"><img src="../../../../static/images/img/icon_yinpin.png"></span>
+              </template>
+            </el-table-column>
             <el-table-column prop="status" label="状态" align="center">
               <template slot-scope="scope">
                 <span v-if="!scope.row.status">有效</span>
@@ -158,8 +170,8 @@
             </el-table-column>
             <el-table-column label="详情" align="center">
               <template slot-scope="scope">
-                <!-- <span>{{scope.row.evPath}}</span> -->
-                <img :src="host+scope.row.evPath" style="height:50px;">
+                <img v-if="scope.row.evType == '照片'" :src="host+scope.row.evPath" style="height:50px;">
+                <el-link type="primary" v-if="scope.row.evType != '照片'" :href="host+scope.row.evPath">下载</el-link>
               </template>
             </el-table-column>
             <el-table-column label="备注" align="center" prop="note"></el-table-column>
@@ -320,6 +332,7 @@ export default {
         let _that = this;
         this.$store.dispatch("getDictListDetail", BASIC_DATA_SYS.enTypeId).then(
           res => {
+            console.log('证据类型',res.data)
             _that.evTypeOptions = res.data;
           },
           err => {
@@ -548,6 +561,27 @@ export default {
         }
       })
       return disAbleRow
+    },
+    currentPages(scope){
+      let rowIndex = scope.$index;
+      let tempPage = '';
+      let qianPage = 2;
+      let pageStart=0;
+      let pageEnd=0;
+      this.caseList.forEach((item,index)=>{
+        if(rowIndex > index){
+          qianPage = qianPage + Number(item.page);
+        }
+      })
+      if(scope.row.page>1){
+        pageStart = qianPage+1;
+        pageEnd = qianPage+ Number(scope.row.page);
+        tempPage = pageStart + '~' + pageEnd
+      }else{
+        pageStart = qianPage+1;
+        tempPage = pageStart;
+      }
+      return tempPage
     }
   },
   mounted() {
@@ -646,7 +680,11 @@ export default {
     margin: 40% 16px 30px 16px;
   }
 }
+.el-upload-dragger{
+  height: 360px;
+}
 .relationFileVisibleBox{
-  height: calc(100% - 254px);
+  overflow: auto;
+  height: calc(100% - 280px);
 }
 </style>
