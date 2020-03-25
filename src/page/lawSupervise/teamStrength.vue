@@ -1,5 +1,5 @@
 <template>
-<!--  执法监管首页 by-jingli -->
+<!--  队伍力量 by-jingli -->
 <div id="lawSupervise" ref="lawSupervise" class="mainBox" >
     <div class="amap-page-container">
         <!-- amap://styles/whitesmoke -->
@@ -125,7 +125,7 @@
                             <i class="iconfont law-xianlu"></i>
                         </div>
                      </div>
-                     <!-- 4非现场治超检测 -->
+                          <!-- 4非现场治超检测 -->
                      <div v-else-if="curWindow.category == 4">
                         <div>
                             <i class="iconfont law-jiankong"></i>
@@ -135,23 +135,32 @@
                         <div class="flexBox">
                             <div class="con">
                                 <p>{{curWindow.other.address}}</p>
+                                <div>
+                                    <p>{{curWindow.other.createTime}} &nbsp;
+                                        超限{{curWindow.other.cxchl}} &nbsp;
+                                        黑名单{{curWindow.other.blackList}}
+                                    </p>
+                                </div>
                             </div>
                             <div class="status">
                                 <i class="iconfont law-mobile-phone"></i>
                                 <p>在线</p>
                             </div>
                         </div>
-                        <div>
-                                <p>{{curWindow.other.createTime}} &nbsp;
-                                    超限{{curWindow.other.cxchl}} &nbsp;
-                                    黑名单{{curWindow.other.blackList}}</p>
-                        </div>
                         <div class="btns">
-                            <i class="iconfont law-mobile"></i>
-                            <i class="iconfont law-shipin"></i>
-                            <i class="iconfont law-jiankong"></i>
-                            <i class="iconfont law-msg-box"></i>
-                            <i class="iconfont law-xianlu"></i>
+                            <el-table v-if="curWindow.other.list"
+                                style="width: 100%;"
+                                :data="curWindow.other.list"
+                                resizable
+                                stripe>
+                                <el-table-column width="100" prop="checkTime" label="过检时间"></el-table-column>
+                                <el-table-column width="100" prop="vehicleNumber" label="车牌号"></el-table-column>
+                                <el-table-column width="70" prop="overload" label="超载率"></el-table-column>
+                                <el-table-column width="100" prop="area" label="车属地"></el-table-column>
+                                <el-table-column width="80" label="重点监管">
+                                    <template><span>是</span></template>
+                                </el-table-column>
+                            </el-table>
                         </div>
                      </div>
                      <!-- 5监管企业 -->
@@ -180,17 +189,15 @@
                             <i class="iconfont law-xianlu"></i>
                         </div>
                      </div>
-                     <!-- 6监管车辆 -->
+                      <!-- 6监管车辆 -->
                      <div v-else-if="curWindow.category == 6">
-                        <div>
-                             <i class="iconfont law-car"></i>
-                            {{curWindow.other.nickName}}
-                            <div class="right">{{curWindow.other.enforceNo}}</div>
-                        </div>
-                        <div class="flexBox">
+                         <div class="flexBox">
                             <div class="con">
-                                <p>{{curWindow.other.address}}</p>
-                                <p>{{curWindow.other.mobile}}</p>
+                                <p>
+                                    <i class="iconfont law-car"></i>
+                                    {{curWindow.other.vehicleNumber}}</p>
+                                <p>{{curWindow.other.organName}}</p>
+                                <!-- <p>{{curWindow.other.mobile}}</p> -->
                             </div>
                             <div class="status">
                                 <i class="iconfont law-mobile-phone"></i>
@@ -332,7 +339,7 @@ import Vue from "vue";
 import echarts from 'echarts';
 import 'echarts/lib/chart/graph';
 import {lawSuperviseObj,yjObj} from './echarts/echartsJson';
-import {getZfjgLawSupervise} from '@/api/lawSupervise.js';
+import {getZfjgLawSupervise,getBySiteId,getById} from '@/api/lawSupervise.js';
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 
 import AMap from 'vue-amap';
@@ -482,10 +489,6 @@ export default {
         }
     },
     methods: {
-        eve(marker) {
-            debugger
-            marker.visible = true
-        },
         onSearchResult(pois, category) {
           let latSum = 0;
           let lngSum = 0;
@@ -513,6 +516,9 @@ export default {
 
                                 that.curWindow = that.windows[i];
                                 console.log(that.curWindow);
+                                if (category == 4) {
+                                    that.getBySiteId(that.curWindow.other.id,that.curWindow.other)
+                                }
                                 that.$nextTick(() => {
                                     that.curWindow.visible = true;
                                 });
@@ -529,7 +535,6 @@ export default {
                         iconStyle: 'red',
                         events: {
                             click() {
-                                debugger;
                                 that.windows.forEach(window => {
                                     window.visible = false;
                                 });
@@ -560,7 +565,11 @@ export default {
           }
         },
         searchByTab (item) {
-            this.category = item.code
+            this.markers.splice(0, this.markers.length);
+            if (this.curWindow) {
+                this.curWindow.visible = false;
+            }
+            this.category = item.code;
             let data = {
                     // area: this.currentAddressObj.province + this.currentAddressObj.district,
                     area: '东城区',
@@ -571,8 +580,26 @@ export default {
                 }
             this.getZfjgLawSupervise(data)
         },
+        getBySiteId (id,obj) {
+            let _this = this
+            new Promise((resolve, reject) => {
+                getBySiteId(id).then(
+                    res => {
+                        resolve(res)
+                        obj.list = res.data
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
         searchAll (pois) {
-            this.markers.splice(0, this.markers.length)
+            this.markers.splice(0, this.markers.length);
+            if (this.curWindow) {
+                this.curWindow.visible = false;
+            }
             if (this.category == -1) {
                 this.errorMsg(`总计${pois.length}条数据`, 'success');
                 this.onSearchResult(pois, this.category);

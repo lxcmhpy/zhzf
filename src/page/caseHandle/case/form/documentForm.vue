@@ -64,7 +64,9 @@
       </div>
     </div>
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'documentForm'" ></caseSlideMenu>
+    <caseSlideMenu :activeIndex="'documentForm'" @showdocumentForm="showdocumentForm"></caseSlideMenu>
+    <!-- 文书列表 -->
+    <documentFormRef ref="documentFormRef"></documentFormRef>
      <el-dialog
         :visible.sync="pdfVisible"
         @close="closeDialog"
@@ -90,6 +92,7 @@
   </div>
 </template>
 <script>
+import documentFormRef from "./documentFormRef";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
 import {
@@ -117,10 +120,12 @@ import {
                 editVisible: false,
                 mlList: "",
                 indexPdf: 0,
+                host:'',
             };
         },
         components: {
           caseSlideMenu,
+          documentFormRef
         },
         computed: { ...mapGetters(['caseId']) },
         methods: {
@@ -186,7 +191,11 @@ import {
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.getDocList();
-            }
+            },
+            //点击卷宗目录后 显示卷宗目录
+            showdocumentForm() {
+              this.$refs.documentFormRef.showModal();
+            },
         },
         mounted() {
             // this.setDepartTable(this.data)
