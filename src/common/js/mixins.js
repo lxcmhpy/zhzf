@@ -65,9 +65,9 @@ export const mixinGetCaseApiList = {
               this.formData[key] = formData[key]
             }
             //对环节或文书中的一些字段做处理
-            if (this.needDealData) {
-              this.getDataAfter();
-            }
+            // if (this.needDealData) {
+            //   this.getDataAfter();
+            // }
             console.log('this.formData', this.formData)
             this.setSomeData(this.formData);
             this.isSaveLink = true;

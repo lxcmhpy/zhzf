@@ -159,7 +159,8 @@
         <p>因你（单位）
           <span>
             <el-form-item prop="illegalFact">
-              <el-input v-model="docData.illegalFact" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.illegalFact" :maxLength='maxLength' v-bind:class="{ over_flow:docData.illegalFact && docData.illegalFact.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}" style="width:450px;"></el-input>
             </el-form-item>
           </span>，
         </p>

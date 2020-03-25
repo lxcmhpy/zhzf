@@ -17,7 +17,10 @@
         <p>
           <span>
             <el-form-item prop="caseName" class="width120">
-              <el-input v-model="docData.caseName" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength' 
+              v-bind:class="{ over_flow:docData.caseName && docData.caseName.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              placeholder="\"></el-input>
             </el-form-item>
           </span>一案，本机关于
           <span>
@@ -36,12 +39,15 @@
         <p>
           <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">1.现因
           <span>
-            <el-form-item :prop="disabledOne?'':'stopReason'" class="width120">
-              <el-input v-model="docData.stopReason"  v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item :prop="disabledOne ? '':'stopReason'" class="width120">
+              <el-input type="textarea" v-model="docData.stopReason"  
+              v-bind:class="{ over_flow:docData.stopReason.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>，根据《中华人民共和国行政强制法》第三十九条第一款的规定，本机关决定自
           <span>
-            <el-form-item :prop="disabledOne?'':'executeTime'" class="pdf_datapick">
+            <el-form-item :prop="disabledOne ? '':'executeTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.executeTime" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
@@ -51,8 +57,11 @@
         <p>
           <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">2.现因
           <span>
-            <el-form-item :prop="disabledTwo?'':'endReason'" class="width120">
-              <el-input v-model="docData.endReason" v-bind:disabled="disabledTwo" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item :prop="disabledTwo ? '':'endReason'" class="width120">
+              <el-input type="textarea" v-model="docData.endReason" v-bind:disabled="disabledTwo" 
+              v-bind:class="{ over_flow:docData.endReason.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>，根据《中华人民共和国行政强制法》第四十条的规定，本机关决定终结执行。
         </p>
@@ -60,12 +69,16 @@
           <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">3.你(单位)
           <span>
             <el-form-item prop="caseName2" class="width120">
-              <el-input  v-model="docData.caseName" v-bind:disabled="disabledThree" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input  type="textarea" v-model="docData.caseName" 
+              v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              v-bind:disabled="disabledThree" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>一案，本机关于
           <span>
             <el-form-item :prop="disabledThree?'':'serviceTime'" class="pdf_datapick">
-              <el-date-picker v-model="docData.serviceTime" v-bind:disabled="disabledThree" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.serviceTime" 
+              v-bind:disabled="disabledThree" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
           </span>决定中止执行，现中止执行的情形已消失，根据《中华人民共和国行政强制法》第三十九第二款的规定，决定从即日恢复强制执行。
