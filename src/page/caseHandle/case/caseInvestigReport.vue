@@ -165,14 +165,14 @@
             <div class="print_info">
             <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
                 <tr>
-                <td rowspan="6" width="49">
+                <td rowspan="4" width="49">
                     <p>调查</p>
                     <p>结论</p>
                     <p>和处</p>
                     <p>理意</p>
                     <p>见</p>
                 </td>
-                <td rowspan="6" colspan="6" @click="showLawOfficeOpion">
+                <td rowspan="4" colspan="6" @click="showLawOfficeOpion">
                     <p class="approveDiv">{{formData.lawOfficeOpinions}}</p>
                     <div class="pdf_seal">
                     <!-- <p>执法人员签名：</p>
@@ -192,18 +192,18 @@
                 <tr></tr>
                 <tr></tr>
                 <tr></tr>
-                <tr></tr>
-                <tr></tr>
+                <!-- <tr></tr>
+                <tr></tr> -->
 
                 <tr>
-                <td rowspan="6">
+                <td rowspan="4">
                     <p>经办</p>
                     <p>机构</p>
                     <p>负责</p>
                     <p>人意</p>
                     <p>见</p>
                 </td>
-                <td rowspan="6" colspan="8">
+                <td rowspan="4" colspan="8">
                     <p class="approveDiv">{{formData.approveOpinions}}</p>
                     <div class="pdf_seal">
                     <p>签名：{{formData.approvePeo}}</p>
@@ -220,11 +220,11 @@
                 <tr></tr>
                 <tr></tr>
                 <tr></tr>
-                <tr></tr>
-                <tr></tr>
+                <!-- <tr></tr>
+                <tr></tr> -->
 
                 <tr>
-                <td rowspan="6">
+                <td rowspan="4">
                     <p>重大</p>
                     <p>案件</p>
                     <p>法制</p>
@@ -233,7 +233,7 @@
                     <p>审核</p>
                     <p>意见</p>
                 </td>
-                <td rowspan="6" colspan="8">
+                <td rowspan="4" colspan="8">
                     <p class="approveDiv">{{formData.secondApproveOpinions}}</p>
                     <div class="pdf_seal">
                     <p>签名：{{formData.secondApprovePeo}}</p>
@@ -250,13 +250,9 @@
                 <tr></tr>
                 <tr></tr>
                 <tr></tr>
-                <tr></tr>
-                <tr></tr>
-            </table>
-            </div>
+                <!-- <tr></tr>
+                <tr></tr> -->
 
-            <div class="print_info">
-            <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
                 <tr>
                 <td rowspan="6" width="49">
                     <p>交通</p>
@@ -289,6 +285,41 @@
                 <tr></tr>
             </table>
             </div>
+
+            <!-- <div class="print_info">
+            <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+                <tr>
+                <td rowspan="4" width="49">
+                    <p>交通</p>
+                    <p>运输</p>
+                    <p>执法</p>
+                    <p>部门</p>
+                    <p>负责</p>
+                    <p>人审</p>
+                    <p>批意</p>
+                    <p>见</p>
+                </td>
+                <td rowspan="4" colspan="7">
+                    <p class="approveDiv">{{formData.thirdApproveOpinions}}</p>
+                    <div class="pdf_seal">
+                    <p>签名：{{formData.thirdApprovePeo}}</p>
+                    <p>
+                        {{formData.thirdApproveTime}}
+                        <el-form-item prop="makeDate" class="pdf_datapick">
+                        <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
+                        </el-date-picker>
+                        </el-form-item>
+                    </p>
+                    </div>
+                </td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+            </table>
+            </div> -->
         </div>
       </div>
 

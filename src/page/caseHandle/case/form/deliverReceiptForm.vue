@@ -28,8 +28,8 @@
           </el-form>
         </div>
       </div>
-      <div class="tablePartF">
-        <el-table :data="tableData" stripe height="100%">
+      <div class="tablePart table_tr_overflow">
+        <el-table :data="tableData" stripe style="width: 100%" highlight-current-row height="100%">
           <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
           <el-table-column prop="docName" label="送达文书" align="center"></el-table-column>
           <el-table-column prop="servedDate" label="送达日期" align="center"></el-table-column>
@@ -129,10 +129,13 @@
       </div>
     </el-dialog> -->
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'deliverReceiptForm'"></caseSlideMenu>
+    <caseSlideMenu :activeIndex="'deliverReceiptForm'" @showdeliverReceiptForm="showdeliverReceiptForm"></caseSlideMenu>
+    <!-- 文书列表 -->
+    <deliverReceiptFormRef ref="deliverReceiptFormRef"></deliverReceiptFormRef>
   </div>
 </template>
 <script>
+import deliverReceiptFormRef from "./deliverReceiptFormRef";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
 export default {
@@ -175,7 +178,8 @@ export default {
   },
   computed: { ...mapGetters(['caseId']) },
   components: {
-    caseSlideMenu
+    caseSlideMenu,
+    deliverReceiptFormRef
   },
   methods: {
     handleRow(index, row) {
@@ -223,6 +227,7 @@ export default {
     },
     //表单筛选
     getDeliverReList() {
+      debugger
       console.log('caseId=',this.caseId)
       let data = {
         caseId: this.caseId,
@@ -235,6 +240,7 @@ export default {
       };
       let _this = this
       this.$store.dispatch("getDeliverReceipt", data).then(res => {
+        debugger
         _this.tableData = res.data.records;
         _this.total = res.data.total;
       });
@@ -276,6 +282,7 @@ export default {
     },
     //更换页码
     handleCurrentChange(val) {
+      debugger
       this.currentPage = val;
       this.getDeliverReList();
     },
@@ -302,6 +309,10 @@ export default {
       let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
       return Y + M + D + h + m + s;
     },
+    //点击卷宗目录后 显示卷宗目录
+    showdeliverReceiptForm() {
+      this.$refs.deliverReceiptFormRef.showModal();
+    },
   },
   mounted() {
     // this.setDepartTable(this.data)
@@ -324,24 +335,27 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-@import "@/assets/css/systemManage.scss";
-.paginationF {
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
-  margin: auto;
-  text-align: center;
-}
-.tablePartF {
-  height: 100%;
-  overflow: auto;
-  box-sizing: border-box;
-  padding-top: 4%;
-}
-.fullscreen {
-  .hasBigMarginRight {
-    margin-right: 65px;
+<style lang="scss" scoped>
+  @import "@/assets/css/systemManage.scss";
+  .paginationF{
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    margin: auto;
+    text-align: center;
   }
-}
+  .tablePartF{
+    height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+    padding-top: 0px;
+  }
+  .searchAndpageBox {
+    padding: 5px 20px 50px 20px;
+  }
+  .fullscreen {
+  .hasBigMarginRight{
+      margin-right: 65px;
+    }
+  }
 </style>

@@ -240,4 +240,10 @@
     bottom: 20px;
     @include echartsStyle();
  }
+ .circle {
+    width: 16px;
+    height:16px;
+    border-radius:50%;
+    text-align: center;
+ }
 

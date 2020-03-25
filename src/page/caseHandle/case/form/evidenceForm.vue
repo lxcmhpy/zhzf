@@ -4,7 +4,7 @@
     <div class="searchAndpageBox">
       <div class="handlePart">
         <div class="search">
-          <el-form :inline="true" :model="evidenceForm" ref="evidenceForm">
+          <el-form :inline="true" :model="evidenceForm" ref="evidenceForm" label-width="80px">
             <el-form-item>
               <el-button type="primary" icon="add" size="medium" @click="handleAdd">上传证据</el-button>
             </el-form-item>
