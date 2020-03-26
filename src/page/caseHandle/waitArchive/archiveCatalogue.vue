@@ -28,17 +28,7 @@
                 <td>材料名称</td>
                 <td>页码</td>
             </tr>
-            <!-- <tr @click="showCover">
-                <td>1</td>
-                <td>卷宗封面</td>
-                <td>1</td>
-            </tr>
-            <tr @click="showCover">
-                <td>2</td>
-                <td>卷内目录</td>
-                <td>2</td>
-            </tr> -->
-            <tr v-for="(item,index) in caseList" :key="index" @click="alertPDF(item)">
+            <tr v-for="(item,index) in caseList" :key="index" @click="alertPDF(item)" :class="!item.storageId && item.name=='备考表' ? 'activeTd' :''">
                 <td>{{index+1}}</td>
                 <td>{{item.name ? item.name :item.evName}}</td>
                 <td>{{currentPages(item,index)}}</td>
@@ -118,24 +108,24 @@ export default {
     routerArchiveCatalogueDetail () {
         this.$router.push({name:'archiveCatalogueDetail'})
     },
+    //点击卷宗目录列表
     alertPDF (item) {
       console.log(this.$route.name)
       if(this.$route.name!='archiveCover'){
-        this.$router.push({name:'archiveCover',params:{clickData:JSON.stringify(item)}});
+        this.$router.push({name:'archiveCover',params:{clickData:JSON.stringify(item),mulvList:this.caseList}});
         return;
       }
-      
-      this.$emit('alertPDF', item)
+      this.$emit('alertPDF', {item:item,mulvList:this.caseList})
     },
     //显示封面
-    showCover(){
-      if(this.$route.name!='archiveCover'){
-        let item={name:'cover'}
-        this.$router.push({name:'archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
-        return;
-      }
-      this.$emit('showCoverEmit')
-    },
+    // showCover(){
+    //   if(this.$route.name!='archiveCover'){
+    //     let item={name:'cover'}
+    //     this.$router.push({name:'archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
+    //     return;
+    //   }
+    //   this.$emit('showCoverEmit')
+    // },
     currentPages(row,index){
       var rowIndex = index;
       let tempPage = '';
@@ -194,11 +184,17 @@ export default {
             padding: 10px 0;
             min-height: 38px;
             border: 1px solid #7F8185;
+            cursor: pointer;
         }
         tr{
             td:nth-child(1),td:nth-child(3){
                 width: 40px;
             }
+        }
+        .activeTd{
+          td{
+            color: red;
+          }
         }
     }
 }
