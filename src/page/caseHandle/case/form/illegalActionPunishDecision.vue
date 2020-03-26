@@ -54,21 +54,39 @@ export default {
             this.cont4 = '';
             this.cont5 = '';
             this.cont6 = '';
+            
         },
         markPunishDecision(){
             console.log("111",this.checkDec)
-           if(this.checkDec[0] == '罚款'){
-               this.fullDecision = this.checkDec[0] + this.cont1
-           }else if(this.checkDec[0] == '责令整改'){
-               this.fullDecision = this.checkDec[0] + this.cont2
-           }else if(this.checkDec[0] == '警告'){
-               this.fullDecision = this.checkDec[0] + this.cont3
-           }else if(this.checkDec[0] == '没收违法所得'){
-               this.fullDecision = this.checkDec[0] + this.cont4
-           }else if(this.checkDec[0] == '没收非法财产'){
-               this.fullDecision = this.checkDec[0] + this.cont5
-           }else if(this.checkDec[0] == '责令停产停业、暂扣或吊销许可整合执照'){
-               this.fullDecision = this.checkDec[0] + this.cont6
+        //    if(this.checkDec[0] == '罚款'){
+        //        this.fullDecision = this.checkDec[0] + this.cont1
+        //    }else if(this.checkDec[0] == '责令整改'){
+        //        this.fullDecision = this.checkDec[0] + this.cont2
+        //    }else if(this.checkDec[0] == '警告'){
+        //        this.fullDecision = this.checkDec[0] + this.cont3
+        //    }else if(this.checkDec[0] == '没收违法所得'){
+        //        this.fullDecision = this.checkDec[0] + this.cont4
+        //    }else if(this.checkDec[0] == '没收非法财产'){
+        //        this.fullDecision = this.checkDec[0] + this.cont5
+        //    }else if(this.checkDec[0] == '责令停产停业、暂扣或吊销许可整合执照'){
+        //        this.fullDecision = this.checkDec[0] + this.cont6
+        //    }
+            
+           for(let i = 0; i < this.checkDec.length; i++){
+               debugger
+               if(this.checkDec[i] == '罚款'){
+                    this.fullDecision += this.checkDec[i] + this.cont1
+                }else if(this.checkDec[i] == '责令整改'){
+                    this.fullDecision += this.checkDec[i] + this.cont2
+                }else if(this.checkDec[i] == '警告'){
+                    this.fullDecision += this.checkDec[i] + this.cont3
+                }else if(this.checkDec[i] == '没收违法所得'){
+                    this.fullDecision += this.checkDec[i] + this.cont4
+                }else if(this.checkDec[i] == '没收非法财产'){
+                    this.fullDecision += this.checkDec[i] + this.cont5
+                }else if(this.checkDec[i] == '责令停产停业、暂扣或吊销许可整合执照'){
+                    this.fullDecision += this.checkDec[i] + this.cont6
+                }
            }
            console.log(this.fullDecision);
            let punishDecisionData = {
