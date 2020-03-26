@@ -346,10 +346,10 @@ export default {
     },
     //查询证据材料列表
     findEvidence(){
+      debugger
       let data={
         docId:'2c9029ac6c26fd72016c27247b290003',
         caseId:this.caseId,
-
       };
       let _this = this
       findByCondition(data).then(
