@@ -219,10 +219,9 @@
               <p>情况</p>
             </td>
             <td colspan="6" class="color_DBE4EF">
-              <!-- <el-form-item prop="closeSituation">
+              <el-form-item prop="closeSituation">
                 <el-input type='textarea' v-model="formData.closeSituation"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder=""></el-input>
-              </el-form-item>-->
-              {{formData.closeSituation}}
+              </el-form-item>
               <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
                 <p>
