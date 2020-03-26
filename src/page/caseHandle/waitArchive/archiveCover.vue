@@ -43,7 +43,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="执法机关"  prop="organName">
-                  <el-input v-model="formData.organName" class="w-120" size="small"></el-input>
+                  <el-input v-model="formData.organName" class="w-120" size="small" disabled></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -60,6 +60,7 @@
                     type="datetime"
                     format="yyyy-MM-dd HH:mm"
                     value-format="yyyy-MM-dd HH:mm"
+                    disabled
                   ></el-date-picker>
                 </el-form-item>
               </div>
@@ -70,6 +71,7 @@
                     type="datetime"
                     format="yyyy-MM-dd HH:mm"
                     value-format="yyyy-MM-dd HH:mm"
+                    disabled
                   ></el-date-picker>
                 </el-form-item>
               </div>
@@ -153,36 +155,26 @@
         </div>
       </div>
     </el-form>
-
+    <!-- 卷内目录 -->
+    <div v-show="showCover == 'mulv'" class="mulvCon">
+      <table border="1" bordercolor="black" width="100%" cellspacing="0" class="mulvtable">
+            <tr>
+                <td>序号</td>
+                <td>材料名称</td>
+                <td>页码</td>
+            </tr>
+            <tr v-for="(item,index) in mulvList" :key="index">
+                <td>{{index+1}}</td>
+                <td>{{item.name ? item.name :item.evName}}</td>
+                <td>{{item.page}}</td>
+            </tr>
+        </table>
+    </div>
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'archiveCatalogue'" @showArchiveCatalogue="showArchiveCatalogue"></caseSlideMenu>
     <!-- 卷宗目录 -->
     <archiveCatalogue ref="archiveCatalogueRef"  @alertPDF="alertPDF" @showCoverEmit="showCoverEvent"></archiveCatalogue>
-    <!-- 引入buttn -->
-    <!-- <div @click="getMl">pdf</div> -->
-    <!-- <el-dialog
-        :visible.sync="pdfVisible"
-        @close="closeDialog"
-        :close-on-click-modal="false"
-        width="1000px"
-         append-to-body>
-        <div >
-        <div style="height:auto;">
-            <div v-if="mlList.length > 0" lazy>
-                <object >
-                    <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
-                    :src="mlList[indexPdf]" type="application/pdf" internalinstanceid="29">
-                </object>
-            </div>
-            <div style="position:absolute;bottom:150px;right: 20px;width:100px;">
-            <el-button @click="updatePDF1">上一张</el-button><br><br>
-            <el-button @click="updatePDF2">下一张</el-button>
-            </div>
-        </div>
-        </div>
-    </el-dialog> -->
 
-            <!--@saveData="saveData" -->
     <casePageFloatBtns
         :pageDomId="'archiveCoverForm'"
         :formOrDocData="formOrDocData"
@@ -196,6 +188,7 @@
     </div>
     <div style="position:fixed;bottom:150px;right: 60px;width:100px;"  v-show="showCover=='beikao'">
       <el-button type="primary"  @click="submitBeikao()">保存</el-button><br><br>
+
     </div>
     <!-- <button style="z-index:2005;position:fixed;bottom:50px"   @mouseenter.stop.prevent="a($event,'hover')">
       <span @click="a($event,'click')">卷宗<br>目录</span></button> -->
@@ -209,6 +202,7 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
 import { mapGetters } from "vuex";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
@@ -218,11 +212,11 @@ export default {
         caseNumber: "",
         caseName: "",
         acceptTime: "",
-        lyTime: "",
+        lyTime: new Date().format('yyyy-MM-dd HH:mm'),
         closeDate: "",
         party: "",
         period:"",
-        organName:"",
+        organName:iLocalStroage.gets("userInfo").organName,
         nickName:"",
       },
     caseLinkDataForm: {
@@ -299,6 +293,7 @@ export default {
         docData: "",
         status: ""
       },
+      mulvList:[],
     };
   },
   inject: ['reload'],
@@ -310,11 +305,13 @@ export default {
   computed: { ...mapGetters(['caseId']) },
   mixins: [mixinGetCaseApiList],
   methods: {
-    alertPDF(item) {
-      console.log('item',item);
-      if(item.name == "卷宗封面"){
-        if(item.storageId){
-          this.docSrc = this.host + item.storageId;
+    alertPDF(data) {
+      console.log('item',data.item);
+      console.log('mulvList',data.mulvList);
+
+      if(data.item.name == "卷宗封面"){
+        if(data.item.storageId){
+          this.docSrc = this.host + data.item.storageId;
           this.showCover = 'pdf';
         }else{
           this.showCover = 'cover';
@@ -322,16 +319,26 @@ export default {
         }
         return;
       }
-      if(item.name=='备考表'){
-        if(item.storageId){
-          this.docSrc = this.host + item.storageId;
+      if(data.item.name == "卷内目录"){
+        if(data.item.storageId){
+          this.docSrc = this.host + data.item.storageId;
+          this.showCover = 'pdf';
+        }else{
+          this.showCover = 'mulv';
+          this.mulvList = data.mulvList;
+        }
+        return;
+      }
+      if(data.item.name=='备考表'){
+        if(data.item.storageId){
+          this.docSrc = this.host + data.item.storageId;
           this.showCover = 'pdf';
         }else{
           this.showCover = 'beikao'
         }
         return;
       }
-      this.docSrc = this.host + item.storageId;
+      this.docSrc = this.host + data.item.storageId;
       this.showCover = 'pdf';
        
     },
@@ -342,26 +349,7 @@ export default {
         let _this = this
         this.$refs['archiveCoverForm'].validate((valid,noPass) => {
           if (valid) {
-            this.$confirm('此操作将完成归档、生成电子卷宗，是否继续?', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-                // _this.com_submitCaseForm(handleType, "archiveCoverForm", true);
-                // _this.$router.push({ name: 'firstPdfPage' ,params: {
-                //     caseId: _this.caseId,
-                //     docId: _this.docId
-                // }});
-                this.submitArchiveSure(handleType);
-                // this.getByMlCaseId(this.caseId);
-               
-               // this.showCover = false;
-                //  this.docSrc = this.host + this.caseList[0].storageId;
-                //  this.nowShowPdfIndex = 0;
-                // this.getMl()
-            }).catch(() => {
-
-            });
+            this.canArchive(handleType);
           }else{
             let a = Object.values(noPass)[0];
             console.log(a);
@@ -400,9 +388,32 @@ export default {
                 console.log(err)
               })
     },
-    getMl() {
-        this.pdfVisible = true
-        this.getByMlCaseId(this.caseId)
+    //判断是否可以归档
+    canArchive(handleType){
+      this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
+         res=>{
+           let canArchiveFlag = true;
+           res.data.forEach(item=>{
+             if(item.name=='备考表' && !item.storageId){
+               canArchiveFlag = false;
+               return
+             }
+           })
+           if(canArchiveFlag){
+             this.$confirm('此操作将完成归档、生成电子卷宗，是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                  this.submitArchiveSure(handleType);
+              }).catch(() => {
+
+              });
+           }else{
+              this.$message({type: 'warning',message:'备考表未完成!'})
+              this.$refs.archiveCatalogueRef.showModal(true);
+           }
+         })
     },
     //点击归档后调用
     getByMlCaseId(caseId) {
@@ -414,12 +425,14 @@ export default {
               return a.num - b.num;
             });
            console.log('getByMlCaseId2',res.data)
+          
 
              this.caseList = res.data;
-              this.showCover = 'pdf';
+              console.log('this.caseList[0].storageId',this.caseList[0].storageId)
               this.docSrc = this.host + this.caseList[0].storageId;
               this.nowShowPdfIndex = 0;
               this.archiveSuccess = true;
+               this.showCover = 'pdf';
          },
          err=>{
            console.log(err)
@@ -501,7 +514,10 @@ export default {
     //在目录排序页面点击弹窗数据后返回的
     if(this.$route.params && this.$route.params.clickData){
       console.log('this.$route.params',this.$route.params)
-      let data = JSON.parse(this.$route.params.clickData);
+      let data ={
+        item:JSON.parse(this.$route.params.clickData),
+        mulvList:this.$route.params.mulvList
+      } 
       this.alertPDF(data);
       
     }else{
@@ -515,4 +531,22 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/documentForm.scss";
+.mulvCon{
+  width:400px;margin: 20px auto;
+  .mulvtable{
+    text-align: center;
+    background: #fdffff;
+    td{
+        padding: 10px 0;
+        min-height: 38px;
+        border: 1px solid #7F8185;
+    }
+    tr{
+        td:nth-child(1),td:nth-child(3){
+            width: 40px;
+        }
+    }
+  }
+}
+
 </style>
