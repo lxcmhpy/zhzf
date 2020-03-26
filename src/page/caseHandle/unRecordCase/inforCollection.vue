@@ -789,10 +789,10 @@ export default {
           { required: true, message: "请选择", trigger: "change" }
         ],
         illegalLaw: [
-          { required: true, message: "请选择", trigger: "blur" }
+          { required: true, message: "请选择", trigger: "change" }
         ],
         punishLaw: [
-          { required: true, message: "请选择", trigger: "blur" }
+          { required: true, message: "请选择", trigger: "change" }
         ],
         partyAge: [
           { validator: validateAge, trigger: "blur" }
