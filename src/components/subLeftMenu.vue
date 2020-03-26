@@ -2,13 +2,22 @@
   <!-- 左菜单 -->
   <div>
     <el-menu :default-active="$route.name" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" @select="changeMenu">
-      <el-submenu :index="item.name" v-for="item in currentSlideMenu" :key="item.id">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span slot="title">{{item.title}}</span>
-        </template>
-        <el-menu-item :index="subItem.name" v-for="subItem in item.children" :key="subItem.id" @click="clicSubmenu">{{subItem.title}}</el-menu-item>
-      </el-submenu>
+      <template v-for="item in currentSlideMenu">
+        <el-submenu :index="item.name" :key="item.id" v-if="item.children.length!=0">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span slot="title">{{item.title}}</span>
+          </template>
+          <el-menu-item :index="subItem.name" v-for="subItem in item.children" :key="subItem.id" @click="clicSubmenu">{{subItem.title}}</el-menu-item>
+        </el-submenu>
+        <el-menu-item :index="item.name" :key="item.id" v-if="item.children.length==0">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span slot="title">{{item.title}}</span>
+          </template>
+        </el-menu-item>
+
+      </template>
     </el-menu>
 
   </div>
@@ -58,6 +67,7 @@ export default {
           }
         }
       });
+      console.log('currentSlideMenu',this.currentSlideMenu)
     }
   },
   mounted() {

@@ -745,7 +745,15 @@ export default [
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/testPdf.vue")
-  }
+  },
   
   //---------------长软end------------
+  {
+    path: "/electronicFileDetail",
+    name: "electronicFileDetail",
+    meta: {
+      title: "卷宗详情",
+    },
+    component: () => import("@/page/caseHandle/electronicCaseFile/electronicFileDetail.vue")
+  }
 ]
