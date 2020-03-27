@@ -65,7 +65,8 @@
         padding: 0px 24px;
         .shadow {
             margin-bottom: 24px;
-            padding: 6px;
+            padding: 20px;
+            padding-bottom: 17px;
             box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
             background: #fff;
             .box {
@@ -75,6 +76,7 @@
                     margin: 2px auto;
                     margin-bottom: 15px;
                     text-align: left;
+                    line-height: 24px;
                     .titleflag {
                         width      : 4px;
                         height     : 16px;

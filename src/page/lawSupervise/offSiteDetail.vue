@@ -1,6 +1,6 @@
 <template>
 <div class="main_box">
-    <div class="main_content">
+    <div class="main_content" style="margin-top: 24px">
         <div class="shadow">
             <div class="box w-2">
                 <div class="box_title">
@@ -78,7 +78,7 @@
                 </table>
             </div>
         </div>
-        <div class="shadow mt-1">
+        <div class="shadow">
             <div class="box w-2">
                 <div class="box_title">
                     <span class="titleflag">
@@ -106,4 +106,10 @@
     </div>
 </div>
 </template>
-<style src="@/assets/css/checkInfo.scss" lang="scss" scoped></style>
+
+<style src="@/assets/css/sliderPage.scss" lang="scss"></style>
+<style>
+.main_box .main_content .shadow {
+    padding-top: 14px;
+}
+</style>
