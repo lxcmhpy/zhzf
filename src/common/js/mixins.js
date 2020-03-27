@@ -65,9 +65,9 @@ export const mixinGetCaseApiList = {
               this.formData[key] = formData[key]
             }
             //对环节或文书中的一些字段做处理
-            // if (this.needDealData) {
-            //   this.getDataAfter();
-            // }
+            if (this.needDealData) {
+              this.getDataAfter();
+            }
             console.log('this.formData', this.formData)
             this.setSomeData(this.formData);
             this.isSaveLink = true;
@@ -635,9 +635,14 @@ export const mixinGetCaseApiList = {
         console.log(err)
       })
     },
+    //隐藏textarea 显示span
     replaceTextArea(){ 
-      // this.hidePart=false;
-      // this.hidePar2=true;
+      //打印时去掉下拉框的图标
+      let selectObjIcon = document.getElementsByClassName('el-select__caret');
+      for(let i=0;i<selectObjIcon.length;i++){
+        selectObjIcon[i].style.display = 'none';
+      }
+      
       let obj = document.getElementsByTagName('textarea');
       console.log(obj);
       console.log(obj[0]);
@@ -657,9 +662,9 @@ export const mixinGetCaseApiList = {
         objParent.appendChild(newSpan);
       }
       
-      setTimeout(() => {
-          htmlExportPDF('test_print',function(){})
-      }, 1000)
+      // setTimeout(() => {
+      //     htmlExportPDF('test_print',function(){})
+      // }, 1000)
      
   }
 
