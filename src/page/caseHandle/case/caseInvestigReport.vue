@@ -2,7 +2,7 @@
   <div class="print_box color_FFFFFF">
     <el-form :rules="rules" ref="caseInvestiForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
       <div class="printNumbers_box">
-        <div id="caseInvest-print"  style="height:auto;padding:0px;">
+        <div id="caseInvest-print" style="height:auto;padding:0px;">
           <div class="print_info">
             <div class="doc_topic">案件调查报告</div>
             <div class="doc_number">案号：{{formData.caseNumber}}</div>

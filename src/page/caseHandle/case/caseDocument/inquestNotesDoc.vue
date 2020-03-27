@@ -107,7 +107,7 @@
         </p>
         <p>
           被邀请人：<el-form-item prop="invited" style="width:180px">
-            <el-input v-model="docData.invited" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-input v-model="docData.invited" maxLength='10' placeholder="\"></el-input>
           </el-form-item>
           单位及职务：<el-form-item prop="invitedUnitAndPosition" style="width:180px">
             <el-input type="textarea" v-model="docData.invitedUnitAndPosition" v-bind:class="{ over_flow:docData.invitedUnitAndPosition.length>14?true:false }"
