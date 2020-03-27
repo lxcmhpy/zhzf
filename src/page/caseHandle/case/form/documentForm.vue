@@ -45,7 +45,8 @@
           <el-table-column prop="createTime" label="保存日期" align="center"></el-table-column>
           <el-table-column label="操作" align="center" fixed="right">
             <template slot-scope="scope">
-              <el-button type="text" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+              <!-- <el-button type="text" @click="handleEdit(scope.$index, scope.row)">查看</el-button> -->
+              <el-button type="text" @click="viewDocPdf(scope.row)">查看</el-button>
               <el-button type="text" @click="handleEdit(scope.$index, scope.row)">打印</el-button>
             </template>
           </el-table-column>
@@ -195,6 +196,20 @@ import {
             //点击卷宗目录后 显示卷宗目录
             showdocumentForm() {
               this.$refs.documentFormRef.showModal();
+            },
+            viewDocPdf(row) {
+              debugger
+              console.log('row',row) 
+              let routerData = {
+                hasApprovalBtn: false,
+                docId: row.caseDoctypeId,
+                approvalOver: false,
+                hasBack: true,
+                docDataId:row.id
+              };
+              debugger
+              this.$store.dispatch("deleteTabs", this.$route.name);
+              this.$router.push({ name: "myPDF", params: routerData });
             },
         },
         mounted() {

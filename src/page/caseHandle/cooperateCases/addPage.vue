@@ -41,16 +41,16 @@
         </el-form-item>
         <el-form-item label="移送原因" prop="copyReason" class="is-required">
           <el-form-item>
-            <el-radio v-model="caseData.copyReason" label="重大、疑难案件"></el-radio>
+            <el-radio v-model="caseData.copyReason" label="重大、疑难案件" @change="changeReason"></el-radio>
           </el-form-item>
           <el-form-item>
-            <el-radio v-model="caseData.copyReason" label="违法行为涉嫌犯罪"></el-radio>
+            <el-radio v-model="caseData.copyReason" label="违法行为涉嫌犯罪" @change="changeReason"></el-radio>
           </el-form-item>
           <el-form-item>
             <el-row :gutter="20">
               <el-col :span="3">
                 <el-form-item>
-                  <el-radio v-model="caseData.copyReason" label="其他原因"></el-radio>
+                  <el-radio v-model="caseData.copyReason" label="其他原因" @change="changeReason"></el-radio>
                 </el-form-item>
               </el-col>
               <el-col :span="19">
@@ -318,6 +318,11 @@ export default {
         }
       );
     },
+    // 原因变化
+    changeReason(){
+      console.log('reson')
+      this.caseData.otherReason=''
+    }
   },
   mounted() {
     console.log('选择的案件', this.$route.params)

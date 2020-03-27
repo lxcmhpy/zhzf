@@ -49,7 +49,7 @@
 
           <div class="item">
             <el-form-item label="发起时间">
-              <el-date-picker v-model="caseSearchForm.createTime" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']">
+              <el-date-picker v-model="caseSearchForm.time" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']">
               </el-date-picker>
             </el-form-item>
           </div>
@@ -72,7 +72,7 @@ export default {
       caseSearchForm: {
         caseNumber: "",
         person: '',
-        createTime: '',
+        time: '',
         party: "",
         organMb: "",
         wfxw: "",

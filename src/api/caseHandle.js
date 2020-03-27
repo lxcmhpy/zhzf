@@ -758,9 +758,10 @@ export function getHandleRecordApi(data) {
     return request({
       url: "/doc/proof/saveOrUpdateProof",
       method: "POST",
-      params: data,
+      data: data,
       showloading: true,
       loadingType:'loadPart',
+      contentType:'application/json',
       cancelToken: setCancelSource()
     });
   }
