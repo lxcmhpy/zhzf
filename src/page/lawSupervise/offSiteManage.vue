@@ -16,13 +16,13 @@
             </div>
             <el-form :inline="true" :model="form" label-width="80px"  ref="form">
                 <el-form-item label="检测站点">
-                    <el-input v-model="form.jczd" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+                    <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
                 <el-form-item label="车牌号">
-                    <el-select v-model="form.cphColor" class="w-80"></el-select>
+                    <el-select v-model="form.vehicleColor" class="w-80"></el-select>
                 </el-form-item>
                 <el-form-item label=" " label-width="0px">
-                    <el-input v-model="form.cph" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+                    <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
                 <el-form-item label=" " label-width="13px">
                     <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
@@ -33,7 +33,7 @@
                 <el-collapse-transition>
                     <div v-show="isShow" :class="{'ransition-box':true}">
                         <el-form-item label="超限率">
-                            <el-input v-model="form.cxl" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input>
+                            <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input>
                         </el-form-item>
                         <el-form-item label="过检时间">
                              <el-date-picker
@@ -48,9 +48,9 @@
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item label="处理状态">
-                            <el-select v-model="form.clzt" prop="type">
+                            <el-select v-model="form.status" prop="type">
                                 <el-option
-                                v-for="item in clztStatus"
+                                v-for="item in statusStatus"
                                 :key="item.value"
                                 :label="item.value"
                                 :value="item.value"
@@ -76,15 +76,15 @@
                 <el-table-column prop="createTime" label="处理状态" align="center"></el-table-column>
             </el-table>
         </div>
-        <div class="paginationBox" v-show="totalPage">
+        <div class="paginationBox" v-show="form.size">
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page="currentPage"
+                :current-page="form.current"
                 background
                 :page-sizes="[10, 20, 30, 40]"
                 layout="prev, pager, next,sizes,jumper"
-                :total="totalPage"
+                :total="form.size"
             ></el-pagination>
         </div>
     </div>
@@ -93,21 +93,24 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <script>
+import {queryListPage} from '@/api/lawSupervise.js';
 export default {
   data() {
     return {
-        currentPage: 1, //当前页
         pageSize: 10, //pagesize
-        totalPage: 0, //总页数
         form: {
-            jczd: '',
-            cphColor: '',
-            cph: '',
-            cxl: '',
-            gjsj: '',
-            clzt: ''
+            siteName: '',
+            vehicleColor: '',
+            vehicleNumber: '',
+            overload: '',
+            gjsj: ['', ''],
+            status: '',
+            current: 1, //当前页
+            size: 0, //总页数
+            checkEndTime: '',
+            checkStartTime: ''
         },
-        clztStatus: [{
+        statusStatus: [{
             value: '未审核'
         }, {
             value: '转办'
@@ -120,7 +123,22 @@ export default {
   },
   methods: {
     search () {
-
+        this.form.checkStartTime = this.form.gjsj[0];
+        this.form.checkEndTime = this.form.gjsj[1];
+        let _this = this
+        new Promise((resolve, reject) => {
+            queryListPage(_this.form).then(
+                res => {
+                    resolve(res)
+                    debugger
+                    // obj.list = res.data
+                },
+                error => {
+                    //  _this.errorMsg(error.toString(), 'error')
+                        return
+                }
+            )
+        })
     },
     reset () {
 

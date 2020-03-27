@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box printNumbers_box" id="caseInvest-print">
+  <div class="print_box printNumbers_box" id="caseInvest-print" style="width:790px; margin:0 auto;">
     <el-form :rules="rules" ref="caseInvestiForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
 
       <div class="print_info" >
