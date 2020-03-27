@@ -39,6 +39,24 @@
       <el-button @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
     </span>
   </el-dialog>
+  <el-dialog
+        :visible.sync="pdfVisible"
+        @close="closeDialog"
+        :close-on-click-modal="false"
+        width="1000px"
+         append-to-body>
+        <div >
+        <div style="height:auto;">
+        <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
+            <div lazy>
+                <object >
+                    <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
+                    :src="mlList" type="application/pdf" internalinstanceid="29">
+                </object>
+            </div>
+        </div>
+        </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -51,7 +69,7 @@ export default {
       caseList:[],
       mlList: "",
       pdfVisible: false,
-      closeDialog: false,
+      // doccloseDialog: false,
       host:'',
     };
   },
@@ -101,20 +119,11 @@ export default {
     routerArchiveCatalogueDetail () {
         this.$router.push({name:'archiveCatalogueDetail'})
     },
-    // alertPDF (item) {
-    //     debugger
-    //   console.log(this.$route.name)
-    //   if(this.$route.name!='archiveCover'){
-    //     this.$router.push({name:'archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
-    //     return;
-    //   }
-    //   this.$emit('alertPDF', item)
-    // },
     alertPDF (item) {
         debugger
         let data = {
-            caseId:item.caseBasicinfoId,
-            docId: item.caseDoctypeId,
+            caseId:item.caseId,
+            docId: item.caseSerProofId,
         };
         let _that = this
         findByCaseIdAndDocIdApi(data).then(res=>{

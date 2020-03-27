@@ -31,14 +31,15 @@
       <div class="tablePart table_tr_overflow">
         <el-table :data="tableData" stripe style="width: 100%" highlight-current-row height="100%">
           <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-          <el-table-column prop="docName" label="送达文书" align="center"></el-table-column>
+          <el-table-column prop="docName" label="送达文书" align="center" width="200"></el-table-column>
           <el-table-column prop="servedDate" label="送达日期" align="center"></el-table-column>
           <el-table-column prop="address" label="送达地点" align="center"></el-table-column>
           <el-table-column prop="servedType" label="送达方式" align="center"></el-table-column>
-          <el-table-column prop="servedUser" label="受/代送达人" align="center"></el-table-column>
+          <el-table-column prop="recivePerson" label="受/代送达人" align="center"></el-table-column>
           <el-table-column label="操作" align="center" fixed="right">
             <template slot-scope="scope">
-              <el-button type="text" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+              <!-- <el-button type="text" @click="handleEdit(scope.$index, scope.row)">查看</el-button> -->
+              <el-button type="text" @click="viewDocPdf(scope.row)">查看</el-button>
               <el-button type="text" @click="handleEdit(scope.$index, scope.row)">打印</el-button>
             </template>
           </el-table-column>
@@ -132,12 +133,33 @@
     <caseSlideMenu :activeIndex="'deliverReceiptForm'" @showdeliverReceiptForm="showdeliverReceiptForm"></caseSlideMenu>
     <!-- 文书列表 -->
     <deliverReceiptFormRef ref="deliverReceiptFormRef"></deliverReceiptFormRef>
+    <el-dialog
+        :visible.sync="pdfVisible"
+        @close="closeDialog"
+        :close-on-click-modal="false"
+        width="1000px"
+         >
+        <div >
+        <div style="height:auto;">
+        <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
+            <div lazy>
+                <object >
+                    <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
+                    :src="mlList" type="application/pdf" internalinstanceid="29">
+                </object>
+            </div>
+        </div>
+        </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import deliverReceiptFormRef from "./deliverReceiptFormRef";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
+import {
+  findByCaseIdAndDocIdApi
+} from "@/api/caseHandle";
 export default {
   data() {
     const isSelect = (rule, value, callback) => {
@@ -148,12 +170,12 @@ export default {
       }
     };
     return {
-      changeableTable: [
-        { docName: '', address: '', servedDate: '', receiveType: '' },
-        { docName: '', address: '', servedDate: '', receiveType: '' },
-      ],
-      servedTypeOptions: [],
-      receiveTypeOptions: [],
+      pdfVisible: false,
+      closeDialog: false,
+      mlList: "",
+      host:'',
+      servedTypeOptions: [],//送达方式
+      receiveTypeOptions: [],//接收方式
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       total: 0, //总数
@@ -206,7 +228,6 @@ export default {
     },
     handleAdd(index, row) {
       //带入表单值
-
       this.form = {};
       this.changeableTable = [
         { docName: '', address: '', servedDate: '', receiveType: '' },
@@ -217,13 +238,21 @@ export default {
       this.$router.push('deliveryCertificate');
     },
     handleEdit(index, row) {
-      const item = this.tableData[index];
-      this.uForm = {
-        evName: item.evName,
-        evType: item.evType,
-        status: item.status
-      };
-      this.editVisible = true;
+    debugger
+        let data = {
+            caseId:row.caseId,
+            docId: row.caseSerProofId,
+        };
+        let _that = this
+        findByCaseIdAndDocIdApi(data).then(res=>{
+            debugger
+            _that.mlList = _that.host + res.data[0].storageId;
+                
+        },err=>{
+            console.log(err);
+        })
+        this.indexPdf = 0;
+        this.pdfVisible = true
     },
     //表单筛选
     getDeliverReList() {
@@ -238,6 +267,8 @@ export default {
         current: this.currentPage,
         size: this.pageSize
       };
+      debugger
+      console.log('data',data)
       let _this = this
       this.$store.dispatch("getDeliverReceipt", data).then(res => {
         debugger
@@ -303,19 +334,36 @@ export default {
       let date = new Date(val);
       let Y = date.getFullYear() + '-';
       let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
-      let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
-      let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
-      let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
-      let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-      return Y + M + D + h + m + s;
+      let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate();
+      // let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+      // let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+      // let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+      // let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+      // return Y + M + D + h + m + s;
+       return Y + M + D;
     },
-    //点击卷宗目录后 显示卷宗目录
+    //点击送达回证列表，显示弹框
     showdeliverReceiptForm() {
       this.$refs.deliverReceiptFormRef.showModal();
     },
+    viewDocPdf(row) {
+        debugger
+        console.log('row',row) 
+        let routerData = {
+          hasApprovalBtn: false,
+          docId: row.caseSerProofId,
+          approvalOver: false,
+          hasBack: true,
+          docDataId:row.caseSerProofId
+        };
+        debugger
+        this.$store.dispatch("deleteTabs", this.$route.name);
+        this.$router.push({ name: "myPDF", params: routerData });
+      },
   },
   mounted() {
     // this.setDepartTable(this.data)
+    this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
   },
   created() {
     this.getDeliverReList();

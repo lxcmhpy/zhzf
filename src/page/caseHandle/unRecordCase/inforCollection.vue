@@ -252,8 +252,8 @@
               </el-form-item>
             </div>
             <div class="itemThird">
-              <el-form-item label="联系电话" prop="partyTel">
-                <el-input v-model="driverOrAgentInfo.tel" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+              <el-form-item label="联系电话">
+                <el-input v-model="driverOrAgentInfo.tel" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false" @blur="blur2($event.target.value)"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -265,7 +265,7 @@
             </div>
             <div class="itemSmall">
               <el-form-item label="邮编">
-                <el-input v-model="driverOrAgentInfo.adressCode" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                <el-input v-model="driverOrAgentInfo.adressCode" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false" @blur="blur3($event.target.value)"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -384,6 +384,7 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测站">
+              <span style="color:red">*</span>
               <el-select v-model="inforForm.otherInfo.checkStastions">
                 <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
@@ -431,6 +432,7 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车辆轴数">
+              <span style="color:red">*</span>
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxleNumber" @change="weightLimit('车辆轴数')">
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
@@ -443,6 +445,7 @@
           </div>
           <div class="itemThird">
             <el-form-item label="车型">
+              <span style="color:red">*</span>
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
                 <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="中置轴挂车列车"></el-option>
@@ -758,7 +761,7 @@ export default {
         staff: "",
         certificateId: "",
         otherInfo: {
-          isBigTransfer: '0',
+          isBigTransfer: '否',
         },
         weightLimit: '',
         overWeight: '',
@@ -786,13 +789,13 @@ export default {
           { required: true, message: "请输入装载物", trigger: "change" }
         ],
         'driverOrAgentInfo.relationWithCase': [
-          { required: true, message: "请选择", trigger: "change" }
+          { required: true, message: "请选择案件关系", trigger: "change" }
         ],
         illegalLaw: [
-          { required: true, message: "请选择", trigger: "blur" }
+          { required: true, message: "请选择违法条款", trigger: "blur" }
         ],
         punishLaw: [
-          { required: true, message: "请选择", trigger: "blur" }
+          { required: true, message: "请选择处罚依据", trigger: "blur" }
         ],
         partyAge: [
           { validator: validateAge, trigger: "blur" }
@@ -1476,6 +1479,21 @@ export default {
       console.log('this.driverOrAgentInfo.age', this.driverOrAgentInfo.age)
       // this.driverOrAgentInfo.age = 3;
       this.driverOrAgentInfo.age = val >= 0 ? val : 0;
+    },
+    	
+	  blur2(val) {
+      debugger
+      var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[358]\d{9})$)/;
+      if (!reg.test(val) && val) {
+        this.$message('手机号不正确')
+      }
+        // callback();
+    },
+     blur3(val) {
+      var reg = /^\d{6}$/;
+      if (!reg.test(val) && val) {
+        this.$message('请输入正确的6位邮编')
+      }
     },
   },
   mounted() {
