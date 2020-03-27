@@ -5,7 +5,7 @@
     </div>
     <div :class="caseState != 'copy' ? 'fullWid' : '' ">
       <el-form :model="caseSearchForm" ref="caseSearchForm" class="caseSearchForm" label-width="100px">
-        <div :class="lineSearchSty">
+        <div>
           <div class="item" v-if="caseState == 'copy'">
             <el-form-item label="案号">
               <el-input v-model="caseSearchForm.caseNumber"></el-input>
@@ -19,14 +19,14 @@
           </div>
           <div class="item">
             <el-form-item label="目标机构">
-              <el-input v-model="caseSearchForm.vehicleShipId"></el-input>
+              <el-input v-model="caseSearchForm.organMb"></el-input>
             </el-form-item>
           </div>
-          <div class="item" v-if="caseState == 'copy' || caseState == 'waitDeal'">
+          <div class="item">
             <el-form-item label="处理状态">
               <!-- <el-input v-model="caseSearchForm.caseStatus"></el-input> -->
-              <el-select v-model="caseSearchForm.caseStatus" placeholder="全部">
-                <el-option v-for="item in caseStateList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              <el-select v-model="caseSearchForm.state" placeholder="全部">
+                <el-option v-for="item in caseStateList" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -38,12 +38,12 @@
         <div :class="{hideSomeSearchClass:hideSomeSearch,lineTwoStyle:caseState == 'waitArchive'}">
           <div class="item">
             <el-form-item label="违法行为">
-              <el-input v-model="caseSearchForm.caseCauseName"></el-input>
+              <el-input v-model="caseSearchForm.wfss"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="申请人">
-              <el-input v-model="caseSearchForm.applicant"></el-input>
+              <el-input v-model="caseSearchForm.person"></el-input>
             </el-form-item>
           </div>
 
@@ -74,38 +74,27 @@ export default {
         party: "",
         vehicleShipId: "",
         caseType: "",
-        caseCauseName: "",
-        caseStatus: "",
-        currentLinkName: "",
-        acceptStartTime: "",
-        acceptEndTime: "",
-        applicant: "",
-        applyStartTime: "",
-        applyEndTime: "",
-        endCaseStartTime: "",
-        endCaseEndTime: ""
+        wfss:"",
+        state: "",
+        person: "",
+        endTime: "",
+        beginTime: "",
       },
-      acceptTimeArray: [],
-      endCaseTimeArray: [],
-      applyTimeArray: [],
+      acceptTimeArray:[],
       hideSomeSearch: true,
-      linkList: [], //环节
-      caseTypeList: [],//类型
-      caseStateList: [],//状态
-      dictId: this.caseState == "waitDeal" ? "ef38274ddea12be26e9a8c1bf23cd401" : "324701f1633dd65ca79a28fbc79c1628",
+      caseStateList: [
+        {
+          value: '1',
+          label: '已完成'
+        },
+        {
+          value: '2',
+          label: '已发送'
+        },
+      ]
     };
   },
-  computed: {
-    lineSearchSty() {
-      if (this.caseState == "copy") {
-        return "unRecordCaseStyle";
-      } else if (this.caseState == "waitDeal") {
-        return "waitDealStyle";
-      } else if (this.caseState == "approveIng") {
-        return "approveIngStyle";
-      }
-    }
-  },
+  computed: {},
   props: ["caseState"],
   methods: {
     caseRecord() { },
@@ -122,61 +111,16 @@ export default {
           }
       })
     },
-    //查询所以环节
-    getAllLinkList() {
-      getQueryLinkListApi().then(
-        res => {
-          this.linkList = res.data;
-        },
-        error => {
-          console.log(error)
-        }
-      );
-    },
-    //查询所有案件类型
-    getQueryCaseTypeList() {
-      getQueryCaseTypeListApi().then(
-        res => {
-          console.log('类型', res);
-          this.caseTypeList = res.data.records;
-        },
-        error => {
-          console.log(error)
-        }
-      );
-    },
     //搜索
     searchCaseEmit() {
-      console.log('点击')
-      this.caseSearchForm.applyStartTime = this.applyTimeArray[0]
-      this.caseSearchForm.applyEndTime = this.applyTimeArray[1]
-
-      this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0]
-      this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1]
-
-      this.caseSearchForm.endCaseStartTime = this.endCaseTimeArray[0]
-      this.caseSearchForm.endCaseEndTime = this.endCaseTimeArray[1]
-
+      console.log("状态",this.caseSearchForm.state);
+      this.caseSearchForm.beginTime = this.acceptTimeArray[0]
+      this.caseSearchForm.endTime = this.acceptTimeArray[1]
+      console.log("查询条件",this.caseSearchForm)
       this.$emit('searchCase', this.caseSearchForm);
     },
-    //查询案件状态
-    getQueryCaseStateList() {
-      getDictListDetailApi(this.dictId).then(
-        res => {
-          console.log("状态", res);
-          // this.options = res.data;
-          this.caseStateList = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    }
   },
   created() {
-    this.getAllLinkList();
-    this.getQueryCaseTypeList();
-    this.getQueryCaseStateList();
   }
 };
 </script>

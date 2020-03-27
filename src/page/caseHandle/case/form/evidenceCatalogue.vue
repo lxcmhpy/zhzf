@@ -124,6 +124,7 @@ export default {
       (this.form.category = "证据"),
       (this.form.userId = iLocalStroage.gets("userInfo").id),
       (this.form.evName = param.file.name);
+      (this.form.evType = param.file.type);
       this.insertEvi();      
     },
     //插入证据

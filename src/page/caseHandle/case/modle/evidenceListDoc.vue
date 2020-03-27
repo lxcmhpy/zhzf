@@ -391,6 +391,9 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      //  setTimeout(() => {
+      //   this.printContent();
+      //   }, 1000)
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
@@ -520,5 +523,7 @@ export default {
 @import "@/assets/css/caseHandle/caseDocModle.scss";
 .print_box .print_info .evidencetable tr td{
   white-space: inherit;
+  text-align-last: center;
 }
+
 </style>

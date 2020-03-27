@@ -139,7 +139,7 @@ import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // import signture from "../../../../js/signture";
 import mySignture from "@/common/js/mySignture";
-
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: {
     overflowInput,
@@ -169,6 +169,8 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
+        docDataId: "", //多份文书的id
+
       },
       name: '',
       inputInfo: '',
@@ -231,6 +233,25 @@ export default {
         docId: this.$route.params.docId
       };
       this.com_getDocDataByCaseIdAndDocId(data)
+
+      //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+      let addMoreData = JSON.parse(this.$route.params.addMoreData);
+
+      if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
+        //设置询问笔录名称
+        console.log('添加')
+        this.caseDocDataForm.note = "询问笔录（" + addMoreData.askData.peopleType + ")(第" + addMoreData.askData.askNum + "次)";
+        this.com_getCaseBasicInfo(data.caseId, data.docId);
+      } else {
+        console.log('修改')
+        let currentDocDataId = iLocalStroage.get("currentDocDataId");
+        if (currentDocDataId) {
+          this.getDocDetailById(currentDocDataId)
+        } else {
+          this.getDocDetailById(this.$route.params.docDataId)
+        }
+      }
+
     },
     //保存文书信息
     addDocData(handleType) {
@@ -412,28 +433,32 @@ export default {
       this.getDocDetailById(this.$route.params.docDataId)
     }
     this.docData.fine = this.convertCurrency(this.docData.fine);
-    var flag = this.$route.params.approvalForm.executeHandle || ''
-    if (flag) {
-      if (this.$route.params.approvalForm.executeHandle == 0) {
-        // 拒绝
-        this.checknames.push("3")
-        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
+    console.log('this.$route.params.approvalForm', this.$route.params.approvalForm.executeHandle)
+
+
+    if (this.$route.params.approvalForm.executeHandle == '0') {
+      // 拒绝
+      console.log('拒绝')
+
+      this.checknames.push("3")
+      this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
+    }
+    else {
+      if (this.$route.params.approvalForm.executeType == 1) {
+        // 分期
+        this.checknames.push("2")
+        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
+
       }
-      else {
-        if (this.$route.params.approvalForm.executeType == 1) {
-          // 分期
-          this.checknames.push("2")
-          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
+      if (this.$route.params.approvalForm.executeType == 0) {
+        // 延期
+        this.checknames.push("1")
+        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
 
-        }
-        if (this.$route.params.approvalForm.executeType == 0) {
-          // 延期
-          this.checknames.push("1")
-          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
-
-        }
       }
     }
+
+
 
     this.click()
 

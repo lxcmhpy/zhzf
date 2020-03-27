@@ -166,7 +166,6 @@
         </div>
       </div>
     </el-dialog>
-
     <casePageFloatBtns :pageDomId="'deliverCertificate-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData('docForm')" @backHuanjie="submitData"></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> 

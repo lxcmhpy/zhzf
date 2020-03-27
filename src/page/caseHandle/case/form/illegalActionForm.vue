@@ -211,25 +211,25 @@ export default {
           { required: true, message: "当事人姓名必须填写", trigger: "blur" }
         ],
         caseCauseNameCopy: [
-          { required: true, message: "必须填写", trigger: "blur" }
+          { required: true, message: "违法行为必须填写", trigger: "blur" }
         ],
         illegalBasis: [
-          { required: true, message: "必须填写", trigger: "blur" }
+          { required: true, message: "违法事实必须填写", trigger: "blur" }
         ],
         punishLaw: [
-          { required: true, message: "必须填写", trigger: "blur" }
+          { required: true, message: "违法规定必须填写", trigger: "blur" }
         ],
         punishDecision: [
-          { required: true, message: "必须填写", trigger: "change" }
+          { required: true, message: "处罚决定必须填写", trigger: "change" }
         ],
         organContactor:[
-          { required: true, message: "必须填写", trigger: "blur" },
+          { required: true, message: "联系机构必须填写", trigger: "blur" },
         ],
         organAddress:[
-          { required: true, message: "必须填写", trigger: "blur" }
+          { required: true, message: "联系地址必须填写", trigger: "blur" }
         ],
         organTel:[
-          { required: true, message: "必须填写", trigger: "blur" },
+          { required: true, message: "联系电话必须填写", trigger: "blur" },
           { validator: validatePhone, trigger: "blur" }
         ],
         organZipCode:[

@@ -796,6 +796,7 @@ export default {
         ],
         punishLaw: [
           { required: true, message: "请选择处罚依据", trigger: "blur" }
+          { required: true, message: "请选择", trigger: "change" }
         ],
         partyAge: [
           { validator: validateAge, trigger: "blur" }
@@ -900,7 +901,7 @@ export default {
       currentUserLawId: "",
       disableBtn: false, //提交暂存按钮的禁用
       activeA: [true, false, false, false, false],
-      autoSava:true, //自动暂存
+      autoSava: true, //自动暂存
     };
   },
   components: {
@@ -928,7 +929,7 @@ export default {
     },
     //设置执法人员
     setLawPerson(userlist) {
-      console.log('选择的执法人员',userlist);
+      console.log('选择的执法人员', userlist);
       // this.lawPersonList = userlist;
       this.alreadyChooseLawPerson = userlist;
       this.lawPersonListId = [];
@@ -1012,7 +1013,7 @@ export default {
     //更改与当事人关系   为同一人时自动赋值且不可编辑
     changeRelationWithParty(val) {
       debugger
-      console.log(this.driverOrAgentInfoList[0].relationWithParty=='同一人'?true : false);
+      console.log(this.driverOrAgentInfoList[0].relationWithParty == '同一人' ? true : false);
       if (val == "0") {
         console.log(val);
         this.driverOrAgentInfoList[0].name = this.inforForm.party;
@@ -1214,6 +1215,10 @@ export default {
       this.inforForm.agentPartyEcertId = JSON.stringify(
         this.driverOrAgentInfoList
       );
+      // 超限
+      this.inforForm.otherInfo = JSON.stringify(
+        this.inforForm.otherInfo
+      );
       console.log(this.inforForm)
       this.inforForm.state = state;
       this.inforForm.caseStatus = '未立案';
@@ -1229,7 +1234,7 @@ export default {
             });
             // _this.$store.dispatch("deleteTabs", _this.$route.name);
             _this.$store.commit("setCaseId", res.data.id);
-           
+
           },
           err => {
             console.log(err);
@@ -1273,15 +1278,15 @@ export default {
       //驾驶人或代理人
       this.driverOrAgentInfoList = JSON.parse(data.agentPartyEcertId);
       //超限信息
-      if(data.otherInfo!=""){
+      if (data.otherInfo != "") {
         this.inforForm.otherInfo = JSON.parse(data.otherInfo);
       }
-      if(data.caseCauseName=='车辆在公路上擅自超限行驶'){
-          this.showOverrun =true;
+      if (data.caseCauseName == '车辆在公路上擅自超限行驶') {
+        this.showOverrun = true;
       };
       debugger
-      if(data.caseStatus=='待审批'){
-        this.isHandleCase=true;
+      if (data.caseStatus == '待审批') {
+        this.isHandleCase = true;
       };
       //当前用户不是创建案件者，输入框设置为只读
       // currentUserId = iLocalStroage.gets("userInfo").id;
@@ -1295,14 +1300,14 @@ export default {
       let staffIdList = data.staffId.split(',');
       let staffCertificateIdList = data.certificateId.split(',');
       this.lawPersonListId = staffIdList;
-      staffIdList.forEach((item,index) => {
+      staffIdList.forEach((item, index) => {
         let newlaw = {
-          id:item,
-          lawOfficerName:staffNameList[index],
-          lawOfficerCards:staffCertificateIdList[index]
+          id: item,
+          lawOfficerName: staffNameList[index],
+          lawOfficerCards: staffCertificateIdList[index]
         }
         this.alreadyChooseLawPerson.push(newlaw);
-     });
+      });
 
     },
     // 超重限制及抽屉表
@@ -1511,7 +1516,7 @@ export default {
     console.log("标志", someCaseInfo.illageAct)
     this.showOverrun =
       someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
-    console.log('showOverrun',this.showOverrun)
+    console.log('showOverrun', this.showOverrun)
 
     this.driverOrAgentInfo.relationWithParty = '1';
     this.inforForm.otherInfo.checkResult = '1'
@@ -1530,20 +1535,20 @@ export default {
       this.autoSava = false;
     }
     //暂存数据后从其他页面回到信息采集页
-    if(iLocalStroage.get("stageCaseId")){
+    if (iLocalStroage.get("stageCaseId")) {
       this.fromSlide();
     }
   },
   beforeRouteLeave(to, from, next) {
-    console.log('to',to)
-    console.log('from',from)
-    console.log('next',next);
-    if(this.autoSava){
+    console.log('to', to)
+    console.log('from', from)
+    console.log('next', next);
+    if (this.autoSava) {
       this.stageInfo(0);
-      iLocalStroage.set("stageCaseId",this.caseId);
+      iLocalStroage.set("stageCaseId", this.caseId);
     }
-    
-    next(vm=>{console.log(vm)})
+
+    next(vm => { console.log(vm) })
 
   }
 };

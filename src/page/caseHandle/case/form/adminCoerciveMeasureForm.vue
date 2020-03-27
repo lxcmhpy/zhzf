@@ -1,7 +1,7 @@
 <!-------长软------->
 <template>
   <div class="print_box">
-      <div class="print_info"  id="adminCoerciveMeasure-print">
+      <div class="print_info" id="adminCoerciveMeasure-print" style="height:auto;position:relative;">
         <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
           <div class="doc_topic">行政强制措施决定书</div>
           <div class="doc_number">案号：{{formData.caseNumber}}</div>
@@ -15,17 +15,16 @@
             <td rowspan="2">个人</td>
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="party">
+              <el-form-item :prop="isParty ? 'party' :''">
                 <el-input
                   type="textarea"
                   v-model="formData.party"
                   v-bind:class="{ over_flow:formData.party.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="isParty && originalData.party ? true : false"
                   placeholder="\"
                 ></el-input>
-                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
             <td>身份证件号</td>
@@ -38,7 +37,7 @@
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
                   placeholder="\"
-                  :disabled="isParty ? false : true"
+                  :disabled="isParty && originalData.partyIdNo ? true : false"
                 ></el-input>
               </el-form-item>
             </td>
@@ -53,7 +52,7 @@
                   v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="isParty && originalData.partyAddress ? true : false"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -64,7 +63,7 @@
                 <el-input
                   v-model="formData.partyTel"
                   :maxLength="maxLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="isParty && originalData.partyTel ? true : false"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -74,11 +73,11 @@
             <td rowspan="4">单位</td>
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item prop="partyName">
+              <el-form-item :prop="!isParty ? 'partyName':''">
                 <el-input
                   v-model="formData.partyName"
                   :maxLength="maxLength"
-                  :disabled="!isParty ? false : true"
+                  :disabled="isParty || originalData.partyName? true : false"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -87,11 +86,11 @@
           <tr>
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
-              <el-form-item prop="partyUnitAddress">
+              <el-form-item :prop="!isParty ? 'partyUnitAddress':''">
                 <el-input
                   v-model="formData.partyUnitAddress"
                   :maxLength="maxLength"
-                  :disabled="!isParty ? false : true"
+                  :disabled="isParty || originalData.partyUnitAddress? true : false"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -100,23 +99,23 @@
           <tr>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyUnitTel">
+              <el-form-item :prop="!isParty ? 'partyUnitTel':''">
                 <el-input
                   v-model="formData.partyUnitTel"
                   minlength="11"
                   :maxLength="maxLength"
-                  :disabled="!isParty ? false : true"
+                  :disabled="isParty || originalData.partyUnitTel? true : false"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
             </td>
             <td>法定代表人</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyManager">
+              <el-form-item :prop="!isParty ? 'partyManager':''">
                 <el-input
                   v-model="formData.partyManager"
                   :maxLength="maxLength"
-                  :disabled="!isParty ? false : true"
+                  :disabled="isParty ||  originalData.partyManager? true : false"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -125,11 +124,11 @@
           <tr>
             <td colspan="2">统一社会信用代码</td>
             <td colspan="3" class="color_DBE4EF">
-              <el-form-item prop="socialCreditCode">
+              <el-form-item :prop="!isParty ? 'socialCreditCode':''">
                 <el-input
                   v-model="formData.socialCreditCode"
                   :maxLength="maxLength"
-                  :disabled="!isParty ? false : true"
+                  :disabled="isParty || originalData.socialCreditCode? true : false"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -137,14 +136,13 @@
           </tr>
         </table>
           <p>
-            
-              <el-form-item prop="afsj" class="pdf_datapick" style="width: 150px">
-                <el-date-picker v-model="formData.afsj" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日">
+             <el-form-item prop="afsj" class="pdf_datapick" style="width: 150px">
+                <el-date-picker :disabled="originalData.afsj? true : false" v-model="formData.afsj" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日">
                 </el-date-picker>
               </el-form-item>
             ，你（单位）
               <el-form-item rows = '2' prop="caseCauseName" style="width: 300px">
-                <el-input v-model="formData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="true" :maxLength='90'></el-input>
+                <el-input :disabled="originalData.caseCauseName? true : false" v-model="formData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="true" :maxLength='90'></el-input>
               </el-form-item>
             。依据
             <span>
@@ -212,8 +210,8 @@
               </el-date-picker>
             </el-form-item>
           </div>
-
-          <br><br><br><br>
+          <br/><br/><br/><br/>
+          <div class="print_info" >
           <p class="p_begin">查封、扣押场所、设施、财物清单如下：</p>
           <div @click="handleAdd">
             <el-table :data="formData.tableData" border stripe style="width: 100%">
@@ -237,6 +235,7 @@
           <br>
           <div class="notice clear">
             <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
+          </div>
           </div>
           </el-form>
       </div>
@@ -293,7 +292,6 @@
             </div>
           </el-dialog>
           <casePageFloatBtns :pageDomId="'adminCoerciveMeasure-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
-
           <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
     </div>
 </template>
@@ -359,37 +357,59 @@ export default {
       huanjieAndDocId: "4028e4ef63683cd00163684359a10001",  //行政强制措施决定书ID
       rules: {
         partyIdNo: [
+          { required: true, message: "身份证号不能为空", trigger: "blur" },
           { validator: validateIDNumber, trigger: "blur" }
         ],
         partyTel: [
+          { required: true, message: "联系电话不能为空", trigger: "blur" },
           { validator: validatePhone, trigger: "blur" }
         ],
+        partyAddress: [
+          { required: true, message: "住址不能为空", trigger: "blur" }
+        ],
+        partyManager: [
+          { required: true, message: "法定代表人不能为空", trigger: "blur" },
+          { validator: validateIfCom, trigger: "blur" }
+        ],
+        partyUnitAddress: [
+          { required: true, message: "地址不能为空", trigger: "blur" },
+          { validator: validateIfCom, trigger: "blur" }
+        ],
+        partyUnitTel: [
+          { required: true, message: "联系电话不能为空", trigger: "blur" },
+          { validator: validateIfCom, trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        socialCreditCode: [
+          { required: true, message: "统一社会信用代码", trigger: "blur" },
+          { validator: validateIfCom, trigger: "blur" }
+        ],
         afsj: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '案发时间不能为空', trigger: 'blur' },
         ],
         caseCauseName: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '违法事实不能为空', trigger: 'blur' },
         ],
         punishLaw: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '法律条款不能为空', trigger: 'blur' },
         ],
         detainGoods: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '财务名称不能为空', trigger: 'blur' },
         ],
         enforceMeasure: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '采用的强制措施不能为空', trigger: 'blur' },
         ],
         measureStartDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '强制措施开始时间不能为空', trigger: 'blur' },
         ],
         measureEndDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '强制措施结束时间不能为空', trigger: 'blur' },
         ],
         reconsiderationOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '复议机构不能为空', trigger: 'blur' },
         ],
         lawsuitOrgan: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '诉讼机构不能为空', trigger: 'blur' },
         ]
       },
       nameLength: 23,
@@ -432,7 +452,7 @@ export default {
           label: '查封'
         },
         {
-          value: '查封',
+          value: '扣押',
           label: '扣押'
         }
       ],
@@ -488,7 +508,7 @@ export default {
       console.log(this.tableDatas)
       let length = this.tableDatas.length;
       if(length == 0){
-        this.tableDatas.push({'sort': 1,'spec' : '1', 'amount' : 1});
+        this.tableDatas.push({'sort': 1});
       }else{
         this.tableDatas.push({'sort': Number(this.tableDatas[length - 1].sort) + 1,'spec' : '1', 'amount' : 1});
       }
@@ -534,6 +554,8 @@ export default {
         return "个";
       }else if( cellValue == '4'){
         return "件";
+      }else{
+        return "";
       }
     },
     startTime(){
