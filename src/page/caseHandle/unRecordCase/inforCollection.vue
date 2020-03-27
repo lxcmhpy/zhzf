@@ -795,8 +795,7 @@ export default {
           { required: true, message: "请选择违法条款", trigger: "blur" }
         ],
         punishLaw: [
-          { required: true, message: "请选择处罚依据", trigger: "blur" }
-          { required: true, message: "请选择", trigger: "change" }
+          { required: true, message: "请选择处罚依据", trigger: "change" }
         ],
         partyAge: [
           { validator: validateAge, trigger: "blur" }
