@@ -438,8 +438,18 @@ export default {
       this.staffList = this.docData.staff.split(',');
       this.staffIdList = this.docData.staffId.split(',');
       console.log(iLocalStroage.gets("userInfo"))
-      // this.docData.staff1 = iLocalStroage.gets("userInfo").username||'';
-      // this.docData.certificateId1 = this.docData.certificateId.split(',')[0];
+      this.docData.staff1 = this.staffList[0];
+      this.docData.staffId1 = this.staffIdList[0];
+      // let index=0
+      // this.staffIdList.forEach(element => {
+      //   console.log('idlist',element)
+      //   console.log('index',index)
+      //   console.log('iLocalStroage.gets("userInfo").id',)
+      //   if(iLocalStroage.gets("userInfo").id==element){
+      //     console.log(ok)
+      //   }
+      //   index++;
+      // });
       console.log('staffList', this.staffList);
 
     },
