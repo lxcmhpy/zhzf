@@ -794,6 +794,8 @@
 }
 
 .printNumbers_box {
+    // width: 1190.56px !important;
+    // height: 1683.78px !important;
     position: absolute;
     left    : 0;
     right   : 0;
@@ -1473,13 +1475,7 @@
 
     }
 }
-.replaceTableBySpan{
-    display:inline-block;
-    width:100%;
-    line-height: 15px;
-    white-space: normal;
-    word-break: break-all;
-}
+
 
 .overflow_lins_style .overflow_lins span.overflow_lins_textarea{
 text-indent: 11em;

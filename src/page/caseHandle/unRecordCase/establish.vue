@@ -55,9 +55,8 @@
             <td rowspan="2">案由</td>
             <td rowspan="2" colspan="8" class="color_DBE4EF">
               <el-form-item prop="caseName">
-                <el-input  v-show="showTextArea" type="textarea" v-model="formData.caseName" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>
-                <span v-show="!showTextArea" class="replaceTableBySpan" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }">{{formData.caseName}}</span>
-
+                <el-input  type="textarea" v-model="formData.caseName" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>
+               
               </el-form-item>
             </td>
           </tr>
@@ -120,8 +119,7 @@
             <td colspan="2" class="color_DBE4EF">
               <el-form-item :prop="isParty ? 'partyAddress' :''">
                 <el-input  type="textarea" v-model="formData.partyAddress" v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="isParty && !originalData.partyAddress ? false : true"></el-input>
-                <!-- <span v-show="!showTextArea" class="replaceTableBySpan" v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }">{{formData.partyAddress}}</span> -->
-
+               
               </el-form-item>
             </td>
             <td>
@@ -131,14 +129,13 @@
             <td class="color_DBE4EF">
               <el-form-item :prop="isParty ? 'partyIdNo' :''">
                 <el-input type="textarea" v-model="formData.partyIdNo" v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="isParty && !originalData.partyIdNo ? false : true"></el-input>
-                <!-- <span v-show="!showTextArea" class="replaceTableBySpan" v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }">{{formData.partyIdNo}}</span> -->
+               
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td class="color_DBE4EF">
               <el-form-item :prop="isParty ? 'partyTel' :''">
                 <el-input type="textarea" v-model="formData.partyTel" v-bind:class="{ over_flow:formData.partyTel.length>6?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="isParty && !originalData.partyTel? false : true"></el-input>
-                <!-- <span v-show="!showTextArea" class="replaceTableBySpan" v-bind:class="{ over_flow:formData.partyTel.length>14?true:false }">{{formData.partyTel}}</span> -->
               </el-form-item>
             </td>
           </tr>
