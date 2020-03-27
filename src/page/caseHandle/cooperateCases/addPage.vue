@@ -321,6 +321,7 @@ export default {
     // 原因变化
     changeReason(){
       console.log('reson')
+      this.caseData.otherReason=''
     }
   },
   mounted() {

@@ -112,7 +112,7 @@
     <div class="float_left width356">
       <div class="shadow case_home_top">
         <div class="casehome_topic">信息查验
-          <span @click="infoCheck('checkHome')">查看更多</span>
+          <span @click="infoCheck('checkHome')">更多</span>
         </div>
         <div class="icon_content">
           <ul>
@@ -202,14 +202,14 @@
           <el-button size="small" @click="caseRecordMore()">查看更多</el-button>
         </center>
         <!-- <el-button type="text" @click="caseRecordMore()">打开嵌套表格的 Drawer</el-button> -->
-        <!-- <el-drawer title="我嵌套了表格!" :visible.sync="table" direction="rtl" size="50%">
-         <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
-        </el-drawer> -->
+        <el-drawer title="我嵌套了表格!" :visible.sync="table" direction="rtl" size="50%">
+          <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
+        </el-drawer>
 
       </div>
 
     </div>
-    
+
     <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
   </div>
 </template>
@@ -409,8 +409,24 @@ export default {
       }
       console.log('点击', this.tableData)
     },
-    clickCase() {
-
+    clickCase(row) {
+      console.log('未立案flag', this.moreFlag)
+      if (this.moreFlag == 'unRecordCase') {
+        console.log(row);
+        if (row.caseStatus == '已移送') {
+          let message = '该案件正在移送中，移送完成后才可与继续办理'
+          this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
+        } else {
+          this.$store.commit("setCaseId", row.id);
+          //设置案件状态不为审批中
+          this.$store.commit("setCaseApproval", false);
+          this.$router.replace({
+            name: "establish"
+          });
+          let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+          this.$store.commit("setCaseNumber", setCaseNumber);
+        }
+      }
     },
     //获取机构下数据
     getCaseList2(searchData) {
@@ -438,6 +454,7 @@ export default {
     // 查看更多
     router(path) {
       this.$router.push({ path: '/myCase/' + path });
+
     },
     // 立案登记
     caseRecord(data) {
@@ -530,6 +547,7 @@ export default {
       let searchData = {
         flag: 3
       }
+      this.moreFlag = 'approveIng';
       this.getCaseList2(searchData);
     } else {
       let searchData = {

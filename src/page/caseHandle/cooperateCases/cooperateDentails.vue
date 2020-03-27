@@ -40,8 +40,8 @@
             <el-form-item label="案发地点">
               {{caseData.afdd}}
             </el-form-item>
-            <el-form-item label="抄告原因">
-              {{caseData.copyReason}}
+            <el-form-item label="移送原因">
+              {{caseData.copyReason}}{{caseData.otherReason}}
             </el-form-item>
           </div>
         </div>
