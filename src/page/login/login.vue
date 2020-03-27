@@ -374,7 +374,11 @@ export default {
                   _this.success = false
               },
               error => {
-                console.log(error);
+                console.log('error',error);
+                 this.$message({
+                  type: "error",
+                  message: error.message
+                });
               }
             );
           }
