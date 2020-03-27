@@ -111,7 +111,7 @@
         <p>
           依据《中华人民共和国行政处罚法》第三十七条第二款规定，对你（单位）的下列物品进行抽样取证。
         </p>
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0" @click="handleAdd">
+        <table class="evidencetable" border="1" bordercolor="black" width="100%" cellspacing="0" @click="handleAdd">
           <!-- <tr>
             <td>序号</td>
             <td>被抽样物品名称</td>
@@ -418,7 +418,7 @@ export default {
     //保存文书信息
     saveData(handleType) {
       // this.docData.evdenceList = this.evdenceList;
-
+     
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -493,5 +493,9 @@ export default {
 }
 .print_box #obtanEvidence_print .el-form-item__content .el-input .el-input__inner{
   width: 100%;
+}
+.print_box .print_info .evidencetable tr td{
+  white-space: inherit;
+  text-align-last: center;
 }
 </style>

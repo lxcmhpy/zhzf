@@ -55,7 +55,8 @@
             <td rowspan="2">案由</td>
             <td rowspan="2" colspan="8" class="color_DBE4EF">
               <el-form-item prop="caseName">
-                <el-input type="textarea" v-model="formData.caseName" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>
+                <el-input  type="textarea" v-model="formData.caseName" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>
+               
               </el-form-item>
             </td>
           </tr>
@@ -117,7 +118,8 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item :prop="isParty ? 'partyAddress' :''">
-                <el-input type="textarea" v-model="formData.partyAddress" v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="isParty && !originalData.partyAddress ? false : true"></el-input>
+                <el-input  type="textarea" v-model="formData.partyAddress" v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="isParty && !originalData.partyAddress ? false : true"></el-input>
+               
               </el-form-item>
             </td>
             <td>
@@ -127,12 +129,13 @@
             <td class="color_DBE4EF">
               <el-form-item :prop="isParty ? 'partyIdNo' :''">
                 <el-input type="textarea" v-model="formData.partyIdNo" v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="isParty && !originalData.partyIdNo ? false : true"></el-input>
+               
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td class="color_DBE4EF">
               <el-form-item :prop="isParty ? 'partyTel' :''">
-                <el-input type="textarea" v-model="formData.partyTel" v-bind:class="{ over_flow:formData.partyTel.length>11?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="isParty && !originalData.partyTel? false : true"></el-input>
+                <el-input type="textarea" v-model="formData.partyTel" v-bind:class="{ over_flow:formData.partyTel.length>6?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="isParty && !originalData.partyTel? false : true"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -164,7 +167,7 @@
             <td style="width:50px">联系电话</td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyUnitTel">
-                <el-input type="textarea" v-model="formData.partyUnitTel" v-bind:class="{ over_flow:formData.partyUnitTel.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="!isParty && !originalData.partyUnitTel ? false : true"></el-input>
+                <el-input type="textarea" v-model="formData.partyUnitTel" v-bind:class="{ over_flow:formData.partyUnitTel.length>6?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="!isParty && !originalData.partyUnitTel ? false : true"></el-input>
               </el-form-item>
             </td>
           </tr>

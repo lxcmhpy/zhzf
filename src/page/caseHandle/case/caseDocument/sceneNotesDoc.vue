@@ -290,6 +290,8 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 import {
   findCaseAllBindPropertyApi,
 } from "@/api/caseHandle";
+
+
 // 验证规则
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 
@@ -492,6 +494,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -656,6 +659,11 @@ export default {
   }
   #scenetimeBox .is-required .el-input__inner::-webkit-input-placeholder{
     color: #000;
+  }
+  .overflow_lins_style .overflow_lins span.overflow_lins_textarea{
+    white-space: normal;
+    line-height: 23px;
+    text-indent: 0;
   }
 }
 </style>

@@ -1475,3 +1475,20 @@
 
     }
 }
+
+
+.overflow_lins_style .overflow_lins span.overflow_lins_textarea{
+text-indent: 11em;
+left: 0;
+top:0;
+}
+.print_box .print_info p .el-form-item__content span.over_flow{
+    line-height: 15px;
+    font-size: 12px;
+}
+.print_box .print_info tr td span.over_flow{
+    white-space: normal;
+    word-break: break-all;
+    font-size: 12px;
+    line-height: 15px;
+}

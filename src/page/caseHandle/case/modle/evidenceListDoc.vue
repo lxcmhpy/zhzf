@@ -391,6 +391,9 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      //  setTimeout(() => {
+      //   this.printContent();
+      //   }, 1000)
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
