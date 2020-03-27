@@ -1,8 +1,7 @@
 <template>
   <div class="print_box printNumbers_box" id="caseInvest-print">
     <el-form :rules="rules" ref="caseInvestiForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
-      <div class="print_info">
-      <!-- <div id="caseInvest-print"  style="height:auto;padding:0px;"> -->
+
       <div class="print_info" >
         <div class="doc_topic">案件调查报告</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
@@ -285,8 +284,7 @@
           <tr></tr>
         </table>
       </div>
-      <!-- </div> -->
-      </div>
+
 
     </el-form>
 
