@@ -73,17 +73,27 @@ export default {
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     //获取机构下的移送数据
-    getTransferCase(searchData) {
+    getTransferCase(searchData, time) {
       let data = searchData;
       // data.userId = iLocalStroage.gets("userInfo").id;
       data.current = this.currentPage;
+      console.log('data.createTime', data.time)
+      let timeSave = data.time
+      if (data.time) {
+        data.endTime = data.time[0]
+        data.beginTime = data.time[1]
+        data.time = ''
+      }
+
       data.size = this.pageSize;
       console.log(data);
       TransferCaseApi(data).then(
         res => {
           console.log('移送列表', res)
           this.tableData = res.data.records
-          this.total = res.data.total
+          this.total = res.data.total;
+          data.time = timeSave
+
         });
     },
     //更改每页显示的条数
