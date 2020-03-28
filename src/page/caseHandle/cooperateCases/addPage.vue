@@ -64,18 +64,22 @@
         </el-form-item>
 
         <el-form-item label="附件">
-          <!-- appendix -->
-          <!-- <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="uploadFileList">
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">最多上传3个附件</div>
-          </el-upload> -->
-          <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadPaymentVoucher" :show-file-list="false">
-            <el-button size="small" type="primary">点击上传</el-button>
-            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+          <!-- <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadPaymentVoucher" :show-file-list="false">
+            <el-button size="small" type="primary">选取文件</el-button>
             <ul>
-              <li v-for="item in alreadyLoadPayEvidence" :key="item.id">{{item.fileName}}</li>
+              <li v-for="item in fileListArr" :key="item.id">{{item.fileName}}
+                <span ><i @click="deleteFile(item)" class="el-icon-circle-close"></i></span>
+              </li>
             </ul>
+          </el-upload> -->
+           <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadPaymentVoucher" :show-file-list="false">
+            <el-button size="small" type="primary">选取文件</el-button>
           </el-upload>
+          <ul>
+            <li v-for="item in fileListArr" :key="item.id">{{item.fileName}}
+              <span ><i @click="deleteFile(item)" class="el-icon-circle-close"></i></span>
+            </li>
+          </ul>
         </el-form-item>
         <el-form-item label="备注">
           <el-input type="textarea" v-model="caseData.notes"></el-input>
@@ -125,10 +129,7 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import { AddEditTransferCaseApi, getFinishDocByIdApi, getFinishEvdenceByIdApi } from "@/api/caseHandle";
-import {
-  uploadEvApi,
-  findFileByIdApi,
-} from "@/api/upload";
+import {uploadEvApi, findFileByIdApi ,deleteFileByIdApi ,getFile} from "@/api/upload";
 // const fileOptions = ['上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊上海啊啊啊啊啊啊啊啊啊', '北京', '广州', '深圳'];
 export default {
   data() {
@@ -160,7 +161,7 @@ export default {
       fileList: [],
       evdenceList: [],
       userInfo: iLocalStroage.gets('userInfo'),
-      alreadyLoadPayEvidence: [], //已上传的附件
+      fileListArr: [], //已上传的附件
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
@@ -201,7 +202,7 @@ export default {
       console.log(this.caseData)
       // 附件
       let appendixList= []
-      this.alreadyLoadPayEvidence.forEach(element => {
+      this.fileListArr.forEach(element => {
         appendixList.push(element.fileName)
       });
       this.caseData.appendix=appendixList.join(',')
@@ -292,6 +293,24 @@ export default {
     //上传附件
     uploadPaymentVoucher(param) {
       console.log(param);
+        if(this.fileListArr.length >=3){
+        this.$message.warning('最多选择3个文件！');
+        return;
+      }
+      const isLt2M = param.file.size / 1024 / 1024 < 10     //这里做文件大小限制
+      if(!isLt2M) {
+        this.$message({
+          message: '上传文件大小不能超过 10MB!',
+          type: 'warning'
+        });
+        return;
+      }
+      for(let i=0; i<this.fileListArr.length; i++){
+        if(param.file.name == this.fileListArr[i].fileName){
+          this.$message.warning('不能上传同一个文件');
+          return;
+        }
+      }
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append('caseId', this.caseData.caseId)
@@ -299,30 +318,62 @@ export default {
       uploadEvApi(fd).then(
         res => {
           console.log(res);
-          this.findPaymentVoucher(res.data, true);
+          this.findFileList(res.data, true);
         },
         error => {
           console.log(error)
+          
         }
       );
+    },
+       //删除附件
+    deleteFile(data){
+      console.log('删除',data);
+      deleteFileByIdApi(data.storageId).then(res=>{
+        console.log(res);
+        this.findFileList();
+      },err=>{
+         console.log(err)
+      })
     },
      //通过缴费凭证id 查询缴费凭证file
     findPaymentVoucher(id, isAdd) {
       findFileByIdApi(id).then(
         res => {
           console.log(res);
-          this.alreadyLoadPayEvidence.push(res.data);
+          this.fileListArr.push(res.data);
         },
         error => {
           console.log(error)
         }
       );
     },
+       //通过案件ID和文书ID查询附件
+    findFileList(){
+      let data =  {
+        caseId: this.caseData.caseId,
+        docId :"2c9029e16c753a19016c755fe1340001"
+      }
+      console.log(data);
+      getFile(data).then(
+        res => {
+          console.log("附件列表",res);
+          this.fileListArr = res.data;
+
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    },
     // 原因变化
     changeReason(){
       console.log('reson')
       this.caseData.otherReason=''
     }
+  },
+  created(){
+    this.findFileList();
   },
   mounted() {
     console.log('选择的案件', this.$route.params)
