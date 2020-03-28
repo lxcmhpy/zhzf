@@ -285,7 +285,7 @@ export default {
 
     //获取菜单
     getMenu() {
-        debugger
+        // debugger
       let _this = this
       this.$store.dispatch("getMenu").then(
         res => {

@@ -26,7 +26,7 @@
             <el-form-item label="处理状态">
               <!-- <el-input v-model="caseSearchForm.caseStatus"></el-input> -->
               <el-select v-model="caseSearchForm.caseType" placeholder="全部">
-                <el-option v-for="item in caseStateList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in caseStateList" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -80,7 +80,7 @@ export default {
       hideSomeSearch: true,
       linkList: [], //环节
       caseTypeList: [],//类型
-      caseStateList: [],//状态
+      caseStateList: ['已发送','已接收','已退回','已完成','已关闭'],//状态
       dictId: this.caseState == "waitDeal" ? "ef38274ddea12be26e9a8c1bf23cd401" : "324701f1633dd65ca79a28fbc79c1628",
     };
   },
@@ -142,23 +142,23 @@ export default {
       this.$emit('searchCase', this.caseSearchForm);
     },
     //查询案件状态
-    getQueryCaseStateList() {
-      getDictListDetailApi(this.dictId).then(
-        res => {
-          console.log("状态", res);
-          // this.options = res.data;
-          this.caseStateList = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    }
+    // getQueryCaseStateList() {
+    //   getDictListDetailApi(this.dictId).then(
+    //     res => {
+    //       console.log("状态", res);
+    //       // this.options = res.data;
+    //       this.caseStateList = res.data;
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     }
+    //   );
+    // }
   },
   created() {
     this.getAllLinkList();
     this.getQueryCaseTypeList();
-    this.getQueryCaseStateList();
+    // this.getQueryCaseStateList();
   }
 };
 </script>

@@ -85,11 +85,11 @@ export default {
       caseStateList: [
         {
           value: '1',
-          label: '已完成'
+          label: '已发送'
         },
         {
           value: '2',
-          label: '已发送'
+          label: '已完成'
         },
       ]
     };
@@ -112,10 +112,19 @@ export default {
       })
     },
     //搜索
-    searchCaseEmit() {
-      console.log("状态",this.caseSearchForm.state);
+    searchCaseEmit() {  
       this.caseSearchForm.beginTime = this.acceptTimeArray[0]
       this.caseSearchForm.endTime = this.acceptTimeArray[1]
+      // let measureStartDate = new Date(this.acceptTimeArray[0]);
+      // let Y = measureStartDate.getFullYear() + '-';
+      // let M = measureStartDate.getMonth() + 1 < 10 ? '0' + (measureStartDate.getMonth() + 1) + '-' : measureStartDate.getMonth() + 1 + '-';
+      // let D = measureStartDate.getDate() < 10 ? '0' + measureStartDate.getDate() + '' : measureStartDate.getDate() + '';
+      // this.caseSearchForm.beginTime = Y + M + D;
+      // let measureEndDate = new Date(this.acceptTimeArray[1]);
+      // let y = measureEndDate.getFullYear() + '-';
+      // let m = measureEndDate.getMonth() + 1 < 10 ? '0' + (measureEndDate.getMonth() + 1) + '-' : measureStartDate.getMonth() + 1 + '-';
+      // let d = measureEndDate.getDate() < 10 ? '0' + measureEndDate.getDate() + '' : measureStartDate.getDate() + '';
+      // this.caseSearchForm.endTime = y + m + d;
       console.log("查询条件",this.caseSearchForm)
       this.$emit('searchCase', this.caseSearchForm);
     },
