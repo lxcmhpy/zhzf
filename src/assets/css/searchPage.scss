@@ -4,9 +4,13 @@
     .handlePart {
         position: relative;
         padding: 0px 7px;
+        display: flex;
     }
     .el-input,.el-select {
         width: 130px;
+    }
+    .w-80 {
+        width: 80px;
     }
 }
 .searchPage {

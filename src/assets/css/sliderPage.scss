@@ -1,0 +1,153 @@
+.main_box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    * {
+        box-sizing: border-box;
+    }
+    .slider-container {
+        overflow-y: auto;
+    }
+    .slider-wrapper {
+        margin-top: 60px;
+    }
+    .slider-item {
+        height: auto !important;
+    }
+    .slider-touch {
+        margin-top: 86px;
+    }
+    .slider-pagination {
+        width: 100% !important;
+        background:linear-gradient(180deg,rgba(255,255,255,1) 0%,rgba(234,237,244,1) 100%);
+        box-shadow:0px 6px 4px 0px rgba(39,66,122,0.13);
+        position  : fixed;
+        top: 122px !important;
+        right: auto !important;
+        left:auto !important;
+        height: 60px;
+        z-index: 10;
+        text-align: center;
+        margin-right: 150px;
+        .swiper-pagination-title {
+            line-height: 60px;
+            position: relative;
+            display: inline-block;
+            a {
+                width: 130px;
+                height: 32px;
+                line-height: 32px;
+                display:inline-block;
+                vertical-align: -2px;
+                margin-right: 30px;
+                cursor: pointer;
+                i {
+                    color:#12C365;
+                    font-size: 19px;
+                    vertical-align: -2px;
+                    padding-right: 8px;
+                }
+            }
+            &.slider-pagination-bullet-active-render {
+                a {
+                    color:white;
+                    background: #4573D0;
+                    i:before {
+                        color:#EF4843;
+                    }
+                }
+            }
+        }
+    }
+    .main_content {
+        width: 100%;
+        padding: 0px 24px;
+        .shadow {
+            margin-bottom: 24px;
+            padding: 20px;
+            padding-bottom: 17px;
+            box-shadow: 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+            background: #fff;
+            .box {
+                margin: 0 auto;
+                position: relative;
+                .box_title {
+                    margin: 2px auto;
+                    margin-bottom: 15px;
+                    text-align: left;
+                    line-height: 24px;
+                    .titleflag {
+                        width      : 4px;
+                        height     : 16px;
+                        display    : inline-block;
+                        background : #4573D0;
+                        // margin-right: 2px;
+                        vertical-align:middle;
+                    }
+                    .title {
+                        height     : 65px;
+                        font-size  : 18px;
+                        font-weight: 600;
+                        color      : rgba(32, 35, 43, 1);
+                        vertical-align: middle;
+                    }
+                }
+                .table_style {
+                    width        : 100%;
+                    // height    : 400px;
+                    margin-bottom: 22px;
+                    font-size: 14px;
+                    font-weight:500;
+                    color: #20232B;
+                    text-align: left;
+                    td {
+                        border        : 1px solid #DFDFDF;
+                        vertical-align: middle;
+                        padding       : 14px;
+                        // height     : 46px;
+                    }
+                    .color_ff {
+                        background: #F4F8FF;
+                    }
+
+                }
+                .list {
+                    overflow: hidden;
+                    li {
+                        float: left;
+                        position: relative;
+                        margin-right:22px;
+                        &:last-child {
+                            margin-right: 0px;
+                        }
+                        .img {
+                            width: 188px;
+                            height: 110px
+                        }
+                        .iconfont {
+                            opacity: 0.7;
+                            position: absolute;
+                            left: 50%;
+                            top: 50%;
+                            margin-left: -18px;
+                            margin-top: -18px;
+                            font-size: 37px;
+                            color:black;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .w-1 {
+        width: 150px;
+    }
+    .w-2 {
+        width: 820px;
+    }
+    .mt-1 {
+        margin-top: 64px;
+    }
+
+}

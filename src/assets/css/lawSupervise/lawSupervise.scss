@@ -37,6 +37,9 @@
         flex: 0.6;
         height: 40px;
         line-height: 40px;
+        .el-input__inner {
+            border-radius: 0px;
+        }
         // margin-right: -1px;
         .el-input__inner {
             height: 40px;
@@ -60,20 +63,23 @@
         }
     }
     .search-box {
-        height: 39px;
+        height: 38px;
         border-top: 1px solid #DCDFE6;
         border-left: 1px solid #DCDFE6;
         border-bottom: 1px solid #DCDFE6;
         box-shadow: none;
         border-radius: 0px;
+        margin-top: 1px;
     }
  }
  .el-vue-search-box-container {
      flex: 0.8;
     .search-box-wrapper .search-btn {
-        background:rgb(2, 118, 250,0.9) !important;
+        background:rgb(2, 118, 250,1) !important;
         font-family: 'element-icons';
         color:transparent !important;
+        border: 1px solid #DCDFE6;
+        border-left:0px;
         &:before{
             content: "\e778" !important;
             color: white !important;
@@ -85,6 +91,7 @@
         width: calc(100% - 45px);
         border-top: 1px solid #dbdbdb;
         border-bottom: 0px;
+        margin-top: -1px;
     }
  }
  .amap-tool {

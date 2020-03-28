@@ -32,3 +32,15 @@ export function getById(type,id) {
       cancelToken: setCancelSource()
     });
   }
+
+  export function queryListPage(data) {
+    return request({
+      url: "/zfjg/superviseVehicle/queryListPage",
+      method: "get",
+      data: data,
+      showloading: false,
+      baseUrlType:2,
+      cancelToken: setCancelSource()
+    });
+  }
+
