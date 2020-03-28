@@ -16,13 +16,13 @@
         <p class="p_begin">
           讨论时间：
           <span>
-            <el-form-item prop="discussionStartTime" class="pdf_datapick inputwidth" style="width:210px">
+            <el-form-item prop="discussionStartTime" class="pdf_datapick inputwidth" style="width:220px">
               <el-date-picker v-model="docData.discussionStartTime" type="datetime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分">
               </el-date-picker>
             </el-form-item>
           </span>至
           <span>
-            <el-form-item prop="discussionEndTime" class="pdf_datapick inputwidth" style="width:210px">
+            <el-form-item prop="discussionEndTime" class="pdf_datapick inputwidth" style="width:220px">
               <el-date-picker v-model="docData.discussionEndTime" type="datetime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分">
               </el-date-picker>
             </el-form-item>
@@ -78,7 +78,7 @@
         <!-- 多行样式 -->
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="illegalFactsEvidence">
+            <el-form-item prop="discussionRecord">
               <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90'></el-input>
               <span class="overflow_describe">讨论记录：</span>
               <span class="span_bg" @click="overFlowEdit" style="margin-top: 8px;">&nbsp;</span>
@@ -111,7 +111,7 @@
         <!-- 多行样式 -->
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="illegalFactsEvidence">
+            <el-form-item prop="conclussionOpinion">
               <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.conclussionOpinion" rows="3" maxLength='90'></el-input>
               <span class="overflow_describe">结论性意见：</span>
               <span class="span_bg" @click="overFlowEdit" style="margin-top: 8px;">&nbsp;</span>
@@ -162,8 +162,6 @@ export default {
         reporter: '',
         recorder: '',
         presentMembersName: '',
-        discussionRecord: '',
-        conclussionOpinion: '',
         overWidthFlag: false,
         discussionRecord: '',//多行编辑内容
         conclussionOpinion: '',//多行编辑内容
@@ -204,7 +202,10 @@ export default {
         ],
         discussionRecord: [
           { required: true, message: '请输入讨论记录', trigger: 'blur' },
-        ]
+        ],
+        conclussionOpinion: [
+          { required: true, message: '请输入结论性意见', trigger: 'blur' },
+        ],
       },
       nameLength: 23,
       adressLength: 23,
