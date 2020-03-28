@@ -127,6 +127,28 @@
         background: #f6f8fd;
     }
 
+    .dialog_unlaw {
+        .el-drawer__header {
+            margin-bottom: 0;
+            padding      : 0 41px 0 30px;
+            color        : #20232B;
+            height       : 64px;
+            line-height  : 64px;
 
+            font-size  : 20px;
+            font-family: PingFang SC;
+            font-weight: 500;
+            span{
+                border: 0 !important;
+                border-color: transparent !important;
+                // background: red;
+            }
+        }
+
+        .el-drawer__body {
+            padding   : 33px 41px 43px 30px;
+            border-top: 1px solid #D6DBE3;
+        }
+    }
 
 }

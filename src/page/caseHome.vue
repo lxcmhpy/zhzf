@@ -202,8 +202,8 @@
           <el-button size="small" @click="caseRecordMore()">查看更多</el-button>
         </center>
         <!-- <el-button type="text" @click="caseRecordMore()">打开嵌套表格的 Drawer</el-button> -->
-        <el-drawer title="我嵌套了表格!" :visible.sync="table" direction="rtl" size="50%">
-          <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
+        <el-drawer title="选择违法行为" :visible.sync="table"  size="50%" class="dialog_unlaw">
+          <caseRegisterDiag ref="caseRegisterDiagRef" @checkMoreIllega="checkMoreIllega"></caseRegisterDiag>
         </el-drawer>
 
       </div>
@@ -464,13 +464,14 @@ export default {
     },
     // 查看更多违法行为
     caseRecordMore() {
-      // this.table = true
+      this.table = true
       console.log()
       let lawCate = {
         cateId: '',
         cateName: this.caseForm.wayType,
       };
-      this.$refs.chooseillegalActRef.showModal(lawCate);
+      this.$refs.caseRegisterDiagRef.showModal(lawCate);
+      // this.$refs.chooseillegalActRef.showModal(lawCate);
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     // 查找
@@ -506,6 +507,10 @@ export default {
     setIllegaAct(val) {
       // this.caseRegisterForm.illageAct = val.strContent;
       // this.illageActId = val.id;
+    },
+    // 查看更多违法行为
+    checkMoreIllega(){
+
     },
     // 获取带办理条数
     getTotal(flag) {
