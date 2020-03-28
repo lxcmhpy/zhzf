@@ -51,7 +51,7 @@
                   v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="formData.partyAge ? true : false"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -63,7 +63,7 @@
                 <!-- 需要完善 -->
                 <el-select
                   v-model="formData.partySex"
-                  :disabled="isParty ? false : true"
+                  :disabled="formData.partySex ? true : false"
                   placeholder="\"
                   class="select10"
                 >
@@ -83,7 +83,7 @@
                   v-bind:class="{ over_flow:formData.partyUnitPosition.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="formData.partyUnitPosition ? true : false "
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -97,7 +97,7 @@
                   v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="formData.partyAddress ? true : false "
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -113,7 +113,7 @@
                   v-bind:class="{ over_flow:formData.partyTel.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="formData.partyTel ? true : false"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -127,7 +127,7 @@
                   v-bind:class="{ over_flow:formData.partyZipCode && formData.partyZipCode.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="isParty ? false : true"
+                  :disabled="formData.partyZipCode ? true : false"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -215,20 +215,29 @@
           </tr>
           <tr>
             <td>
-              <p>执行</p>
-              <p>情况</p>
+              <p class="center_similar">执
+              <p class="center_similar">行</p>
+              <p class="center_similar">情
+              <p class="center_similar">况</p>
             </td>
             <td colspan="6" class="color_DBE4EF">
               <el-form-item prop="closeSituation">
-                <el-input type='textarea' v-model="formData.closeSituation"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder=""></el-input>
+                <el-input  style="float:left;width:70%;margin-top:30px;"
+                type="textarea"
+                v-model="formData.closeSituation"
+                v-bind:class="{ over_flow:formData.closeSituation && formData.closeSituation.length>14?true:false }"
+                :autosize="{ minRows: 1, maxRows: 5}"
+                maxlength="200"
+                placeholder="\">
+                </el-input>
+                <div class="pdf_seal" style="float:right; width: 30%;">
+                  <p>签名：{{formData.approvePeo}}</p>
+                  <p>
+                    <span v-if="formData.approveTime">{{formData.approveTime}}</span>
+                    <span v-else>年 月 日</span>
+                  </p>
+                </div>
               </el-form-item>
-              <div class="pdf_seal">
-                <p>签名：{{formData.approvePeo}}</p>
-                <p>
-                  <span v-if="formData.approveTime">{{formData.approveTime}}</span>
-                  <span v-else>年 月 日</span>
-                </p>
-              </div>
             </td>
           </tr>
           <tr>
@@ -337,6 +346,7 @@ export default {
         secondApprovePeo: "",
         secondApproveTime: ""
       },
+      isParty: false,
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -356,39 +366,6 @@ export default {
         closeSituation: [
           { required: true, message: "执行情况不能为空", trigger: "blur" }
         ]
-        // partyIdNo: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyAddress: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyTel: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyName: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyUnitAddress: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyUnitTel: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyManager: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // punishLaw: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // socialCreditCode: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // illegalFactsEvidence: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // reconsiderationOrgan: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
       },
       nameLength: 23,
       adressLength: 23,

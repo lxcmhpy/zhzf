@@ -195,6 +195,7 @@
 
   </div>
 </template>
+
 <script>
 import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 import archiveCatalogue from "./archiveCatalogue";

@@ -85,11 +85,11 @@ export default {
       caseStateList: [
         {
           value: '1',
-          label: '已完成'
+          label: '已发送'
         },
         {
           value: '2',
-          label: '已发送'
+          label: '已完成'
         },
       ]
     };
