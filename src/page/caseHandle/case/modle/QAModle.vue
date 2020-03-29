@@ -182,7 +182,6 @@ export default {
       }else {
         //标准模版 自定义模版
         this.chooseCustomTemplate = true;
-
         this.findModelList(val)
       }
     },
@@ -211,6 +210,11 @@ export default {
       findModelListByModelTypeIdApi(modelTypeId).then(res=>{
         console.log(res);
         this.modelList = res.data;
+        if(res.data[0]){
+          this.addBannerForm.template = res.data[0].id;
+        }else{
+          this.addBannerForm.template = '';
+        }
       },err=>{
         console.log(err);
       })

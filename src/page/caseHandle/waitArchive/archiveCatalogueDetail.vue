@@ -9,9 +9,9 @@
         <el-table-column width="50" type="index" label="序号" align="center"></el-table-column>
         <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
         <el-table-column prop="page" label="起止页数" align="center">
-          <template slot-scope="scope">
+          <!-- <template slot-scope="scope">
               <span>{{currentPages(scope)}}</span>
-          </template>
+          </template> -->
         </el-table-column>
         <el-table-column label="顺序调整" align="center" >
           <template slot-scope="scope">

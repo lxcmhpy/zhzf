@@ -59,7 +59,26 @@
         </center>
       </el-form>
     </div>
-
+    <el-dialog title="提示" :visible.sync="visible" @close="visible = false" :close-on-click-modal="false" width="420px">
+      <div>
+        <el-row>
+          <el-col :span="2">
+            <!-- <i class="el-icon-question" style="color:red;"></i> -->
+            <img src="../../../../static/images/img/tip_wenhao.png" alt="" style="margin-top:5px">
+          </el-col>
+          <el-col :span="22">
+            <p style="line-height:28px">
+              提交成功后，案件将抄告至目标机构。<br />
+              是否确认提交?
+            </p>
+          </el-col>
+        </el-row>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="goSubmit('caseData')">确认</el-button>
+        <el-button @click="visible = false">取消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -84,6 +103,7 @@ export default {
         createTime: new Date()
       },
       fileListArr: [], //已上传的附件
+      visible: false,
       rules: {
         organType: [
           { required: true, message: '请选择机构类型', trigger: 'blur' }
@@ -104,7 +124,7 @@ export default {
         name: "addCopyOne",
       });
     },
-    submitForm(formName) {
+    goSubmit(formName) {
       let appendixList= []
       this.fileListArr.forEach(element => {
         appendixList.push(element.fileName)
@@ -137,6 +157,10 @@ export default {
           return false;
         }
       });
+    },
+    submitForm(formName) {
+     this.visible = true;
+     console.log("弹窗",this.visible)
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();

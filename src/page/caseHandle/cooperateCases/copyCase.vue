@@ -82,7 +82,7 @@ export default {
       copyData.size = this.pageSize;
       queryCaseCopyListPageApi(copyData).then(
         res => {
-          console.log('抄告列表', res)
+          console.log('抄告列表', res.data.records)
           this.tableData = res.data.records
           this.total = res.data.total
         });

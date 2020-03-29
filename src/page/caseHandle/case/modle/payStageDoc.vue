@@ -34,7 +34,7 @@
         <p>
           <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">同意你（单位）延期缴纳罚款。延长至
           <span>
-            <el-form-item :prop="disabledOne?'':'delayDate'" class="pdf_datapick width151">
+            <el-form-item :prop="disabledOne?'placeholder':'delayDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.delayDate" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
@@ -56,18 +56,18 @@
 
           </span>期至
           <span>
-            <el-form-item :prop="disabledTwo?'':'instalmentDate'" class="pdf_datapick width151">
+            <el-form-item :prop="disabledTwo?'placeholder':'instalmentDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.instalmentDate" v-bind:disabled="disabledTwo" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
           </span>前，缴纳罚款
           <span>
-            <el-form-item :prop="disabledTwo?'':'payFine'">
+            <el-form-item :prop="disabledTwo?'placeholder':'payFine'">
               <el-input v-model="docData.payFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>元（大写）（每期均应当单独开具本文书）。此外，尚有未缴纳的罚款
           <span>
-            <el-form-item :prop="disabledTwo?'':'debtFine'">
+            <el-form-item :prop="disabledTwo?'placeholder':'debtFine'">
               <el-input v-model="docData.debtFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>元（大写）。
@@ -75,7 +75,7 @@
         <p>
           <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">由于
           <span>
-            <el-form-item :prop="disabledThree?'':'reason'" style="width:500px">
+            <el-form-item :prop="disabledThree?'placeholder':'reason'" style="width:500px">
               <el-input v-model="docData.reason" v-bind:disabled="disabledThree" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>，因此，本机关认为你的申请不符合《中华人民共和国行政处罚法》第五十二条的规定，不同意你（单位）分期（延期）缴纳罚款。
