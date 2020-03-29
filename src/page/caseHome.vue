@@ -458,6 +458,8 @@ export default {
         cateId: '',
         cateName: this.caseForm.wayType,
         hyTypeLable: this.caseForm.commenCase,
+        hyTypeId: this.caseForm.commenCase,
+        categoryId: this.caseForm.commenCase,
       };
       this.$refs.chooseillegalActRef.showModal(lawCate);
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');

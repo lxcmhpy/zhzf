@@ -171,7 +171,7 @@ export default {
         docData: "",
         status: "",   //提交状态
         docDataId: "", //多份文书的id
-
+        linkTypeId: "2c9029e16c753a19016c755fe1340001" //环节ID
       },
       name: '',
       inputInfo: '',

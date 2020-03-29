@@ -198,7 +198,8 @@ export default {
         caseDoctypeId: "2c9029cf698f9e6c01698fd9e9000002", //表单类型IDer
         //表单数据
         docData: "",
-        status: ""
+        status: "",
+        linkTypeId: "2c9029e16c753a19016c755fe1340001" //环节ID
       },
       name: '',
       inputInfo: '',

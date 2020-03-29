@@ -173,7 +173,8 @@ export default {
         caseDoctypeId: this.$route.params.docId, //表单类型IDer
         //表单数据
         docData: "",
-        status: ""
+        status: "",
+        linkTypeId:'2c90293b6c178b55016c17c93326000f' //所属环节的id
       },
       rules: {
         caseName: [
