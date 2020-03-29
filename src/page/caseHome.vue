@@ -373,7 +373,7 @@ export default {
       unRecord: '0',
       waitArchive: '0',
       approveIng: '0',
-      lawCateList:[]
+      lawCateList: []
     };
   },
   methods: {
@@ -482,6 +482,15 @@ export default {
         // categoryId: this.caseForm.programType,
         // strNumber: this.caseForm.wayType,
       }
+      if(this.caseForm.wayType=='水路运政'){
+        data.categoryId=1002000300000000
+      }
+      if(this.caseForm.wayType=='公路路政'){
+        data.categoryId=1002000100000000
+      }
+      if(this.caseForm.wayType=='道路运政'){
+        data.categoryId=1002000200000000
+      }
       this.$store.dispatch("getIllegaAct", data).then(
         res => {
           console.log('getIllegaAct', res)
@@ -500,7 +509,7 @@ export default {
         console.log(element.label)
         if (this.caseForm.wayType == element.label) {
           this.commonOptions = element.children
-          console.log('this.commonOptions',this.commonOptions)
+          console.log('this.commonOptions', this.commonOptions)
         }
       });
       this.getIllegaAct()
@@ -543,7 +552,7 @@ export default {
         }
       );
     },
-        //获取业务领域
+    //获取业务领域
     getEnforceLawType() {
       let _this = this
       this.$store.dispatch("getEnforceLawType", "1").then(
@@ -584,7 +593,8 @@ export default {
     console.log('userinfo', iLocalStroage.gets("userInfo").roles[0].name)
 
     this.changeCommonOptions()
-this.getEnforceLawType()
+    //获取业务领域
+    this.getEnforceLawType()
 
   }
 };
@@ -722,7 +732,6 @@ img {
   height: 470px;
   padding: 0px 20px 15px 20px;
 }
-
 </style>
 <style lang="scss">
 @import "@/assets/css/caseHandle/caseHome.scss";

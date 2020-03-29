@@ -6,13 +6,13 @@
         <div>
           <div class="item">
             <el-form-item label="执法门类" prop="category">
-              <el-input v-model="illegalActSearchForm.category" disabled></el-input>
+              <el-input v-model="category" disabled></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="行业类别" prop="hyType">
-              <el-select v-model="illegalActSearchForm.hyType" placeholder="请选择" @change="changehyType"  clearable>
-                <el-option v-for="item in industryCategoryList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              <el-select v-model="illegalActSearchForm.hyTypeId" placeholder="请选择" @change="changehyType" clearable>
+                <el-option v-for="item in industryCategoryList" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -35,13 +35,13 @@
           </div> -->
         </div>
       </el-form>
-      <div style="height:calc(100% - 170px);" >
-        <el-table :data="tableData"  stripe :height="tableHeight" border highlight-current-row @current-change="selectIllegaAct">
+      <div style="height:calc(100% - 170px);">
+        <el-table :data="tableData" stripe :height="tableHeight" border highlight-current-row @current-change="selectIllegaAct">
           <el-table-column prop="strNumber" label="代码" width="180"></el-table-column>
           <el-table-column prop="strContent" label="违法行为"></el-table-column>
         </el-table>
       </div>
-      <div class="paginationBox center" >
+      <div class="paginationBox center">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
     </el-drawer>
@@ -60,11 +60,12 @@ export default {
       showcateId: false,
       table: false,
       illegalActSearchForm: {
-        category: "",
-        hyType: "",
+        categoryId: "",
+        hyTypeId: "",
         strNumber: "",
         strContent: ""
       },
+      category:'',
       tableData: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -79,7 +80,8 @@ export default {
     showModal(data) {
       console.log('传输数据', data)
       this.table = true;
-      this.illegalActSearchForm.hyType = data.cateName;
+      this.category = data.cateName;
+
       // this.visible = true;
       this.getIndustryCategory();
 
@@ -87,8 +89,8 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.illegalActSearchForm = {
-        category: "",
-        hyType: "",
+        categoryId: "",
+        hyTypeId: "",
         strNumber: "",
         strContent: ""
       };
@@ -111,10 +113,12 @@ export default {
     },
     //获取行业类别 根据执法门类
     getIndustryCategory() {
+
       let _this = this
-      this.$store.dispatch("getIndustryCategory", this.illegalActSearchForm.categoryId).then(
+      this.$store.dispatch("getIndustryCategory", this.categoryId).then(
         res => {
           _this.industryCategoryList = res.data;
+          console.log('下拉框',_this.industryCategoryList)
           _this.getIllegaAct();
         },
         err => {
@@ -124,10 +128,21 @@ export default {
     },
     //查询违法行为
     getIllegaAct() {
+
       this.illegalActSearchForm.size = this.pageSize;
       this.illegalActSearchForm.current = this.currentPage;
-      // this.illegalActSearchForm.categoryId  = 1002000300000000;
-      // this.illegalActSearchForm.category  = '';
+      // this.categoryId  = 1002000300000000;
+      // this.category  = '';
+      if (this.category == '水路运政') {
+        this.illegalActSearchForm.categoryId = 1002000300000000
+      }
+      if (this.category == '公路路政') {
+        this.illegalActSearchForm.categoryId = 1002000100000000
+      }
+      if (this.category == '道路运政') {
+        this.illegalActSearchForm.categoryId = 1002000200000000
+      }
+
       let _this = this
       this.$store.dispatch("getIllegaAct", this.illegalActSearchForm).then(
         res => {
