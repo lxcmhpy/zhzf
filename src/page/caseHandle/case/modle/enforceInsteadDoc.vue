@@ -406,7 +406,8 @@ export default {
         caseDoctypeId: this.$route.params.docId, //文书类型ID
         //文书数据
         docData: "",
-        status: "" //提交状态
+        status: "" ,//提交状态
+        linkTypeId:"a36b59bd27ff4b6fe96e1b06390d204h"
       },
       name: '',
       inputInfo: '',
