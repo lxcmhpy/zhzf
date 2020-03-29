@@ -5,37 +5,33 @@
     :visible.sync="visible"
     @close="closeDialog"
     top="60px"
-    width="405px"
+    width="305px"
     :modal="false"
     :show-close="false"
   >
     <template slot="title">
         <div class="catalogueTitle">
             文书列表
-            <!-- 案件：{{caseInfo.caseNumber}} -->
         </div>
     </template>
-    <!-- <div class="haha" v-show="visible">
-      <div class="archiveCatalogueHead">卷宗目录</div>
-      <div class="archiveCatalogueCon"></div>
-      <div class="archiveCatalogueFoot">排序管理</div>
-
-    </div> -->
-    <div >
-        <table border="1" bordercolor="black" width="100%" cellspacing="0">
-            <tr>
-                <td>序号</td>
-                <td>文书名称</td>
-                <!-- <td>页码</td> -->
-            </tr>
-            <tr v-for="(item,index) in caseList" :key="index" @click="alertPDF(item)">
-                <td>{{index+1}}</td>
-                <td>{{item.name}}</td>
-                <!-- <td>{{item.page}}</td> -->
-            </tr>
-        </table>
+    <div class="userList">
+          <div style="margin: 15px 0;"></div>
+          <el-checkbox-group v-model="checkedDocId">
+              <el-checkbox 
+              v-for="(item,index) in caseList" 
+              :label="item.storageId" 
+              :key="item.storageId">
+                <span class="name">{{index+1}}</span>
+                <span class="name">{{item.docName}}</span>
+              </el-checkbox>
+          </el-checkbox-group>
     </div>
     <span slot="footer" class="dialog-footer">
+      <el-checkbox
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+          ></el-checkbox>
       <el-button @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
     </span>
   </el-dialog>
@@ -48,11 +44,23 @@
         <div >
         <div style="height:auto;">
         <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
-            <div lazy>
+            <!-- <div v-if="mlList.length > 0" lazy>
                 <object >
                     <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
-                    :src="mlList" type="application/pdf" internalinstanceid="29">
+                    :src="mlList[indexPdf]" type="application/pdf" internalinstanceid="29">
                 </object>
+            </div> -->
+            <div v-show="showCover=='pdf'">
+                <object >
+                    <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
+                    :src="docSrc" type="application/pdf" internalinstanceid="29">
+                </object>
+            </div>
+            <div style="position:absolute;bottom:150px;right: 20px;width:100px;">
+              <!-- <el-button @click="updatePDF1">上一张</el-button><br><br>
+              <el-button @click="updatePDF2">下一张</el-button> -->
+              <el-button @click="showNext('last')" :disabled="!nowShowPdfIndex ? true : false">上一张</el-button><br><br>
+              <el-button @click="showNext('next')" :disabled="nowShowPdfIndex == this.checkedDocId.length-1 ? true : false">下一张</el-button>
             </div>
         </div>
         </div>
@@ -61,16 +69,21 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { findByCaseBasicInfoIdApi,findByCaseIdAndDocIdApi } from "@/api/caseHandle";
+import { findByCaseBasicInfoIdApi,findByCaseIdAndDocIdApi,findVoByDocCaseIdApi } from "@/api/caseHandle";
 export default {
   data() {
     return {
       visible: false,
       caseList:[],
-      mlList: "",
+      mlList: [],
       pdfVisible: false,
-      closeDialog: false,
-      host:'',
+      host:"",
+      checkedDocId:[],
+      indexPdf: 0,
+      nowShowPdfIndex:0,
+       docSrc:'', //文书的pdf地址
+       isIndeterminate: true,
+       checkAll: false,
     };
   },
   inject: ["reload"],
@@ -88,20 +101,10 @@ export default {
     closeDialog() {
       this.visible = false;
     },
-    // getByMlCaseId() {
-    //      this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
-    //      res=>{
-    //          this.caseList = res.data;
-    //      },
-    //      err=>{
-    //        console.log(err)
-    //      }
-    //    )
-    // },
     //获取已完成文书列表
-    getByMlCaseId() {
+     getByMlCaseId() {
       let _this = this
-      findByCaseBasicInfoIdApi(this.caseId).then(
+      findVoByDocCaseIdApi(this.caseId).then(
         res => {
             debugger
           console.log(res);
@@ -112,17 +115,39 @@ export default {
         }
       );
     },
-    routerArchiveCatalogueDetail () {
-        this.$router.push({name:'archiveCatalogueDetail'})
+    // getByMlCaseId() {
+    //   let _this = this
+    //   findByCaseBasicInfoIdApi(this.caseId).then(
+    //     res => {
+    //         debugger
+    //       console.log(res);
+    //       _this.caseList = res.data;
+    //     },
+    //     error => {
+    //       console.log(error);
+    //     }
+    //   );
+    // },
+     routerArchiveCatalogueDetail () {
+        debugger
+        let _thats = this
+        this.docSrc = this.host + this.checkedDocId[0];
+        this.nowShowPdfIndex = 0;
+        this.indexPdf = 0;
+        this.pdfVisible = true
+        this.archiveSuccess = true;
+        this.showCover = 'pdf';
     },
-    // alertPDF (item) {
+    // routerArchiveCatalogueDetail () {
     //     debugger
-    //   console.log(this.$route.name)
-    //   if(this.$route.name!='archiveCover'){
-    //     this.$router.push({name:'archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
-    //     return;
-    //   }
-    //   this.$emit('alertPDF', item)
+    //     let _thats = this
+    //     this.checkedDocId.forEach((v)=>{
+    //        debugger
+    //        _thats.mlList.push(this.host + v)
+    //     });
+    //     this.indexPdf = 0;
+    //     this.pdfVisible = true
+    //     console.log('选中的id',this.checkedDocId)
     // },
     alertPDF (item) {
         debugger
@@ -149,10 +174,46 @@ export default {
         return;
       }
       this.$emit('showCoverEmit')
-    }
+    },
+     //上下翻页显示pdf
+    showNext(flag){
+      debugger
+      if(flag == 'last'){
+        debugger
+        if(this.nowShowPdfIndex){
+          debugger
+          this.nowShowPdfIndex--;
+          this.docSrc = this.host + this.checkedDocId[this.nowShowPdfIndex];
+        }
+      }else{
+        debugger
+        if(this.nowShowPdfIndex != this.checkedDocId.length-1){
+          this.nowShowPdfIndex++;
+          debugger
+          this.docSrc = this.host + this.checkedDocId[this.nowShowPdfIndex];
+        }
+      }
+    },
+     //全选
+    handleCheckAllChange(val) {
+      debugger
+      console.log(val);
+      if (val) {
+        debugger
+        this.caseList.forEach(item => {
+          debugger
+          //复选框存入id
+          this.checkedDocId.push(item.storageId);
+        });
+      } else {
+        this.checkedDocId = [];
+      }
+      this.isIndeterminate = false;
+    },
   },
   mounted () {
     this.getByMlCaseId();
+    this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
      var class1 =  document.getElementsByClassName("archiveCatalogueBox");
      console.log('class',class1)
      var class2 = class1[0].parentNode;

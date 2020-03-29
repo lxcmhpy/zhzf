@@ -45,7 +45,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="paginationF">
+      <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
       </div>
     </div>

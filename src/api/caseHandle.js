@@ -775,6 +775,25 @@ export function getHandleRecordApi(data) {
       cancelToken: setCancelSource(),
     });
   }
-
+ //查询文书列表
+ export function findVoByDocCaseIdApi(data) {
+  return request({
+    url: "/sys/file/findVoByDocCaseId/"+data,
+    method: "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource(),
+  });
+}
+//查询操作记录查询条件
+export function querySearchConditionApi(data) {
+  return request({
+    url: "/doc/caseFormLogs/querySearchCondition/"+data,
+    method: "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource(),
+  });
+}
   //-----------------长软lv ends------------
 
