@@ -113,8 +113,16 @@ export default {
     },
     //搜索
     searchCaseEmit() {  
-      this.caseSearchForm.beginTime = this.acceptTimeArray[0]
-      this.caseSearchForm.endTime = this.acceptTimeArray[1]
+      // debugger
+      console.log("shuju",this.acceptTimeArray)
+      if(this.acceptTimeArray){
+        this.caseSearchForm.beginTime = this.acceptTimeArray[0];
+        this.caseSearchForm.endTime = this.acceptTimeArray[1];
+      }else{
+        this.caseSearchForm.beginTime = '';
+        this.caseSearchForm.endTime = '';
+      }
+      this.caseSearchForm.current = 1
       // let measureStartDate = new Date(this.acceptTimeArray[0]);
       // let Y = measureStartDate.getFullYear() + '-';
       // let M = measureStartDate.getMonth() + 1 < 10 ? '0' + (measureStartDate.getMonth() + 1) + '-' : measureStartDate.getMonth() + 1 + '-';

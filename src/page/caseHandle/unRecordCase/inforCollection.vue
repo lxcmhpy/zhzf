@@ -1501,7 +1501,7 @@ export default {
     },
   },
   mounted() {
-    debugger
+    // debugger
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
     console.log(someCaseInfo);
     this.inforForm.caseCauseName = someCaseInfo.illageAct;
