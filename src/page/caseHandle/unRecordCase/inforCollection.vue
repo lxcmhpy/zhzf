@@ -952,6 +952,7 @@ export default {
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
         .then(
           res => {
+            console.log('执法人员列表',res)
             _this.userList = res.data;
             let currentUserData = {};
             _this.lawPersonListId = [];
@@ -964,9 +965,10 @@ export default {
                 currentUserData.id = item.id;
                 currentUserData.lawOfficerName = item.lawOfficerName;
                 currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
-                _this.lawPersonListId.push(currentUserData.id);
                 _this.alreadyChooseLawPerson.push(currentUserData);
+                _this.lawPersonListId.push(currentUserData.id);
                 _this.currentUserLawId = currentUserData.id;
+
               }
             });
           },
