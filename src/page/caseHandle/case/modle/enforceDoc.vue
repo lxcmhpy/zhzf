@@ -39,7 +39,7 @@
         <p>
           <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">1.现因
           <span>
-            <el-form-item :prop="disabledOne ? '':'stopReason'" class="width120">
+            <el-form-item :prop="disabledOne ? 'placeholder':'stopReason'" class="width120">
               <el-input type="textarea" v-model="docData.stopReason"  
               v-bind:class="{ over_flow:docData.stopReason.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
@@ -47,7 +47,7 @@
             </el-form-item>
           </span>，根据《中华人民共和国行政强制法》第三十九条第一款的规定，本机关决定自
           <span>
-            <el-form-item :prop="disabledOne ? '':'executeTime'" class="pdf_datapick">
+            <el-form-item :prop="disabledOne ? 'placeholder':'executeTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.executeTime" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
@@ -57,7 +57,7 @@
         <p>
           <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">2.现因
           <span>
-            <el-form-item :prop="disabledTwo ? '':'endReason'" class="width120">
+            <el-form-item :prop="disabledTwo ? 'placeholder':'endReason'" class="width120">
               <el-input type="textarea" v-model="docData.endReason" v-bind:disabled="disabledTwo" 
               v-bind:class="{ over_flow:docData.endReason.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
@@ -76,7 +76,7 @@
             </el-form-item>
           </span>一案，本机关于
           <span>
-            <el-form-item :prop="disabledThree?'':'serviceTime'" class="pdf_datapick">
+            <el-form-item :prop="disabledThree?'placeholder':'serviceTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.serviceTime" 
               v-bind:disabled="disabledThree" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
@@ -86,7 +86,7 @@
         <p>
           <input type="checkbox" name="measure" value="4" v-model="checknames" @change="click">4.本机关于
           <span>
-            <el-form-item :prop="disabledFour?'':'agreeTime'" class="pdf_datapick">
+            <el-form-item :prop="disabledFour?'placeholder':'agreeTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.agreeTime" v-bind:disabled="disabledFour" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
@@ -185,7 +185,8 @@ export default {
         docData: "",
         status: "", //提交状态
         //多份文书的docDataId
-        docDataId:""
+        docDataId:"",
+        linkTypeId:"a36b59bd27ff4b6fe96e1b06390d204h"
       },
       name: '',
       inputInfo: '',
