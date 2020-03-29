@@ -180,7 +180,7 @@
           <div class="magin_btm">常见违法行为
             <span class="casehome_topic_select">
               <el-select v-model="caseForm.commenCase" placeholder="不限类别" size='small' @change="getIllegaAct">
-                <el-option v-for="item in commonOptions" :key="item.value" :label="item.label" :value="item.label">
+                <el-option v-for="item in commonOptions" :key="item.value" :label="item.label" :value="item.id">
                 </el-option>
               </el-select>
               <!-- <el-cascader v-model="caseForm.commenCase" size="mini" placeholder="不限类别" :options="options" :props="{ expandTrigger: 'hover' }" @change="getIllegaAct"></el-cascader> -->
@@ -259,51 +259,63 @@ export default {
           children: [
             {
               value: '01',
-              label: '道路旅客运输'
+              label: '道路旅客运输',
+              id: "1002000200010000"
             },
             {
               value: '02',
-              label: '道路普通货物运输'
+              label: '道路普通货物运输',
+              id: "1002000200020000"
             },
             {
               value: '03',
-              label: '道路危险货物运输'
+              label: '道路危险货物运输',
+              id: "1002000200030000"
             },
             {
               value: '04',
-              label: '国际道路运输'
+              label: '国际道路运输',
+              id: "1002000200040000"
             },
             {
               value: '05',
-              label: '道路运输站（场）'
+              label: '道路运输站（场）',
+              id: "1002000200050000"
             },
             {
               value: '06',
-              label: '机动车维修'
+              label: '机动车维修',
+              id: "1002000200060000"
             },
             {
               value: '07',
-              label: '驾驶员培训'
+              label: '驾驶员培训',
+              id: "1002000200070000"
             },
             {
               value: '08',
-              label: '道路运输从业人员'
+              label: '道路运输从业人员',
+              id: "1002000200080000"
             },
             {
               value: '09',
-              label: '城市公交'
+              label: '城市公交',
+              id: "1002000200090000"
             },
             {
               value: '010',
-              label: '城市轨道交通'
+              label: '城市轨道交通',
+              id: "1002000200100000"
             },
             {
               value: '011',
-              label: '出租汽车'
+              label: '出租汽车',
+              id: "1002000200110000"
             },
             {
               value: '012',
-              label: '汽车租赁'
+              label: '汽车租赁',
+              id: "1002000200120000"
             },
           ]
         },
@@ -314,15 +326,18 @@ export default {
           children: [
             {
               value: '11',
-              label: '公路管理'
+              label: '公路管理',
+              id: "1002000100010000"
             },
             {
               value: '12',
-              label: '超载超限'
+              label: '超载超限',
+              id: "1002000100020000"
             },
             {
               value: '13',
-              label: '收费公路'
+              label: '收费公路',
+              id: "1002000100030000"
             },
           ]
         },
@@ -457,9 +472,7 @@ export default {
       let lawCate = {
         cateId: '',
         cateName: this.caseForm.wayType,
-        hyTypeLable: this.caseForm.commenCase,
         hyTypeId: this.caseForm.commenCase,
-        categoryId: this.caseForm.commenCase,
       };
       this.$refs.chooseillegalActRef.showModal(lawCate);
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
@@ -479,7 +492,7 @@ export default {
       var data = {
         size: 5,
         current: 1,
-        // categoryId: this.caseForm.programType,
+        hyTypeId: this.caseForm.commenCase,
         // strNumber: this.caseForm.wayType,
       }
       if(this.caseForm.wayType=='水路运政'){
@@ -504,6 +517,7 @@ export default {
     },
     // 
     changeCommonOptions() {
+      this.caseForm.commenCase=''
       console.log(this.caseForm.wayType)
       this.options.forEach(element => {
         console.log(element.label)
