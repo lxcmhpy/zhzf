@@ -384,7 +384,6 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测站">
-              <span style="color:red">*</span>
               <el-select v-model="inforForm.otherInfo.checkStastions">
                 <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
@@ -432,7 +431,6 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车辆轴数">
-              <span style="color:red">*</span>
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxleNumber" @change="weightLimit('车辆轴数')">
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
@@ -445,7 +443,6 @@
           </div>
           <div class="itemThird">
             <el-form-item label="车型">
-              <span style="color:red">*</span>
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
                 <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="中置轴挂车列车"></el-option>

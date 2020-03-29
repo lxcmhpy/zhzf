@@ -48,7 +48,7 @@
          <table class="evidencetable" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
               <td width="20%">送达文书<br>名称,文号</td>
-              <td width="20%">签收人姓名<br>(盖章)</td>
+              <td width="20%">收件人姓名<br>(盖章)</td>
               <td width="20%">送达地点</td>
               <td width="20%">送达日期</td>
               <td width="10%">送达方式</td>
@@ -117,7 +117,7 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="签收人姓名(盖章)" align="center">
+              <el-table-column label="收件人姓名(盖章)" align="center">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.receiver" :disabled="true"></el-input>
                 </template>

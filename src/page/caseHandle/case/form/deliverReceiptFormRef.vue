@@ -35,9 +35,9 @@
             </tr>
         </table>
     </div>
-    <span slot="footer" class="dialog-footer">
+    <!-- <span slot="footer" class="dialog-footer">
       <el-button @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
-    </span>
+    </span> -->
   </el-dialog>
   <el-dialog
         :visible.sync="pdfVisible"
