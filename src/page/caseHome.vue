@@ -171,7 +171,7 @@
               </el-radio-group>
             </div>
           </div>
-          <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back" @change="getIllegaAct">
+          <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back" @change="changeCommonOptions">
             <el-radio-button label="水路运政"></el-radio-button>
             <el-radio-button label="公路路政"></el-radio-button>
             <el-radio-button label="道路运政"></el-radio-button>
@@ -179,11 +179,11 @@
           </el-radio-group>
           <div class="magin_btm">常见违法行为
             <span class="casehome_topic_select">
-              <!-- <el-select v-model="caseForm.value" placeholder="请选择" size='small'>
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+              <el-select v-model="caseForm.commenCase" placeholder="不限类别" size='small' @change="getIllegaAct">
+                <el-option v-for="item in commonOptions" :key="item.value" :label="item.label" :value="item.id">
                 </el-option>
-              </el-select> -->
-              <el-cascader v-model="caseForm.commenCase" size="mini" aria-placeholder="不限类别" :options="options" :props="{ expandTrigger: 'hover' }" @change="getIllegaAct"></el-cascader>
+              </el-select>
+              <!-- <el-cascader v-model="caseForm.commenCase" size="mini" placeholder="不限类别" :options="options" :props="{ expandTrigger: 'hover' }" @change="getIllegaAct"></el-cascader> -->
             </span>
           </div>
         </el-form>
@@ -202,14 +202,12 @@
           <el-button size="small" @click="caseRecordMore()">查看更多</el-button>
         </center>
         <!-- <el-button type="text" @click="caseRecordMore()">打开嵌套表格的 Drawer</el-button> -->
-        <el-drawer title="选择违法行为" :visible.sync="table"  size="50%" class="dialog_unlaw">
-          <caseRegisterDiag ref="caseRegisterDiagRef" @checkMoreIllega="checkMoreIllega"></caseRegisterDiag>
-        </el-drawer>
 
       </div>
 
     </div>
 
+    <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
     <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
   </div>
 </template>
@@ -218,8 +216,8 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 // 立案登记
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
-import caseRegisterDiag from "./chooseIllegegaDialog.vue";
-import chooseillegalAct from "@/page/caseHandle/unRecordCase/chooseillegalAct";
+import caseRegisterDiag from "@/page/caseHandle/unRecordCase/caseRegisterDiag.vue";
+import chooseillegalAct from "./chooseIllegegaDialog.vue";
 export default {
   mixins: [mixinGetCaseApiList],
   components: {
@@ -229,23 +227,6 @@ export default {
   },
   data() {
     return {
-      gridData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
       table: false,
       activeName: 'first',
       waitDealSearch: '',
@@ -253,12 +234,7 @@ export default {
       waitArchiveSearch: '',
       approveIngSearch: '',
       radio: 1,
-      radio3: '',
       tableData: [],
-      options: [{
-        value: '1',
-        label: '不限类别'
-      }],
       caseList: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -274,86 +250,107 @@ export default {
         value: '不限类别',
         commenCase: '',
       },
+      commonOptions: [],
       options: [
         {
           value: '0',
           label: '道路运政',
+          cateId: "1002000200000000",
           children: [
             {
               value: '01',
-              label: '道路旅客运输'
+              label: '道路旅客运输',
+              id: "1002000200010000"
             },
             {
               value: '02',
-              label: '道路普通货物运输'
+              label: '道路普通货物运输',
+              id: "1002000200020000"
             },
             {
               value: '03',
-              label: '道路危险货物运输'
+              label: '道路危险货物运输',
+              id: "1002000200030000"
             },
             {
               value: '04',
-              label: '国际道路运输'
+              label: '国际道路运输',
+              id: "1002000200040000"
             },
             {
               value: '05',
-              label: '道路运输站（场）'
+              label: '道路运输站（场）',
+              id: "1002000200050000"
             },
             {
               value: '06',
-              label: '机动车维修'
+              label: '机动车维修',
+              id: "1002000200060000"
             },
             {
               value: '07',
-              label: '驾驶员培训'
+              label: '驾驶员培训',
+              id: "1002000200070000"
             },
             {
               value: '08',
-              label: '道路运输从业人员'
+              label: '道路运输从业人员',
+              id: "1002000200080000"
             },
             {
               value: '09',
-              label: '城市公交'
+              label: '城市公交',
+              id: "1002000200090000"
             },
             {
               value: '010',
-              label: '城市轨道交通'
+              label: '城市轨道交通',
+              id: "1002000200100000"
             },
             {
               value: '011',
-              label: '出租汽车'
+              label: '出租汽车',
+              id: "1002000200110000"
             },
             {
               value: '012',
-              label: '汽车租赁'
+              label: '汽车租赁',
+              id: "1002000200120000"
             },
           ]
         },
         {
           value: '1',
           label: '公路路政',
+          cateId: "1002000100000000",
           children: [
             {
               value: '11',
-              label: '公路管理'
+              label: '公路管理',
+              id: "1002000100010000"
             },
             {
               value: '12',
-              label: '超载超限'
+              label: '超载超限',
+              id: "1002000100020000"
             },
             {
               value: '13',
-              label: '收费公路'
+              label: '收费公路',
+              id: "1002000100030000"
             },
           ]
         },
         {
           value: '2',
           label: '水路运政',
+          cateId: "1002000300000000",
+          children: []
         },
         {
           value: '3',
           label: '港口行政',
+          cateId: "1002000500000000",
           children: [
             {
               value: '31',
@@ -372,20 +369,26 @@ export default {
         {
           value: '4',
           label: '航道行政',
+          cateId: "1002000400000000",
+          children: []
         },
         {
           value: '5',
           label: '海事行政',
+          cateId: "1002000700000000",
+          children: []
         },
         {
           value: '6',
           label: '工程质量监督',
+          children: []
         },
       ],
       waitDeal: '0',
       unRecord: '0',
       waitArchive: '0',
       approveIng: '0',
+      lawCateList: []
     };
   },
   methods: {
@@ -469,9 +472,9 @@ export default {
       let lawCate = {
         cateId: '',
         cateName: this.caseForm.wayType,
+        hyTypeId: this.caseForm.commenCase,
       };
-      this.$refs.caseRegisterDiagRef.showModal(lawCate);
-      // this.$refs.chooseillegalActRef.showModal(lawCate);
+      this.$refs.chooseillegalActRef.showModal(lawCate);
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     // 查找
@@ -489,8 +492,17 @@ export default {
       var data = {
         size: 5,
         current: 1,
-        // categoryId: this.caseForm.programType,
+        hyTypeId: this.caseForm.commenCase,
         // strNumber: this.caseForm.wayType,
+      }
+      if(this.caseForm.wayType=='水路运政'){
+        data.categoryId=1002000300000000
+      }
+      if(this.caseForm.wayType=='公路路政'){
+        data.categoryId=1002000100000000
+      }
+      if(this.caseForm.wayType=='道路运政'){
+        data.categoryId=1002000200000000
       }
       this.$store.dispatch("getIllegaAct", data).then(
         res => {
@@ -503,13 +515,26 @@ export default {
         }
       );
     },
+    // 
+    changeCommonOptions() {
+      this.caseForm.commenCase=''
+      console.log(this.caseForm.wayType)
+      this.options.forEach(element => {
+        console.log(element.label)
+        if (this.caseForm.wayType == element.label) {
+          this.commonOptions = element.children
+          console.log('this.commonOptions', this.commonOptions)
+        }
+      });
+      this.getIllegaAct()
+    },
     //设置违法行为
     setIllegaAct(val) {
       // this.caseRegisterForm.illageAct = val.strContent;
       // this.illageActId = val.id;
     },
     // 查看更多违法行为
-    checkMoreIllega(){
+    checkMoreIllega() {
 
     },
     // 获取带办理条数
@@ -540,7 +565,20 @@ export default {
           console.log(err);
         }
       );
-    }
+    },
+    //获取业务领域
+    getEnforceLawType() {
+      let _this = this
+      this.$store.dispatch("getEnforceLawType", "1").then(
+        res => {
+          _this.lawCateList = res.data;
+          console.log('列表121', _this.lawCateList)
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
 
   },
   mounted() {
@@ -568,6 +606,9 @@ export default {
     this.getTotal('3');
     console.log('userinfo', iLocalStroage.gets("userInfo").roles[0].name)
 
+    this.changeCommonOptions()
+    //获取业务领域
+    this.getEnforceLawType()
 
   }
 };
@@ -655,20 +696,7 @@ export default {
   padding: 17px 20px 15px 20px;
   text-align: center;
 }
-ul {
-  height: calc(15% - 20px);
-}
-li {
-  width: 100%;
-  height: 100%;
-  line-height: 14px;
-  color: #606060;
-  font-size: 14px;
-  font-weight: 400;
-  overflow: hidden; /*溢出隐藏*/
-  white-space: nowrap; /*规定文本不进行换行*/
-  text-overflow: ellipsis; /*当对象内文本溢出时显示省略标记（...）*/
-}
+
 .bull {
   margin: 0 5px;
 }
@@ -718,15 +746,8 @@ img {
   height: 470px;
   padding: 0px 20px 15px 20px;
 }
-.wfxwList {
-  height: auto;
-  margin-bottom: 20px;
-}
-.wfxwList li {
-  line-height: 33px;
-  height: 33px;
-}
 </style>
 <style lang="scss">
 @import "@/assets/css/caseHandle/caseHome.scss";
 </style>
+

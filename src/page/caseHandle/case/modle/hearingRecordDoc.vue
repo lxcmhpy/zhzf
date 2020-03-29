@@ -355,7 +355,8 @@ export default {
         caseDoctypeId: this.$route.params.docId,    //文书类型ID
         //表单数据
         docData: "",
-        status: ""
+        status: "",
+        linkTypeId:'2c9029ac6c26fd72016c27247b290003'
       },
       rules: {
         caseNumber: [
@@ -439,7 +440,7 @@ export default {
       this.staffIdList = this.docData.staffId.split(',');
       console.log(iLocalStroage.gets("userInfo"))
       this.docData.staff1 = this.staffList[0];
-      this.docData.staffId1c  = this.staffIdList[0];
+      this.docData.staffId1= this.staffIdList[0];
       // let index=0
       // this.staffIdList.forEach(element => {
       //   console.log('idlist',element)

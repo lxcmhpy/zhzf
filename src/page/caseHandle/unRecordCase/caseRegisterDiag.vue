@@ -65,7 +65,7 @@ export default {
         caseType: [{ required: true, message: "请选择", trigger: "change" }],
         illageAct: [{ required: true, message: "请选择", trigger: "change" }]
       },
-      lawCateList: [], //执法门类列表
+      lawCateList: [], //业务领域列表
       caseTypeList: [] //案件类型列表
     };
   },
@@ -81,8 +81,9 @@ export default {
       this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
           _this.lawCateList = res.data;
-          _this.lawCateList.forEach(element => {
-            console.log('循环', caseForm.wayType, element.cateName)
+          if(caseForm){
+             _this.lawCateList.forEach(element => {
+            // console.log('循环', caseForm.wayType, element.cateName)
             if (element.cateName == caseForm.wayType) {
               _this.caseRegisterForm.cateId = element.cateId;
             }
@@ -92,8 +93,10 @@ export default {
             if (element.cateName == caseForm.wayType) {
               _this.caseRegisterForm.cateId = element.cateId;
             }
-            _this.getCaseType();
+           
           });
+          }
+          _this.getCaseType();
         },
         err => {
           console.log(err);
@@ -101,7 +104,10 @@ export default {
       );
       // 首页跳转代入
       // debugger
-      this.caseRegisterForm.programType = caseForm.programType;
+      if(caseForm){
+         this.caseRegisterForm.programType = caseForm.programType;
+      }
+     
       this.caseRegisterForm.illageAct = data ? data.strContent : null;
     },
     //关闭弹窗的时候清除数据
@@ -129,10 +135,10 @@ export default {
         };
         this.$refs.chooseillegalActRef.showModal(lawCate);
       } else {
-        this.$message("请选择执法门类");
+        this.$message("请选择业务领域");
       }
     },
-    //获取执法门类
+    //获取业务领域
     getEnforceLawType() {
       let _this = this
       this.$store.dispatch("getEnforceLawType", "1").then(
@@ -181,7 +187,7 @@ export default {
               caseTypeId = item.caseTypeId;
             }
           })
-          let cateName = ''; //执法门类name
+          let cateName = ''; //业务领域name
           _this.lawCateList.forEach(item => {
             if (item.cateId == _this.caseRegisterForm.cateId) {
               cateName = item.cateName;

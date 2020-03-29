@@ -25,8 +25,8 @@
           <div class="item">
             <el-form-item label="处理状态">
               <!-- <el-input v-model="caseSearchForm.caseStatus"></el-input> -->
-              <el-select v-model="caseSearchForm.caseType" placeholder="全部">
-                <el-option v-for="item in caseStateList" :key="item" :label="item" :value="item"></el-option>
+              <el-select v-model="caseSearchForm.state" placeholder="全部">
+                <el-option v-for="item in caseStateList" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -49,7 +49,7 @@
 
           <div class="item">
             <el-form-item label="发起时间">
-              <el-date-picker v-model="caseSearchForm.time" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']">
+              <el-date-picker v-model="acceptTimeArray" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']">
               </el-date-picker>
             </el-form-item>
           </div>
@@ -77,10 +77,33 @@ export default {
         organMb: "",
         wfxw: "",
       },
+      acceptTimeArray:[],
       hideSomeSearch: true,
       linkList: [], //环节
       caseTypeList: [],//类型
-      caseStateList: ['已发送','已接收','已退回','已完成','已关闭'],//状态
+      caseStateList: [
+        // '已发送','已接收','已退回','已完成','已关闭'
+       {
+          value: '1',
+          label: '已发送'
+        },
+        {
+          value: '2',
+          label: '已完成'
+        },
+        {
+          value: '3',
+          label: '已接收'
+        },
+        {
+          value: '4',
+          label: '已退回'
+        },
+        {
+          value: '5',
+          label: '已关闭'
+        },
+        ],//状态
       dictId: this.caseState == "waitDeal" ? "ef38274ddea12be26e9a8c1bf23cd401" : "324701f1633dd65ca79a28fbc79c1628",
     };
   },
@@ -138,6 +161,16 @@ export default {
     //搜索
     searchCaseEmit() {
       console.log('点击')
+     console.log("shuju",this.acceptTimeArray)
+      if(this.acceptTimeArray){
+        this.caseSearchForm.beginTime = this.acceptTimeArray[0];
+        this.caseSearchForm.endTime = this.acceptTimeArray[1];
+      }else{
+        this.caseSearchForm.beginTime = '';
+        this.caseSearchForm.endTime = '';
+      }
+      
+      this.caseSearchForm.current = 1
       this.caseSearchForm.records = JSON.stringify(this.caseSearchForm.records)
       this.$emit('searchCase', this.caseSearchForm);
     },
