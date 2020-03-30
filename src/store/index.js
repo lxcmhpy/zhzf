@@ -15,6 +15,8 @@ import uploadFile from './modules/uploadFile'
 import person from './modules/person';
 // 信息查验
 import checkInfo from './modules/checkInfo';
+// 监管
+import supervise from './modules/supervise';
 
 Vue.use(Vuex);
 
@@ -56,7 +58,8 @@ const store = new Vuex.Store({
         flowChart,
         uploadFile,
         person,
-        checkInfo
+        checkInfo,
+        supervise
     }
 });
 

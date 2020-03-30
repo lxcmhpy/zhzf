@@ -13,7 +13,7 @@ export default  [
                     title: "执法监管首页",
                     oneTab:true,
                 },
-                component: () => import("@/page/lawSupervise/lawSupervise.vue"),
+                component: () => import("@/page/lawSupervise/supervisePage/kshjg/lawSupervise.vue"),
             },
 
             {
@@ -23,7 +23,7 @@ export default  [
                 title: "非现场治超检测",
                 oneTab:true,
                 },
-                component: () => import("@/page/lawSupervise/offSiteDetectionOverload.vue")
+                component: () => import("@/page/lawSupervise/supervisePage/kshjg/offSiteDetectionOverload.vue")
             },
             {
                 path: "/teamStrength",
@@ -32,7 +32,7 @@ export default  [
                 title: "队伍力量",
                 oneTab:true,
                 },
-                component: () => import("@/page/lawSupervise/teamStrength.vue")
+                component: () => import("@/page/lawSupervise/supervisePage/kshjg/teamStrength.vue")
             }
         ]
     }, {
@@ -47,21 +47,21 @@ export default  [
                    title: '非现场治超',
                    oneTab:true,
                },
-               component: () => import("@/page/lawSupervise/offSiteManage.vue"),
+               component: () => import("@/page/lawSupervise/supervisePage/xszx/offSiteManage.vue"),
            }, {
                path: '/offSiteDetail',
                name: 'offSiteDetail',
                meta: {
                    title: '线索详情'
                },
-               component: () => import("@/page/lawSupervise/offSiteDetail.vue")
+               component: () => import("@/page/lawSupervise/supervisePage/xszx/offSiteDetail.vue")
            }, {
                 path: '/evidenceDetail',
                 name: 'evidenceDetail',
                 meta: {
                     title: '证据详情'
                 },
-                component: () => import("@/page/lawSupervise/evidenceDetail.vue")
+                component: () => import("@/page/lawSupervise/supervisePage/xszx/evidenceDetail.vue")
            }]
     }
 ]

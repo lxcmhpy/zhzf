@@ -6,6 +6,7 @@
         </slideritem>
         <div slot="loading">loading...</div>
     </slider>
+    <btns></btns>
 </div>
 </template>
 <style src="@/assets/css/sliderPage.scss" lang="scss"></style>
@@ -14,7 +15,7 @@
 import {slider,slideritem} from 'vue-concise-slider';
 import checkDataComponent from './componentChild/checkDataComponent.vue';
 import takePhotosComponent from './componentChild/takePhotosComponent.vue';
-
+import btns from '@/page/lawSupervise/componentCommon/btns.vue';
 export default {
     data() {
     let self = this;
@@ -75,7 +76,8 @@ export default {
     slider,
     slideritem,
     checkDataComponent,
-    takePhotosComponent
+    takePhotosComponent,
+    btns
   }
 }
 </script>

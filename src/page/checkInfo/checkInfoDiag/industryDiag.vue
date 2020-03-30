@@ -104,6 +104,9 @@ export default {
 .tg .tg-0pky{border-color:inherit;text-align:center;vertical-align:center;height: 25px;}
 .tg .tg-0lax{background:green;border-color:inherit;font-size:20px;text-align:left;vertical-align:center;height: 30px;}
 .tg .tg-title{background:gray;text-align:center;vertical-align:center;height: 30px;}
+<<<<<<< HEAD
 .tg .tg-cly1{text-align:center;vertical-align:middle;height: 25px;}
 .tg .tg-y93n{background-color:#c0c0c0;text-align:center;vertical-align:middle;height: 25px;}
+=======
+>>>>>>> 3860697b671ff819133d41fc15296911becacb0c
 </style>

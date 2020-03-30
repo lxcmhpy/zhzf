@@ -13,7 +13,14 @@
                     <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
                 <el-form-item label="车牌号">
-                    <el-select v-model="form.vehicleColor" class="w-80"></el-select>
+                    <el-select v-model="form.vehicleColor" class="w-80" placeholder="请选择">
+                        <el-option
+                        v-for="item in vehicleColorList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.name"
+                        ></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label=" " label-width="0px">
                     <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
@@ -33,7 +40,15 @@
                 <el-collapse-transition>
                     <div v-show="isShow" :class="{'ransition-box':true}">
                         <el-form-item label="超限率">
-                            <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input>
+                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
+                            <el-select v-model="form.overload" class="w-80" placeholder="请选择">
+                                <el-option
+                                v-for="item in cxlList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.name"
+                                ></el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="过检时间" >
                              <el-date-picker
@@ -83,8 +98,8 @@
                 <el-table-column prop="key" label="重点监管" align="center"></el-table-column>
                 <el-table-column prop="status" label="处理状态" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
-                    <template>
-                        <a href="javascript:void(0)" @click="routerDetail">
+                    <template slot-scope="scope">
+                        <a href="javascript:void(0)" @click="routerDetail(scope.row)">
                             详情
                         </a>
                         <a href="javascript:void(0)" @click="routerEvidenceDetail">
@@ -210,11 +225,15 @@
 }
 </style>
 <script>
-import {queryListPage} from '@/api/lawSupervise.js';
+import {queryListPage, findAllDrawerById} from '@/api/lawSupervise.js';
+import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
+import { mapGetters } from "vuex";
 export default {
   inject: ["reload"],
   data() {
     return {
+        vehicleColorList: null,
+        cxlList: null,
         pageSize: 10, //pagesize
         form: {
             siteName: '',
@@ -259,7 +278,21 @@ export default {
                 res => {
                     resolve(res)
                     _this.tableData = res.data.records
-                    // obj.list = res.data
+                },
+                error => {
+                    //  _this.errorMsg(error.toString(), 'error')
+                        return
+                }
+            )
+        })
+    },
+    findAllDrawerById (data, obj) {
+        let _this = this
+        new Promise((resolve, reject) => {
+            findAllDrawerById(data).then(
+                res => {
+                    // resolve(res)
+                    _this[obj] = res.data
                 },
                 error => {
                     //  _this.errorMsg(error.toString(), 'error')
@@ -271,7 +304,8 @@ export default {
     reset () {
 
     },
-    routerDetail () {
+    routerDetail (row) {
+        this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
             name: 'offSiteDetail'
         })
@@ -292,7 +326,10 @@ export default {
     }
   },
   created () {
-    this.search()
+    this.search();
+    debugger;
+    this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
+    this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'vehicleColorList');
   },
   mounted () {
 

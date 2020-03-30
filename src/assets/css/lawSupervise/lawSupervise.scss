@@ -1,7 +1,6 @@
 
 @import "../basicStyles/fontOrBgColorStylesSet.scss";
 @import "./lawSuperviseFunc.scss";
-@import "../basicStyles/error.scss";
 .flexBox {
     display: flex;
 }
@@ -220,6 +219,7 @@
        border-radius: 0px;
        box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
        // z-index: 1500;
+
        li {
            height: 40px;
            line-height: 6px;
@@ -242,6 +242,9 @@
                display: inline-block;
            }
        }
+       .select {
+            background: #F3F4FD;
+        }
     }
 }
 //  .amap-tool {
@@ -428,7 +431,7 @@
         cursor: pointer;
         width: 26px;
         height: 89px;
-        background: url('../../../static/images/img/lawSupervise/btn_norshouqi2.png');
+        background: url('../../../../static/images/img/lawSupervise/btn_norshouqi2.png');
         right:0px;
         i {
             line-height: 86px;
@@ -444,7 +447,7 @@
             margin-top: 44%;
             width: 26px;
             height: 89px;
-            background: url('../../../static/images/img/lawSupervise/btn_norshouqi2.png');
+            background: url('../../../../static/images/img/lawSupervise/btn_norshouqi2.png');
             bottom: 50%;
             left:0px;
             cursor: pointer;
@@ -475,7 +478,7 @@
         margin-left: 50%;
         width: 26px;
         height: 89px;
-        background: url('../../../static/images/img/lawSupervise/btn_norshouqi2.png');
+        background: url('../../../../static/images/img/lawSupervise/btn_norshouqi2.png');
         bottom: -32px;
         left:0px;
         transform:rotate(90deg);
@@ -494,7 +497,7 @@
             margin-left: 50%;
             width: 26px;
             height: 89px;
-            background: url('../../../static/images/img/lawSupervise/btn_norshouqi2.png');
+            background: url('../../../../static/images/img/lawSupervise/btn_norshouqi2.png');
             bottom: auto;
             left:0px;
             transform:rotate(90deg);
