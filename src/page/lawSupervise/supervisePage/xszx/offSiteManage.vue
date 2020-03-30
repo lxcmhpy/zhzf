@@ -243,8 +243,8 @@ export default {
             status: '',
             current: 1, //当前页
             size: 0, //总页数
-            checkEndTime: '',
-            checkStartTime: ''
+            // checkEndTime: '',
+            // checkStartTime: ''
         },
         timeList: ['',''],
         statusStatus: [{
