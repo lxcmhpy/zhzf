@@ -21,7 +21,7 @@
           <div>
             <el-popover placement="top-start" width="335" trigger="hover" style="padding:0" popper-class='padding0'>
               <div class="info_top">
-                <li><img src="../../../static/images/img/personInfo/bg.png" alt=""></li>
+                <li><img src="../../../static/images/img/personInfo/head.svg" alt=""></li>
                 <li>
                   <p class="name">{{userInfo.username}}</p>
                   <p class="number">{{userInfo.username}}</p>
@@ -52,7 +52,7 @@
                 <li @click="handleCommand('b')" style="margin-right:0 !important"><img src="../../../static/images/img/personInfo/unlogin.png" alt="">退出登录</li>
               </div>
               <span slot="reference">
-                <img src="../../../static/images/img/personInfo/bg.png" alt="">
+                <img src="../../../static/images/img/personInfo/head.svg" alt="">
                 {{userInfo.username}}
                 <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
               </span>
