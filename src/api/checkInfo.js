@@ -67,3 +67,34 @@ export function crewCheckApiKyxlbsp(data) {
     });
 }
 
+//国内水路运输船舶营运证-证书编号资源服务接口
+export function crewCheckApiGnslcbyy(data) {
+    console.log(data);
+    return request({
+        url: CHECK_API +"/ship/shipYyzNO?zjh=" + data.zjh ,
+        method: "GET",
+        showloading: false,
+        cancelToken: setCancelSource()
+    });
+}
+//国际班轮运输经营资格登记证-证书编号资源服务接口
+export function crewCheckApiGjysjyzgz(data) {
+    console.log(data);
+    return request({
+        url: CHECK_API +"/ship/gjDjzsbh?zsbh=" + data.zsbh ,
+        method: "GET",
+        showloading: false,
+        cancelToken: setCancelSource()
+    });
+}
+
+//客运线路标识牌查验接口
+export function crewCheckApiKyxlbsp(data) {
+    console.log(data);
+    return request({
+        url: CHECK_API +"/ship/gjDjzsbh?zsbh=" + data.zsbh ,
+        method: "GET",
+        showloading: false,
+        cancelToken: setCancelSource()
+    });
+}

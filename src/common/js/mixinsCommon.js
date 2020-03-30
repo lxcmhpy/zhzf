@@ -25,20 +25,29 @@ export const lawSuperviseMixins = {
     data () {
         return {
             tableData: [{
-                name: '京A12345',
-                num: '123'
+                name: '中国石油化工公司',
+                num: '123',
+                icon: 'law-zfj'
             },{
-                name: '粤C12345',
-                num: '333'
+                name: '中国石油化工公司',
+                num: '333',
+                icon: 'law-zfj'
             },{
                 name: '津B12345',
-                num: '2'
+                num: '2',
+                icon: 'law-car'
             },{
                 name: '冀C12345',
-                num: '89'
+                num: '89',
+                icon: 'law-car'
+            },{
+                name: '冀C12345',
+                num: '89',
+                icon: 'law-car'
             }],
             tabList: [{
                 name: '队伍力量',
+                iconfont: 'icon_duiwu',
                 children: [{
                     name: '执法人员',
                     icon: 'iconfont law-people',
@@ -58,6 +67,7 @@ export const lawSuperviseMixins = {
                 }]
             },{
                 name: '应用场景',
+                iconfont: 'icon_changjing',
                 children: [{
                     name: '非现场站点',
                     icon: 'iconfont law-jiankong',
@@ -110,7 +120,7 @@ export const lawSuperviseMixins = {
                 _this.loading = true
                 _this.updateLoading()
                 _this.tableData.splice(0, _this.tableData.length)
-                for(let i=0;i<4;i++) {
+                for(let i=0;i<5;i++) {
                     // delete (_this.tableData[i])
                     let nameListNum = Math.floor(Math.random() * 10);
                     let nameNum = Math.floor(Math.random() * 10000 + 1);

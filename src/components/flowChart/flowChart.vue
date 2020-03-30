@@ -666,7 +666,17 @@ export default {
           console.log('获取强制措施时间',res);
           let formData= JSON.parse(res.data.formData);
           console.log('formData',formData);
-          this.measureDate = formData.measureStartDate + " 至 "+ formData.measureEndDate;
+          let measureStartDate = new Date(formData.measureStartDate);
+          let Y = measureStartDate.getFullYear() + '-';
+          let M = measureStartDate.getMonth() + 1 < 10 ? '0' + (measureStartDate.getMonth() + 1) + '-' : measureStartDate.getMonth() + 1 + '-';
+          let D = measureStartDate.getDate() < 10 ? '0' + measureStartDate.getDate() + ' ' : measureStartDate.getDate() + ' ';
+          let startData = Y + M + D;
+          let measureEndDate = new Date(formData.measureEndDate);
+          let y = measureEndDate.getFullYear() + '-';
+          let m = measureEndDate.getMonth() + 1 < 10 ? '0' + (measureEndDate.getMonth() + 1) + '-' : measureStartDate.getMonth() + 1 + '-';
+          let d = measureEndDate.getDate() < 10 ? '0' + measureEndDate.getDate() + ' ' : measureStartDate.getDate() + ' ';
+          let endDate = y + m + d;
+          this.measureDate = startData + " 至 "+ endDate;
           
         },err=>{
 

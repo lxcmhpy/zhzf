@@ -12,13 +12,13 @@
           <el-row>
             <el-col :span="9">
               <el-form-item style="width:520px">
-                <el-input v-model="formLabelAlign.caseNumber" placeholder="请输入抄告案件的案号">
+                <el-input v-model="formLabelAlign.caseNumber" @keyup.enter.native="getUnRecordCase" placeholder="请输入抄告案件的案号">
                   <el-button slot="append" icon="el-icon-search" @click="getUnRecordCase"></el-button>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="9" :offset="6" v-bind:class="{ disabled_btn:nextStepFlag?false:true }">
-              <el-button type="primary" class="next_btn" size="small" @click="nextStep" :disabled='!nextStepFlag'>下一步</el-button>
+              <el-button type="primary" class="next_btn" size="small" @click="nextStep">下一步</el-button>
             </el-col>
           </el-row>
         </el-form>
@@ -39,11 +39,11 @@
           </el-table-column>
           <el-table-column prop="acceptTime" label="受案时间" align="center" width="150"></el-table-column>
           <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
-          <el-table-column prop="caseStatus" label="当前环节" align="center" width="100"></el-table-column>
+          <el-table-column prop="currentLinkName" label="当前环节" align="center" width="100"></el-table-column>
         </el-table>
       </div>
       <div class="paginationBox">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[5]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
       </div>
       <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
     </div>
@@ -61,7 +61,7 @@ export default {
     return {
       tableData: [],
       currentPage: 1, //当前页
-      pageSize: 5, //pagesize
+      pageSize: 10, //pagesize
       total: 0, //总页数
       hideSomeSearch: true,
       formLabelAlign: {
@@ -84,15 +84,16 @@ export default {
     getUnRecordCase(searchData) {
       let data = searchData;
       data.userTd = iLocalStroage.gets("userInfo").id;
-      data.caseNumber = this.formLabelAlign.caseNumber
+      data.caseNumber = this.formLabelAlign.caseNumber;
       data.current = this.currentPage;
       data.size = this.pageSize;
       console.log(data);
       selectCopyCaseApi(data).then(
         res => {
           console.log('可抄告列表', res)
-          this.tableData = res.data.records
-          this.total=res.data.total
+          this.tableData = res.data.records;
+          this.total=res.data.total;
+          this.nextStepFlag = false;
         });
     },
     //更改每页显示的条数
@@ -112,6 +113,7 @@ export default {
     },
     // 下一步
     nextStep() {
+      if(this.nextStepFlag){
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.replace({
         name: "addCopyTwo",
@@ -119,6 +121,13 @@ export default {
             caseData:this.caseData
          }
       });
+      }else{
+      this.$message({
+          showClose: true,
+          message: '请选中案件后再试',
+          type: 'warning'
+        });
+      }
     },
     chexkCase(caseData) {
       console.log(caseData)

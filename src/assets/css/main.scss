@@ -58,6 +58,13 @@
             }
         }
 
+        @media screen and (max-width: 1400px) {
+            .headMenu {
+                float      : left;
+                margin-left: 5%;
+            }
+        }
+
         .headerRight {
             float   : right;
             overflow: hidden;
@@ -383,6 +390,13 @@
         }
     }
 }
-.el-message.el-message--error.validateErrorTip{
+
+.el-message.el-message--error.validateErrorTip {
     left: calc(50% + 100px);
+}
+
+#catalogueUpload{
+    .el-upload-dragger{
+        height: 380px;
+    }
 }

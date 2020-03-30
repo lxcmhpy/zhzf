@@ -21,7 +21,10 @@
                 v-model="formData.illegalFact"
                 rows="3"
                 maxlength="90"
+              
               ></el-input>
+              <!-- <span v-show="hidePar2"  class="text_indent10 overflow_lins_textarea"  style="display:inline-block;width:100%;position: absolute;left: 0;top: 0;line-height: 32px;text-indent: 12em;">{{formData.illegalFact}}</span> -->
+              
               <span class="overflow_describe">违法事实及依据：</span>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span
@@ -43,9 +46,8 @@
                 v-bind:class="{ over_flow:formData.illegalLaw.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                v-show="hidePart"
               ></el-input>
-              <span v-show="hidePar2"  v-bind:class="{ over_flow:formData.illegalLaw.length>12?true:false }" style="display:inline-block;width:100%;position: absolute;left: 0;top: 0;line-height: 15px;">{{formData.illegalLaw}}</span>
+              <!-- <span v-show="hidePar2"  v-bind:class="{ over_flow:formData.illegalLaw.length>12?true:false }" style="display:inline-block;width:100%;position: absolute;left: 0;top: 0;line-height: 15px;">{{formData.illegalLaw}}</span> -->
             </el-form-item>
            
            
@@ -355,9 +357,33 @@ export default {
         false
       );
     },
-    test(){
+    test(){ 
         this.hidePart=false;
         this.hidePar2=true;
+        let obj = document.getElementsByTagName('textarea');
+        console.log(obj);
+        console.log(obj[0]);
+
+        let obj2 = [];
+        
+        for(let i=0;i<obj.length;i++){
+          console.log(obj[i]);
+          //获取textarea的值
+          let textAreaValue = obj[i].value;
+          //获取textarea的classname
+          let textAreaBoxClass = obj[i].parentNode.className;
+          console.log('textAreaBoxClass',textAreaBoxClass);
+          let objParent = obj[i].parentNode.parentNode;
+          console.log('objParent',objParent);
+          //追加span元素
+          let newSpan = document.createElement("span");
+          newSpan.innerHTML = textAreaValue;
+          newSpan.setAttribute("class", textAreaBoxClass); 
+          // newSpan.className +='newSpanClass'
+          obj[i].parentNode.style.display='none'
+          objParent.appendChild(newSpan);
+        }
+        
         setTimeout(() => {
             htmlExportPDF('test_print',function(){})
         }, 1000)
@@ -371,4 +397,6 @@ export default {
 </script>
 <style lang="scss" >
 @import "@/assets/css/caseHandle/caseDocModle.scss";
+
+
 </style>

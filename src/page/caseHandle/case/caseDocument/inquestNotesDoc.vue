@@ -107,7 +107,7 @@
         </p>
         <p>
           被邀请人：<el-form-item prop="invited" style="width:180px">
-            <el-input v-model="docData.invited" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-input v-model="docData.invited" maxLength='10' placeholder="\"></el-input>
           </el-form-item>
           单位及职务：<el-form-item prop="invitedUnitAndPosition" style="width:180px">
             <el-input type="textarea" v-model="docData.invitedUnitAndPosition" v-bind:class="{ over_flow:docData.invitedUnitAndPosition.length>14?true:false }"
@@ -244,6 +244,7 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
+        linkTypeId:'2c90293b6c178b55016c17c93326000f' //所属环节的id
       },
       handleType: "",  // 0 暂存  1  提交
       dictId: "2dc1e0a3a8ce225c292259da39294847",

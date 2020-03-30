@@ -84,7 +84,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="案发日期">
-                  <el-date-picker style="width: 40%" v-model="formData.afsj" type="date" format="yyyy-MM-dd" placeholder=" -- ">
+                  <el-date-picker disabled style="width: 40%" v-model="formData.afsj" type="date" format="yyyy-MM-dd" placeholder=" -- ">
                   </el-date-picker>
                 </el-form-item>
               </div>
@@ -99,10 +99,10 @@
             <div class="row">
               <div class="col">
                 <el-form-item style="width: 100%" label="措施起止期限">
-                  <el-date-picker style="width: 40%" v-model="formData.measureStartDate" @change="startTime" type="date" format="yyyy-MM-dd" placeholder=" -- ">
+                  <el-date-picker disabled style="width: 40%" v-model="formData.measureStartDate" @change="startTime" type="date" format="yyyy-MM-dd" placeholder=" -- ">
                   </el-date-picker>
                   至
-                  <el-date-picker style="width: 40%" v-model="formData.measureEndDate" type="date" format="yyyy-MM-dd" placeholder=" -- ">
+                  <el-date-picker disabled style="width: 40%" v-model="formData.measureEndDate" type="date" format="yyyy-MM-dd" placeholder=" -- ">
                   </el-date-picker>
                 </el-form-item>
               </div>
@@ -126,7 +126,7 @@
                   <span v-if="scope.row.status == '0'">
                     暂存
                   </span>
-                  <span v-if="scope.row.status == ''">
+                  <span v-if="scope.row.status != '1' && scope.row.status != '0'">
                     -
                   </span>
                 </template>
@@ -143,7 +143,7 @@
                     <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
                     <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
                   </span>
-                  <span v-if="scope.row.status == ''" class="tableHandelcase">
+                  <span v-if="scope.row.status != '1' && scope.row.status != '0'" class="tableHandelcase">
                     <!-- 无状态 -->
                     <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
                   </span>
@@ -240,42 +240,47 @@ export default {
       docTableDatas: [],
       rules: {
         party: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '姓名不能为空', trigger: 'blur' },
         ],
         partyIdNo: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '身份证号不能为空', trigger: 'blur' },
           { validator: validateIDNumber, trigger: "blur" }
         ],
         partyAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '联系地址不能为空', trigger: 'blur' },
         ],
         partyTel: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '联系电话不能为空', trigger: 'blur' },
           { validator: validatePhone, trigger: "blur" }
         ],
         partyName: [
           { validator: validateIfCom, trigger: "blur" },
         ],
+        partyManager: [
+          { required: true, message: "法定代表人不能为空", trigger: "blur" },
+          { validator: validateIfCom, trigger: "blur" }
+        ],
         partyUnitAddress: [
-          { validator: validateIfCom, trigger: "blur" },
+          { required: true, message: "地址不能为空", trigger: "blur" },
+          { validator: validateIfCom, trigger: "blur" }
         ],
         partyUnitTel: [
+          { required: true, message: "联系电话不能为空", trigger: "blur" },
           { validator: validateIfCom, trigger: "blur" },
-        ],
-        partyManager: [
-          { validator: validateIfCom, trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" }
         ],
         socialCreditCode: [
-          { validator: validateIfCom, trigger: "blur" },
+          { required: true, message: "统一社会信用代码", trigger: "blur" },
+          { validator: validateIfCom, trigger: "blur" }
         ],
         afsj: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '案发时间不能为空', trigger: 'blur' },
         ],
         measureStartDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '开始时间不能为空', trigger: 'blur' },
         ],
         measureEndDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '结束时间不能为空', trigger: 'blur' },
         ]
       },
       // nextBtnDisab: true

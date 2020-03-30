@@ -376,6 +376,22 @@ export function findEvidencePicApi(data) {
   });
 }
 
+//通过案件ID和文书Id查询案件附件
+export function findByCaseIdAndDocIdApi(data) {
+  let params = {
+    caseId: data.caseId,
+    docId: data.docId
+  }
+  return request({
+    url: "/sys/file/findByCaseIdAndDocId",
+    method: "get",
+    params: params,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 // // 获取归档目录
 // export function findByMlCaseId(caseId) {
 //     return request({
@@ -727,14 +743,25 @@ export function getHandleRecordApi(data) {
       cancelToken: setCancelSource()
     });
   }
+    //获取送达回证
+  export function getDeliverReceiptByCaseIdApi(data) {
+      return request({
+        url: "/doc/proof/findByCaseId/"+data.caseId,
+        method: "GET",
+        showloading: true,
+        loadingType:'loadPart',
+        cancelToken: setCancelSource()
+      });
+    }
   //添加修改送达回证
   export function saveOrUpdateDeliverReceiptApi(data) {
     return request({
       url: "/doc/proof/saveOrUpdateProof",
       method: "POST",
-      params: data,
+      data: data,
       showloading: true,
       loadingType:'loadPart',
+      contentType:'application/json',
       cancelToken: setCancelSource()
     });
   }
@@ -748,6 +775,25 @@ export function getHandleRecordApi(data) {
       cancelToken: setCancelSource(),
     });
   }
-
+ //查询文书列表
+ export function findVoByDocCaseIdApi(data) {
+  return request({
+    url: "/sys/file/findVoByDocCaseId/"+data,
+    method: "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource(),
+  });
+}
+//查询操作记录查询条件
+export function querySearchConditionApi(data) {
+  return request({
+    url: "/doc/caseFormLogs/querySearchCondition/"+data,
+    method: "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource(),
+  });
+}
   //-----------------长软lv ends------------
 

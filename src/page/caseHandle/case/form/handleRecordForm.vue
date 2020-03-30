@@ -39,21 +39,23 @@
               <el-input v-model="recordForm.operationContent"></el-input>
             </el-form-item>
             <el-form-item label="操作日期" >
-              <el-form-item prop="createTime1">
+              <el-form-item prop="operateStartTime">
                 <el-date-picker
                   type="datetime"
                   placeholder="选择日期"
                   v-model="recordForm.operateStartTime"
                   style="width: 100%;"
+                  @blur="starttime"
                 ></el-date-picker>
               </el-form-item>
               ——
-              <el-form-item prop="createTime2">
+              <el-form-item prop="operateEndTime">
                 <el-date-picker
                   type="datetime"
                   placeholder="选择日期"
                   v-model="recordForm.operateEndTime"
                   style="width: 100%;"
+                  @blur="endtime"
                 ></el-date-picker>
               </el-form-item>
             </el-form-item>
@@ -64,8 +66,8 @@
           </el-form>
         </div>
       </div>
-      <div class="tablePartF">
-        <el-table :data="tableData" stripe height="100%">
+      <div class="tablePart table_tr_overflow">
+        <el-table :data="tableData" stripe style="width: 100%" highlight-current-row height="100%">
           <!-- <el-table-column type="selection" width="55" align="center"></el-table-column>-->
           <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
           <!--<el-table-column prop="id" label="序号" align="center"></el-table-column>-->
@@ -77,7 +79,7 @@
           <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         </el-table>
       </div>
-      <div class="paginationF">
+      <div class="paginationBox">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -90,19 +92,19 @@
       </div>
     </div>
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'evidenceForm'" ></caseSlideMenu>
+    <caseSlideMenu :activeIndex="'handleRecordForm'" ></caseSlideMenu>
   </div>
 </template>
 <script>
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
+import {
+  querySearchConditionApi
+} from "@/api/caseHandle";
     export default {
         data() {
             return {
                 options : [{
-                    value: '信息采集',
-                    label: '信息采集'
-                }, {
                     value: '立案登记',
                     label: '立案登记'
 
@@ -111,16 +113,40 @@ import { mapGetters } from "vuex";
                     label: '调查类文书'
 
                 }, {
-                    value: '当事人权利登记',
-                    label: '当事人权利登记'
+                    value: '调查报告',
+                    label: '调查报告'
 
-                }],
-                operatorOptions : [{
-                  value: 'test2',
-                  label: 'test2'
                 }, {
-                  value: 'ceshiyixia',
-                  label: 'ceshiyixia'
+                    value: '违法行为通知',
+                    label: '违法行为通知'
+
+                }, {
+                    value: '当事人权利',
+                    label: '当事人权利'
+
+                }, {
+                    value: '处罚决定',
+                    label: '处罚决定'
+
+                }, {
+                    value: '决定执行',
+                    label: '决定执行'
+
+                }, {
+                    value: '结案登记',
+                    label: '结案登记'
+
+                }, {
+                    value: '归档',
+                    label: '归档'
+
+                }, {
+                    value: '行政强制措施',
+                    label: '行政强制措施'
+
+                }, {
+                    value: '强制执行',
+                    label: '强制执行'
 
                 }],
                 operationlOptions : [{
@@ -138,6 +164,18 @@ import { mapGetters } from "vuex";
                   value: '审批',
                   label: '审批'
 
+                }, {
+                  value: '暂存',
+                  label: '暂存'
+
+                }, {
+                  value: '上传证据',
+                  label: '上传证据'
+
+                }, {
+                  value: '归档',
+                  label: '归档'
+
                 }],
                 value: '',
                 //activeName: '1',
@@ -145,32 +183,15 @@ import { mapGetters } from "vuex";
                 pageSize: 10, //pagesize
                 total: 0, //总数
                 tableData: [],
+                operatorOptions:[],
                 recordForm: {
                     linkName: "",
                     operator: "",
                     operationl: "",
                     operationContent: "",
-                    createTime1: "",
-                    createTime2: ""
+                    operateStartTime: "",
+                    operateEndTime: ""
                 },
-                rules: {
-                    createTime1: [
-                        {
-                            type: "date",
-                            required: true,
-                            message: "请选择日期",
-                            trigger: "change"
-                        }
-                    ],
-                    createTime2: [
-                        {
-                            type: "date",
-                            required: true,
-                            message: "请选择时间",
-                            trigger: "change"
-                        }
-                    ]
-                }
             };
         },
         computed: { ...mapGetters(['caseId']) },
@@ -194,8 +215,8 @@ import { mapGetters } from "vuex";
                     operator:this.recordForm.operator,
                     operationl:this.recordForm.operationl,
                     operationContent:this.recordForm.operationContent,
-                    operateStartTime:this.formatDateStr(this.recordForm.operateStartTime),
-                    operateEndTime:this.formatDateStr(this.recordForm.operateEndTime),
+                    operateStartTime:  this.recordForm.operateStartTime == "" ? "" :this.formatDateStr(this.recordForm.operateStartTime),
+                    operateEndTime: this.recordForm.operateEndTime == "" ? "" :this.formatDateStr(this.recordForm.operateEndTime),
                     current: this.currentPage,
                     size: this.pageSize
                 };
@@ -234,16 +255,52 @@ import { mapGetters } from "vuex";
               let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
               return Y + M + D + h + m + s;
             },
+
+             
+            starttime(){
+              if (this.recordForm.operateEndTime){
+                if(this.recordForm.operateStartTime > this.recordForm.operateEndTime){
+                  this.$message({
+                    message: '开始时间不能大于结束时间',
+                    type: 'warning'
+                  });
+                }
+              }
+            },
+            endtime(){
+              if (this.recordForm.operateStartTime){
+                if(this.recordForm.operateStartTime > this.recordForm.operateEndTime){
+                  this.$message({
+                    message: '结束时间不能小于开始时间',
+                    type: 'warning'
+                  });
+                }
+              }
+            },
+            getAllOperator(){
+              let _this = this
+              querySearchConditionApi(this.caseId).then(
+                res => {
+                  res.data.operator.forEach((v)=>{
+                  _this.operatorOptions.push({ value: v, label: v });
+                })
+                },
+                error => {
+                  console.log(error);
+                }
+              );
+          },
         },
         mounted() {
             // this.setDepartTable(this.data)
         },
         created() {
             this.getRecordList();
+            this.getAllOperator();
         }
     };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   @import "@/assets/css/systemManage.scss";
   .paginationF{
     position: absolute;
@@ -256,7 +313,10 @@ import { mapGetters } from "vuex";
     height: 100%;
     overflow: auto;
     box-sizing: border-box;
-    padding-top: 4%;
+    padding-top: 0px;
+  }
+  .searchAndpageBox {
+    padding: 5px 20px 50px 20px;
   }
   .fullscreen {
   .hasBigMarginRight{

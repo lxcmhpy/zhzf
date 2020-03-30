@@ -261,7 +261,12 @@
               </el-table-column>
 
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-              <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
+              <el-table-column prop="name" label="材料名称" align="center">
+                <template slot-scope="scope">
+                  <span v-show="scope.row.isRequired ==0"><span style="color:red">*</span> {{scope.row.name}}</span>
+                  <span v-show="scope.row.isRequired !=0">{{scope.row.name}}</span>
+                </template>
+              </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope" v-show="scope.row.name != '询问笔录'">
                   <span v-if="scope.row.status == '1'">已完成</span>

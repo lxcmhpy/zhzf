@@ -281,7 +281,8 @@ export default {
         caseDoctypeId: this.$route.params.docId,    //文书类型ID
         //表单数据
         docData: "",
-        status: ""
+        status: "",
+        linkTypeId:'2c90293b6c178b55016c17c93326000f' //所属环节的id
       },
       rules: {
         party: [
@@ -391,6 +392,9 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      //  setTimeout(() => {
+      //   this.printContent();
+      //   }, 1000)
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
@@ -520,5 +524,7 @@ export default {
 @import "@/assets/css/caseHandle/caseDocModle.scss";
 .print_box .print_info .evidencetable tr td{
   white-space: inherit;
+  text-align-last: center;
 }
+
 </style>

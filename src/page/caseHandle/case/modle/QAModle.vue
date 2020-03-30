@@ -111,9 +111,9 @@ export default {
       console.log(data);
       if(data[0].question =='你是否申请回避？'){
         this.huibi = data[0].answer;
-        let myQs = data.splice(0,1);
-        console.log('myQs',myQs);
-        this.addBannerForm.domains = myQs;
+        data.splice(0,1);
+        console.log('myQs',data);
+        this.addBannerForm.domains = data;
       }else{
         this.addBannerForm.domains = data;
       }
@@ -182,7 +182,6 @@ export default {
       }else {
         //标准模版 自定义模版
         this.chooseCustomTemplate = true;
-
         this.findModelList(val)
       }
     },
@@ -211,6 +210,11 @@ export default {
       findModelListByModelTypeIdApi(modelTypeId).then(res=>{
         console.log(res);
         this.modelList = res.data;
+        if(res.data[0]){
+          this.addBannerForm.template = res.data[0].id;
+        }else{
+          this.addBannerForm.template = '';
+        }
       },err=>{
         console.log(err);
       })

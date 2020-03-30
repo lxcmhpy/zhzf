@@ -34,9 +34,8 @@
               <el-form-item prop="partyIdNo">
                 <!-- <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input> -->
 
-                <el-input
+                <el-input v-model="docData.partyIdNo"
                   type="textarea"
-                  v-model="docData.partyIdNo"
                   v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
@@ -159,21 +158,25 @@
         <p>因你（单位）
           <span>
             <el-form-item prop="illegalFact">
-              <el-input v-model="docData.illegalFact" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.illegalFact" :maxLength='maxLength' v-bind:class="{ over_flow:docData.illegalFact && docData.illegalFact.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}" style="width:450px;"></el-input>
             </el-form-item>
           </span>，
         </p>
         <p>
           <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">1.本机关于
           <span>
-            <el-form-item :prop="disabledOne?'':'serviceTime'" class="pdf_datapick">
+            <el-form-item :prop="disabledOne?'placeholder':'serviceTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.serviceTime" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
           </span>作出了
           <span>
             <el-form-item prop="punishDecision"  class="width120">
-              <el-input v-model="docData.punishDecision" v-bind:disabled="disabledOne" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.punishDecision" 
+              type="textarea"
+              v-bind:class="{ over_flow:docData.punishDecision.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}" v-bind:disabled="disabledOne" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>决定，决定书案号为
           <span>
@@ -182,16 +185,24 @@
             </el-form-item>
           </span>。经本机关催告后仍不履行，因其后果已经或者将危害交通安全、造成环境污染或者破坏自然资源。依据《中华人民共和国行政强制法》第五十条以及
           <span>
-            <el-form-item :prop="disabledOne?'':'punishBasisOne'">
-              <el-input v-model="docData.punishBasisOne" v-bind:disabled="disabledOne" :maxLength='maxLength'></el-input>
+            <el-form-item :prop="disabledOne?'placeholder':'punishBasisOne'">
+              <el-input v-model="docData.punishBasisOne"
+              type="textarea"
+              v-bind:class="{ over_flow:docData.punishBasisOne.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              v-bind:disabled="disabledOne" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>的规定，
         </p>
         <p>
           <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">2.需要立即清除道路、河道、航道或者公共场所的遗洒物、障碍物或者污染物，因你（单位）不能清除，依据《中华人民共和国行政强制法》第五十二条以及
           <span>
-            <el-form-item :prop="disabledTwo?'':'punishBasisTwo'"  class="width120">
-              <el-input v-model="docData.punishBasisTwo" v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
+            <el-form-item :prop="disabledTwo?'placeholder':'punishBasisTwo'"  class="width120">
+              <el-input v-model="docData.punishBasisTwo"
+              type="textarea"
+              v-bind:class="{ over_flow:docData.punishBasisTwo.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>的规定，
         </p>
@@ -202,7 +213,7 @@
           1.代履行人 ：<input type="checkbox" name="people" value="1" v-model="peoples" @change="clickPeople">本机关
                       <input type="checkbox" name="people" value="2" v-model="peoples" @change="clickPeople">第三人：
           <span>
-            <el-form-item :prop="disabledThree?'':'impleAgent'">
+            <el-form-item :prop="disabledThree?'placeholder':'impleAgent'">
               <el-input v-model="docData.impleAgent"  v-bind:disabled="disabledThree" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
@@ -211,7 +222,11 @@
           2.代履行标的：
           <span>
             <el-form-item prop="impleIndex">
-              <el-input v-model="docData.impleIndex" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.impleIndex" 
+              type="textarea"
+              v-bind:class="{ over_flow:docData.impleIndex.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
         </p>
@@ -219,7 +234,11 @@
           3.代履行时间和方式：
           <span>
             <el-form-item prop="impleTimeAndWay">
-              <el-input v-model="docData.impleTimeAndWay" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.impleTimeAndWay" 
+              type="textarea"
+              v-bind:class="{ over_flow:docData.impleTimeAndWay.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>
         </p>
@@ -227,22 +246,38 @@
           4.代履行费用（预算）：
           <span>
             <el-form-item prop="impleFee">
-              <el-input v-model="docData.impleFee" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.impleFee" 
+              type="textarea"
+              v-bind:class="{ over_flow:docData.impleFee.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>请你（单位）在收到本决定书后
           <span>
             <el-form-item prop="noticeTime">
-              <el-input v-model="docData.noticeTime" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.noticeTime" 
+              type="textarea"
+              v-bind:class="{ over_flow:docData.noticeTime.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>日内预付代履行预算费用（开户行:
           <span>
             <el-form-item prop="bank">
-              <el-input v-model="docData.bank" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.bank" 
+              type="textarea"
+              v-bind:class="{ over_flow:docData.bank.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>账号：
           <span>
             <el-form-item prop="bankAccount">
-              <el-input v-model="docData.bankAccount" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.bankAccount" 
+              type="textarea"
+              v-bind:class="{ over_flow:docData.bankAccount.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 3}"
+              :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>）。代履行费用据实决算后，多退少补。
         </p>
@@ -371,7 +406,8 @@ export default {
         caseDoctypeId: this.$route.params.docId, //文书类型ID
         //文书数据
         docData: "",
-        status: "" //提交状态
+        status: "" ,//提交状态
+        linkTypeId:"a36b59bd27ff4b6fe96e1b06390d204h"
       },
       name: '',
       inputInfo: '',

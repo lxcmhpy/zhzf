@@ -187,7 +187,7 @@
                     <!-- <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span> -->
                     <span v-if="scope.row.status == '1'" class="tableHandelcase">
                       <!-- 已完成 -->
-                      <span @click="viewDocPdf(item)">查看</span>
+                      <span @click="viewDocPdf(scope.row)">查看</span>
                       <span >打印</span>
                     </span>
                     <!-- 未完成 暂存 -->
@@ -472,6 +472,7 @@
 
        //预览pdf
       viewDocPdf(row) {
+        console.log('row',row) 
         let routerData = {
           hasApprovalBtn: false,
           docId: row.docId,

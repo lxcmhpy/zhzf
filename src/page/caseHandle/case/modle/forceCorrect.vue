@@ -224,20 +224,20 @@ export default {
       },
       name: "",
       rules: {
-        party: [{ required: true, message: "请输入", trigger: "blur" }],
+        party: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
         // makeDate: [
         //   { required: true, message: '请输入', trigger: 'blur' },
         // ],
         punishLaw: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "法律条款不能为空", trigger: "blur" }
         ],
         reconsiderationOrgan: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "复议机构不能为空", trigger: "blur" }
         ],
         litigationOrgan: [
-          { required: true, message: "请输入", trigger: "blur" }
+          { required: true, message: "诉讼机构不能为空", trigger: "blur" }
         ],
-        correctWay: [{ required: true, message: "请选择", trigger: "change" }]
+        correctWay: [{ required: true, message: "责令改正方式不能为空", trigger: "change" }]
       },
       nameLength: 23,
       adressLength: 23,

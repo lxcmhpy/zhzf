@@ -17,7 +17,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="organMb" label="目标机构" align="center" width="150"></el-table-column>
-          <el-table-column prop="createTime" label="发起时间" align="center" width="150"></el-table-column>
+          <el-table-column prop="createTime" :formatter = "dataFormat" label="发起时间" align="center" width="150"></el-table-column>
           <el-table-column prop="person" label="申请人" align="center" width="100"></el-table-column>
           <el-table-column label="处理状态" align="center" width="100">
             <template slot-scope="scope">
@@ -68,22 +68,40 @@ export default {
     caseRegisterDiag
   },
   methods: {
+        dataFormat(row, column, cellValue, index) {
+      const daterc = row[column.property]
+      if(daterc==null || daterc== "") return "";
+      let date = new Date(daterc);
+      let Y = date.getFullYear() + '-';
+      let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+      let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+      let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+      let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+      let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+      let formatData = Y + M + D;
+      return formatData;
+    },
     caseRecord() {
       this.$refs.caseRegisterDiagRef.showModal();
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     //获取机构下的移送数据
-    getTransferCase(searchData) {
+    getTransferCase(searchData, time) {
+      console.log('searchData',searchData)
       let data = searchData;
       // data.userId = iLocalStroage.gets("userInfo").id;
+      if(data.current){
+      this.currentPage=data.current;
+      }
       data.current = this.currentPage;
+
       data.size = this.pageSize;
       console.log(data);
       TransferCaseApi(data).then(
         res => {
           console.log('移送列表', res)
           this.tableData = res.data.records
-          this.total = res.data.total
+          this.total = res.data.total; 
         });
     },
     //更改每页显示的条数

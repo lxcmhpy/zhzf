@@ -120,6 +120,10 @@
             /* width: */
             width   : 47px !important;
         }
+        ul {
+            margin-top: 5px;
+            height: 180px;
+          }
     }
 
     .el-radio-button__inner {
@@ -127,6 +131,47 @@
         background: #f6f8fd;
     }
 
+    .dialog_unlaw {
+        .el-drawer__header {
+            margin-bottom: 0;
+            padding      : 0 41px 0 30px;
+            color        : #20232B;
+            height       : 64px;
+            line-height  : 64px;
 
+            font-size  : 20px;
+            font-family: PingFang SC;
+            font-weight: 500;
+            span{
+                border: 0 !important;
+                border-color: transparent !important;
+                // background: red;
+            }
+        }
+
+        .el-drawer__body {
+            padding   : 33px 41px 43px 30px;
+            border-top: 1px solid #D6DBE3;
+        }
+    }
+    .wfxwList {
+        height: auto;
+        margin-bottom: 20px;
+        li {
+            line-height: 33px;
+            height: 33px;
+            cursor: pointer;
+          }
+        
+          li {
+            width: 100%;
+            color: #606060;
+            font-size: 14px;
+            font-weight: 400;
+            overflow: hidden; /*溢出隐藏*/
+            white-space: nowrap; /*规定文本不进行换行*/
+            text-overflow: ellipsis; /*当对象内文本溢出时显示省略标记（...）*/
+          }
+      }
 
 }

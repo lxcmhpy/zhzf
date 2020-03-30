@@ -9,7 +9,7 @@
             当事人（个人姓名或单位名称）
             <span>
               <el-form-item prop="party">
-                <el-input v-model="docData.party" :maxLength='maxLength'></el-input>
+                <el-input disabled v-model="docData.party" :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>:
           </p>
@@ -17,23 +17,23 @@
             因你（单位）
             <span>
               <el-form-item prop="caseCauseName">
-                <el-input v-model="docData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:docData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"   :maxLength='maxLength'></el-input>
+                <el-input disabled v-model="docData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:docData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"   :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>，本机关依法于
             <span>
               <el-form-item prop="enforceDate" class="pdf_datapick">
-                <el-date-picker v-model="docData.enforceDate" type="date" @blur="starttime" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                <el-date-picker disabled v-model="docData.enforceDate" type="date" @blur="starttime" format="yyyy年MM月dd日" placeholder="    年  月  日">
                 </el-date-picker>
               </el-form-item>
             </span>对你（单位）采取了
             <span>
               <el-form-item prop="enforceMeasure">
-                <el-input v-model="docData.enforceMeasure" type='textarea'  v-bind:class="{ over_flow:docData.enforceMeasure.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"  :maxLength='maxLength'></el-input>
+                <el-input disabled v-model="docData.enforceMeasure" type='textarea'  v-bind:class="{ over_flow:docData.enforceMeasure.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"  :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>的行政强制措施，行政强制措施决定书案号：
             <span>
               <el-form-item prop="caseNumberCopy">
-                <el-input v-model="docData.caseNumberCopy" :maxLength='maxLength'></el-input>
+                <el-input disabled v-model="docData.caseNumberCopy" :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>。
           </p>
@@ -110,26 +110,11 @@ export default {
         status: ""
       },
       rules: {
-        party: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        caseCauseName: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        enforceDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        enforceMeasure: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        caseNumberCopy: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
         situationDescription: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '延期原因不能为空', trigger: 'blur' },
         ],
         delayDate: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '延期日期不能为空', trigger: 'blur' },
         ]
       },
       nameLength: 23,
@@ -217,7 +202,7 @@ export default {
     },
     starttime(){
       if (this.docData.enforceDate){
-        this.$set(this.docData, 'delayDate', new Date(this.docData.enforceDate.getTime() + 59 * 24 * 3600 * 1000));
+        this.$set(this.docData, 'delayDate', new Date(this.docData.enforceDate.getTime() + 29 * 24 * 3600 * 1000));
       }
     },
   },

@@ -1,59 +1,43 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
-    <div
-      :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'"
-      id="waitDealBox"
-    >
-      <caseListSearch
-        @showSomeSearch="showSomeSearch"
-        @searchCase="getCaseList2"
-        :caseState="'waitDeal'"
-      ></caseListSearch>
+    <div :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'" id="waitDealBox">
+      <caseListSearch @showSomeSearch="showSomeSearch" @searchCase="getCaseList2" :caseState="'waitDeal'"></caseListSearch>
 
       <div class="tablePart table_tr_overflow">
-        <el-table
-          :data="tableData"
-          stripe
-          style="width: 100%"
-          highlight-current-row
-          @current-change="clickCase"
-          height="100%"
-        >
+        <el-table :data="tableData" stripe style="width: 100%" highlight-current-row @current-change="clickCase" height="100%">
           <el-table-column prop="caseNumber" label="案号" align="center" width="200"></el-table-column>
           <el-table-column prop="name" label="当事人/单位" align="center" width="150"></el-table-column>
           <el-table-column prop="vehicleShipId" label="车/船号" align="center" width="100"></el-table-column>
           <el-table-column prop="caseCauseName" label="违法行为" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="top-start">
-                  <div slot="content" style="max-width:200px">{{scope.row.caseCauseName}}</div>
-                  <span>{{scope.row.caseCauseName}}</span>
+                <div slot="content" style="max-width:200px">{{scope.row.caseCauseName}}</div>
+                <span>{{scope.row.caseCauseName}}</span>
               </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column prop="acceptTime" label="受案时间" align="center" width="150"></el-table-column>
           <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
           <el-table-column prop="currentLinkName" label="当前环节" align="center" width="100"></el-table-column>
-          <el-table-column prop="caseStatus" label="案件状态" align="center" width="100"></el-table-column>
+          <el-table-column prop="caseStatus" label="案件状态" align="center" width="100">
+            <template slot-scope="scope">
+              <div :style="{'color':scope.row.caseStatus=='已移送'?'#22C058':''}">{{scope.row.caseStatus}}</div>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
       <div class="paginationBox">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          background
-          :page-sizes="[10, 20, 30, 40]"
-          layout="prev, pager, next,sizes,jumper"
-          :total="total"
-        ></el-pagination>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
       </div>
     </div>
+    <tansferAtentionDialog ref="tansferAtentionDialogRef"></tansferAtentionDialog>
   </div>
 </template>
 <script>
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
+import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
 
 export default {
   data() {
@@ -67,7 +51,8 @@ export default {
   },
   mixins: [mixinGetCaseApiList],
   components: {
-    caseListSearch
+    caseListSearch,
+    tansferAtentionDialog
   },
   methods: {
     goFlowChart(id) {
@@ -89,18 +74,25 @@ export default {
     },
     clickCase(row) {
       console.log(row);
-      this.$store.commit("setCaseId", row.id);
-      //设置案件状态不为审批中
-      this.$store.commit("setCaseApproval", false);
-      console.log(this.$store.state.caseId);
-      this.$router.push({
-        name: "caseInfo",
-        params: {
-          caseInfo: row
-        }
-      });
-      let setCaseNumber = row.caseNumber!='' ?  row.caseNumber : '案件'
-      this.$store.commit("setCaseNumber", setCaseNumber);
+      if (row.caseStatus == '已移送') {
+        let message = '该案件正在移送中，移送完成后才可与继续办理'
+        this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
+      }
+      else {
+        this.$store.commit("setCaseId", row.id);
+        //设置案件状态不为审批中
+        this.$store.commit("setCaseApproval", false);
+        console.log(this.$store.state.caseId);
+        this.$router.push({
+          name: "caseInfo",
+          params: {
+            caseInfo: row
+          }
+        });
+        let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+        this.$store.commit("setCaseNumber", setCaseNumber);
+      }
+
 
     },
     //更改每页显示的条数
