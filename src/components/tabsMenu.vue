@@ -43,6 +43,7 @@ export default {
       if (targetName == "home_index") {
         return;
       }
+      debugger;
       this.$store.dispatch("deleteTabs", targetName);
       if (this.activeIndex === targetName) {
         // 设置当前激活的路由
