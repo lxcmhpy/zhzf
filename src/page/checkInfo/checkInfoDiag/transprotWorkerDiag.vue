@@ -11,64 +11,40 @@
         <div align="center">
             <table class="tg">
                 <tr>
-                    <td class="tg-title" style="width:120px;">姓名</td>
-                    <td class="tg-0pky" style="width:130px;">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
-                    <td class="tg-title" style="width:50px;">性别</td>
-                    <td class="tg-0pky" style="width:120px;">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
-                    <td class="tg-title" style="width:100px;">出生日期</td>
-                    <td class="tg-0pky" style="width:150px;">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
+                    <td class="tg-y93n" style="width:120px;">姓名</td>
+                    <td class="tg-0pky" style="width:130px;">{{dlyscyryForm.staffName}}</td>
+                    <td class="tg-y93n" style="width:50px;">性别</td>
+                    <td class="tg-0pky" style="width:120px;"></td>
+                    <td class="tg-y93n" style="width:100px;">出生日期</td>
+                    <td class="tg-0pky" style="width:150px;"></td>
                 </tr>
                 <tr>
-                    <td class="tg-title">地址</td>
-                    <td class="tg-0pky" colspan="5">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
+                    <td class="tg-y93n">地址</td>
+                    <td class="tg-0pky" colspan="5"></td>
                 </tr>
                 <tr>
-                    <td class="tg-title">从业资格证号</td>
-                    <td class="tg-0pky" colspan="2">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
-                    <td class="tg-title">资格证初领时间</td>
-                    <td class="tg-0pky" colspan="2">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
+                    <td class="tg-y93n">从业资格证号</td>
+                    <td class="tg-0pky" colspan="2">{{dlyscyryForm.CertificateCode}}</td>
+                    <td class="tg-y93n">资格证初领时间</td>
+                    <td class="tg-0pky" colspan="2"></td>
                 </tr>
                  <tr>
-                    <td class="tg-title">发证机关</td>
-                    <td class="tg-0pky" colspan="2">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
-                    <td class="tg-title">资格证发证日期</td>
-                    <td class="tg-0pky" colspan="2">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
+                    <td class="tg-y93n">发证机关</td>
+                    <td class="tg-0pky" colspan="2">{{dlyscyryForm.LicenseIssueOrganCode}}</td>
+                    <td class="tg-y93n">资格证发证日期</td>
+                    <td class="tg-0pky" colspan="2"></td>
                 </tr>
                  <tr>
-                    <td class="tg-title">证照状态</td>
-                    <td class="tg-0pky" colspan="2">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
-                    <td class="tg-title">有效期止</td>
-                    <td class="tg-0pky" colspan="2">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
+                    <td class="tg-y93n">证照状态</td>
+                    <td class="tg-0pky" colspan="2"> </td>
+                    <td class="tg-y93n">有效期止</td>
+                    <td class="tg-0pky" colspan="2"></td>
                 </tr>
                  <tr>
-                    <td class="tg-title">户籍地行政区划</td>
-                    <td class="tg-0pky" colspan="2">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
-                    <td class="tg-title">从业资格证类别</td>
-                    <td class="tg-0pky" colspan="2">
-                      <el-input type="text"  readonly="readonly"></el-input>
-                    </td>
+                    <td class="tg-y93n">户籍地行政区划</td>
+                    <td class="tg-0pky" colspan="2"></td>
+                    <td class="tg-y93n">从业资格证类别</td>
+                    <td class="tg-cly1" colspan="2">{{dlyscyryForm.cyzgzlb}}</td>
                 </tr>
             </table>
         </div>
@@ -106,5 +82,6 @@ export default {
 .tg .tg-0pky{border-color:inherit;text-align:center;vertical-align:center;height: 25px;}
 .tg .tg-0lax{background:green;border-color:inherit;font-size:20px;text-align:left;vertical-align:center;height: 30px;}
 .tg .tg-title{background:gray;text-align:center;vertical-align:center;height: 30px;}
-.tg .el-input input{border:none;}
+.tg .tg-cly1{text-align:center;vertical-align:middle;height: 25px;}
+.tg .tg-y93n{background-color:#c0c0c0;text-align:center;vertical-align:middle;height: 25px;}
 </style>
