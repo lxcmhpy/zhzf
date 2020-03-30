@@ -24,7 +24,7 @@
           <el-row :gutter="20">
             <el-col :span="5">
               <el-form-item prop="organType">
-                <el-select v-model="caseData.organType" placeholder="机构类型">
+                <el-select v-model="caseData.organType" placeholder="机构类型" @change="changeOrganType">
                   <el-option label="执法机构" value="执法机构"></el-option>
                   <el-option label="公安机关" value="公安机关"></el-option>
                   <el-option label="司法机关" value="司法机关"></el-option>
@@ -34,7 +34,11 @@
             </el-col>
             <el-col :span="17">
               <el-form-item prop="organMb">
-                <el-input v-model="caseData.organMb"></el-input>
+                <el-input v-model="caseData.organMb" v-if="caseData.organType!='执法机构'"></el-input>
+                <el-select v-if="caseData.organType=='执法机构'" v-model="caseData.organMb" placeholder="请选择" style="width:435px;">
+                  <el-option value='执法机构一' label="执法机构一"></el-option>
+                  <el-option value='执法机构二' label='执法机构二'></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -251,7 +255,7 @@ export default {
           AddEditTransferCaseApi(this.caseData).then(res => {
             console.log(res);
             if (res.code == 200) {
-               this.$message({
+              this.$message({
                 type: "sucess",
                 message: "提交成功"
               });
@@ -398,6 +402,10 @@ export default {
     changeReason() {
       console.log('reson')
       this.caseData.otherReason = ''
+    },
+    // 目标机构变化
+    changeOrganType(){
+      this.caseData.organMb=''
     }
   },
   created() {

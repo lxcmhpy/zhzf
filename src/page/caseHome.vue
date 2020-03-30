@@ -430,6 +430,38 @@ export default {
           this.$store.commit("setCaseNumber", setCaseNumber);
         }
       }
+      else
+        if (this.moreFlag == 'waitDeal') {
+          console.log(row);
+          if (row.caseStatus == '已移送') {
+            let message = '该案件正在移送中，移送完成后才可与继续办理'
+            this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
+          }
+          else {
+            this.$store.commit("setCaseId", row.id);
+            //设置案件状态不为审批中
+            this.$store.commit("setCaseApproval", false);
+            console.log(this.$store.state.caseId);
+            this.$router.push({
+              name: "caseInfo",
+              params: {
+                caseInfo: row
+              }
+            });
+            let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+            this.$store.commit("setCaseNumber", setCaseNumber);
+          }
+        }
+        else
+          if (this.moreFlag == 'waitArchive') {
+            console.log(row);
+            this.$store.commit('setCaseId', row.id);
+            //设置案件状态不为审批中
+            this.$store.commit("setCaseApproval", false);
+            this.$router.push({
+              name: "archiveCover"
+            });
+          }
     },
     //获取机构下数据
     getCaseList2(searchData) {
@@ -495,14 +527,14 @@ export default {
         hyTypeId: this.caseForm.commenCase,
         // strNumber: this.caseForm.wayType,
       }
-      if(this.caseForm.wayType=='水路运政'){
-        data.categoryId=1002000300000000
+      if (this.caseForm.wayType == '水路运政') {
+        data.categoryId = 1002000300000000
       }
-      if(this.caseForm.wayType=='公路路政'){
-        data.categoryId=1002000100000000
+      if (this.caseForm.wayType == '公路路政') {
+        data.categoryId = 1002000100000000
       }
-      if(this.caseForm.wayType=='道路运政'){
-        data.categoryId=1002000200000000
+      if (this.caseForm.wayType == '道路运政') {
+        data.categoryId = 1002000200000000
       }
       this.$store.dispatch("getIllegaAct", data).then(
         res => {
@@ -517,7 +549,7 @@ export default {
     },
     // 
     changeCommonOptions() {
-      this.caseForm.commenCase=''
+      this.caseForm.commenCase = ''
       console.log(this.caseForm.wayType)
       this.options.forEach(element => {
         console.log(element.label)
