@@ -7,7 +7,8 @@ export function getZfjgLawSupervise(data) {
     url: "/zfjg/list",
     method: "get",
     params:data,
-    showloading: false,
+    showloading: true,
+    loadingType:'loadPart',
     baseUrlType:2,
     cancelToken: setCancelSource()
   });
@@ -17,7 +18,8 @@ export function getBySiteId(sitedId) {
     return request({
       url: "/zfjg/superviseVehicle/findBySiteId/" + sitedId,
       method: "get",
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       baseUrlType:2,
       cancelToken: setCancelSource()
     });
@@ -27,7 +29,8 @@ export function getById(type,id) {
     return request({
       url: "/zfjg/findById/" + type+ '/'+id,
       method: "get",
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       baseUrlType:2,
       cancelToken: setCancelSource()
     });

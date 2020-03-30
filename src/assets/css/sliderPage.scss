@@ -75,6 +75,8 @@
             .box {
                 margin: 0 auto;
                 position: relative;
+                height:auto;
+                padding:0px;
                 .box_title {
                     margin: 2px auto;
                     margin-bottom: 15px;
@@ -85,7 +87,7 @@
                         height     : 16px;
                         display    : inline-block;
                         background : #4573D0;
-                        // margin-right: 2px;
+                        margin-right: 2px;
                         vertical-align:middle;
                     }
                     .title {

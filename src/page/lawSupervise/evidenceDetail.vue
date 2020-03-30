@@ -9,6 +9,7 @@
 </div>
 </template>
 <style src="@/assets/css/sliderPage.scss" lang="scss"></style>
+<style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
 <script>
 import {slider,slideritem} from 'vue-concise-slider';
 import checkDataComponent from './componentChild/checkDataComponent.vue';

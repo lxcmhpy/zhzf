@@ -235,13 +235,14 @@
             </span>
             <span v-else>正在定位</span>
         </div>
-        <div class="amap-right-position">
+        <div class="amap-position" :class="'amap-' + direction + '-box'">
             <div class="drawerBtn" @click="updateDrawer">
                 <i class="el-icon-arrow-right"></i>
             </div>
             <el-drawer
                 size="350px"
                 customClass="amap-drawer"
+                :direction="direction"
                 :wrapperClosable="false"
                 :withHeader="false"
                 :modal="false"
@@ -252,42 +253,38 @@
                 </div>
                 <div class="amap-main-content">
                     <transition name="el-fade-in">
-                        <div class="echarts-box" v-show="status1" style="width:380px">
-                            <em class="title left">非现场执法点</em>
+                        <div class="echarts-box" v-show="status1">
+                            <em class="title left"><i class="titleflag"></i>非现场执法点</em>
                             <i class="iconfont law-delete1 right" @click="status1 = false"></i>
                             <div class="amap-chart">
                                 <el-table
                                 v-loading="loading"
                                     @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
                                     :data="zfdList"
-                                    style="width: 100%">
+                                    style="width: 100%;height: 170px;">
                                     <el-table-column
                                         prop="name"
                                         label="站点名称"
-                                        width="80">
+                                        >
                                     </el-table-column>
                                     <el-table-column
                                         prop="cxchl"
                                         label="超限查处量"
-                                        width="100"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="blackList"
                                         label="重点监管"
-                                        width="80"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="gjzl"
                                         label="过检总量"
-                                        width="80"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="status"
                                         label="状态"
-                                        width="50"
                                         >
                                         <template>
                                             <div class="orangeBg circle" ></div>
@@ -298,42 +295,37 @@
                         </div>
                     </transition>
                     <transition name="el-fade-in">
-                        <div class="echarts-box" v-show="status2" style="width: 540px">
-                            <em class="title left">告警车辆</em>
+                        <div class="echarts-box" v-show="status2">
+                            <em class="title left"><i class="titleflag"></i>告警车辆</em>
                             <i class="iconfont law-delete1 right" @click="status2 = false"></i>
                             <div class="amap-chart">
                                 <el-table
                                 v-loading="loading"
                                     @row-click="(row, column, event)=>positionEvent(row, column, event, 6)"
                                     :data="gjclList"
-                                    style="width: 100%">
+                                    style="width: 100%;height: 170px;">
                                     <el-table-column
                                         prop="checkTime"
-                                        label="过检时间"
-                                        width="80">
+                                        label="过检时间">
                                     </el-table-column>
                                     <el-table-column
                                         prop="vehicleNumber"
                                         label="车牌号"
-                                        width="90"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="overload"
                                         label="超载率"
-                                        width="70"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="area"
                                         label="车属地"
-                                        width="70"
                                         >
                                     </el-table-column>
                                         <!-- prop="blackList" -->
                                     <el-table-column
                                         label="重点监管"
-                                        width="80"
                                         >
                                         <template>
                                             <div><i class="iconfont law-star orangeC"></i></div>
@@ -342,13 +334,11 @@
                                     <el-table-column
                                         prop="lscc"
                                         label="历史查处"
-                                        width="80"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="siteName"
                                         label="站点名称"
-                                        width="80"
                                         >
                                     </el-table-column>
                                 </el-table>
@@ -501,6 +491,7 @@ export default {
     data () {
         let self = this;
         return {
+            direction: 'btt',
             drawer: false,
             windows: [],
             curWindow: null,
@@ -899,4 +890,10 @@ export default {
 </script>
 <style lang="scss">
 @import "@/assets/css/lawSupervise/lawSupervise.scss";
+</style>
+<style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
+<style scope lang='scss'>
+.amap-main-content {
+    padding: 0 17px;
+}
 </style>

@@ -23,6 +23,12 @@
                     <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
                     <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow" >
                     </el-button>
+                    <a href="javascript:void(0)" @click="routerDetail">
+                        详情
+                    </a>
+                    <a href="javascript:void(0)" @click="routerEvidenceDetail">
+                        证据
+                    </a>
                 </el-form-item>
                 <el-collapse-transition>
                     <div v-show="isShow" :class="{'ransition-box':true}">
@@ -104,6 +110,7 @@
 </keep-alive>
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
+<style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
 <style lang="scss" scoped>
 .vehicle-black {
     width:100%;
