@@ -133,8 +133,4 @@ export default {
 .tg .tg-0pky{border-color:inherit;text-align:center;vertical-align:center;height: 25px;}
 .tg .tg-0lax{background:green;border-color:inherit;font-size:20px;text-align:left;vertical-align:center;height: 30px;}
 .tg .tg-title{background:gray;text-align:center;vertical-align:center;height: 30px;}
-<<<<<<< HEAD
-.tg .el-input input{border:none;}
-=======
->>>>>>> ff83d3f8147d38df0d877582e443b6d28643179d
 </style>
