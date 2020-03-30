@@ -31,7 +31,9 @@
             <tr v-for="(item,index) in caseList" :key="index" @click="alertPDF(item)" :class="!item.storageId && item.name=='备考表' ? 'activeTd' :''">
                 <td>{{index+1}}</td>
                 <td>{{item.name ? item.name :item.evName}}</td>
-                <td>{{currentPages(item,index)}}</td>
+                <!-- <td>{{currentPages(item,index)}}</td> -->
+                <td>{{item.page}}</td>
+
             </tr>
         </table>
     </div>
@@ -71,24 +73,24 @@ export default {
          this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
          res=>{
            console.log('res.data',res.data)
-            res.data.forEach(item=>{
-              if(item.name == "卷宗封面"){
-                if(!item.num){
-                  item.num = -1;
-                }
-                item.page = 1;
-              }else if(item.name == "卷内目录"){
-                if(!item.num){
-                  item.num = 0;
-                }
-                item.page = 1;
-              }else if(item.name == "备考表"){
-                if(!item.num){
-                  item.num = 1000;
-                }    //先这样写，之后再改
-                item.page = 1;
-              }
-            })
+            // res.data.forEach(item=>{
+            //   if(item.name == "卷宗封面"){
+            //     if(!item.num){
+            //       item.num = -1;
+            //     }
+            //     item.page = 1;
+            //   }else if(item.name == "卷内目录"){
+            //     if(!item.num){
+            //       item.num = 0;
+            //     }
+            //     item.page = 1;
+            //   }else if(item.name == "备考表"){
+            //     if(!item.num){
+            //       item.num = 1000;
+            //     }    
+            //     item.page = 1;
+            //   }
+            // })
             res.data = res.data.sort(function(a,b){
               return a.num - b.num;
             });

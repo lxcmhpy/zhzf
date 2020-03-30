@@ -4,7 +4,7 @@
       <section class="form_contianer" v-show="showLogin">
         <!-- <div class="login_logo"><img src="../../../src/assets/image/main/logo.png" alt=""><span>全国交通运输执法管理系统</span></div>-->
         <div class="leftC">
-          <img src="../../../static/images/img/login/login1.png" alt="">
+          <img src="../../../static/images/img/login/pic_denglu.jpg" alt="">
         </div>
         <div class="rightC" v-if="!resetFlag">
           <div class="form_box">
@@ -285,7 +285,7 @@ export default {
 
     //获取菜单
     getMenu() {
-        debugger
+        // debugger
       let _this = this
       this.$store.dispatch("getMenu").then(
         res => {

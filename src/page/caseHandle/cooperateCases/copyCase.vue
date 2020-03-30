@@ -15,7 +15,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="organMb" label="目标机构" align="center" width="150"></el-table-column>
-          <el-table-column prop="createTime" :formatter = "dataFormat" label="发起时间" align="center" width="150"></el-table-column>
+          <el-table-column prop="createTime" :formatter="dataFormat" label="发起时间" align="center" width="150"></el-table-column>
           <el-table-column prop="person" label="申请人" align="center" width="100"></el-table-column>
           <el-table-column prop="state" label="处理状态" align="center" width="100">
             <template slot-scope="scope">
@@ -60,29 +60,32 @@ export default {
   methods: {
     dataFormat(row, column, cellValue, index) {
       const daterc = row[column.property]
-      if(daterc==null || daterc== "") return "";
+      if (daterc == null || daterc == "") return "";
       let date = new Date(daterc);
       let Y = date.getFullYear() + '-';
       let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
       let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
       let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
-      let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+      let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
       let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
       let formatData = Y + M + D;
       return formatData;
     },
-    
+
     caseRecord() {
       this.$refs.caseRegisterDiagRef.showModal();
     },
     //获取当前人的案件抄告列表
     getCaseCopy(searchData) {
       let copyData = searchData;
+      if (copyData.current) {
+        this.currentPage = copyData.current;
+      }
       copyData.current = this.currentPage;
       copyData.size = this.pageSize;
       queryCaseCopyListPageApi(copyData).then(
         res => {
-          console.log('抄告列表', res)
+          console.log('抄告列表', res.data.records)
           this.tableData = res.data.records
           this.total = res.data.total
         });
@@ -104,7 +107,7 @@ export default {
     },
     // 查看
     view(row) {
-      console.log("案号",row.caseNumber)
+      console.log("案号", row.caseNumber)
       this.$router.replace({
         name: "caseCopyDentails",
         params: {

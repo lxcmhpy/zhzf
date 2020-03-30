@@ -52,7 +52,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="paginationF">
+      <div class="paginationBox">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -104,7 +104,7 @@ import {
             return {
                 pdfVisible: false,
                 closeDialog: false,
-                value: '',
+                value: "",
                 //activeName: '1',
                 currentPage: 1, //当前页
                 pageSize: 10, //pagesize
@@ -121,7 +121,7 @@ import {
                 editVisible: false,
                 mlList: "",
                 indexPdf: 0,
-                host:'',
+                host:"",
             };
         },
         components: {

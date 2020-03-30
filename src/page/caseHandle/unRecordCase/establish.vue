@@ -448,7 +448,6 @@ export default {
     // 提交表单
     saveData(handleType) {
       //参数  提交类型 、formRef
-
       this.com_submitCaseForm(handleType, "establishForm", true);
     },
     showApprovePeopleList() {

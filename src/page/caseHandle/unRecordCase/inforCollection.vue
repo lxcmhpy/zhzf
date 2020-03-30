@@ -384,7 +384,6 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测站">
-              <span style="color:red">*</span>
               <el-select v-model="inforForm.otherInfo.checkStastions">
                 <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
@@ -432,7 +431,6 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车辆轴数">
-              <span style="color:red">*</span>
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxleNumber" @change="weightLimit('车辆轴数')">
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
@@ -445,7 +443,6 @@
           </div>
           <div class="itemThird">
             <el-form-item label="车型">
-              <span style="color:red">*</span>
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
                 <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="中置轴挂车列车"></el-option>
@@ -955,6 +952,7 @@ export default {
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
         .then(
           res => {
+            console.log('执法人员列表',res)
             _this.userList = res.data;
             let currentUserData = {};
             _this.lawPersonListId = [];
@@ -967,9 +965,10 @@ export default {
                 currentUserData.id = item.id;
                 currentUserData.lawOfficerName = item.lawOfficerName;
                 currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
-                _this.lawPersonListId.push(currentUserData.id);
                 _this.alreadyChooseLawPerson.push(currentUserData);
+                _this.lawPersonListId.push(currentUserData.id);
                 _this.currentUserLawId = currentUserData.id;
+
               }
             });
           },
@@ -1501,7 +1500,7 @@ export default {
     },
   },
   mounted() {
-    debugger
+    // debugger
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
     console.log(someCaseInfo);
     this.inforForm.caseCauseName = someCaseInfo.illageAct;

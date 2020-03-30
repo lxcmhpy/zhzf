@@ -1,9 +1,9 @@
 <!-------长软------->
 <template>
-  <div class="print_box">
+  <div class="print_box printNumbers_box" id="adminCoerciveMeasure-print" style="width:790px; margin:0 auto;">
         <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
-          <div class="printNumbers_box">
-          <div id="adminCoerciveMeasure-print" style="height:auto;padding:0px;">
+          <!-- <div class="printNumbers_box">
+          <div id="adminCoerciveMeasure-print" style="height:auto;padding:0px;"> -->
               <div class="print_info">
               <div class="doc_topic">行政强制措施决定书</div>
               <div class="doc_number">案号：{{formData.caseNumber}}</div>
@@ -11,7 +11,7 @@
                 <tr>
                   <td rowspan="6">
                     当
-                    <br>事
+                    <br>事 
                     <br>人
                   </td>
                   <td rowspan="2">个人</td>
@@ -246,8 +246,8 @@
           <div class="notice clear">
             <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
           </div>
-          </div>
-          </div>
+          <!-- </div>
+          </div> -->
           </el-form>
 
           <!-- 添加弹出框 -->

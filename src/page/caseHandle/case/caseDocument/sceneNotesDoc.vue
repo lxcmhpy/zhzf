@@ -375,7 +375,8 @@ export default {
         caseDoctypeId: this.$route.params.docId, //文书类型ID
         //文书数据
         docData: "",
-        status: "" //提交状态
+        status: "", //提交状态
+        linkTypeId:'2c90293b6c178b55016c17c93326000f' //所属环节的id
       },
       handleType: "", // 0 暂存  1  提交
       dictId: "2dc1e0a3a8ce225c292259da39294847",
@@ -494,7 +495,6 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
