@@ -110,6 +110,7 @@
 </keep-alive>
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
+<style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
 <style lang="scss" scoped>
 .vehicle-black {
     width:100%;

@@ -891,6 +891,7 @@ export default {
 <style lang="scss">
 @import "@/assets/css/lawSupervise/lawSupervise.scss";
 </style>
+<style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
 <style scope lang='scss'>
 .amap-main-content {
     padding: 0 17px;
