@@ -28,11 +28,11 @@ export default {
             component: 'takePhotosComponent'
         },{
             name:'备注说明',
-            className: 'el-icon-warning',
+            className: 'el-icon-success',
             component: 'takePhotosComponent'
         },{
             name:'上传证据',
-            className: 'el-icon-warning',
+            className: 'el-icon-success',
             component: 'takePhotosComponent'
         }],
         options: {

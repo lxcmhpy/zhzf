@@ -37,7 +37,7 @@ export function getById(type,id) {
     return request({
       url: "/zfjg/superviseVehicle/queryListPage",
       method: "get",
-      data: data,
+      params: data,
       showloading: false,
       baseUrlType:2,
       cancelToken: setCancelSource()
