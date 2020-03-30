@@ -133,5 +133,5 @@ export default {
 .tg .tg-0pky{border-color:inherit;text-align:center;vertical-align:center;height: 25px;}
 .tg .tg-0lax{background:green;border-color:inherit;font-size:20px;text-align:left;vertical-align:center;height: 30px;}
 .tg .tg-title{background:gray;text-align:center;vertical-align:center;height: 30px;}
-.el-input input{border:none;}
+.tg .el-input input{border:none;}
 </style>
