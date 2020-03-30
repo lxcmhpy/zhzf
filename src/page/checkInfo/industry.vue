@@ -50,10 +50,31 @@
         <span class="titleflag">
         </span>
         <span class="title">查验结果</span>
-        <el-button @click="show(true)" v-if='showFlag' size="mini">&or;</el-button>
-        <el-button @click="show(false)" v-if='!showFlag' size="mini">&and;</el-button>
+        <!-- <el-button @click="show(true)" v-if='showFlag' size="mini">&or;</el-button>
+        <el-button @click="show(false)" v-if='!showFlag' size="mini">&and;</el-button> -->
       </div>
-      <div v-if="tableData.lenth>0">请在上方查验条件输入检索内容，显示结果</div>
+      <div>
+        <span>相关的 个搜索结果</span>  
+      </div>  
+      <div class="tablePart" align="center">
+        <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
+          <el-table-column prop="OwnerName" label="业户名称" align="center"></el-table-column>
+          <el-table-column prop="LicenseCode" label="经营许可证号" align="center"></el-table-column>
+          <el-table-column prop="LicenseIssueOrgan" label="发证机关" align="center"></el-table-column>
+          <el-table-column prop="EconType" label="经营类型" align="center"></el-table-column>
+          <el-table-column prop="xkzyxq" label="许可证有效期" align="center"></el-table-column>
+          <el-table-column prop="OperatingStatus" label="经营状态" align="center"></el-table-column>
+          <el-table-column label="操作" align="center">
+                <template slot-scope="scope" >
+                    <div>
+                    <el-button type="text" @click="industrySee(scope.$index, scope.row)">查看</el-button>
+                    </div>
+                </template>
+          </el-table-column>
+        </el-table>
+      </div>
+        <industrySee ref="industrySeeRef"></industrySee>
+      <!-- <div v-if="tableData.lenth>0">请在上方查验条件输入检索内容，显示结果</div>
       <table v-for='item in searchList' :key="item.id">
         <tr>
           <td class="color_ff" valign="middle">
@@ -110,14 +131,18 @@
           <td class="color_ff">经营业户负责人姓名</td>
           <td>{{item.PrincipalName}}</td>
         </tr>
-      </table>
+      </table> -->
     </div>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
+import industrySee from "@/page/checkInfo/checkInfoDiag/industryDiag";
 export default {
   mixins: [mixinGetCaseApiList],
+  components: {
+    industrySee
+  },
   data() {
 //     OwnerName:北京京版物流有限责任公司
 // LicenseCode:货备110115000169
@@ -130,7 +155,19 @@ export default {
       },
       radio: '1',
       checkType: 1,
-      tableData: [],
+      tableData: [{
+        OwnerName: 1,
+        LicenseCode: 1,
+        LicenseIssueOrgan: 1,
+        EconType: 1,
+        xkzyxq: 1,
+        OperatingStatus: 1
+      }],
+      //查看
+    industrySee(index, row) {
+      console.log(row);
+      this.$refs.industrySeeRef.industrySee(row);
+    },
       searchList: [{}],
       showFlag: true,
       sfList: [

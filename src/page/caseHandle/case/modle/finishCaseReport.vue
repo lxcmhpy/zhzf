@@ -7,7 +7,7 @@
         <div class="doc_cause">
           案由：
           <!-- {{formData.caseName}} -->
-          <el-form-item prop="caseName" class="width500">
+          <el-form-item prop="caseName" class="width500 caseNameBox">
             <el-input
               type="textarea"
               v-model="formData.caseName"
@@ -508,5 +508,14 @@ export default {
 @import "@/assets/css/caseHandle/caseDocModle.scss";
 .textindent0 {
   text-indent: 0 !important;
+}
+.print_box #finishCase_print .doc_cause .caseNameBox span.el-textarea{
+  top: -12px;
+}
+.print_box #finishCase_print .doc_cause .caseNameBox span.over_flow{
+    top: -8px;
+    text-overflow: initial;
+    font-size: 12px;
+    line-height: 14px;
 }
 </style>
