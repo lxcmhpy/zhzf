@@ -12,13 +12,13 @@
             :zoom="zoom"
             :events="events"
             class="amap-demo">
-            <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events">
+            <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :template="marker.template">
             </el-amap-marker>
-            <el-amap-info-window v-if="curWindow" :visible="curWindow.visible" :position="curWindow.position">
+            <el-amap-info-window v-if="curWindow" :visible="curWindow&&curWindow.visible" :position="curWindow.position">
                  <div :class="'lawWindowStyle'+curWindow.category" >
                      <!-- 0执法人员 -->
                      <div v-if="curWindow.category == 0">
-                        <div>
+                        <div class="lawWindowTitle">
                             <i class="iconfont law-people"></i>
                             {{curWindow.other.nickName}}
                             <div class="right">{{curWindow.other.enforceNo}}</div>
@@ -44,7 +44,7 @@
                      </div>
                      <!-- 1执法机构 -->
                      <div  v-else-if="curWindow.category == 1">
-                        <div>
+                        <div class="lawWindowTitle">
                             <i class="iconfont law-zfj"></i>
                             {{curWindow.other.name}}
                             <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
@@ -101,15 +101,16 @@
                      </div>
                      <!-- 3执法船舶 -->
                      <div v-else-if="curWindow.category == 3">
-                        <div>
+                        <!-- <div>
                             <i class="iconfont law-ship"></i>
                             {{curWindow.other.shipNumber}}<br>
                             {{curWindow.other.organName}}
-                        </div>
+                        </div> -->
                         <div class="flexBox">
                             <div class="con">
-                                <p>{{curWindow.other.address}}</p>
-                                <p>{{curWindow.other.mobile}}</p>
+                                <i class="iconfont law-ship"></i>
+                                {{curWindow.other.shipNumber}}<br>
+                                {{curWindow.other.organName}}
                             </div>
                             <div class="status">
                                 <i class="iconfont law-mobile-phone"></i>
@@ -125,9 +126,9 @@
                             <i class="iconfont law-xianlu"></i>
                         </div>
                      </div>
-                          <!-- 4非现场治超检测 -->
+                     <!-- 4非现场治超检测 -->
                      <div v-else-if="curWindow.category == 4">
-                        <div>
+                        <div class="lawWindowTitle">
                             <i class="iconfont law-jiankong"></i>
                             {{curWindow.other.name}}
                             <div class="right">{{curWindow.other.status == 0? '正常': '异常'}}</div>
@@ -165,7 +166,7 @@
                      </div>
                      <!-- 5监管企业 -->
                      <div v-else-if="curWindow.category == 5">
-                        <div>
+                        <div class="lawWindowTitle">
                             <i class="iconfont law-zfj"></i>
                             {{curWindow.other.nickName}}
                             <div class="right">{{curWindow.other.enforceNo}}</div>
@@ -189,7 +190,7 @@
                             <i class="iconfont law-xianlu"></i>
                         </div>
                      </div>
-                      <!-- 6监管车辆 -->
+                     <!-- 6监管车辆 -->
                      <div v-else-if="curWindow.category == 6">
                          <div class="flexBox">
                             <div class="con">
@@ -215,7 +216,7 @@
                      </div>
                      <!-- -1搜索地图 -->
                      <div v-else-if="curWindow.category == -1">
-                        <div>
+                        <div class="noneWindow">
                             当前位置：{{curWindow.other.address}}<br>
                             当前坐标：[{{curWindow.other.lng}},{{curWindow.other.lat}}]<br>
                             类型：{{curWindow.other.type}}
@@ -233,7 +234,7 @@
         </div>
     </div>
     <div class="amap-search">
-         <el-select
+        <el-select
             v-model="styleIndexNumher"
             placeholder="样式切换">
             <el-option
@@ -253,20 +254,15 @@
             :value="item.code"
             ></el-option>
         </el-select>
-        <!-- {{category}}  --- {{categoryList[category].placeholder}} -->
-        <!-- <el-input v-model="searchObj.searchValue" :placeholder="categoryList[searchObj.category].placeholder"></el-input> -->
         <el-amap-search-box class="search-box" ref="searchAmapBox" :search-option="searchOption" :on-search-result="searchAll">
         </el-amap-search-box>
-        <!-- <el-button icon="el-icon-search" @click="onSearchResult()"></el-button> -->
-         <!-- <el-amap-search-box :search-option="searchOption" :on-search-result="onSearchResult">
-             <i class="el-icon-search"></i>
-         </el-amap-search-box> -->
     </div>
      <div class="amap-tool">
          <el-button v-for="(item,index) in tabList" :key="index"
           @click="currentTabIndex === index ? currentTabIndex = null : currentTabIndex = index">
-             <i class="iconfont law-guanli"></i>
+            <img :src="'./static/images/img/lawSupervise/'+item.iconfont+'.png'">
              {{item.name}}
+             <i class="el-icon-arrow-down el-icon--right"></i>
              <transition name="el-zoom-in-top">
                 <div class="drop-down-menu transition-box" v-if="currentTabIndex == index">
                     <i class="el-icon-caret-top"></i>
@@ -320,12 +316,15 @@
          </transition>
     </div>
     <div class="amap-right-position" v-show="status3">
+
         <div class="echarts-box">
             <em class="title left">车辆预警</em>
             <i class="iconfont law-delete1 right" @click="status3 = false"></i>
             <div id="echartsBox2" class="amap-chart"></div>
         </div>
     </div> -->
+
+
     <!-- <div class="amap-main-content">
 
     </div> -->
@@ -339,7 +338,7 @@ import Vue from "vue";
 import echarts from 'echarts';
 import 'echarts/lib/chart/graph';
 import {lawSuperviseObj,yjObj} from './echarts/echartsJson';
-import {getZfjgLawSupervise,getBySiteId,getById} from '@/api/lawSupervise.js';
+import {getZfjgLawSupervise,getBySiteId} from '@/api/lawSupervise.js';
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 
 import AMap from 'vue-amap';
@@ -349,7 +348,7 @@ Vue.use(AMap);
 AMap.initAMapApiLoader({
     key: '2fab5dfd6958addd56c89e58df8cbb37',
     plugin: ['Autocomplete', 'PlaceSearch', 'Scale', 'OverView', 'ToolBar', 'MapType',
-    'PolyEditor', 'AMap.CircleEditor', 'lazyAMapApiLoaderInstance', 'Geolocation', 'Marker'],
+    'PolyEditor', 'AMap.CircleEditor', 'lazyAMapApiLoaderInstance', 'Geolocation', 'Marker', 'Icon'],
     v: '1.4.4',
     uiVersion: '1.0.11',
     showLabel: false
@@ -370,13 +369,13 @@ AMap.initAMapApiLoader({
 // 添加列表点选监听事件
 // AMap.event.addListener(placeSearch, "selectChanged", this.selectAddress);
 let amapManager = new AMap.AMapManager();
-
 export default {
     // el: '#lawSupervise',
     name: 'lawSupervise',
     data () {
         let self = this;
         return {
+            drawer: false,
             windows: [],
             curWindow: null,
             default: '',
@@ -397,39 +396,48 @@ export default {
             categoryList: [{
                 show: '地图位置',
                 code: -1,
-                placeholder: '请输入位置信息'
+                placeholder: '请输入位置信息',
+                className: 'map_didian'
             },{
                 show: '执法人员',
                 code: 0,
-                placeholder: '请输入执法人员名称'
+                placeholder: '请输入执法人员名称',
+                className: 'map_renyuan'
             },{
                 show: '执法机构',
                 code: 1,
-                placeholder: '请输入执法机构名称'
+                placeholder: '请输入执法机构名称',
+                className: 'map_jigou'
             },{
                 show: '执法车辆',
                 code: 2,
-                placeholder: '请输入车牌号'
+                placeholder: '请输入车牌号',
+                className: 'map_jingche'
             },{
                 show: '执法船舶',
                 code: 3,
-                placeholder: '请输入站点名称'
+                placeholder: '请输入站点名称',
+                className: 'map_cbo'
             },{
                 show: '非现场治超检测点',
                 code: 4,
-                placeholder: '请输入站点名称'
+                placeholder: '请输入站点名称',
+                className: 'map_o_gud'
             },{
                 show: '监管企业',
                 code: 5,
-                placeholder: '请输入企业名称'
+                placeholder: '请输入企业名称',
+                className: 'map_o_gud'
             },{
                 show: '监管车辆',
                 code: 6,
-                placeholder: '请输入车牌号码'
+                placeholder: '请输入车牌号码',
+                className: 'map_jingche'
             },{
                 show: '视频监控',
                 code: 7,
-                placeholder: '请输入'
+                placeholder: '请输入',
+                className: 'map_didian'
             }],
             center: [116.397428, 39.90923],
             searchOption: {
@@ -489,6 +497,19 @@ export default {
         }
     },
     methods: {
+        updateDrawer () {
+            this.drawer = !this.drawer;
+            if (this.drawer) {
+                let _this = this
+                this.$nextTick(()=>{
+                    var flowChart = echarts.init(document.getElementById('echartsBox1'));
+                    flowChart.setOption(_this.lawSuperviseObj.option);
+                    var flowChart1 = echarts.init(document.getElementById('echartsBox2'));
+                    flowChart1.setOption(_this.yjObj);
+                    _this.getRealTimeDataByLawSupervise();
+                })
+            }
+        },
         onSearchResult(pois, category) {
           let latSum = 0;
           let lngSum = 0;
@@ -505,7 +526,7 @@ export default {
                         position:[poi.lng, poi.lat],
                         other: poi.other,
                         visible: false,
-                        iconStyle: 'red',
+                        template: `<img src="/static/images/img/lawSupervise/${_this.categoryList[category+1].className}.png">`,
                         // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
                         // content: `<div class="prompt">${ poi.other.username }</div>`,
                         events: {
@@ -515,10 +536,10 @@ export default {
                                 });
 
                                 that.curWindow = that.windows[i];
-                                console.log(that.curWindow);
                                 if (category == 4) {
                                     that.getBySiteId(that.curWindow.other.id,that.curWindow.other)
                                 }
+                                console.log(that.curWindow);
                                 that.$nextTick(() => {
                                     that.curWindow.visible = true;
                                 });
@@ -532,7 +553,7 @@ export default {
                         other: poi,
                         // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
                         // content: null,
-                        iconStyle: 'red',
+                        template: `<div><img src="./static/images/img/lawSupervise/map_didian.png"><span style="position:absolute;left:12px;top:8px;color:white">${i +1}</span></div>`,
                         events: {
                             click() {
                                 that.windows.forEach(window => {
@@ -540,6 +561,7 @@ export default {
                                 });
 
                                 that.curWindow = that.windows[i];
+
                                 console.log(that.curWindow);
                                 that.$nextTick(() => {
                                     that.curWindow.visible = true;
@@ -547,6 +569,7 @@ export default {
                             }
                         }
                     })
+
                 }
                 windows.push({
                     position: [poi.lng, poi.lat],
@@ -564,6 +587,22 @@ export default {
             this.center = [center.lng, center.lat];
           }
         },
+        getBySiteId (id,obj) {
+            let _this = this
+            new Promise((resolve, reject) => {
+                getBySiteId(id).then(
+                    res => {
+                        resolve(res)
+                        obj.list = res.data
+
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
         searchByTab (item) {
             this.markers.splice(0, this.markers.length);
             if (this.curWindow) {
@@ -578,22 +617,7 @@ export default {
                     size: 0,
                     type: item.code
                 }
-            this.getZfjgLawSupervise(data)
-        },
-        getBySiteId (id,obj) {
-            let _this = this
-            new Promise((resolve, reject) => {
-                getBySiteId(id).then(
-                    res => {
-                        resolve(res)
-                        obj.list = res.data
-                    },
-                    error => {
-                        //  _this.errorMsg(error.toString(), 'error')
-                            return
-                    }
-                )
-            })
+            this.getZfjgLawSupervise(data);
         },
         searchAll (pois) {
             this.markers.splice(0, this.markers.length);
@@ -619,55 +643,51 @@ export default {
         getZfjgLawSupervise (data) {
             let _this = this
             new Promise((resolve, reject) => {
-                    getZfjgLawSupervise(data).then(
-                        res => {
-                            // resolve(res);
-                            let resultList = []
-                            if (res.data && res.data.records.length == 0) {
-                                _this.errorMsg('暂无数据', 'error');
-                                // return
-                            } else {
-                                _this.errorMsg(`总计${res.data.records.length}条数据`, 'success');
-                            }
-                            res.data.records.forEach((item,i)=>{
-                                let position = item.position.split(',');
-                                let lng = parseFloat(position[0]);
-                                let lat = parseFloat(position[1]);
-                                resultList.push({
-                                    address: item.address,
-                                    distance: null,
-                                    id: item.id,
+                getZfjgLawSupervise(data).then(
+                    res => {
+                        // resolve(res);
+                        let resultList = []
+                        if (res.data && res.data.records.length == 0) {
+                            _this.errorMsg('暂无数据', 'error');
+                            // return
+                        } else {
+                            _this.errorMsg(`总计${res.data.records.length}条数据`, 'success');
+                        }
+                        res.data.records.forEach((item,i)=>{
+                            let position = item.position.split(',');
+                            let lng = parseFloat(position[0]);
+                            let lat = parseFloat(position[1]);
+                            resultList.push({
+                                address: item.address,
+                                distance: null,
+                                id: item.id,
+                                lat: lat,
+                                lng: lng,
+                                location: {
+                                    O: lng,
+                                    P: lat,
                                     lat: lat,
-                                    lng: lng,
-                                    location: {
-                                        O: lng,
-                                        P: lat,
-                                        lat: lat,
-                                        lng: lng
-                                    },
-                                    name: item.nickName,
-                                    shopinfo: '',
-                                    tel: '',
-                                    type: _this.category,
-                                    other: item
-                                })
+                                    lng: lng
+                                },
+                                name: item.nickName,
+                                shopinfo: '',
+                                tel: '',
+                                type: _this.category,
+                                other: item
                             })
-
-                            _this.onSearchResult(resultList, _this.category)
-                        },
-                        error => {
-                            //  _this.errorMsg(error.toString(), 'error')
-                             return
                         })
-                })
+
+                        _this.onSearchResult(resultList, _this.category)
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    })
+            })
         }
     },
     mounted () {
-        // var flowChart = echarts.init(document.getElementById('echartsBox1'))
-        // flowChart.setOption(this.lawSuperviseObj.option)
-        // var flowChart1 = echarts.init(document.getElementById('echartsBox2'))
-        // flowChart1.setOption(this.yjObj)
-        this.getRealTimeDataByLawSupervise()
+
     },
     mixins: [
         lawSuperviseMixins, mixinsCommon

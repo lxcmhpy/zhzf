@@ -49,6 +49,9 @@
                     padding-right: 8px;
                 }
             }
+            &:last-child {
+                margin-right: 150px;
+            }
             &.slider-pagination-bullet-active-render {
                 a {
                     color:white;

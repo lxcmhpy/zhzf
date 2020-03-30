@@ -36,6 +36,7 @@ export function crewCheckApiCertificates(data) {
     });
 }
 
+
 //国内水路运输船舶营运证-证书编号资源服务接口
 export function crewCheckApiGnslcbyy(data) {
     console.log(data);
