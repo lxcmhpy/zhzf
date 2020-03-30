@@ -51,19 +51,23 @@ export const lawSuperviseMixins = {
                 children: [{
                     name: '执法人员',
                     icon: 'iconfont law-people',
-                    code: 0
+                    code: 0,
+                    select: false
                 },{
                     name: '执法机构',
                     icon: 'iconfont law-zfj',
-                    code: 1
+                    code: 1,
+                    select: false
                 },{
                     name: '执法车辆',
                     icon: 'iconfont law-car',
-                    code: 2
+                    code: 2,
+                    select: false
                 },{
                     name: '执法船舶',
                     icon: 'iconfont law-ship',
-                    code: 3
+                    code: 3,
+                    select: false
                 }]
             },{
                 name: '应用场景',
@@ -71,23 +75,28 @@ export const lawSuperviseMixins = {
                 children: [{
                     name: '非现场站点',
                     icon: 'iconfont law-jiankong',
-                    code: 4
+                    code: 4,
+                    select: false
                 },{
                     name: '视频监控',
                     icon: 'iconfont law-shipin',
-                    code: 7
+                    code: 7,
+                    select: false
                 },{
                     name: '固定站点',
                     icon: 'iconfont law-gdzd',
-                    code: null
+                    code: null,
+                    select: false
                 },{
                     name: '卫星影像',
                     icon: 'iconfont law-wx',
-                    code: null
+                    code: null,
+                    select: false
                 },{
                     name: '黑名单车辆',
                     icon: 'iconfont law-blackCar',
-                    code: null
+                    code: null,
+                    select: false
                 }]
             }],
             style: "amap://styles/whitesmoke",

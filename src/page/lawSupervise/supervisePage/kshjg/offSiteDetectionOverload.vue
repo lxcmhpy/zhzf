@@ -1,3 +1,6 @@
+
+
+
 <template>
 <!--  执法监管首页 by-jingli -->
 <div id="lawSupervise" ref="lawSupervise" class="mainBox" >
@@ -227,19 +230,19 @@
             </el-amap-info-window>
         </el-amap>
         <div class="toolbar">
-            <span v-if="loaded">
+            <!-- <span v-if="loaded">
             location: lng = {{ lng }} lat = {{ lat }}
             </span>
-            <span v-else>正在定位</span>
+            <span v-else>正在定位</span> -->
         </div>
         <div class="amap-position" :class="'amap-' + direction + '-box'">
             <div class="drawerBtn" @click="updateDrawer">
                 <i class="el-icon-arrow-right"></i>
             </div>
             <el-drawer
-                :direction="direction"
                 size="350px"
                 customClass="amap-drawer"
+                :direction="direction"
                 :wrapperClosable="false"
                 :withHeader="false"
                 :modal="false"
@@ -251,32 +254,95 @@
                 <div class="amap-main-content">
                     <transition name="el-fade-in">
                         <div class="echarts-box" v-show="status1">
-                            <em class="title left">近三个月执行情况</em>
+                            <em class="title left"><i class="titleflag"></i>非现场执法点</em>
                             <i class="iconfont law-delete1 right" @click="status1 = false"></i>
-                            <div id="echartsBox1" class="amap-chart" style="height:200px"></div>
-                        </div>
-                    </transition>
-                    <transition name="el-fade-in">
-                        <div class="echarts-box" v-show="status2">
-                            <em class="title left">近三个月查处排行</em>
-                            <i class="iconfont law-delete1 right" @click="status2 = false"></i>
                             <div class="amap-chart">
-                                <ul style="width: 100%">
-                                    <li class="mc" v-for="(item,index) in tableData" :key="index">
-                                        <div>{{index+1}}</div>
-                                        <div><i :class="['iconfont',item.icon]"></i> {{item.name}}</div>
-                                        <div>{{item.num}}</div>
-                                    </li>
-                                    <li class="ck">查看全部</li>
-                                </ul>
+                                <el-table
+                                v-loading="loading"
+                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
+                                    :data="zfdList"
+                                    style="width: 100%;height: 170px;">
+                                    <el-table-column
+                                        prop="name"
+                                        label="站点名称"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="cxchl"
+                                        label="超限查处量"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="blackList"
+                                        label="重点监管"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="gjzl"
+                                        label="过检总量"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="status"
+                                        label="状态"
+                                        >
+                                        <template>
+                                            <div class="orangeBg circle" ></div>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
                             </div>
                         </div>
                     </transition>
                     <transition name="el-fade-in">
-                        <div class="echarts-box">
-                            <em class="title left">车辆预警</em>
-                            <i class="iconfont law-delete1 right" @click="status3 = false"></i>
-                            <div id="echartsBox2" class="amap-chart" style="height:200px" ></div>
+                        <div class="echarts-box" v-show="status2">
+                            <em class="title left"><i class="titleflag"></i>告警车辆</em>
+                            <i class="iconfont law-delete1 right" @click="status2 = false"></i>
+                            <div class="amap-chart">
+                                <el-table
+                                v-loading="loading"
+                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 6)"
+                                    :data="gjclList"
+                                    style="width: 100%;height: 170px;">
+                                    <el-table-column
+                                        prop="checkTime"
+                                        label="过检时间">
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="vehicleNumber"
+                                        label="车牌号"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="overload"
+                                        label="超载率"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="area"
+                                        label="车属地"
+                                        >
+                                    </el-table-column>
+                                        <!-- prop="blackList" -->
+                                    <el-table-column
+                                        label="重点监管"
+                                        >
+                                        <template>
+                                            <div><i class="iconfont law-star orangeC"></i></div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="lscc"
+                                        label="历史查处"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="siteName"
+                                        label="站点名称"
+                                        >
+                                    </el-table-column>
+                                </el-table>
+                            </div>
                         </div>
                     </transition>
                 </div>
@@ -295,7 +361,8 @@
             ></el-option>
         </el-select>
         <el-select
-            v-model="category"
+            v-model="categorySelect"
+            @change="category=categorySelect"
             placeholder="请选择">
             <el-option
             v-for="(item,index) in categoryList"
@@ -387,8 +454,8 @@
 import Vue from "vue";
 import echarts from 'echarts';
 import 'echarts/lib/chart/graph';
-import {lawSuperviseObj,yjObj} from './echarts/echartsJson';
-import {getZfjgLawSupervise,getBySiteId} from '@/api/lawSupervise.js';
+import {lawSuperviseObj,yjObj} from '@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js';
+import {getZfjgLawSupervise,getBySiteId, getById} from '@/api/lawSupervise.js';
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 
 import AMap from 'vue-amap';
@@ -403,21 +470,6 @@ AMap.initAMapApiLoader({
     uiVersion: '1.0.11',
     showLabel: false
 });
-// AMap.service(["AMap.PlaceSearch"], function () {
-//     //构造地点查询类
-//     placeSearch = new AMap.PlaceSearch({
-//     pageSize: 5, // 单页显示结果条数
-//     pageIndex: 1, // 页码
-//     citylimit: false,  //是否强制限制在设置的城市内搜索
-//     map: map, // 展现结果的地图实例
-//     panel: "panel", // 结果列表将在此容器中进行展示。
-//     autoFitView: true, // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
-//     renderStyle: 'default'
-//     });
-
-// });
-// 添加列表点选监听事件
-// AMap.event.addListener(placeSearch, "selectChanged", this.selectAddress);
 let amapManager = new AMap.AMapManager();
 export default {
     // el: '#lawSupervise',
@@ -425,7 +477,8 @@ export default {
     data () {
         let self = this;
         return {
-            direction: 'rtl',
+            categorySelect: -1,
+            direction: 'btt',
             drawer: false,
             windows: [],
             curWindow: null,
@@ -544,22 +597,14 @@ export default {
                 },
             }
             ],
-            markers: []
+            markers: [],
+            zfdList: null,
+            gjclList: null
         }
     },
     methods: {
         updateDrawer () {
             this.drawer = !this.drawer;
-            if (this.drawer) {
-                let _this = this
-                this.$nextTick(()=>{
-                    var flowChart = echarts.init(document.getElementById('echartsBox1'));
-                    flowChart.setOption(_this.lawSuperviseObj.option);
-                    var flowChart1 = echarts.init(document.getElementById('echartsBox2'));
-                    flowChart1.setOption(_this.yjObj);
-                    _this.getRealTimeDataByLawSupervise();
-                })
-            }
         },
         onSearchResult(pois, category) {
           let latSum = 0;
@@ -735,10 +780,92 @@ export default {
                             return
                     })
             })
-        }
+        },
+        positionEvent (row, column, event, category) {
+            // debugger;
+            this.markers.splice(0, this.markers.length);
+            if (this.curWindow) {
+                this.curWindow.visible = false;
+            }
+            this.getById(category, row.id);
+        },
+        searchPageAll (code, obj) {
+            this.markers.splice(0, this.markers.length);
+            if (this.curWindow) {
+                this.curWindow.visible = false;
+            }
+            // 进入页面加载查询所有初始数据
+            let data = {
+                    // area: this.currentAddressObj.province + this.currentAddressObj.district,
+                    area: '',
+                    current: 1,
+                    key: '',
+                    size: 0,
+                    type: code
+                };
+            let that = this;
+            new Promise((resolve, reject) => {
+                    getZfjgLawSupervise(data).then(
+                        res => {
+                            // resolve(res);
+                            let resultList = [];
+                            that[obj] = res.data.records;
+                        },
+                        error => {
+                            //  _this.errorMsg(error.toString(), 'error')
+                             return
+                        })
+                })
+        },
+         getById (type,id) {
+            let _this = this
+            new Promise((resolve, reject) => {
+                    getById(type,id).then(
+                        res => {
+                            // resolve(res);
+                            let resultList = []
+                            if (res.data) {
+                                _this.errorMsg(`总计1条数据`, 'success');
+                                let position = res.data.position.split(',');
+                                let lng = parseFloat(position[0]);
+                                let lat = parseFloat(position[1]);
+                                _this.category = type;
+                                resultList.push({
+                                    address: res.data.area,
+                                    distance: null,
+                                    id: res.data.id,
+                                    lat: lat,
+                                    lng: lng,
+                                    location: {
+                                        O: lng,
+                                        P: lat,
+                                        lat: lat,
+                                        lng: lng
+                                    },
+                                    name: res.data.vehicleNumber,
+                                    shopinfo: '',
+                                    tel: '',
+                                    type: type,
+                                    other: res.data
+                                })
+                            } else {
+                                _this.errorMsg('暂无数据', 'error');
+                            }
+
+
+                            _this.onSearchResult(resultList, _this.category)
+                        },
+                        error => {
+                            //  _this.errorMsg(error.toString(), 'error')
+                             return
+                        })
+                })
+        },
     },
     mounted () {
-
+        this.getRealTimeDataByLawSupervise()
+        this.searchPageAll(4, 'zfdList')
+        this.searchPageAll(6, 'gjclList')
     },
     mixins: [
         lawSuperviseMixins, mixinsCommon
@@ -748,7 +875,10 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-@import "@/assets/css/lawSupervise/lawSupervise.scss";
-</style>
+<style lang="scss" src="@/assets/css/lawSupervise/lawSupervise.scss"></style>
 <style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
+<style scope lang='scss'>
+.amap-main-content {
+    padding: 0 17px;
+}
+</style>

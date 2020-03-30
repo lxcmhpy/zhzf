@@ -13,6 +13,7 @@ const getters = {
   listPage: state => state.listPage,
   caseId:state => state.caseHandle.caseId,
   docId: state => state.caseHandle.docId,
-  caseApproval: state => state.caseHandle.caseApproval
+  caseApproval: state => state.caseHandle.caseApproval,
+  offSiteManageId: state => state.supervise.offSiteManageId
 };
 export default getters;

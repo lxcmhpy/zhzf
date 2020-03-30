@@ -8,5 +8,9 @@ export const BASIC_DATA_SYS = {
     // 归档环节id\表单类型id
     archiveId:'2c9029ee6cac9281016cacab478e0007',
     // 证据类型
-    enTypeId: '574a5a05d004e32fe5d7f73c4b6a22ef'
+    enTypeId: '574a5a05d004e32fe5d7f73c4b6a22ef',
+    // 监管 超限率
+    cxl: '28bc01c6fb9ddd92db25ab764e605c90',
+    // 车牌颜色
+    vehicleColor: '388c5ac24cde480df1a54bc97829a481'
 }

@@ -35,7 +35,16 @@ export function getById(type,id) {
       cancelToken: setCancelSource()
     });
   }
-
+  export function getDetailById(id) {
+    return request({
+      url: "/zfjg/superviseVehicle/findById/" + id,
+      method: "get",
+      showloading: false,
+    //   loadingType:'loadPart',
+      baseUrlType:2,
+      cancelToken: setCancelSource()
+    });
+  }
   export function queryListPage(data) {
     return request({
       url: "/zfjg/superviseVehicle/queryListPage",
@@ -46,4 +55,12 @@ export function getById(type,id) {
       cancelToken: setCancelSource()
     });
   }
-
+  export function findAllDrawerById (data) {
+    return request({
+      url: "/sys/drawer/findAllDrawerById/" +data,
+      method: "get",
+      showloading: false,
+      baseUrlType:1,
+      cancelToken: setCancelSource()
+    });
+  }
