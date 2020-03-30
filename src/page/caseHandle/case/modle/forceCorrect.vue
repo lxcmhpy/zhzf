@@ -177,9 +177,9 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   data() {
     var validateBycorrectWay = (rule, value, callback) => {
-      console.log('this.formData.correctWay[0]',this.formData.correctWay[0])
+      console.log('数值',this.formData.correctWay[0])
       if (this.formData.correctWay[0] == '2' && !value)  {
-        return callback(new Error("请输入"));
+        return callback(new Error("责令改正日期不能为空"));
       }
       callback();
     };
@@ -237,7 +237,12 @@ export default {
         litigationOrgan: [
           { required: true, message: "诉讼机构不能为空", trigger: "blur" }
         ],
-        correctWay: [{ required: true, message: "责令改正方式不能为空", trigger: "change" }]
+        correctWay: [
+          { required: true, message: "责令改正方式不能为空", trigger: "change" }
+        ],
+        correctTime: [
+          { validator: validateBycorrectWay, trigger: "blur" }
+        ]
       },
       nameLength: 23,
       adressLength: 23,
@@ -280,6 +285,7 @@ export default {
     submitDataIllegal(handleType) {},
     saveData(handleType) {
       //参数  提交类型 、
+      console.log("日期",this.formData.correctWay)
       this.com_submitCaseForm(handleType, "docForm", true);
     },
     // 盖章
