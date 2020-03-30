@@ -509,7 +509,7 @@ export default [
     path: "/shipCertificates",
     name: "shipCertificates",
     meta: {
-      title: "船舶营运证"
+      title: "国内（国际）船舶查询"
     },
     component: () => import("@/page/checkInfo/shipCertificates.vue")
   },
