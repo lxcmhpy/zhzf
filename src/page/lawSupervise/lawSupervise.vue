@@ -232,11 +232,12 @@
             </span>
             <span v-else>正在定位</span>
         </div>
-        <div class="amap-right-position">
+        <div class="amap-position" :class="'amap-' + direction + '-box'">
             <div class="drawerBtn" @click="updateDrawer">
                 <i class="el-icon-arrow-right"></i>
             </div>
             <el-drawer
+                :direction="direction"
                 size="350px"
                 customClass="amap-drawer"
                 :wrapperClosable="false"
@@ -252,7 +253,7 @@
                         <div class="echarts-box" v-show="status1">
                             <em class="title left">近三个月执行情况</em>
                             <i class="iconfont law-delete1 right" @click="status1 = false"></i>
-                            <div id="echartsBox1" class="amap-chart" style="height: 220px;"></div>
+                            <div id="echartsBox1" class="amap-chart" style="height:200px"></div>
                         </div>
                     </transition>
                     <transition name="el-fade-in">
@@ -268,28 +269,6 @@
                                     </li>
                                     <li class="ck">查看全部</li>
                                 </ul>
-                                <!-- <el-table
-                                v-loading="loading"
-                                    :data="tableData"
-                                    style="width: 100%">
-                                    <el-table-column
-                                        type="index"
-                                        label="排名"
-                                        width="50">
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="name"
-                                        label="车牌号/企业名称"
-                                        width="140"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="num"
-                                        label="查处次数"
-                                        width="100"
-                                        >
-                                    </el-table-column>
-                                </el-table> -->
                             </div>
                         </div>
                     </transition>
@@ -297,7 +276,7 @@
                         <div class="echarts-box">
                             <em class="title left">车辆预警</em>
                             <i class="iconfont law-delete1 right" @click="status3 = false"></i>
-                            <div id="echartsBox2" class="amap-chart"  style="height: 180px;"></div>
+                            <div id="echartsBox2" class="amap-chart" style="height:200px" ></div>
                         </div>
                     </transition>
                 </div>
@@ -446,6 +425,7 @@ export default {
     data () {
         let self = this;
         return {
+            direction: 'rtl',
             drawer: false,
             windows: [],
             curWindow: null,
@@ -771,3 +751,4 @@ export default {
 <style lang="scss">
 @import "@/assets/css/lawSupervise/lawSupervise.scss";
 </style>
+<style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
