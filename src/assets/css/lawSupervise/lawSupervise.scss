@@ -19,13 +19,6 @@
     height: calc(100% - 0px);
     // border: 20px solid white;
     box-shadow:0px 6px 4px 0px rgba(94,137,181,0.1);
-    .el-drawer__wrapper {
-        top: 92px;
-        right:0px !important;
-        width: 380px;
-        left: auto;
-    }
-
  }
  .el-select-dropdown {
     margin-top: -1px !important;
@@ -297,12 +290,6 @@
 //     top:0px;
 //     @include echartsStyle();
 //  }
-.amap-main-content {
-    position: relative;
-    overflow:auto;
-    height: 82vh;
-    @include echartsStyle();
- }
  .amap-info-content {
     // background: transparent;
     background:rgba(255, 255, 255, 1);
@@ -409,21 +396,32 @@
      width: 280px;
 
  }
-.amap-right-position {
+
+.amap-position {
     position: absolute;
+    z-index:2000;
+ }
+ .amap-rtl-box {
     right: 0px;
     top: 30%;
-    z-index:2000;
-    @include echartsStyle();
-    .drawerBtn {
+    .el-drawer__wrapper {
+        top: 92px;
+        right:0px !important;
+        width: 380px;
+        left: auto;
+    }
+    .amap-main-content {
+        position: relative;
+        overflow:auto;
+        height: 82vh;
+        @include echartsStyle(300px, false);
+     }
+     .drawerBtn {
         position: absolute;
         cursor: pointer;
         width: 26px;
         height: 89px;
         background: url('../../../static/images/img/lawSupervise/btn_norshouqi2.png');
-        // border-right: 26px solid white;
-        // border-top: 16px solid transparent;
-        // border-bottom: 12px solid transparent;
         right:0px;
         i {
             line-height: 86px;
@@ -432,6 +430,77 @@
             color: #868688;
         }
     }
+     .amap-drawer {
+        overflow: visible;
+        .drawerBtn {
+            margin-left: -26px;
+            margin-top: 44%;
+            width: 26px;
+            height: 89px;
+            background: url('../../../static/images/img/lawSupervise/btn_norshouqi2.png');
+            bottom: 50%;
+            left:0px;
+            cursor: pointer;
+            i {
+                line-height: 86px;
+                margin-left: 6px;
+                border-left: 1px;
+            }
+        }
+    }
+ }
+ .amap-btt-box {
+    right: 0px;
+    top: 30%;
+    .el-drawer__wrapper {
+        width: calc(100% - 202px);
+        left: 202px;
+        top:calc(100% - 380px);
+    }
+    .el-drawer__body {
+        overflow:auto;
+        .amap-main-content {
+            position: relative;
+            @include echartsStyle(100%, true);
+         }
+    }
+     .drawerBtn {
+        margin-left: 50%;
+        width: 26px;
+        height: 89px;
+        background: url('../../../static/images/img/lawSupervise/btn_norshouqi2.png');
+        bottom: -32px;
+        left:0px;
+        transform:rotate(90deg);
+        position: fixed;
+        i {
+            line-height: 86px;
+            margin-left: 6px;
+            border-left: 1px;
+            color: #868688;
+        }
+    }
+     .amap-drawer {
+        overflow: visible;
+        .drawerBtn {
+            margin-left: 50%;
+            width: 26px;
+            height: 89px;
+            background: url('../../../static/images/img/lawSupervise/btn_norshouqi2.png');
+            bottom: auto;
+            left:0px;
+            transform:rotate(90deg);
+            position: absolute;
+            top:-57px;
+            cursor: pointer;
+            i {
+                line-height: 86px;
+                margin-left: 6px;
+                border-left: 1px;
+            }
+        }
+    }
+
  }
  .circle {
     width: 16px;
@@ -439,24 +508,11 @@
     border-radius:50%;
     text-align: center;
  }
-.amap-drawer {
-    overflow: visible;
-    .drawerBtn {
-        margin-left: -26px;
-        margin-top: 44%;
-        width: 26px;
-        height: 89px;
-        background: url('../../../static/images/img/lawSupervise/btn_norshouqi2.png');
-        // border-right: 26px solid white;
-        // border-top: 16px solid transparent;
-        // border-bottom: 12px solid transparent;
-        bottom: 50%;
-        left:0px;
-        cursor: pointer;
-        i {
-            line-height: 86px;
-            margin-left: 6px;
-            border-left: 1px;
-        }
-    }
+ .titleflag {
+    width      : 4px;
+    height     : 16px;
+    display    : inline-block;
+    background : #4573D0;
+    margin-right: 10px;
+    vertical-align:-2px;
 }
