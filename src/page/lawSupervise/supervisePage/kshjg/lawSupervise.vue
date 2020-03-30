@@ -644,11 +644,11 @@ export default {
         },
         searchByTab (item) {
             // this.markers.splice(0, this.markers.length);
-            item.select = !item.select;
             if (this.allSearchList.length > 5) {
                 this.errorMsg(`至多选择5条数据`, 'success');
                 return
             }
+            item.select = !item.select;
             if (item.select) {
                 this.allSearchList.push(item);
                 if (this.curWindow) {
