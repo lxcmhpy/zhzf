@@ -35,7 +35,7 @@
           <el-table-column prop="servedDate" label="送达日期" align="center"></el-table-column>
           <el-table-column prop="address" label="送达地点" align="center"></el-table-column>
           <el-table-column prop="servedType" label="送达方式" align="center"></el-table-column>
-          <el-table-column prop="recivePerson" label="受/代送达人" align="center"></el-table-column>
+          <el-table-column prop="server" label="受/代送达人" align="center"></el-table-column>
           <el-table-column label="操作" align="center" fixed="right">
             <template slot-scope="scope">
               <!-- <el-button type="text" @click="handleEdit(scope.$index, scope.row)">查看</el-button> -->

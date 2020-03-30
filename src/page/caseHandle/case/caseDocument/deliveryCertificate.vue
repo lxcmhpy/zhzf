@@ -356,8 +356,10 @@ export default {
             caseNumber: this.docData.caseNumber,
             caseName: this.docData.caseName,
             servedOrg: this.docData.servedOrg,//送达单位
-            recivePerson: this.docData.recivePerson,//受送达人
-            recivePersonInstead: this.docData.recivePersonInstead,//代收人
+            // recivePerson: this.docData.recivePerson,//受送达人
+            server: this.docData.recivePerson,
+            // recivePersonInstead: this.docData.recivePersonInstead,//代收人
+            collector: this.docData.recivePersonInstead,
             deliveryCertificatelist: this.docData.deliveryCertificatelist,//送达文书列表
             docNote: this.docData.docNote//备注
           };
