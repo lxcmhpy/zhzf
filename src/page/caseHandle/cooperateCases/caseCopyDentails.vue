@@ -107,6 +107,7 @@ export default {
       caseData: {},
       appendixList: [],
     }
+    
   },
   methods: {
     getCaseInfo(){
@@ -122,7 +123,10 @@ export default {
   },
   mounted() {
     this.caseData = this.$route.params.caseInfo,
-    console.log(this.caseData);
+    this.caseData = this.$route.params.caseInfo
+    if (this.caseData.appendix != '') {
+      this.appendixList = this.caseData.appendix.split(",")
+    }
   }
 }
 </script>

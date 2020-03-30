@@ -34,7 +34,7 @@
         <p>
           <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">同意你（单位）延期缴纳罚款。延长至
           <span>
-            <el-form-item :prop="disabledOne?'':'delayDate'" class="pdf_datapick width151">
+            <el-form-item :prop="disabledOne?'placeholder':'delayDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.delayDate" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
@@ -56,18 +56,18 @@
 
           </span>期至
           <span>
-            <el-form-item :prop="disabledTwo?'':'instalmentDate'" class="pdf_datapick width151">
+            <el-form-item :prop="disabledTwo?'placeholder':'instalmentDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.instalmentDate" v-bind:disabled="disabledTwo" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
           </span>前，缴纳罚款
           <span>
-            <el-form-item :prop="disabledTwo?'':'payFine'">
+            <el-form-item :prop="disabledTwo?'placeholder':'payFine'">
               <el-input v-model="docData.payFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>元（大写）（每期均应当单独开具本文书）。此外，尚有未缴纳的罚款
           <span>
-            <el-form-item :prop="disabledTwo?'':'debtFine'">
+            <el-form-item :prop="disabledTwo?'placeholder':'debtFine'">
               <el-input v-model="docData.debtFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>元（大写）。
@@ -75,7 +75,7 @@
         <p>
           <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">由于
           <span>
-            <el-form-item :prop="disabledThree?'':'reason'" style="width:500px">
+            <el-form-item :prop="disabledThree?'placeholder':'reason'" style="width:500px">
               <el-input v-model="docData.reason" v-bind:disabled="disabledThree" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>，因此，本机关认为你的申请不符合《中华人民共和国行政处罚法》第五十二条的规定，不同意你（单位）分期（延期）缴纳罚款。
@@ -139,7 +139,7 @@ import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // import signture from "../../../../js/signture";
 import mySignture from "@/common/js/mySignture";
-
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: {
     overflowInput,
@@ -158,6 +158,7 @@ export default {
         instalmentNum: '',
         instalmentDate: '',
         payFine: '',
+        debtFine: '',
         reason: '',
         stampTime: '',
       },
@@ -169,6 +170,8 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
+        docDataId: "", //多份文书的id
+        linkTypeId: "2c9029e16c753a19016c755fe1340001" //环节ID
       },
       name: '',
       inputInfo: '',
@@ -231,6 +234,25 @@ export default {
         docId: this.$route.params.docId
       };
       this.com_getDocDataByCaseIdAndDocId(data)
+
+      //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+      let addMoreData = JSON.parse(this.$route.params.addMoreData);
+
+      if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
+        //设置询问笔录名称
+        console.log('添加')
+        this.caseDocDataForm.note = "询问笔录（" + addMoreData.askData.peopleType + ")(第" + addMoreData.askData.askNum + "次)";
+        this.com_getCaseBasicInfo(data.caseId, data.docId);
+      } else {
+        console.log('修改')
+        let currentDocDataId = iLocalStroage.get("currentDocDataId");
+        if (currentDocDataId) {
+          this.getDocDetailById(currentDocDataId)
+        } else {
+          this.getDocDetailById(this.$route.params.docDataId)
+        }
+      }
+
     },
     //保存文书信息
     addDocData(handleType) {
@@ -359,7 +381,7 @@ export default {
       return chineseStr;
     },
     click() {
-      // this.clearData()
+      this.clearData()
       console.log('this.checknames', this.checknames)
       if (this.checknames.length > 1) {
         this.checknames.shift();
@@ -412,28 +434,32 @@ export default {
       this.getDocDetailById(this.$route.params.docDataId)
     }
     this.docData.fine = this.convertCurrency(this.docData.fine);
-    var flag = this.$route.params.approvalForm.executeHandle || ''
-    if (flag) {
-      if (this.$route.params.approvalForm.executeHandle == 0) {
-        // 拒绝
-        this.checknames.push("3")
-        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
+    console.log('this.$route.params.approvalForm', this.$route.params.approvalForm.executeHandle)
+
+
+    if (this.$route.params.approvalForm.executeHandle == '0') {
+      // 拒绝
+      console.log('拒绝')
+
+      this.checknames.push("3")
+      this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
+    }
+    else {
+      if (this.$route.params.approvalForm.executeType == 1) {
+        // 分期
+        this.checknames.push("2")
+        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
+
       }
-      else {
-        if (this.$route.params.approvalForm.executeType == 1) {
-          // 分期
-          this.checknames.push("2")
-          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
+      if (this.$route.params.approvalForm.executeType == 0) {
+        // 延期
+        this.checknames.push("1")
+        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
 
-        }
-        if (this.$route.params.approvalForm.executeType == 0) {
-          // 延期
-          this.checknames.push("1")
-          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
-
-        }
       }
     }
+
+
 
     this.click()
 

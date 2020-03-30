@@ -24,7 +24,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="punishType" label="处罚类型">
-                  <el-input ref="punishType" clearable class="w-120" v-model="formData.punishType" size="small" disabled placeholder="-"></el-input>
+                  <el-input ref="punishType" clearable class="w-120" v-model="formData.punishType" size="small" placeholder="-"  disabled></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -44,7 +44,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="punishDecision" label="处罚决定">
-                  <el-input ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="请输入" disabled></el-input>
+                  <el-input ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="-" disabled></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -357,22 +357,31 @@ export default {
         // 分期延期缴纳通知书必做
         console.log(this.allAskDocList)
         let flag = true
-        this.allAskDocList.forEach(element => {
-          if (element.name == '分期（延期）缴纳罚款通知书【2016】') {
-            this.unfinishFlag = '分期（延期）缴纳罚款通知书';
-            console.log('lement.status,element.status', element.status)
-            if (element.status != 1) {
+        if (this.allAskDocList.length == 0) {
+          this.unfinishFlag = '分期（延期）缴纳罚款通知书';
+          flag = false;
+          return false;
+        }
+        else {
+          this.allAskDocList.forEach(element => {
+            if (element.name == '分期（延期）缴纳罚款通知书【2016】') {
+              console.log('element.name', element.status)
               this.unfinishFlag = '分期（延期）缴纳罚款通知书';
-              console.log('执行')
-              let caseData = {}
-              this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
-              flag = false;
-              return false;
+              console.log('lement.status,element.status', element.status)
+              if (element.status != 1) {
+                this.unfinishFlag = '分期（延期）缴纳罚款通知书';
+                console.log('执行')
+                let caseData = {}
+                this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+                flag = false;
+                return false;
+              }
             }
-          }
-          else
-            return flag;
-        });
+            else
+              return flag;
+          });
+        }
+
         return flag;
       }
     },
@@ -469,8 +478,10 @@ export default {
         hasApprovalBtn: false,
         docId: row.docId,
         approvalOver: false,
-        hasBack: true
+        hasBack: true,
+        docDataId: row.docDataId
       };
+      console.log('routerData,routerData', routerData)
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: "myPDF", params: routerData });
     },
@@ -485,6 +496,7 @@ export default {
       }
     },
     getDataAfter() {
+      console.log('this.formData.tempPunishAmount',this.formData.tempPunishAmount)
       if (this.formData.tempPunishAmount) {
         this.formData.paidAmount = this.formData.paidAmount ? this.formData.paidAmount : 0;
       }
@@ -637,9 +649,9 @@ export default {
     },
     // // 是否已完成缴费
     isFinish() {
-    //   if (this.formData.toPayAmount == 0) {
-    //     this.formData.performance = '已完成'
-    //   }
+      //   if (this.formData.toPayAmount == 0) {
+      //     this.formData.performance = '已完成'
+      //   }
     }
   },
 

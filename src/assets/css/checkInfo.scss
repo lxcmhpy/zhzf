@@ -19,7 +19,7 @@
 
     .center_content {
         margin-bottom: 23px;
-
+    
     }
 
     .bottom {
@@ -58,6 +58,12 @@
     .title_box {
         width     : calc(100% - 130px);
         text-align: center;
+    }
+
+    .title_box_c {
+        width     : calc(100% - 130px);
+        text-align: center;
+        height     : 35px;
     }
 
     .float {

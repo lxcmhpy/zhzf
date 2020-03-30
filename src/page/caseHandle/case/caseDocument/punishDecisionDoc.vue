@@ -396,22 +396,22 @@ export default {
         partyTel: [{ validator: validatePhone, trigger: "blur" }],
         partyUnitTel: [{ validator: validatePhone, trigger: "blur" }],
         punishLaw: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '处罚依据必须填写', trigger: 'blur' },
         ],
         illegalLaw: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '违法依据必须填写', trigger: 'blur' },
         ],
         tempPunishAmount: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '行政处罚必须填写', trigger: 'blur' },
         ],
          illegalFact: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '违法事实及依据必须填写', trigger: 'blur' },
         ],
         litigationOrgan: [
-          { required: true, message: '请选择', trigger: 'change' },
+          { required: true, message: '行政诉讼机构必须填写', trigger: 'change' },
         ],
         reconsiderationOrgan: [
-          { required: true, message: '请选择', trigger: 'change' },
+          { required: true, message: '行政复议机构必须填写', trigger: 'change' },
         ],
         
 

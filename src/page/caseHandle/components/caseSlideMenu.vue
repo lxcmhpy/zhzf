@@ -16,14 +16,14 @@
       <el-menu-item index="handleRecordForm" @click="goTo('handleRecordForm')">
         操作<br>记录
       </el-menu-item>
-      <el-menu-item index="documentForm" @click="goTo('documentForm')">
-        文书<br>列表
+      <el-menu-item index="documentForm">
+        <div @mouseenter="mouseenterShowEmit('documentForm')" @click="goTo('documentForm')">文书<br>列表</div>
       </el-menu-item>
-      <el-menu-item index="deliverReceiptForm" @click="goTo('deliverReceiptForm')">
-        送达<br>回证
+      <el-menu-item index="deliverReceiptForm" >
+        <div @mouseenter="mouseenterShowEmit('deliverReceiptForm')" @click="goTo('deliverReceiptForm')">送达<br>回证</div>
       </el-menu-item>
-      <el-menu-item index="evidenceForm" @click="goTo('evidenceForm')">
-        <div @mouseenter="mouseenterShowEmit('evidenceForm')">证据<br>目录</div>
+      <el-menu-item index="evidenceForm" >
+        <div @mouseenter="mouseenterShowEmit('evidenceForm')" @click="goTo('evidenceForm')">证据<br>目录</div>
       </el-menu-item>
       <el-menu-item index="archiveCatalogue" > 
         <div @mouseenter="mouseenterShowEmit('archiveCatalogue')"  @click="goTo('archiveCatalogueDetail')">卷宗<br>目录</div>
@@ -79,6 +79,15 @@ export default {
       console.log('hover')
       if(type == 'archiveCatalogue'){
          this.$emit('showArchiveCatalogue');
+      }
+      if(type == 'documentForm'){
+         this.$emit('showdocumentForm');
+      }
+      if(type == 'deliverReceiptForm'){
+         this.$emit('showdeliverReceiptForm');
+      }
+      if(type == 'evidenceForm'){
+        this.$emit('showEvidenceCatalogue');
       }
      
     },

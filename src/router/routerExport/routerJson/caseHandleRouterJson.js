@@ -509,7 +509,7 @@ export default [
     path: "/shipCertificates",
     name: "shipCertificates",
     meta: {
-      title: "船舶营运证"
+      title: "国内（国际）船舶查询"
     },
     component: () => import("@/page/checkInfo/shipCertificates.vue")
   },
@@ -534,7 +534,7 @@ export default [
       path: "/addTransfer",
       name: "addTransfer",
       meta: {
-          title: "新增抄送"
+          title: "新增移送"
       },
       component: () => import("@/page/caseHandle/cooperateCases/addPage.vue")
   },
@@ -542,7 +542,7 @@ export default [
       path: "/addSelect",
       name: "addSelect",
       meta: {
-          title: "新增抄送"
+          title: "新增移送"
       },
       component: () => import("@/page/caseHandle/cooperateCases/selectPage.vue")
   },
@@ -745,7 +745,15 @@ export default [
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/testPdf.vue")
-  }
+  },
   
   //---------------长软end------------
+  {
+    path: "/electronicFileDetail",
+    name: "electronicFileDetail",
+    meta: {
+      title: "卷宗详情",
+    },
+    component: () => import("@/page/caseHandle/electronicCaseFile/electronicFileDetail.vue")
+  }
 ]

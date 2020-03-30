@@ -29,6 +29,7 @@ export function getFile(data) {
 
 // 上传证据
 export  function  uploadEvApi(data)  {
+  console.log("789",data);
   return  request({
     url:  "/sys/file/uploadEv",
     method:  "POST",
@@ -58,7 +59,7 @@ export function uploadEvdence(data) {
         contentType: 'multipart/form-data;',
         showloading: true,
         loadingType:'loadPart',
-        responseType: 'blob',
+        // responseType: 'blob',
         cancelToken:  setCancelSource(),
       });
 }

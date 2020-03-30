@@ -45,13 +45,14 @@
           <el-table-column prop="createTime" label="保存日期" align="center"></el-table-column>
           <el-table-column label="操作" align="center" fixed="right">
             <template slot-scope="scope">
-              <el-button type="text" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+              <!-- <el-button type="text" @click="handleEdit(scope.$index, scope.row)">查看</el-button> -->
+              <el-button type="text" @click="viewDocPdf(scope.row)">查看</el-button>
               <el-button type="text" @click="handleEdit(scope.$index, scope.row)">打印</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
-      <div class="paginationF">
+      <div class="paginationBox">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -64,7 +65,9 @@
       </div>
     </div>
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'documentForm'" ></caseSlideMenu>
+    <caseSlideMenu :activeIndex="'documentForm'" @showdocumentForm="showdocumentForm"></caseSlideMenu>
+    <!-- 文书列表 -->
+    <documentFormRef ref="documentFormRef"></documentFormRef>
      <el-dialog
         :visible.sync="pdfVisible"
         @close="closeDialog"
@@ -90,6 +93,7 @@
   </div>
 </template>
 <script>
+import documentFormRef from "./documentFormRef";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
 import {
@@ -100,7 +104,7 @@ import {
             return {
                 pdfVisible: false,
                 closeDialog: false,
-                value: '',
+                value: "",
                 //activeName: '1',
                 currentPage: 1, //当前页
                 pageSize: 10, //pagesize
@@ -117,10 +121,12 @@ import {
                 editVisible: false,
                 mlList: "",
                 indexPdf: 0,
+                host:"",
             };
         },
         components: {
           caseSlideMenu,
+          documentFormRef
         },
         computed: { ...mapGetters(['caseId']) },
         methods: {
@@ -186,7 +192,25 @@ import {
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.getDocList();
-            }
+            },
+            //点击卷宗目录后 显示卷宗目录
+            showdocumentForm() {
+              this.$refs.documentFormRef.showModal();
+            },
+            viewDocPdf(row) {
+              debugger
+              console.log('row',row) 
+              let routerData = {
+                hasApprovalBtn: false,
+                docId: row.caseDoctypeId,
+                approvalOver: false,
+                hasBack: true,
+                docDataId:row.id
+              };
+              debugger
+              this.$store.dispatch("deleteTabs", this.$route.name);
+              this.$router.push({ name: "myPDF", params: routerData });
+            },
         },
         mounted() {
             // this.setDepartTable(this.data)

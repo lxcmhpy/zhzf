@@ -9,13 +9,13 @@ export const lawSuperviseObj = {
             }
         },
         legend: {
-            data: ['任务指派', '任务确认比例', '其他']
+            data: ['待办任务', '接收任务', '完成任务']
         },
         grid: {
             left: '3%',
             right: '4%',
             bottom: '8%',
-            top: '17%',
+            top: '18%',
             containLabel: true
         },
         xAxis: [
@@ -31,49 +31,52 @@ export const lawSuperviseObj = {
         ],
         series: [
             {
-                name: '任务指派',
+                name: '待办任务',
                 type: 'bar',
                 data: [920, 432, 301],
                 itemStyle: {
-                    color: new echarts.graphic.LinearGradient(
-                        0, 0, 0, 1,
-                        [
-                            {offset: 0, color: '#83bff6'},
-                            {offset: 0.5, color: '#188df0'},
-                            {offset: 1, color: '#188df0'}
-                        ]
-                    )
+                    color: '#4573D0'
+                    // color: new echarts.graphic.LinearGradient(
+                    //     0, 0, 0, 1,
+                    //     [
+                    //         {offset: 0, color: '#4573D0'},
+                    //         {offset: 0.5, color: '#188df0'},
+                    //         {offset: 1, color: '#188df0'}
+                    //     ]
+                    // )
                 }
             },
             {
-                name: '任务确认比例',
+                name: '接收任务',
                 type: 'bar',
                 stack: '广告',
                 data: [420, 632, 401],
                 itemStyle: {
-                    color: new echarts.graphic.LinearGradient(
-                        0, 0, 0, 1,
-                        [
-                            {offset: 0, color: '#f1d69f'},
-                            {offset: 0.5, color: '#ebb951'},
-                            {offset: 1, color: '#ffac00'}
-                        ]
-                    )
+                    color: '#5AD8A6'
+                    // color: new echarts.graphic.LinearGradient(
+                    //     0, 0, 0, 1,
+                    //     [
+                    //         {offset: 0, color: '#f1d69f'},
+                    //         {offset: 0.5, color: '#ebb951'},
+                    //         {offset: 1, color: '#ffac00'}
+                    //     ]
+                    // )
                 }
             },
             {
-                name: '其他',
+                name: '完成任务',
                 type: 'bar',
                 data: [862, 318, 164],
                 itemStyle: {
-                    color: new echarts.graphic.LinearGradient(
-                        0, 0, 0, 1,
-                        [
-                            {offset: 0, color: '#eeeeee'},
-                            {offset: 0.5, color: '#dad9d8'},
-                            {offset: 1, color: '#c4c4c4'}
-                        ]
-                    )
+                    color: '#5D7092'
+                    // color: new echarts.graphic.LinearGradient(
+                    //     0, 0, 0, 1,
+                    //     [
+                    //         {offset: 0, color: '#eeeeee'},
+                    //         {offset: 0.5, color: '#dad9d8'},
+                    //         {offset: 1, color: '#c4c4c4'}
+                    //     ]
+                    // )
                 }
             }
         ]
@@ -124,7 +127,8 @@ export var yjObj = {
             type: 'bar',
             itemStyle: {
                 // color: 'rgba(0,0,0,0.05)'
-                color: 'rgba(255, 156, 27, 0.6)'
+                // color: 'rgba(255, 156, 27, 0.6)'
+                color: '#6188D7'
             },
             barGap: '-100%',
             barCategoryGap: '60%',
@@ -134,14 +138,15 @@ export var yjObj = {
         {
             type: 'bar',
             itemStyle: {
-                color: new echarts.graphic.LinearGradient(
-                    0, 0, 0, 1,
-                    [
-                        {offset: 0, color: '#83bff6'},
-                        {offset: 0.5, color: '#188df0'},
-                        {offset: 1, color: '#188df0'}
-                    ]
-                )
+                color:'#5AD8A6'
+                // color: new echarts.graphic.LinearGradient(
+                //     0, 0, 0, 1,
+                //     [
+                //         {offset: 0, color: '#83bff6'},
+                //         {offset: 0.5, color: '#188df0'},
+                //         {offset: 1, color: '#188df0'}
+                //     ]
+                // )
             },
             data: data
         }

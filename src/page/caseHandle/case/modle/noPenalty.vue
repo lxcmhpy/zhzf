@@ -3,16 +3,14 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="docForm" :model="formData" label-width="105px" :rules="rules">
+    <el-form ref="docForm" :disabled="formData.reason && originalData.reason ? true : false" :model="formData" label-width="105px" :rules="rules">
       <div class="content_box">
         <div class="content">
           <div class="content_title">
             不予处罚 
           </div>
           <div class="border_blue"></div>
-
           <div class="content_form">
-            
             <div class="row">
               <div class="col">
                 <el-form-item label="原因" prop="reason" class="reasonCon">
@@ -46,8 +44,8 @@
                     
                   </el-upload>
                   <ul>
-                      <li v-for="item in fileListArr" :key="item.id" class="fileLiCon"><span>{{item.fileName}}</span><span @click="deleteFile(item)"><i class="iconfont law-delete"></i></span></li>
-                    </ul>
+                    <li v-for="item in fileListArr" :key="item.id" class="fileLiCon"><span>{{item.fileName}}</span><span @click="deleteFile(item)"><i class="iconfont law-delete"></i></span></li>
+                  </ul>
                 </el-form-item>
             </el-row>
             <div class="row">
@@ -61,27 +59,25 @@
           <!-- <div class="border_blue"></div> -->
         </div>
       </div>
-      <div class="content_box">
-
+    </el-form>
+    <div class="content_box">
         <!-- 悬浮按钮 -->
         <div class="float-btns ">
-
-          <el-button type="primary" @click="continueHandle" v-if="!this.$route.params.isComplete">
+          <el-button :type="formData.reason && originalData.reason ? 'primary' : 'info'" :disabled="formData.reason && originalData.reason ? false : true" @click="continueHandle" v-if="!this.$route.params.isComplete">
            <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2285" width="24" height="24">
               <path d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z" fill="#FFFFFF" p-id="2286"></path>
             </svg><br>
             下一<br>环节</el-button>
-          <el-button type="primary" @click="submitCaseDoc(1)" v-if="!this.$route.params.isComplete">
-            <i class="iconfont law-save"></i>
-            <br>
-            保存</el-button>
+          <el-button :type="formData.reason && originalData.reason ? 'info' : 'primary'" :disabled="formData.reason && originalData.reason ? true : false" @click="submitCaseDoc(1)" v-if="!this.$route.params.isComplete">
+            <i class="iconfont law-save"></i><br>
+            保存
+          </el-button>
           <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete">
             <i class="iconfont law-back"></i>
             <br />返回
           </el-button>
         </div>
       </div>
-    </el-form>
   </div>
 </template>
 <script>
@@ -105,12 +101,11 @@ export default {
       formData: {
         reason:"",
         otherReason:"",
-        // fileList:[],
         notes:"",
       },  
-      fileList:[], 
+      originalData:"",
       fileListArr:[],
-      radios:[],
+      isSave: false,
       disabledOne: true,   
       //提交方式
       handleType: 0, //0  暂存     1 提交
@@ -137,12 +132,15 @@ export default {
   methods: {
     //加载表单信息
     setFormData() {
+      this.isSave= false;
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, false);
     },
     submitCaseDoc(handleType) {
       //参数  提交类型 、formRef、有无下一环节按
       this.com_submitCaseForm(handleType, 'docForm', false);
+      this.isSave = true;
+      console.log("状态",this.isSave)
     },
     //下一环节
     continueHandle() {
@@ -164,16 +162,27 @@ export default {
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
       }
     },
-    handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-    },
     //上传附件
     uploadFile(param) {
+      const isLt2M = param.file.size / 1024 / 1024 < 10     //这里做文件大小限制
+      console.log("大小",isLt2M)
       if(this.fileListArr.length >=3){
         this.$message.warning('最多选择3个文件！');
         return;
       }
-      console.log(param);
+      if(!isLt2M) {
+        this.$message({
+          message: '上传文件大小不能超过 10MB!',
+          type: 'warning'
+        });
+        return;
+      }
+      for(let i=0; i<this.fileListArr.length; i++){
+        if(param.file.name == this.fileListArr[i].fileName){
+          this.$message.warning('不能上传同一个文件');
+          return;
+        }
+      }
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append('caseId', this.caseId)
@@ -181,7 +190,6 @@ export default {
       uploadEvApi(fd).then(
         res => {
           console.log(res);
-          // console.log(this.fileList);
           this.findFileList();
         },
         error => {
@@ -259,7 +267,6 @@ export default {
   },
   
   mounted() {
-    // this.setFormData();
   },
   created() {
     this.setFormData();

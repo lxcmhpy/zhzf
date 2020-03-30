@@ -79,17 +79,29 @@
       </div>
       <div class="padding22 tablebox">
         <el-table :data="tableData" stripe height="100%" highlight-current-row @current-change="clickCase">
-          <el-table-column :prop="moreFlag != 'unRecordCase' ? 'caseNumber'  :'tempNo' " label="案号" align="center" ></el-table-column>
+          <el-table-column :prop="moreFlag != 'unRecordCase' ? 'caseNumber'  :'tempNo' " label="案号" align="center"></el-table-column>
           <el-table-column prop="name" label="当事人" align="center"></el-table-column>
           <!-- <el-table-column prop="vehicleShipId" label="车/船号" align="center"></el-table-column> -->
           <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
           <!-- <el-table-column prop="acceptTime" label="受案时间" align="center"></el-table-column> -->
           <!-- <el-table-column prop="caseType" label="案件类型" align="center"></el-table-column> -->
           <el-table-column label="总处理时长" align="center">
-            <template></template>
+            <template slot-scope="scope">
+              <div>{{scope.row.caseDealTime||"-"}}</div>
+            </template>
           </el-table-column>
           <el-table-column prop="currentLinkName" label="当前环节" align="center"></el-table-column>
-          <el-table-column prop="caseStatus" label="当前状态" align="center"></el-table-column>
+          <el-table-column prop="caseStatus" label="当前状态" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.caseStatus=='办理中'" style="color:#2B313E">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='待归档'" style="color:#2B313E">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='待审批'" style="color:#00B4A1">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='待审核'" style="color:#00B4A1">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='审核中'" style="color:#00B4A1">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='未立案'" style="color:#E84241">{{scope.row.caseStatus}}</div>
+              <div v-if="scope.row.caseStatus=='审批中'" style="color:#0074F5">{{scope.row.caseStatus}}</div>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
 
@@ -100,7 +112,7 @@
     <div class="float_left width356">
       <div class="shadow case_home_top">
         <div class="casehome_topic">信息查验
-          <span @click="infoCheck('checkHome')">查看更多</span>
+          <span @click="infoCheck('checkHome')">更多</span>
         </div>
         <div class="icon_content">
           <ul>
@@ -159,7 +171,7 @@
               </el-radio-group>
             </div>
           </div>
-          <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back" @change="getIllegaAct">
+          <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back" @change="changeCommonOptions">
             <el-radio-button label="水路运政"></el-radio-button>
             <el-radio-button label="公路路政"></el-radio-button>
             <el-radio-button label="道路运政"></el-radio-button>
@@ -167,25 +179,34 @@
           </el-radio-group>
           <div class="magin_btm">常见违法行为
             <span class="casehome_topic_select">
-              <!-- <el-select v-model="caseForm.value" placeholder="请选择" size='small'>
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+              <el-select v-model="caseForm.commenCase" placeholder="不限类别" size='small' @change="getIllegaAct">
+                <el-option v-for="item in commonOptions" :key="item.value" :label="item.label" :value="item.id">
                 </el-option>
-              </el-select> -->
-              <el-cascader v-model="caseForm.commenCase" size="mini" aria-placeholder="不限类别" :options="options" :props="{ expandTrigger: 'hover' }" @change="getIllegaAct"></el-cascader>
+              </el-select>
+              <!-- <el-cascader v-model="caseForm.commenCase" size="mini" placeholder="不限类别" :options="options" :props="{ expandTrigger: 'hover' }" @change="getIllegaAct"></el-cascader> -->
             </span>
           </div>
         </el-form>
         <ul class="wfxwList">
-          <li v-for="item in caseList" :key="item.id" @click="caseRecord(item)"><span class="bull">&bull;</span>{{item.strContent}}</li>
+          <li v-for="item in caseList" :key="item.id" @click="caseRecord(item)">
+            <span class="bull">&bull;</span>
+            <el-tooltip class="item" effect="light" placement="top-start">
+              <div slot="content" style="max-width:250px">{{item.strContent}}</div>
+              <span>{{item.strContent}}</span>
+            </el-tooltip>
+          </li>
+
         </ul>
 
         <center>
           <el-button size="small" @click="caseRecordMore()">查看更多</el-button>
         </center>
+        <!-- <el-button type="text" @click="caseRecordMore()">打开嵌套表格的 Drawer</el-button> -->
 
       </div>
 
     </div>
+
     <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
     <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
   </div>
@@ -196,7 +217,7 @@ import iLocalStroage from "@/common/js/localStroage";
 // 立案登记
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import caseRegisterDiag from "@/page/caseHandle/unRecordCase/caseRegisterDiag.vue";
-import chooseillegalAct from "@/page/caseHandle/unRecordCase/chooseillegalAct";
+import chooseillegalAct from "./chooseIllegegaDialog.vue";
 export default {
   mixins: [mixinGetCaseApiList],
   components: {
@@ -206,18 +227,14 @@ export default {
   },
   data() {
     return {
+      table: false,
       activeName: 'first',
       waitDealSearch: '',
       unRecordCaseSearch: '',
       waitArchiveSearch: '',
       approveIngSearch: '',
       radio: 1,
-      radio3: '',
       tableData: [],
-      options: [{
-        value: '1',
-        label: '不限类别'
-      }],
       caseList: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -233,86 +250,107 @@ export default {
         value: '不限类别',
         commenCase: '',
       },
+      commonOptions: [],
       options: [
         {
           value: '0',
           label: '道路运政',
+          cateId: "1002000200000000",
           children: [
             {
               value: '01',
-              label: '道路旅客运输'
+              label: '道路旅客运输',
+              id: "1002000200010000"
             },
             {
               value: '02',
-              label: '道路普通货物运输'
+              label: '道路普通货物运输',
+              id: "1002000200020000"
             },
             {
               value: '03',
-              label: '道路危险货物运输'
+              label: '道路危险货物运输',
+              id: "1002000200030000"
             },
             {
               value: '04',
-              label: '国际道路运输'
+              label: '国际道路运输',
+              id: "1002000200040000"
             },
             {
               value: '05',
-              label: '道路运输站（场）'
+              label: '道路运输站（场）',
+              id: "1002000200050000"
             },
             {
               value: '06',
-              label: '机动车维修'
+              label: '机动车维修',
+              id: "1002000200060000"
             },
             {
               value: '07',
-              label: '驾驶员培训'
+              label: '驾驶员培训',
+              id: "1002000200070000"
             },
             {
               value: '08',
-              label: '道路运输从业人员'
+              label: '道路运输从业人员',
+              id: "1002000200080000"
             },
             {
               value: '09',
-              label: '城市公交'
+              label: '城市公交',
+              id: "1002000200090000"
             },
             {
               value: '010',
-              label: '城市轨道交通'
+              label: '城市轨道交通',
+              id: "1002000200100000"
             },
             {
               value: '011',
-              label: '出租汽车'
+              label: '出租汽车',
+              id: "1002000200110000"
             },
             {
               value: '012',
-              label: '汽车租赁'
+              label: '汽车租赁',
+              id: "1002000200120000"
             },
           ]
         },
         {
           value: '1',
           label: '公路路政',
+          cateId: "1002000100000000",
           children: [
             {
               value: '11',
-              label: '公路管理'
+              label: '公路管理',
+              id: "1002000100010000"
             },
             {
               value: '12',
-              label: '超载超限'
+              label: '超载超限',
+              id: "1002000100020000"
             },
             {
               value: '13',
-              label: '收费公路'
+              label: '收费公路',
+              id: "1002000100030000"
             },
           ]
         },
         {
           value: '2',
           label: '水路运政',
+          cateId: "1002000300000000",
+          children: []
         },
         {
           value: '3',
           label: '港口行政',
+          cateId: "1002000500000000",
           children: [
             {
               value: '31',
@@ -331,20 +369,26 @@ export default {
         {
           value: '4',
           label: '航道行政',
+          cateId: "1002000400000000",
+          children: []
         },
         {
           value: '5',
           label: '海事行政',
+          cateId: "1002000700000000",
+          children: []
         },
         {
           value: '6',
           label: '工程质量监督',
+          children: []
         },
       ],
       waitDeal: '0',
       unRecord: '0',
       waitArchive: '0',
       approveIng: '0',
+      lawCateList: []
     };
   },
   methods: {
@@ -368,8 +412,24 @@ export default {
       }
       console.log('点击', this.tableData)
     },
-    clickCase() {
-
+    clickCase(row) {
+      console.log('未立案flag', this.moreFlag)
+      if (this.moreFlag == 'unRecordCase') {
+        console.log(row);
+        if (row.caseStatus == '已移送') {
+          let message = '该案件正在移送中，移送完成后才可与继续办理'
+          this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
+        } else {
+          this.$store.commit("setCaseId", row.id);
+          //设置案件状态不为审批中
+          this.$store.commit("setCaseApproval", false);
+          this.$router.replace({
+            name: "establish"
+          });
+          let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+          this.$store.commit("setCaseNumber", setCaseNumber);
+        }
+      }
     },
     //获取机构下数据
     getCaseList2(searchData) {
@@ -380,6 +440,14 @@ export default {
       data.current = this.currentPage;
       data.size = this.pageSize;
       this.getCaseList(data)
+      this.tableData.forEach(element => {
+        let nd = 1000 * 24 * 60 * 60;
+        let endTime = element.closeDate || new Date()
+        element.caseDealTime = endTime - new Date(element.acceptTime);
+        let day = element.caseDealTime / nd;
+        day = Math.floor(day)
+        console.log(day, '天', endTime, element.acceptTime, element.caseDealTime)
+      });
     },
 
     // 信息查验
@@ -389,6 +457,7 @@ export default {
     // 查看更多
     router(path) {
       this.$router.push({ path: '/myCase/' + path });
+
     },
     // 立案登记
     caseRecord(data) {
@@ -398,10 +467,12 @@ export default {
     },
     // 查看更多违法行为
     caseRecordMore() {
+      this.table = true
       console.log()
       let lawCate = {
         cateId: '',
         cateName: this.caseForm.wayType,
+        hyTypeId: this.caseForm.commenCase,
       };
       this.$refs.chooseillegalActRef.showModal(lawCate);
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
@@ -421,8 +492,17 @@ export default {
       var data = {
         size: 5,
         current: 1,
-        // categoryId: this.caseForm.programType,
+        hyTypeId: this.caseForm.commenCase,
         // strNumber: this.caseForm.wayType,
+      }
+      if(this.caseForm.wayType=='水路运政'){
+        data.categoryId=1002000300000000
+      }
+      if(this.caseForm.wayType=='公路路政'){
+        data.categoryId=1002000100000000
+      }
+      if(this.caseForm.wayType=='道路运政'){
+        data.categoryId=1002000200000000
       }
       this.$store.dispatch("getIllegaAct", data).then(
         res => {
@@ -435,10 +515,27 @@ export default {
         }
       );
     },
+    // 
+    changeCommonOptions() {
+      this.caseForm.commenCase=''
+      console.log(this.caseForm.wayType)
+      this.options.forEach(element => {
+        console.log(element.label)
+        if (this.caseForm.wayType == element.label) {
+          this.commonOptions = element.children
+          console.log('this.commonOptions', this.commonOptions)
+        }
+      });
+      this.getIllegaAct()
+    },
     //设置违法行为
     setIllegaAct(val) {
       // this.caseRegisterForm.illageAct = val.strContent;
       // this.illageActId = val.id;
+    },
+    // 查看更多违法行为
+    checkMoreIllega() {
+
     },
     // 获取带办理条数
     getTotal(flag) {
@@ -468,21 +565,51 @@ export default {
           console.log(err);
         }
       );
-    }
+    },
+    //获取业务领域
+    getEnforceLawType() {
+      let _this = this
+      this.$store.dispatch("getEnforceLawType", "1").then(
+        res => {
+          _this.lawCateList = res.data;
+          console.log('列表121', _this.lawCateList)
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
 
   },
   mounted() {
     // let data = {};
-    let searchData = {
-      flag: 0
+    let role = iLocalStroage.gets("userInfo").roles[0].name
+    if (role.indexOf("负责人") != -1) {
+      console.log('yes')
+      this.activeName = 'fourth';
+      let searchData = {
+        flag: 3
+      }
+      this.moreFlag = 'approveIng';
+      this.getCaseList2(searchData);
+    } else {
+      let searchData = {
+        flag: 0
+      }
+      this.getCaseList2(searchData);
     }
-    this.getCaseList2(searchData);
     this.getIllegaAct();
     // 获取带办理条数
     this.getTotal('0');
     this.getTotal('1');
     this.getTotal('2');
     this.getTotal('3');
+    console.log('userinfo', iLocalStroage.gets("userInfo").roles[0].name)
+
+    this.changeCommonOptions()
+    //获取业务领域
+    this.getEnforceLawType()
+
   }
 };
 </script>
@@ -569,20 +696,7 @@ export default {
   padding: 17px 20px 15px 20px;
   text-align: center;
 }
-ul {
-  height: calc(15% - 20px);
-}
-li {
-  width: 100%;
-  height: 100%;
-  line-height: 14px;
-  color: #606060;
-  font-size: 14px;
-  font-weight: 400;
-  overflow: hidden; /*溢出隐藏*/
-  white-space: nowrap; /*规定文本不进行换行*/
-  text-overflow: ellipsis; /*当对象内文本溢出时显示省略标记（...）*/
-}
+
 .bull {
   margin: 0 5px;
 }
@@ -632,15 +746,8 @@ img {
   height: 470px;
   padding: 0px 20px 15px 20px;
 }
-.wfxwList {
-  height: auto;
-  margin-bottom: 20px;
-}
-.wfxwList li {
-  line-height: 33px;
-  height: 33px;
-}
 </style>
 <style lang="scss">
 @import "@/assets/css/caseHandle/caseHome.scss";
 </style>
+

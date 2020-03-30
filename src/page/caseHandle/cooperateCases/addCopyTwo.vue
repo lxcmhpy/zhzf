@@ -21,7 +21,7 @@
         <el-form-item label="目标机构" class="is-required">
           <el-row :gutter="20">
             <el-col :span="5">
-              <el-form-item prop="organType" @change="queryState">
+              <el-form-item prop="organType">
                 <el-select v-model="caseData.organType" placeholder="机构类型">
                   <el-option label="执法机构" value="执法机构"></el-option>
                   <el-option label="公安机关" value="公安机关"></el-option>
@@ -43,11 +43,13 @@
         <el-form-item label="附件">
           <!-- appendix -->
           <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadPaymentVoucher" :show-file-list="false">
-            <el-button size="small" type="primary">点击上传</el-button>
-            <ul>
-              <li v-for="item in alreadyLoadPayEvidence" :key="item.id">{{item.fileName}}</li>
-            </ul>
+            <el-button size="small" type="primary">选取文件</el-button>
           </el-upload>
+          <ul>
+            <li v-for="item in fileListArr" :key="item.id">{{item.fileName}}
+              <span ><i @click="deleteFile(item)" class="el-icon-circle-close"></i></span>
+            </li>
+          </ul>
         </el-form-item>
         <el-form-item label="备注">
           <el-input type="textarea" v-model="caseData.notes"></el-input>
@@ -57,13 +59,32 @@
         </center>
       </el-form>
     </div>
-
+    <el-dialog title="提示" :visible.sync="visible" @close="visible = false" :close-on-click-modal="false" width="420px">
+      <div>
+        <el-row>
+          <el-col :span="2">
+            <!-- <i class="el-icon-question" style="color:red;"></i> -->
+            <img src="../../../../static/images/img/tip_wenhao.png" alt="" style="margin-top:5px">
+          </el-col>
+          <el-col :span="22">
+            <p style="line-height:28px">
+              提交成功后，案件将抄告至目标机构。<br />
+              是否确认提交?
+            </p>
+          </el-col>
+        </el-row>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="goSubmit('caseData')">确认</el-button>
+        <el-button @click="visible = false">取消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { addEditCopyCaseApi} from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
-import { uploadEvApi, findFileByIdApi } from "@/api/upload";
+import { uploadEvApi, findFileByIdApi ,deleteFileByIdApi ,getFile } from "@/api/upload";
 export default {
   data() {
     return {
@@ -71,6 +92,7 @@ export default {
         person: '',
         caseNumber: '',
         caseCauseName: '',
+        organSend: '',
         organType: '',
         organMb: '',
         appendix: '',
@@ -80,11 +102,8 @@ export default {
         state: '',
         createTime: new Date()
       },
-      files: [],
-      fileOptions: [],
-      uploadFileList: [],
-      alreadyLoadPayEvidence: [], //已上传的附件
-      fileList: [],
+      fileListArr: [], //已上传的附件
+      visible: false,
       rules: {
         organType: [
           { required: true, message: '请选择机构类型', trigger: 'blur' }
@@ -93,7 +112,7 @@ export default {
           { required: true, message: '请输入目标机构', trigger: 'blur' }
         ],
         copyReason: [
-          { required: true, message: '请选择抄告原因', trigger: 'blur' }
+          { required: true,max: 10, message: '请选择抄告原因,且最多10个汉字', trigger: 'blur' }
         ]
       }
     };
@@ -105,21 +124,26 @@ export default {
         name: "addCopyOne",
       });
     },
-    submitForm(formName) {
+    goSubmit(formName) {
       let appendixList= []
-      this.alreadyLoadPayEvidence.forEach(element => {
+      this.fileListArr.forEach(element => {
         appendixList.push(element.fileName)
       });
       this.caseData.appendix=appendixList.join(',')
+      if(this.caseData.organType == "执法机构"){
+        this.caseData.state = "1";
+      }else{
+        this.caseData.state = "2";
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.caseData)
+          console.log("添加",this.caseData)
           addEditCopyCaseApi(this.caseData).then(res => {
             console.log(res);
             if (res.code == 200) {
               this.$store.dispatch("deleteTabs", this.$route.name);
               this.$router.replace({
-                name: "copyCase",
+                name: "copyCase"
               });
             }
           }, err => {
@@ -134,31 +158,33 @@ export default {
         }
       });
     },
+    submitForm(formName) {
+     this.visible = true;
+     console.log("弹窗",this.visible)
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    queryState(val){
-      if(val == "执法机构"){
-        caseData.state = 1;
-      }else{
-        caseData.state = 2;
-      }
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
-    },
     //上传附件
     uploadPaymentVoucher(param) {
-      console.log(param);
+      const isLt2M = param.file.size / 1024 / 1024 < 10     //这里做文件大小限制
+      if(this.fileListArr.length >=3){
+        this.$message.warning('最多选择3个文件！');
+        return;
+      }
+      if(!isLt2M) {
+        this.$message({
+          message: '上传文件大小不能超过 10MB!',
+          type: 'warning'
+        });
+        return;
+      }
+      for(let i=0; i<this.fileListArr.length; i++){
+        if(param.file.name == this.fileListArr[i].fileName){
+          this.$message.warning('不能上传同一个文件');
+          return;
+        }
+      }
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append('caseId', this.caseData.caseId)
@@ -166,46 +192,70 @@ export default {
       uploadEvApi(fd).then(
         res => {
           console.log(res);
-          this.findPaymentVoucher(res.data, true);
+          this.findFileList(res.data, true);
         },
         error => {
           console.log(error)
         }
       );
     },
-     //通过附件id 查询附件file
-    findPaymentVoucher(id, isAdd) {
-      findFileByIdApi(id).then(
+    //删除附件
+    deleteFile(data){
+      console.log('删除',data);
+      deleteFileByIdApi(data.storageId).then(res=>{
+        console.log(res);
+        this.findFileList();
+      },err=>{
+         console.log(err)
+      })
+    },
+    //  //通过附件id 查询附件file
+    // findPaymentVoucher(id, isAdd) {
+    //   findFileByIdApi(id).then(
+    //     res => {
+    //       console.log(res);
+    //       this.fileListArr.push(res.data);
+    //     },
+    //     error => {
+    //       console.log(error)
+    //     }
+    //   );
+    // }
+     //通过案件ID和文书ID查询附件
+    findFileList(){
+      let data =  {
+        caseId: this.caseData.caseId,
+        docId :"2c9029e16c753a19016c755fe1340001"
+      }
+      console.log(data);
+      getFile(data).then(
         res => {
-          console.log(res);
-          this.alreadyLoadPayEvidence.push(res.data);
+          console.log("附件列表",res);
+          this.fileListArr = res.data;
+
         },
         error => {
-          console.log(error)
+          console.log(error);
         }
-      );
-    }
+      )
+    },
   },
   mounted() {
     console.log('选择的案件', this.$route.params)
     let datas = this.$route.params.caseData;
     let caseData = this.caseData;
-    console.log('数据', datas)
+    console.log('用户信息', iLocalStroage.gets("userInfo"))
     for (var key in caseData) {
+      if(key != 'state')
       this.caseData[key] = datas[key]
     }
     this.caseData.caseId = this.$route.params.caseData.id
     this.caseData.person = iLocalStroage.gets("userInfo").username
-    // this.caseData.caseNumber = this.$route.params.caseData.caseNumber
-    // this.caseData.caseCauseName = this.$route.params.caseData.caseCauseName
-    // this.caseData.caseId = this.$route.params.caseData.id
-    // this.caseData.createTime = this.$route.params.caseData.createTime
-    // this.caseData.acceptTime = this.$route.params.caseData.acceptTime
-    // this.caseData.caseStatus = this.$route.params.caseData.caseStatus
-    // this.caseData.vehicleShipId = this.$route.params.caseData.vehicleShipId
-    // this.caseData.wfxw = this.$route.params.caseData.caseCauseName
-    // 
+    this.caseData.organSend = iLocalStroage.gets("userInfo").organName
     console.log('表单', this.caseData)
+  },
+  created(){
+    this.findFileList();
   }
 }
 </script>
