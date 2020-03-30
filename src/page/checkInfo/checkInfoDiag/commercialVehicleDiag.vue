@@ -16,37 +16,37 @@
                 <tr>
                     <td class="tg-title" colspan="2" style="width:225px;">车辆号码</td>
                     <td class="tg-0pky" colspan="2" style="width:225px;">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2" style="width:225px;">车辆颜色代码</td>
                     <td class="tg-0pky" colspan="2" style="width:225px;">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text" readonly="readonly"></el-input>
                     </td>
                 </tr>
                <tr>
                     <td class="tg-title" colspan="2">道路运输证字</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">道路运输证号</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                 <tr>
                     <td class="tg-title" colspan="2">车辆类型代码</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">车辆状况（车辆营运状态）</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text" readonly="readonly"></el-input>
                     </td>
                 </tr>
                 <tr>
                     <td class="tg-title" colspan="2">经营范围</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-0pky" colspan="2">  </td>
                     <td class="tg-0pky" colspan="2"></td>
@@ -54,55 +54,55 @@
                  <tr>
                     <td class="tg-title" colspan="2">车辆识别VIN码</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text" readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">车辆燃料类型</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text" readonly="readonly"></el-input>
                     </td>
                 </tr>
                  <tr>
                     <td class="tg-title" colspan="2">发证机构</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">车籍地行政区域代码</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                  <tr>
                     <td class="tg-title" colspan="2">车辆核定载客位</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">总质量</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                 <tr>
                     <td class="tg-title" style="width:110px;">车辆车长</td>
                     <td class="tg-0pky" colspan="2" style="width:220px;">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" style="width:110px;">车辆车宽</td>
                     <td class="tg-0pky" style="width:110px;">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                      <td class="tg-title" colspan="2" style="width:220px;">车辆车高</td>
                     <td class="tg-0pky" style="width:110px;">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                  <tr>
                     <td class="tg-title" colspan="2">有效期起</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">有效期止</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                  <tr>
@@ -111,77 +111,77 @@
                 <tr>
                     <td class="tg-title" colspan="2">业户信息ID</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">省级行政区划代码</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                 <tr>
                     <td class="tg-title" colspan="2">经营许可证字</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">经营许可证号</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                 <tr>
                     <td class="tg-title" colspan="2">有效期起</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">有效期止</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                 <tr>
                     <td class="tg-title" colspan="2">经营状态</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">经营业户名称</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                  <tr>
                     <td class="tg-title" colspan="2">企业组织机构代码</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">经营业户所在地行政区划代码</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                  <tr>
                     <td class="tg-title" colspan="2">负责人姓名</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">经营类型</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                  <tr>
                     <td class="tg-title" colspan="2">发证机关</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-title" colspan="2">核发日期</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                 </tr>
                 <tr>
                     <td class="tg-title" colspan="2">经营范围</td>
                     <td class="tg-0pky" colspan="2">
-                      <el-input type="text" v-model="jyyhForm.OrganizationCode" readonly="readonly"></el-input>
+                      <el-input type="text"  readonly="readonly"></el-input>
                     </td>
                     <td class="tg-0pky" colspan="2"></td>
                     <td class="tg-0pky" colspan="2"></td>
