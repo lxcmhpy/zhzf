@@ -430,7 +430,6 @@ export const mixinGetCaseApiList = {
       );
     },
     async printContent() {
-      // this.showTextArea=false;
       this.replaceTextArea();
       htmlExportPDF(this.formOrDocData.pageDomId, this.uploadFile)
     },
