@@ -650,7 +650,7 @@ export default {
             }
             item.select = !item.select;
             if (item.select) {
-                this.allSearchList.push(item);
+
                 if (this.curWindow) {
                     this.curWindow.visible = false;
                 }
@@ -663,18 +663,19 @@ export default {
                         size: 0,
                         type: item.code
                     }
+                this.allSearchList.push(data);
                 this.getZfjgLawSupervise(data, this.category);
             } else {
                 let _this = this;
                 let _index =  _.findIndex(this.allSearchList, function (chr) {
-                    return chr.code === item.code
+                    return chr.type === item.code
                 })
                 this.allSearchList.splice(_index,1);
                 this.markers.splice(0, this.markers.length);
                 this.windows.splice(0, this.windows.length);
                 debugger;
                 this.allSearchList.forEach((v,i)=>{
-                    _this.getZfjgLawSupervise(v, v.code);
+                    _this.getZfjgLawSupervise(v, v.type);
                 })
             }
         },
@@ -710,7 +711,7 @@ export default {
                             _this.errorMsg('暂无数据', 'error');
                             // return
                         } else {
-                            _this.errorMsg(`总计${res.data.records.length}条数据`, 'success');
+                            _this.errorMsg(`查询到${res.data.records.length}条数据`, 'success');
                         }
                         res.data.records.forEach((item,i)=>{
                             let position = item.position.split(',');
