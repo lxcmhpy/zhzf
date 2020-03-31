@@ -1,14 +1,13 @@
 <template>
-  <div class="print_box" id='btnB'>
+  <div class="print_box" id="caseInvest-print" style="width:790px; margin:0 auto;">
     <div class="print_info" id="deliverCertificate-print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
         <div class="doc_topic">送达回证</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
-        <p>案由：
-          <el-form-item prop="caseName" style="width:500px">
-            <el-input type='textarea' v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled></el-input>
+        <div>案由:<el-form-item prop="caseName" style="width:585px">
+            <el-input type="textarea" v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled style="height:36px;"></el-input>
           </el-form-item>
-        </p>
+        </div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td>
@@ -43,33 +42,24 @@
 
             </td>
           </tr>
-        </table>
-        <div @click="handleAdd">
-         <table class="evidencetable" border="1" bordercolor="black" width="100%" cellspacing="0">
-            <tr>
+          <tr>
               <td width="20%">送达文书<br>名称,文号</td>
               <td width="20%">收件人姓名<br>(盖章)</td>
               <td width="20%">送达地点</td>
               <td width="20%">送达日期</td>
               <td width="10%">送达方式</td>
               <td width="10%">送达人</td>
+          </tr>
+            <tr @click="handleAdd" v-for="(item,index) in docData.deliveryCertificatelist" :key="index" >
+              <td>{{item.docName ? item.docName : ''}}</td>
+              <td>{{item.receiver ? item.receiver : ''}}</td>
+              <td>{{item.address ? item.address : ''}}</td>
+              <td>{{item.servedDate ? item.servedDate : ''}}</td>
+              <td>{{item.servedType ? item.servedType : ''}}</td>
+              <td>{{item.deliveryMaster ? item.deliveryMaster : ''}}</td>
             </tr>
-            <tr v-for="(item,index) in docData.deliveryCertificatelist" :key="index">
-              <td>{{item.docName}}</td>
-              <td></td>
-              <td>{{item.address}}</td>
-              <td>{{item.servedDate}}</td>
-              <td>{{item.servedType}}</td>
-              <td>{{item.deliveryMaster}}</td>
-            </tr>
-         </table>
-        </div>
-
-        
-
-        <div>
-         <table border="1" bordercolor="black" width="100%" cellspacing="0">
-          <tr>
+         
+            <tr>
             <td colspan="6">
               <div class="pdf_seal">
                 <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
@@ -88,11 +78,12 @@
               </el-form-item>
             </td>
           </tr>
-        </table>
-        </div>
-        <el-form-item  prop="docLength" style="visibility:hidden">
+          <el-form-item  prop="docLength" style="visibility:hidden">
           <el-input v-model="docData.docLength"></el-input>
         </el-form-item>
+        </table>
+       
+        
       </el-form>
     </div>
 
@@ -166,13 +157,13 @@
         </div>
       </div>
     </el-dialog>
-    <casePageFloatBtns :pageDomId="'deliverCertificate-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData('docForm')" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'deliverCertificate-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> 
+    
   </div>
 </template>
 <script>
-import overflowInput from "../pdf/overflowInput";
+
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
@@ -330,10 +321,10 @@ export default {
       this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
     },
     // 获取多行编辑内容
-    getOverFloeEditInfo(edit) {
-      console.log('回显', edit)
-      this.docData.illegalFactsEvidence = edit;
-    },
+    // getOverFloeEditInfo(edit) {
+    //   console.log('回显', edit)
+    //   this.docData.illegalFactsEvidence = edit;
+    // },
     //提交
     submitData(handleType) {
        debugger
@@ -342,16 +333,10 @@ export default {
         name: this.$route.params.url
       });
     },
-
-    //保存文书信息
-    saveData(docForm) {
+  // 提交文书表单
+    saveData(handleType, docForm) {
       debugger
-      console.log('送达回证保存数据',this.docData)
-      this.$refs[docForm].validate(valid => {
-        debugger
-        console.log('送达回证保存数据',this.docData)
-        if (valid) {
-          let data = {
+      let data = {
             caseId: this.caseId, //流程里的案件id
             caseNumber: this.docData.caseNumber,
             caseName: this.docData.caseName,
@@ -362,31 +347,104 @@ export default {
             collector: this.docData.recivePersonInstead,
             deliveryCertificatelist: this.docData.deliveryCertificatelist,//送达文书列表
             docNote: this.docData.docNote//备注
-          };
-          console.log('添加', data)
-          let _this = this
-          debugger
-          this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(res => {
-            if (res.code == 200) {
-              console.log('添加成功！')
-              _this.$message({
-                message: '添加成功！',
-                type: 'success'
-              });
-              _this.$store.dispatch("deleteTabs", _this.$route.name); //关闭当前页签
-              _this.$store.dispatch("printContent"); //关闭当前页签
-              _this.$router.push('deliverReceiptForm')
-            } else {
-              _this.$message.error('出现异常，添加失败！');
-            }
-          });
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
+      };
+      if (handleType==1) {
+         debugger
+        this.$refs['docForm'].validate((valid, noPass) => {
+           debugger
+          if (valid) {
+             debugger
+            this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(
+              res => {
+                 debugger
+                this.$message({
+                  type: "success",
+                  message: "提交成功"
+                });
+                this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+                // this.$router.push('deliverReceiptForm')
+                //提交成功后提交pdf到服务器，后打开pdf
+                this.printContent();
+              },
+              err => {
+                console.log(err);
+              }
+            );
+          } else {
+             debugger
+            // noPass[Object.keys(v)[0]]
+            let a = Object.values(noPass)[0];
+            console.log(a);
+            this.$message({
+              showClose: true,
+              message: a[0].message,
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+            });
+            return false;
+          }
 
+        });
+      } else {
+        debugger
+        this.$store.dispatch("saveOrUpdateDeliverReceipt",data).then(
+          res => {
+            debugger
+            console.log("暂存文书", res);
+            this.$message({
+              type: "success",
+              message: "暂存成功"
+            });
+            // this.reload();
+          },
+          err => {
+            console.log(err);
+          }
+        );
+      }
     },
+
+    //保存文书信息
+    // saveData(handleType) {
+    //   this.$refs['docForm'].validate(valid => {
+    //     if (valid) {
+    //       let data = {
+    //         caseId: this.caseId, //流程里的案件id
+    //         caseNumber: this.docData.caseNumber,
+    //         caseName: this.docData.caseName,
+    //         servedOrg: this.docData.servedOrg,//送达单位
+    //         // recivePerson: this.docData.recivePerson,//受送达人
+    //         server: this.docData.recivePerson,
+    //         // recivePersonInstead: this.docData.recivePersonInstead,//代收人
+    //         collector: this.docData.recivePersonInstead,
+    //         deliveryCertificatelist: this.docData.deliveryCertificatelist,//送达文书列表
+    //         docNote: this.docData.docNote//备注
+    //       };
+    //       console.log('添加', data)
+    //       let _this = this
+    //       debugger
+    //       this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(res => {
+    //         if (res.code == 200) {
+    //           console.log('添加成功！')
+    //           _this.$message({
+    //             message: '添加成功！',
+    //             type: 'success'
+    //           });
+    //           _this.$store.dispatch("deleteTabs", _this.$route.name); //关闭当前页签
+    //           _this.$store.dispatch("printContent"); //关闭当前页签
+    //           _this.$router.push('deliverReceiptForm')
+    //         } else {
+    //           _this.$message.error('出现异常，添加失败！');
+    //         }
+    //       });
+    //     } else {
+    //       console.log('error submit!!');
+    //       return false;
+    //     }
+    //   });
+
+    // },
     //是否是完成状态
     isOverStatus() {
       if (this.$route.params.docStatus == '1') {
@@ -436,14 +494,23 @@ export default {
         }
     
     },
+    getDataAfter() {
+      debugger
+      console.log(this.docData.deliveryCertificatelist);
+      if (!this.docData.deliveryCertificatelist.length) {
+        this.docData.deliveryCertificatelist = [{ docName: '', receiver: '', address: '', servedDate: '', servedType: '', deliveryMaster: '' }]
+      }
+    }
   },
 
   mounted() {
     this.getDocDataByCaseIdAndDocId();
+    this.getDataAfter();
     // this.getCaseBasicInfo();
   },
   created() {
     this.isOverStatus();
+   
   }
 }
 </script>
@@ -451,7 +518,7 @@ export default {
 @import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>
 <style scoped>
-.print_box .print_info .evidencetable tr td{
+.print_box .print_info tr td{
   white-space: inherit;
 }
 .color_DBE4EF
