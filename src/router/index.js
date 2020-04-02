@@ -67,15 +67,18 @@ function routerGo(to, next) {
 function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，转换为组件对象
   const accessedRouters = asyncRouterMap.filter(route => {
    // if (route.component) {
-
-      if (route.component == '' ) {//Layout组件特殊处理
+      // debugger
+      if(route.type == 1 || route.path == '' && route.type!= -1){
+        return;
+      }
+      if (!route.component) {//Layout组件特殊处理
         route.component = Layout
       }else if(route.component == 'Main'){
         route.component = MainContent;
-      }
-      else {
+      }else {
+        console.log('route.component',route.component);
         route.meta ={ title:route.title ,permTypes:route.permTypes ? route.permTypes : ''};
-        route.component = loadView(route.component)
+        route.component = loadView(route.component);
       }
     //}
     if(route.type== -1){

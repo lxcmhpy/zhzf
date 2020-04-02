@@ -10,7 +10,6 @@ import {
     getAllMenuListApi, getTreePermissionApi, addPermissionApi, deletePermissionApi,
     getDictListApi, getDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
-
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi } from "@/api/caseDeploy";
@@ -60,7 +59,7 @@ const system = {
                     .then(
                         response => {
                                 console.log("loginIn response", response);
-                                commit(types.SET_AUTHTOKEN, response.data); //token
+                                commit(types.SET_AUTHTOKEN, response.access_token); //token
                                 resolve(response);
                         },
                         error => {
