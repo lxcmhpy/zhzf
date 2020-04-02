@@ -30,7 +30,7 @@
               </tr>
               <tr>
                 <td class="tg-y93n">证书有效期开始日期</td>
-                <td class="tg-cly1"></td>
+                <td class="tg-cly1">{{crewCertificatesForm.ISSU_DATE}}</td>
                 <td class="tg-y93n">证书有效期截止日期</td>
                 <td class="tg-cly1">{{crewCertificatesForm.EXPIRY_DATE}}</td>
               </tr>
@@ -53,6 +53,7 @@ export default {
       crewCertificatesForm: {
       },
       dialogTitle: "",
+      rules:[]
     };
   },
   methods: {

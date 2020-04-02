@@ -52,6 +52,7 @@ export function findFileByIdApi(id) {
 }
 // 上传2020-2-25 上传-
 export function uploadEvdence(data) {
+    console.log(data);
     return  request({
         url:  "/sys/file/uploadEvdence",
         method:  "POST",

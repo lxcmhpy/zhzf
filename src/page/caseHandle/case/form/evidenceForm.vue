@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="tablePartF">
-        <el-table :data="tableData" stripe height="100%">
+        <el-table :data="tableData" stripe height="100%" @row-click="evidenceDetail">
           <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
           <el-table-column prop="evName" label="证据名称" align="center"></el-table-column>
           <el-table-column prop="evType" label="证据类型" align="center"></el-table-column>
@@ -51,6 +51,7 @@
                 :inactive-value="1"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
+                @change="updateEviBySwitch(scope.row)"
               ></el-switch>
             </template>
           </el-table-column>
@@ -64,7 +65,7 @@
               <el-button
                 type="text"
                 icon="el-icon-edit"
-                @click="handleEdit(scope.$index, scope.row)"
+                @click.stop="handleEdit(scope.$index, scope.row)"
               >编辑</el-button>
             </template>
           </el-table-column>
@@ -128,15 +129,16 @@
             <el-form-item label="记 录 人" prop="userName" label-width="113px">
               <el-input v-model="form.userName" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="记录时间" prop="createTime" label-width="113px">
+            <el-form-item label="记录时间" prop="recordTime" label-width="113px">
               <el-date-picker
-                v-model="form.createTime"
+                v-model="form.recordTime"
                 type="datetime"
+                format="yyyy-MM-dd"
                 placeholder="选择日期时间"
                 style="width: 100%"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="取证地点" prop="recordPlace" label-width="113px">
+            <el-form-item label="相关地点" prop="recordPlace" label-width="113px">
               <el-input v-model="form.recordPlace" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="状  态" prop="status" label-width="113px">
@@ -193,15 +195,16 @@
             <el-form-item label="记 录 人" prop="userName" label-width="113px">
               <el-input v-model="uForm.userName" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="记录时间" prop="createTime" label-width="113px">
+            <el-form-item label="记录时间" prop="recordTime" label-width="113px">
               <el-date-picker
-                v-model="uForm.createTime"
+                v-model="uForm.recordTime"
                 type="datetime"
+                format="yyyy-MM-dd"
                 placeholder="选择日期时间"
                 style="width: 100%"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="取证地点" prop="recordPlace" label-width="113px">
+            <el-form-item label="相关地点" prop="recordPlace" label-width="113px">
               <el-input v-model="uForm.recordPlace" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="状  态" prop="status" label-width="113px">
@@ -303,18 +306,18 @@ export default {
             validator: isSelect
           }
         ],
-        evName: [
-          { required: true, message: "证据名称不能为空", trigger: "blur" }
-        ],
-        userName: [
-          { required: true, message: "记录人不能为空", trigger: "blur" }
-        ],
-        createTime: [
-          { required: true, message: "记录时间不能为空", trigger: "blur" }
-        ],
-        recordPlace: [
-          { required: true, message: "取证地点不能为空", trigger: "blur" }
-        ],
+        // evName: [
+        //   { required: true, message: "证据名称不能为空", trigger: "blur" }
+        // ],
+        // userName: [
+        //   { required: true, message: "记录人不能为空", trigger: "blur" }
+        // ],
+        // recordTime: [
+        //   { required: true, message: "记录时间不能为空", trigger: "blur" }
+        // ],
+        // recordPlace: [
+        //   { required: true, message: "取证地点不能为空", trigger: "blur" }
+        // ],
         status: [{ required: true, message: "状态不能为空", trigger: "blur" }]
       }
     };
@@ -346,6 +349,9 @@ export default {
       this.$confirm("确认关闭？")
         .then(_ => {
           done();
+          this.$nextTick(() => {
+          this.$refs['form'].resetFields()
+      })
         })
         .catch(_ => {});
     },
@@ -363,10 +369,10 @@ export default {
         evPath: item.evPath,
         evType: item.evType,
         userName: item.userName,
-        createTime: item.createTime,
+        recordTime: item.recordTime,
         recordPlace: item.recordPlace,
         status: item.status,
-        note: item.note
+        note: item.note,
       };
       this.editVisible = true;
     },
@@ -408,8 +414,11 @@ export default {
       fd.append("evName", this.form.evName);
       fd.append("evType", this.form.evType);
       fd.append("status", this.form.status);
-      fd.append("remark", this.form.remark);
+      fd.append("note", this.form.note);
       fd.append("fileId", this.form.fileId);
+      fd.append("userName", this.form.userName);
+      fd.append("recordPlace", this.form.recordPlace);
+      fd.append("recordTime", this.uForm.recordTime);
       // fd.append("id", this.form.id);
       let _this = this;
       // this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
@@ -428,6 +437,35 @@ export default {
         }
       });
     },
+    //通过switch开关修改状态
+    updateEviBySwitch(row){
+      console.log("data",row);
+      let data = {
+        id: row.id,
+        caseId: row.caseId,
+        evName: row.evName,
+        evType: row.evType,
+        userName: row.userName,
+        recordTime: row.recordTime,
+        recordPlace: row.recordPlace,
+        status: row.status,
+        note: row.note
+      };
+      let _this = this;
+      this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
+        if (res.code == 200) {
+          _this.$message({
+            message: "编辑成功！",
+            type: "success"
+          });
+          _this.editVisible = false;
+          _this.currentPage = 1;
+          _this.getEviList();
+        } else {
+          _this.$message.error("出现异常，添加失败！");
+        }
+      });
+    },
     //修改证据
     updateEvi() {
       let data = {
@@ -436,7 +474,7 @@ export default {
         evName: this.uForm.evName,
         evType: this.uForm.evType,
         userName: this.uForm.userName,
-        createTime: this.formatDateStr(this.uForm.createTime),
+        recordTime: this.uForm.recordTime,
         recordPlace: this.uForm.recordPlace,
         status: this.uForm.status,
         note: this.uForm.note
@@ -493,17 +531,18 @@ export default {
           : date.getMonth() + 1 + "-";
       let D =
         date.getDate() < 10 ? "0" + date.getDate() + " " : date.getDate() + " ";
-      let h =
-        date.getHours() < 10
-          ? "0" + date.getHours() + ":"
-          : date.getHours() + ":";
-      let m =
-        date.getMinutes() < 10
-          ? "0" + date.getMinutes() + ":"
-          : date.getMinutes() + ":";
-      let s =
-        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-      return Y + M + D + h + m + s;
+      // let h =
+      //   date.getHours() < 10
+      //     ? "0" + date.getHours() + ":"
+      //     : date.getHours() + ":";
+      // let m =
+      //   date.getMinutes() < 10
+      //     ? "0" + date.getMinutes() + ":"
+      //     : date.getMinutes() + ":";
+      // let s =
+      //   date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+      // return Y + M + D + h + m + s;
+      return Y + M + D;
     },
     //鼠标hover证据目录后 显示证据目录
     showEvidenceCatalogue() {

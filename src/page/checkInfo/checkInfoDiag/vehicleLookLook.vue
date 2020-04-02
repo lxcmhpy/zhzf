@@ -1,3 +1,5 @@
+
+
 <template>
   <el-dialog
     :title="dialogTitle"
@@ -36,31 +38,31 @@
               </tr>
               <tr>
                 <td class="tg-n6x5">有效起始日期</td>
-                <td class="tg-cly1">{{vehicleForm.ValidDate}}</td>
+                <td class="tg-cly1">{{vehicleForm.LineValidBegin}}</td>
                 <td class="tg-n6x5">有效截止日期</td>
-                <td class="tg-cly1">{{vehicleForm.ExpireDate}}</td>
+                <td class="tg-cly1">{{vehicleForm.LineValidEnd}}</td>
               </tr>
               <tr>
                 <td class="tg-n6x5">线路名称</td>
                 <td class="tg-cly1">{{vehicleForm.OperLineName}}</td>
                 <td class="tg-n6x5">客运班线类型</td>
-                <td class="tg-cly1"></td>
+                <td class="tg-cly1">{{vehicleForm.LineOpTypeCode}}</td>
               </tr>
               <tr>
                 <td class="tg-n6x5">始发客运站行政区划（转汉字）</td>
-                <td class="tg-cly1"></td>
+                <td class="tg-cly1">{{vehicleForm.StartStationZone}</td>
                 <td class="tg-n6x5">始发客运站</td>
                 <td class="tg-cly1">{{vehicleForm.StartStation}}</td>
               </tr>
               <tr>
                 <td class="tg-n6x5">讫点客运站行政区划（转汉字）</td>
-                <td class="tg-cly1"></td>
+                <td class="tg-cly1">{{vehicleForm.EndStationZone}</td>
                 <td class="tg-n6x5">讫点客运站</td>
                 <td class="tg-cly1">{{vehicleForm.EndStation}}</td>
               </tr>
               <tr>
                 <td class="tg-n6x5">主要途径站点</td>
-                <td class="tg-cly1"></td>
+                <td class="tg-cly1">{{vehicleForm.LineTransPlace}}</td>
                 <td class="tg-n6x5">省级行政区划代码</td>
                 <td class="tg-cly1">{{vehicleForm.ProvinceCode}}</td>
               </tr>
@@ -89,6 +91,7 @@ export default {
       vehicleForm: {
       },
       dialogTitle: "",
+      rules:[]
     };
   },
   methods: {
