@@ -255,7 +255,6 @@ export default {
                   clearTimeout(_this.timeOutFlag)
                   // iLocalStroage.sets('userInfo', res.userInfo);
                   _this.getCurrentUser();
-                  _this.getMenu();
                   _this.success = false
               },
               error => {
@@ -305,6 +304,7 @@ export default {
       getCurrentUserApi().then(res=>{
         console.log("当前用户信息",res);
         iLocalStroage.sets('userInfo', res.data);
+        this.getMenu();
 
       },err=>{
         console.log(err);
