@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <td class="tg-y93n">经营许可证字</td>
-                    <td class="tg-cly1" >{{jyyhForm.NativeAreaCode}} </td>
+                    <td class="tg-cly1" >{{jyyhForm.LicenseWord}} </td>
                     <td class="tg-y93n">经营许可证号</td>
                     <td class="tg-cly1" >{{jyyhForm.LicenseCode}}</td>
                 </tr>

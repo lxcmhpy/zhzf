@@ -20,14 +20,14 @@
           </el-radio-group>
         </div>
        <el-form-item label="车牌号码">
-          <el-input style="width:600px;padding-left:30px;" v-model="checkData.ownerName" placeholder="请输入车辆（挂车）号牌"></el-input>
+          <el-input style="width:600px;padding-left:30px;" v-model="checkData.VehicleNo" placeholder="请输入车辆（挂车）号牌"></el-input>
         </el-form-item>
         <br/>
         <el-form-item label="道路运输证号" v-if="checkType==1">
-          <el-input style="width:600px" v-model="checkData.ownerName" placeholder="请输入道路运输证号"></el-input>
+          <el-input style="width:600px" v-model="checkData.TransCertificateCode" placeholder="请输入道路运输证号"></el-input>
         </el-form-item>
         <el-form-item label="VIN号" v-if="checkType==2">
-          <el-input style="width:600px;padding-left:50px;" v-model="checkData.licenseCode" placeholder="请输入VIN号"></el-input>
+          <el-input style="width:600px;padding-left:50px;" v-model="checkData.Vin" placeholder="请输入VIN号"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="getCheck" size="medium">查询</el-button>
@@ -46,11 +46,11 @@
       </div>  
       <div class="tablePart" align="center">
         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
-          <el-table-column prop="cphm" label="车牌号码" align="center"></el-table-column>
-          <el-table-column prop="dlyszh" label="道路运输证号" align="center"></el-table-column>
-          <el-table-column prop="cljyfw" label="车辆经营范围" align="center"></el-table-column>
-          <el-table-column prop="fzjg" label="发证机构" align="center"></el-table-column>
-          <el-table-column prop="dlyszyxqsrq" label="道路运输证有效起始日期" align="center"></el-table-column>
+          <el-table-column prop="VehicleNo" label="车牌号码" align="center"></el-table-column>
+          <el-table-column prop="TransCertificateCode" label="道路运输证号" align="center"></el-table-column>
+          <el-table-column prop="BusinessScopeCode" label="车辆经营范围" align="center"></el-table-column>
+          <el-table-column prop="TransCertificateGrantOrgan" label="发证机构" align="center"></el-table-column>
+          <el-table-column prop="CertificateBeginDate" label="道路运输证有效起始日期" align="center"></el-table-column>
           <el-table-column prop="jyywmc" label="经营业户名称" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
                 <template slot-scope="scope" >
@@ -82,20 +82,22 @@ export default {
 // ProvinceCode:110000
     return {
       checkData: {
-        provinceCode: '',
-        ownerName: '',
-        licenseCode: ''
+        VehicleNo: '',
+        TransCertificateCode: '',
+        Vin: ''
       },
       radio: '1',
       checkType: 1,
-      tableData: [{
-        cphm: 1,
-        dlyszh: 1,
-        cljyfw: 1,
-        fzjg: 1,
-        dlyszyxqsrq: 1,
-        jyyhmc: 1
-      }],
+      tableData: [
+      //   {
+      //   cphm: 1,
+      //   dlyszh: 1,
+      //   cljyfw: 1,
+      //   fzjg: 1,
+      //   dlyszyxqsrq: 1,
+      //   jyyhmc: 1
+      // }
+      ],
       searchList: [{}],
       showFlag: true,
 
@@ -112,7 +114,7 @@ export default {
     //查询违法行为
     getCheck() {
         let _this = this
-      this.$store.dispatch("yehuCheck", this.checkData).then(
+      this.$store.dispatch("yyclCheck", this.checkData).then(
         res => {
           console.log('返回', res)
           _this.searchList = res.data

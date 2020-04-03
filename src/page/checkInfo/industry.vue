@@ -155,14 +155,17 @@ export default {
       },
       radio: '1',
       checkType: 1,
-      tableData: [{
-        OwnerName: 1,
-        LicenseCode: 1,
-        LicenseIssueOrgan: 1,
-        EconType: 1,
-        xkzyxq: 1,
-        OperatingStatus: 1
-      }],
+      // tableData: [{
+      //   OwnerName: 1,
+      //   LicenseCode: 1,
+      //   LicenseIssueOrgan: 1,
+      //   EconType: 1,
+      //   xkzyxq: 1,
+      //   OperatingStatus: 1
+      // }],
+      tableData: [
+
+      ],
       //查看
     industrySee(index, row) {
       console.log(row);
@@ -325,7 +328,7 @@ export default {
         res => {
           console.log('返回', res)
           _this.searchList = res.data
-          if (_this.searchList.length > 1) {
+          if (_this.searchList != null && _this.searchList.length > 1) {
             _this.showFlag = false;
           }
         },

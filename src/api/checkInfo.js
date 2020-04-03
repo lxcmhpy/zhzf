@@ -68,3 +68,25 @@ export function crewCheckApiKyxlbsp(data) {
         cancelToken: setCancelSource()
     });
 }
+
+//道路运输从业人员查验
+export function dlyscyryCheck(data) {
+    console.log(data);
+    return request({
+        url: CHECK_API + "/yuz/cyyy?certificateCode=" + data.certificateCode + "&staffName=" + data.staffName + "&provinceCode=" + data.provinceCode,
+        method: "GET",
+        showloading: false,
+        cancelToken: setCancelSource()
+    });
+}
+
+//营运车辆查验
+export function yyclCheck(data) {
+    console.log(data);
+    return request({
+        url: CHECK_API + "/yuz/car?vehicleNo=" + data.VehicleNo + "&transCertificateCode=" + data.TransCertificateCode + "&vin=" + data.Vin,
+        method: "GET",
+        showloading: false,
+        cancelToken: setCancelSource()
+    });
+}

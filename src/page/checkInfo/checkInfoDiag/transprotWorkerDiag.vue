@@ -26,25 +26,25 @@
                     <td class="tg-y93n">从业资格证号</td>
                     <td class="tg-cly1" colspan="2">{{dlyscyryForm.CertificateCode}}</td>
                     <td class="tg-y93n">资格证初领时间</td>
-                    <td class="tg-cly1" colspan="2"></td>
+                    <td class="tg-cly1" colspan="2">{{dlyscyryForm.CertificateFirstIssueDate}}</td>
                 </tr>
                  <tr>
                     <td class="tg-y93n">发证机关</td>
                     <td class="tg-cly1" colspan="2">{{dlyscyryForm.LicenseIssueOrganCode}}</td>
                     <td class="tg-y93n">资格证发证日期</td>
-                    <td class="tg-cly1" colspan="2"></td>
+                    <td class="tg-cly1" colspan="2">{{dlyscyryForm.CertificateIssueDate}}</td>
                 </tr>
                  <tr>
                     <td class="tg-y93n">证照状态</td>
-                    <td class="tg-cly1" colspan="2"> </td>
+                    <td class="tg-cly1" colspan="2">{{dlyscyryForm.CertificateState}}</td>
                     <td class="tg-y93n">有效期止</td>
-                    <td class="tg-cly1" colspan="2"></td>
+                    <td class="tg-cly1" colspan="2">{{dlyscyryForm.CertificateExpireDate}}</td>
                 </tr>
                  <tr>
                     <td class="tg-y93n">户籍地行政区划</td>
-                    <td class="tg-cly1" colspan="2"></td>
+                    <td class="tg-cly1" colspan="2">{{dlyscyryForm.StaffZoneCode}}</td>
                     <td class="tg-y93n">从业资格证类别</td>
-                    <td class="tg-cly1" colspan="2">{{dlyscyryForm.cyzgzlb}}</td>
+                    <td class="tg-cly1" colspan="2"></td>
                 </tr>
             </table>
         </div>
