@@ -37,11 +37,11 @@ export function crewCheckApiCertificates(data) {
 }
 
 
-//国内水路运输船舶营运证-证书编号资源服务接口
-export function crewCheckApiGnslcbyy(data) {
+//船舶基础资料_船舶基本信息资源服务接口
+export function crewCheckApiCbjczl(data) {
     console.log(data);
     return request({
-        url: CHECK_API +"/ship/shipYyzNO?zjh=" + data.zjh ,
+        url: CHECK_API +"/ship/shipInfo?shipId=" + data.shipId,
         method: "GET",
         showloading: false,
         cancelToken: setCancelSource()
@@ -62,7 +62,7 @@ export function crewCheckApiGjysjyzgz(data) {
 export function crewCheckApiKyxlbsp(data) {
     console.log(data);
     return request({
-        url: CHECK_API +"/ship/gjDjzsbh?zsbh=" + data.zsbh ,
+        url: CHECK_API +"/yuz/lxbsp?plateColorCode=" + data.plateColorCode + "&vehicleNo=" + data.vehicleNo  ,
         method: "GET",
         showloading: false,
         cancelToken: setCancelSource()

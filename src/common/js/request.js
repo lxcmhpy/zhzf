@@ -49,10 +49,7 @@ service.interceptors.request.use(
      showFullScreenLoading(loadingType);
    }
    if (getToken("TokenKey")) {
-     config.headers["accessToken"] = getToken("TokenKey");
-    //  config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
-
-
+      config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
    }
    console.log('config',config)
    return config;

@@ -144,7 +144,7 @@ export default {
         }
     },
     mounted () {
-        alert(this.offSiteManageId);
+        // alert(this.offSiteManageId);
         this.getDetailById(this.offSiteManageId);
     },
     computed: {

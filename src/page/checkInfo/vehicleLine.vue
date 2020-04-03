@@ -14,8 +14,8 @@
                 <span class="title">查验条件</span>
                 </div>
                 <div class="title_box">
-                    <el-form-item label="车牌颜色" class="margin28" >
-                        <el-select v-model="checkData.color" placeholder="请选择">
+                    <el-form-item label="车牌颜色" class="margin28" prop="plateColorCode">
+                        <el-select v-model="checkData.plateColorCode" placeholder="请选择">
                             <el-option
                                 v-for="(item,i) in sfList"
                                 :key="i"
@@ -24,8 +24,8 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="车牌号码">
-                        <el-input style="width:400px;" v-model="checkData.cph" placeholder="输入车牌号码"></el-input>
+                    <el-form-item label="车牌号码" prop="vehicleNo">
+                        <el-input style="width:400px;" v-model="checkData.vehicleNo " placeholder="输入车牌号码"></el-input>
                     </el-form-item>
                     <el-form-item>
                     <el-button type="primary" @click="getVehicleCheck" size="medium">查询</el-button>
@@ -68,21 +68,37 @@ export default {
   data() {
     return {
       checkData: {
-        color: '',
-        cph: '',
+        plateColorCode: "",
+        vehicleNo : "",
       },
-      tableData: [{
-        VehicleNo: 1,
-        SignId: 11,
-        ValidDate: 1,
-        OperLineName: 1,
-        LineOpStatusCode: 1,
-        LineValidBegin: 1
-      }],
+      tableData: [],
       searchList: [],
       showFlag: true,
       checkFlag: false,
       loading: true,
+      sfList:[
+        {
+          value: '蓝色',
+          label: 1
+        },
+        {
+          value: '黄色',
+          label: 2
+        },
+        {
+          value: '黑色 ',
+          label: 3
+        },
+        {
+          value: '白色',
+          label: 4
+        },
+        {
+          value: '其他',
+          label: 9
+        }
+      ],
+      
     }
   },
   components: {
@@ -98,14 +114,16 @@ export default {
     },
     getVehicleCheck() {
       let data = {
-        VehicleNo:this.checkData.color,
-        PlateColorCode: this.checkData.cph
+        vehicleNo: this.checkData.vehicleNo,
+        plateColorCode: this.checkData.plateColorCode
       };
-      this.searchList = [];
+      // this.searchList = [];
       this.checkFlag = true;
       let _this = this
-      this.$store.dispatch("crewCheckApiKyxlbsp", data).then(res => {
-        _this.tableData = res.data.records;
+      // this.$store.dispatch("crewCheckApiKyxlbsp", data).then(res => {
+        crewCheckApiKyxlbsp(data).then(res => {
+          console.log("列表",res);
+        _this.tableData = res.data;
       });
     },
     changeType() {
@@ -117,10 +135,13 @@ export default {
     },
     // 清空数据
     clearData() {
-      this.checkData.color = '';
-      this.checkData.cph = '';
-    }
-  }
+      this.checkData.plateColorCode = '';
+      this.checkData.vehicleNo  = '';
+    },
+  },
+  // created(){
+  //   this.getVehicleCheck();
+  // }
 }
 </script>
 

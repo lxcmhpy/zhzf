@@ -650,7 +650,7 @@ export default {
             }
             item.select = !item.select;
             if (item.select) {
-                this.allSearchList.push(item);
+
                 if (this.curWindow) {
                     this.curWindow.visible = false;
                 }
@@ -663,16 +663,19 @@ export default {
                         size: 0,
                         type: item.code
                     }
-                this.getZfjgLawSupervise(data);
+                this.allSearchList.push(data);
+                this.getZfjgLawSupervise(data, this.category);
             } else {
                 let _this = this;
                 let _index =  _.findIndex(this.allSearchList, function (chr) {
-                    return chr.category === item.code
+                    return chr.type === item.code
                 })
                 this.allSearchList.splice(_index,1);
                 this.markers.splice(0, this.markers.length);
+                this.windows.splice(0, this.windows.length);
+                debugger;
                 this.allSearchList.forEach((v,i)=>{
-                    this.getZfjgLawSupervise(v);
+                    _this.getZfjgLawSupervise(v, v.type);
                 })
             }
         },
@@ -694,10 +697,10 @@ export default {
                     size: 0,
                     type: this.category
                 }
-                this.getZfjgLawSupervise(data);
+                this.getZfjgLawSupervise(data, this.category);
             }
         },
-        getZfjgLawSupervise (data) {
+        getZfjgLawSupervise (data, category) {
             let _this = this
             new Promise((resolve, reject) => {
                 getZfjgLawSupervise(data).then(
@@ -708,7 +711,7 @@ export default {
                             _this.errorMsg('暂无数据', 'error');
                             // return
                         } else {
-                            _this.errorMsg(`总计${res.data.records.length}条数据`, 'success');
+                            _this.errorMsg(`查询到${res.data.records.length}条数据`, 'success');
                         }
                         res.data.records.forEach((item,i)=>{
                             let position = item.position.split(',');
@@ -734,7 +737,7 @@ export default {
                             })
                         })
 
-                        _this.onSearchResult(resultList, _this.category,_this.windows.length);
+                        _this.onSearchResult(resultList, category,_this.windows.length);
                     },
                     error => {
                         //  _this.errorMsg(error.toString(), 'error')

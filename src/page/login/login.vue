@@ -253,9 +253,8 @@ export default {
                 // 登录成功
                   // 清除定时器
                   clearTimeout(_this.timeOutFlag)
-                  iLocalStroage.sets('userInfo', res.userInfo);
-                  // _this.getCurrentUser();
-                  _this.getMenu();
+                  // iLocalStroage.sets('userInfo', res.userInfo);
+                  _this.getCurrentUser();
                   _this.success = false
               },
               error => {
@@ -299,13 +298,15 @@ export default {
         }
       )
     },
+    
     //获取当前登录用户的信息
-    getCurrentUser() {
-      getCurrentUserApi().then(res => {
-        console.log(res);
+    getCurrentUser(){
+      getCurrentUserApi().then(res=>{
+        console.log("当前用户信息",res);
         iLocalStroage.sets('userInfo', res.data);
+        this.getMenu();
 
-      }, err => {
+      },err=>{
         console.log(err);
       })
     },

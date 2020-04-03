@@ -38,7 +38,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="punishTerm" label="处罚期限">
-                  <el-input :disabled="true" ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-input>
+                  <el-date-picker :disabled="true" ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-date-picker>
                 </el-form-item>
               </div>
             </div>
@@ -69,7 +69,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="waitAmount" label="待缴纳金额">
-                  <el-input ref="waitAmount" clearable class="w-120" v-model.number="formData.waitAmount" size="small"></el-input>
+                  <el-input :disabled="true" ref="waitAmount" clearable class="w-120" v-model.number="formData.waitAmount" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
