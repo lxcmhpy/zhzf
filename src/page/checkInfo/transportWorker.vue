@@ -42,12 +42,15 @@
         <span class="titleflag">
         </span>
         <span class="title">查验结果</span>
+      </div> 
+      <div>
+        <span>相关的{{dlyscyryAmount}}个搜索结果</span>  
       </div>  
       <div class="tablePart" align="center">
         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
           <el-table-column prop="staffName" label="姓名" align="center"></el-table-column>
           <el-table-column prop="CertificateCode" label="从业资格证号" align="center"></el-table-column>
-          <el-table-column prop="cyzgzlb" label="从业资格类别" align="center"></el-table-column>
+          <el-table-column prop="WorkTypeCode" label="从业资格类别" align="center"></el-table-column>
           <el-table-column prop="LicenseIssueOrganCode" label="发证机关" align="center"></el-table-column>
           <el-table-column prop="zjyxq" label="证件有效期" align="center"></el-table-column>
           <el-table-column prop="CertificateState" label="资格证状态" align="center"></el-table-column>
@@ -85,6 +88,7 @@ export default {
       },
       radio: '1',
       checkType: 1,
+      dlyscyryAmount:'0',
       tableData: [
       //   {
       //   staffName: 1,
@@ -251,8 +255,11 @@ export default {
       this.$store.dispatch("dlyscyryCheck", this.checkData).then(
         res => {
           console.log('返回', res)
-          _this.searchList = res.data
-          if (_this.searchList.length > 1) {
+          _this.tableData = res.data;
+          if (_this.tableData!=null &&  _this.tableData.length > 0) {
+             _this.dlyscyryAmount = res.data.length;
+          }
+          if (_this.tableData!=null &&  _this.tableData.length > 1) {
             _this.showFlag = false;
           }
         },

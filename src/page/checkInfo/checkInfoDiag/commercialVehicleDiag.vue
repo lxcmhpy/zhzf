@@ -7,7 +7,7 @@
     width="50%"
     append-to-body
   >
-    <el-form :model="dlyscyryForm" ref="yyclForm" class="yyclForm">
+    <el-form :model="yyclForm" ref="yyclForm" class="yyclForm">
         <div align="center">
             <table class="tg">
                 <tr>
@@ -39,9 +39,9 @@
                 </tr>
                  <tr>
                     <td class="tg-y93n" colspan="2">车辆识别VIN码</td>
-                    <td class="tg-cly1" colspan="2"></td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.Vin}}</td>
                     <td class="tg-y93n" colspan="2">车辆燃料类型</td>
-                    <td class="tg-cly1" colspan="2"></td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.FuelType}}</td>
                 </tr>
                  <tr>
                     <td class="tg-y93n" colspan="2">发证机构</td>
@@ -51,7 +51,7 @@
                 </tr>
                  <tr>
                     <td class="tg-y93n" colspan="2">车辆核定载客位</td>
-                    <td class="tg-cly1" colspan="2">{{yyclForm.ApproveSeats}}</td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.ApproveSeat}}</td>
                     <td class="tg-y93n" colspan="2">总质量</td>
                     <td class="tg-cly1" colspan="2">{{yyclForm.ApproveTon}}</td>
                 </tr>
@@ -94,7 +94,7 @@
                     <td class="tg-y93n" colspan="2">经营状态</td>
                     <td class="tg-cly1" colspan="2">{{yyclForm.OperatingStatus}}</td>
                     <td class="tg-y93n" colspan="2">经营业户名称</td>
-                    <td class="tg-cly1" colspan="2"></td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.OwnerName}}</td>
                 </tr>
                  <tr>
                     <td class="tg-y93n" colspan="2">企业组织机构代码</td>

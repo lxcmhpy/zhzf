@@ -42,7 +42,7 @@
         <span class="title">查验结果</span>
       </div>
       <div>
-        <span>相关的 个搜索结果</span>  
+        <span>相关的{{yyclAmount}}个搜索结果</span>  
       </div>  
       <div class="tablePart" align="center">
         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
@@ -51,7 +51,7 @@
           <el-table-column prop="BusinessScopeCode" label="车辆经营范围" align="center"></el-table-column>
           <el-table-column prop="TransCertificateGrantOrgan" label="发证机构" align="center"></el-table-column>
           <el-table-column prop="CertificateBeginDate" label="道路运输证有效起始日期" align="center"></el-table-column>
-          <el-table-column prop="jyywmc" label="经营业户名称" align="center"></el-table-column>
+          <el-table-column prop="OwnerName" label="经营业户名称" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
                 <template slot-scope="scope" >
                     <div>
@@ -88,6 +88,7 @@ export default {
       },
       radio: '1',
       checkType: 1,
+      yyclAmount:'0',
       tableData: [
       //   {
       //   cphm: 1,
@@ -111,14 +112,17 @@ export default {
     goBack() {
       this.$router.go(-1);//返回上一层
     },
-    //查询违法行为
+    //查询
     getCheck() {
         let _this = this
       this.$store.dispatch("yyclCheck", this.checkData).then(
         res => {
           console.log('返回', res)
-          _this.searchList = res.data
-          if (_this.searchList.length > 1) {
+          _this.tableData = res.data;
+          if (_this.tableData!=null && _this.tableData.length > 0) {
+            _this.yyclAmount = _this.tableData.length;
+          }
+          if (_this.tableData!=null && _this.tableData.length > 1) {
             _this.showFlag = false;
           }
         },
@@ -136,8 +140,9 @@ export default {
     },
     // 清空数据
     clearData() {
-      this.checkData.ownerName = '';
-      this.checkData.licenseCode = '';
+      this.checkData.VehicleNo = '';
+      this.checkData.TransCertificateCode = '';
+      this.checkData.Vin = '';
     },
     //查看
     commercialVehicleSee(index, row) {

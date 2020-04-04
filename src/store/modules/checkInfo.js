@@ -1,4 +1,4 @@
-import { yehuCheckApi, crewCheckApiIdcard, crewCheckApiCertificates } from "@/api/checkInfo";
+import { yehuCheckApi, crewCheckApiIdcard, crewCheckApiCertificates, dlyscyryCheckApi, yyclCheckApi } from "@/api/checkInfo";
 
 const person = {
     state: {

@@ -70,7 +70,7 @@ export function crewCheckApiKyxlbsp(data) {
 }
 
 //道路运输从业人员查验
-export function dlyscyryCheck(data) {
+export function dlyscyryCheckApi(data) {
     console.log(data);
     return request({
         url: CHECK_API + "/yuz/cyyy?certificateCode=" + data.certificateCode + "&staffName=" + data.staffName + "&provinceCode=" + data.provinceCode,
@@ -81,7 +81,7 @@ export function dlyscyryCheck(data) {
 }
 
 //营运车辆查验
-export function yyclCheck(data) {
+export function yyclCheckApi(data) {
     console.log(data);
     return request({
         url: CHECK_API + "/yuz/car?vehicleNo=" + data.VehicleNo + "&transCertificateCode=" + data.TransCertificateCode + "&vin=" + data.Vin,
