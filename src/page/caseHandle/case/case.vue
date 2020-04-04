@@ -137,7 +137,6 @@ export default {
   methods: {
     // 归档首页
     goFirstPage(){
-      this.$router.push({ name: 'firstPdfPage' });
     },
     // 解除证据登记保存决定书
     goDeleteEvidence(){
@@ -149,7 +148,7 @@ export default {
     },
     // 立案登记表
     goEstablishDoc() {
-      this.$router.push({ name: 'establishDoc' });
+     
     },
     // 询问笔录
     goQAreport() {
@@ -183,7 +182,7 @@ export default {
     },
     //抽样取样凭证Doc
     goSampleEvidenceDoc() {
-      this.$router.push({ name: 'sampleEvidenceDoc' });
+     
     },
     goSceneNotesDoc() {
       this.$router.push({ name: 'sceneNotesDoc' });
@@ -203,7 +202,7 @@ export default {
   
     // 证据保存清单
     goEvidenceListForm() {
-      this.$router.push({ name: 'evidenceListForm' });
+     
     },
    
     // 抽样取样凭证
@@ -227,7 +226,7 @@ export default {
     },
     //  执行公告-打印
     goDentail() {
-      this.$router.push({ name: 'dentail' });
+      
 
     },
     //  执行公告-打印
@@ -247,16 +246,7 @@ export default {
     },
     //  代履行决定书-表单
     goEnforceInsteadForm() {
-      this.makeRoute(
-        "/enforceInsteadForm",
-        "/enforceInsteadForm2",
-        "/enforceInsteadForm3",
-        "/enforceInsteadForm",
-        "/enforceInsteadForm2",
-        "/enforceInsteadForm3",
-        " 代履行决定书-表单",
-        "caseHandle/case/form/enforceInsteadForm.vue"
-      );
+      
     },
     //  行政强制执行决定书-打印
     goEnforceDecideReprot() {
@@ -269,7 +259,7 @@ export default {
     },
     // 中止（终结、恢复）行政强制执行通知书-表单
     goEnforceReprotForm() {
-      this.$router.push({ name: 'enforceForm' });
+      
     },
     // 中止（终结、恢复）行政强制执行通知书-打印
     goEnforceReprot() {
@@ -328,7 +318,7 @@ export default {
     },
     //行政处罚决定书pdf
     goAdmPunishDecisionPdf() {
-      this.$router.push({ name: 'admPunishDecisionPdf' });
+     
     },
     //责令改正违法行为通知书pdf
     goOrderCorrectIllegalActPdf() {
@@ -340,35 +330,17 @@ export default {
     },
     // 结案报告-表单
     goFilingApprovalForm() {
-      this.$router.push({ name: 'filingApproval' });
+      // this.$router.push({ name: 'filingApproval' });
     },
     // 解除（延长）行政强制措施
     goRemoveOrPrelong(){
       this.$router.push({ name: 'removeOrPrelong' });
     },
     goImportantCaseDissForm() {
-      this.makeRoute(
-        "/important",
-        "/important2",
-        "/important3",
-        "important",
-        "important2",
-        "important3",
-        "重大案件集体讨论",
-        "caseHandle/case/form/importantCaseDissForm.vue"
-      );
+      
     },
     goArchivesForm() {
-      this.makeRoute(
-        "/archives",
-        "/archives2",
-        "/archives3",
-        "archives",
-        "archives2",
-        "archives3",
-        "归档",
-        "caseHandle/case/form/archivesForm.vue"
-      );
+      
     },
     //处罚执行
     goPenaltyExecution() {
