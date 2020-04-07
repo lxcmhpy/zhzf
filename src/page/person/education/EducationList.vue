@@ -123,7 +123,7 @@ export default {
                         _this.getEducation();
                     },
                     err => {
-                    console.log(err);
+//                    console.log(err);
                     }
                 );
             }).catch(() => {});
@@ -146,7 +146,7 @@ export default {
                         _this.getEducation();
                     },
                     err => {
-                    console.log(err);
+//                    console.log(err);
                     }
                 );
                 })
@@ -170,7 +170,7 @@ export default {
                 _this.totalPage = res.data.total;
             });
             err => {
-                console.log(err);
+//                console.log(err);
             };
         },
         // 重置

@@ -12,7 +12,7 @@
       <el-table
         style="margin-left:25px;width:97%;margin-bottom:35px;"
         :data="tableData"
-        resizable 
+        resizable
         stripe
         @selection-change="handleSelectionChange">
         <el-table-column prop="awardId" type="selection" width="55"></el-table-column>
@@ -81,11 +81,11 @@ import addPunishmentComp from './../../page/person/person-award/Punishment'
                 _this.totalPage = res.data.total;
           });
           error=>{
-            console.info(error);
+//            console.info(error);
           };
         },
         deletePunishment(row){
-          console.info(this.multipleSelection);
+//          console.info(this.multipleSelection);
           let _this = this
           if(this.multipleSelection.length==0){
               this.$message({message:'请选择需要删除的信息',type: 'warning'});

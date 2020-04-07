@@ -33,7 +33,7 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   methods: {
     showModal(data) {
-        console.log(data);
+//        console.log(data);
         this.setSrc(data.evPath);
         this.visible = true;
     },
@@ -43,7 +43,7 @@ export default {
     },
     setSrc(evPath){
        let srcImg = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST +evPath;
-       console.log('srcImg',srcImg);
+//       console.log('srcImg',srcImg);
        this.srcImg = srcImg;
     }
   }

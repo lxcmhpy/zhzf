@@ -58,7 +58,7 @@ export default {
     //新增
     showModal(data, caseData,unfinishFlag) {
       //显示弹框
-      console.log(data);
+//      console.log(data);
       this.caseLinkDataForm.caseLinktypeId = caseData.caseLinktypeId;
       this.caseLinkDataForm.caseBasicinfoId = caseData.caseBasicinfoId;
       this.visible = true;
@@ -66,9 +66,9 @@ export default {
         if (item.isRequired === 0) //后台数据原因 要写===0
           this.checkList.push(item);
       })
-      console.log('unfinishFlag',unfinishFlag)
+//      console.log('unfinishFlag',unfinishFlag)
       this.unfinishFlag= unfinishFlag;
-      console.log('this.checkList', this.checkList);
+//      console.log('this.checkList', this.checkList);
       // this.checkList = data
     },
     //关闭弹窗的时候清除数据

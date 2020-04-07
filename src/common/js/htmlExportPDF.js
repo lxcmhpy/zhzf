@@ -7,8 +7,8 @@ export async function htmlExportPDF(id, callback) {
   element.className += ' color_FFFFFF';
   let width = element.offsetWidth; //获取dom 宽度
   let height = element.offsetHeight; //获取dom 高度
-  console.log('height', height)
-  console.log('width', width)
+  // console.log('height', height)
+  // console.log('width', width)
   let canvas = document.createElement("canvas"); //创建一个canvas节点
   let scale = 5; //定义任意放大倍数 支持小数
   canvas.width = width * scale; //定义canvas 宽度 * 缩放，在此我是把canvas放大了2倍

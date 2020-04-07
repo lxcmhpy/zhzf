@@ -78,7 +78,7 @@
                 _this.totalPage = res.data.total;
           });
           error=>{
-            console.info(error);
+//            console.info(error);
           };
         },
         deleteTrain(row){
@@ -98,7 +98,7 @@
                     _this.getPersonList();
                 },
                 err => {
-                console.log(err);
+//                console.log(err);
                 }
             );
           })

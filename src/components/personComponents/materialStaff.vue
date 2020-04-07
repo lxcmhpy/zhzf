@@ -59,7 +59,7 @@ export default {
             }
         },
         handlePreview(file) {
-            console.log(file);
+//            console.log(file);
         },
         beforeRemove(file, fileList) {
             return this.$confirm(`确定移除 ${ file.name }？`);
@@ -68,7 +68,7 @@ export default {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
         },
-        
+
     }
 }
 </script>

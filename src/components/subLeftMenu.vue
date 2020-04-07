@@ -55,7 +55,7 @@ export default {
     },
     //获取侧边栏菜单
     getSlideMenu(val) {
-      console.log(val);
+//      console.log(val);
       this.currentSlideMenu = [];
       let _this = this
       this.allMenuList.forEach(item => {
@@ -67,7 +67,7 @@ export default {
           }
         }
       });
-      console.log('currentSlideMenu',this.currentSlideMenu)
+//      console.log('currentSlideMenu',this.currentSlideMenu)
     }
   },
   mounted() {

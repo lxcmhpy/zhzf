@@ -45,7 +45,7 @@ export default {
       this.$store.dispatch("findLawRegulationsByCauseId", this.caseCauseId).then(
         res => {
           debugger
-          console.log(res);
+//          console.log(res);
           let data = res.data;
           data.forEach(item => {
             let xiang1 = item.iitemCog ? "第" + item.iitemCog + "项" : "";
@@ -66,7 +66,7 @@ export default {
       );
     },
     handleSelectionChange(val) {
-      console.log(val);
+//      console.log(val);
       this.selectData = val;
     },
     backInfor() {

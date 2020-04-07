@@ -7,7 +7,7 @@ export default [
   //   },
   //   component: () => import("@/page/caseHandle/case/side.vue")
   // },
-  
+
   {
     path: "/deleteEvidence",
     name: "deleteEvidence",
@@ -279,7 +279,7 @@ export default [
     },
     component: () => import("@/components/htmlExportPDF/viewPDF.vue")
   },
-   // -----------------信息查验start----------------
+  // -----------------信息查验start----------------
   {
     path: "/checkHome",
     name: "checkHome",
@@ -337,7 +337,7 @@ export default [
     },
     component: () => import("@/page/checkInfo/shipCertificates.vue")
   },
-   // -----------------信息查验end----------------
+  // -----------------信息查验end----------------
   {
     path: "/archiveCover",
     name: "archiveCover",
@@ -347,61 +347,61 @@ export default [
     component: () => import("@/page/caseHandle/waitArchive/archiveCover.vue")
   },
   {
-      path: "/archiveCatalogueDetail",
-      name: "archiveCatalogueDetail",
-      meta: {
-          title: "卷宗目录详情"
-      },
-      component: () => import("@/page/caseHandle/waitArchive/archiveCatalogueDetail.vue")
+    path: "/archiveCatalogueDetail",
+    name: "archiveCatalogueDetail",
+    meta: {
+      title: "卷宗目录详情"
+    },
+    component: () => import("@/page/caseHandle/waitArchive/archiveCatalogueDetail.vue")
   },
   {
-      path: "/addTransfer",
-      name: "addTransfer",
-      meta: {
-          title: "新增移送"
-      },
-      component: () => import("@/page/caseHandle/cooperateCases/addPage.vue")
+    path: "/addTransfer",
+    name: "addTransfer",
+    meta: {
+      title: "新增移送"
+    },
+    component: () => import("@/page/caseHandle/cooperateCases/addPage.vue")
   },
   {
-      path: "/addSelect",
-      name: "addSelect",
-      meta: {
-          title: "新增移送"
-      },
-      component: () => import("@/page/caseHandle/cooperateCases/selectPage.vue")
+    path: "/addSelect",
+    name: "addSelect",
+    meta: {
+      title: "新增移送"
+    },
+    component: () => import("@/page/caseHandle/cooperateCases/selectPage.vue")
   },
   {
-      path: "/cooperateDentails",
-      name: "cooperateDentails",
-      meta: {
-          title: "移送：案号"
-      },
-      component: () => import("@/page/caseHandle/cooperateCases/cooperateDentails.vue")
+    path: "/cooperateDentails",
+    name: "cooperateDentails",
+    meta: {
+      title: "移送：案号"
+    },
+    component: () => import("@/page/caseHandle/cooperateCases/cooperateDentails.vue")
   },
   {
     path: "/addCopyTwo",
     name: "addCopyTwo",
     meta: {
-        title: "新增抄告"
+      title: "新增抄告"
     },
     component: () => import("@/page/caseHandle/cooperateCases/addCopyTwo.vue")
-},
-{
+  },
+  {
     path: "/addCopyOne",
     name: "addCopyOne",
     meta: {
-        title: "新增抄告"
+      title: "新增抄告"
     },
     component: () => import("@/page/caseHandle/cooperateCases/addCopyOne.vue")
-},
+  },
   {
     path: "/caseCopyDentails",
     name: "caseCopyDentails",
     meta: {
-        title: "抄告：案号"
+      title: "抄告：案号"
     },
     component: () => import("@/page/caseHandle/cooperateCases/caseCopyDentails.vue")
-},
+  },
   // -----------------长软start----------------
   {
     path: "/evidenceListDoc",
@@ -508,8 +508,8 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/importantCaseTeamDissDoc.vue")
   },
-   //lv:start
-   {
+  //lv:start
+  {
     path: "/handleRecordForm",
     name: "handleRecordForm",
     meta: {
@@ -554,7 +554,7 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/testPdf.vue")
   },
-  
+
   //---------------长软end------------
   {
     path: "/electronicFileDetail",
