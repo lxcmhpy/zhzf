@@ -108,7 +108,7 @@ export default {
       this.$store.dispatch("hasDepartmentName", data).then(
         res => {
           console.log(res);
-          if(res.data.id){
+          if(res.data && res.data.id){ 
             _this.errorName = true;
           }else{
             _this.addOrEditDepartmentSure();
