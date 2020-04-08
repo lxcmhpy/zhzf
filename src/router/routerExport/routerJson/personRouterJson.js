@@ -8,5 +8,5 @@ export default  [
           oneTab:true,
         },
         component: () => import("@/page/person/person-manage/personDetailPage.vue")
-      },
+      }
 ]

@@ -2,7 +2,7 @@ import MainContent from '@/components/mainContent'
 import Layout from '@/page/lagout/mainLagout' //Layout 是架构组件，不在后台返回，在文件里单独引入
 import caseHandleRouterJson from './routerJson/caseHandleRouterJson'
 import personRouterJson from './routerJson/personRouterJson'
-
+import lawSuperviseJson from './routerJson/lawSuperviseJson'
 // 不作为Main组件的子页面展示的页面单独写，如下
 const route = [
   // 登录
@@ -62,7 +62,8 @@ const route = [
         children: [
           ...personRouterJson
         ]
-      }
+      },
+      ...lawSuperviseJson
     ]
   },
   //主页的路由
