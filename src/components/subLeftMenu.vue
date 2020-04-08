@@ -47,6 +47,7 @@
       changeMenu(key, keyPath) {
         console.log(key);
         this.$router.push({name: key});
+        console.log(this.$router);
       },
       //展开菜单
       handleOpen(key, keyPath) {

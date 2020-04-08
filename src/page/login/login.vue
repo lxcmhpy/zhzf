@@ -288,7 +288,7 @@ export default {
       let _this = this
       this.$store.dispatch("getMenu").then(
         res => {
-            debugger
+//            debugger
           _this.menuList = [...res.data, ...menuList];
           iLocalStroage.sets('menu', _this.menuList);
           _this.$router.push({ name: "home_index" });
@@ -298,7 +298,7 @@ export default {
         }
       )
     },
-    
+
     //获取当前登录用户的信息
     getCurrentUser(){
       getCurrentUserApi().then(res=>{
