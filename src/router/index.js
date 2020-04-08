@@ -16,14 +16,24 @@ const RouterConfig = {
   routes: routers
 };
 export const router = new VueRouter(RouterConfig);
+let getRouter ;
 router.beforeEach((to, from, next) => {
   let tokenObj = iLocalStroage.getExpired('TokenKey');
   if (tokenObj) {
     //判断是否登录
     if (to.path === "/login") {
       next({name: "home_index"});
-    } else {
+      if(!getRouter){
+        if(iLocalStroage.get('menu')){
+          routerGo(to, next)//执行路由跳转方法
+        }
+
+      }else{
         next();
+      }
+
+    } else {
+      next();
     }
   } else {
     //未登录  进入登录页面
@@ -37,3 +47,45 @@ router.beforeEach((to, from, next) => {
 router.afterEach(to => {
   window.scrollTo(0, 0);
 });
+
+function routerGo(to, next) {
+  getRouter = iLocalStroage.gets('menu')//后台拿到路W由
+  getRouter = filterAsyncRouter(getRouter) //过滤路由
+  router.addRoutes(getRouter) //动态添加路由
+  //global.antRouter = getRouter //将路由数据传递给全局变量，做侧边栏菜单渲染工作
+  next({...to, replace: true})
+}
+
+function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，转换为组件对象
+  const accessedRouters = asyncRouterMap.filter(route => {
+    // if (route.component) {
+    // debugger
+    if (route.type === 1 || route.path === '' && route.type !== -1) {
+      return;
+    }
+    if (!route.component) {//Layout组件特殊处理
+      route.component = Layout
+    } else if (route.component === 'Main') {
+      route.component = MainContent;
+    } else {
+      console.log('route.component', route.component);
+      route.meta = {title: route.title, permTypes: route.permTypes ? route.permTypes : ''};
+      route.component = loadView(route.component);
+    }
+    //}
+    if (route.type === -1) {
+      route.path = '/main';
+    }
+    if (route.children && route.children.length) {
+      route.children = filterAsyncRouter(route.children);
+    }
+
+    return true
+  })
+  console.log('accessedRouters', accessedRouters);
+  return accessedRouters
+}
+
+function loadView(view) {
+  return () => import(`@/page/${view}.vue`);
+}
