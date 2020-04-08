@@ -1,159 +1,30 @@
-[
+import Layout from '@/page/lagout/mainLagout' //Layout 是架构组件，不在后台返回，在文件里单独引入
+import MainContent from '@/components/mainContent'
+
+export default [
   {
-    "id": "125909152017944576",
-    "createTime": "2019-04-04 00:50:22",
-    "name": "xboot",
-    "showAlways": true,
-    "type": -1,
-    "title": "系统管理",
-    "path": "/main",
-    "component": {
-      "name": "mainLagout",
-      "components": {
-        "headMenu": {
-          "name": "",
-          "computed": {},
-          "methods": {},
-          "staticRenderFns": [],
-          "_compiled": true,
-          "__file": "src/components/headMenu.vue",
-          "beforeCreate": [
-            null
-          ],
-          "beforeDestroy": [
-            null
-          ]
-        },
-        "subLeftMenu": {
-          "name": "backSubmenu",
-          "props": {},
-          "computed": {},
-          "methods": {},
-          "watch": {},
-          "staticRenderFns": [],
-          "_compiled": true,
-          "beforeCreate": [
-            null,
-            null
-          ],
-          "__file": "src/components/subLeftMenu.vue",
-          "beforeDestroy": [
-            null
-          ]
-        },
-        "tabsMenu": {
-          "name": "",
-          "computed": {
-            "activeIndex": {}
-          },
-          "methods": {},
-          "watch": {},
-          "staticRenderFns": [],
-          "_compiled": true,
-          "__file": "src/components/tabsMenu.vue",
-          "beforeCreate": [
-            null
-          ],
-          "beforeDestroy": [
-            null
-          ]
-        },
-        "mainContent": {
-          "name": "",
-          "methods": {},
-          "staticRenderFns": [],
-          "_compiled": true,
-          "__file": "src/components/mainContent.vue",
-          "beforeCreate": [
-            null
-          ],
-          "beforeDestroy": [
-            null
-          ]
-        }
-      },
-      "computed": {},
-      "inject": [
-        "reload"
-      ],
-      "methods": {},
-      "watch": {},
-      "staticRenderFns": [],
-      "_compiled": true,
-      "beforeCreate": [
-        null,
-        null
-      ],
-      "__file": "src/page/lagout/mainLagout.vue",
-      "beforeDestroy": [
-        null
-      ]
-    },
-    "icon": "md-home1",
-    "buttonType": null,
-    "parentId": null,
-    "description": null,
-    "sortOrder": 0,
-    "status": 0,
-    "url": null,
-    "menuGroup": "系统",
-    "children": [
+    name: "xboot",
+    title: "系统管理",
+    path: "/main",
+    component: Layout,
+    children: [
       {
-        "id": "5129710648430592",
-        "createTime": "2018-06-04 19:02:29",
-        "name": "sys",
-        "showAlways": true,
-        "type": 0,
-        "title": "基本管理",
-        "path": "/sys",
-        "component": {
-          "name": "",
-          "methods": {},
-          "staticRenderFns": [],
-          "_compiled": true,
-          "__file": "src/components/mainContent.vue",
-          "beforeCreate": [
-            null
-          ],
-          "beforeDestroy": [
-            null
-          ]
+        name: "sys",
+        showAlways: true,
+        meta: {
+          title: "基本管理"
         },
-        "icon": "ios-settingss",
-        "buttonType": null,
-        "parentId": "125909152017944576",
-        "description": null,
-        "sortOrder": 1,
-        "status": 0,
-        "url": null,
-        "menuGroup": "系统",
-        "children": [
+        path: "/sys",
+        component: MainContent,
+        children: [
           {
-            "id": "238745be276c4c2ed27bfe6110cf62df",
-            "createTime": "2020-02-25 20:20:03",
-            "name": "user-manage",
-            "showAlways": true,
-            "type": 0,
-            "title": "用户管理",
-            "path": "user-manage",
-            "icon": null,
-            "buttonType": null,
-            "parentId": "5129710648430592",
-            "description": null,
-            "sortOrder": 1.1,
-            "status": 0,
-            "url": null,
-            "menuGroup": null,
-            "children": [],
-            "permTypes": null,
-            "expand": true,
-            "checked": false,
-            "selected": false,
-            "plevel": null,
-            "meta": {
-              "title": "用户管理",
-              "permTypes": ""
-            }
+            name: "user-manage",
+            title: "用户管理",
+            path: "/user-manage",
+            meta: {
+              title: "用户管理",
+            },
+            component: () => import("@/page/login/login.vue")
           },
           {
             "id": "40238597734928384",

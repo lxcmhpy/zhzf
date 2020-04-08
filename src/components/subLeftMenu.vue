@@ -42,6 +42,7 @@ export default {
   methods: {
     //切换菜单
     changeMenu(key, keyPath) {
+      console.log(key);
       this.$router.push({ name: key });
     },
     //展开菜单
