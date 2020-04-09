@@ -15,7 +15,7 @@
           <span class="titleflag">
           </span>
           <span class="title">查验条件</span>
-          <el-radio-group v-model="checkType" @change="changeType">
+          <el-radio-group v-model="checkType" @change="changeType" style="margin-left: 40px">
             <el-radio :label="1">业户名称查验</el-radio>
             <el-radio :label="2">经营许可证号查验</el-radio>
           </el-radio-group>
@@ -57,7 +57,7 @@
         <span>相关的{{yehuAmount}}个搜索结果</span>
       </div>
       <div class="tablePart" align="center">
-        <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
+        <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;min-height: 100px" >
           <el-table-column prop="OwnerName" label="业户名称" align="center"></el-table-column>
           <el-table-column prop="LicenseCode" label="经营许可证号" align="center"></el-table-column>
           <el-table-column prop="LicenseIssueOrgan" label="发证机关" align="center"></el-table-column>
