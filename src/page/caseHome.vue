@@ -703,6 +703,9 @@ export default {
   font-weight: 550;
   color: rgba(43, 49, 62, 1);
   position: relative;
+  span{
+    cursor: pointer;
+  }
 }
 .casehome_topic span {
   position: absolute;

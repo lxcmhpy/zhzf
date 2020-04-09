@@ -53,9 +53,9 @@
         <!-- <el-button @click="show(true)" v-if='showFlag' size="mini">&or;</el-button>
         <el-button @click="show(false)" v-if='!showFlag' size="mini">&and;</el-button> -->
       </div>
-      <div>
-        <span>相关的{{yehuAmount}}个搜索结果</span>  
-      </div>  
+      <div class="result">
+        <span>相关的{{yehuAmount}}个搜索结果</span>
+      </div>
       <div class="tablePart" align="center">
         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
           <el-table-column prop="OwnerName" label="业户名称" align="center"></el-table-column>
