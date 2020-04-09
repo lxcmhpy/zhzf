@@ -22,7 +22,9 @@
             </el-form-item>
           </div>
           <div class="item hasMargintop">
-            <el-input v-model="inforForm.caseSourceText" v-show="caseSourceTextDisable"></el-input>
+            <el-form-item prop="caseSourceText">
+              <el-input v-model="inforForm.caseSourceText" v-show="caseSourceTextDisable"></el-input>
+            </el-form-item>
           </div>
         </div>
         <div>
@@ -702,6 +704,15 @@ export default {
       }
       callback();
     };
+    //案件来源后面输入框的验证
+    var validatecaseSourceText = (rule, value, callback) => {
+      debugger
+      if (this.caseSourceTextDisable == true && !value) {
+        debugger
+        return callback(new Error("请输入案件来源描述"));
+      }
+      callback();
+    };
     return {
       RecentCheckStastions: [{ value: '', label: '' }],//最近五个检测站
       RecentCheckWorkers: [{ value: '', label: '' }],//历史保存过检测人员
@@ -765,6 +776,7 @@ export default {
       },
       rules: {
         caseSource: [{ required: true, message: "请选择", trigger: "change" }],
+        caseSourceText: [{ required: true,validator: validatecaseSourceText, trigger: "change" }],
         acceptTime: [
           { required: true, message: "请选择时间", trigger: "change" }
         ],
@@ -1117,12 +1129,14 @@ export default {
     },
     //提交信息
     submitInfo(state) {
+      debugger
       // this.searchLawPerson();
       // console.log('searchLawPerson', this.allUserList)
       // console.log("lawPersonList", this.lawPersonList)
       console.log("表单数据", this.inforForm)
       let _this = this
       this.$refs["inforForm"].validate(valid => {
+        debugger
         if (valid) {
           // let submitData = {
           //   caseSource: this.inforForm.caseSource,
@@ -1286,6 +1300,12 @@ export default {
       if (data.caseStatus == '待审批') {
         this.isHandleCase = true;
       };
+      if (data.trailerIdNo !=""){
+        this.showTrailer = true;
+      }
+      if (data.discretionId !=""){
+         this.activeJudgli = data.discretionId;
+      }
       //当前用户不是创建案件者，输入框设置为只读
       // currentUserId = iLocalStroage.gets("userInfo").id;
       // if(currentUserId!=data.createId){
@@ -1500,7 +1520,7 @@ export default {
     },
   },
   mounted() {
-    // debugger
+    debugger
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
     console.log(someCaseInfo);
     this.inforForm.caseCauseName = someCaseInfo.illageAct;
@@ -1521,6 +1541,7 @@ export default {
     this.inforForm.trailerColor = '1'
   },
   created() {
+    debugger
     this.findJudgFreedomList();
     // this.setLawPerson(
     //   [iLocalStroage.gets('userInfo').username]

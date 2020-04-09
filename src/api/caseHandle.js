@@ -125,11 +125,17 @@ export function findLawOfficerListApi(organId) {
 }
 
 //通过姓名或执法证号查询执法人员列表
-export function findStaffListApi(inputValue) {
+export function findStaffListApi(data) {
+  debugger
+  let data2={
+    organId:data.organId,
+    inputValue:data.inputValue
+  }
   return request({
-    url: "/sys/lawOfficer/findLawOfficerList/"+inputValue,
+    url: "/sys/lawOfficer/listLawOfficer",
     method: "get",
     showloading: true,
+    params:data2,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
