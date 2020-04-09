@@ -15,10 +15,10 @@
           <span class="title">查验条件</span>
         </div>
         <el-form-item label="从业资格证号">
-      <el-input v-model="checkData.ownerName" placeholder="请输入从业资格证号(身份证号)"></el-input>
+      <el-input v-model="checkData.certificateCode" placeholder="请输入从业资格证号(身份证号)"></el-input>
     </el-form-item>
     <el-form-item label="姓名">
-      <el-input v-model="checkData.ownerName" placeholder="请输入姓名"></el-input>
+      <el-input v-model="checkData.staffName" placeholder="请输入姓名"></el-input>
     </el-form-item>
         <el-form-item label="省份" class="margin28" >
           <el-select v-model="checkData.provinceCode" placeholder="请选择">
@@ -42,12 +42,15 @@
         <span class="titleflag">
         </span>
         <span class="title">查验结果</span>
+      </div> 
+      <div>
+        <span>相关的{{dlyscyryAmount}}个搜索结果</span>  
       </div>  
       <div class="tablePart" align="center">
         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
           <el-table-column prop="staffName" label="姓名" align="center"></el-table-column>
           <el-table-column prop="CertificateCode" label="从业资格证号" align="center"></el-table-column>
-          <el-table-column prop="cyzgzlb" label="从业资格类别" align="center"></el-table-column>
+          <el-table-column prop="WorkTypeCode" label="从业资格类别" align="center"></el-table-column>
           <el-table-column prop="LicenseIssueOrganCode" label="发证机关" align="center"></el-table-column>
           <el-table-column prop="zjyxq" label="证件有效期" align="center"></el-table-column>
           <el-table-column prop="CertificateState" label="资格证状态" align="center"></el-table-column>
@@ -79,20 +82,23 @@ export default {
 // ProvinceCode:110000
     return {
       checkData: {
-        provinceCode: '',
-        ownerName: '',
-        licenseCode: ''
+        certificateCode: '',
+        staffName: '',
+        provinceCode: ''
       },
       radio: '1',
       checkType: 1,
-      tableData: [{
-        staffName: 1,
-        CertificateCode: 1,
-        cyzgzlb: 1,
-        LicenseIssueOrganCode: 1,
-        zjyxq: 1,
-        CertificateState: 1
-      }],
+      dlyscyryAmount:'0',
+      tableData: [
+      //   {
+      //   staffName: 1,
+      //   CertificateCode: 1,
+      //   cyzgzlb: 1,
+      //   LicenseIssueOrganCode: 1,
+      //   zjyxq: 1,
+      //   CertificateState: 1
+      // }
+      ],
       searchList: [{}],
       showFlag: true,
       sfList: [
@@ -246,11 +252,14 @@ export default {
     //查询违法行为
     getCheck() {
         let _this = this
-      this.$store.dispatch("yehuCheck", this.checkData).then(
+      this.$store.dispatch("dlyscyryCheck", this.checkData).then(
         res => {
           console.log('返回', res)
-          _this.searchList = res.data
-          if (_this.searchList.length > 1) {
+          _this.tableData = res.data;
+          if (_this.tableData!=null &&  _this.tableData.length > 0) {
+             _this.dlyscyryAmount = res.data.length;
+          }
+          if (_this.tableData!=null &&  _this.tableData.length > 1) {
             _this.showFlag = false;
           }
         },

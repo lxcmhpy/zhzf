@@ -1,10 +1,10 @@
-import Layout from '@/page/lagout/mainLagout'//Layout 是架构组件，不在后台返回，在文件里单独引入
+import MainContent from '@/components/mainContent'//Layout 是架构组件，不在后台返回，在文件里单独引入
 export default  [
     {
         //可视化监管
         path: '/lawSupervise',
         name: 'lawSupervise1',
-        component: Layout,
+        component: MainContent,
         children: [{
              //执法监管
                 path: '/lawSupervise',
@@ -39,7 +39,7 @@ export default  [
         //线索中心
         path: '/clueManage',
         name: 'clueManage',
-        component: Layout,
+        component: MainContent,
         children: [{
                path: '/offSiteManage',
                name: 'offSiteManage',

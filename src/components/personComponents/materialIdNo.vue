@@ -61,7 +61,7 @@ export default {
             }
         },
         handlePreview(file) {
-            console.log(file);
+//            console.log(file);
         },
         handleExceed(files, fileList) {
             this.$message.error(`当前限制选择 2 个文件，本次选择了 ${fileList.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -73,7 +73,7 @@ export default {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
         },
-        
+
     }
 }
 </script>

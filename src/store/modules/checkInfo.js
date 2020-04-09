@@ -1,4 +1,4 @@
-import { yehuCheckApi, crewCheckApiIdcard, crewCheckApiCertificates } from "@/api/checkInfo";
+import { yehuCheckApi, crewCheckApiIdcard, crewCheckApiCertificates, dlyscyryCheckApi, yyclCheckApi } from "@/api/checkInfo";
 
 const person = {
     state: {
@@ -41,6 +41,30 @@ const person = {
                                     reject(error);
                                 })
                         }
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+         //道路运输从业人员查验
+         dlyscyryCheck({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                dlyscyryCheckApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+         //道路运输从业人员查验
+         yyclCheck({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                yyclCheckApi(data).then(
+                    res => {
+                        resolve(res);
                     },
                     error => {
                         reject(error);

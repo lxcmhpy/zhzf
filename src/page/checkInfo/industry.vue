@@ -54,7 +54,7 @@
         <el-button @click="show(false)" v-if='!showFlag' size="mini">&and;</el-button> -->
       </div>
       <div>
-        <span>相关的 个搜索结果</span>  
+        <span>相关的{{yehuAmount}}个搜索结果</span>  
       </div>  
       <div class="tablePart" align="center">
         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
@@ -155,14 +155,18 @@ export default {
       },
       radio: '1',
       checkType: 1,
-      tableData: [{
-        OwnerName: 1,
-        LicenseCode: 1,
-        LicenseIssueOrgan: 1,
-        EconType: 1,
-        xkzyxq: 1,
-        OperatingStatus: 1
-      }],
+      yehuAmount:'0',
+      // tableData: [{
+      //   OwnerName: 1,
+      //   LicenseCode: 1,
+      //   LicenseIssueOrgan: 1,
+      //   EconType: 1,
+      //   xkzyxq: 1,
+      //   OperatingStatus: 1
+      // }],
+      tableData: [
+
+      ],
       //查看
     industrySee(index, row) {
       console.log(row);
@@ -324,8 +328,12 @@ export default {
       this.$store.dispatch("yehuCheck", this.checkData).then(
         res => {
           console.log('返回', res)
-          _this.searchList = res.data
-          if (_this.searchList.length > 1) {
+         // _this.searchList = res.data
+          _this.tableData = res.data;
+          if ( _this.tableData != null &&  _this.tableData.length > 0) {
+            _this.yehuAmount = _this.tableData.length;
+          }
+          if ( _this.tableData != null &&  _this.tableData.length > 1) {
             _this.showFlag = false;
           }
         },

@@ -17,9 +17,9 @@
     <div class="userList">
           <div style="margin: 15px 0;"></div>
           <el-checkbox-group v-model="checkedDocId">
-              <el-checkbox 
-              v-for="(item,index) in caseList" 
-              :label="item.storageId" 
+              <el-checkbox
+              v-for="(item,index) in caseList"
+              :label="item.storageId"
               :key="item.storageId">
                 <span class="name">{{index+1}}</span>
                 <span class="name">{{item.docName}}</span>
@@ -91,10 +91,10 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   methods: {
     showModal() {
-      console.log('show');
+//      console.log('show');
 
       this.visible = true;
-      console.log(this.visible);
+//      console.log(this.visible);
 
     },
     //关闭弹窗的时候清除数据
@@ -159,7 +159,7 @@ export default {
         findByCaseIdAndDocIdApi(data).then(res=>{
             debugger
             _that.mlList = _that.host + res.data[0].storageId;
-                
+
         },err=>{
             console.log(err);
         })
@@ -196,8 +196,8 @@ export default {
     },
      //全选
     handleCheckAllChange(val) {
-      debugger
-      console.log(val);
+//      debugger
+//      console.log(val);
       if (val) {
         debugger
         this.caseList.forEach(item => {
@@ -215,9 +215,9 @@ export default {
     this.getByMlCaseId();
     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
      var class1 =  document.getElementsByClassName("archiveCatalogueBox");
-     console.log('class',class1)
+//     console.log('class',class1)
      var class2 = class1[0].parentNode;
-     console.log('class',class2)
+//     console.log('class',class2)
      class2.style.right = '60px';
      this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
   }

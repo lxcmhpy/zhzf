@@ -311,7 +311,7 @@ export default {
     },
     //设置拟处罚决定
     setPunishDecis(val){
-      console.log('val',val);
+//      console.log('val',val);
       // console.log('this.formData.punishDecision ',this.formData.punishDecision)
       this.formData.punishDecision = val.fullDecision;
       this.formData.tempPunishAmount = val.amount;
@@ -323,7 +323,7 @@ export default {
       let _this = this
       this.$store.dispatch("getOrganDetail", params).then(
         res => {
-          console.log("机构", res);
+//          console.log("机构", res);
           let organData = res.data;
           _this.formData.organContactor = organData.contactor;
           _this.formData.organAddress = organData.address;
@@ -331,7 +331,7 @@ export default {
           _this.formData.organTel = organData.telephone;
         },
         err => {
-          console.log(err);
+//          console.log(err);
         }
       );
     }

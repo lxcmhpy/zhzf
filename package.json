@@ -37,7 +37,8 @@
     "vue-router": "^3.0.1",
     "vue-simple-verify": "^1.0.8",
     "vuex": "3.0.1",
-    "webpack": "^3.12.0"
+    "webpack": "^3.12.0",
+    "x2js": "^3.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

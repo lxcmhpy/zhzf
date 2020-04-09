@@ -305,7 +305,7 @@ export default {
     },
     //清空文书
     delDocDataByDocId(data){
-      console.log("清空文书",data);
+//      console.log("清空文书",data);
       this.$refs.resetDocDiaRef.showModal(data);
     },
     //预览pdf
@@ -330,7 +330,7 @@ export default {
     delDocDataByDocId(data) {
       this.$store.dispatch("delDocDataByDocId", data).then(
         res => {
-          console.log('删除', res)
+//          console.log('删除', res)
 
           // this.docTableDatas = res.data;
           // console.log('文书列表', this.docTableDatas)
@@ -354,7 +354,7 @@ export default {
       let _this = this
       findByCondition(data).then(
             res => {
-              console.log('证据',res);
+//              console.log('证据',res);
               _this.evidenceTableDatas = res.data.records;
               _this.currentPage = res.data.current;
               _this.total = res.data.total;
@@ -366,19 +366,19 @@ export default {
     },
     //更改证据每页显示的条数
     handleSizeChange(val) {
-      console.log("每页显示的条数", val);
+//      console.log("每页显示的条数", val);
       this.pageSize = val;
       this.findEvidence();
     },
     //更换证据页码
     handleCurrentChange(val) {
-      console.log("当前页", val);
+//      console.log("当前页", val);
       this.currentPage = val;
       this.findEvidence();
     },
     //修改证据名称
     handleEviNameChange(row,column){
-      console.log(row,column);
+//      console.log(row,column);
       if(column.property == "evName"){
         this.$refs.editEvidenceNameRef.showModal(row);
       }
@@ -388,7 +388,7 @@ export default {
     },
     //更改 是否是重大案件
     changeImportant(val){
-      console.log(val);
+//      console.log(val);
       let docId = '2c9029ca5b716296015b716568050001';
       if(!val){  //非重大案件
         this.docTableDatas = this.docTableDatasCopy.filter(item => item.docId !== docId);
@@ -399,7 +399,7 @@ export default {
         })
         if(docDataId){   //重大案件文书状态为已完成时
           deleteDocByIdApi(docDataId).then(res=>{
-            console.log('删除文书',res);
+//            console.log('删除文书',res);
           },error=>{
             console.log(error);
           })

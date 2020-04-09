@@ -247,7 +247,7 @@
           component: row.component,
           icon: row.icon,
           url: row.url,
-          buttonType: row.buttonType.length > 0 ? row.buttonType.split(',') : [],
+          buttonType: row.buttonType && row.buttonType.length > 0 ? row.buttonType.split(',') : [],
           sortOrder: row.sortOrder
         }
         that.dialogTitle = '修改'

@@ -137,9 +137,9 @@ export default {
       }
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log("添加",this.caseData)
+//          console.log("添加",this.caseData)
           addEditCopyCaseApi(this.caseData).then(res => {
-            console.log(res);
+//            console.log(res);
             if (res.code == 200) {
               this.$store.dispatch("deleteTabs", this.$route.name);
               this.$router.replace({
@@ -160,7 +160,7 @@ export default {
     },
     submitForm(formName) {
      this.visible = true;
-     console.log("弹窗",this.visible)
+//     console.log("弹窗",this.visible)
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
@@ -191,7 +191,7 @@ export default {
       fd.append('docId', '2c9029e16c753a19016c755fe1340001');
       uploadEvApi(fd).then(
         res => {
-          console.log(res);
+//          console.log(res);
           this.findFileList(res.data, true);
         },
         error => {
@@ -201,7 +201,7 @@ export default {
     },
     //删除附件
     deleteFile(data){
-      console.log('删除',data);
+//      console.log('删除',data);
       deleteFileByIdApi(data.storageId).then(res=>{
         console.log(res);
         this.findFileList();
@@ -227,10 +227,10 @@ export default {
         caseId: this.caseData.caseId,
         docId :"2c9029e16c753a19016c755fe1340001"
       }
-      console.log(data);
+//      console.log(data);
       getFile(data).then(
         res => {
-          console.log("附件列表",res);
+//          console.log("附件列表",res);
           this.fileListArr = res.data;
 
         },
@@ -241,10 +241,10 @@ export default {
     },
   },
   mounted() {
-    console.log('选择的案件', this.$route.params)
+//    console.log('选择的案件', this.$route.params)
     let datas = this.$route.params.caseData;
     let caseData = this.caseData;
-    console.log('用户信息', iLocalStroage.gets("userInfo"))
+//    console.log('用户信息', iLocalStroage.gets("userInfo"))
     for (var key in caseData) {
       if(key != 'state')
       this.caseData[key] = datas[key]
@@ -252,7 +252,7 @@ export default {
     this.caseData.caseId = this.$route.params.caseData.id
     this.caseData.person = iLocalStroage.gets("userInfo").username
     this.caseData.organSend = iLocalStroage.gets("userInfo").organName
-    console.log('表单', this.caseData)
+//    console.log('表单', this.caseData)
   },
   created(){
     this.findFileList();
@@ -263,7 +263,7 @@ export default {
 /* @import "@/assets/css/caseHandle/index.scss"; */
 @import "@/assets/css/documentForm.scss";
 </style>
- 
+
 <style scoped>
 .steps /deep/ .el-step__icon {
   font-size: 18px;

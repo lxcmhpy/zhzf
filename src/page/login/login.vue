@@ -253,9 +253,8 @@ export default {
                 // 登录成功
                   // 清除定时器
                   clearTimeout(_this.timeOutFlag)
-                  iLocalStroage.sets('userInfo', res.userInfo);
-                  // _this.getCurrentUser();
-                  _this.getMenu();
+                  // iLocalStroage.sets('userInfo', res.userInfo);
+                  _this.getCurrentUser();
                   _this.success = false
               },
               error => {
@@ -289,7 +288,7 @@ export default {
       let _this = this
       this.$store.dispatch("getMenu").then(
         res => {
-            debugger
+//            debugger
           _this.menuList = [...res.data, ...menuList];
           iLocalStroage.sets('menu', _this.menuList);
           _this.$router.push({ name: "home_index" });
@@ -299,13 +298,15 @@ export default {
         }
       )
     },
-    //获取当前登录用户的信息
-    getCurrentUser() {
-      getCurrentUserApi().then(res => {
-        console.log(res);
-        iLocalStroage.sets('userInfo', res.data);
 
-      }, err => {
+    //获取当前登录用户的信息
+    getCurrentUser(){
+      getCurrentUserApi().then(res=>{
+        console.log("当前用户信息",res);
+        iLocalStroage.sets('userInfo', res.data);
+        this.getMenu();
+
+      },err=>{
         console.log(err);
       })
     },

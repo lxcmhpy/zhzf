@@ -112,7 +112,7 @@ export default {
 
   },
   mounted() {
-    console.log(this.$route.params.caseInfo)
+//    console.log(this.$route.params.caseInfo)
     this.caseData = this.$route.params.caseInfo
     if (this.caseData.appendix != '') {
       this.appendixList = this.caseData.appendix.split(",")

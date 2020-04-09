@@ -125,7 +125,7 @@ export default {
     showModal(type, data) {
       this.visible = true;
       this.handelType = type;
-      console.log(type);
+//      console.log(type);
       if (type == 0) {
         this.dialogTitle = "执法门类配置（新增）";
 
@@ -133,7 +133,7 @@ export default {
         // this.addOrganForm.pidName = data.parentNodeName;
         // this.isDisabled = false;
       } else if (type == 2) {
-        console.log(data);
+//        console.log(data);
         this.dialogTitle = "修改角色";
         this.addRoleForm.name = data.name;
         this.addRoleForm.description = data.description;
@@ -165,8 +165,8 @@ export default {
             });
           }
           _this.organData = res.data;
-          console.log(_this.defaultExpandedKeys);
-          console.log(_this.organData);
+//          console.log(_this.defaultExpandedKeys);
+//          console.log(_this.organData);
           if (organId == "root") {
             _this.currentOrganId = res.data[0].id;
           } else {
@@ -175,7 +175,7 @@ export default {
         //   _this.getSelectOrgan();
         },
         err => {
-          console.log(err);
+//          console.log(err);
         }
       );
     },

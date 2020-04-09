@@ -38,7 +38,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="punishTerm" label="处罚期限">
-                  <el-input :disabled="true" ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-input>
+                  <el-date-picker :disabled="true" ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-date-picker>
                 </el-form-item>
               </div>
             </div>
@@ -69,7 +69,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="waitAmount" label="待缴纳金额">
-                  <el-input ref="waitAmount" clearable class="w-120" v-model.number="formData.waitAmount" size="small"></el-input>
+                  <el-input :disabled="true" ref="waitAmount" clearable class="w-120" v-model.number="formData.waitAmount" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -111,17 +111,17 @@
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                   <span v-if="scope.row.status == '1'" class="tableHandelcase">
-                   
+
                     <i  class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
                     <i  class="iconfont law-print"></i>
                   </span>
                   <span v-if="scope.row.status == '0'" class="tableHandelcase">
-                   
+
                     <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
                     <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
                   </span>
                   <span v-if="scope.row.status === ''" class="tableHandelcase">
-                   
+
                     <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
                   </span>
                 </template>
@@ -343,7 +343,7 @@
 
        //保存表单数据
       submitCaseDoc(handleType) {
-        console.log(this.formData)
+//        console.log(this.formData)
         this.com_submitCaseForm(handleType, "forceExecuteForm", false);
       },
 
@@ -351,21 +351,21 @@
       isComplete() {
         debugger
         this.unfinishFlag = '';
-        console.log('强制类型:', this.formData.forceType)
+//        console.log('强制类型:', this.formData.forceType)
         if (this.formData.forceType==='强制执行') {
           // 强制执行书必做
            debugger
-          console.log(this.docTableDatas)
+//          console.log(this.docTableDatas)
           let flag = true
           this.docTableDatas.forEach(element => {
             if (element.name == '行政强制执行决定书【2016】') {
                debugger
               this.unfinishFlag = '行政强制执行决定书';
-              console.log('lement.status,element.status', element.status)
+//              console.log('lement.status,element.status', element.status)
               if (element.status != 1) {
                  debugger
                 this.unfinishFlag = '行政强制执行决定书';
-                console.log('执行')
+//                console.log('执行')
                 let caseData = {}
                 this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
                 flag = false;
@@ -378,22 +378,22 @@
              return flag;
         }
       },
-      
+
       isComplete2(){
         debugger
         this.unfinishFlag = '';
-        console.log('强制类型:', this.formData.forceType)
+//        console.log('强制类型:', this.formData.forceType)
         if (this.formData.forceType==='代履行') {
           // 代履行必做
           let flag2 = true;
-          console.log(this.docTableDatas)
+//          console.log(this.docTableDatas)
           this.docTableDatas.forEach(element => {
             if (element.name == '代履行决定书【2016】') {
                debugger
               if (element.status != 1) {
                  debugger
                 this.unfinishFlag = '代履行决定书';
-                console.log('this.unfinishFlag', this.unfinishFlag)
+//                console.log('this.unfinishFlag', this.unfinishFlag)
                 let caseData = {}
                 this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
                 flag2 = false;
@@ -408,7 +408,7 @@
           return flag2;
         }
       },
-      
+
        //下一环节
       continueHandle() {
         // debugger
@@ -426,7 +426,7 @@
         }
         else {
           // this.$message({ message: '请完成对应文书', type: 'error' });
-          console.log(this.unfinishFlag)
+//          console.log(this.unfinishFlag)
           let unfinishFlag = this.unfinishFlag || ""
           this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
         }
@@ -435,7 +435,7 @@
       // 进入文书
       enterDoc(row) {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-        console.log("row", row);
+//        console.log("row", row);
         this.$router.push({
           name: row.url,
           params: {
@@ -449,17 +449,17 @@
       },
 
       //查看文书
-      viewDoc(row) {      
+      viewDoc(row) {
           this.com_viewDoc(row);
       },
       addMoreDoc(row) {
-        console.log("添加");
+//        console.log("添加");
         iLocalStroage.removeItem("currentDocDataId");
         this.$refs.chooseHandleTypeDiaRef.showModal(row, this.isSaveLink);
       },
       //清空文书
       delDocDataByDocId(data){
-        console.log("清空文书",data);       
+//        console.log("清空文书",data);
         this.$refs.resetDocDiaRef.showModal(data);
       },
       //通过案件id和表单类型Id查询已绑定文书
@@ -472,7 +472,7 @@
 
        //预览pdf
       viewDocPdf(row) {
-        console.log('row',row) 
+//        console.log('row',row)
         let routerData = {
           hasApprovalBtn: false,
           docId: row.docId,
@@ -523,7 +523,7 @@
 
       setMoreDocTableTitle() {
         debugger
-        console.log("djhafiufh执行方法")
+//        console.log("djhafiufh执行方法")
         this.docTableDatas = [];
         this.allAskDocList = [];
         this.docTableDatas.push({ name: '中止（终结、恢复）行政强制执行通知书', status: '中止', openRow: true, url: "enforceDoc", docId: "2c902908696a1fc501696a754e3b0002" , note: '' });
@@ -568,7 +568,7 @@
 
       }
     }
-    
+
   };
 </script>
 

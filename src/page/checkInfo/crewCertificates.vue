@@ -62,8 +62,8 @@
 
 <script>
 import crewLookLook from "@/page/checkInfo/checkInfoDiag/crewLookLook";
-import { crewCheckApiIdcard } from "@/api/checkInfo";
-import { crewCheckApiCertificates } from "@/api/checkInfo";
+import { crewCheckApiIdcard ,crewCheckApiCertificates} from "@/api/checkInfo";
+// import { crewCheckApiCertificates } from "@/api/checkInfo";
 export default {
   data() {
     return {
@@ -73,14 +73,7 @@ export default {
       },
       radio: '1',
       checkType: 1,
-      tableData: [{
-        ANAME: 1,
-        ID_CARD_NO: 11,
-        CERT_NO: 1,
-        CERT_STATUS: 1,
-        ISSU_DATE: 1,
-        ISSU_ORG_CODE: 1
-      }],
+      tableData: [],
       searchList: [],
       showFlag: true,
       checkFlag: false,
@@ -106,15 +99,19 @@ export default {
         let data = {
             certNo: this.checkData.certNo,
           };
-          this.$store.dispatch("crewCheckApiKyxlbsp", data).then(res => {
-              _this.tableData = res.data.records;
+          // this.$store.dispatch("crewCheckApiKyxlbsp", data).then(res => {
+            crewCheckApiCertificates(data).then(res => {
+              console.log("船舶",res);
+              _this.tableData = res.data;
             });
       }else{
           let data = {
             idCardNo: this.checkData.idCardNo,
           };
-          this.$store.dispatch("crewCheckApiCertificates", data).then(res => {
-              _this.tableData = res.data.records;
+          // this.$store.dispatch("crewCheckApiCertificates", data).then(res => {
+            crewCheckApiIdcard(data).then(res => {
+              console.log("船舶",res);
+              _this.tableData = res.data;
             });
       }
     },

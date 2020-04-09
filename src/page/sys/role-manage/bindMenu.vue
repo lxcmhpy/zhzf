@@ -17,6 +17,7 @@
         ref="menuTree"
         highlight-current
         :props="defaultProps"
+        
       ></el-tree>
     </div>
     <span slot="footer" class="dialog-footer">

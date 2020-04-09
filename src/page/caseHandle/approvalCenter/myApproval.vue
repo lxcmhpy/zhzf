@@ -93,7 +93,7 @@ export default {
     },
     //点击进入案件详情
     clickCase(row){
-      console.log(row)
+//      console.log(row)
       this.$store.commit("setCaseId", row.id);
       // console.log(this.$store.state.caseId)
       //设置案件状态为审批中

@@ -7,14 +7,7 @@ export default [
   //   },
   //   component: () => import("@/page/caseHandle/case/side.vue")
   // },
-  {
-    path: "/firstPdfPage",
-    name: "firstPdfPage",
-    meta: {
-      title: "pdf首页"
-    },
-    component: () => import("@/page/caseHandle/case/modle/firstPdfPage.vue")
-  },
+
   {
     path: "/deleteEvidence",
     name: "deleteEvidence",
@@ -40,15 +33,6 @@ export default [
     component: () => import("@/page/caseHandle/case/modle/modle.vue")
   },
   {
-    path: "/establishDoc",
-    name: "establishDoc",
-    meta: {
-      title: "立案登记表",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/modle/establishDoc.vue")
-  },
-  {
     path: "/othermodle",
     name: "othermodle",
     meta: {
@@ -67,42 +51,6 @@ export default [
     component: () => import("@/page/caseHandle/case/modle/finishCaseReport.vue")
   },
   {
-    path: "/liveReport",
-    name: "liveReport",
-    meta: {
-      title: "现场笔录",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/liveReport.vue")
-  },
-  {
-    path: "/dentail",
-    name: "dentail",
-    meta: {
-      title: "侧边条"
-    },
-    component: () => import("@/page/caseHandle/case/dentail.vue")
-  },
-  {
-    path: "/enforceForm",
-    name: "enforceForm",
-    meta: {
-      title: "中止（终结、恢复）行政强制执行通知书-表单",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/form/enforceForm.vue")
-  },
-
-  {
-    path: "/sendReportForm",
-    name: "sendReportForm",
-    meta: {
-      title: "送达回证-表单",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/form/sendReportForm.vue")
-  },
-  {
     path: "/caseInvestig",
     name: "caseInvestig",
     meta: {
@@ -119,15 +67,6 @@ export default [
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/caseDoc.vue")
-  },
-  {
-    path: "/evidenceListForm",
-    name: "evidenceListForm",
-    meta: {
-      title: "证据保存清单",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/form/evidenceListForm.vue")
   },
   {
     path: "/obtaineEvidenceForm",
@@ -173,71 +112,6 @@ export default [
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
-  },
-  {
-    path: "/remindLetter",
-    name: "remindLetter",
-    meta: {
-      title: "催告书-pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/pdf/remindLetter.vue")
-  },
-  {
-    path: "/enforceInstead",
-    name: "enforceInstead",
-    meta: {
-      title: "代履行决定书-pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/pdf/enforceInstead.vue")
-  },
-  {
-    path: "/enforceDecide",
-    name: "enforceDecide",
-    meta: {
-      title: "行政强制执行决定书-pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/pdf/enforceDecide.vue")
-  },
-  {
-    path: "/enforce",
-    name: "enforce",
-    meta: {
-      title: "中止（终结、恢复）行政强制执行通知书-pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/pdf/enforce.vue")
-  },
-  {
-    path: "/sendReport",
-    name: "sendReport",
-    meta: {
-      title: "送达回证-pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/pdf/sendReport.vue")
-  },
-  {
-
-    path: "/filingApproval",
-    name: "filingApproval",
-    meta: {
-      title: "立案登记表",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/unRecordCase/filingApprovalForm.vue")
-  },
-  {
-
-    path: "/caseDetail",
-    name: "caseDetail",
-    meta: {
-      title: "案件详情",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/caseDetail.vue")
   },
   //处罚执行
   {
@@ -309,16 +183,6 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
   },
-  //违法行为通知书PDF
-  {
-    path: "/illegalActionPdf",
-    name: "illegalActionPdf",
-    meta: {
-      title: "违法行为通知书-pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/pdf/illegalActionPdf.vue")
-  },
   //听证通知书(流程中)
   {
     path: "/hearingNoticePdf",
@@ -338,36 +202,6 @@ export default [
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/modle/hearingRecordDoc.vue")
-  },
-  //当场行政处罚决定书PDF
-  {
-    path: "/spotAdmPunishDecisionPdf",
-    name: "spotAdmPunishDecisionPdf",
-    meta: {
-      title: "当场行政处罚决定书-pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/pdf/spotAdmPunishDecisionPdf.vue")
-  },
-  //行政处罚决定书PDF
-  {
-    path: "/admPunishDecisionPdf",
-    name: "admPunishDecisionPdf",
-    meta: {
-      title: "行政处罚决定书-pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/pdf/admPunishDecisionPdf.vue")
-  },
-  //责令改正违法行为通知书pdf
-  {
-    path: "/orderCorrectIllegalActPdf",
-    name: "orderCorrectIllegalActPdf",
-    meta: {
-      title: "责令改正违法行为通知书-pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/pdf/orderCorrectIllegalActPdf.vue")
   },
   //案件总览
   {
@@ -409,16 +243,6 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/caseDocument/inquestNotesDoc.vue")
   },
-  //抽样取样凭证-doc
-  {
-    path: "/sampleEvidenceDoc",
-    name: "sampleEvidenceDoc",
-    meta: {
-      title: "抽样取样凭证-doc",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/caseDocument/sampleEvidenceDoc.vue")
-  },
   //现场笔录-doc
   {
     path: "/sceneNotesDoc",
@@ -455,7 +279,7 @@ export default [
     },
     component: () => import("@/components/htmlExportPDF/viewPDF.vue")
   },
-   // -----------------信息查验start----------------
+  // -----------------信息查验start----------------
   {
     path: "/checkHome",
     name: "checkHome",
@@ -513,7 +337,7 @@ export default [
     },
     component: () => import("@/page/checkInfo/shipCertificates.vue")
   },
-   // -----------------信息查验end----------------
+  // -----------------信息查验end----------------
   {
     path: "/archiveCover",
     name: "archiveCover",
@@ -523,61 +347,61 @@ export default [
     component: () => import("@/page/caseHandle/waitArchive/archiveCover.vue")
   },
   {
-      path: "/archiveCatalogueDetail",
-      name: "archiveCatalogueDetail",
-      meta: {
-          title: "卷宗目录详情"
-      },
-      component: () => import("@/page/caseHandle/waitArchive/archiveCatalogueDetail.vue")
+    path: "/archiveCatalogueDetail",
+    name: "archiveCatalogueDetail",
+    meta: {
+      title: "卷宗目录详情"
+    },
+    component: () => import("@/page/caseHandle/waitArchive/archiveCatalogueDetail.vue")
   },
   {
-      path: "/addTransfer",
-      name: "addTransfer",
-      meta: {
-          title: "新增移送"
-      },
-      component: () => import("@/page/caseHandle/cooperateCases/addPage.vue")
+    path: "/addTransfer",
+    name: "addTransfer",
+    meta: {
+      title: "新增移送"
+    },
+    component: () => import("@/page/caseHandle/cooperateCases/addPage.vue")
   },
   {
-      path: "/addSelect",
-      name: "addSelect",
-      meta: {
-          title: "新增移送"
-      },
-      component: () => import("@/page/caseHandle/cooperateCases/selectPage.vue")
+    path: "/addSelect",
+    name: "addSelect",
+    meta: {
+      title: "新增移送"
+    },
+    component: () => import("@/page/caseHandle/cooperateCases/selectPage.vue")
   },
   {
-      path: "/cooperateDentails",
-      name: "cooperateDentails",
-      meta: {
-          title: "移送：案号"
-      },
-      component: () => import("@/page/caseHandle/cooperateCases/cooperateDentails.vue")
+    path: "/cooperateDentails",
+    name: "cooperateDentails",
+    meta: {
+      title: "移送：案号"
+    },
+    component: () => import("@/page/caseHandle/cooperateCases/cooperateDentails.vue")
   },
   {
     path: "/addCopyTwo",
     name: "addCopyTwo",
     meta: {
-        title: "新增抄告"
+      title: "新增抄告"
     },
     component: () => import("@/page/caseHandle/cooperateCases/addCopyTwo.vue")
-},
-{
+  },
+  {
     path: "/addCopyOne",
     name: "addCopyOne",
     meta: {
-        title: "新增抄告"
+      title: "新增抄告"
     },
     component: () => import("@/page/caseHandle/cooperateCases/addCopyOne.vue")
-},
+  },
   {
     path: "/caseCopyDentails",
     name: "caseCopyDentails",
     meta: {
-        title: "抄告：案号"
+      title: "抄告：案号"
     },
     component: () => import("@/page/caseHandle/cooperateCases/caseCopyDentails.vue")
-},
+  },
   // -----------------长软start----------------
   {
     path: "/evidenceListDoc",
@@ -644,22 +468,6 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/spotAdmPunishDecisionDoc.vue")
   },
-  // {
-  //   path: "/payStageDoc",
-  //   name: "payStageDoc",
-  //   meta: {
-  //     title: "分期（延期）缴纳罚款通知书"
-  //   },
-  //   component: () => import("@/page/caseHandle/case/modle/payStageDoc.vue")
-  // },
-  // {
-  //   path: "/executAnnounceDoc",
-  //   name: "executAnnounceDoc",
-  //   meta: {
-  //     title: "执行公告"
-  //   },
-  //   component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
-  // },
   {
     path: "/remindLetterDoc",
     name: "remindLetterDoc",
@@ -700,8 +508,8 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/importantCaseTeamDissDoc.vue")
   },
-   //lv:start
-   {
+  //lv:start
+  {
     path: "/handleRecordForm",
     name: "handleRecordForm",
     meta: {
@@ -746,7 +554,7 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/testPdf.vue")
   },
-  
+
   //---------------长软end------------
   {
     path: "/electronicFileDetail",
