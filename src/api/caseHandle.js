@@ -124,6 +124,23 @@ export function findLawOfficerListApi(organId) {
   });
 }
 
+//通过姓名或执法证号查询执法人员列表
+export function findStaffListApi(data) {
+  debugger
+  let data2={
+    organId:data.organId,
+    inputValue:data.inputValue
+  }
+  return request({
+    url: "/sys/lawOfficer/listLawOfficer",
+    method: "get",
+    showloading: true,
+    params:data2,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //根据案件ID获取案件信息
 export function getCaseBasicInfoApi(data) {
   return request({
@@ -575,17 +592,6 @@ export function findByCaseIdAndDocIdApi(data) {
     url: "/case/sys/file/findByCaseIdAndDocId",
     method: "get",
     params: params,
-    showloading: true,
-    loadingType:'loadPart',
-    cancelToken: setCancelSource()
-  });
-}
-
-//通过姓名或执法证号查询执法人员列表
-export function findStaffListApi(inputValue) {
-  return request({
-    url: "/sys/lawOfficer/findLawOfficerList/"+inputValue,
-    method: "get",
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
