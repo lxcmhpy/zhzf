@@ -598,17 +598,6 @@ export function findByCaseIdAndDocIdApi(data) {
   });
 }
 
-//通过姓名或执法证号查询执法人员列表
-export function findStaffListApi(inputValue) {
-  return request({
-    url: "/sys/lawOfficer/findLawOfficerList/"+inputValue,
-    method: "get",
-    showloading: true,
-    loadingType:'loadPart',
-    cancelToken: setCancelSource()
-  });
-}
-
 //案件抄告列表
 export function queryCaseCopyListPageApi(data) {
   return request({
