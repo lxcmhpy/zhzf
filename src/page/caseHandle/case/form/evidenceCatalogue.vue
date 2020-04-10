@@ -1,20 +1,21 @@
 <template v-if="caseInfo">
 <div>
   <el-dialog
-    custom-class="leftDialog leftDialog2 evidenceCatalogueBox"
+    custom-class="leftDialog leftDialog2 archiveCatalogueBox evidenceCatalogueBox"
     :visible.sync="visible"
     @close="closeDialog"
-    top="60px"
+    top="0px"
     width="405px"
     :modal="false"
     :show-close="false"
+    :append-to-body="true"
   >
     <template slot="title">
         <div class="catalogueTitle">
             证据目录
         </div>
     </template>
-    <div >
+    <div class="a">
         <el-table bordercolor="black" width="100%" cellspacing="0" :data="eviList">
             <el-table-column prop="evPath" align="center">
               <template slot-scope="scope">
@@ -69,6 +70,8 @@ export default {
         category: "",
         userId: ""
       },
+      getData:false,
+
     };
   },
   inject: ["reload"],
@@ -87,6 +90,7 @@ export default {
 
       this.visible = true;
       console.log(this.visible);
+      if(!this.getData)  this.getEviList();
 
     },
     //关闭弹窗的时候清除数据
@@ -95,6 +99,7 @@ export default {
     },
     //查询证据列表
     getEviList() {
+      this.getData = true;
         let data = {
             caseId:this.caseId,
             // evName:this.evidenceForm.evName,
@@ -158,43 +163,12 @@ export default {
   mounted () {
       this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST;
       console.log(this.host);
-      this.getEviList();
-      var class1 =  document.getElementsByClassName("evidenceCatalogueBox");
-      console.log('class',class1)
-      var class2 = class1[0].parentNode;
-      console.log('class',class2)
+       let class1 =  document.getElementsByClassName("evidenceCatalogueBox");
+      let class2 = class1[0].parentNode;
       class2.style.right = '60px';
+      class2.style.top = '60px';
+      class2.style.overflow = 'hidden';
   }
 };
 </script>
-<style lang="scss">
-// @import "@/assets/css/caseHandle/index.scss";
-.evidenceCatalogueBox{
-    background: #EAEDF4;
-    .el-dialog__header {
-        height: 64px;
-        background: #FFFFFF;
-        color: #20232B;
-        padding: 0 0 0 20px;
-        line-height: 64px;
-        .catalogueTitle {
-            font-size: 20px;
-            cursor: pointer;
-        }
-    }
-    table{
-        text-align: center;
-        background: #fdffff;
-        td{
-            padding: 10px 0;
-            min-height: 38px;
-            border: 1px solid #7F8185;
-        }
-        tr{
-            td:nth-child(1),td:nth-child(3){
-                width: 40px;
-            }
-        }
-    }
-}
-</style>
+

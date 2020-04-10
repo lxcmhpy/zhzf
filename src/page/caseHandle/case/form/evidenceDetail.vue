@@ -1,7 +1,7 @@
 <template>
 <div>
 <el-dialog title="证据详情" :modal="false" :visible.sync="visible"
-    :show-close="false" width="60%" class= "detailDialog">
+    :show-close="false" width="60%" class= "detailDialog" :append-to-body="true">
       <div>
         <div style="float: left;width: 45%">
           <!-- <el-upload

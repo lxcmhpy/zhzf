@@ -95,7 +95,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns ></externalVideoBtns>
+                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -123,7 +123,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns ></externalVideoBtns>
+                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -192,7 +192,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns ></externalVideoBtns>
+                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -217,7 +217,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns ></externalVideoBtns>
+                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>

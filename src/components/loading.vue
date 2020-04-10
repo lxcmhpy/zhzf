@@ -174,7 +174,7 @@ export default {
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    // transform: translate(-50%, -50%);
     width: 152px;
     height: 90px;
     // background: url(../../static/images/gif/loading1.gif) !important;

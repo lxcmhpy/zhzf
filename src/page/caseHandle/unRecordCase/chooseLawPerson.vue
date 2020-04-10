@@ -38,7 +38,7 @@
             @change="handleCheckAllChange"
           >全选</el-checkbox>
           <div style="margin: 15px 0;"></div>
-          <el-checkbox-group v-model="checkedUserId" @change="handleCheckedUserChange">
+          <el-checkbox-group v-model="checkedUserId" @change="handleCheckedUserChange" >
             <el-checkbox
               v-for="(user,index) in userList"
               :label="user.id"
@@ -50,6 +50,7 @@
                 v-model="selectedNumber[index]"
                 placeholder="请选择"
                 @change="changeLawOfficerCards($event,user.lawOfficerCardsAndId)"
+                @click.native.prevent
               >
                 <el-option
                   v-for="item in user.lawOfficerCardsAndId.lawOfficerCards"
@@ -91,8 +92,12 @@ export default {
   methods: {
     findStallByCondition(){
         // findStaffListApi(this.staffNameOrCode);
+        let data = {
+        organId: iLocalStroage.gets("userInfo").organId,
+        inputValue: this.staffNameOrCode
+      };
         let _this = this
-        findStaffListApi(this.staffNameOrCode).then(res=>{
+        findStaffListApi(data).then(res=>{
             _this.userList = res.data;
             _this.userList.forEach(item => {
               //执法证号下拉框

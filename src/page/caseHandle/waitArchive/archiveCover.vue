@@ -6,6 +6,14 @@
           <div class="content_title">全国道路运输执法案件</div>
           <div class="border_blue"></div>
           <div class="content_form">
+            <el-form-item label="logo">
+              <div class="logoBox">
+                  <img src="../../../../static/images/img/main/logo.png" alt="">
+              </div> 
+            </el-form-item>
+          </div>
+          <div class="border_blue"></div>
+          <div class="content_form">
             <div class="row">
               <div class="col">
                 <el-form-item label="案号">
@@ -171,9 +179,9 @@
         </table>
     </div>
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'archiveCatalogue'" @showArchiveCatalogue="showArchiveCatalogue"></caseSlideMenu>
+    <caseSlideMenu ref="caseSlideMenuRef" :activeIndex="'archiveCatalogue'" @showArchiveCatalogue="showArchiveCatalogue"></caseSlideMenu>
     <!-- 卷宗目录 -->
-    <archiveCatalogue ref="archiveCatalogueRef"  @alertPDF="alertPDF" @showCoverEmit="showCoverEvent"></archiveCatalogue>
+    <!-- <archiveCatalogue ref="archiveCatalogueRef"  @alertPDF="alertPDF" @showCoverEmit="showCoverEvent"></archiveCatalogue> -->
 
     <casePageFloatBtns
         :pageDomId="'archiveCoverForm'"
@@ -303,7 +311,7 @@ export default {
     archiveCatalogue,
     casePageFloatBtns
   },
-  computed: { ...mapGetters(['caseId']) },
+  computed: { ...mapGetters(['caseId','clickArchiveCatalogue','archiveCatalogueList']) },
   mixins: [mixinGetCaseApiList],
   methods: {
     alertPDF(data) {
@@ -450,7 +458,11 @@ export default {
         // } else {
         //     this.com_submitCaseForm(handleType, "archiveCoverForm", true);
         // }
+        if(handleType == 1){
          this.submitArchive(handleType)
+        }else{
+          this.com_submitCaseForm(handleType, "archiveCoverForm", true);
+        }
     },
     //鼠标hover卷宗目录后 显示卷宗目录
     showArchiveCatalogue(){
@@ -506,27 +518,39 @@ export default {
     }
   },
   mounted() {
-    console.log()
-    this.$refs.archiveCatalogueRef.showModal(true);
+    // this.$refs.archiveCatalogueRef.showModal(true);
     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
     // this.getByMlCaseId(this.caseId)
     this.caseLinkDataForm.caseBasicinfoId = this.caseId
-  
+    this.$refs.caseSlideMenuRef.mouseenterShowEmit('archiveCatalogue')
     //在目录排序页面点击弹窗数据后返回的
-    if(this.$route.params && this.$route.params.clickData){
-      console.log('this.$route.params',this.$route.params)
-      let data ={
-        item:JSON.parse(this.$route.params.clickData),
-        mulvList:this.$route.params.mulvList
-      } 
-      this.alertPDF(data);
+    // if(this.$route.params && this.$route.params.clickData){
+    //   console.log('this.$route.params',this.$route.params)
+    //   let data ={
+    //     item:JSON.parse(this.$route.params.clickData),
+    //     mulvList:this.$route.params.mulvList
+    //   } 
+    //   this.alertPDF(data);
       
-    }else{
-      this.setFormData();
+    // }else{
+    //   this.setFormData();
+    // }
+  },
+  watch:{
+    'clickArchiveCatalogue':{
+      handler(newVal,oldVal){
+           console.log("newVal","oldVal")
+            console.log(newVal,oldVal)
+            if(newVal){
+              let data = {
+                item:this.clickArchiveCatalogue,
+                mulvList:this.archiveCatalogueList
+              }
+              this.alertPDF(data);
+            }
+      },
+      deep:true,
     }
-    
-    
-
   }
 };
 </script>
@@ -547,6 +571,17 @@ export default {
             width: 40px;
         }
     }
+  }
+}
+.logoBox{
+  width:90px;
+  border: 1px solid #ddd;
+  padding: 8px 0;
+  margin-top: 30px;
+  justify-content: center;
+  display: flex;
+  img{
+    width:85%
   }
 }
 

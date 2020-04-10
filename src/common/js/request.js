@@ -72,7 +72,7 @@ service.interceptors.response.use(
         return Promise.reject(response.data);
       }else if(response.data.code == -1){   //重新登录
         tryHideFullScreenLoading();
-        alertMessage('账户在其他地方登录，您被迫下线'); //账户在其他地方登录，您被迫下线
+        alertMessage('登陆超时，请重新登录'); //账户在其他地方登录，您被迫下线
         removeToken()
         return Promise.reject(response.data);
       }else{

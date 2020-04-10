@@ -13,14 +13,18 @@
           <u v-if="lineStyleFlag">{{docData.caseName}}</u>
         </p>
         <p>
-          勘验时间：<el-form-item prop="inquestStartTime" class="pdf_datapick" style="width:212px">
-            <el-date-picker v-model="docData.inquestStartTime" type="datetime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分" clear-icon='el-icon-circle-close'>
+          勘验时间：<el-form-item prop="inquestStartTime" class="pdf_datapick dataTimeReplaceBox" style="width:250px">
+            <el-date-picker v-model="docData.inquestStartTime" type="datetime" format="yyyy-MM-dd HH:mm"
+                value-format="yyyy年MM月dd日HH时mm分" style="width:250px">
             </el-date-picker>
+            <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.inquestStartTime"></el-input>
           </el-form-item>
           至
-          <el-form-item prop="inquestEndTime" class="pdf_datapick" style="width:212px">
-            <el-date-picker v-model="docData.inquestEndTime" type="datetime" format="dd日HH时mm分" placeholder="    日  时  分" clear-icon='el-icon-circle-close'>
+          <el-form-item prop="inquestEndTime" class="pdf_datapick dataTimeReplaceBox" style="width:212px">
+            <el-date-picker v-model="docData.inquestEndTime" type="datetime" format="yyyy-MM-dd HH:mm"
+              value-format="yyyy年MM月dd日HH时mm分">
             </el-date-picker>
+            <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="replaceInquestEndTime"></el-input>
           </el-form-item>
         </p>
         <el-row>
@@ -186,6 +190,23 @@ import {
 export default {
 
   data() {
+    //验证开始时间
+    var validateStartTime = (rule, value, callback) => {
+      let parseInquestStartTime = this.docData.inquestStartTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
+      let parseinquestEndTime = this.docData.inquestEndTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
+    //  console.log(Date.parse(this.docData.inquestStartTime),Date.parse(this.docData.inquestEndTime))
+      if(Date.parse(parseInquestStartTime)>Date.parse(parseinquestEndTime)){
+        this.$message({
+              showClose: true,
+              message: '开始时间不得大于结束时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        return callback(new Error("开始时间不得大于结束时间"));
+      }
+      callback();
+    };
     return {
       // inquestResult:'',
       restaurants: [],
@@ -236,6 +257,12 @@ export default {
         certificateId2:[{ required: true, message: "执法证号不能为空", trigger: "blur" }],
         recorder:[{ required: true, message: "记录人不能为空", trigger: "blur" }],
         inquestResult:[{ required: true, message: "勘验情况及结果不能为空", trigger: "blur" }],
+        inquestEndTime: [
+          { validator:validateStartTime , trigger: "blur" }
+        ],
+        inquestStartTime: [
+          { validator:validateStartTime , trigger: "blur" }
+        ],
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
@@ -271,7 +298,15 @@ export default {
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId']) },
+  computed: { 
+    ...mapGetters(['caseId']) ,
+    replaceInquestEndTime(){
+      if(this.docData.inquestEndTime){
+        let inquestEndTimeArr=this.docData.inquestEndTime.split('月');
+        return inquestEndTimeArr[1]
+      }
+    }
+  },
   methods: {
     checkHeights() {
       console.log('this.inputInfos')
@@ -476,4 +511,20 @@ export default {
 </script>
 <style lang="scss">
 @import "@/assets/css/caseHandle/caseDocModle.scss";
+#inquestNote_print{
+  .dataTimeReplaceBox{
+    position: relative;
+    .el-form-item__content .el-date-editor--datetime{
+      opacity:0;
+      position: absolute;
+      z-index: 2;
+    }
+    .replaceTime{
+      position:absolute;
+      top:0;
+      left:10px;
+    }
+  }
+}
+
 </style>

@@ -526,6 +526,17 @@ export function getDictListDetailApi(id) {
   });
 }
 
+//获取字典详情  字典值
+export function getDictListDetailByNameApi(name) {
+  return request({
+    url: "/system/sys/drawer/findAllDrawerByName/" + name,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 
 //新增、修改菜单
 export function addPermissionApi(data) {

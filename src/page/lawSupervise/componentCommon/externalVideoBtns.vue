@@ -34,7 +34,7 @@ export default {
         window.PhoneCallModule.sipHangUp();
     },
     videoCall() {
-      window.PhoneCallModule.sipVideoCall("10000","test1");
+    //   window.PhoneCallModule.sipVideoCall("10000","test1");
       document.getElementById('closePhone').click();
     },
     makeMobileCall() {
