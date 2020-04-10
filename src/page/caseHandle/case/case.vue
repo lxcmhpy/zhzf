@@ -202,15 +202,7 @@ export default {
   
     // 证据保存清单
     goEvidenceListForm() {
-<<<<<<< HEAD
-      this.$router.push({ name: 'evidenceListForm' });
-    },
-    // 抽样取样凭证
-    goObtaineEvidenceForm() {
-      this.$router.push({ name: 'obtaineEvidenceForms' });
-=======
      
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
     },
    
     // 抽样取样凭证

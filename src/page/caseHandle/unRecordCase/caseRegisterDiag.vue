@@ -77,24 +77,6 @@ export default {
     showModal(data, caseForm) {
       this.visible = true;
       // this.getEnforceLawType();
-<<<<<<< HEAD
-      this.$store.dispatch("getEnforceLawType", "1").then(
-        res => {
-          this.lawCateList = res.data;
-          this.lawCateList.forEach(element => {
-            console.log('循环', caseForm.wayType, element.cateName)
-            if (element.cateName == caseForm.wayType) {
-              this.caseRegisterForm.cateId = element.cateId;
-            }
-            if (element.cateName == caseForm.wayType) {
-              this.caseRegisterForm.cateId = element.cateId;
-            }
-            if (element.cateName == caseForm.wayType) {
-              this.caseRegisterForm.cateId = element.cateId;
-            }
-            this.getCaseType();
-          });
-=======
       let _this = this
       this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
@@ -115,24 +97,18 @@ export default {
           });
           }
           _this.getCaseType();
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
         },
         err => {
           console.log(err);
         }
       );
       // 首页跳转代入
-<<<<<<< HEAD
-      this.caseRegisterForm.programType = caseForm.programType;
-      this.caseRegisterForm.illageAct = data.strContent;
-=======
       // debugger
       if(caseForm){
          this.caseRegisterForm.programType = caseForm.programType;
       }
      
       this.caseRegisterForm.illageAct = data ? data.strContent : null;
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

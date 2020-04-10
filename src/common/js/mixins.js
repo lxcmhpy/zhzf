@@ -592,17 +592,10 @@ export const mixinGetCaseApiList = {
       console.log('flowChartData', flowChartData);
       let completeLinkArr = flowChartData.completeLink.split(',');
 
-<<<<<<< HEAD
-      //现场笔录、勘验笔录、询问笔录中数据处理 + 抽样取证凭证
-      if(caseLinktypeId == '2c9029ca5b71f8a3015b71fc67ee0001' || caseLinktypeId == '2c9029ab655639600165564481f70001' || caseLinktypeId == '2c9029ca5b71686d015b71a86ead0032'|| caseLinktypeId == '2c9029ca5b71686d015b71f5ac68004f'){
-        console.log('data.staff',data.staff);
-        this.setStaffAndCertificateId();
-=======
       //既是环节也是文书的
       let isHuanjieDoc = false;
       if (data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204g" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204h") {
         isHuanjieDoc = true;
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
       }
       this.$store.dispatch('deleteTabs', 'flowChart');
       let data2 = this.com_getCaseRouteName(data.linkID);

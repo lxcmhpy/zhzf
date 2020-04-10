@@ -171,11 +171,7 @@
               </el-radio-group>
             </div>
           </div>
-<<<<<<< HEAD
-          <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back" @change="getIllegaAct">
-=======
           <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back" @change="changeCommonOptions">
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
             <el-radio-button label="水路运政"></el-radio-button>
             <el-radio-button label="公路路政"></el-radio-button>
             <el-radio-button label="道路运政"></el-radio-button>
@@ -183,19 +179,11 @@
           </el-radio-group>
           <div class="magin_btm">常见违法行为
             <span class="casehome_topic_select">
-<<<<<<< HEAD
-              <!-- <el-select v-model="caseForm.value" placeholder="请选择" size='small'>
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select> -->
-              <el-cascader v-model="value" :options="options" :props="{ expandTrigger: 'hover' }" @change="handleChange"></el-cascader>
-=======
               <el-select v-model="caseForm.commenCase" placeholder="不限类别" size='small' @change="getIllegaAct">
                 <el-option v-for="item in commonOptions" :key="item.value" :label="item.label" :value="item.id">
                 </el-option>
               </el-select>
               <!-- <el-cascader v-model="caseForm.commenCase" size="mini" placeholder="不限类别" :options="options" :props="{ expandTrigger: 'hover' }" @change="getIllegaAct"></el-cascader> -->
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
             </span>
           </div>
         </el-form>
@@ -211,11 +199,7 @@
         </ul>
 
         <center>
-<<<<<<< HEAD
-          <el-button size="small" @click="caseRecord()">查看更多</el-button>
-=======
           <el-button size="small" @click="caseRecordMore()">查看更多</el-button>
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
         </center>
         <!-- <el-button type="text" @click="caseRecordMore()">打开嵌套表格的 Drawer</el-button> -->
 
@@ -266,64 +250,11 @@ export default {
         value: '不限类别',
         commenCase: '',
       },
-<<<<<<< HEAD
-=======
       commonOptions: [],
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
       options: [
         {
           value: '0',
           label: '道路运政',
-<<<<<<< HEAD
-          children: [
-            {
-              value: '01',
-              label: '道路旅客运输'
-            },
-            {
-              value: '02',
-              label: '道路普通货物运输'
-            },
-            {
-              value: '03',
-              label: '道路危险货物运输'
-            },
-            {
-              value: '04',
-              label: '国际道路运输'
-            },
-            {
-              value: '05',
-              label: '道路运输站（场）'
-            },
-            {
-              value: '06',
-              label: '机动车维修'
-            },
-            {
-              value: '07',
-              label: '驾驶员培训'
-            },
-            {
-              value: '08',
-              label: '道路运输从业人员'
-            },
-            {
-              value: '09',
-              label: '城市公交'
-            },
-            {
-              value: '010',
-              label: '城市轨道交通'
-            },
-            {
-              value: '011',
-              label: '出租汽车'
-            },
-            {
-              value: '012',
-              label: '汽车租赁'
-=======
           cateId: "1002000200000000",
           children: [
             {
@@ -385,27 +316,12 @@ export default {
               value: '012',
               label: '汽车租赁',
               id: "1002000200120000"
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
             },
           ]
         },
         {
           value: '1',
           label: '公路路政',
-<<<<<<< HEAD
-          children: [
-            {
-              value: '11',
-              label: '公路管理'
-            },
-            {
-              value: '12',
-              label: '超载超限'
-            },
-            {
-              value: '13',
-              label: '收费公路'
-=======
           cateId: "1002000100000000",
           children: [
             {
@@ -422,36 +338,18 @@ export default {
               value: '13',
               label: '收费公路',
               id: "1002000100030000"
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
             },
           ]
         },
         {
           value: '2',
           label: '水路运政',
-<<<<<<< HEAD
-=======
           cateId: "1002000300000000",
           children: []
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
         },
         {
           value: '3',
           label: '港口行政',
-<<<<<<< HEAD
-          children: [
-            {
-              value: '31',
-              label: '港口行政'
-            },
-            {
-              value: '32',
-              label: '港口建设'
-            },
-            {
-              value: '33',
-              label: '港口经营'
-=======
           cateId: "1002000500000000",
           children: [
             {
@@ -465,35 +363,24 @@ export default {
             {
               value: '33',
               label: '港口危贷'
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
             },
           ]
         },
         {
           value: '4',
           label: '航道行政',
-<<<<<<< HEAD
-=======
           cateId: "1002000400000000",
           children: []
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
         },
         {
           value: '5',
           label: '海事行政',
-<<<<<<< HEAD
-=======
           cateId: "1002000700000000",
           children: []
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
         },
         {
           value: '6',
           label: '工程质量监督',
-<<<<<<< HEAD
-        },
-      ]
-=======
           children: []
         },
       ],
@@ -502,7 +389,6 @@ export default {
       waitArchive: '0',
       approveIng: '0',
       lawCateList: []
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
     };
   },
   methods: {
@@ -513,20 +399,6 @@ export default {
       }
       this.getCaseList2(searchData)
       if (tab.index == 0) {
-<<<<<<< HEAD
-        this.moreFlag = 'waitDeal'
-      }
-      if (tab.index == 1) {
-        this.moreFlag = 'unRecordCase'
-      }
-      if (tab.index == 2) {
-        this.moreFlag = 'waitArchive'
-      }
-      if (tab.index == 3) {
-        this.moreFlag = 'approveIng'
-      }
-
-=======
         this.moreFlag = 'waitDeal';
       }
       if (tab.index == 1) {
@@ -539,7 +411,6 @@ export default {
         this.moreFlag = 'approveIng';
       }
       console.log('点击', this.tableData)
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
     },
     clickCase(row) {
       console.log('未立案flag', this.moreFlag)
@@ -618,17 +489,11 @@ export default {
     // 查看更多
     router(path) {
       this.$router.push({ path: '/myCase/' + path });
-<<<<<<< HEAD
-=======
-
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
     },
     // 立案登记
     caseRecord(data) {
       console.log(data)
       this.$refs.caseRegisterDiagRef.showModal(data, this.caseForm);
-<<<<<<< HEAD
-=======
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     // 查看更多违法行为
@@ -641,7 +506,6 @@ export default {
         hyTypeId: this.caseForm.commenCase,
       };
       this.$refs.chooseillegalActRef.showModal(lawCate);
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     // 查找

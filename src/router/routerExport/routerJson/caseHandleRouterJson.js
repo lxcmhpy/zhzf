@@ -75,18 +75,6 @@ export default [
       title: "抽样取样凭证",
       oneTab: true,
     },
-<<<<<<< HEAD
-    component: () => import("@/page/caseHandle/case/form/obtaineEvidenceForm.vue")
-  },
-  {
-    path: "/obtaineEvidenceForm",
-    name: "obtaineEvidenceForm",
-    meta: {
-      title: "抽样取样凭证",
-      oneTab: true,
-    },
-=======
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
     component: () => import("@/page/caseHandle/case/form/obtaineEvidenceFormReport.vue")
   },
   {

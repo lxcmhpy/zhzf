@@ -90,13 +90,8 @@
           </el-form-item>
         </p>
         <div class="pager_input quzheng">抽样取证地点：
-<<<<<<< HEAD
-          <el-form-item>
-            <el-input class='text_indent10 overflow_lins_textarea' v-model="docData.evidencePlace" rows="3" maxLength='90' placeholder="\"></el-input>
-=======
           <el-form-item prop="evidencePlace">
             <el-input class='text_indent10 overflow_lins_textarea' v-model="docData.evidencePlace"  maxLength='30' placeholder="\"></el-input>
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
           </el-form-item>
         </div>
         <el-row :gutter="10" class="pager_input">
@@ -132,16 +127,6 @@
               <td width="10%">数量</td>
               <td width="40%">被抽样物品地点</td>
           </tr>
-<<<<<<< HEAD
-          <tr v-for="item in docData.evdenceList" :key="item.id">
-            <td>{{item.index}}</td>
-            <td>{{item.sampleName}}</td>
-            <td>{{item.batchNumber}}</td>
-            <td>{{item.sampleNumber}}</td>
-            <td>{{item.samplePlace}}</td>
-          </tr>
-          <span>+</span>
-=======
           <tr v-for="(item,index) in docData.evdenceList" :key="index">
             <td>{{item.evidenceNo}}</td>
             <td >{{item.evidenceName}}</td>
@@ -182,7 +167,6 @@
             </td>
           </tr> -->
          
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
         </table>
         <el-form-item  prop="evidenceLength" style="visibility:hidden">
           <el-input v-model="docData.evidenceLength"></el-input>
@@ -290,11 +274,7 @@ export default {
       callback();
     };
     return {
-<<<<<<< HEAD
-
-=======
       
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
       docData: {
         caseNumber: '',
         // partyType: '',
@@ -308,18 +288,11 @@ export default {
         partyManager: '',
         socialCreditCode: '',
 
-<<<<<<< HEAD
-        getEvidence: '',
-=======
         getEvidenceTime: '',
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
         evidencePlace: '',
         evidenceDepartment: '',
         evidenceDepartmentPhone: '',
         evdenceList: [],
-<<<<<<< HEAD
-      },
-=======
         evidenceLength:0
       },
       // 下表格数据
@@ -360,19 +333,14 @@ export default {
       //     samplePlace4: ''
       //   },
       // ],
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
       caseDocDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
         caseDoctypeId: this.$route.params.docId, //文书类型ID
         //文书数据
         docData: "",
-<<<<<<< HEAD
-        status: "" //提交状态
-=======
         status: "", //提交状态
         linkTypeId:'2c90293b6c178b55016c17c93326000f' //所属环节的id
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
       },
       // CaseDocDataForm: {
       //   caseBasicinfoId: "2c9029ca5b71686d015b71f5ac68004f",
@@ -467,68 +435,12 @@ export default {
         name: this.$route.params.url
       });
     },
-<<<<<<< HEAD
-    //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
-      this.caseDocDataForm.caseBasicinfoId = this.caseId;
-      let data = {
-        caseId: this.caseId,
-        docId: this.$route.params.docId
-      };
-      this.com_getDocDataByCaseIdAndDocId(data)
-
-      this.docData.qaList.push({
-        question: '',
-        answer: '',
-        key: ''
-      });
-
-    },
-    addDocData(handleType) {
-      this.com_addDocData(handleType);
-      // this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-      // this.$router.push({
-      //   name: this.$route.params.url,
-      // });
-    },
-
-    // 获取问答内容
-    getQAModleInfo(edit) {
-      console.log('回显', edit)
-      this.qaList = JSON.parse(edit);
-      if (this.qaList.length < 2) {
-        this.qaList.push({})
-      }
-      // this.docData.QAModleInfo = edit;
-    },
-    overFlowEdit() { },
-
-    //保存文书信息
-    saveData(handleType) {
-      this.com_addDocData(handleType, "docForm");
-    },
-    submitData(handleType) {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: this.$route.params.url
-      });
-    },
-=======
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
     //是否是完成状态
     isOverStatus() {
       if (this.$route.params.docStatus == '1') {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-<<<<<<< HEAD
-    setStaffAndCertificateId() {
-      this.staffList = this.docData.staff.split(',')
-    }
-  },
-  mounted() {
-    this.getCaseBasicInfo();
-=======
     getDataAfter() {
       console.log('this.docData', this.docData)
     },
@@ -575,7 +487,6 @@ export default {
     },
   },
   mounted() {
->>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
   },
