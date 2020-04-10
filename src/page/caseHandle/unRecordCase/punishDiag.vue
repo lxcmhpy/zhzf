@@ -1,25 +1,12 @@
 <template>
-  <el-dialog
-    title="选泽违法条款及处罚依据"
-    :visible.sync="visible"
-    @close="closeDialog"
-    :close-on-click-modal="false"
-    width="40%"
-    append-to-body
-  >
+  <el-dialog title="选择违法条款及处罚依据" :visible.sync="visible" @close="closeDialog" :close-on-click-modal="false" width="40%" append-to-body>
     <div>
       <p>违法行为:<span>{{caseCauseName}}</span></p>
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-      >
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" class="table_style" @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="drawerName" label="类型"></el-table-column>
-        <el-table-column prop="illageClause" label="违法条款" ></el-table-column>
-        <el-table-column prop="punishClause" label="处罚依据" ></el-table-column>
+        <el-table-column prop="illageClause" label="违法条款"></el-table-column>
+        <el-table-column prop="punishClause" label="处罚依据"></el-table-column>
       </el-table>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -34,9 +21,9 @@ export default {
     return {
       visible: false,
       tableData: [],
-      caseCauseId:"",
-      caseCauseName:"",
-      selectData:[],
+      caseCauseId: "",
+      caseCauseName: "",
+      selectData: [],
     };
   },
   inject: ["reload"],
@@ -52,22 +39,24 @@ export default {
       this.visible = false;
     },
     //获取违法条款及处罚条款
-    findLawRegulationsByCauseId(){
+    findLawRegulationsByCauseId() {
       this.tableData = [];
-      this.$store.dispatch("findLawRegulationsByCauseId",this.caseCauseId).then(
+      let _this = this
+      this.$store.dispatch("findLawRegulationsByCauseId", this.caseCauseId).then(
         res => {
-          console.log(res);
+          debugger
+//          console.log(res);
           let data = res.data;
-          data.forEach(item=>{
-            let xiang1 = item.iitemCog? "第"+ item.iitemCog+"项" : "";
-            let xiang2 = item.iitemPun? "第"+ item.iitemPun+"项" : "";
+          data.forEach(item => {
+            let xiang1 = item.iitemCog ? "第" + item.iitemCog + "项" : "";
+            let xiang2 = item.iitemPun ? "第" + item.iitemPun + "项" : "";
 
-            let clause={
-              drawerName:item.drawerName,
-              illageClause:"《"+item.bnslawNameCog+"》第"+item.itemCog+"条" + xiang1,
-              punishClause:"《"+item.bnslawNamePun+"》第"+item.itemPun+"条" + xiang2
+            let clause = {
+              drawerName: item.drawerName,
+              illageClause: "《" + item.bnslawNameCog + "》第" + item.itemCog + "条" + xiang1,
+              punishClause: "《" + item.bnslawNamePun + "》第" + item.itemPun + "条" + xiang2
             }
-            this.tableData.push(clause);
+            _this.tableData.push(clause);
 
           })
         },
@@ -76,18 +65,25 @@ export default {
         }
       );
     },
-    handleSelectionChange(val){
-      console.log(val);
+    handleSelectionChange(val) {
+//      console.log(val);
       this.selectData = val;
     },
-    backInfor(){
+    backInfor() {
       this.visible = false;
-      this.$emit('setIllegalLawAndPunishLaw',this.selectData);
+      this.$emit('setIllegalLawAndPunishLaw', this.selectData);
     }
   },
-  mounted() {}
+  mounted() { }
 };
 </script>
 <style lang="scss">
 @import "@/assets/css/caseHandle/index.scss";
+</style>
+<style scoped>
+.table_style {
+  width: 100%;
+  height: 400px;
+  overflow: auto;
+}
 </style>

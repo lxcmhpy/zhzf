@@ -9,7 +9,7 @@
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <span class="datapick_style">
           <p>
-            时间：<el-form-item prop="askdataStart" class="pdf_datapick" >
+            时间：<el-form-item prop="askdataStart" class="pdf_datapick" style="width:220px">
               <!-- <el-date-picker style="height:100%" v-model="docData.askdata" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
               </el-date-picker> -->
               <!-- <el-date-picker v-model="docData.askdata" type="datetimerange" range-separator="至" format="yyyy年MM月dd日HH时MM分" start-placeholder="    年  月  日  时  分" end-placeholder="  时  分" :clearable="false">
@@ -18,7 +18,7 @@
                 v-model="docData.askdataStart"
                 type="datetime"
                 placeholder="年 月 日 时 分"
-                format="yyyy年MM月dd日HH时mm分">
+                format="yyyy年MM月dd日HH时mm分" style="width:220px">
               </el-date-picker>
             </el-form-item>
             至
@@ -26,19 +26,19 @@
               <el-time-picker
                 placeholder="时 分"
                 v-model="docData.askdataEnd"
-                format="HH时mm分"
+                format="HH时mm分" 
               >
               </el-time-picker>
             </el-form-item>
 
-            第
+            <span style="margin-left:50px">第</span>
             <el-form-item class="askRecordNumberBox" prop="askRecordNumber">
               <el-input v-model="docData.askRecordNumber" maxLength='2' placeholder="\"></el-input>
             </el-form-item>次询问
 
           </p>
           <p>地点：
-            <el-form-item v-if="!lineStyleFlag" prop="inquiryAddress" class="inquiryAddressBox">
+            <el-form-item v-if="!lineStyleFlag" prop="inquiryAddress" class="inquiryAddressBox" style="width:570px">
               <el-input v-model="docData.inquiryAddress" maxLength='40' placeholder="\"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiryAddress}}</u>
@@ -55,7 +55,7 @@
                 <u v-if="lineStyleFlag">{{docData.inquiryStaff}}</u></p>
             </el-col>
             <el-col :span="12">
-              <p>记录人：<el-form-item v-if="!lineStyleFlag" prop="recordStaff" class="width213">
+              <p>记录人：<el-form-item v-if="!lineStyleFlag" prop="recordStaff" style="width:246px">
                   <!-- <el-input type='textarea' v-model="docData.recordStaff" v-bind:class="{ over_flow:docData.recordStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <!-- <el-input type='textarea' v-model="docData.recordStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <el-select v-model="docData.recordStaff" :maxLength='maxLength'>
@@ -81,7 +81,7 @@
 
                   <el-input type='textarea' v-model="docData.inquiriedRelation" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item> -->
-                <el-form-item prop="inquiriedRelation" class="width182">
+                <el-form-item prop="inquiriedRelation" style="width:209px">
                 <el-select v-model="docData.inquiriedRelation" @change="changeRelationWithCase">
                   <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
@@ -96,7 +96,11 @@
               <p>
                 性别：<el-form-item v-if="!lineStyleFlag" prop="inquiriedSex" class="width228">
                   <!-- <el-input type='textarea' v-model="docData.inquiriedSex" v-bind:class="{ over_flow:docData.inquiriedSex.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <el-input type='textarea' v-model="docData.inquiriedSex" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                  <!-- <el-input type='textarea' v-model="docData.inquiriedSex" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <el-select v-model="docData.inquiriedSex" :maxLength="maxLength" placeholder="\">
+                    <el-option :value="0" label="男"></el-option>
+                    <el-option :value="1" label="女"></el-option>
+                  </el-select>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedSex}}</u>
 
@@ -104,7 +108,7 @@
             </el-col>
             <el-col :span="12">
               <p>
-                年龄：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAge" class="width230">
+                年龄：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAge" style="width:262px">
                   <!-- <el-input type='textarea' v-model="docData.inquiriedAge" v-bind:class="{ over_flow:docData.inquiriedAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <el-input type='textarea' v-model="docData.inquiriedAge" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
@@ -123,7 +127,7 @@
             </el-col>
             <el-col :span="12">
               <p>
-                联系电话：<el-form-item v-if="!lineStyleFlag" prop="inquiriedTel" class="width198">
+                联系电话：<el-form-item v-if="!lineStyleFlag" prop="inquiriedTel" style="width:230px">
                   <el-input type='textarea' v-model="docData.inquiriedTel" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedTel}}</u>
@@ -203,37 +207,7 @@
 
       </div>
     </el-form>
-    <!-- 悬浮按钮 -->
-    <!-- <div class="float-btns">
-      <el-button type="success">
-        <svg t="1577706357599" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2136" width="16" height="16">
-          <path d="M153.6 0h716.8v102.4H153.6zM0 153.6v614.4h153.6v256h716.8v-256h153.6V153.6z m768 768H256v-307.2h512z m153.6-563.2h-153.6V256h153.6z" p-id="2137" fill="#FFFFFF"></path>
-        </svg>
-        <br>
-        打印
-      </el-button>
-      <el-button type="success">
-        <svg t="1577706400265" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3033" width="16" height="16">
-          <path d="M946.176 896a34.304 34.304 0 0 1 0 68.608H77.824a34.304 34.304 0 0 1 0-68.608h868.352z m0-622.08L401.92 818.176 189.44 839.68l21.504-211.968 473.088-473.088 71.168-71.168c31.744-31.744 87.552-31.744 119.296 0l71.168 71.168c15.872 15.872 24.576 37.376 24.576 59.904 0.512 22.016-8.192 43.52-24.064 59.392zM266.24 762.88l103.936-10.752 431.616-431.616-93.696-93.696L276.48 658.432 266.24 762.88zM815.104 127.488c-4.096 0-8.192 1.536-11.264 4.608l-46.592 46.592 93.696 93.696 46.592-46.592c6.144-6.144 6.144-16.384 0-22.528l-71.168-71.168c-3.072-3.072-7.168-4.608-11.264-4.608z" p-id="3034" fill="#FFFFFF"></path>
-        </svg>
-        <br>
-        编辑
-      </el-button>
-      <el-button type="success">
-        <svg t="1577706320726" class="icon" viewBox="0 0 1052 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1274" width="16" height="16">
-          <path d="M615.822222 597.674667c-20.48-18.744889-33.194667-48.981333-33.194666-77.539556 0-27.107556 11.52-51.683556 30.208-70.115555a1.905778 1.905778 0 0 1 0.483555-0.227556c6.314667-6.229333 13.454222-11.776 21.248-16.412444a162.872889 162.872889 0 0 0 54.812445-121.571556c0-91.079111-75.121778-164.892444-167.822223-164.892444-92.728889 0-167.879111 73.813333-167.879111 164.892444 0 48.184889 21.219556 91.477333 54.840889 121.571556 7.822222 4.636444 14.904889 10.183111 21.276445 16.412444a0.995556 0.995556 0 0 1 0.341333 0.170667c18.830222 18.488889 30.293333 43.064889 30.293333 70.172444 0 28.558222-12.714667 58.794667-33.166222 77.539556h-246.613333c-13.368889 0-24.206222 10.609778-24.206223 23.665777v152.092445h730.168889v-152.092445a23.893333 23.893333 0 0 0-24.177777-23.665777h-246.613334z m-407.210666 227.271111H834.56v52.138666H208.611556v-52.138666z" fill="#FFFFFF" p-id="1275"></path>
-        </svg>
-        <br>
-        签章
-      </el-button>
-      <el-button type="primary">
-        <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
-          <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF"></path>
-        </svg><br>
-        提交
-      </el-button>
-    </div> -->
-    <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
+   
     <casePageFloatBtns
       :pageDomId="'question_print'"
       :formOrDocData="formOrDocData"
@@ -249,8 +223,10 @@ import QAModle from "./QAModle";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-import iLocalStroage from "@/common/js/localStroage";
-
+import iLocalStroage from "@/common/js/localStroage"; 
+import {
+  findCaseAllBindPropertyApi,
+} from "@/api/caseHandle";
 export default {
   components: {
     QAModle,
@@ -301,9 +277,9 @@ export default {
         askTime: 1,
         qaList: [{},{}],//弹出框问答数组，如请求时未返回即数组未定义，可能回显失败，刷新即可查看效果
         askdataStart:"",
-        askdataEnd:"",
+        askdataEnd:""
       },
-      qaList: [{},{}],
+      qaList: [{question:'',answer:''},{question:'',answer:''}],
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
@@ -311,6 +287,9 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
+        note:"",//文书名字
+        docDataId:"", //多份文书的id
+        linkTypeId:'2c90293b6c178b55016c17c93326000f' //所属环节的id
       },
       num4: 1,
       lineStyleFlag: false,
@@ -321,78 +300,38 @@ export default {
       value1: '',
       rules: {
         askdataStart: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '开始时间不能为空', trigger: 'blur' },
         ],
         askdataEnd: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '结束时间不能为空', trigger: 'blur' },
         ],
         askRecordNumber: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '询问次数不能为空', trigger: 'blur' },
         ],
         inquiryAddress: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '地点不能为空', trigger: 'blur' },
         ],
         inquiryStaff: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '询问人不能为空', trigger: 'blur' },
         ],
         recordStaff: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '记录人不能为空', trigger: 'change' },
         ],
         inquiried: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '被询问人不能为空', trigger: 'blur' },
         ],
         staff1: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '执法人员不能为空', trigger: 'blur' },
         ],
         staff2: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '执法人员不能为空', trigger: 'blur' },
         ],
         certificateId1: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '执法证号不能为空', trigger: 'blur' },
         ],
         certificateId2: [
-          { required: true, message: '请输入', trigger: 'blur' },
+          { required: true, message: '执法证号不能为空', trigger: 'blur' },
         ],
-
-
-
-        // party: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyIdNo: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyAddress: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyTel: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyName: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyUnitAddress: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyUnitTel: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // partyManager: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // punishLaw: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // socialCreditCode: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // illegalFactsEvidence: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // reconsiderationOrgan: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-
       },
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
@@ -408,6 +347,7 @@ export default {
         { value: "5", label: "代理人" }
       ],
       staffList:[],
+      needDealData:true,
 
     }
   },
@@ -422,7 +362,24 @@ export default {
         caseId: this.caseId,
         docId: this.$route.params.docId
       };
-      this.com_getDocDataByCaseIdAndDocId(data)
+      //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+      let addMoreData = JSON.parse(this.$route.params.addMoreData);
+    
+      if(addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")){
+        //设置询问笔录名称
+        console.log('添加')
+        this.caseDocDataForm.note = "询问笔录（"+addMoreData.askData.peopleType+")(第"+addMoreData.askData.askNum +"次)";
+        this.com_getCaseBasicInfo(data.caseId,data.docId);
+      }else{
+        console.log('修改')
+        let currentDocDataId = iLocalStroage.get("currentDocDataId");
+        if(currentDocDataId){
+          this.getDocDetailById(currentDocDataId)
+        }else{
+          this.getDocDetailById(this.$route.params.docDataId)
+        }
+      }
+      // this.getDocDetailById(this.$route.params.docDataId)
 
       this.docData.qaList.push({
         question: '',
@@ -447,8 +404,9 @@ export default {
     getQAModleInfo(edit) {
       console.log('回显', edit)
       this.qaList = JSON.parse(edit);
+    
       if(this.qaList.length<2){
-        this.qaList.push({})
+        this.qaList.push({question:'',answer:''})
       }
 
       // this.docData.QAModleInfo = edit;
@@ -475,7 +433,7 @@ export default {
     changeRelationWithCase(val){
       if(val == '0'){//为当事人
         this.docData.inquiried = this.docData.party;
-        this.docData.inquiriedSex = this.docData.partySex;
+        this.docData.inquiriedSex = Number(this.docData.partySex);
         this.docData.inquiriedAge = this.docData.partyAge;
         this.docData.inquiriedIdNo = this.docData.partyIdNo;
         this.docData.inquiriedTel = this.docData.partyTel;
@@ -495,7 +453,7 @@ export default {
       this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
       console.log(staffIndex);
     },
-    setStaffAndCertificateId(){
+    getDataAfter(){
       this.staffList=this.docData.staff.split(',');
       this.docData.staff1 =  this.staffList[0];
       this.docData.staff2 =  this.staffList[1];
@@ -505,20 +463,130 @@ export default {
       this.docData.inquiryStaff =iLocalStroage.gets('userInfo').username;
       this.docData.organName = iLocalStroage.gets('userInfo').organName;
       //与案件关系默认为当事人
-      this.docData.inquiriedRelation = "0";
-      this.docData.inquiried = this.docData.party;
-      this.docData.inquiriedSex = this.docData.partySex;
-      this.docData.inquiriedAge = this.docData.partyAge;
-      this.docData.inquiriedIdNo = this.docData.partyIdNo;
-      this.docData.inquiriedTel = this.docData.partyTel;
-      this.docData.inquiriedUnitPosition = this.docData.partyUnitPosition;
+      // this.docData.inquiriedRelation = "0";
+      // this.docData.inquiried = this.docData.party;
+      // this.docData.inquiriedSex = Number(this.docData.partySex);
+      // this.docData.inquiriedAge = this.docData.partyAge;
+      // this.docData.inquiriedIdNo = this.docData.partyIdNo;
+      // this.docData.inquiriedTel = this.docData.partyTel;
+      // this.docData.inquiriedUnitPosition = this.docData.partyUnitPosition;
+      // let addMoreData = JSON.parse(this.$route.params.addMoreData);
+      // console.log('addMoreData',addMoreData);
+      this.setDataForPelple();
       //默认第一次询问
-      this.docData.askRecordNumber = 1;
+      this.docData.askRecordNumber = JSON.parse(this.$route.params.addMoreData).askData.askNum ? JSON.parse(this.$route.params.addMoreData).askData.askNum : 1;
+      console.log('this.docData.askRecordNumber',this.docData.askRecordNumber);
+    },
+    //根据类型
+    setDataForPelple(){
+       let selectPeo = JSON.parse(this.$route.params.addMoreData).askData.peopleAndRelationType;
+      //  console.log('addMoreData',selectPeo);
+       
+       let selectPeo2 = selectPeo.split('-'); //[name,relation]
+       console.log('addMoreData',selectPeo2);
+       let dailiDataList = JSON.parse(this.docData.agentPartyEcertId);
+        let dailiData = "";
+       dailiDataList.forEach(item=>{
+        //  console.log(item);
+          if(this.switchRelate(item.relationWithCase) == selectPeo2[1] && item.name == selectPeo2[0]){
+            console.log('不是当事人')
+           dailiData = item;
+          console.log('dailiData22222',dailiData);
+          this.docData.inquiriedRelation = item.relationWithCase;
+
+           return;
+          }
+          // this.setDataForPelpleDetail(dailiData);
+
+       })
+       //当事人
+       if(!dailiData){
+         dailiData ={
+          name:this.docData.party,
+          sex: this.docData.partySex,
+          zhengjianNumber: this.docData.partyIdNo,
+          age:this.docData.partyAge,
+          company: this.docData.partyUnitPosition, 
+          position: this.docData.occupation,
+          tel: this.docData.partyTel,
+          adress: this.docData.partyAddress,
+        }
+        
+        this.docData.inquiriedRelation = "0";
+       }
+      //与案件关系选择以上都不是时
+      if(selectPeo2[0] == '以上均不是'){
+        dailiData ={
+          name:'',
+          sex: '',
+          zhengjianNumber: '',
+          age:'',
+          company: '', 
+          position: '',
+          tel: '',
+          adress: '',
+        }
+        this.docData.inquiriedRelation = "";
+      }
+      this.setDataForPelpleDetail(dailiData);
+       
+    },
+    setDataForPelpleDetail(dailiData){
+      console.log('dailiData',dailiData);
+        this.docData.inquiried = dailiData.name;
+        this.docData.inquiriedSex = Number(dailiData.sex);
+        this.docData.inquiriedIdNo = dailiData.zhengjianNumber;
+        this.docData.inquiriedAge = dailiData.age,
+        this.docData.inquiriedUnitPosition = dailiData.company + " " + dailiData.position;
+        this.docData.inquiriedAddress = dailiData.adress;
+        this.docData.inquiriedTel = dailiData.tel;
+        console.log(' this.docData.inquiriedSex', this.docData.inquiriedSex);
+    },
+    switchRelate(relation){
+      let realRelation = '';
+      switch (relation) {
+        case "0":
+          realRelation = '当事人'
+          break;
+        case "1":
+          realRelation = '驾驶人'
+          break;
+        case "2":
+          realRelation = '实际所有者'
+          break;
+        case "3":
+          realRelation = '证人'
+          break;
+        case "4":
+          realRelation = '承运人'
+          break;
+        case "5":
+          realRelation = '代理人'
+          break;
+        default:
+          break;
+      }
+      return realRelation;
+    },
+    //获取执法人员
+    getLawOfficer(){
+      let data = {
+        caseBasicInfoId: this.caseId,
+        typeId: this.$route.params.docId
+      };
+        findCaseAllBindPropertyApi(data).then(res=>{
+          console.log(res);
+          let data2 = JSON.parse(res.data.propertyData);
+          this.staffList = data2.staff.split(',');
+        },err=>{
+          console.length(err);
+        })
     }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
      this.isOverStatus();
+     this.getLawOfficer();
   },
 }
 </script>
@@ -529,7 +597,7 @@ export default {
    width: 100px;
  }
  .inquiryAddressBox{
-   width: calc(100% - 60px);
+  //  width: calc(100% - 60px);
   // width: 500px;
  }
  .inquiriedUnitPositionBox{
@@ -537,6 +605,9 @@ export default {
  }
  .inquiriedAddressBox{
    width: calc(100% - 80px);
+ }
+.print_info p .span_bg{
+  height: 23px;
  }
 
 }

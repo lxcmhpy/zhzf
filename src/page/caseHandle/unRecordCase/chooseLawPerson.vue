@@ -11,7 +11,7 @@
       <div class="choosed">
         <p>
           <span>已选人员</span>
-          <span>4</span>
+          <span>{{this.checkedUser.length}}</span>
         </p>
         <div>
           <el-tag
@@ -26,10 +26,10 @@
       <div class="choose">
         <p>
           <span>本机构人员</span>
-          <span>20</span>
+          <span>{{this.userList.length}}</span>
         </p>
-        <el-input placeholder="请输入姓名或执法证号" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入姓名或执法证号" class="input-with-select" v-model="staffNameOrCode">
+          <el-button slot="append" icon="el-icon-search" @click="findStallByCondition()"></el-button>
         </el-input>
         <div class="userList">
           <el-checkbox
@@ -71,7 +71,7 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-
+import { findStaffListApi } from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -83,11 +83,33 @@ export default {
       selectedNumber: [],
       alreadyChooseLawPerson: [], //信息采集页传来的
       currentUserName: iLocalStroage.gets("userInfo").username, //当前登录用户的username
-      checkedUserId: []
+      checkedUserId: [],
+      staffNameOrCode: "",
     };
   },
   inject: ["reload"],
   methods: {
+    findStallByCondition(){
+        // findStaffListApi(this.staffNameOrCode);
+        let data = {
+        organId: iLocalStroage.gets("userInfo").organId,
+        inputValue: this.staffNameOrCode
+      };
+        let _this = this
+        findStaffListApi(data).then(res=>{
+            _this.userList = res.data;
+            _this.userList.forEach(item => {
+              //执法证号下拉框
+              item.lawOfficerCardsAndId = {
+                id: item.id,
+                lawOfficerCards: item.lawOfficerCards.split(",")
+              };
+            });
+      },err=>{
+        console.log(err);
+      })
+
+    },
     showModal(alreadyChooseLawPersonId, inforCollectLawPerson) {
       this.visible = true;
       // this.alreadyChooseLawPerson = alreadyChooseLawPerson;
@@ -99,6 +121,7 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
+      this.staffNameOrCode = "";
     },
     //全选
     handleCheckAllChange(val) {
@@ -120,12 +143,13 @@ export default {
     handleCheckedUserChange(val) {
       console.log(val);
       this.checkedUser = [];
+       let _this = this
       val.forEach(item => {
-        this.userList.forEach(item2 => {
+        _this.userList.forEach(item2 => {
           if (item == item2.id) {
             //更新tag
             console.log('更新tag',item2);
-            this.checkedUser.push(item2);
+            _this.checkedUser.push(item2);
             return;
           }
         });
@@ -165,12 +189,13 @@ export default {
     },
     //查询执法人员
     searchLawPerson(alreadyChooseLawPersonId, inforCollectLawPerson) {
+      let _this = this
       this.$store
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
         .then(
           res => {
-            this.userList = res.data;
-            this.userList.forEach(item => {
+            _this.userList = res.data;
+            _this.userList.forEach(item => {
               //执法证号下拉框
               item.lawOfficerCardsAndId = {
                 id: item.id,
@@ -187,14 +212,14 @@ export default {
                 }
               });
               if (hasChangeCard) {
-                this.selectedNumber.push(
+                _this.selectedNumber.push(
                   inforCollectLawPerson2.selectLawOfficerCard
                 );
                 //userList新增字段 选中的执法证号
                 item.selectLawOfficerCard =
                   inforCollectLawPerson2.selectLawOfficerCard;
               } else {
-                this.selectedNumber.push(
+                _this.selectedNumber.push(
                   item.lawOfficerCardsAndId.lawOfficerCards[0]
                 );
                 //userList新增字段 选中的执法证号
@@ -203,7 +228,7 @@ export default {
               }
             });
             //  this.checkedUser = this.alreadyChooseLawPerson;
-            this.handleCheckedUserChange(alreadyChooseLawPersonId);
+            _this.handleCheckedUserChange(alreadyChooseLawPersonId);
           },
           err => {
             console.log(err);

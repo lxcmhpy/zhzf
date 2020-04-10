@@ -125,7 +125,7 @@ export default {
     showModal(type, data) {
       this.visible = true;
       this.handelType = type;
-      console.log(type);
+//      console.log(type);
       if (type == 0) {
         this.dialogTitle = "执法门类配置（新增）";
 
@@ -133,7 +133,7 @@ export default {
         // this.addOrganForm.pidName = data.parentNodeName;
         // this.isDisabled = false;
       } else if (type == 2) {
-        console.log(data);
+//        console.log(data);
         this.dialogTitle = "修改角色";
         this.addRoleForm.name = data.name;
         this.addRoleForm.description = data.description;
@@ -152,29 +152,30 @@ export default {
     },
     //获取机构
     getAllOrgan(organId) {
+        let _this = this
       this.$store.dispatch("getAllOrgan").then(
         res => {
-          this.defaultExpandedKeys.push(res.data[0].id);
-          this.selectCurrentTreeName = this.selectCurrentTreeName
-            ? this.selectCurrentTreeName
+          _this.defaultExpandedKeys.push(res.data[0].id);
+          _this.selectCurrentTreeName = _this.selectCurrentTreeName
+            ? _this.selectCurrentTreeName
             : res.data[0].label;
           if (res.data[0].children && res.data[0].children.length > 0) {
             res.data[0].children.forEach(item => {
-              this.defaultExpandedKeys.push(item.id);
+              _this.defaultExpandedKeys.push(item.id);
             });
           }
-          this.organData = res.data;
-          console.log(this.defaultExpandedKeys);
-          console.log(this.organData);
+          _this.organData = res.data;
+//          console.log(_this.defaultExpandedKeys);
+//          console.log(_this.organData);
           if (organId == "root") {
-            this.currentOrganId = res.data[0].id;
+            _this.currentOrganId = res.data[0].id;
           } else {
-            this.currentOrganId = organId;
+            _this.currentOrganId = organId;
           }
-        //   this.getSelectOrgan();
+        //   _this.getSelectOrgan();
         },
         err => {
-          console.log(err);
+//          console.log(err);
         }
       );
     },

@@ -2,7 +2,7 @@ import * as types from "../mutation-types";
 import Vue from "vue";
 const vm = new Vue(); //vm等同于this
 
-import { getCaptchaApi, loginInApi, getMenuApi, loginOutApi,getCapImgSrcApi } from "@/api/login";
+import { getCaptchaApi, loginInApi, resetPasswordApi, getMenuApi, loginOutApi, getCapImgSrcApi } from "@/api/login";
 import {
     getAllOrganApi, getSelectOrganApi, addOrganApi, getOrganDetailApi, deleteOrganApi, hasOrganNameApi, getCurrentAndNextOrganApi,
     getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getOrganBindRoleApi,
@@ -10,7 +10,6 @@ import {
     getAllMenuListApi, getTreePermissionApi, addPermissionApi, deletePermissionApi,
     getDictListApi, getDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
-
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi } from "@/api/caseDeploy";
@@ -39,7 +38,7 @@ const system = {
             })
         },
         //获取验证码图片
-        getCapImgSrc({ commit },data) {
+        getCapImgSrc({ commit }, data) {
             return new Promise((resolve, reject) => {
                 getCapImgSrcApi(data).then(
                     res => {
@@ -59,7 +58,26 @@ const system = {
                 loginInApi(userInfo)
                     .then(
                         response => {
-                            console.log("loginIn response", response);
+                                console.log("loginIn response", response);
+                                commit(types.SET_AUTHTOKEN, response.access_token); //token
+                                resolve(response);
+                        },
+                        error => {
+                            reject(error);
+                        }
+                    )
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
+        },
+        // 修改密码
+        resetPassword({ commit }, userInfo) {
+            return new Promise((resolve, reject) => {
+                resetPasswordApi(userInfo)
+                    .then(
+                        response => {
+                            console.log(" resetPassword response", response);
                             commit(types.SET_AUTHTOKEN, response.data); //token
                             // Cookies.set("menu", "customerService");
                             resolve(response);

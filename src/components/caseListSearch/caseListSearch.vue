@@ -8,7 +8,7 @@
         :model="caseSearchForm"
         ref="caseSearchForm"
         class="caseSearchForm"
-        label-width="90px"
+        label-width="100px"
       >
         <div :class="lineSearchSty">
           <div class="item" v-if="caseState != 'unRecordCase'">
@@ -27,29 +27,59 @@
               <el-input v-model="caseSearchForm.vehicleShipId"></el-input>
             </el-form-item>
           </div>
-          <div class="item">
-            <el-form-item label="案件类型">
-               <el-select
-                v-model="caseSearchForm.caseType"
-                placeholder="请选择"
-              >
-                <el-option
-                  v-for="item in caseTypeList"
-                  :key="item.id"
-                  :label="item.typeName"
-                  :value="item.typeName"
-                ></el-option>
-              </el-select>
+            <div class="item">&nbsp;
+                <el-button type="primary" size="medium" icon="el-icon-search" @click="searchCaseEmit"></el-button>
+                <el-button
+                type
+                size="medium"
+                :icon="hideSomeSearch ? 'el-icon-arrow-down':'el-icon-arrow-up'"
+                @click="showSomeSearchEmit"
+                ></el-button>
+            </div>
+        </div>
+
+        <!-- <div v-if="caseState == 'waitDeal'">
+          <div class="item item2">
+            <el-form-item label="当事人/单位">
+              <el-input v-model="caseSearchForm.caseId"></el-input>
             </el-form-item>
           </div>
-          <div class="item" v-if="caseState == 'unRecordCase' || caseState == 'waitDeal'">
-            <el-form-item label="案件状态">
-              <el-input v-model="caseSearchForm.caseStatus"></el-input>
-            </el-form-item>
-          </div>
+        </div>-->
+        <div :class="{hideSomeSearchClass:hideSomeSearch,lineTwoStyle:caseState == 'waitArchive'}">
+            <div class="item">
+                <el-form-item label="案件类型">
+                    <el-select
+                        v-model="caseSearchForm.caseType"
+                        placeholder="请选择"
+                    >
+                        <el-option
+                        v-for="item in caseTypeList"
+                        :key="item.id"
+                        :label="item.typeName"
+                        :value="item.typeName"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
+            </div>
+            <div class="item" v-if="caseState == 'unRecordCase' || caseState == 'waitDeal'">
+                <el-form-item label="案件状态">
+                    <!-- <el-input v-model="caseSearchForm.caseStatus"></el-input> -->
+                    <el-select
+                        v-model="caseSearchForm.caseStatus"
+                        placeholder="请选择"
+                    >
+                        <el-option
+                        v-for="item in caseStateList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.name"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
+            </div>
 
           <div class="item" v-if="caseState == 'waitDeal' || caseState == 'approveIng'">
-            <el-form-item label="当前环节">
+            <el-form-item label="当前环节" v-if="caseState == 'waitDeal'">
                 <el-select
                 v-model="caseSearchForm.currentLinkName"
                 placeholder="请选择"
@@ -63,32 +93,27 @@
               </el-select>
 
             </el-form-item>
+            <el-form-item label="当前环节" v-if="caseState == 'approveIng'">
+                <el-select
+                v-model="caseSearchForm.currentLinkName"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="(item,index) in approvalInglinkList"
+                  :key="index"
+                  :label="item"
+                  :value="item"
+                ></el-option>
+              </el-select>
+
+            </el-form-item>
           </div>
+         
           <div class="item" v-if="caseState == 'myApproval'">
             <el-form-item label="申请人">
               <el-input v-model="caseSearchForm.applicant"></el-input>
             </el-form-item>
           </div>
-          <div class="item">
-            <el-button type="primary" size="medium" icon="el-icon-search" @click="searchCaseEmit"></el-button>
-            <el-button
-              type
-              size="medium"
-              :icon="hideSomeSearch ? 'el-icon-arrow-down':'el-icon-arrow-up'"
-              @click="showSomeSearchEmit"
-            ></el-button>
-          </div>
-        </div>
-
-        <!-- <div v-if="caseState == 'waitDeal'">
-          <div class="item item2">
-            <el-form-item label="当事人/单位">
-              <el-input v-model="caseSearchForm.caseId"></el-input>
-            </el-form-item>
-          </div>
-        </div>-->
-
-        <div :class="{hideSomeSearchClass:hideSomeSearch,lineTwoStyle:caseState == 'waitArchive'}">
           <div class="item">
             <el-form-item label="违法行为">
               <el-input v-model="caseSearchForm.caseCauseName"></el-input>
@@ -105,10 +130,9 @@
                 value-format="yyyy-MM-dd HH:mm:ss"
                 format="yyyy-MM-dd"
                 :default-time="['00:00:00', '23:59:59']">
-              ></el-date-picker>
+              </el-date-picker>
             </el-form-item>
           </div>
-
           <div class="item" v-if="caseState == 'waitArchive'">
             <el-form-item label="结案时间">
               <el-date-picker
@@ -120,10 +144,9 @@
                 value-format="yyyy-MM-dd HH:mm:ss"
                 format="yyyy-MM-dd"
                 :default-time="['00:00:00', '23:59:59']">
-              ></el-date-picker>
+              </el-date-picker>
             </el-form-item>
           </div>
-
           <div class="item" v-if="caseState == 'myApproval'" >
             <el-form-item label="申请时间">
               <el-date-picker
@@ -135,7 +158,7 @@
                 value-format="yyyy-MM-dd HH:mm:ss"
                 format="yyyy-MM-dd"
                 :default-time="['00:00:00', '23:59:59']">
-              ></el-date-picker>
+              </el-date-picker>
             </el-form-item>
           </div>
         </div>
@@ -148,6 +171,9 @@ import {
  getQueryLinkListApi,
  getQueryCaseTypeListApi,
 } from "@/api/caseHandle";
+import {
+ getDictListDetailApi
+} from "@/api/system";
 export default {
   data() {
     return {
@@ -173,6 +199,9 @@ export default {
       hideSomeSearch: true,
       linkList:[], //环节
       caseTypeList:[],//类型
+      caseStateList:[],//状态
+      dictId: this.caseState=="waitDeal" ?  "ef38274ddea12be26e9a8c1bf23cd401" : "324701f1633dd65ca79a28fbc79c1628",
+      approvalInglinkList:['立案登记','案件调查报告','结案报告']
     };
   },
   computed: {
@@ -197,7 +226,7 @@ export default {
     caseRecordEmit() {
       this.$emit("caseRecord");
     },
-    //查询所以环节
+    //查询所有环节
     getAllLinkList() {
       getQueryLinkListApi().then(
         res => {
@@ -233,11 +262,25 @@ export default {
         this.caseSearchForm.endCaseEndTime = this.endCaseTimeArray[1]
 
         this.$emit('searchCase',this.caseSearchForm);
+    },
+    //查询案件状态
+    getQueryCaseStateList(){
+      getDictListDetailApi(this.dictId).then(
+        res => {
+          console.log("状态", res);
+          // this.options = res.data;
+          this.caseStateList = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
   },
   created(){
       this.getAllLinkList();
       this.getQueryCaseTypeList();
+      this.getQueryCaseStateList();
   }
 };
 </script>

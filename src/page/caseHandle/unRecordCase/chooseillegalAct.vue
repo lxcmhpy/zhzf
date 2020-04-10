@@ -17,12 +17,12 @@
         <div>
           <div class="item">
             <el-input v-model="illegalActSearchForm.categoryId" v-if="showcateId"></el-input>
-            <el-form-item label="执法门类">
+            <el-form-item label="执法门类" prop="cateName">
               <el-input v-model="cateName" disabled></el-input>
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="行业类别">
+            <el-form-item label="行业类别" prop="hyTypeId">
               <el-select v-model="illegalActSearchForm.hyTypeId" placeholder="请选择" @change="changehyType">
               <el-option
                 v-for="item in industryCategoryList"
@@ -34,19 +34,19 @@
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="行为代码">
+            <el-form-item label="行为代码" prop="strNumber">
               <el-input v-model="illegalActSearchForm.strNumber"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="itemBig">
-            <el-form-item label="违法行为">
+            <el-form-item label="违法行为" prop="strContent">
               <el-input v-model="illegalActSearchForm.strContent"></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
-            <el-button type="primary" @click="getIllegaAct">确 定</el-button>
+            <el-button type="primary" @click="getIllegaAct">查 询</el-button>
           </div>
         </div>
       </el-form>
@@ -108,6 +108,9 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
+      this.$nextTick(() => {
+        this.$refs['illegalActSearchForm'].resetFields()
+      })
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -122,11 +125,11 @@ export default {
     },
     //获取行业类别 根据执法门类
     getIndustryCategory(){
-
+      let _this = this
       this.$store.dispatch("getIndustryCategory",this.illegalActSearchForm.categoryId).then(
         res => {
-         this.industryCategoryList = res.data;
-         this.getIllegaAct();
+         _this.industryCategoryList = res.data;
+         _this.getIllegaAct();
         },
         err => {
           console.log(err);
@@ -137,10 +140,11 @@ export default {
     getIllegaAct(){
       this.illegalActSearchForm.size = this.pageSize;
       this.illegalActSearchForm.current = this.currentPage;
+      let _this = this
       this.$store.dispatch("getIllegaAct",this.illegalActSearchForm).then(
         res => {
-         this.tableData = res.data.records;
-         this.totalPage=res.data.total
+         _this.tableData = res.data.records;
+         _this.totalPage=res.data.total
         },
         err => {
           console.log(err);

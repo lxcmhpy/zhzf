@@ -10,7 +10,7 @@
     <div>
         <!-- <p  style="line-height: 30px;cursor: pointer;" @click="chooseQues">{{item}}</p> -->
         <el-radio-group v-model="question">
-            <p v-for="(item,index) in questionList" :key="index" style="line-height: 30px;"><el-radio  :label="item"></el-radio></p>
+            <p v-for="(item,index) in questionList" :key="index" style="line-height: 30px;"><el-radio  :label="item.request"></el-radio></p>
         </el-radio-group>
     </div>
      <span slot="footer" class="dialog-footer">
@@ -19,28 +19,40 @@
   </el-dialog>
 </template>
 <script>
+import {
+  findRequestListByModelIdApi,
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
       visible: false,
       question:"",
-      questionList:['叫啥','住哪','为啥来这']
+      questionList:[]
     };
   },
   methods: {
-    showModal() {
-      
+    showModal(modelId) {
+      console.log('modelId',modelId)
       this.visible = true;
-    
+      this.findQuestionList(modelId);
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
     },
     chooseQuesEmit(){
-        console.log(this.question);
          this.visible = false;
         this.$emit("chooseQues",this.question);
+    },
+    //获取问题
+    findQuestionList(modelId){
+      findRequestListByModelIdApi(modelId).then(res=>{
+        console.log('问题',res);
+        this.questionList = res.data;
+        console.log('this.questionList',this.questionList);
+      },err=>{
+        console.log(err);
+      })
     }
     
   }

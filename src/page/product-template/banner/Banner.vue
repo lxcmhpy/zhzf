@@ -136,11 +136,12 @@ export default {
         size: this.pageSize,
         // name: this.dicSearchForm.name
       };
+      let _this = this
       this.$store.dispatch("getBannerList", data).then(
         res => {
           console.log("环节列表", res);
-          this.tableData = res.data.records;
-          this.totalPage = res.data.total;
+          _this.tableData = res.data.records;
+          _this.totalPage = res.data.total;
 
         },
         err => {

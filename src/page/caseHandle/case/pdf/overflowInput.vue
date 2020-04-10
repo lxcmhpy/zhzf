@@ -24,7 +24,7 @@ export default {
   inject: ["reload"],
   methods: {
     showModal(type, data) {
-      console.log(1212);
+//      console.log(1212);
       this.visible = true;
       this.dialogTitle = "多行编辑"
     },

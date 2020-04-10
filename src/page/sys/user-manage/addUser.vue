@@ -180,9 +180,10 @@ export default {
       //显示弹框
       this.visible = true;
       this.dialogStatus = "addEquipment";
+      let _this = this
       //新增弹框标题
       this.$nextTick(() => {
-        this.$refs["addUserForm"].resetFields();
+        _this.$refs["addUserForm"].resetFields();
       });
       this.parentNode = data;
       this.getCurrentOrganAndChild();
@@ -212,11 +213,12 @@ export default {
     },
     //获取当前机构及其子机构
     getCurrentOrganAndChild() {
+      let _this = this
       this.$store.dispatch("getCurrentAndNextOrgan",this.parentNode.parentNodeId).then(
         res => {
 
           console.log(res);
-          this.getOrganList = res.data;
+          _this.getOrganList = res.data;
           // this.addUserForm = this.rowData;
           //this.addUserForm.organId  = this.rowData.organId;
         },
@@ -231,11 +233,12 @@ export default {
       let data = {
         organId: data1
       };
+      let _this = this
       console.log("获取选中的机构下的部门", data);
       this.$store.dispatch("getDepartmentsNoPage", data).then(
         res => {
           console.log("部门数据", res);
-          this.departments = res.data;
+          _this.departments = res.data;
         },
         err => {
           console.log(err);
@@ -244,59 +247,60 @@ export default {
     },
     // 弹框保存
     save() {
+      let _this = this
       this.$refs["addUserForm"].validate(valid => {
         if (valid) {
-          if (this.dialogStatus === "addEquipment") {
-            console.log("this.addUserForm", this.addUserForm);
-            this.$store
-              .dispatch("addUser", this.addUserForm)
+          if (_this.dialogStatus === "addEquipment") {
+            console.log("this.addUserForm", _this.addUserForm);
+            _this.$store
+              .dispatch("addUser", _this.addUserForm)
               .then(res => {
-                this.$message({
+                _this.$message({
                   showClose: true,
                   message: "新增用户成功",
                   type: "success"
                 });
-                this.visible = false;
-                this.$emit("uploadaaa", "1");
+                _this.visible = false;
+                _this.$emit("uploadaaa", "1");
               })
               .catch(err => {
-                this.$message({
+                _this.$message({
                   showClose: true,
                   message: err,
                   type: "error"
                 });
               });
-          } else if (this.dialogStatus === "editEquipment") {
-            console.log(this.addUserForm);
+          } else if (_this.dialogStatus === "editEquipment") {
+            console.log(_this.addUserForm);
             let data = {
-              id: this.addUserForm.id,
-              username: this.addUserForm.username,
-              mobile: this.addUserForm.mobile,
-              nickName: this.addUserForm.nickName,
-              idNumber: this.addUserForm.idNumber,
-              category: this.addUserForm.category,
-              organId: this.addUserForm.organId,
-              organTitle: this.addUserForm.organTitle,
-              departmentId: this.addUserForm.departmentId,
-              departmentTitle: this.addUserForm.departmentTitle,
-              Provincial: this.addUserForm.Provincial,
-              Ministerial: this.addUserForm.Ministerial,
-              Maritime: this.addUserForm.Maritime,
-              Other: this.addUserForm.Other
+              id: _this.addUserForm.id,
+              username: _this.addUserForm.username,
+              mobile: _this.addUserForm.mobile,
+              nickName: _this.addUserForm.nickName,
+              idNumber: _this.addUserForm.idNumber,
+              category: _this.addUserForm.category,
+              organId: _this.addUserForm.organId,
+              organTitle: _this.addUserForm.organTitle,
+              departmentId: _this.addUserForm.departmentId,
+              departmentTitle: _this.addUserForm.departmentTitle,
+              Provincial: _this.addUserForm.Provincial,
+              Ministerial: _this.addUserForm.Ministerial,
+              Maritime: _this.addUserForm.Maritime,
+              Other: _this.addUserForm.Other
             };
-            this.$store
-              .dispatch("updateUser", this.addUserForm)
+            _this.$store
+              .dispatch("updateUser", _this.addUserForm)
               .then(res => {
-                this.$message({
+                _this.$message({
                   showClose: true,
                   message: "修改用户成功",
                   type: "success"
                 });
-                this.$emit("uploadaaa");
-                this.visible = false;
+                _this.$emit("uploadaaa");
+                _this.visible = false;
               })
               .catch(err => {
-                this.$message({
+                _this.$message({
                   showClose: true,
                   message: err,
                   type: "error"
@@ -309,8 +313,9 @@ export default {
     // 弹框取消按钮
     resetForm() {
       this.visible = false;
+      let _this = this
       this.$nextTick(() => {
-        this.$refs["addUserForm"].resetFields();
+        _this.$refs["addUserForm"].resetFields();
       });
     },
     //失去焦点请求 名称是否重复

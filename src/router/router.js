@@ -1,17 +1,15 @@
-import {loginRouter, registRouter,redirectRouter,homeRouter,lagoutOneRouter} from './routerExport/common'
-
+import {route} from './routerExport/common'
+import commonRouterJson from './routerExport/routerJson/commonRouterJson'
 
 //通用基础router（全国）
 const routersCommon = [
-  loginRouter,
-  registRouter,
-  homeRouter,
-  // ...lagoutOneRouter,
-  redirectRouter
+  ...route,
+  ...commonRouterJson,
+
 ]
 
 
-const routers= [...routersCommon]
+const routers = [...routersCommon]
 export {routers}
 
 

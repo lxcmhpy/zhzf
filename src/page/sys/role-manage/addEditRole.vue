@@ -42,6 +42,7 @@ export default {
       visible: false,
       addRoleForm: {
         name: "",
+        roleGroup:"",
         description: ""
       },
       rules: {
@@ -70,6 +71,7 @@ export default {
         this.dialogTitle = "修改角色";
         this.addRoleForm.name = data.name;
         this.addRoleForm.description = data.description;
+        this.addRoleForm.roleGroup = data.roleGroup;
         this.editRoleId = data.id;
         // this.organId = data.id;
         // this.parentNode = data.parentNode;
@@ -90,13 +92,14 @@ export default {
     //失去焦点请求 名称是否重复
     blurOrganName() {
       if (this.addOrganForm.name) {
+        let _this = this
         this.$store.dispatch("hasOrganName", this.addOrganForm.name).then(
           res => {
             console.log(res);
             if (res.data.id) {
-              this.errorOrganName = true;
+              _this.errorOrganName = true;
             } else {
-              this.errorOrganName = false;
+              _this.errorOrganName = false;
             }
           },
           err => {
@@ -107,38 +110,40 @@ export default {
     },
     //新增角色 修改角色
     addOrEditRole(formName) {
+      let _this = this
       this.$refs[formName].validate(valid => {
-        if (valid && !this.errorOrganName) {
+        if (valid && !_this.errorOrganName) {
           // this.addOrganForm.pid = this.parentNode.parentNodeId;
           // this.addOrganForm.id = this.handelType == 0 ? "" : this.organId;
           // console.log("数据", this.addOrganForm);
-          if (this.handelType) {
+          if (_this.handelType) {
             //修改
-            this.addRoleForm.id= this.editRoleId;
-            this.$store.dispatch("editRole", this.addRoleForm).then(
+            _this.addRoleForm.id= this.editRoleId;
+            console.log("要修改的角色",_this.addRoleForm);
+            _this.$store.dispatch("editRole", _this.addRoleForm).then(
               res => {
-                console.log("角色", res);
-                this.$message({
+                console.log("修改后的角色", res);
+                _this.$message({
                   type: "success",
                   message: "修改成功"
                 });
-                this.visible = false;
-                this.reload();
+                _this.visible = false;
+                _this.reload();
               },
               err => {
                 console.log(err);
               }
             );
           } else {
-            this.$store.dispatch("addRole", this.addRoleForm).then(
+            _this.$store.dispatch("addRole", _this.addRoleForm).then(
               res => {
                 console.log("角色", res);
-                this.$message({
+                _this.$message({
                   type: "success",
-                  message:"添加成功!" 
+                  message:"添加成功!"
                 });
-                this.visible = false;
-                this.reload();
+                _this.visible = false;
+                _this.reload();
               },
               err => {
                 console.log(err);

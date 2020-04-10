@@ -1,6 +1,6 @@
 .print_box {
-    width : 100%;
-    height: 100%;
+    // width : 790px !important;
+    // height: 1117px;
     /* 默认属性 */
     font-family    : 'SimSun';
     font-size      : 16px;
@@ -9,7 +9,7 @@
     font-weight    : 200;
     /*  line-height: 24px; */
     /* 可解决模板页面多出一行问题 */
-    text-shadow: 1px 0px 0px black;
+    /* text-shadow: 1px 0px 0px black;  */
 
     /* a4盒子 */
     .print_info {
@@ -26,9 +26,14 @@
         padding          : 81px 82px 0;
         background       : #ffffff;
         box-sizing       : border-box;
+
         /* 包含padding */
+        /*----------长软start--------*/
+        .p_begin {
+            text-indent: 0em !important;
+        }
 
-
+        /*----------长软end--------*/
         /*  标题 */
         .doc_topic {
             // margin-top     : 80px;
@@ -72,6 +77,11 @@
 
             }
 
+        }
+
+        .el-input__inner,
+        .el-textarea__inner {
+            border-radius: 0;
         }
 
         /* 表格 */
@@ -121,7 +131,7 @@
 
                 p {
                     text-indent: 0;
-                    line-height: 32px;
+                    line-height: 28px;
 
                     .el-form-item {
                         width: auto;
@@ -132,6 +142,38 @@
                     .el-input {
                         background: #DF5A5B !important;
 
+                    }
+                }
+
+                .el-date-editor {
+                    i {
+                        display: none;
+                    }
+                }
+
+                .el-input__inner::-webkit-input-placeholder,
+                .el-textarea__inner::-webkit-input-placeholder {
+                    color      : transparent;
+                    text-align : center;
+                    font-size  : 16px;
+                    font-family: SimSun;
+                }
+
+                /* 不可编辑的表格 */
+                .is-disabled {
+
+                    .el-input__inner,
+                    .el-textarea__inner {
+                        text-align     : center;
+                        text-align-last: center;
+                    }
+
+                    .el-input__inner::-webkit-input-placeholder,
+                    .el-textarea__inner::-webkit-input-placeholder {
+                        color      : #000000;
+                        text-align : center;
+                        font-size  : 16px;
+                        font-family: SimSun;
                     }
                 }
             }
@@ -169,9 +211,8 @@
                 text-indent: 0;
             }
 
-
             .el-form-item {
-                width: 200px;
+                /* width: 200px; */
             }
 
             .el-form-item__content {
@@ -204,6 +245,8 @@
                     line-height    : 16px;
                     text-align     : left;
                     text-align-last: left;
+                    /* 新增 */
+                    width: 100%;
                 }
 
                 .el-input__inner {
@@ -349,7 +392,7 @@
         }
 
         /* 验证提示 */
-        .is-error {
+        .is-required {
 
             .el-input__inner,
             .el-input__inner:focus,
@@ -370,9 +413,16 @@
         }
 
         td {
-            .is-error {
-                .el-form-item__content {
+            .is-required {
+                /* .el-form-item__content {
                     background: #F7C9CB !important;
+                } */
+
+                .el-input__inner,
+                .el-input__inner:focus,
+                .el-textarea__inner,
+                .el-textarea__inner:focus {
+                    background: transparent !important;
                 }
             }
         }
@@ -384,10 +434,10 @@
                 background: transparent !important;
             }
 
-            .is-error {
+            .is-required {
 
                 .span_bg {
-                    background: #F7C9CB !important;
+                    background: #F7C9CB;
                 }
             }
         }
@@ -449,6 +499,11 @@
         }
 
         .print_table {
+            position  : relative;
+            width     : 100%;
+            box-sizing: border-box;
+            padding   : 0px;
+            margin    : 0px;
 
             .el-input .el-input__inner {
                 border: 0;
@@ -461,7 +516,7 @@
         .pdf_seal {
             margin-top   : 15px;
             margin-bottom: 11px;
-            width        : 176px;
+            width        : 180px;
             text-align   : center;
             font-size    : 16px;
             font-family  : SimSun;
@@ -523,6 +578,15 @@
             border: 1px solid #000000;
 
         }
+
+        /* -解决pdf-disable */
+        .is-disabled {
+
+            .el-input__inner,
+            .el-textarea__inner {
+                color: black !important;
+            }
+        }
     }
 
     /* 悬浮按钮 */
@@ -530,7 +594,7 @@
         width   : 48px;
         height  : 100px;
         position: fixed;
-        right   : 27px;
+        right   : 70px;
         bottom  : 167px;
 
         &.float-btns .el-button {
@@ -577,6 +641,68 @@
 
     u {
         font-weight: 600;
+    }
+
+    .el-form-item__content {
+        .el-input {
+            .el-input__inner {
+                width        : 169px;
+                border-radius: 0px !important;
+            }
+        }
+
+        .el-date-editor.el-input__inner,
+        .el-date-editor.el-input {
+            width        : 169px;
+            border-radius: 0px !important;
+
+            .el-input__prefix {
+                left : auto;
+                right: 5px;
+            }
+        }
+
+        .el-input__suffix {
+            left : auto;
+            right: 5px;
+        }
+
+        .el-input--prefix .el-input__inner {
+            padding-left: 15px;
+            width       : 100%;
+        }
+
+        overflow: hidden;
+
+        // .el-input{
+        //     .el-input__inner{
+        //         width        : 10%;
+        //         border-radius: 0px !important;
+        //     }
+        // }
+        // .el-textarea__inner{
+        //     width        : 10%;
+        //     border-radius: 0px !important;
+        // }
+        // .el-date-editor .el-input__inner,.el-date-editor .el-input{
+        //     width        : 10%;
+        //     border-radius: 0px !important;
+        //     .el-input__prefix {
+        //         left : auto;
+        //         right: 5px;
+        //     }
+        // }
+        // .el-input__suffix {
+        //     left : auto;
+        //     right: 5px;
+        // }
+        // .el-input--prefix .el-input__inner {
+        //     padding-left: 30px;
+        // }
+        .el-select {
+            // width     : 10%;
+            border-radius: 0px !important;
+        }
     }
 }
 
@@ -668,6 +794,8 @@
 }
 
 .printNumbers_box {
+    // width: 1190.56px !important;
+    // height: 1683.78px !important;
     position: absolute;
     left    : 0;
     right   : 0;
@@ -802,6 +930,29 @@
 
 }
 
+.width38 {
+    width: 38px;
+}
+
+.width100 {
+    width: 100px;
+}
+
+.width96 {
+    width: 96px;
+}
+
+.width120 {
+    width: 120px;
+}
+.width130 {
+    width: 130px;
+}
+
+.width151 {
+    width: 151px;
+}
+
 .width212 {
     width: 212px;
 }
@@ -810,12 +961,21 @@
     width: 213px;
 }
 
+.width235 {
+    width: 235px;
+}
+
 .width188 {
     width: 188px;
 }
 
 .width182 {
     width: 182px;
+}
+
+.width220 {
+    width: 220px;
+
 }
 
 .width228 {
@@ -846,6 +1006,14 @@
     width: 476px;
 }
 
+.width537 {
+    width: 537px;
+}
+
+.width505 {
+    width: 505px;
+}
+
 .text_indent10 {
     .el-textarea__inner {
         text-indent: 10em;
@@ -862,10 +1030,43 @@
         background-color: #ffffff !important;
     }
 
+    /* 验证提示 */
+    .is-required {
+        .el-input {
+
+            .el-input__inner,
+            .el-input__inner:focus {
+                background: #ffffff !important;
+            }
+        }
+
+        .el-textarea {
+
+            .el-textarea__inner,
+            .el-textarea__inner:focus {
+                background: transparent !important;
+            }
+        }
+
+        .span_bg {
+            background: #ffffff !important;
+        }
+
+
+    }
+
     /* 输入框 */
     .el-input__inner,
     .el-textarea__inner {
         background-color: #ffffff !important;
+
+    }
+
+    /* 下拉框 */
+    .print_info {
+        i {
+            display: none !important;
+        }
 
     }
 
@@ -877,6 +1078,30 @@
             border-radius: 0 !important;
             border-bottom: 1px solid #000000 !important;
         }
+
+        /* 多行 */
+
+        i {
+            display: none !important;
+        }
+
+    }
+
+    .doc_cause {
+        .el-textarea__inner {
+            border-radius: 0 !important;
+            border-bottom: 1px solid #000000 !important;
+        }
+    }
+
+    th {
+        background: #fff !important;
+    }
+
+    .span_bg {
+        background   : #ffffff !important;
+        border-bottom: 1px solid #000000 !important;
+        box-sizing   : border-box;
     }
 
     .overflow_lins_textarea {
@@ -889,12 +1114,7 @@
         }
     }
 
-    /* 多行 */
-    .span_bg {
-        background   : #ffffff;
-        border-bottom: 1px solid #000000 !important;
-        box-sizing   : border-box;
-    }
+
 
     /* 复选框 */
     // .is-checked {
@@ -904,12 +1124,25 @@
     }
 
     .el-checkbox__inner::after {
-        // content                 : "√";
-        border                     : 1px solid #000 !important;
-
+        // content                    : "√";
+        // border                     : 1px solid #000 !important;
+        border-color                  : #000;
     }
 
-    .is-error {
+    .el-checkbox__inner::after {
+        border-color: #000 !important;
+    }
+
+    /* 单选框 */
+    input[type="checkbox"] {
+        background: #fff !important;
+    }
+
+    .el-checkbox__label {
+        color: #000 !important;
+    }
+
+    .is-required {
 
         .el-input__inner,
         .el-input__inner:focus,
@@ -939,9 +1172,9 @@
 
     .data_picker {
         .el-range-input {
-            background : #ffffff;
+            background   : #ffffff;
             border-bottom: 1px solid #000000 !important;
-
+            font-weight  : 500;
         }
     }
 
@@ -953,6 +1186,22 @@
 
 #establish-print {
     padding-top: 35px;
+
+    .el-checkbox__input.is-disabled+span.el-checkbox__label {
+        color: #606266;
+    }
+
+    .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
+        background-color: #409EFF;
+        border          : 1px solid #000000;
+    }
+
+    .pdf_datapick {
+        .el-input__prefix {
+            display: none;
+        }
+    }
+
 }
 
 #illegalActionPunishDecisionBox {
@@ -1059,6 +1308,7 @@
         width      : 48%;
         font-size  : 16px;
         font-weight: 600;
+        font-family: 'SimSun';
         color      : #000000;
     }
 
@@ -1066,6 +1316,14 @@
         height    : 24px !important;
         background: transparent;
 
+    }
+
+    .el-range-separator {
+        font-size  : 16px;
+        font-weight: 600;
+        font-family: 'SimSun';
+        color      : #000000;
+        line-height: 28px;
     }
 }
 
@@ -1081,7 +1339,156 @@
 }
 
 .quzheng {
+    clear: both;
+
     .el-form-item {
-        width: 506px;
+        width: 500px;
+
+        .el-input__inner,
+        .el-textarea__inner {
+            width: 100% !important;
+        }
     }
+}
+
+
+.first_page_box {
+    border    : 3px solid #060A13;
+    height    : 788px;
+    background: #D7D2BE;
+    box-sizing: border-box;
+
+    .title_img_box {
+        text-align: center;
+        margin-top: 60px;
+
+        img {
+            width : 110px;
+            height: 132px;
+        }
+    }
+
+    .first_title {
+        margin-top: 13px;
+        font-size : 33px;
+        text-align: center;
+    }
+
+    .first_casenumber {
+        margin-top: 13px;
+        text-align: center;
+
+        .case_number {
+            display      : inline-block;
+            padding      : 0 10px;
+            border-bottom: 1px solid black;
+        }
+    }
+
+    .table_box {
+        position: relative;
+        padding : 0 75px;
+        top     : 123px;
+
+        td {
+            font-size  : 15px !important;
+            white-space: normal !important;
+            word-wrap  : break-word;
+            word-break : break-all;
+        }
+
+        .text_left {
+            text-align     : left;
+            text-align-last: left;
+        }
+
+        .text_center {
+            text-align     : center;
+            text-align-last: center;
+            padding        : 0 4px;
+        }
+    }
+}
+
+
+
+/* 段落时间内选择*/
+.p_datapick {
+    .el-form-item {
+        width: 150px !important;
+    }
+
+    i {
+        display: none;
+    }
+}
+
+.width_file {
+    .el-form-item {
+        width: 367px !important;
+    }
+}
+
+.select10 {
+    .el-input__suffix-inner {
+        .el-select__caret {
+            margin-right: -12px !important;
+        }
+    }
+}
+
+/* 听证笔录 */
+.listen_data {
+
+    .el-date-editor.el-input__inner,
+    .el-date-editor.el-input {
+        width: 210px !important;
+
+    }
+
+}
+
+.single_check {
+    .is-checked+ {
+        color: black;
+
+    }
+    .el-radio__inner:hover {
+        border-color: black;
+    }
+    .is-checked {
+        .el-radio__inner {
+            border-color: black;
+            background  : black;
+        }
+
+    }
+    .el-radio__label{
+        color: black !important;
+
+        }
+}
+.inputwidth{
+
+        .el-input{
+            width: 100% !important;
+
+    }
+}
+
+
+.overflow_lins_style .overflow_lins span.overflow_lins_textarea{
+text-indent: 11em;
+left: 0;
+top:0;
+}
+.print_box .print_info p .el-form-item__content span.over_flow{
+    line-height: 15px;
+    font-size: 12px;
+}
+.print_box .print_info tr td span.over_flow{
+    white-space: normal;
+    word-break: break-all;
+    font-size: 12px;
+    line-height: 15px;
 }

@@ -1,14 +1,19 @@
 <template>
   <div>
     <div>
-        <el-row>
+        <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
+          <font style="font-size:25px;"><span class="titleflag"></span>培训信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
+          <el-button type="primary"  @click="addTrain"  style="margin-right:25px;float:right;" icon="el-icon-plus" size="medium">新增培训</el-button>
+        </div>
+        <!--<el-row>
           <el-button type="primary" icon="el-icon-plus"  @click="addTrain"  size="mini" round>新增</el-button>
           <el-button type="danger" icon="el-icon-delete" @click="deleteTrain" size="mini" round>删除</el-button>
-        </el-row>
+        </el-row>-->
         <el-table
+          style="margin-left:25px;width:97%;margin-bottom:35px;"
           :data="tableData"
-          border
-          style="width: 100%;height:582px"
+          resizable
+          stripe
           @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column prop="trainType" label="培训类型"></el-table-column>
@@ -23,18 +28,6 @@
               <el-button type="text"  @click="editTrain(scope.row)" >修改</el-button>
           </el-table-column>
         </el-table>
-    </div>
-    <div class="paginationBox">
-      <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          background
-          :page-sizes="[10, 20, 30, 40, 50]"
-          layout="prev, pager, next,sizes,jumper"
-          :total="totalPage"
-        >
-      </el-pagination>
     </div>
 
     <!-- 新增、修改、查看页面 -->
@@ -78,32 +71,34 @@
             size: this.pageSize,
             personId: this.$route.params.personInfo.personId,
           }
+          let _this = this
           this.$store.dispatch("getTrainListMoudle",paramsData)
             .then(res=>{
-                this.tableData = res.data.records;
-                this.totalPage = res.data.total;
+                _this.tableData = res.data.records;
+                _this.totalPage = res.data.total;
           });
           error=>{
-            console.info(error);
+//            console.info(error);
           };
         },
         deleteTrain(row){
+            let _this = this
           this.$confirm("确定要删除所选的培训信息吗?", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: "warning"
           }).then(() => {
-            this.$store.dispatch("deleteEducationMoudle", this.multipleSelection).then(
+            _this.$store.dispatch("deleteEducationMoudle", _this.multipleSelection).then(
                 res => {
-                    this.$message({
+                    _this.$message({
                         type: "success",
                         message: "删除成功!"
                     });
                     //重新加载页面数据
-                    this.getPersonList();
+                    _this.getPersonList();
                 },
                 err => {
-                console.log(err);
+//                console.log(err);
                 }
             );
           })
@@ -124,4 +119,11 @@
 
 <style lang="scss" scoped>
   @import "@/assets/css/personManage.scss";
+  .titleflag {
+                width      : 4px;
+                height     : 22px;
+                margin-right: 8px;
+                display    : inline-block;
+                background : #4573D0;
+            }
 </style>

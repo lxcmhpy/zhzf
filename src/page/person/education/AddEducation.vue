@@ -70,26 +70,27 @@ export default {
                 graduationDate:this.addEducationForm.graduationDate,
                 note:this.addEducationForm.note,
             };
+            let _this = this
             if(this.handelType==1){
                 this.$store.dispatch("addEducationMoudle", this.addEducationForm).then(res => {
-                    this.$emit("getEducationList");
-                        this.$message({
+                    _this.$emit("getEducationList");
+                        _this.$message({
                             type: "success",
                             message:  "添加成功!",
                         });
-                        this.visible = false;
+                        _this.visible = false;
                     });
                     err => {
                         console.log(err);
                 };
             }else if(this.handelType==2){
                 this.$store.dispatch("updateEducationMoudle", this.addEducationForm).then(res => {
-                    this.$emit("getEducationList");
-                        this.$message({
+                    _this.$emit("getEducationList");
+                        _this.$message({
                             type: "success",
                             message:  "修改成功!",
                         });
-                        this.visible = false;
+                        _this.visible = false;
                     });
                     err => {
                         console.log(err);

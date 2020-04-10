@@ -55,7 +55,7 @@
       >
         <!-- <el-table-column prop="code" label="部门编码" align="center"></el-table-column> -->
         <el-table-column prop="name" label="部门名称" align="center"></el-table-column>
-        <el-table-column prop="status" label="状态" align="center">
+        <el-table-column prop="status" label="状态" align="center">          
           <span slot-scope="scope">
             <span>{{scope.row.status == 0 ? '正常': '注销'}}</span>
           </span>
@@ -138,26 +138,27 @@ export default {
 
     //获取机构
     getAllOrgan(organId) {
+      let _this = this
       this.$store.dispatch("getAllOrgan").then(
         res => {
-          this.defaultExpandedKeys.push(res.data[0].id);
-          this.selectCurrentTreeName = this.selectCurrentTreeName
-            ? this.selectCurrentTreeName
+          _this.defaultExpandedKeys.push(res.data[0].id);
+          _this.selectCurrentTreeName = _this.selectCurrentTreeName
+            ? _this.selectCurrentTreeName
             : res.data[0].label;
           if (res.data[0].children && res.data[0].children.length > 0) {
             res.data[0].children.forEach(item => {
-              this.defaultExpandedKeys.push(item.id);
+              _this.defaultExpandedKeys.push(item.id);
             });
           }
-          this.organData = res.data;
-          console.log(this.defaultExpandedKeys);
-          console.log(this.organData);
+          _this.organData = res.data;
+          console.log(_this.defaultExpandedKeys);
+          console.log(_this.organData);
           if (organId == "root") {
-            this.currentOrganId = res.data[0].id;
+            _this.currentOrganId = res.data[0].id;
           } else {
-            this.currentOrganId = organId;
+            _this.currentOrganId = organId;
           }
-          this.getSelectOrgan();
+          _this.getSelectOrgan();
         },
         err => {
           console.log(err);
@@ -171,11 +172,12 @@ export default {
         current: this.currentPage,
         size: this.pageSize
       };
+      let _this = this
       this.$store.dispatch("getDepartments", data).then(
         res => {
           console.log('部门数据',res);
-          this.tableData = res.data.records;
-          this.totalPage = res.data.total;
+          _this.tableData = res.data.records;
+          _this.totalPage = res.data.total;
         },
         err => {
           console.log(err);
@@ -216,6 +218,7 @@ export default {
 
     //删除部门
     deleteDepartment(id) {
+        let _this = this
       this.$confirm("确认删除该部门?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -224,8 +227,8 @@ export default {
         .then(() => {
           this.$store.dispatch("deleteDepartment", id).then(
             res => {
-              this.getAllOrgan(this.currentOrganId);
-              this.$message({
+              _this.getAllOrgan(_this.currentOrganId);
+              _this.$message({
                 type: "success",
                 message: "删除成功!"
               });

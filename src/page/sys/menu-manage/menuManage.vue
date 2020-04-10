@@ -98,6 +98,11 @@
             <el-input ref="title" v-model="addItemObj.title"></el-input>
           </el-form-item>
         </div>
+        <div class="item">
+          <el-form-item label="接口地址" prop="url">
+            <el-input v-model="addItemObj.url"></el-input>
+          </el-form-item>
+        </div>
         <div class="item" v-if="addItemObj.type !== -1">
           <el-form-item label="上级菜单" prop="parentId">
             <elSelectTree
@@ -196,11 +201,12 @@
     inject: ["reload"],
     methods: {
       searchTable() {
+        let _this = this
         this.$store.dispatch("getTreePermission").then(
           res => {
             console.log(res);
-            this.tableData = res.data;
-            this.total = res.data.length
+            _this.tableData = res.data;
+            _this.total = res.data.length
           },
           err => {
             console.log(err);
@@ -211,16 +217,18 @@
         this.dialogTitle = '新增'
         this.isShowDialog = true
         this.addItemObj.parentId = row.id
+        let _this = this
         setTimeout(() => {
-          this.$refs.elSelectTreeObj.valueTitle = row.title
-          this.$refs.elSelectTreeObj.valueId = row.id
+          _this.$refs.elSelectTreeObj.valueTitle = row.title
+          _this.$refs.elSelectTreeObj.valueId = row.id
         })
       },
       addItem() {
         this.dialogTitle = '新增'
         this.isShowDialog = true
+        let _this = this
         setTimeout(() => {
-          this.$refs.elSelectTreeObj.clearHandle()
+          _this.$refs.elSelectTreeObj.clearHandle()
         })
       },
       editItem(row) {
@@ -239,7 +247,7 @@
           component: row.component,
           icon: row.icon,
           url: row.url,
-          buttonType: row.buttonType.length > 0 ? row.buttonType.split(',') : [],
+          buttonType: row.buttonType && row.buttonType.length > 0 ? row.buttonType.split(',') : [],
           sortOrder: row.sortOrder
         }
         that.dialogTitle = '修改'
@@ -263,7 +271,7 @@
             res => {
               if (res.code === 200) {
                 that.isShowDialog = false
-                this.$message({
+                that.$message({
                   type: "success",
                   message: that.dialogTitle + '成功！'
                 });
@@ -271,7 +279,7 @@
               }
             },
             err => {
-              this.$message({
+              that.$message({
                 type: "error",
                 message: err
               });
@@ -284,7 +292,7 @@
         this.$store.dispatch("deletePermission", row.id).then(
           res => {
             if (res.code === 200) {
-              this.$message({
+              that.$message({
                 type: "success",
                 message: '删除成功！'
               });
@@ -298,9 +306,12 @@
       },
       handleSizeChange(val) {
         this.pageSize = val;
+        this.currentPage = 1;
+        this.searchTable();
       },
       handleCurrentChange(val) {
         this.currentPage = val;
+        this.searchTable();
       },
       hindleChanged(val) {
         this.addItemObj.parentId = val

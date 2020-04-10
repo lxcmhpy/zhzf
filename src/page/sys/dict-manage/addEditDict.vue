@@ -21,7 +21,7 @@
       </div>
       <div class="item">
         <el-form-item label="序号" prop="sort">
-          <el-input v-model="addDictForm.sort"></el-input>
+          <el-input v-model="addDictForm.sort" disabled></el-input>
         </el-form-item>
       </div>
       <div class="item">
@@ -104,10 +104,11 @@ export default {
     },
     //新增修改字典
     addOrEditDict(formName) {
+      let _this = this
       this.$refs[formName].validate(valid => {
-        if (valid && !this.errorName) {
+        if (valid && !_this.errorName) {
             // this.departmentNameRepeat();
-            this.addOrEditDictSure();
+            _this.addOrEditDictSure();
         }
       });
     },
@@ -139,29 +140,30 @@ export default {
       // console.log("数据", this.addOrganForm);
       // console.log(this.addDepartmentForm);
       this.addDictForm.id = this.handelType == 0 ? "" : this.editId;
+      let _this = this
       this.$store.dispatch("addDict", this.addDictForm).then(
         res => {
           console.log("新增字典", res);
           if(!res.data){
-            this.$message({
+            _this.$message({
               type: "error",
-              message: this.handelType == 0 ? "添加失败,名称不能重复!" : "修改失败,名称不能重复!"
+              message: _this.handelType == 0 ? "添加失败,名称不能重复!" : "修改失败,名称不能重复!"
             });
             return
           }
-        //  this.reload();
-        console.log(this.$refs)
-        if(this.formType == 'list'){
-          this.reload();
-        }else{
-          console.log(this.pid)
-          this.$emit('getDetail',{id:this.pid})
-        }
-          this.$message({
-            type: "success",
-            message: this.handelType == 0 ? "添加成功!" : "修改成功"
-          });
-          this.visible = false;
+            //  this.reload();
+            console.log(this.$refs)
+            if(_this.formType == 'list'){
+            _this.reload();
+            }else{
+            console.log(this.pid)
+            _this.$emit('getDetail',{id:this.pid})
+            }
+            _this.$message({
+                type: "success",
+                message: this.handelType == 0 ? "添加成功!" : "修改成功"
+            });
+            _this.visible = false;
         },
         err => {
           console.log(err);

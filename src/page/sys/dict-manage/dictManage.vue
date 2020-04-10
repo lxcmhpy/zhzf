@@ -81,11 +81,12 @@ export default {
         size: this.pageSize,
         name:this.dicSearchForm.name
       };
+      let _this = this
       this.$store.dispatch("getDictList",data).then(
         res => {
           console.log("字典列表", res);
-          this.tableData = res.data.records;
-          this.totalPage = res.data.total;
+          _this.tableData = res.data.records;
+          _this.totalPage = res.data.total;
         },
         err => {
           console.log(err);
@@ -99,16 +100,17 @@ export default {
     },
     //删除字典
     deleteDict(id){
+        let _this = this
       this.$confirm("确认删除?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.$store.dispatch("deleteDict", id).then(
+          _this.$store.dispatch("deleteDict", id).then(
             res => {
-              this.reload();
-              this.$message({
+              _this.reload();
+              _this.$message({
                 type: "success",
                 message: "删除成功!"
               });
@@ -141,12 +143,12 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getSelectOrgan();
+      this.getDictList();
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getSelectOrgan();
+      this.getDictList();
     },
   },
   created() {

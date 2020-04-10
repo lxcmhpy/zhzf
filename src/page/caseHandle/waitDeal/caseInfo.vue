@@ -21,7 +21,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="caseNumber" label="案号">
-                  {{formData.caseNumber}}
+                  {{formData.caseNumber ? formData.caseNumber : formData.tempNo}}
                   <!-- <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -44,7 +44,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="案由">
-                  {{formData.caseCauseName}}
+                  {{formData.caseName}}
                   <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -52,7 +52,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="partyType" label="当事人">
-                  {{formData.party}}
+                  {{formData.party ? formData.party : formData.partyName}}
                   <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -76,7 +76,7 @@
               <div class="col">
                 <el-form-item label="基本情况">
                   {{formData.caseInfo}}
-                  南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。浏览地图、搜索地点、查询公交驾车线路、查 南、生活。乘车方案查询,以及准确的票价和时间信息。
+            
                   <!-- <el-input type="textarea" class="height106" v-model="formData.caseCauseDescrib" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -102,8 +102,9 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚类型">
+                  {{formData.punishType}}
                   <!-- 字段名 -->
-                  {{formData.party}}
+                  <!-- {{formData.party}} -->
                   <!-- <el-select v-model="formData.party" placeholder="请选择">
                     <el-option label="行政处罚" value="shanghai"></el-option>
                     <el-option label="处罚类型二" value="beijing"></el-option>
@@ -117,7 +118,7 @@
               <div class="col">
                 <el-form-item label="处罚金额">
                   <!-- 字段名 -->
-                  ￥{{formData.punishAmount}}
+                  ￥{{formData.tempPunishAmount}}
                   <!-- <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入">
                        <span slot="prefix" >￥</span>
                   </el-input> -->
@@ -178,11 +179,13 @@
 
 </template>
 <script>
-import caseSlideMenu from '../components/caseSlideMenu'
+import caseSlideMenu from '../components/caseSlideMenu' 
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-
+import {
+  getCaseBasicInfoApi
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -199,12 +202,14 @@ export default {
         partyAge: "",
         party: "",
         partySex: "",
+        partyName:"",
         investigProcess: "",
         caseCauseDescrib: "",
         isMajorCase: "1",
         punishType: ['警告'],
         investigResult: '',
         dealOpinions: '1212121',
+        tempPunishAmount:"",
       },
       approval:this.$route.params.isApproval ? true : false,
     };
@@ -232,30 +237,25 @@ export default {
     //案件审批
     approvalCase(){
       this.$store.dispatch('deleteTabs', 'caseInfo');
-      console.log(this.caseInfo)
-      // currentLinkName
+      console.log(this.caseInfo);
       let approvalLink = ''
-      //let docId = ""
-      switch(this.caseInfo.currentLinkName){
-        case "立案登记":
+      let docId = ""
+      switch(this.caseInfo.currentLinkId){
+        case "2c90293b6c178b55016c17c255a4000d":
           approvalLink = 'establish';
-          // docId="2c9029ae654210eb0165421564970001";
+          docId="2c9029ae654210eb0165421564970001";
           break;
-        case "案件调查报告":
+        case "2c9029ee6cac9281016caca7f38e0002":
           approvalLink = 'caseInvestig';
-          // docId="2c9029ee6cac9281016cacb5a5b6000c";
+          docId="2c9029ca5b711f61015b71391c9e2420";
           break;
-          case "结案报告":
+          case "2c9029ee6cac9281016cacaadf990006":
           approvalLink = 'finishCaseReport';
-          // docId="2c9029d2695c03fd01695c278e7a0001";
+          docId="2c9029d2695c03fd01695c278e7a0001";
           break;
       }
-      this.$router.push({
-          name: approvalLink,
-          params:{
-            isApproval:true
-          }
-      })
+      this.getFileIdByDocId(docId,approvalLink);
+      
       //显示pdf页面
       // this.$router.push({
       //     name: 'myPDF',
@@ -268,7 +268,16 @@ export default {
   },
   mounted(){
     if(this.$route.params.fromSlide){
-      this.com_getCaseBasicInfo(this.caseId);
+      let data ={id:this.caseId}
+      getCaseBasicInfoApi(data).then(res=>{
+        console.log(res);
+        let caseData = res.data;
+         for (var key in caseData) {
+            this.formData[key] = caseData[key]
+          }
+      },err=>{
+        console.log(err);
+      })
     }else{
       this.formData = this.caseInfo;
     }

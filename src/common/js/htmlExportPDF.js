@@ -2,10 +2,13 @@ import html2Canvas from 'html2canvas'
 import JsPDF from 'jspdf'
 
 export async function htmlExportPDF(id, callback) {
-  let element = document.getElementById(id)
+  // debugger;
+  let element = document.getElementById(id);
+  element.className += ' color_FFFFFF';
   let width = element.offsetWidth; //获取dom 宽度
   let height = element.offsetHeight; //获取dom 高度
-
+  // console.log('height', height)
+  // console.log('width', width)
   let canvas = document.createElement("canvas"); //创建一个canvas节点
   let scale = 5; //定义任意放大倍数 支持小数
   canvas.width = width * scale; //定义canvas 宽度 * 缩放，在此我是把canvas放大了2倍
@@ -25,13 +28,13 @@ export async function htmlExportPDF(id, callback) {
     context.msImageSmoothingEnabled = false;
     context.imageSmoothingEnabled = false;
 
-    let imgData = canvas.toDataURL('image/jpeg','1.0');//转化成base64格式,可上网了解此格式
+    let imgData = canvas.toDataURL('image/jpeg', '1.0');//转化成base64格式,可上网了解此格式
     let img = new Image();
     img.src = imgData;
     let doc = new JsPDF('', 'pt', 'a4');
-    img.onload = function() {
-      img.width = canvas.width/5;   //因为在上面放大了2倍，生成image之后要/2
-      img.height = canvas.height/5;
+    img.onload = function () {
+      img.width = canvas.width / 5;   //因为在上面放大了2倍，生成image之后要/2
+      img.height = canvas.height / 5;
       // img.style.transform="scale(5,5)";
       // console.log(imgData)
 
@@ -50,26 +53,25 @@ export async function htmlExportPDF(id, callback) {
 
       //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
       //当内容未超过pdf一页显示的范围，无需分页
-      var page = leftHeight/pageHeight
-      var minus = (leftHeight%pageHeight)/page
+      var page = leftHeight / pageHeight
+      var minus = (leftHeight % pageHeight) / page
       if (leftHeight < pageHeight) {
         doc.addImage(imgData, 'jpeg', 0, 0, imgWidth, imgHeight);
       } else {
         while (leftHeight > 0) {
           doc.addImage(imgData, 'jpeg', 0, position, imgWidth, imgHeight)
-          leftHeight -= (pageHeight+minus);
-          position -= 842;
+          leftHeight -= (pageHeight + minus);
+          position -= 841.49;
           //避免添加空白页
           if (leftHeight > minus) {
-
             doc.addPage();
           }
         }
       }
 
-      let name = 'report_pdf_' + new Date().getTime() + '.pdf'
+      let name = 'report_pdf_' + new Date().getTime() + '.pdf';
+      callback(doc, name);
       // doc.save(name); //保存为pdf文件
-      callback(doc, name)
     }
   })
 }

@@ -1,7 +1,7 @@
 <template>
-  <div class="print_box">
+  <div class="print_box" style="width:790px;margin:0 auto;">
       <!-- <div class="print_info"> -->
-        <embed class="print_info" style="padding:0px;width: 730px;height:100% !important" name="plugin" id="plugin" :src="storagePath" type="application/pdf" internalinstanceid="29">
+        <embed v-for="(item,index) in storagePath" :key="index" class="print_info" style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="item" type="application/pdf" internalinstanceid="29">
       <!-- </div>  -->
     <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @backHuanjie="backHuanjie" @showApprovePeopleList="showApprovePeopleList"></casePageFloatBtns>
 
@@ -12,7 +12,7 @@
 <script>
 
 import pdf from 'vue-pdf'
-import iLocalStroage from "@/common/js/localStroage";
+// import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import casePageFloatBtns from '@/components/casePageFloatBtns/casePageFloatBtns.vue'
 import showApprovePeople from "../../components/showApprovePeople";
@@ -22,7 +22,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      storagePath: null,
+      storagePath: [],
       formOrDocData:{
         showBtn:[true,false,false,true,false,true,true,false,false,false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId:"",
@@ -36,20 +36,45 @@ export default {
     casePageFloatBtns,
     pdf
   },
-  computed:{...mapGetters(['caseId'])},
+  computed:{...mapGetters(['caseId', 'docId'])},
   methods: {
+    print () {
+        for(var i =0;i<this.storagePath.length;i++){
+            // new PDFObject({ url: this.storagePath[i] }).embed();
+        }
+    },
     getFile () {
-      console.log('docId',this.$route.params.docId);
+        // debugger;
+        if (this.$route.params && this.$route.params.docId) {
+            this.$store.commit('setDocId', this.$route.params.docId)
+        }
+      console.log('docId',this.docId);
       console.log('caseId',this.caseId)
-
+      let _that = this
       this.$store.dispatch("getFile", {
-          docId: this.$route.params.docId,
+          docId: this.docId,
           caseId: this.caseId,
         }).then(
         res => {
-          console.log(res[0].storageId)
+          console.log(res);
           console.log(11111111)
-          this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST+res[0].storageId
+          // debugger
+
+          //多份文书按照docDataId取地址
+          for(var i=0;i<res.length;i++) {
+              // if(i==0) {
+              //   _that.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
+              // }
+              if(this.$route.params.docDataId && this.$route.params.docDataId == res[i].docDataId){
+                console.log('res[i].storageId',res[i].storageId);
+                _that.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
+                break;
+             }
+          }
+          //单份文书取一个
+          if(_that.storagePath.length==0){
+            _that.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[0].storageId)
+          }
         },
         err => {
           console.log(err);
@@ -117,6 +142,11 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.go(-1);
     },
+    // isCompete(){
+    //   if(this.$route.params.isComplete){
+    //     this.formOrDocData.showBtn = [false,false,false,false,false,false,false,false,false,true]
+    //   }
+    // },
 
     // 盖章
     makeSeal() {
@@ -134,6 +164,7 @@ export default {
   },
   created() {
     this.isApproval();
+    // this.isCompete();
   }
 };
 </script>

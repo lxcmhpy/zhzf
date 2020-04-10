@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-loading v-show="loading"></v-loading>
-    <router-view v-if="isRouterAlive"/>
+    <router-view v-if="isRouterAlive"/> 
   </div>
 </template>
 
@@ -30,8 +30,9 @@ export default {
     //刷新页面
     reload() {
       this.isRouterAlive = false;
+      let _this = this
       this.$nextTick(() => {
-        this.isRouterAlive = true;
+        _this.isRouterAlive = true;
       });
     }
   }

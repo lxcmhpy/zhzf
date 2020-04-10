@@ -43,6 +43,7 @@ export default {
       if (targetName == "home_index") {
         return;
       }
+      debugger;
       this.$store.dispatch("deleteTabs", targetName);
       if (this.activeIndex === targetName) {
         // 设置当前激活的路由
@@ -62,14 +63,15 @@ export default {
     // 刷新时以当前路由做为tab加入tabs
     // 当前路由不是首页时，添加首页以及另一页到store里，并设置激活状态
     // 当当前路由是首页时，添加首页到store，并设置激活状态
+    let _this = this
     if (this.$route.path !== "/" && this.$route.name !== "home_index") {
       this.$store.dispatch("deleteAllTabs");
       this.$store.dispatch("addTabs", {
-        route: this.$route.path,
-        name: this.$route.name,
-        title: this.$route.meta.title
+        route: _this.$route.path,
+        name: _this.$route.name,
+        title: _this.$route.meta.title
       });
-      this.$store.dispatch("setActiveIndex", this.$route.name);
+      this.$store.dispatch("setActiveIndex", _this.$route.name);
     } else {
       this.$store.dispatch("setActiveIndex", "home_index");
     }
@@ -140,4 +142,4 @@ export default {
     }
   }
 };
-</script>  
+</script>

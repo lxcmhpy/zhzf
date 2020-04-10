@@ -1,3 +1,4 @@
+
 import request from "@/common/js/request";
 import { setCancelSource } from "@/common/js/cancelToken";
 import Vue from "vue";
@@ -8,21 +9,50 @@ let vm = new Vue();
  * @param {*} params.account  必填 账号
  * @param {*} params.password  必填  密码
  */
+
 export function loginInApi(params) {
+  var data = new FormData();
+  data.append("username", params.username);
+  data.append("password", params.password);
+  data.append("grant_type", "password");
+  return request({
+    url: "/auth/oauth/token",
+    method: "POST",
+    data:data,
+    headers: {
+      "Authorization": "Basic Y2F0c2ljOmNhdHNpYw==",
+      "Content-Type": "multipart/form-data"
+    },
+    auth:{
+      username: 'catsic',
+      password: 'catsic'
+    },
+    mimeType: "multipart/form-data",
+    processData: false,
+    showloading: true,
+    loadingType:'loadFull',
+    contentType: false,
+    // baseUrlType:1,
+    cancelToken: setCancelSource()
+  });
+}
+
+
+//修改密码
+export function resetPasswordApi(params) {
 
   let data = vm.$qs.stringify({
     username: params.username,
-    password: params.password,
-    code: params.code,
-    captchaId: params.captchaId
+    nickName: params.nickName,
+    enforceNo: params.enforceNo,
   })
   console.log(data)
   return request({
-    url: "/login",
+    url: "/system/sys/user/resetPassWord",
     method: "POST",
     contentType: 'multipart/form-data',
     data:data,
-    showloading: true,
+    showloading: false,
     baseUrlType:1,
     cancelToken: setCancelSource()
   });
@@ -33,7 +63,7 @@ export function getCaptchaApi() {
   return request({
     url: "/common/captcha/getcaptcha",
     method: "get",
-    showloading: true,
+    showloading: false,
     baseUrlType:1,
     cancelToken: setCancelSource()
   });
@@ -46,7 +76,7 @@ export function getCapImgSrcApi(captchaId) {
   return request({
     url: "/common/captcha/draw/"+captchaId,
     method: "get",
-    showloading: true,
+    showloading: false,
     baseUrlType:1,
     responseType: 'arraybuffer',
     cancelToken: setCancelSource()
@@ -56,16 +86,27 @@ export function getCapImgSrcApi(captchaId) {
 //获取菜单
 export function getMenuApi() {
   return request({
-    url: "/sys/permission/getTreePermission",
+    url: "/system/sys/permission/getMenuList",
     method: "get",
     baseUrlType:1,
     showloading: true,
+    loadingType:'loadFull',
     cancelToken: setCancelSource()
 
   });
 }
 
+//获取当前登录用户的信息
+export function getCurrentUserApi() {
+  return request({
+    url: "/system/sys/user/findCurrentUser",
+    method: "get",
+    showloading: true,
+    loadingType:'loadFull',
+    cancelToken: setCancelSource()
 
+  });
+}
 // 退出
 export function loginOutApi() {
   return request({

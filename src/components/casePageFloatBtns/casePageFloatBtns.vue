@@ -5,11 +5,11 @@
         <!-- <a target="_blank" href="javascript:void(0)" @click="getFile()">访问</a>
         <a href="javascript:void(0)" @click="viewPDF()">跳转到pdf</a> -->
 
-        <el-button type="success" @click="printContent" v-if="formOrDocData.showBtn[3]">
+        <!-- <el-button type="success" @click="printContent" v-if="formOrDocData.showBtn[3]">
 
           <i class="iconfont law-print"></i>
           <br />打印
-        </el-button>
+        </el-button> -->
         <!-- <el-button type="success" v-if="formOrDocData.showBtn[4]">
           <svg
             t="1577706400265"
@@ -37,12 +37,15 @@
           <i class="iconfont law-upload"></i>
           <br />提交
         </el-button>
-
+        <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[10]">
+          <i class="iconfont law-save"></i>
+          <br />归档
+        </el-button>
         <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]">
           <i class="iconfont law-save"></i>
           <br />保存
         </el-button>
-        <el-button type="primary" @click="submitDataBtn(0)" v-if="formOrDocData.showBtn[2]">
+        <el-button type="primary" @click="saveDataBtn(0)" v-if="formOrDocData.showBtn[2]">
           <i class="iconfont law-save"></i>
           <br />暂存
         </el-button>
@@ -52,7 +55,7 @@
       </el-button>
       <el-button type="primary" @click="approvalBtn" v-if="formOrDocData.showBtn[7]">
         <i class="iconfont law-edit"></i>
-        <br />审批
+        <br />审批 
       </el-button>
       <el-button type="primary" @click="backHuanjieBtn" v-if="formOrDocData.showBtn[9]">
         <i class="iconfont law-back"></i>
@@ -72,13 +75,12 @@ export default {
       // docId
     }
   },
-  props: ['pageDomId','formOrDocData'],
+  props: ['formOrDocData'],
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   methods: {
     //   打印方法
     async printContent() {
-      htmlExportPDF(this.pageDomId, this.uploadFile)
     },
     uploadFile (file, name) {
       var f = new File([file.output("blob")], name, {type: 'application/pdf'})
@@ -86,6 +88,7 @@ export default {
       fd.append("file", f)
       fd.append('caseId',this.caseId)
       fd.append('docId','5cad5b54eb97a15250672a4c397cee56')
+      fd.append('category', '文书');
 
       this.$store.dispatch("uploadFile", fd).then(
         res => {
@@ -106,6 +109,13 @@ export default {
     },
     saveDataBtn(handleType){
       this.$emit('saveData',handleType);
+      // //当前环节为文书时
+      // if(this.formOrDocData.isHuanjie){
+      //   this.com_submitCaseForm(handleType, this.formOrDocData.formRef, this.formOrDocData.nextShowPdf);
+      // }else{ 
+      //   //文书保存
+      //   this.com_addDocData(handleType, this.formOrDocData.formRef);
+      // }
     },
     getFile () {
       this.$store.dispatch("getFile", {
@@ -121,29 +131,28 @@ export default {
       );
     },
      //保存文书信息
-     addDocData(handleType){
-      this.com_addDocData(handleType,'docForm').then(
-        res => {
-          this.$message({
-            type: "success",
-            message: "保存成功",
-          });
-          this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-          this.$router.push({
-            name: 'caseDoc',
-            // name: row.url,
-            params: {
-              // id: row.id,
-              // //案件ID
-              // caseBasicinfoId: this.caseBasicinfoId,
-            }
-          });
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
+    //  addDocData(handleType){
+    //   let _this = this
+    //   this.com_addDocData(handleType,'docForm').then(
+    //     res => {
+    //       _this.$message({
+    //         type: "success",
+    //         message: "保存成功",
+    //       });
+    //       _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+    //       _this.$router.push({
+    //         name: 'caseDoc',
+           
+    //         params: {
+            
+    //         }
+    //       });
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     }
+    //   );
+    // },
     // 跳转到pdf页面
     viewPDF () {
       this.$router.push({name: "viewPDF"})

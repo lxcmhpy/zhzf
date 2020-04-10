@@ -324,7 +324,7 @@ function callBackWaitStatus(id, error, status, msg){
 
 //通过AZTBrowser来打开需要的地址
 signture.openURL = function(pdfPath){
-    debugger
+    // debugger
     console.log(pdfPath);
 	var test = window.location.href;
 	var string =test.split("/");

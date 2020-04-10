@@ -20,7 +20,7 @@
       </div>
       <div class="item">
         <el-form-item label="序号" prop="sortOrder">
-          <el-input v-model="addDepartmentForm.sortOrder"></el-input>
+          <el-input v-model="addDepartmentForm.sortOrder" disabled></el-input>
         </el-form-item>
         <!-- <span class="errorInput" v-if="errorOrganName">该机构名称已存在</span> -->
       </div>
@@ -104,13 +104,14 @@ export default {
         oid: this.parentNode.parentNodeId,
         name: this.addDepartmentForm.name
       };
+      let _this = this
       this.$store.dispatch("hasDepartmentName", data).then(
         res => {
           console.log(res);
-          if(res.data.id){
-            this.errorName = true;
+          if(res.data && res.data.id){ 
+            _this.errorName = true;
           }else{
-            this.addOrEditDepartmentSure();
+            _this.addOrEditDepartmentSure();
           }
 
         },
@@ -125,15 +126,16 @@ export default {
       this.addDepartmentForm.id = this.handelType == 0 ? "" : this.departmentId;
       // console.log("数据", this.addOrganForm);
       console.log(this.addDepartmentForm);
+      let _this = this
       this.$store.dispatch("addDepartment", this.addDepartmentForm).then(
         res => {
           console.log("部门", res);
-          this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-          this.$message({
+          _this.$emit("getAllOrgan2", _this.addDepartmentForm.oid);
+          _this.$message({
             type: "success",
-            message: this.handelType == 0 ? "添加成功!" : "修改成功"
+            message: _this.handelType == 0 ? "添加成功!" : "修改成功"
           });
-          this.visible = false;
+          _this.visible = false;
         },
         err => {
           console.log(err);

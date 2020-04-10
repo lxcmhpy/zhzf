@@ -37,9 +37,9 @@
     <div class="departTable">
       <p>
         {{selectCurrentTreeName}}
-        <span class="editSelectNode" @click="editSelectNode">
+        <!-- <span class="editSelectNode" @click="editSelectNode">
           <i class="iconfont law-btn_bianji"></i>
-        </span>
+        </span> -->
       </p>
       <div class="handelBtn">
         <div>子机构列表</div>
@@ -144,26 +144,27 @@ export default {
 
     //获取机构
     getAllOrgan(organId) {
+      let _this = this
       this.$store.dispatch("getAllOrgan").then(
         res => {
-          this.defaultExpandedKeys.push(res.data[0].id);
-          this.selectCurrentTreeName = this.selectCurrentTreeName
-            ? this.selectCurrentTreeName
+          _this.defaultExpandedKeys.push(res.data[0].id);
+          _this.selectCurrentTreeName = _this.selectCurrentTreeName
+            ? _this.selectCurrentTreeName
             : res.data[0].label;
           if (res.data[0].children && res.data[0].children.length > 0) {
             res.data[0].children.forEach(item => {
-              this.defaultExpandedKeys.push(item.id);
+              _this.defaultExpandedKeys.push(item.id);
             });
           }
-          this.organData = res.data;
-          console.log(this.defaultExpandedKeys);
-          console.log(this.organData);
+          _this.organData = res.data;
+          console.log(_this.defaultExpandedKeys);
+          console.log(_this.organData);
           if (organId == "root") {
-            this.currentOrganId = res.data[0].id;
+            _this.currentOrganId = res.data[0].id;
           } else {
-            this.currentOrganId = organId;
+            _this.currentOrganId = organId;
           }
-          this.getSelectOrgan();
+          _this.getSelectOrgan();
         },
         err => {
           console.log(err);
@@ -178,11 +179,12 @@ export default {
         size: this.pageSize
       };
       console.log(data);
+      let _this = this
       this.$store.dispatch("getSelectOrgan", data).then(
         res => {
           console.log(res);
-          this.tableData = res.data.records;
-          this.totalPage = res.data.total;
+          _this.tableData = res.data.records;
+          _this.totalPage = res.data.total;
         },
         err => {
           console.log(err);
@@ -236,16 +238,17 @@ export default {
     },
     //删除机构
     deleteOrgan(id) {
+        let _this = this
       this.$confirm("确认删除该机构?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.$store.dispatch("deleteOrgan", id).then(
+          _this.$store.dispatch("deleteOrgan", id).then(
             res => {
-              this.getAllOrgan(this.currentOrganId);
-              this.$message({
+              _this.getAllOrgan(this.currentOrganId);
+              _this.$message({
                 type: "success",
                 message: "删除成功!"
               });

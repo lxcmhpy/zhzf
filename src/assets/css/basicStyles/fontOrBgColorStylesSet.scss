@@ -8,10 +8,14 @@
     color: $blackC2;
 }
 .blueC {
-    color: $blueC
+    color: $blueC;
 }
-
-
+.greenC2 {
+    color: $greenC2;
+}
+.orangeC {
+    color: $orangeC;
+}
 
 /*------------背景颜色设置------------背景颜色设置------------*/
 .blackBg {
@@ -22,5 +26,15 @@
 }
 .blueBg {
     background: $blueC;
-    color: #FFFFFF;
+    color: $white;
+}
+.greenBg2 {
+    background: $greenC2;
+    color: $white;
+}
+.orangeBg {
+    background: $orangeC;
+}
+.redBg {
+    background: $redC;
 }

@@ -17,6 +17,7 @@
         ref="menuTree"
         highlight-current
         :props="defaultProps"
+        
       ></el-tree>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -50,11 +51,12 @@ export default {
     },
     //获取菜单
     getMenu() {
+      let _this = this
       this.$store.dispatch("getTreePermission").then(
         res => {
           console.log("获取菜单", res);
-          this.menuData = res.data;
-          this.getRoleBindMenu();
+          _this.menuData = res.data;
+          _this.getRoleBindMenu();
         },
         err => {
           console.log(err);
@@ -63,6 +65,7 @@ export default {
     },
     //查询角色下绑定的菜单权限
     getRoleBindMenu(){
+      let _this = this
       this.$store.dispatch("getRoleBindMenu",this.roleId).then(
         res => {
           console.log('角色下绑定的菜单权限',res);
@@ -70,7 +73,7 @@ export default {
           res.data.forEach(item => {
             permissionIds.push(item.permissionId);
           });
-          this.$refs.menuTree.setCheckedKeys(permissionIds);
+          _this.$refs.menuTree.setCheckedKeys(permissionIds);
         },
         err => {
           console.log(err);
@@ -84,11 +87,12 @@ export default {
           roleId:this.roleId,
           permissionIds:this.$refs.menuTree.getCheckedKeys()
       }
+      let _this = this
       this.$store.dispatch("roleBindMenu", data).then(
         res => {
           console.log("绑定", res);
-          this.visible = false;
-          this.$message({
+          _this.visible = false;
+          _this.$message({
             type: "success",
             message: "绑定成功"
           });

@@ -5,6 +5,7 @@ const state = {
   // common部分状态
   loading: false,
   loadingTime:'',//加载load记录时间
+  loadingType:'', //loading 类型
   authToken: "", //token值    
   
   headActiveNav:'xboot', //当前选中的header

@@ -1,14 +1,19 @@
 <template>
   <div>
     <div>
-      <el-row>
+      <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
+          <font style="font-size:25px;"><span class="titleflag"></span>奖励信息</font> &nbsp;&nbsp;&nbsp;&nbsp;
+          <el-button type="primary"  @click="addReward"  round style="margin-right:25px;float:right;" icon="el-icon-plus" size="medium">新增奖励</el-button>
+      </div>
+      <!--<el-row>
         <el-button type="primary" icon="el-icon-plus"  @click="addReward" size="mini" round>新增</el-button>
         <el-button type="danger" icon="el-icon-delete" @click="deleteReward" size="mini" round>删除</el-button>
-      </el-row>
+      </el-row>-->
       <el-table
+        style="margin-left:25px;width:97%;margin-bottom:35px;"
         :data="tableData"
-        border
-        style="width: 100%;height:582px"
+        resizable 
+        stripe
         @selection-change="handleSelectionChange">
         <el-table-column prop="awardId" type="selection" width="55"></el-table-column>
         <el-table-column prop="personId" label="姓名"></el-table-column>
@@ -23,18 +28,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="paginationBox">
-      <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          background
-          :page-sizes="[10, 20, 30, 40, 50]"
-          layout="prev, pager, next,sizes,jumper"
-          :total="totalPage"
-        >
-      </el-pagination>
-    </div>
+    
     <!-- 新增、修改、查看页面 -->
     <addRewardComp ref="addRewardCompRef" @getAllReward="getReward"></addRewardComp>
   </div>
@@ -59,8 +53,9 @@ import addRewardComp from './../../page/person/person-award/AddAward'
       methods:{
         handleSelectionChange(val) {
           this.multipleSelection = [];
+           let _this = this
            val.forEach((item,val) => {
-                  this.multipleSelection.push(item.awardId);
+                  _this.multipleSelection.push(item.awardId);
            });
         },
         //更改每页显示的条数
@@ -80,16 +75,18 @@ import addRewardComp from './../../page/person/person-award/AddAward'
             personId: this.$route.params.personInfo.personId,
             dataType:'0',//惩罚类型
           }
+          let _this = this
           this.$store.dispatch("getAwardListMoudle",paramsData)
             .then(res=>{
-                this.tableData = res.data.records;
-                this.totalPage = res.data.total;
+                _this.tableData = res.data.records;
+                _this.totalPage = res.data.total;
           });
           error=>{
             console.info(error);
           };
         },
         deleteReward(row){
+            let _this = this
           if(this.multipleSelection.length==0){
               this.$message({message:'请选择需要删除的信息',type: 'warning'});
           }else{
@@ -98,14 +95,14 @@ import addRewardComp from './../../page/person/person-award/AddAward'
               cancelButtonText: "取消",
               type: "warning"
             }).then(() => {
-              this.$store.dispatch("deleteAwardModudle", this.multipleSelection).then(
+              _this.$store.dispatch("deleteAwardModudle", _this.multipleSelection).then(
                   res => {
-                      this.$message({
+                      _this.$message({
                           type: "success",
                           message: "删除成功!"
                       });
                       //重新加载页面数据
-                      this.getReward();
+                      _this.getReward();
                   },
                   err => {
                   console.log(err);
@@ -130,4 +127,11 @@ import addRewardComp from './../../page/person/person-award/AddAward'
 
 <style lang="scss" scoped>
   @import "@/assets/css/personManage.scss";
+  .titleflag {
+                width      : 4px;
+                height     : 22px;
+                margin-right: 8px;
+                display    : inline-block;
+                background : #4573D0;
+            }
 </style>

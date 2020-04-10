@@ -1,4 +1,5 @@
 @import "./basicStyles/variables.scss";
+@import "./basicStyles/lengthStylesSet.scss";
 
 .fullscreen {
   .login {}
@@ -6,7 +7,9 @@
   .el-aside {
     background: $blackC2;
   }
-
+  .el-container{
+    height: calc(100vh - 60px) ;
+  }
   .el-main {
     background: #EAEDF4;
     padding   : 0;
@@ -53,6 +56,7 @@
 
   .el-input .el-input__inner {
     height: 32px;
+    border-radius: 0px;
   }
 
   /* 表格 */
@@ -102,9 +106,10 @@
   /* 表格行高-默认最小值*/
   .el-table__row {
     height: 53px;
+    cursor: pointer;
   }
   .tablePart {
-    height:calc(100% - 100px) !important;
+    height:calc(100% - 170px) !important;
   }
   .el-table {
       height: 100%;
@@ -124,31 +129,6 @@
 }
 // 新增-by:jingli
 .searchPage {
-
-    .el-form-item__content {
-        .el-input{
-            .el-input__inner{
-                width: 169px;
-                border-radius: 0px !important;
-            }
-        }
-        .el-date-editor.el-input__inner,.el-date-editor.el-input{
-            width: 169px;
-            border-radius: 0px !important;
-            .el-input__prefix {
-                left: auto;
-                right: 5px;
-            }
-        }
-        .el-input__suffix {
-            left: auto;
-            right: 5px;
-        }
-        .el-input--prefix .el-input__inner {
-            padding-left: 15px;
-        }
-
-    }
     .paginationBox {
         text-align: center;
         margin:15px;
@@ -178,6 +158,52 @@
             border: 1px solid #f4f4f4 !important;
         }
     }
+    .el-date-editor {
+        height:33px;
+        line-height:33px;
+    }
+    .el-input__inner{
+        border-radius: 0px;
+    }
 
 }
-
+.fullscreen {
+    // .el-form-item__content {
+    //     overflow: hidden;
+    //     .el-input{
+    //         .el-input__inner{
+    //             width: 169px;
+    //             border-radius: 0px !important;
+    //         }
+    //     }
+    //     .el-textarea__inner{
+    //         width: 169px;
+    //         border-radius: 0px !important;
+    //     }
+    //     .el-date-editor .el-input__inner,.el-date-editor .el-input{
+    //         width: 169px;
+    //         border-radius: 0px !important;
+    //         .el-input__prefix {
+    //             left: auto;
+    //             right: 5px;
+    //         }
+    //     }
+    //     .el-input__suffix {
+    //         left: auto;
+    //         right: 5px;
+    //     }
+    //     .el-input--prefix .el-input__inner {
+    //         padding-left: 30px;
+    //     }
+    //     .el-select {
+    //         width: 169px;
+    //         border-radius: 0px !important;
+    //     }
+    // }
+    .el-button  {
+        border-radius: 0px;
+    }
+}
+.el-dialog.fullscreen {
+    height: auto;
+}

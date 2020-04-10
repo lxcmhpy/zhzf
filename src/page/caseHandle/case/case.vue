@@ -10,6 +10,32 @@
         <li @click="goSampleEvidenceDoc">抽样取样凭证</li>
         <li @click="goSceneNotesDoc">现场笔录</li>
         <li @click="goInquiryNotesDoc">询问笔录</li>
+        
+        <li @click="testPdf">pdf测试</li>
+        <!----------长软start --------------->
+        <li @click="goEvidenceListDoc" style="color:blue">证据登记保存清单（已集成）</li>
+        <li @click="goAdminCoerciveMeasureDoc" style="color:blue">行政强制措施决定书</li>
+        <li @click="goProlongAdminCompulsoryDoc" style="color:blue">延长行政强制措施期限通知书</li>
+        <li @click="goRemoveAdminCoerciveMeasureDoc" style="color:blue">解除行政强制措施决定书</li>
+
+        <li @click="goHearingNoticeDoc" style="color:blue">听证通知书（已集成）</li>
+        <li @click="goHearingRecordDoc" style="color:blue">听证笔录（已集成）</li>
+        <li @click="goPunishDecisionDoc2" style="color:blue">当场行政处罚决定书</li>
+
+        <li @click="goPayStageReprotDoc" style="color:blue">分期（延期）缴纳罚款通知书（已集成）</li>
+        <li @click="goExecutAnnounceReprotDoc" style="color:blue">执行公告（已集成）</li>
+        <li @click="goRemindLetterReprotDoc" style="color:blue">催告书</li>
+        <li @click="goEnforceDecideReprotDoc" style="color:blue">行政强制执行决定书</li>
+        <li @click="goEnforceInsteadReprotDoc" style="color:blue">代履行决定书</li>
+        <li @click="goEnforceReprotDoc" style="color:blue">中止（终结、恢复）行政强制执行通知书</li>
+        <li @click="goImportantCaseTeamDissDoc" style="color:blue">重大案件集体讨论记录（已集成）</li>
+
+        <br>
+        <li @click="goHandleRecordForm"  style="color:blue">操作记录</li>
+        <li @click="goEvidenceForm"  style="color:blue">证据目录</li>
+        <li @click="goDocumentForm"  style="color:blue">文书列表</li>
+        <li @click="goDeliverReceiptForm" style="color:blue">送达回证</li>
+        <!----------长软end --------------->
       </ul>
     </div>
     <div>
@@ -21,11 +47,12 @@
         <li class="text-red">听证通知书</li>
         <li class="text-red">听证笔录</li>
         <li class="text-red">当场行政处罚决定书</li>
-
+        
         <br><br>
 
         表单：
         <li @click="goFilingApprovalForm">立案审批表</li>
+        <li @click="goRemoveOrPrelong">解除（延长）强制行政措施</li>
         <li @click="goIllegalAction">违法行为通知书</li>
         <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
         <li @click="goAdminPunisheDecision">行政处罚决定书</li>
@@ -49,6 +76,9 @@
       <ul>
         <br><br>
         <!--  -->
+        <li @click="goFirstPage">归档首页</li>
+        <li @click="goDeleteEvidence">解除证据登记保存决定书</li>
+        <li @click="goForceCorrect">责令改正违法行为通知书</li>
         <li @click="goModle">标准文书模板-当场行政处罚决定书</li>
         <li @click="goEstablishDoc">-立案登记表</li>
         <li @click="goQAreport">-询问笔录</li>
@@ -63,7 +93,7 @@
 
         表单：
         <!-- <li @click="goInquestReprot">交通运输行政执法文书式样之三 ： 勘验笔录</li> -->
-        <li @click="goInquirieRecordForm">询问笔录</li>
+       
         <li @click="goEvidenceListForm">证据保存清单</li>
         <li @click="goObtaineEvidenceForm">抽样取样凭证</li>
         <li class="text-red">表单十七 ： 分期（延期）缴纳罚款通知书(未做-无样式图)</li>
@@ -105,9 +135,20 @@ export default {
   },
 
   methods: {
+    // 归档首页
+    goFirstPage(){
+    },
+    // 解除证据登记保存决定书
+    goDeleteEvidence(){
+      this.$router.push({ name: 'deleteEvidence' });
+    },
+    // 责令改正违法行为通知书
+    goForceCorrect(){
+      this.$router.push({ name: 'forceCorrect' });
+    },
     // 立案登记表
     goEstablishDoc() {
-      this.$router.push({ name: 'establishDoc' });
+     
     },
     // 询问笔录
     goQAreport() {
@@ -141,7 +182,7 @@ export default {
     },
     //抽样取样凭证Doc
     goSampleEvidenceDoc() {
-      this.$router.push({ name: 'sampleEvidenceDoc' });
+     
     },
     goSceneNotesDoc() {
       this.$router.push({ name: 'sceneNotesDoc' });
@@ -158,17 +199,20 @@ export default {
       this.$router.push({ name: 'caseDoc' });
     },
     // 询问笔录
-    goInquirieRecordForm() {
-      this.$router.push({ name: 'inquirieForm' });
-    },
+  
     // 证据保存清单
     goEvidenceListForm() {
+<<<<<<< HEAD
       this.$router.push({ name: 'evidenceListForm' });
     },
     // 抽样取样凭证
     goObtaineEvidenceForm() {
       this.$router.push({ name: 'obtaineEvidenceForms' });
+=======
+     
+>>>>>>> 765b48315e89e2c789d16abdb881742627dfaaf8
     },
+   
     // 抽样取样凭证
     goObtaineEvidenceReport() {
       this.$router.push({ name: 'obtaineEvidenceForm' });
@@ -190,7 +234,7 @@ export default {
     },
     //  执行公告-打印
     goDentail() {
-      this.$router.push({ name: 'dentail' });
+      
 
     },
     //  执行公告-打印
@@ -210,16 +254,7 @@ export default {
     },
     //  代履行决定书-表单
     goEnforceInsteadForm() {
-      this.makeRoute(
-        "/enforceInsteadForm",
-        "/enforceInsteadForm2",
-        "/enforceInsteadForm3",
-        "/enforceInsteadForm",
-        "/enforceInsteadForm2",
-        "/enforceInsteadForm3",
-        " 代履行决定书-表单",
-        "caseHandle/case/form/enforceInsteadForm.vue"
-      );
+      
     },
     //  行政强制执行决定书-打印
     goEnforceDecideReprot() {
@@ -232,7 +267,7 @@ export default {
     },
     // 中止（终结、恢复）行政强制执行通知书-表单
     goEnforceReprotForm() {
-      this.$router.push({ name: 'enforceForm' });
+      
     },
     // 中止（终结、恢复）行政强制执行通知书-打印
     goEnforceReprot() {
@@ -291,7 +326,7 @@ export default {
     },
     //行政处罚决定书pdf
     goAdmPunishDecisionPdf() {
-      this.$router.push({ name: 'admPunishDecisionPdf' });
+     
     },
     //责令改正违法行为通知书pdf
     goOrderCorrectIllegalActPdf() {
@@ -303,32 +338,17 @@ export default {
     },
     // 结案报告-表单
     goFilingApprovalForm() {
-      this.$router.push({ name: 'filingApproval' });
+      // this.$router.push({ name: 'filingApproval' });
     },
-
+    // 解除（延长）行政强制措施
+    goRemoveOrPrelong(){
+      this.$router.push({ name: 'removeOrPrelong' });
+    },
     goImportantCaseDissForm() {
-      this.makeRoute(
-        "/important",
-        "/important2",
-        "/important3",
-        "important",
-        "important2",
-        "important3",
-        "重大案件集体讨论",
-        "caseHandle/case/form/importantCaseDissForm.vue"
-      );
+      
     },
     goArchivesForm() {
-      this.makeRoute(
-        "/archives",
-        "/archives2",
-        "/archives3",
-        "archives",
-        "archives2",
-        "archives3",
-        "归档",
-        "caseHandle/case/form/archivesForm.vue"
-      );
+      
     },
     //处罚执行
     goPenaltyExecution() {
@@ -342,6 +362,88 @@ export default {
     goModle() {
       this.$router.push({ name: 'modle' });
     },
+    //-------------------长软start--------------
+    goPunishDecisionDoc2(){
+      this.$router.push({ name: 'spotAdmPunishDecisionDoc' });
+    },
+    // 证据保存清单
+    goEvidenceListDoc() {
+      this.$router.push({ name: 'evidenceListDoc' });
+    },
+    //行政强制措施决定书
+    goAdminCoerciveMeasureDoc() {
+      this.$router.push({ name: 'adminCoerciveMeasureDoc' });
+    },
+    //延长行政强制措施期限通知书
+    goProlongAdminCompulsoryDoc() {
+      this.$router.push({ name: 'prolongAdminCompulsoryDoc' });
+    },
+    //解除行政强制措施决定书
+    goRemoveAdminCoerciveMeasureDoc() {
+      this.$router.push({ name: 'removeAdminCoerciveMeasureDoc' });
+    },
+     //听证通知书pdf
+    goHearingNoticeDoc() {
+      this.$router.push({ name: 'hearingNoticeDoc' });
+    },
+    //听证笔录pdf
+    goHearingRecordDoc(){
+      this.$router.push({ name: 'hearingRecordeDoc' });
+    },
+    //当场行政处罚决定书pdf
+    goSpotAdmPunishDecisionDoc(){
+      this.$router.push({ name: 'spotAdmPunishDecisionDoc' });
+    },
+    //  分期（延期）缴纳罚款通知书-打印
+    goPayStageReprotDoc() {
+      this.$router.push({ name: 'payStageDoc' });
+    },
+    //  执行公告-打印
+    goExecutAnnounceReprotDoc() {
+      this.$router.push({ name: 'executAnnounceDoc' });
+    },
+    //  催告书-打印
+    goRemindLetterReprotDoc() {
+      this.$router.push({ name: 'remindLetterDoc' });
+    },
+      //  行政强制执行决定书-打印
+    goEnforceDecideReprotDoc() {
+      this.$router.push({ name: 'enforceDecideDoc' });
+    },
+     //  代履行决定书-打印
+    goEnforceInsteadReprotDoc() {
+      this.$router.push({ name: 'enforceInsteadDoc' });
+    },
+     // 中止（终结、恢复）行政强制执行通知书-打印
+    goEnforceReprotDoc() {
+      this.$router.push({ name: 'enforceDoc' });
+    },
+     //重大案件集体讨论记录
+    goImportantCaseTeamDissDoc() {
+      this.$router.push({ name: 'importantCaseTeamDissDoc' });
+    },
+    //长软aaa start
+    // 操作记录
+    goHandleRecordForm() {
+        this.$router.push({ name: 'handleRecordForm' });
+    },
+    // 证据目录
+    goEvidenceForm() {
+        this.$router.push({ name: 'evidenceForm' });
+    },
+    // 文书列表
+    goDocumentForm() {
+        this.$router.push({ name: 'documentForm' });
+    },
+    // 送达回证
+    goDeliverReceiptForm() {
+        this.$router.push({ name: 'deliverReceiptForm' });
+    },
+
+    testPdf() {
+      this.$router.push({ name: 'testPdf' });
+    },
+    //--------------长软end-------------------
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
       //path不可以重复  name也不可以重复
       this.$router.addRoutes([

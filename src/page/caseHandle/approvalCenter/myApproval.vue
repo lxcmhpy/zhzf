@@ -8,17 +8,24 @@
     <caseListSearch ref="caseListSearch" @showSomeSearch="showSomeSearch"  @searchCase="getMyApprovalCase" :caseState="'myApproval'"></caseListSearch>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="clickCase">
-        <el-table-column prop="applyDate" label="申请时间" align="center"></el-table-column>
-        <el-table-column label="案号" align="center">
+        <el-table-column prop="applyDate" label="申请时间" align="center" width="200"></el-table-column>
+        <el-table-column label="案号" align="center" width="200">
             <template slot-scope="scope">
                 <span>{{scope.row.caseNumber ? scope.row.caseNumber : scope.row.tempNo}}</span>
             </template>
         </el-table-column>
-        <el-table-column prop="name" label="当事人/单位" align="center"></el-table-column>
-        <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
-        <el-table-column prop="caseType" label="案件类型" align="center"></el-table-column>
-        <el-table-column prop="applicant" label="申请人" align="center"></el-table-column>
-        <el-table-column prop="currentLinkName" label="当前环节" align="center"></el-table-column>
+        <el-table-column prop="name" label="当事人/单位" align="center" width="200"></el-table-column>
+        <el-table-column prop="caseCauseName" label="违法行为" align="center">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" placement="top-start">
+                <div slot="content" style="max-width:200px">{{scope.row.caseCauseName}}</div>
+                <span>{{scope.row.caseCauseName}}</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
+        <el-table-column prop="applicant" label="申请人" align="center" width="100"></el-table-column>
+        <el-table-column prop="currentLinkName" label="当前环节" align="center" width="100"></el-table-column>
       </el-table>
     </div>
     <div class="paginationBox">
@@ -86,9 +93,12 @@ export default {
     },
     //点击进入案件详情
     clickCase(row){
-      console.log(row)
+//      console.log(row)
       this.$store.commit("setCaseId", row.id);
       // console.log(this.$store.state.caseId)
+      //设置案件状态为审批中
+      this.$store.commit("setCaseApproval", true);
+
       this.$router.replace({
         name: 'caseInfo',
         params: {

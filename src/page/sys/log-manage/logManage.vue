@@ -34,23 +34,33 @@
                     <el-form-item label="操作日期" >
                                 <!-- type="daterange" -->
                         <el-form-item prop="startTime">
-                            <el-date-picker
+                             <el-date-picker
+                                v-model="logForm.dateArray"
+                                type="daterange"
+                                range-separator="—"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                format="yyyy-MM-dd"
+                                :default-time="['00:00:00', '23:59:59']"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期">
+                            </el-date-picker>
+                            <!-- <el-date-picker
                                 type="date"
                                 placeholder="开始日期"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                                 format="yyyy-MM-dd"
                                 range-separator="—"
                                 v-model="logForm.startTime"
-                            ></el-date-picker>
-                            </el-form-item>
-                            <el-form-item label="至" label-width="30px" prop="endTime">
+                            ></el-date-picker> -->
+                            <!-- </el-form-item> -->
+                            <!-- <el-form-item label="至" label-width="30px" prop="endTime">
                             <el-date-picker
                                 placeholder="结束日期"
                                 value-format="yyyy-MM-dd 23:59:59"
                                 format="yyyy-MM-dd"
                                 range-separator="—"
                                 v-model="logForm.endTime"
-                            ></el-date-picker>
+                            ></el-date-picker> -->
                         </el-form-item>
                     </el-form-item>
 
@@ -99,7 +109,8 @@ export default {
         operation: "",
         username: "",
         startTime: "",
-        endTime: ""
+        endTime: "",
+        dateArray: ""
       },
       logType:[{
             value: null,
@@ -143,14 +154,15 @@ export default {
         type: this.logForm.type,
         operation: this.logForm.operation,
         username: this.logForm.username,
-        startTime: this.logForm.startTime,
-        endTime: this.logForm.endTime,
+        startTime: this.logForm.dateArray? this.logForm.dateArray[0] : '',
+        endTime: this.logForm.dateArray? this.logForm.dateArray[1] : '',
         current: this.currentPage,
         size: this.pageSize
       };
+      let _this = this
       this.$store.dispatch("getloglist", data).then(res => {
-        this.tableData = res.data.records;
-         this.totalPage = res.data.total;
+        _this.tableData = res.data.records;
+         _this.totalPage = res.data.total;
       });
       err => {
         console.log(err);
