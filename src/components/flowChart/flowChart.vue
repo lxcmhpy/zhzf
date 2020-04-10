@@ -512,7 +512,7 @@ export default {
                         }
                     }
                     if (v1.id == '7_1') {
-                        alert(1)
+                        // alert(1)
                         // debugger
                     }
                     this.updateTempLinkByNotTempArray(graphDataTemp,v1.source, curNode)
@@ -652,7 +652,7 @@ export default {
        this.alReadyFinishCoerciveM = false
       else
        this.alReadyFinishCoerciveM = true
-      
+
     },
     //获取强制措施时间
     getMeasuerTime(){
@@ -677,7 +677,7 @@ export default {
           let d = measureEndDate.getDate() < 10 ? '0' + measureEndDate.getDate() + ' ' : measureStartDate.getDate() + ' ';
           let endDate = y + m + d;
           this.measureDate = startData + " 至 "+ endDate;
-          
+
         },err=>{
 
         }

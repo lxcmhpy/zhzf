@@ -43,7 +43,11 @@ export default {
       this.$store.commit("setHeadActiveNav", key);
       //删除之前的tab页签
       // this.$store.dispatch("deleteAllTabs");
-      this.$router.push({ name: "home_index" });
+      // name,--->path
+      if (key) {
+        this.$router.push({ name: key });
+      }
+    //   this.$router.push({ name: "home_index" });
     }
   }
 };
