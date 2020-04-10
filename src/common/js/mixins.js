@@ -413,8 +413,8 @@ export const mixinGetCaseApiList = {
         this.setEstabishCaseSourceAndText();
       }
 
-      //现场笔录、勘验笔录、询问笔录中数据处理
-      if(caseLinktypeId == '2c9029ca5b71f8a3015b71fc67ee0001' || caseLinktypeId == '2c9029ab655639600165564481f70001' || caseLinktypeId == '2c9029ca5b71686d015b71a86ead0032'){
+      //现场笔录、勘验笔录、询问笔录中数据处理 + 抽样取证凭证
+      if(caseLinktypeId == '2c9029ca5b71f8a3015b71fc67ee0001' || caseLinktypeId == '2c9029ab655639600165564481f70001' || caseLinktypeId == '2c9029ca5b71686d015b71a86ead0032'|| caseLinktypeId == '2c9029ca5b71686d015b71f5ac68004f'){
         console.log('data.staff',data.staff);
         this.setStaffAndCertificateId();
       }

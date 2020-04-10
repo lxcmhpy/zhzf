@@ -73,17 +73,33 @@ export default {
   },
   methods: {
     showModal(data, caseForm) {
-
       this.visible = true;
-      this.getEnforceLawType();
+      // this.getEnforceLawType();
+      this.$store.dispatch("getEnforceLawType", "1").then(
+        res => {
+          this.lawCateList = res.data;
+          this.lawCateList.forEach(element => {
+            console.log('循环', caseForm.wayType, element.cateName)
+            if (element.cateName == caseForm.wayType) {
+              this.caseRegisterForm.cateId = element.cateId;
+            }
+            if (element.cateName == caseForm.wayType) {
+              this.caseRegisterForm.cateId = element.cateId;
+            }
+            if (element.cateName == caseForm.wayType) {
+              this.caseRegisterForm.cateId = element.cateId;
+            }
+            this.getCaseType();
+          });
+        },
+        err => {
+          console.log(err);
+        }
+      );
       // 首页跳转代入
-      // this.chooseIllegalAct()
-      this.caseRegisterForm.illageAct = data.strContent;
-      this.caseRegisterForm.cateId = caseForm.wayType;
       this.caseRegisterForm.programType = caseForm.programType;
-      this.getCaseType()
+      this.caseRegisterForm.illageAct = data.strContent;
     },
-
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;

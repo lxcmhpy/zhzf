@@ -167,11 +167,11 @@ export default {
     },
     // 抽样取样凭证
     goObtaineEvidenceForm() {
-      this.$router.push({ name: 'obtaineEvidenceForm' });
+      this.$router.push({ name: 'obtaineEvidenceForms' });
     },
     // 抽样取样凭证
     goObtaineEvidenceReport() {
-      this.$router.push({ name: 'obtaineEvidenceFormReport' });
+      this.$router.push({ name: 'obtaineEvidenceForm' });
     },
     // 送达回证
     goDeliveryCertificate() {

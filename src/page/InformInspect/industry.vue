@@ -113,9 +113,9 @@ export default {
   data() {
     return {
       checkData: {
-        provinceCode: '110000',
-        ownerName: '北京京版物流有限责任公司',
-        licenseCode: '货备110115000169'
+        provinceCode: '',
+        ownerName: '',
+        licenseCode: ''
       },
       // checkData: {
       //   provinceCode: '',

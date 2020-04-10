@@ -133,8 +133,8 @@ export default [
     component: () => import("@/page/caseHandle/case/form/evidenceListForm.vue")
   },
   {
-    path: "/obtaineEvidenceForm",
-    name: "obtaineEvidenceForm",
+    path: "/obtaineEvidenceForms",
+    name: "obtaineEvidenceForms",
     meta: {
       title: "抽样取样凭证",
       oneTab: true,
@@ -142,8 +142,8 @@ export default [
     component: () => import("@/page/caseHandle/case/form/obtaineEvidenceForm.vue")
   },
   {
-    path: "/obtaineEvidenceFormReport",
-    name: "obtaineEvidenceFormReport",
+    path: "/obtaineEvidenceForm",
+    name: "obtaineEvidenceForm",
     meta: {
       title: "抽样取样凭证",
       oneTab: true,
