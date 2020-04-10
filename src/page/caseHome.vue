@@ -480,43 +480,40 @@
           console.log(day, '天', endTime, element.acceptTime, element.caseDealTime)
         });
       },
-
-      // 信息查验
-      infoCheck(path) {
-        this.$router.push({name: path});
-      },
-      // 查看更多
-      router(path) {
-        this.$router.push({path: '/myCase/' + path});
-
-      },
-      // 立案登记
-      caseRecord(data) {
-        console.log(data)
-        this.$refs.caseRegisterDiagRef.showModal(data, this.caseForm);
-        // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
-      },
-      // 查看更多违法行为
-      caseRecordMore() {
-        this.table = true
-        console.log()
-        let lawCate = {
-          cateId: '',
-          cateName: this.caseForm.wayType,
-          hyTypeId: this.caseForm.commenCase,
-        };
-        this.$refs.chooseillegalActRef.showModal(lawCate);
-        // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
-      },
-      // 查找
-      search(index, name) {
-        //搜索
-        this.caseSearchForm = {
-          flag: index,
-          caseNumber: name
-        };
-        this.getCaseList2(this.caseSearchForm)
-
+    // 信息查验
+    infoCheck(path) {
+      this.$router.push({ name: path });
+    },
+    // 查看更多
+    router(path) {
+      this.$router.push({ path: '/myCase/' + path });
+    },
+    // 立案登记
+    caseRecord(data) {
+      console.log(data)
+      this.$refs.caseRegisterDiagRef.showModal(data, this.caseForm);
+      // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
+    },
+    // 查看更多违法行为
+    caseRecordMore() {
+      this.table = true
+      console.log()
+      let lawCate = {
+        cateId: '',
+        cateName: this.caseForm.wayType,
+        hyTypeId: this.caseForm.commenCase,
+      };
+      this.$refs.chooseillegalActRef.showModal(lawCate);
+      // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
+    },
+    // 查找
+    search(index, name) {
+      //搜索
+      this.caseSearchForm = {
+        flag: index,
+        caseNumber: name
+      };
+      this.getCaseList2(this.caseSearchForm)
       },
       //查询违法行为
       getIllegaAct() {
