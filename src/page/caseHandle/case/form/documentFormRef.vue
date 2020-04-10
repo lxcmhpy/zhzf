@@ -1,20 +1,21 @@
 <template v-if="caseInfo">
 <div>
   <el-dialog
-    custom-class="leftDialog leftDialog2 archiveCatalogueBox"
+    custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat"
     :visible.sync="visible"
     @close="closeDialog"
-    top="60px"
-    width="305px"
+    top="0px"
+    width="405px"
     :modal="false"
     :show-close="false"
+    :append-to-body="true"
   >
     <template slot="title">
         <div class="catalogueTitle">
             文书列表
         </div>
     </template>
-    <div class="userList">
+    <div class="userList a">
           <div style="margin: 15px 0;"></div>
           <el-checkbox-group v-model="checkedDocId">
               <el-checkbox
@@ -84,6 +85,8 @@ export default {
        docSrc:'', //文书的pdf地址
        isIndeterminate: true,
        checkAll: false,
+      getData:false,
+
     };
   },
   inject: ["reload"],
@@ -94,7 +97,8 @@ export default {
 //      console.log('show');
 
       this.visible = true;
-//      console.log(this.visible);
+    this.getByMlCaseId();
+
 
     },
     //关闭弹窗的时候清除数据
@@ -103,10 +107,10 @@ export default {
     },
     //获取已完成文书列表
      getByMlCaseId() {
+      this.getData = true;
       let _this = this
       findVoByDocCaseIdApi(this.caseId).then(
         res => {
-            debugger
           console.log(res);
           _this.caseList = res.data;
         },
@@ -129,7 +133,6 @@ export default {
     //   );
     // },
      routerArchiveCatalogueDetail () {
-        debugger
         let _thats = this
         this.docSrc = this.host + this.checkedDocId[0];
         this.nowShowPdfIndex = 0;
@@ -212,14 +215,12 @@ export default {
     },
   },
   mounted () {
-    this.getByMlCaseId();
     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
-     var class1 =  document.getElementsByClassName("archiveCatalogueBox");
-//     console.log('class',class1)
-     var class2 = class1[0].parentNode;
-//     console.log('class',class2)
-     class2.style.right = '60px';
-     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
+     let class1 =  document.getElementsByClassName("documentFormCat");
+      let class2 = class1[0].parentNode;
+      class2.style.right = '60px';
+      class2.style.top = '60px';
+      class2.style.overflow = 'hidden';
   }
 };
 </script>

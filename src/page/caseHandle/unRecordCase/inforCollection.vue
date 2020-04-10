@@ -351,9 +351,9 @@
         </div>
         <div v-if="showTrailer">
           <div class="item">
-            <el-form-item label="车牌类型">
+            <el-form-item label="挂车类型">
               <el-select v-model="inforForm.trailerType">
-                <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="item in allTrailerTypeType" :key="item.id" :label="item.name" :value="item.name"></el-option>     
               </el-select>
             </el-form-item>
           </div>
@@ -676,6 +676,9 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validateIDNumber, validateAge, validateZIP, validatePhone } from '@/common/js/validator'
+import {
+  getDictListDetailByNameApi
+} from "@/api/system";
 export default {
   data() {
     //选择个人试验证
@@ -898,6 +901,7 @@ export default {
       disableBtn: false, //提交暂存按钮的禁用
       activeA: [true, false, false, false, false],
       autoSava: true, //自动暂存
+      allTrailerTypeType:[], //挂车类型
     };
   },
   components: {
@@ -1498,6 +1502,15 @@ export default {
         this.$message('请输入正确的6位邮编')
       }
     },
+    //获取挂车类型数据
+    getTrailerType(){
+      getDictListDetailByNameApi('trailerType').then(res=>{
+        console.log('挂车类型',res);
+        this.allTrailerTypeType = res.data;
+      },err=>{
+        console.log(err);
+      })
+    }
   },
   mounted() {
     // debugger
@@ -1522,6 +1535,7 @@ export default {
   },
   created() {
     this.findJudgFreedomList();
+    this.getTrailerType();
     // this.setLawPerson(
     //   [iLocalStroage.gets('userInfo').username]
     // )

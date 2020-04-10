@@ -52,7 +52,8 @@ export default {
         approveOpinions: "同意",
         approvalTime: new Date().format('yyyy年MM月dd日'),
       },
-      caseData: ""
+      caseData: "",
+      approvalPeopleName:iLocalStroage.gets("userInfo").nickName ? iLocalStroage.gets("userInfo").nickName : iLocalStroage.gets("userInfo").username,
     };
   },
   inject: ["reload"],
@@ -95,7 +96,7 @@ export default {
             console.log('此时为三级审批')
             params.jsonApproveData = JSON.stringify({
               thirdApproveOpinions:this.approvalForm.approveOpinions,
-              thirdApprovePeo: iLocalStroage.gets("userInfo").username,
+              thirdApprovePeo: this.approvalPeopleName,
               thirdApproveTime: this.approvalForm.approvalTime
             });
           } else {
@@ -104,7 +105,7 @@ export default {
 
             params.jsonApproveData = JSON.stringify({
               secondApproveOpinions:this.approvalForm.approveOpinions,
-              secondApprovePeo: iLocalStroage.gets("userInfo").username,
+              secondApprovePeo: this.approvalPeopleName,
               secondApproveTime: this.approvalForm.approvalTime
             });
           }
@@ -114,7 +115,7 @@ export default {
 
           params.jsonApproveData = JSON.stringify({
             approveOpinions:this.approvalForm.approveOpinions,
-            approvePeo: iLocalStroage.gets("userInfo").username,
+            approvePeo: this.approvalPeopleName,
             approveTime: this.approvalForm.approvalTime
           });
         }
@@ -124,14 +125,14 @@ export default {
           // 此时为二级审批
           params.jsonApproveData = JSON.stringify({
             secondApproveOpinions:this.approvalForm.approveOpinions,
-            secondApprovePeo: iLocalStroage.gets("userInfo").username,
+            secondApprovePeo: this.approvalPeopleName,
             secondApproveTime: this.approvalForm.approvalTime
           });
         } else {
           //此时为一级审批
           params.jsonApproveData = JSON.stringify({
             approveOpinions:this.approvalForm.approveOpinions,
-            approvePeo: iLocalStroage.gets("userInfo").username,
+            approvePeo: this.approvalPeopleName,
             approveTime: this.approvalForm.approvalTime
           });
         }

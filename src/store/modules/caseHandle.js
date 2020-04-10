@@ -14,6 +14,8 @@ const caseHandle = {
         caseId:'' ,  //案件id
         docId: '',
         caseApproval:'', //案件是否为审批状态
+        clickArchiveCatalogue:'', //当前点击的归档卷宗目录
+        archiveCatalogueList:[], //归档卷宗目录
     },
     mutations:{
         //设置caseId
@@ -26,7 +28,13 @@ const caseHandle = {
         setCaseApproval(state,data){
             iLocalStroage.set('caseApproval',data)
             state.caseApproval = data;
-        }
+        },
+        setClickArchiveCatalogue(state,data) {
+            state.clickArchiveCatalogue = data
+        },
+        setArchiveCatalogueList(state,data) {
+            state.archiveCatalogueList = data
+        },
     },
     actions:{
         //获取执法门类
