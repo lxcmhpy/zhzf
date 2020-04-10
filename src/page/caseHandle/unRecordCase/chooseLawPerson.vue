@@ -92,8 +92,12 @@ export default {
   methods: {
     findStallByCondition(){
         // findStaffListApi(this.staffNameOrCode);
+        let data = {
+        organId: iLocalStroage.gets("userInfo").organId,
+        inputValue: this.staffNameOrCode
+      };
         let _this = this
-        findStaffListApi(this.staffNameOrCode).then(res=>{
+        findStaffListApi(data).then(res=>{
             _this.userList = res.data;
             _this.userList.forEach(item => {
               //执法证号下拉框

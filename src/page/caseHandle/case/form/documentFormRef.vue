@@ -97,7 +97,7 @@ export default {
 //      console.log('show');
 
       this.visible = true;
-    this.getByMlCaseId();
+      if(!this.getData)  this.getByMlCaseId();
 
 
     },

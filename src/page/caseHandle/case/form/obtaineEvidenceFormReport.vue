@@ -366,6 +366,13 @@ export default {
         status: "", //提交状态
         linkTypeId:'2c90293b6c178b55016c17c93326000f' //所属环节的id
       },
+      // CaseDocDataForm: {
+      //   caseBasicinfoId: "2c9029ca5b71686d015b71f5ac68004f",
+      //   caseDoctypeId: "123",
+      //   //表单数据
+      //   docData: "",
+      //   status: "",
+      // },
       rules: {
         partyIdNo: [
           { validator:validateIDNumber , trigger: "blur"}

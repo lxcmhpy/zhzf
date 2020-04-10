@@ -72,6 +72,7 @@ export default {
       pdfVisible: false,
       // doccloseDialog: false,
       host:'',
+      getData:false,
     };
   },
   inject: ["reload"],
@@ -81,7 +82,8 @@ export default {
     showModal() {
       console.log('show');
       this.visible = true;
-      this.getByMlCaseId();
+      if(!this.getData)  this.getByMlCaseId();
+
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -99,7 +101,7 @@ export default {
     // },
     //获取已完成送达回证列表
     getByMlCaseId() {
-      
+      this.getData = true;
         let data = {
             caseId: this.caseId,
         };

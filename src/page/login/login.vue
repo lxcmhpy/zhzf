@@ -84,7 +84,6 @@
           <div class="form_box">
             <span class="back">
               <el-button icon="el-icon-arrow-left" size="mini" @click="resetChange(false)"></el-button>
-
             </span>
             <span class="title">密码重置申请</span>
             <div class="formC1" v-if="check">
