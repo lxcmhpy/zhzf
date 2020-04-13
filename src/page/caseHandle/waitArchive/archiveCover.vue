@@ -521,7 +521,8 @@ export default {
     // this.$refs.archiveCatalogueRef.showModal(true);
     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
     // this.getByMlCaseId(this.caseId)
-    this.caseLinkDataForm.caseBasicinfoId = this.caseId
+    this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+    this.setFormData();
     this.$refs.caseSlideMenuRef.mouseenterShowEmit('archiveCatalogue')
     //在目录排序页面点击弹窗数据后返回的
     // if(this.$route.params && this.$route.params.clickData){
