@@ -44,14 +44,7 @@
                   <p>在线</p>
                 </div>
               </div>
-
-              <div class="btns">
-                <i class="iconfont law-mobile" @click="makeMobileCall"></i>
-                <i class="iconfont law-shipin" @click="makeVideoCall"></i>
-                <i class="iconfont law-jiankong" @click="Call"></i>
-                <i class="iconfont law-msg-box" ></i>
-                <i class="iconfont law-xianlu"></i>
-              </div>
+                <externalVideoBtns @click="show=false"></externalVideoBtns>
             </div>
             <!-- 1执法机构 -->
             <div v-else-if="curWindow.category == 1">
@@ -102,14 +95,14 @@
                   <p>在线</p>
                 </div>
               </div>
-
-              <div class="btns">
+                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+              <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
                 <i class="iconfont law-jiankong"></i>
                 <i class="iconfont law-msg-box"></i>
                 <i class="iconfont law-xianlu"></i>
-              </div>
+              </div> -->
             </div>
             <!-- 3执法船舶 -->
             <div v-else-if="curWindow.category == 3">
@@ -130,14 +123,14 @@
                   <p>在线</p>
                 </div>
               </div>
-
-              <div class="btns">
+                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+              <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
                 <i class="iconfont law-jiankong"></i>
                 <i class="iconfont law-msg-box"></i>
                 <i class="iconfont law-xianlu"></i>
-              </div>
+              </div> -->
             </div>
             <!-- 4非现场治超检测 -->
             <div v-else-if="curWindow.category == 4">
@@ -199,14 +192,14 @@
                   <p>在线</p>
                 </div>
               </div>
-
-              <div class="btns">
+                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+              <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
                 <i class="iconfont law-jiankong"></i>
                 <i class="iconfont law-msg-box"></i>
                 <i class="iconfont law-xianlu"></i>
-              </div>
+              </div> -->
             </div>
             <!-- 6监管车辆 -->
             <div v-else-if="curWindow.category == 6">
@@ -224,14 +217,14 @@
                   <p>在线</p>
                 </div>
               </div>
-
-              <div class="btns">
+                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+              <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
                 <i class="iconfont law-jiankong"></i>
                 <i class="iconfont law-msg-box"></i>
                 <i class="iconfont law-xianlu"></i>
-              </div>
+              </div> -->
             </div>
             <!-- -1搜索地图 -->
             <div v-else-if="curWindow.category == -1">
@@ -244,6 +237,7 @@
               </div>
             </div>
             <!-- <div v-else></div> -->
+
           </div>
         </el-amap-info-window>
       </el-amap>
@@ -252,7 +246,9 @@
             location: lng = {{ lng }} lat = {{ lat }}
             </span>
         <span v-else>正在定位</span>-->
+        <!-- <externalVideoBtns style="position:absolute;z-index:300"></externalVideoBtns> -->
       </div>
+      <!-- 右侧浮动栏 -->
       <div class="amap-position" :class="'amap-' + direction + '-box'">
         <div class="drawerBtn" @click="updateDrawer">
           <i class="el-icon-arrow-right"></i>
@@ -358,86 +354,59 @@
         </transition>
       </el-button>
     </div>
-    <!-- <div class="amap-main-content">
-        <transition name="el-fade-in">
-            <div class="echarts-box" v-show="status1">
-                <em class="title left">近三个月执行情况</em>
-                <i class="iconfont law-delete1 right" @click="status1 = false"></i>
-                <div id="echartsBox1" class="amap-chart"></div>
-            </div>
-        </transition>
-         <transition name="el-fade-in">
-            <div class="echarts-box" v-show="status2">
-                <em class="title left">近三个月查处排行</em>
-                <i class="iconfont law-delete1 right" @click="status2 = false"></i>
-                <div class="amap-chart">
-                    <el-table
-                    v-loading="loading"
-                        :data="tableData"
-                        style="width: 100%">
-                        <el-table-column
-                            type="index"
-                            label="排名"
-                            width="50">
-                        </el-table-column>
-                        <el-table-column
-                            prop="name"
-                            label="车牌号/企业名称"
-                            width="140"
-                            >
-                        </el-table-column>
-                        <el-table-column
-                            prop="num"
-                            label="查处次数"
-                            width="100"
-                            >
-                        </el-table-column>
-                    </el-table>
+    <transition name="el-fade-in" >
+        <div v-show="makePhoneStatus">
+             <!--  -->
+            <div class="makePhoneBox" id="phoneBox">
+                <div >
+                    <div class="echarts-box">
+                        <i class="el-icon-close right" id="closePhone" @click="updateMakePhoneStatus"></i>
+                        <i class="el-icon-rank right" @mousedown="event=>start(event,'phoneBox')"></i>
+                        <div class="videoBox">
+                            <video class="video" width="200px" height="200px" id="video_local" autoplay="autoplay" muted></video>
+                            <video class="video" width="200px" height="200px" id="video_remote" autoplay="autoplay"></Video>
+                        </div>
+                    </div>
+                    <div class="phoneBtns">
+                        <img :src="'./static/images/img/lawSupervise/ring_off.png'" @click="ringOff">
+                    </div>
                 </div>
             </div>
-         </transition>
-    </div>
-    <div class="amap-right-position" v-show="status3">
-
-        <div class="echarts-box">
-            <em class="title left">车辆预警</em>
-            <i class="iconfont law-delete1 right" @click="status3 = false"></i>
-            <div id="echartsBox2" class="amap-chart"></div>
+            <!-- <audio id="audio_remote" autoplay="autoplay"> </audio>
+            <audio id="ringtone" loop  :src="'./static/sounds/ringtone.wav'"> </audio>
+            <audio id="ringbacktone"  loop :src="'./static/sounds/ringbacktone.wav'"> </audio>
+            <audio id="dtmfTone" :src="'./static/assets/sounds/dtmf.wav'"> </audio> -->
         </div>
-    </div>-->
-
-    <!-- <div class="amap-main-content">
-
-    </div>-->
-    <!-- 标记 -->
-    <!-- <el-amap-marker v-for="(marker, index) in markers" :position="marker" :key="index"></el-amap-marker> -->
-    <div style="width: 100%; height: 280px;position:absolute;top:200px;left:300px;z-index: 3000;border:3px solid black;">
-        <video class="video" width="45%" height="100%" id="video_local" autoplay="autoplay" muted></video>
-        <video class="video" width="45%" height="100%" id="video_remote" autoplay="autoplay"></Video>
-    </div>
-        <audio id="audio_remote" autoplay="autoplay"> </audio>
-        <audio id="ringtone" loop :src="'./static/sounds/ringtone.wav'"> </audio>
-        <audio id="ringbacktone" loop :src="'./static/sounds/ringbacktone.wav'"> </audio>
-        <audio id="dtmfTone" :src="'./static/sounds/dtmf.wav'"> </audio>
+    </transition>
+    <audioPhone></audioPhone>
+    <!-- autoplay="autoplay"  -->
+    <!-- <div v-if="showVideo">
+    </div> -->
+    <a id="getPhone" @click="videoCall"></a>
+        <audio id="audio_remote" controls="controls" ref="audio_remote" autoplay="autoplay"> </audio>
+    <audio id="ringtone" loop ref="ringtone"  :src="'./static/sounds/ringtone.wav'"> </audio>
+    <audio id="ringbacktone" ref="ringbacktone"  loop :src="'./static/sounds/ringbacktone.wav'"> </audio>
+    <audio id="dtmfTone" ref="dtmfTone" :src="'./static/assets/sounds/dtmf.wav'"> </audio>
   </div>
 </template>
+<script type="text/javascript" src="@/common/js/call.js"></script>
 <script>
 import Vue from "vue";
+require("@/common/js/call.js");
+import audioPhone from "../../componentCommon/audioPhone.vue";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";
-import {
-  lawSuperviseObj,
-  yjObj
-} from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
+import {lawSuperviseObj, yjObj} from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
 import { getZfjgLawSupervise, getBySiteId } from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
-// import {PhoneCallModule} from '@/common/js/external/PhoneCall.js';
-// import PhoneCall from "../../../../../static/js/external/PhoneCall.js";
-import { PhoneCallModule } from "@/common/js/call.js";
+import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
+// import externalVideoBtns from '@/page/lawSupervise/componentCommon/externalVideoBtns.vue';
 import _ from "lodash";
 import AMap from "vue-amap";
 import { AMapManager } from "vue-amap";
 
+// import draggable from "vuedraggable";
+// import { PhoneCallModule } from "@/common/js/call.js";
 Vue.use(AMap);
 AMap.initAMapApiLoader({
   key: "2fab5dfd6958addd56c89e58df8cbb37",
@@ -466,154 +435,193 @@ export default {
   data() {
     let self = this;
     return {
-      categorySelect: -1,
-      direction: "rtl",
-      drawer: false,
-      windows: [],
-      curWindow: null,
-      default: "",
-      slotStyle: "lawWindowStyle1",
-      slotStyleList: ["", "greenBg2", "orangeBg", "redBg"],
-      status1: true,
-      status2: true,
-      status3: true,
-      lawSuperviseObj,
-      yjObj,
-      currentTabIndex: null,
-      category: -1,
-      categoryList: [
-        {
-          show: "地图位置",
-          code: -1,
-          placeholder: "请输入位置信息",
-          className: "map_didian"
-        },
-        {
-          show: "执法人员",
-          code: 0,
-          placeholder: "请输入执法人员名称",
-          className: "map_renyuan"
-        },
-        {
-          show: "执法机构",
-          code: 1,
-          placeholder: "请输入执法机构名称",
-          className: "map_jigou"
-        },
-        {
-          show: "执法车辆",
-          code: 2,
-          placeholder: "请输入车牌号",
-          className: "map_jingche"
-        },
-        {
-          show: "执法船舶",
-          code: 3,
-          placeholder: "请输入站点名称",
-          className: "map_cbo"
-        },
-        {
-          show: "非现场治超检测点",
-          code: 4,
-          placeholder: "请输入站点名称",
-          className: "map_o_gud"
-        },
-        {
-          show: "监管企业",
-          code: 5,
-          placeholder: "请输入企业名称",
-          className: "map_o_gud"
-        },
-        {
-          show: "监管车辆",
-          code: 6,
-          placeholder: "请输入车牌号码",
-          className: "map_jingche"
-        },
-        {
-          show: "视频监控",
-          code: 7,
-          placeholder: "请输入",
-          className: "map_didian"
-        }
-      ],
-      center: [116.397428, 39.90923],
-      searchOption: {
-        city: "北京",
-        citylimit: true
-      },
-      currentAddressObj: null,
-      zoom: 16,
-      amapManager,
-      events: {
-        init(map) {
-          // AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
-          // const marker = new SimpleMarker({
-          // iconStyle: 'red',
-          // map: [],
-          // position: map.getCenter()
-          // });
-          // });
-        }
-      },
-      loaded: false,
-      lng: 0,
-      lat: 0,
-      plugin: [
-        {
-          pName: "ToolBar",
-          position: "RB"
-        },
-        {
-          pName: "Scale",
-          position: "RB"
-        },
-        {
-          pName: "Geolocation",
-          position: "RB",
-          events: {
-            init(o) {
-              // o 是高德地图定位插件实例
-              o.getCurrentPosition((status, result) => {
-                if (result && result.position) {
-                  self.currentAddressObj = result.addressComponent;
-                  self.lng = result.position.lng;
-                  self.lat = result.position.lat;
-                  self.center = [self.lng, self.lat];
-                  self.loaded = true;
-                  self.$nextTick();
-                }
-              });
+        // audioPosition: {
+        //     dtmfTone: './static/assets/sounds/dtmf.wav',
+        //     ringbacktone: './static/sounds/ringbacktone.wav',
+        //     ringtone: './static/sounds/ringtone.wav'
+        // },
+        showVideo: false,
+        makePhoneStatus: false,
+        show: true,
+        categorySelect: -1,
+        direction: "rtl",
+        drawer: false,
+        windows: [],
+        curWindow: null,
+        default: "",
+        slotStyle: "lawWindowStyle1",
+        slotStyleList: ["", "greenBg2", "orangeBg", "redBg"],
+        status1: true,
+        status2: true,
+        status3: true,
+        lawSuperviseObj,
+        yjObj,
+        currentTabIndex: null,
+        category: -1,
+        categoryList: [
+            {
+            show: "地图位置",
+            code: -1,
+            placeholder: "请输入位置信息",
+            className: "map_didian"
+            },
+            {
+            show: "执法人员",
+            code: 0,
+            placeholder: "请输入执法人员名称",
+            className: "map_renyuan"
+            },
+            {
+            show: "执法机构",
+            code: 1,
+            placeholder: "请输入执法机构名称",
+            className: "map_jigou"
+            },
+            {
+            show: "执法车辆",
+            code: 2,
+            placeholder: "请输入车牌号",
+            className: "map_jingche"
+            },
+            {
+            show: "执法船舶",
+            code: 3,
+            placeholder: "请输入站点名称",
+            className: "map_cbo"
+            },
+            {
+            show: "非现场治超检测点",
+            code: 4,
+            placeholder: "请输入站点名称",
+            className: "map_o_gud"
+            },
+            {
+            show: "监管企业",
+            code: 5,
+            placeholder: "请输入企业名称",
+            className: "map_o_gud"
+            },
+            {
+            show: "监管车辆",
+            code: 6,
+            placeholder: "请输入车牌号码",
+            className: "map_jingche"
+            },
+            {
+            show: "视频监控",
+            code: 7,
+            placeholder: "请输入",
+            className: "map_didian"
             }
-          }
+        ],
+        center: [116.397428, 39.90923],
+        searchOption: {
+            city: "北京",
+            citylimit: true
         },
-        {
-          pName: "PlaceSearch",
-          renderStyle: "default",
-          events: {}
-        }
-      ],
-      markers: [],
-      allSearchList: []
+        currentAddressObj: null,
+        zoom: 16,
+        amapManager,
+        events: {
+            init(map) {
+            // AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
+            // const marker = new SimpleMarker({
+            // iconStyle: 'red',
+            // map: [],
+            // position: map.getCenter()
+            // });
+            // });
+            }
+        },
+        loaded: false,
+        lng: 0,
+        lat: 0,
+        plugin: [
+            {
+            pName: "ToolBar",
+            position: "RB"
+            },
+            {
+            pName: "Scale",
+            position: "RB"
+            },
+            {
+            pName: "Geolocation",
+            position: "RB",
+            events: {
+                init(o) {
+                // o 是高德地图定位插件实例
+                o.getCurrentPosition((status, result) => {
+                    if (result && result.position) {
+                    self.currentAddressObj = result.addressComponent;
+                    self.lng = result.position.lng;
+                    self.lat = result.position.lat;
+                    self.center = [self.lng, self.lat];
+                    self.loaded = true;
+                    self.$nextTick();
+                    }
+                });
+                }
+            }
+            },
+            {
+            pName: "PlaceSearch",
+            renderStyle: "default",
+            events: {}
+            }
+        ],
+        markers: [],
+        allSearchList: []
     };
   },
   methods: {
-    makeVideoCall () {
-        PhoneCallModule.sipRegister();
-        let obj = PhoneCallModule;
-        setTimeout(function(){
-            obj.sipVideoCall("10000", "test1");
-        },2000)
+    updateMakePhoneStatus () {
+        this.makePhoneStatus = !this.makePhoneStatus;
+        if (this.makePhoneStatus) {
+            window.PhoneCallModule.sipRegister();
+            this.showVideo = true;
+            // document.getElementById('getPhone').click();
+            // this.videoCall();
+            let _this=this;
+            setTimeout(function() {
+                _this.videoCall();
+                // window.PhoneCallModule.sipVideoCall("10000","test1");
+            }, 4000)
+        } else {
+            this.ringOff();
+
+        }
     },
-    makeMobileCall() {
-      PhoneCallModule.sipRegister();
-       let _this = this;
-        setTimeout(function(){
-            _this.Call();
-        },2000)
+    videoCall() {
+        document.getElementById("audio_remote").pause();
+
+     document.getElementById("audio_remote").play();
+      PhoneCallModule.sipVideoCall("10000","test1");
     },
-    Call () {
-      PhoneCallModule.sipAudioCall("10000", "test1");
+    ringOff () {
+        window.PhoneCallModule.sipHangUp();
+        this.makePhoneStatus = false;
+        this.showVideo = false;
+    },
+    start (e, id) {
+        let odiv = e.target;        //获取目标元素
+            //算出鼠标相对元素的位置
+            document.onmousemove = (e)=>{       //鼠标按下并移动的事件
+            // "phoneBox"
+                let obj = document.getElementById(id).style;
+                obj.left = e.clientX < 325 ? '0px' : (e.clientX -350 )+ 'px';
+                obj.top = e.clientY < 90 ? '0px' : (e.clientY -110) + 'px';
+                if (e.clientY >= (document.body.clientHeight - 60)) {
+                     obj.top = (document.body.clientHeight - 210) +'px';
+                }
+                if (e.clientX >= (document.body.clientWidth-400)) {
+                    obj.left = (document.body.clientWidth-400) + 'px';
+                }
+            };
+            document.onmouseup = (e) => {
+                document.onmousemove = null;
+                document.onmouseup = null;
+            };
     },
     updateDrawer() {
       this.drawer = !this.drawer;
@@ -727,11 +735,12 @@ export default {
     },
     searchByTab(item) {
       // this.markers.splice(0, this.markers.length);
-      if (this.allSearchList.length > 5) {
-        this.errorMsg(`至多选择5条数据`, "success");
-        return;
+        item.select = !item.select;
+      if (item.select&&this.allSearchList.length >= 5) {
+        item.select = false;
+        this.errorMsg(`至多选择5条数据`, "error");
+        return
       }
-      item.select = !item.select;
       if (item.select) {
         if (this.curWindow) {
           this.curWindow.visible = false;
@@ -752,13 +761,14 @@ export default {
         let _index = _.findIndex(this.allSearchList, function(chr) {
           return chr.type === item.code;
         });
-        this.allSearchList.splice(_index, 1);
-        this.markers.splice(0, this.markers.length);
-        this.windows.splice(0, this.windows.length);
-        debugger;
-        this.allSearchList.forEach((v, i) => {
-          _this.getZfjgLawSupervise(v, v.type);
-        });
+        if(_index > -1) {
+            this.allSearchList.splice(_index, 1);
+            this.markers.splice(0, this.markers.length);
+            this.windows.splice(0, this.windows.length);
+            this.allSearchList.forEach((v, i) => {
+            _this.getZfjgLawSupervise(v, v.type);
+            });
+        }
       }
     },
     searchAll(pois) {
@@ -832,10 +842,21 @@ export default {
       });
     }
   },
-  mounted() {},
+  mounted() {
+    //   debugger;
+    // window.PhoneCallModule.sipRegister();
+    // let _this = this;
+    // this.$nextTick(() => {
+    //     _this.$refs.audio_remote.load();
+    //     _this.$refs.dtmfTone.load();
+    //     _this.$refs.ringbacktone.load();
+    //     _this.$refs.ringtone.load();
+    // })
+  },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {
     // echarts,
+    externalVideoBtns, audioPhone
   }
 };
 </script>

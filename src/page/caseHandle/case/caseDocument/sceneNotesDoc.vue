@@ -134,7 +134,7 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="scenePeopeRelation">
                   <el-select v-model="docData.scenePeopeRelation" :maxLength="maxLength" placeholder="\" @change="changeRelationWithCase">
-                    <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option> 
+                    <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </el-form-item>
               </td>
@@ -151,7 +151,7 @@
                     :maxlength="nameLength"
                     placeholder="\"
                   ></el-input>
-                  
+
                 </el-form-item>
               </td>
               <td>联系电话</td>
@@ -435,7 +435,7 @@ export default {
       needDealData:true,
     };
   },
-  computed: { 
+  computed: {
     ...mapGetters(["caseId"]),
     defaultStartTime(){
       let a = new Date();
@@ -445,11 +445,11 @@ export default {
       console.log();
       let b = "10:00:00" ;
       if(this.enforceStartTime){
-        alert(111);
+        // alert(111);
        b = this.enforceStartTime.split(' ')[1];
 
       }
-      
+
       return b+' - 23:59:59';
     }
    },
@@ -540,7 +540,7 @@ export default {
             name:this.docData.party,
             sex: this.docData.partySex,
             zhengjianNumber: this.docData.partyIdNo,
-            relationWithCase: "0",  
+            relationWithCase: "0",
             company: this.docData.partyUnitPosition,
             position: this.docData.partyUnitPosition,
             tel: this.docData.partyTel,
@@ -554,12 +554,12 @@ export default {
           this.originalDocData = JSON.parse(JSON.stringify(dailiData));
       }
       //标识 1 有自动带入信息：当姓名的内容修改时，清空自动带入的其他指标内容；2 若无自动带入信息，则修改姓名时，其他指标不清空
-      this.daiRuscenePeopelSex = dailiData.sex !== '' ? true : false; 
-      this.daiRuscenePeopelIdNo = dailiData.zhengjianNumber ? true : false; 
-      this.daiRuscenePeopeRelation = dailiData.relationWithCase ? true : false; 
-      this.daiRuscenePeopeUnitPosition = dailiData.company || dailiData.position ? true : false; 
-      this.daiRuscenePeopeTel = dailiData.tel ? true : false; 
-      this.daiRuscenePeopeAddress= dailiData.adress ? true : false; 
+      this.daiRuscenePeopelSex = dailiData.sex !== '' ? true : false;
+      this.daiRuscenePeopelIdNo = dailiData.zhengjianNumber ? true : false;
+      this.daiRuscenePeopeRelation = dailiData.relationWithCase ? true : false;
+      this.daiRuscenePeopeUnitPosition = dailiData.company || dailiData.position ? true : false;
+      this.daiRuscenePeopeTel = dailiData.tel ? true : false;
+      this.daiRuscenePeopeAddress= dailiData.adress ? true : false;
       this.setDataForScenePelple(true,dailiData);
 
     },
@@ -600,7 +600,7 @@ export default {
         this.docData.scenePeopeUnitPosition = dailiData.company + " " + dailiData.position;
         this.docData.scenePeopeAddress = dailiData.adress;
         this.docData.scenePeopeTel = dailiData.tel;
-      
+
       }else{
         //1 有自动带入信息：当姓名的内容修改时，清空自动带入的其他指标内容；2 若无自动带入信息，则修改姓名时，其他指标不清空
         this.docData.scenePeopelSex = this.daiRuscenePeopelSex ? '' : this.docData.scenePeopelSex;

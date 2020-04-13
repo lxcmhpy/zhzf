@@ -29,10 +29,11 @@ Vue.prototype.$qs = qs;
 // Vue.prototype.$mySignture = mySignture;
 
 /* eslint-disable no-new */
-new Vue({
+const v = new Vue({
   el: "#app",
   router,
   store,
   components: { App },
   template: "<App/>"
 });
+export default v
