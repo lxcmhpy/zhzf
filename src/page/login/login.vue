@@ -290,7 +290,7 @@ export default {
 //            debugger
           _this.menuList = [...res.data, ...menuList];
           iLocalStroage.sets('menu', _this.menuList);
-          _this.$router.push({ name: "home_index" });
+          _this.$router.push({ name: "case_handle_home_index" });
         },
         err => {
           console.log(err);

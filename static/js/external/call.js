@@ -1,7 +1,7 @@
 // 视频呼叫 by:jingli
-import v from "@/main.js";
+// import v from "@/main.js";
 // import ElementUI from "element-ui";
-window.PhoneCallModule =(function () {
+var PhoneCallModule =(function () {
 	var SERVER_ADDR = 'http://192.168.7.24:80/api/api.class.php?';
 	function onCallStateChanged(e){
         // e.type
@@ -14,22 +14,22 @@ window.PhoneCallModule =(function () {
 			break;
 			//Incoming audio call
 			case 2:
-                v.$message({
-                    iconClass: 'iconfont law-success',
-                    customClass: 'successMsg',
-                    dangerouslyUseHTMLString: true,
-                    message: `语音来电：<a href="javascript:void(0)" style="color:red">点击接听</a>`
-                });
+                // v.$message({
+                //     iconClass: 'iconfont law-success',
+                //     customClass: 'successMsg',
+                //     dangerouslyUseHTMLString: true,
+                //     message: `语音来电：<a href="javascript:void(0)" style="color:red">点击接听</a>`
+                // });
 
 			break;
 			//Incoming video call
 			case 3:
-                v.$message({
-                    iconClass: 'iconfont law-success',
-                    customClass: 'successMsg',
-                    dangerouslyUseHTMLString: true,
-                    message: `视频来电：<a href="javascript:void(0)" style="color:red" onclick="document.getElementById('closePhone').click()">点击接听</a>`
-                });
+                // v.$message({
+                //     iconClass: 'iconfont law-success',
+                //     customClass: 'successMsg',
+                //     dangerouslyUseHTMLString: true,
+                //     message: `视频来电：<a href="javascript:void(0)" style="color:red" onclick="document.getElementById('closePhone').click()">点击接听</a>`
+                // });
 
 			break;
 			case 4:
@@ -56,12 +56,12 @@ window.PhoneCallModule =(function () {
 			break;
 			//call hangup
 			case 8:
-				v.$message({
-                    iconClass: 'iconfont law-error',
-                    customClass: 'errorMsg',
-                    dangerouslyUseHTMLString: true,
-                    message: `已挂断`
-                });
+				// v.$message({
+                //     iconClass: 'iconfont law-error',
+                //     customClass: 'errorMsg',
+                //     dangerouslyUseHTMLString: true,
+                //     message: `已挂断`
+                // });
 
 			break;
 

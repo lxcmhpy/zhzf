@@ -97,7 +97,7 @@ export default {
       // collapsed: false,
       // avatar: Cookies.get("avatar")
       userInfo: iLocalStroage.gets('userInfo'),
-      selectedHeadMenu: 'xboot'   //接收headMenu传来的选中的一级菜单
+      selectedHeadMenu: 'caseHandle'   //接收headMenu传来的选中的一级菜单
     };
   },
   components: {
