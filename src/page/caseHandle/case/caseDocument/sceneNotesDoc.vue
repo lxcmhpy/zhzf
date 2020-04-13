@@ -31,25 +31,25 @@
               </td>
               <td>执法时间</td>
               <td colspan="3" id="scenetimeBox">
-                <el-form-item prop="enforceStartTime" class="pdf_datapick">
+                <el-form-item prop="enforceStartTime" class="pdf_datapick dataTimeReplaceBox">
                   <el-date-picker
                     v-model="docData.enforceStartTime"
                     type="datetime"
-                    format="yyyy年MM月dd日HH时mm分"
-                    value-format="yyyy-MM-dd hh:mm:ss"
-                    placeholder="    年  月  日  时  分"
+                    format="yyyy-MM-dd HH:mm"
+                    value-format="yyyy年MM月dd日HH时mm分"
                     style="width:235px"
-                    :default-time="defaultStartTime"
-                    :picker-options="pickerOptionsStart"
+                    :default-time="defaultStartTime" 
                   ></el-date-picker>
-                  <br />至
+                   <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.enforceStartTime"></el-input> 
+                </el-form-item>
+                <br><span style="display:inline-block;width:20px;margin-top:10px;">至</span><el-form-item prop="enforceEndTime" class="pdf_datapick" style="width:100px">
                   <el-time-picker
+                    placeholder="时 分"
                     v-model="docData.enforceEndTime"
-                    type="date"
-                    format="HH时mm分"
-                    placeholder="    时  分"
-                    style="width:200px"
-                  ></el-time-picker>
+                    format="HH时mm分" 
+                    value-format="HH:mm"
+                  >
+                  </el-time-picker>
                 </el-form-item>
               </td>
             </tr>
@@ -305,6 +305,44 @@ export default {
     casePageFloatBtns
   },
   data() {
+    //验证开始时间
+    var validateStartTime = (rule, value, callback) => {
+      let parseInquestStartTime = this.docData.enforceStartTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
+      let a = parseInquestStartTime.split(' ');
+      let parseinquestEndTime = a[0] + ' ' + this.docData.enforceEndTime;
+      let currentTime = new Date();
+      if(Date.parse(parseInquestStartTime)>Date.parse(currentTime)){
+        this.$message({
+              showClose: true,
+              message: '开始时间不得大于当前时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        return callback(new Error("开始时间不得大于结束时间"));
+      }
+      if(Date.parse(parseinquestEndTime)>Date.parse(currentTime)){
+        this.$message({
+              showClose: true,
+              message: '结束时间不得大于当前时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        return callback(new Error("开始时间不得大于结束时间"));
+      }
+      if((Date.parse(parseInquestStartTime)>Date.parse(parseinquestEndTime)) && this.docData.enforceEndTime){
+        this.$message({
+              showClose: true,
+              message: '开始时间不得大于结束时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        return callback(new Error("开始时间不得大于结束时间"));
+      }
+      callback();
+    };
     return {
       // overFlowEditList:[{},{}],
       isOverflow: false,
@@ -339,10 +377,12 @@ export default {
       rules: {
         afdd: [{ required: true, message: '执法地点不能为空', trigger: "blur" }],
         enforceStartTime: [
-          { required: true, message: "执法开始时间不能为空", trigger: "blur" }
+          { required: true, message: "执法开始时间不能为空", trigger: "blur" },
+          { validator: validateStartTime, trigger: "blur" }
         ],
         enforceEndTime: [
-          { required: true, message: "执法结束时间不能为空", trigger: "blur" }
+          { required: true, message: "执法结束时间不能为空", trigger: "blur" },
+          { validator: validateStartTime, trigger: "blur" }
         ],
         staff1: [
           { required: true, message: "执法人员不能为空", trigger: "change" }
@@ -665,5 +705,20 @@ export default {
     line-height: 23px;
     text-indent: 0;
   }
+  .dataTimeReplaceBox{
+    position: relative;
+    height: 35px;
+    .el-form-item__content .el-date-editor--datetime{
+      opacity:0;
+      position: absolute;
+      z-index: 2;
+    }
+    .replaceTime{
+      position:absolute;
+      top:0;
+      left:10px;
+    }
+  }
+
 }
 </style>
