@@ -219,7 +219,8 @@
             <div class="item">
               <el-form-item label="与当事人关系">
                 <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
-                  <el-option v-for="item in allRelationWithParty" :key="item.value" :label="item.label"
+                  <el-option v-for="item in index === 0?allRelationWithParty:allRelationWithParty_" :key="item.value"
+                             :label="item.label"
                              :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
@@ -919,6 +920,13 @@
           {value: "3", label: "雇佣关系"},
           {value: "4", label: "车辆所有人"}
         ],
+        allRelationWithParty_: [
+          //与当事人关系下拉框
+          {value: "1", label: "近亲戚"},
+          {value: "2", label: "借用车辆"},
+          {value: "3", label: "雇佣关系"},
+          {value: "4", label: "车辆所有人"}
+        ],
         allRelationWithCase: [
           //与案件关系下拉框
           {value: "0", label: "当事人"},
@@ -1076,8 +1084,8 @@
       },
       //更改与当事人关系   为同一人时自动赋值且不可编辑
       changeRelationWithParty(val) {
-        console.log(this.driverOrAgentInfoList[0].relationWithParty == '同一人' ? true : false);
-        if (val == "0") {
+        console.log(this.driverOrAgentInfoList[0].relationWithParty === '同一人');
+        if (val === "0") {
           console.log(val);
           this.driverOrAgentInfoList[0].name = this.inforForm.party;
           this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
@@ -1539,8 +1547,19 @@
       },
       //自动计算年龄
       changePartyIdType2(idCard, index) {
-        if (idCard == this.driverOrAgentInfoList[0].zhengjianNumber) {
-          this.$message('省份证号不能相同');
+        for (let i = 0; i < this.driverOrAgentInfoList.length; i++) {
+          if(idCard === this.inforForm.partyIdNo && this.driverOrAgentInfoList[i].relationWithParty !== '当事人'){
+            this.$message('身份证号不能相同！');
+            return
+          }
+          if(index !== i && idCard === this.driverOrAgentInfoList[i].zhengjianNumber){
+            this.$message('身份证号不能相同！');
+            return
+          }
+
+        }
+        if (idCard === this.driverOrAgentInfoList[0].zhengjianNumber) {
+
         }
         let iden = idCard;
         let val = idCard.length;

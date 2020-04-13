@@ -69,7 +69,7 @@
                     <span class="tans_box">
                       <span class="i_box_org">
                       </span><i class="el-icon-user-solid"></i>
-                      <span style="color:#20232B;margin-left:5px">{{caseData.organType}}-{{caseData.organMb}}</span>
+                      <span style="color:#20232B;margin-left:5px">{{caseData.organMb}}</span>
                     </span>
                   </div>
                   <div>
@@ -113,6 +113,7 @@ export default {
   },
   mounted() {
 //    console.log(this.$route.params.caseInfo)
+    this.caseData.person = iLocalStroage.gets("userInfo").organName + '-' + this.caseData.person;  
     this.caseData = this.$route.params.caseInfo
     if (this.caseData.appendix != '') {
       this.appendixList = this.caseData.appendix.split(",")
