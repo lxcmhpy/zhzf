@@ -385,7 +385,8 @@
           <div class="item">
             <el-form-item label="挂车类型">
               <el-select v-model="inforForm.trailerType">
-                <el-option v-for="item in allTrailerTypeType" :key="item.id" :label="item.name" :value="item.name"></el-option>     
+                <el-option v-for="item in allTrailerTypeType" :key="item.id" :label="item.name"
+                           :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -725,9 +726,10 @@
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
   import {validateIDNumber, validateAge, validateZIP, validatePhone} from '@/common/js/validator'
-import {
-  getDictListDetailByNameApi
-} from "@/api/system";
+  import {
+    getDictListDetailByNameApi
+  } from "@/api/system";
+
   export default {
     data() {
       //选择个人试验证
@@ -756,9 +758,7 @@ import {
       };
       //案件来源后面输入框的验证
       var validatecaseSourceText = (rule, value, callback) => {
-        debugger
         if (this.caseSourceTextDisable == true && !value) {
-          debugger
           return callback(new Error("请输入案件来源描述"));
         }
         callback();
@@ -961,7 +961,7 @@ import {
         disableBtn: false, //提交暂存按钮的禁用
         activeA: [true, false, false, false, false],
         autoSava: true, //自动暂存
-        allTrailerTypeType:[], //挂车类型
+        allTrailerTypeType: [], //挂车类型
 
       };
     },
@@ -982,6 +982,7 @@ import {
           this.caseSourceTextPla = item.placeholder
           this.caseSourceTextDisable = true;
         }
+        this.inforForm.caseSource = item.value
       },
       //选择执法人员
       addLawPerson() {
@@ -1075,7 +1076,6 @@ import {
       },
       //更改与当事人关系   为同一人时自动赋值且不可编辑
       changeRelationWithParty(val) {
-        debugger
         console.log(this.driverOrAgentInfoList[0].relationWithParty == '同一人' ? true : false);
         if (val == "0") {
           console.log(val);
@@ -1183,14 +1183,12 @@ import {
       },
       //提交信息
       submitInfo(state) {
-        debugger
         // this.searchLawPerson();
         // console.log('searchLawPerson', this.allUserList)
         // console.log("lawPersonList", this.lawPersonList)
         console.log("表单数据", this.inforForm)
         let _this = this
         this.$refs["inforForm"].validate(valid => {
-          debugger
           if (valid) {
             // let submitData = {
             //   caseSource: this.inforForm.caseSource,
@@ -1352,7 +1350,6 @@ import {
           this.showOverrun = true;
         }
         ;
-        debugger
         if (data.caseStatus == '待审批') {
           this.isHandleCase = true;
         }
@@ -1583,7 +1580,6 @@ import {
       },
 
       blur2(val) {
-        debugger
         var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[358]\d{9})$)/;
         if (!reg.test(val) && val) {
           this.$message('手机号不正确')
@@ -1597,17 +1593,16 @@ import {
         }
       },
       //获取挂车类型数据
-      getTrailerType(){
-        getDictListDetailByNameApi('trailerType').then(res=>{
-          console.log('挂车类型',res);
+      getTrailerType() {
+        getDictListDetailByNameApi('trailerType').then(res => {
+          console.log('挂车类型', res);
           this.allTrailerTypeType = res.data;
-        },err=>{
+        }, err => {
           console.log(err);
         })
       }
     },
     mounted() {
-      debugger
       let someCaseInfo = iLocalStroage.gets("someCaseInfo");
       console.log(someCaseInfo);
       this.inforForm.caseCauseName = someCaseInfo.illageAct;
@@ -1628,7 +1623,6 @@ import {
       this.inforForm.trailerColor = '1'
     },
     created() {
-      debugger
       this.findJudgFreedomList();
       this.getTrailerType();
       // this.setLawPerson(
