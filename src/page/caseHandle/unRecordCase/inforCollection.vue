@@ -19,7 +19,7 @@
             <el-form-item label="案件来源" prop="caseSource">
               <el-select v-model="inforForm.caseSource" placeholder="请选择" @change="changeCaseSource">
                 <el-option v-for="item in allcaseSource" :key="item.value" :label="item.label"
-                           :value="item.value"></el-option>
+                           :value="item"></el-option>
               </el-select>
             </el-form-item>
           </div>
