@@ -379,17 +379,13 @@
         </div>
     </transition>
     <audioPhone></audioPhone>
-    <!-- autoplay="autoplay"  -->
-    <!-- <div v-if="showVideo">
-    </div> -->
     <a id="getPhone" @click="videoCall"></a>
-        <audio id="audio_remote" controls="controls" ref="audio_remote" autoplay="autoplay"> </audio>
-    <audio id="ringtone" loop ref="ringtone"  :src="'./static/sounds/ringtone.wav'"> </audio>
-    <audio id="ringbacktone" ref="ringbacktone"  loop :src="'./static/sounds/ringbacktone.wav'"> </audio>
-    <audio id="dtmfTone" ref="dtmfTone" :src="'./static/assets/sounds/dtmf.wav'"> </audio>
+    <audio id="audio_remote"  ref="audio_remote" autoplay="autoplay"> </audio>
+        <audio id="ringtone" loop ref="ringtone" :src="require('../../../../../static/sounds/ringtone.wav')"> </audio>
+        <audio id="ringbacktone" ref="ringbacktone"  loop :src="require('../../../../../static/sounds/ringbacktone.wav')"> </audio>
+        <audio id="dtmfTone" ref="dtmfTone" :src="require('../../../../../static/sounds/dtmf.wav')"> </audio>
   </div>
 </template>
-<script type="text/javascript" src="@/common/js/call.js"></script>
 <script>
 import Vue from "vue";
 require("@/common/js/call.js");
@@ -579,24 +575,17 @@ export default {
         this.makePhoneStatus = !this.makePhoneStatus;
         if (this.makePhoneStatus) {
             window.PhoneCallModule.sipRegister();
-            this.showVideo = true;
-            // document.getElementById('getPhone').click();
-            // this.videoCall();
-            let _this=this;
             setTimeout(function() {
-                _this.videoCall();
+                document.getElementById('getPhone').click();
                 // window.PhoneCallModule.sipVideoCall("10000","test1");
-            }, 4000)
+            }, 2000)
         } else {
             this.ringOff();
 
         }
     },
     videoCall() {
-        document.getElementById("audio_remote").pause();
-
-     document.getElementById("audio_remote").play();
-      PhoneCallModule.sipVideoCall("10000","test1");
+      window.PhoneCallModule.sipVideoCall("10000","test1");
     },
     ringOff () {
         window.PhoneCallModule.sipHangUp();
@@ -844,7 +833,7 @@ export default {
   },
   mounted() {
     //   debugger;
-    // window.PhoneCallModule.sipRegister();
+    window.PhoneCallModule.sipRegister();
     // let _this = this;
     // this.$nextTick(() => {
     //     _this.$refs.audio_remote.load();

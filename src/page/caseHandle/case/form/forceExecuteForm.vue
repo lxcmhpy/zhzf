@@ -38,7 +38,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="punishTerm" label="处罚期限">
-                  <el-date-picker :disabled="true" ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-date-picker>
+                  <el-date-picker :disabled="true" ref="punishTerm" format="yyyy-MM-dd" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-date-picker>
                 </el-form-item>
               </div>
             </div>
