@@ -117,6 +117,9 @@
                 <!-- <el-table-column prop="status" label="处理状态" align="center"></el-table-column> -->
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
+                         <a href="javascript:void(0)" @click="routerInvalidCue(scope.row)">
+                            无效信息跳转
+                        </a>
                         <a href="javascript:void(0)" @click="routerDetail(scope.row)">
                             详情
                         </a>
@@ -349,6 +352,11 @@ export default {
     //更换页码
     handleCurrentChange(val) {
       this.getLogList(val);
+    },
+    routerInvalidCue (item) {
+        this.$router.push({
+            name: 'invalidCue'
+        })
     }
   },
   created () {
