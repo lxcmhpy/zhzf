@@ -43,12 +43,12 @@ window.PhoneCallModule =(function () {
 				*/
 			break;
 			case 6:
-                v.$message({
-                    iconClass: 'iconfont law-error',
-                    customClass: 'errorMsg',
-                    dangerouslyUseHTMLString: true,
-                    message: `请求已终止`
-                });
+                // v.$message({
+                //     iconClass: 'iconfont law-error',
+                //     customClass: 'errorMsg',
+                //     dangerouslyUseHTMLString: true,
+                //     message: `请求已终止`
+                // });
 
 			break;
 			//Terminating the call...
@@ -167,6 +167,8 @@ window.PhoneCallModule =(function () {
 		// 	password: $('#password').val(),
 		// 	authToken:result
         // };
+        let music = document.getElementById('audio_remote');
+
         var callCredential = {
             			displayName: 'test3',
             			privateIdentity: '10002',
@@ -178,7 +180,6 @@ window.PhoneCallModule =(function () {
                     };
 
 		PhoneCall.sipRegister(callCredential);
-
 		/*
 		var paraStr = "data=" + $('#edtExtension').val();
 

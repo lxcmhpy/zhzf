@@ -354,29 +354,46 @@
         </transition>
       </el-button>
     </div>
-        <transition name="el-fade-in" >
-        <div class="makePhoneBox" id="phoneBox" v-show="makePhoneStatus">
-            <div >
-                <div class="echarts-box">
-                    <i class="el-icon-close right" id="closePhone" @click="updateMakePhoneStatus"></i>
-                    <i class="el-icon-rank right" @mousedown="event=>start(event,'phoneBox')"></i>
-                    <div class="videoBox">
-                        <video class="video" width="200px" height="200px" id="video_local" autoplay="autoplay" muted></video>
-                        <video class="video" width="200px" height="200px" id="video_remote" autoplay="autoplay"></Video>
+    <transition name="el-fade-in" >
+        <div v-show="makePhoneStatus">
+             <!--  -->
+            <div class="makePhoneBox" id="phoneBox">
+                <div >
+                    <div class="echarts-box">
+                        <i class="el-icon-close right" id="closePhone" @click="updateMakePhoneStatus"></i>
+                        <i class="el-icon-rank right" @mousedown="event=>start(event,'phoneBox')"></i>
+                        <div class="videoBox">
+                            <video class="video" width="200px" height="200px" id="video_local" autoplay="autoplay" muted></video>
+                            <video class="video" width="200px" height="200px" id="video_remote" autoplay="autoplay"></Video>
+                        </div>
+                    </div>
+                    <div class="phoneBtns">
+                        <img :src="'./static/images/img/lawSupervise/ring_off.png'" @click="ringOff">
                     </div>
                 </div>
-                <div class="phoneBtns">
-                    <img :src="'./static/images/img/lawSupervise/ring_off.png'" @click="ringOff">
-                </div>
             </div>
+            <!-- <audio id="audio_remote" autoplay="autoplay"> </audio>
+            <audio id="ringtone" loop  :src="'./static/sounds/ringtone.wav'"> </audio>
+            <audio id="ringbacktone"  loop :src="'./static/sounds/ringbacktone.wav'"> </audio>
+            <audio id="dtmfTone" :src="'./static/assets/sounds/dtmf.wav'"> </audio> -->
         </div>
-        </transition>
+    </transition>
+    <audioPhone></audioPhone>
+    <!-- autoplay="autoplay"  -->
+    <!-- <div v-if="showVideo">
+    </div> -->
+    <a id="getPhone" @click="videoCall"></a>
+        <audio id="audio_remote" controls="controls" ref="audio_remote" autoplay="autoplay"> </audio>
+    <audio id="ringtone" loop ref="ringtone"  :src="'./static/sounds/ringtone.wav'"> </audio>
+    <audio id="ringbacktone" ref="ringbacktone"  loop :src="'./static/sounds/ringbacktone.wav'"> </audio>
+    <audio id="dtmfTone" ref="dtmfTone" :src="'./static/assets/sounds/dtmf.wav'"> </audio>
   </div>
 </template>
 <script type="text/javascript" src="@/common/js/call.js"></script>
 <script>
 import Vue from "vue";
 require("@/common/js/call.js");
+import audioPhone from "../../componentCommon/audioPhone.vue";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";
 import {lawSuperviseObj, yjObj} from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
@@ -418,6 +435,12 @@ export default {
   data() {
     let self = this;
     return {
+        // audioPosition: {
+        //     dtmfTone: './static/assets/sounds/dtmf.wav',
+        //     ringbacktone: './static/sounds/ringbacktone.wav',
+        //     ringtone: './static/sounds/ringtone.wav'
+        // },
+        showVideo: false,
         makePhoneStatus: false,
         show: true,
         categorySelect: -1,
@@ -556,20 +579,29 @@ export default {
         this.makePhoneStatus = !this.makePhoneStatus;
         if (this.makePhoneStatus) {
             window.PhoneCallModule.sipRegister();
+            this.showVideo = true;
+            // document.getElementById('getPhone').click();
+            // this.videoCall();
             let _this=this;
             setTimeout(function() {
                 _this.videoCall();
-            },2000)
+                // window.PhoneCallModule.sipVideoCall("10000","test1");
+            }, 4000)
         } else {
             this.ringOff();
+
         }
     },
     videoCall() {
-      window.PhoneCallModule.sipVideoCall("10000","test1");
+        document.getElementById("audio_remote").pause();
+
+     document.getElementById("audio_remote").play();
+      PhoneCallModule.sipVideoCall("10000","test1");
     },
     ringOff () {
         window.PhoneCallModule.sipHangUp();
         this.makePhoneStatus = false;
+        this.showVideo = false;
     },
     start (e, id) {
         let odiv = e.target;        //获取目标元素
@@ -811,11 +843,20 @@ export default {
     }
   },
   mounted() {
+    //   debugger;
+    // window.PhoneCallModule.sipRegister();
+    // let _this = this;
+    // this.$nextTick(() => {
+    //     _this.$refs.audio_remote.load();
+    //     _this.$refs.dtmfTone.load();
+    //     _this.$refs.ringbacktone.load();
+    //     _this.$refs.ringtone.load();
+    // })
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {
     // echarts,
-    externalVideoBtns
+    externalVideoBtns, audioPhone
   }
 };
 </script>

@@ -7,12 +7,23 @@
       <i class="iconfont law-msg-box"></i>
       <i class="iconfont law-xianlu"></i>
     </div>
+     <!-- <audio id="audio_remote" ref="audio_remote" autoplay="autoplay"></audio>
+    <audio id="ringtone" loop ref="ringtone"  >
+        <source :src="'./static/sounds/ringtone.wav'" type="audio/mpeg" />
+    </audio>
+    <audio id="ringbacktone" ref="ringbacktone"  loop :src="'./static/sounds/ringbacktone.wav'"> </audio>
+    <audio id="dtmfTone" ref="dtmfTone" :src="'./static/assets/sounds/dtmf.wav'"> </audio> -->
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
+         audioPosition: {
+            dtmfTone: './static/assets/sounds/dtmf.wav',
+            ringbacktone: './static/sounds/ringbacktone.wav',
+            ringtone: './static/sounds/ringtone.wav'
+        },
       mobileDoing: false,
       videoDoing: false
     }
@@ -21,11 +32,17 @@ export default {
     makeVideoCall() {
         this.videoDoing = !this.videoDoing;
         if (this.videoDoing) {
-            window.PhoneCallModule.sipRegister();
-            let _this=this;
-            setTimeout(function() {
-                _this.videoCall();
-            },2000)
+
+            // let _this=this;
+            // this.$nextTick(() => {
+            //     _this.$refs.audio_remote.load();
+            //     _this.$refs.dtmfTone.load();
+            //     _this.$refs.ringbacktone.load();
+            //     _this.$refs.ringtone.load();
+            // })
+                this.videoCall();
+            // setTimeout(function() {
+            // },2000)
         } else {
             this.handUp();
         }
@@ -54,7 +71,9 @@ export default {
     }
   },
   mounted(){
-    //   window.PhoneCallModule.sipRegister();
+    //   setTimeout(()=>{
+    //       window.PhoneCallModule.sipRegister();
+    //   }, 100)
   }
 }
 </script>>

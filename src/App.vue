@@ -2,12 +2,6 @@
   <div id="app">
     <v-loading v-show="loading"></v-loading>
     <router-view v-if="isRouterAlive"/>
-    <div>
-        <audio id="audio_remote" autoplay="autoplay"> </audio>
-        <audio id="ringtone" loop :src="'./static/sounds/ringtone.wav'"> </audio>
-        <audio id="ringbacktone" loop :src="'./static/sounds/ringbacktone.wav'"> </audio>
-        <audio id="dtmfTone" :src="'./static/sounds/dtmf.wav'"> </audio>
-    </div>
   </div>
 </template>
 <script>

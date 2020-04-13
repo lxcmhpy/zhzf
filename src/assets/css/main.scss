@@ -198,21 +198,41 @@
   }
 
   .com_searchAndpageBoxPadding {
-    // position: absolute;
     position: relative;
-    padding: 22px;
-    // height  : calc(100% - 44px);
     height: 100%;
     box-sizing: border-box;
-    // width   : calc(100% - 44px);
-    // left    : 22px;
-    // right   : 22px;
-    // top     : 22px;
-    // bottom  : 22px;
+    .com_searchPage_top {
+        position: fixed;
+        top:90px;
+        width: 100%;
+        background: white;
+        z-index: 1000;
+        height: 50px;
+        box-sizing: border-box;
+        .el-tabs__header {
+            width: calc(100% - 200px);
+            .el-tabs__item {
+                height: 50px;
+                line-height: 50px;
+                font-size: 15px;
+                .el-badge__content.is-fixed {
+                    top: 24px;
+                    right: -7px;
+                }
+            }
+            .el-tabs__active-bar {
+                height: 3px;
+            }
+        }
+    }
+    .com_searchPage_top + .searchAndpageBox {
+        margin-top: 70px;
+    }
   }
 
   .searchAndpageBox {
     box-sizing: border-box;
+    margin: 22px;
     padding: 20px;
     height: 100%;
     background: #fff;
