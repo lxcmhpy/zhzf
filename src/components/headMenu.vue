@@ -5,8 +5,7 @@
       :default-active="activeIndex"
       class="el-menu-demo"
       mode="horizontal"
-      @select="handleSelect"
-    >
+      @select="handleSelect">
       <el-menu-item v-for="item in headMenuList" :index="item.name" :key="item.id">{{item.title}}</el-menu-item>
     </el-menu>
     {{activeIndex}}
@@ -38,7 +37,6 @@
     },
     methods: {
       handleSelect(key, keyPath) {
-        debugger
         //将当前选中的一级菜单名传到父组件
         this.$emit("selectHeadMenu", key);
         iLocalStroage.set("headActiveNav", key);
@@ -46,10 +44,10 @@
         //删除之前的tab页签
         // this.$store.dispatch("deleteAllTabs");
         // name,--->path
-        if (key) {
-          this.$router.push({name: key});
-        }
-        //   this.$router.push({ name: "home_index" });
+        // if (key) {
+        //   this.$router.push({name: key});
+        // }
+          this.$router.push({ name: "home_index" });
       }
     }
   };
