@@ -24,7 +24,7 @@
     computed: {
       //刷新设置选中当前头 slide
       activeIndex: function () {
-          debugger;
+          // debugger;
         var key = iLocalStroage.get("headActiveNav");
         if (key) {
           this.$emit("selectHeadMenu", key);
