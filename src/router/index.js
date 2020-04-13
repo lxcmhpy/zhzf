@@ -22,7 +22,7 @@ router.beforeEach((to, from, next) => {
   if (tokenObj) {
     //判断是否登录
     if (to.path === "/login") {
-      next({name: "home_index"});
+      next({name: "case_handle_home_index"});
     } else {
       next();
     }

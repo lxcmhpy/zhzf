@@ -5,7 +5,7 @@ export const menuList = [{
     showAlways:true,
     type:0,
     title:"执法监管",
-    path:"",
+    path:"lawSupervise",
     component:"",
     icon:"md-home1",
     buttonType:"",
