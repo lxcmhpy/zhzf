@@ -833,7 +833,7 @@ export default {
   },
   mounted() {
     //   debugger;
-    // window.PhoneCallModule.sipRegister();
+    window.PhoneCallModule.sipRegister();
     // let _this = this;
     // this.$nextTick(() => {
     //     _this.$refs.audio_remote.load();
