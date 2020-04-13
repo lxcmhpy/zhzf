@@ -402,19 +402,19 @@
       handleClick(tab) {
         console.log(tab.index);
         let searchData = {
-          flag: tab.index
+          flag: tab.index == 3 ? 4 : tab.index
         }
         this.getCaseList2(searchData)
         if (tab.index == 0) {
           this.moreFlag = 'waitDeal';
         }
-        if (tab.index === 1) {
+        if (tab.index == 1) {
           this.moreFlag = 'unRecordCase';
         }
-        if (tab.index === 2) {
+        if (tab.index == 2) {
           this.moreFlag = 'waitArchive';
         }
-        if (tab.index === 3) {
+        if (tab.index == 3) {
           this.moreFlag = 'approveIng';
         }
         console.log('点击', this.tableData)
@@ -480,40 +480,45 @@
           console.log(day, '天', endTime, element.acceptTime, element.caseDealTime)
         });
       },
-    // 信息查验
-    infoCheck(path) {
-      this.$router.push({ name: path });
-    },
-    // 查看更多
-    router(path) {
-      this.$router.push({ path: '/myCase/' + path });
-    },
-    // 立案登记
-    caseRecord(data) {
-      console.log(data)
-      this.$refs.caseRegisterDiagRef.showModal(data, this.caseForm);
-      // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
-    },
-    // 查看更多违法行为
-    caseRecordMore() {
-      this.table = true
-      console.log()
-      let lawCate = {
-        cateId: '',
-        cateName: this.caseForm.wayType,
-        hyTypeId: this.caseForm.commenCase,
-      };
-      this.$refs.chooseillegalActRef.showModal(lawCate);
-      // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
-    },
-    // 查找
-    search(index, name) {
-      //搜索
-      this.caseSearchForm = {
-        flag: index,
-        caseNumber: name
-      };
-      this.getCaseList2(this.caseSearchForm)
+      // 信息查验
+      infoCheck(path) {
+        this.$router.push({name: path});
+      },
+      // 查看更多
+      router(path) {
+        if(path === 'approveIng'){
+          this.$router.push({path: '/approvalCenter/myApproval'});
+        }else{
+          this.$router.push({path: '/myCase/' + path});
+        }
+
+      },
+      // 立案登记
+      caseRecord(data) {
+        console.log(data)
+        this.$refs.caseRegisterDiagRef.showModal(data, this.caseForm);
+        // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
+      },
+      // 查看更多违法行为
+      caseRecordMore() {
+        this.table = true
+        console.log()
+        let lawCate = {
+          cateId: '',
+          cateName: this.caseForm.wayType,
+          hyTypeId: this.caseForm.commenCase,
+        };
+        this.$refs.chooseillegalActRef.showModal(lawCate);
+        // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
+      },
+      // 查找
+      search(index, name) {
+        //搜索
+        this.caseSearchForm = {
+          flag: index,
+          caseNumber: name
+        };
+        this.getCaseList2(this.caseSearchForm)
       },
       //查询违法行为
       getIllegaAct() {
@@ -585,8 +590,8 @@
             if (flag == 2) {
               this.waitArchive = total
             }
-            if (flag == 3) {
-              this.approveIng = total
+            if (flag == 4) {
+              this.approveIng = total ? total : 0
             }
           },
           err => {
@@ -612,11 +617,11 @@
     mounted() {
       // let data = {};
       let role = iLocalStroage.gets("userInfo").roles[0].name
-      if (role.indexOf("负责人") != -1) {
+      if (role.indexOf("负责人") !== -1) {
         console.log('yes')
         this.activeName = 'fourth';
         let searchData = {
-          flag: 3
+          flag: 4
         }
         this.moreFlag = 'approveIng';
         this.getCaseList2(searchData);
@@ -631,7 +636,7 @@
       this.getTotal('0');
       this.getTotal('1');
       this.getTotal('2');
-      this.getTotal('3');
+      this.getTotal('4');
       console.log('userinfo', iLocalStroage.gets("userInfo").roles[0].name)
 
       this.changeCommonOptions()

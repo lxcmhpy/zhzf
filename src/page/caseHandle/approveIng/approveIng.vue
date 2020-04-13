@@ -89,12 +89,21 @@
       },
       //跳转立案登记
       clickCase(row) {
+        console.log(row)
+        this.$store.commit("setCaseId", row.id);
+        // console.log(this.$store.state.caseId)
+        //设置案件状态为审批中
+        this.$store.commit("setCaseApproval", true);
+
         this.$router.replace({
-          name: 'filingApproval',
+          name: 'caseInfo',
           params: {
-            id: row.id,
+            caseInfo: row,
+            isApproval: true
           }
         });
+        let setCaseNumber = row.caseNumber !== '' ? row.caseNumber : '案件'
+        this.$store.commit("setCaseNumber", setCaseNumber);
       }
     },
     created() {

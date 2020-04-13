@@ -5,19 +5,7 @@
         <div class="doc_topic">结案报告</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <div class="doc_cause">
-          案由：
-          <!-- {{formData.caseName}} -->
-          <el-form-item prop="caseName" class="width500 caseNameBox">
-            <el-input
-              type="textarea"
-              v-model="formData.caseName"
-              v-bind:class="{ over_flow:formData.caseName.length>25?true:false }"
-              :autosize="{ minRows: 1, maxRows: 3}"
-              :maxlength="40"
-              placeholder="\"
-              disabled
-            ></el-input>
-          </el-form-item>
+          案由：{{formData.caseName}}
         </div>
 
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
