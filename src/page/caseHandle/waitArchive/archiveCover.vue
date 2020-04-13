@@ -420,7 +420,8 @@ export default {
               });
            }else{
               this.$message({type: 'warning',message:'备考表未完成!'})
-              this.$refs.archiveCatalogueRef.showModal(true);
+              // this.$refs.archiveCatalogueRef.showModal(true);
+              this.$refs.caseSlideMenuRef.mouseenterShowEmit('archiveCatalogue')
            }
          })
     },
@@ -466,11 +467,11 @@ export default {
     },
     //鼠标hover卷宗目录后 显示卷宗目录
     showArchiveCatalogue(){
-      this.$refs.archiveCatalogueRef.showModal(false);
+      // this.$refs.archiveCatalogueRef.showModal(false);
     },
     //关闭卷宗目录
     hideArchiveCatalogue(){
-      this.$refs.archiveCatalogueRef.closeDialog();
+      // this.$refs.archiveCatalogueRef.closeDialog();
     },
     //加载表单信息
     setFormData() {
@@ -521,7 +522,8 @@ export default {
     // this.$refs.archiveCatalogueRef.showModal(true);
     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
     // this.getByMlCaseId(this.caseId)
-    this.caseLinkDataForm.caseBasicinfoId = this.caseId
+    this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+    this.setFormData();
     this.$refs.caseSlideMenuRef.mouseenterShowEmit('archiveCatalogue')
     //在目录排序页面点击弹窗数据后返回的
     // if(this.$route.params && this.$route.params.clickData){

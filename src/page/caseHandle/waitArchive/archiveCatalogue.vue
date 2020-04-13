@@ -166,12 +166,6 @@ export default {
       class2.style.right = '60px';
       class2.style.top = '60px';
       class2.style.overflow = 'hidden';
-      // if(class1[1]){
-      //   let class3 = class1[1].parentNode; 
-      //   class3.style.right = '60px';
-      //   class3.style.top = '60px';
-      //   class3.style.overflow = 'hidden';
-      // }
     }
   },
   mounted () {

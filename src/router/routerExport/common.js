@@ -32,15 +32,15 @@ const route = [
     component: Layout,
     children: [
       {
-        path: "/index",
+        path: "/home",
         name: "home2",
         component: MainContent,
         children: [
           {
-            path: "index",
-            name: "home_index",
+            path: "/index",
+            name: "case_handle_home_index",
             meta: {
-              title: "首页"
+              title: "案件办理首页"
             },
             component: () => import("@/page/home.vue")
           }
