@@ -379,21 +379,16 @@
         </div>
     </transition>
     <audioPhone></audioPhone>
-    <!-- autoplay="autoplay"  -->
-    <!-- <div v-if="showVideo">
-    </div> -->
     <a id="getPhone" @click="videoCall"></a>
-    <div v-if="showVideo">
-        <audio id="audio_remote"  ref="audio_remote" autoplay="autoplay"> </audio>
+    <audio id="audio_remote"  ref="audio_remote" autoplay="autoplay"> </audio>
         <audio id="ringtone" loop ref="ringtone" :src="require('../../../../../static/sounds/ringtone.wav')"> </audio>
         <audio id="ringbacktone" ref="ringbacktone"  loop :src="require('../../../../../static/sounds/ringbacktone.wav')"> </audio>
         <audio id="dtmfTone" ref="dtmfTone" :src="require('../../../../../static/sounds/dtmf.wav')"> </audio>
-    </div>
   </div>
 </template>
 <script>
 import Vue from "vue";
-// require("@/common/js/call.js");
+require("@/common/js/call.js");
 import audioPhone from "../../componentCommon/audioPhone.vue";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";
@@ -580,11 +575,6 @@ export default {
         this.makePhoneStatus = !this.makePhoneStatus;
         if (this.makePhoneStatus) {
             window.PhoneCallModule.sipRegister();
-            this.showVideo = true;
-
-            // this.videoCall();
-            // let _this=this;
-            // _this.videoCall();
             setTimeout(function() {
                 document.getElementById('getPhone').click();
                 // window.PhoneCallModule.sipVideoCall("10000","test1");
@@ -595,10 +585,6 @@ export default {
         }
     },
     videoCall() {
-    //     document.getElementById("audio_remote").load();
-    //     document.getElementById("audio_remote").pause();
-
-    //  document.getElementById("audio_remote").play();
       window.PhoneCallModule.sipVideoCall("10000","test1");
     },
     ringOff () {
