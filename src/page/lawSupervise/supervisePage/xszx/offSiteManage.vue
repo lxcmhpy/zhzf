@@ -93,6 +93,9 @@
              <el-button type="primary" size="medium">
                 <i class="iconfont law-submit-o f12"></i> 转办
             </el-button>
+            <a href="javascript:void(0)" @click="routerInvalidCue(null)">
+                            无效信息跳转
+                        </a>
         </div>
          <div class="tablePart">
             <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
