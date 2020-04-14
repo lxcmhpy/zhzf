@@ -206,22 +206,42 @@
         <div class="line"></div>
         <p>驾驶人或代理人</p>
         <div class="driverOrAgentBox" v-for="(driverOrAgentInfo,index) in driverOrAgentInfoList" :key="index">
-          <div class="line" v-if="driverOrAgentInfoList.length>1&&index!=0"></div>
-          <div>
-            <div class="item">
-              <el-form-item label="与当事人关系">
-                <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
-                  <el-option v-for="item in index === 0?allRelationWithParty:allRelationWithParty_" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                </el-select>
-              </el-form-item>
+          <div v-show="partyTypePerson=='1'">
+            <div>
+              <div class="item">
+                <el-form-item label="与当事人关系">
+                  <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
+                    <el-option v-for="item in allRelationWithParty" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <div class="item">
+                <!-- 需要完善验证 -->
+                <el-form-item label="与案件关系" class="is-required">
+                  <el-select v-model="driverOrAgentInfo.relationWithCase">
+                    <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
             </div>
-            <div class="item">
-              <!-- 需要完善验证 -->
-              <el-form-item label="与案件关系" class="is-required">
-                <el-select v-model="driverOrAgentInfo.relationWithCase">
-                  <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                </el-select>
-              </el-form-item>
+          </div>
+          <div v-show="partyTypePerson!='1'">
+            <div>
+              <div class="item">
+                <el-form-item label="与当事人关系">
+                  <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
+                    <el-option v-for="item in allQYRelationWithParty" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <div class="item">
+                <!-- 需要完善验证 -->
+                <el-form-item label="与案件关系" class="is-required">
+                  <el-select v-model="driverOrAgentInfo.relationWithCase">
+                    <el-option v-for="item in allQYRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
             </div>
           </div>
           <div>
@@ -891,6 +911,19 @@ export default {
         { value: "4", label: "承运人" },
         { value: "5", label: "代理人" }
       ],
+      allQYRelationWithParty: [
+        //与当事人关系下拉框(企业组织)
+        { value: "2", label: "借用车辆" },
+        { value: "3", label: "雇佣关系" },
+        { value: "5", label: "其他" }
+      ],
+      allQYRelationWithCase: [
+        //与案件关系下拉框(企业组织)
+        { value: "1", label: "驾驶人" },
+        { value: "3", label: "证人" },
+        { value: "4", label: "承运人" },
+        { value: "5", label: "代理人" }
+      ],
       allVehicleIdColor: [
         //车牌颜色下拉框
         { value: "1", label: "黄色" },
@@ -1014,6 +1047,7 @@ export default {
     },
     //更改当事人类型
     changePartyType(val) {
+      debugger
       this.partyTypePerson = val;
       if (val == "1") {
         this.inforForm.partyName = "";
@@ -1035,6 +1069,22 @@ export default {
         this.inforForm.partyUnitPosition = "";
         this.inforForm.occupation = "";
         this.inforForm.partyEcertId = "";
+      }
+      if(this.driverOrAgentInfoList[0].relationWithParty == "0" ||this.driverOrAgentInfoList[0].relationWithParty == '1' || this.driverOrAgentInfoList[0].relationWithParty == '4' 
+      || this.driverOrAgentInfoList[0].relationWithParty == '5' || this.driverOrAgentInfoList[0].relationWithCase == '0' || this.driverOrAgentInfoList[0].relationWithCase == '2'){
+          this.driverOrAgentInfoList[0].relationWithParty = "";
+          this.driverOrAgentInfoList[0].relationWithCase = "";
+          this.driverOrAgentInfoList[0].name = "";
+          this.driverOrAgentInfoList[0].zhengjianType = "";
+          this.driverOrAgentInfoList[0].zhengjianNumber = "";
+          this.driverOrAgentInfoList[0].sex = "";
+          this.driverOrAgentInfoList[0].age = "";
+          this.driverOrAgentInfoList[0].tel = "";
+          this.driverOrAgentInfoList[0].adress = "";
+          this.driverOrAgentInfoList[0].adressCode = "";
+          this.driverOrAgentInfoList[0].company = "";
+          this.driverOrAgentInfoList[0].position = "";
+          this.driverOrAgentInfoList[0].zigeNumber = "";
       }
     },
     //更改与当事人关系   为同一人时自动赋值且不可编辑
@@ -1262,7 +1312,7 @@ export default {
             });
             // _this.$store.dispatch("deleteTabs", _this.$route.name);
             _this.$store.commit("setCaseId", res.data.id);
-
+            this.autoSava = false;
           },
           err => {
             console.log(err);

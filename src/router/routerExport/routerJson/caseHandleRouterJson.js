@@ -69,8 +69,8 @@ export default [
     component: () => import("@/page/caseHandle/case/caseDoc.vue")
   },
   {
-    path: "/obtaineEvidenceForms",
-    name: "obtaineEvidenceForms",
+    path: "/obtaineEvidenceForm",
+    name: "obtaineEvidenceForm",
     meta: {
       title: "抽样取样凭证",
       oneTab: true,

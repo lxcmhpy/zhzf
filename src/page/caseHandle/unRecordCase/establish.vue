@@ -541,4 +541,10 @@ export default {
  <style lang="scss">
 // @import "@/assets/css/pdf.scss";
 @import "@/assets/css/caseHandle/caseDocModle.scss";
+#establish-print{
+  .el-form-item__content .el-input__suffix{
+    width: 20px;
+    right: 0;
+  }
+}
 </style>
