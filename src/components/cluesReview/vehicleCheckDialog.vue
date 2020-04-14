@@ -158,7 +158,7 @@
           <div class="map-top">
             <span class="map-top-title">轨迹信息</span>
             <span class="map-top-icon"><i class="el-icon-search"></i>搜索</span>
-            <span class="map-top-icon"><i class="iconfont law-qiye"></i>测距</span>
+            <span class="map-top-icon"><i class="iconfont law-chizi"></i>测距</span>
           </div>
           <div class="map-btm">
             <div class="map-search">
