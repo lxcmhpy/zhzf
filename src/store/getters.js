@@ -11,9 +11,16 @@ const getters = {
   whiteList: state => state.whiteList,
   imgIp: state => state.imgIp,
   listPage: state => state.listPage,
+  //案件办理
   caseId:state => state.caseHandle.caseId,
   docId: state => state.caseHandle.docId,
   caseApproval: state => state.caseHandle.caseApproval,
-  offSiteManageId: state => state.supervise.offSiteManageId
+  clickArchiveCatalogue:state => state.caseHandle.clickArchiveCatalogue,
+  archiveCatalogueList:state => state.caseHandle.archiveCatalogueList,
+
+  
+  //监管
+  offSiteManageId: state => state.supervise.offSiteManageId,
+  
 };
 export default getters;

@@ -89,14 +89,21 @@
       },
       //跳转立案登记
       clickCase(row) {
-        let routerData = {
-          hasApprovalBtn: false,
-          docId: row.docId,
-          approvalOver: false,
-          hasBack: true,
-        }
-        this.$store.dispatch("deleteTabs", this.$route.name);
-        this.$router.push({name: 'myPDF', params: routerData})
+        console.log(row)
+        this.$store.commit("setCaseId", row.id);
+        // console.log(this.$store.state.caseId)
+        //设置案件状态为审批中
+        this.$store.commit("setCaseApproval", true);
+
+        this.$router.replace({
+          name: 'caseInfo',
+          params: {
+            caseInfo: row,
+            isApproval: true
+          }
+        });
+        let setCaseNumber = row.caseNumber !== '' ? row.caseNumber : '案件'
+        this.$store.commit("setCaseNumber", setCaseNumber);
       }
     },
     created() {

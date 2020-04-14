@@ -1,13 +1,23 @@
 <template>
 <keep-alive>
 <div class="com_searchAndpageBoxPadding">
+    <div class="com_searchPage_top">
+        <!-- <ul class="com_searchPage_tab">
+            <li v-for="(item, index) in processStatus" :class="{'active': index === tabActiveIndex}"  :key="index" @click="activeAndSearch(item,index)">{{item.value}}</li>
+        </ul> -->
+        <!-- @tab-click="activeAndSearch" -->
+        <el-tabs v-model="tabActiveIndex" :stretch="true">
+            <el-tab-pane v-for="(item, index) in processStatus" :key="index"  :name="`${index}`">
+                <span slot="label">
+                    <el-badge :value="index==0?null:index" >
+                        {{item.value}}
+                    </el-badge>
+                </span>
+            </el-tab-pane>
+        </el-tabs>
+    </div>
     <div class="searchAndpageBox toggleBox">
         <div class="handlePart caseHandleSearchPart">
-            <div>
-                <el-button type="primary" size="medium">
-                    <i class="iconfont law-submit-o f12"></i> 预警推送
-                </el-button><br><br>
-            </div>
             <el-form :inline="true" :model="form" label-width="80px"  ref="form">
                 <el-form-item label="检测站点">
                     <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
@@ -30,12 +40,12 @@
                     <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
                     <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow" >
                     </el-button>
-                    <a href="javascript:void(0)" @click="routerDetail">
+                    <!-- <a href="javascript:void(0)" @click="routerDetail">
                         详情
                     </a>
                     <a href="javascript:void(0)" @click="routerEvidenceDetail">
                         证据
-                    </a>
+                    </a> -->
                 </el-form-item>
                 <el-collapse-transition>
                     <div v-show="isShow" :class="{'ransition-box':true}">
@@ -62,19 +72,27 @@
                                 end-placeholder="结束日期">
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="处理状态">
+                        <!-- <el-form-item label="处理状态">
                             <el-select v-model="form.status" prop="type">
                                 <el-option
-                                v-for="item in statusStatus"
+                                v-for="item in processStatus"
                                 :key="item.value"
                                 :label="item.value"
                                 :value="item.value"
                                 ></el-option>
                             </el-select>
-                        </el-form-item>
+                        </el-form-item> -->
                     </div>
                 </el-collapse-transition>
             </el-form>
+        </div>
+        <div class="handlePart" style="margin-left: 0px;">
+            <el-button type="primary" size="medium">
+                <i class="iconfont law-submit-o f12"></i> 预警推送
+            </el-button>
+             <el-button type="primary" size="medium">
+                <i class="iconfont law-submit-o f12"></i> 转办
+            </el-button>
         </div>
          <div class="tablePart">
             <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
@@ -96,9 +114,12 @@
                 <el-table-column prop="overweight" label="超重（kg）" align="center"></el-table-column>
                 <el-table-column prop="overload" label="超限率（kg）" align="center"></el-table-column>
                 <el-table-column prop="key" label="重点监管" align="center"></el-table-column>
-                <el-table-column prop="status" label="处理状态" align="center"></el-table-column>
+                <!-- <el-table-column prop="status" label="处理状态" align="center"></el-table-column> -->
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
+                         <a href="javascript:void(0)" @click="routerInvalidCue(scope.row)">
+                            无效信息跳转
+                        </a>
                         <a href="javascript:void(0)" @click="routerDetail(scope.row)">
                             详情
                         </a>
@@ -232,6 +253,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+        tabActiveIndex: '0',
         vehicleColorList: null,
         cxlList: null,
         pageSize: 10, //pagesize
@@ -247,12 +269,16 @@ export default {
             // checkStartTime: ''
         },
         timeList: ['',''],
-        statusStatus: [{
-            value: '未审核'
+        processStatus: [{
+            value: '无效信息'
         }, {
-            value: '转办'
+            value: '待审核'
         }, {
-            value: '误解'
+            value: '审核中'
+        }, {
+            value: '已转办'
+        }, {
+            value: '已审核'
         }],
         isShow: false,
         tableData: [],
@@ -269,6 +295,9 @@ export default {
     }
   },
   methods: {
+    activeAndSearch (item,index) {
+        this.tabActiveIndex = index;
+    },
     search () {
         this.form.checkStartTime = this.timeList[0];
         this.form.checkEndTime = this.timeList[1];
@@ -323,11 +352,15 @@ export default {
     //更换页码
     handleCurrentChange(val) {
       this.getLogList(val);
+    },
+    routerInvalidCue (item) {
+        this.$router.push({
+            name: 'invalidCue'
+        })
     }
   },
   created () {
     this.search();
-    debugger;
     this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
     this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'vehicleColorList');
   },

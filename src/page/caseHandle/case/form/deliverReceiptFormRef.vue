@@ -1,13 +1,14 @@
 <template v-if="caseInfo">
 <div>
   <el-dialog
-    custom-class="leftDialog leftDialog2 archiveCatalogueBox"
+    custom-class="leftDialog leftDialog2 archiveCatalogueBox deliverCaBox"
     :visible.sync="visible"
     @close="closeDialog"
-    top="60px"
+    top="0px"
     width="405px"
     :modal="false"
     :show-close="false"
+    :append-to-body="true"
   >
     <template slot="title">
         <div class="catalogueTitle">
@@ -71,6 +72,7 @@ export default {
       pdfVisible: false,
       // doccloseDialog: false,
       host:'',
+      getData:false,
     };
   },
   inject: ["reload"],
@@ -79,9 +81,8 @@ export default {
   methods: {
     showModal() {
       console.log('show');
-
       this.visible = true;
-      console.log(this.visible);
+      if(!this.getData)  this.getByMlCaseId();
 
     },
     //关闭弹窗的时候清除数据
@@ -100,14 +101,14 @@ export default {
     // },
     //获取已完成送达回证列表
     getByMlCaseId() {
-        debugger
+      this.getData = true;
         let data = {
             caseId: this.caseId,
         };
       let _this = this
       getDeliverReceiptByCaseIdApi(data).then(
         res => {
-            debugger
+           
           console.log(res);
           _this.caseList = res.data;
         },
@@ -147,45 +148,44 @@ export default {
     }
   },
   mounted () {
-    this.getByMlCaseId();
-     var class1 =  document.getElementsByClassName("archiveCatalogueBox");
-     console.log('class',class1)
-     var class2 = class1[0].parentNode;
-     console.log('class',class2)
-     class2.style.right = '60px';
-     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
+     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST;
+      let class1 =  document.getElementsByClassName("deliverCaBox");
+      let class2 = class1[0].parentNode;
+      class2.style.right = '60px';
+      class2.style.top = '60px';
+      class2.style.overflow = 'hidden';
   }
 };
 </script>
 <style lang="scss">
 // @import "@/assets/css/caseHandle/index.scss";
-.fullscreen .archiveCatalogueBox{
-    background: #EAEDF4;
-    margin-right: 0;
-    .el-dialog__header {
-        height: 64px;
-        background: #FFFFFF;
-        color: #20232B;
-        padding: 0 0 0 20px;
-        line-height: 64px;
-        .catalogueTitle {
-            font-size: 20px;
-            cursor: pointer;
-        }
-    }
-    table{
-        text-align: center;
-        background: #fdffff;
-        td{
-            padding: 10px 0;
-            min-height: 38px;
-            border: 1px solid #7F8185;
-        }
-        tr{
-            td:nth-child(1),td:nth-child(3){
-                width: 40px;
-            }
-        }
-    }
-}
+// .fullscreen .archiveCatalogueBox{
+//     background: #EAEDF4;
+//     margin-right: 0;
+//     .el-dialog__header {
+//         height: 64px;
+//         background: #FFFFFF;
+//         color: #20232B;
+//         padding: 0 0 0 20px;
+//         line-height: 64px;
+//         .catalogueTitle {
+//             font-size: 20px;
+//             cursor: pointer;
+//         }
+//     }
+//     table{
+//         text-align: center;
+//         background: #fdffff;
+//         td{
+//             padding: 10px 0;
+//             min-height: 38px;
+//             border: 1px solid #7F8185;
+//         }
+//         tr{
+//             td:nth-child(1),td:nth-child(3){
+//                 width: 40px;
+//             }
+//         }
+//     }
+// }
 </style>

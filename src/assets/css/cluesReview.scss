@@ -1,0 +1,184 @@
+.mini-dialog-title {
+    .el-dialog {
+        .el-dialog__header {
+            padding    : 11px 24px 9px !important;
+            color      : #20232B;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            line-height: 25px;
+        }
+    }
+
+    .el-form-item__label {
+        color  : #7B7B7B;
+        padding: 0 8px 0 0;
+    }
+
+    .el-dialog__body {
+        padding      : 30px 23px 30px 25px;
+        border-bottom: 1px solid #E9EDF6;
+    }
+
+    .el-dialog__footer {
+        padding: 16px 22px;
+
+        .el-button {
+            width : 88px;
+            height: 36px;
+        }
+    }
+
+    /* 无效信息 */
+    .error-message {
+        text-align: center;
+
+        img {
+            margin: 6px;
+        }
+
+        p {
+            margin-top    : 8px;
+            height        : 22px;
+            vertical-align: bottom;
+            font-size     : 16px;
+            font-weight   : 500;
+        }
+    }
+
+    .invalidinfo {
+        .el-select {
+            margin-top   : 34px;
+            margin-bottom: 24px;
+            width        : 100%;
+        }
+
+        p {
+            height     : 20px;
+            line-height: 20px;
+            font-size  : 14px;
+            font-weight: 500;
+            color      : #7B7B7B;
+        }
+
+        .el-textarea {
+            margin-top   : 9px;
+            margin-bottom: 20px;
+
+        }
+
+        .el-textarea__inner {
+            padding      : 10px 15px;
+            resize       : none;
+            border-radius: 0;
+        }
+    }
+
+
+}
+
+
+/* 车辆查验 */
+.vehicle-dialog {
+
+    // height: 900px !important;
+    .el-dialog__body {
+        padding: 0;
+    }
+
+    .check-vehicle {
+
+        text-align: center;
+
+        .top {
+            height     : 118px;
+            line-height: 118px;
+            background : #4573D0;
+        }
+
+        .banner {
+            height    : 44px;
+            box-sizing: border-box;
+            background: #4573D0;
+        }
+
+        .table,
+        .map,
+        .list {
+            height: 675px;
+        }
+
+        .el-tabs__content {
+            height: 675px;
+        }
+
+        .el-input-group {
+            width: 441px;
+        }
+
+        .el-input-group__append,
+        .el-input-group__prepend {
+            background-color: #FFFFFF;
+            color           : #20232B;
+            border          : 1px 0 solid #DCDFE6;
+            border-radius   : 0;
+            padding         : 0 20px;
+        }
+
+        .el-input-group__prepend {
+            width: 92px;
+        }
+
+        .el-tabs--border-card {
+            border            : 0;
+            -webkit-box-shadow: 0 !important;
+            box-shadow        : 0 !important;
+        }
+
+        .el-tabs__nav-scroll {
+            background: #4573D0;
+        }
+
+        .is-top {
+            // border-bottom: 1px solid #DFDFDF;
+        }
+
+        .el-tabs--border-card>.el-tabs__header .el-tabs__item {
+            color: #fff;
+        }
+
+        .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
+            color: #409EFF;
+        }
+
+        .el-tabs__nav {
+            float        : none;
+            border-bottom: 1px solid #DFDFDF;
+        }
+
+        i {
+            margin-right: 8px;
+        }
+    }
+
+    table {
+        margin: 32px 30px 0;
+        width : 820px;
+
+        td {
+            border     : 1px solid #DFDFDF;
+            box-sizing : border-box;
+            height     : 46px;
+            line-height: 20px;
+            min-width  : 150px;
+            font-size  : 14px;
+            font-weight: 500;
+            color      : rgba(32, 35, 43, 1);
+            text-align: left;
+            padding: 13px 10px;
+        }
+
+        .table-bg {
+            background: #F4F8FF;
+        }
+    }
+}

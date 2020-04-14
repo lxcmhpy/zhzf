@@ -9,17 +9,14 @@
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <span class="datapick_style">
           <p>
-            时间：<el-form-item prop="askdataStart" class="pdf_datapick" style="width:220px">
-              <!-- <el-date-picker style="height:100%" v-model="docData.askdata" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
-              </el-date-picker> -->
-              <!-- <el-date-picker v-model="docData.askdata" type="datetimerange" range-separator="至" format="yyyy年MM月dd日HH时MM分" start-placeholder="    年  月  日  时  分" end-placeholder="  时  分" :clearable="false">
-              </el-date-picker> -->
+            时间：<el-form-item prop="askdataStart" class="pdf_datapick" id="askModelDataTimeBox">
               <el-date-picker
                 v-model="docData.askdataStart"
                 type="datetime"
-                placeholder="年 月 日 时 分"
-                format="yyyy年MM月dd日HH时mm分" style="width:220px">
+                format="yyyy-MM-dd HH:mm"
+                value-format="yyyy年MM月dd日HH时mm分">
               </el-date-picker>
+              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.askdataStart"></el-input>
             </el-form-item>
             至
             <el-form-item prop="askdataEnd" class="pdf_datapick" style="width:100px">
@@ -348,7 +345,6 @@ export default {
       ],
       staffList:[],
       needDealData:true,
-
     }
   },
   inject: ["reload"],
@@ -608,6 +604,24 @@ export default {
  }
 .print_info p .span_bg{
   height: 23px;
+ }
+.datapick_style .el-form-item__content .el-input__suffix{
+   display:none;
+ }
+ #askModelDataTimeBox{
+   width:220px;
+   position: relative;
+   .el-form-item__content .el-date-editor--datetime{
+     width:220px;
+     opacity:0;
+     position: absolute;
+    z-index: 2;
+   }
+   .replaceTime{
+     position:absolute;
+     top:0;
+     left:10px;
+   }
  }
 
 }

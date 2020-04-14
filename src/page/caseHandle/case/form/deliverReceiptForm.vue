@@ -131,8 +131,7 @@
     </el-dialog> -->
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'deliverReceiptForm'" @showdeliverReceiptForm="showdeliverReceiptForm"></caseSlideMenu>
-    <!-- 文书列表 -->
-    <deliverReceiptFormRef ref="deliverReceiptFormRef"></deliverReceiptFormRef>
+   
     <el-dialog
         :visible.sync="pdfVisible"
         @close="closeDialog"
@@ -154,7 +153,6 @@
   </div>
 </template>
 <script>
-import deliverReceiptFormRef from "./deliverReceiptFormRef";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
 import {
@@ -201,7 +199,6 @@ export default {
   computed: { ...mapGetters(['caseId']) },
   components: {
     caseSlideMenu,
-    deliverReceiptFormRef
   },
   methods: {
     handleRow(index, row) {

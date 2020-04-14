@@ -1,7 +1,7 @@
 <template>
   <div class="containerBox box searchPage">
     <div class="back" >
-      <span @click="router"><i class="el-icon-arrow-left"></i>返回</span>
+      <span @click="router"><i class="el-icon-arrow-left"></i>前往归档页面</span>
       <el-button type="primary" size="small" @click="editOrder">确认</el-button>
     </div>
     <div class="tablePart">
@@ -20,6 +20,8 @@
                 <span v-show="scope.$index" @click="byAsc(scope.row,scope.$index)" class="iconfont law-desc blueC"></span>
                 <span v-show="scope.$index == caseList.length-1" class="iconfont law-asc"></span> 
                 <span v-show="scope.$index != caseList.length-1" @click="byDesc(scope.row,scope.$index)" class="iconfont law-asc blueC"></span>
+                <!-- 删除 -->
+                <span v-if="scope.row.category == '证据'" @click="deleteEvidence(scope.row,scope.$index)" class="iconfont law-delete blueC"></span>
             </div>
           </template>
         </el-table-column>
@@ -67,7 +69,8 @@
             drag
             :http-request="saveFile"
             action="https://jsonplaceholder.typicode.com/posts/"
-            multiple
+            :on-remove="handleRemoveFile"
+            :limit="1"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -217,13 +220,13 @@
       </div>
     </el-drawer>
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'archiveCatalogue'" @showArchiveCatalogue="showArchiveCatalogue"></caseSlideMenu>
+    <caseSlideMenu :activeIndex="'archiveCatalogue'"></caseSlideMenu>
     <!-- 卷宗目录 -->
-    <archiveCatalogue ref="archiveCatalogueRef"></archiveCatalogue>
+    <!-- <archiveCatalogue ref="archiveCatalogueRef"></archiveCatalogue> -->
   </div>
 </template>
 <script>
-import archiveCatalogue from "./archiveCatalogue";
+// import archiveCatalogue from "./archiveCatalogue";
 import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 import { uploadEvApi, findFileByIdApi, uploadEvdence } from "@/api/upload";
 import iLocalStroage from "@/common/js/localStroage.js";
@@ -231,7 +234,7 @@ import { validateRequire } from "@/common/js/validator.js";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
 import {
-  saveOrUpdateDocCatalogList,findEvidencePicApi
+  saveOrUpdateDocCatalogList,findEvidencePicApi,deleteDocCatalogEvidenApi,
 } from "@/api/caseHandle";
 export default {
   data() {
@@ -342,9 +345,12 @@ export default {
       }
     },
     next() {
-      this.enclosureVisible = true;
-      this.addEvidenceVisible = false;
-      // this.operateVisible = false
+      if (this.multipleSelection.length > 0) {
+        this.enclosureVisible = true;
+        this.addEvidenceVisible = false;
+      }else{
+        this.$message('请选择要关联的附件')
+      }
     },
     addEnclosure() {
       if (this.multipleSelection.length > 0) {
@@ -402,6 +408,11 @@ export default {
     },
     submitForm(formName) {
       let _that = this;
+      console.log('_that.formUpload.file',_that.formUpload.file)
+      if(!_that.formUpload.file){
+        this.$message('请上传附件');
+        return;
+      }
       this.$refs[formName].validate(valid => {
         if (valid) {
           // _that.addEvidence(_that.uploadForm);
@@ -467,9 +478,9 @@ export default {
       );
     },
     //点击卷宗目录后 显示卷宗目录
-    showArchiveCatalogue() {
-      this.$refs.archiveCatalogueRef.showModal(true);
-    },
+    // showArchiveCatalogue() {
+    //   this.$refs.archiveCatalogueRef.showModal(true);
+    // },
     // 绑定已有证据材料
     bindEvidence(row) {
       this.relationFileVisible = true;
@@ -505,24 +516,6 @@ export default {
       this.$store.dispatch("getByMlCaseIdNew", caseId).then(
         res => {
             console.log('文书列表',res)
-          res.data.forEach(item=>{
-              if(item.name == "卷宗封面"){
-                if(!item.num){
-                  item.num = -1;
-                }
-                item.page = 1;
-              }else if(item.name == "卷内目录"){
-                if(!item.num){
-                  item.num = 0;
-                }
-                item.page = 1;
-              }else if(item.name == "备考表"){
-                if(!item.num){
-                  item.num = 1000;
-                }    //先这样写，之后再改
-                item.page = 1;
-              }
-            })
           res.data = res.data.sort(function(a,b){
             return a.num - b.num;
           });
@@ -580,26 +573,44 @@ export default {
       })
       return disAbleRow
     },
-    currentPages(scope){
-      let rowIndex = scope.$index;
-      let tempPage = '';
-      let qianPage = 0;
-      let pageStart=0;
-      let pageEnd=0;
-      this.caseList.forEach((item,index)=>{
-        if(rowIndex > index){
-          qianPage = qianPage + Number(item.page);
-        }
+    //处理页码
+    // currentPages(scope){
+    //   let rowIndex = scope.$index;
+    //   let tempPage = '';
+    //   let qianPage = 0;
+    //   let pageStart=0;
+    //   let pageEnd=0;
+    //   this.caseList.forEach((item,index)=>{
+    //     if(rowIndex > index){
+    //       qianPage = qianPage + Number(item.page);
+    //     }
+    //   })
+    //   if(scope.row.page>1){
+    //     pageStart = qianPage+1;
+    //     pageEnd = qianPage+ Number(scope.row.page);
+    //     tempPage = pageStart + '~' + pageEnd
+    //   }else{
+    //     pageStart = qianPage+1;
+    //     tempPage = pageStart;
+    //   }
+    //   return tempPage
+    // },
+
+    //删除绑定的证据
+    deleteEvidence(row,index){
+      console.log('删除绑定的证据',row,index);
+      // this.editOrder();
+      deleteDocCatalogEvidenApi(row.id).then(res=>{
+        this.$message( {type: "success",message:'删除成功'})
+        this.reload();
+      },err=>{
+        console.log(err)
       })
-      if(scope.row.page>1){
-        pageStart = qianPage+1;
-        pageEnd = qianPage+ Number(scope.row.page);
-        tempPage = pageStart + '~' + pageEnd
-      }else{
-        pageStart = qianPage+1;
-        tempPage = pageStart;
-      }
-      return tempPage
+    },
+    //新增证据 删除选择的文件
+    handleRemoveFile(file,fileList){
+      this.formUpload.file = '';
+      this.formUpload.evName = '';
     }
   },
   mounted() {
@@ -609,7 +620,7 @@ export default {
   },
   components: {
     caseSlideMenu,
-    archiveCatalogue
+    // archiveCatalogue
   }
 };
 </script>

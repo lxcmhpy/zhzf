@@ -263,8 +263,8 @@
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
                 <template slot-scope="scope">
-                  <span v-show="scope.row.isRequired ==0"><span style="color:red">*</span> {{scope.row.name}}</span>
-                  <span v-show="scope.row.isRequired !=0">{{scope.row.name}}</span>
+                  <span v-show="scope.row.isRequired ===0"><span style="color:red">*</span> {{scope.row.name}}</span>
+                  <span v-show="scope.row.isRequired !==0">{{scope.row.name}}</span>
                 </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
@@ -284,8 +284,8 @@
                     <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">
-                      <span @click="viewDoc(scope.row)">编辑</span>  
-                      <span @click="delDocDataByDocId(scope.row)">清空</span>  
+                      <span @click="viewDoc(scope.row)">编辑</span>
+                      <span @click="delDocDataByDocId(scope.row)">清空</span>
                     </span>
                     <!-- 无状态 -->
                     <span v-if="scope.row.status === ''" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
@@ -509,7 +509,7 @@ export default {
     },
     //预览pdf
     viewDocPdf(row) {
-      console.log('row',row) 
+      console.log('row',row)
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,
@@ -542,7 +542,7 @@ export default {
     setMoreDocTableTitle() {
       this.docTableDatas = [];
       this.allAskDocList = [];
-      // askDocListNum:0,  
+      // askDocListNum:0,
       // askDocListFinishNum:0,
 
       this.docTableDatas.push({

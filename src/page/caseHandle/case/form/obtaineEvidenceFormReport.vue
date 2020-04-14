@@ -84,9 +84,16 @@
         </table>
         <p class="textindent0 data_picker">
           抽样取证时间：
-          <el-form-item prop="getEvidenceTime">
+          <!-- <el-form-item prop="getEvidenceTime">
           <el-date-picker style="width:430px"  v-model="docData.getEvidenceTime" type="datetimerange" range-separator="至" start-placeholder=" 年  月  日  时  分" end-placeholder=" 年  月  日  时  分" format="yyyy年MM月dd日HH时mm分">
           </el-date-picker>
+          </el-form-item> -->
+          <el-form-item prop="getEvidenceTime">
+             <el-date-picker style="width:215px" v-model="docData.getEvidenceTime" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+          </el-form-item>
+          <span>至</span>
+          <el-form-item prop="getEvidenceTimeEnd">
+             <el-date-picker style="width:215px" v-model="docData.getEvidenceTimeEnd" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
           </el-form-item>
         </p>
         <div class="pager_input quzheng">抽样取证地点：
@@ -273,6 +280,22 @@ export default {
       }
       callback();
     };
+    //验证开始时间
+    var validateStartTime = (rule, value, callback) => {
+      console.log(Date.parse(value),Date.parse(this.docData.getEvidenceTimeEnd))
+      if(Date.parse(this.docData.getEvidenceTime)>Date.parse(this.docData.getEvidenceTimeEnd)){
+        this.$message({
+              showClose: true,
+              message: '开始时间不得大于结束时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        return callback(new Error("开始时间不得大于结束时间"));
+      }
+      callback();
+    };
+    
     return {
       
       docData: {
@@ -289,6 +312,7 @@ export default {
         socialCreditCode: '',
 
         getEvidenceTime: '',
+        getEvidenceTimeEnd:'',
         evidencePlace: '',
         evidenceDepartment: '',
         evidenceDepartmentPhone: '',
@@ -357,7 +381,12 @@ export default {
           { validator:validatePhone , trigger: "blur" }
         ],
         getEvidenceTime: [
-          { required: true, message: '抽样取证时间不能为空', trigger: 'blur' }
+          { required: true, message: '抽样取证时间不能为空', trigger: 'blur' },
+          { validator:validateStartTime , trigger: "blur" }
+        ],
+        getEvidenceTimeEnd: [
+          { required: true, message: '抽样取证结束时间不能为空', trigger: 'blur' },
+          { validator:validateStartTime , trigger: "blur" }
         ],
         evidencePlace: [
           { required: true, message: '抽样取证地点不能为空', trigger: 'blur' }

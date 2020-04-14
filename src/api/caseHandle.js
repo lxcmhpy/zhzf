@@ -783,3 +783,14 @@ export function TransferCaseApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//删除目录列表(解除证据关联)
+export function deleteDocCatalogEvidenApi(id) {
+  return request({
+    url: "/case/doc/docCatalog/deleteDocCatalog/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

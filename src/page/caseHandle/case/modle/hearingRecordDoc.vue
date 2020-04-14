@@ -515,4 +515,11 @@ export default {
 </script>
 <style lang="scss">
 @import "@/assets/css/caseHandle/caseDocModle.scss";
+#hearingRecordDoc_print{
+  .overflow_lins_textarea{
+    &>textarea{
+      text-indent: 5em;
+    }
+  }
+}
 </style>

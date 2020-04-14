@@ -3,10 +3,11 @@
     custom-class="leftDialog leftDialog2 archiveCatalogueBox"
     :visible.sync="visible"
     @close="closeDialog"
-    top="60px"
     width="405px"
+    top="0"
     :modal="false"
     :show-close="false"
+    :append-to-body="true"
   >
     <template slot="title">
         <div class="catalogueTitle">
@@ -21,7 +22,7 @@
       <div class="archiveCatalogueFoot">排序管理</div>
 
     </div> -->
-    <div >
+    <div class="a">
         <table border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
                 <td>序号</td>
@@ -31,14 +32,13 @@
             <tr v-for="(item,index) in caseList" :key="index" @click="alertPDF(item)" :class="!item.storageId && item.name=='备考表' ? 'activeTd' :''">
                 <td>{{index+1}}</td>
                 <td>{{item.name ? item.name :item.evName}}</td>
-                <!-- <td>{{currentPages(item,index)}}</td> -->
                 <td>{{item.page}}</td>
 
             </tr>
         </table>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="routerArchiveCatalogueDetail" type="primary">排序管理</el-button>
+      <el-button @click="routerArchiveCatalogueDetail" type="primary" icon="iconfont law-paixu"> 排序管理</el-button>
     </span>
   </el-dialog>
 </template>
@@ -48,7 +48,8 @@ export default {
   data() {
     return {
       visible: false,
-      caseList:[]
+      caseList:[],
+      getData:false,
     };
   },
   inject: ["reload"],
@@ -63,16 +64,20 @@ export default {
       // if(!this.caseList.length){
       //   this.getByMlCaseId();
       // }
-      if(refresh) this.getByMlCaseId();
+      console.log('this.getData',this.getData)
+      if(refresh && !this.getData) this.getByMlCaseId();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
+      this.getData = false;
     },
     getByMlCaseId() {
+        this.getData = true;
          this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
          res=>{
-           console.log('res.data',res.data)
+           console.log('res.data',res.data);
+          
             // res.data.forEach(item=>{
             //   if(item.name == "卷宗封面"){
             //     if(!item.num){
@@ -117,7 +122,11 @@ export default {
         this.$router.push({name:'archiveCover',params:{clickData:JSON.stringify(item),mulvList:this.caseList}});
         return;
       }
-      this.$emit('alertPDF', {item:item,mulvList:this.caseList})
+      // this.$emit('alertPDF', {item:item,mulvList:this.caseList})
+      console.log('item',item)
+      this.$store.commit("setClickArchiveCatalogue", item);
+      this.$store.commit("setArchiveCatalogueList", this.caseList);
+
     },
     //显示封面
     // showCover(){
@@ -148,14 +157,21 @@ export default {
         tempPage = pageStart;
       }
       return tempPage
+    },
+    //设置弹窗左偏移
+    setRight(){
+      console.log('设置弹窗左偏移')
+      let class1 =  document.getElementsByClassName("archiveCatalogueBox");
+      let class2 = class1[0].parentNode;
+      class2.style.right = '60px';
+      class2.style.top = '60px';
+      class2.style.overflow = 'hidden';
     }
   },
   mounted () {
     // this.getByMlCaseId();
     //设置弹窗遮罩层不要遮到右侧快捷菜单
-     var class1 =  document.getElementsByClassName("archiveCatalogueBox");
-     var class2 = class1[0].parentNode;
-     class2.style.right = '60px';
+    this.setRight();
   }
 };
 </script>

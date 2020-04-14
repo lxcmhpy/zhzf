@@ -198,21 +198,41 @@
   }
 
   .com_searchAndpageBoxPadding {
-    // position: absolute;
     position: relative;
-    padding: 22px;
-    // height  : calc(100% - 44px);
     height: 100%;
     box-sizing: border-box;
-    // width   : calc(100% - 44px);
-    // left    : 22px;
-    // right   : 22px;
-    // top     : 22px;
-    // bottom  : 22px;
+    .com_searchPage_top {
+        position: fixed;
+        top:90px;
+        width: 100%;
+        background: white;
+        z-index: 1000;
+        height: 50px;
+        box-sizing: border-box;
+        .el-tabs__header {
+            width: calc(100% - 200px);
+            .el-tabs__item {
+                height: 50px;
+                line-height: 50px;
+                font-size: 15px;
+                .el-badge__content.is-fixed {
+                    top: 24px;
+                    right: -7px;
+                }
+            }
+            .el-tabs__active-bar {
+                height: 3px;
+            }
+        }
+    }
+    .com_searchPage_top + .searchAndpageBox {
+        margin-top: 70px;
+    }
   }
 
   .searchAndpageBox {
     box-sizing: border-box;
+    margin: 22px;
     padding: 20px;
     height: 100%;
     background: #fff;
@@ -428,6 +448,64 @@
   left: calc(50% + 100px);
 }
 
+
+#catalogueUpload{
+    .el-upload-dragger{
+        height: 380px;
+    }
+}
+
+ .archiveCatalogueBox{
+    background: #EAEDF4;
+    margin-right: 0;
+    height: 100%;
+    .el-dialog__header {
+        height: 64px;
+        background: #FFFFFF;
+        color: #20232B;
+        padding: 0 0 0 20px;
+        line-height: 64px;
+        .catalogueTitle {
+            font-size: 20px;
+            cursor: pointer;
+            img{
+              height: 30px;
+              vertical-align: middle;
+            }
+        }
+    }
+    .el-dialog__body{
+        height: calc(100% - 150px);
+        padding-bottom: 0;
+        .a{
+            height: 100%;
+            overflow: auto;
+        }
+    }
+    .el-dialog__footer{
+        text-align: center;
+    }
+    table{
+        text-align: center;
+        background: #fdffff;
+        td{
+            padding: 10px 0;
+            min-height: 38px;
+            border: 1px solid #7F8185;
+            cursor: pointer;
+        }
+        tr{
+            td:nth-child(1),td:nth-child(3){
+                width: 40px;
+            }
+        }
+        .activeTd{
+          td{
+            color: red;
+          }
+        }
+    }
+}
 #catalogueUpload {
   .el-upload-dragger {
     height: 380px;
