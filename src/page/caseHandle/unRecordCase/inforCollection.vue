@@ -203,7 +203,7 @@
             </el-form-item>
           </div>
         </div>
-
+        <div class="line"></div>
         <p>驾驶人或代理人</p>
         <div class="driverOrAgentBox" v-for="(driverOrAgentInfo,index) in driverOrAgentInfoList" :key="index">
           <div v-show="partyTypePerson=='1'">
@@ -1403,7 +1403,7 @@ export default {
         if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType) {
           switch (inforForm.otherInfo.vehicleType) {
             case '中置轴挂车列车':
-              this.vehicleAxlesTypeList =[{ label: '1+2+3', value: '1+2+3' }, { label: '2+2+2', value: '2+2+2' }];
+              this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }, { label: '2+2+2', value: '2+2+2' }];
               break;
             case '铰接列车':
               this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }];
@@ -1656,7 +1656,7 @@ export default {
       }, err => {
         console.log(err);
       })
-    }
+    },
   },
   mounted() {
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
@@ -1709,7 +1709,8 @@ export default {
       console.log(vm)
     })
 
-  }
+  },
+
 };
 </script>
 <style lang="scss">
