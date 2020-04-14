@@ -4,6 +4,7 @@
 var PhoneCallModule =(function () {
 	var SERVER_ADDR = 'http://192.168.7.24:80/api/api.class.php?';
 	function onCallStateChanged(e){
+        return e;
         // e.type
 		switch (e.type){
 			//Failed to make call
@@ -20,10 +21,11 @@ var PhoneCallModule =(function () {
                 //     dangerouslyUseHTMLString: true,
                 //     message: `语音来电：<a href="javascript:void(0)" style="color:red">点击接听</a>`
                 // });
-
+                // alert(1)
 			break;
 			//Incoming video call
 			case 3:
+                // alert(2)
                 // v.$message({
                 //     iconClass: 'iconfont law-success',
                 //     customClass: 'successMsg',
@@ -36,6 +38,7 @@ var PhoneCallModule =(function () {
 			break;
 			//Early media started
 			case 5:
+                // alert(3)
 			/*
 				$('#tdAudio').hide();
 				$('#tdCallOut').hide();
@@ -43,6 +46,7 @@ var PhoneCallModule =(function () {
 				*/
 			break;
 			case 6:
+                // alert(4)
                 // v.$message({
                 //     iconClass: 'iconfont law-error',
                 //     customClass: 'errorMsg',
@@ -87,6 +91,7 @@ var PhoneCallModule =(function () {
 	};
 
 	function onPhoneCallMsgCB(e){
+        return e;
 		switch (e.type){
 			//dont support WebSocket!
 			case 1:
@@ -158,17 +163,6 @@ var PhoneCallModule =(function () {
 	};
 
 	var sipRegister = function(){
-		// var callCredential = {
-		// 	displayName: $('#displayName').val(),
-		// 	privateIdentity: $('#privateIdentity').val(),
-		// 	webSocketServerUrl: $('#webSocketServerUrl').val(),
-		// 	sipOutboundProxyUrl: $('#sipOutboundProxyUrl').val(),
-		// 	iceServers:'[]',
-		// 	password: $('#password').val(),
-		// 	authToken:result
-        // };
-        // let music = document.getElementById('audio_remote');
-
         var callCredential = {
             			displayName: 'test3',
             			privateIdentity: '10002',
@@ -180,25 +174,6 @@ var PhoneCallModule =(function () {
                     };
 
 		PhoneCall.sipRegister(callCredential);
-		/*
-		var paraStr = "data=" + $('#edtExtension').val();
-
-		$.post(SERVER_ADDR,paraStr,function(result){
-			var result = JSON.parse(result);
-				if (result.success === 'true') {
-				var callCredential = {
-					displayName: $('#edtFullName').val(),
-					privateIdentity: $('#edtExtension').val(),
-					webSocketServerUrl: $('#edtWebSocketServerAddr').val(),
-					sipOutboundProxyUrl: $('#edtSIPServerAddr').val(),
-					iceServers:'[]',
-					password: $('#edtUsrPwd').val(),
-					authToken:result;
-				};
-				PhoneCall.sipRegister(callCredential);
-			}
-		});
-		*/
 
 	};
 
@@ -212,7 +187,8 @@ var PhoneCallModule =(function () {
 			onCallStateChanged: onCallStateChanged
 		}
 
-		PhoneCall.initPhoneCall(phoneSettings);
+        PhoneCall.initPhoneCall(phoneSettings);
+        // debugger;
 	};
 
 	window.onload = initialize;
@@ -223,7 +199,7 @@ var PhoneCallModule =(function () {
 		sipVideoCall: videoCall,
 		sipAnswer: answerCall,
         sipHangUp: hangUp,
-        status:false,
         sipUnRegister: unRegister
 	};
 } ());
+

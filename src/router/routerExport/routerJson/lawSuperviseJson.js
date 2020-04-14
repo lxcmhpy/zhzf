@@ -24,16 +24,16 @@ export default  [
                 oneTab:true,
                 },
                 component: () => import("@/page/lawSupervise/supervisePage/kshjg/offSiteDetectionOverload.vue")
-            },
-            {
-                path: "/teamStrength",
-                name: "teamStrength",
-                meta: {
-                title: "队伍力量",
-                oneTab:true,
-                },
-                component: () => import("@/page/lawSupervise/supervisePage/kshjg/teamStrength.vue")
             }
+            // {
+            //     path: "/teamStrength",
+            //     name: "teamStrength",
+            //     meta: {
+            //     title: "队伍力量",
+            //     oneTab:true,
+            //     },
+            //     component: () => import("@/page/lawSupervise/supervisePage/kshjg/teamStrength.vue")
+            // }
         ]
     }, {
         //线索中心
@@ -62,6 +62,13 @@ export default  [
                     title: '证据详情'
                 },
                 component: () => import("@/page/lawSupervise/supervisePage/xszx/evidenceDetail.vue")
-           }]
+           }, {
+            path: '/invalidCue',
+            name: 'invalidCue',
+            meta: {
+                title: '无效信息'
+            },
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/invalidCue.vue")
+        }]
     }
 ]
