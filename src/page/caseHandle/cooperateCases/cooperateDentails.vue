@@ -99,6 +99,7 @@
   </div>
 </template>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
@@ -112,7 +113,7 @@ export default {
 
   },
   mounted() {
-//    console.log(this.$route.params.caseInfo)
+   console.log(this.$route.params.caseInfo)
     this.caseData.person = iLocalStroage.gets("userInfo").organName + '-' + this.caseData.person;  
     this.caseData = this.$route.params.caseInfo
     if (this.caseData.appendix != '') {
