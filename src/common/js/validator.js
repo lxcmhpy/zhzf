@@ -64,7 +64,6 @@ export function validatePhone(rule, value, callback) {
 
 /* 是否是身份证号码   有值时验证*/
 export function validateIDNumber(rule, value, callback) {
-    debugger
     // var reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
     // if (!reg.test(value) && value) {
     //     callback(new Error('身份证格式错误'));
@@ -86,7 +85,6 @@ export function validateIDNumber(rule, value, callback) {
 }
 
 var isDateTime = function (format, reObj) {
-    debugger
     format = format || 'yyyy-MM-dd';
     var input = this, o = {}, d = new Date();
     var f1 = format.split(/[^a-z]+/gi), f2 = input.split(/\D+/g), f3 = format.split(/[a-z]+/gi), f4 = input.split(/\d+/g);
