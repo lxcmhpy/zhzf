@@ -89,12 +89,14 @@
       },
       //跳转立案登记
       clickCase(row) {
-        this.$router.replace({
-          name: 'filingApproval',
-          params: {
-            id: row.id,
-          }
-        });
+        let routerData = {
+          hasApprovalBtn: false,
+          docId: row.docId,
+          approvalOver: false,
+          hasBack: true,
+        }
+        this.$store.dispatch("deleteTabs", this.$route.name);
+        this.$router.push({name: 'myPDF', params: routerData})
       }
     },
     created() {
