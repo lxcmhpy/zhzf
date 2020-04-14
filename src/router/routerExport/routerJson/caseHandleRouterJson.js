@@ -563,5 +563,21 @@ export default [
       title: "卷宗详情",
     },
     component: () => import("@/page/caseHandle/electronicCaseFile/electronicFileDetail.vue")
-  }
+  },
+  {
+    path: "/caseCenter-overWeightCase",
+    name: "caseCenter-overWeightCase",
+    meta: {
+      title: "超限案件列表",
+    },
+    component: () => import("@/page/caseCenter/myWaitDeal/overWeightCase.vue")
+  },
+  {
+    path: "/caseCenter-transferAndRegisterCase",
+    name: "caseCenter-transferAndRegisterCase",
+    meta: {
+      title: "转立案列表",
+    },
+    component: () => import("@/page/caseCenter/partyWaitDeal/transferAndRegisterCase.vue")
+  },
 ]
