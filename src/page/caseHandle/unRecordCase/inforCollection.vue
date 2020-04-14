@@ -204,21 +204,42 @@
 
         <p>驾驶人或代理人</p>
         <div class="driverOrAgentBox" v-for="(driverOrAgentInfo,index) in driverOrAgentInfoList" :key="index">
-          <div>
-            <div class="item">
-              <el-form-item label="与当事人关系">
-                <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
-                  <el-option v-for="item in allRelationWithParty" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                </el-select>
-              </el-form-item>
+          <div v-show="partyTypePerson=='1'">
+            <div>
+              <div class="item">
+                <el-form-item label="与当事人关系">
+                  <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
+                    <el-option v-for="item in allRelationWithParty" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <div class="item">
+                <!-- 需要完善验证 -->
+                <el-form-item label="与案件关系" class="is-required">
+                  <el-select v-model="driverOrAgentInfo.relationWithCase">
+                    <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
             </div>
-            <div class="item">
-              <!-- 需要完善验证 -->
-              <el-form-item label="与案件关系" class="is-required">
-                <el-select v-model="driverOrAgentInfo.relationWithCase">
-                  <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                </el-select>
-              </el-form-item>
+          </div>
+          <div v-show="partyTypePerson!='1'">
+            <div>
+              <div class="item">
+                <el-form-item label="与当事人关系">
+                  <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
+                    <el-option v-for="item in allQYRelationWithParty" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <div class="item">
+                <!-- 需要完善验证 -->
+                <el-form-item label="与案件关系" class="is-required">
+                  <el-select v-model="driverOrAgentInfo.relationWithCase">
+                    <el-option v-for="item in allQYRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
             </div>
           </div>
           <div>
@@ -861,6 +882,19 @@ export default {
         { value: "0", label: "当事人" },
         { value: "1", label: "驾驶人" },
         { value: "2", label: "实际所有者" },
+        { value: "3", label: "证人" },
+        { value: "4", label: "承运人" },
+        { value: "5", label: "代理人" }
+      ],
+      allQYRelationWithParty: [
+        //与当事人关系下拉框(企业组织)
+        { value: "2", label: "借用车辆" },
+        { value: "3", label: "雇佣关系" },
+        { value: "5", label: "其他" }
+      ],
+      allQYRelationWithCase: [
+        //与案件关系下拉框(企业组织)
+        { value: "1", label: "驾驶人" },
         { value: "3", label: "证人" },
         { value: "4", label: "承运人" },
         { value: "5", label: "代理人" }
