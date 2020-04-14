@@ -1307,6 +1307,7 @@
               });
               // _this.$store.dispatch("deleteTabs", _this.$route.name);
               _this.$store.commit("setCaseId", res.data.id);
+              this.autoSava = false;
 
             },
             err => {
