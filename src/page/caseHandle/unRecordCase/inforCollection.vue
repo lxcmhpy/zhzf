@@ -10,37 +10,32 @@
         <a :class="activeA[4]? 'activeA' :''" @click="jump(5)">违法事实</a>
       </div>
     </div>
-    <el-form :model="inforForm" :rules="rules" ref="inforForm" class="caseInfoForm" label-width="100px"
-             :disabled="isHandleCase">
+    <el-form :model="inforForm" :rules="rules" ref="inforForm" class="caseInfoForm" label-width="100px" :disabled="isHandleCase">
       <div class="caseFormBac" id="link_1">
         <p>案件情况</p>
         <div>
           <div class="item">
             <el-form-item label="案件来源" prop="caseSource">
               <el-select v-model="inforForm.caseSource" placeholder="请选择" @change="changeCaseSource">
-                <el-option v-for="item in allcaseSource" :key="item.value" :label="item.label"
-                           :value="item"></el-option>
+                <el-option v-for="item in allcaseSource" :key="item.value" :label="item.label" :value="item"></el-option>
               </el-select>
             </el-form-item>
           </div>
           <div class="item hasMargintop">
             <el-form-item prop="caseSourceText">
-              <el-input v-model="inforForm.caseSourceText" v-show="caseSourceTextDisable"
-                        :placeholder="caseSourceTextPla"></el-input>
+              <el-input v-model="inforForm.caseSourceText" v-show="caseSourceTextDisable" :placeholder="caseSourceTextPla"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="item">
             <el-form-item label="案发时间">
-              <el-date-picker v-model="inforForm.afsj" type="datetime" format="yyyy-MM-dd HH:mm"
-                              value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+              <el-date-picker v-model="inforForm.afsj" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="受案时间" prop="acceptTime">
-              <el-date-picker v-model="inforForm.acceptTime" type="datetime" format="yyyy-MM-dd HH:mm"
-                              value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+              <el-date-picker v-model="inforForm.acceptTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
             </el-form-item>
           </div>
         </div>
@@ -75,8 +70,7 @@
             <el-form-item label="执法人员" id="lawPersonBox" prop="lawPersonListId">
               <!-- <el-input> -->
               <el-select v-model="lawPersonListId" multiple @remove-tag="removeLawPersontag">
-                <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName"
-                           :value="item.id" placeholder="请添加"></el-option>
+                <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加"></el-option>
               </el-select>
               <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
               <!-- </el-input> -->
@@ -107,11 +101,9 @@
           </div>
           <div class="item appendSelect">
             <el-form-item label="证件类型" prop="partyIdNo">
-              <el-input placeholder="请输入内容" v-model="inforForm.partyIdNo"
-                        @change="changePartyIdType(inforForm.partyIdNo)" class="input-with-select hasMargintop">
+              <el-input placeholder="请输入内容" v-model="inforForm.partyIdNo" @change="changePartyIdType(inforForm.partyIdNo)" class="input-with-select hasMargintop">
                 <el-select slot="prepend" v-model="inforForm.partyIdType">
-                  <el-option v-for="item in credentialType" :key="item.value" :label="item.label"
-                             :value="item.value"></el-option>
+                  <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-input>
             </el-form-item>
@@ -128,8 +120,7 @@
           </div>
           <div class="itemThird">
             <el-form-item label="年龄" prop="partyAge">
-              <el-input v-model="inforForm.partyAge" type="number" :disabled="inforForm.partyIdNo?true:false"
-                        @change="noFue('inforForm.partyAge',inforForm.partyAge)"></el-input>
+              <el-input v-model="inforForm.partyAge" type="number" :disabled="inforForm.partyIdNo?true:false" @change="noFue('inforForm.partyAge',inforForm.partyAge)"></el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
@@ -219,9 +210,7 @@
             <div class="item">
               <el-form-item label="与当事人关系">
                 <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
-                  <el-option v-for="item in index === 0?allRelationWithParty:allRelationWithParty_" :key="item.value"
-                             :label="item.label"
-                             :value="item.value"></el-option>
+                  <el-option v-for="item in index === 0?allRelationWithParty:allRelationWithParty_" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -229,8 +218,7 @@
               <!-- 需要完善验证 -->
               <el-form-item label="与案件关系" class="is-required">
                 <el-select v-model="driverOrAgentInfo.relationWithCase">
-                  <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label"
-                             :value="item.value"></el-option>
+                  <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -238,19 +226,14 @@
           <div>
             <div class="item">
               <el-form-item label="姓名">
-                <el-input v-model="driverOrAgentInfo.name"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                <el-input v-model="driverOrAgentInfo.name" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
               </el-form-item>
             </div>
             <div class="item appendSelect">
               <el-form-item label="证件类型" prop="partyIdNo">
-                <el-input placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber"
-                          @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
-                          class="input-with-select hasMargintop"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
+                <el-input placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber" @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)" class="input-with-select hasMargintop" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
                   <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType">
-                    <el-option v-for="item in credentialType" :key="item.value" :label="item.label"
-                               :value="item.value"></el-option>
+                    <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -259,8 +242,7 @@
           <div>
             <div class="itemThird">
               <el-form-item label="性别">
-                <el-select v-model="driverOrAgentInfo.sex"
-                           :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
+                <el-select v-model="driverOrAgentInfo.sex" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
                   <el-option :value="0" label="男"></el-option>
                   <el-option :value="1" label="女"></el-option>
                 </el-select>
@@ -268,53 +250,43 @@
             </div>
             <div class="itemThird">
               <el-form-item label="年龄">
-                <el-input v-model="driverOrAgentInfo.age" type="number"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
-                          @change="noFueA(driverOrAgentInfo.age)"></el-input>
+                <el-input v-model="driverOrAgentInfo.age" type="number" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false" @change="noFueA(driverOrAgentInfo.age)"></el-input>
               </el-form-item>
             </div>
             <div class="itemThird">
               <el-form-item label="联系电话">
-                <el-input v-model="driverOrAgentInfo.tel"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
-                          @blur="blur2($event.target.value)"></el-input>
+                <el-input v-model="driverOrAgentInfo.tel" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false" @blur="blur2($event.target.value)"></el-input>
               </el-form-item>
             </div>
           </div>
           <div>
             <div class="itemBig">
               <el-form-item label="联系地址">
-                <el-input v-model="driverOrAgentInfo.adress"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                <el-input v-model="driverOrAgentInfo.adress" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
               </el-form-item>
             </div>
             <div class="itemSmall">
               <el-form-item label="邮编">
-                <el-input v-model="driverOrAgentInfo.adressCode"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
-                          @blur="blur3($event.target.value)"></el-input>
+                <el-input v-model="driverOrAgentInfo.adressCode" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false" @blur="blur3($event.target.value)"></el-input>
               </el-form-item>
             </div>
           </div>
           <div>
             <div class="itemBig">
               <el-form-item label="工作单位">
-                <el-input v-model="driverOrAgentInfo.company"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                <el-input v-model="driverOrAgentInfo.company" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
               </el-form-item>
             </div>
             <div class="itemSmall">
               <el-form-item label="职位">
-                <el-input v-model="driverOrAgentInfo.position"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                <el-input v-model="driverOrAgentInfo.position" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
               </el-form-item>
             </div>
           </div>
           <div>
             <div class="itemOne">
               <el-form-item label="从业资格证号">
-                <el-input v-model="driverOrAgentInfo.zigeNumber"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                <el-input v-model="driverOrAgentInfo.zigeNumber" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -335,8 +307,7 @@
           <div class="item">
             <el-form-item label="车牌颜色">
               <el-select v-model="inforForm.vehicleIdColor">
-                <el-option v-for="item in allVehicleIdColor" :key="item.value" :label="item.label"
-                           :value="item.value"></el-option>
+                <el-option v-for="item in allVehicleIdColor" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -345,8 +316,7 @@
           <div class="item">
             <el-form-item label="车牌类型">
               <el-select v-model="inforForm.vehicleShipType">
-                <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label"
-                           :value="item.value"></el-option>
+                <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -376,8 +346,7 @@
           <div class="item">
             <el-form-item label="车牌颜色">
               <el-select v-model="inforForm.trailerColor" disabled>
-                <el-option v-for="item in allVehicleIdColor" :key="item.value" :label="item.label"
-                           :value="item.value"></el-option>
+                <el-option v-for="item in allVehicleIdColor" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -386,8 +355,7 @@
           <div class="item">
             <el-form-item label="挂车类型">
               <el-select v-model="inforForm.trailerType">
-                <el-option v-for="item in allTrailerTypeType" :key="item.id" :label="item.name"
-                           :value="item.name"></el-option>
+                <el-option v-for="item in allTrailerTypeType" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -419,8 +387,7 @@
           <div class="itemBig">
             <el-form-item label="检测站">
               <el-select v-model="inforForm.otherInfo.checkStastions">
-                <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label"
-                           :value="item.value"></el-option>
+                <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
               <!-- <el-input v-model="inforForm.otherInfo.checkStastions"></el-input> -->
             </el-form-item>
@@ -437,16 +404,14 @@
           <div class="itemBig">
             <el-form-item label="检测人员">
               <el-select v-model="inforForm.otherInfo.checkWorker">
-                <el-option v-for="item in RecentCheckWorkers" :key="item.value" :label="item.label"
-                           :value="item.value"></el-option>
+                <el-option v-for="item in RecentCheckWorkers" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
               <!-- <el-input v-model="inforForm.otherInfo.checkWorker"></el-input> -->
             </el-form-item>
           </div>
           <div class="itemSmall">
             <el-form-item label="检测时间" prop="checkTime">
-              <el-date-picker v-model="inforForm.otherInfo.checkTime" type="datetime" format="yyyy-MM-dd HH:mm"
-                              value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+              <el-date-picker v-model="inforForm.otherInfo.checkTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
             </el-form-item>
           </div>
         </div>
@@ -468,8 +433,7 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车辆轴数">
-              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxleNumber"
-                         @change="weightLimit('车辆轴数')">
+              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxleNumber" @change="weightLimit('车辆轴数')">
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
                 <el-option label="4" value="4"></el-option>
@@ -481,9 +445,8 @@
           </div>
           <div class="itemThird">
             <el-form-item label="车型">
-              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
-                <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label"
-                           :value="item.value"></el-option>
+              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit('车型')">
+                <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="中置轴挂车列车"></el-option>
                 <el-option label="铰列车"></el-option>
                 <el-option label="全挂汽车列车"></el-option> -->
@@ -493,8 +456,7 @@
           <div class="itemThird">
             <el-form-item label="轴数分布">
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxlesType" @change="weightLimit">
-                <el-option v-for="item in vehicleAxlesTypeList" :key="item.value" :label="item.label"
-                           :value="item.value"></el-option>
+                <el-option v-for="item in vehicleAxlesTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="1+2+3"></el-option>
                 <el-option label="2+2+2"></el-option> -->
               </el-select>
@@ -654,8 +616,7 @@
             </el-form-item>-->
             <p>自由裁量标准(违法程度/违法情节/建议处罚)</p>
             <ul>
-              <li v-for="(item,index) in judgFreedomList" :key="index" :class="{activeJudgli : activeJudgli==item.id}"
-                  @click="selectJudgFreedom(item)">
+              <li v-for="(item,index) in judgFreedomList" :key="index" :class="{activeJudgli : activeJudgli==item.id}" @click="selectJudgFreedom(item)">
                 <div>{{item.drawerName}}</div>
                 <div>{{item.wfqj}}</div>
                 <div>{{item.lawerLimit}}</div>
@@ -689,8 +650,7 @@
         </div>
         <el-button class="caseSubmitBtn" icon="el-icon-plus" :disabled="disableBtn" @click="submitInfo(1)">提交
         </el-button>
-        <el-button class="caseSubmitBtn caseSubmitBtn2" icon="el-icon-plus" :disabled="disableBtn"
-                   @click="stageInfo(0)">暂存
+        <el-button class="caseSubmitBtn caseSubmitBtn2" icon="el-icon-plus" :disabled="disableBtn" @click="stageInfo(0)">暂存
         </el-button>
       </div>
     </el-form>
@@ -703,409 +663,190 @@
     <!-- 置顶 -->
     <el-backtop target="#inforCollectionBox" :bottom="46" :right='8' :visibility-height='800'>
       <div class="back-ball">
-        <svg t="1581647372853" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-             p-id="1939" width="18" height="22">
-          <path
-            d="M862.72 147.2H161.28c-18.432 0-33.28-14.848-33.28-33.28s14.848-33.28 33.28-33.28h701.44c18.432 0 33.28 14.848 33.28 33.28s-14.848 33.28-33.28 33.28zM549.376 323.84v580.608c0 21.504-17.408 38.912-38.912 38.912-21.504 0-38.912-17.408-38.912-38.912V323.84c0-21.504 17.408-38.912 38.912-38.912 21.504 0 38.912 17.408 38.912 38.912z"
-            p-id="1940" fill="#bfbfbf"></path>
-          <path
-            d="M542.72 262.144L207.872 661.248c-13.824 16.384-38.4 18.688-54.784 4.864-16.384-13.824-18.688-38.4-4.864-54.784L483.072 212.224c13.824-16.384 38.4-18.688 54.784-4.864 16.384 13.824 18.688 38.4 4.864 54.784z"
-            p-id="1941" fill="rgb(158, 167, 182)"></path>
-          <path
-            d="M481.28 262.144l334.848 398.848c13.824 16.384 38.4 18.688 54.784 4.864 16.384-13.824 18.688-38.4 4.864-54.784L540.928 212.224c-13.824-16.384-38.4-18.688-54.784-4.864-16.384 13.824-18.688 38.4-4.864 54.784z"
-            p-id="1942" fill="rgb(158, 167, 182)"></path>
+        <svg t="1581647372853" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1939" width="18" height="22">
+          <path d="M862.72 147.2H161.28c-18.432 0-33.28-14.848-33.28-33.28s14.848-33.28 33.28-33.28h701.44c18.432 0 33.28 14.848 33.28 33.28s-14.848 33.28-33.28 33.28zM549.376 323.84v580.608c0 21.504-17.408 38.912-38.912 38.912-21.504 0-38.912-17.408-38.912-38.912V323.84c0-21.504 17.408-38.912 38.912-38.912 21.504 0 38.912 17.408 38.912 38.912z" p-id="1940" fill="#bfbfbf"></path>
+          <path d="M542.72 262.144L207.872 661.248c-13.824 16.384-38.4 18.688-54.784 4.864-16.384-13.824-18.688-38.4-4.864-54.784L483.072 212.224c13.824-16.384 38.4-18.688 54.784-4.864 16.384 13.824 18.688 38.4 4.864 54.784z" p-id="1941" fill="rgb(158, 167, 182)"></path>
+          <path d="M481.28 262.144l334.848 398.848c13.824 16.384 38.4 18.688 54.784 4.864 16.384-13.824 18.688-38.4 4.864-54.784L540.928 212.224c-13.824-16.384-38.4-18.688-54.784-4.864-16.384 13.824-18.688 38.4-4.864 54.784z" p-id="1942" fill="rgb(158, 167, 182)"></path>
         </svg>
       </div>
     </el-backtop>
   </div>
 </template>
 <script>
-  import chooseLawPerson from "./chooseLawPerson";
-  import punishDiag from "./punishDiag";
-  import caseSlideMenu from '../components/caseSlideMenu'
-  import iLocalStroage from "@/common/js/localStroage";
-  import {mixinGetCaseApiList} from "@/common/js/mixins";
-  import {mapGetters} from "vuex";
-  import {validateIDNumber, validateAge, validateZIP, validatePhone} from '@/common/js/validator'
-  import {
-    getDictListDetailByNameApi
-  } from "@/api/system";
+import chooseLawPerson from "./chooseLawPerson";
+import punishDiag from "./punishDiag";
+import caseSlideMenu from '../components/caseSlideMenu'
+import iLocalStroage from "@/common/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import { mapGetters } from "vuex";
+import { validateIDNumber, validateAge, validateZIP, validatePhone } from '@/common/js/validator'
+import {
+  getDictListDetailByNameApi
+} from "@/api/system";
 
-  export default {
-    data() {
-      //选择个人试验证
-      var validatePart = (rule, value, callback) => {
-        if (this.inforForm.partyType == 1 && !value) {
-          return callback(new Error("请输入"));
-        }
-        callback();
-      };
-      //选择公司时验证
-      var validatePartName = (rule, value, callback) => {
-        if (this.inforForm.partyType == 2 && !value) {
-          return callback(new Error("请输入"));
-        }
-        callback();
-      };
-      //执法人员人数不得少于2个，最多不多与9个
-      var validateLawPersonNumber = (rule, value, callback) => {
-        console.log(this.lawPersonListId)
-        if (this.lawPersonListId.length < 2) {
-          return callback(new Error('执法人员不得少于2人'));
-        } else if (this.lawPersonListId.length > 9) {
-          return callback(new Error('执法人员不得多于9人'));
-        }
-        callback();
-      };
-      //案件来源后面输入框的验证
-      var validatecaseSourceText = (rule, value, callback) => {
-        if (this.caseSourceTextDisable == true && !value) {
-          return callback(new Error("请输入案件来源描述"));
-        }
-        callback();
-      };
-      return {
-        RecentCheckStastions: [{value: '', label: ''}],//最近五个检测站
-        RecentCheckWorkers: [{value: '', label: ''}],//历史保存过检测人员
-        vehicleTypeList: [],//车型
-        vehicleAxlesTypeList: [],//轴数
-        inforForm: {
-          caseSource: "", //案件来源
-          caseSourceText: "", //案件来源后的
-          afsj: "", //案发时间
-          acceptTime: new Date().format('yyyy-MM-dd HH:mm'), //受案时间
-          caseCauseId: "", //违法行为id
-          caseCauseName: "", //违法行为
-          zfmlId: "", //执法门类ID
-          zfml: "", //执法门类
-          programType: "", //程序类型
-          caseType: "", // 案件类型
-          partyType: 1, //当事人类型
-          party: "", //当事人信息-当事人姓名
-          partyIdType: "0", //证件类型
-          partyIdNo: "", //当事人信息-身份证件号
-          partySex: "",
-          partyAge: "",
-          partyTel: "",
-          partyAddress: "",
-          partyZipCode: "",
-          partyUnitPosition: "",
-          occupation: "",
-          partyEcertId: "",
-          partyName: "",
-          partyUnitTel: "",
-          socialCreditCode: "",
-          roadTransportLicense: "",
-          partyManager: "",
-          partyManagerPositions: "",
-          partyUnitAddress: "",
-          vehicleShipId: "",
-          vehicleIdColor: "",
-          vehicleShipType: "",
-          brand: "",
-          ccertId: "",
-          trailerIdNo: "",
-          trailerColor: "",
-          trailerType: "",
-          trailerBrand: "",
-          trailerCcertId: "",
-          caseCauseNameCopy: "",
-          illegalLaw: "",
-          punishLaw: "",
-          discretionId: "",
-          tempPunishAmount: "",
-          organId: iLocalStroage.gets("userInfo").organId,
-          caseTypeId: "",
-          staffId: "",
-          staff: "",
-          certificateId: "",
-          otherInfo: {
-            isBigTransfer: '否',
-          },
+export default {
+  data() {
+    //选择个人试验证
+    var validatePart = (rule, value, callback) => {
+      if (this.inforForm.partyType == 1 && !value) {
+        return callback(new Error("请输入"));
+      }
+      callback();
+    };
+    //选择公司时验证
+    var validatePartName = (rule, value, callback) => {
+      if (this.inforForm.partyType == 2 && !value) {
+        return callback(new Error("请输入"));
+      }
+      callback();
+    };
+    //执法人员人数不得少于2个，最多不多与9个
+    var validateLawPersonNumber = (rule, value, callback) => {
+      console.log(this.lawPersonListId)
+      if (this.lawPersonListId.length < 2) {
+        return callback(new Error('执法人员不得少于2人'));
+      } else if (this.lawPersonListId.length > 9) {
+        return callback(new Error('执法人员不得多于9人'));
+      }
+      callback();
+    };
+    //案件来源后面输入框的验证
+    var validatecaseSourceText = (rule, value, callback) => {
+      if (this.caseSourceTextDisable == true && !value) {
+        return callback(new Error("请输入案件来源描述"));
+      }
+      callback();
+    };
+    return {
+      RecentCheckStastions: [{ value: '', label: '' }],//最近五个检测站
+      RecentCheckWorkers: [{ value: '', label: '' }],//历史保存过检测人员
+      vehicleTypeList: [],//车型
+      vehicleAxlesTypeList: [],//轴数
+      inforForm: {
+        caseSource: "", //案件来源
+        caseSourceText: "", //案件来源后的
+        afsj: "", //案发时间
+        acceptTime: new Date().format('yyyy-MM-dd HH:mm'), //受案时间
+        caseCauseId: "", //违法行为id
+        caseCauseName: "", //违法行为
+        zfmlId: "", //执法门类ID
+        zfml: "", //执法门类
+        programType: "", //程序类型
+        caseType: "", // 案件类型
+        partyType: 1, //当事人类型
+        party: "", //当事人信息-当事人姓名
+        partyIdType: "0", //证件类型
+        partyIdNo: "", //当事人信息-身份证件号
+        partySex: "",
+        partyAge: "",
+        partyTel: "",
+        partyAddress: "",
+        partyZipCode: "",
+        partyUnitPosition: "",
+        occupation: "",
+        partyEcertId: "",
+        partyName: "",
+        partyUnitTel: "",
+        socialCreditCode: "",
+        roadTransportLicense: "",
+        partyManager: "",
+        partyManagerPositions: "",
+        partyUnitAddress: "",
+        vehicleShipId: "",
+        vehicleIdColor: "",
+        vehicleShipType: "",
+        brand: "",
+        ccertId: "",
+        trailerIdNo: "",
+        trailerColor: "",
+        trailerType: "",
+        trailerBrand: "",
+        trailerCcertId: "",
+        caseCauseNameCopy: "",
+        illegalLaw: "",
+        punishLaw: "",
+        discretionId: "",
+        tempPunishAmount: "",
+        organId: iLocalStroage.gets("userInfo").organId,
+        caseTypeId: "",
+        staffId: "",
+        staff: "",
+        certificateId: "",
+        otherInfo: {
+          isBigTransfer: '否',
           weightLimit: '',
           overWeight: '',
         },
-        rules: {
-          caseSource: [{required: true, message: "请选择", trigger: "change"}],
-          caseSourceText: [{required: true, validator: validatecaseSourceText, trigger: "change"}],
-          acceptTime: [
-            {required: true, message: "请选择时间", trigger: "change"}
-          ],
-          party: [
-            // { required: true, message: "请输入", trigger: "blur" },
-            {required: true, validator: validatePart, trigger: "blur"}
-          ],
-          partyName: [
-            // { required: true, message: "请输入", trigger: "blur" },
-            {required: true, validator: validatePartName, trigger: "blur"}
-          ],
-          lawPersonListId: [
-            {required: true, validator: validateLawPersonNumber, trigger: "change"}
-          ],
-          'otherInfo.checkTime': [
-            {required: true, message: "请输入检测时间", trigger: "change"}
-          ],
-          'otherInfo.vehiclefiledThing': [
-            {required: true, message: "请输入装载物", trigger: "change"}
-          ],
-          'driverOrAgentInfo.relationWithCase': [
-            {required: true, message: "请选择案件关系", trigger: "change"}
-          ],
-          illegalLaw: [
-            {required: true, message: "请选择违法条款", trigger: "blur"}
-          ],
-          punishLaw: [
-            {required: true, message: "请选择处罚依据", trigger: "change"}
-          ],
-          partyAge: [
-            {validator: validateAge, trigger: "blur"}
-          ],
-          partyIdNo: [
-            {validator: validateIDNumber, trigger: "blur"}
-          ],
-          partyZipCode: [
-            {validator: validateZIP, trigger: "blur"}
-          ],
-          partyTel: [
-            {validator: validatePhone, trigger: "blur"}
-          ],
-          partyUnitTel: [
-            {validator: validatePhone, trigger: "blur"}
-          ],
-        },
-        //案件类型
-        allcaseSource: [
-          {value: "行政检查", label: "行政检查", placeholder: ""},
-          {value: "投诉举报", label: "投诉举报", placeholder: ""},
-          {value: "上级交办", label: "上级交办", placeholder: "请输入上级机关名称"},
-          {value: "下级报请", label: "下级报请", placeholder: "请输入下级机关名称"},
-          {value: "部门移送", label: "部门移送", placeholder: "请输入移送部门名称"},
-          {value: "其他途径", label: "其他途径", placeholder: "请输入发现途径"}
-        ],
-        caseSourceTextPla: '',
-        //证件类型
-        credentialType: [
-          {value: "0", label: "身份证"},
-          {value: "1", label: "护照"}
-        ],
-        alreadyChooseLawPerson: [],
-        partyTypePerson: "1", //判断要显示的部分
-        driverOrAgentInfoList: [
-          {
-            //驾驶人或代理人
-            relationWithParty: "",
-            relationWithCase: "",
-            name: "",
-            zhengjianType: "",
-            zhengjianNumber: "",
-            sex: "",
-            age: "",
-            tel: "",
-            adress: "",
-            adressCode: "",
-            company: "",
-            position: "",
-            zigeNumber: ""
-          }
-        ],
-        driverOrAgentInfo: {
-          relationWithParty: '1',
-          age: '',
-        },
-        allRelationWithParty: [
-          //与当事人关系下拉框
-          {value: "0", label: "同一人"},
-          {value: "1", label: "近亲戚"},
-          {value: "2", label: "借用车辆"},
-          {value: "3", label: "雇佣关系"},
-          {value: "4", label: "车辆所有人"}
-        ],
-        allRelationWithParty_: [
-          //与当事人关系下拉框
-          {value: "1", label: "近亲戚"},
-          {value: "2", label: "借用车辆"},
-          {value: "3", label: "雇佣关系"},
-          {value: "4", label: "车辆所有人"}
-        ],
-        allRelationWithCase: [
-          //与案件关系下拉框
-          {value: "0", label: "当事人"},
-          {value: "1", label: "驾驶人"},
-          {value: "2", label: "实际所有者"},
-          {value: "3", label: "证人"},
-          {value: "4", label: "承运人"},
-          {value: "5", label: "代理人"}
-        ],
-        allVehicleIdColor: [
-          //车牌颜色下拉框
-          {value: "1", label: "黄色"},
-          {value: "2", label: "蓝色"},
-          {value: "3", label: "绿色"},
-          {value: "4", label: "黄绿"},
-          {value: "5", label: "黑色"},
-          {value: "6", label: "白色"},
-          {value: "7", label: "其他"}
-        ],
-        allVehicleShipType: [
-          {value: "1", label: "中小客车"},
-          {value: "2", label: "大客车"},
-          {value: "3", label: "小型货车"},
-          {value: "4", label: "中型货车"},
-          {value: "5", label: "大型货车"},
-          {value: "6", label: "特大型货车"},
-          {value: "7", label: "集装箱车"},
-          {value: "8", label: "摩托车"},
-          {value: "9", label: "拖拉机"}
-        ],
-        showTrailer: false, //是否显示挂车信息
-        judgFreedomList: [], //自由裁量列表
-        caseSourceTextDisable: false,
-        relationWithPartyIsOne: true, //与当事人关系是否为同一人
-        isHandleCase: false,
-        activeJudgli: "",
-        showOverrun: false, //显示超限信息锚点
-        lawPersonListId: "",
-        currentUserLawId: "",
-        disableBtn: false, //提交暂存按钮的禁用
-        activeA: [true, false, false, false, false],
-        autoSava: true, //自动暂存
-        allTrailerTypeType: [], //挂车类型
-
-      };
-    },
-    components: {
-      chooseLawPerson,
-      punishDiag,
-      caseSlideMenu
-    },
-    mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId'])},
-    methods: {
-      //更改案件来源
-      changeCaseSource(item) {
-        if (item.value === "行政检查" || item.value === "投诉举报") {
-          this.caseSourceTextDisable = false;
-          this.inforForm.caseSourceText = '';
-        } else {
-          this.caseSourceTextPla = item.placeholder
-          this.caseSourceTextDisable = true;
-        }
-        this.inforForm.caseSource = item.value
-      },
-      //选择执法人员
-      addLawPerson() {
-        console.log(this.lawPersonListId);
-        this.$refs.chooseLawPersonRef.showModal(this.lawPersonListId, this.alreadyChooseLawPerson);
-      },
-      //设置执法人员
-      setLawPerson(userlist) {
-        console.log('选择的执法人员', userlist);
-        // this.lawPersonList = userlist;
-        this.alreadyChooseLawPerson = userlist;
-        this.lawPersonListId = [];
-        let staffIdArr = [];
-        let staffArr = [];
-        let certificateIdArr = [];
-
-        this.alreadyChooseLawPerson.forEach(item => {
-          this.lawPersonListId.push(item.id);
-          //给表单数据赋值
-          staffIdArr.push(item.id);
-          staffArr.push(item.lawOfficerName);
-          certificateIdArr.push(item.selectLawOfficerCard);
-        });
-        this.inforForm.staffId = staffIdArr.join(',');
-        this.inforForm.staff = staffArr.join(',');
-        this.inforForm.certificateId = certificateIdArr.join(',');
 
       },
-      //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
-      setLawPersonCurrentP() {
-        let _this = this
-        this.$store
-          .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
-          .then(
-            res => {
-              console.log('执法人员列表', res)
-              _this.userList = res.data;
-              let currentUserData = {};
-              _this.lawPersonListId = [];
-              _this.alreadyChooseLawPerson = [];
-
-              res.data.forEach(item => {
-                if (
-                  item.userId == iLocalStroage.gets("userInfo").id
-                ) {
-                  currentUserData.id = item.id;
-                  currentUserData.lawOfficerName = item.lawOfficerName;
-                  currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
-                  _this.alreadyChooseLawPerson.push(currentUserData);
-                  _this.lawPersonListId.push(currentUserData.id);
-                  _this.currentUserLawId = currentUserData.id;
-
-                }
-              });
-            },
-            err => {
-              console.log(err);
-            }
-          );
+      rules: {
+        caseSource: [{ required: true, message: "请选择", trigger: "change" }],
+        caseSourceText: [{ required: true, validator: validatecaseSourceText, trigger: "change" }],
+        acceptTime: [
+          { required: true, message: "请选择时间", trigger: "change" }
+        ],
+        party: [
+          // { required: true, message: "请输入", trigger: "blur" },
+          { required: true, validator: validatePart, trigger: "blur" }
+        ],
+        partyName: [
+          // { required: true, message: "请输入", trigger: "blur" },
+          { required: true, validator: validatePartName, trigger: "blur" }
+        ],
+        lawPersonListId: [
+          { required: true, validator: validateLawPersonNumber, trigger: "change" }
+        ],
+        'otherInfo.checkTime': [
+          { required: true, message: "请输入检测时间", trigger: "change" }
+        ],
+        'otherInfo.vehiclefiledThing': [
+          { required: true, message: "请输入装载物", trigger: "change" }
+        ],
+        'driverOrAgentInfo.relationWithCase': [
+          { required: true, message: "请选择案件关系", trigger: "change" }
+        ],
+        illegalLaw: [
+          { required: true, message: "请选择违法条款", trigger: "blur" }
+        ],
+        punishLaw: [
+          { required: true, message: "请选择处罚依据", trigger: "change" }
+        ],
+        partyAge: [
+          { validator: validateAge, trigger: "blur" }
+        ],
+        partyIdNo: [
+          { validator: validateIDNumber, trigger: "blur" }
+        ],
+        partyZipCode: [
+          { validator: validateZIP, trigger: "blur" }
+        ],
+        partyTel: [
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        partyUnitTel: [
+          { validator: validatePhone, trigger: "blur" }
+        ],
       },
-      removeLawPersontag(val) {
-        console.log(val);
-        if (this.currentUserLawId == val) {
-          this.lawPersonListId.push(val);
-        }
-      },
-      //更改当事人类型
-      changePartyType(val) {
-        this.partyTypePerson = val;
-        if (val == "1") {
-          this.inforForm.partyName = "";
-          this.inforForm.partyUnitTel = "";
-          this.inforForm.socialCreditCode = "";
-          this.inforForm.roadTransportLicense = "";
-          this.inforForm.partyManager = "";
-          this.inforForm.partyManagerPositions = "";
-          this.inforForm.partyUnitAddress = "";
-        } else {
-          this.inforForm.party = "";
-          this.inforForm.partyIdType = "";
-          this.inforForm.partyIdNo = "";
-          this.inforForm.partySex = "";
-          this.inforForm.partyAge = "";
-          this.inforForm.partyTel = "";
-          this.inforForm.partyAddress = "";
-          this.inforForm.partyZipCode = "";
-          this.inforForm.partyUnitPosition = "";
-          this.inforForm.occupation = "";
-          this.inforForm.partyEcertId = "";
-        }
-      },
-      //更改与当事人关系   为同一人时自动赋值且不可编辑
-      changeRelationWithParty(val) {
-        console.log(this.driverOrAgentInfoList[0].relationWithParty === '同一人');
-        if (val === "0") {
-          console.log(val);
-          this.driverOrAgentInfoList[0].name = this.inforForm.party;
-          this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
-          this.driverOrAgentInfoList[0].zhengjianNumber = this.inforForm.partyIdNo;
-          this.driverOrAgentInfoList[0].sex = this.inforForm.partySex;
-          this.driverOrAgentInfoList[0].age = this.inforForm.partyAge;
-          this.driverOrAgentInfoList[0].tel = this.inforForm.partyTel;
-          this.driverOrAgentInfoList[0].adress = this.inforForm.partyAddress;
-          this.driverOrAgentInfoList[0].adressCode = this.inforForm.partyZipCode;
-          this.driverOrAgentInfoList[0].company = this.inforForm.partyUnitPosition;
-          this.driverOrAgentInfoList[0].position = this.inforForm.occupation;
-          this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
-          this.relationWithPartyIsOne = true;
-        } else {
-          this.relationWithPartyIsOne = false;
-        }
-      },
-      //添加其他人信息
-      addDriverOrAgent() {
-        var item = {
+      //案件类型
+      allcaseSource: [
+        { value: "行政检查", label: "行政检查", placeholder: "" },
+        { value: "投诉举报", label: "投诉举报", placeholder: "" },
+        { value: "上级交办", label: "上级交办", placeholder: "请输入上级机关名称" },
+        { value: "下级报请", label: "下级报请", placeholder: "请输入下级机关名称" },
+        { value: "部门移送", label: "部门移送", placeholder: "请输入移送部门名称" },
+        { value: "其他途径", label: "其他途径", placeholder: "请输入发现途径" }
+      ],
+      caseSourceTextPla: '',
+      //证件类型
+      credentialType: [
+        { value: "0", label: "身份证" },
+        { value: "1", label: "护照" }
+      ],
+      alreadyChooseLawPerson: [],
+      partyTypePerson: "1", //判断要显示的部分
+      driverOrAgentInfoList: [
+        {
+          //驾驶人或代理人
           relationWithParty: "",
           relationWithCase: "",
           name: "",
@@ -1119,562 +860,824 @@
           company: "",
           position: "",
           zigeNumber: ""
-        };
-        this.driverOrAgentInfoList.push(item);
+        }
+      ],
+      driverOrAgentInfo: {
+        relationWithParty: '1',
+        age: '',
       },
-      //添加挂车
-      addTrailer() {
-        this.showTrailer = true;
-      },
-      //点击处罚依据显示弹窗
-      showPunishDiag() {
-        let data = {
-          caseCauseId: this.inforForm.caseCauseId,
-          caseCauseName: this.inforForm.caseCauseName
-        };
-        this.$refs.punishDiagRef.showModal(data);
-      },
-      //设置违法条款和处罚条款
-      setIllegalLawAndPunishLaw(data) {
-        console.log(data);
-        let illegalLawArr = [];
-        let punishLawArr = [];
+      allRelationWithParty: [
+        //与当事人关系下拉框
+        { value: "0", label: "同一人" },
+        { value: "1", label: "近亲戚" },
+        { value: "2", label: "借用车辆" },
+        { value: "3", label: "雇佣关系" },
+        { value: "4", label: "车辆所有人" }
+      ],
+      allRelationWithParty_: [
+        //与当事人关系下拉框
+        { value: "1", label: "近亲戚" },
+        { value: "2", label: "借用车辆" },
+        { value: "3", label: "雇佣关系" },
+        { value: "4", label: "车辆所有人" }
+      ],
+      allRelationWithCase: [
+        //与案件关系下拉框
+        { value: "0", label: "当事人" },
+        { value: "1", label: "驾驶人" },
+        { value: "2", label: "实际所有者" },
+        { value: "3", label: "证人" },
+        { value: "4", label: "承运人" },
+        { value: "5", label: "代理人" }
+      ],
+      allVehicleIdColor: [
+        //车牌颜色下拉框
+        { value: "1", label: "黄色" },
+        { value: "2", label: "蓝色" },
+        { value: "3", label: "绿色" },
+        { value: "4", label: "黄绿" },
+        { value: "5", label: "黑色" },
+        { value: "6", label: "白色" },
+        { value: "7", label: "其他" }
+      ],
+      allVehicleShipType: [
+        { value: "1", label: "中小客车" },
+        { value: "2", label: "大客车" },
+        { value: "3", label: "小型货车" },
+        { value: "4", label: "中型货车" },
+        { value: "5", label: "大型货车" },
+        { value: "6", label: "特大型货车" },
+        { value: "7", label: "集装箱车" },
+        { value: "8", label: "摩托车" },
+        { value: "9", label: "拖拉机" }
+      ],
+      showTrailer: false, //是否显示挂车信息
+      judgFreedomList: [], //自由裁量列表
+      caseSourceTextDisable: false,
+      relationWithPartyIsOne: true, //与当事人关系是否为同一人
+      isHandleCase: false,
+      activeJudgli: "",
+      showOverrun: false, //显示超限信息锚点
+      lawPersonListId: "",
+      currentUserLawId: "",
+      disableBtn: false, //提交暂存按钮的禁用
+      activeA: [true, false, false, false, false],
+      autoSava: true, //自动暂存
+      allTrailerTypeType: [], //挂车类型
 
-        data.forEach(item => {
-          illegalLawArr.push(item.illageClause);
-          punishLawArr.push(item.punishClause);
-        });
-        this.inforForm.illegalLaw = illegalLawArr.join(";");
-        this.inforForm.punishLaw = punishLawArr.join(";");
-      },
-      //查询自由裁量标准
-      findJudgFreedomList() {
-        this.$store.dispatch("findJudgFreedomList").then(
+    };
+  },
+  components: {
+    chooseLawPerson,
+    punishDiag,
+    caseSlideMenu
+  },
+  mixins: [mixinGetCaseApiList],
+  computed: { ...mapGetters(['caseId']) },
+  methods: {
+    //更改案件来源
+    changeCaseSource(item) {
+      if (item.value === "行政检查" || item.value === "投诉举报") {
+        this.caseSourceTextDisable = false;
+        this.inforForm.caseSourceText = '';
+      } else {
+        this.caseSourceTextPla = item.placeholder
+        this.caseSourceTextDisable = true;
+      }
+      this.inforForm.caseSource = item.value
+    },
+    //选择执法人员
+    addLawPerson() {
+      console.log(this.lawPersonListId);
+      this.$refs.chooseLawPersonRef.showModal(this.lawPersonListId, this.alreadyChooseLawPerson);
+    },
+    //设置执法人员
+    setLawPerson(userlist) {
+      console.log('选择的执法人员', userlist);
+      // this.lawPersonList = userlist;
+      this.alreadyChooseLawPerson = userlist;
+      this.lawPersonListId = [];
+      let staffIdArr = [];
+      let staffArr = [];
+      let certificateIdArr = [];
+
+      this.alreadyChooseLawPerson.forEach(item => {
+        this.lawPersonListId.push(item.id);
+        //给表单数据赋值
+        staffIdArr.push(item.id);
+        staffArr.push(item.lawOfficerName);
+        certificateIdArr.push(item.selectLawOfficerCard);
+      });
+      this.inforForm.staffId = staffIdArr.join(',');
+      this.inforForm.staff = staffArr.join(',');
+      this.inforForm.certificateId = certificateIdArr.join(',');
+
+    },
+    //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
+    setLawPersonCurrentP() {
+      let _this = this
+      this.$store
+        .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
+        .then(
+          res => {
+            console.log('执法人员列表', res)
+            _this.userList = res.data;
+            let currentUserData = {};
+            _this.lawPersonListId = [];
+            _this.alreadyChooseLawPerson = [];
+
+            res.data.forEach(item => {
+              if (
+                item.userId == iLocalStroage.gets("userInfo").id
+              ) {
+                currentUserData.id = item.id;
+                currentUserData.lawOfficerName = item.lawOfficerName;
+                currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
+                _this.alreadyChooseLawPerson.push(currentUserData);
+                _this.lawPersonListId.push(currentUserData.id);
+                _this.currentUserLawId = currentUserData.id;
+
+              }
+            });
+          },
+          err => {
+            console.log(err);
+          }
+        );
+    },
+    removeLawPersontag(val) {
+      console.log(val);
+      if (this.currentUserLawId == val) {
+        this.lawPersonListId.push(val);
+      }
+    },
+    //更改当事人类型
+    changePartyType(val) {
+      this.partyTypePerson = val;
+      if (val == "1") {
+        this.inforForm.partyName = "";
+        this.inforForm.partyUnitTel = "";
+        this.inforForm.socialCreditCode = "";
+        this.inforForm.roadTransportLicense = "";
+        this.inforForm.partyManager = "";
+        this.inforForm.partyManagerPositions = "";
+        this.inforForm.partyUnitAddress = "";
+      } else {
+        this.inforForm.party = "";
+        this.inforForm.partyIdType = "";
+        this.inforForm.partyIdNo = "";
+        this.inforForm.partySex = "";
+        this.inforForm.partyAge = "";
+        this.inforForm.partyTel = "";
+        this.inforForm.partyAddress = "";
+        this.inforForm.partyZipCode = "";
+        this.inforForm.partyUnitPosition = "";
+        this.inforForm.occupation = "";
+        this.inforForm.partyEcertId = "";
+      }
+    },
+    //更改与当事人关系   为同一人时自动赋值且不可编辑
+    changeRelationWithParty(val) {
+      console.log(this.driverOrAgentInfoList[0].relationWithParty === '同一人');
+      if (val === "0") {
+        console.log(val);
+        this.driverOrAgentInfoList[0].name = this.inforForm.party;
+        this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
+        this.driverOrAgentInfoList[0].zhengjianNumber = this.inforForm.partyIdNo;
+        this.driverOrAgentInfoList[0].sex = this.inforForm.partySex;
+        this.driverOrAgentInfoList[0].age = this.inforForm.partyAge;
+        this.driverOrAgentInfoList[0].tel = this.inforForm.partyTel;
+        this.driverOrAgentInfoList[0].adress = this.inforForm.partyAddress;
+        this.driverOrAgentInfoList[0].adressCode = this.inforForm.partyZipCode;
+        this.driverOrAgentInfoList[0].company = this.inforForm.partyUnitPosition;
+        this.driverOrAgentInfoList[0].position = this.inforForm.occupation;
+        this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
+        this.relationWithPartyIsOne = true;
+      } else {
+        this.relationWithPartyIsOne = false;
+      }
+    },
+    //添加其他人信息
+    addDriverOrAgent() {
+      var item = {
+        relationWithParty: "",
+        relationWithCase: "",
+        name: "",
+        zhengjianType: "",
+        zhengjianNumber: "",
+        sex: "",
+        age: "",
+        tel: "",
+        adress: "",
+        adressCode: "",
+        company: "",
+        position: "",
+        zigeNumber: ""
+      };
+      this.driverOrAgentInfoList.push(item);
+    },
+    //添加挂车
+    addTrailer() {
+      this.showTrailer = true;
+    },
+    //点击处罚依据显示弹窗
+    showPunishDiag() {
+      let data = {
+        caseCauseId: this.inforForm.caseCauseId,
+        caseCauseName: this.inforForm.caseCauseName
+      };
+      this.$refs.punishDiagRef.showModal(data);
+    },
+    //设置违法条款和处罚条款
+    setIllegalLawAndPunishLaw(data) {
+      console.log(data);
+      let illegalLawArr = [];
+      let punishLawArr = [];
+
+      data.forEach(item => {
+        illegalLawArr.push(item.illageClause);
+        punishLawArr.push(item.punishClause);
+      });
+      this.inforForm.illegalLaw = illegalLawArr.join(";");
+      this.inforForm.punishLaw = punishLawArr.join(";");
+    },
+    //查询自由裁量标准
+    findJudgFreedomList() {
+      this.$store.dispatch("findJudgFreedomList").then(
+        res => {
+          console.log(res);
+          this.judgFreedomList = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    //选中自由裁量
+    selectJudgFreedom(item) {
+      console.log(item);
+      if (this.activeJudgli == item.id) {
+        this.activeJudgli = "";
+        this.inforForm.discretionId = "";
+      } else {
+        this.activeJudgli = item.id;
+        this.inforForm.discretionId = item.id;
+      }
+      this.inforForm.tempPunishAmount = item.lawerLimit;
+    },
+    toNextPart() {
+    },
+    //点击滚动
+    jump(index) {
+      console.log(this.$el);
+      this.activeA = [false, false, false, false, false];
+      this.activeA[index - 1] = true;
+      if (index >= 1) {
+        let numTotal = 0;
+        for (let i = 0; i < index; i++) {
+          // let elPageOt = this.$el.querySelector(`#link_${i}`) ? this.$el.querySelector(`#link_${i}`).offsetHeight : 40;
+          let elPageOt = this.$el.querySelector(`#link_${i}`) ? this.$el.querySelector(`#link_${i}`).offsetHeight : 0;
+          numTotal += elPageOt;
+        }
+        console.log('numTotal', numTotal);
+        document.getElementById("inforCollectionBox").scrollTop = numTotal;
+      }
+    },
+    //提交信息
+    submitInfo(state) {
+      // this.searchLawPerson();
+      // console.log('searchLawPerson', this.allUserList)
+      // console.log("lawPersonList", this.lawPersonList)
+      console.log("表单数据", this.inforForm)
+      let _this = this
+      this.$refs["inforForm"].validate(valid => {
+        if (valid) {
+          // let submitData = {
+          //   caseSource: this.inforForm.caseSource,
+          //   inforForm: this.inforForm.inforForm,
+          //   afsj: this.inforForm.afsj,
+          //   acceptTime: this.inforForm.acceptTime,
+          //   caseCauseId: this.inforForm.caseCauseId,
+          //   caseCauseName: this.inforForm.caseCauseName,
+          //   programType: this.inforForm.programType,
+          //   caseType: this.inforForm.caseType,
+          //   lawPersonList: this.inforForm.lawPersonList,
+          //   partyType: this.inforForm.partyType,
+          //   party: this.inforForm.party,
+          //   partyIdType: this.inforForm.partyIdType,
+          //   partyIdNo: this.inforForm.partyIdNo,
+          //   partySex: this.inforForm.partySex,
+          //   partyAge: this.inforForm.partyAge,
+          //   partyTel: this.inforForm.partyTel,
+          //   partyAddress: this.inforForm.partyAddress,
+          //   partyZipCode: this.inforForm.partyZipCode,
+          //   partyUnitPosition: this.inforForm.partyUnitPosition,
+          //   occupation: this.inforForm.occupation,
+          //   partyEcertId: this.inforForm.partyEcertId,
+          //   partyName: this.inforForm.partyName,
+          //   partyUnitTel: this.inforForm.partyUnitTel,
+          //   socialCreditCode: this.inforForm.socialCreditCode,
+          //   roadTransportLicense: this.inforForm.roadTransportLicense,
+          //   partyManager: this.inforForm.partyManager,
+          //   partyManagerPositions: this.inforForm.partyManagerPositions,
+          //   partyUnitAddress: this.inforForm.partyUnitAddress,
+          //   vehicleShipId: this.inforForm.vehicleShipId,
+          //   vehicleIdColor: this.inforForm.vehicleIdColor,
+          //   vehicleShipType: this.inforForm.vehicleShipType,
+          //   brand: this.inforForm.brand,
+          //   ccertId: this.inforForm.ccertId,
+          //   trailerIdNo: this.inforForm.trailerIdNo,
+          //   trailerColor: this.inforForm.trailerColor,
+          //   trailerType: this.inforForm.trailerType,
+          //   trailerBrand: this.inforForm.trailerBrand,
+          //   trailerCcertId: this.inforForm.trailerCcertId,
+          //   caseCauseNameCopy: this.inforForm.caseCauseNameCopy,
+          //   illegalLaw: this.inforForm.illegalLaw,
+          //   punishLaw: this.inforForm.punishLaw,
+          //   agentPartyEcertId:JSON.stringify(this.driverOrAgentInfoList),
+          //   discretionId:this.inforForm.discretionId
+          // };
+          _this.inforForm.agentPartyEcertId = JSON.stringify(
+            _this.driverOrAgentInfoList
+          );
+          // 超限
+          _this.inforForm.otherInfo = JSON.stringify(
+            _this.inforForm.otherInfo
+          );
+          console.log(_this.inforForm)
+          _this.inforForm.state = state;
+          _this.inforForm.caseStatus = '未立案';
+          _this.$store
+            .dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm)
+            .then(
+              res => {
+                console.log(res);
+                _this.$message({
+                  type: "success",
+                  message: "提交成功!"
+                });
+                _this.$store.dispatch("deleteTabs", _this.$route.name);
+                _this.$store.commit("setCaseId", res.data.id);
+                iLocalStroage.removeItem("stageCaseId");
+                this.autoSava = false;
+                _this.$router.replace({
+                  name: "establish"
+                });
+              },
+              err => {
+                console.log(err);
+              }
+            );
+        }
+      });
+    },
+    //查询执法人员
+    getAllUserList(list) {
+      console.log("list", list);
+      this.allUserList = list;
+      setTimeout(() => {
+      }, 100);
+    },
+    stageInfo(state) {
+      this.inforForm.agentPartyEcertId = JSON.stringify(
+        this.driverOrAgentInfoList
+      );
+      // 超限
+      this.inforForm.otherInfo = JSON.stringify(
+        this.inforForm.otherInfo
+      );
+      console.log(this.inforForm)
+      this.inforForm.state = state;
+      this.inforForm.caseStatus = '未立案';
+      let _this = this
+      this.$store
+        .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
+        .then(
           res => {
             console.log(res);
-            this.judgFreedomList = res.data;
+            _this.$message({
+              type: "success",
+              message: "暂存成功!"
+            });
+            // _this.$store.dispatch("deleteTabs", _this.$route.name);
+            _this.$store.commit("setCaseId", res.data.id);
+
           },
           err => {
             console.log(err);
           }
         );
-      },
-      //选中自由裁量
-      selectJudgFreedom(item) {
-        console.log(item);
-        if (this.activeJudgli == item.id) {
-          this.activeJudgli = "";
-          this.inforForm.discretionId = "";
-        } else {
-          this.activeJudgli = item.id;
-          this.inforForm.discretionId = item.id;
-        }
-        this.inforForm.tempPunishAmount = item.lawerLimit;
-      },
-      toNextPart() {
-      },
-      //点击滚动
-      jump(index) {
-        console.log(this.$el);
-        this.activeA = [false, false, false, false, false];
-        this.activeA[index - 1] = true;
-        if (index >= 1) {
-          let numTotal = 0;
-          for (let i = 0; i < index; i++) {
-            // let elPageOt = this.$el.querySelector(`#link_${i}`) ? this.$el.querySelector(`#link_${i}`).offsetHeight : 40;
-            let elPageOt = this.$el.querySelector(`#link_${i}`) ? this.$el.querySelector(`#link_${i}`).offsetHeight : 0;
-            numTotal += elPageOt;
-          }
-          console.log('numTotal', numTotal);
-          document.getElementById("inforCollectionBox").scrollTop = numTotal;
-        }
-      },
-      //提交信息
-      submitInfo(state) {
-        // this.searchLawPerson();
-        // console.log('searchLawPerson', this.allUserList)
-        // console.log("lawPersonList", this.lawPersonList)
-        console.log("表单数据", this.inforForm)
-        let _this = this
-        this.$refs["inforForm"].validate(valid => {
-          if (valid) {
-            // let submitData = {
-            //   caseSource: this.inforForm.caseSource,
-            //   inforForm: this.inforForm.inforForm,
-            //   afsj: this.inforForm.afsj,
-            //   acceptTime: this.inforForm.acceptTime,
-            //   caseCauseId: this.inforForm.caseCauseId,
-            //   caseCauseName: this.inforForm.caseCauseName,
-            //   programType: this.inforForm.programType,
-            //   caseType: this.inforForm.caseType,
-            //   lawPersonList: this.inforForm.lawPersonList,
-            //   partyType: this.inforForm.partyType,
-            //   party: this.inforForm.party,
-            //   partyIdType: this.inforForm.partyIdType,
-            //   partyIdNo: this.inforForm.partyIdNo,
-            //   partySex: this.inforForm.partySex,
-            //   partyAge: this.inforForm.partyAge,
-            //   partyTel: this.inforForm.partyTel,
-            //   partyAddress: this.inforForm.partyAddress,
-            //   partyZipCode: this.inforForm.partyZipCode,
-            //   partyUnitPosition: this.inforForm.partyUnitPosition,
-            //   occupation: this.inforForm.occupation,
-            //   partyEcertId: this.inforForm.partyEcertId,
-            //   partyName: this.inforForm.partyName,
-            //   partyUnitTel: this.inforForm.partyUnitTel,
-            //   socialCreditCode: this.inforForm.socialCreditCode,
-            //   roadTransportLicense: this.inforForm.roadTransportLicense,
-            //   partyManager: this.inforForm.partyManager,
-            //   partyManagerPositions: this.inforForm.partyManagerPositions,
-            //   partyUnitAddress: this.inforForm.partyUnitAddress,
-            //   vehicleShipId: this.inforForm.vehicleShipId,
-            //   vehicleIdColor: this.inforForm.vehicleIdColor,
-            //   vehicleShipType: this.inforForm.vehicleShipType,
-            //   brand: this.inforForm.brand,
-            //   ccertId: this.inforForm.ccertId,
-            //   trailerIdNo: this.inforForm.trailerIdNo,
-            //   trailerColor: this.inforForm.trailerColor,
-            //   trailerType: this.inforForm.trailerType,
-            //   trailerBrand: this.inforForm.trailerBrand,
-            //   trailerCcertId: this.inforForm.trailerCcertId,
-            //   caseCauseNameCopy: this.inforForm.caseCauseNameCopy,
-            //   illegalLaw: this.inforForm.illegalLaw,
-            //   punishLaw: this.inforForm.punishLaw,
-            //   agentPartyEcertId:JSON.stringify(this.driverOrAgentInfoList),
-            //   discretionId:this.inforForm.discretionId
-            // };
-            _this.inforForm.agentPartyEcertId = JSON.stringify(
-              _this.driverOrAgentInfoList
-            );
-            // 超限
-            _this.inforForm.otherInfo = JSON.stringify(
-              _this.inforForm.otherInfo
-            );
-            console.log(_this.inforForm)
-            _this.inforForm.state = state;
-            _this.inforForm.caseStatus = '未立案';
-            _this.$store
-              .dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm)
-              .then(
-                res => {
-                  console.log(res);
-                  _this.$message({
-                    type: "success",
-                    message: "提交成功!"
-                  });
-                  _this.$store.dispatch("deleteTabs", _this.$route.name);
-                  _this.$store.commit("setCaseId", res.data.id);
-                  iLocalStroage.removeItem("stageCaseId");
-                  this.autoSava = false;
-                  _this.$router.replace({
-                    name: "establish"
-                  });
-                },
-                err => {
-                  console.log(err);
-                }
-              );
-          }
-        });
-      },
-      //查询执法人员
-      getAllUserList(list) {
-        console.log("list", list);
-        this.allUserList = list;
-        setTimeout(() => {
-        }, 100);
-      },
-      stageInfo(state) {
-        this.inforForm.agentPartyEcertId = JSON.stringify(
-          this.driverOrAgentInfoList
-        );
-        // 超限
-        this.inforForm.otherInfo = JSON.stringify(
-          this.inforForm.otherInfo
-        );
-        console.log(this.inforForm)
-        this.inforForm.state = state;
-        this.inforForm.caseStatus = '未立案';
-        let _this = this
-        this.$store
-          .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
-          .then(
-            res => {
-              console.log(res);
-              _this.$message({
-                type: "success",
-                message: "暂存成功!"
-              });
-              // _this.$store.dispatch("deleteTabs", _this.$route.name);
-              _this.$store.commit("setCaseId", res.data.id);
-
-            },
-            err => {
-              console.log(err);
-            }
-          );
-      },
-      //右侧小导航进入的，则获取案件信息
-      fromSlide() {
-        console.log('fromSlide');
-        let data = {
-          id: this.caseId
-        };
-        let _this = this
-        this.$store.dispatch("getCaseBasicInfo", data).then(
-          res => {
-            console.log('获取案件信息', res)
-            _this.inforForm = res.data;
-            this.handleCaseData(res.data);
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      },
-      //处理数据回显问题
-      handleCaseData(data) {
-        console.log('handleCaseData方法', data);
-        //使当事人类型选中
-        if (data.partyType == "1") {
-          this.inforForm.partyType = 1;
-          this.partyTypePerson = 1;
-        } else {
-          this.inforForm.partyType = 2;
-          this.partyTypePerson = 2;
-        }
-        if (data.partySex == "1") {
-          this.inforForm.partySex = 1;
-        } else {
-          this.inforForm.partySex = 0;
-        }
-        //驾驶人或代理人
-        this.driverOrAgentInfoList = JSON.parse(data.agentPartyEcertId);
-        //超限信息
-        if (data.otherInfo != "") {
-          this.inforForm.otherInfo = JSON.parse(data.otherInfo);
-        }
-        if (data.caseCauseName == '车辆在公路上擅自超限行驶') {
-          this.showOverrun = true;
-        }
-        ;
-        if (data.caseStatus == '待审批') {
-          this.isHandleCase = true;
-        }
-        ;
-        if (data.trailerIdNo != "") {
-          this.showTrailer = true;
-        }
-        if (data.discretionId != "") {
-          this.activeJudgli = data.discretionId;
-        }
-        //当前用户不是创建案件者，输入框设置为只读
-        // currentUserId = iLocalStroage.gets("userInfo").id;
-        // if(currentUserId!=data.createId){
-        //    let allInput = document.querySelectorAll('.el-input');
-
-        // };
-        //设置执法人员
-        this.alreadyChooseLawPerson = [];
-        let staffNameList = data.staff.split(',');
-        let staffIdList = data.staffId.split(',');
-        let staffCertificateIdList = data.certificateId.split(',');
-        this.lawPersonListId = staffIdList;
-        staffIdList.forEach((item, index) => {
-          let newlaw = {
-            id: item,
-            lawOfficerName: staffNameList[index],
-            lawOfficerCards: staffCertificateIdList[index]
-          }
-          this.alreadyChooseLawPerson.push(newlaw);
-        });
-
-      },
-      // 超重限制及抽屉表
-      weightLimit(type) {
-        var inforForm = this.inforForm;
-        if (type == '车辆轴数') {
-
-          this.vehicleTypeList = [];
-          this.vehicleAxlesTypeList = [];
-          this.inforForm.otherInfo.vehicleType = '';
-          this.inforForm.otherInfo.vehicleAxlesType = '';
-          this.inforForm.otherInfo.vehiclePowerType = '';
-        }
-
-        inforForm.otherInfo.weightLimit = '';
-        if (inforForm.otherInfo.vehicleAxleNumber == 6) {
-          this.vehicleTypeList = [{label: '中置轴挂车列车', value: '中置轴挂车列车'}, {
-            label: '铰接列车',
-            value: '铰接列车'
-          }, {label: '全挂汽车列车', value: '全挂汽车列车'}];
-          this.vehicleAxlesTypeList = [{label: '1+2+3', value: '1+2+3'}, {label: '2+2+2', value: '2+2+2'}];
-          if (inforForm.otherInfo.vehiclePowerType) {
-            inforForm.otherInfo.weightLimit = 46;
-            if (inforForm.otherInfo.vehiclePowerType == '双轴') {
-              inforForm.otherInfo.weightLimit = 49;
-            }
-          }
-
-        }
-        if (inforForm.otherInfo.vehicleAxleNumber == 5) {
-          this.vehicleTypeList = [{label: '中置轴挂车列车', value: '中置轴挂车列车'}, {
-            label: '铰接列车',
-            value: '铰接列车'
-          }, {label: '全挂汽车列车', value: '全挂汽车列车'}];
-          this.vehicleAxlesTypeList = [{label: '1+2+2', value: '1+2+2'}, {
-            label: '2+1+2',
-            value: '2+1+2'
-          }, {label: '1+1+3', value: '1+1+3'}];
-          if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
-            this.inforForm.otherInfo.weightLimit = 43;
-            if (inforForm.otherInfo.vehicleAxlesType == '1+1+3') {
-              inforForm.otherInfo.weightLimit = 42;
-            }
-          }
-
-        }
-        if (inforForm.otherInfo.vehicleAxleNumber == 4) {
-          this.vehicleTypeList = [{label: '中置轴挂车列车', value: '中置轴挂车列车'}, {
-            label: '铰接列车',
-            value: '铰接列车'
-          }, {label: '全挂汽车列车', value: '全挂汽车列车'}, {label: '载货汽车', value: '载货汽车'}]
-          this.vehicleAxlesTypeList = [{label: '1+2+1', value: '1+2+1'}, {
-            label: '1+1+2',
-            value: '1+1+2'
-          }, {label: '1+1+1+1', value: '1+1+1+1'}, {label: '2+2', value: '2+2'}];
-          if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
-            this.inforForm.otherInfo.weightLimit = 36;
-            if (inforForm.otherInfo.vehicleType == '中置轴挂车列车') {
-              if (inforForm.otherInfo.vehicleAxlesType == '1+2+1') {
-                inforForm.otherInfo.weightLimit = 35;
-              }
-            }
-            if (inforForm.otherInfo.vehicleType == '载货汽车') {
-              inforForm.otherInfo.weightLimit = 31;
-            }
-          }
-
-        }
-        if (inforForm.otherInfo.vehicleAxleNumber == 3) {
-          this.vehicleTypeList = [{label: '中置轴挂车列车', value: '中置轴挂车列车'}, {label: '铰接列车', value: '铰接列车'}, {
-            label: '载货汽车',
-            value: '载货汽车'
-          }]
-          this.vehicleAxlesTypeList = [{label: '1+1+1', value: '1+1+1'}];
-          if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
-            this.inforForm.otherInfo.weightLimit = 27;
-            if (inforForm.otherInfo.vehicleType == '载货汽车') {
-              inforForm.otherInfo.weightLimit = 25;
-            }
-          }
-
-        }
-        if (inforForm.otherInfo.vehicleAxleNumber == 2) {
-          this.vehicleTypeList = [{label: '载货汽车', value: '载货汽车'}]
-          this.vehicleAxlesTypeList = [{label: '1+1', value: '1+1'}];
-          if (inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
-            this.inforForm.otherInfo.weightLimit = 18;
-          }
-        }
-
-        if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight)
-          inforForm.otherInfo.overWeight = this.inforForm.otherInfo.allWeight - this.inforForm.otherInfo.weightLimit
-      },
-      // 计算超重
-      concludeOverWeight() {
-        this.inforForm.otherInfo.overWeight = '';
-        if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight) {
-          this.inforForm.otherInfo.overWeight = this.inforForm.otherInfo.allWeight - this.inforForm.otherInfo.weightLimit
-        }
-        if (this.inforForm.otherInfo.overWeight < 0) {
-          this.inforForm.otherInfo.overWeight = 0
-        }
-
-      },
-      //自动计算年龄
-      changePartyIdType(idCard) {
-        let iden = idCard;
-        let val = idCard.length;
-        let sex = null;
-        let myDate = new Date();
-        let month = myDate.getMonth() + 1;
-        let day = myDate.getDate();
-        let age = 0;
-        if (val === 18) {
-          age = myDate.getFullYear() - iden.substring(6, 10) - 1;
-          sex = iden.substring(16, 17);
-          if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
-
-        }
-        if (val === 15) {
-          age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
-          sex = iden.substring(13, 14);
-          if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
-        }
-
-        if (sex % 2 === 0) {
-          sex = 1;
-        } else {
-          sex = 0;
-        }
-        ;
-        this.inforForm.partyAge = age;
-        this.inforForm.partySex = sex;
-        // let nowDate = new Date();
-        // let year = nowDate.getFullYear();
-        // let age = '';
-        // console.log('year', year)
-        // if (idCard != null && idCard != "") {
-        //   if (idCard.length == 15) {
-        //     age = year - ("19" + idCard.substr(6, 2));
-        //   } else if (idCard.length == 18) {
-        //     age = year - idCard.substr(6, 4);
-        //   }
-        // }
-        // // bug;
-        // var sexData = idCard.substr(17, 1)
-        // if (sexData % 2 == 0) {
-        //   this.inforForm.partySex = 1
-        // }
-        // if (sexData % 2 == 1) {
-        //   this.inforForm.partySex = 0
-        // }
-        // console.log('性别', sexData % 2)
-        // // if()
-        // console.log('年龄', age)
-        // this.inforForm.partyAge = age;
-      },
-      //自动计算年龄
-      changePartyIdType2(idCard, index) {
-        for (let i = 0; i < this.driverOrAgentInfoList.length; i++) {
-          if(idCard === this.inforForm.partyIdNo && this.driverOrAgentInfoList[i].relationWithParty !== '当事人'){
-            this.$message('身份证号不能相同！');
-            return
-          }
-          if(index !== i && idCard === this.driverOrAgentInfoList[i].zhengjianNumber){
-            this.$message('身份证号不能相同！');
-            return
-          }
-
-        }
-        if (idCard === this.driverOrAgentInfoList[0].zhengjianNumber) {
-
-        }
-        let iden = idCard;
-        let val = idCard.length;
-        let sex = null;
-        let myDate = new Date();
-        let month = myDate.getMonth() + 1;
-        let day = myDate.getDate();
-        let age = 0;
-        if (val === 18) {
-          age = myDate.getFullYear() - iden.substring(6, 10) - 1;
-          sex = iden.substring(16, 17);
-          if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
-
-        }
-        if (val === 15) {
-          age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
-          sex = iden.substring(13, 14);
-          if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
-        }
-
-        if (sex % 2 === 0) {
-          sex = 1;
-        } else {
-          sex = 0;
-        }
-        ;
-        this.driverOrAgentInfoList[index].age = age;
-        this.driverOrAgentInfoList[index].sex = sex;
-      },
-      noFue(val) {
-        this.inforForm.partyAge = val >= 0 ? val : 0;
-      },
-      noFueA(val) {
-        console.log('this.driverOrAgentInfo.age', this.driverOrAgentInfo.age)
-        // this.driverOrAgentInfo.age = 3;
-        this.driverOrAgentInfo.age = val >= 0 ? val : 0;
-      },
-
-      blur2(val) {
-        var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[358]\d{9})$)/;
-        if (!reg.test(val) && val) {
-          this.$message('手机号不正确')
-        }
-        // callback();
-      },
-      blur3(val) {
-        var reg = /^\d{6}$/;
-        if (!reg.test(val) && val) {
-          this.$message('请输入正确的6位邮编')
-        }
-      },
-      //获取挂车类型数据
-      getTrailerType() {
-        getDictListDetailByNameApi('trailerType').then(res => {
-          console.log('挂车类型', res);
-          this.allTrailerTypeType = res.data;
-        }, err => {
+    },
+    //右侧小导航进入的，则获取案件信息
+    fromSlide() {
+      console.log('fromSlide');
+      let data = {
+        id: this.caseId
+      };
+      let _this = this
+      this.$store.dispatch("getCaseBasicInfo", data).then(
+        res => {
+          console.log('获取案件信息', res)
+          _this.inforForm = res.data;
+          this.handleCaseData(res.data);
+        },
+        err => {
           console.log(err);
-        })
-      }
+        }
+      );
     },
-    mounted() {
-      let someCaseInfo = iLocalStroage.gets("someCaseInfo");
-      console.log(someCaseInfo);
-      this.inforForm.caseCauseName = someCaseInfo.illageAct;
-      this.inforForm.caseCauseNameCopy = someCaseInfo.illageAct;
-      this.inforForm.caseCauseId = someCaseInfo.illageActId;
-      this.inforForm.programType = someCaseInfo.programType;
-      this.inforForm.caseType = someCaseInfo.caseType;
-      this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
-      this.inforForm.zfmlId = someCaseInfo.cateId;
-      this.inforForm.zfml = someCaseInfo.cateName;
-      console.log("标志", someCaseInfo.illageAct)
-      this.showOverrun =
-        someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
-      console.log('showOverrun', this.showOverrun)
+    //处理数据回显问题
+    handleCaseData(data) {
+      console.log('handleCaseData方法', data);
+      //使当事人类型选中
+      if (data.partyType == "1") {
+        this.inforForm.partyType = 1;
+        this.partyTypePerson = 1;
+      } else {
+        this.inforForm.partyType = 2;
+        this.partyTypePerson = 2;
+      }
+      if (data.partySex == "1") {
+        this.inforForm.partySex = 1;
+      } else {
+        this.inforForm.partySex = 0;
+      }
+      //驾驶人或代理人
+      this.driverOrAgentInfoList = JSON.parse(data.agentPartyEcertId);
+      //超限信息
+      if (data.otherInfo != "") {
+        this.inforForm.otherInfo = JSON.parse(data.otherInfo);
+      }
+      if (data.caseCauseName == '车辆在公路上擅自超限行驶') {
+        this.showOverrun = true;
+      }
+      ;
+      if (data.caseStatus == '待审批') {
+        this.isHandleCase = true;
+      }
+      ;
+      if (data.trailerIdNo != "") {
+        this.showTrailer = true;
+      }
+      if (data.discretionId != "") {
+        this.activeJudgli = data.discretionId;
+      }
+      //当前用户不是创建案件者，输入框设置为只读
+      // currentUserId = iLocalStroage.gets("userInfo").id;
+      // if(currentUserId!=data.createId){
+      //    let allInput = document.querySelectorAll('.el-input');
 
-      this.driverOrAgentInfo.relationWithParty = '1';
-      this.inforForm.otherInfo.checkResult = '1'
-      this.inforForm.trailerColor = '1'
+      // };
+      //设置执法人员
+      this.alreadyChooseLawPerson = [];
+      let staffNameList = data.staff.split(',');
+      let staffIdList = data.staffId.split(',');
+      let staffCertificateIdList = data.certificateId.split(',');
+      this.lawPersonListId = staffIdList;
+      staffIdList.forEach((item, index) => {
+        let newlaw = {
+          id: item,
+          lawOfficerName: staffNameList[index],
+          lawOfficerCards: staffCertificateIdList[index]
+        }
+        this.alreadyChooseLawPerson.push(newlaw);
+      });
+
     },
-    created() {
-      this.findJudgFreedomList();
-      this.getTrailerType();
-      // this.setLawPerson(
-      //   [iLocalStroage.gets('userInfo').username]
-      // )
-      console.log(this.$route)
-      this.setLawPersonCurrentP();
-      if (this.$route.params.fromSlide) {
-        this.fromSlide();
-        this.disableBtn = true;
-        this.autoSava = false;
+    // 超重限制及抽屉表
+    weightLimit(type) {
+      var inforForm = this.inforForm;
+      if (type == '车辆轴数') {
+
+        this.vehicleTypeList = [];
+        this.vehicleAxlesTypeList = [];
+        this.inforForm.otherInfo.vehicleType = '';
+        this.inforForm.otherInfo.vehicleAxlesType = '';
+        this.inforForm.otherInfo.vehiclePowerType = '';
       }
-      //暂存数据后从其他页面回到信息采集页
-      if (iLocalStroage.get("stageCaseId")) {
-        this.fromSlide();
-      }
-    },
-    beforeRouteLeave(to, from, next) {
-      console.log('to', to)
-      console.log('from', from)
-      console.log('next', next);
-      if (this.autoSava) {
-        this.stageInfo(0);
-        iLocalStroage.set("stageCaseId", this.caseId);
+      if (type == '车型') {
+        this.inforForm.otherInfo.vehicleAxlesType = '';
       }
 
-      next(vm => {
-        console.log(vm)
+      inforForm.otherInfo.weightLimit = '';
+      if (inforForm.otherInfo.vehicleAxleNumber == 6) {
+        this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, {
+          label: '铰接列车',
+          value: '铰接列车'
+        }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
+        this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }, { label: '2+2+2', value: '2+2+2' }];
+        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType) {
+          switch (inforForm.otherInfo.vehicleType) {
+            case '中置轴挂车列车':
+              this.vehicleAxlesTypeList =[{ label: '1+2+3', value: '1+2+3' }, { label: '2+2+2', value: '2+2+2' }];
+              break;
+            case '铰接列车':
+              this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }];
+              break;
+            case '全挂汽车列车':
+              this.vehicleAxlesTypeList = [{ label: '2+2+2', value: '2+2+2' }];
+              break;
+            default:
+              break;
+          }
+        }
+
+        if (inforForm.otherInfo.vehiclePowerType) {
+          inforForm.otherInfo.weightLimit = 46;
+          if (inforForm.otherInfo.vehiclePowerType == '双轴') {
+            inforForm.otherInfo.weightLimit = 49;
+          }
+        }
+
+      }
+      if (inforForm.otherInfo.vehicleAxleNumber == 5) {
+        this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, {
+          label: '铰接列车',
+          value: '铰接列车'
+        }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
+
+        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType) {
+          switch (inforForm.otherInfo.vehicleType) {
+            case '中置轴挂车列车':
+              this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' }, { label: '2+1+2', value: '2+1+2' }];
+              break;
+            case '铰接列车':
+              this.vehicleAxlesTypeList = [{ label: '2+1+2', value: '2+1+2' }, { label: '1+1+3', value: '1+1+3' }, { label: '1+2+2', value: '1+2+2' }];
+              break;
+            case '全挂汽车列车':
+              this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' }, { label: '2+1+2', value: '2+1+2' }];
+              break;
+            default:
+              break;
+          }
+        }
+
+        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
+          this.inforForm.otherInfo.weightLimit = 43;
+          if (inforForm.otherInfo.vehicleAxlesType == '1+1+3') {
+            inforForm.otherInfo.weightLimit = 42;
+          }
+        }
+
+      }
+      if (inforForm.otherInfo.vehicleAxleNumber == 4) {
+        this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, {
+          label: '铰接列车',
+          value: '铰接列车'
+        }, { label: '全挂汽车列车', value: '全挂汽车列车' }, { label: '载货汽车', value: '载货汽车' }]
+
+        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType) {
+          switch (inforForm.otherInfo.vehicleType) {
+            case '中置轴挂车列车':
+              this.vehicleAxlesTypeList = [{ label: '1+2+1', value: '1+2+1' }, { label: '1+1+2', value: '1+1+2' }];
+              break;
+            case '铰接列车':
+              this.vehicleAxlesTypeList = [{ label: '1+1+2', value: '1+1+2' }];
+              break;
+            case '全挂汽车列车':
+              this.vehicleAxlesTypeList = [{ label: '1+1+1+1', value: '1+1+1+1' }];
+              break;
+            case '载货汽车':
+              this.vehicleAxlesTypeList = [{ label: '2+2', value: '2+2' }];
+              break;
+            default:
+              break;
+          }
+        }
+
+        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
+          this.inforForm.otherInfo.weightLimit = 36;
+          if (inforForm.otherInfo.vehicleType == '中置轴挂车列车') {
+            if (inforForm.otherInfo.vehicleAxlesType == '1+2+1') {
+              inforForm.otherInfo.weightLimit = 35;
+            }
+          }
+          if (inforForm.otherInfo.vehicleType == '载货汽车') {
+            inforForm.otherInfo.weightLimit = 31;
+          }
+        }
+
+      }
+      if (inforForm.otherInfo.vehicleAxleNumber == 3) {
+        this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, { label: '铰接列车', value: '铰接列车' }, {
+          label: '载货汽车',
+          value: '载货汽车'
+        }]
+        this.vehicleAxlesTypeList = [{ label: '1+1+1', value: '1+1+1' }];
+        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
+          this.inforForm.otherInfo.weightLimit = 27;
+          if (inforForm.otherInfo.vehicleType == '载货汽车') {
+            inforForm.otherInfo.weightLimit = 25;
+          }
+        }
+
+      }
+      if (inforForm.otherInfo.vehicleAxleNumber == 2) {
+        this.vehicleTypeList = [{ label: '载货汽车', value: '载货汽车' }]
+        this.vehicleAxlesTypeList = [{ label: '1+1', value: '1+1' }];
+        if (inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
+          this.inforForm.otherInfo.weightLimit = 18;
+        }
+      }
+
+      if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight)
+        inforForm.otherInfo.overWeight = this.inforForm.otherInfo.allWeight - this.inforForm.otherInfo.weightLimit
+    },
+    // 计算超重
+    concludeOverWeight() {
+      console.log('overweight', this.inforForm.otherInfo.overWeight)
+      this.inforForm.otherInfo.overWeight = '';
+      if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight) {
+        this.inforForm.otherInfo.overWeight = this.inforForm.otherInfo.allWeight - this.inforForm.otherInfo.weightLimit
+      }
+      if (this.inforForm.otherInfo.overWeight < 0) {
+        this.inforForm.otherInfo.overWeight = 0
+      }
+
+    },
+    //自动计算年龄
+    changePartyIdType(idCard) {
+      let iden = idCard;
+      let val = idCard.length;
+      let sex = null;
+      let myDate = new Date();
+      let month = myDate.getMonth() + 1;
+      let day = myDate.getDate();
+      let age = 0;
+      if (val === 18) {
+        age = myDate.getFullYear() - iden.substring(6, 10) - 1;
+        sex = iden.substring(16, 17);
+        if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
+
+      }
+      if (val === 15) {
+        age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
+        sex = iden.substring(13, 14);
+        if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
+      }
+
+      if (sex % 2 === 0) {
+        sex = 1;
+      } else {
+        sex = 0;
+      }
+      ;
+      this.inforForm.partyAge = age;
+      this.inforForm.partySex = sex;
+      // let nowDate = new Date();
+      // let year = nowDate.getFullYear();
+      // let age = '';
+      // console.log('year', year)
+      // if (idCard != null && idCard != "") {
+      //   if (idCard.length == 15) {
+      //     age = year - ("19" + idCard.substr(6, 2));
+      //   } else if (idCard.length == 18) {
+      //     age = year - idCard.substr(6, 4);
+      //   }
+      // }
+      // // bug;
+      // var sexData = idCard.substr(17, 1)
+      // if (sexData % 2 == 0) {
+      //   this.inforForm.partySex = 1
+      // }
+      // if (sexData % 2 == 1) {
+      //   this.inforForm.partySex = 0
+      // }
+      // console.log('性别', sexData % 2)
+      // // if()
+      // console.log('年龄', age)
+      // this.inforForm.partyAge = age;
+    },
+    //自动计算年龄
+    changePartyIdType2(idCard, index) {
+      for (let i = 0; i < this.driverOrAgentInfoList.length; i++) {
+        if (idCard === this.inforForm.partyIdNo && this.driverOrAgentInfoList[i].relationWithParty !== '当事人') {
+          this.$message('身份证号不能相同！');
+          return
+        }
+        if (index !== i && idCard === this.driverOrAgentInfoList[i].zhengjianNumber) {
+          this.$message('身份证号不能相同！');
+          return
+        }
+
+      }
+      if (idCard === this.driverOrAgentInfoList[0].zhengjianNumber) {
+
+      }
+      let iden = idCard;
+      let val = idCard.length;
+      let sex = null;
+      let myDate = new Date();
+      let month = myDate.getMonth() + 1;
+      let day = myDate.getDate();
+      let age = 0;
+      if (val === 18) {
+        age = myDate.getFullYear() - iden.substring(6, 10) - 1;
+        sex = iden.substring(16, 17);
+        if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
+
+      }
+      if (val === 15) {
+        age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
+        sex = iden.substring(13, 14);
+        if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
+      }
+
+      if (sex % 2 === 0) {
+        sex = 1;
+      } else {
+        sex = 0;
+      }
+      ;
+      this.driverOrAgentInfoList[index].age = age;
+      this.driverOrAgentInfoList[index].sex = sex;
+    },
+    noFue(val) {
+      this.inforForm.partyAge = val >= 0 ? val : 0;
+    },
+    noFueA(val) {
+      console.log('this.driverOrAgentInfo.age', this.driverOrAgentInfo.age)
+      // this.driverOrAgentInfo.age = 3;
+      this.driverOrAgentInfo.age = val >= 0 ? val : 0;
+    },
+
+    blur2(val) {
+      var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[358]\d{9})$)/;
+      if (!reg.test(val) && val) {
+        this.$message('手机号不正确')
+      }
+      // callback();
+    },
+    blur3(val) {
+      var reg = /^\d{6}$/;
+      if (!reg.test(val) && val) {
+        this.$message('请输入正确的6位邮编')
+      }
+    },
+    //获取挂车类型数据
+    getTrailerType() {
+      getDictListDetailByNameApi('trailerType').then(res => {
+        console.log('挂车类型', res);
+        this.allTrailerTypeType = res.data;
+      }, err => {
+        console.log(err);
       })
-
     }
-  };
+  },
+  mounted() {
+    let someCaseInfo = iLocalStroage.gets("someCaseInfo");
+    console.log(someCaseInfo);
+    this.inforForm.caseCauseName = someCaseInfo.illageAct;
+    this.inforForm.caseCauseNameCopy = someCaseInfo.illageAct;
+    this.inforForm.caseCauseId = someCaseInfo.illageActId;
+    this.inforForm.programType = someCaseInfo.programType;
+    this.inforForm.caseType = someCaseInfo.caseType;
+    this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
+    this.inforForm.zfmlId = someCaseInfo.cateId;
+    this.inforForm.zfml = someCaseInfo.cateName;
+    console.log("标志", someCaseInfo.illageAct)
+    this.showOverrun =
+      someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
+    console.log('showOverrun', this.showOverrun)
+
+    this.driverOrAgentInfo.relationWithParty = '1';
+    this.inforForm.otherInfo.checkResult = '1'
+    this.inforForm.trailerColor = '1'
+  },
+  created() {
+    this.findJudgFreedomList();
+    this.getTrailerType();
+    // this.setLawPerson(
+    //   [iLocalStroage.gets('userInfo').username]
+    // )
+    console.log(this.$route)
+    this.setLawPersonCurrentP();
+    if (this.$route.params.fromSlide) {
+      this.fromSlide();
+      this.disableBtn = true;
+      this.autoSava = false;
+    }
+    //暂存数据后从其他页面回到信息采集页
+    if (iLocalStroage.get("stageCaseId")) {
+      this.fromSlide();
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log('to', to)
+    console.log('from', from)
+    console.log('next', next);
+    if (this.autoSava) {
+      this.stageInfo(0);
+      iLocalStroage.set("stageCaseId", this.caseId);
+    }
+
+    next(vm => {
+      console.log(vm)
+    })
+
+  }
+};
 </script>
 <style lang="scss">
-  @import "@/assets/css/caseHandle/index.scss";
+@import "@/assets/css/caseHandle/index.scss";
 </style>
