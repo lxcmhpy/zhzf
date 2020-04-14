@@ -24,7 +24,7 @@
           <el-row :gutter="20">
             <el-col :span="5">
               <el-form-item prop="organType">
-                <el-select v-model="caseData.organType" placeholder="机构类型" @change="changeOrganType">
+                <el-select @change="changOrganType" v-model="caseData.organType" placeholder="机构类型">
                   <el-option label="执法机构" value="执法机构"></el-option>
                   <el-option label="公安机关" value="公安机关"></el-option>
                   <el-option label="司法机关" value="司法机关"></el-option>
@@ -34,7 +34,7 @@
             </el-col>
             <el-col :span="17">
               <el-form-item prop="organMb">
-                <el-input v-model="caseData.organMb" v-if="caseData.organType!='执法机构'"></el-input>
+                <el-input :disabled=" caseData.organType ? false : true " v-model="caseData.organMb" v-if="caseData.organType!='执法机构'"></el-input>
                 <el-select v-if="caseData.organType=='执法机构'" v-model="caseData.organMb" placeholder="请选择" style="width:435px;">
                   <el-option value='执法机构一' label="执法机构一"></el-option>
                   <el-option value='执法机构二' label='执法机构二'></el-option>
@@ -222,9 +222,11 @@ export default {
         name: "addSelect",
       });
     },
+    changOrganType(){
+      this.caseData.organMb = "";
+    },
     submitForm(formName) {
       this.visible = true;
-
     },
     goSubmit(formName) {
       console.log(this.caseData)
@@ -401,12 +403,8 @@ export default {
     // 原因变化
     changeReason() {
       console.log('reson')
-      this.caseData.otherReason = ''
+      this.caseData.otherReason = "";
     },
-    // 目标机构变化
-    changeOrganType(){
-      this.caseData.organMb=''
-    }
   },
   created() {
     this.findFileList();
@@ -423,7 +421,7 @@ export default {
     // this.caseData.vehicleShipId = this.$route.params.caseData.vehicleShipId
     // this.caseData.caseType = this.$route.params.caseData.caseType
     this.caseData.wfxw = this.$route.params.caseData.caseCauseName
-    this.caseData.person = this.userInfo.organName + '-' + this.userInfo.username;
+    this.caseData.person = this.userInfo.username;
     console.log('表单', this.caseData)
     getFinishDocByIdApi(this.caseData.caseId).then(res => {
       console.log('文书列表', res.data);

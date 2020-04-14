@@ -67,7 +67,7 @@
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'documentForm'" @showdocumentForm="showdocumentForm"></caseSlideMenu>
     <!-- 文书列表 -->
-    <documentFormRef ref="documentFormRef"></documentFormRef>
+    <!-- <documentFormRef ref="documentFormRef"></documentFormRef> -->
      <el-dialog
         :visible.sync="pdfVisible"
         @close="closeDialog"
@@ -126,7 +126,7 @@ import {
         },
         components: {
           caseSlideMenu,
-          documentFormRef
+          // documentFormRef
         },
         computed: { ...mapGetters(['caseId']) },
         methods: {

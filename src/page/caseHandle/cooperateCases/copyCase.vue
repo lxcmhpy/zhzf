@@ -75,7 +75,7 @@ export default {
     caseRecord() {
       this.$refs.caseRegisterDiagRef.showModal();
     },
-    //获取当前人的案件抄告列表
+    //获取案件抄告列表
     getCaseCopy(searchData) {
       let copyData = searchData;
       if (copyData.current) {
@@ -88,6 +88,7 @@ export default {
           console.log('抄告列表', res.data.records)
           this.tableData = res.data.records
           this.total = res.data.total
+          console.log('总数', this.total)
         });
     },
     //更改每页显示的条数

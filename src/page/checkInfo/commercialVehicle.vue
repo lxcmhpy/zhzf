@@ -41,9 +41,9 @@
         </span>
         <span class="title">查验结果</span>
       </div>
-      <div>
-        <span>相关的{{yyclAmount}}个搜索结果</span>  
-      </div>  
+      <div class="result">
+        <span>相关的{{yyclAmount}}个搜索结果</span>
+      </div>
       <div class="tablePart" align="center">
         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
           <el-table-column prop="VehicleNo" label="车牌号码" align="center"></el-table-column>
@@ -65,7 +65,7 @@
         <commercialVehicleSee ref="commercialVehicleSeeRef"></commercialVehicleSee>
     </div>
   </div>
-  
+
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";

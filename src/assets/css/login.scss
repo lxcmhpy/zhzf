@@ -1,157 +1,150 @@
 @import './basicStyles/variables.scss';
 
 .login {
-  width          : 100%;
-  height         : 100%;
-  background     : #F5F8FA;
+  width: 100%;
+  height: 100%;
+  background: #F5F8FA;
   background-size: cover;
   // box-sizing  : border-box;
 
   .error {
-    float    : left;
+    float: left;
     font-size: 12px;
-    color    : #E84241
+    color: #E84241
   }
 }
 
 .login_logo {
-  width     : 1000px;
-  margin    : 0 auto;
-  position  : absolute;
-  top       : -70px;
-  left      : 20px;
+  width: 1000px;
+  margin: 0 auto;
+  position: absolute;
+  top: -70px;
+  left: 20px;
   text-align: left;
 
   img {
-    width         : 35px;
+    width: 35px;
     vertical-align: middle;
-    margin-right  : 10px;
+    margin-right: 10px;
   }
 
   span {
-    font-size     : 32px;
-    color         : #20232C;
+    font-size: 32px;
+    color: #20232C;
     vertical-align: middle;
   }
 }
 
 .form_contianer {
-  position     : relative;
-  width        : 100%;
-  height       : 100%;
-  min-height   : 700px;
-  // overflow     : auto;
+  width: 100%;
+  height: 100%;
   margin-bottom: 50px;
-  background   : #fff;
-  position     : absolute;
-  text-align   : center;
-  box-shadow   : 0 0 5px #ccc;
-  min-height   : 760px;
+  background: #fff;
+  position: absolute;
+  text-align: center;
+  box-shadow: 0 0 5px #ccc;
+  min-height: 760px;
   display: flex;
   // box-sizing: border-box;
 
-
   .leftC {
-    float     : left;
+    float: left;
     // width     : 58%;
-    height    : 100%;
+    height: 100%;
     background: #12223d;
     background: url('../../../static/images/img/login/login_bg.png') no-repeat;
-    background-size:100% 100%;
-    overflow  : hidden;
-
+    background-size: 100% 100%;
+    overflow: hidden;
 
     img {
-    //   height: 1080px;
-    // width     : 100%;
-    height: 100%;
+      //   height: 1080px;
+      // width     : 100%;
+      height: 100%;
     }
   }
 
   .rightC {
-    float     : right;
-    width     : 42%;
-    height    : 600px;
+    float: right;
+    width: 42%;
+    height: 600px;
     // padding   : 30px 100px;
     margin: auto;
     box-sizing: border-box;
-    position  : relative;
+    position: relative;
     // top       : 150px;
-    overflow  : hidden;
+    overflow: hidden;
 
     p {
       font-size: 18px;
-      margin   : 10px 0 35px 0;
+      margin: 10px 0 35px 0;
     }
 
     .title {
-      display      : inline-block;
-      width        : 180px;
-      float        : left;
-      text-align   : left;
-      height       : 35px;
-      line-height  : 35px;
+      display: inline-block;
+      width: 180px;
+      float: left;
+      text-align: left;
+      height: 35px;
+      line-height: 35px;
       margin-bottom: 70px;
-      font-size    : 24px;
-      font-weight  : 400;
-      cursor       : pointer;
+      font-size: 24px;
+      font-weight: 400;
+      cursor: pointer;
     }
 
     .checkText {
-      font-size  : 32px;
+      font-size: 32px;
       font-weight: 500;
     }
 
     .form_box {
-      width : 420px;
+      width: 420px;
       margin: 0 auto;
       min-height: 566px;
 
-
       .back {
-        float      : left;
-        width      : 120px;
+        float: left;
+        width: 120px;
         line-height: 24px;
-        text-align : left;
+        text-align: left;
 
         .el-button {
           border: 0;
-          width : 30px;
+          width: 30px;
+          font-size: 24px;
         }
       }
     }
 
     .formC1 {
       margin-top: 20%;
-      clear     : both;
-
-
+      clear: both;
 
       .code_box {
-        margin    : 32px auto;
-        height    : 234px;
-        width     : 234px;
-        padding   : 10px;
-        border    : 1px solid #DAE0E8;
+        margin: 32px auto;
+        height: 234px;
+        width: 234px;
+        padding: 10px;
+        border: 1px solid #DAE0E8;
         box-sizing: border-box;
 
         img {
-          width : 100%;
+          width: 100%;
           height: 100%;
         }
       }
 
       button {
-        width     : 100%;
+        width: 100%;
         background: $blueC;
-        margin    : 20px 0;
+        margin: 20px 0;
       }
 
       .forgetPass {
         text-align: right;
-        font-size : 12px;
-        margin    : -15px 0 15px;
-        height    : 12px;
+        font-size: 12px;
+        margin: -15px 0 15px;
+        height: 12px;
       }
 
       .login_btm {
@@ -160,8 +153,8 @@
 
       .captchaBox {
         position: absolute;
-        right   : 0;
-        top     : 0px;
+        right: 0;
+        top: 0px;
       }
 
       .codeInputBox {
@@ -174,8 +167,8 @@
 
       .codeInput {
         position: absolute;
-        width   : 300px;
-        left    : 0;
+        width: 300px;
+        left: 0;
       }
 
       .left_float {
@@ -186,41 +179,39 @@
         float: right;
       }
 
-
       .margin24 {
         margin-left: 24px;
       }
 
       .el-input__inner {
         border-radius: 0;
-        border-top   : 0;
-        border-left  : 0;
-        border-right : 0;
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
       }
 
       .wechat_box {
-        width    : 140px;
+        width: 140px;
         // height: 170px;
 
         .wechat {
-          clear              : both;
-          width              : 150px;
-          height             : 150px;
-          padding            : 10px;
-          margin-left        : -10px;
+          clear: both;
+          width: 150px;
+          height: 150px;
+          padding: 10px;
+          margin-left: -10px;
           // background-color: red;
-          box-shadow         : 1px 6px 4px 4px rgba(94, 137, 181, 0.1);
-          box-sizing         : border-box;
+          box-shadow: 1px 6px 4px 4px rgba(94, 137, 181, 0.1);
+          box-sizing: border-box;
 
           img {
-            width : 100%;
+            width: 100%;
             height: 100%;
           }
         }
       }
 
     }
-
 
   }
 
@@ -229,25 +220,24 @@
   }
 
   .gray {
-    color    : #999999;
+    color: #999999;
     font-size: 14px;
   }
 
   .footer {
-    width      : 100%;
+    width: 100%;
     // position   : absolute;
     // right      : 0;
     // bottom     : 30px;
     margin: 0 auto;
-    text-align : center;
-    clear      : both;
-    font-size  : 14px;
+    text-align: center;
+    clear: both;
+    font-size: 14px;
     font-family: PingFang SC;
     font-weight: 400;
-    color      : rgba(153, 153, 153, 1);
-    margin-top : -30px;
+    color: rgba(153, 153, 153, 1);
+    margin-top: -30px;
   }
-
 
 }
 
@@ -259,5 +249,5 @@
 .form-fade-enter,
 .form-fade-leave-active {
   transform: translate3d(0, -50px, 0);
-  opacity  : 0;
+  opacity: 0;
 }

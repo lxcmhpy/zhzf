@@ -591,7 +591,7 @@
 
     /* 悬浮按钮 */
     .float-btns {
-        width   : 48px;
+        width   : 51px;
         height  : 100px;
         position: fixed;
         right   : 70px;
@@ -599,8 +599,8 @@
 
         &.float-btns .el-button {
             border-radius: 1px;
-            width        : 48px;
-            height       : 48px;
+            width        : 51px;
+            height       : 51px;
             padding      : 0;
             text-align   : center;
         }
@@ -1134,7 +1134,7 @@
     }
 
     /* 单选框 */
-    input[type="checkbox"i] {
+    input[type="checkbox"] {
         background: #fff !important;
     }
 
@@ -1461,7 +1461,7 @@
             border-color: black;
             background  : black;
         }
-        
+
     }
     .el-radio__label{
         color: black !important;

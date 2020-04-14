@@ -47,18 +47,21 @@ export default {
           debugger
 //          console.log(res);
           let data = res.data;
-          data.forEach(item => {
-            let xiang1 = item.iitemCog ? "第" + item.iitemCog + "项" : "";
-            let xiang2 = item.iitemPun ? "第" + item.iitemPun + "项" : "";
+          if(data && data.length>0){
+            data.forEach(item => {
+              let xiang1 = item.iitemCog ? "第" + item.iitemCog + "项" : "";
+              let xiang2 = item.iitemPun ? "第" + item.iitemPun + "项" : "";
 
-            let clause = {
-              drawerName: item.drawerName,
-              illageClause: "《" + item.bnslawNameCog + "》第" + item.itemCog + "条" + xiang1,
-              punishClause: "《" + item.bnslawNamePun + "》第" + item.itemPun + "条" + xiang2
-            }
-            _this.tableData.push(clause);
+              let clause = {
+                drawerName: item.drawerName,
+                illageClause: "《" + item.bnslawNameCog + "》第" + item.itemCog + "条" + xiang1,
+                punishClause: "《" + item.bnslawNamePun + "》第" + item.itemPun + "条" + xiang2
+              }
+              _this.tableData.push(clause);
 
-          })
+            })
+          }
+          
         },
         err => {
           console.log(err);

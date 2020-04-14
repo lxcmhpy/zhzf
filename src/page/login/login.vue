@@ -84,7 +84,6 @@
           <div class="form_box">
             <span class="back">
               <el-button icon="el-icon-arrow-left" size="mini" @click="resetChange(false)"></el-button>
-
             </span>
             <span class="title">密码重置申请</span>
             <div class="formC1" v-if="check">
@@ -291,7 +290,7 @@ export default {
 //            debugger
           _this.menuList = [...res.data, ...menuList];
           iLocalStroage.sets('menu', _this.menuList);
-          _this.$router.push({ name: "home_index" });
+          _this.$router.push({ name: "case_handle_home_index" });
         },
         err => {
           console.log(err);

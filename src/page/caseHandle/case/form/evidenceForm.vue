@@ -233,7 +233,7 @@
     <caseSlideMenu :activeIndex="'evidenceForm'" @showEvidenceCatalogue="showEvidenceCatalogue"></caseSlideMenu>
 
     <!-- 证据目录 -->
-    <evidenceCatalogue ref="evidenceCatalogueRef"></evidenceCatalogue>
+    <!-- <evidenceCatalogue ref="evidenceCatalogueRef"></evidenceCatalogue> -->
 
     <evidenceDetail ref="evidenceDetailRef"></evidenceDetail>
   </div>

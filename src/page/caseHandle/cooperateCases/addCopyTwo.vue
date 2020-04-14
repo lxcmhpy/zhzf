@@ -22,7 +22,7 @@
           <el-row :gutter="20">
             <el-col :span="5">
               <el-form-item prop="organType">
-                <el-select v-model="caseData.organType" placeholder="机构类型">
+                <el-select @change="changOrganType" v-model="caseData.organType" placeholder="机构类型">
                   <el-option label="执法机构" value="执法机构"></el-option>
                   <el-option label="公安机关" value="公安机关"></el-option>
                   <el-option label="司法机关" value="司法机关"></el-option>
@@ -32,7 +32,11 @@
             </el-col>
             <el-col :span="17">
               <el-form-item prop="organMb">
-                <el-input v-model="caseData.organMb" :disabled=" caseData.organType ? false : true "></el-input>
+                <el-input :disabled=" caseData.organType ? false : true " v-model="caseData.organMb" v-if="caseData.organType!='执法机构'"></el-input>
+                <el-select v-if="caseData.organType=='执法机构'" v-model="caseData.organMb" placeholder="请选择" style="width:435px;">
+                  <el-option value='执法机构一' label="执法机构一"></el-option>
+                  <el-option value='执法机构二' label='执法机构二'></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -209,19 +213,9 @@ export default {
          console.log(err)
       })
     },
-    //  //通过附件id 查询附件file
-    // findPaymentVoucher(id, isAdd) {
-    //   findFileByIdApi(id).then(
-    //     res => {
-    //       console.log(res);
-    //       this.fileListArr.push(res.data);
-    //     },
-    //     error => {
-    //       console.log(error)
-    //     }
-    //   );
-    // }
-     //通过案件ID和文书ID查询附件
+    changOrganType(){
+      this.caseData.organMb = "";
+    },
     findFileList(){
       let data =  {
         caseId: this.caseData.caseId,

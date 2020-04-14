@@ -1,402 +1,513 @@
 @import "./basicStyles/variables.scss";
 
 .fullscreen {
+  height: 100%;
+
+  #fullscreenCon {
     height: 100%;
+  }
 
-    #fullscreenCon {
-        height: 100%;
+  #mainHeader {
+    overflow: hidden;
+    height: 54px;
+    background: #20232B;
+    color: #fff;
+
+    & > div {
+      height: 100%;
+      line-height: 54px;
     }
 
-    #mainHeader {
-        overflow  : hidden;
-        height    : 54px;
+    .main_logo {
+      float: left;
+
+      img {
+        width: 35px;
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+
+      span {
+        font-size: 20px;
+        vertical-align: middle;
+      }
+    }
+
+    .headMenu {
+      float: left;
+      margin-left: 10%;
+
+      .el-menu {
         background: #20232B;
-        color     : #fff;
+      }
 
-        &>div {
-            height     : 100%;
-            line-height: 54px;
+      .el-menu--horizontal {
+        & > .el-menu-item {
+          color: #9FA3AF;
         }
 
-        .main_logo {
-            float: left;
-
-            img {
-                width         : 35px;
-                vertical-align: middle;
-                margin-right  : 10px;
-            }
-
-            span {
-                font-size     : 20px;
-                vertical-align: middle;
-            }
+        & > .el-menu-item.is-active {
+          color: #fff;
+          border-bottom: 2px solid $blueC;
         }
 
-        .headMenu {
-            float      : left;
-            margin-left: 10%;
-
-            .el-menu {
-                background: #20232B;
-            }
-
-            .el-menu--horizontal {
-                &>.el-menu-item {
-                    color: #9FA3AF;
-                }
-
-                &>.el-menu-item.is-active {
-                    color        : #fff;
-                    border-bottom: 2px solid $blueC;
-                }
-
-                .el-menu-item:focus,
-                .el-menu-item:hover {
-                    background: #20232B;
-                }
-            }
+        .el-menu-item:focus,
+        .el-menu-item:hover {
+          background: #20232B;
         }
-
-        @media screen and (max-width: 1400px) {
-            .headMenu {
-                float      : left;
-                margin-left: 5%;
-            }
-        }
-
-        .headerRight {
-            float   : right;
-            overflow: hidden;
-            color   : #909298;
-
-            div {
-                float      : left;
-                margin-left: 20px;
-
-
-            }
-
-            .el-dropdown {
-                color: #909298;
-            }
-
-            img {
-                margin-right  : 8px;
-                width         : 24px;
-                height        : 24px;
-                border-radius : 50px;
-                vertical-align: middle;
-            }
-
-        }
+      }
     }
 
-    .el-aside {
-        .el-menu {
-            background  : $blackC2;
-            border-right: 0;
-
-            .el-submenu__title {
-                color: #9FA3AF;
-            }
-
-            .el-menu-item {
-                color: #9FA3AF;
-            }
-
-            .el-menu-item.is-active {
-                background: $blueC;
-                color     : #fff;
-            }
-
-            .el-menu-item:focus,
-            .el-menu-item:hover,
-            .el-menu-item:focus,
-            .el-menu-item:hover {
-                background: $blueC;
-                color     : #fff;
-            }
-
-        }
+    @media screen and (max-width: 1400px) {
+      .headMenu {
+        float: left;
+        margin-left: 5%;
+      }
     }
 
-    #tabsHeader {
-        height    : 33px;
-        background: $blackC2;
-        color     : #9FA3AF;
-        padding   : 0;
+    .headerRight {
+      float: right;
+      overflow: hidden;
+      color: #909298;
 
-        .el-tabs__item {
-            height     : 32px;
-            line-height: 32px;
-        }
+      div {
+        float: left;
+        margin-left: 20px;
 
-        .el-tabs--border-card>.el-tabs__header {
-            background: $blackC2;
-        }
+      }
 
-        .el-tabs--border-card {
-            border: 1px solid #414752;
-        }
+      .el-dropdown {
+        color: #909298;
+      }
 
-        .el-tabs--border-card>.el-tabs__content {
-            display: none;
-        }
+      img {
+        margin-right: 8px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50px;
+        vertical-align: middle;
+      }
 
-        .el-tabs__nav-wrap {
-            margin-bottom: 0;
-        }
+    }
+  }
 
-        .el-tabs--border-card>.el-tabs__header .el-tabs__item {
-            color: #9FA3AF;
-        }
+  .el-aside {
+    .el-menu {
+      background: $blackC2;
+      border-right: 0;
 
-        .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
-            color: #4A5A78;
-        }
+      .el-submenu__title {
+        color: #9FA3AF;
+      }
+
+      .el-menu-item {
+        color: #9FA3AF;
+      }
+
+      .el-menu-item.is-active {
+        background: $blueC;
+        color: #fff;
+      }
+
+      .el-menu-item:focus,
+      .el-menu-item:hover,
+      .el-menu-item:focus,
+      .el-menu-item:hover {
+        background: $blueC;
+        color: #fff;
+      }
+
+    }
+  }
+
+  #tabsHeader {
+    height: 33px;
+    background: $blackC2;
+    color: #9FA3AF;
+    padding: 0;
+
+    .el-tabs__item {
+      height: 32px;
+      line-height: 32px;
     }
 
-    .fullBox {
-        height    : 100%;
-        background: #fff;
+    .el-tabs--border-card > .el-tabs__header {
+      background: $blackC2;
     }
 
-    .com_searchAndpageBoxPadding {
-        // position: absolute;
-        position   : relative;
-        padding    : 22px;
-        // height  : calc(100% - 44px);
-        height     : 100%;
-        box-sizing : border-box;
-        // width   : calc(100% - 44px);
-        // left    : 22px;
-        // right   : 22px;
-        // top     : 22px;
-        // bottom  : 22px;
+    .el-tabs--border-card {
+      border: 1px solid #414752;
+      border-left: 0px;
     }
 
-    .searchAndpageBox {
-        box-sizing: border-box;
-        padding   : 20px;
-        height    : 100%;
-        background: #fff;
-        position  : relative;
-
-        .handlePart {
-            // position: absolute;
-            // top     : 20px;
-            // left    : 20px;
-            position   : relative;
-            margin     : 20px 20px 0px 20px;
-
-            .search {
-                display: inline-block;
-            }
-        }
-
-        .paginationBox {
-            position  : relative;
-            // bottom : 10px;
-            // left   : 0;
-            // right  : 0;
-            // margin : auto;
-            text-align: center;
-        }
-
-        .tablePart {
-            height       : calc(100% - 170px);
-            overflow     : auto;
-            /* margin-top: 15px; */
-            padding-top  : 15px;
-            box-sizing   : border-box;
-        }
+    .el-tabs--border-card > .el-tabs__content {
+      display: none;
     }
 
-    /* 左侧弹出框  */
-    .leftDialog {
-        height       : 100%;
-        margin-top   : 0;
-        margin-right : 0;
-        margin-bottom: 0;
-        overflow     : auto;
-
-        .el-dialog__header {
-            border-bottom: 1px solid #D6DBE3;
-        }
+    .el-tabs__nav-wrap {
+      margin-bottom: 0;
     }
 
-    /* 左侧弹出框  右边有距离 */
-    .leftDialog2 {
-        margin-right: 58px;
-        height      : calc(100% - 60px);
-
-        .el-dialog__body {
-            height  : calc(100% - 200px);
-            overflow: auto;
-        }
-
-        .el-dialog__footer {
-            text-align: center;
-        }
-    }
-
-    .questDialog {
-        min-width: 500px;
-
-        .el-dialog__body {
-            height    : 400px;
-            overflow-y: auto;
-        }
-    }
-
-    .caseBox {
+    .el-tabs--border-card > .el-tabs__header .el-tabs__item {
+      color: #9FA3AF;
+      border-right: 1px solid rgb(60, 76, 106);
+      width: 158px;
+      height: 33px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      border-left: 0;
+      .el-icon-close {
         position: absolute;
-        width   : 100%;
+        right: 6px;
+        margin-top: -7px;
+        top: 50%;
+      }
+    }
+    .el-tabs--border-card > .el-tabs__header .el-tabs__item:last-child {
+      border-right: 0
+    }
 
-        .content {
-            background   : #ffffff;
-            margin       : 22px;
-            margin-top   : 32px;
-            margin-bottom: 23px;
-            font-size    : 26px;
-            font-family  : PingFang SC;
-            font-weight  : 600;
-            color        : rgba(32, 35, 43, 1);
-            text-align   : center;
-            line-height  : 25px;
+    .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
+      color: #4A5A78;
+      background: linear-gradient(0deg, rgba(234, 237, 244, 1), rgba(255, 255, 255, 1));
+      border-bottom: 0;
+    }
+    .el-tabs__nav-prev {
+      height: 32px;
+      .el-icon-arrow-left {
+        position: absolute;
+        top: 50%;
+        margin-top: -6px;
+      }
+    }
+    .el-tabs__nav-next {
+      height: 32px;
+      .el-icon-arrow-right {
+        position: absolute;
+        top: 50%;
+        left: -13px;
+        margin-top: -6px;
+      }
+    }
+  }
+
+  .fullBox {
+    height: 100%;
+    background: #fff;
+  }
+
+  .com_searchAndpageBoxPadding {
+    position: relative;
+    height: 100%;
+    box-sizing: border-box;
+    .com_searchPage_top {
+        position: fixed;
+        top:90px;
+        width: 100%;
+        background: white;
+        z-index: 1000;
+        height: 50px;
+        box-sizing: border-box;
+        .el-tabs__header {
+            width: calc(100% - 200px);
+            .el-tabs__item {
+                height: 50px;
+                line-height: 50px;
+                font-size: 15px;
+                .el-badge__content.is-fixed {
+                    top: 24px;
+                    right: -7px;
+                }
+            }
+            .el-tabs__active-bar {
+                height: 3px;
+            }
         }
     }
+    .com_searchPage_top + .searchAndpageBox {
+        margin-top: 70px;
+    }
+  }
+
+  .searchAndpageBox {
+    box-sizing: border-box;
+    margin: 22px;
+    padding: 20px;
+    height: 100%;
+    background: #fff;
+    position: relative;
+
+    .handlePart {
+      // position: absolute;
+      // top     : 20px;
+      // left    : 20px;
+      position: relative;
+      margin: 20px 20px 0px 20px;
+
+      .search {
+        display: inline-block;
+      }
+    }
+
+    .paginationBox {
+      position: relative;
+      // bottom : 10px;
+      // left   : 0;
+      // right  : 0;
+      // margin : auto;
+      text-align: center;
+    }
+
+    .tablePart {
+      height: calc(100% - 170px);
+      overflow: auto;
+      /* margin-top: 15px; */
+      padding-top: 15px;
+      box-sizing: border-box;
+    }
+  }
+
+  /* 左侧弹出框  */
+  .leftDialog {
+    height: 100%;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    overflow: auto;
+
+    .el-dialog__header {
+      border-bottom: 1px solid #D6DBE3;
+    }
+  }
+
+  /* 左侧弹出框  右边有距离 */
+  .leftDialog2 {
+    margin-right: 58px;
+    height: calc(100% - 60px);
+
+    .el-dialog__body {
+      height: calc(100% - 200px);
+      overflow: auto;
+    }
+
+    .el-dialog__footer {
+      text-align: center;
+    }
+  }
+
+  .questDialog {
+    min-width: 500px;
+
+    .el-dialog__body {
+      height: 400px;
+      overflow-y: auto;
+    }
+  }
+
+  .caseBox {
+    position: absolute;
+    width: 100%;
+
+    .content {
+      background: #ffffff;
+      margin: 22px;
+      margin-top: 32px;
+      margin-bottom: 23px;
+      font-size: 26px;
+      font-family: PingFang SC;
+      font-weight: 600;
+      color: rgba(32, 35, 43, 1);
+      text-align: center;
+      line-height: 25px;
+    }
+  }
 }
 
 .caseAndEvidenceListDiaClass {
-    .el-dialog__body {
-        max-height: 400px;
-        overflow-y: auto;
+  .el-dialog__body {
+    max-height: 400px;
+    overflow-y: auto;
 
-        .el-button-group {
-            width: 100%;
+    .el-button-group {
+      width: 100%;
 
-            button {
-                width: 50%;
-            }
-        }
-
-        ul {
-            li {
-                margin: 10px 0;
-            }
-        }
+      button {
+        width: 50%;
+      }
     }
+
+    ul {
+      li {
+        margin: 10px 0;
+      }
+    }
+  }
 }
 
 .padding0 {
-    padding: 0 !important;
+  padding: 0 !important;
 }
 
 .info_top {
-    width     : 335px;
-    height    : 88px;
-    border    : 1px dashed #43464E;
-    box-sizing: border-box;
+  width: 335px;
+  height: 88px;
+  border: 1px dashed #43464E;
+  box-sizing: border-box;
 
-    img {
-        margin-top   : 18px;
-        margin-right : 14px;
-        margin-left  : 33px;
-        width        : 52px;
-        height       : 52px;
-        border-radius: 50px;
-        border       : 2px solid #ffffff;
+  img {
+    margin-top: 18px;
+    margin-right: 14px;
+    margin-left: 33px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50px;
+    border: 2px solid #ffffff;
+  }
+
+  li {
+    float: left;
+
+    .name {
+      margin-top: 21px;
+      color: black;
+      font-size: 18px;
+      font-weight: 500;
     }
 
-    li {
-        float: left;
-
-        .name {
-            margin-top : 21px;
-            color      : black;
-            font-size  : 18px;
-            font-weight: 500;
-        }
-
-        .number {
-            font-size  : 14px;
-            color      : #7B7B7B;
-            font-weight: 400;
-        }
+    .number {
+      font-size: 14px;
+      color: #7B7B7B;
+      font-weight: 400;
     }
+  }
 
 }
 
 .info_center {
-    min-height   : 148px;
-    padding      : 19px 0 9px;
-    margin       : 0 19px;
-    border-bottom: 1px solid #979797;
-    box-sizing   : border-box;
+  min-height: 148px;
+  padding: 19px 0 9px;
+  margin: 0 19px;
+  border-bottom: 1px solid #979797;
+  box-sizing: border-box;
 
-    .el-form-item {
-        margin-bottom: 10px;
+  .el-form-item {
+    margin-bottom: 10px;
 
-        .el-form-item__label {
-            line-height: 20px;
-            padding    : 0;
-            color      : #7B7B7B;
-        }
-
-        .el-form-item__content {
-            line-height: 20px;
-            font-size  : 14px;
-            color      : #20232B;
-        }
+    .el-form-item__label {
+      line-height: 20px;
+      padding: 0;
+      color: #7B7B7B;
     }
 
-
-
-    ul {
-        clear: both;
-
-        li {
-            float        : left;
-            margin-bottom: 10px;
-        }
-
-        .lable {
-            color: #7B7B7B;
-        }
-
-        .info {
-            color: #20232B;
-        }
+    .el-form-item__content {
+      line-height: 20px;
+      font-size: 14px;
+      color: #20232B;
     }
+  }
+
+  ul {
+    clear: both;
+
+    li {
+      float: left;
+      margin-bottom: 10px;
+    }
+
+    .lable {
+      color: #7B7B7B;
+    }
+
+    .info {
+      color: #20232B;
+    }
+  }
 
 }
 
 .info_btm {
-    padding   : 22px 19px;
-    height    : 62px;
-    box-sizing: border-box;
+  padding: 22px 19px;
+  height: 62px;
+  box-sizing: border-box;
 
-    li {
-        width       : 82px;
-        cursor      : pointer;
-        float       : left;
-        margin-right: 25px;
+  li {
+    width: 82px;
+    cursor: pointer;
+    float: left;
+    margin-right: 25px;
 
-        img {
-            vertical-align: middle;
-            margin-right  : 8px;
-        }
+    img {
+      vertical-align: middle;
+      margin-right: 8px;
     }
+  }
 }
 
 .el-message.el-message--error.validateErrorTip {
-    left: calc(50% + 100px);
+  left: calc(50% + 100px);
 }
+
 
 #catalogueUpload{
     .el-upload-dragger{
         height: 380px;
     }
+}
+
+ .archiveCatalogueBox{
+    background: #EAEDF4;
+    margin-right: 0;
+    height: 100%;
+    .el-dialog__header {
+        height: 64px;
+        background: #FFFFFF;
+        color: #20232B;
+        padding: 0 0 0 20px;
+        line-height: 64px;
+        .catalogueTitle {
+            font-size: 20px;
+            cursor: pointer;
+            img{
+              height: 30px;
+              vertical-align: middle;
+            }
+        }
+    }
+    .el-dialog__body{
+        height: calc(100% - 150px);
+        padding-bottom: 0;
+        .a{
+            height: 100%;
+            overflow: auto;
+        }
+    }
+    .el-dialog__footer{
+        text-align: center;
+    }
+    table{
+        text-align: center;
+        background: #fdffff;
+        td{
+            padding: 10px 0;
+            min-height: 38px;
+            border: 1px solid #7F8185;
+            cursor: pointer;
+        }
+        tr{
+            td:nth-child(1),td:nth-child(3){
+                width: 40px;
+            }
+        }
+        .activeTd{
+          td{
+            color: red;
+          }
+        }
+    }
+}
+#catalogueUpload {
+  .el-upload-dragger {
+    height: 380px;
+  }
 }

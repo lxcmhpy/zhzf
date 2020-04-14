@@ -63,6 +63,7 @@ export default {
     //新增
     showModal(data,caseData) {
       //显示弹框
+      this.checkList = [];
       console.log(data);
       this.caseLinkDataForm.caseLinktypeId = caseData.caseLinktypeId;
       this.caseLinkDataForm.caseBasicinfoId = caseData.caseBasicinfoId;
@@ -95,6 +96,7 @@ export default {
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
+      debugger
       this.visible = false;
       this.checkList = [];
     },
@@ -105,9 +107,9 @@ export default {
     // 弹框关闭按钮
     resetForm() {
       this.visible = false;
-      //   this.$nextTick(() => {
-      //     this.$refs["addUserForm"].resetFields();
-      //   });
+        // this.$nextTick(() => {
+        //   this.$refs["addUserForm"].resetFields();
+        // });
     },
   }
 };
