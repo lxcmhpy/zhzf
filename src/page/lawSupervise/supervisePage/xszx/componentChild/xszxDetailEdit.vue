@@ -365,9 +365,13 @@
                 <table class="table_style" v-if="obj">
                     <tr>
                         <td class="color_ff w-1">图像识别车牌</td>
-                        <td>{{obj.vehicleNumber}}</td>
+                        <td>
+                            <el-input width="300px" readonly v-model="obj.vehicleNumber"></el-input>
+                        </td>
                         <td class="color_ff w-1">车牌颜色</td>
-                        <td>{{obj.vehicleColor}}</td>
+                        <td>
+                            <el-input width="100px" readonly v-model="obj.vehicleColor"></el-input>
+                        </td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">ETC识别车牌</td>
@@ -397,9 +401,9 @@
                 <table class="table_style" v-if="obj">
                     <tr>
                         <td class="color_ff w-1">驱动轴</td>
-                        <td>{{obj.vehicleNumber}}</td>
+                        <td width="260px">{{obj.vehicleNumber}}</td>
                         <td class="color_ff w-1">轴型</td>
-                        <td>{{obj.vehicleColor}}</td>
+                        <td >{{obj.vehicleColor}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">总重</td>
@@ -436,7 +440,7 @@
                 <table class="table_style" v-if="obj">
                     <tr>
                         <td class="color_ff w-1">检测时间</td>
-                        <td>{{obj.vehicleNumber}}</td>
+                        <td width="260px">{{obj.vehicleNumber}}</td>
                         <td class="color_ff w-1">检测站点</td>
                         <td>{{obj.vehicleColor}}</td>
                     </tr>

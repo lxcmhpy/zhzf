@@ -53,5 +53,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "@/assets/css/cluesReview.scss";
+@import "@/assets/css/dialogStyle.scss";
 </style>
