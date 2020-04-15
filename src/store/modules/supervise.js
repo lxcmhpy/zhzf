@@ -1,7 +1,7 @@
 import iLocalStroage from "@/common/js/localStroage";
 const supervise = {
     state:{
-        offSiteManageId:'' ,
+        offSiteManageId: '' ,
     },
     mutations:{
         //设置caseId

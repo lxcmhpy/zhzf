@@ -1,4 +1,5 @@
 <template>
+<!-- 非现场治超列表 -->
 <keep-alive>
 <div class="com_searchAndpageBoxPadding">
     <div class="com_searchPage_top">
@@ -115,18 +116,21 @@
                 <el-table-column prop="overload" label="超限率（kg）" align="center"></el-table-column>
                 <el-table-column prop="key" label="重点监管" align="center"></el-table-column>
                 <!-- <el-table-column prop="status" label="处理状态" align="center"></el-table-column> -->
-                <el-table-column label="操作" align="center">
+                <el-table-column label="操作" width="300px" align="center">
                     <template slot-scope="scope">
                          <a href="javascript:void(0)" @click="routerInvalidCueDetail(scope.row)">
-                            无效信息跳转
-                        </a><br>
+                            无效信息
+                        </a>&nbsp;&nbsp;
                         <a href="javascript:void(0)" @click="routerExamineDetail(scope.row)">
-                            审核跳转
-                        </a><br>
+                            已审核
+                        </a>&nbsp;&nbsp;
+                        <a href="javascript:void(0)" @click="routerExamineDoingDetail(scope.row)">
+                            待审核
+                        </a>&nbsp;&nbsp;
                         <a href="javascript:void(0)" @click="routerDetail(scope.row)">
                             详情
-                        </a><br>
-                        <a href="javascript:void(0)" @click="routerEvidenceDetail">
+                        </a>&nbsp;&nbsp;
+                        <a href="javascript:void(0)" @click="routerEvidenceDetail(scope.row)">
                             证据
                         </a>
                     </template>
@@ -261,7 +265,7 @@ export default {
     return {
         vehicleColorList: null,
         cxlList: null,
-        pageSize: 10, //pagesize
+        // pageSize: 10, //pagesize
         form: {
             siteName: '',
             vehicleColor: '',
@@ -269,10 +273,11 @@ export default {
             overload: '',
             status: '',
             current: 1, //当前页
-            size: 0, //总页数
+            size: 10, //每页显示条数
             // checkEndTime: '',
             // checkStartTime: ''
         },
+        total: 0, // 总条数
         timeList: ['',''],
         processStatus: [{
             value: '无效信息'
@@ -310,7 +315,8 @@ export default {
             queryListPage(_this.form).then(
                 res => {
                     resolve(res)
-                    _this.tableData = res.data.records
+                    _this.tableData = res.data.records;
+                    _this.total = res.data.total;
                 },
                 error => {
                     //  _this.errorMsg(error.toString(), 'error')
@@ -343,7 +349,7 @@ export default {
             name: 'offSiteDetail'
         })
     },
-    routerEvidenceDetail () {
+    routerEvidenceDetail (row) {
         this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
             name: 'evidenceDetail'
@@ -351,7 +357,7 @@ export default {
     },
       //更改每页显示的条数
     handleSizeChange(val) {
-        this.pageSize = val;
+        this.form.pageSize = val;
         this.getLogList(1);
     },
     //更换页码
@@ -367,9 +373,22 @@ export default {
     routerExamineDetail (item) {
         this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
-            name: 'examineDetail'
+            name: 'examineDoingDetail',
+            params: {
+                status: '2'
+            }
+        })
+    },
+    routerExamineDoingDetail (item) {
+        this.$store.commit('setOffSiteManageId', item.id);
+        this.$router.push({
+            name: 'examineDoingDetail',
+            params: {
+                status: '0'
+            }
         })
     }
+
   },
   created () {
     this.search();

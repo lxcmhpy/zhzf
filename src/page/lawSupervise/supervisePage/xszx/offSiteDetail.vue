@@ -1,4 +1,5 @@
 <template>
+<!-- 线索详情 -->
 <div class="main_box">
     <div class="main_content" style="margin-top: 24px">
         <div class="shadow">
@@ -116,7 +117,7 @@
 }
 </style>
 <script>
-import btns from '@/page/lawSupervise/componentCommon/btns.vue';
+import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 import {getDetailById} from '@/api/lawSupervise.js';
 import { mapGetters } from "vuex";
 export default {

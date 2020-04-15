@@ -69,13 +69,14 @@ export default  [
                 title: '无效信息'
             },
             component: () => import("@/page/lawSupervise/supervisePage/xszx/invalidCueDetail.vue")
-        }, {
-            path: '/examineDetail',
-            name: 'examineDetail',
+        },
+        {
+            path: '/examineDoingDetail/:status',
+            name: 'examineDoingDetail',
             meta: {
-                title: '审核信息'
+                title: '待审核'
             },
-            component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDetail.vue")
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDoingDetail.vue")
         }]
     }, {
         //统计分析
