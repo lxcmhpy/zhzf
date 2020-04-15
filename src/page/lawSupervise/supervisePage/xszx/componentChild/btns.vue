@@ -1,7 +1,7 @@
 <template>
   <div class="superviseBtns">
     <div v-if="['0', '1'].indexOf(tabActiveValue) > -1">
-      <el-button type="button" class="submitBtn blueBtn" @click="showModal" >
+      <el-button type="button" class="submitBtn blueBtn" @click="showInvalidCue" >
         <i class="el-icon-warning-outline"></i>
         <div>无效<br />信息</div>
       </el-button>
@@ -11,35 +11,55 @@
       </el-button>
     </div>
     <div v-else>
-      <el-button type="button" class="submitBtn blueBtn">
+      <el-button type="button" class="submitBtn blueBtn" @click="showZbDialog">
         <div>完成</div>
       </el-button>
     </div>
 
     <div>
-      <el-dialog class="mini-dialog-title" title="无效信息" :visible.sync="visible" :show-close="false"
-        :close-on-click-modal="false" width="420px" >
-        <div class="error-message">
-          <div class="">
-            <img src="@/../static/images/img/cluesReview/icon_wuxiao.png"  alt="" />
-          </div>
-          <p>当前线索为无效信息</p>
-        </div>
-        <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="0">
-          <div class="invalidinfo">
-            <el-select v-model="checkSearchForm.number" placeholder="选择无效线索类型">
-              <el-option :value="0" label="无效线索类型1"></el-option>
-              <el-option :value="1" label="无效线索类型2"></el-option>
-            </el-select>
-            <p>备注说明</p>
-            <el-input v-model="checkSearchForm.color" type="textarea"></el-input>
-          </div>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="gotoCoerciveMeasureDoc">确认</el-button>
-          <el-button @click="visible = false">取消</el-button>
-        </span>
-      </el-dialog>
+        <el-dialog class="mini-dialog-title" title="无效信息" :visible.sync="visible" :show-close="false"
+            :close-on-click-modal="false" width="420px" >
+            <div class="error-message">
+            <div class="">
+                <img src="@/../static/images/img/cluesReview/icon_wuxiao.png"  alt="" />
+            </div>
+            <p>当前线索为无效信息</p>
+            </div>
+            <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="0">
+            <div class="invalidinfo">
+                <el-select v-model="checkSearchForm.number" placeholder="选择无效线索类型">
+                <el-option :value="0" label="无效线索类型1"></el-option>
+                <el-option :value="1" label="无效线索类型2"></el-option>
+                </el-select>
+                <p>备注说明</p>
+                <el-input v-model="checkSearchForm.color" type="textarea"></el-input>
+            </div>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="routerOffSiteManage">确认</el-button>
+            <el-button @click="visible = false">取消</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog class="mini-dialog-title" title="转办说明" :visible.sync="zbVisible" :show-close="false"
+            :close-on-click-modal="false" width="800px" >
+            <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="130px">
+                <div class="invalidinfo">
+                    <el-form-item label="立案机构：">
+                        <el-select v-model="checkSearchForm.number" placeholder="选择无效线索类型">
+                            <el-option :value="0" label="无效线索类型1"></el-option>
+                            <el-option :value="1" label="无效线索类型2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                     <el-form-item label="转办说明：">
+                        <el-input v-model="checkSearchForm.color" type="textarea"></el-input>
+                    </el-form-item>
+                </div>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="routerOffSiteManage">确认</el-button>
+                <el-button @click="zbVisible = false">取消</el-button>
+            </span>
+        </el-dialog>
     </div>
   </div>
 </template>
@@ -58,6 +78,7 @@
     margin: 8px 0px;
     line-height: 16px;
     font-size: 12px;
+    z-index: 2000;
     i {
       font-size: 20px;
     }
@@ -87,6 +108,7 @@ export default {
   data() {
     return {
       visible: false,
+      zbVisible: false,
       checkSearchForm: {
         number: '',
         color: ''
@@ -94,7 +116,10 @@ export default {
     };
   },
   methods: {
-    showModal(data) {
+    showZbDialog () {
+        this.zbVisible = true;
+    },
+    showInvalidCue(data) {
       console.log(data);
       this.visible = true;
     },
@@ -105,6 +130,11 @@ export default {
     gotoCoerciveMeasureDoc() {
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: 'removeOrPrelong' })
+    },
+    routerOffSiteManage () {
+        this.$router.push({
+            name: 'offSiteManage'
+        })
     },
     dialogInvalidCue() {
 
