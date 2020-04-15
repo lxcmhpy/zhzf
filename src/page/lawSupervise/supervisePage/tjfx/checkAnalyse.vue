@@ -1,33 +1,22 @@
 <template>
   <keep-alive>
     <div class="com_searchAndpageBoxPadding">
-      <div class="com_searchPage_top">
-        <!-- <ul class="com_searchPage_tab">
-            <li v-for="(item, index) in processStatus" :class="{'active': index === tabActiveIndex}"  :key="index" @click="activeAndSearch(item,index)">{{item.value}}</li>
-        </ul> -->
-        <!-- @tab-click="activeAndSearch" -->
-        <el-tabs v-model="tabActiveIndex" :stretch="true">
-          <el-tab-pane v-for="(item, index) in processStatus" :key="index" :name="`${index}`">
-            <span slot="label">
-              <el-badge :value="index==0?null:index">
-                {{item.value}}
-              </el-badge>
-            </span>
-          </el-tab-pane>
-        </el-tabs>
-      </div>
       <div class="searchAndpageBox toggleBox">
         <div class="handlePart caseHandleSearchPart">
           <el-form :inline="true" :model="form" label-width="80px" ref="form">
-            <el-form-item label="车牌号">
-              <el-select v-model="form.vehicleColor" class="w-80" placeholder="请选择">
-                <el-option v-for="item in vehicleColorList" :key="item.id" :label="item.name" :value="item.name"></el-option>
-              </el-select>
+            <el-form-item label="检测站点">
+              <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
             </el-form-item>
-            <el-form-item label=" " label-width="0px">
-              <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+
+            <el-form-item label="开始时间">
+              <el-date-picker v-model="checkStartTime" type="date" format="yyyy-MM-dd" placeholder="开始日期">
+              </el-date-picker>
             </el-form-item>
-            <el-form-item label="任务时间">
+            <el-form-item label="结束时间">
+              <el-date-picker v-model="checkEndTime" type="date" format="yyyy-MM-dd" placeholder="结束日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="时间段">
               <el-date-picker v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
@@ -36,19 +25,21 @@
               <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
               <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
               </el-button>
-              <!-- <a href="javascript:void(0)" @click="routerDetail">
-                        详情
-                    </a>
-                    <a href="javascript:void(0)" @click="routerEvidenceDetail">
-                        证据
-                    </a> -->
             </el-form-item>
             <el-collapse-transition>
               <div v-show="isShow" :class="{'ransition-box':true}">
-                <el-form-item label="检测站点">
+                <el-form-item label="车牌号">
+                  <el-select v-model="form.vehicleColor" class="w-80" placeholder="请选择">
+                    <el-option v-for="item in vehicleColorList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label=" " label-width="0px">
+                  <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+                </el-form-item>
+                <el-form-item label="超限率">
                   <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
-                <el-form-item label="处理状态">
+                <el-form-item label="黑名单">
                   <el-select v-model="form.status" prop="type">
                     <el-option v-for="item in processStatus" :key="item.value" :label="item.value" :value="item.value"></el-option>
                   </el-select>
@@ -57,14 +48,16 @@
             </el-collapse-transition>
           </el-form>
         </div>
-        <!-- <div class="handlePart" style="margin-left: 0px;">
+        <div class="handlePart" style="margin-left: 0px;">
           <el-button type="primary" size="medium">
-            <i class="iconfont law-submit-o f12"></i> 预警推送
+            <!-- <i class="iconfont law-submit-o f12"></i>  -->
+            导出
           </el-button>
           <el-button type="primary" size="medium">
-            <i class="iconfont law-submit-o f12"></i> 转办
+            <!-- <i class="iconfont law-submit-o f12"></i>  -->
+            统计图
           </el-button>
-        </div> -->
+        </div>
         <div class="tablePart">
           <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;">
             <el-table-column label="序号" width="70px">
@@ -72,7 +65,9 @@
                 {{scope.$index+1}}
               </template>
             </el-table-column>
-            <el-table-column prop="checkTime" label="任务时间" align="center" width="100"></el-table-column>
+            <el-table-column prop="checkTime" label="过检时间" align="center" width="100"></el-table-column>
+            <el-table-column prop="lane" label="检测站点" align="center"></el-table-column>
+
             <el-table-column label="车牌号码" align="center" width="120">
               <template slot-scope="scope">
                 <div :class="vehicleColorObj[scope.row.vehicleColor]">
@@ -82,16 +77,10 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="lane" label="相关说明" align="center"></el-table-column>
-            <el-table-column prop="status" label="处理状态" align="center"></el-table-column>
-            <el-table-column prop="totalWeight" label="处置机构/人员" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <a href="javascript:void(0)" @click="routerDetail(scope.row)">
-                  详情
-                </a>
-              </template>
-            </el-table-column>
+            <el-table-column prop="totalWeight" label="车货总质量" align="center"></el-table-column>
+            <el-table-column prop="overWeight" label="超重" align="center"></el-table-column>
+            <el-table-column prop="overWeight" label="超限率" align="center"></el-table-column>
+            <el-table-column prop="totalWeight" label="重点监管" align="center"></el-table-column>
           </el-table>
         </div>
         <div class="paginationBox" v-show="form.size">
@@ -221,8 +210,8 @@ export default {
         status: '',
         current: 1, //当前页
         size: 0, //总页数
-        // checkEndTime: '',
-        // checkStartTime: ''
+        checkEndTime: '',
+        checkStartTime: ''
       },
       timeList: ['', ''],
       processStatus: [{
@@ -311,7 +300,7 @@ export default {
     },
     routerInvalidCue(item) {
       this.$router.push({
-        name: 'invalidCueDetail'
+        name: 'invalidCue'
       })
     }
   },

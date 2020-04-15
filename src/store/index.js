@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 import state from './state';
 import mutations from './mutations'
 import getters from './getters';
@@ -21,9 +22,9 @@ import supervise from './modules/supervise';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-    state,
     mutations,
     // actions,
+    state,
     getters,
     actions:{
         //默认加载最短时间1秒
@@ -60,7 +61,16 @@ const store = new Vuex.Store({
         person,
         checkInfo,
         supervise
-    }
+    },
+    plugins: [createPersistedState({
+        storage: window.sessionStorage,
+        reducer (val) {
+            return {
+                supervise: val.supervise,
+                caseHandle: val.caseHandle
+            }
+        }
+    })],
 });
 
 export default store;

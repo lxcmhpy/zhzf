@@ -63,12 +63,48 @@ export default  [
                 },
                 component: () => import("@/page/lawSupervise/supervisePage/xszx/evidenceDetail.vue")
            }, {
-            path: '/invalidCue',
-            name: 'invalidCue',
+            path: '/invalidCueDetail',
+            name: 'invalidCueDetail',
             meta: {
                 title: '无效信息'
             },
-            component: () => import("@/page/lawSupervise/supervisePage/xszx/invalidCue.vue")
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/invalidCueDetail.vue")
+        },
+        {
+            path: '/examineDoingDetail/:status',
+            name: 'examineDoingDetail',
+            meta: {
+                title: '待审核'
+            },
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDoingDetail.vue")
         }]
+    }, {
+        //统计分析
+        path: '/analysis',
+        name: 'analysis',
+        component: MainContent,
+        children: [{
+               path: '/checkAnalyse',
+               name: 'checkAnalyse',
+               meta: {
+                   title: '治超检测统计分析',
+                   oneTab:true,
+               },
+               component: () => import("@/page/lawSupervise/supervisePage/tjfx/checkAnalyse.vue")
+           }]
+    }, {
+        //重点监管
+        path: '/analysis',
+        name: 'analysis',
+        component: MainContent,
+        children: [{
+               path: '/checkAnalyse',
+               name: 'checkAnalyse',
+               meta: {
+                   title: '治超检测统计分析',
+                   oneTab:true,
+               },
+               component: () => import("@/page/lawSupervise/supervisePage/tjfx/checkAnalyse.vue")
+           }]
     }
 ]

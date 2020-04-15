@@ -5,7 +5,7 @@
                 <div class="box_title">
                     <span class="titleflag">
                     </span>
-                    <span class="title">称重检测数据（车辆信息）</span>
+                    <span class="title">称重检测数据</span>
                 </div>
                 <table class="table_style" v-if="obj">
                     <tr>
@@ -34,12 +34,10 @@
                     </tr>
                 </table>
             </div>
-        </div>
-        <div class="shadow">
             <div class="box w-2">
                 <div class="box_title">
-                    <span class="titleflag"></span>
-                    <span class="title">称重检测数据（检测信息）</span>
+                    <!-- <span class="titleflag"></span>
+                    <span class="title">称重检测数据（检测信息）</span> -->
                 </div>
                 <table class="table_style" v-if="obj">
                     <tr>
@@ -74,13 +72,12 @@
                     </tr>
                 </table>
             </div>
-        </div>
-        <div class="shadow">
             <div class="box w-2">
 
                 <div class="box_title">
-                    <span class="titleflag"></span>
-                    <span class="title">称重检测数据（站点信息）</span></div>
+                    <!-- <span class="titleflag"></span>
+                    <span class="title">称重检测数据（站点信息）</span> -->
+                </div>
                 <table class="table_style" v-if="obj">
                     <tr>
                         <td class="color_ff w-1">检测时间</td>
@@ -163,6 +160,6 @@
 </template>
 <script>
 export default {
-
+    props: ['obj']
 }
 </script>

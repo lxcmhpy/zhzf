@@ -3,6 +3,7 @@ import Layout from '@/page/lagout/mainLagout' //Layout 是架构组件，不在�
 import caseHandleRouterJson from './routerJson/caseHandleRouterJson'
 import personRouterJson from './routerJson/personRouterJson'
 import lawSuperviseJson from './routerJson/lawSuperviseJson'
+import caseCenterJson from './routerJson/caseCenterJson'
 
 // 不作为Main组件的子页面展示的页面单独写，如下
 const route = [
@@ -64,7 +65,8 @@ const route = [
           ...personRouterJson
         ]
       },
-      ...lawSuperviseJson
+      ...lawSuperviseJson,
+      ...caseCenterJson
     ]
   },
   //主页的路由

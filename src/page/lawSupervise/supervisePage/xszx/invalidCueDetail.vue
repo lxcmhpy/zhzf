@@ -1,4 +1,5 @@
 <template>
+<!-- 无效信息页面 -->
 <div class="main_box">
     <div class="main_content" style="margin-top: 24px">
         <div class="shadow">
@@ -8,23 +9,19 @@
                     </span>
                     <span class="title">相关说明</span>
                 </div>
-                <table class="table_style" v-if="obj">
-                    <tr>
-                        <td>
-                            <el-input
-                                    type="textarea"
-                                    :rows="2"
-                                    placeholder="请输入内容"
-                                    v-model="obj.vehicleNumber">
-                            </el-input>
-                        </td>
-                    </tr>
-                </table>
+                <div>
+                    <el-input
+                            type="textarea"
+                            :rows="4"
+                            placeholder="请输入内容"
+                            v-model="obj.remarks">
+                    </el-input>
+                </div>
             </div>
         </div>
-        <xszxCommon></xszxCommon>
+        <xszxCommon v-if="obj" :obj="obj"></xszxCommon>
     </div>
-    <btns></btns>
+    <!-- <btns></btns> -->
 </div>
 </template>
 
@@ -36,7 +33,7 @@
 }
 </style>
 <script>
-import btns from '@/page/lawSupervise/componentCommon/btns.vue';
+import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 import {getDetailById} from '@/api/lawSupervise.js';
 import { mapGetters } from "vuex";
 import xszxCommon from './componentChild/xszxCommon.vue';

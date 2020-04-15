@@ -51,8 +51,9 @@
                 :inactive-value="1"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
-                @change="updateEviBySwitch(scope.row)"
+                @change.native.prevent="updateEviBySwitch(scope.row)"
               ></el-switch>
+
             </template>
           </el-table-column>
           <el-table-column prop="evPath" label="附件" align="center">

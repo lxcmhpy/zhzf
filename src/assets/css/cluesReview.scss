@@ -106,11 +106,16 @@
             }
         }
 
+        .table-padding {
+            padding   : 32px 30px 0;
+            height    : 675px;
+            box-sizing: border-box;
+        }
+
         .el-tabs__item {
             height: 42px;
         }
 
-        .table,
         .map,
         .list {
             height: 675px;
@@ -165,27 +170,6 @@
         }
     }
 
-    table {
-        margin: 32px 30px 0;
-        width : 820px;
-
-        td {
-            border     : 1px solid #DFDFDF;
-            box-sizing : border-box;
-            height     : 46px;
-            line-height: 20px;
-            min-width  : 150px;
-            font-size  : 14px;
-            font-weight: 500;
-            color      : rgba(32, 35, 43, 1);
-            text-align : left;
-            padding    : 13px 10px;
-        }
-
-        .table-bg {
-            background: #F4F8FF;
-        }
-    }
 
     .map {
         .map-top {
@@ -254,28 +238,37 @@
                 }
 
             }
+
             .el-input__inner {
-                padding: 0 30px 0 5px;
-                width: 163px !important;
-                height:26px;
-                line-height:26px;
-                background:rgba(62,149,143,1);
-                border: 0;
-                color: white;
+                padding    : 0 30px 0 5px;
+                width      : 163px !important;
+                height     : 26px;
+                line-height: 26px;
+                background : rgba(62, 149, 143, 1);
+                border     : 0;
+                color      : white;
             }
-            .el-date-editor,.el-input,.el-input--prefix,.el-input--suffix ,.el-date-editor--date{
+
+            .el-date-editor,
+            .el-input,
+            .el-input--prefix,
+            .el-input--suffix,
+            .el-date-editor--date {
                 width: 163px !important;
-                i{
-                    color: white;
+
+                i {
+                    color     : white;
                     margin-top: -4px;
                 }
+
                 .el-input__icon {
                     line-height: auto;
                 }
+
                 .el-input__prefix {
-                    left: auto;
+                    left : auto;
                     right: 0;
-                    
+
                 }
             }
         }
@@ -353,16 +346,143 @@
             }
 
             button {
-                
+
                 border: 0;
-                color: white;
+                color : white;
 
             }
-            .btnstyle{
-                background-color: #4AAFA7 !important; width:100px;border-color: #4AAFA7 !important;
+
+            .btnstyle {
+                background-color: #4AAFA7 !important;
+                width           : 100px;
+                border-color    : #4AAFA7 !important;
             }
         }
     }
+}
+
+/* 表格样式 */
+.table-style {
+    table {
+        width: 820px;
+
+        td {
+            border     : 1px solid #DFDFDF;
+            box-sizing : border-box;
+            height     : 46px;
+            line-height: 20px;
+            min-width  : 150px;
+            font-size  : 14px;
+            font-weight: 500;
+            color      : rgba(32, 35, 43, 1);
+            text-align : left;
+            padding    : 13px 10px;
+        }
+
+        .table-bg {
+            background: #F4F8FF;
+        }
+    }
+
+}
+
+/* 阴影盒子样式 */
+.shadow-box {
+    padding   : 24px 0 54px;
+    width     : 100%;
+    box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
+    box-sizing: border-box;
+
+    .info-box {
+        width : 820px;
+        margin: 0 auto;
+    }
+}
+
+.title-box {
+    margin-bottom: 14px;
+    height       : 25px;
+
+    .title-blue {
+        margin    : 5px 8px 0 0;
+        display   : block;
+        float     : left;
+        width     : 4px;
+        height    : 16px;
+        background: rgba(69, 115, 208, 1);
+
+    }
+
+    .title-text {
+        font-size  : 18px;
+        font-weight: 500;
+        color      : rgba(32, 35, 43, 1);
+        line-height: 25px;
+    }
+}
+
+/* 证据图片 */
+.evidence-img {
+    margin-top: 5px;
+    min-height: 111px;
+
+    li {
+        margin: 0 21px 28px 0;
+        width : 189px;
+        float : left;
+
+    }
+
+    .img-url {
+        margin-bottom: 8px;
+        height       : 111px;
+        background   : #D8D8D8;
+        box-sizing   : border-box;
+        overflow     : hidden;
+        text-align   : center;
+
+        img {
+            height: 100%;
+        }
+    }
+
+    .img-title {
+        font-size  : 14px;
+        font-weight: 400;
+        color      : rgba(123, 123, 123, 1);
+        line-height: 20px;
+    }
+
+    .img-url-upload {
+        margin-bottom : 8px;
+        height        : 111px;
+        background    : #EDEFFD;
+        text-align    : center;
+        vertical-align: middle;
+        line-height   : 111px;
+
+        img {
+            vertical-align: middle;
+        }
+    }
+
+}
+
+.margin-right0 {
+    margin-right: 0 !important;
+}
+
+.evidence-img:after {
+    content   : '\20';
+    display   : block;
+    height    : 0;
+    clear     : both;
+    visibility: hidden;
+    overflow  : hidden;
+}
+
+.bg-white {
+    background: white;
 }
 
 .left {
@@ -375,4 +495,12 @@
 
 .width198 {
     width: 198px;
+}
+.margin-top22px{
+    margin-top: 22px;
+}
+
+.keyVehicleDentails{
+    padding: 22px;
+    box-sizing: border-box;
 }
