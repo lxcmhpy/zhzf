@@ -163,6 +163,6 @@
 </template>
 <script>
 export default {
-
+    props: ['obj']
 }
 </script>

@@ -311,7 +311,7 @@ export default {
     },
     routerInvalidCue(item) {
       this.$router.push({
-        name: 'invalidCue'
+        name: 'invalidCueDetail'
       })
     }
   },

@@ -202,13 +202,13 @@
             </td>
           </tr>
           <tr>
-            <td>
-              <p class="center_similar">执
+            <td rowspan="4">
+              <p class="center_similar">执</p>
               <p class="center_similar">行</p>
-              <p class="center_similar">情
+              <p class="center_similar">情</p>
               <p class="center_similar">况</p>
             </td>
-            <td colspan="6" class="color_DBE4EF">
+            <td colspan="6" rowspan="4" class="color_DBE4EF">
               <el-form-item prop="closeSituation">
                 <el-input  style="float:left;width:70%;margin-top:30px;"
                 type="textarea"
@@ -218,16 +218,20 @@
                 maxlength="200"
                 placeholder="\">
                 </el-input>
-                <div class="pdf_seal" style="float:right; width: 30%;">
-                  <p>签名：{{formData.approvePeo}}</p>
+                <div class="pdf_seal" style="float:right; width: 30%;padding-top:90px;">
+                  <p>签名：{{formData.staffSign}}</p>
                   <p>
-                    <span v-if="formData.approveTime">{{formData.approveTime}}</span>
+                    <span v-if="formData.staffSignTime">{{formData.staffSignTime}}</span>
                     <span v-else>年 月 日</span>
                   </p>
                 </div>
               </el-form-item>
             </td>
           </tr>
+          <tr></tr>
+          <tr></tr>
+          <tr></tr>
+
           <tr>
             <td>
               <p>经办机</p>

@@ -63,12 +63,19 @@ export default  [
                 },
                 component: () => import("@/page/lawSupervise/supervisePage/xszx/evidenceDetail.vue")
            }, {
-            path: '/invalidCue',
-            name: 'invalidCue',
+            path: '/invalidCueDetail',
+            name: 'invalidCueDetail',
             meta: {
                 title: '无效信息'
             },
-            component: () => import("@/page/lawSupervise/supervisePage/xszx/invalidCue.vue")
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/invalidCueDetail.vue")
+        }, {
+            path: '/examineDetail',
+            name: 'examineDetail',
+            meta: {
+                title: '审核信息'
+            },
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDetail.vue")
         }]
     }, {
         //统计分析

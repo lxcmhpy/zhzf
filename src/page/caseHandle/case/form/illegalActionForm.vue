@@ -21,7 +21,7 @@
         <p>
           &nbsp;&nbsp;经调查，本机关认为你（单位）
           <span>
-            <el-form-item prop="caseCauseNameCopy">
+            <el-form-item prop="caseCauseNameCopy" style="width:250px;">
               <el-input
                 type="textarea"
                 v-model="formData.caseCauseNameCopy"
@@ -29,6 +29,7 @@
                 :autosize="{ minRows: 1, maxRows: 2}"
                 :maxLength="maxLength"
                 disabled
+                style="width:250px;"
               ></el-input>
             </el-form-item>
           </span>行为，违反了

@@ -93,9 +93,6 @@
              <el-button type="primary" size="medium">
                 <i class="iconfont law-submit-o f12"></i> 转办
             </el-button>
-            <a href="javascript:void(0)" @click="routerInvalidCue(null)">
-                            无效信息跳转
-                        </a>
         </div>
          <div class="tablePart">
             <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
@@ -120,12 +117,15 @@
                 <!-- <el-table-column prop="status" label="处理状态" align="center"></el-table-column> -->
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                         <a href="javascript:void(0)" @click="routerInvalidCue(scope.row)">
+                         <a href="javascript:void(0)" @click="routerInvalidCueDetail(scope.row)">
                             无效信息跳转
-                        </a>
+                        </a><br>
+                        <a href="javascript:void(0)" @click="routerExamineDetail(scope.row)">
+                            审核跳转
+                        </a><br>
                         <a href="javascript:void(0)" @click="routerDetail(scope.row)">
                             详情
-                        </a>
+                        </a><br>
                         <a href="javascript:void(0)" @click="routerEvidenceDetail">
                             证据
                         </a>
@@ -344,6 +344,7 @@ export default {
         })
     },
     routerEvidenceDetail () {
+        this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
             name: 'evidenceDetail'
         })
@@ -357,9 +358,16 @@ export default {
     handleCurrentChange(val) {
       this.getLogList(val);
     },
-    routerInvalidCue (item) {
+    routerInvalidCueDetail (item) {
+        this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
-            name: 'invalidCue'
+            name: 'invalidCueDetail'
+        })
+    },
+    routerExamineDetail (item) {
+        this.$store.commit('setOffSiteManageId', item.id);
+        this.$router.push({
+            name: 'examineDetail'
         })
     }
   },
