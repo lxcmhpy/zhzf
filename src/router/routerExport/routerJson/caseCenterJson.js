@@ -6,7 +6,17 @@ export default  [
         name: 'caseCenter',
         component: MainContent,
         children: [
-            // 事务中心
+            // {
+            //      // 事务中心
+            //        path: '/lawSupervise',
+            //        name: 'lawSupervise',
+            //        meta: {
+            //            title: "事务中心首页",
+            //            oneTab:true,
+            //        },
+            //        component: () => import("@/page/lawSupervise/supervisePage/kshjg/lawSupervise.vue"),
+            //    },
+          
             {
                 path: "/transferAndRegisterCase",
                 name: "transferAndRegisterCase",
