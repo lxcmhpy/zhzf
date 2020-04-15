@@ -37,14 +37,16 @@ export function getById(type,id) {
   }
   export function getDetailById(id) {
     return request({
-      url: "/zfjg/superviseVehicle/findById/" + id,
+      url: "/zfjg/superviseVehicle/findById/",
       method: "get",
       showloading: false,
+      data: id,
     //   loadingType:'loadPart',
       baseUrlType:2,
       cancelToken: setCancelSource()
     });
   }
+//   /zfjg/superviseVehicle/findWeighingRecord/{name}
   export function queryListPage(data) {
     return request({
       url: "/zfjg/superviseVehicle/queryListPage",
@@ -57,7 +59,7 @@ export function getById(type,id) {
   }
   export function findAllDrawerById (data) {
     return request({
-      url: "/sys/drawer/findAllDrawerById/" +data,
+      url: "/system/sys/drawer/findAllDrawerById/" +data,
       method: "get",
       showloading: false,
       baseUrlType:1,
