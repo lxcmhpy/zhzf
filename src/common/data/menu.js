@@ -59,32 +59,34 @@ export const menuList = [{
             //      selected:false,
             //      plevel:""
             //  },
-            {
-                id: "3160101",
-                createTime: "2020-03-09 04:15:19",
-                name: "teamStrength",
-                showAlways: true,
-                type: 0,
-                title: "队伍力量",
-                path: "teamStrength",
-                component: "lawSupervise/teamStrength",
-                icon: "md-home1",
-                buttonType: "",
-                parentId: "31601",
-                description: "",
-                sortOrder: 2,
-                status: 0,
-                url: "",
-                menuGroup: "",
-                children: [
+            // {
+            //     id: "3160101",
+            //     createTime: "2020-03-09 04:15:19",
+            //     name: "teamStrength",
+            //     showAlways: true,
+            //     type: 0,
+            //     title: "队伍力量",
+            //     path: "teamStrength",
+            //     component: "lawSupervise/teamStrength",
+            //     icon: "md-home1",
+            //     buttonType: "",
+            //     parentId: "31601",
+            //     description: "",
+            //     sortOrder: 2,
+            //     status: 0,
+            //     url: "",
+            //     menuGroup: "",
+            //     children: [
 
-                ],
-                permTypes: "",
-                expand: true,
-                checked: false,
-                selected: false,
-                plevel: ""
-            }, {
+            //     ],
+            //     permTypes: "",
+            //     expand: true,
+            //     checked: false,
+            //     selected: false,
+            //     plevel: ""
+            // },
+
+            {
                 id: "3160102",
                 createTime: "2020-03-09 04:15:19",
                 name: "offSiteDetectionOverload",

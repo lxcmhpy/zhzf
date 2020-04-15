@@ -29,8 +29,7 @@
     </div>
 </div>
 </template>
-<style src="@/assets/css/sliderPage.scss" lang="scss"></style>
-<style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
+
 <script>
 export default {
     props: ['obj'],
