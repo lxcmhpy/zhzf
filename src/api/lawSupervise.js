@@ -37,10 +37,9 @@ export function getById(type,id) {
   }
   export function getDetailById(id) {
     return request({
-      url: "/zfjg/superviseVehicle/findById/",
+      url: "/zfjg/superviseVehicle/findById/" + id,
       method: "get",
       showloading: false,
-      data: id,
     //   loadingType:'loadPart',
       baseUrlType:2,
       cancelToken: setCancelSource()
