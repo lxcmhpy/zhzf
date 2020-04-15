@@ -88,7 +88,7 @@
             </el-form>
         </div>
         <div class="handlePart" style="margin-left: 0px;">
-            <el-button type="primary" size="medium">
+            <el-button type="primary" size="medium" >
                 <i class="iconfont law-submit-o f12"></i> 预警推送
             </el-button>
              <el-button type="primary" size="medium">

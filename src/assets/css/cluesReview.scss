@@ -1,6 +1,5 @@
 .mini-dialog-title {
     z-index: 3000;
-
     .el-dialog {
         .el-dialog__header {
             padding    : 11px 24px 9px !important;
@@ -80,6 +79,16 @@
     }
 
 
+}
+.el-drawer__wrapper {
+    z-index: 3000 !important;
+    .list {
+        ul {
+            li {
+                width: 100%;
+            }
+        }
+    }
 }
 
 

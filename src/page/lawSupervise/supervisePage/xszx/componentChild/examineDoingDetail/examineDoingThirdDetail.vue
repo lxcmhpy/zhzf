@@ -1,14 +1,14 @@
 <template>
  <!-- 完成证据包 -->
 <div class="main_box">
-    <xszxCommon :obj="obj"></xszxCommon>
+    <xszxDetailView :obj="obj"></xszxDetailView>
 </div>
 </template>
 
 <script>
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 import { mapGetters } from "vuex";
-import xszxCommon from '../xszxCommon.vue';
+import xszxDetailView from '../xszxDetailView.vue';
 
 export default {
     props: ['obj'],
@@ -25,7 +25,7 @@ export default {
         ...mapGetters(["offSiteManageId"])
     },
     components: {
-        btns, xszxCommon
+        btns, xszxDetailView
     }
 }
 </script>

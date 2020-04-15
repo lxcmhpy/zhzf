@@ -2,7 +2,7 @@
 <!-- 检测数据核对  -->
 <!--审核中、待审核、可编辑-->
 <div class="main_box">
-    <xszxCommon :obj="obj"></xszxCommon>
+    <xszxDetailEdit :obj="obj"></xszxDetailEdit>
     <div class="shadow">
         <div class="box w-2">
             <div class="box_title">
@@ -26,7 +26,7 @@
 <script>
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 import { mapGetters } from "vuex";
-import xszxCommon from '../xszxCommon.vue';
+import xszxDetailEdit from '../xszxDetailEdit.vue';
 
 export default {
     props: ['obj'],
@@ -51,7 +51,7 @@ export default {
         ...mapGetters(["offSiteManageId"])
     },
     components: {
-        btns, xszxCommon
+        btns, xszxDetailEdit
     }
 }
 </script>

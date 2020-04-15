@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <xszxCommon v-if="obj" :obj="obj"></xszxCommon>
+        <xszxDetailView v-if="obj" :obj="obj"></xszxDetailView>
     </div>
     <!-- <btns></btns> -->
 </div>
@@ -36,7 +36,7 @@
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 import {getDetailById} from '@/api/lawSupervise.js';
 import { mapGetters } from "vuex";
-import xszxCommon from './componentChild/xszxCommon.vue';
+import xszxDetailView from './componentChild/xszxDetailView.vue';
 
 export default {
     data () {
@@ -70,7 +70,7 @@ export default {
         ...mapGetters(["offSiteManageId"])
     },
     components: {
-        btns, xszxCommon
+        btns, xszxDetailView
     }
 }
 </script>
