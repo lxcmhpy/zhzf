@@ -99,7 +99,7 @@
   }
 }
 </style>
-<style lang="scss" src="@/assets/css/cluesReview.scss"></style>
+<style lang="scss" src="@/assets/css/dialogStyle.scss"></style>
 <script>
 import {mapGetters} from "vuex";
 export default {
