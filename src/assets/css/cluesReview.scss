@@ -391,6 +391,7 @@
     padding   : 24px 0 54px;
     width     : 100%;
     box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
+    box-sizing: border-box;
 
     .info-box {
         width : 820px;
@@ -494,4 +495,12 @@
 
 .width198 {
     width: 198px;
+}
+.margin-top22px{
+    margin-top: 22px;
+}
+
+.keyVehicleDentails{
+    padding: 22px;
+    box-sizing: border-box;
 }

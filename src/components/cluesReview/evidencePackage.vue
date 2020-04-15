@@ -16,14 +16,14 @@
                   {{item.name}}
                   </div>
               </li>
-              <li>
+              <!-- <li>
                   <div class="img-url-upload">
                   <img src="@/../static/images/img/cluesReview/icon_weizhi.png" alt=""/>
                   </div>
                   <div class="img-title">
                   点击上传
                   </div>
-              </li>
+              </li> -->
           </ul>
         </div>
       </div>
@@ -47,10 +47,6 @@ export default {
       },{
           id:'',  
           url:'@/../static/images/img/cluesReview/pic3.jpg',
-          name:'上传文件的名称',
-      },{
-          id:'',  
-          url:'@/../static/images/img/cluesReview/pic4.jpg',
           name:'上传文件的名称',
       },{
           id:'',  

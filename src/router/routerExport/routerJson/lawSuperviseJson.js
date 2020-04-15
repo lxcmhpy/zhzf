@@ -70,5 +70,33 @@ export default  [
             },
             component: () => import("@/page/lawSupervise/supervisePage/xszx/invalidCue.vue")
         }]
+    }, {
+        //统计分析
+        path: '/analysis',
+        name: 'analysis',
+        component: MainContent,
+        children: [{
+               path: '/checkAnalyse',
+               name: 'checkAnalyse',
+               meta: {
+                   title: '治超检测统计分析',
+                   oneTab:true,
+               },
+               component: () => import("@/page/lawSupervise/supervisePage/tjfx/checkAnalyse.vue")
+           }]
+    }, {
+        //重点监管
+        path: '/analysis',
+        name: 'analysis',
+        component: MainContent,
+        children: [{
+               path: '/checkAnalyse',
+               name: 'checkAnalyse',
+               meta: {
+                   title: '治超检测统计分析',
+                   oneTab:true,
+               },
+               component: () => import("@/page/lawSupervise/supervisePage/tjfx/checkAnalyse.vue")
+           }]
     }
 ]
