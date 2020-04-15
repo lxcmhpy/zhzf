@@ -620,4 +620,12 @@ export default [
     },
     component: () => import("@/components/cluesReview/otherEnclosure.vue")
   },
+  {
+    path: "/zdjg-keyVehicleDentails",
+    name: "zdjg-keyVehicleDentails",
+    meta: {
+      title: "其他附件组件",
+    },
+    component: () => import("@/page/lawSupervise/supervisePage/zdjg/keyVehicleDentails.vue")
+  },
 ]

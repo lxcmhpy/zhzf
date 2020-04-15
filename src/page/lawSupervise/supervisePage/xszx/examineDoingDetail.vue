@@ -1,5 +1,5 @@
 <template>
-<!-- 检测数据核对  -->
+<!-- 审核页面、待审核、审核中  -->
 <div class="main_box">
     <div class="com_searchAndpageBoxPadding">
         <div class="com_searchPage_top com_examin_top" >

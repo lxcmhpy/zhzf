@@ -1,5 +1,5 @@
 <template>
-<!-- 无效信息 -->
+<!-- 无效信息页面 -->
 <div class="main_box">
     <div class="main_content" style="margin-top: 24px">
         <div class="shadow">

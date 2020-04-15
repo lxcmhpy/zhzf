@@ -1,4 +1,5 @@
 <template>
+<!-- 非现场治超列表 -->
 <keep-alive>
 <div class="com_searchAndpageBoxPadding">
     <div class="com_searchPage_top">
@@ -129,7 +130,7 @@
                         <a href="javascript:void(0)" @click="routerDetail(scope.row)">
                             详情
                         </a>&nbsp;&nbsp;
-                        <a href="javascript:void(0)" @click="routerEvidenceDetail">
+                        <a href="javascript:void(0)" @click="routerEvidenceDetail(scope.row)">
                             证据
                         </a>
                     </template>
@@ -348,7 +349,7 @@ export default {
             name: 'offSiteDetail'
         })
     },
-    routerEvidenceDetail () {
+    routerEvidenceDetail (row) {
         this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
             name: 'evidenceDetail'
@@ -372,7 +373,10 @@ export default {
     routerExamineDetail (item) {
         this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
-            name: 'examineDetail'
+            name: 'examineDoingDetail',
+            params: {
+                status: '2'
+            }
         })
     },
     routerExamineDoingDetail (item) {
