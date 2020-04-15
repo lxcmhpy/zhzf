@@ -12,6 +12,10 @@
     .w-80 {
         width: 80px;
     }
+    .noMore {
+        font-size: 12px;
+        color: #ccc;
+    }
 }
 .searchPage {
     display: flex;
@@ -26,6 +30,7 @@
     .paginationBox {
         flex-shrink:0;
         height:40px;
+
     }
     .handlePart {
         flex-shrink:0;

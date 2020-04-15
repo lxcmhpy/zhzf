@@ -390,7 +390,7 @@
 </template>
 <script>
 import Vue from "vue";
-// require("@/common/js/call.js");
+require("@/common/js/call.js");
 import audioPhone from "../../componentCommon/audioPhone.vue";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";

@@ -19,7 +19,7 @@ export  function  getLawCategoryListApi(data)  {
 export function getBannerListApi(data) {
   console.log(data);
   return request({
-    url: "/sys/link/queryLinkPage",
+    url: "/system/sys/link/queryLinkPage",
     method: "get",
     params: data,
     showloading: false,
