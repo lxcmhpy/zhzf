@@ -580,4 +580,44 @@ export default [
     },
     component: () => import("@/page/caseCenter/partyWaitDeal/transferAndRegisterCase.vue")
   },
+  {
+    path: "/caseCenter-dealNotes",
+    name: "caseCenter-dealNotes",
+    meta: {
+      title: "处置说明组件",
+    },
+    component: () => import("@/components/cluesReview/dealNotes.vue")
+  },
+  {
+    path: "/caseCenter-dealProgress",
+    name: "caseCenter-dealProgress",
+    meta: {
+      title: "执行情况组件",
+    },
+    component: () => import("@/components/cluesReview/dealProgress.vue")
+  },
+  {
+    path: "/caseCenter-evidencePackage",
+    name: "caseCenter-evidencePackage",
+    meta: {
+      title: "证据包组件",
+    },
+    component: () => import("@/components/cluesReview/evidencePackage.vue")
+  },
+  {
+    path: "/caseCenter-evidenceTransfer",
+    name: "caseCenter-evidenceTransfer",
+    meta: {
+      title: "转办证据组件",
+    },
+    component: () => import("@/components/cluesReview/evidenceTransfer.vue")
+  },
+  {
+    path: "/caseCenter-otherEnclosure",
+    name: "caseCenter-otherEnclosure",
+    meta: {
+      title: "其他附件组件",
+    },
+    component: () => import("@/components/cluesReview/otherEnclosure.vue")
+  },
 ]
