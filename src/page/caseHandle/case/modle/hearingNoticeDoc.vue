@@ -317,7 +317,6 @@ export default {
           this.docData.organZipCode = res.data.zipCode;
           this.docData.organContactor = res.data.contactor;
         })
-
     },
     //保存文书信息
     addDocData(handleType) {

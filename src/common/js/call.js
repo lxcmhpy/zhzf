@@ -18,7 +18,8 @@
 	};
 
     window.onload = initialize;
-
+    console.log(window.PhoneCallModule);
+    window.PhoneCallModule.sipRegister();
 // // import ElementUI from "element-ui";
 // window.PhoneCallModule =(function () {
 // 	var SERVER_ADDR = 'http://192.168.7.24:80/api/api.class.php?';
