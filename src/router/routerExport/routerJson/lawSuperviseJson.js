@@ -69,13 +69,48 @@ export default  [
                 title: '无效信息'
             },
             component: () => import("@/page/lawSupervise/supervisePage/xszx/invalidCueDetail.vue")
-        }, {
-            path: '/examineDetail',
-            name: 'examineDetail',
+        },
+
+        // {
+        //     path: '/examineDetail',
+        //     name: 'examineDetail',
+        //     meta: {
+        //         title: '审核信息'
+        //     },
+        //     component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDetail.vue")
+        // },
+
+        {
+            path: '/examineDoingDetail/:status',
+            name: 'examineDoingDetail',
             meta: {
-                title: '审核信息'
+                title: '待审核'
             },
-            component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDetail.vue")
-        }]
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDoingDetail.vue")
+        }
+        // , {
+        //     path: '/examineDoingFirstDetail/:status',
+        //     name: 'examineDoingFirstDetail',
+        //     meta: {
+        //         title: '待审核'
+        //     },
+        //     component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDoingFirstDetail.vue")
+        // },
+        // {
+        //     path: '/examineDoingSecondDetail/:status',
+        //     name: 'examineDoingSecondDetail',
+        //     meta: {
+        //         title: '待审核'
+        //     },
+        //     component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDoingSecondDetail.vue")
+        // }, {
+        //     path: '/examineDoingThirdDetail/:status',
+        //     name: 'examineDoingThirdDetail',
+        //     meta: {
+        //         title: '待审核'
+        //     },
+        //     component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDoingThirdDetail.vue")
+        // }
+    ]
     }
 ]
