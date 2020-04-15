@@ -1,5 +1,6 @@
 .mini-dialog-title {
     z-index: 3000;
+
     .el-dialog {
         .el-dialog__header {
             padding    : 11px 24px 9px !important;
@@ -48,9 +49,13 @@
 
     .invalidinfo {
         .el-select {
+
+            width: 100%;
+        }
+
+        .invalidinfo-margin {
             margin-top   : 34px;
             margin-bottom: 24px;
-            width        : 100%;
         }
 
         p {
@@ -497,11 +502,12 @@
 .width198 {
     width: 198px;
 }
-.margin-top22px{
+
+.margin-top22px {
     margin-top: 22px;
 }
 
-.keyVehicleDentails{
-    padding: 22px;
+.keyVehicleDentails {
+    padding   : 22px;
     box-sizing: border-box;
 }

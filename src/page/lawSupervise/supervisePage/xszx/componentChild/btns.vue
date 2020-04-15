@@ -27,7 +27,7 @@
             </div>
             <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="0">
             <div class="invalidinfo">
-                <el-select v-model="checkSearchForm.number" placeholder="选择无效线索类型">
+                <el-select v-model="checkSearchForm.number" placeholder="选择无效线索类型" class="invalidinfo-margin">
                 <el-option :value="0" label="无效线索类型1"></el-option>
                 <el-option :value="1" label="无效线索类型2"></el-option>
                 </el-select>

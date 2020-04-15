@@ -48,9 +48,6 @@
           <span class="title-text">历史查处</span>
         </div>
       </div>
-      <div class="history-record">
-          
-      </div>
     </div>
 
     <!-- 当前轨迹             (驶入有数据时，地图展开） -->
