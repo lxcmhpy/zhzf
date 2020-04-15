@@ -204,24 +204,7 @@
         let _this = this
         this.$store.dispatch("getAllOrgan").then(
           res => {
-            _this.defaultExpandedKeys.push(res.data[0].id);
-            _this.selectCurrentTreeName = _this.selectCurrentTreeName
-              ? _this.selectCurrentTreeName
-              : res.data[0].label;
-            if (res.data[0].children && res.data[0].children.length > 0) {
-              res.data[0].children.forEach(item => {
-                _this.defaultExpandedKeys.push(item.id);
-              });
-            }
-            _this.organData = res.data;
-            console.log(_this.defaultExpandedKeys);
-            console.log(_this.organData);
-            if (organId == "root") {
-              _this.currentOrganId = res.data[0].id;
-            } else {
-              _this.currentOrganId = organId;
-            }
-            _this.getSelectOrgan();
+           _this.organList = res
           },
           err => {
             console.log(err);

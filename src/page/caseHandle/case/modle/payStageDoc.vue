@@ -35,7 +35,8 @@
           <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">同意你（单位）延期缴纳罚款。延长至
           <span>
             <el-form-item :prop="disabledOne?'placeholder':'delayDate'" class="pdf_datapick width151">
-              <el-date-picker v-model="docData.delayDate" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.delayDate" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日"
+                              placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
           </span>。
@@ -45,7 +46,8 @@
           <span>
             <el-form-item :prop="disabledTwo?'':'instalmentNum'" style="width:46px">
               <!-- <el-input v-model="docData.instalmentNum"></el-input> -->
-              <el-select v-model="docData.instalmentNum" v-bind:disabled="disabledTwo" :maxLength='maxLength' placeholder=" ">
+              <el-select v-model="docData.instalmentNum" v-bind:disabled="disabledTwo" :maxLength='maxLength'
+                         placeholder=" ">
                 <el-option label="1" value="1"></el-option>
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
@@ -57,7 +59,8 @@
           </span>期至
           <span>
             <el-form-item :prop="disabledTwo?'placeholder':'instalmentDate'" class="pdf_datapick width151">
-              <el-date-picker v-model="docData.instalmentDate" v-bind:disabled="disabledTwo" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.instalmentDate" v-bind:disabled="disabledTwo" type="date"
+                              format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
           </span>前，缴纳罚款
@@ -127,348 +130,357 @@
       </el-button>
     </div> -->
     <!-- 悬浮按钮 -->
-    <casePageFloatBtns :pageDomId="'payStageDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'payStageDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData"
+                       @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
 <script>
-import overflowInput from "./overflowInput";
-import { mixinGetCaseApiList } from "@/common/js/mixins";
-import { mapGetters } from "vuex";
-import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-// import signture from "../../../../js/signture";
-import mySignture from "@/common/js/mySignture";
-import iLocalStroage from "@/common/js/localStroage";
-export default {
-  components: {
-    overflowInput,
-    casePageFloatBtns
-  },
-  mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId']) },
-  data() {
-    return {
-      docData: {
-        caseNumber: '',
-        party: '',
-        serviceTime: '',
-        fine: '',
-        delayDate: '',
-        instalmentNum: '',
-        instalmentDate: '',
-        payFine: '',
-        debtFine: '',
-        reason: '',
-        stampTime: '',
-      },
-      handleType: 0, //0  暂存     1 提交
-      caseDocDataForm: {
-        id: "",   //修改的时候用
-        caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: this.$route.params.docId,    //文书类型ID
-        //文书数据
-        docData: "",
-        status: "",   //提交状态
-        docDataId: "", //多份文书的id
-        linkTypeId: "2c9029e16c753a19016c755fe1340001" //环节ID
-      },
-      name: '',
-      inputInfo: '',
-      inputInfos: '',
-      illegalFactsEvidence: '',
-      value1: '',
-      rules: {
-        serviceTime: [
-          { required: true, message: '请输入送达日期', trigger: 'blur' },
-        ],
-        caseNumber: [
-          { required: true, message: '请输入案号', trigger: 'blur' },
-        ],
-        fine: [
-          { required: true, message: '请输入罚款', trigger: 'blur' },
-        ],
-        delayDate: [
-          { required: true, message: '请输入延长缴纳日期', trigger: 'blur' },
-        ],
-        instalmentNum: [
-          { required: true, message: '请输入当前分期数', trigger: 'blur' },
-        ],
-        payFine: [
-          { required: true, message: '请输入本期缴纳金额  ', trigger: 'blur' },
-        ],
-        debtFine: [
-          { required: true, message: '请输入未缴纳的罚款', trigger: 'blur' },
-        ],
-        instalmentDate: [
-          { required: true, message: '请输入本期缴纳时间', trigger: 'blur' },
-        ],
-        reason: [
-          { required: true, message: '请输入拒绝原因', trigger: 'blur' },
-        ],
+  import overflowInput from "./overflowInput";
+  import {mixinGetCaseApiList} from "@/common/js/mixins";
+  import {mapGetters} from "vuex";
+  import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+  // import signture from "../../../../js/signture";
+  import mySignture from "@/common/js/mySignture";
+  import iLocalStroage from "@/common/js/localStroage";
+
+  export default {
+    components: {
+      overflowInput,
+      casePageFloatBtns
+    },
+    mixins: [mixinGetCaseApiList],
+    computed: {...mapGetters(['caseId'])},
+    data() {
+      return {
+        docData: {
+          caseNumber: '',
+          party: '',
+          serviceTime: '',
+          fine: '',
+          delayDate: '',
+          instalmentNum: '',
+          instalmentDate: '',
+          payFine: '',
+          debtFine: '',
+          reason: '',
+          stampTime: '',
+        },
+        handleType: 0, //0  暂存     1 提交
+        caseDocDataForm: {
+          id: "",   //修改的时候用
+          caseBasicinfoId: '',   //案件ID
+          caseDoctypeId: this.$route.params.docId,    //文书类型ID
+          //文书数据
+          docData: "",
+          status: "",   //提交状态
+          docDataId: "", //多份文书的id
+          linkTypeId: "2c9029e16c753a19016c755fe1340001" //环节ID
+        },
+        name: '',
+        inputInfo: '',
+        inputInfos: '',
+        illegalFactsEvidence: '',
+        value1: '',
+        rules: {
+          serviceTime: [
+            {required: true, message: '请输入送达日期', trigger: 'blur'},
+          ],
+          caseNumber: [
+            {required: true, message: '请输入案号', trigger: 'blur'},
+          ],
+          fine: [
+            {required: true, message: '请输入罚款', trigger: 'blur'},
+          ],
+          delayDate: [
+            {required: true, message: '请输入延长缴纳日期', trigger: 'blur'},
+          ],
+          instalmentNum: [
+            {required: true, message: '请输入当前分期数', trigger: 'blur'},
+          ],
+          payFine: [
+            {required: true, message: '请输入本期缴纳金额  ', trigger: 'blur'},
+          ],
+          debtFine: [
+            {required: true, message: '请输入未缴纳的罚款', trigger: 'blur'},
+          ],
+          instalmentDate: [
+            {required: true, message: '请输入本期缴纳时间', trigger: 'blur'},
+          ],
+          reason: [
+            {required: true, message: '请输入拒绝原因', trigger: 'blur'},
+          ],
+
+        },
+        nameLength: 23,
+        adressLength: 23,
+        maxLength: 23,
+        maxLengthOverLine: 122,
+        formOrDocData: {
+          showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+          pageDomId: 'payStageDoc_print',
+        },
+        checknames: [],
+        disabledOne: true,
+        disabledTwo: true,
+        disabledThree: true,
+        isChange: false
+      }
+    },
+
+    methods: {
+      //根据案件ID和文书Id获取数据
+      getDocDataByCaseIdAndDocId() {
+        this.caseDocDataForm.caseBasicinfoId = this.caseId;
+//        console.log("this.caseId,this.caseId", this.caseId)
+//        console.log("this.caseId,this.caseId", this.caseDocDataForm.caseBasicinfoId)
+        let data = {
+          caseId: this.caseId,
+          docId: this.$route.params.docId
+        };
+        this.com_getDocDataByCaseIdAndDocId(data)
+
+        //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+        let addMoreData = JSON.parse(this.$route.params.addMoreData);
+
+        if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
+          //设置询问笔录名称
+//          console.log('添加')
+          this.caseDocDataForm.note = "询问笔录（" + addMoreData.askData.peopleType + ")(第" + addMoreData.askData.askNum + "次)";
+          this.com_getCaseBasicInfo(data.caseId, data.docId);
+        } else {
+//          console.log('修改')
+          let currentDocDataId = iLocalStroage.get("currentDocDataId");
+          if (currentDocDataId) {
+            this.getDocDetailById(currentDocDataId)
+          } else {
+            this.getDocDetailById(this.$route.params.docDataId)
+          }
+        }
 
       },
-      nameLength: 23,
-      adressLength: 23,
-      maxLength: 23,
-      maxLengthOverLine: 122,
-      formOrDocData: {
-        showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: 'payStageDoc_print',
+      //保存文书信息
+      addDocData(handleType) {
+        this.com_addDocData(handleType, 'docForm');
       },
-      checknames: [],
-      disabledOne: true,
-      disabledTwo: true,
-      disabledThree: true,
-    }
-  },
+      // 盖章
+      makeSeal() {
+//        console.log('盖章!');
+        mySignture.openURL('oeder');
+      },
+      // 打印
+      print() {
+//        console.log('打印!');
+      },
+      // 多行编辑
+      overFlowEdit() {
+        this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
+      },
+      // 获取多行编辑内容
+      getOverFloeEditInfo(edit) {
+        this.docData.illegalFactsEvidence = edit;
+      },
+      //提交
+      submitData(handleType) {
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$router.push({
+          name: this.$route.params.url
+        });
+      },
+      //保存文书信息
+      saveData(handleType) {
+//        console.log('caseBasicinfoId', this.caseDocDataForm.caseBasicinfoId)
+        if (this.disabledOne && this.disabledTwo && this.disabledThree) {
+          this.$message("请选择分期延期决定");
+          return
+        }
+        this.com_addDocData(handleType, "docForm");
+      },
+      //是否是完成状态
+      isOverStatus() {
+        if (this.$route.params.docStatus == '1') {
+          this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        }
+      },
+      //人民币转大写
+      convertCurrency(money) {
+        //汉字的数字
+        var cnNums = new Array('零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖');
+        //基本单位
+        var cnIntRadice = new Array('', '拾', '佰', '仟');
+        //对应整数部分扩展单位
+        var cnIntUnits = new Array('', '万', '亿', '兆');
+        //对应小数部分单位
+        var cnDecUnits = new Array('角', '分', '毫', '厘');
+        //整数金额时后面跟的字符
+        var cnInteger = '整';
+        //整型完以后的单位
+        var cnIntLast = '元';
+        //最大处理的数字
+        var maxNum = 999999999999999.9999;
+        //金额整数部分
+        var integerNum;
+        //金额小数部分
+        var decimalNum;
+        //输出的中文金额字符串
+        var chineseStr = '';
+        //分离金额后用的数组，预定义
+        var parts;
+        if (money == '') {
+          return '';
+        }
+        money = parseFloat(money);
+        if (money >= maxNum) {
+          //超出最大处理数字
+          return '';
+        }
+        if (money == 0) {
+          chineseStr = cnNums[0] + cnIntLast + cnInteger;
+          return chineseStr;
+        }
+        //转换为字符串
+        money = money.toString();
+        if (money.indexOf('.') == -1) {
+          integerNum = money;
+          decimalNum = '';
+        } else {
+          parts = money.split('.');
+          integerNum = parts[0];
+          decimalNum = parts[1].substr(0, 4);
+        }
+        //获取整型部分转换
+        if (parseInt(integerNum, 10) > 0) {
+          var zeroCount = 0;
+          var IntLen = integerNum.length;
+          for (var i = 0; i < IntLen; i++) {
+            var n = integerNum.substr(i, 1);
+            var p = IntLen - i - 1;
+            var q = p / 4;
+            var m = p % 4;
+            if (n == '0') {
+              zeroCount++;
+            } else {
+              if (zeroCount > 0) {
+                chineseStr += cnNums[0];
+              }
+              //归零
+              zeroCount = 0;
+              chineseStr += cnNums[parseInt(n)] + cnIntRadice[m];
+            }
+            if (m == 0 && zeroCount < 4) {
+              chineseStr += cnIntUnits[q];
+            }
+          }
+          chineseStr += cnIntLast;
+        }
+        //小数部分
+        if (decimalNum != '') {
+          var decLen = decimalNum.length;
+          for (var i = 0; i < decLen; i++) {
+            var n = decimalNum.substr(i, 1);
+            if (n != '0') {
+              chineseStr += cnNums[Number(n)] + cnDecUnits[i];
+            }
+          }
+        }
+        if (chineseStr == '') {
+          chineseStr += cnNums[0] + cnIntLast + cnInteger;
+        } else if (decimalNum == '') {
+          chineseStr += cnInteger;
+        }
+        console.log('chineseStr=' + chineseStr)
+        return chineseStr;
+      },
+      click() {
+        this.clearData()
+//        console.log('this.checknames', this.checknames)
+        if (this.checknames.length > 1) {
+          this.checknames.shift();
+        }
+        if (this.checknames == '1') {
+          this.disabledOne = false;
+          this.disabledTwo = true;
+          this.disabledThree = true;
+        } else if (this.checknames == '2') {
+          this.disabledOne = true;
+          this.disabledTwo = false;
+          this.disabledThree = true;
+          this.docData.instalmentNum = '1'
+        } else if (this.checknames == '3') {
+          this.disabledOne = true;
+          this.disabledTwo = true;
+          this.disabledThree = false;
+        } else {
+          this.disabledOne = true;
+          this.disabledTwo = true;
+          this.disabledThree = true;
+        }
+      },
+      clearData() {
+        this.docData.delayDate = '';
+        this.docData.instalmentNum = '';
+        this.docData.instalmentDate = '';
+        this.docData.payFine = '';
+        this.docData.debtFine = '';
+        this.docData.reason = '';
 
-  methods: {
-    //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
+      }
+    },
+    mounted() {
+      // this.getDocDataByCaseIdAndDocId();
+      // console.log('parm', this.$route.params.approvalForm)
+      // console.log("this.caseId,this.caseId", this.caseId)
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
-      console.log("this.caseId,this.caseId", this.caseId)
-      console.log("this.caseId,this.caseId", this.caseDocDataForm.caseBasicinfoId)
       let data = {
         caseId: this.caseId,
         docId: this.$route.params.docId
       };
-      this.com_getDocDataByCaseIdAndDocId(data)
-
-      //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
-      let addMoreData = JSON.parse(this.$route.params.addMoreData);
-
-      if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
-        //设置询问笔录名称
-        console.log('添加')
-        this.caseDocDataForm.note = "询问笔录（" + addMoreData.askData.peopleType + ")(第" + addMoreData.askData.askNum + "次)";
-        this.com_getCaseBasicInfo(data.caseId, data.docId);
+      //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+      if (this.$route.params.handelType === 'isAddMore') {
+//        console.log('多份文书', this.$route.params.handelType)
+        this.com_getCaseBasicInfo(data.caseId, data.docId)
       } else {
-        console.log('修改')
-        let currentDocDataId = iLocalStroage.get("currentDocDataId");
-        if (currentDocDataId) {
-          this.getDocDetailById(currentDocDataId)
-        } else {
-          this.getDocDetailById(this.$route.params.docDataId)
+        this.getDocDetailById(this.$route.params.docDataId)
+      }
+
+//      console.log('this.$route.params.approvalForm', this.$route.params.approvalForm.executeHandle)
+      if (this.$route.params.approvalForm.executeHandle === '0') {
+        // 拒绝
+//        console.log('拒绝')
+        this.checknames.push("3")
+        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
+      }
+      else {
+        if (this.$route.params.approvalForm.executeType === 1) {
+          // 分期
+          this.checknames.push("2")
+          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
+
+        }
+        if (this.$route.params.approvalForm.executeType === 0) {
+          // 延期
+          this.checknames.push("1")
+          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
+
         }
       }
-
+      this.click()
     },
-    //保存文书信息
-    addDocData(handleType) {
-      this.com_addDocData(handleType, 'docForm');
+    created() {
+      this.isOverStatus();
     },
-    // 盖章
-    makeSeal() {
-      console.log('盖章!');
-      mySignture.openURL('oeder');
-    },
-    // 打印
-    print() {
-      console.log('打印!');
-    },
-    // 多行编辑
-    overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
-    },
-    // 获取多行编辑内容
-    getOverFloeEditInfo(edit) {
-      this.docData.illegalFactsEvidence = edit;
-    },
-    //提交
-    submitData(handleType) {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: this.$route.params.url
-      });
-    },
-    //保存文书信息
-    saveData(handleType) {
-      console.log('caseBasicinfoId', this.caseDocDataForm.caseBasicinfoId)
-      this.com_addDocData(handleType, "docForm");
-    },
-    //是否是完成状态
-    isOverStatus() {
-      if (this.$route.params.docStatus == '1') {
-        this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-      }
-    },
-    //人民币转大写
-    convertCurrency(money) {
-      //汉字的数字
-      var cnNums = new Array('零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖');
-      //基本单位
-      var cnIntRadice = new Array('', '拾', '佰', '仟');
-      //对应整数部分扩展单位
-      var cnIntUnits = new Array('', '万', '亿', '兆');
-      //对应小数部分单位
-      var cnDecUnits = new Array('角', '分', '毫', '厘');
-      //整数金额时后面跟的字符
-      var cnInteger = '整';
-      //整型完以后的单位
-      var cnIntLast = '元';
-      //最大处理的数字
-      var maxNum = 999999999999999.9999;
-      //金额整数部分
-      var integerNum;
-      //金额小数部分
-      var decimalNum;
-      //输出的中文金额字符串
-      var chineseStr = '';
-      //分离金额后用的数组，预定义
-      var parts;
-      if (money == '') { return ''; }
-      money = parseFloat(money);
-      if (money >= maxNum) {
-        //超出最大处理数字
-        return '';
-      }
-      if (money == 0) {
-        chineseStr = cnNums[0] + cnIntLast + cnInteger;
-        return chineseStr;
-      }
-      //转换为字符串
-      money = money.toString();
-      if (money.indexOf('.') == -1) {
-        integerNum = money;
-        decimalNum = '';
-      } else {
-        parts = money.split('.');
-        integerNum = parts[0];
-        decimalNum = parts[1].substr(0, 4);
-      }
-      //获取整型部分转换
-      if (parseInt(integerNum, 10) > 0) {
-        var zeroCount = 0;
-        var IntLen = integerNum.length;
-        for (var i = 0; i < IntLen; i++) {
-          var n = integerNum.substr(i, 1);
-          var p = IntLen - i - 1;
-          var q = p / 4;
-          var m = p % 4;
-          if (n == '0') {
-            zeroCount++;
-          } else {
-            if (zeroCount > 0) {
-              chineseStr += cnNums[0];
-            }
-            //归零
-            zeroCount = 0;
-            chineseStr += cnNums[parseInt(n)] + cnIntRadice[m];
-          }
-          if (m == 0 && zeroCount < 4) {
-            chineseStr += cnIntUnits[q];
-          }
-        }
-        chineseStr += cnIntLast;
-      }
-      //小数部分
-      if (decimalNum != '') {
-        var decLen = decimalNum.length;
-        for (var i = 0; i < decLen; i++) {
-          var n = decimalNum.substr(i, 1);
-          if (n != '0') {
-            chineseStr += cnNums[Number(n)] + cnDecUnits[i];
-          }
+    watch: {
+      'docData.fine'(val) {
+        if (val && !this.isChange) {
+          this.docData.fine = this.convertCurrency(this.docData.fine);
+          this.isChange = true
+          console.log(this.docData.fine);
         }
       }
-      if (chineseStr == '') {
-        chineseStr += cnNums[0] + cnIntLast + cnInteger;
-      } else if (decimalNum == '') {
-        chineseStr += cnInteger;
-      }
-      console.log('chineseStr=' + chineseStr)
-      return chineseStr;
-    },
-    click() {
-      this.clearData()
-      console.log('this.checknames', this.checknames)
-      if (this.checknames.length > 1) {
-        this.checknames.shift();
-      }
-      if (this.checknames == '1') {
-        this.disabledOne = false;
-        this.disabledTwo = true;
-        this.disabledThree = true;
-      } else if (this.checknames == '2') {
-        this.disabledOne = true;
-        this.disabledTwo = false;
-        this.disabledThree = true;
-        this.docData.instalmentNum = '1'
-      } else if (this.checknames == '3') {
-        this.disabledOne = true;
-        this.disabledTwo = true;
-        this.disabledThree = false;
-      } else {
-        this.disabledOne = true;
-        this.disabledTwo = true;
-        this.disabledThree = true;
-      }
-    },
-    clearData() {
-      this.docData.delayDate = '';
-      this.docData.instalmentNum = '';
-      this.docData.instalmentDate = '';
-      this.docData.payFine = '';
-      this.docData.debtFine = '';
-      this.docData.reason = '';
-
     }
-  },
-  mounted() {
-    // this.getDocDataByCaseIdAndDocId();
-    // console.log('parm', this.$route.params.approvalForm)
-    // console.log("this.caseId,this.caseId", this.caseId)
-    this.caseDocDataForm.caseBasicinfoId = this.caseId;
-    let data = {
-      caseId: this.caseId,
-      docId: this.$route.params.docId
-    };
-
-
-    //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
-    if (this.$route.params.handelType == 'isAddMore') {
-      console.log('多份文书', this.$route.params.handelType)
-      this.com_getCaseBasicInfo(data.caseId, data.docId);
-    } else {
-      this.getDocDetailById(this.$route.params.docDataId)
-    }
-    this.docData.fine = this.convertCurrency(this.docData.fine);
-    console.log('this.$route.params.approvalForm', this.$route.params.approvalForm.executeHandle)
-
-
-    if (this.$route.params.approvalForm.executeHandle == '0') {
-      // 拒绝
-      console.log('拒绝')
-
-      this.checknames.push("3")
-      this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
-    }
-    else {
-      if (this.$route.params.approvalForm.executeType == 1) {
-        // 分期
-        this.checknames.push("2")
-        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
-
-      }
-      if (this.$route.params.approvalForm.executeType == 0) {
-        // 延期
-        this.checknames.push("1")
-        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
-
-      }
-    }
-
-
-
-    this.click()
-
-  },
-  created() {
-    this.isOverStatus();
   }
-}
 </script>
 <style lang="scss">
-@import "@/assets/css/caseHandle/caseDocModle.scss";
+  @import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>
