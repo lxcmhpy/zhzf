@@ -253,7 +253,7 @@ export default {
             // complete: '#0174f5',//已完成  doing: '#f2a010',// 进行中  unLock: '#52c2b6',// 已解锁  lock: '#b2b2b2' //未解锁
             if (that.stateLinkArray.indexOf(params.data.curLinkState) >-1){
               //跳转
-              that.flowShowPdfOrForm(params.data,that.data);
+              that.flowShowPdfOrFormBefore(params.data,that.data);
             }
           }
 
