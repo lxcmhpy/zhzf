@@ -17,10 +17,10 @@ const getters = {
   caseApproval: state => state.caseHandle.caseApproval,
   clickArchiveCatalogue:state => state.caseHandle.clickArchiveCatalogue,
   archiveCatalogueList:state => state.caseHandle.archiveCatalogueList,
+  openTab: state => state.openTab,
 
-  
   //监管
   offSiteManageId: state => state.supervise.offSiteManageId,
-  
+
 };
 export default getters;
