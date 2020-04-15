@@ -3,11 +3,11 @@
 <div class="com_searchAndpageBoxPadding">
     <div class="com_searchPage_top">
         <!-- <ul class="com_searchPage_tab">
-            <li v-for="(item, index) in processStatus" :class="{'active': index === tabActiveIndex}"  :key="index" @click="activeAndSearch(item,index)">{{item.value}}</li>
+            <li v-for="(item, index) in processStatus" :class="{'active': index === tabActiveValue}"  :key="index" @click="activeAndSearch(item,index)">{{item.value}}</li>
         </ul> -->
         <!-- @tab-click="activeAndSearch" -->
-        <el-tabs v-model="tabActiveIndex" :stretch="true">
-            <el-tab-pane v-for="(item, index) in processStatus" :key="index"  :name="`${index}`">
+        <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="search">
+            <el-tab-pane v-for="(item, index) in processStatus" :key="item.value"  :name="item.value" >
                 <span slot="label">
                     <el-badge :value="index==0?null:index" >
                         {{item.value}}
@@ -117,12 +117,15 @@
                 <!-- <el-table-column prop="status" label="处理状态" align="center"></el-table-column> -->
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                         <a href="javascript:void(0)" @click="routerInvalidCue(scope.row)">
+                         <a href="javascript:void(0)" @click="routerInvalidCueDetail(scope.row)">
                             无效信息跳转
-                        </a>
+                        </a><br>
+                        <a href="javascript:void(0)" @click="routerExamineDetail(scope.row)">
+                            审核跳转
+                        </a><br>
                         <a href="javascript:void(0)" @click="routerDetail(scope.row)">
                             详情
-                        </a>
+                        </a><br>
                         <a href="javascript:void(0)" @click="routerEvidenceDetail">
                             证据
                         </a>
@@ -130,16 +133,19 @@
                 </el-table-column>
             </el-table>
         </div>
-        <div class="paginationBox" v-show="form.size">
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="form.current"
-                background
-                :page-sizes="[10, 20, 30, 40]"
-                layout="prev, pager, next,sizes,jumper"
-                :total="form.size"
-            ></el-pagination>
+        <div class="paginationBox" >
+            <div v-if="form.size">
+                <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="form.current"
+                    background
+                    :page-sizes="[10, 20, 30, 40]"
+                    layout="prev, pager, next,sizes,jumper"
+                    :total="form.size"
+                ></el-pagination>
+            </div>
+            <div class="noMore" v-else>没有更多了</div>
         </div>
     </div>
 </div>
@@ -253,7 +259,6 @@ export default {
   inject: ["reload"],
   data() {
     return {
-        tabActiveIndex: '0',
         vehicleColorList: null,
         cxlList: null,
         pageSize: 10, //pagesize
@@ -280,6 +285,7 @@ export default {
         }, {
             value: '已审核'
         }],
+        tabActiveValue: '无效信息',
         isShow: false,
         tableData: [],
         vehicleColorObj: {
@@ -295,13 +301,11 @@ export default {
     }
   },
   methods: {
-    activeAndSearch (item,index) {
-        this.tabActiveIndex = index;
-    },
     search () {
         this.form.checkStartTime = this.timeList[0];
         this.form.checkEndTime = this.timeList[1];
-        let _this = this
+        this.form.status = this.tabActiveValue;
+        let _this = this;
         new Promise((resolve, reject) => {
             queryListPage(_this.form).then(
                 res => {
@@ -340,6 +344,7 @@ export default {
         })
     },
     routerEvidenceDetail () {
+        this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
             name: 'evidenceDetail'
         })
@@ -353,9 +358,16 @@ export default {
     handleCurrentChange(val) {
       this.getLogList(val);
     },
-    routerInvalidCue (item) {
+    routerInvalidCueDetail (item) {
+        this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
-            name: 'invalidCue'
+            name: 'invalidCueDetail'
+        })
+    },
+    routerExamineDetail (item) {
+        this.$store.commit('setOffSiteManageId', item.id);
+        this.$router.push({
+            name: 'examineDetail'
         })
     }
   },

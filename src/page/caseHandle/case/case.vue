@@ -84,6 +84,10 @@
         <li @click="goInvalidInfoDialog">无效信息弹窗</li>
         <li @click="goVehicleCheckDialog">车辆查验弹窗</li>
         <li @click="goOverWeightCase">事务中心-我的待办</li>
+        <li @click="goOverWeightCase">事务中心-我的待办</li>
+        <li @click="goOverWeightCase">事务中心-我的待办</li>
+        <li @click="goTransferAndRegisterCase">事务中心-转立案</li>
+
         <!--  -->
         <li @click="goFirstPage">归档首页</li>
         <li @click="goDeleteEvidence">解除证据登记保存决定书</li>
@@ -165,6 +169,9 @@ export default {
     },
     goOverWeightCase() {
       this.$router.push({ name: 'caseCenter-overWeightCase' });
+    },
+    goTransferAndRegisterCase() {
+      this.$router.push({ name: 'caseCenter-transferAndRegisterCase' });
     },
     // 归档首页
     goFirstPage() {

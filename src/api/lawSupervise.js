@@ -45,6 +45,7 @@ export function getById(type,id) {
       cancelToken: setCancelSource()
     });
   }
+//   /zfjg/superviseVehicle/findWeighingRecord/{name}
   export function queryListPage(data) {
     return request({
       url: "/zfjg/superviseVehicle/queryListPage",
@@ -57,7 +58,7 @@ export function getById(type,id) {
   }
   export function findAllDrawerById (data) {
     return request({
-      url: "/sys/drawer/findAllDrawerById/" +data,
+      url: "/system/sys/drawer/findAllDrawerById/" +data,
       method: "get",
       showloading: false,
       baseUrlType:1,
