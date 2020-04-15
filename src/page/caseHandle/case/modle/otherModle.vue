@@ -24,6 +24,7 @@
                 placeholder="时 分"
                 v-model="docData.askdataEnd"
                 format="HH时mm分" 
+                value-format="HH:mm"
               >
               </el-time-picker>
             </el-form-item>
@@ -231,6 +232,24 @@ export default {
 
   },
   data() {
+    //验证开始时间
+    var validateStartTime = (rule, value, callback) => {
+      let parseInquestStartTime = this.docData.askdataStart.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
+      let a = parseInquestStartTime.split(' ');
+      let parseinquestEndTime = a[0] + ' ' + this.docData.askdataEnd;
+      
+      if((Date.parse(parseInquestStartTime)>Date.parse(parseinquestEndTime)) && this.docData.askdataEnd){
+        this.$message({
+              showClose: true,
+              message: '开始时间不得大于结束时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        return callback(new Error("开始时间不得大于结束时间"));
+      }
+      callback();
+    };
     return {
       value2: '',
       isOverflow: false,
@@ -298,9 +317,11 @@ export default {
       rules: {
         askdataStart: [
           { required: true, message: '开始时间不能为空', trigger: 'blur' },
+          { validator: validateStartTime, trigger: "blur" }
         ],
         askdataEnd: [
           { required: true, message: '结束时间不能为空', trigger: 'blur' },
+          { validator: validateStartTime, trigger: "blur" }
         ],
         askRecordNumber: [
           { required: true, message: '询问次数不能为空', trigger: 'blur' },

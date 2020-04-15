@@ -41,6 +41,11 @@
     <div>
       <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
       <br><br>
+      <InvalidInfoDialog ref="InvalidInfoDialog"></InvalidInfoDialog>
+      <vehicleCheckDialog ref="vehicleCheckDialogRef"></vehicleCheckDialog>
+      <numberCorrectDialog ref="numberCorrectDialog"></numberCorrectDialog>
+      <li @click="goOverWeightCase">超限案件列表</li>
+
       <ul>
         文书：
         <li @click="goInquestNotes">勘验笔录</li>
@@ -75,6 +80,10 @@
       <p>zmh(17、18、19、20、21、22、23、24文书表单及pdf打印版)</p>
       <ul>
         <br><br>
+        <li @click="goNumberCorrectDialog">号牌更正弹窗</li>
+        <li @click="goInvalidInfoDialog">无效信息弹窗</li>
+        <li @click="goVehicleCheckDialog">车辆查验弹窗</li>
+        <li @click="goOverWeightCase">事务中心-我的待办</li>
         <!--  -->
         <li @click="goFirstPage">归档首页</li>
         <li @click="goDeleteEvidence">解除证据登记保存决定书</li>
@@ -122,13 +131,8 @@
         <li @click="goSendReprot">打印二十三 ：送达回证</li>
         <li @click="goFinishReprot">打印二十四 ： 结案报告</li>
 
-        <li @click="goNumberCorrectDialog">号牌更正弹窗</li>
-        <li @click="goInvalidInfoDialog">无效信息弹窗</li>
-        <li @click="goVehicleCheckDialog">车辆查验弹窗</li>
       </ul>
-      <InvalidInfoDialog ref="InvalidInfoDialog"></InvalidInfoDialog>
-      <vehicleCheckDialog ref="vehicleCheckDialogRef"></vehicleCheckDialog>
-      <numberCorrectDialog ref="numberCorrectDialog"></numberCorrectDialog>
+
     </div>
 
   </div>
@@ -158,6 +162,9 @@ export default {
     },
     goVehicleCheckDialog() {
       this.$refs.vehicleCheckDialogRef.showModal();
+    },
+    goOverWeightCase() {
+      this.$router.push({ name: 'caseCenter-overWeightCase' });
     },
     // 归档首页
     goFirstPage() {

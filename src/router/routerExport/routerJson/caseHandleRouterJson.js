@@ -69,8 +69,8 @@ export default [
     component: () => import("@/page/caseHandle/case/caseDoc.vue")
   },
   {
-    path: "/obtaineEvidenceForms",
-    name: "obtaineEvidenceForms",
+    path: "/obtaineEvidenceForm",
+    name: "obtaineEvidenceForm",
     meta: {
       title: "抽样取样凭证",
       oneTab: true,
@@ -563,5 +563,21 @@ export default [
       title: "卷宗详情",
     },
     component: () => import("@/page/caseHandle/electronicCaseFile/electronicFileDetail.vue")
-  }
+  },
+  {
+    path: "/caseCenter-overWeightCase",
+    name: "caseCenter-overWeightCase",
+    meta: {
+      title: "超限案件列表",
+    },
+    component: () => import("@/page/caseCenter/myWaitDeal/overWeightCase.vue")
+  },
+  {
+    path: "/caseCenter-transferAndRegisterCase",
+    name: "caseCenter-transferAndRegisterCase",
+    meta: {
+      title: "转立案列表",
+    },
+    component: () => import("@/page/caseCenter/partyWaitDeal/transferAndRegisterCase.vue")
+  },
 ]
