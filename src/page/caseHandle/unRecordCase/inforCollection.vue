@@ -250,7 +250,7 @@
                           :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
                   <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType">
                     <el-option v-for="item in credentialType" :key="item.value" :label="item.label"
-                               :value="item.value"></el-option>
+                               :value="item.value" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -417,7 +417,7 @@
         <p>超限信息</p>
         <div>
           <div class="itemBig">
-            <el-form-item label="检测站">
+            <el-form-item label="检测站" class = "is-required">
               <el-select v-model="inforForm.otherInfo.checkStastions">
                 <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label"
                            :value="item.value"></el-option>
@@ -467,7 +467,7 @@
         </div>
         <div>
           <div class="itemThird">
-            <el-form-item label="车辆轴数">
+            <el-form-item label="车辆轴数"  class = "is-required">
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxleNumber"
                          @change="weightLimit('车辆轴数')">
                 <el-option label="2" value="2"></el-option>
@@ -480,7 +480,7 @@
             </el-form-item>
           </div>
           <div class="itemThird">
-            <el-form-item label="车型">
+            <el-form-item label="车型"  class = "is-required">
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
                 <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label"
                            :value="item.value"></el-option>

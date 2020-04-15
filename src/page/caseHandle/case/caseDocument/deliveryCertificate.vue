@@ -64,8 +64,8 @@
               <div class="pdf_seal">
                 <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
                 <el-form-item prop="makeDate" class="pdf_datapick">
-                  <!-- <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
-                  </el-date-picker> -->
+                  <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                  </el-date-picker>
                 </el-form-item>
               </div>
             </td>
@@ -73,7 +73,7 @@
           </tr>
           <tr>
             <td colspan="6" class="color_DBE4EF remark">
-              <el-form-item label='备注'>
+              <el-form-item label='备注:'>
                 <el-input type='textarea' v-model="docData.docNote" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -210,7 +210,7 @@ export default {
           { required: true, message: '送达单位请输入', trigger: 'blur' },
         ],
         recivePersonInstead: [
-          { required: true, message: '代收人请输入', trigger: 'blur' },
+          {  message: '代收人请输入', trigger: 'blur' },
         ],
         recivePerson: [
           { required: true, message: '受送达人请输入', trigger: 'blur' },
