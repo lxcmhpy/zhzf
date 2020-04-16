@@ -507,6 +507,7 @@ export default {
     // 重置
     resetSearch() {
       this.$refs["evidenceForm"].resetFields();
+      this.getEviList();
     },
 
     //更改每页显示的条数

@@ -15,7 +15,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         stripe
-        @row-click="tableAdd"
+        
         row-key="id"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         height="100%"
@@ -60,6 +60,7 @@
       :title="dialogTitle"
       :visible.sync="isShowDialog"
       :close-on-click-modal="false"
+      @close="closeDialog"
       width="35%"
     >
       <el-form
@@ -371,7 +372,13 @@
           })
         }
         return result
-      }
+      },
+      //关闭弹窗的时候清除数据
+    closeDialog() {
+      this.$nextTick(() => {
+        this.$refs['addItemObj'].resetFields()
+      })
+    },
     },
     mounted() {
     },
