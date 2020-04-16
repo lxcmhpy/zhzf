@@ -407,9 +407,10 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测站">
-              <el-select v-model="inforForm.otherInfo.checkStastions">
+              <el-autocomplete style="width: 100%" v-model="inforForm.otherInfo.checkStastions" :fetch-suggestions="querySearch"></el-autocomplete>
+              <!--<el-select v-model="inforForm.otherInfo.checkStastions">
                 <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>
+              </el-select>-->
               <!-- <el-input v-model="inforForm.otherInfo.checkStastions"></el-input> -->
             </el-form-item>
           </div>
@@ -424,9 +425,10 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测人员">
-              <el-select v-model="inforForm.otherInfo.checkWorker">
+              <el-autocomplete style="width: 100%" v-model="inforForm.otherInfo.checkWorker" :fetch-suggestions="queryCheckWorker"></el-autocomplete>
+             <!-- <el-select v-model="inforForm.otherInfo.checkWorker">
                 <el-option v-for="item in RecentCheckWorkers" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>
+              </el-select>-->
               <!-- <el-input v-model="inforForm.otherInfo.checkWorker"></el-input> -->
             </el-form-item>
           </div>
@@ -702,7 +704,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validateIDNumber, validateAge, validateZIP, validatePhone } from '@/common/js/validator'
 import {
-  getDictListDetailByNameApi
+  getDictListDetailByNameApi,findHistoryBySignApi
 } from "@/api/system";
 
 export default {
@@ -739,8 +741,8 @@ export default {
       callback();
     };
     return {
-      RecentCheckStastions: [{ value: '', label: '' }],//最近五个检测站
-      RecentCheckWorkers: [{ value: '', label: '' }],//历史保存过检测人员
+      recentCheckStastions: [],//最近五个检测站
+      recentCheckWorkers: [],//历史保存过检测人员
       vehicleTypeList: [],//车型
       vehicleAxlesTypeList: [],//轴数
       inforForm: {
@@ -1070,7 +1072,7 @@ export default {
         this.inforForm.occupation = "";
         this.inforForm.partyEcertId = "";
       }
-      if(this.driverOrAgentInfoList[0].relationWithParty == "0" ||this.driverOrAgentInfoList[0].relationWithParty == '1' || this.driverOrAgentInfoList[0].relationWithParty == '4' 
+      if(this.driverOrAgentInfoList[0].relationWithParty == "0" ||this.driverOrAgentInfoList[0].relationWithParty == '1' || this.driverOrAgentInfoList[0].relationWithParty == '4'
       || this.driverOrAgentInfoList[0].relationWithParty == '5' || this.driverOrAgentInfoList[0].relationWithCase == '0' || this.driverOrAgentInfoList[0].relationWithCase == '2'){
           this.driverOrAgentInfoList[0].relationWithParty = "";
           this.driverOrAgentInfoList[0].relationWithCase = "";
@@ -1676,6 +1678,41 @@ export default {
         console.log(err);
       })
     },
+    //查询历史记录
+    findHistoryBySign(sign){
+        findHistoryBySignApi(iLocalStroage.gets('userInfo').id,sign).then(res=>{
+            console.log("历史记录",res);
+            if(sign=='checkStastions'){
+                this.recentCheckStastions = res.data;
+            }else if(sign=="checkWorker"){
+                this.recentCheckWorkers = res.data;
+            }
+
+        },err=>{
+            console.log(err);
+        })
+    },
+    //检测站 可输入也可以选择
+    querySearch(queryString, cb){
+        console.log("输入搜索");
+        let checkStastions = this.recentCheckStastions;
+        var results = queryString ? checkStastions.filter(this.createFilter(queryString)) : checkStastions;
+        let a = [];
+        results.forEach(item=>{
+            a.push({value:item.inputValue})
+        })
+        cb(a);
+    },
+    //检测人员 可输入也可以选择
+    queryCheckWorker(queryString, cb){
+        let checkWorker = this.recentCheckWorkers;
+        var results = queryString ? checkWorker.filter(this.createFilter(queryString)) : checkWorker;
+        let a = [];
+        results.forEach(item=>{
+            a.push({value:item.inputValue})
+        })
+        cb(a);
+    },
   },
   mounted() {
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
@@ -1717,6 +1754,9 @@ export default {
     if (iLocalStroage.get("stageCaseId")) {
       this.fromSlide();
     }
+    this.findHistoryBySign("checkStastions");
+    this.findHistoryBySign("recentCheckWorkers");
+
   },
   beforeRouteLeave(to, from, next) {
     console.log('to', to)

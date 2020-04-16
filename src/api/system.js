@@ -589,3 +589,15 @@ export  function  getOrganIdApi(data)  {
     });
 }
 /**------------长软end---------- */
+
+//根据用户id和标记查询历史输入记录
+export  function  findHistoryBySignApi(userId,sign)  {
+  return  request({
+    url:  "/case/doc/inputHistroy/findById/"  +  userId+"/"+sign,
+    method:  "get",
+    //  params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource()
+  });
+}
