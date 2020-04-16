@@ -362,7 +362,7 @@
                     <div class="echarts-box">
                         <i class="el-icon-close right" id="closePhone" @click="ringOff"></i>
                         <i class="el-icon-rank right" @mousedown="event=>start(event,'phoneBox')"></i>
-                        <div class="videoBox" >
+                        <div class="videoBox" v-if="doing == 2">
                             <video class="video" width="200px" height="200px" id="video_local" autoplay="autoplay" muted></video>
                             <video class="video" width="200px" height="200px" id="video_remote" autoplay="autoplay" ></Video>
                         </div>
@@ -730,7 +730,7 @@ export default {
           area: "东城区",
           current: 1,
           key: "",
-          size: 0,
+          size: 20,
           type: item.code
         };
         this.allSearchList.push(data);
@@ -765,7 +765,7 @@ export default {
           area: "",
           current: 1,
           key: this.$refs.searchAmapBox.keyword,
-          size: 0,
+          size: 20,
           type: this.category
         };
         this.getZfjgLawSupervise(data, this.category);
@@ -831,9 +831,9 @@ export default {
     //     _this.$refs.ringbacktone.load();
     //     _this.$refs.ringtone.load();
     // })
-    window.PhoneCallModule.onCallStateChanged = function onCallStateChanged(e){
-        alert(e.type)
-    }
+    // window.PhoneCallModule.onCallStateChanged = function onCallStateChanged(e){
+    //     // alert(e.type)
+    // }
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {

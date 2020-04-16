@@ -117,6 +117,7 @@ export default {
       // console.log(this.alreadyChooseLawPerson)
       this.checkedUserId = alreadyChooseLawPersonId;
       console.log("alreadyChooseLawPersonId", alreadyChooseLawPersonId);
+      console.log("inforCollectLawPerson", inforCollectLawPerson);
       this.searchLawPerson(alreadyChooseLawPersonId, inforCollectLawPerson);
     },
     //关闭弹窗的时候清除数据

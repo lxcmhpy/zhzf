@@ -1,7 +1,37 @@
 <template>
-<!-- 无效信息页面 -->
+<!-- 已转办页面 -->
 <div class="main_box">
     <div class="main_content" style="margin-top: 24px">
+        <div class="shadow">
+            <div class="box w-2">
+                <div class="box_title">
+                    <span class="titleflag">
+                    </span>
+                    <span class="title">转办说明</span>
+                </div>
+                <table class="table_style" v-if="obj">
+                    <tr>
+                        <td class="color_ff w-1">车牌号</td>
+                        <td>{{obj.vehicleNumber}}</td>
+                        <td class="color_ff w-1">车牌颜色</td>
+                        <td>{{obj.vehicleColor}}</td>
+                    </tr>
+                    <tr>
+                        <td class="color_ff w-1">转办时间</td>
+                        <td></td>
+                        <td class="color_ff w-1">转办说明</td>
+                        <td>{{obj.key}}</td>
+                    </tr>
+                    <tr>
+                        <td class="color_ff w-1">处置机构</td>
+                        <td>{{obj.checkTime}}</td>
+                        <td class="color_ff w-1">状态</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <xszxDetailView v-if="obj" :obj="obj"></xszxDetailView>
         <div class="shadow">
             <div class="box w-2">
                 <div class="box_title">
@@ -19,7 +49,6 @@
                 </div>
             </div>
         </div>
-        <xszxDetailView v-if="obj" :obj="obj"></xszxDetailView>
     </div>
     <!-- <btns></btns> -->
 </div>

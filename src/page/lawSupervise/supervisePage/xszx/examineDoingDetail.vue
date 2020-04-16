@@ -16,9 +16,6 @@
         </div>
         <div class="main_content" style="margin-top: 70px">
             <component v-if="obj" :obj="obj" v-bind:is="examineDoingDetailChildren[tabActiveValue]" ></component>
-            <!-- <examineDoingFirstDetail v-if="tabActiveValue=='0'&&obj" :obj="obj" ></examineDoingFirstDetail>
-            <examineDoingSecondDetail v-if="tabActiveValue=='1'&&obj" :obj="obj"></examineDoingSecondDetail>
-            <examineDoingThirdDetail v-if="tabActiveValue=='2'&&obj" :obj="obj"></examineDoingThirdDetail> -->
         </div>
     </div>
     <btns v-if="tabActiveValue" :tabActiveValue="tabActiveValue"></btns>
@@ -36,7 +33,7 @@
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 import {getDetailById} from '@/api/lawSupervise.js';
 import { mapGetters } from "vuex";
-import xszxCommon from './componentChild/xszxCommon.vue';
+import xszxDetailView from './componentChild/xszxDetailView.vue';
 import examineDoingFirstDetail from './componentChild/examineDoingDetail/examineDoingFirstDetail';
 import examineDoingSecondDetail from './componentChild/examineDoingDetail/examineDoingSecondDetail';
 import examineDoingThirdDetail from './componentChild/examineDoingDetail/examineDoingThirdDetail';

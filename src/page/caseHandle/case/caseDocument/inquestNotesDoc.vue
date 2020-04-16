@@ -56,7 +56,7 @@
             <el-input type='textarea' v-model="docData.staffUnitAndPosition1" v-bind:class="{ over_flow:docData.staffUnitAndPosition1.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35"></el-input>
           </el-form-item>
-          执法证号：<el-form-item prop="certificateId1" style="width:155px">
+          执法证号：<el-form-item prop="certificateId1" style="width:150px">
             <el-input  v-model="docData.certificateId1" :maxLength='maxLength' placeholder="\"></el-input>
           </el-form-item>
         </p>
@@ -70,7 +70,7 @@
             <el-input type='textarea' v-model="docData.staffUnitAndPosition2" v-bind:class="{ over_flow:docData.staffUnitAndPosition2.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35"></el-input>
           </el-form-item>
-          执法证号：<el-form-item prop="certificateId2" style="width:155px">
+          执法证号：<el-form-item prop="certificateId2" style="width:150px">
             <el-input v-model="docData.certificateId2" :maxLength='maxLength' placeholder="\"></el-input>
           </el-form-item>
         </p>

@@ -85,7 +85,7 @@
             <tr>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="staff2">
-                  <el-select v-model="docData.staff2" :maxLength='maxLength'  @change="changeStaff2">
+                  <el-select v-model="docData.staff2" :maxLength='maxLength'  @change="changeStaff2" placeholder="请选择">
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
                   </el-select>
                 </el-form-item>
@@ -248,10 +248,13 @@
               </td>
             </tr>
             <tr>
-              <td colspan="7">
+              <td colspan="7" class="illegalFactsTip">
                 备注：
-                <el-form-item prop="note">
-                  <el-input v-model="docData.note" placeholder="\" style="width:480px"></el-input>
+                <el-form-item prop="note" style="width:480px">
+                  <el-input type="textarea"
+                    v-bind:class="{ over_flow:docData.note.length>30?true:false }"
+                    :autosize="{ minRows: 1, maxRows: 3}"
+                    maxlength="60" v-model="docData.note" placeholder="\" ></el-input>
                 </el-form-item>
               </td>
             </tr>
@@ -500,29 +503,6 @@ export default {
     casePageFloatBtns
   },
   methods: {
-    // widthCheck(str, len, event) {
-    //   console.log('event,', event)
-    //   console.log('str,', str, '  len:', len)
-    //   if (event.length > len) {
-    //     this.isOverflow = true
-    //   } else
-    //     this.isOverflow = false
-    //   if (event.length > 40) {
-    //     this.isOverLine = true
-    //     console.log('overline', this.isOverLine)
-    //   }
-    // },
-    // onSubmit(formName) {
-    //   console.log('submit!');
-    //   this.$refs[formName].validate((valid) => {
-    //     if (valid) {
-    //       alert('submit!');
-    //     } else {
-    //       console.log('error submit!!');
-    //       return false;
-    //     }
-    //   });
-    // },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -572,8 +552,10 @@ export default {
       this.staffList=this.docData.staff.split(',');
       this.docData.staff1 = this.docData.staff.split(',')[0];
       this.docData.certificateId1 = this.docData.certificateId.split(',')[0];
-      this.docData.staff2 = this.docData.staff.split(',')[1];
-      this.docData.certificateId2 = this.docData.certificateId.split(',')[1];
+      if(this.staffList.length == 2){
+        this.docData.staff2 = this.docData.staff.split(',')[1];
+        this.docData.certificateId2 = this.docData.certificateId.split(',')[1];
+      }
       let dailiData = {};
       if(this.docData.partyType == '1'){ //当事人类型为个人
         dailiData ={

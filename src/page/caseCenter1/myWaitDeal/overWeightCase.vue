@@ -19,12 +19,17 @@
       <div class="searchAndpageBox toggleBox">
         <div class="handlePart caseHandleSearchPart">
           <el-form :inline="true" :model="form" label-width="80px" ref="form">
-            <el-form-item label="创建时间">
+            <el-form-item label="车牌号">
+              <el-select v-model="form.vehicleColor" class="w-80" placeholder="请选择">
+                <el-option v-for="item in vehicleColorList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label=" " label-width="0px">
+              <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+            </el-form-item>
+            <el-form-item label="任务时间">
               <el-date-picker v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
-            </el-form-item>
-            <el-form-item label="关键字">
-              <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
             </el-form-item>
             <el-form-item label=" " label-width="13px">
               <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
@@ -40,7 +45,7 @@
             </el-form-item>
             <el-collapse-transition>
               <div v-show="isShow" :class="{'ransition-box':true}">
-                <el-form-item label="处置人员">
+                <el-form-item label="检测站点">
                   <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
                 <el-form-item label="处理状态">
@@ -52,12 +57,14 @@
             </el-collapse-transition>
           </el-form>
         </div>
-        <div class="handlePart" style="margin-left: 0px;">
-          <el-button type="primary" size="medium"> 批量指派
+        <!-- <div class="handlePart" style="margin-left: 0px;">
+          <el-button type="primary" size="medium">
+            <i class="iconfont law-submit-o f12"></i> 预警推送
           </el-button>
-          <el-button type="primary" size="medium">任务撤销
+          <el-button type="primary" size="medium">
+            <i class="iconfont law-submit-o f12"></i> 转办
           </el-button>
-        </div>
+        </div> -->
         <div class="tablePart">
           <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;">
             <el-table-column label="序号" width="70px">
@@ -65,8 +72,7 @@
                 {{scope.$index+1}}
               </template>
             </el-table-column>
-            <el-table-column prop="checkTime" label="创建时间" align="center" width="100"></el-table-column>
-
+            <el-table-column prop="checkTime" label="任务时间" align="center" width="100"></el-table-column>
             <el-table-column label="车牌号码" align="center" width="120">
               <template slot-scope="scope">
                 <div :class="vehicleColorObj[scope.row.vehicleColor]">
@@ -95,7 +101,6 @@
     </div>
   </keep-alive>
 </template>
-
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
 <style lang="scss" scoped>
@@ -223,51 +228,16 @@ export default {
       processStatus: [{
         value: '待办'
       }, {
+        value: '已回退'
+      }, {
         value: '在办'
       }, {
         value: '办结'
+      }, {
+        value: '机构待办'
       }],
       isShow: false,
-        tableData: [{
-        area: "北京市东城区和平东街",
-        axleNumber: 5,
-        axleType: "D型",
-        blackList: 0,
-        checkEquipment: "EQ001",
-        checkLocation: "路段",
-        checkOrgan: "东城交通支队",
-        checkTime: "2020-03-18 00:00:00",
-        direction: "上行",
-        etc: null,
-        etcVehicleNumber: null,
-        height: 3,
-        id: "4",
-        invalidInfo: null,
-        key: "是",
-        lane: "4",
-        length: 6,
-        load: 50,
-        lscc: 2,
-        organId: "4",
-        organName: "东城交通支队",
-        overload: 5,
-        overweight: 40,
-        position: "116.423187,39.955247",
-        push: null,
-        pushInfo: null,
-        remarks: null,
-        siteId: "3",
-        siteName: "东城交通支队北区执法站",
-        speed: 120,
-        status: "无效信息",
-        totalWeight: 66,
-        transfer: null,
-        transferInfo: null,
-        vehicleColor: "黄色",
-        vehicleNumber: "京A66666",
-        vehicleType: "中型货车",
-        width: 3,
-      }],
+      tableData: [],
       vehicleColorObj: {
         '黑色': 'vehicle-black',
         '白色': 'vehicle-white',
@@ -322,7 +292,7 @@ export default {
     routerDetail(row) {
       this.$store.commit('setOffSiteManageId', row.id);
       this.$router.push({
-        name: 'transferAndRegisterCaseDentail'
+        name: 'offSiteDetail'
       })
     },
     routerEvidenceDetail() {
@@ -341,7 +311,7 @@ export default {
     },
     routerInvalidCue(item) {
       this.$router.push({
-        name: 'invalidCue'
+        name: 'invalidCueDetail'
       })
     }
   },

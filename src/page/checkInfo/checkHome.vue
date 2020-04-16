@@ -197,7 +197,7 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-@import "@/assets/css/checkInfo.scss";
+// @import "@/assets/css/checkInfo.scss";
 @import "../../../static/iconfont/iconfont.css";
 </style>
 <style type="text/css">
@@ -208,4 +208,4 @@ export default {
   fill: currentColor;
   overflow: hidden;
 }
-</style> 
+</style>
