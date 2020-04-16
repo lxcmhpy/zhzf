@@ -209,7 +209,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
-      // tabActiveIndex: '0',
+      tabActiveIndex: '0',
       vehicleColorList: null,
       cxlList: null,
       pageSize: 10, //pagesize
@@ -269,7 +269,7 @@ export default {
         siteId: "3",
         siteName: "东城交通支队北区执法站",
         speed: 120,
-        status: "无效信息",
+        // status: "无效信息",
         totalWeight: 66,
         transfer: null,
         transferInfo: null,

@@ -31,7 +31,8 @@
                             <el-button @click="visible = false">取消</el-button>
                         </span>
                     </el-dialog>
-                     <el-drawer
+                     <el-drawer 
+                     class="el-drawer-title-noborder"
                             title="车辆查验"
                             direction="rtl"
                             size="876px"
@@ -255,7 +256,7 @@
                                                 </ul>
                                                 </div>
                                                 <div class="map-box">
-                                                <el-amap vid="lawSupervise" mapStyle="amap://styles/whitesmoke" :center="center" :plugin="plugin" :amap-manager="amapManager" :zoom="zoom" :events="events" class="amap-demo">
+                                                <el-amap vid="lawSupervise" mapStyle="amap://styles/whitesmoke" :center="center" :plugin="plugin" :amap-manager="amapManager" :zoom="zoom" :events="events">
                                                     <!-- <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :template="marker.template"></el-amap-marker> -->
                                                 </el-amap>
                                                 </div>
@@ -280,7 +281,61 @@
                                                 </el-form-item>
                                                 </div>
                                             </div>
-                                            <ul>
+                                            <ul class="list-info">
+                                                <li>
+                                                <p>京（XX）路政赔〔2020〕第00008号</p>
+                                                <div class="left main-info">
+                                                    <tr>
+                                                    <td class="width198">立案时间：2019-12-14</td>
+                                                    <td>当事人姓名/公司：百度在线网络技术（北京）有限公司</td>
+                                                    </tr>
+                                                    <tr>
+                                                    <td>处置状态：已结案</td>
+                                                    <td>立案机构：北京市交通大队</td>
+                                                    </tr>
+                                                </div>
+                                                <div class="right">
+                                                    <el-button type="success" size="medium" class="btnstyle" style="background-color: #4AAFA7 !important; width:100px;border-color: #4AAFA7 !important;">
+                                                    查看详情
+                                                    </el-button>
+                                                </div>
+                                                </li>
+                                                <li>
+                                                <p>京（XX）路政赔〔2020〕第00008号</p>
+                                                <div class="left main-info">
+                                                    <tr>
+                                                    <td class="width198">立案时间：2019-12-14</td>
+                                                    <td>当事人姓名/公司：百度在线网络技术（北京）有限公司</td>
+                                                    </tr>
+                                                    <tr>
+                                                    <td>处置状态：已结案</td>
+                                                    <td>立案机构：北京市交通大队</td>
+                                                    </tr>
+                                                </div>
+                                                <div class="right">
+                                                    <el-button type="success" size="medium" class="btnstyle" style="background-color: #4AAFA7 !important; width:100px;border-color: #4AAFA7 !important;">
+                                                    查看详情
+                                                    </el-button>
+                                                </div>
+                                                </li>
+                                                <li>
+                                                <p>京（XX）路政赔〔2020〕第00008号</p>
+                                                <div class="left main-info">
+                                                    <tr>
+                                                    <td class="width198">立案时间：2019-12-14</td>
+                                                    <td>当事人姓名/公司：百度在线网络技术（北京）有限公司</td>
+                                                    </tr>
+                                                    <tr>
+                                                    <td>处置状态：已结案</td>
+                                                    <td>立案机构：北京市交通大队</td>
+                                                    </tr>
+                                                </div>
+                                                <div class="right">
+                                                    <el-button type="success" size="medium" class="btnstyle" style="background-color: #4AAFA7 !important; width:100px;border-color: #4AAFA7 !important;">
+                                                    查看详情
+                                                    </el-button>
+                                                </div>
+                                                </li>
                                                 <li>
                                                 <p>京（XX）路政赔〔2020〕第00008号</p>
                                                 <div class="left main-info">
@@ -631,3 +686,11 @@ export default {
     }
 }
 </script>
+<style lang='css'>
+
+.el-drawer-title-noborder /deep/ span:focus {
+    outline: 0
+}
+</style>
+
+
