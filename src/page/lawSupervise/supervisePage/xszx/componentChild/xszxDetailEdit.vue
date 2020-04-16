@@ -514,6 +514,26 @@
                 </ul>
             </div>
         </div>
+
+        <el-upload
+            class="upload-demo"
+            id="catalogueUpload"
+            drag
+            :http-request="saveFile"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-remove="handleRemoveFile"
+            :limit="1"
+          >
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">
+              <em>点击上传附件</em>
+            </div>
+            <!-- <div
+              class="el-upload__tip"
+              slot="tip"
+              style="text-align: center"
+            >只能上传jpg/png文件，且不超过500kb</div> -->
+          </el-upload>
     </div>
 </template>
 <script>

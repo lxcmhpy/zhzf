@@ -141,8 +141,5 @@ export default {
       }
     }
   },
-  computed: {
-        ...mapGetters(["openTab"])
-    },
 };
 </script>

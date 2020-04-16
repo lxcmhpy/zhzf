@@ -67,7 +67,8 @@ const store = new Vuex.Store({
         reducer (val) {
             return {
                 supervise: val.supervise,
-                caseHandle: val.caseHandle
+                caseHandle: val.caseHandle,
+                openTab: val.openTab
             }
         }
     })],

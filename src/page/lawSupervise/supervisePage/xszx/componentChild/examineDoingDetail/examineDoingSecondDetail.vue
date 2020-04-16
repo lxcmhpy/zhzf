@@ -25,6 +25,20 @@
                 <el-table-column prop="overload" label="处理状态" align="center"></el-table-column>
             </el-table>
             </div>
+            <el-dialog class="mini-dialog-title" title="超限复合" :visible.sync="cxVisible" :show-close="false"
+                 :close-on-click-modal="false" width="420px" >
+                    <div class="success-message">
+                        <i class="el-icon-success" ></i>
+                        <p>经数据比对，{{obj.vehicleNumber}}通过违法超限复合</p>
+                    </div>
+                    <p>复合规则：<br>
+                        <i class="circle"></i>历史12小时内，同一次超限行为<br>
+                        <i class="circle"></i>本次为最小检测记录
+                    </p>
+                    <span slot="footer" class="dialog-footer">
+                        <el-button type="primary" @click="cxVisible = false">查看</el-button>
+                    </span>
+            </el-dialog>
         </div>
     </div>
 </div>
@@ -35,8 +49,16 @@ export default {
     props: ['obj'],
     data () {
         return {
-            tableData: []
+            tableData: [],
+            cxVisible: false
         }
+    },
+    methods: {
+
+    },
+    mounted () {
+        this.cxVisible = true
     }
+
 }
 </script>
