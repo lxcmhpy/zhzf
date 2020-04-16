@@ -362,7 +362,7 @@
                     <div class="echarts-box">
                         <i class="el-icon-close right" id="closePhone" @click="ringOff"></i>
                         <i class="el-icon-rank right" @mousedown="event=>start(event,'phoneBox')"></i>
-                        <div class="videoBox" >
+                        <div class="videoBox" v-if="doing == 2">
                             <video class="video" width="200px" height="200px" id="video_local" autoplay="autoplay" muted></video>
                             <video class="video" width="200px" height="200px" id="video_remote" autoplay="autoplay" ></Video>
                         </div>
