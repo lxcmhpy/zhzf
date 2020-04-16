@@ -144,7 +144,7 @@
                   </el-form-item>
                 ，你（单位）
                   <el-form-item rows = '2' prop="caseCauseName" style="width: 300px">
-                    <el-input :disabled="originalData.caseCauseName? true : false" v-model="formData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="true" :maxLength='90'></el-input>
+                    <el-input  :disabled="originalData.caseCauseName? true : false" v-model="formData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:formData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxLength='50'></el-input>
                   </el-form-item>
                 。依据
                 <span>
@@ -157,7 +157,7 @@
                 </span>的规定，本机关决定对你（单位）的
                 <span>
                   <el-form-item prop="detainGoods" style="width: 330px">
-                    <el-input v-model="formData.detainGoods" :maxLength='maxLength'></el-input>
+                    <el-input type='textarea' :autosize="{ minRows: 1, maxRows: 3}" v-model="formData.detainGoods" v-bind:class="{ over_flow:formData.detainGoods.length>14?true:false }"  :maxLength='40'></el-input>
                   </el-form-item>
                 </span>（财物、设施或场所的名称及数量）实施
                 <span>
@@ -241,17 +241,15 @@
                 </el-form-item>
               </span>
             </p>
-          </div>
-          <br>
-          <div class="notice clear">
-            <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
-          </div>
-          <!-- </div>
-          </div> -->
-          </el-form>
+            <br><br><br>
+            <div class="notice clear">
+              <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
+            </div>
+          </div>         
+        </el-form>
 
           <!-- 添加弹出框 -->
-          <el-dialog title="查封、扣押场所、设施、财物清单" :visible.sync="addVisible" width="60%" v-loading="addLoading" :before-close="handleClose">
+          <el-dialog title="查封、扣押场所、设施、财物清单" :visible.sync="addVisible" width="60%" v-loading="addLoading">
             <div>
               <div>
                 <el-form ref="addResFormRef">
@@ -266,7 +264,7 @@
                     <el-table-column prop="spec" label="规格" align="center">
                       <template slot-scope="scope">
                         <el-select v-model="scope.row.spec" placeholder="">
-                          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.label">
                           </el-option>
                         </el-select>
                       </template>
@@ -445,18 +443,22 @@ export default {
       options: [
         {
           value: '1',
-          label: '份'
+          label: '(空)'
         },
         {
           value: '2',
-          label: '套'
+          label: '份'
         },
         {
           value: '3',
-          label: '个'
+          label: '套'
         },
         {
           value: '4',
+          label: '个'
+        },
+        {
+          value: '5',
           label: '件'
         }
       ],
@@ -526,6 +528,13 @@ export default {
     addTableData(){
       console.log(this.tableDatas)
       let length = this.tableDatas.length;
+      if(length == 5){
+        this.$message({
+          message: '最多输入五行！',
+          type: 'warning'
+        });
+        return;
+      }
       if(length == 0){
         this.tableDatas.push({'resNo': 1, 'amount' : 1});
       }else{
@@ -545,21 +554,29 @@ export default {
     //确定添加
     addResSure(formName){
       let canAdd = true;
-      for(let i=0; i<this.tableDatas.length; i++){
-          if(!this.tableDatas[i].resName || !this.tableDatas[i].spec || !this.tableDatas[i].amount || !this.tableDatas[i].resNote){
-            this.$message({
-              message: '数据至少有一项不为空！',
-              type: 'warning'
-            });
-            canAdd = false;
-            break;
+      console.log("添加数据",this.tableDatas.length)
+      if(this.tableDatas.length == 0){
+        this.$message({
+          message: '数据至少有一行不为空！',
+          type: 'warning'
+        });
+        canAdd = false; 
+      }else{
+        for(let i=0; i<this.tableDatas.length; i++){
+            if(!this.tableDatas[i].resName || !this.tableDatas[i].spec){
+              this.$message({
+                message: '财务名称或规格不能为空！',
+                type: 'warning'
+              });
+              canAdd = false;
+              break;
+            }
           }
-        }
-        if(canAdd){
-          this.formData.resList = this.tableDatas;
-          this.addVisible = false;
-        }
-    
+      }
+      if(canAdd){
+        this.formData.resList = this.tableDatas;
+        this.addVisible = false;
+      }
     },
 
     startTime(){

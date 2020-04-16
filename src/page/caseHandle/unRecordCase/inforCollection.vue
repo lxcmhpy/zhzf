@@ -1385,15 +1385,17 @@ export default {
       let staffIdList = data.staffId.split(',');
       let staffCertificateIdList = data.certificateId.split(',');
       this.lawPersonListId = staffIdList;
+      console.log('staffIdList',staffIdList)
       staffIdList.forEach((item, index) => {
         let newlaw = {
           id: item,
           lawOfficerName: staffNameList[index],
-          lawOfficerCards: staffCertificateIdList[index]
+          lawOfficerCards: staffCertificateIdList[index],
+          selectLawOfficerCard:staffCertificateIdList[index]
         }
         this.alreadyChooseLawPerson.push(newlaw);
       });
-
+      console.log('this.alreadyChooseLawPerson',this.alreadyChooseLawPerson)
     },
     // 超重限制及抽屉表
     weightLimit(type) {
@@ -1678,19 +1680,20 @@ export default {
   mounted() {
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
     console.log(someCaseInfo);
-    this.inforForm.caseCauseName = someCaseInfo.illageAct;
-    this.inforForm.caseCauseNameCopy = someCaseInfo.illageAct;
-    this.inforForm.caseCauseId = someCaseInfo.illageActId;
-    this.inforForm.programType = someCaseInfo.programType;
-    this.inforForm.caseType = someCaseInfo.caseType;
-    this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
-    this.inforForm.zfmlId = someCaseInfo.cateId;
-    this.inforForm.zfml = someCaseInfo.cateName;
-    console.log("标志", someCaseInfo.illageAct)
-    this.showOverrun =
-      someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
-    console.log('showOverrun', this.showOverrun)
-
+    if(someCaseInfo){
+      this.inforForm.caseCauseName = someCaseInfo.illageAct;
+      this.inforForm.caseCauseNameCopy = someCaseInfo.illageAct;
+      this.inforForm.caseCauseId = someCaseInfo.illageActId;
+      this.inforForm.programType = someCaseInfo.programType;
+      this.inforForm.caseType = someCaseInfo.caseType;
+      this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
+      this.inforForm.zfmlId = someCaseInfo.cateId;
+      this.inforForm.zfml = someCaseInfo.cateName;
+      console.log("标志", someCaseInfo.illageAct)
+      this.showOverrun =
+        someCaseInfo.illageAct == "车辆在公路上擅自超限行驶" ? true : false;
+      console.log('showOverrun', this.showOverrun)
+    }
     this.driverOrAgentInfo.relationWithParty = '1';
     this.inforForm.otherInfo.checkResult = '1'
     this.inforForm.trailerColor = '1'
@@ -1701,8 +1704,10 @@ export default {
     // this.setLawPerson(
     //   [iLocalStroage.gets('userInfo').username]
     // )
-    console.log(this.$route)
-    this.setLawPersonCurrentP();
+    console.log(this.$route);
+    if(!this.$route.params.fromSlide && !iLocalStroage.get("stageCaseId")){
+       this.setLawPersonCurrentP();
+    }
     if (this.$route.params.fromSlide) {
       this.fromSlide();
       this.disableBtn = true;
