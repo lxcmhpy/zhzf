@@ -146,7 +146,7 @@
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
             ></el-date-picker>
-          </el-form-item>
+          </el-form-item> 
         </div>
         <div class="notice clear">
           <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>

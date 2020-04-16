@@ -99,7 +99,7 @@ export default {
       this.closeOtherDia();
       if(type == 'archiveCatalogue'){
         //  this.$emit('showArchiveCatalogue');
-        this.$refs.archiveCatalogueRef.showModal(true);
+        this.$refs.archiveCatalogueRef.showModal(false);
       }
       if(type == 'documentForm'){
         this.$refs.documentFormRef.showModal();

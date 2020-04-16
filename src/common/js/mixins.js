@@ -640,7 +640,8 @@ export const mixinGetCaseApiList = {
         if(caseIsApprovaling && (data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006')){    
           this.$router.push({ name: 'myPDF', params: { docId: data2.docId, isComplete: true } })
         }else{
-          this.$router.push({ name: data2.nextLink })
+          this.searchHuanjiePdf(data2,data.linkID);
+          // this.$router.push({ name: data2.nextLink })
         }
       }
     },
@@ -687,6 +688,21 @@ export const mixinGetCaseApiList = {
       //     htmlExportPDF('test_print',function(){})
       // }, 1000)
      
+  },
+  //查询环节是否生成了pdf
+  searchHuanjiePdf(data,linkID){
+    this.$store.dispatch("getFile", {
+      docId: data.docId,
+      caseId: this.caseId,
+    }).then(res=>{
+      console.log('查询环节是否生成了pdf',res);
+      if(res && res.length >=0){
+        this.$router.push({ name: 'myPDF', params: { docId: data.docId, caseLinktypeId: linkID } })
+      }else{
+        this.$router.push({ name: data.nextLink })
+      }
+    })
+    .catch(err=>{console.log(err)})
   }
 
 
