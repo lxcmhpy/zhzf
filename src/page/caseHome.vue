@@ -616,8 +616,15 @@
     },
     mounted() {
       // let data = {};
-      let role = iLocalStroage.gets("userInfo").roles[0].name
-      if (role.indexOf("负责人") !== -1) {
+      let role = iLocalStroage.gets("userInfo").roles;
+      let isApprovalPeople = false;
+      //判断是不是审批人员
+      role.forEach(item=>{
+        if(item.name == '法制审查' || item.name == '部门负责人' || item.name == '经办机构负责人'){
+          isApprovalPeople = true;
+        }
+      })
+      if (isApprovalPeople) {
         console.log('yes')
         this.activeName = 'fourth';
         let searchData = {
