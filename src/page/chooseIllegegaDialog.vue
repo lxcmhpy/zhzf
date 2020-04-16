@@ -2,7 +2,7 @@
   <div style="height: 100%;" class="dialo">
     <el-drawer title="选择违法行为" :visible.sync="table" size="50%" class="dialog_unlaw" :before-close='closeDialog'>
 
-      <el-form :model="illegalActSearchForm" ref="illegalActSearchForm" class="illegalActSearchForm" label-width="70px">
+      <el-form :model="illegalActSearchForm" :rules="rules" ref="illegalActSearchFormRef" class="illegalActSearchForm" label-width="70px">
         <div>
           <div class="item">
             <el-form-item label="业务领域" prop="category">
@@ -18,7 +18,7 @@
           </div>
           <div class="item">
             <el-form-item label="行为代码" prop="strNumber">
-              <el-input v-model="illegalActSearchForm.strNumber" placeholder="请输入违法性代码"></el-input>
+              <el-input v-model="illegalActSearchForm.strNumber" placeholder="请输入违法性代码" maxlength="7"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -55,6 +55,14 @@
 <script>
 export default {
   data() {
+    var valiDatLength = (rule, value, callback) => {
+      console.log(value)
+      var re = /^[0-9]{7}$/;
+      if(value && !re.test(value)){
+        return callback(new Error("请输入7位数字"));
+      }
+      callback();
+    }
     return {
       visible: false,
       showcateId: false,
@@ -206,6 +214,11 @@ export default {
           children: []
         },
       ],
+      rules: {
+        strNumber:[
+          {validator:valiDatLength, trigger: "blur"}
+        ],
+      },
     };
   },
   inject: ["reload"],
@@ -269,7 +282,7 @@ export default {
     //   );
     // },
     //查询违法行为
-    getIllegaAct() {
+    getIllegaAct(validate=false) {
 
       this.illegalActSearchForm.size = this.pageSize;
       this.illegalActSearchForm.current = this.currentPage;
@@ -285,16 +298,28 @@ export default {
         this.illegalActSearchForm.categoryId = 1002000200000000
       }
 
-      let _this = this
-      this.$store.dispatch("getIllegaAct", this.illegalActSearchForm).then(
-        res => {
-          _this.tableData = res.data.records;
-          _this.totalPage = res.data.total
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      let _this = this;
+      let validatePass = false;
+      if(validate){
+           _this.$refs['illegalActSearchFormRef'].validate(valid => {
+            if (valid) {
+              validatePass = true
+            }
+          })
+      }
+      if(!validate || validatePass){
+        this.$store.dispatch("getIllegaAct", this.illegalActSearchForm).then(
+          res => {
+            _this.tableData = res.data.records;
+            _this.totalPage = res.data.total
+          },
+          err => {
+            console.log(err);
+          }
+        );
+      }
+      
+      
     },
     //更改行业类别
     changehyType() {

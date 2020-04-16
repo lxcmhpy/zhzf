@@ -7,18 +7,21 @@
             <el-form-item label="检测站点">
               <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
             </el-form-item>
-
-            <el-form-item label="开始时间">
+            <!-- <el-form-item label="开始时间">
               <el-date-picker v-model="checkStartTime" type="date" format="yyyy-MM-dd" placeholder="开始日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="结束时间">
               <el-date-picker v-model="checkEndTime" type="date" format="yyyy-MM-dd" placeholder="结束日期">
               </el-date-picker>
+            </el-form-item> -->
+            <el-form-item>
+              <el-date-picker style='width:280px' v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
+              </el-date-picker>
             </el-form-item>
             <el-form-item label="时间段">
-              <el-date-picker v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
-              </el-date-picker>
+              <el-time-picker is-range v-model="form.timeArea" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围" format="HH:mm" style='width:200px'>
+              </el-time-picker>
             </el-form-item>
             <el-form-item label=" " label-width="13px">
               <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
@@ -37,12 +40,13 @@
                   <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
                 <el-form-item label="超限率">
-                  <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+                   <el-select v-model="form.overanlyse" prop="type">
+                    <el-option v-for="item in overanlyseList" :key="item.value" :label="item.value" :value="item.value"></el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="黑名单">
-                  <el-select v-model="form.status" prop="type">
-                    <el-option v-for="item in processStatus" :key="item.value" :label="item.value" :value="item.value"></el-option>
-                  </el-select>
+                  <el-checkbox v-model="form.status">是</el-checkbox>
+                
                 </el-form-item>
               </div>
             </el-collapse-transition>
@@ -211,7 +215,8 @@ export default {
         current: 1, //当前页
         size: 0, //总页数
         checkEndTime: '',
-        checkStartTime: ''
+        checkStartTime: '',
+        timeArea: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
       },
       timeList: ['', ''],
       processStatus: [{
@@ -227,6 +232,13 @@ export default {
       }],
       isShow: false,
       tableData: [],
+      overanlyseList:[{
+        value:'50%'
+      },{
+        value:'100%'
+      },{
+        value:'200%'
+      }],
       vehicleColorObj: {
         '黑色': 'vehicle-black',
         '白色': 'vehicle-white',

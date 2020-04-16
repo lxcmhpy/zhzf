@@ -27,6 +27,15 @@ export default  [
                 component: () => import("@/page/caseCenter/partyWaitDeal/transferAndRegisterCase.vue")
             },
             {
+                path: "/transferAndRegisterCaseDentail",
+                name: "transferAndRegisterCaseDentail",
+                meta: {
+                title: "转立案列表详情",
+                oneTab:true,
+                },
+                component: () => import("@/page/caseCenter/partyWaitDeal/dentails/dentail.vue")
+            },
+            {
                 path: "/overWeightCase",
                 name: "overWeightCase",
                 meta: {
@@ -34,6 +43,15 @@ export default  [
                 oneTab:true,
                 },
                 component: () => import("@/page/caseCenter/myWaitDeal/overWeightCase.vue")
+            },
+            {
+                path: "/overWeightCaseDentail",
+                name: "overWeightCaseDentail",
+                meta: {
+                title: "超限案件列表详情",
+                oneTab:true,
+                },
+                component: () => import("@/page/caseCenter/myWaitDeal/dentails/dentail.vue")
             },
         ]
     }

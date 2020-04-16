@@ -6,8 +6,8 @@
             <li v-for="(item, index) in processStatus" :class="{'active': index === tabActiveIndex}"  :key="index" @click="activeAndSearch(item,index)">{{item.value}}</li>
         </ul> -->
         <!-- @tab-click="activeAndSearch" -->
-        <el-tabs v-model="tabActiveIndex" :stretch="true">
-          <el-tab-pane v-for="(item, index) in processStatus" :key="index" :name="`${index}`">
+        <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="search">
+          <el-tab-pane v-for="(item, index) in processStatus" :key="item.value" :name="item.value">
             <span slot="label">
               <el-badge :value="index==0?null:index">
                 {{item.value}}
@@ -94,8 +94,11 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="paginationBox" v-show="form.size">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
+        <div class="paginationBox">
+          <div v-if="total > 10">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
+          </div>
+          <div class="noMore" v-else>没有更多了</div>
         </div>
       </div>
     </div>
@@ -202,7 +205,7 @@
 }
 </style>
 <script>
-import { queryListPage, findAllDrawerById } from '@/api/lawSupervise.js';
+import { queryListPage, findAllDrawerById, overWeightCaseList } from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
 export default {
@@ -224,6 +227,8 @@ export default {
         // checkEndTime: '',
         // checkStartTime: ''
       },
+      total: 0, // 总条数
+      tabActiveValue: '无效信息',
       timeList: ['', ''],
       processStatus: [{
         value: '待办'
@@ -237,7 +242,46 @@ export default {
         value: '机构待办'
       }],
       isShow: false,
-      tableData: [],
+      tableData: [{
+        area: "北京市东城区和平东街",
+        axleNumber: 5,
+        axleType: "D型",
+        blackList: 0,
+        checkEquipment: "EQ001",
+        checkLocation: "路段",
+        checkOrgan: "东城交通支队",
+        checkTime: "2020-03-18 00:00:00",
+        direction: "上行",
+        etc: null,
+        etcVehicleNumber: null,
+        height: 3,
+        id: "4",
+        invalidInfo: null,
+        key: "是",
+        lane: "4",
+        length: 6,
+        load: 50,
+        lscc: 2,
+        organId: "4",
+        organName: "东城交通支队",
+        overload: 5,
+        overweight: 40,
+        position: "116.423187,39.955247",
+        push: null,
+        pushInfo: null,
+        remarks: null,
+        siteId: "3",
+        siteName: "东城交通支队北区执法站",
+        speed: 120,
+        // status: "无效信息",
+        totalWeight: 66,
+        transfer: null,
+        transferInfo: null,
+        vehicleColor: "黄色",
+        vehicleNumber: "京A66666",
+        vehicleType: "中型货车",
+        width: 3,
+      }],
       vehicleColorObj: {
         '黑色': 'vehicle-black',
         '白色': 'vehicle-white',
@@ -251,15 +295,16 @@ export default {
     }
   },
   methods: {
-    activeAndSearch(item, index) {
-      this.tabActiveIndex = index;
-    },
+    // activeAndSearch(item, index) {
+    //   this.tabActiveValue = index;
+    // },
     search() {
       this.form.checkStartTime = this.timeList[0];
       this.form.checkEndTime = this.timeList[1];
+      this.form.status = this.tabActiveValue;
       let _this = this
       new Promise((resolve, reject) => {
-        queryListPage(_this.form).then(
+        overWeightCaseList(_this.form).then(
           res => {
             resolve(res)
             _this.tableData = res.data.records
@@ -292,7 +337,7 @@ export default {
     routerDetail(row) {
       this.$store.commit('setOffSiteManageId', row.id);
       this.$router.push({
-        name: 'offSiteDetail'
+        name: 'overWeightCaseDentail'
       })
     },
     routerEvidenceDetail() {
@@ -316,9 +361,7 @@ export default {
     }
   },
   created() {
-    // this.search();
-    // this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
-    // this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'vehicleColorList');
+    this.search();
   },
   mounted() {
 

@@ -15,7 +15,7 @@
       </div>
       <div class="item">
         <el-form-item label="所属机构" prop="pidName">
-          <el-input v-model="addDepartmentForm.pidName"></el-input>
+          <el-input v-model="addDepartmentForm.pidName" disabled></el-input>
         </el-form-item>
       </div>
       <div class="item">
@@ -45,7 +45,8 @@ export default {
         sortOrder: "",
         name: "",
         pidName: "",
-        status: true
+        status: true,
+        type:""
       },
       rules: {
         name: [{ required: true, message: "请输入角色名称", trigger: "blur" }]
@@ -69,6 +70,7 @@ export default {
         this.addDepartmentForm.pidName = data.parentNodeName;
         this.addDepartmentForm.sortOrder = data.departmentLength + 1;
         // this.isDisabled = false;
+        this.addDepartmentForm.type=type;
       } else if (type == 2) {
         console.log(data);
         this.dialogTitle = "修改部门";
@@ -78,6 +80,7 @@ export default {
         this.addDepartmentForm.status = data.row.status == 0 ? true : false;
         this.addDepartmentForm.sortOrder = data.row.sortOrder;
         this.addDepartmentForm.pidName = data.parentNode.parentNodeName;
+        this.addDepartmentForm.type=type;
       }
     },
     //关闭弹窗的时候清除数据
@@ -98,27 +101,32 @@ export default {
         }
       });
     },
-    //查询名称是否重复
+    //查询名称是否重复,
     departmentNameRepeat() {
       let data = {
         oid: this.parentNode.parentNodeId,
         name: this.addDepartmentForm.name
       };
       let _this = this
-      this.$store.dispatch("hasDepartmentName", data).then(
-        res => {
-          console.log(res);
-          if(res.data && res.data.id){ 
-            _this.errorName = true;
-          }else{
-            _this.addOrEditDepartmentSure();
-          }
+      if(this.addDepartmentForm.type==2){
+          _this.addOrEditDepartmentSure();
+      }else{
+        this.$store.dispatch("hasDepartmentName", data).then(
+          res => {
+            console.log(res);
+            if(res.data && res.data.id){ 
+              _this.errorName = true;
+            }else{
+              _this.addOrEditDepartmentSure();
+            }
 
-        },
-        err => {
-          console.log(err);
-        }
-      );
+          },
+          err => {
+            console.log(err);
+          }
+        );
+      }
+      
     },
     //新增 修改
     addOrEditDepartmentSure() {

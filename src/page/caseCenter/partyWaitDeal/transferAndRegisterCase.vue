@@ -88,8 +88,11 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="paginationBox" v-show="form.size">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
+        <div class="paginationBox">
+          <div v-if="total > 10">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
+          </div>
+          <div class="noMore" v-else>没有更多了</div>
         </div>
       </div>
     </div>
@@ -219,6 +222,7 @@ export default {
         // checkEndTime: '',
         // checkStartTime: ''
       },
+      total: 0, // 总条数
       timeList: ['', ''],
       processStatus: [{
         value: '待办'
@@ -228,7 +232,46 @@ export default {
         value: '办结'
       }],
       isShow: false,
-      tableData: [],
+      tableData: [{
+        area: "北京市东城区和平东街",
+        axleNumber: 5,
+        axleType: "D型",
+        blackList: 0,
+        checkEquipment: "EQ001",
+        checkLocation: "路段",
+        checkOrgan: "东城交通支队",
+        checkTime: "2020-03-18 00:00:00",
+        direction: "上行",
+        etc: null,
+        etcVehicleNumber: null,
+        height: 3,
+        id: "4",
+        invalidInfo: null,
+        key: "是",
+        lane: "4",
+        length: 6,
+        load: 50,
+        lscc: 2,
+        organId: "4",
+        organName: "东城交通支队",
+        overload: 5,
+        overweight: 40,
+        position: "116.423187,39.955247",
+        push: null,
+        pushInfo: null,
+        remarks: null,
+        siteId: "3",
+        siteName: "东城交通支队北区执法站",
+        speed: 120,
+        status: "无效信息",
+        totalWeight: 66,
+        transfer: null,
+        transferInfo: null,
+        vehicleColor: "黄色",
+        vehicleNumber: "京A66666",
+        vehicleType: "中型货车",
+        width: 3,
+      }],
       vehicleColorObj: {
         '黑色': 'vehicle-black',
         '白色': 'vehicle-white',
@@ -283,7 +326,7 @@ export default {
     routerDetail(row) {
       this.$store.commit('setOffSiteManageId', row.id);
       this.$router.push({
-        name: 'offSiteDetail'
+        name: 'transferAndRegisterCaseDentail'
       })
     },
     routerEvidenceDetail() {

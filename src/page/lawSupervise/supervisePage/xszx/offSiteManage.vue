@@ -148,7 +148,7 @@
             </el-dialog>
         </div>
          <div class="tablePart">
-            <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
+            <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @row-click="handleNodeClick">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="checkTime" label="过检时间" align="center" width="100"></el-table-column>
                 <el-table-column prop="organName" label="执法点" align="center"></el-table-column>
@@ -168,7 +168,7 @@
                 <el-table-column prop="overload" label="超限率（kg）" align="center"></el-table-column>
                 <el-table-column prop="key" label="重点监管" align="center"></el-table-column>
                 <!-- <el-table-column prop="status" label="处理状态" align="center"></el-table-column> -->
-                <el-table-column label="操作" width="300px" align="center">
+                <!-- <el-table-column label="操作" width="300px" align="center">
                     <template slot-scope="scope">
                          <a href="javascript:void(0)" @click="routerInvalidCueDetail(scope.row)">
                             无效信息
@@ -189,11 +189,11 @@
                             证据
                         </a>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
             </el-table>
         </div>
         <div class="paginationBox" >
-            <div v-if="form.size">
+            <div v-if="total > 10">
                 <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
@@ -201,7 +201,7 @@
                     background
                     :page-sizes="[10, 20, 30, 40]"
                     layout="prev, pager, next,sizes,jumper"
-                    :total="form.size"
+                    :total="total"
                 ></el-pagination>
             </div>
             <div class="noMore" v-else>没有更多了</div>
@@ -458,7 +458,17 @@ export default {
         this.$router.push({
             name: 'transferManage',
         })
-    }
+    },
+    handleNodeClick(data) {
+    //    if(this.tabActiveValue == )
+        switch (data.status) {
+            case '待审核': this.routerExamineDoingDetail(data); break;
+            case '无效信息': this.routerInvalidCueDetail(data); break;
+            case '审核中': this.routerExamineDoingDetail(data); break;
+            case '已转办': this.routerTransferDetail(data); break;
+            case '已审核': this.routerExamineDetail(data); break;
+        }
+    },
   },
   created () {
     this.search();
