@@ -77,6 +77,22 @@ export default  [
                 title: '待审核'
             },
             component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDoingDetail.vue")
+        },
+        {
+            path: '/transferDetail',
+            name: 'transferDetail',
+            meta: {
+                title: '已转办详情'
+            },
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/transferDetail.vue")
+        },
+        {
+            path: '/transferManage',
+            name: 'transferManage',
+            meta: {
+                title: '转办列表'
+            },
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/transferManage.vue")
         }]
     }, {
         //统计分析

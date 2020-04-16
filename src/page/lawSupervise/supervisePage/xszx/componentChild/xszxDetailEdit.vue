@@ -27,7 +27,7 @@
                             </div>
                         </el-form>
                         <span slot="footer" class="dialog-footer">
-                            <el-button type="primary" @click="gotoCoerciveMeasureDoc">保存</el-button>
+                            <el-button type="primary" @click="saveHp">保存</el-button>
                             <el-button @click="visible = false">取消</el-button>
                         </span>
                     </el-dialog>
@@ -37,7 +37,6 @@
                             size="876px"
                             :visible.sync="checkVisible">
                             <div class="vehicle-dialog table-style">
-                     <!-- <el-dialog title="车辆查验" :visible.sync="visible" @close="closeDialog" :close-on-click-modal="false" width="876px" class="vehicle-dialog table-style"> -->
                                 <el-form>
                                     <div class="check-vehicle">
                                         <div class="top">
@@ -623,6 +622,11 @@ export default {
             this.checkVisible = true
         },
         handleClick(tab, event) {
+        },
+        saveHp () {
+            this.obj.vehicleNumber = this.checkSearchForm.number;
+            this.obj.vehicleColor = this.checkSearchForm.color;
+            this.visible = false;
         }
     }
 }

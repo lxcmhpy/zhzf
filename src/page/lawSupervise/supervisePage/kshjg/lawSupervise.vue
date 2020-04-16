@@ -730,7 +730,7 @@ export default {
           area: "东城区",
           current: 1,
           key: "",
-          size: 0,
+          size: 20,
           type: item.code
         };
         this.allSearchList.push(data);
@@ -765,7 +765,7 @@ export default {
           area: "",
           current: 1,
           key: this.$refs.searchAmapBox.keyword,
-          size: 0,
+          size: 20,
           type: this.category
         };
         this.getZfjgLawSupervise(data, this.category);
@@ -831,9 +831,9 @@ export default {
     //     _this.$refs.ringbacktone.load();
     //     _this.$refs.ringtone.load();
     // })
-    window.PhoneCallModule.onCallStateChanged = function onCallStateChanged(e){
-        alert(e.type)
-    }
+    // window.PhoneCallModule.onCallStateChanged = function onCallStateChanged(e){
+    //     // alert(e.type)
+    // }
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {
