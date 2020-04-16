@@ -421,7 +421,7 @@ export default {
     // this.caseData.vehicleShipId = this.$route.params.caseData.vehicleShipId
     // this.caseData.caseType = this.$route.params.caseData.caseType
     this.caseData.wfxw = this.$route.params.caseData.caseCauseName
-    this.caseData.person = this.userInfo.username;
+    this.caseData.person = this.userInfo.nickName;
     console.log('表单', this.caseData)
     getFinishDocByIdApi(this.caseData.caseId).then(res => {
       console.log('文书列表', res.data);
@@ -431,7 +431,7 @@ export default {
 
       // let hash = {};
       // res.data.forEach(curVal => {
-      //    hash[curVal.docName] ? '' : hash[curVal.docName] = true && this.fileList.push(curVal); 
+      //    hash[curVal.docName] ? '' : hash[curVal.docName] = true && this.fileList.push(curVal);
       //     console.log(' this.fileList', this.fileList)
       // });
       // let flag = 1;
@@ -460,7 +460,7 @@ export default {
 /* @import "@/assets/css/caseHandle/index.scss"; */
 @import "@/assets/css/documentForm.scss";
 </style>
- 
+
 <style scoped>
 .steps /deep/ .el-step__icon {
   font-size: 18px;
