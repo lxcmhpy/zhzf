@@ -1101,7 +1101,18 @@
           this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
           this.relationWithPartyIsOne = true;
         } else {
-          this.relationWithPartyIsOne = false;
+            this.driverOrAgentInfoList[0].name = "";
+            this.driverOrAgentInfoList[0].zhengjianType = "";
+            this.driverOrAgentInfoList[0].zhengjianNumber = "";
+            this.driverOrAgentInfoList[0].sex = "";
+            this.driverOrAgentInfoList[0].age = "";
+            this.driverOrAgentInfoList[0].tel = "";
+            this.driverOrAgentInfoList[0].adress = "";
+            this.driverOrAgentInfoList[0].adressCode = "";
+            this.driverOrAgentInfoList[0].company = "";
+            this.driverOrAgentInfoList[0].position = "";
+            this.driverOrAgentInfoList[0].zigeNumber = "";
+            this.relationWithPartyIsOne = false;
         }
       },
       //添加其他人信息
