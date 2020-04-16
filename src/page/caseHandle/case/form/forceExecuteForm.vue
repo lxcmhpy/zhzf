@@ -144,7 +144,7 @@
                         <span v-if="item.status == '1'" class="tableHandelcase">
                           <!-- 已完成 -->
                           <span @click="viewDocPdf(item)">查看</span>
-                          <span >打印</span>
+                          <span @click="viewDocPdf(item)">打印</span>
                         </span>
                         <span v-if="item.status == '0'" class="tableHandelcase">
                           <!-- 未完成 -->
@@ -188,7 +188,7 @@
                     <span v-if="scope.row.status == '1'" class="tableHandelcase">
                       <!-- 已完成 -->
                       <span @click="viewDocPdf(scope.row)">查看</span>
-                      <span >打印</span>
+                      <span @click="viewDocPdf(scope.row)">打印</span>
                     </span>
                     <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">

@@ -947,15 +947,15 @@
           {value: "7", label: "其他"}
         ],
         allVehicleShipType: [
-          {value: "1", label: "中小客车"},
-          {value: "2", label: "大客车"},
-          {value: "3", label: "小型货车"},
-          {value: "4", label: "中型货车"},
-          {value: "5", label: "大型货车"},
-          {value: "6", label: "特大型货车"},
-          {value: "7", label: "集装箱车"},
-          {value: "8", label: "摩托车"},
-          {value: "9", label: "拖拉机"}
+          {value: "中小客车", label: "中小客车"},
+          {value: "大客车", label: "大客车"},
+          {value: "小型货车", label: "小型货车"},
+          {value: "中型货车", label: "中型货车"},
+          {value: "大型货车", label: "大型货车"},
+          {value: "特大型货车", label: "特大型货车"},
+          {value: "集装箱车", label: "集装箱车"},
+          {value: "摩托车", label: "摩托车"},
+          {value: "拖拉机", label: "拖拉机"}
         ],
         showTrailer: false, //是否显示挂车信息
         judgFreedomList: [], //自由裁量列表
