@@ -6,14 +6,14 @@
             <li v-for="(item, index) in processStatus" :class="{'active': index === tabActiveIndex}"  :key="index" @click="activeAndSearch(item,index)">{{item.value}}</li>
         </ul> -->
         <!-- @tab-click="activeAndSearch" -->
-        <el-tabs v-model="tabActiveIndex" :stretch="true">
-          <el-tab-pane v-for="(item, index) in processStatus" :key="index" :name="`${index}`">
-            <span slot="label">
-              <el-badge :value="index==0?null:index">
-                {{item.value}}
-              </el-badge>
-            </span>
-          </el-tab-pane>
+        <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="search">
+            <el-tab-pane v-for="(item, index) in processStatus" :key="item.value"  :name="item.value" >
+                <span slot="label">
+                    <el-badge :value="index==0?null:index" >
+                        {{item.value}}
+                    </el-badge>
+                </span>
+            </el-tab-pane>
         </el-tabs>
       </div>
       <div class="searchAndpageBox toggleBox">
@@ -202,14 +202,14 @@
 }
 </style>
 <script>
-import { queryListPage, findAllDrawerById } from '@/api/lawSupervise.js';
+import { queryListPage, findAllDrawerById,overWeightCaseList } from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
 export default {
   inject: ["reload"],
   data() {
     return {
-      tabActiveIndex: '0',
+      // tabActiveIndex: '0',
       vehicleColorList: null,
       cxlList: null,
       pageSize: 10, //pagesize
@@ -224,6 +224,7 @@ export default {
         // checkEndTime: '',
         // checkStartTime: ''
       },
+      tabActiveValue: '无效信息',
       timeList: ['', ''],
       processStatus: [{
         value: '待办'
@@ -290,15 +291,16 @@ export default {
     }
   },
   methods: {
-    activeAndSearch(item, index) {
-      this.tabActiveIndex = index;
-    },
+    // activeAndSearch(item, index) {
+    //   this.tabActiveValue = index;
+    // },
     search() {
       this.form.checkStartTime = this.timeList[0];
       this.form.checkEndTime = this.timeList[1];
+      this.form.status = this.tabActiveValue;
       let _this = this
       new Promise((resolve, reject) => {
-        queryListPage(_this.form).then(
+        overWeightCaseList(_this.form).then(
           res => {
             resolve(res)
             _this.tableData = res.data.records
@@ -355,9 +357,7 @@ export default {
     }
   },
   created() {
-    // this.search();
-    // this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
-    // this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'vehicleColorList');
+    this.search();
   },
   mounted() {
 

@@ -65,3 +65,14 @@ export function getById(type,id) {
       cancelToken: setCancelSource()
     });
   }
+  //   /zfjg/superviseVehicle/findWeighingRecord/{name}
+  export function overWeightCaseList(data) {
+    return request({
+      url: "/zfjg/overrunCase/queryOverrunCasePage",
+      method: "get",
+      params: data,
+      showloading: false,
+      baseUrlType:2,
+      cancelToken: setCancelSource()
+    });
+  }
