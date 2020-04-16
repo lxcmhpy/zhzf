@@ -193,7 +193,7 @@
             </el-table>
         </div>
         <div class="paginationBox" >
-            <div v-if="form.size">
+            <div v-if="total > 10">
                 <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
@@ -201,7 +201,7 @@
                     background
                     :page-sizes="[10, 20, 30, 40]"
                     layout="prev, pager, next,sizes,jumper"
-                    :total="form.size"
+                    :total="total"
                 ></el-pagination>
             </div>
             <div class="noMore" v-else>没有更多了</div>
