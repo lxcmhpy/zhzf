@@ -46,7 +46,28 @@
             font-weight   : 500;
         }
     }
-
+    p{
+        line-height: 27px;
+        .circle {
+            border-radius: 50%;
+            background:#ccc;
+            width: 5px;
+            height: 5px;
+            margin:3px 7px;
+            display: inline-block;
+        }
+    }
+    .success-message {
+        text-align: center;
+        // margin-bottom: 15px;
+        i {
+            color: rgb(66, 214, 98);
+            font-size: 37px;
+        }
+        p{
+            line-height: 40px;
+        }
+    }
     .invalidinfo {
         .el-select {
 

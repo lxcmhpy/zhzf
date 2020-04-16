@@ -1,6 +1,7 @@
 <template>
   <!-- 左菜单 -->
   <div>
+      {{$route.name}}
     <el-menu :default-active="$route.name" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
              :collapse="isCollapse" @select="changeMenu">
       <template v-for="item in currentSlideMenu">
@@ -45,9 +46,8 @@
     methods: {
       //切换菜单
       changeMenu(key, keyPath) {
-        console.log(key);
-        this.$router.push({name: key});
-        console.log(this.$router);
+         this.$store.dispatch("setActiveIndex", key);
+         this.$router.push({name: key});
       },
       //展开菜单
       handleOpen(key, keyPath) {
