@@ -157,6 +157,15 @@ export default {
     //跳转立案登记
     handleCase(row) {
       console.log(row);
+      //暂存案件跳转信息采集
+      if(row.state == 0){
+        this.$store.commit("setCaseId", row.id);
+        iLocalStroage.set("stageCaseId",row.id);
+        this.$router.replace({
+          name: "inforCollect"
+        });
+        return;
+      }
       if (row.caseStatus == '已移送') {
         let message = '该案件正在移送中，移送完成后才可与继续办理'
         this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');

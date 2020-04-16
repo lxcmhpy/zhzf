@@ -266,6 +266,8 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
+import { getOrganDetailApi } from "@/api/system";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: {
     casePageFloatBtns
@@ -471,7 +473,14 @@ export default {
       }
     },
     getDataAfter() {
-      console.log('this.docData', this.docData)
+      let orgData = {
+        id: iLocalStroage.gets("userInfo").organId
+      };
+      getOrganDetailApi(orgData).then(
+        res => {
+          this.docData.evidenceDepartment = res.data.name;
+          this.docData.evidenceDepartmentPhone = res.data.telephone;
+        })
     },
     handleAdd(evidenceNo, row) {
         this.tableDatas = JSON.parse(JSON.stringify(this.docData.evdenceList));

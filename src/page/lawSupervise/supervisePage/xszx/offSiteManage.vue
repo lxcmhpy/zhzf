@@ -1,13 +1,14 @@
 <template>
+<!-- 非现场治超列表 -->
 <keep-alive>
 <div class="com_searchAndpageBoxPadding">
     <div class="com_searchPage_top">
         <!-- <ul class="com_searchPage_tab">
-            <li v-for="(item, index) in processStatus" :class="{'active': index === tabActiveIndex}"  :key="index" @click="activeAndSearch(item,index)">{{item.value}}</li>
+            <li v-for="(item, index) in processStatus" :class="{'active': index === tabActiveValue}"  :key="index" @click="activeAndSearch(item,index)">{{item.value}}</li>
         </ul> -->
         <!-- @tab-click="activeAndSearch" -->
-        <el-tabs v-model="tabActiveIndex" :stretch="true">
-            <el-tab-pane v-for="(item, index) in processStatus" :key="index"  :name="`${index}`">
+        <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="search">
+            <el-tab-pane v-for="(item, index) in processStatus" :key="item.value"  :name="item.value" >
                 <span slot="label">
                     <el-badge :value="index==0?null:index" >
                         {{item.value}}
@@ -87,12 +88,64 @@
             </el-form>
         </div>
         <div class="handlePart" style="margin-left: 0px;">
-            <el-button type="primary" size="medium">
+            <el-button type="primary" size="medium" @click="yjVisible=true">
                 <i class="iconfont law-submit-o f12"></i> 预警推送
             </el-button>
-             <el-button type="primary" size="medium">
+             <el-button type="primary" size="medium" @click="routerTransferManage">
                 <i class="iconfont law-submit-o f12"></i> 转办
             </el-button>
+            <el-dialog class="mini-dialog-title" title="预警推送" :visible.sync="yjVisible" :show-close="false"
+                :close-on-click-modal="false" width="800px" >
+                <el-form :model="form" ref="form" class="checkSearchForm" label-width="120px">
+                    <div class="invalidinfo main_box">
+                        <p>推送信息</p>
+                        <table class="table_style" >
+                            <tr>
+                                <td class="color_ff w-1"  width="160px">
+                                    执法机构
+                                </td>
+                                <td>
+                                    <el-select v-model="form.lane" placeholder="请选择执法机构">
+                                        <el-option :value="0" label="无效线索类型1"></el-option>
+                                        <el-option :value="1" label="无效线索类型2"></el-option>
+                                    </el-select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="color_ff w-1">
+                                    相关说明
+                                </td>
+                                <td width="260px">
+                                    <el-input
+                                            type="textarea"
+                                            :rows="4"
+                                            placeholder="请输入内容"
+                                            v-model="form.load">
+                                    </el-input>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p>预警信息(4条)</p>
+                    </div>
+                    <div class="tablePart">
+                        <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
+                            <el-table-column type="selection" width="55" align="center"></el-table-column>
+                            <el-table-column prop="checkTime" label="检测时间" align="center" width="100"></el-table-column>
+                            <el-table-column prop="organName" label="执法点" align="center"></el-table-column>
+                            <el-table-column prop="lane" label="车牌号" align="center"></el-table-column>
+                            <el-table-column prop="vehicleNumber" label="车货总质量" align="center"  width="120">
+                                                </el-table-column>
+                            <el-table-column prop="totalWeight" label="超重" align="center"></el-table-column>
+                            <el-table-column prop="load" label="超限率" align="center"></el-table-column>
+                        </el-table>
+                    </div>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="yjVisible=false">确认</el-button>
+                    <el-button @click="yjVisible = false">取消</el-button>
+                </span>
+            </el-dialog>
         </div>
          <div class="tablePart">
             <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
@@ -115,28 +168,43 @@
                 <el-table-column prop="overload" label="超限率（kg）" align="center"></el-table-column>
                 <el-table-column prop="key" label="重点监管" align="center"></el-table-column>
                 <!-- <el-table-column prop="status" label="处理状态" align="center"></el-table-column> -->
-                <el-table-column label="操作" align="center">
+                <el-table-column label="操作" width="300px" align="center">
                     <template slot-scope="scope">
+                         <a href="javascript:void(0)" @click="routerInvalidCueDetail(scope.row)">
+                            无效信息
+                        </a>&nbsp;&nbsp;
+                        <a href="javascript:void(0)" @click="routerExamineDetail(scope.row)">
+                            已审核
+                        </a>&nbsp;&nbsp;
+                        <a href="javascript:void(0)" @click="routerExamineDoingDetail(scope.row)">
+                            待审核
+                        </a>&nbsp;&nbsp;
+                        <a href="javascript:void(0)" @click="routerTransferDetail(scope.row)">
+                            已转办
+                        </a>
                         <a href="javascript:void(0)" @click="routerDetail(scope.row)">
                             详情
-                        </a>
-                        <a href="javascript:void(0)" @click="routerEvidenceDetail">
+                        </a>&nbsp;&nbsp;
+                        <a href="javascript:void(0)" @click="routerEvidenceDetail(scope.row)">
                             证据
                         </a>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
-        <div class="paginationBox" v-show="form.size">
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="form.current"
-                background
-                :page-sizes="[10, 20, 30, 40]"
-                layout="prev, pager, next,sizes,jumper"
-                :total="form.size"
-            ></el-pagination>
+        <div class="paginationBox" >
+            <div v-if="total > 10">
+                <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="form.current"
+                    background
+                    :page-sizes="[10, 20, 30, 40]"
+                    layout="prev, pager, next,sizes,jumper"
+                    :total="total"
+                ></el-pagination>
+            </div>
+            <div class="noMore" v-else>没有更多了</div>
         </div>
     </div>
 </div>
@@ -144,6 +212,7 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
+<style lang="scss" src="@/assets/css/cluesReview.scss"></style>
 <style lang="scss" scoped>
 .vehicle-black {
     width:100%;
@@ -250,10 +319,10 @@ export default {
   inject: ["reload"],
   data() {
     return {
-        tabActiveIndex: '0',
+        yjVisible: false,
         vehicleColorList: null,
         cxlList: null,
-        pageSize: 10, //pagesize
+        // pageSize: 10, //pagesize
         form: {
             siteName: '',
             vehicleColor: '',
@@ -261,10 +330,11 @@ export default {
             overload: '',
             status: '',
             current: 1, //当前页
-            size: 0, //总页数
+            size: 10, //每页显示条数
             // checkEndTime: '',
             // checkStartTime: ''
         },
+        total: 0, // 总条数
         timeList: ['',''],
         processStatus: [{
             value: '无效信息'
@@ -277,6 +347,7 @@ export default {
         }, {
             value: '已审核'
         }],
+        tabActiveValue: '无效信息',
         isShow: false,
         tableData: [],
         vehicleColorObj: {
@@ -292,18 +363,17 @@ export default {
     }
   },
   methods: {
-    activeAndSearch (item,index) {
-        this.tabActiveIndex = index;
-    },
     search () {
         this.form.checkStartTime = this.timeList[0];
         this.form.checkEndTime = this.timeList[1];
-        let _this = this
+        this.form.status = this.tabActiveValue;
+        let _this = this;
         new Promise((resolve, reject) => {
             queryListPage(_this.form).then(
                 res => {
                     resolve(res)
-                    _this.tableData = res.data.records
+                    _this.tableData = res.data.records;
+                    _this.total = res.data.total;
                 },
                 error => {
                     //  _this.errorMsg(error.toString(), 'error')
@@ -336,19 +406,58 @@ export default {
             name: 'offSiteDetail'
         })
     },
-    routerEvidenceDetail () {
+    routerEvidenceDetail (row) {
+        this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
             name: 'evidenceDetail'
         })
     },
       //更改每页显示的条数
     handleSizeChange(val) {
-        this.pageSize = val;
+        this.form.pageSize = val;
         this.getLogList(1);
     },
     //更换页码
     handleCurrentChange(val) {
       this.getLogList(val);
+    },
+    routerInvalidCueDetail (item) {
+        this.$store.commit('setOffSiteManageId', item.id);
+        this.$router.push({
+            name: 'invalidCueDetail'
+        })
+    },
+    routerExamineDetail (item) {
+        this.$store.commit('setOffSiteManageId', item.id);
+        this.$router.push({
+            name: 'examineDoingDetail',
+            params: {
+                status: '2'
+            }
+        })
+    },
+    routerExamineDoingDetail (item) {
+        this.$store.commit('setOffSiteManageId', item.id);
+        this.$router.push({
+            name: 'examineDoingDetail',
+            params: {
+                status: '0'
+            }
+        })
+    },
+    routerTransferDetail (item) {
+        this.$store.commit('setOffSiteManageId',  item.id);
+        this.$router.push({
+            name: 'transferDetail',
+            // params: {
+            //     status: '0'
+            // }
+        })
+    },
+    routerTransferManage () {
+        this.$router.push({
+            name: 'transferManage',
+        })
     }
   },
   created () {

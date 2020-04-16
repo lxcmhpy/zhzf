@@ -44,7 +44,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns @click="show=false"></externalVideoBtns>
+                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
             </div>
             <!-- 1执法机构 -->
             <div v-else-if="curWindow.category == 1">
@@ -355,35 +355,37 @@
       </el-button>
     </div>
     <transition name="el-fade-in" >
-        <div v-show="makePhoneStatus">
+        <div v-show="makePhoneStatus" >
              <!--  -->
             <div class="makePhoneBox" id="phoneBox">
                 <div >
                     <div class="echarts-box">
-                        <i class="el-icon-close right" id="closePhone" @click="updateMakePhoneStatus"></i>
+                        <i class="el-icon-close right" id="closePhone" @click="ringOff"></i>
                         <i class="el-icon-rank right" @mousedown="event=>start(event,'phoneBox')"></i>
-                        <div class="videoBox">
+                        <div class="videoBox" v-if="doing == 2">
                             <video class="video" width="200px" height="200px" id="video_local" autoplay="autoplay" muted></video>
-                            <video class="video" width="200px" height="200px" id="video_remote" autoplay="autoplay"></Video>
+                            <video class="video" width="200px" height="200px" id="video_remote" autoplay="autoplay" ></Video>
                         </div>
                     </div>
                     <div class="phoneBtns">
-                        <img :src="'./static/images/img/lawSupervise/ring_off.png'" @click="ringOff">
+                        <span @click="ringOff">
+                        <img :src="'./static/images/img/lawSupervise/ring_off.png'" >
+                        <br> <span style="color:white;line-height: 40px;">取消</span>
+                        </span>
+                        <!-- <img :src="'./static/images/img/lawSupervise/ring_off.png'" v-if="doing" @click="ringOff"> -->
                     </div>
                 </div>
             </div>
-            <!-- <audio id="audio_remote" autoplay="autoplay"> </audio>
-            <audio id="ringtone" loop  :src="'./static/sounds/ringtone.wav'"> </audio>
-            <audio id="ringbacktone"  loop :src="'./static/sounds/ringbacktone.wav'"> </audio>
-            <audio id="dtmfTone" :src="'./static/assets/sounds/dtmf.wav'"> </audio> -->
         </div>
     </transition>
-    <audioPhone></audioPhone>
-    <a id="getPhone" @click="videoCall"></a>
-    <audio id="audio_remote"  ref="audio_remote" autoplay="autoplay"> </audio>
-        <audio id="ringtone" loop ref="ringtone" :src="require('../../../../../static/sounds/ringtone.wav')"> </audio>
+        <a id="getPhone" @click="makePhoneStatus=!makePhoneStatus"></a>
+     <div v-show="showVideo">
+        <audio id="audio_remote"  ref="audio_remote" autoplay="autoplay"> </audio>
+        <audio id="ringtone" loop ref="ringtone"  :src="require('../../../../../static/sounds/ringtone.wav')"> </audio>
         <audio id="ringbacktone" ref="ringbacktone"  loop :src="require('../../../../../static/sounds/ringbacktone.wav')"> </audio>
-        <audio id="dtmfTone" ref="dtmfTone" :src="require('../../../../../static/sounds/dtmf.wav')"> </audio>
+        <audio id="dtmfTone" ref="dtmfTone"  :src="require('../../../../../static/sounds/dtmf.wav')"> </audio>
+
+    </div>
   </div>
 </template>
 <script>
@@ -401,8 +403,6 @@ import _ from "lodash";
 import AMap from "vue-amap";
 import { AMapManager } from "vue-amap";
 
-// import draggable from "vuedraggable";
-// import { PhoneCallModule } from "@/common/js/call.js";
 Vue.use(AMap);
 AMap.initAMapApiLoader({
   key: "2fab5dfd6958addd56c89e58df8cbb37",
@@ -436,6 +436,7 @@ export default {
         //     ringbacktone: './static/sounds/ringbacktone.wav',
         //     ringtone: './static/sounds/ringtone.wav'
         // },
+        doing: null,
         showVideo: false,
         makePhoneStatus: false,
         show: true,
@@ -571,26 +572,15 @@ export default {
     };
   },
   methods: {
-    updateMakePhoneStatus () {
+    updateMakePhoneStatus (code) {
+        this.doing = code;
         this.makePhoneStatus = !this.makePhoneStatus;
-        if (this.makePhoneStatus) {
-            window.PhoneCallModule.sipRegister();
-            setTimeout(function() {
-                document.getElementById('getPhone').click();
-                // window.PhoneCallModule.sipVideoCall("10000","test1");
-            }, 2000)
-        } else {
-            this.ringOff();
-
-        }
-    },
-    videoCall() {
-      window.PhoneCallModule.sipVideoCall("10000","test1");
+        this.showVideo = true;
     },
     ringOff () {
+        this.doing = null;
         window.PhoneCallModule.sipHangUp();
         this.makePhoneStatus = false;
-        this.showVideo = false;
     },
     start (e, id) {
         let odiv = e.target;        //获取目标元素
@@ -740,7 +730,7 @@ export default {
           area: "东城区",
           current: 1,
           key: "",
-          size: 0,
+          size: 20,
           type: item.code
         };
         this.allSearchList.push(data);
@@ -775,7 +765,7 @@ export default {
           area: "",
           current: 1,
           key: this.$refs.searchAmapBox.keyword,
-          size: 0,
+          size: 20,
           type: this.category
         };
         this.getZfjgLawSupervise(data, this.category);
@@ -833,7 +823,7 @@ export default {
   },
   mounted() {
     //   debugger;
-    window.PhoneCallModule.sipRegister();
+    // window.PhoneCallModule.sipRegister();
     // let _this = this;
     // this.$nextTick(() => {
     //     _this.$refs.audio_remote.load();
@@ -841,6 +831,9 @@ export default {
     //     _this.$refs.ringbacktone.load();
     //     _this.$refs.ringtone.load();
     // })
+    // window.PhoneCallModule.onCallStateChanged = function onCallStateChanged(e){
+    //     // alert(e.type)
+    // }
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {

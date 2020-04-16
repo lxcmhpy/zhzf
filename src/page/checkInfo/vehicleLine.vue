@@ -38,7 +38,7 @@
                 <span class="titleflag">
                 </span>
                 <span class="title">查验结果</span>
-            </div>  
+            </div>
             <div class="tablePart" align="center">
                 <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
                 <el-table-column prop="VehicleNo" label="车牌号" align="center"></el-table-column>
@@ -98,7 +98,7 @@ export default {
           label: 9
         }
       ],
-      
+
     }
   },
   components: {
@@ -144,7 +144,7 @@ export default {
   // }
 }
 </script>
-
+<!--
 <style lang='scss' scoped>
 @import "@/assets/css/checkInfo.scss";
-</style>
+</style>-->

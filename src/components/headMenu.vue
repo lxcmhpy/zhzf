@@ -18,16 +18,17 @@
     name: "",
     data() {
       return {
-        headMenuList: iLocalStroage.gets("menu")
+        headMenuList: iLocalStroage.gets("menu"),
+        reg: /(-menu-)/gi
       };
     },
     computed: {
       //刷新设置选中当前头 slide
       activeIndex: function () {
-          debugger;
         var key = iLocalStroage.get("headActiveNav");
         if (key) {
-          this.$emit("selectHeadMenu", key);
+            let keyStr = key.split(this.reg);
+          this.$emit("selectHeadMenu", keyStr[0]);
           return key;
         }
         return "case_handle_home_index";
@@ -38,9 +39,7 @@
     },
     methods: {
       handleSelect(key, keyPath) {
-          debugger;
-        let reg = /(-menu-)/gi;
-        let keyStr = key.split(reg);
+        let keyStr = key.split(this.reg);
         //将当前选中的一级菜单名传到父组件
         this.$emit("selectHeadMenu", keyStr[0]);
         iLocalStroage.set("headActiveNav", key);

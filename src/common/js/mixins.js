@@ -586,8 +586,27 @@ export const mixinGetCaseApiList = {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]
       }
     },
+    //判断流程图跳转pdf文书还是表单 前先获取一下案件基本信息，为了获取是否有环节正在审批中
+    flowShowPdfOrFormBefore(data, flowChartData){
+      let casedata = {
+        id: this.caseId
+      };
+      this.$store.dispatch("getCaseBasicInfo", casedata).then(
+        res => {
+          console.log('判断流程图跳转获取案件信息', res);
+          let caseIsApprovaling = false;
+          if(res.data.caseStatus == "待审批" || res.data.caseStatus == "审批中"){
+            caseIsApprovaling = true;
+          }
+          this.flowShowPdfOrForm(data, flowChartData,caseIsApprovaling)
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
     //判断流程图跳转pdf文书还是表单
-    flowShowPdfOrForm(data, flowChartData) {
+    flowShowPdfOrForm(data, flowChartData,caseIsApprovaling) {
       console.log(data);
       console.log('flowChartData', flowChartData);
       let completeLinkArr = flowChartData.completeLink.split(',');
@@ -600,14 +619,13 @@ export const mixinGetCaseApiList = {
       this.$store.dispatch('deleteTabs', 'flowChart');
       let data2 = this.com_getCaseRouteName(data.linkID);
       this.$store.commit('setDocId', data.docId);
-      debugger
-      if (data.curLinkState == "complete") {    //已完成文书显示pdf
+      if (data.curLinkState == "complete" ) {    //已完成文书显示pdf  审核中也显示pdf
         if (!isHuanjieDoc) {
           this.$router.push({ name: 'myPDF', params: { docId: data2.docId, isComplete: true } })
         } else {
           this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
         }
-      } else {
+      } else if(data.curLinkState == 'unLock'){
         // 行政强制措施即将到期，请前往解除行政强制措施
         if (data.linkID != 'a36b59bd27ff4b6fe96e1b06390d204h' && data.linkID != '2c9029ee6cac9281016cacaadf990006') {
           this.$router.push({ name: data2.nextLink })
@@ -618,8 +636,12 @@ export const mixinGetCaseApiList = {
             this.$router.push({ name: data2.nextLink })
           }
         }
-
-
+      }else if(data.curLinkState == 'doing'){  //进行中的环节
+        if(caseIsApprovaling && (data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006')){    
+          this.$router.push({ name: 'myPDF', params: { docId: data2.docId, isComplete: true } })
+        }else{
+          this.$router.push({ name: data2.nextLink })
+        }
       }
     },
     //根据id获取文书信息(使用场景:询问笔录查看详情）

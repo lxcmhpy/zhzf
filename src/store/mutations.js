@@ -60,7 +60,7 @@ const mutations = {
     state.activeSlideMenu = name;
   },
   setCaseNumber(state,name){
-    state.caseNumber = name;
+    state.caseHandle.caseNumber = name;
   },
   //更改tab title
   changeOneTabName(state,data){

@@ -955,7 +955,7 @@
           {value: "特大型货车", label: "特大型货车"},
           {value: "集装箱车", label: "集装箱车"},
           {value: "摩托车", label: "摩托车"},
-          {value: "拖拉机", label: "拖拉机"}
+          {value: "", label: "拖拉机"}
         ],
         showTrailer: false, //是否显示挂车信息
         judgFreedomList: [], //自由裁量列表

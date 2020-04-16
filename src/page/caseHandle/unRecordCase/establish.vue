@@ -209,7 +209,7 @@
               <p>负责人</p>
               <p>意见</p>
             </td>
-            <td colspan="3" class="color_DBE4EF table_seal" @click="overFlowEdit1" style="white-space: pre-wrap;word-break:break-all">
+            <td colspan="3" class="color_DBE4EF table_seal" style="white-space: pre-wrap;word-break:break-all">
               <div style="word-break:break-all">{{formData.approveOpinions}}</div>
               <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
@@ -234,7 +234,7 @@
               <p class="center_similar"></p>
               <p class="center_similar"></p> -->
             </td>
-            <td colspan="8" class="color_DBE4EF table_seal" @click="overFlowEdit" style="white-space: pre-wrap;word-break:break-all">
+            <td colspan="8" class="color_DBE4EF table_seal"  style="white-space: pre-wrap;word-break:break-all">
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
@@ -541,4 +541,10 @@ export default {
  <style lang="scss">
 // @import "@/assets/css/pdf.scss";
 @import "@/assets/css/caseHandle/caseDocModle.scss";
+#establish-print{
+  .el-form-item__content .el-input__suffix{
+    width: 20px;
+    right: 0;
+  }
+}
 </style>

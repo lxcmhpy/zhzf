@@ -15,7 +15,8 @@
 import {slider,slideritem} from 'vue-concise-slider';
 import checkDataComponent from './componentChild/checkDataComponent.vue';
 import takePhotosComponent from './componentChild/takePhotosComponent.vue';
-import btns from '@/page/lawSupervise/componentCommon/btns.vue';
+import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
+
 export default {
     data() {
     let self = this;

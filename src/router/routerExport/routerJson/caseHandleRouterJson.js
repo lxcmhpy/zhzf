@@ -69,8 +69,8 @@ export default [
     component: () => import("@/page/caseHandle/case/caseDoc.vue")
   },
   {
-    path: "/obtaineEvidenceForms",
-    name: "obtaineEvidenceForms",
+    path: "/obtaineEvidenceForm",
+    name: "obtaineEvidenceForm",
     meta: {
       title: "抽样取样凭证",
       oneTab: true,
@@ -563,5 +563,69 @@ export default [
       title: "卷宗详情",
     },
     component: () => import("@/page/caseHandle/electronicCaseFile/electronicFileDetail.vue")
-  }
+  },
+  {
+    path: "/caseCenter-overWeightCase",
+    name: "caseCenter-overWeightCase",
+    meta: {
+      title: "超限案件列表",
+    },
+    component: () => import("@/page/caseCenter/myWaitDeal/overWeightCase.vue")
+  },
+  {
+    path: "/caseCenter-transferAndRegisterCase",
+    name: "caseCenter-transferAndRegisterCase",
+    meta: {
+      title: "转立案列表",
+    },
+    component: () => import("@/page/caseCenter/partyWaitDeal/transferAndRegisterCase.vue")
+  },
+  {
+    path: "/caseCenter-dealNotes",
+    name: "caseCenter-dealNotes",
+    meta: {
+      title: "处置说明组件",
+    },
+    component: () => import("@/components/cluesReview/dealNotes.vue")
+  },
+  {
+    path: "/caseCenter-dealProgress",
+    name: "caseCenter-dealProgress",
+    meta: {
+      title: "执行情况组件",
+    },
+    component: () => import("@/components/cluesReview/dealProgress.vue")
+  },
+  {
+    path: "/caseCenter-evidencePackage",
+    name: "caseCenter-evidencePackage",
+    meta: {
+      title: "证据包组件",
+    },
+    component: () => import("@/components/cluesReview/evidencePackage.vue")
+  },
+  {
+    path: "/caseCenter-evidenceTransfer",
+    name: "caseCenter-evidenceTransfer",
+    meta: {
+      title: "转办证据组件",
+    },
+    component: () => import("@/components/cluesReview/evidenceTransfer.vue")
+  },
+  {
+    path: "/caseCenter-otherEnclosure",
+    name: "caseCenter-otherEnclosure",
+    meta: {
+      title: "其他附件组件",
+    },
+    component: () => import("@/components/cluesReview/otherEnclosure.vue")
+  },
+  {
+    path: "/zdjg-keyVehicleDentails",
+    name: "zdjg-keyVehicleDentails",
+    meta: {
+      title: "其他附件组件",
+    },
+    component: () => import("@/page/lawSupervise/supervisePage/zdjg/keyVehicleDentails.vue")
+  },
 ]

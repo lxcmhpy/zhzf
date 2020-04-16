@@ -123,6 +123,7 @@ export default {
   },
   mounted() {
     this.caseData = this.$route.params.caseInfo,
+    this.caseData.person = iLocalStroage.gets("userInfo").organName + '-' + this.caseData.person;  
     this.caseData = this.$route.params.caseInfo
     if (this.caseData.appendix != '') {
       this.appendixList = this.caseData.appendix.split(",")

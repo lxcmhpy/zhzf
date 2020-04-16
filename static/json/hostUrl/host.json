@@ -1,5 +1,5 @@
 {
-  "CURRENT": "WW",
+  "CURRENT": "TEST",
   "ONLINE": {
     "//": "http://172.16.170.44:8088/catsic",
     "HOST": "http://172.16.170.96:8088/catsic",
@@ -7,9 +7,10 @@
   },
   "TEST": {
     "//": "http://172.16.170.44:8080/catsic",
-    "HOST": "http://172.16.170.96:9000",
+    "HOST": "http://172.16.170.96:9000/",
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
-    "PDF_HOST": "http://124.192.215.10:9332/"
+    "PDF_HOST": "http://124.192.215.10:9332/",
+    "LAW_SUPERVISE_HOST": "http://172.16.170.44:8090/"
   },
   "LOCAL": {
     "//": "http://172.16.170.44:8080/catsic",
@@ -22,9 +23,9 @@
   },
   "WW": {
     "//": "http://172.16.170.44:8080/catsic",
-    "HOST": "http://172.16.170.96:9000",
-    "CAPTCHA_HOST": "http://172.16.170.96:9000",
+    "HOST": "http://124.192.215.4:9000",
+    "CAPTCHA_HOST": "http://124.192.215.4:9000",
     "PDF_HOST": "http://124.192.215.10:9332/",
-    "LAW_SUPERVISE_HOST": "http://172.16.170.96:8090/"
+    "LAW_SUPERVISE_HOST": "http://124.192.215.4:8090/"
   }
 }

@@ -24,16 +24,16 @@ export default  [
                 oneTab:true,
                 },
                 component: () => import("@/page/lawSupervise/supervisePage/kshjg/offSiteDetectionOverload.vue")
-            },
-            {
-                path: "/teamStrength",
-                name: "teamStrength",
-                meta: {
-                title: "队伍力量",
-                oneTab:true,
-                },
-                component: () => import("@/page/lawSupervise/supervisePage/kshjg/teamStrength.vue")
             }
+            // {
+            //     path: "/teamStrength",
+            //     name: "teamStrength",
+            //     meta: {
+            //     title: "队伍力量",
+            //     oneTab:true,
+            //     },
+            //     component: () => import("@/page/lawSupervise/supervisePage/kshjg/teamStrength.vue")
+            // }
         ]
     }, {
         //线索中心
@@ -62,6 +62,65 @@ export default  [
                     title: '证据详情'
                 },
                 component: () => import("@/page/lawSupervise/supervisePage/xszx/evidenceDetail.vue")
+           }, {
+            path: '/invalidCueDetail',
+            name: 'invalidCueDetail',
+            meta: {
+                title: '无效信息'
+            },
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/invalidCueDetail.vue")
+        },
+        {
+            path: '/examineDoingDetail/:status',
+            name: 'examineDoingDetail',
+            meta: {
+                title: '待审核'
+            },
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDoingDetail.vue")
+        },
+        {
+            path: '/transferDetail',
+            name: 'transferDetail',
+            meta: {
+                title: '已转办详情'
+            },
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/transferDetail.vue")
+        },
+        {
+            path: '/transferManage',
+            name: 'transferManage',
+            meta: {
+                title: '转办列表'
+            },
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/transferManage.vue")
+        }]
+    }, {
+        //统计分析
+        path: '/analysis',
+        name: 'analysis',
+        component: MainContent,
+        children: [{
+               path: '/checkAnalyse',
+               name: 'checkAnalyse',
+               meta: {
+                   title: '治超检测统计分析',
+                   oneTab:true,
+               },
+               component: () => import("@/page/lawSupervise/supervisePage/tjfx/checkAnalyse.vue")
+           }]
+    }, {
+        //重点监管
+        path: '/analysis',
+        name: 'analysis',
+        component: MainContent,
+        children: [{
+               path: '/checkAnalyse',
+               name: 'checkAnalyse',
+               meta: {
+                   title: '治超检测统计分析',
+                   oneTab:true,
+               },
+               component: () => import("@/page/lawSupervise/supervisePage/tjfx/checkAnalyse.vue")
            }]
     }
 ]

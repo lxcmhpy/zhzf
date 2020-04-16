@@ -22,7 +22,7 @@
           <el-row :gutter="20">
             <el-col :span="5">
               <el-form-item prop="organType">
-                <el-select v-model="caseData.organType" placeholder="机构类型">
+                <el-select @change="changOrganType" v-model="caseData.organType" placeholder="机构类型">
                   <el-option label="执法机构" value="执法机构"></el-option>
                   <el-option label="公安机关" value="公安机关"></el-option>
                   <el-option label="司法机关" value="司法机关"></el-option>
@@ -32,7 +32,17 @@
             </el-col>
             <el-col :span="17">
               <el-form-item prop="organMb">
-                <el-input v-model="caseData.organMb" :disabled=" caseData.organType ? false : true "></el-input>
+                <el-input :disabled="caseData.organType?false:true" v-model="caseData.organMb"
+                          v-if="caseData.organType!='执法机构'"></el-input>
+                <div @click="visibleOrgan = true">
+                  <el-input v-if="caseData.organType=='执法机构'" disabled v-model="caseData.organMb"
+                            style="cursor: pointer!important;" class="pointer"></el-input>
+                </div>
+
+                <!--<el-select v-if="caseData.organType=='执法机构'" v-model="caseData.organMb" placeholder="请选择" style="width:435px;">-->
+                <!--<el-option value='执法机构一' label="执法机构一"></el-option>-->
+                <!--<el-option value='执法机构二' label='执法机构二'></el-option>-->
+                <!--</el-select>-->
               </el-form-item>
             </el-col>
           </el-row>
@@ -42,12 +52,13 @@
         </el-form-item>
         <el-form-item label="附件">
           <!-- appendix -->
-          <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadPaymentVoucher" :show-file-list="false">
+          <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/"
+                     :http-request="uploadPaymentVoucher" :show-file-list="false">
             <el-button size="small" type="primary">选取文件</el-button>
           </el-upload>
           <ul>
             <li v-for="item in fileListArr" :key="item.id">{{item.fileName}}
-              <span ><i @click="deleteFile(item)" class="el-icon-circle-close"></i></span>
+              <span><i @click="deleteFile(item)" class="el-icon-circle-close"></i></span>
             </li>
           </ul>
         </el-form-item>
@@ -55,7 +66,9 @@
           <el-input type="textarea" v-model="caseData.notes"></el-input>
         </el-form-item>
         <center>
-          <el-button type="primary" @click="submitForm('caseData')" style="width:174px;margin-bottom:74px;margin-top:70px">提交</el-button>
+          <el-button type="primary" @click="submitForm('caseData')"
+                     style="width:174px;margin-bottom:74px;margin-top:70px">提交
+          </el-button>
         </center>
       </el-form>
     </div>
@@ -68,7 +81,7 @@
           </el-col>
           <el-col :span="22">
             <p style="line-height:28px">
-              提交成功后，案件将抄告至目标机构。<br />
+              提交成功后，案件将抄告至目标机构。<br/>
               是否确认提交?
             </p>
           </el-col>
@@ -79,240 +92,284 @@
         <el-button @click="visible = false">取消</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="选择目标机构" :visible.sync="visibleOrgan" @close="visibleOrgan = false" :close-on-click-modal="false"
+               width="525">
+      <div class="dialogCenter">
+        <div>
+          <div>
+            已选
+          </div>
+        </div>
+        <div>
+          <div>
+            全部
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer" style="text-align: center!important;">
+        <el-button type="primary" @click="submitOrgan">确认</el-button>
+        <el-button @click="visibleOrgan = false">取消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { addEditCopyCaseApi} from "@/api/caseHandle";
-import iLocalStroage from "@/common/js/localStroage";
-import { uploadEvApi, findFileByIdApi ,deleteFileByIdApi ,getFile } from "@/api/upload";
-export default {
-  data() {
-    return {
-      caseData: {
-        person: '',
-        caseNumber: '',
-        caseCauseName: '',
-        organSend: '',
-        organType: '',
-        organMb: '',
-        appendix: '',
-        copyReason: '',
-        notes: '',
-        party: '',
-        state: '',
-        createTime: new Date()
-      },
-      fileListArr: [], //已上传的附件
-      visible: false,
-      rules: {
-        organType: [
-          { required: true, message: '请选择机构类型', trigger: 'blur' }
-        ],
-        organMb: [
-          { required: true, message: '请输入目标机构', trigger: 'blur' }
-        ],
-        copyReason: [
-          { required: true,max: 10, message: '请选择抄告原因,且最多10个汉字', trigger: 'blur' }
-        ]
-      }
-    };
-  },
-  methods: {
-    reSelect() {
-      this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.replace({
-        name: "addCopyOne",
-      });
-    },
-    goSubmit(formName) {
-      let appendixList= []
-      this.fileListArr.forEach(element => {
-        appendixList.push(element.fileName)
-      });
-      this.caseData.appendix=appendixList.join(',')
-      if(this.caseData.organType == "执法机构"){
-        this.caseData.state = "1";
-      }else{
-        this.caseData.state = "2";
-      }
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-//          console.log("添加",this.caseData)
-          addEditCopyCaseApi(this.caseData).then(res => {
-//            console.log(res);
-            if (res.code == 200) {
-              this.$store.dispatch("deleteTabs", this.$route.name);
-              this.$router.replace({
-                name: "copyCase"
-              });
-            }
-          }, err => {
-            console.log(err);
-          })
-        } else {
-          this.$message({
-            type: "error",
-            message: "请完善表单信息"
-          });
-          return false;
+  import {addEditCopyCaseApi} from "@/api/caseHandle";
+  import iLocalStroage from "@/common/js/localStroage";
+  import {uploadEvApi, findFileByIdApi, deleteFileByIdApi, getFile} from "@/api/upload";
+
+  export default {
+    data() {
+      return {
+        caseData: {
+          person: '',
+          caseNumber: '',
+          caseCauseName: '',
+          organSend: '',
+          organType: '',
+          organMb: '',
+          appendix: '',
+          copyReason: '',
+          notes: '',
+          party: '',
+          state: '',
+          createTime: new Date()
+        },
+        fileListArr: [], //已上传的附件
+        visible: false,
+        visibleOrgan: false,
+        rules: {
+          organType: [
+            {required: true, message: '请选择机构类型', trigger: 'blur'}
+          ],
+          organMb: [
+            {required: true, message: '请输入目标机构', trigger: 'blur'}
+          ],
+          copyReason: [
+            {required: true, max: 10, message: '请选择抄告原因,且最多10个汉字', trigger: 'blur'}
+          ]
         }
-      });
+      };
     },
-    submitForm(formName) {
-     this.visible = true;
-//     console.log("弹窗",this.visible)
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    //上传附件
-    uploadPaymentVoucher(param) {
-      const isLt2M = param.file.size / 1024 / 1024 < 10     //这里做文件大小限制
-      if(this.fileListArr.length >=3){
-        this.$message.warning('最多选择3个文件！');
-        return;
-      }
-      if(!isLt2M) {
-        this.$message({
-          message: '上传文件大小不能超过 10MB!',
-          type: 'warning'
+    methods: {
+      reSelect() {
+        this.$store.dispatch("deleteTabs", this.$route.name);
+        this.$router.replace({
+          name: "addCopyOne",
         });
-        return;
-      }
-      for(let i=0; i<this.fileListArr.length; i++){
-        if(param.file.name == this.fileListArr[i].fileName){
-          this.$message.warning('不能上传同一个文件');
+      },
+      goSubmit(formName) {
+        let appendixList = []
+        this.fileListArr.forEach(element => {
+          appendixList.push(element.fileName)
+        });
+        this.caseData.appendix = appendixList.join(',')
+        if (this.caseData.organType == "执法机构") {
+          this.caseData.state = "1";
+        } else {
+          this.caseData.state = "2";
+        }
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+//          console.log("添加",this.caseData)
+            addEditCopyCaseApi(this.caseData).then(res => {
+//            console.log(res);
+              if (res.code == 200) {
+                this.$store.dispatch("deleteTabs", this.$route.name);
+                this.$router.replace({
+                  name: "copyCase"
+                });
+              }
+            }, err => {
+              console.log(err);
+            })
+          } else {
+            this.$message({
+              type: "error",
+              message: "请完善表单信息"
+            });
+            return false;
+          }
+        });
+      },
+      submitForm(formName) {
+        this.visible = true;
+//     console.log("弹窗",this.visible)
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+      //获取机构
+      getAllOrgan(organId) {
+        let _this = this
+        this.$store.dispatch("getAllOrgan").then(
+          res => {
+           _this.organList = res
+          },
+          err => {
+            console.log(err);
+          }
+        );
+      },
+      submitOrgan() {
+
+      },
+      //上传附件
+      uploadPaymentVoucher(param) {
+        const isLt2M = param.file.size / 1024 / 1024 < 10     //这里做文件大小限制
+        if (this.fileListArr.length >= 3) {
+          this.$message.warning('最多选择3个文件！');
           return;
         }
-      }
-      var fd = new FormData()
-      fd.append("file", param.file);
-      fd.append('caseId', this.caseData.caseId)
-      fd.append('docId', '2c9029e16c753a19016c755fe1340001');
-      uploadEvApi(fd).then(
-        res => {
+        if (!isLt2M) {
+          this.$message({
+            message: '上传文件大小不能超过 10MB!',
+            type: 'warning'
+          });
+          return;
+        }
+        for (let i = 0; i < this.fileListArr.length; i++) {
+          if (param.file.name == this.fileListArr[i].fileName) {
+            this.$message.warning('不能上传同一个文件');
+            return;
+          }
+        }
+        var fd = new FormData()
+        fd.append("file", param.file);
+        fd.append('caseId', this.caseData.caseId)
+        fd.append('docId', '2c9029e16c753a19016c755fe1340001');
+        uploadEvApi(fd).then(
+          res => {
 //          console.log(res);
-          this.findFileList(res.data, true);
-        },
-        error => {
-          console.log(error)
-        }
-      );
-    },
-    //删除附件
-    deleteFile(data){
+            this.findFileList(res.data, true);
+          },
+          error => {
+            console.log(error)
+          }
+        );
+      },
+      //删除附件
+      deleteFile(data) {
 //      console.log('删除',data);
-      deleteFileByIdApi(data.storageId).then(res=>{
-        console.log(res);
-        this.findFileList();
-      },err=>{
-         console.log(err)
-      })
-    },
-    //  //通过附件id 查询附件file
-    // findPaymentVoucher(id, isAdd) {
-    //   findFileByIdApi(id).then(
-    //     res => {
-    //       console.log(res);
-    //       this.fileListArr.push(res.data);
-    //     },
-    //     error => {
-    //       console.log(error)
-    //     }
-    //   );
-    // }
-     //通过案件ID和文书ID查询附件
-    findFileList(){
-      let data =  {
-        caseId: this.caseData.caseId,
-        docId :"2c9029e16c753a19016c755fe1340001"
-      }
-//      console.log(data);
-      getFile(data).then(
-        res => {
-//          console.log("附件列表",res);
-          this.fileListArr = res.data;
-
-        },
-        error => {
-          console.log(error);
+        deleteFileByIdApi(data.storageId).then(res => {
+          console.log(res);
+          this.findFileList();
+        }, err => {
+          console.log(err)
+        })
+      },
+      changOrganType() {
+        this.caseData.organMb = "";
+      },
+      findFileList() {
+        let data = {
+          caseId: this.caseData.caseId,
+          docId: "2c9029e16c753a19016c755fe1340001"
         }
-      )
+//      console.log(data);
+        getFile(data).then(
+          res => {
+//          console.log("附件列表",res);
+            this.fileListArr = res.data;
+
+          },
+          error => {
+            console.log(error);
+          }
+        )
+      },
     },
-  },
-  mounted() {
+    mounted() {
 //    console.log('选择的案件', this.$route.params)
-    let datas = this.$route.params.caseData;
-    let caseData = this.caseData;
+      let datas = this.$route.params.caseData;
+      let caseData = this.caseData;
 //    console.log('用户信息', iLocalStroage.gets("userInfo"))
-    for (var key in caseData) {
-      if(key != 'state')
-      this.caseData[key] = datas[key]
-    }
-    this.caseData.caseId = this.$route.params.caseData.id
-    this.caseData.person = iLocalStroage.gets("userInfo").username
-    this.caseData.organSend = iLocalStroage.gets("userInfo").organName
+      for (var key in caseData) {
+        if (key != 'state')
+          this.caseData[key] = datas[key]
+      }
+      this.caseData.caseId = this.$route.params.caseData.id
+      this.caseData.person = iLocalStroage.gets("userInfo").nickName
+      this.caseData.organSend = iLocalStroage.gets("userInfo").organName
 //    console.log('表单', this.caseData)
-  },
-  created(){
-    this.findFileList();
+    },
+    created() {
+      this.findFileList();
+      this.getAllOrgan("root");
+    }
   }
-}
 </script>
 <style lang="scss" scoped>
-/* @import "@/assets/css/caseHandle/index.scss"; */
-@import "@/assets/css/documentForm.scss";
+  /* @import "@/assets/css/caseHandle/index.scss"; */
+  @import "@/assets/css/documentForm.scss";
 </style>
 
 <style scoped>
-.steps /deep/ .el-step__icon {
-  font-size: 18px;
-  width: 42px !important;
-  height: 42px;
-}
-.steps /deep/ .is-process /deep/.el-step__icon {
-  background: #4573d0;
-  color: #ffffff;
-  border-color: #4573d0;
-}
-.steps /deep/ .el-step__head.is-success {
-  color: #4573d0;
-  border-color: #4573d0;
-}
-.steps /deep/ .el-step__title.is-success {
-  color: #b2b2b2;
-}
-.steps /deep/ .el-step__icon /deep/.el-step__icon-inner {
-  font-weight: 400;
-}
-.steps /deep/ .el-step__main {
-  white-space: normal;
-  text-align: left;
-  margin-top: -42px;
-  margin-left: 42px;
-  padding-left: 11px;
-  width: 66px;
-  z-index: 1;
-  position: relative;
-}
-.steps /deep/ .el-step.is-horizontal .el-step__line {
-  height: 2px;
-  top: 21px;
-  left: 128px;
-  right: 26px;
-}
-.list /deep/ .el-checkbox__input {
-  vertical-align: middle;
-  position: absolute;
-  top: 3px;
-}
+  .steps /deep/ .el-step__icon {
+    font-size: 18px;
+    width: 42px !important;
+    height: 42px;
+  }
 
-.list /deep/ .el-checkbox__label {
-  width: calc(100% - 22px);
-  padding-left: 22px;
-  line-height: 20px;
-  font-size: 14px;
-  color: #20232b;
-  font-weight: 600;
-}
+  .steps /deep/ .is-process /deep/ .el-step__icon {
+    background: #4573d0;
+    color: #ffffff;
+    border-color: #4573d0;
+  }
+
+  .steps /deep/ .el-step__head.is-success {
+    color: #4573d0;
+    border-color: #4573d0;
+  }
+
+  .steps /deep/ .el-step__title.is-success {
+    color: #b2b2b2;
+  }
+
+  .steps /deep/ .el-step__icon /deep/ .el-step__icon-inner {
+    font-weight: 400;
+  }
+
+  .steps /deep/ .el-step__main {
+    white-space: normal;
+    text-align: left;
+    margin-top: -42px;
+    margin-left: 42px;
+    padding-left: 11px;
+    width: 66px;
+    z-index: 1;
+    position: relative;
+  }
+
+  .steps /deep/ .el-step.is-horizontal .el-step__line {
+    height: 2px;
+    top: 21px;
+    left: 128px;
+    right: 26px;
+  }
+
+  .list /deep/ .el-checkbox__input {
+    vertical-align: middle;
+    position: absolute;
+    top: 3px;
+  }
+
+  .list /deep/ .el-checkbox__label {
+    width: calc(100% - 22px);
+    padding-left: 22px;
+    line-height: 20px;
+    font-size: 14px;
+    color: #20232b;
+    font-weight: 600;
+  }
+
+  .pointer /deep/ .el-input__inner {
+    cursor: pointer !important;
+  }
+  .dialogCenter{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+
 </style>

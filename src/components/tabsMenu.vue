@@ -13,6 +13,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "",
   data() {
@@ -139,6 +140,9 @@ export default {
         this.$store.dispatch("setActiveIndex", to.name);
       }
     }
-  }
+  },
+  computed: {
+        ...mapGetters(["openTab"])
+    },
 };
 </script>
