@@ -16,7 +16,9 @@
               </el-date-picker>
             </el-form-item> -->
             <el-form-item>
-              <el-date-picker style='width:240px' v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker style='width:240px'
+              :picker-options="pickerOptions"
+               v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="时间段">
@@ -46,7 +48,7 @@
                 </el-form-item>
                 <el-form-item label="黑名单">
                   <el-checkbox v-model="form.status">是</el-checkbox>
-                
+
                 </el-form-item>
               </div>
             </el-collapse-transition>
@@ -201,7 +203,14 @@ import { mapGetters } from "vuex";
 export default {
   inject: ["reload"],
   data() {
+      let _this =this;
     return {
+    pickerOptions:  {
+            onPick:  ({  maxDate,  minDate  })  =>  {
+                _this.$set(_this.timeList,0,minDate);
+                _this.$set(_this.timeList,1,minDate);
+            }
+        },
       tabActiveIndex: '0',
       vehicleColorList: null,
       cxlList: null,

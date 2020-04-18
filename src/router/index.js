@@ -22,7 +22,8 @@ router.beforeEach((to, from, next) => {
   if (tokenObj) {
     //判断是否登录
     if (to.path === "/login") {
-      next({name: "case_handle_home_index"});
+    //   next({name: "case_handle_home_index"});
+    this.$router.redirect("case_handle_home_index");
     } else {
       next();
     }

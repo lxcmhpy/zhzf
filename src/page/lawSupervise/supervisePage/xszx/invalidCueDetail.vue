@@ -3,7 +3,7 @@
 <div class="main_box">
     <div class="main_content" style="margin-top: 24px">
         <div class="shadow">
-            <div class="box w-2">
+            <div class="box w-2" v-if="obj">
                 <div class="box_title">
                     <span class="titleflag">
                     </span>
@@ -21,7 +21,7 @@
         </div>
         <xszxDetailView v-if="obj" :obj="obj"></xszxDetailView>
     </div>
-    <!-- <btns></btns> -->
+    <btns></btns>
 </div>
 </template>
 

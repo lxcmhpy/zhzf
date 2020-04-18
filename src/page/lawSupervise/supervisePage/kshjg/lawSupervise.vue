@@ -44,7 +44,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
             </div>
             <!-- 1执法机构 -->
             <div v-else-if="curWindow.category == 1">
@@ -95,7 +95,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -123,7 +123,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -192,7 +192,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -217,7 +217,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -246,7 +246,7 @@
             location: lng = {{ lng }} lat = {{ lat }}
             </span>
         <span v-else>正在定位</span>-->
-        <!-- <externalVideoBtns style="position:absolute;z-index:300"></externalVideoBtns> -->
+        <!-- <externalVideoBtns :doing="videoDoing"  style="position:absolute;z-index:300"></externalVideoBtns> -->
       </div>
       <!-- 右侧浮动栏 -->
       <div class="amap-position" :class="'amap-' + direction + '-box'">
@@ -354,43 +354,35 @@
         </transition>
       </el-button>
     </div>
-    <transition name="el-fade-in" >
-        <div v-show="makePhoneStatus" >
-             <!--  -->
+    <!-- <transition name="el-fade-in" >
+        <div v-show="makePhoneStatus&&doing == '1'" >
             <div class="makePhoneBox" id="phoneBox">
                 <div >
                     <div class="echarts-box">
                         <i class="el-icon-close right" id="closePhone" @click="ringOff"></i>
                         <i class="el-icon-rank right" @mousedown="event=>start(event,'phoneBox')"></i>
-                        <div class="videoBox" v-if="doing == 2">
-                            <video class="video" width="200px" height="200px" id="video_local" autoplay="autoplay" muted></video>
-                            <video class="video" width="200px" height="200px" id="video_remote" autoplay="autoplay" ></Video>
-                        </div>
-                    </div>
+                      </div>
                     <div class="phoneBtns">
                         <span @click="ringOff">
                         <img :src="'./static/images/img/lawSupervise/ring_off.png'" >
                         <br> <span style="color:white;line-height: 40px;">取消</span>
                         </span>
-                        <!-- <img :src="'./static/images/img/lawSupervise/ring_off.png'" v-if="doing" @click="ringOff"> -->
                     </div>
                 </div>
             </div>
         </div>
-    </transition>
+    </transition> -->
         <a id="getPhone" @click="makePhoneStatus=!makePhoneStatus"></a>
-     <div v-show="showVideo">
-        <audio id="audio_remote"  ref="audio_remote" autoplay="autoplay"> </audio>
-        <audio id="ringtone" loop ref="ringtone"  :src="require('../../../../../static/sounds/ringtone.wav')"> </audio>
-        <audio id="ringbacktone" ref="ringbacktone"  loop :src="require('../../../../../static/sounds/ringbacktone.wav')"> </audio>
-        <audio id="dtmfTone" ref="dtmfTone"  :src="require('../../../../../static/sounds/dtmf.wav')"> </audio>
+     <!-- <div v-show="showVideo">
 
-    </div>
+
+    </div> -->
   </div>
 </template>
 <script>
 import Vue from "vue";
-require("@/common/js/call.js");
+import { mapGetters } from "vuex";
+// require("@/common/js/call.js");
 import audioPhone from "../../componentCommon/audioPhone.vue";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";
@@ -436,9 +428,8 @@ export default {
         //     ringbacktone: './static/sounds/ringbacktone.wav',
         //     ringtone: './static/sounds/ringtone.wav'
         // },
-        doing: null,
+        videoDoing: null,
         showVideo: false,
-        makePhoneStatus: false,
         show: true,
         categorySelect: -1,
         direction: "rtl",
@@ -573,35 +564,13 @@ export default {
   },
   methods: {
     updateMakePhoneStatus (code) {
-        this.doing = code;
-        this.makePhoneStatus = !this.makePhoneStatus;
+        this.videoDoing = code;
+        // this.makePhoneStatus = !this.makePhoneStatus;
+        this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
+        this.$store.commit('setDoing', code);
         this.showVideo = true;
     },
-    ringOff () {
-        this.doing = null;
-        window.PhoneCallModule.sipHangUp();
-        this.makePhoneStatus = false;
-    },
-    start (e, id) {
-        let odiv = e.target;        //获取目标元素
-            //算出鼠标相对元素的位置
-            document.onmousemove = (e)=>{       //鼠标按下并移动的事件
-            // "phoneBox"
-                let obj = document.getElementById(id).style;
-                obj.left = e.clientX < 325 ? '0px' : (e.clientX -350 )+ 'px';
-                obj.top = e.clientY < 90 ? '0px' : (e.clientY -110) + 'px';
-                if (e.clientY >= (document.body.clientHeight - 60)) {
-                     obj.top = (document.body.clientHeight - 210) +'px';
-                }
-                if (e.clientX >= (document.body.clientWidth-400)) {
-                    obj.left = (document.body.clientWidth-400) + 'px';
-                }
-            };
-            document.onmouseup = (e) => {
-                document.onmousemove = null;
-                document.onmouseup = null;
-            };
-    },
+
     updateDrawer() {
       this.drawer = !this.drawer;
       if (this.drawer) {
@@ -822,6 +791,8 @@ export default {
     }
   },
   mounted() {
+    //   window.PhoneCallModule.sipUnRegister();
+      window.PhoneCallModule.sipRegister();
     //   debugger;
     // window.PhoneCallModule.sipRegister();
     // let _this = this;
@@ -831,15 +802,104 @@ export default {
     //     _this.$refs.ringbacktone.load();
     //     _this.$refs.ringtone.load();
     // })
-    // window.PhoneCallModule.onCallStateChanged = function onCallStateChanged(e){
-    //     // alert(e.type)
-    // }
+    let _this = this;
+    window.PhoneCallModule.onCallStateChanged = function onCallStateChanged(e){
+        switch (e.type){
+			//Failed to make call
+			case 0:
+			break;
+			//call connected
+			case 1:
+			break;
+			//Incoming audio call
+			case 2:
+                _this.$message({
+                    iconClass: 'iconfont law-success',
+                    customClass: 'successMsg',
+                    dangerouslyUseHTMLString: true,
+                    message: `语音来电：<a href="javascript:void(0)" style="color:red" onclick="document.getElementById('btnPhone1').click()">点击接听</a>`
+                });
+                // alert(1)
+			break;
+			//Incoming video call
+			case 3:
+                // alert(2)
+                _this.$message({
+                    iconClass: 'iconfont law-success',
+                    customClass: 'successMsg',
+                    dangerouslyUseHTMLString: true,
+                    message: `视频来电：<a href="javascript:void(0)" style="color:red" onclick="document.getElementById('btnPhone2').click()">点击接听</a>`
+                });
+
+			break;
+			case 4:
+			break;
+			//Early media started
+			case 5:
+                // alert(3)
+			/*
+				$('#tdAudio').hide();
+				$('#tdCallOut').hide();
+				$('#tdVideo').show();
+				*/
+			break;
+			case 6:
+                // alert(4)
+                // v.$message({
+                //     iconClass: 'iconfont law-error',
+                //     customClass: 'errorMsg',
+                //     dangerouslyUseHTMLString: true,
+                //     message: `请求已终止`
+                // });
+
+			break;
+			//Terminating the call...
+			case 7:
+			break;
+			//call hangup
+			case 8:
+				// v.$message({
+                //     iconClass: 'iconfont law-error',
+                //     customClass: 'errorMsg',
+                //     dangerouslyUseHTMLString: true,
+                //     message: `已挂断`
+                // });
+
+			break;
+
+			case 9:
+				//$('#callingDlg').modal('hide');
+			break;
+			//answer audio call
+			case 10:
+				//$('#btnCancelCallOut').html('挂断');
+				//$('#tdAudio').hide();
+				//$('#tdCallOut').show();
+				//$('#tdVideo').hide();
+			break;
+			//answer video call
+			case 11:
+				//$('#tdAudio').hide();
+				//$('#tdCallOut').hide();
+				//$('#tdVideo').show();
+				//$('#tdVideoBtn').hide();
+			break;
+        }
+    }
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {
     // echarts,
     externalVideoBtns, audioPhone
-  }
+  },
+   watch: {
+        makePhoneStatus (val, oldVal) {
+            this.videoDoing = null;
+        }
+    },
+    computed: {
+        ...mapGetters(["makePhoneStatus", "doing"])
+    }
 };
 </script>
 

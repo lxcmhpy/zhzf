@@ -21,6 +21,8 @@ const getters = {
 
   //监管
   offSiteManageId: state => state.supervise.offSiteManageId,
-
+  // 语音视频
+  makePhoneStatus: state => state.phoneVideo.makePhoneStatus,
+  doing: state => state.phoneVideo.doing,
 };
 export default getters;

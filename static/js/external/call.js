@@ -4,90 +4,8 @@
 var PhoneCallModule =(function () {
 	var SERVER_ADDR = 'http://192.168.7.24:80/api/api.class.php?';
 	function onCallStateChanged(e){
-        return e;
-        // e.type
-		switch (e.type){
-			//Failed to make call
-			case 0:
-			break;
-			//call connected
-			case 1:
-			break;
-			//Incoming audio call
-			case 2:
-                // v.$message({
-                //     iconClass: 'iconfont law-success',
-                //     customClass: 'successMsg',
-                //     dangerouslyUseHTMLString: true,
-                //     message: `语音来电：<a href="javascript:void(0)" style="color:red">点击接听</a>`
-                // });
-                // alert(1)
-			break;
-			//Incoming video call
-			case 3:
-                // alert(2)
-                // v.$message({
-                //     iconClass: 'iconfont law-success',
-                //     customClass: 'successMsg',
-                //     dangerouslyUseHTMLString: true,
-                //     message: `视频来电：<a href="javascript:void(0)" style="color:red" onclick="document.getElementById('closePhone').click()">点击接听</a>`
-                // });
-
-			break;
-			case 4:
-			break;
-			//Early media started
-			case 5:
-                // alert(3)
-			/*
-				$('#tdAudio').hide();
-				$('#tdCallOut').hide();
-				$('#tdVideo').show();
-				*/
-			break;
-			case 6:
-                // alert(4)
-                // v.$message({
-                //     iconClass: 'iconfont law-error',
-                //     customClass: 'errorMsg',
-                //     dangerouslyUseHTMLString: true,
-                //     message: `请求已终止`
-                // });
-
-			break;
-			//Terminating the call...
-			case 7:
-			break;
-			//call hangup
-			case 8:
-				// v.$message({
-                //     iconClass: 'iconfont law-error',
-                //     customClass: 'errorMsg',
-                //     dangerouslyUseHTMLString: true,
-                //     message: `已挂断`
-                // });
-
-			break;
-
-			case 9:
-				//$('#callingDlg').modal('hide');
-			break;
-			//answer audio call
-			case 10:
-				//$('#btnCancelCallOut').html('挂断');
-				//$('#tdAudio').hide();
-				//$('#tdCallOut').show();
-				//$('#tdVideo').hide();
-			break;
-			//answer video call
-			case 11:
-				//$('#tdAudio').hide();
-				//$('#tdCallOut').hide();
-				//$('#tdVideo').show();
-				//$('#tdVideoBtn').hide();
-			break;
-        }
-        // document.getElementById('phoneBox').click();
+        return e
+	        // document.getElementById('phoneBox').click();
 	};
 
 	function onPhoneCallMsgCB(e){
@@ -164,8 +82,8 @@ var PhoneCallModule =(function () {
 
 	var sipRegister = function(){
         var callCredential = {
-            			displayName: 'test3',
-            			privateIdentity: '10002',
+                        displayName: 'ecds05',
+                        privateIdentity: '100007',
             			webSocketServerUrl: 'wss://124.192.215.9:10062',
             			sipOutboundProxyUrl: 'udp://172.16.170.47:7766',
             			iceServers:'[]',

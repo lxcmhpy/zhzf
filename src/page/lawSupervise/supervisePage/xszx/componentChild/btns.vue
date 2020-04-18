@@ -15,7 +15,9 @@
         <div>完成</div>
       </el-button>
     </div>
-
+    <div>
+        <span></span>
+    </div>
     <div>
         <el-dialog class="mini-dialog-title" title="无效信息" :visible.sync="visible" :show-close="false"
             :close-on-click-modal="false" width="420px" >
