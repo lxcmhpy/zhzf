@@ -352,7 +352,8 @@
           </div>
           <div class="item">
             <el-form-item label="品牌">
-              <el-input v-model="inforForm.brand"></el-input>
+              <!--<el-input v-model="inforForm.brand"></el-input>-->
+              <el-autocomplete style="width: 100%" v-model="inforForm.brand" :fetch-suggestions="queryBrand"></el-autocomplete>
             </el-form-item>
           </div>
         </div>
@@ -770,6 +771,7 @@
         recentCheckWorkers: [],//历史保存过检测人员
         vehicleTypeList: [],//车型
         vehicleAxlesTypeList: [],//轴数
+        brandList: [],//品牌
         inforForm: {
           caseSource: "", //案件来源
           caseSourceText: "", //案件来源后的
@@ -1640,6 +1642,8 @@
                   this.recentCheckStastions = res.data;
               }else if(sign=="checkWorker"){
                   this.recentCheckWorkers = res.data;
+              }else if(sign=="brand"){
+                  this.brandList = res.data;
               }
 
           },err=>{
@@ -1661,6 +1665,16 @@
       queryCheckWorker(queryString, cb){
           let checkWorker = this.recentCheckWorkers;
           var results = queryString ? checkWorker.filter(this.createFilter(queryString)) : checkWorker;
+          let a = [];
+          results.forEach(item=>{
+              a.push({value:item.inputValue})
+          })
+          cb(a);
+      },
+      //品牌 可输入也可以选择
+      queryBrand(queryString, cb){
+          let brand = this.brandList;
+          var results = queryString ? brand.filter(this.createFilter(queryString)) : brand;
           let a = [];
           results.forEach(item=>{
               a.push({value:item.inputValue})
@@ -1706,7 +1720,8 @@
         this.fromSlide();
       }
         this.findHistoryBySign("checkStastions");
-        this.findHistoryBySign("recentCheckWorkers");
+        this.findHistoryBySign("checkWorker");
+        this.findHistoryBySign("brand");
     },
     beforeRouteLeave(to, from, next) {
       console.log('to', to)
