@@ -4,7 +4,7 @@
       <div class="info-box">
         <div class="title-box">
           <span class="title-blue">&nbsp;</span>
-          <span class="title-text">转办证据</span>
+          <span class="title-text">其他附件</span>
         </div>
         <div class="evidence-img">
           <ul>
@@ -37,20 +37,8 @@ export default {
   data() {
     return {
       imgList: [{
-          id:'',  
+          id:'1',  
           url:'@/../static/images/img/cluesReview/pic1.jpg',
-          name:'上传文件的名称',
-      },{
-          id:'',  
-          url:'@/../static/images/img/cluesReview/pic2.jpg',
-          name:'上传文件的名称',
-      },{
-          id:'',  
-          url:'@/../static/images/img/cluesReview/pic3.jpg',
-          name:'上传文件的名称',
-      },{
-          id:'',  
-          url:'@/../static/images/img/cluesReview/pic4.jpg',
           name:'上传文件的名称',
       }
       ],
@@ -59,5 +47,5 @@ export default {
 }
 </script>
 <style lang="scss">
-@import "@/assets/css/dialogStyle.scss";
+@import "@/assets/css/cluesReview.scss";
 </style>

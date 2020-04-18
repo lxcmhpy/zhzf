@@ -9,7 +9,8 @@
         <el-tabs v-model="tabActiveIndex" :stretch="true">
           <el-tab-pane v-for="(item, index) in processStatus" :key="index" :name="`${index}`">
             <span slot="label">
-              <el-badge :value="index==0?null:index">
+              <!-- <el-badge :value="index==0?null:index"> -->
+              <el-badge :value="index+1">
                 {{item.value}}
               </el-badge>
             </span>
@@ -20,7 +21,7 @@
         <div class="handlePart caseHandleSearchPart">
           <el-form :inline="true" :model="form" label-width="80px" ref="form">
             <el-form-item label="创建时间">
-              <el-date-picker v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker size="small" v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="关键字">
@@ -200,6 +201,7 @@
 }
 </style>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
 import { queryListPage, findAllDrawerById } from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
@@ -325,8 +327,9 @@ export default {
     },
     routerDetail(row) {
       this.$store.commit('setOffSiteManageId', row.id);
+      iLocalStroage.sets('caseCenterDentails', this.$route.path);
       this.$router.push({
-        name: 'transferAndRegisterCaseDentail'
+        name: 'dentails-index'
       })
     },
     routerEvidenceDetail() {

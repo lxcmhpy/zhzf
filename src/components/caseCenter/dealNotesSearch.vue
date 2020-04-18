@@ -2,16 +2,19 @@
   <div class="table-style">
     <div class="shadow-box bg-white">
       <div class="info-box">
-          <div class="title-box">
-              <span class="title-blue"></span>
-              <span class="title-text">处置说明</span>
-          </div>
+        <div class="title-box">
+          <span class="title-blue"></span>
+          <span class="title-text">处置说明</span>
+        </div>
         <table>
           <tr>
             <td class="table-bg">车牌号</td>
-            <td></td>
+            <td>12121</td>
             <td class="table-bg">车牌颜色</td>
-            <td></td>
+            <td class="search-tr">
+              <span class="search-text">黄色</span>
+              <el-button type="primary" >查询</el-button>
+            </td>
           </tr>
 
           <tr>
@@ -36,9 +39,8 @@
       </div>
 
     </div>
-
   </div>
 </template>
 <style lang="scss">
-@import "@/assets/css/dialogStyle.scss";
+@import "@/assets/css/cluesReview.scss";
 </style>

@@ -6,16 +6,16 @@ export default  [
         name: 'caseCenter',
         component: MainContent,
         children: [
-            // {
-            //      // 事务中心
-            //        path: '/lawSupervise',
-            //        name: 'lawSupervise',
-            //        meta: {
-            //            title: "事务中心首页",
-            //            oneTab:true,
-            //        },
-            //        component: () => import("@/page/lawSupervise/supervisePage/kshjg/lawSupervise.vue"),
-            //    },
+            {
+                 // 事务中心
+                   path: '/caseCenter',
+                   name: 'caseCenter',
+                   meta: {
+                       title: "事务中心首页",
+                       oneTab:true,
+                   },
+                   component: () => import("@/page/caseCenter/caseCenter.vue"),
+               },
           
             {
                 path: "/transferAndRegisterCase",
@@ -52,6 +52,15 @@ export default  [
                 oneTab:true,
                 },
                 component: () => import("@/page/caseCenter/myWaitDeal/dentails/dentail.vue")
+            },
+            {
+                path: "/dentails-index",
+                name: "dentails-index",
+                meta: {
+                title: "列表详情",
+                oneTab:true,
+                },
+                component: () => import("@/page/caseCenter/dentails/dentails-index.vue")
             },
         ]
     }
