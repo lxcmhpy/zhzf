@@ -208,13 +208,10 @@
           <el-button size="small" @click="caseRecordMore()">查看更多</el-button>
         </center>
         <!-- <el-button type="text" @click="caseRecordMore()">打开嵌套表格的 Drawer</el-button> -->
-
       </div>
-
     </div>
-
     <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
-    <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
+    <chooseillegalAct ref="chooseillegalActRef" @toCaseRegister="toCaseRegister"></chooseillegalAct>
   </div>
 </template>
 <script>
@@ -402,19 +399,19 @@
       handleClick(tab) {
         console.log(tab.index);
         let searchData = {
-          flag: tab.index == 3 ? 4 : tab.index
+          flag: tab.index
         }
         this.getCaseList2(searchData)
         if (tab.index == 0) {
           this.moreFlag = 'waitDeal';
         }
-        if (tab.index == 1) {
+        if (tab.index === 1) {
           this.moreFlag = 'unRecordCase';
         }
-        if (tab.index == 2) {
+        if (tab.index === 2) {
           this.moreFlag = 'waitArchive';
         }
-        if (tab.index == 3) {
+        if (tab.index === 3) {
           this.moreFlag = 'approveIng';
         }
         console.log('点击', this.tableData)
@@ -480,45 +477,47 @@
           console.log(day, '天', endTime, element.acceptTime, element.caseDealTime)
         });
       },
-      // 信息查验
-      infoCheck(path) {
-        this.$router.push({name: path});
-      },
-      // 查看更多
-      router(path) {
-        if(path === 'approveIng'){
-          this.$router.push({path: '/approvalCenter/myApproval'});
-        }else{
-          this.$router.push({path: '/myCase/' + path});
-        }
-
-      },
-      // 立案登记
-      caseRecord(data) {
-        console.log(data)
-        this.$refs.caseRegisterDiagRef.showModal(data, this.caseForm);
-        // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
-      },
-      // 查看更多违法行为
-      caseRecordMore() {
-        this.table = true
-        console.log()
-        let lawCate = {
-          cateId: '',
-          cateName: this.caseForm.wayType,
-          hyTypeId: this.caseForm.commenCase,
-        };
-        this.$refs.chooseillegalActRef.showModal(lawCate);
-        // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
-      },
-      // 查找
-      search(index, name) {
-        //搜索
-        this.caseSearchForm = {
-          flag: index,
-          caseNumber: name
-        };
-        this.getCaseList2(this.caseSearchForm)
+    // 信息查验
+    infoCheck(path) {
+      this.$router.push({ name: path });
+    },
+    // 查看更多
+    router(path) {
+      this.$router.push({ path: '/myCase/' + path });
+    },
+    // 立案登记
+    caseRecord(data) {
+      console.log(data)
+      this.$refs.caseRegisterDiagRef.showModal(data, this.caseForm);
+      // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
+    },
+    // 查看更多违法行为
+    caseRecordMore() {
+      let cate = '';
+      if (this.caseForm.wayType == '水路运政') {
+        cate = 1002000300000000;
+      }
+      if (this.caseForm.wayType == '公路路政') {
+        cate = 1002000100000000;
+      }
+      if (this.caseForm.wayType == '道路运政') {
+        cate = 1002000200000000
+      }
+      let lawCate = {
+        cateId: cate,
+        cateName: this.caseForm.wayType,
+        hyTypeId: this.caseForm.commenCase,
+      };
+      this.$refs.chooseillegalActRef.showModal(lawCate);
+    },
+    // 查找
+    search(index, name) {
+      //搜索
+      this.caseSearchForm = {
+        flag: index,
+        caseNumber: name
+      };
+      this.getCaseList2(this.caseSearchForm)
       },
       //查询违法行为
       getIllegaAct() {
@@ -563,13 +562,8 @@
         this.getIllegaAct()
       },
       //设置违法行为
-      setIllegaAct(val) {
-        // this.caseRegisterForm.illageAct = val.strContent;
-        // this.illageActId = val.id;
-      },
-      // 查看更多违法行为
-      checkMoreIllega() {
-
+      toCaseRegister(val) {
+       this.caseRecord(val,this.caseForm)
       },
       // 获取带办理条数
       getTotal(flag) {
@@ -591,8 +585,8 @@
             if (flag == 2) {
               this.waitArchive = total
             }
-            if (flag == 4) {
-              this.approveIng = total ? total : 0
+            if (flag == 3) {
+              this.approveIng = total
             }
           },
           err => {
@@ -616,7 +610,6 @@
 
     },
     mounted() {
-      // let data = {};
       let role = iLocalStroage.gets("userInfo").roles;
       let isApprovalPeople = false;
       //判断是不是审批人员
@@ -639,11 +632,12 @@
         this.getCaseList2(searchData);
       }
       this.getIllegaAct();
+
       // 获取带办理条数
       this.getTotal('0');
       this.getTotal('1');
       this.getTotal('2');
-      this.getTotal('4');
+      this.getTotal('3');
       console.log('userinfo', iLocalStroage.gets("userInfo").roles[0].name)
 
       this.changeCommonOptions()
@@ -687,11 +681,6 @@
   .width356 {
     width: 356px;
     box-sizing: border-box;
-  }
-
-  .padding22 {
-    /* padding: 0 22px; */
-    /* box-sizing: border-box; */
   }
 
   .colorD8DBE0 {

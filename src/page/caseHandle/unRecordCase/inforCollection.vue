@@ -1248,7 +1248,7 @@
             );
             // 超限
             _this.inforForm.otherInfo = JSON.stringify(
-              _this.inforForm.otherInfo
+              // _this.inforForm.otherInfo
             );
             console.log(_this.inforForm)
             _this.inforForm.state = state;
