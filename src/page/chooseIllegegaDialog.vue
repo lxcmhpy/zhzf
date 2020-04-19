@@ -1,11 +1,12 @@
 <template>
   <div style="height: 100%;" class="dialo">
     <el-drawer title="选择违法行为" :visible.sync="table" size="50%" class="dialog_unlaw" :before-close='closeDialog'>
+
       <el-form :model="illegalActSearchForm" :rules="rules" ref="illegalActSearchFormRef" class="illegalActSearchForm" label-width="70px">
         <div>
           <div class="item">
-            <el-form-item label="业务领域" prop="cateName">
-              <el-input v-model="cateName" disabled></el-input>
+            <el-form-item label="业务领域" prop="category">
+              <el-input v-model="category" disabled></el-input>
             </el-form-item>
           </div>
           <div class="item">
@@ -45,7 +46,7 @@
 export default {
   data() {
     var valiDatLength = (rule, value, callback) => {
-      console.log("行为代码",value)
+      console.log(value)
       var re = /^[0-9]{7}$/;
       if(value && !re.test(value)){
         return callback(new Error("请输入7位数字"));
@@ -62,7 +63,7 @@ export default {
         strNumber: "",
         strContent: ""
       },
-      cateName: '',
+      category: '',
       tableData: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -82,12 +83,19 @@ export default {
     showModal(data) {
       this.illegalActSearchForm.categoryId = data.cateId;
       this.illegalActSearchForm.hyTypeId = data.hyTypeId;
-      this.cateName = data.cateName;
+      this.category = data.cateName;
       this.table = true;
       this.getIndustryCategory();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
+      this.illegalActSearchForm = {
+        categoryId: "",
+        hyTypeId: "",
+        strNumber: "",
+        strContent: ""
+      };
+      // this.visible = false;
       this.table = false;
       this.$nextTick(() => {
         this.$refs['illegalActSearchFormRef'].resetFields()
@@ -149,10 +157,10 @@ export default {
     },
     //选中违法行为并跳转到立案登记
     selectIllegaAct(val) {
-      if(val != null && val != ""){
+      console.log(val);
+      this.currentIllegaAct = val;
       this.table = false;
-      this.$emit('toCaseRegister', val)
-      }
+      this.$emit('toCaseRegister', this.currentIllegaAct)
     }
   },
   mounted() { }

@@ -41,7 +41,7 @@
       </div>
     </div>
     <!-- 历史查处 -->
-    <div class="shadow-box bg-white margin-top22px">
+    <div class="shadow-box bg-white">
       <div class="info-box">
         <div class="title-box">
           <span class="title-blue"></span>
@@ -51,7 +51,7 @@
     </div>
 
     <!-- 当前轨迹             (驶入有数据时，地图展开） -->
-    <div class="shadow-box bg-white margin-top22px">
+    <div class="shadow-box bg-white">
       <div class="info-box">
         <div class="title-box">
           <span class="title-blue"></span>

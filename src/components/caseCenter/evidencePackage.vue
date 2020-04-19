@@ -37,19 +37,23 @@ export default {
   data() {
     return {
       imgList: [{
-          id:'',  
+          id:'1',  
           url:'@/../static/images/img/cluesReview/pic1.jpg',
           name:'上传文件的名称',
       },{
-          id:'',  
+          id:'2',  
           url:'@/../static/images/img/cluesReview/pic2.jpg',
           name:'上传文件的名称',
       },{
-          id:'',  
+          id:'3',  
           url:'@/../static/images/img/cluesReview/pic3.jpg',
           name:'上传文件的名称',
       },{
-          id:'',  
+          id:'4',  
+          url:'@/../static/images/img/cluesReview/pic4.jpg',
+          name:'上传文件的名称',
+      },{
+          id:'5',  
           url:'@/../static/images/img/cluesReview/pic4.jpg',
           name:'上传文件的名称',
       },

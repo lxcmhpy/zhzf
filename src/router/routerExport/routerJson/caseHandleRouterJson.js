@@ -586,7 +586,7 @@ export default [
     meta: {
       title: "处置说明组件",
     },
-    component: () => import("@/components/cluesReview/dealNotes.vue")
+    component: () => import("@/components/caseCenter/dealNotes.vue")
   },
   {
     path: "/caseCenter-dealProgress",
@@ -594,7 +594,7 @@ export default [
     meta: {
       title: "执行情况组件",
     },
-    component: () => import("@/components/cluesReview/dealProgress.vue")
+    component: () => import("@/components/caseCenter/dealProgress.vue")
   },
   {
     path: "/caseCenter-evidencePackage",
@@ -602,7 +602,7 @@ export default [
     meta: {
       title: "证据包组件",
     },
-    component: () => import("@/components/cluesReview/evidencePackage.vue")
+    component: () => import("@/components/caseCenter/evidencePackage.vue")
   },
   {
     path: "/caseCenter-evidenceTransfer",
@@ -610,7 +610,7 @@ export default [
     meta: {
       title: "转办证据组件",
     },
-    component: () => import("@/components/cluesReview/evidenceTransfer.vue")
+    component: () => import("@/components/caseCenter/evidenceTransfer.vue")
   },
   {
     path: "/caseCenter-otherEnclosure",
@@ -618,7 +618,7 @@ export default [
     meta: {
       title: "其他附件组件",
     },
-    component: () => import("@/components/cluesReview/otherEnclosure.vue")
+    component: () => import("@/components/caseCenter/otherEnclosure.vue")
   },
   {
     path: "/zdjg-keyVehicleDentails",
