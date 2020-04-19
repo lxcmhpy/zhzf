@@ -1154,8 +1154,6 @@ export default {
           let elPageOt = this.$el.querySelector(`#link_${i}`) ? this.$el.querySelector(`#link_${i}`).offsetHeight : 0;
           numTotal += elPageOt;
         }
-        console.log('numTotal', numTotal);
-        document.getElementById("inforCollectionBox").scrollTop = numTotal;
       }
     },
     //提交信息
@@ -1217,7 +1215,7 @@ export default {
           );
           // 超限
           _this.inforForm.otherInfo = JSON.stringify(
-            _this.inforForm.otherInfo
+            // _this.inforForm.otherInfo
           );
           console.log(_this.inforForm)
           _this.inforForm.state = state;
@@ -1245,6 +1243,71 @@ export default {
             );
         }
       });
+    },
+    //查询执法人员
+    getAllUserList(list) {
+      console.log("list", list);
+      this.allUserList = list;
+      setTimeout(() => {
+      }, 100);
+    },
+    stageInfo(state) {
+      this.inforForm.agentPartyEcertId = JSON.stringify(
+        this.driverOrAgentInfoList
+      );
+      // 超限
+      this.inforForm.otherInfo = JSON.stringify(
+        this.inforForm.otherInfo
+      );
+      console.log(this.inforForm)
+      this.inforForm.state = state;
+      this.inforForm.caseStatus = '未立案';
+      let _this = this
+      this.$store
+        .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
+        .then(
+          res => {
+            console.log(res);
+            _this.$message({
+              type: "success",
+              message: "暂存成功!"
+            });
+            // _this.$store.dispatch("deleteTabs", _this.$route.name);
+            _this.$store.commit("setCaseId", res.data.id);
+
+          },
+          err => {
+            console.log(err);
+          }
+        );
+      // 超限
+      _this.inforForm.otherInfo = JSON.stringify(
+        _this.inforForm.otherInfo
+      );
+      console.log(_this.inforForm)
+      _this.inforForm.state = state;
+      _this.inforForm.caseStatus = '未立案';
+      _this.$store
+        .dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm)
+        .then(
+          res => {
+            console.log(res);
+            _this.$message({
+              type: "success",
+              message: "提交成功!"
+            });
+            _this.$store.dispatch("deleteTabs", _this.$route.name);
+            _this.$store.commit("setCaseId", res.data.id);
+            iLocalStroage.removeItem("stageCaseId");
+            this.autoSava = false;
+            _this.$router.replace({
+              name: "establish"
+            });
+          },
+          err => {
+            console.log(err);
+          }
+        );
     },
     //查询执法人员
     getAllUserList(list) {
@@ -1638,7 +1701,7 @@ export default {
     },
   },
   mounted() {
-      // 事务中心跳转
+    // 事务中心跳转
     let overWeightCaseData = iLocalStroage.gets("overWeightCaseData")
     console.log('事务中心', overWeightCaseData)
     if (overWeightCaseData) {
@@ -1668,7 +1731,7 @@ export default {
     this.inforForm.otherInfo.checkResult = '1'
     this.inforForm.trailerColor = '1'
 
-  
+
 
   },
   created() {

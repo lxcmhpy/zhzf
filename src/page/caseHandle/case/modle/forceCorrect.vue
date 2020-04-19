@@ -273,9 +273,9 @@ export default {
     // 提交表单
     saveData(handleType) {
       //参数  提交类型 、
-      this.printContent();
+      // this.printContent();
       console.log("日期",this.formData.correctWay)
-      // this.com_submitCaseForm(handleType, "docForm", true);
+      this.com_submitCaseForm(handleType, "docForm", true);
     },
     // 盖章
     makeSeal() {
