@@ -88,8 +88,11 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="paginationBox" v-show="form.size">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
+        <div class="paginationBox">
+          <div v-if="total > 10">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
+          </div>
+          <div class="noMore" v-else>没有更多了</div>
         </div>
       </div>
     </div>
@@ -219,6 +222,7 @@ export default {
         // checkEndTime: '',
         // checkStartTime: ''
       },
+      total: 0, // 总条数
       timeList: ['', ''],
       processStatus: [{
         value: '待办'
@@ -228,7 +232,7 @@ export default {
         value: '办结'
       }],
       isShow: false,
-        tableData: [{
+      tableData: [{
         area: "北京市东城区和平东街",
         axleNumber: 5,
         axleType: "D型",

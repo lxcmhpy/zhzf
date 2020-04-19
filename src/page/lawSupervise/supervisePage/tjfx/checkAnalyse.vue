@@ -19,10 +19,11 @@
               <el-date-picker style='width:240px'
               :picker-options="pickerOptions"
                v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
+
               </el-date-picker>
             </el-form-item>
             <el-form-item label="时间段">
-              <el-time-picker is-range v-model="form.timeArea" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围" format="HH:mm" style='width:20 0px'>
+              <el-time-picker is-range v-model="form.timeArea" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围" format="HH:mm" style='width:200px'>
               </el-time-picker>
             </el-form-item>
             <el-form-item label=" " label-width="13px">

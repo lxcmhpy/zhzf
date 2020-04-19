@@ -34,15 +34,63 @@
               <el-form-item prop="organMb">
                 <el-input :disabled="caseData.organType?false:true" v-model="caseData.organMb"
                           v-if="caseData.organType!='执法机构'"></el-input>
-                <div @click="visibleOrgan = true">
-                  <el-input v-if="caseData.organType=='执法机构'" disabled v-model="caseData.organMb"
+                <div v-if="caseData.organType=='执法机构'" @click="visibleOrgan = true">
+                  <el-input disabled v-model="caseData.organMb"
+                            placeholder="选择目标机构"
                             style="cursor: pointer!important;" class="pointer"></el-input>
                 </div>
+                <el-dialog
+                  title="选择目标机构"
+                  :visible.sync="visibleOrgan"
+                  @close="visibleOrgan = false"
+                  :close-on-click-modal="false"
+                  width="40%"
+                  append-to-body
+                >
+                  <div class="chooseLawPer">
+                    <div class="choosed">
+                      <p>
+                        <span>已选</span>
+                      </p>
+                      <div>
+                        <el-tag v-if="checkedOrgan !== ''" closable
+                                :disable-transitions="false" @close="deleteUser()">{{checkedOrgan}}
+                        </el-tag>
+                      </div>
+                    </div>
+                    <div class="choose">
+                      <p>
+                        <span>全部</span>
+                      </p>
+                      <el-input class="input-with-select" v-model="filterText">
+                        <el-button slot="append" icon="el-icon-search" @click="findOrgan()"></el-button>
+                      </el-input>
+                      <div class="organList">
+                        <!--<el-checkbox-->
+                        <!--:indeterminate="isIndeterminate"-->
+                        <!--v-model="checkAll"-->
+                        <!--@change="handleCheckAllChange"-->
+                        <!--&gt;全选-->
+                        <!--</el-checkbox>-->
+                        <div style="margin: 15px 0;"></div>
+                        <el-tree
+                          :data="organList"
+                          show-checkbox
+                          check-strictly
+                          node-key="id"
+                          ref="organTree"
+                          :filter-node-method="filterNode"
+                          @check-change="handleCheckChange">
+                        </el-tree>
 
-                <!--<el-select v-if="caseData.organType=='执法机构'" v-model="caseData.organMb" placeholder="请选择" style="width:435px;">-->
-                <!--<el-option value='执法机构一' label="执法机构一"></el-option>-->
-                <!--<el-option value='执法机构二' label='执法机构二'></el-option>-->
-                <!--</el-select>-->
+                      </div>
+                    </div>
+                  </div>
+                  <span slot="footer" class="dialog-footer">
+                    <el-button @click="visibleOrgan = false">取 消</el-button>
+                    <el-button type="primary" @click="submitOrgan()">确 定</el-button>
+                  </span>
+                </el-dialog>
               </el-form-item>
             </el-col>
           </el-row>
@@ -92,25 +140,7 @@
         <el-button @click="visible = false">取消</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="选择目标机构" :visible.sync="visibleOrgan" @close="visibleOrgan = false" :close-on-click-modal="false"
-               width="525">
-      <div class="dialogCenter">
-        <div>
-          <div>
-            已选
-          </div>
-        </div>
-        <div>
-          <div>
-            全部
-          </div>
-        </div>
-      </div>
-      <span slot="footer" class="dialog-footer" style="text-align: center!important;">
-        <el-button type="primary" @click="submitOrgan">确认</el-button>
-        <el-button @click="visibleOrgan = false">取消</el-button>
-      </span>
-    </el-dialog>
+
   </div>
 </template>
 <script>
@@ -137,7 +167,6 @@
         },
         fileListArr: [], //已上传的附件
         visible: false,
-        visibleOrgan: false,
         rules: {
           organType: [
             {required: true, message: '请选择机构类型', trigger: 'blur'}
@@ -148,7 +177,12 @@
           copyReason: [
             {required: true, max: 10, message: '请选择抄告原因,且最多10个汉字', trigger: 'blur'}
           ]
-        }
+        },
+        visibleOrgan: false,
+        checkedOrgan: '',
+        organList: [],
+        checkedOrganName: '',
+        filterText: ''
       };
     },
     methods: {
@@ -204,15 +238,62 @@
         let _this = this
         this.$store.dispatch("getAllOrgan").then(
           res => {
-           _this.organList = res
+
+            _this.organList = res.data
           },
           err => {
             console.log(err);
           }
         );
       },
+      handleCheckChange(data, checked, node) {
+        if (checked) {
+          this.$refs.organTree.setCheckedNodes([data]);
+          this.checkedOrgan = data.label
+        } else {
+          if (this.checkedOrgan === data.label) {
+            this.checkedOrgan = ''
+          }
+        }
+      },
+      deleteUser() {
+        this.checkedOrgan = ''
+        this.$refs.organTree.setCheckedNodes([]);
+      },
+      changeLawOfficerCards(val, personData) {
+        this.organList.forEach(item => {
+          if (item.id === personData.id) {
+            item.selectLawOfficerCard = val;
+          }
+        });
+      },
       submitOrgan() {
-
+        this.caseData.organMb = this.checkedOrgan
+        this.visibleOrgan = false
+      },
+      findOrgan() {
+        this.$refs.organTree.filter(this.filterText)
+      },
+      filterNode(value, data, node) {
+        if (!value) {
+          return true
+        }
+        let level = node.level
+        let _array = [] //这里使用数组存储 只是为了存储值。
+        this.getReturnNode(node, _array, value)
+        let result = false
+        _array.forEach(item => {
+          result = result || item
+        })
+        return result
+      },
+      getReturnNode(node, _array, value) {
+        let isPass = node.data && node.data.label && node.data.label.indexOf(value) !== -1
+        isPass ? _array.push(isPass) : ''
+        this.index++
+        if (!isPass && node.level !== 1 && node.parent) {
+          this.getReturnNode(node.parent, _array, value)
+        }
       },
       //上传附件
       uploadPaymentVoucher(param) {
@@ -366,10 +447,6 @@
   .pointer /deep/ .el-input__inner {
     cursor: pointer !important;
   }
-  .dialogCenter{
-    display: flex;
-    justify-content: center;
-    text-align: center;
-  }
+
 
 </style>

@@ -32,7 +32,7 @@
 <style lang="scss" src="@/assets/css/lawSupervise/phone.scss"></style>
 <style>
 .noHeight {
-    height: 0px;
+    height: 0px !important;
 }
 </style>
 <script>
@@ -48,7 +48,9 @@ export default {
         answer (code) {
             this.show = true;
             this.$store.commit('setMakePhoneStatus', true);
-            window.PhoneCallModule.sipAnswer();
+            setTimeout(function(){
+                window.PhoneCallModule.sipAnswer();
+            }, 1000)
 
         },
         ringOff () {
@@ -84,6 +86,7 @@ export default {
             this.show = val;
         },
         doing (val, oldVal) {
+            debugger;
             this.videoDoing = val === '2';
         },
     },

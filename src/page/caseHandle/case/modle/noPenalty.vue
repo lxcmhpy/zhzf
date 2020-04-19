@@ -37,6 +37,7 @@
                       :http-request="uploadFile"
                       :limit="3"
                       :show-file-list="false"
+                      :before-upload="uploadFileValidat"
                       >
                       <el-button size="small" type="primary">上传附件</el-button> <span class="upLoadNumSpan">最多上传3个附件</span>
 
@@ -162,27 +163,29 @@ export default {
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
       }
     },
-    //上传附件
-    uploadFile(param) {
-      const isLt2M = param.file.size / 1024 / 1024 < 10     //这里做文件大小限制
-      console.log("大小",isLt2M)
+    uploadFileValidat(file){
+       let isLt2M = file.size / 1024 / 1024 < 10    //这里做文件大小限制
       if(this.fileListArr.length >=3){
         this.$message.warning('最多选择3个文件！');
-        return;
+        return false;
       }
       if(!isLt2M) {
         this.$message({
           message: '上传文件大小不能超过 10MB!',
           type: 'warning'
         });
-        return;
+        return false;
       }
       for(let i=0; i<this.fileListArr.length; i++){
-        if(param.file.name == this.fileListArr[i].fileName){
+        if(file.name == this.fileListArr[i].fileName){
           this.$message.warning('不能上传同一个文件');
-          return;
+          return false;
         }
       }
+      return true;
+    },
+    //上传附件
+    uploadFile(param) {
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append('caseId', this.caseId)

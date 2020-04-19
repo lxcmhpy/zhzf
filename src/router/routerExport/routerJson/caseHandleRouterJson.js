@@ -1,13 +1,6 @@
-export default [
-  //   {
-  //   path: "/side",
-  //   name: "side",
-  //   meta: {
-  //     title: "侧边条"
-  //   },
-  //   component: () => import("@/page/caseHandle/case/side.vue")
-  // },
+import store from '@/store/index.js';
 
+export default [
   {
     path: "/deleteEvidence",
     name: "deleteEvidence",
@@ -20,7 +13,7 @@ export default [
     path: "/forceCorrect",
     name: "forceCorrect",
     meta: {
-      title: "责令改正违法行为通知书"
+      title: "责令改正违法行为通知书" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/forceCorrect.vue")
   },
@@ -28,7 +21,7 @@ export default [
     path: "/modle",
     name: "modle",
     meta: {
-      title: "标准文书模板"
+      title: "标准文书模板" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/modle.vue")
   },
@@ -36,7 +29,7 @@ export default [
     path: "/othermodle",
     name: "othermodle",
     meta: {
-      title: "询问笔录",
+      title: "询问笔录" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/modle/otherModle.vue")
@@ -45,7 +38,7 @@ export default [
     path: "/finishCaseReport",
     name: "finishCaseReport",
     meta: {
-      title: "结案报告",
+      title: "结案报告" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/modle/finishCaseReport.vue")
@@ -54,7 +47,7 @@ export default [
     path: "/caseInvestig",
     name: "caseInvestig",
     meta: {
-      title: "案件调查报告",
+      title: "案件调查报告" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/caseInvestigReport.vue")
@@ -63,7 +56,7 @@ export default [
     path: "/caseDoc",
     name: "caseDoc",
     meta: {
-      title: "调查类文书",
+      title: "调查类文书" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/caseDoc.vue")
@@ -72,7 +65,7 @@ export default [
     path: "/obtaineEvidenceForm",
     name: "obtaineEvidenceForm",
     meta: {
-      title: "抽样取样凭证",
+      title: "抽样取样凭证" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/obtaineEvidenceFormReport.vue")
@@ -81,7 +74,7 @@ export default [
     path: "/deliveryCertificate",
     name: "deliveryCertificate",
     meta: {
-      title: "送达回证",
+      title: "送达回证" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/caseDocument/deliveryCertificate.vue")
@@ -90,7 +83,7 @@ export default [
     path: "/establish",
     name: "establish",
     meta: {
-      title: "立案登记表-pdf",
+      title: "立案登记表-pdf" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/unRecordCase/establish.vue")
@@ -99,7 +92,7 @@ export default [
     path: "/payStage",
     name: "payStage",
     meta: {
-      title: "分期（延期）缴纳罚款通知书",
+      title: "分期（延期）缴纳罚款通知书" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/modle/payStageDoc.vue")
@@ -108,7 +101,7 @@ export default [
     path: "/executAnnounce",
     name: "executAnnounce",
     meta: {
-      title: "执行公告",
+      title: "执行公告" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/modle/executAnnounceDoc.vue")
@@ -118,7 +111,7 @@ export default [
     path: "/penaltyExecution",
     name: "penaltyExecution",
     meta: {
-      title: "处罚执行",
+      title: "处罚执行" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/PenaltyExecutionForm.vue")
@@ -128,7 +121,7 @@ export default [
     path: "/adminPunishe",
     name: "adminPunishe",
     meta: {
-      title: "行政处罚决定书",
+      title: "行政处罚决定书" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/adminPunisheDecisionForm.vue")
@@ -138,7 +131,7 @@ export default [
     path: "/adminCoerciveMeasure",
     name: "adminCoerciveMeasure",
     meta: {
-      title: "行政强制措施决定书",
+      title: "行政强制措施决定书" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/adminCoerciveMeasureForm.vue")
@@ -148,7 +141,7 @@ export default [
     path: "/noPenalty",
     name: "noPenalty",
     meta: {
-      title: "不予处罚",
+      title: "不予处罚" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/modle/noPenalty.vue")
@@ -158,7 +151,7 @@ export default [
     path: "/partyRights",
     name: "partyRights",
     meta: {
-      title: "当事人权利",
+      title: "当事人权利" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/partyRightsForm.vue")
@@ -168,7 +161,7 @@ export default [
     path: "/forceExecute",
     name: "forceExecute",
     meta: {
-      title: "强制执行",
+      title: "强制执行" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/forceExecuteForm.vue")
@@ -178,7 +171,7 @@ export default [
     path: "/illegalActionForm",
     name: "illegalActionForm",
     meta: {
-      title: "违法行为通知书",
+      title: "违法行为通知书" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/illegalActionForm.vue")
@@ -188,7 +181,7 @@ export default [
     path: "/hearingNoticePdf",
     name: "hearingNoticePdf",
     meta: {
-      title: "听证通知书",
+      title: "听证通知书" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/modle/hearingNoticeDoc.vue")
@@ -198,7 +191,7 @@ export default [
     path: "/hearingRecordePdf",
     name: "hearingRecordePdf",
     meta: {
-      title: "听证笔录",
+      title: "听证笔录" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/modle/hearingRecordDoc.vue")
@@ -208,7 +201,7 @@ export default [
     path: "/caseInfo",
     name: "caseInfo",
     meta: {
-      title: "案件总览",
+      title: "案件总览" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/waitDeal/caseInfo.vue")
@@ -218,7 +211,7 @@ export default [
     path: '/flowChart',
     name: 'flowChart',
     meta: {
-      title: '流程图',
+      title: '流程图' + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/components/flowChart/flowChart.vue")
@@ -228,7 +221,7 @@ export default [
     path: "/punishDecisionDoc",
     name: "punishDecisionDoc",
     meta: {
-      title: "行政处罚决定书-doc",
+      title: "行政处罚决定书-doc" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/caseDocument/punishDecisionDoc.vue")
@@ -238,7 +231,7 @@ export default [
     path: "/inquestNotesDoc",
     name: "inquestNotesDoc",
     meta: {
-      title: "勘验笔录-doc",
+      title: "勘验笔录-doc" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/caseDocument/inquestNotesDoc.vue")
@@ -248,7 +241,7 @@ export default [
     path: "/sceneNotesDoc",
     name: "sceneNotesDoc",
     meta: {
-      title: "现场笔录-doc",
+      title: "现场笔录-doc" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/caseDocument/sceneNotesDoc.vue")
@@ -257,7 +250,7 @@ export default [
     path: "/inforCollect",
     name: "inforCollect",
     meta: {
-      title: "信息采集",
+      title: "信息采集" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/unRecordCase/inforCollection.vue")
@@ -266,7 +259,7 @@ export default [
     path: "/myPDF",
     name: "myPDF",
     meta: {
-      title: "pdf",
+      title: "pdf"  + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/caseDocument/myPDF.vue")
@@ -275,7 +268,7 @@ export default [
     path: "/viewPDF",
     name: "viewPDF",
     meta: {
-      title: "pdf展示"
+      title: "pdf展示" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/components/htmlExportPDF/viewPDF.vue")
   },
@@ -284,7 +277,7 @@ export default [
     path: "/checkHome",
     name: "checkHome",
     meta: {
-      title: "信息查验首页"
+      title: "信息查验首页" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/checkInfo/checkHome.vue")
   },
@@ -292,7 +285,7 @@ export default [
     path: "/transportWorker",
     name: "transportWorker",
     meta: {
-      title: "道路运输从业人员"
+      title: "道路运输从业人员" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/checkInfo/transportWorker.vue")
   },
@@ -300,7 +293,7 @@ export default [
     path: "/commercialVehicle",
     name: "commercialVehicle",
     meta: {
-      title: "营运车辆"
+      title: "营运车辆" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/checkInfo/commercialVehicle.vue")
   },
@@ -308,7 +301,7 @@ export default [
     path: "/industry",
     name: "industry",
     meta: {
-      title: "经营业户"
+      title: "经营业户" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/checkInfo/industry.vue")
   },
@@ -316,7 +309,7 @@ export default [
     path: "/vehicleLine",
     name: "vehicleLine",
     meta: {
-      title: "客运线路标志牌"
+      title: "客运线路标志牌" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/checkInfo/vehicleLine.vue")
   },
@@ -324,7 +317,7 @@ export default [
     path: "/crewCertificates",
     name: "crewCertificates",
     meta: {
-      title: "船员适任证查验"
+      title: "船员适任证查验" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/checkInfo/crewCertificates.vue")
   },
@@ -333,7 +326,7 @@ export default [
     path: "/shipCertificates",
     name: "shipCertificates",
     meta: {
-      title: "国内（国际）船舶查询"
+      title: "国内（国际）船舶查询" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/checkInfo/shipCertificates.vue")
   },
@@ -342,7 +335,7 @@ export default [
     path: "/archiveCover",
     name: "archiveCover",
     meta: {
-      title: "归档"
+      title: "归档" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/waitArchive/archiveCover.vue")
   },
@@ -350,7 +343,7 @@ export default [
     path: "/archiveCatalogueDetail",
     name: "archiveCatalogueDetail",
     meta: {
-      title: "卷宗目录详情"
+      title: "卷宗目录详情" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/waitArchive/archiveCatalogueDetail.vue")
   },
@@ -358,7 +351,7 @@ export default [
     path: "/addTransfer",
     name: "addTransfer",
     meta: {
-      title: "新增移送"
+      title: "新增移送" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/cooperateCases/addPage.vue")
   },
@@ -366,7 +359,7 @@ export default [
     path: "/addSelect",
     name: "addSelect",
     meta: {
-      title: "新增移送"
+      title: "新增移送" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/cooperateCases/selectPage.vue")
   },
@@ -374,7 +367,7 @@ export default [
     path: "/cooperateDentails",
     name: "cooperateDentails",
     meta: {
-      title: "移送：案号"
+      title: "移送：案号" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/cooperateCases/cooperateDentails.vue")
   },
@@ -382,7 +375,7 @@ export default [
     path: "/addCopyTwo",
     name: "addCopyTwo",
     meta: {
-      title: "新增抄告"
+      title: "新增抄告" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/cooperateCases/addCopyTwo.vue")
   },
@@ -398,7 +391,7 @@ export default [
     path: "/caseCopyDentails",
     name: "caseCopyDentails",
     meta: {
-      title: "抄告：案号"
+      title: "抄告：案号" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/cooperateCases/caseCopyDentails.vue")
   },
@@ -407,7 +400,7 @@ export default [
     path: "/evidenceListDoc",
     name: "evidenceListDoc",
     meta: {
-      title: "证据登记保存清单"
+      title: "证据登记保存清单" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/evidenceListDoc.vue")
   },
@@ -415,7 +408,7 @@ export default [
     path: "/prolongAdminCompulsoryDoc",
     name: "prolongAdminCompulsoryDoc",
     meta: {
-      title: "延长行政强制措施期限通知书"
+      title: "延长行政强制措施期限通知书" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/prolongAdminCompulsoryDoc.vue")
   },
@@ -423,7 +416,7 @@ export default [
     path: "/removeAdminCoerciveMeasureDoc",
     name: "removeAdminCoerciveMeasureDoc",
     meta: {
-      title: "解除行政强制措施决定书"
+      title: "解除行政强制措施决定书" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/removeAdminCoerciveMeasureDoc.vue")
   },
@@ -432,7 +425,7 @@ export default [
     path: "/removeOrPrelong",
     name: "removeOrPrelong",
     meta: {
-      title: "解除（延长）行政强制措施决定"
+      title: "解除（延长）行政强制措施决定" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/coerciveMeasureDoc.vue")
   },
@@ -440,7 +433,7 @@ export default [
     path: "/importantCaseTeamDissDoc",
     name: "importantCaseTeamDissDoc",
     meta: {
-      title: "重大案件集体讨论记录"
+      title: "重大案件集体讨论记录" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/importantCaseTeamDissDoc.vue")
   },
@@ -448,7 +441,7 @@ export default [
     path: "/hearingNoticeDoc",
     name: "hearingNoticeDoc",
     meta: {
-      title: "听证通知书"
+      title: "听证通知书" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/hearingNoticeDoc.vue")
   },
@@ -456,7 +449,7 @@ export default [
     path: "/hearingRecordeDoc",
     name: "hearingRecordeDoc",
     meta: {
-      title: "听证笔录"
+      title: "听证笔录" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/hearingRecordDoc.vue")
   },
@@ -464,7 +457,7 @@ export default [
     path: "/spotAdmPunishDecisionDoc",
     name: "spotAdmPunishDecisionDoc",
     meta: {
-      title: "当场行政处罚决定书"
+      title: "当场行政处罚决定书" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/spotAdmPunishDecisionDoc.vue")
   },
@@ -472,7 +465,7 @@ export default [
     path: "/remindLetterDoc",
     name: "remindLetterDoc",
     meta: {
-      title: "催告书"
+      title: "催告书" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/remindLetterDoc.vue")
   },
@@ -480,7 +473,7 @@ export default [
     path: "/enforceInsteadDoc",
     name: "enforceInsteadDoc",
     meta: {
-      title: "代履行决定书-pdf"
+      title: "代履行决定书-pdf" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/enforceInsteadDoc.vue")
   },
@@ -488,7 +481,7 @@ export default [
     path: "/enforceDecideDoc",
     name: "enforceDecideDoc",
     meta: {
-      title: "行政强制执行决定书"
+      title: "行政强制执行决定书" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/enforceDecideDoc.vue")
   },
@@ -496,7 +489,7 @@ export default [
     path: "/enforceDoc",
     name: "enforceDoc",
     meta: {
-      title: "中止（终结、恢复）行政强制执行通知书-pdf"
+      title: "中止（终结、恢复）行政强制执行通知书-pdf" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/enforceDoc.vue")
   },
@@ -504,7 +497,7 @@ export default [
     path: "/importantCaseTeamDissDoc",
     name: "importantCaseTeamDissDoc",
     meta: {
-      title: "重大案件集体讨论记录"
+      title: "重大案件集体讨论记录" + store.state.caseHandle.caseNumber
     },
     component: () => import("@/page/caseHandle/case/modle/importantCaseTeamDissDoc.vue")
   },
@@ -513,7 +506,7 @@ export default [
     path: "/handleRecordForm",
     name: "handleRecordForm",
     meta: {
-      title: "操作记录",
+      title: "操作记录" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/handleRecordForm.vue")
@@ -522,7 +515,7 @@ export default [
     path: "/evidenceForm",
     name: "evidenceForm",
     meta: {
-      title: "证据目录",
+      title: "证据目录" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/evidenceForm.vue")
@@ -531,7 +524,7 @@ export default [
     path: "/documentForm",
     name: "documentForm",
     meta: {
-      title: "文书列表",
+      title: "文书列表" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/documentForm.vue")
@@ -540,7 +533,7 @@ export default [
     path: "/deliverReceiptForm",
     name: "deliverReceiptForm",
     meta: {
-      title: "送达回证",
+      title: "送达回证" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/deliverReceiptForm.vue")
@@ -549,7 +542,7 @@ export default [
     path: "/testPdf",
     name: "testPdf",
     meta: {
-      title: "测试pdf",
+      title: "测试pdf" + store.state.caseHandle.caseNumber,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/testPdf.vue")
@@ -560,7 +553,7 @@ export default [
     path: "/electronicFileDetail",
     name: "electronicFileDetail",
     meta: {
-      title: "卷宗详情",
+      title: "卷宗详情" + store.state.caseHandle.caseNumber,
     },
     component: () => import("@/page/caseHandle/electronicCaseFile/electronicFileDetail.vue")
   },
@@ -576,7 +569,7 @@ export default [
     path: "/caseCenter-transferAndRegisterCase",
     name: "caseCenter-transferAndRegisterCase",
     meta: {
-      title: "转立案列表",
+      title: "转立案列表" + store.state.caseHandle.caseNumber,
     },
     component: () => import("@/page/caseCenter/partyWaitDeal/transferAndRegisterCase.vue")
   },
@@ -584,7 +577,7 @@ export default [
     path: "/caseCenter-dealNotes",
     name: "caseCenter-dealNotes",
     meta: {
-      title: "处置说明组件",
+      title: "处置说明组件" + store.state.caseHandle.caseNumber,
     },
     component: () => import("@/components/cluesReview/dealNotes.vue")
   },
@@ -592,7 +585,7 @@ export default [
     path: "/caseCenter-dealProgress",
     name: "caseCenter-dealProgress",
     meta: {
-      title: "执行情况组件",
+      title: "执行情况组件" + store.state.caseHandle.caseNumber,
     },
     component: () => import("@/components/cluesReview/dealProgress.vue")
   },
@@ -600,7 +593,7 @@ export default [
     path: "/caseCenter-evidencePackage",
     name: "caseCenter-evidencePackage",
     meta: {
-      title: "证据包组件",
+      title: "证据包组件" + store.state.caseHandle.caseNumber,
     },
     component: () => import("@/components/cluesReview/evidencePackage.vue")
   },
@@ -616,7 +609,7 @@ export default [
     path: "/caseCenter-otherEnclosure",
     name: "caseCenter-otherEnclosure",
     meta: {
-      title: "其他附件组件",
+      title: "其他附件组件" + store.state.caseHandle.caseNumber,
     },
     component: () => import("@/components/cluesReview/otherEnclosure.vue")
   },
@@ -624,7 +617,7 @@ export default [
     path: "/zdjg-keyVehicleDentails",
     name: "zdjg-keyVehicleDentails",
     meta: {
-      title: "其他附件组件",
+      title: "其他附件组件" + store.state.caseHandle.caseNumber,
     },
     component: () => import("@/page/lawSupervise/supervisePage/zdjg/keyVehicleDentails.vue")
   },

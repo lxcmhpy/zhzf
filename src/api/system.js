@@ -217,6 +217,7 @@ export function userBindRoleApi(data) {
 
 //日志管理
 export function getloglistApi(data) {
+  console.log("log",data);
   return request({
     url: "/system/sys/log/list",
     method: "GET",
@@ -284,6 +285,7 @@ export function editRoleApi(data) {
   let params = {
     id: data.id,
     name: data.name,
+    roleGroup:data.roleGroup,
     description: data.description
   }
   let data2 = vm.$qs.stringify(params);
@@ -399,6 +401,7 @@ export function addDepartmentApi(data) {
     id: data.id,
     name: data.name,
     oid: data.oid,
+    pidName: data.pidName,
     sortOrder: data.sortOrder,
     status: data.status == true ? 0 : 1
   };
@@ -589,3 +592,15 @@ export  function  getOrganIdApi(data)  {
     });
 }
 /**------------长软end---------- */
+
+//根据用户id和标记查询历史输入记录
+export  function  findHistoryBySignApi(userId,sign)  {
+  return  request({
+    url:  "/case/doc/inputHistroy/findById/"  +  userId+"/"+sign,
+    method:  "get",
+    //  params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource()
+  });
+}

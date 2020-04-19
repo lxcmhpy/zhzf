@@ -252,8 +252,8 @@
           caseCauseName: "",
         },
         caseForm: {
-          programType: 1,
-          wayType: '公路路政',
+          programType: 0,
+          wayType: iLocalStroage.get('caseHome_wayType') || '公路路政',
           value: '不限类别',
           commenCase: '',
         },
@@ -550,6 +550,7 @@
       },
       //
       changeCommonOptions() {
+        iLocalStroage.set('caseHome_wayType',this.caseForm.wayType);
         this.caseForm.commenCase = ''
         console.log(this.caseForm.wayType)
         this.options.forEach(element => {
@@ -620,9 +621,8 @@
       let isApprovalPeople = false;
       //判断是不是审批人员
       role.forEach(item=>{
-        if(item.name == '法制审查' || item.name == '部门负责人' || item.name == '经办机构负责人'){
-          isApprovalPeople = true;
-        }
+        isApprovalPeople = ['法制审查','部门负责人','经办机构负责人'].includes(item.name);
+        if(isApprovalPeople) return;
       })
       if (isApprovalPeople) {
         console.log('yes')

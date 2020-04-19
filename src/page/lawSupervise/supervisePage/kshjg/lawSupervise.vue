@@ -4,28 +4,9 @@
     <div class="amap-page-container">
       <!-- amap://styles/whitesmoke -->
       <!-- :features="['road','bg', 'building']" -->
-      <el-amap
-        vid="lawSupervise"
-        :mapStyle="style"
-        :center="center"
-        :plugin="plugin"
-        :amap-manager="amapManager"
-        :zoom="zoom"
-        :events="events"
-        class="amap-demo"
-      >
-        <el-amap-marker
-          v-for="(marker,index) in markers"
-          :key="index"
-          :position="marker.position"
-          :events="marker.events"
-          :template="marker.template"
-        ></el-amap-marker>
-        <el-amap-info-window
-          v-if="curWindow"
-          :visible="curWindow&&curWindow.visible"
-          :position="curWindow.position"
-        >
+      <el-amap vid="lawSupervise" :mapStyle="style" :center="center" :plugin="plugin" :amap-manager="amapManager" :zoom="zoom" :events="events" class="amap-demo">
+        <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :template="marker.template"></el-amap-marker>
+        <el-amap-info-window v-if="curWindow" :visible="curWindow&&curWindow.visible" :position="curWindow.position">
           <div :class="'lawWindowStyle'+curWindow.category">
             <!-- 0执法人员 -->
             <div v-if="curWindow.category == 0">
@@ -45,6 +26,7 @@
                 </div>
               </div>
                 <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+
             </div>
             <!-- 1执法机构 -->
             <div v-else-if="curWindow.category == 1">
@@ -96,6 +78,7 @@
                 </div>
               </div>
                 <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -124,6 +107,7 @@
                 </div>
               </div>
                 <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -156,13 +140,7 @@
                 </div>
               </div>
               <div class="btns">
-                <el-table
-                  v-if="curWindow.other.list"
-                  style="width: 100%;"
-                  :data="curWindow.other.list"
-                  resizable
-                  stripe
-                >
+                <el-table v-if="curWindow.other.list" style="width: 100%;" :data="curWindow.other.list" resizable stripe>
                   <el-table-column width="100" prop="checkTime" label="过检时间"></el-table-column>
                   <el-table-column width="100" prop="vehicleNumber" label="车牌号"></el-table-column>
                   <el-table-column width="70" prop="overload" label="超载率"></el-table-column>
@@ -253,50 +231,47 @@
         <div class="drawerBtn" @click="updateDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
-        <el-drawer
-          :direction="direction"
-          size="350px"
-          customClass="amap-drawer"
-          :wrapperClosable="false"
-          :withHeader="false"
-          :modal="false"
-          :visible.sync="drawer"
-        >
+        <el-drawer :direction="direction" size="350px" customClass="amap-drawer" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
           <div class="amap-main-content">
             <transition name="el-fade-in">
-              <div class="echarts-box" v-show="status1">
+              <div class="echarts-box">
                 <em class="title left">近三个月执行情况</em>
-                <i class="iconfont law-delete1 right" @click="status1 = false"></i>
-                <div id="echartsBox1" class="amap-chart" style="height:200px"></div>
+                <i v-if="status1 == true" class="iconfont law-youyou right" @click="status1 = false"></i>
+                <i v-if="status1 == false" class="iconfont law-zuozuo right" @click="status1 = true"></i>
+                <div v-show="status1" id="echartsBox1" class="amap-chart" style="height:200px"></div>
               </div>
             </transition>
             <transition name="el-fade-in">
-              <div class="echarts-box" v-show="status2">
+              <div class="echarts-box">
                 <em class="title left">近三个月查处排行</em>
-                <i class="iconfont law-delete1 right" @click="status2 = false"></i>
-                <div class="amap-chart">
-                  <ul style="width: 100%">
-                    <li class="mc" v-for="(item,index) in tableData" :key="index">
-                      <div>{{index+1}}</div>
-                      <div>
-                        <i :class="['iconfont',item.icon]"></i>
-                        {{item.name}}
-                      </div>
-                      <div>{{item.num}}</div>
-                    </li>
-                    <li class="ck">查看全部</li>
-                  </ul>
-                </div>
+                <i v-if="status2 == true" class="iconfont law-youyou right" @click="status2 = false"></i>
+                <i v-if="status2 == false" class="iconfont law-zuozuo right" @click="status2 = true"></i>
+                <span v-show="status2">
+                  <div class="amap-chart">
+                    <ul style="width: 100%">
+                      <li class="mc" v-for="(item,index) in tableData" :key="index">
+                        <div>{{index+1}}</div>
+                        <div>
+                          <i :class="['iconfont',item.icon]"></i>
+                          {{item.name}}
+                        </div>
+                        <div>{{item.num}}</div>
+                      </li>
+                      <li class="ck">查看全部</li>
+                    </ul>
+                  </div>
+                </span>
               </div>
             </transition>
             <transition name="el-fade-in">
               <div class="echarts-box">
                 <em class="title left">车辆预警</em>
-                <i class="iconfont law-delete1 right" @click="status3 = false"></i>
-                <div id="echartsBox2" class="amap-chart" style="height:200px"></div>
+                <i v-if="status3 == true" class="iconfont law-youyou right" @click="status3 = false"></i>
+                <i v-if="status3 == false" class="iconfont law-zuozuo right" @click="status3 = true"></i>
+                <div v-show="status3" id="echartsBox2" class="amap-chart" style="height:200px"></div>
               </div>
             </transition>
           </div>
@@ -305,34 +280,15 @@
     </div>
     <div class="amap-search">
       <el-select v-model="styleIndexNumher" placeholder="样式切换">
-        <el-option
-          v-for="(item,index) in styleListNumber"
-          :key="index"
-          :label="item"
-          :value="index"
-        ></el-option>
+        <el-option v-for="(item,index) in styleListNumber" :key="index" :label="item" :value="index"></el-option>
       </el-select>
       <el-select v-model="categorySelect" @change="category=categorySelect" placeholder="请选择">
-        <el-option
-          v-for="(item,index) in categoryList"
-          :key="index"
-          :label="item.show"
-          :value="item.code"
-        ></el-option>
+        <el-option v-for="(item,index) in categoryList" :key="index" :label="item.show" :value="item.code"></el-option>
       </el-select>
-      <el-amap-search-box
-        class="search-box"
-        ref="searchAmapBox"
-        :search-option="searchOption"
-        :on-search-result="searchAll"
-      ></el-amap-search-box>
+      <el-amap-search-box class="search-box" ref="searchAmapBox" :search-option="searchOption" :on-search-result="searchAll"></el-amap-search-box>
     </div>
     <div class="amap-tool">
-      <el-button
-        v-for="(item,index) in tabList"
-        :key="index"
-        @click="currentTabIndex === index ? currentTabIndex = null : currentTabIndex = index"
-      >
+      <el-button v-for="(item,index) in tabList" :key="index" @click="currentTabIndex === index ? currentTabIndex = null : currentTabIndex = index">
         <img :src="'./static/images/img/lawSupervise/'+item.iconfont+'.png'" />
         {{item.name}}
         <i class="el-icon-arrow-down el-icon--right"></i>
@@ -340,12 +296,7 @@
           <div class="drop-down-menu transition-box" v-if="currentTabIndex == index">
             <i class="el-icon-caret-top"></i>
             <ul>
-              <li
-                v-for="subItem in item.children"
-                :key="subItem.name"
-                :class="{'select':subItem.select}"
-                @click="searchByTab(subItem)"
-              >
+              <li v-for="subItem in item.children" :key="subItem.name" :class="{'select':subItem.select}" @click="searchByTab(subItem)">
                 <i :class="subItem.icon"></i>
                 <p>{{subItem.name}}</p>
               </li>
@@ -354,29 +305,6 @@
         </transition>
       </el-button>
     </div>
-    <!-- <transition name="el-fade-in" >
-        <div v-show="makePhoneStatus&&doing == '1'" >
-            <div class="makePhoneBox" id="phoneBox">
-                <div >
-                    <div class="echarts-box">
-                        <i class="el-icon-close right" id="closePhone" @click="ringOff"></i>
-                        <i class="el-icon-rank right" @mousedown="event=>start(event,'phoneBox')"></i>
-                      </div>
-                    <div class="phoneBtns">
-                        <span @click="ringOff">
-                        <img :src="'./static/images/img/lawSupervise/ring_off.png'" >
-                        <br> <span style="color:white;line-height: 40px;">取消</span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </transition> -->
-        <a id="getPhone" @click="makePhoneStatus=!makePhoneStatus"></a>
-     <!-- <div v-show="showVideo">
-
-
-    </div> -->
   </div>
 </template>
 <script>
@@ -386,7 +314,7 @@ import { mapGetters } from "vuex";
 import audioPhone from "../../componentCommon/audioPhone.vue";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";
-import {lawSuperviseObj, yjObj} from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
+import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
 import { getZfjgLawSupervise, getBySiteId } from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
@@ -423,143 +351,138 @@ export default {
   data() {
     let self = this;
     return {
-        // audioPosition: {
-        //     dtmfTone: './static/assets/sounds/dtmf.wav',
-        //     ringbacktone: './static/sounds/ringbacktone.wav',
-        //     ringtone: './static/sounds/ringtone.wav'
-        // },
-        videoDoing: null,
-        showVideo: false,
-        show: true,
-        categorySelect: -1,
-        direction: "rtl",
-        drawer: false,
-        windows: [],
-        curWindow: null,
-        default: "",
-        slotStyle: "lawWindowStyle1",
-        slotStyleList: ["", "greenBg2", "orangeBg", "redBg"],
-        status1: true,
-        status2: true,
-        status3: true,
-        lawSuperviseObj,
-        yjObj,
-        currentTabIndex: null,
-        category: -1,
-        categoryList: [
-            {
-            show: "地图位置",
-            code: -1,
-            placeholder: "请输入位置信息",
-            className: "map_didian"
-            },
-            {
-            show: "执法人员",
-            code: 0,
-            placeholder: "请输入执法人员名称",
-            className: "map_renyuan"
-            },
-            {
-            show: "执法机构",
-            code: 1,
-            placeholder: "请输入执法机构名称",
-            className: "map_jigou"
-            },
-            {
-            show: "执法车辆",
-            code: 2,
-            placeholder: "请输入车牌号",
-            className: "map_jingche"
-            },
-            {
-            show: "执法船舶",
-            code: 3,
-            placeholder: "请输入站点名称",
-            className: "map_cbo"
-            },
-            {
-            show: "非现场治超检测点",
-            code: 4,
-            placeholder: "请输入站点名称",
-            className: "map_o_gud"
-            },
-            {
-            show: "监管企业",
-            code: 5,
-            placeholder: "请输入企业名称",
-            className: "map_o_gud"
-            },
-            {
-            show: "监管车辆",
-            code: 6,
-            placeholder: "请输入车牌号码",
-            className: "map_jingche"
-            },
-            {
-            show: "视频监控",
-            code: 7,
-            placeholder: "请输入",
-            className: "map_didian"
-            }
-        ],
-        center: [116.397428, 39.90923],
-        searchOption: {
-            city: "北京",
-            citylimit: true
+      videoDoing: null,
+      showVideo: false,
+      show: true,
+      categorySelect: -1,
+      direction: "rtl",
+      drawer: false,
+      windows: [],
+      curWindow: null,
+      default: "",
+      slotStyle: "lawWindowStyle1",
+      slotStyleList: ["", "greenBg2", "orangeBg", "redBg"],
+      status1: true,
+      status2: true,
+      status3: true,
+      lawSuperviseObj,
+      yjObj,
+      currentTabIndex: null,
+      category: -1,
+      categoryList: [
+        {
+          show: "地图位置",
+          code: -1,
+          placeholder: "请输入位置信息",
+          className: "map_didian"
         },
-        currentAddressObj: null,
-        zoom: 16,
-        amapManager,
-        events: {
-            init(map) {
-            // AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
-            // const marker = new SimpleMarker({
-            // iconStyle: 'red',
-            // map: [],
-            // position: map.getCenter()
-            // });
-            // });
-            }
+        {
+          show: "执法人员",
+          code: 0,
+          placeholder: "请输入执法人员名称",
+          className: "map_renyuan"
         },
-        loaded: false,
-        lng: 0,
-        lat: 0,
-        plugin: [
-            {
-            pName: "ToolBar",
-            position: "RB"
-            },
-            {
-            pName: "Scale",
-            position: "RB"
-            },
-            {
-            pName: "Geolocation",
-            position: "RB",
-            events: {
-                init(o) {
-                // o 是高德地图定位插件实例
-                o.getCurrentPosition((status, result) => {
-                    if (result && result.position) {
-                    self.currentAddressObj = result.addressComponent;
-                    self.lng = result.position.lng;
-                    self.lat = result.position.lat;
-                    self.center = [self.lng, self.lat];
-                    self.loaded = true;
-                    self.$nextTick();
-                    }
-                });
+        {
+          show: "执法机构",
+          code: 1,
+          placeholder: "请输入执法机构名称",
+          className: "map_jigou"
+        },
+        {
+          show: "执法车辆",
+          code: 2,
+          placeholder: "请输入车牌号",
+          className: "map_jingche"
+        },
+        {
+          show: "执法船舶",
+          code: 3,
+          placeholder: "请输入站点名称",
+          className: "map_cbo"
+        },
+        {
+          show: "非现场治超检测点",
+          code: 4,
+          placeholder: "请输入站点名称",
+          className: "map_o_gud"
+        },
+        {
+          show: "监管企业",
+          code: 5,
+          placeholder: "请输入企业名称",
+          className: "map_o_gud"
+        },
+        {
+          show: "监管车辆",
+          code: 6,
+          placeholder: "请输入车牌号码",
+          className: "map_jingche"
+        },
+        {
+          show: "视频监控",
+          code: 7,
+          placeholder: "请输入",
+          className: "map_didian"
+        }
+      ],
+      center: [116.397428, 39.90923],
+      searchOption: {
+        city: "北京",
+        citylimit: true
+      },
+      currentAddressObj: null,
+      zoom: 16,
+      amapManager,
+      events: {
+        init(map) {
+          // AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
+          // const marker = new SimpleMarker({
+          // iconStyle: 'red',
+          // map: [],
+          // position: map.getCenter()
+          // });
+          // });
+        }
+      },
+      loaded: false,
+      lng: 0,
+      lat: 0,
+      plugin: [
+        {
+          pName: "ToolBar",
+          position: "RB"
+        },
+        {
+          pName: "Scale",
+          position: "RB"
+        },
+        {
+          pName: "Geolocation",
+          position: "RB",
+          events: {
+            init(o) {
+              // o 是高德地图定位插件实例
+              o.getCurrentPosition((status, result) => {
+                if (result && result.position) {
+                  self.currentAddressObj = result.addressComponent;
+                  self.lng = result.position.lng;
+                  self.lat = result.position.lat;
+                  self.center = [self.lng, self.lat];
+                  self.loaded = true;
+                  self.$nextTick();
                 }
+              });
             }
-            },
-            {
-            pName: "PlaceSearch",
-            renderStyle: "default",
-            events: {}
-            }
-        ],
-        markers: [],
-        allSearchList: []
+          }
+        },
+        {
+          pName: "PlaceSearch",
+          renderStyle: "default",
+          events: {}
+        }
+      ],
+      markers: [],
+      allSearchList: []
     };
   },
   methods: {
@@ -570,7 +493,32 @@ export default {
         this.$store.commit('setDoing', code);
         this.showVideo = true;
     },
-
+    ringOff() {
+      this.videoDoing = null;
+      window.PhoneCallModule.sipHangUp();
+      this.$store.commit('setMakePhoneStatus', false);
+      this.$store.commit('setDoing', null);
+    },
+    start(e, id) {
+      let odiv = e.target;        //获取目标元素
+      //算出鼠标相对元素的位置
+      document.onmousemove = (e) => {       //鼠标按下并移动的事件
+        // "phoneBox"
+        let obj = document.getElementById(id).style;
+        obj.left = e.clientX < 325 ? '0px' : (e.clientX - 350) + 'px';
+        obj.top = e.clientY < 90 ? '0px' : (e.clientY - 110) + 'px';
+        if (e.clientY >= (document.body.clientHeight - 60)) {
+          obj.top = (document.body.clientHeight - 210) + 'px';
+        }
+        if (e.clientX >= (document.body.clientWidth - 400)) {
+          obj.left = (document.body.clientWidth - 400) + 'px';
+        }
+      };
+      document.onmouseup = (e) => {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    },
     updateDrawer() {
       this.drawer = !this.drawer;
       if (this.drawer) {
@@ -602,7 +550,7 @@ export default {
               visible: false,
               template: `<img src="/static/images/img/lawSupervise/${
                 _this.categoryList[category + 1].className
-              }.png">`,
+                }.png">`,
               // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
               // content: `<div class="prompt">${ poi.other.username }</div>`,
               events: {
@@ -683,8 +631,8 @@ export default {
     },
     searchByTab(item) {
       // this.markers.splice(0, this.markers.length);
-        item.select = !item.select;
-      if (item.select&&this.allSearchList.length >= 5) {
+      item.select = !item.select;
+      if (item.select && this.allSearchList.length >= 5) {
         item.select = false;
         this.errorMsg(`至多选择5条数据`, "error");
         return
@@ -706,16 +654,16 @@ export default {
         this.getZfjgLawSupervise(data, this.category);
       } else {
         let _this = this;
-        let _index = _.findIndex(this.allSearchList, function(chr) {
+        let _index = _.findIndex(this.allSearchList, function (chr) {
           return chr.type === item.code;
         });
-        if(_index > -1) {
-            this.allSearchList.splice(_index, 1);
-            this.markers.splice(0, this.markers.length);
-            this.windows.splice(0, this.windows.length);
-            this.allSearchList.forEach((v, i) => {
+        if (_index > -1) {
+          this.allSearchList.splice(_index, 1);
+          this.markers.splice(0, this.markers.length);
+          this.windows.splice(0, this.windows.length);
+          this.allSearchList.forEach((v, i) => {
             _this.getZfjgLawSupervise(v, v.type);
-            });
+          });
         }
       }
     },
@@ -791,101 +739,7 @@ export default {
     }
   },
   mounted() {
-    //   window.PhoneCallModule.sipUnRegister();
       window.PhoneCallModule.sipRegister();
-    //   debugger;
-    // window.PhoneCallModule.sipRegister();
-    // let _this = this;
-    // this.$nextTick(() => {
-    //     _this.$refs.audio_remote.load();
-    //     _this.$refs.dtmfTone.load();
-    //     _this.$refs.ringbacktone.load();
-    //     _this.$refs.ringtone.load();
-    // })
-    let _this = this;
-    window.PhoneCallModule.onCallStateChanged = function onCallStateChanged(e){
-        switch (e.type){
-			//Failed to make call
-			case 0:
-			break;
-			//call connected
-			case 1:
-			break;
-			//Incoming audio call
-			case 2:
-                _this.$message({
-                    iconClass: 'iconfont law-success',
-                    customClass: 'successMsg',
-                    dangerouslyUseHTMLString: true,
-                    message: `语音来电：<a href="javascript:void(0)" style="color:red" onclick="document.getElementById('btnPhone1').click()">点击接听</a>`
-                });
-                // alert(1)
-			break;
-			//Incoming video call
-			case 3:
-                // alert(2)
-                _this.$message({
-                    iconClass: 'iconfont law-success',
-                    customClass: 'successMsg',
-                    dangerouslyUseHTMLString: true,
-                    message: `视频来电：<a href="javascript:void(0)" style="color:red" onclick="document.getElementById('btnPhone2').click()">点击接听</a>`
-                });
-
-			break;
-			case 4:
-			break;
-			//Early media started
-			case 5:
-                // alert(3)
-			/*
-				$('#tdAudio').hide();
-				$('#tdCallOut').hide();
-				$('#tdVideo').show();
-				*/
-			break;
-			case 6:
-                // alert(4)
-                // v.$message({
-                //     iconClass: 'iconfont law-error',
-                //     customClass: 'errorMsg',
-                //     dangerouslyUseHTMLString: true,
-                //     message: `请求已终止`
-                // });
-
-			break;
-			//Terminating the call...
-			case 7:
-			break;
-			//call hangup
-			case 8:
-				// v.$message({
-                //     iconClass: 'iconfont law-error',
-                //     customClass: 'errorMsg',
-                //     dangerouslyUseHTMLString: true,
-                //     message: `已挂断`
-                // });
-
-			break;
-
-			case 9:
-				//$('#callingDlg').modal('hide');
-			break;
-			//answer audio call
-			case 10:
-				//$('#btnCancelCallOut').html('挂断');
-				//$('#tdAudio').hide();
-				//$('#tdCallOut').show();
-				//$('#tdVideo').hide();
-			break;
-			//answer video call
-			case 11:
-				//$('#tdAudio').hide();
-				//$('#tdCallOut').hide();
-				//$('#tdVideo').show();
-				//$('#tdVideoBtn').hide();
-			break;
-        }
-    }
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {

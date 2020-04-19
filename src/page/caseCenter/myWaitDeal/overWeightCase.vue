@@ -7,13 +7,13 @@
         </ul> -->
         <!-- @tab-click="activeAndSearch" -->
         <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="search">
-            <el-tab-pane v-for="(item, index) in processStatus" :key="item.value"  :name="item.value" >
-                <span slot="label">
-                    <el-badge :value="index==0?null:index" >
-                        {{item.value}}
-                    </el-badge>
-                </span>
-            </el-tab-pane>
+          <el-tab-pane v-for="(item, index) in processStatus" :key="item.value" :name="item.value">
+            <span slot="label">
+              <el-badge :value="index==0?null:index">
+                {{item.value}}
+              </el-badge>
+            </span>
+          </el-tab-pane>
         </el-tabs>
       </div>
       <div class="searchAndpageBox toggleBox">
@@ -94,8 +94,11 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="paginationBox" v-show="form.size">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
+        <div class="paginationBox">
+          <div v-if="total > 10">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
+          </div>
+          <div class="noMore" v-else>没有更多了</div>
         </div>
       </div>
     </div>
@@ -202,14 +205,14 @@
 }
 </style>
 <script>
-import { queryListPage, findAllDrawerById,overWeightCaseList } from '@/api/lawSupervise.js';
+import { queryListPage, findAllDrawerById, overWeightCaseList } from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
 export default {
   inject: ["reload"],
   data() {
     return {
-      // tabActiveIndex: '0',
+      tabActiveIndex: '0',
       vehicleColorList: null,
       cxlList: null,
       pageSize: 10, //pagesize
@@ -224,6 +227,7 @@ export default {
         // checkEndTime: '',
         // checkStartTime: ''
       },
+      total: 0, // 总条数
       tabActiveValue: '无效信息',
       timeList: ['', ''],
       processStatus: [{
@@ -269,7 +273,7 @@ export default {
         siteId: "3",
         siteName: "东城交通支队北区执法站",
         speed: 120,
-        status: "无效信息",
+        // status: "无效信息",
         totalWeight: 66,
         transfer: null,
         transferInfo: null,

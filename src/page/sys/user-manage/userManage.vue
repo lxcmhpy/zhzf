@@ -186,6 +186,7 @@ export default {
     },
     reset() {
       this.$refs["userForm"].resetFields();
+      this.getUserList();
     },
     //展开
     showSomeSearch() {
