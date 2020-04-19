@@ -15,10 +15,10 @@
               <div class="col">
                 <el-form-item label="原因" prop="reason" class="reasonCon">
                   <el-radio-group v-model="formData.reason" @change="changeReason">
-                    <p><el-radio :label="0">违法行为轻微</el-radio></p>
-                    <p><el-radio :label="1">违法事实不能成立</el-radio></p>
+                    <p><el-radio :label="1">违法行为轻微</el-radio></p>
+                    <p><el-radio :label="2">违法事实不能成立</el-radio></p>
                     <p>
-                      <el-radio :label="2">其他原因
+                      <el-radio :label="3">其他原因
                         <el-form-item prop="otherReason" class="otherReasonCon">
                           <el-input  v-model="formData.otherReason" :disabled="disabledOne" :maxLength='maxLength' placeholder="\"></el-input>
                         </el-form-item>
@@ -37,6 +37,7 @@
                       :http-request="uploadFile"
                       :limit="3"
                       :show-file-list="false"
+                      :before-upload="uploadFileValidat"
                       >
                       <el-button size="small" type="primary">上传附件</el-button> <span class="upLoadNumSpan">最多上传3个附件</span>
 
@@ -87,7 +88,7 @@ import checkDocFinish from '../../components/checkDocFinish'
 import partyRightsEvidence from '@/page/caseHandle/components/partyRightsEvidence'
 import editEvidenceName from '@/page/caseHandle/components/editEvidenceName'
 
-import { findByCondition,deleteDocByIdApi,
+import { findByCondition,deleteDocByIdApi,deleteFileByCaseAndHuanjieApi,
     } from "@/api/caseHandle";
 import {
   uploadEvApi,
@@ -162,27 +163,29 @@ export default {
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas,caseData);
       }
     },
-    //上传附件
-    uploadFile(param) {
-      const isLt2M = param.file.size / 1024 / 1024 < 10     //这里做文件大小限制
-      console.log("大小",isLt2M)
+    uploadFileValidat(file){
+       let isLt2M = file.size / 1024 / 1024 < 10    //这里做文件大小限制
       if(this.fileListArr.length >=3){
         this.$message.warning('最多选择3个文件！');
-        return;
+        return false;
       }
       if(!isLt2M) {
         this.$message({
           message: '上传文件大小不能超过 10MB!',
           type: 'warning'
         });
-        return;
+        return false;
       }
       for(let i=0; i<this.fileListArr.length; i++){
-        if(param.file.name == this.fileListArr[i].fileName){
+        if(file.name == this.fileListArr[i].fileName){
           this.$message.warning('不能上传同一个文件');
-          return;
+          return false;
         }
       }
+      return true;
+    },
+    //上传附件
+    uploadFile(param) {
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append('caseId', this.caseId)
@@ -247,7 +250,7 @@ export default {
     //更改原因
     changeReason(val){
       console.log(val);
-      if(val == 2){
+      if(val == 3){
         this.disabledOne = false;
       }else{
         this.disabledOne = true;
@@ -263,7 +266,20 @@ export default {
       },err=>{
          console.log(err)
       })
-    }
+    },
+    //删除全部附件
+    deleteAllFile(){
+      console.log('删除全部');
+      let data = {
+        caseId:this.caseId,
+        docId:this.caseLinkDataForm.caseLinktypeId
+      }
+      deleteFileByCaseAndHuanjieApi(data).then(res=>{
+        console.log('删除全部',res);
+      },err=>{
+         console.log(err)
+      })
+    },
   },
   
   mounted() {
@@ -271,6 +287,14 @@ export default {
   created() {
     this.setFormData();
     this.findFileList();
+  },
+  beforeRouteLeave(to, from, next) {
+    if(!this.isSave){
+      this.deleteAllFile();
+    }
+    next(vm => {
+        console.log(vm)
+      })
   }
 }
 </script>

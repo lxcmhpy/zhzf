@@ -795,3 +795,14 @@ export function deleteDocCatalogEvidenApi(id) {
     cancelToken: setCancelSource()
   });
 }
+
+//根据案件id和环节id删除附件
+export function deleteFileByCaseAndHuanjieApi(data) {
+  return  request({
+    url:  "/case/sys/file/deleteByCaseIdAndDocId",
+    method:  "GET",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}

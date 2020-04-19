@@ -6,10 +6,11 @@
             <li v-for="(item, index) in processStatus" :class="{'active': index === tabActiveIndex}"  :key="index" @click="activeAndSearch(item,index)">{{item.value}}</li>
         </ul> -->
         <!-- @tab-click="activeAndSearch" -->
-        <el-tabs v-model="tabActiveIndex" :stretch="true">
-          <el-tab-pane v-for="(item, index) in processStatus" :key="index" :name="`${index}`">
+        <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="search">
+          <el-tab-pane v-for="(item,index) in processStatus" :key="item.value" :name="item.value">
             <span slot="label">
-              <el-badge :value="index==0?null:index">
+              <!-- <el-badge :value="index==0?null:index"> -->
+              <el-badge :value="index+1">
                 {{item.value}}
               </el-badge>
             </span>
@@ -28,7 +29,7 @@
               <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
             </el-form-item>
             <el-form-item label="任务时间">
-              <el-date-picker v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker size="small" v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item label=" " label-width="13px">
@@ -94,8 +95,11 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="paginationBox" v-show="form.size">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
+        <div class="paginationBox">
+          <div v-if="total > 10">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
+          </div>
+          <div class="noMore" v-else>没有更多了</div>
         </div>
       </div>
     </div>
@@ -202,7 +206,8 @@
 }
 </style>
 <script>
-import { queryListPage, findAllDrawerById } from '@/api/lawSupervise.js';
+import iLocalStroage from "@/common/js/localStroage";
+import { queryListPage, findAllDrawerById, overWeightCaseList } from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
 export default {
@@ -224,20 +229,61 @@ export default {
         // checkEndTime: '',
         // checkStartTime: ''
       },
+      total: 0, // 总条数
+      tabActiveValue: '待办',
       timeList: ['', ''],
       processStatus: [{
         value: '待办'
       }, {
-        value: '已回退'
-      }, {
         value: '在办'
+      }, {
+        value: '已回退'
       }, {
         value: '办结'
       }, {
         value: '机构待办'
       }],
       isShow: false,
-      tableData: [],
+      tableData: [{
+        area: "北京市东城区和平东街",
+        axleNumber: 5,
+        axleType: "D型",
+        blackList: 0,
+        checkEquipment: "EQ001",
+        checkLocation: "路段",
+        checkOrgan: "东城交通支队",
+        checkTime: "2020-03-18 00:00:00",
+        direction: "上行",
+        etc: null,
+        etcVehicleNumber: null,
+        height: 3,
+        id: "4",
+        invalidInfo: null,
+        key: "是",
+        lane: "4",
+        length: 6,
+        load: 50,
+        lscc: 2,
+        organId: "4",
+        organName: "东城交通支队",
+        overload: 5,
+        overweight: 40,
+        position: "116.423187,39.955247",
+        push: null,
+        pushInfo: null,
+        remarks: null,
+        siteId: "3",
+        siteName: "东城交通支队北区执法站",
+        speed: 120,
+        // status: "无效信息",
+        totalWeight: 66,
+        transfer: null,
+        transferInfo: null,
+        vehicleColor: "黄色",
+        vehicleNumber: "京A66666",
+        vehicleType: "中型货车",
+        width: 3,
+      }],
       vehicleColorObj: {
         '黑色': 'vehicle-black',
         '白色': 'vehicle-white',
@@ -251,25 +297,26 @@ export default {
     }
   },
   methods: {
-    activeAndSearch(item, index) {
-      this.tabActiveIndex = index;
-    },
+    // activeAndSearch(item, index) {
+    //   this.tabActiveValue = index;
+    // },
     search() {
       this.form.checkStartTime = this.timeList[0];
       this.form.checkEndTime = this.timeList[1];
+      this.form.status = this.tabActiveValue;
       let _this = this
-      new Promise((resolve, reject) => {
-        queryListPage(_this.form).then(
-          res => {
-            resolve(res)
-            _this.tableData = res.data.records
-          },
-          error => {
-            //  _this.errorMsg(error.toString(), 'error')
-            return
-          }
-        )
-      })
+      // new Promise((resolve, reject) => {
+      //   overWeightCaseList(_this.form).then(
+      //     res => {
+      //       resolve(res)
+      //       _this.tableData = res.data.records
+      //     },
+      //     error => {
+      //       //  _this.errorMsg(error.toString(), 'error')
+      //       return
+      //     }
+      //   )
+      // })
     },
     findAllDrawerById(data, obj) {
       let _this = this
@@ -287,13 +334,32 @@ export default {
       })
     },
     reset() {
-
+      this.form.siteName= '';
+      this.form.vehicleColor= '';
+      this.form.vehicleNumber= '';
+      this.form.overload= '';
+      this.form.status= '';
+      this.timeList=['', ''];
     },
     routerDetail(row) {
+      console.log(this.tabActiveValue)
       this.$store.commit('setOffSiteManageId', row.id);
+      let data = {
+        id: '',
+        path: this.$route.path,
+        value: this.tabActiveValue
+      }
+      iLocalStroage.sets('caseCenterDentails', data);
       this.$router.push({
-        name: 'offSiteDetail'
+        name: 'dentails-index'
       })
+      let setCaseNumber = '超限案件详情';
+      this.$store.commit("setCaseNumber", setCaseNumber);
+      // let changeTabData = {
+      //         tabIndex: '',
+      //         title: '超限案件详情'
+      //       };
+      // this.$store.commit("changeOneTabName", changeTabData);
     },
     routerEvidenceDetail() {
       this.$router.push({
@@ -316,9 +382,7 @@ export default {
     }
   },
   created() {
-    // this.search();
-    // this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
-    // this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'vehicleColorList');
+    this.search();
   },
   mounted() {
 

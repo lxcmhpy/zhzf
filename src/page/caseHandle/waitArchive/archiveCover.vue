@@ -462,7 +462,21 @@ export default {
         if(handleType == 1){
          this.submitArchive(handleType)
         }else{
-          this.com_submitCaseForm(handleType, "archiveCoverForm", true);
+          this.caseLinkDataForm.formData = JSON.stringify(this.formData);
+          this.caseLinkDataForm.status = handleType;
+          this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
+          res => {
+            console.log("暂存表单", res);
+            this.$message({
+              type: "success",
+              message: "暂存成功"
+            });
+            this.setFormData();
+          },
+          err => {
+            console.log(err);
+          })
+          // this.com_submitCaseForm(handleType, "archiveCoverForm", true);
         }
     },
     //鼠标hover卷宗目录后 显示卷宗目录

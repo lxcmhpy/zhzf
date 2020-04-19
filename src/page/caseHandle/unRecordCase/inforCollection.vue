@@ -203,45 +203,24 @@
             </el-form-item>
           </div>
         </div>
-        <div class="line"></div>
+
         <p>驾驶人或代理人</p>
         <div class="driverOrAgentBox" v-for="(driverOrAgentInfo,index) in driverOrAgentInfoList" :key="index">
-          <div v-show="partyTypePerson=='1'">
-            <div>
-              <div class="item">
-                <el-form-item label="与当事人关系">
-                  <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
-                    <el-option v-for="item in allRelationWithParty" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </el-form-item>
-              </div>
-              <div class="item">
-                <!-- 需要完善验证 -->
-                <el-form-item label="与案件关系" class="is-required">
-                  <el-select v-model="driverOrAgentInfo.relationWithCase">
-                    <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </el-form-item>
-              </div>
+          <div>
+            <div class="item">
+              <el-form-item label="与当事人关系">
+                <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
+                  <el-option v-for="item in index === 0?allRelationWithParty:allRelationWithParty_" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
             </div>
-          </div>
-          <div v-show="partyTypePerson!='1'">
-            <div>
-              <div class="item">
-                <el-form-item label="与当事人关系">
-                  <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
-                    <el-option v-for="item in allQYRelationWithParty" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </el-form-item>
-              </div>
-              <div class="item">
-                <!-- 需要完善验证 -->
-                <el-form-item label="与案件关系" class="is-required">
-                  <el-select v-model="driverOrAgentInfo.relationWithCase">
-                    <el-option v-for="item in allQYRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </el-form-item>
-              </div>
+            <div class="item">
+              <!-- 需要完善验证 -->
+              <el-form-item label="与案件关系" class="is-required">
+                <el-select v-model="driverOrAgentInfo.relationWithCase">
+                  <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
             </div>
           </div>
           <div>
@@ -344,7 +323,8 @@
           </div>
           <div class="item">
             <el-form-item label="品牌">
-              <el-input v-model="inforForm.brand"></el-input>
+              <!--<el-input v-model="inforForm.brand"></el-input>-->
+              <el-autocomplete style="width: 100%" v-model="inforForm.brand" :fetch-suggestions="queryBrand"></el-autocomplete>
             </el-form-item>
           </div>
         </div>
@@ -407,10 +387,16 @@
         <p>超限信息</p>
         <div>
           <div class="itemBig">
+<<<<<<< HEAD
             <el-form-item label="检测站" class = "is-required">
               <el-select v-model="inforForm.otherInfo.checkStastions">
+=======
+            <el-form-item label="检测站">
+              <el-autocomplete style="width: 100%" v-model="inforForm.otherInfo.checkStastions" :fetch-suggestions="querySearch"></el-autocomplete>
+              <!--<el-select v-model="inforForm.otherInfo.checkStastions">
+>>>>>>> 20def7be2952497249e0b94f1bc0b039166c720d
                 <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>
+              </el-select>-->
               <!-- <el-input v-model="inforForm.otherInfo.checkStastions"></el-input> -->
             </el-form-item>
           </div>
@@ -425,9 +411,10 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测人员">
-              <el-select v-model="inforForm.otherInfo.checkWorker">
+              <el-autocomplete style="width: 100%" v-model="inforForm.otherInfo.checkWorker" :fetch-suggestions="queryCheckWorker"></el-autocomplete>
+              <!-- <el-select v-model="inforForm.otherInfo.checkWorker">
                 <el-option v-for="item in RecentCheckWorkers" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>
+              </el-select>-->
               <!-- <el-input v-model="inforForm.otherInfo.checkWorker"></el-input> -->
             </el-form-item>
           </div>
@@ -467,10 +454,16 @@
             </el-form-item>
           </div>
           <div class="itemThird">
+<<<<<<< HEAD
             <el-form-item label="车型"  class = "is-required">
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
                 <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label"
                            :value="item.value"></el-option>
+=======
+            <el-form-item label="车型">
+              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
+                <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+>>>>>>> 20def7be2952497249e0b94f1bc0b039166c720d
                 <!-- <el-option label="中置轴挂车列车"></el-option>
                 <el-option label="铰列车"></el-option>
                 <el-option label="全挂汽车列车"></el-option> -->
@@ -705,8 +698,9 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validateIDNumber, validateAge, validateZIP, validatePhone } from '@/common/js/validator'
 import {
-  getDictListDetailByNameApi
+  getDictListDetailByNameApi, findHistoryBySignApi
 } from "@/api/system";
+
 
 export default {
   data() {
@@ -742,10 +736,11 @@ export default {
       callback();
     };
     return {
-      RecentCheckStastions: [{ value: '', label: '' }],//最近五个检测站
-      RecentCheckWorkers: [{ value: '', label: '' }],//历史保存过检测人员
+      recentCheckStastions: [],//最近五个检测站
+      recentCheckWorkers: [],//历史保存过检测人员
       vehicleTypeList: [],//车型
       vehicleAxlesTypeList: [],//轴数
+      brandList: [],//品牌
       inforForm: {
         caseSource: "", //案件来源
         caseSourceText: "", //案件来源后的
@@ -798,10 +793,9 @@ export default {
         certificateId: "",
         otherInfo: {
           isBigTransfer: '否',
-          weightLimit: '',
-          overWeight: '',
         },
-
+        weightLimit: '',
+        overWeight: '',
       },
       rules: {
         caseSource: [{ required: true, message: "请选择", trigger: "change" }],
@@ -914,19 +908,6 @@ export default {
         { value: "4", label: "承运人" },
         { value: "5", label: "代理人" }
       ],
-      allQYRelationWithParty: [
-        //与当事人关系下拉框(企业组织)
-        { value: "2", label: "借用车辆" },
-        { value: "3", label: "雇佣关系" },
-        { value: "5", label: "其他" }
-      ],
-      allQYRelationWithCase: [
-        //与案件关系下拉框(企业组织)
-        { value: "1", label: "驾驶人" },
-        { value: "3", label: "证人" },
-        { value: "4", label: "承运人" },
-        { value: "5", label: "代理人" }
-      ],
       allVehicleIdColor: [
         //车牌颜色下拉框
         { value: "1", label: "黄色" },
@@ -938,15 +919,15 @@ export default {
         { value: "7", label: "其他" }
       ],
       allVehicleShipType: [
-        { value: "1", label: "中小客车" },
-        { value: "2", label: "大客车" },
-        { value: "3", label: "小型货车" },
-        { value: "4", label: "中型货车" },
-        { value: "5", label: "大型货车" },
-        { value: "6", label: "特大型货车" },
-        { value: "7", label: "集装箱车" },
-        { value: "8", label: "摩托车" },
-        { value: "9", label: "拖拉机" }
+        { value: "中小客车", label: "中小客车" },
+        { value: "大客车", label: "大客车" },
+        { value: "小型货车", label: "小型货车" },
+        { value: "中型货车", label: "中型货车" },
+        { value: "大型货车", label: "大型货车" },
+        { value: "特大型货车", label: "特大型货车" },
+        { value: "集装箱车", label: "集装箱车" },
+        { value: "摩托车", label: "摩托车" },
+        { value: "", label: "拖拉机" }
       ],
       showTrailer: false, //是否显示挂车信息
       judgFreedomList: [], //自由裁量列表
@@ -1050,7 +1031,6 @@ export default {
     },
     //更改当事人类型
     changePartyType(val) {
-      debugger
       this.partyTypePerson = val;
       if (val == "1") {
         this.inforForm.partyName = "";
@@ -1073,22 +1053,6 @@ export default {
         this.inforForm.occupation = "";
         this.inforForm.partyEcertId = "";
       }
-      if(this.driverOrAgentInfoList[0].relationWithParty == "0" ||this.driverOrAgentInfoList[0].relationWithParty == '1' || this.driverOrAgentInfoList[0].relationWithParty == '4' 
-      || this.driverOrAgentInfoList[0].relationWithParty == '5' || this.driverOrAgentInfoList[0].relationWithCase == '0' || this.driverOrAgentInfoList[0].relationWithCase == '2'){
-          this.driverOrAgentInfoList[0].relationWithParty = "";
-          this.driverOrAgentInfoList[0].relationWithCase = "";
-          this.driverOrAgentInfoList[0].name = "";
-          this.driverOrAgentInfoList[0].zhengjianType = "";
-          this.driverOrAgentInfoList[0].zhengjianNumber = "";
-          this.driverOrAgentInfoList[0].sex = "";
-          this.driverOrAgentInfoList[0].age = "";
-          this.driverOrAgentInfoList[0].tel = "";
-          this.driverOrAgentInfoList[0].adress = "";
-          this.driverOrAgentInfoList[0].adressCode = "";
-          this.driverOrAgentInfoList[0].company = "";
-          this.driverOrAgentInfoList[0].position = "";
-          this.driverOrAgentInfoList[0].zigeNumber = "";
-      }
     },
     //更改与当事人关系   为同一人时自动赋值且不可编辑
     changeRelationWithParty(val) {
@@ -1108,6 +1072,17 @@ export default {
         this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
         this.relationWithPartyIsOne = true;
       } else {
+        this.driverOrAgentInfoList[0].name = "";
+        this.driverOrAgentInfoList[0].zhengjianType = "";
+        this.driverOrAgentInfoList[0].zhengjianNumber = "";
+        this.driverOrAgentInfoList[0].sex = "";
+        this.driverOrAgentInfoList[0].age = "";
+        this.driverOrAgentInfoList[0].tel = "";
+        this.driverOrAgentInfoList[0].adress = "";
+        this.driverOrAgentInfoList[0].adressCode = "";
+        this.driverOrAgentInfoList[0].company = "";
+        this.driverOrAgentInfoList[0].position = "";
+        this.driverOrAgentInfoList[0].zigeNumber = "";
         this.relationWithPartyIsOne = false;
       }
     },
@@ -1193,8 +1168,6 @@ export default {
           let elPageOt = this.$el.querySelector(`#link_${i}`) ? this.$el.querySelector(`#link_${i}`).offsetHeight : 0;
           numTotal += elPageOt;
         }
-        console.log('numTotal', numTotal);
-        document.getElementById("inforCollectionBox").scrollTop = numTotal;
       }
     },
     //提交信息
@@ -1256,7 +1229,7 @@ export default {
           );
           // 超限
           _this.inforForm.otherInfo = JSON.stringify(
-            _this.inforForm.otherInfo
+            // _this.inforForm.otherInfo
           );
           console.log(_this.inforForm)
           _this.inforForm.state = state;
@@ -1315,7 +1288,72 @@ export default {
             });
             // _this.$store.dispatch("deleteTabs", _this.$route.name);
             _this.$store.commit("setCaseId", res.data.id);
+
+          },
+          err => {
+            console.log(err);
+          }
+        );
+      // 超限
+      _this.inforForm.otherInfo = JSON.stringify(
+        _this.inforForm.otherInfo
+      );
+      console.log(_this.inforForm)
+      _this.inforForm.state = state;
+      _this.inforForm.caseStatus = '未立案';
+      _this.$store
+        .dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm)
+        .then(
+          res => {
+            console.log(res);
+            _this.$message({
+              type: "success",
+              message: "提交成功!"
+            });
+            _this.$store.dispatch("deleteTabs", _this.$route.name);
+            _this.$store.commit("setCaseId", res.data.id);
+            iLocalStroage.removeItem("stageCaseId");
             this.autoSava = false;
+            _this.$router.replace({
+              name: "establish"
+            });
+          },
+          err => {
+            console.log(err);
+          }
+        );
+    },
+    //查询执法人员
+    getAllUserList(list) {
+      console.log("list", list);
+      this.allUserList = list;
+      setTimeout(() => {
+      }, 100);
+    },
+    stageInfo(state) {
+      this.inforForm.agentPartyEcertId = JSON.stringify(
+        this.driverOrAgentInfoList
+      );
+      // 超限
+      this.inforForm.otherInfo = JSON.stringify(
+        this.inforForm.otherInfo
+      );
+      console.log(this.inforForm)
+      this.inforForm.state = state;
+      this.inforForm.caseStatus = '未立案';
+      let _this = this
+      this.$store
+        .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
+        .then(
+          res => {
+            console.log(res);
+            _this.$message({
+              type: "success",
+              message: "暂存成功!"
+            });
+            // _this.$store.dispatch("deleteTabs", _this.$route.name);
+            _this.$store.commit("setCaseId", res.data.id);
+
           },
           err => {
             console.log(err);
@@ -1409,9 +1447,6 @@ export default {
         this.inforForm.otherInfo.vehicleAxlesType = '';
         this.inforForm.otherInfo.vehiclePowerType = '';
       }
-      if (type == '车型') {
-        this.inforForm.otherInfo.vehicleAxlesType = '';
-      }
 
       inforForm.otherInfo.weightLimit = '';
       if (inforForm.otherInfo.vehicleAxleNumber == 6) {
@@ -1420,22 +1455,6 @@ export default {
           value: '铰接列车'
         }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
         this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }, { label: '2+2+2', value: '2+2+2' }];
-        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType) {
-          switch (inforForm.otherInfo.vehicleType) {
-            case '中置轴挂车列车':
-              this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }, { label: '2+2+2', value: '2+2+2' }];
-              break;
-            case '铰接列车':
-              this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }];
-              break;
-            case '全挂汽车列车':
-              this.vehicleAxlesTypeList = [{ label: '2+2+2', value: '2+2+2' }];
-              break;
-            default:
-              break;
-          }
-        }
-
         if (inforForm.otherInfo.vehiclePowerType) {
           inforForm.otherInfo.weightLimit = 46;
           if (inforForm.otherInfo.vehiclePowerType == '双轴') {
@@ -1449,23 +1468,10 @@ export default {
           label: '铰接列车',
           value: '铰接列车'
         }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
-
-        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType) {
-          switch (inforForm.otherInfo.vehicleType) {
-            case '中置轴挂车列车':
-              this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' }, { label: '2+1+2', value: '2+1+2' }];
-              break;
-            case '铰接列车':
-              this.vehicleAxlesTypeList = [{ label: '2+1+2', value: '2+1+2' }, { label: '1+1+3', value: '1+1+3' }, { label: '1+2+2', value: '1+2+2' }];
-              break;
-            case '全挂汽车列车':
-              this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' }, { label: '2+1+2', value: '2+1+2' }];
-              break;
-            default:
-              break;
-          }
-        }
-
+        this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' }, {
+          label: '2+1+2',
+          value: '2+1+2'
+        }, { label: '1+1+3', value: '1+1+3' }];
         if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
           this.inforForm.otherInfo.weightLimit = 43;
           if (inforForm.otherInfo.vehicleAxlesType == '1+1+3') {
@@ -1479,26 +1485,10 @@ export default {
           label: '铰接列车',
           value: '铰接列车'
         }, { label: '全挂汽车列车', value: '全挂汽车列车' }, { label: '载货汽车', value: '载货汽车' }]
-
-        if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType) {
-          switch (inforForm.otherInfo.vehicleType) {
-            case '中置轴挂车列车':
-              this.vehicleAxlesTypeList = [{ label: '1+2+1', value: '1+2+1' }, { label: '1+1+2', value: '1+1+2' }];
-              break;
-            case '铰接列车':
-              this.vehicleAxlesTypeList = [{ label: '1+1+2', value: '1+1+2' }];
-              break;
-            case '全挂汽车列车':
-              this.vehicleAxlesTypeList = [{ label: '1+1+1+1', value: '1+1+1+1' }];
-              break;
-            case '载货汽车':
-              this.vehicleAxlesTypeList = [{ label: '2+2', value: '2+2' }];
-              break;
-            default:
-              break;
-          }
-        }
-
+        this.vehicleAxlesTypeList = [{ label: '1+2+1', value: '1+2+1' }, {
+          label: '1+1+2',
+          value: '1+1+2'
+        }, { label: '1+1+1+1', value: '1+1+1+1' }, { label: '2+2', value: '2+2' }];
         if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
           this.inforForm.otherInfo.weightLimit = 36;
           if (inforForm.otherInfo.vehicleType == '中置轴挂车列车') {
@@ -1539,7 +1529,6 @@ export default {
     },
     // 计算超重
     concludeOverWeight() {
-      console.log('overweight', this.inforForm.otherInfo.overWeight)
       this.inforForm.otherInfo.overWeight = '';
       if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight) {
         this.inforForm.otherInfo.overWeight = this.inforForm.otherInfo.allWeight - this.inforForm.otherInfo.weightLimit
@@ -1677,8 +1666,67 @@ export default {
         console.log(err);
       })
     },
+    //查询历史记录
+    findHistoryBySign(sign) {
+      findHistoryBySignApi(iLocalStroage.gets('userInfo').id, sign).then(res => {
+        console.log("历史记录", res);
+        if (sign == 'checkStastions') {
+          this.recentCheckStastions = res.data;
+        } else if (sign == "checkWorker") {
+          this.recentCheckWorkers = res.data;
+        } else if (sign == "brand") {
+          this.brandList = res.data;
+        }
+
+      }, err => {
+        console.log(err);
+      })
+    },
+    //检测站 可输入也可以选择
+    querySearch(queryString, cb) {
+      console.log("输入搜索");
+      let checkStastions = this.recentCheckStastions;
+      var results = queryString ? checkStastions.filter(this.createFilter(queryString)) : checkStastions;
+      let a = [];
+      results.forEach(item => {
+        a.push({ value: item.inputValue })
+      })
+      cb(a);
+    },
+    //检测人员 可输入也可以选择
+    queryCheckWorker(queryString, cb) {
+      let checkWorker = this.recentCheckWorkers;
+      var results = queryString ? checkWorker.filter(this.createFilter(queryString)) : checkWorker;
+      let a = [];
+      results.forEach(item => {
+        a.push({ value: item.inputValue })
+      })
+      cb(a);
+    },
+    //品牌 可输入也可以选择
+    queryBrand(queryString, cb) {
+      let brand = this.brandList;
+      var results = queryString ? brand.filter(this.createFilter(queryString)) : brand;
+      let a = [];
+      results.forEach(item => {
+        a.push({ value: item.inputValue })
+      })
+      cb(a);
+    },
   },
   mounted() {
+    // 事务中心跳转
+    let overWeightCaseData = iLocalStroage.gets("overWeightCaseData")
+    console.log('事务中心', overWeightCaseData)
+    if (overWeightCaseData) {
+      this.inforForm.caseSource = overWeightCaseData.caseSource
+      this.inforForm.caseCauseName = overWeightCaseData.caseCauseName
+      this.inforForm.programType = overWeightCaseData.programType
+      this.inforForm.partyType = overWeightCaseData.partyType
+      this.showOverrun=true
+      return
+    }
+
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
     console.log(someCaseInfo);
     this.inforForm.caseCauseName = someCaseInfo.illageAct;
@@ -1697,6 +1745,9 @@ export default {
     this.driverOrAgentInfo.relationWithParty = '1';
     this.inforForm.otherInfo.checkResult = '1'
     this.inforForm.trailerColor = '1'
+
+
+
   },
   created() {
     this.findJudgFreedomList();
@@ -1715,6 +1766,9 @@ export default {
     if (iLocalStroage.get("stageCaseId")) {
       this.fromSlide();
     }
+    this.findHistoryBySign("checkStastions");
+    this.findHistoryBySign("checkWorker");
+    this.findHistoryBySign("brand");
   },
   beforeRouteLeave(to, from, next) {
     console.log('to', to)
@@ -1729,8 +1783,7 @@ export default {
       console.log(vm)
     })
 
-  },
-
+  }
 };
 </script>
 <style lang="scss">

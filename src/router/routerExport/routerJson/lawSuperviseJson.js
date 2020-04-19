@@ -69,13 +69,58 @@ export default  [
                 title: '无效信息'
             },
             component: () => import("@/page/lawSupervise/supervisePage/xszx/invalidCueDetail.vue")
-        }, {
-            path: '/examineDetail',
-            name: 'examineDetail',
+        },
+        {
+            path: '/examineDoingDetail/:status',
+            name: 'examineDoingDetail',
             meta: {
-                title: '审核信息'
+                title: '待审核'
             },
-            component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDetail.vue")
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDoingDetail.vue")
+        },
+        {
+            path: '/transferDetail',
+            name: 'transferDetail',
+            meta: {
+                title: '已转办详情'
+            },
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/transferDetail.vue")
+        },
+        {
+            path: '/transferManage',
+            name: 'transferManage',
+            meta: {
+                title: '转办列表'
+            },
+            component: () => import("@/page/lawSupervise/supervisePage/xszx/transferManage.vue")
         }]
+    }, {
+        //统计分析
+        path: '/analysis',
+        name: 'analysis',
+        component: MainContent,
+        children: [{
+               path: '/checkAnalyse',
+               name: 'checkAnalyse',
+               meta: {
+                   title: '治超检测统计分析',
+                   oneTab:true,
+               },
+               component: () => import("@/page/lawSupervise/supervisePage/tjfx/checkAnalyse.vue")
+           }]
+    }, {
+        //重点监管
+        path: '/analysis',
+        name: 'analysis',
+        component: MainContent,
+        children: [{
+               path: '/checkAnalyse',
+               name: 'checkAnalyse',
+               meta: {
+                   title: '治超检测统计分析',
+                   oneTab:true,
+               },
+               component: () => import("@/page/lawSupervise/supervisePage/tjfx/checkAnalyse.vue")
+           }]
     }
 ]

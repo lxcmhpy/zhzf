@@ -69,6 +69,7 @@
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyTel">
                 <el-input
+                  type="textarea"
                   v-model="formData.partyTel"
                   :maxLength="maxLength"
                   :disabled="isParty && !originalData.partyTel ? false : true"
@@ -218,7 +219,7 @@
         <p>
           处以罚款的，自收到本决定书之日起十五日内缴至
           <span>
-            <el-form-item prop="bank">
+            <el-form-item prop="bank" style="width:218px;">
               <el-input type="textarea" v-model="formData.bank" v-bind:class="{ over_flow:formData.bank && formData.bank.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength" ></el-input>
             </el-form-item>

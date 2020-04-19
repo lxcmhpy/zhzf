@@ -256,13 +256,13 @@ export default {
                   _this.getCurrentUser();
                   _this.success = false
               },
-              error => {
-                console.log('error',error);
-                 this.$message({
-                  type: "error",
-                  message: error.message
-                });
-              }
+              // error => {
+              //   console.log('error',error);
+              //    this.$message({
+              //     type: "error",
+              //     message: error.message
+              //   });
+              // }
             );
           }
           else {

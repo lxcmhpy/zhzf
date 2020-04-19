@@ -1,9 +1,9 @@
 <template>
-<!-- 无效信息 -->
+<!-- 无效信息页面 -->
 <div class="main_box">
     <div class="main_content" style="margin-top: 24px">
         <div class="shadow">
-            <div class="box w-2">
+            <div class="box w-2" v-if="obj">
                 <div class="box_title">
                     <span class="titleflag">
                     </span>
@@ -19,9 +19,9 @@
                 </div>
             </div>
         </div>
-        <xszxCommon v-if="obj" :obj="obj"></xszxCommon>
+        <xszxDetailView v-if="obj" :obj="obj"></xszxDetailView>
     </div>
-    <!-- <btns></btns> -->
+    <btns></btns>
 </div>
 </template>
 
@@ -33,10 +33,10 @@
 }
 </style>
 <script>
-import btns from '@/page/lawSupervise/componentCommon/btns.vue';
+import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 import {getDetailById} from '@/api/lawSupervise.js';
 import { mapGetters } from "vuex";
-import xszxCommon from './componentChild/xszxCommon.vue';
+import xszxDetailView from './componentChild/xszxDetailView.vue';
 
 export default {
     data () {
@@ -70,7 +70,7 @@ export default {
         ...mapGetters(["offSiteManageId"])
     },
     components: {
-        btns, xszxCommon
+        btns, xszxDetailView
     }
 }
 </script>

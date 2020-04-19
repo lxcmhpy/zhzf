@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 import state from './state';
 import mutations from './mutations'
 import getters from './getters';
@@ -17,13 +18,14 @@ import person from './modules/person';
 import checkInfo from './modules/checkInfo';
 // 监管
 import supervise from './modules/supervise';
+import phoneVideo from './modules/phoneVideo';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-    state,
     mutations,
     // actions,
+    state,
     getters,
     actions:{
         //默认加载最短时间1秒
@@ -59,8 +61,20 @@ const store = new Vuex.Store({
         uploadFile,
         person,
         checkInfo,
-        supervise
-    }
+        supervise,
+        phoneVideo
+    },
+    plugins: [createPersistedState({
+        storage: window.sessionStorage,
+        reducer (val) {
+            return {
+                supervise: val.supervise,
+                caseHandle: val.caseHandle,
+                openTab: val.openTab,
+                phoneVideo: val.phoneVideo
+            }
+        }
+    })],
 });
 
 export default store;

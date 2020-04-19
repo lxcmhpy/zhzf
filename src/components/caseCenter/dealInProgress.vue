@@ -22,9 +22,12 @@
           </tr>
           <tr>
             <td class="table-bg">执法人员</td>
-            <td></td>
-            <td class="table-bg">结案时间</td>
-            <td></td>
+            <td>XX大队</td>
+            <td class="table-bg">状态</td>
+             <td class="search-tr">
+              <span class="search-text">办理中</span>
+              <el-button type="primary" >查询</el-button>
+            </td>
           </tr>
         </table>
       </div>

@@ -89,21 +89,24 @@
       },
       //跳转立案登记
       clickCase(row) {
-        console.log(row)
-        this.$store.commit("setCaseId", row.id);
-        // console.log(this.$store.state.caseId)
-        //设置案件状态为审批中
-        this.$store.commit("setCaseApproval", true);
-
-        this.$router.replace({
-          name: 'caseInfo',
-          params: {
-            caseInfo: row,
-            isApproval: true
-          }
-        });
-        let setCaseNumber = row.caseNumber !== '' ? row.caseNumber : '案件'
-        this.$store.commit("setCaseNumber", setCaseNumber);
+        if (row.caseStatus === '已移送') {
+          let message = '该案件正在移送中，移送完成后才可与继续办理'
+          this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
+        }
+        else {
+          this.$store.commit("setCaseId", row.id);
+          //设置案件状态不为审批中
+          this.$store.commit("setCaseApproval", false);
+          console.log(this.$store.state.caseId);
+          this.$router.push({
+            name: "case_handle_caseInfo",
+            params: {
+              caseInfo: row
+            }
+          });
+          let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+          this.$store.commit("setCaseNumber", setCaseNumber);
+        }
       }
     },
     created() {

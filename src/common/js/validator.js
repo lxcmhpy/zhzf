@@ -69,6 +69,7 @@ export function validateIDNumber(rule, value, callback) {
     //     callback(new Error('身份证格式错误'));
     // }
     // callback();
+
     if (value.length == 18 && 18 != value.length) callback(new Error('身份证格式错误'));;
     var number = value.toLowerCase();
     var d, sum = 0, v = '10x98765432', w = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2], a = '11,12,13,14,15,21,22,23,31,32,33,34,35,36,37,41,42,43,44,45,46,50,51,52,53,54,61,62,63,64,65,71,81,82,91';

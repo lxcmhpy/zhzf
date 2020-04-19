@@ -75,9 +75,14 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="年龄" prop="partyAge">
+                <!-- <el-form-item label="年龄" prop="partyAge">
                   <el-input ref="partyAge" clearable class="w-120" type="number" v-model="formData.partyAge" size="small" placeholder="请输入" :disabled="originalData.partyAge ? true : false"></el-input>
-                </el-form-item>
+                </el-form-item> -->
+                 <el-form-item label="与案件关系">
+                    <el-select ref="relationWithCase" v-model="formData.relationWithCase" :disabled="originalData.relationWithCase ? true : false">
+                      <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
@@ -95,9 +100,12 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="所在单位">
+                <!-- <el-form-item label="所在单位">
                   <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
-                </el-form-item>
+                </el-form-item> -->
+                 <el-form-item label="单位及职务">
+                     <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
+                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
@@ -114,11 +122,11 @@
                   ></el-input>
                 </el-form-item>
               </div>
-              <div class="col">
+              <!-- <div class="col">
                 <el-form-item label="邮编" prop="partyZipCode">
                   <el-input ref="partyZipCode" clearable class="w-120" v-model="formData.partyZipCode" size="small" placeholder="请输入" :disabled="originalData.partyZipCode ? true : false"></el-input>
                 </el-form-item>
-              </div>
+              </div> -->
             </div>
 
             <div class="row" v-if="!isParty">
@@ -177,7 +185,7 @@
                 </el-form-item>
               </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="!isParty">
               <div class="col">
                 <el-form-item label="统一社会信用代码" class="line-height13">
                   <el-input
@@ -421,6 +429,7 @@ export default {
       allAskDocList: [], //询问笔录
       askDocListNum:0,  //询问笔录次数
       askDocListFinishNum:0,//已完成询问笔录次数
+      needDealData:true,
     };
   },
   computed: {
@@ -549,7 +558,7 @@ export default {
         name: "询问笔录",
         status: "询问",
         openRow: true,
-        url: "othermodle",
+        url: "case_handle_othermodle",
         docId: "2c9029ca5b71686d015b71a86ead0032"
       });
       let askDocListFinishNum = 0;
@@ -571,6 +580,9 @@ export default {
 
       console.log("this.docTableDatas", this.docTableDatas);
       console.log("this.allAskDocList", this.allAskDocList);
+    },
+    getDataAfter(){
+      this.formData.partyUnitPosition = `${this.formData.partyUnitPosition} ${this.formData.occupation}`;
     }
   },
   created() {

@@ -1,23 +1,37 @@
 <template>
-<!--审核审批-->
+<!-- 已转办页面 -->
 <div class="main_box">
-    <div class="com_examin_top">
-        <!-- <ul class="com_searchPage_tab">
-            <li v-for="(item, index) in processStatus" :class="{'active': index === tabActiveValue}"  :key="index" @click="activeAndSearch(item,index)">{{item.value}}</li>
-        </ul> -->
-        <!-- @tab-click="activeAndSearch" -->
-        <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="search">
-            <el-tab-pane v-for="(item, index) in processStatus" :key="item.value"  :name="item.value" >
-                <span slot="label">
-                    <el-badge :value="index==0?null:index" >
-                        {{item.value}}
-                    </el-badge>
-                </span>
-            </el-tab-pane>
-        </el-tabs>
-    </div>
     <div class="main_content" style="margin-top: 24px">
-        <xszxCommon v-if="obj" :obj="obj"></xszxCommon>
+        <div class="shadow">
+            <div class="box w-2">
+                <div class="box_title">
+                    <span class="titleflag">
+                    </span>
+                    <span class="title">转办说明</span>
+                </div>
+                <table class="table_style" v-if="obj">
+                    <tr>
+                        <td class="color_ff w-1">车牌号</td>
+                        <td>{{obj.vehicleNumber}}</td>
+                        <td class="color_ff w-1">车牌颜色</td>
+                        <td>{{obj.vehicleColor}}</td>
+                    </tr>
+                    <tr>
+                        <td class="color_ff w-1">转办时间</td>
+                        <td></td>
+                        <td class="color_ff w-1">转办说明</td>
+                        <td>{{obj.key}}</td>
+                    </tr>
+                    <tr>
+                        <td class="color_ff w-1">处置机构</td>
+                        <td>{{obj.checkTime}}</td>
+                        <td class="color_ff w-1">状态</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <xszxDetailView v-if="obj" :obj="obj"></xszxDetailView>
         <div class="shadow">
             <div class="box w-2">
                 <div class="box_title">
@@ -36,7 +50,7 @@
             </div>
         </div>
     </div>
-    <btns></btns>
+    <!-- <btns></btns> -->
 </div>
 </template>
 
@@ -48,23 +62,15 @@
 }
 </style>
 <script>
-import btns from '@/page/lawSupervise/componentCommon/btns.vue';
+import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 import {getDetailById} from '@/api/lawSupervise.js';
 import { mapGetters } from "vuex";
-import xszxCommon from './componentChild/xszxCommon.vue';
+import xszxDetailView from './componentChild/xszxDetailView.vue';
 
 export default {
     data () {
         return {
-            obj: null,
-            processStatus: [{
-                value: '检测数据核对'
-            }, {
-                value: '违法超限复合'
-            }, {
-                value: '生成证据包'
-            }],
-            tabActiveValue: '检测数据核对',
+            obj: null
         }
     },
     methods: {
@@ -93,7 +99,7 @@ export default {
         ...mapGetters(["offSiteManageId"])
     },
     components: {
-        btns, xszxCommon
+        btns, xszxDetailView
     }
 }
 </script>

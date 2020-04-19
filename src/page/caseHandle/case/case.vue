@@ -178,11 +178,11 @@ export default {
     },
     // 解除证据登记保存决定书
     goDeleteEvidence() {
-      this.$router.push({ name: 'deleteEvidence' });
+      this.$router.push({ name: 'case_handle_deleteEvidence' });
     },
     // 责令改正违法行为通知书
     goForceCorrect() {
-      this.$router.push({ name: 'forceCorrect' });
+      this.$router.push({ name: 'case_handle_forceCorrect' });
     },
     // 立案登记表
     goEstablishDoc() {
@@ -190,15 +190,15 @@ export default {
     },
     // 询问笔录
     goQAreport() {
-      this.$router.push({ name: 'othermodle' });
+      this.$router.push({ name: 'case_handle_othermodle' });
     },
     // 结案报告
     goFinishCaseReport() {
-      this.$router.push({ name: 'finishCaseReport' });
+      this.$router.push({ name: 'case_handle_finishCaseReport' });
     },
     //现场笔录
     goDiao() {
-      this.$router.push({ name: 'liveReport' });
+      this.$router.push({ name: 'case_handle_liveReport' });
     },
     goWen() {
       this.makeRoute(
@@ -230,40 +230,40 @@ export default {
     },
     // 案件调查报告
     goCaseInvestig() {
-      this.$router.push({ name: 'caseInvestig' });
+      this.$router.push({ name: 'case_handle_caseInvestig' });
     },
     // 调查类文书
     goCaseDoc() {
-      this.$router.push({ name: 'caseDoc' });
+      this.$router.push({ name: 'case_handle_caseDoc' });
     },
     // 询问笔录
 
     // 证据保存清单
     goEvidenceListForm() {
-      this.$router.push({ name: 'evidenceListForm' });
+      this.$router.push({ name: 'case_handle_evidenceListForm' });
     },
     // 抽样取样凭证
     goObtaineEvidenceForm() {
-      this.$router.push({ name: 'obtaineEvidenceForms' });
+      this.$router.push({ name: 'case_handle_obtaineEvidenceForms' });
 
     },
     // 抽样取样凭证
     goObtaineEvidenceReport() {
-      this.$router.push({ name: 'obtaineEvidenceForm' });
+      this.$router.push({ name: 'case_handle_obtaineEvidenceForm' });
     },
     // 送达回证
     goDeliveryCertificate() {
-      this.$router.push({ name: 'deliveryCertificate' });
+      this.$router.push({ name: 'case_handle_deliveryCertificate' });
     },
     // 立案登记表-打印
     goEstablish() {
-      this.$router.push({ name: 'establish' });
+      this.$router.push({ name: 'case_handle_establish' });
 
     },
 
     //  分期（延期）缴纳罚款通知书-打印
     goPayStageReprot() {
-      this.$router.push({ name: 'payStage' });
+      this.$router.push({ name: 'case_handle_payStage' });
 
     },
     //  执行公告-打印
@@ -273,17 +273,17 @@ export default {
     },
     //  执行公告-打印
     goside() {
-      this.$router.push({ name: 'side' });
+      this.$router.push({ name: 'case_handle_side' });
 
     },
     //  执行公告-打印
     goExecutAnnounceReprot() {
-      this.$router.push({ name: 'executAnnounce' });
+      this.$router.push({ name: 'case_handle_executAnnounce' });
 
     },
     //  催告书-打印
     goRemindLetterReprot() {
-      this.$router.push({ name: 'remindLetter' });
+      this.$router.push({ name: 'case_handle_remindLetter' });
 
     },
     //  代履行决定书-表单
@@ -292,12 +292,12 @@ export default {
     },
     //  行政强制执行决定书-打印
     goEnforceDecideReprot() {
-      this.$router.push({ name: 'enforceDecide' });
+      this.$router.push({ name: 'case_handle_enforceDecide' });
 
     },
     //  代履行决定书-打印
     goEnforceInsteadReprot() {
-      this.$router.push({ name: 'enforceInstead' });
+      this.$router.push({ name: 'case_handle_enforceInstead' });
     },
     // 中止（终结、恢复）行政强制执行通知书-表单
     goEnforceReprotForm() {
@@ -305,7 +305,7 @@ export default {
     },
     // 中止（终结、恢复）行政强制执行通知书-打印
     goEnforceReprot() {
-      this.$router.push({ name: 'enforce' });
+      this.$router.push({ name: 'case_handle_enforce' });
     },
     // 送达回证-表单
     goSendReprotForm() {
@@ -313,50 +313,50 @@ export default {
     },
     // 送达回证-打印
     goSendReprot() {
-      this.$router.push({ name: 'sendReport' });
+      this.$router.push({ name: 'case_handle_sendReport' });
     },
     // 结案报告-表单
     goFinishReprotForm() {
-      this.$router.push({ name: 'finishForm' });
+      this.$router.push({ name: 'case_handle_finishForm' });
     },
     // 结案报告-打印
     goFinishReprot() {
-      this.$router.push({ name: 'finishReport' });
+      this.$router.push({ name: 'case_handle_finishReport' });
 
     },
     //行政处罚决定书
     goAdminPunisheDecision() {
-      this.$router.push({ name: 'adminPunishe' });
+      this.$router.push({ name: 'case_handle_adminPunishe' });
 
     },
     //勘验笔录
     goInquestNotes() {
-      this.$router.push({ name: 'inquestNotes' });
+      this.$router.push({ name: 'case_handle_inquestNotes' });
 
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {
-      this.$router.push({ name: 'order' });
+      this.$router.push({ name: 'case_handle_order' });
     },
     //违法行为通知书
     goIllegalAction() {
-      this.$router.push({ name: 'illegalAction' });
+      this.$router.push({ name: 'case_handle_illegalAction' });
     },
     //违法行为通知书PDF
     goIllegalActionPdf() {
-      this.$router.push({ name: 'illegalActionPdf' });
+      this.$router.push({ name: 'case_handle_illegalActionPdf' });
     },
     //听证通知书pdf
     goHearingNoticePdf() {
-      this.$router.push({ name: 'hearingNoticePdf' });
+      this.$router.push({ name: 'case_handle_hearingNoticePdf' });
     },
     //听证笔录pdf
     goHearingRecordPdf() {
-      this.$router.push({ name: 'hearingRecordePdf' });
+      this.$router.push({ name: 'case_handle_hearingRecordePdf' });
     },
     //当场行政处罚决定书pdf
     goSpotAdmPunishDecisionPdf() {
-      this.$router.push({ name: 'spotAdmPunishDecisionPdf' });
+      this.$router.push({ name: 'case_handle_spotAdmPunishDecisionPdf' });
     },
     //行政处罚决定书pdf
     goAdmPunishDecisionPdf() {
@@ -364,11 +364,11 @@ export default {
     },
     //责令改正违法行为通知书pdf
     goOrderCorrectIllegalActPdf() {
-      this.$router.push({ name: 'orderCorrectIllegalActPdf' });
+      this.$router.push({ name: 'case_handle_orderCorrectIllegalActPdf' });
     },
     //勘验笔录PDF
     goInquestNotesPdf() {
-      this.$router.push({ name: 'inquestNotesPdf' });
+      this.$router.push({ name: 'case_handle_inquestNotesPdf' });
     },
     // 结案报告-表单
     goFilingApprovalForm() {
@@ -376,7 +376,7 @@ export default {
     },
     // 解除（延长）行政强制措施
     goRemoveOrPrelong() {
-      this.$router.push({ name: 'removeOrPrelong' });
+      this.$router.push({ name: 'case_handle_removeOrPrelong' });
     },
     goImportantCaseDissForm() {
 
@@ -386,19 +386,19 @@ export default {
     },
     //处罚执行
     goPenaltyExecution() {
-      this.$router.push({ name: 'penaltyExecution' });
+      this.$router.push({ name: 'case_handle_penaltyExecution' });
     },
     //当事人权利
     goPartyRights() {
-      this.$router.push({ name: 'partyRights' });
+      this.$router.push({ name: 'case_handle_partyRights' });
     },
     //当事人权利
     goModle() {
-      this.$router.push({ name: 'modle' });
+      this.$router.push({ name: 'case_handle_modle' });
     },
     //-------------------长软start--------------
     goPunishDecisionDoc2() {
-      this.$router.push({ name: 'spotAdmPunishDecisionDoc' });
+      this.$router.push({ name: 'case_handle_spotAdmPunishDecisionDoc' });
     },
     // 证据保存清单
     goEvidenceListDoc() {
@@ -406,76 +406,76 @@ export default {
     },
     //行政强制措施决定书
     goAdminCoerciveMeasureDoc() {
-      this.$router.push({ name: 'adminCoerciveMeasureDoc' });
+      this.$router.push({ name: 'case_handle_adminCoerciveMeasureDoc' });
     },
     //延长行政强制措施期限通知书
     goProlongAdminCompulsoryDoc() {
-      this.$router.push({ name: 'prolongAdminCompulsoryDoc' });
+      this.$router.push({ name: 'case_handle_prolongAdminCompulsoryDoc' });
     },
     //解除行政强制措施决定书
     goRemoveAdminCoerciveMeasureDoc() {
-      this.$router.push({ name: 'removeAdminCoerciveMeasureDoc' });
+      this.$router.push({ name: 'case_handle_removeAdminCoerciveMeasureDoc' });
     },
     //听证通知书pdf
     goHearingNoticeDoc() {
-      this.$router.push({ name: 'hearingNoticeDoc' });
+      this.$router.push({ name: 'case_handle_hearingNoticeDoc' });
     },
     //听证笔录pdf
     goHearingRecordDoc() {
-      this.$router.push({ name: 'hearingRecordeDoc' });
+      this.$router.push({ name: 'case_handle_hearingRecordeDoc' });
     },
     //当场行政处罚决定书pdf
     goSpotAdmPunishDecisionDoc() {
-      this.$router.push({ name: 'spotAdmPunishDecisionDoc' });
+      this.$router.push({ name: 'case_handle_spotAdmPunishDecisionDoc' });
     },
     //  分期（延期）缴纳罚款通知书-打印
     goPayStageReprotDoc() {
-      this.$router.push({ name: 'payStageDoc' });
+      this.$router.push({ name: 'case_handle_payStageDoc' });
     },
     //  执行公告-打印
     goExecutAnnounceReprotDoc() {
-      this.$router.push({ name: 'executAnnounceDoc' });
+      this.$router.push({ name: 'case_handle_executAnnounceDoc' });
     },
     //  催告书-打印
     goRemindLetterReprotDoc() {
-      this.$router.push({ name: 'remindLetterDoc' });
+      this.$router.push({ name: 'case_handle_remindLetterDoc' });
     },
     //  行政强制执行决定书-打印
     goEnforceDecideReprotDoc() {
-      this.$router.push({ name: 'enforceDecideDoc' });
+      this.$router.push({ name: 'case_handle_enforceDecideDoc' });
     },
     //  代履行决定书-打印
     goEnforceInsteadReprotDoc() {
-      this.$router.push({ name: 'enforceInsteadDoc' });
+      this.$router.push({ name: 'case_handle_enforceInsteadDoc' });
     },
     // 中止（终结、恢复）行政强制执行通知书-打印
     goEnforceReprotDoc() {
-      this.$router.push({ name: 'enforceDoc' });
+      this.$router.push({ name: 'case_handle_enforceDoc' });
     },
     //重大案件集体讨论记录
     goImportantCaseTeamDissDoc() {
-      this.$router.push({ name: 'importantCaseTeamDissDoc' });
+      this.$router.push({ name: 'case_handle_importantCaseTeamDissDoc' });
     },
     //长软aaa start
     // 操作记录
     goHandleRecordForm() {
-      this.$router.push({ name: 'handleRecordForm' });
+      this.$router.push({ name: 'case_handle_handleRecordForm' });
     },
     // 证据目录
     goEvidenceForm() {
-      this.$router.push({ name: 'evidenceForm' });
+      this.$router.push({ name: 'case_handle_evidenceForm' });
     },
     // 文书列表
     goDocumentForm() {
-      this.$router.push({ name: 'documentForm' });
+      this.$router.push({ name: 'case_handle_documentForm' });
     },
     // 送达回证
     goDeliverReceiptForm() {
-      this.$router.push({ name: 'deliverReceiptForm' });
+      this.$router.push({ name: 'case_handle_deliverReceiptForm' });
     },
 
     testPdf() {
-      this.$router.push({ name: 'testPdf' });
+      this.$router.push({ name: 'case_handle_testPdf' });
     },
     //--------------长软end-------------------
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {

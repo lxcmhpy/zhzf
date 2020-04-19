@@ -175,6 +175,7 @@ export default {
     // 日志重置
     reset() {
       this.$refs["logForm"].resetFields();
+      this.getLogList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {

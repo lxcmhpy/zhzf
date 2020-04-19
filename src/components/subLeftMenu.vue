@@ -45,9 +45,8 @@
     methods: {
       //切换菜单
       changeMenu(key, keyPath) {
-        console.log(key);
-        this.$router.push({name: key});
-        console.log(this.$router);
+         this.$store.dispatch("setActiveIndex", key);
+         this.$router.push({name: key});
       },
       //展开菜单
       handleOpen(key, keyPath) {

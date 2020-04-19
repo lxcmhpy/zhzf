@@ -51,8 +51,9 @@
                 :inactive-value="1"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
-                @change="updateEviBySwitch(scope.row)"
+                @change.native.prevent="updateEviBySwitch(scope.row)"
               ></el-switch>
+
             </template>
           </el-table-column>
           <el-table-column prop="evPath" label="附件" align="center">
@@ -97,6 +98,7 @@
             class="upload-demo"
             drag
             :http-request="saveFile"
+            :file-list="fileList"
             action="https://jsonplaceholder.typicode.com/posts/"
             multiple
           >
@@ -127,13 +129,16 @@
               <el-input v-model="form.evName" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="记 录 人" prop="userName" label-width="113px">
-              <el-input v-model="form.userName" placeholder="请输入"></el-input>
+              <!-- <el-input v-model="form.userName" placeholder="请输入"></el-input> -->
+              <el-select v-model="form.userName" prop="userName" >
+                <el-option v-for="(item,index) in userNameList" :key="index" :value="item" :label="item" ></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="记录时间" prop="recordTime" label-width="113px">
               <el-date-picker
                 v-model="form.recordTime"
-                type="datetime"
-                format="yyyy-MM-dd"
+                type="date"
+                value-format="yyyy-MM-dd"
                 placeholder="选择日期时间"
                 style="width: 100%"
               ></el-date-picker>
@@ -243,6 +248,8 @@ import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 import { mapGetters } from "vuex";
 import evidenceCatalogue from "./evidenceCatalogue";
 import { uploadEvApi, findFileByIdApi, uploadEvdence } from "@/api/upload";
+
+import {getCaseBasicInfoApi} from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage.js";
 import evidenceDetail from "./evidenceDetail";
 // import {saveOrUpdateEvdencenApi2, } from "@/api/caseHandle";
@@ -257,6 +264,7 @@ export default {
       }
     };
     return {
+      fileList:[],
       host: "",
       evfile: "",
       evTypeOptions: [],
@@ -268,6 +276,7 @@ export default {
       total: 0, //总数
       tableData: [],
       srcImgList: [],
+      userNameList:[],
       evidenceForm: {
         evName: "",
         evType: "",
@@ -350,7 +359,8 @@ export default {
         .then(_ => {
           done();
           this.$nextTick(() => {
-          this.$refs['form'].resetFields()
+          this.$refs['form'].resetFields();
+          this.fileList=[];
       })
         })
         .catch(_ => {});
@@ -418,7 +428,7 @@ export default {
       fd.append("fileId", this.form.fileId);
       fd.append("userName", this.form.userName);
       fd.append("recordPlace", this.form.recordPlace);
-      fd.append("recordTime", this.uForm.recordTime);
+      fd.append("recordTime", this.form.recordTime);
       // fd.append("id", this.form.id);
       let _this = this;
       // this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
@@ -497,6 +507,7 @@ export default {
     // 重置
     resetSearch() {
       this.$refs["evidenceForm"].resetFields();
+      this.getEviList();
     },
 
     //更改每页显示的条数
@@ -557,12 +568,29 @@ export default {
         console.log("证据详情",row)        
         this.$refs.evidenceDetailRef.showModal(row); 
     },
+    //查询记录人列表
+    findUserNameList(){
+      let data = {
+        id : this.caseId
+      }
+      getCaseBasicInfoApi(data).then(res => {
+        if (res.code == 200) {
+          console.log("1456",res);
+          this.userNameList = res.data.staff.split(',');
+          console.log("this.userNameList",this.userNameList);
+        } else {
+          console.log("fail");
+        }
+      });
+    }
+    
   },
   mounted() {
     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST;
   },
   created() {
     this.getEviList();
+    this.findUserNameList();
     let _this = this;
     //初始化代码集
     this.$store
