@@ -696,7 +696,7 @@ export const mixinGetCaseApiList = {
       caseId: this.caseId,
     }).then(res=>{
       console.log('查询环节是否生成了pdf',res);
-      if(res && res.length >=0){
+      if(res && res.length >0){
         this.$router.push({ name: 'myPDF', params: { docId: data.docId, caseLinktypeId: linkID } })
       }else{
         this.$router.push({ name: data.nextLink })

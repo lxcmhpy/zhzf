@@ -77,6 +77,7 @@ export default {
     showModal(data, caseForm) {
       this.visible = true;
       // this.getEnforceLawType();
+      this.illageActId = data.id;
       let _this = this
       this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
@@ -170,6 +171,7 @@ export default {
     },
     //选择门类
     changeLawCate(val) {
+      this.caseRegisterForm.illageAct = "";
       this.getCaseType();
     },
     //设置违法行为
