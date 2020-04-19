@@ -14,6 +14,7 @@
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
@@ -36,7 +37,14 @@ export default {
       this.visible = false;
     },
     goSure() {
-    //   this.$store.dispatch("deleteTabs", this.$route.name);
+      //   this.$store.dispatch("deleteTabs", this.$route.name);
+      let data={
+        caseSource:'其他途径',
+        caseCauseName:'车辆在公路上擅自超限行驶',
+        programType:'非现场执法',
+        partyType:2,
+      }
+      iLocalStroage.sets('overWeightCaseData', data);
       this.$router.push({ name: 'inforCollect' })
     }
   },

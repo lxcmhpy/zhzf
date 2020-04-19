@@ -102,6 +102,7 @@ export default {
         type: "success",
         message: "指派完成"
       });
+      this.$router.push({ name: 'transferAndRegisterCase' })
     },
     goBack() {
       this.$refs.goBackDialogRef.showModal();
