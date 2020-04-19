@@ -4,7 +4,9 @@
   (value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
 
     <dealNotesSearch v-if="showFlag==='/overWeightCase'&&
-    (value=='待办')"></dealNotesSearch>
+    (value=='待办')||showFlag==='/transferAndRegisterCase'"></dealNotesSearch>
+
+    <uoloadFiles v-if="showFlag==='/transferAndRegisterCase'"></uoloadFiles>
 
     <dealInProgress v-if="showFlag==='/overWeightCase'&&
     (value=='在办')"></dealInProgress>
@@ -19,7 +21,7 @@
     (value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></otherEnclosure>
 
     <evidenceTransfer v-if="showFlag==='/overWeightCase'&&
-    (value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></evidenceTransfer>
+    (value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')||showFlag==='/transferAndRegisterCase'"></evidenceTransfer>
     <!-- 
     <evidencePackage v-if="showFlag==='/overWeightCase'&&
     value=='待办'"></evidencePackage> -->
@@ -44,7 +46,7 @@
         <br />转立案
       </el-button>
 
-      <el-button type="primary" @click="goConfirmCase" v-if="showFlag==='/transferAndRegisterCase'">
+      <el-button type="primary" @click="goSure" v-if="showFlag==='/transferAndRegisterCase'">
         <i class="iconfont law-save"></i>
         <br />确认
       </el-button>
@@ -64,6 +66,7 @@ import dealInProgress from '@/components/caseCenter/dealInProgress.vue'
 import otherEnclosure from '@/components/caseCenter/otherEnclosure.vue'
 import evidenceTransfer from '@/components/caseCenter/evidenceTransfer.vue'
 import evidencePackage from '@/components/caseCenter/evidencePackage.vue'
+import uoloadFiles from '@/components/caseCenter/uoloadFiles.vue'
 
 import goBackDialog from '@/components/cluesReview/caseBackDialog.vue'
 import confirmCaseDialog from '@/components/cluesReview/confirmCase.vue'
@@ -78,6 +81,7 @@ export default {
     backNotes,
     evidenceTransfer,
     goBackDialog,
+    uoloadFiles,
     confirmCaseDialog
   },
   data() {
@@ -92,6 +96,12 @@ export default {
     },
     goConfirmCaseData() {
 
+    },
+    goSure() {
+       this.$message({
+        type: "success",
+        message: "指派完成"
+      });
     },
     goBack() {
       this.$refs.goBackDialogRef.showModal();
