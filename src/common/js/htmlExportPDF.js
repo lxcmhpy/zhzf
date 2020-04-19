@@ -70,7 +70,7 @@ export async function htmlExportPDF(id, callback) {
       }
 
       let name = 'report_pdf_' + new Date().getTime() + '.pdf';
-      // callback(doc, name);
+      callback(doc, name);
       // doc.save(name); //保存为pdf文件
     }
   })

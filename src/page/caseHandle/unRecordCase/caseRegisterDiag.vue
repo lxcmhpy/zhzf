@@ -77,7 +77,7 @@ export default {
     showModal(data, caseForm) {
       this.visible = true;
       // this.getEnforceLawType();
-      this.illageActId = data.id;
+      this.illageActId = data && data.id || '';
       let _this = this
       this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
@@ -209,6 +209,7 @@ export default {
             cateName: cateName
           };
           iLocalStroage.sets("someCaseInfo", someCaseInfo);
+          iLocalStroage.removeItem("stageCaseId");
           _this.$router.push({
             name: 'inforCollect',
           });
