@@ -31,7 +31,7 @@ export const mixinGetCaseApiList = {
             else{
               endTime = new Date()
             }
-            
+
             let day = (endTime - new Date(item.acceptTime)) / nd;
             day = Math.ceil(day)
             item.caseDealTime = day+'天';
@@ -637,7 +637,7 @@ export const mixinGetCaseApiList = {
           }
         }
       }else if(data.curLinkState == 'doing'){  //进行中的环节
-        if(caseIsApprovaling && (data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006')){    
+        if(caseIsApprovaling && (data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006')){
           this.$router.push({ name: 'myPDF', params: { docId: data2.docId, isComplete: true } })
         }else{
           this.searchHuanjiePdf(data2,data.linkID);
@@ -658,18 +658,18 @@ export const mixinGetCaseApiList = {
       })
     },
     //隐藏textarea 显示span
-    replaceTextArea(){ 
+    replaceTextArea(){
       //打印时去掉下拉框的图标
       let selectObjIcon = document.getElementsByClassName('el-select__caret');
       for(let i=0;i<selectObjIcon.length;i++){
         selectObjIcon[i].style.display = 'none';
       }
-      
+
       let obj = document.getElementsByTagName('textarea');
       console.log(obj);
       console.log(obj[0]);
 
-      
+
       for(let i=0;i<obj.length;i++){
         //获取textarea的值
         let textAreaValue = obj[i].value;
@@ -679,15 +679,15 @@ export const mixinGetCaseApiList = {
         //追加span元素
         let newSpan = document.createElement("span");
         newSpan.innerHTML = textAreaValue;
-        newSpan.setAttribute("class", textAreaBoxClass); 
+        newSpan.setAttribute("class", textAreaBoxClass);
         obj[i].parentNode.style.display='none'
         objParent.appendChild(newSpan);
       }
-      
+
       // setTimeout(() => {
       //     htmlExportPDF('test_print',function(){})
       // }, 1000)
-     
+
   },
   //查询环节是否生成了pdf
   searchHuanjiePdf(data,linkID){
@@ -706,7 +706,7 @@ export const mixinGetCaseApiList = {
   }
 
 
-    
+
 
   },
   created() {
