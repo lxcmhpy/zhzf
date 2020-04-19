@@ -1,7 +1,6 @@
 <template>
   <!-- 左菜单 -->
   <div>
-      {{$route.name}}
     <el-menu :default-active="$route.name" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
              :collapse="isCollapse" @select="changeMenu">
       <template v-for="item in currentSlideMenu">

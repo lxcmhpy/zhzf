@@ -19,16 +19,25 @@ export default {
   data() {
     return {};
   },
+  methods: {
+    //   getTabName (item) {
+    //       debugger;
+    //       if (item) {
+    //         return item.name.indexof('case_handle_') > -1 ? item.name + this.caseHandle.caseNumber:item.name;
+    //       }
+    //   }
+  },
   computed: {
     openTab() {
       // console.log('openTab', this.$store.state.openTab)
-      return this.$store.state.openTab;
+      return this.openTab;
     },
     activeIndex: {
       get() {
         return this.$store.state.activeIndex;
       },
       set(val) {
+        //   case_handle_
         this.$store.dispatch("setActiveIndex", val);
       }
     }
@@ -82,6 +91,7 @@ export default {
       //已经打开的 ，将其置为active
       //未打开的，将其放入队列里
       let flag = false;
+      debugger;
       for (let i = 0; i < this.openTab.length; i++) {
         //下一个路由已经在tab中，是案件的话替换tab title
         if ( (to.name == this.openTab[i].name) || (to.meta.oneTab && this.openTab[i].isCase)) {
@@ -89,7 +99,7 @@ export default {
           if (this.openTab[i].isCase) {
             let changeTabData = {
               tabIndex: i,
-              title: this.$store.state.caseNumber
+              title: this.caseHandle.caseNumber
             };
             this.$store.commit("changeOneTabName", changeTabData);
           }
@@ -122,10 +132,10 @@ export default {
         let tabTitle = "";
         let isCase = false;
         if (
-          this.$store.state.caseNumber &&
-          this.$store.state.caseNumber != "案件"
+          this.caseHandle.caseNumber &&
+          this.caseHandle.caseNumber != "案件"
         ) {
-          tabTitle = this.$store.state.caseNumber;
+          tabTitle = this.caseHandle.caseNumber;
           isCase = true;
         } else {
           tabTitle = this.$route.meta.title;
@@ -141,5 +151,8 @@ export default {
       }
     }
   },
+  computed: {
+        ...mapGetters(["caseHandle", "openTab"])
+  }
 };
 </script>

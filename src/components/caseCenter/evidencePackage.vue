@@ -16,14 +16,6 @@
                   {{item.name}}
                   </div>
               </li>
-              <!-- <li>
-                  <div class="img-url-upload">
-                  <img src="@/../static/images/img/cluesReview/icon_weizhi.png" alt=""/>
-                  </div>
-                  <div class="img-title">
-                  点击上传
-                  </div>
-              </li> -->
           </ul>
         </div>
       </div>
@@ -34,22 +26,27 @@
 </template>
 <script>
 export default {
+  props:['name'],
   data() {
     return {
       imgList: [{
-          id:'',  
+          id:'1',
           url:'@/../static/images/img/cluesReview/pic1.jpg',
           name:'上传文件的名称',
       },{
-          id:'',  
+          id:'2',
           url:'@/../static/images/img/cluesReview/pic2.jpg',
           name:'上传文件的名称',
       },{
-          id:'',  
+          id:'3',
           url:'@/../static/images/img/cluesReview/pic3.jpg',
           name:'上传文件的名称',
       },{
-          id:'',  
+          id:'4',
+          url:'@/../static/images/img/cluesReview/pic4.jpg',
+          name:'上传文件的名称',
+      },{
+          id:'5',
           url:'@/../static/images/img/cluesReview/pic4.jpg',
           name:'上传文件的名称',
       },

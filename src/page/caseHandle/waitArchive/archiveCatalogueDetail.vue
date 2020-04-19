@@ -66,10 +66,12 @@
           <el-upload
             class="upload-demo"
             id="catalogueUpload"
+            ref="uploadEvidenceRef"
             drag
             :http-request="saveFile"
             action="https://jsonplaceholder.typicode.com/posts/"
             :on-remove="handleRemoveFile"
+            :on-exceed="handleExceed"
             :limit="1"
           >
             <i class="el-icon-upload"></i>
@@ -133,7 +135,7 @@
         </div>
         <div style="clear:both;text-align:center">
           <el-button size="medium" type="primary" @click="submitForm('evidenceForm')">提 交</el-button>
-          <el-button size="medium" @click="addEvidenceVisible=false">取 消</el-button>
+          <el-button size="medium" @click="closeAddEvidenceDialog">取 消</el-button>
         </div>
       </div>
     </el-dialog>
@@ -512,6 +514,13 @@ export default {
     closeDialog1() {
       this.relationFileVisible = false;
     },
+    closeAddEvidenceDialog(){
+      console.log('清空form')
+      this.$refs.evidenceForm.resetFields();
+      //清空文件
+      this.$refs.uploadEvidenceRef.clearFiles();
+      this.addEvidenceVisible = false;
+    },
     getByMlCaseId(caseId) {
       this.$store.dispatch("getByMlCaseIdNew", caseId).then(
         res => {
@@ -611,7 +620,10 @@ export default {
     handleRemoveFile(file,fileList){
       this.formUpload.file = '';
       this.formUpload.evName = '';
-    }
+    },
+    handleExceed(file,fileList){
+      this.$message('只能上传一个附件')
+    },
   },
   mounted() {
     // console.log(this.caseList);

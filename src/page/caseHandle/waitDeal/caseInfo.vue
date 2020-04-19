@@ -76,7 +76,7 @@
               <div class="col">
                 <el-form-item label="基本情况">
                   {{formData.caseInfo}}
-            
+
                   <!-- <el-input type="textarea" class="height106" v-model="formData.caseCauseDescrib" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -179,7 +179,7 @@
 
 </template>
 <script>
-import caseSlideMenu from '../components/caseSlideMenu' 
+import caseSlideMenu from '../components/caseSlideMenu'
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
@@ -242,20 +242,20 @@ export default {
       let docId = ""
       switch(this.caseInfo.currentLinkId){
         case "2c90293b6c178b55016c17c255a4000d":
-          approvalLink = 'establish';
+          approvalLink = 'case_handle_establish';
           docId="2c9029ae654210eb0165421564970001";
           break;
         case "2c9029ee6cac9281016caca7f38e0002":
-          approvalLink = 'caseInvestig';
+          approvalLink = 'case_handle_caseInvestig';
           docId="2c9029ca5b711f61015b71391c9e2420";
           break;
           case "2c9029ee6cac9281016cacaadf990006":
-          approvalLink = 'finishCaseReport';
+          approvalLink = 'case_handle_finishCaseReport';
           docId="2c9029d2695c03fd01695c278e7a0001";
           break;
       }
       this.getFileIdByDocId(docId,approvalLink);
-      
+
       //显示pdf页面
       // this.$router.push({
       //     name: 'myPDF',

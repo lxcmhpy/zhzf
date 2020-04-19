@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="btns">
-      <i class="iconfont law-mobile" :class="{'greenC2': doing == 1}" @click="call(1)"></i>
-      <i class="iconfont law-shipin" :class="{'greenC2': doing == 2}" @click="call(2)"></i>
+      <i class="iconfont law-mobile"  :class="{'greenC2': doing == '1'}" @click="call('1')"></i>
+      <i class="iconfont law-shipin" id="btnPhone2" :class="{'greenC2': doing == '2'}" @click="call('2')"></i>
       <i class="iconfont law-jiankong"></i>
       <i class="iconfont law-msg-box"></i>
       <i class="iconfont law-xianlu"></i>
@@ -11,6 +11,7 @@
 </template>
 <script>
 export default {
+  props:['doing'],
   data() {
     return {
          audioPosition: {
@@ -18,12 +19,13 @@ export default {
             ringbacktone: './static/sounds/ringbacktone.wav',
             ringtone: './static/sounds/ringtone.wav'
         },
-      doing: null
     }
   },
   methods: {
     handUp () {
         window.PhoneCallModule.sipHangUp();
+        window.PhoneCallModule.sipUnRegister();
+        window.PhoneCallModule.sipRegister();
         this.$emit('updateMakePhoneStatus', this.doing);
     },
     call(code) {
@@ -32,20 +34,18 @@ export default {
             this.handUp();
             return
         }
-        this.doing = code;
-        if (code == 1) {
+        if (code == '1') {
             // 语音呼叫
-            window.PhoneCallModule.sipRegister();
             setTimeout(function(){
-                window.PhoneCallModule.sipAudioCall("10000","test1");
+                window.PhoneCallModule.sipAudioCall("100006","ecds04");
 
-            },4000)
-        } else if(code == 2) {
+            },1500)
+        } else if(code == '2') {
             // 视频呼叫
-            window.PhoneCallModule.sipRegister();
+            // window.PhoneCallModule.sipRegister();
             setTimeout(function(){
-            window.PhoneCallModule.sipVideoCall("10000","test1");
-            },4000)
+                window.PhoneCallModule.sipVideoCall("100006","ecds04");
+            },1500)
         }
         this.$emit('updateMakePhoneStatus', code)
     }

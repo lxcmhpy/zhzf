@@ -15,7 +15,9 @@
         <div>完成</div>
       </el-button>
     </div>
-
+    <div>
+        <span></span>
+    </div>
     <div>
         <el-dialog class="mini-dialog-title" title="无效信息" :visible.sync="visible" :show-close="false"
             :close-on-click-modal="false" width="420px" >
@@ -145,7 +147,7 @@ export default {
       this.$store.commit('setCaseApproval',false);
       this.$store.commit('setCaseNumber','吐临〔2020〕第00320号');
       this.$router.push({
-        name: 'establish'
+        name: 'case_handle_establish'
       });
       // let someCaseInfo = {"illageAct":"从事水路运输经营的船舶未随船携带船舶营运证件","illageActId":"206e7cbe53ff4a1dad5a7607fdbe9b28","programType":"一般程序","caseType":"标准案件","caseTypeId":"c82372d6b571a5b5691451a477bd58bc","cateId":"1002000300000000","cateName":"水路运政"}
       // iLocalStroage.sets("someCaseInfo", someCaseInfo);

@@ -94,6 +94,7 @@ service.interceptors.response.use(
 
 function httpErrorStr(error) {
   tryHideFullScreenLoading();
+  console.log('error',error.response)
   if (error.toString().indexOf("Network Error") != -1) {//系统返回 无code 网络错误
     alertMessage("networkError"); //networkError
   } else if (error.toString().indexOf("500") != -1) {
@@ -103,6 +104,10 @@ function httpErrorStr(error) {
     // removeToken();
   } else if (error.message == "stopQuest") {
     return false;
+  } else if (error.response.data.error == 'unauthorized') {
+    alertMessage('用户名或密码错误')
+  }else if (error.response.status == 400) {
+    alertMessage(error.response.data.error_description)
   } else {
     alertMessage("请求失败"); //请求失败
   }

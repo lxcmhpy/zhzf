@@ -2,11 +2,17 @@
   <div id="app">
     <v-loading v-show="loading"></v-loading>
     <router-view v-if="isRouterAlive"/>
+    <audio id="audio_remote"  ref="audio_remote" autoplay="autoplay"> </audio>
+    <audio id="ringtone" loop ref="ringtone"  :src="'../static/sounds/ringtone.wav'"> </audio>
+    <audio id="ringbacktone" ref="ringbacktone"  loop :src="'../static/sounds/ringbacktone.wav'"> </audio>
+    <audio id="dtmfTone" ref="dtmfTone"  :src="'../static/sounds/dtmf.wav'"> </audio>
+    <dialogPhoneVideo></dialogPhoneVideo>
   </div>
 </template>
 <script>
 import loading from "@/components/loading";
 import { mapGetters } from "vuex";
+import dialogPhoneVideo from "@/components/phoneVideo/dialogPhoneVideo.vue";
 export default {
   name: "App",
   data() {
@@ -15,7 +21,7 @@ export default {
     };
   },
   components: {
-    "v-loading": loading
+    "v-loading": loading, dialogPhoneVideo
   },
   computed: {
     ...mapGetters(["loading"])
