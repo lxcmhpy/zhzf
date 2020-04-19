@@ -584,6 +584,7 @@ export function getHandleRecordApi(data) {
 
 //通过案件ID和文书Id查询案件附件
 export function findByCaseIdAndDocIdApi(data) {
+  debugger
   let params = {
     caseId: data.caseId,
     docId: data.docId

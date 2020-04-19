@@ -478,7 +478,7 @@
             </el-form-item>
           </div>
           <div class="itemThird">
-            <el-form-item label="轴数分布">
+            <el-form-item label="轴数分布" class = "is-required">
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxlesType" @change="weightLimit">
                 <el-option v-for="item in vehicleAxlesTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="1+2+3"></el-option>
@@ -489,7 +489,7 @@
         </div>
         <div>
           <div class="item">
-            <el-form-item label="车货总重">
+            <el-form-item label="车货总重" class = "is-required">
               <el-input v-model="inforForm.otherInfo.allWeight" @change="concludeOverWeight">
                 <template slot="append">吨</template>
               </el-input>
