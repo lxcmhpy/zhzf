@@ -17,7 +17,6 @@
             <el-form-item prop="party">
               <el-input
                 disabled
-                type="textarea"
                 v-model="formData.party"
                 v-bind:class="{ over_flow:formData.party.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
@@ -37,7 +36,7 @@
                 type="textarea"
                 v-model="formData.caseName"
                 rows="3"
-                maxlength="90"
+                maxlength="75"
               ></el-input>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span
@@ -208,7 +207,8 @@ export default {
         // correctWay1:"",
         // correctWay2:"",
         litigationOrgan: "",
-        makeDate: ""
+        makeDate: "",
+        caseName:'',
       },
       reconsiderationOptions: [], //行政复议机构
       enforcementOptions: [], //行政诉讼机构
@@ -258,17 +258,6 @@ export default {
     };
   },
   methods: {
-    onSubmit(formName) {
-      console.log("submit!");
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
     // 多行编辑
     overFlowEdit() {
       this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
@@ -282,9 +271,9 @@ export default {
       );
     },
     // 提交表单
-    submitDataIllegal(handleType) {},
     saveData(handleType) {
       //参数  提交类型 、
+      // this.printContent();
       console.log("日期",this.formData.correctWay)
       this.com_submitCaseForm(handleType, "docForm", true);
     },
@@ -378,6 +367,9 @@ export default {
   }
   .is-error .el-radio-group{
     background: #f7c9cb;
+  }
+  .overflow_lins_style .overflow_lins span.overflow_lins_textarea{
+    text-indent: 0;
   }
 }
 </style>

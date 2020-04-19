@@ -7,9 +7,9 @@
   </div>
 </template>
 <script>
-import dealNotes from '@/components/cluesReview/dealNotes.vue'
-import otherEnclosure from '@/components/cluesReview/otherEnclosure.vue'
-import evidencePackage from '@/components/cluesReview/evidencePackage.vue'
+import dealNotes from '@/components/caseCenter/dealNotes.vue'
+import otherEnclosure from '@/components/caseCenter/otherEnclosure.vue'
+import evidencePackage from '@/components/caseCenter/evidencePackage.vue'
 export default {
   components: {
     dealNotes,

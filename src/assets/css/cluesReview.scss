@@ -46,29 +46,36 @@
             font-weight   : 500;
         }
     }
-    p{
+
+    p {
         line-height: 27px;
+
         .circle {
             border-radius: 50%;
-            background:#ccc;
-            width: 5px;
-            height: 5px;
-            margin:3px 7px;
-            display: inline-block;
+            background   : #ccc;
+            width        : 5px;
+            height       : 5px;
+            margin       : 3px 7px;
+            display      : inline-block;
         }
     }
+
     .success-message {
         text-align: center;
+
         // margin-bottom: 15px;
         i {
-            color: rgb(66, 214, 98);
+            color    : rgb(66, 214, 98);
             font-size: 37px;
         }
-        p{
+
+        p {
             line-height: 40px;
         }
     }
+
     .invalidinfo {
+        margin-top: 22px;
         .el-select {
 
             width: 100%;
@@ -421,7 +428,8 @@
             font-weight: 500;
             color      : rgba(32, 35, 43, 1);
             text-align : left;
-            padding    : 13px 10px;
+            padding    : 0 10px;
+            vertical-align: middle;
         }
 
         .table-bg {
@@ -433,10 +441,11 @@
 
 /* 阴影盒子样式 */
 .shadow-box {
-    padding   : 24px 0 54px;
-    width     : 100%;
-    box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
-    box-sizing: border-box;
+    margin-bottom: 22px;
+    padding      : 24px 0 54px;
+    width        : 100%;
+    box-shadow   : 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
+    box-sizing   : border-box;
 
     .info-box {
         width : 820px;
@@ -677,7 +686,6 @@
     }
 }
 
-.yehu {}
 
 .check_home {
     box-sizing: border-box;
@@ -784,4 +792,53 @@
         background: #F4F8FF;
     }
 
+}
+
+.main-box {
+    padding: 22px 22px 0;
+}
+
+/* 悬浮按钮 */
+.float-btns {
+    width   : 48px;
+    height  : 100px;
+    position: fixed;
+    right   : 70px;
+    bottom  : 97px;
+
+    & .el-button {
+        border-radius: 1px;
+        width        : 48px;
+        min-height   : 48px;
+        padding      : 0;
+        text-align   : center;
+    }
+
+    & .el-button+.el-button {
+        margin-left: 0;
+        margin-top : 10px;
+    }
+
+    & .el-button--success {
+        color           : white;
+        background-color: #4AAFA7;
+        border-color    : #4AAFA7;
+
+    }
+
+    .el-button i {
+        font-size   : 22px;
+        margin-right: 0;
+    }
+
+}
+.search-tr{
+    .search-text{
+        line-height: 46px;
+    }
+    .el-button{
+        margin-right: -10px;
+        height: 46px;
+        float:right;
+    }
 }

@@ -8,7 +8,7 @@ Vue.use(VueRouter);
 
 // 路由拦截
 // 需要鉴权
-const whiteList = ["/login", "/register", "/service", "/user", '/flowChart', '/modle', '/othermodle',]; //免登录白名单
+const whiteList = ["/login", "/register", "/service", "/user", '/flowChart', '/case_handle_modle', '/case_handle_othermodle',]; //免登录白名单
 
 // 路由配置
 const RouterConfig = {

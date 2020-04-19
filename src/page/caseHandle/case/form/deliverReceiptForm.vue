@@ -131,7 +131,7 @@
     </el-dialog> -->
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'deliverReceiptForm'" @showdeliverReceiptForm="showdeliverReceiptForm"></caseSlideMenu>
-   
+
     <el-dialog
         :visible.sync="pdfVisible"
         @close="closeDialog"
@@ -232,7 +232,7 @@ export default {
       ];
       // this.addVisible = true;
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push('deliveryCertificate');
+      this.$router.push('case_handle_deliveryCertificate');
     },
     handleEdit(index, row) {
     debugger
@@ -244,7 +244,7 @@ export default {
         findByCaseIdAndDocIdApi(data).then(res=>{
             debugger
             _that.mlList = _that.host + res.data[0].storageId;
-                
+
         },err=>{
             console.log(err);
         })
@@ -345,7 +345,7 @@ export default {
     },
     viewDocPdf(row) {
         debugger
-        console.log('row',row) 
+        console.log('row',row)
         let routerData = {
           hasApprovalBtn: false,
           docId: row.caseSerProofId,

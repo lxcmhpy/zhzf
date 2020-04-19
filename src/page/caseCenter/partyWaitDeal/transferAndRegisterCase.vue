@@ -9,7 +9,8 @@
         <el-tabs v-model="tabActiveIndex" :stretch="true">
           <el-tab-pane v-for="(item, index) in processStatus" :key="index" :name="`${index}`">
             <span slot="label">
-              <el-badge :value="index==0?null:index">
+              <!-- <el-badge :value="index==0?null:index"> -->
+              <el-badge :value="index+1">
                 {{item.value}}
               </el-badge>
             </span>
@@ -20,11 +21,11 @@
         <div class="handlePart caseHandleSearchPart">
           <el-form :inline="true" :model="form" label-width="80px" ref="form">
             <el-form-item label="创建时间">
-              <el-date-picker v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker size="small" v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="关键字">
-              <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+              <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
             </el-form-item>
             <el-form-item label=" " label-width="13px">
               <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
@@ -200,6 +201,7 @@
 }
 </style>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
 import { queryListPage, findAllDrawerById } from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
@@ -223,6 +225,7 @@ export default {
         // checkStartTime: ''
       },
       total: 0, // 总条数
+      tabActiveValue: '待办',
       timeList: ['', ''],
       processStatus: [{
         value: '待办'
@@ -291,6 +294,7 @@ export default {
     search() {
       this.form.checkStartTime = this.timeList[0];
       this.form.checkEndTime = this.timeList[1];
+      this.form.status = this.tabActiveValue;
       let _this = this
       new Promise((resolve, reject) => {
         queryListPage(_this.form).then(
@@ -321,12 +325,23 @@ export default {
       })
     },
     reset() {
-
+      this.form.siteName = '';
+      this.form.vehicleColor = '';
+      this.form.vehicleNumber = '';
+      this.form.overload = '';
+      this.form.status = '';
+      this.timeList = ['', ''];
     },
     routerDetail(row) {
       this.$store.commit('setOffSiteManageId', row.id);
+      let data = {
+        id: '',
+        path: this.$route.path,
+        value: this.tabActiveValue
+      }
+      iLocalStroage.sets('caseCenterDentails', data);
       this.$router.push({
-        name: 'transferAndRegisterCaseDentail'
+        name: 'dentails-index'
       })
     },
     routerEvidenceDetail() {

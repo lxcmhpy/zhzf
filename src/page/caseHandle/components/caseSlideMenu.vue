@@ -4,35 +4,38 @@
       <i class="el-icon-arrow-down"></i>
     </div>
     <el-menu class="el-menu-vertical-demo" :default-active="activeIndex" background-color="#545c64" active-background-color="#F3F9F9" text-color="#9EA7B6" active-text-color="#4573D0" :collapse="true">
-      <el-menu-item index="caseInfo" @click="goTo('caseInfo')">
+      <el-menu-item index="caseInfo" :disabled = "disabledCaseInfo" @click="goTo('case_handle_caseInfo')">
         案件<br>总览
       </el-menu-item>
-      <el-menu-item index="inforCollect" @click="goTo('inforCollect')">
+      <el-menu-item index="inforCollect" @click="goTo('case_handle_inforCollect')">
         基本<br>信息
       </el-menu-item>
-      <el-menu-item index="flowChart" @click="goTo('flowChart')">
+      <el-menu-item index="flowChart" :disabled = "disabledFlow" @click="goTo('case_handle_flowChart')">
         案件<br>流程
       </el-menu-item>
-      <el-menu-item index="handleRecordForm" @click="goTo('handleRecordForm')">
+      <el-menu-item index="handleRecordForm" @click="goTo('case_handle_handleRecordForm')">
         操作<br>记录
       </el-menu-item>
-      <el-menu-item index="documentForm">
-        <div @mouseenter="mouseenterShowEmit('documentForm')" @click="goTo('documentForm')">文书<br>列表</div>
+      <el-menu-item index="documentForm" :disabled = "disabledBeforeEstablish">
+        <div v-if="!disabledBeforeEstablish" @mouseenter="mouseenterShowEmit('documentForm')" @click="goTo('case_handle_documentForm')">文书<br>列表</div>
+        <div v-else>文书<br>列表</div>
       </el-menu-item>
-      <el-menu-item index="deliverReceiptForm" >
-        <div @mouseenter="mouseenterShowEmit('deliverReceiptForm')" @click="goTo('deliverReceiptForm')">送达<br>回证</div>
+      <el-menu-item index="deliverReceiptForm" :disabled = "disabledBeforeEstablish">
+        <div v-if="!disabledBeforeEstablish" @mouseenter="mouseenterShowEmit('deliverReceiptForm')" @click="goTo('case_handle_deliverReceiptForm')">送达<br>回证</div>
+        <div v-else>送达<br>回证</div>
       </el-menu-item>
       <el-menu-item index="evidenceForm" >
-        <div @mouseenter="mouseenterShowEmit('evidenceForm')" @click="goTo('evidenceForm')">证据<br>目录</div>
+        <div @mouseenter="mouseenterShowEmit('evidenceForm')" @click="goTo('case_handle_evidenceForm')">证据<br>目录</div>
       </el-menu-item>
-      <el-menu-item index="archiveCatalogue" > 
-        <div @mouseenter="mouseenterShowEmit('archiveCatalogue')"  @click="goTo('archiveCatalogueDetail')">卷宗<br>目录</div>
+      <el-menu-item index="archiveCatalogue" :disabled = "disabledArchiveCatalogue">
+        <div v-if="!disabledArchiveCatalogue" @mouseenter="mouseenterShowEmit('archiveCatalogue')"  @click="goTo('case_handle_archiveCatalogueDetail')">卷宗<br>目录</div>
+        <div v-else>卷宗<br>目录</div>
        </el-menu-item>
       <!-- <el-menu-item index="10" class="top" @click="scrollToTop">
         置顶
       </el-menu-item> -->
     </el-menu>
-       
+
 
 
     <!-- <div class="btn_box bottom_fixed">
@@ -62,11 +65,14 @@ import deliverReceiptFormRef from "@/page/caseHandle/case/form/deliverReceiptFor
 export default {
   data(){
     return{
-
+      disabledArchiveCatalogue:false,
+      disabledCaseInfo:false,
+      disabledBeforeEstablish:false,
+      disabledFlow:false,
     }
   },
   props:['activeIndex'],
-  computed: { ...mapGetters(["caseApproval"]) },
+  computed: { ...mapGetters(["caseApproval",'caseId']) },
   components: {
     archiveCatalogue,
     evidenceCatalogue,
@@ -87,7 +93,7 @@ export default {
             }
         })
       }
-      
+
     },
     scrollToTop() {
         let scrollId = this.$route.meta.scrollId;
@@ -110,7 +116,7 @@ export default {
       if(type == 'evidenceForm'){
         this.$refs.evidenceCatalogueRef.showModal();
       }
-     
+
     },
     //关掉其他目录弹窗
     closeOtherDia(){
@@ -118,8 +124,37 @@ export default {
         this.$refs.evidenceCatalogueRef.closeDialog();
         this.$refs.documentFormRef.closeDialog();
         this.$refs.deliverReceiptFormRef.closeDialog();
+    },
+    //判断快捷菜单是否可用
+    getCaseData(){
+      let data = {
+          id: this.caseId
+      };
+      this.$store.dispatch("getCaseBasicInfo", data).then(
+          res => {
+            console.log('快捷菜单获取案件信息', res);
+            this.menuCanUse(res.data)
+          },
+          err => {
+            console.log(err);
+          }
+      );
+    },
+    menuCanUse(data){
+      //案件状态（办理中，待归档）
+      //控制卷宗目录 (归档页面可用)
+      this.disabledArchiveCatalogue = data.caseStatus !== "待归档" ;
+      //控制案件总览 （提交完立案审批之后可用）方法: 当前环节为立案登记且caseStatus不等于待审批
+      this.disabledCaseInfo = data.currentLinkName == "立案登记" && data.caseStatus != "待审批";
+      //控制案件总览、文书列表、送达回证（两级立案审批通过后可用）方法：判断已完成有没有立案
+      this.disabledBeforeEstablish = !data.completeLink.includes('2c90293b6c178b55016c17c255a4000d');
+      //控制案件流程 （信息采集保存后可用 方法：状态是不是1
+      this.disabledFlow = !data.state
     }
-    
+  },
+  mounted(){
+    //判断快捷菜单是否可用
+    this.getCaseData();
   }
 }
 </script>

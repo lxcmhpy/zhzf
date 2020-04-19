@@ -162,7 +162,7 @@ export default {
         this.$store.commit("setCaseId", row.id);
         iLocalStroage.set("stageCaseId",row.id);
         this.$router.replace({
-          name: "inforCollect"
+          name: "case_handle_inforCollect"
         });
         return;
       }
@@ -174,7 +174,7 @@ export default {
         //设置案件状态不为审批中
         this.$store.commit("setCaseApproval", false);
         this.$router.replace({
-          name: "establish"
+          name: "case_handle_establish"
         });
         let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
         this.$store.commit("setCaseNumber", setCaseNumber);

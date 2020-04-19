@@ -558,7 +558,7 @@ export default {
         name: "询问笔录",
         status: "询问",
         openRow: true,
-        url: "othermodle",
+        url: "case_handle_othermodle",
         docId: "2c9029ca5b71686d015b71a86ead0032"
       });
       let askDocListFinishNum = 0;

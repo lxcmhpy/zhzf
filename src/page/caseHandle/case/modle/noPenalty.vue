@@ -15,10 +15,10 @@
               <div class="col">
                 <el-form-item label="原因" prop="reason" class="reasonCon">
                   <el-radio-group v-model="formData.reason" @change="changeReason">
-                    <p><el-radio :label="0">违法行为轻微</el-radio></p>
-                    <p><el-radio :label="1">违法事实不能成立</el-radio></p>
+                    <p><el-radio :label="1">违法行为轻微</el-radio></p>
+                    <p><el-radio :label="2">违法事实不能成立</el-radio></p>
                     <p>
-                      <el-radio :label="2">其他原因
+                      <el-radio :label="3">其他原因
                         <el-form-item prop="otherReason" class="otherReasonCon">
                           <el-input  v-model="formData.otherReason" :disabled="disabledOne" :maxLength='maxLength' placeholder="\"></el-input>
                         </el-form-item>
@@ -88,7 +88,7 @@ import checkDocFinish from '../../components/checkDocFinish'
 import partyRightsEvidence from '@/page/caseHandle/components/partyRightsEvidence'
 import editEvidenceName from '@/page/caseHandle/components/editEvidenceName'
 
-import { findByCondition,deleteDocByIdApi,
+import { findByCondition,deleteDocByIdApi,deleteFileByCaseAndHuanjieApi,
     } from "@/api/caseHandle";
 import {
   uploadEvApi,
@@ -250,7 +250,7 @@ export default {
     //更改原因
     changeReason(val){
       console.log(val);
-      if(val == 2){
+      if(val == 3){
         this.disabledOne = false;
       }else{
         this.disabledOne = true;
@@ -266,7 +266,20 @@ export default {
       },err=>{
          console.log(err)
       })
-    }
+    },
+    //删除全部附件
+    deleteAllFile(){
+      console.log('删除全部');
+      let data = {
+        caseId:this.caseId,
+        docId:this.caseLinkDataForm.caseLinktypeId
+      }
+      deleteFileByCaseAndHuanjieApi(data).then(res=>{
+        console.log('删除全部',res);
+      },err=>{
+         console.log(err)
+      })
+    },
   },
   
   mounted() {
@@ -274,6 +287,14 @@ export default {
   created() {
     this.setFormData();
     this.findFileList();
+  },
+  beforeRouteLeave(to, from, next) {
+    if(!this.isSave){
+      this.deleteAllFile();
+    }
+    next(vm => {
+        console.log(vm)
+      })
   }
 }
 </script>
