@@ -1709,6 +1709,7 @@ export default {
       this.inforForm.caseCauseName = overWeightCaseData.caseCauseName
       this.inforForm.programType = overWeightCaseData.programType
       this.inforForm.partyType = overWeightCaseData.partyType
+      this.showOverrun=true
       return
     }
 
