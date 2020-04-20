@@ -232,7 +232,7 @@ export default {
       ];
       // this.addVisible = true;
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push('case_handle_deliveryCertificate');
+      this.$router.push('deliveryCertificate');
     },
     handleEdit(index, row) {
     debugger
@@ -355,7 +355,7 @@ export default {
         };
         debugger
         this.$store.dispatch("deleteTabs", this.$route.name);
-        this.$router.push({ name: "myPDF", params: routerData });
+        this.$router.push({ name: "case_handle_myPDF", params: routerData });
       },
   },
   mounted() {

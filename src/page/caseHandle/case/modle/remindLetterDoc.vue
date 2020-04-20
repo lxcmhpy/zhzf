@@ -21,8 +21,8 @@
             </el-form-item>
           </span>，本机关于
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick width151" >
-              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            <el-form-item prop="serviceTime" class="pdf_datapick" style="width:140px">
+              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" >
               </el-date-picker>
             </el-form-item>
           </span>作出了

@@ -5,8 +5,22 @@
       <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" class="table_style" @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="drawerName" label="类型"></el-table-column>
-        <el-table-column prop="illageClause" label="违法条款"></el-table-column>
-        <el-table-column prop="punishClause" label="处罚依据"></el-table-column>
+        <el-table-column prop="illageClause" label="违法条款">
+          <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" placement="top-start">
+                <div slot="content" style="max-width:200px">{{scope.row.bnsLawNoteCog}}</div>
+                <span>{{scope.row.illageClause}}</span>
+              </el-tooltip>
+            </template>
+        </el-table-column>
+        <el-table-column prop="punishClause" label="处罚依据">
+          <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" placement="top-start">
+                <div slot="content" style="max-width:200px">{{scope.row.bnsLawNotePun}}</div>
+                <span>{{scope.row.punishClause}}</span>
+              </el-tooltip>
+            </template>
+        </el-table-column>
       </el-table>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -44,8 +58,7 @@ export default {
       let _this = this
       this.$store.dispatch("findLawRegulationsByCauseId", this.caseCauseId).then(
         res => {
-          debugger
-//          console.log(res);
+         console.log(res);
           let data = res.data;
           if(data && data.length>0){
             data.forEach(item => {
@@ -55,7 +68,9 @@ export default {
               let clause = {
                 drawerName: item.drawerName,
                 illageClause: "《" + item.bnslawNameCog + "》第" + item.itemCog + "条" + xiang1,
-                punishClause: "《" + item.bnslawNamePun + "》第" + item.itemPun + "条" + xiang2
+                punishClause: "《" + item.bnslawNamePun + "》第" + item.itemPun + "条" + xiang2,
+                bnsLawNoteCog: item.bnsLawNoteCog,
+                bnsLawNotePun: item.bnsLawNoteCog
               }
               _this.tableData.push(clause);
 
