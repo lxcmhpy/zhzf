@@ -1706,7 +1706,7 @@ export default {
     querySearch(queryString, cb) {
       console.log("输入搜索");
       let checkStastions = this.recentCheckStastions;
-      var results = queryString ? checkStastions.filter(this.createFilter(queryString)) : checkStastions;
+      var results = queryString ? checkStastions.filter(this.createFilter(queryString,checkStastions)) : checkStastions;
       let a = [];
       results.forEach(item => {
         a.push({ value: item.inputValue })
@@ -1716,7 +1716,7 @@ export default {
     //检测人员 可输入也可以选择
     queryCheckWorker(queryString, cb) {
       let checkWorker = this.recentCheckWorkers;
-      var results = queryString ? checkWorker.filter(this.createFilter(queryString)) : checkWorker;
+      var results = queryString ? checkWorker.filter(this.createFilter(queryString,checkWorker)) : checkWorker;
       let a = [];
       results.forEach(item => {
         a.push({ value: item.inputValue })
@@ -1726,14 +1726,20 @@ export default {
     //品牌 可输入也可以选择
     queryBrand(queryString, cb) {
       let brand = this.brandList;
-      var results = queryString ? brand.filter(this.createFilter(queryString)) : brand;
+      var results = queryString ? brand.filter(this.createFilter(queryString,brand)) : brand;
       let a = [];
       results.forEach(item => {
         a.push({ value: item.inputValue })
       })
       cb(a);
     },
+    createFilter(queryString,data) {
+        return (data) => {
+            return (data.inputValue.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+    },
   },
+
   mounted() {
     // 事务中心跳转
     let overWeightCaseData = iLocalStroage.gets("overWeightCaseData")
