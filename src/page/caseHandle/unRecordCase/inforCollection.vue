@@ -684,7 +684,7 @@
         </div>
         <el-button class="caseSubmitBtn" icon="el-icon-plus" :disabled="disableBtn" @click="submitInfo(1)">提交
         </el-button>
-        <el-button class="caseSubmitBtn caseSubmitBtn2" icon="el-icon-plus" :disabled="disableBtn" @click="stageInfo(0)">暂存
+        <el-button class="caseSubmitBtn caseSubmitBtn2" icon="el-icon-plus" :disabled="disableBtn || disableZcBtn" @click="stageInfo(0)">暂存
         </el-button>
       </div>
     </el-form>
@@ -759,6 +759,8 @@ export default {
       vehicleAxlesTypeList: [],//轴数
       brandList: [],//品牌
       inforForm: {
+        id:"", //案件id 修改时需要
+        tempNo:"", //临时案号 修改时需要
         caseSource: "", //案件来源
         caseSourceText: "", //案件来源后的
         afsj: "", //案发时间
@@ -971,7 +973,8 @@ export default {
       autoSava: true, //自动暂存
       allTrailerTypeType: [], //挂车类型,
       //案发地点标志
-      afddFlag:false
+      afddFlag:false,
+      disableZcBtn:false, //暂存按钮禁用
 
     };
   },
@@ -1280,7 +1283,7 @@ export default {
                 iLocalStroage.removeItem("stageCaseId");
                 this.autoSava = false;
                 _this.$router.replace({
-                  name: "establish"
+                  name: "case_handle_establish"
                 });
               },
               err => {
@@ -1844,10 +1847,17 @@ export default {
     //暂存数据后从其他页面回到信息采集页
     if (iLocalStroage.get("stageCaseId")) {
       this.fromSlide();
+      this.autoSava = false;
     }
     this.findHistoryBySign("checkStastions");
     this.findHistoryBySign("checkWorker");
     this.findHistoryBySign("brand");
+    //修改基本信息
+    if (this.$route.params.editFlag) {
+       this.fromSlide();
+       this.disableZcBtn = true; //暂存按钮禁用
+       this.autoSava = false;
+    }
   },
   beforeRouteLeave(to, from, next) {
     console.log('to', to)

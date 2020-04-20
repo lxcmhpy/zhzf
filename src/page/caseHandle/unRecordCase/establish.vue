@@ -1,6 +1,7 @@
 <template>
   <div class="print_box">
     <!-- sdmaskjdnsjdns -->
+    <el-button type="primary" class="editCaseInfoBtn" @click="gotoEditCase">修改基本信息</el-button>
     <div class="print_info" id="establish-print">
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
         <div class="doc_topic">立案登记表</div>
@@ -271,6 +272,7 @@
     <overflowInput1 ref="overflowInputRef1" @overFloeEditInfo="getOverFloeEditInfo1"></overflowInput1>
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
+    <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
 </template>
 <script>
@@ -279,6 +281,7 @@ import approvalDialog from "../components/approvalDialog";
 import overflowInput from "../case/modle/overflowInput";
 import overflowInput1 from "../case/modle/overflowInput1";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+import caseSlideMenu from '../components/caseSlideMenu'
 
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
@@ -410,6 +413,7 @@ export default {
       isPartyPhone: false,
       needDealData:true,
       disableWhenApproval:false,
+      editCaseInfo:'', //修改案件基本信息需要传的数据
     };
   },
   components: {
@@ -417,7 +421,8 @@ export default {
     approvalDialog,
     overflowInput,
     overflowInput1,
-    casePageFloatBtns
+    casePageFloatBtns,
+    caseSlideMenu
   },
   computed: { ...mapGetters(["caseId"]) },
   mixins: [mixinGetCaseApiList],
@@ -530,17 +535,44 @@ export default {
       if (typeof (this.formData.checkBox) == 'string') {
         this.formData.checkBox = [this.formData.checkBox];
       }
+    },
+    //获取案件基本信息
+    getCaseInfo(){
+      let data = {
+        id: this.caseId
+      };
+      this.$store.dispatch("getCaseBasicInfo", data)
+      .then(
+        res => {
+          console.log('获取案件信息', res);
+          this.editCaseInfo ={
+            id:res.data.id,
+            tempNo:res.data.tempNo
+          }
+        })
+      .catch(err=>{console.log(err)})
+    },
+    //修改案件基本信息
+    gotoEditCase(){
+        this.$router.push({
+          name: "case_handle_inforCollect",
+          params:{editFlag:true}
+        })
     }
   },
   created() {
     this.setData();
     this.isApproval();
+    this.getCaseInfo();
   }
 };
 </script>
  <style lang="scss">
 // @import "@/assets/css/pdf.scss";
 @import "@/assets/css/caseHandle/caseDocModle.scss";
+.editCaseInfoBtn{
+  margin: 20px;
+}
 #establish-print{
   .el-form-item__content .el-input__suffix{
     width: 20px;

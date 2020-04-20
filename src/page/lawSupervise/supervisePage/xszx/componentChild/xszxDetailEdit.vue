@@ -441,7 +441,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="color_ff w-1">车速</td>
+                        <td class="color_ff w-1">车速（km/h）</td>
                         <td>{{obj.speed}}</td>
                         <td class="color_ff w-1">行驶方向</td>
                         <td>{{obj.direction}}</td>
@@ -455,34 +455,42 @@
                 </div>
                 <table class="table_style" v-if="obj">
                     <tr>
+                        <td class="color_ff w-1">轴数</td>
+                        <td width="260px">6</td>
                         <td class="color_ff w-1">驱动轴</td>
-                        <td width="260px">{{obj.vehicleNumber}}</td>
+                        <td width="260px">
+                             <el-select value="双轴"  placeholder="请选择">
+                                <el-option
+                                label="双轴"
+                                value="双轴"
+                                ></el-option>
+                            </el-select>
+
+                        </td>
+                    </tr>
+                    <tr>
                         <td class="color_ff w-1">轴型</td>
                         <td >{{obj.vehicleColor}}</td>
-                    </tr>
-                    <tr>
                         <td class="color_ff w-1">总重</td>
                         <td></td>
+                    </tr>
+                    <tr>
                         <td class="color_ff w-1">限重</td>
                         <td>{{obj.key}}</td>
-                    </tr>
-                    <tr>
                         <td class="color_ff w-1">超重（KG）</td>
                         <td>{{obj.checkTime}}</td>
+                     </tr>
+                    <tr>
                         <td class="color_ff w-1">超限率（%）</td>
                         <td></td>
-                    </tr>
-                    <tr>
                         <td class="color_ff w-1">车长</td>
                         <td>{{obj.speed}}</td>
+                   </tr>
+                    <tr>
                         <td class="color_ff w-1">车宽</td>
                         <td>{{obj.direction}}</td>
-                    </tr>
-                    <tr>
                         <td class="color_ff w-1">车高</td>
                         <td>{{obj.axleNumber}}</td>
-                        <td class="color_ff w-1"></td>
-                        <td></td>
                     </tr>
                 </table>
             </div>
@@ -528,19 +536,16 @@
                     <span class="title">现场照片/视频</span>
                 </div>
                 <ul class="list">
-                    <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
-                    </li>
-                    <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
-                        <i class="iconfont law-bofang"></i>
-                    </li>
-                    <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
-                    </li>
-                    <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
-                        <i class="iconfont law-bofang"></i>
+                    <li v-for="index in 4" :key="index">
+                        <div class="demo-image__preview">
+                            <el-image
+                            class="img"
+                                style="width: 100px; height: 100px"
+                                :src="'./static/images/img/temp/sp.jpg'"
+                                :preview-src-list="['https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg','https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg']"
+                                >
+                            </el-image>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -553,15 +558,16 @@
                     <span class="title">补充证据材料</span>
                 </div>
                 <ul class="list">
-                    <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
-                    </li>
-                    <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
-                        <i class="iconfont law-bofang"></i>
-                    </li>
-                    <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
+                    <li v-for="index in 2" :key="index">
+                        <div class="demo-image__preview">
+                            <el-image
+                            class="img"
+                                style="width: 100px; height: 100px"
+                                :src="'./static/images/img/temp/sp.jpg'"
+                                :preview-src-list="['https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg','https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg']"
+                                >
+                            </el-image>
+                        </div>
                     </li>
                     <li>
                         <el-upload
@@ -697,7 +703,9 @@ export default {
 }
 </script>
 <style lang='scss'>
-
+.el-icon-circle-close {
+    color:white;
+}
 .el-drawer-title-noborder ::deep span:focus {
     outline: 0
 }
@@ -732,6 +740,22 @@ export default {
          border: 0px;
     }
     .el-upload-list {
+    }
+}
+.demo-image__preview {
+    .img{
+         width: 188px !important;
+        height: 110px !important;
+        img {
+            width: 188px !important;
+            height: 110px !important;
+        }
+        .el-image-viewer__canvas {
+            img {
+                width: auto !important;
+                height: 100% !important;
+            }
+        }
     }
 }
 </style>

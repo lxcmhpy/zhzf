@@ -3,9 +3,13 @@
     <div class="com_searchAndpageBoxPadding">
       <div class="searchAndpageBox toggleBox">
         <div class="handlePart caseHandleSearchPart">
-          <el-form :inline="true" :model="form" label-width="80px" ref="form">
-            <el-form-item label="检测站点">
-              <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+          <el-form :inline="true" :model="form" label-width="80px" ref="checkAnalyseForm">
+            <el-form-item label="检测站点" prop="siteName">
+              <el-input
+                v-model="form.siteName"
+                placeholder="回车可直接查询"
+                @keyup.enter.native="search()"
+              ></el-input>
             </el-form-item>
             <!-- <el-form-item label="开始时间">
               <el-date-picker v-model="checkStartTime" type="date" format="yyyy-MM-dd" placeholder="开始日期">
@@ -17,43 +21,97 @@
             </el-form-item> -->
             <!-- {{aa}},{{bb}} -->
             <el-form-item>
-              <el-date-picker style='width:240px'
-              :picker-options="pickerOptions"
-               v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
-
+              <el-date-picker
+                style="width:240px"
+                :picker-options="pickerOptions"
+                v-model="timeList"
+                type="daterange"
+                range-separator="—"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                format="yyyy-MM-dd"
+                :default-time="['00:00:00', '23:59:59']"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                prop="timeList"
+              >
               </el-date-picker>
             </el-form-item>
             <el-form-item label="时间段">
-              <el-time-picker is-range v-model="form.timeArea" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围" format="HH:mm" style='width:200px'>
+              <el-time-picker
+                is-range
+                v-model="form.timeArea"
+                range-separator="至"
+                start-placeholder="开始时间"
+                end-placeholder="结束时间"
+                placeholder="选择时间范围"
+                format="HH:mm"
+                style="width:200px"
+                prop="timeArea"
+              >
               </el-time-picker>
             </el-form-item>
             <el-collapse-transition>
-              <div v-show="isShow" :class="{'ransition-box':true}">
-                <el-form-item label="车牌号">
-                  <el-select v-model="form.vehicleColor" class="w-80" placeholder="请选择">
-                    <el-option v-for="item in vehicleColorList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              <div v-show="isShow" :class="{ 'ransition-box': true }">
+                <el-form-item label="车牌号" prop="vehicleColor">
+                  <el-select
+                    v-model="form.vehicleColor"
+                    class="w-80"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="item in vehicleColorList"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label=" " label-width="0px">
-                  <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+                <el-form-item label=" " label-width="0px" prop="vehicleNumber">
+                  <el-input
+                    v-model="form.vehicleNumber"
+                    placeholder="回车可直接查询"
+                    @keyup.enter.native="search()"
+                  ></el-input>
                 </el-form-item>
-                <el-form-item label="超限率">
+                <el-form-item label="超限率"  prop="overanlyse">
                   <el-select v-model="form.overanlyse" prop="type">
-                    <el-option v-for="item in overanlyseList" :key="item.value" :label="item.value" :value="item.value"></el-option>
+                    <el-option
+                      v-for="item in overanlyseList"
+                      :key="item.value"
+                      :label="item.value"
+                      :value="item.value"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="黑名单">
+                <el-form-item label="黑名单"  prop="status">
                   <el-checkbox v-model="form.status">是</el-checkbox>
-
                 </el-form-item>
               </div>
             </el-collapse-transition>
           </el-form>
           <div class="search-btns">
-               <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
-              <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
-              <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
-              </el-button>
+            <el-button
+              size="medium"
+              class="commonBtn searchBtn"
+              title="搜索"
+              icon="iconfont law-sousuo"
+              @click="search(1)"
+            ></el-button>
+            <el-button
+              size="medium"
+              class="commonBtn searchBtn"
+              title="重置"
+              icon="iconfont law-zhongzhi"
+              @click="reset('checkAnalyseForm')"
+            ></el-button>
+            <el-button
+              size="medium"
+              class="commonBtn toogleBtn"
+              :title="isShow ? '点击收缩' : '点击展开'"
+              :icon="isShow ? 'iconfont law-top' : 'iconfont law-down'"
+              @click="isShow = !isShow"
+            >
+            </el-button>
           </div>
         </div>
         <div class="handlePart" style="margin-left: 0px;">
@@ -67,32 +125,71 @@
           </el-button>
         </div>
         <div class="tablePart">
-          <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;">
+          <el-table
+            :data="tableData"
+            stripe
+            resizable
+            border
+            style="width: 100%;height:100%;"
+          >
             <el-table-column label="序号" width="70px">
               <template slot-scope="scope">
-                {{scope.$index+1}}
+                {{ scope.$index + 1 }}
               </template>
             </el-table-column>
-            <el-table-column prop="checkTime" label="过检时间" align="center" width="100"></el-table-column>
-            <el-table-column prop="lane" label="检测站点" align="center"></el-table-column>
+            <el-table-column
+              prop="checkTime"
+              label="过检时间"
+              align="center"
+              width="100"
+            ></el-table-column>
+            <el-table-column
+              prop="lane"
+              label="检测站点"
+              align="center"
+            ></el-table-column>
 
             <el-table-column label="车牌号码" align="center" width="120">
               <template slot-scope="scope">
                 <div :class="vehicleColorObj[scope.row.vehicleColor]">
                   <div class="border">
-                    {{scope.row.vehicleNumber}}
+                    {{ scope.row.vehicleNumber }}
                   </div>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="totalWeight" label="车货总质量" align="center"></el-table-column>
-            <el-table-column prop="overWeight" label="超重" align="center"></el-table-column>
-            <el-table-column prop="overWeight" label="超限率" align="center"></el-table-column>
-            <el-table-column prop="totalWeight" label="重点监管" align="center"></el-table-column>
+            <el-table-column
+              prop="totalWeight"
+              label="车货总质量"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              prop="overWeight"
+              label="超重"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              prop="overWeight"
+              label="超限率"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              prop="totalWeight"
+              label="重点监管"
+              align="center"
+            ></el-table-column>
           </el-table>
         </div>
         <div class="paginationBox" v-show="form.size">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="form.current"
+            background
+            :page-sizes="[10, 20, 30, 40]"
+            layout="prev, pager, next,sizes,jumper"
+            :total="form.size"
+          ></el-pagination>
         </div>
       </div>
     </div>
@@ -199,26 +296,26 @@
 }
 </style>
 <script>
-import { queryListPage, findAllDrawerById } from '@/api/lawSupervise.js';
-import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
-import { mapGetters } from "vuex";
+import {queryListPage,findAllDrawerById} from '@/api/lawSupervise.js';
+import {BASIC_DATA_SYS} from "@/common/js/BASIC_DATA.js";
+import {mapGetters} from "vuex";
 export default {
   inject: ["reload"],
   data() {
-      let _this =this;
-      return {
-        pickerOptions:  {
-            onPick:  ({maxDate, minDate}) => {
-                if (minDate) {
-                    _this.$set(_this.timeList,0,minDate);
-                    _this.$set(_this.timeList,1,minDate);
-                }
-                if(maxDate) {
-                    //  _this.$set(_this.timeList,0,minDate);
-                    _this.$set(_this.timeList,1,maxDate);
-                }
-            }
-        },
+    let _this=this;
+    return {
+      pickerOptions: {
+        onPick: ({maxDate,minDate}) => {
+          if(minDate) {
+            _this.$set(_this.timeList,0,minDate);
+            _this.$set(_this.timeList,1,minDate);
+          }
+          if(maxDate) {
+            //  _this.$set(_this.timeList,0,minDate);
+            _this.$set(_this.timeList,1,maxDate);
+          }
+        }
+      },
       tabActiveIndex: '0',
       vehicleColorList: null,
       cxlList: null,
@@ -233,27 +330,27 @@ export default {
         size: 0, //总页数
         checkEndTime: '',
         checkStartTime: '',
-        timeArea: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
+        timeArea: [new Date(2016,9,10,8,40),new Date(2016,9,10,9,40)],
       },
-      timeList: ['', ''],
+      timeList: ['',''],
       processStatus: [{
         value: '待办'
-      }, {
+      },{
         value: '已回退'
-      }, {
+      },{
         value: '在办'
-      }, {
+      },{
         value: '办结'
-      }, {
+      },{
         value: '机构待办'
       }],
       isShow: false,
       tableData: [],
       overanlyseList: [{
         value: '50%'
-      }, {
+      },{
         value: '100%'
-      }, {
+      },{
         value: '200%'
       }],
       vehicleColorObj: {
@@ -266,45 +363,24 @@ export default {
         '渐变绿': 'vehicle-gradient-green',
         '黄绿色': 'vehicle-yelloe-green',
       },
-      // pickerOptions: {
-      //   shortcuts: [{
-      //     text: '确定',
-      //     onclick(picker) {
-      //       picker.$emit('pick', [_this.aa, _this.bb])
-      //     }
-      //   }],
-      //   onPick: ({ maxDate, minDate }) => {
-      //     // debugger
-      //     // console.log('11111')
-      //     _this.aa = maxDate
-      //     _this.bb = minDate
-      //     // _this.timeList=[minDate,minDate]
-      //     _this.$set(_this.timeList, 0, '2020-10-10 23:00:00');
-
-      //     // _this.$set(_this.timeList,0,'2020-10-10 23:00:00');
-
-      //   }
-      // },
-      aa: null,
-      bb: null,
     }
   },
 
   methods: {
-    activeAndSearch(item, index) {
-      this.tabActiveIndex = index;
+    activeAndSearch(item,index) {
+      this.tabActiveIndex=index;
     },
     search() {
-      this.form.checkStartTime = this.timeList[0];
-      this.form.checkEndTime = this.timeList[1];
+      this.form.checkStartTime=this.timeList[0];
+      this.form.checkEndTime=this.timeList[1];
       // this.aa = this.timeList[0];
       // this.bb = this.timeList[1];
-      let _this = this
-      new Promise((resolve, reject) => {
+      let _this=this
+      new Promise((resolve,reject) => {
         queryListPage(_this.form).then(
           res => {
             resolve(res)
-            _this.tableData = res.data.records
+            _this.tableData=res.data.records
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
@@ -313,13 +389,13 @@ export default {
         )
       })
     },
-    findAllDrawerById(data, obj) {
-      let _this = this
-      new Promise((resolve, reject) => {
+    findAllDrawerById(data,obj) {
+      let _this=this
+      new Promise((resolve,reject) => {
         findAllDrawerById(data).then(
           res => {
             // resolve(res)
-            _this[obj] = res.data
+            _this[obj]=res.data
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
@@ -328,11 +404,11 @@ export default {
         )
       })
     },
-    reset() {
-
+    reset (formName) {
+        this.$refs[formName].resetFields();
     },
     routerDetail(row) {
-      this.$store.commit('setOffSiteManageId', row.id);
+      this.$store.commit('setOffSiteManageId',row.id);
       this.$router.push({
         name: 'offSiteDetail'
       })
@@ -344,7 +420,7 @@ export default {
     },
     //更改每页显示的条数
     handleSizeChange(val) {
-      this.pageSize = val;
+      this.pageSize=val;
       this.getLogList(1);
     },
     //更换页码

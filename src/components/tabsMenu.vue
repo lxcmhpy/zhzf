@@ -30,7 +30,12 @@ export default {
     tabClick(tab) {
         this.activeIndexStr = tab.name;
         this.$store.commit("SET_ACTIVE_INDEX_STO", tab.name);
-        this.$router.push({ name: tab.name});
+        debugger;
+        if (tab.params) {
+            this.$router.push({ name: tab.name,params:tab.params});
+        } else {
+            this.$router.push({ name: tab.name});
+        }
     },
     //移除tab标签
     tabRemove(targetName) {
@@ -124,7 +129,8 @@ export default {
           route: to.path,
           name: to.name,
           title: tabTitle,
-          isCase: isCase
+          isCase: isCase,
+          params: to.params
         });
         // this.$store.dispatch("setActiveIndex", to.name);
         this.$store.commit("SET_ACTIVE_INDEX_STO",to.name);

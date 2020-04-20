@@ -348,24 +348,23 @@
       <el-amap-search-box class="search-box" ref="searchAmapBox" :search-option="searchOption" :on-search-result="searchAll"></el-amap-search-box>
     </div>
      <div class="amap-tool">
-         <el-button v-for="(item,index) in tabList" :key="index"
-          @click="currentTabIndex === index ? currentTabIndex = null : currentTabIndex = index">
-            <img :src="'./static/images/img/lawSupervise/'+item.iconfont+'.png'">
-             {{item.name}}
-             <i class="el-icon-arrow-down el-icon--right"></i>
-             <transition name="el-zoom-in-top">
-                <div class="drop-down-menu transition-box" v-if="currentTabIndex == index">
-                    <i class="el-icon-caret-top"></i>
-                    <ul>
-                        <li v-for="subItem in item.children" :key="subItem.name" @click="searchByTab(subItem)">
-                            <i :class="subItem.icon"></i>
-                            <p>{{subItem.name}}</p>
-                        </li>
-                    </ul>
-                </div>
-             </transition>
-         </el-button>
-     </div>
+      <el-button v-for="(item,index) in tabList" :key="index" @click="currentTabIndex === index ? currentTabIndex = null : currentTabIndex = index">
+        <img :src="'./static/images/img/lawSupervise/'+item.iconfont+'.png'" />
+        {{item.name}}
+        <i class="el-icon-arrow-down el-icon--right"></i>
+        <transition name="el-zoom-in-top">
+          <div class="drop-down-menu transition-box" v-if="currentTabIndex == index">
+            <i class="el-icon-caret-top"></i>
+            <ul>
+              <li v-for="subItem in item.children" :key="subItem.name" :class="{'select':subItem.select}" @click="searchByTab(subItem)">
+                <i :class="subItem.icon"></i>
+                <p>{{subItem.name}}</p>
+              </li>
+            </ul>
+          </div>
+        </transition>
+      </el-button>
+    </div>
 
 </div>
 </template>
@@ -521,7 +520,8 @@ export default {
             ],
             markers: [],
             zfdList: null,
-            gjclList: null
+            gjclList: null,
+            allSearchList: []
         }
     },
     methods: {
@@ -552,144 +552,219 @@ export default {
                 if (e.clientX >= (document.body.clientWidth - 400)) {
                 obj.left = (document.body.clientWidth - 400) + 'px';
                 }
-        };
-        document.onmouseup = (e) => {
-            document.onmousemove = null;
-            document.onmouseup = null;
-        };
+            };
+            document.onmouseup = (e) => {
+                document.onmousemove = null;
+                document.onmouseup = null;
+            };
         },
         updateDrawer () {
             this.drawer = !this.drawer;
         },
-        onSearchResult(pois, category) {
-          let latSum = 0;
-          let lngSum = 0;
-          if (pois.length > 0) {
-            let _this = this;
-            let windows = []
-            pois.forEach((poi,i) => {
-                let {lng, lat} = poi;
+        onSearchResult(pois, category, length) {
+            let latSum = 0;
+            let lngSum = 0;
+            if (pois.length > 0) {
+                let _this = this;
+                // let windows = []
+                pois.forEach((poi, i) => {
+                let { lng, lat } = poi;
                 lngSum += lng;
                 latSum += lat;
-                let that = _this
+                let that = _this;
                 if (category != -1) {
                     _this.markers.push({
-                        position:[poi.lng, poi.lat],
-                        other: poi.other,
-                        visible: false,
-                        template: `<img src="/static/images/img/lawSupervise/${_this.categoryList[category+1].className}.png">`,
-                        // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
-                        // content: `<div class="prompt">${ poi.other.username }</div>`,
-                        events: {
-                            click() {
-                                that.windows.forEach(window => {
-                                    window.visible = false;
-                                });
-
-                                that.curWindow = that.windows[i];
-                                if (category == 4) {
-                                    that.getBySiteId(that.curWindow.other.id,that.curWindow.other)
-                                }
-                                console.log(that.curWindow);
-                                that.$nextTick(() => {
-                                    that.curWindow.visible = true;
-                                });
-                            }
+                    position: [poi.lng, poi.lat],
+                    other: poi.other,
+                    visible: false,
+                    template: `<img src="/static/images/img/lawSupervise/${
+                        _this.categoryList[category + 1].className
+                        }.png">`,
+                    // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
+                    // content: `<div class="prompt">${ poi.other.username }</div>`,
+                    events: {
+                        click() {
+                        that.windows.forEach(window => {
+                            window.visible = false;
+                        });
+                        that.curWindow = that.windows[length + i];
+                        if (category == 4) {
+                            that.getBySiteId(
+                            that.curWindow.other.id,
+                            that.curWindow.other
+                            );
                         }
+                        console.log(that.curWindow);
+                        that.$nextTick(() => {
+                            that.curWindow.visible = true;
+                        });
+                        }
+                    }
                     });
                 } else {
                     _this.markers.push({
-                        position: [poi.lng, poi.lat],
-                        visible: false,
-                        other: poi,
-                        // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
-                        // content: null,
-                        template: `<div><img src="./static/images/img/lawSupervise/map_didian.png"><span style="position:absolute;left:12px;top:8px;color:white">${i +1}</span></div>`,
-                        events: {
-                            click() {
-                                that.windows.forEach(window => {
-                                    window.visible = false;
-                                });
+                    position: [poi.lng, poi.lat],
+                    visible: false,
+                    other: poi,
+                    // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
+                    // content: null,
+                    template: `<div><img src="./static/images/img/lawSupervise/map_didian.png"><span style="position:absolute;left:12px;top:8px;color:white">${i +
+                        1}</span></div>`,
+                    events: {
+                        click() {
+                        that.windows.forEach(window => {
+                            window.visible = false;
+                        });
 
-                                that.curWindow = that.windows[i];
+                        that.curWindow = that.windows[i];
 
-                                console.log(that.curWindow);
-                                that.$nextTick(() => {
-                                    that.curWindow.visible = true;
-                                });
-                            }
+                        console.log(that.curWindow);
+                        that.$nextTick(() => {
+                            that.curWindow.visible = true;
+                        });
                         }
-                    })
-
+                    }
+                    });
                 }
-                windows.push({
+                let aaa = {
                     position: [poi.lng, poi.lat],
                     category: category,
                     other: poi.other ? poi.other : poi,
                     visible: false
+                };
+                _this.windows.push(aaa);
                 });
-            });
-            let center = {
-              lng: lngSum / pois.length,
-              lat: latSum / pois.length
-            };
-            console.log(this.curWindow);
-            this.windows = windows;
-            this.center = [center.lng, center.lat];
-          }
-        },
-        getBySiteId (id,obj) {
-            let _this = this
-            new Promise((resolve, reject) => {
-                getBySiteId(id).then(
-                    res => {
-                        resolve(res)
-                        obj.list = res.data
-
-                    },
-                    error => {
-                        //  _this.errorMsg(error.toString(), 'error')
-                            return
-                    }
-                )
-            })
-        },
-        searchByTab (item) {
-            this.markers.splice(0, this.markers.length);
-            if (this.curWindow) {
-                this.curWindow.visible = false;
+                let center = {
+                lng: lngSum / pois.length,
+                lat: latSum / pois.length
+                };
+                console.log(this.curWindow);
+                // this.windows = [...this.windows, ...windows];
+                this.center = [center.lng, center.lat];
             }
-            this.category = item.code;
-            let data = {
-                    // area: this.currentAddressObj.province + this.currentAddressObj.district,
-                    area: '东城区',
-                    current: 1,
-                    key: '',
-                    // size: 0,
-                    type: item.code
-                }
-            this.getZfjgLawSupervise(data);
         },
-        searchAll (pois) {
+        getBySiteId(id, obj) {
+        let _this = this;
+        new Promise((resolve, reject) => {
+            getBySiteId(id).then(
+            res => {
+                resolve(res);
+                obj.list = res.data;
+            },
+            error => {
+                //  _this.errorMsg(error.toString(), 'error')
+                return;
+            }
+            );
+        });
+        },
+        searchByTab(item) {
+            // this.markers.splice(0, this.markers.length);
+            item.select = !item.select;
+            if (item.select && this.allSearchList.length >= 5) {
+                item.select = false;
+                this.errorMsg(`至多选择5条数据`, "error");
+                return
+            }
+            if (item.select) {
+                if (this.curWindow) {
+                this.curWindow.visible = false;
+                }
+                this.category = item.code;
+                let data = {
+                // area: this.currentAddressObj.province + this.currentAddressObj.district,
+                area: "东城区",
+                current: 1,
+                key: "",
+                //   size: 20,
+                type: item.code
+                };
+                this.allSearchList.push(data);
+                this.getZfjgLawSupervise(data, this.category);
+            } else {
+                let _this = this;
+                let _index = _.findIndex(this.allSearchList, function (chr) {
+                return chr.type === item.code;
+                });
+                if (_index > -1) {
+                this.allSearchList.splice(_index, 1);
+                this.markers.splice(0, this.markers.length);
+                this.windows.splice(0, this.windows.length);
+                this.allSearchList.forEach((v, i) => {
+                    _this.getZfjgLawSupervise(v, v.type);
+                });
+                }
+            }
+        },
+        searchAll(pois) {
             this.markers.splice(0, this.markers.length);
             if (this.curWindow) {
                 this.curWindow.visible = false;
             }
             if (this.category == -1) {
-                this.errorMsg(`总计${pois.length}条数据`, 'success');
-                this.onSearchResult(pois, this.category);
+                this.errorMsg(`总计${pois.length}条数据`, "success");
+                this.onSearchResult(pois, this.category, 0);
                 // 搜索地图位置
             } else {
                 // this.currentAddressObj.province + this.currentAddressObj.district
                 let data = {
-                    area: '',
-                    current: 1,
-                    key: this.$refs.searchAmapBox.keyword,
-                    size: 0,
-                    type: this.category
-                }
-                this.getZfjgLawSupervise(data)
+                area: "",
+                current: 1,
+                key: this.$refs.searchAmapBox.keyword,
+                size: 20,
+                type: this.category
+                };
+                this.getZfjgLawSupervise(data, this.category);
             }
+        },
+        getZfjgLawSupervise(data, category) {
+            let _this = this;
+            new Promise((resolve, reject) => {
+                getZfjgLawSupervise(data).then(
+                res => {
+                    // resolve(res);
+                    let resultList = [];
+                    if (res.data && res.data.records.length == 0) {
+                    _this.errorMsg("暂无数据", "error");
+                    // return
+                    } else {
+                    _this.errorMsg(
+                        `查询到${res.data.records.length}条数据`,
+                        "success"
+                    );
+                    }
+                    res.data.records.forEach((item, i) => {
+                        let position = item.position.split(",");
+                        let lng = parseFloat(position[0]);
+                        let lat = parseFloat(position[1]);
+                        resultList.push({
+                            address: item.address,
+                            distance: null,
+                            id: item.id,
+                            lat: lat,
+                            lng: lng,
+                            location: {
+                            O: lng,
+                            P: lat,
+                            lat: lat,
+                            lng: lng
+                            },
+                            name: item.nickName,
+                            shopinfo: "",
+                            tel: "",
+                            type: _this.category,
+                            other: item
+                        });
+                    });
+
+                    _this.onSearchResult(resultList, category, _this.windows.length);
+                },
+                error => {
+                    //  _this.errorMsg(error.toString(), 'error')
+                    return;
+                }
+                );
+            });
         },
         getZfjgLawSupervise (data) {
             let _this = this
@@ -728,7 +803,7 @@ export default {
                             })
                         })
 
-                        _this.onSearchResult(resultList, _this.category)
+                        _this.onSearchResult(resultList, _this.category,0)
                     },
                     error => {
                         //  _this.errorMsg(error.toString(), 'error')
@@ -768,11 +843,11 @@ export default {
                         },
                         error => {
                             //  _this.errorMsg(error.toString(), 'error')
-                             return
+                            return
                         })
                 })
         },
-         getById (type,id) {
+        getById (type,id) {
             let _this = this
             new Promise((resolve, reject) => {
                     getById(type,id).then(
@@ -808,19 +883,21 @@ export default {
                             }
 
 
-                            _this.onSearchResult(resultList, _this.category)
+                            _this.onSearchResult(resultList, _this.category,0)
                         },
                         error => {
                             //  _this.errorMsg(error.toString(), 'error')
-                             return
+                            return
                         })
                 })
         },
     },
     mounted () {
-        this.getRealTimeDataByLawSupervise()
-        this.searchPageAll(4, 'zfdList')
-        this.searchPageAll(6, 'gjclList')
+        this.getRealTimeDataByLawSupervise();
+        this.searchPageAll(4, 'zfdList');
+        this.searchPageAll(6, 'gjclList');
+        this.category = 4;
+        this.searchByTab(this.tabList[1].children[0]);
     },
     mixins: [
         lawSuperviseMixins, mixinsCommon

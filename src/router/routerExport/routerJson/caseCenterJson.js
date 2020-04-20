@@ -3,7 +3,7 @@ export default  [
     {
         //可视化监管
         path: '/caseCenter',
-        name: 'caseCenter',
+        name: 'caseCenter1',
         component: MainContent,
         children: [
             {
@@ -16,7 +16,7 @@ export default  [
                    },
                    component: () => import("@/page/caseCenter/caseCenter.vue"),
                },
-          
+
             {
                 path: "/transferAndRegisterCase",
                 name: "transferAndRegisterCase",
