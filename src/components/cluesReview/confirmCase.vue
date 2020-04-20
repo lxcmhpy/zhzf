@@ -45,7 +45,7 @@ export default {
         partyType:2,
       }
       iLocalStroage.sets('overWeightCaseData', data);
-      this.$router.push({ name: 'inforCollect' })
+      this.$router.push({ name: 'case_handle_inforCollect' })
     }
   },
   mounted() { }

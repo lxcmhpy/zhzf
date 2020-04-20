@@ -100,7 +100,7 @@ export default {
       this.$store.commit("setCaseApproval", true);
 
       this.$router.replace({
-        name: 'caseInfo',
+        name: 'case_handle_caseInfo',
         params: {
           caseInfo: row,
           isApproval:true

@@ -435,7 +435,7 @@ export default {
           //设置案件状态不为审批中
           this.$store.commit("setCaseApproval", false);
           this.$router.replace({
-            name: "establish"
+            name: "case_handle_establish"
           });
           let setCaseNumber = row.caseNumber !== '' ? row.caseNumber : '案件'
           this.$store.commit("setCaseNumber", setCaseNumber);
@@ -450,7 +450,7 @@ export default {
           //设置案件状态不为审批中
           this.$store.commit("setCaseApproval", false);
           this.$router.push({
-            name: "caseInfo",
+            name: "case_handle_caseInfo",
             params: {
               caseInfo: row
             }
@@ -463,7 +463,7 @@ export default {
         //设置案件状态不为审批中
         this.$store.commit("setCaseApproval", false);
         this.$router.push({
-          name: "archiveCover"
+          name: "case_handle_archiveCover"
         });
       }
     },
