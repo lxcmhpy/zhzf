@@ -604,3 +604,13 @@ export  function  findHistoryBySignApi(userId,sign)  {
     cancelToken:  setCancelSource()
   });
 }
+//通过机构ID查找路线名称
+export function findRouteManageByOrganIdApi(data) {
+  return  request({
+    url:  "/case/doc/routeManagement/findRouteManageByOrganId/"+data.organId,
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}

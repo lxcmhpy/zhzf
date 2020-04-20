@@ -58,7 +58,7 @@
           </el-table-column>
           <el-table-column prop="evPath" label="附件" align="center">
             <template slot-scope="scope">
-              <img :src="host+scope.row.evPath" width="40" height="40" />
+              <img :src="host+scope.row.evPath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" fixed="right">
@@ -241,6 +241,8 @@
     <!-- <evidenceCatalogue ref="evidenceCatalogueRef"></evidenceCatalogue> -->
 
     <evidenceDetail ref="evidenceDetailRef"></evidenceDetail>
+
+    <evidenceImageDetail ref="evidenceImageDetailRef"></evidenceImageDetail>
   </div>
 </template>
 <script>
@@ -252,6 +254,7 @@ import { uploadEvApi, findFileByIdApi, uploadEvdence } from "@/api/upload";
 import {getCaseBasicInfoApi} from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage.js";
 import evidenceDetail from "./evidenceDetail";
+import evidenceImageDetail from "./evidenceImageDetail";
 // import {saveOrUpdateEvdencenApi2, } from "@/api/caseHandle";
 // import { getEviByCaseIdApi } from "@api/caseHandle";
 export default {
@@ -335,7 +338,8 @@ export default {
   components: {
     caseSlideMenu,
     evidenceCatalogue,
-    evidenceDetail
+    evidenceDetail,
+    evidenceImageDetail
   },
   methods: {
     submitForm(formName) {
@@ -567,6 +571,9 @@ export default {
     evidenceDetail(row){
         console.log("证据详情",row)        
         this.$refs.evidenceDetailRef.showModal(row); 
+    },
+    imgDetail(row){
+      this.$refs.evidenceImageDetailRef.showModal(row);
     },
     //查询记录人列表
     findUserNameList(){
