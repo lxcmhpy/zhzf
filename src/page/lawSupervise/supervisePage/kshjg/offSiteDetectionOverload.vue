@@ -5,237 +5,226 @@
 <!--  执法监管首页 by-jingli -->
 <div id="lawSupervise" ref="lawSupervise" class="mainBox" >
     <div class="amap-page-container">
-        <!-- amap://styles/whitesmoke -->
-            <!-- :features="['road','bg', 'building']" -->
-        <el-amap vid="lawSupervise"
-            :mapStyle="style"
-            :center="center"
-            :plugin="plugin"
-            :amap-manager="amapManager"
-            :zoom="zoom"
-            :events="events"
-            class="amap-demo">
-            <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :template="marker.template">
-            </el-amap-marker>
-            <el-amap-info-window v-if="curWindow" :visible="curWindow&&curWindow.visible" :position="curWindow.position">
-                 <div :class="'lawWindowStyle'+curWindow.category" >
-                     <!-- 0执法人员 -->
-                     <div v-if="curWindow.category == 0">
-                        <div class="lawWindowTitle">
-                            <i class="iconfont law-people"></i>
-                            {{curWindow.other.nickName}}
-                            <div class="right">{{curWindow.other.enforceNo}}</div>
-                        </div>
-                        <div class="flexBox">
-                            <div class="con">
-                                <p>{{curWindow.other.address}}</p>
-                                <p>{{curWindow.other.mobile}}</p>
-                            </div>
-                            <div class="status">
-                                <i class="iconfont law-mobile-phone"></i>
-                                <p>在线</p>
-                            </div>
-                        </div>
+      <!-- amap://styles/whitesmoke -->
+      <!-- :features="['road','bg', 'building']" -->
+      <el-amap vid="lawSupervise" :mapStyle="style" :center="center" :plugin="plugin" :amap-manager="amapManager" :zoom="zoom" :events="events" class="amap-demo">
+        <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :template="marker.template"></el-amap-marker>
+        <el-amap-info-window v-if="curWindow" :visible="curWindow&&curWindow.visible" :position="curWindow.position">
+          <div :class="'lawWindowStyle'+curWindow.category">
+            <!-- 0执法人员 -->
+            <div v-if="curWindow.category == 0">
+              <div class="lawWindowTitle">
+                <i class="iconfont law-people"></i>
+                {{curWindow.other.nickName}}
+                <div class="right">{{curWindow.other.enforceNo}}</div>
+              </div>
+              <div class="flexBox">
+                <div class="con">
+                  <p>{{curWindow.other.address}}</p>
+                  <p>{{curWindow.other.mobile}}</p>
+                </div>
+                <div class="status">
+                  <i class="iconfont law-mobile-phone"></i>
+                  <p>在线</p>
+                </div>
+              </div>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
 
-                        <div class="btns">
-                            <i class="iconfont law-mobile"></i>
-                            <i class="iconfont law-shipin"></i>
-                            <i class="iconfont law-jiankong"></i>
-                            <i class="iconfont law-msg-box"></i>
-                            <i class="iconfont law-xianlu"></i>
-                        </div>
-                     </div>
-                     <!-- 1执法机构 -->
-                     <div  v-else-if="curWindow.category == 1">
-                        <div class="lawWindowTitle">
-                            <i class="iconfont law-zfj"></i>
-                            {{curWindow.other.name}}
-                            <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
-                        </div>
-                        <div class="flexBox">
-                            <div class="con">
-                                <p>{{curWindow.other.address}}</p>
-                                <p>{{curWindow.other.contact}}&nbsp;&nbsp;{{curWindow.other.phone}}</p>
-                            </div>
-                            <div class="status">
-                                    <i class="iconfont law-mobile-phone"></i>
-                                    <p>{{curWindow.other.status}}</p>
-                            </div>
-                        </div>
+            </div>
+            <!-- 1执法机构 -->
+            <div v-else-if="curWindow.category == 1">
+              <div class="lawWindowTitle">
+                <i class="iconfont law-zfj"></i>
+                {{curWindow.other.name}}
+                <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
+              </div>
+              <div class="flexBox">
+                <div class="con">
+                  <p>{{curWindow.other.address}}</p>
+                  <p>{{curWindow.other.contact}}&nbsp;&nbsp;{{curWindow.other.phone}}</p>
+                </div>
+                <div class="status">
+                  <i class="iconfont law-mobile-phone"></i>
+                  <p>{{curWindow.other.status}}</p>
+                </div>
+              </div>
 
-                        <div class="btns">
-                            <div class="flexBox">
-                                <div class="con">
-                                    <p>{{curWindow.other.address}}</p>
-                                    <p>{{curWindow.other.contact}}&nbsp;&nbsp;{{curWindow.other.phone}}</p>
-                                </div>
-                            </div>
-                            <div class="flexBox">
-                                <div class="con">
-                                    <i class="el-icon-location"></i>
-                                    <span>{{curWindow.other.position}}</span>
-                                </div>
-                            </div>
-                        </div>
-                     </div>
-                     <!-- 2执法车辆 -->
-                     <div v-else-if="curWindow.category == 2">
-                        <div class="flexBox">
-                            <div class="con">
-                                <p>
-                                    <i class="iconfont law-car"></i>
-                                    {{curWindow.other.vehicleNumber}}</p>
-                                <p>{{curWindow.other.organName}}</p>
-                                <!-- <p>{{curWindow.other.mobile}}</p> -->
-                            </div>
-                            <div class="status">
-                                <i class="iconfont law-mobile-phone"></i>
-                                <p>在线</p>
-                            </div>
-                        </div>
+              <div class="btns">
+                <div class="flexBox">
+                  <div class="con">
+                    <p>{{curWindow.other.address}}</p>
+                    <p>{{curWindow.other.contact}}&nbsp;&nbsp;{{curWindow.other.phone}}</p>
+                  </div>
+                </div>
+                <div class="flexBox">
+                  <div class="con">
+                    <i class="el-icon-location"></i>
+                    <span>{{curWindow.other.position}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 2执法车辆 -->
+            <div v-else-if="curWindow.category == 2">
+              <div class="flexBox">
+                <div class="con">
+                  <p>
+                    <i class="iconfont law-car"></i>
+                    {{curWindow.other.vehicleNumber}}
+                  </p>
+                  <p>{{curWindow.other.organName}}</p>
+                  <!-- <p>{{curWindow.other.mobile}}</p> -->
+                </div>
+                <div class="status">
+                  <i class="iconfont law-mobile-phone"></i>
+                  <p>在线</p>
+                </div>
+              </div>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
 
-                        <div class="btns">
-                            <i class="iconfont law-mobile"></i>
-                            <i class="iconfont law-shipin"></i>
-                            <i class="iconfont law-jiankong"></i>
-                            <i class="iconfont law-msg-box"></i>
-                            <i class="iconfont law-xianlu"></i>
-                        </div>
-                     </div>
-                     <!-- 3执法船舶 -->
-                     <div v-else-if="curWindow.category == 3">
-                        <!-- <div>
+              <!-- <div class="btns">
+                <i class="iconfont law-mobile"></i>
+                <i class="iconfont law-shipin"></i>
+                <i class="iconfont law-jiankong"></i>
+                <i class="iconfont law-msg-box"></i>
+                <i class="iconfont law-xianlu"></i>
+              </div> -->
+            </div>
+            <!-- 3执法船舶 -->
+            <div v-else-if="curWindow.category == 3">
+              <!-- <div>
                             <i class="iconfont law-ship"></i>
                             {{curWindow.other.shipNumber}}<br>
                             {{curWindow.other.organName}}
-                        </div> -->
-                        <div class="flexBox">
-                            <div class="con">
-                                <i class="iconfont law-ship"></i>
-                                {{curWindow.other.shipNumber}}<br>
-                                {{curWindow.other.organName}}
-                            </div>
-                            <div class="status">
-                                <i class="iconfont law-mobile-phone"></i>
-                                <p>在线</p>
-                            </div>
-                        </div>
-
-                        <div class="btns">
-                            <i class="iconfont law-mobile"></i>
-                            <i class="iconfont law-shipin"></i>
-                            <i class="iconfont law-jiankong"></i>
-                            <i class="iconfont law-msg-box"></i>
-                            <i class="iconfont law-xianlu"></i>
-                        </div>
-                     </div>
-                     <!-- 4非现场治超检测 -->
-                     <div v-else-if="curWindow.category == 4">
-                        <div class="lawWindowTitle">
-                            <i class="iconfont law-jiankong"></i>
-                            {{curWindow.other.name}}
-                            <div class="right">{{curWindow.other.status == 0? '正常': '异常'}}</div>
-                        </div>
-                        <div class="flexBox">
-                            <div class="con">
-                                <p>{{curWindow.other.address}}</p>
-                                <div>
-                                    <p>{{curWindow.other.createTime}} &nbsp;
-                                        超限{{curWindow.other.cxchl}} &nbsp;
-                                        黑名单{{curWindow.other.blackList}}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="status">
-                                <i class="iconfont law-mobile-phone"></i>
-                                <p>在线</p>
-                            </div>
-                        </div>
-                        <div class="btns">
-                            <el-table v-if="curWindow.other.list"
-                                style="width: 100%;"
-                                :data="curWindow.other.list"
-                                resizable
-                                stripe>
-                                <el-table-column width="100" prop="checkTime" label="过检时间"></el-table-column>
-                                <el-table-column width="100" prop="vehicleNumber" label="车牌号"></el-table-column>
-                                <el-table-column width="70" prop="overload" label="超载率"></el-table-column>
-                                <el-table-column width="100" prop="area" label="车属地"></el-table-column>
-                                <el-table-column width="80" label="重点监管">
-                                    <template><span>是</span></template>
-                                </el-table-column>
-                            </el-table>
-                        </div>
-                     </div>
-                     <!-- 5监管企业 -->
-                     <div v-else-if="curWindow.category == 5">
-                        <div class="lawWindowTitle">
-                            <i class="iconfont law-zfj"></i>
-                            {{curWindow.other.nickName}}
-                            <div class="right">{{curWindow.other.enforceNo}}</div>
-                        </div>
-                        <div class="flexBox">
-                            <div class="con">
-                                <p>{{curWindow.other.address}}</p>
-                                <p>{{curWindow.other.mobile}}</p>
-                            </div>
-                            <div class="status">
-                                <i class="iconfont law-mobile-phone"></i>
-                                <p>在线</p>
-                            </div>
-                        </div>
-
-                        <div class="btns">
-                            <i class="iconfont law-mobile"></i>
-                            <i class="iconfont law-shipin"></i>
-                            <i class="iconfont law-jiankong"></i>
-                            <i class="iconfont law-msg-box"></i>
-                            <i class="iconfont law-xianlu"></i>
-                        </div>
-                     </div>
-                     <!-- 6监管车辆 -->
-                     <div v-else-if="curWindow.category == 6">
-                         <div class="flexBox">
-                            <div class="con">
-                                <p>
-                                    <i class="iconfont law-car"></i>
-                                    {{curWindow.other.vehicleNumber}}</p>
-                                <p>{{curWindow.other.organName}}</p>
-                                <!-- <p>{{curWindow.other.mobile}}</p> -->
-                            </div>
-                            <div class="status">
-                                <i class="iconfont law-mobile-phone"></i>
-                                <p>在线</p>
-                            </div>
-                        </div>
-
-                        <div class="btns">
-                            <i class="iconfont law-mobile"></i>
-                            <i class="iconfont law-shipin"></i>
-                            <i class="iconfont law-jiankong"></i>
-                            <i class="iconfont law-msg-box"></i>
-                            <i class="iconfont law-xianlu"></i>
-                        </div>
-                     </div>
-                     <!-- -1搜索地图 -->
-                     <div v-else-if="curWindow.category == -1">
-                        <div class="noneWindow">
-                            当前位置：{{curWindow.other.address}}<br>
-                            当前坐标：[{{curWindow.other.lng}},{{curWindow.other.lat}}]<br>
-                            类型：{{curWindow.other.type}}
-                        </div>
-                     </div>
-                     <!-- <div v-else></div> -->
+              </div>-->
+              <div class="flexBox">
+                <div class="con">
+                  <i class="iconfont law-ship"></i>
+                  {{curWindow.other.shipNumber}}
+                  <br />
+                  {{curWindow.other.organName}}
                 </div>
-            </el-amap-info-window>
-        </el-amap>
-        <div class="toolbar">
-            <!-- <span v-if="loaded">
-            location: lng = {{ lng }} lat = {{ lat }}
-            </span>
-            <span v-else>正在定位</span> -->
-        </div>
-        <div class="amap-position" :class="'amap-' + direction + '-box'">
+                <div class="status">
+                  <i class="iconfont law-mobile-phone"></i>
+                  <p>在线</p>
+                </div>
+              </div>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+
+              <!-- <div class="btns">
+                <i class="iconfont law-mobile"></i>
+                <i class="iconfont law-shipin"></i>
+                <i class="iconfont law-jiankong"></i>
+                <i class="iconfont law-msg-box"></i>
+                <i class="iconfont law-xianlu"></i>
+              </div> -->
+            </div>
+            <!-- 4非现场治超检测 -->
+            <div v-else-if="curWindow.category == 4">
+              <div class="lawWindowTitle">
+                <i class="iconfont law-jiankong"></i>
+                {{curWindow.other.name}}
+                <div class="right">{{curWindow.other.status == 0? '正常': '异常'}}</div>
+              </div>
+              <div class="flexBox">
+                <div class="con">
+                  <p>{{curWindow.other.address}}</p>
+                  <div>
+                    <p>
+                      {{curWindow.other.createTime}} &nbsp;
+                      超限{{curWindow.other.cxchl}} &nbsp;
+                      黑名单{{curWindow.other.blackList}}
+                    </p>
+                  </div>
+                </div>
+                <div class="status">
+                  <i class="iconfont law-mobile-phone"></i>
+                  <p>在线</p>
+                </div>
+              </div>
+              <div class="btns">
+                <el-table v-if="curWindow.other.list" style="width: 100%;" :data="curWindow.other.list" resizable stripe>
+                  <el-table-column width="100" prop="checkTime" label="过检时间"></el-table-column>
+                  <el-table-column width="100" prop="vehicleNumber" label="车牌号"></el-table-column>
+                  <el-table-column width="70" prop="overload" label="超载率"></el-table-column>
+                  <el-table-column width="100" prop="area" label="车属地"></el-table-column>
+                  <el-table-column width="80" label="重点监管">
+                    <template>
+                      <span>是</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
+            <!-- 5监管企业 -->
+            <div v-else-if="curWindow.category == 5">
+              <div class="lawWindowTitle">
+                <i class="iconfont law-zfj"></i>
+                {{curWindow.other.nickName}}
+                <div class="right">{{curWindow.other.enforceNo}}</div>
+              </div>
+              <div class="flexBox">
+                <div class="con">
+                  <p>{{curWindow.other.address}}</p>
+                  <p>{{curWindow.other.mobile}}</p>
+                </div>
+                <div class="status">
+                  <i class="iconfont law-mobile-phone"></i>
+                  <p>在线</p>
+                </div>
+              </div>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+              <!-- <div class="btns">
+                <i class="iconfont law-mobile"></i>
+                <i class="iconfont law-shipin"></i>
+                <i class="iconfont law-jiankong"></i>
+                <i class="iconfont law-msg-box"></i>
+                <i class="iconfont law-xianlu"></i>
+              </div> -->
+            </div>
+            <!-- 6监管车辆 -->
+            <div v-else-if="curWindow.category == 6">
+              <div class="flexBox">
+                <div class="con">
+                  <p>
+                    <i class="iconfont law-car"></i>
+                    {{curWindow.other.vehicleNumber}}
+                  </p>
+                  <p>{{curWindow.other.organName}}</p>
+                  <!-- <p>{{curWindow.other.mobile}}</p> -->
+                </div>
+                <div class="status">
+                  <i class="iconfont law-mobile-phone"></i>
+                  <p>在线</p>
+                </div>
+              </div>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+              <!-- <div class="btns">
+                <i class="iconfont law-mobile"></i>
+                <i class="iconfont law-shipin"></i>
+                <i class="iconfont law-jiankong"></i>
+                <i class="iconfont law-msg-box"></i>
+                <i class="iconfont law-xianlu"></i>
+              </div> -->
+            </div>
+            <!-- -1搜索地图 -->
+            <div v-else-if="curWindow.category == -1">
+              <div class="noneWindow">
+                当前位置：{{curWindow.other.address}}
+                <br />
+                当前坐标：[{{curWindow.other.lng}},{{curWindow.other.lat}}]
+                <br />
+                类型：{{curWindow.other.type}}
+              </div>
+            </div>
+            <!-- <div v-else></div> -->
+
+          </div>
+        </el-amap-info-window>
+
+      </el-amap>
+    </div>
+     <div class="amap-position" :class="'amap-' + direction + '-box'">
             <div class="drawerBtn" @click="updateDrawer">
                 <i class="el-icon-arrow-right"></i>
             </div>
@@ -348,31 +337,15 @@
                 </div>
             </el-drawer>
         </div>
-    </div>
+
     <div class="amap-search">
-        <el-select
-            v-model="styleIndexNumher"
-            placeholder="样式切换">
-            <el-option
-            v-for="(item,index) in styleListNumber"
-            :key="index"
-            :label="item"
-            :value="index"
-            ></el-option>
-        </el-select>
-        <el-select
-            v-model="categorySelect"
-            @change="category=categorySelect"
-            placeholder="请选择">
-            <el-option
-            v-for="(item,index) in categoryList"
-            :key="index"
-            :label="item.show"
-            :value="item.code"
-            ></el-option>
-        </el-select>
-        <el-amap-search-box class="search-box" ref="searchAmapBox" :search-option="searchOption" :on-search-result="searchAll">
-        </el-amap-search-box>
+      <el-select v-model="styleIndexNumher" placeholder="样式切换">
+        <el-option v-for="(item,index) in styleListNumber" :key="index" :label="item" :value="index"></el-option>
+      </el-select>
+      <el-select v-model="categorySelect" @change="category=categorySelect" placeholder="请选择">
+        <el-option v-for="(item,index) in categoryList" :key="index" :label="item.show" :value="item.code"></el-option>
+      </el-select>
+      <el-amap-search-box class="search-box" ref="searchAmapBox" :search-option="searchOption" :on-search-result="searchAll"></el-amap-search-box>
     </div>
      <div class="amap-tool">
          <el-button v-for="(item,index) in tabList" :key="index"
@@ -393,71 +366,18 @@
              </transition>
          </el-button>
      </div>
-    <!-- <div class="amap-main-content">
-        <transition name="el-fade-in">
-            <div class="echarts-box" v-show="status1">
-                <em class="title left">近三个月执行情况</em>
-                <i class="iconfont law-delete1 right" @click="status1 = false"></i>
-                <div id="echartsBox1" class="amap-chart"></div>
-            </div>
-        </transition>
-         <transition name="el-fade-in">
-            <div class="echarts-box" v-show="status2">
-                <em class="title left">近三个月查处排行</em>
-                <i class="iconfont law-delete1 right" @click="status2 = false"></i>
-                <div class="amap-chart">
-                    <el-table
-                    v-loading="loading"
-                        :data="tableData"
-                        style="width: 100%">
-                        <el-table-column
-                            type="index"
-                            label="排名"
-                            width="50">
-                        </el-table-column>
-                        <el-table-column
-                            prop="name"
-                            label="车牌号/企业名称"
-                            width="140"
-                            >
-                        </el-table-column>
-                        <el-table-column
-                            prop="num"
-                            label="查处次数"
-                            width="100"
-                            >
-                        </el-table-column>
-                    </el-table>
-                </div>
-            </div>
-         </transition>
-    </div>
-    <div class="amap-right-position" v-show="status3">
-
-        <div class="echarts-box">
-            <em class="title left">车辆预警</em>
-            <i class="iconfont law-delete1 right" @click="status3 = false"></i>
-            <div id="echartsBox2" class="amap-chart"></div>
-        </div>
-    </div> -->
-
-
-    <!-- <div class="amap-main-content">
-
-    </div> -->
-        <!-- 标记 -->
-        <!-- <el-amap-marker v-for="(marker, index) in markers" :position="marker" :key="index"></el-amap-marker> -->
 
 </div>
 </template>
 <script>
 import Vue from "vue";
+import { mapGetters } from "vuex";
 import echarts from 'echarts';
 import 'echarts/lib/chart/graph';
 import {lawSuperviseObj,yjObj} from '@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js';
 import {getZfjgLawSupervise,getBySiteId, getById} from '@/api/lawSupervise.js';
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
-
+import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
 
@@ -477,6 +397,8 @@ export default {
     data () {
         let self = this;
         return {
+            videoDoing: null,
+            showVideo: false,
             categorySelect: -1,
             direction: 'btt',
             drawer: false,
@@ -603,6 +525,39 @@ export default {
         }
     },
     methods: {
+        updateMakePhoneStatus (code) {
+            this.videoDoing = code;
+            // this.makePhoneStatus = !this.makePhoneStatus;
+            this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
+            this.$store.commit('setDoing', code);
+            this.showVideo = true;
+        },
+        ringOff() {
+            this.videoDoing = null;
+            window.PhoneCallModule.sipHangUp();
+            this.$store.commit('setMakePhoneStatus', false);
+            this.$store.commit('setDoing', null);
+        },
+        start(e, id) {
+            let odiv = e.target;        //获取目标元素
+            //算出鼠标相对元素的位置
+            document.onmousemove = (e) => {       //鼠标按下并移动的事件
+                // "phoneBox"
+                let obj = document.getElementById(id).style;
+                obj.left = e.clientX < 325 ? '0px' : (e.clientX - 350) + 'px';
+                obj.top = e.clientY < 90 ? '0px' : (e.clientY - 110) + 'px';
+                if (e.clientY >= (document.body.clientHeight - 60)) {
+                obj.top = (document.body.clientHeight - 210) + 'px';
+                }
+                if (e.clientX >= (document.body.clientWidth - 400)) {
+                obj.left = (document.body.clientWidth - 400) + 'px';
+                }
+        };
+        document.onmouseup = (e) => {
+            document.onmousemove = null;
+            document.onmouseup = null;
+        };
+        },
         updateDrawer () {
             this.drawer = !this.drawer;
         },
@@ -710,7 +665,7 @@ export default {
                     area: '东城区',
                     current: 1,
                     key: '',
-                    size: 0,
+                    // size: 0,
                     type: item.code
                 }
             this.getZfjgLawSupervise(data);
@@ -871,7 +826,11 @@ export default {
         lawSuperviseMixins, mixinsCommon
     ],
     components: {
-        // echarts,
+    // echarts,
+        externalVideoBtns
+    },
+    computed: {
+        ...mapGetters(["makePhoneStatus", "doing"])
     }
 }
 </script>

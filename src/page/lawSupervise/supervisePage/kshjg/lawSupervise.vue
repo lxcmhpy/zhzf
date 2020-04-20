@@ -311,7 +311,6 @@
 import Vue from "vue";
 import { mapGetters } from "vuex";
 // require("@/common/js/call.js");
-import audioPhone from "../../componentCommon/audioPhone.vue";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
@@ -647,7 +646,7 @@ export default {
           area: "东城区",
           current: 1,
           key: "",
-          size: 20,
+        //   size: 20,
           type: item.code
         };
         this.allSearchList.push(data);
@@ -744,7 +743,7 @@ export default {
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {
     // echarts,
-    externalVideoBtns, audioPhone
+    externalVideoBtns
   },
    watch: {
         makePhoneStatus (val, oldVal) {

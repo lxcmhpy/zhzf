@@ -63,7 +63,6 @@ export default {
       this.$refs.upload.clearFiles()
     },
     fileChange(file) {
-      console.log(file);
       if (file.name) {
         this.evidenceForm.hasfile = true;
       }
@@ -75,6 +74,7 @@ export default {
       let _this = this
       this.$refs["evidenceForm"].validate(valid => {
         if (valid) {
+          debugger
           var fd = new FormData();
           console.log('fileName', _this.evidenceForm.evName);
           console.log('file', _this.evfile);
@@ -87,18 +87,15 @@ export default {
           fd.append("docId", _this.linkId);
           fd.append("category", '证据');
           fd.append("evName", _this.evidenceForm.evName);
-          // fd.append("evType", this.form.evType);
+          fd.append("evType", _this.evfile.type);
           fd.append("status", 0);
 
           uploadEvdence(fd).then(
             res => {
-              console.log(res);
-              debugger;
               // _this.uploadEvidence2(res.data)
               // this.visible = false;
               // this.$emit('findEvidenceEmit')
               //   this.findFile(res.data);
-              console.log("1111111", res);
               if (res.code == 200) {
                 this.$message({
                   message: "添加成功！",

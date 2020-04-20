@@ -50,6 +50,7 @@
             </div>
         </div>
     </div>
+    <span class="transferDetail">已转办</span>
     <!-- <btns></btns> -->
 </div>
 </template>

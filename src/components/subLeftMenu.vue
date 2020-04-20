@@ -73,15 +73,16 @@ import { mapGetters } from "vuex";
       }
     },
     mounted() {
+        debugger;
         this.allMenuList=this.menu;
         // debugger;
-        this.getSlideMenu(this.selectedHeadMenu); //默认加载案件办理的二级菜单
+        this.getSlideMenu(this.headActiveNav); //默认加载案件办理的二级菜单
       // console.log('selectedHeadMenu', this.selectedHeadMenu);
     },
     created() {
     },
     computed: {
-        ...mapGetters(['menu', 'activeIndexSto'])
+        ...mapGetters(['menu', 'activeIndexSto', 'headActiveNav'])
     },
     watch: {
       selectedHeadMenu: function (val, oldVal) {

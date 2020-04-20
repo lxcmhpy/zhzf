@@ -34,18 +34,19 @@ export default {
             this.handUp();
             return
         }
+        window.PhoneCallModule.sipRegister();
         if (code == '1') {
             // 语音呼叫
             setTimeout(function(){
                 window.PhoneCallModule.sipAudioCall("100006","ecds04");
 
-            },1500)
+            },3000)
         } else if(code == '2') {
             // 视频呼叫
             // window.PhoneCallModule.sipRegister();
             setTimeout(function(){
                 window.PhoneCallModule.sipVideoCall("100006","ecds04");
-            },1500)
+            },3000)
         }
         this.$emit('updateMakePhoneStatus', code)
     }
