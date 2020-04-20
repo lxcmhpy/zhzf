@@ -2,7 +2,7 @@
   <div id="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
-        <a :class="activeA[0]? 'activeA' :''" @click="jump(1)">案件情况</a>
+        <a :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv">案件情况</a>
         <a :class="activeA[1]? 'activeA' :''" @click="jump(2)">当事人</a>
         <a :class="activeA[2]? 'activeA' :''" @click="jump(3)">车辆信息</a>
         <a :class="activeA[3]? 'activeA' :''" v-if="showOverrun" @click="jump(4)">超限信息</a>
@@ -11,7 +11,7 @@
       </div>
     </div>
     <el-form :model="inforForm" :rules="rules" ref="inforForm" class="caseInfoForm" label-width="100px" :disabled="isHandleCase">
-      <div class="caseFormBac" id="link_1">
+      <div class="caseFormBac" id="link_1" ref="link_1" @mousewheel="scrool1">
         <p>案件情况</p>
         <div>
           <div class="item">
@@ -79,7 +79,7 @@
         </div>
       </div>
 
-      <div class="caseFormBac" id="link_2">
+      <div class="caseFormBac" id="link_2" ref="link_2" @mousewheel="scrool2">
         <p>当事人信息</p>
         <div>
           <div class="itemOne">
@@ -296,7 +296,7 @@
         </div>
       </div>
 
-      <div class="caseFormBac" id="link_3">
+      <div class="caseFormBac" id="link_3" ref="link_3" @mousewheel="scrool3">
         <p>车辆信息</p>
         <div>
           <div class="item">
@@ -382,7 +382,7 @@
           <el-button type="primary" size="medium" icon="el-icon-plus">添加其他</el-button>
         </div>
       </div>-->
-      <div class="caseFormBac" id="link_4" v-if="showOverrun">
+      <div class="caseFormBac" id="link_4" v-if="showOverrun" ref="link_4" @mousewheel="scrool4">
         <p>超限信息</p>
         <div>
           <div class="itemBig">
@@ -448,7 +448,7 @@
           </div>
           <div class="itemThird">
             <el-form-item label="车型">
-              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit('车型')">
+              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
                 <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="中置轴挂车列车"></el-option>
                 <el-option label="铰列车"></el-option>
@@ -585,7 +585,7 @@
           </div>
         </div>
       </div>
-      <div class="caseFormBac" id="link_5">
+      <div class="caseFormBac" id="link_5" ref="link_5" @mousewheel="scrool5">
         <p>违法事实</p>
         <div>
           <div class="itemOne">
@@ -1154,6 +1154,8 @@ export default {
           let elPageOt = this.$el.querySelector(`#link_${i}`) ? this.$el.querySelector(`#link_${i}`).offsetHeight : 0;
           numTotal += elPageOt;
         }
+        console.log('numTotal', numTotal);
+        document.getElementById("inforCollectionBox").scrollTop = numTotal;
       }
     },
     //提交信息
@@ -1433,40 +1435,6 @@ export default {
         this.inforForm.otherInfo.vehicleAxlesType = '';
         this.inforForm.otherInfo.vehiclePowerType = '';
       }
-        if (type == '车型') {
-            this.vehicleAxlesTypeList = [];
-            this.inforForm.otherInfo.vehicleAxlesType = '';
-            if (inforForm.otherInfo.vehicleType == '载货汽车') {
-                if (inforForm.otherInfo.vehicleAxleNumber == 4) {
-                    this.vehicleAxlesTypeList = [{ label: '2+2', value: '2+2' }];
-                }
-            }else if (inforForm.otherInfo.vehicleType == '中置轴挂车列车') {
-                if (inforForm.otherInfo.vehicleAxleNumber == 4) {
-                    this.vehicleAxlesTypeList = [{ label: '1+1+2', value: '1+1+2' },{ label: '1+2+1', value: '1+2+1' }];
-                }else if (inforForm.otherInfo.vehicleAxleNumber == 5) {
-                    this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' },{ label: '2+1+2', value: '2+1+2' }];
-                }else if (inforForm.otherInfo.vehicleAxleNumber == 6) {
-                    this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' },{ label: '2+2+2', value: '2+2+2' }];
-                }
-            }else if (inforForm.otherInfo.vehicleType == '铰接列车') {
-                if (inforForm.otherInfo.vehicleAxleNumber == 4) {
-                    this.vehicleAxlesTypeList = [{ label: '1+1+2', value: '1+1+2' }];
-                }else if (inforForm.otherInfo.vehicleAxleNumber == 5) {
-                    this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' },{ label: '2+1+2', value: '2+1+2' },{ label: '1+1+3', value: '1+1+3' }];
-                }else if (inforForm.otherInfo.vehicleAxleNumber == 6) {
-                    this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }];
-                }
-            }else if (inforForm.otherInfo.vehicleType == '全挂汽车列车') {
-                if (inforForm.otherInfo.vehicleAxleNumber == 4) {
-                    this.vehicleAxlesTypeList = [{ label: '1+1+1+1', value: '1+1+1+1' }];
-                }else if (inforForm.otherInfo.vehicleAxleNumber == 5) {
-                    this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' },{ label: '2+1+2', value: '2+1+2' }];
-                }else if (inforForm.otherInfo.vehicleAxleNumber == 6) {
-                    this.vehicleAxlesTypeList = [{ label: '2+2+2', value: '2+2+2' }];
-                }
-            }
-
-        }
 
       inforForm.otherInfo.weightLimit = '';
       if (inforForm.otherInfo.vehicleAxleNumber == 6) {
@@ -1474,7 +1442,7 @@ export default {
           label: '铰接列车',
           value: '铰接列车'
         }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
-        // this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }, { label: '2+2+2', value: '2+2+2' }];
+        this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }, { label: '2+2+2', value: '2+2+2' }];
         if (inforForm.otherInfo.vehiclePowerType) {
           inforForm.otherInfo.weightLimit = 46;
           if (inforForm.otherInfo.vehiclePowerType == '双轴') {
@@ -1488,10 +1456,10 @@ export default {
           label: '铰接列车',
           value: '铰接列车'
         }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
-        /*this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' }, {
+        this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' }, {
           label: '2+1+2',
           value: '2+1+2'
-        }, { label: '1+1+3', value: '1+1+3' }];*/
+        }, { label: '1+1+3', value: '1+1+3' }];
         if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
           this.inforForm.otherInfo.weightLimit = 43;
           if (inforForm.otherInfo.vehicleAxlesType == '1+1+3') {
@@ -1505,10 +1473,10 @@ export default {
           label: '铰接列车',
           value: '铰接列车'
         }, { label: '全挂汽车列车', value: '全挂汽车列车' }, { label: '载货汽车', value: '载货汽车' }]
-        /*this.vehicleAxlesTypeList = [{ label: '1+2+1', value: '1+2+1' }, {
+        this.vehicleAxlesTypeList = [{ label: '1+2+1', value: '1+2+1' }, {
           label: '1+1+2',
           value: '1+1+2'
-        }, { label: '1+1+1+1', value: '1+1+1+1' }, { label: '2+2', value: '2+2' }];*/
+        }, { label: '1+1+1+1', value: '1+1+1+1' }, { label: '2+2', value: '2+2' }];
         if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
           this.inforForm.otherInfo.weightLimit = 36;
           if (inforForm.otherInfo.vehicleType == '中置轴挂车列车') {
@@ -1733,6 +1701,42 @@ export default {
       })
       cb(a);
     },
+
+    menu() {
+      // this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
+      // console.log(this.scroll)
+      //获取节点
+      var scrollDiv = document.getElementById('scrollDiv');
+      //绑定事件
+      scrollDiv.addEventListener('scroll', function () {
+        console.log(scrollDiv.scrollTop);
+      });
+      // this.document.getElementById('scrollDiv').click()
+    },
+    handleScroll(el) {
+      this.scrollTop = this.$refs.content.scrollTop
+      console.log(this.$refs.content.scrollTop)
+    },
+    scrool1() {
+      let scrolled = this.$refs.link_1.scrollTop;
+      this.activeA = [true, false, false, false, false]
+    },
+    scrool2() {
+      let scrolled = this.$refs.link_1.scrollTop;
+      this.activeA = [false, true, false, false, false]
+    },
+    scrool3() {
+      let scrolled = this.$refs.link_1.scrollTop;
+      this.activeA = [false, false, true, false, false]
+    },
+    scrool4() {
+      let scrolled = this.$refs.link_1.scrollTop;
+      this.activeA = [false, false, false, true, false]
+    },
+    scrool5() {
+      let scrolled = this.$refs.link_1.scrollTop;
+      this.activeA = [false, false, false, false, true]
+    },
   },
   mounted() {
     // 事务中心跳转
@@ -1743,9 +1747,15 @@ export default {
       this.inforForm.caseCauseName = overWeightCaseData.caseCauseName
       this.inforForm.programType = overWeightCaseData.programType
       this.inforForm.partyType = overWeightCaseData.partyType
-      this.showOverrun=true
+      this.showOverrun = true
       return
     }
+    // 鼠标滚动
+    this.$refs.link_1.addEventListener('scroll', this.scrool1);
+    this.$refs.link_2.addEventListener('scroll', this.scrool2);
+    this.$refs.link_3.addEventListener('scroll', this.scrool3);
+    this.$refs.link_4.addEventListener('scroll', this.scrool4);
+    this.$refs.link_5.addEventListener('scroll', this.scrool5);
 
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
     console.log(someCaseInfo);
@@ -1766,10 +1776,10 @@ export default {
     this.inforForm.otherInfo.checkResult = '1'
     this.inforForm.trailerColor = '1'
 
-
-
   },
   created() {
+
+
     this.findJudgFreedomList();
     this.getTrailerType();
     // this.setLawPerson(
