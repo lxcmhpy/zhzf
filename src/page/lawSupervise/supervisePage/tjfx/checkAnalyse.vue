@@ -17,10 +17,11 @@
             </el-form-item> -->
             <!-- {{aa}},{{bb}} -->
             <el-form-item>
-              <!-- <el-date-picker :picker-options="pickerOptions" style='width:280px' v-model="timeList" unlink-panels type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期">
-              </el-date-picker> -->
+              <el-date-picker style='width:240px'
+              :picker-options="pickerOptions"
+               v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
 
-              <el-date-picker style='width:240px' :picker-options="pickerOptions" v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+              </el-date-picker>
             </el-form-item>
             <el-form-item label="时间段">
               <el-time-picker is-range v-model="form.timeArea" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围" format="HH:mm" style='width:200px'>
@@ -204,8 +205,14 @@ import { mapGetters } from "vuex";
 export default {
   inject: ["reload"],
   data() {
-    let _this = this;
+      let _this =this;
     return {
+    pickerOptions:  {
+            onPick:  ({  maxDate,  minDate  })  =>  {
+                _this.$set(_this.timeList,0,minDate);
+                _this.$set(_this.timeList,1,minDate);
+            }
+        },
       tabActiveIndex: '0',
       vehicleColorList: null,
       cxlList: null,

@@ -8,7 +8,7 @@ Vue.use(VueRouter);
 
 // 路由拦截
 // 需要鉴权
-const whiteList = ["/login", "/register", "/service", "/user", '/flowChart', '/modle', '/othermodle',]; //免登录白名单
+const whiteList = ["/login", "/register", "/service", "/user", '/flowChart', '/case_handle_modle', '/case_handle_othermodle',]; //免登录白名单
 
 // 路由配置
 const RouterConfig = {
@@ -22,7 +22,8 @@ router.beforeEach((to, from, next) => {
   if (tokenObj) {
     //判断是否登录
     if (to.path === "/login") {
-      next({name: "case_handle_home_index"});
+    //   next({name: "case_handle_home_index"});
+    this.$router.redirect("case_handle_home_index");
     } else {
       next();
     }

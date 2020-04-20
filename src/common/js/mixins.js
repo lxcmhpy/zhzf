@@ -31,7 +31,7 @@ export const mixinGetCaseApiList = {
             else{
               endTime = new Date()
             }
-            
+
             let day = (endTime - new Date(item.acceptTime)) / nd;
             day = Math.ceil(day)
             item.caseDealTime = day+'天';
@@ -221,52 +221,52 @@ export const mixinGetCaseApiList = {
       }
       switch (caseLinkId) {
         case "2c90293b6c178b55016c17c255a4000d":   //立案登记
-          data.nextLink = "establish";
+          data.nextLink = "case_handle_establish";
           data.docId = "2c9029ae654210eb0165421564970001";
           break;
         case "2c90293b6c178b55016c17c93326000f":   //调查类文书
-          data.nextLink = "caseDoc";
+          data.nextLink = "case_handle_caseDoc";
           break;
         case "2c90293b6c178b55016c17c7ae92000e":   //行政强制措施
-          data.nextLink = "adminCoerciveMeasure";
+          data.nextLink = "case_handle_adminCoerciveMeasure";
           data.docId = "4028e4ef63683cd00163684359a10001";
           break;
         case "2c9029ee6cac9281016caca7f38e0002":   //调查报告
-          data.nextLink = "caseInvestig";
+          data.nextLink = "case_handle_caseInvestig";
           data.docId = "2c9029ca5b711f61015b71391c9e2420";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204e":   //案件审核
           data.nextLink = "";
           break;
         case "2c9029ee6cac9281016caca8ea500003":   //违法行为通知
-          data.nextLink = "illegalActionForm";
+          data.nextLink = "case_handle_illegalActionForm";
           data.docId = "2c9029ca5b71686d015b719fe0900026";
           break;
         case "2c9029ee6cac9281016caca9a0000004":   //责令改正
-          data.nextLink = "forceCorrect";
+          data.nextLink = "case_handle_forceCorrect";
           data.docId = "2c9029cc6a901fbe016a911e2dae000b";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204f":   //移交移送
           data.nextLink = "";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204g":   //不予处罚
-          data.nextLink = "noPenalty";
+          data.nextLink = "case_handle_noPenalty";
           break;
         case "2c9029ac6c26fd72016c27247b290003":   //当事人权利
-          data.nextLink = "partyRights";
+          data.nextLink = "case_handle_partyRights";
           break;
         case "2c9029d56c8f7b66016c8f8043c90001":   //处罚决定
-          data.nextLink = "punishDecisionDoc";
+          data.nextLink = "case_handle_punishDecisionDoc";
           data.docId = "2c9029ca5b71686d015b71c8a0c10042";
           break;
         case "2c9029e16c753a19016c755fe1340001":   //决定执行
-          data.nextLink = "penaltyExecution";
+          data.nextLink = "case_handle_penaltyExecution";
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204h":   //强制执行
-          data.nextLink = "forceExecute";
+          data.nextLink = "case_handle_forceExecute";
           break;
         case "2c9029ee6cac9281016cacaadf990006":   //结案登记
-          data.nextLink = "finishCaseReport";
+          data.nextLink = "case_handle_finishCaseReport";
           data.docId = "2c9029d2695c03fd01695c278e7a0001";
           break;
         case "2c9029ee6cac9281016cacab478e0007":   //归档
@@ -484,7 +484,7 @@ export const mixinGetCaseApiList = {
             docDataId: (this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : ''
           }
           this.$store.dispatch("deleteTabs", this.$route.name);
-          this.$router.push({ name: 'myPDF', params: routerData })
+          this.$router.push({ name: 'case_handle_myPDF', params: routerData })
         },
         err => {
           console.log(err);
@@ -621,7 +621,7 @@ export const mixinGetCaseApiList = {
       this.$store.commit('setDocId', data.docId);
       if (data.curLinkState == "complete" ) {    //已完成文书显示pdf  审核中也显示pdf
         if (!isHuanjieDoc) {
-          this.$router.push({ name: 'myPDF', params: { docId: data2.docId, isComplete: true } })
+          this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
         } else {
           this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
         }
@@ -652,7 +652,7 @@ export const mixinGetCaseApiList = {
           return;
         }
         if(caseIsApprovaling && (data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006')){    
-          this.$router.push({ name: 'myPDF', params: { docId: data2.docId, isComplete: true } })
+          this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
         }else{
           this.searchHuanjiePdf(data2,data.linkID);
           // this.$router.push({ name: data2.nextLink })
@@ -672,18 +672,18 @@ export const mixinGetCaseApiList = {
       })
     },
     //隐藏textarea 显示span
-    replaceTextArea(){ 
+    replaceTextArea(){
       //打印时去掉下拉框的图标
       let selectObjIcon = document.getElementsByClassName('el-select__caret');
       for(let i=0;i<selectObjIcon.length;i++){
         selectObjIcon[i].style.display = 'none';
       }
-      
+
       let obj = document.getElementsByTagName('textarea');
       console.log(obj);
       console.log(obj[0]);
 
-      
+
       for(let i=0;i<obj.length;i++){
         //获取textarea的值
         let textAreaValue = obj[i].value;
@@ -693,15 +693,15 @@ export const mixinGetCaseApiList = {
         //追加span元素
         let newSpan = document.createElement("span");
         newSpan.innerHTML = textAreaValue;
-        newSpan.setAttribute("class", textAreaBoxClass); 
+        newSpan.setAttribute("class", textAreaBoxClass);
         obj[i].parentNode.style.display='none'
         objParent.appendChild(newSpan);
       }
-      
+
       // setTimeout(() => {
       //     htmlExportPDF('test_print',function(){})
       // }, 1000)
-     
+
   },
   //查询环节是否生成了pdf
   searchHuanjiePdf(data,linkID){
@@ -711,7 +711,7 @@ export const mixinGetCaseApiList = {
     }).then(res=>{
       console.log('查询环节是否生成了pdf',res);
       if(res && res.length >0){
-        this.$router.push({ name: 'myPDF', params: { docId: data.docId, caseLinktypeId: linkID } })
+        this.$router.push({ name: 'case_handle_myPDF', params: { docId: data.docId, caseLinktypeId: linkID } })
       }else{
         this.$router.push({ name: data.nextLink })
       }
@@ -720,7 +720,7 @@ export const mixinGetCaseApiList = {
   }
 
 
-    
+
 
   },
   created() {

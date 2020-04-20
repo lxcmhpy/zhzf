@@ -37,7 +37,7 @@ const route = [
         name: "home2",
         component: MainContent,
         children: [
-          {
+            {
             path: "/index",
             name: "case_handle_home_index",
             meta: {

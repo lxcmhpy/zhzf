@@ -1,16 +1,9 @@
-export default [
-  //   {
-  //   path: "/side",
-  //   name: "side",
-  //   meta: {
-  //     title: "侧边条"
-  //   },
-  //   component: () => import("@/page/caseHandle/case/side.vue")
-  // },
+import store from '@/store/index.js';
 
+export default [
   {
     path: "/deleteEvidence",
-    name: "deleteEvidence",
+    name: "case_handle_deleteEvidence",
     meta: {
       title: "解除证据登记保存决定书"
     },
@@ -18,7 +11,7 @@ export default [
   },
   {
     path: "/forceCorrect",
-    name: "forceCorrect",
+    name: "case_handle_forceCorrect",
     meta: {
       title: "责令改正违法行为通知书"
     },
@@ -26,7 +19,7 @@ export default [
   },
   {
     path: "/modle",
-    name: "modle",
+    name: "case_handle_modle",
     meta: {
       title: "标准文书模板"
     },
@@ -34,7 +27,7 @@ export default [
   },
   {
     path: "/othermodle",
-    name: "othermodle",
+    name: "case_handle_othermodle",
     meta: {
       title: "询问笔录",
       oneTab: true,
@@ -43,7 +36,7 @@ export default [
   },
   {
     path: "/finishCaseReport",
-    name: "finishCaseReport",
+    name: "case_handle_finishCaseReport",
     meta: {
       title: "结案报告",
       oneTab: true,
@@ -52,7 +45,7 @@ export default [
   },
   {
     path: "/caseInvestig",
-    name: "caseInvestig",
+    name: "case_handle_caseInvestig",
     meta: {
       title: "案件调查报告",
       oneTab: true,
@@ -61,7 +54,7 @@ export default [
   },
   {
     path: "/caseDoc",
-    name: "caseDoc",
+    name: "case_handle_caseDoc",
     meta: {
       title: "调查类文书",
       oneTab: true,
@@ -70,7 +63,7 @@ export default [
   },
   {
     path: "/obtaineEvidenceForm",
-    name: "obtaineEvidenceForm",
+    name: "case_handle_obtaineEvidenceForm",
     meta: {
       title: "抽样取样凭证",
       oneTab: true,
@@ -79,7 +72,7 @@ export default [
   },
   {
     path: "/deliveryCertificate",
-    name: "deliveryCertificate",
+    name: "case_handle_deliveryCertificate",
     meta: {
       title: "送达回证",
       oneTab: true,
@@ -88,7 +81,7 @@ export default [
   },
   {
     path: "/establish",
-    name: "establish",
+    name: "case_handle_establish",
     meta: {
       title: "立案登记表-pdf",
       oneTab: true,
@@ -97,7 +90,7 @@ export default [
   },
   {
     path: "/payStage",
-    name: "payStage",
+    name: "case_handle_payStage",
     meta: {
       title: "分期（延期）缴纳罚款通知书",
       oneTab: true,
@@ -106,7 +99,7 @@ export default [
   },
   {
     path: "/executAnnounce",
-    name: "executAnnounce",
+    name: "case_handle_executAnnounce",
     meta: {
       title: "执行公告",
       oneTab: true,
@@ -116,7 +109,7 @@ export default [
   //处罚执行
   {
     path: "/penaltyExecution",
-    name: "penaltyExecution",
+    name: "case_handle_penaltyExecution",
     meta: {
       title: "处罚执行",
       oneTab: true,
@@ -126,7 +119,7 @@ export default [
   //行政处罚决定书
   {
     path: "/adminPunishe",
-    name: "adminPunishe",
+    name: "case_handle_adminPunishe",
     meta: {
       title: "行政处罚决定书",
       oneTab: true,
@@ -136,7 +129,7 @@ export default [
   //行政强制措施决定书
   {
     path: "/adminCoerciveMeasure",
-    name: "adminCoerciveMeasure",
+    name: "case_handle_adminCoerciveMeasure",
     meta: {
       title: "行政强制措施决定书",
       oneTab: true,
@@ -146,7 +139,7 @@ export default [
   //不予处罚
   {
     path: "/noPenalty",
-    name: "noPenalty",
+    name: "case_handle_noPenalty",
     meta: {
       title: "不予处罚",
       oneTab: true,
@@ -156,7 +149,7 @@ export default [
   //当事人权利
   {
     path: "/partyRights",
-    name: "partyRights",
+    name: "case_handle_partyRights",
     meta: {
       title: "当事人权利",
       oneTab: true,
@@ -166,7 +159,7 @@ export default [
   //强制执行
   {
     path: "/forceExecute",
-    name: "forceExecute",
+    name: "case_handle_forceExecute",
     meta: {
       title: "强制执行",
       oneTab: true,
@@ -176,7 +169,7 @@ export default [
   //违法行为通知书
   {
     path: "/illegalActionForm",
-    name: "illegalActionForm",
+    name: "case_handle_illegalActionForm",
     meta: {
       title: "违法行为通知书",
       oneTab: true,
@@ -186,7 +179,7 @@ export default [
   //听证通知书(流程中)
   {
     path: "/hearingNoticePdf",
-    name: "hearingNoticePdf",
+    name: "case_handle_hearingNoticePdf",
     meta: {
       title: "听证通知书",
       oneTab: true,
@@ -196,7 +189,7 @@ export default [
   //听证笔录(流程中)
   {
     path: "/hearingRecordePdf",
-    name: "hearingRecordePdf",
+    name: "case_handle_hearingRecordePdf",
     meta: {
       title: "听证笔录",
       oneTab: true,
@@ -206,7 +199,7 @@ export default [
   //案件总览
   {
     path: "/caseInfo",
-    name: "caseInfo",
+    name: "case_handle_caseInfo",
     meta: {
       title: "案件总览",
       oneTab: true,
@@ -226,7 +219,7 @@ export default [
   //行政处罚决定书
   {
     path: "/punishDecisionDoc",
-    name: "punishDecisionDoc",
+    name: "case_handle_punishDecisionDoc",
     meta: {
       title: "行政处罚决定书-doc",
       oneTab: true,
@@ -236,7 +229,7 @@ export default [
   //勘验笔录-doc
   {
     path: "/inquestNotesDoc",
-    name: "inquestNotesDoc",
+    name: "case_handle_inquestNotesDoc",
     meta: {
       title: "勘验笔录-doc",
       oneTab: true,
@@ -246,7 +239,7 @@ export default [
   //现场笔录-doc
   {
     path: "/sceneNotesDoc",
-    name: "sceneNotesDoc",
+    name: "case_handle_sceneNotesDoc",
     meta: {
       title: "现场笔录-doc",
       oneTab: true,
@@ -255,7 +248,7 @@ export default [
   },
   {
     path: "/inforCollect",
-    name: "inforCollect",
+    name: "case_handle_inforCollect",
     meta: {
       title: "信息采集",
       oneTab: true,
@@ -264,16 +257,16 @@ export default [
   },
   {
     path: "/myPDF",
-    name: "myPDF",
+    name: "case_handle_myPDF",
     meta: {
-      title: "pdf",
+      title: "pdf" ,
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/caseDocument/myPDF.vue")
   },
   {
     path: "/viewPDF",
-    name: "viewPDF",
+    name: "case_handle_viewPDF",
     meta: {
       title: "pdf展示"
     },
@@ -282,7 +275,7 @@ export default [
   // -----------------信息查验start----------------
   {
     path: "/checkHome",
-    name: "checkHome",
+    name: "case_handle_checkHome",
     meta: {
       title: "信息查验首页"
     },
@@ -290,7 +283,7 @@ export default [
   },
   {
     path: "/transportWorker",
-    name: "transportWorker",
+    name: "case_handle_transportWorker",
     meta: {
       title: "道路运输从业人员"
     },
@@ -298,7 +291,7 @@ export default [
   },
   {
     path: "/commercialVehicle",
-    name: "commercialVehicle",
+    name: "case_handle_commercialVehicle",
     meta: {
       title: "营运车辆"
     },
@@ -306,7 +299,7 @@ export default [
   },
   {
     path: "/industry",
-    name: "industry",
+    name: "case_handle_industry",
     meta: {
       title: "经营业户"
     },
@@ -314,7 +307,7 @@ export default [
   },
   {
     path: "/vehicleLine",
-    name: "vehicleLine",
+    name: "case_handle_vehicleLine",
     meta: {
       title: "客运线路标志牌"
     },
@@ -322,7 +315,7 @@ export default [
   },
   {
     path: "/crewCertificates",
-    name: "crewCertificates",
+    name: "case_handle_crewCertificates",
     meta: {
       title: "船员适任证查验"
     },
@@ -331,7 +324,7 @@ export default [
 
   {
     path: "/shipCertificates",
-    name: "shipCertificates",
+    name: "case_handle_shipCertificates",
     meta: {
       title: "国内（国际）船舶查询"
     },
@@ -340,7 +333,7 @@ export default [
   // -----------------信息查验end----------------
   {
     path: "/archiveCover",
-    name: "archiveCover",
+    name: "case_handle_archiveCover",
     meta: {
       title: "归档"
     },
@@ -348,7 +341,7 @@ export default [
   },
   {
     path: "/archiveCatalogueDetail",
-    name: "archiveCatalogueDetail",
+    name: "case_handle_archiveCatalogueDetail",
     meta: {
       title: "卷宗目录详情"
     },
@@ -356,7 +349,7 @@ export default [
   },
   {
     path: "/addTransfer",
-    name: "addTransfer",
+    name: "case_handle_addTransfer",
     meta: {
       title: "新增移送"
     },
@@ -364,7 +357,7 @@ export default [
   },
   {
     path: "/addSelect",
-    name: "addSelect",
+    name: "case_handle_addSelect",
     meta: {
       title: "新增移送"
     },
@@ -372,7 +365,7 @@ export default [
   },
   {
     path: "/cooperateDentails",
-    name: "cooperateDentails",
+    name: "case_handle_cooperateDentails",
     meta: {
       title: "移送：案号"
     },
@@ -380,7 +373,7 @@ export default [
   },
   {
     path: "/addCopyTwo",
-    name: "addCopyTwo",
+    name: "case_handle_addCopyTwo",
     meta: {
       title: "新增抄告"
     },
@@ -388,7 +381,7 @@ export default [
   },
   {
     path: "/addCopyOne",
-    name: "addCopyOne",
+    name: "case_handle_addCopyOne",
     meta: {
       title: "新增抄告"
     },
@@ -396,7 +389,7 @@ export default [
   },
   {
     path: "/caseCopyDentails",
-    name: "caseCopyDentails",
+    name: "case_handle_caseCopyDentails",
     meta: {
       title: "抄告：案号"
     },
@@ -405,7 +398,7 @@ export default [
   // -----------------长软start----------------
   {
     path: "/evidenceListDoc",
-    name: "evidenceListDoc",
+    name: "case_handle_evidenceListDoc",
     meta: {
       title: "证据登记保存清单"
     },
@@ -413,7 +406,7 @@ export default [
   },
   {
     path: "/prolongAdminCompulsoryDoc",
-    name: "prolongAdminCompulsoryDoc",
+    name: "case_handle_prolongAdminCompulsoryDoc",
     meta: {
       title: "延长行政强制措施期限通知书"
     },
@@ -421,7 +414,7 @@ export default [
   },
   {
     path: "/removeAdminCoerciveMeasureDoc",
-    name: "removeAdminCoerciveMeasureDoc",
+    name: "case_handle_removeAdminCoerciveMeasureDoc",
     meta: {
       title: "解除行政强制措施决定书"
     },
@@ -430,7 +423,7 @@ export default [
   //解除（延长）行政强制措施
   {
     path: "/removeOrPrelong",
-    name: "removeOrPrelong",
+    name: "case_handle_removeOrPrelong",
     meta: {
       title: "解除（延长）行政强制措施决定"
     },
@@ -438,7 +431,7 @@ export default [
   },
   {
     path: "/importantCaseTeamDissDoc",
-    name: "importantCaseTeamDissDoc",
+    name: "case_handle_importantCaseTeamDissDoc",
     meta: {
       title: "重大案件集体讨论记录"
     },
@@ -446,7 +439,7 @@ export default [
   },
   {
     path: "/hearingNoticeDoc",
-    name: "hearingNoticeDoc",
+    name: "case_handle_hearingNoticeDoc",
     meta: {
       title: "听证通知书"
     },
@@ -454,7 +447,7 @@ export default [
   },
   {
     path: "/hearingRecordeDoc",
-    name: "hearingRecordeDoc",
+    name: "case_handle_hearingRecordeDoc",
     meta: {
       title: "听证笔录"
     },
@@ -462,7 +455,7 @@ export default [
   },
   {
     path: "/spotAdmPunishDecisionDoc",
-    name: "spotAdmPunishDecisionDoc",
+    name: "case_handle_spotAdmPunishDecisionDoc",
     meta: {
       title: "当场行政处罚决定书"
     },
@@ -470,7 +463,7 @@ export default [
   },
   {
     path: "/remindLetterDoc",
-    name: "remindLetterDoc",
+    name: "case_handle_remindLetterDoc",
     meta: {
       title: "催告书"
     },
@@ -478,7 +471,7 @@ export default [
   },
   {
     path: "/enforceInsteadDoc",
-    name: "enforceInsteadDoc",
+    name: "case_handle_enforceInsteadDoc",
     meta: {
       title: "代履行决定书-pdf"
     },
@@ -486,7 +479,7 @@ export default [
   },
   {
     path: "/enforceDecideDoc",
-    name: "enforceDecideDoc",
+    name: "case_handle_enforceDecideDoc",
     meta: {
       title: "行政强制执行决定书"
     },
@@ -494,7 +487,7 @@ export default [
   },
   {
     path: "/enforceDoc",
-    name: "enforceDoc",
+    name: "case_handle_enforceDoc",
     meta: {
       title: "中止（终结、恢复）行政强制执行通知书-pdf"
     },
@@ -502,7 +495,7 @@ export default [
   },
   {
     path: "/importantCaseTeamDissDoc",
-    name: "importantCaseTeamDissDoc",
+    name: "case_handle_importantCaseTeamDissDoc",
     meta: {
       title: "重大案件集体讨论记录"
     },
@@ -511,7 +504,7 @@ export default [
   //lv:start
   {
     path: "/handleRecordForm",
-    name: "handleRecordForm",
+    name: "case_handle_handleRecordForm",
     meta: {
       title: "操作记录",
       oneTab: true,
@@ -520,7 +513,7 @@ export default [
   },
   {
     path: "/evidenceForm",
-    name: "evidenceForm",
+    name: "case_handle_evidenceForm",
     meta: {
       title: "证据目录",
       oneTab: true,
@@ -529,7 +522,7 @@ export default [
   },
   {
     path: "/documentForm",
-    name: "documentForm",
+    name: "case_handle_documentForm",
     meta: {
       title: "文书列表",
       oneTab: true,
@@ -538,7 +531,7 @@ export default [
   },
   {
     path: "/deliverReceiptForm",
-    name: "deliverReceiptForm",
+    name: "case_handle_deliverReceiptForm",
     meta: {
       title: "送达回证",
       oneTab: true,
@@ -547,7 +540,7 @@ export default [
   },
   {
     path: "/testPdf",
-    name: "testPdf",
+    name: "case_handle_testPdf",
     meta: {
       title: "测试pdf",
       oneTab: true,
@@ -558,7 +551,7 @@ export default [
   //---------------长软end------------
   {
     path: "/electronicFileDetail",
-    name: "electronicFileDetail",
+    name: "case_handle_electronicFileDetail",
     meta: {
       title: "卷宗详情",
     },
@@ -566,7 +559,7 @@ export default [
   },
   {
     path: "/caseCenter-overWeightCase",
-    name: "caseCenter-overWeightCase",
+    name: "case_handle_caseCenter-overWeightCase",
     meta: {
       title: "超限案件列表",
     },
@@ -574,7 +567,7 @@ export default [
   },
   {
     path: "/caseCenter-transferAndRegisterCase",
-    name: "caseCenter-transferAndRegisterCase",
+    name: "case_handle_caseCenter-transferAndRegisterCase",
     meta: {
       title: "转立案列表",
     },
@@ -582,7 +575,7 @@ export default [
   },
   {
     path: "/caseCenter-dealNotes",
-    name: "caseCenter-dealNotes",
+    name: "case_handle_caseCenter-dealNotes",
     meta: {
       title: "处置说明组件",
     },
@@ -590,7 +583,7 @@ export default [
   },
   {
     path: "/caseCenter-dealProgress",
-    name: "caseCenter-dealProgress",
+    name: "case_handle_caseCenter-dealProgress",
     meta: {
       title: "执行情况组件",
     },
@@ -598,7 +591,7 @@ export default [
   },
   {
     path: "/caseCenter-evidencePackage",
-    name: "caseCenter-evidencePackage",
+    name: "case_handle_caseCenter-evidencePackage",
     meta: {
       title: "证据包组件",
     },
@@ -606,7 +599,7 @@ export default [
   },
   {
     path: "/caseCenter-evidenceTransfer",
-    name: "caseCenter-evidenceTransfer",
+    name: "case_handle_caseCenter-evidenceTransfer",
     meta: {
       title: "转办证据组件",
     },
@@ -614,7 +607,7 @@ export default [
   },
   {
     path: "/caseCenter-otherEnclosure",
-    name: "caseCenter-otherEnclosure",
+    name: "case_handle_caseCenter-otherEnclosure",
     meta: {
       title: "其他附件组件",
     },
@@ -622,7 +615,7 @@ export default [
   },
   {
     path: "/zdjg-keyVehicleDentails",
-    name: "zdjg-keyVehicleDentails",
+    name: "case_handle_zdjg-keyVehicleDentails",
     meta: {
       title: "其他附件组件",
     },

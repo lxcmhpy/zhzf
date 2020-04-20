@@ -25,7 +25,7 @@
               </el-date-picker>
             </el-form-item>
             <el-form-item label="关键字">
-              <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+              <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
             </el-form-item>
             <el-form-item label=" " label-width="13px">
               <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
@@ -225,6 +225,7 @@ export default {
         // checkStartTime: ''
       },
       total: 0, // 总条数
+      tabActiveValue: '待办',
       timeList: ['', ''],
       processStatus: [{
         value: '待办'
@@ -293,6 +294,7 @@ export default {
     search() {
       this.form.checkStartTime = this.timeList[0];
       this.form.checkEndTime = this.timeList[1];
+      this.form.status = this.tabActiveValue;
       let _this = this
       new Promise((resolve, reject) => {
         queryListPage(_this.form).then(
@@ -323,11 +325,21 @@ export default {
       })
     },
     reset() {
-
+      this.form.siteName = '';
+      this.form.vehicleColor = '';
+      this.form.vehicleNumber = '';
+      this.form.overload = '';
+      this.form.status = '';
+      this.timeList = ['', ''];
     },
     routerDetail(row) {
       this.$store.commit('setOffSiteManageId', row.id);
-      iLocalStroage.sets('caseCenterDentails', this.$route.path);
+      let data = {
+        id: '',
+        path: this.$route.path,
+        value: this.tabActiveValue
+      }
+      iLocalStroage.sets('caseCenterDentails', data);
       this.$router.push({
         name: 'dentails-index'
       })

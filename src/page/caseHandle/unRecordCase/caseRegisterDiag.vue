@@ -94,7 +94,7 @@ export default {
             if (element.cateName == caseForm.wayType) {
               _this.caseRegisterForm.cateId = element.cateId;
             }
-           
+
           });
           }
           _this.getCaseType();
@@ -108,7 +108,7 @@ export default {
       if(caseForm){
          this.caseRegisterForm.programType = caseForm.programType;
       }
-     
+
       this.caseRegisterForm.illageAct = data ? data.strContent : null;
     },
     //关闭弹窗的时候清除数据
@@ -211,7 +211,7 @@ export default {
           iLocalStroage.sets("someCaseInfo", someCaseInfo);
           iLocalStroage.removeItem("stageCaseId");
           _this.$router.push({
-            name: 'inforCollect',
+            name: 'case_handle_inforCollect',
           });
         }
       });

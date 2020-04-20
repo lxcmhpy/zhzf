@@ -438,7 +438,6 @@ export default {
       console.log('staff',this.docData.staff)
       this.staffList = this.docData.staff.split(',');
       this.staffIdList = this.docData.staffId.split(',');
-      console.log(iLocalStroage.gets("userInfo"))
       this.docData.staff1 = this.staffList[0];
       this.docData.staffId1= this.staffIdList[0];
       // let index=0
@@ -451,7 +450,6 @@ export default {
       //   }
       //   index++;
       // });
-      console.log('staffList', this.staffList);
 
     },
     //保存文书信息

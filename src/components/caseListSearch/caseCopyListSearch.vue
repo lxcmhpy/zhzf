@@ -105,14 +105,14 @@ export default {
     },
     newAdd() {
        this.$router.push({
-          name: 'addCopyOne',
+          name: 'case_handle_addCopyOne',
           params:{
             fromSlide: true
           }
       })
     },
     //搜索
-    searchCaseEmit() {  
+    searchCaseEmit() {
       // debugger
       console.log("shuju",this.acceptTimeArray)
       if(this.acceptTimeArray){

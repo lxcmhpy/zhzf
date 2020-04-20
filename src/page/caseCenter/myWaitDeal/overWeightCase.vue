@@ -7,7 +7,7 @@
         </ul> -->
         <!-- @tab-click="activeAndSearch" -->
         <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="search">
-          <el-tab-pane v-for="item in processStatus" :key="item.value" :name="item.value">
+          <el-tab-pane v-for="(item,index) in processStatus" :key="item.value" :name="item.value">
             <span slot="label">
               <!-- <el-badge :value="index==0?null:index"> -->
               <el-badge :value="index+1">
@@ -234,13 +234,13 @@ export default {
       timeList: ['', ''],
       processStatus: [{
         value: '待办'
-      },  {
+      }, {
         value: '在办'
-      },  {
+      }, {
         value: '已回退'
       }, {
         value: '办结'
-      },{
+      }, {
         value: '机构待办'
       }],
       isShow: false,
@@ -334,20 +334,32 @@ export default {
       })
     },
     reset() {
-
+      this.form.siteName= '';
+      this.form.vehicleColor= '';
+      this.form.vehicleNumber= '';
+      this.form.overload= '';
+      this.form.status= '';
+      this.timeList=['', ''];
     },
     routerDetail(row) {
       console.log(this.tabActiveValue)
       this.$store.commit('setOffSiteManageId', row.id);
-      let data={
-        id:'',
-        path:this.$route.path,
-        value:this.tabActiveValue
+      let data = {
+        id: '',
+        path: this.$route.path,
+        value: this.tabActiveValue
       }
       iLocalStroage.sets('caseCenterDentails', data);
       this.$router.push({
         name: 'dentails-index'
       })
+      let setCaseNumber = '超限案件详情';
+      this.$store.commit("setCaseNumber", setCaseNumber);
+      // let changeTabData = {
+      //         tabIndex: '',
+      //         title: '超限案件详情'
+      //       };
+      // this.$store.commit("changeOneTabName", changeTabData);
     },
     routerEvidenceDetail() {
       this.$router.push({
