@@ -479,7 +479,7 @@
           </div>
           <div class="itemThird">
             <el-form-item label="车型">
-              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
+              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit('车型')">
                 <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="中置轴挂车列车"></el-option>
                 <el-option label="铰列车"></el-option>
@@ -814,11 +814,11 @@ export default {
         weightLimit: '',
         overWeight: '',
         routeId:'',
-        
+
         direction:'',
-        
+
         location:'',
-        
+
         kilometre:'',
         metre:''
       },
@@ -971,7 +971,7 @@ export default {
       autoSava: true, //自动暂存
       allTrailerTypeType: [], //挂车类型,
       //案发地点标志
-      afddFlag:false 
+      afddFlag:false
 
     };
   },
@@ -1479,14 +1479,48 @@ export default {
         this.inforForm.otherInfo.vehicleAxlesType = '';
         this.inforForm.otherInfo.vehiclePowerType = '';
       }
+        if (type == '车型') {
+            this.vehicleAxlesTypeList = [];
+            this.inforForm.otherInfo.vehicleAxlesType = '';
+            if (inforForm.otherInfo.vehicleType == '载货汽车') {
+                if (inforForm.otherInfo.vehicleAxleNumber == 4) {
+                    this.vehicleAxlesTypeList = [{ label: '2+2', value: '2+2' }];
+                }
+            }else if (inforForm.otherInfo.vehicleType == '中置轴挂车列车') {
+                if (inforForm.otherInfo.vehicleAxleNumber == 4) {
+                    this.vehicleAxlesTypeList = [{ label: '1+1+2', value: '1+1+2' },{ label: '1+2+1', value: '1+2+1' }];
+                }else if (inforForm.otherInfo.vehicleAxleNumber == 5) {
+                    this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' },{ label: '2+1+2', value: '2+1+2' }];
+                }else if (inforForm.otherInfo.vehicleAxleNumber == 6) {
+                    this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' },{ label: '2+2+2', value: '2+2+2' }];
+                }
+            }else if (inforForm.otherInfo.vehicleType == '铰接列车') {
+                if (inforForm.otherInfo.vehicleAxleNumber == 4) {
+                    this.vehicleAxlesTypeList = [{ label: '1+1+2', value: '1+1+2' }];
+                }else if (inforForm.otherInfo.vehicleAxleNumber == 5) {
+                    this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' },{ label: '2+1+2', value: '2+1+2' },{ label: '1+1+3', value: '1+1+3' }];
+                }else if (inforForm.otherInfo.vehicleAxleNumber == 6) {
+                    this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }];
+                }
+            }else if (inforForm.otherInfo.vehicleType == '全挂汽车列车') {
+                if (inforForm.otherInfo.vehicleAxleNumber == 4) {
+                    this.vehicleAxlesTypeList = [{ label: '1+1+1+1', value: '1+1+1+1' }];
+                }else if (inforForm.otherInfo.vehicleAxleNumber == 5) {
+                    this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' },{ label: '2+1+2', value: '2+1+2' }];
+                }else if (inforForm.otherInfo.vehicleAxleNumber == 6) {
+                    this.vehicleAxlesTypeList = [{ label: '2+2+2', value: '2+2+2' }];
+                }
+            }
 
-      inforForm.otherInfo.weightLimit = '';
+        }
+
+
+        inforForm.otherInfo.weightLimit = '';
       if (inforForm.otherInfo.vehicleAxleNumber == 6) {
         this.vehicleTypeList = [{ label: '中置轴挂车列车', value: '中置轴挂车列车' }, {
           label: '铰接列车',
           value: '铰接列车'
         }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
-        this.vehicleAxlesTypeList = [{ label: '1+2+3', value: '1+2+3' }, { label: '2+2+2', value: '2+2+2' }];
         if (inforForm.otherInfo.vehiclePowerType) {
           inforForm.otherInfo.weightLimit = 46;
           if (inforForm.otherInfo.vehiclePowerType == '双轴') {
@@ -1500,10 +1534,6 @@ export default {
           label: '铰接列车',
           value: '铰接列车'
         }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
-        this.vehicleAxlesTypeList = [{ label: '1+2+2', value: '1+2+2' }, {
-          label: '2+1+2',
-          value: '2+1+2'
-        }, { label: '1+1+3', value: '1+1+3' }];
         if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
           this.inforForm.otherInfo.weightLimit = 43;
           if (inforForm.otherInfo.vehicleAxlesType == '1+1+3') {
@@ -1517,10 +1547,6 @@ export default {
           label: '铰接列车',
           value: '铰接列车'
         }, { label: '全挂汽车列车', value: '全挂汽车列车' }, { label: '载货汽车', value: '载货汽车' }]
-        this.vehicleAxlesTypeList = [{ label: '1+2+1', value: '1+2+1' }, {
-          label: '1+1+2',
-          value: '1+1+2'
-        }, { label: '1+1+1+1', value: '1+1+1+1' }, { label: '2+2', value: '2+2' }];
         if (inforForm.otherInfo.vehicleAxleNumber && inforForm.otherInfo.vehicleType && inforForm.otherInfo.vehicleAxlesType) {
           this.inforForm.otherInfo.weightLimit = 36;
           if (inforForm.otherInfo.vehicleType == '中置轴挂车列车') {
@@ -1757,7 +1783,7 @@ export default {
         }
       );
     },
-   
+
    //案发地点-位置
    getLocationList() {
       this.$store.dispatch("getDictListDetail", "a648aef61fdc2e8d578272c4f16d0c4f").then(
@@ -1780,9 +1806,9 @@ export default {
           },
           err => {
             console.log(err);
-          })     
+          })
     },
-    
+
     // 锚点回显-start
     scrool1() {
       let scrolled = this.$refs.link_1.scrollTop;
