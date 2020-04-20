@@ -26,14 +26,16 @@ import { mapGetters } from "vuex";
     },
     methods: {
       handleSelect(key, keyPath) {
+          debugger;
         let keyStr = key.split(this.reg);
         this.$store.commit("SET_ACTIVE_INDEX_STO", keyStr[2]);
+        this.$store.commit("setHeadActiveNav", keyStr[2]);
         //将当前选中的一级菜单名传到父组件
         this.$emit("selectHeadMenu", keyStr[2]);
-        this.$store.commit("setHeadActiveNav", keyStr[2]);
         //删除之前的tab页签
         // this.$store.dispatch("deleteAllTabs");
         if (keyStr[2] && keyStr[2] !== 'null') {
+            // debugger;
             this.$router.push({ name: keyStr[2] });
         }
       }
@@ -44,7 +46,7 @@ import { mapGetters } from "vuex";
         },
     mounted () {
         this.headMenuList = this.menu;
-        this.$store.commit("setHeadActiveNav", this.headActiveNav);
+        // this.$store.commit("setHeadActiveNav", this.headActiveNav);
     },
   };
 </script>

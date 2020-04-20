@@ -321,6 +321,16 @@
     .el-input__inner {
       border-radius: 0;
     }
+    .el-date-editor {
+        height: 32px;
+        vertical-align: middle;
+        .el-range__icon {
+            line-height: 25px;
+        }
+        .el-range-separator {
+            line-height:23px;
+        }
+    }
   }
 
   /* 左侧弹出框  */

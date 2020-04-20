@@ -37,7 +37,7 @@
                 <el-input :disabled=" caseData.organType ? false : true " v-model="caseData.organMb"
                           v-if="caseData.organType!='执法机构'"></el-input>
                 <div v-if="caseData.organType=='执法机构'" @click="visibleOrgan = true">
-                  <el-input disabled v-model="caseData.organMb"
+                  <el-input disabled v-model="caseData.organMb" @input='changeInput'
                             placeholder="选择目标机构"
                             style="cursor: pointer!important;" class="pointer"></el-input>
                 </div>
@@ -108,12 +108,12 @@
             <el-row :gutter="20">
               <el-col :span="3">
                 <el-form-item>
-                  <el-radio v-model="caseData.copyReason" label="其他原因" @change="changeReason"></el-radio>
+                  <el-radio v-model="caseData.copyReason" label="其他原因" @change="changeReason" ></el-radio>
                 </el-form-item>
               </el-col>
               <el-col :span="19">
                 <el-form-item :prop="caseData.copyReason == '其他原因' ? 'otherReason' :''">
-                  <el-input v-model="caseData.otherReason"
+                  <el-input v-model="caseData.otherReason" @input='changeInput'
                             :disabled="caseData.copyReason == '其他原因' ? false :true"></el-input>
                 </el-form-item>
               </el-col>
@@ -532,6 +532,9 @@
         console.log('reson')
         this.caseData.otherReason = "";
       },
+      changeInput(){
+        this.$forceUpdate()
+      }
     },
     created() {
       this.findFileList();

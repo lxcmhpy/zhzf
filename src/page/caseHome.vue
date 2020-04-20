@@ -161,7 +161,7 @@
         </div>
       </div>
 
-      <div class="shadow case_home_bottom"  style="overflow:hidden">
+      <div class="shadow case_home_bottom" style="overflow:hidden">
         <el-form ref="form" :model="caseForm" label-width="80px">
           <div class="casehome_topic">立案登记
             <div style="float:right;height:20px" class="programType">
@@ -173,9 +173,9 @@
           </div>
 
           <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back" @change="changeCommonOptions" style="width:100%">
-          <span class='el-radio-button__inner' style="float: right;margin-right: 4px;" @click="moreBtn=!moreBtn">
-            <i v-bind:class="moreBtn?'el-icon-arrow-down':'el-icon-arrow-up'"></i>
-          </span>
+            <span class='el-radio-button__inner' style="float: right;margin-right: 4px;" @click="moreBtn=!moreBtn">
+              <i v-bind:class="moreBtn?'el-icon-arrow-down':'el-icon-arrow-up'"></i>
+            </span>
             <el-radio-button label="水路运政" style="border-left: 1px solid #DCDFE6;"></el-radio-button>
             <el-radio-button label="公路路政"></el-radio-button>
             <el-radio-button label="道路运政"></el-radio-button>
@@ -183,7 +183,7 @@
             <span v-if="moreBtn">
               <el-radio-button label="航道行政"></el-radio-button>
               <el-radio-button label="海事行政"></el-radio-button>
-              <el-radio-button label="工程质量监督"  class="width136px"></el-radio-button>
+              <el-radio-button label="工程质量监督" class="width136px"></el-radio-button>
             </span>
 
           </el-radio-group>
@@ -392,6 +392,7 @@ export default {
         {
           value: '6',
           label: '工程质量监督',
+          cateId: "1002000600000000",
           children: []
         },
       ],
@@ -405,7 +406,6 @@ export default {
   },
   methods: {
     handleClick(tab) {
-      console.log(tab.index);
       let searchData = {
         flag: tab.index == 3 ? 4 : tab.index
       }
@@ -422,10 +422,8 @@ export default {
       if (tab.index == 3) {
         this.moreFlag = 'approveIng';
       }
-      console.log('点击', this.tableData)
     },
     clickCase(row) {
-      console.log(this.moreFlag)
       if (this.moreFlag === 'unRecordCase') {
         if (row.caseStatus === '已移送') {
           let message = '该案件正在移送中，移送完成后才可与继续办理'
@@ -469,7 +467,6 @@ export default {
     },
     //获取机构下数据
     getCaseList2(searchData) {
-      console.log('searchData', searchData)
       let data = searchData;
       data.flag = searchData.flag;
       data.userId = iLocalStroage.gets("userInfo").id;
@@ -482,7 +479,6 @@ export default {
         element.caseDealTime = endTime - new Date(element.acceptTime);
         let day = element.caseDealTime / nd;
         day = Math.floor(day)
-        console.log(day, '天', endTime, element.acceptTime, element.caseDealTime)
       });
     },
     // 信息查验
@@ -500,23 +496,17 @@ export default {
     },
     // 立案登记
     caseRecord(data) {
-      console.log(data)
       this.$refs.caseRegisterDiagRef.showModal(data, this.caseForm);
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     // 查看更多违法行为
     caseRecordMore() {
-      console.log("数据",this.caseForm)
       let cate = '';
-      if (this.caseForm.wayType == '水路运政') {
-        cate = 1002000300000000;
-      }
-      if (this.caseForm.wayType == '公路路政') {
-        cate = 1002000100000000;
-      }
-      if (this.caseForm.wayType == '道路运政') {
-        cate = 1002000200000000
-      }
+      this.options.forEach(element => {
+        if (this.caseForm.wayType == element.label) {
+          cate = element.cateId
+        }
+      });
       let lawCate = {
         cateId: cate,
         cateName: this.caseForm.wayType,
@@ -541,20 +531,14 @@ export default {
         hyTypeId: this.caseForm.commenCase,
         // strNumber: this.caseForm.wayType,
       }
-      if (this.caseForm.wayType == '水路运政') {
-        data.categoryId = 1002000300000000
-      }
-      if (this.caseForm.wayType == '公路路政') {
-        data.categoryId = 1002000100000000
-      }
-      if (this.caseForm.wayType == '道路运政') {
-        data.categoryId = 1002000200000000
-      }
+      this.options.forEach(element => {
+        if (this.caseForm.wayType == element.label) {
+          data.categoryId = element.cateId
+        }
+      });
       this.$store.dispatch("getIllegaAct", data).then(
         res => {
-          console.log('getIllegaAct', res)
           this.caseList = res.data.records
-          console.log('caseList', this.caseList)
         },
         err => {
           console.log(err);
@@ -567,7 +551,6 @@ export default {
       this.caseForm.commenCase = ''
       console.log(this.caseForm.wayType)
       this.options.forEach(element => {
-        console.log(element.label)
         if (this.caseForm.wayType == element.label) {
           this.commonOptions = element.children
           console.log('this.commonOptions', this.commonOptions)
@@ -577,7 +560,7 @@ export default {
     },
     //设置违法行为
     toCaseRegister(val) {
-       this.caseRecord(val,this.caseForm)
+      this.caseRecord(val, this.caseForm)
     },
     // 获取带办理条数
     getTotal(flag) {
@@ -614,7 +597,6 @@ export default {
       this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
           _this.lawCateList = res.data;
-          console.log('列表121', _this.lawCateList)
         },
         err => {
           console.log(err);
@@ -633,7 +615,6 @@ export default {
       if (isApprovalPeople) return;
     })
     if (isApprovalPeople) {
-      console.log('yes')
       this.activeName = 'fourth';
       let searchData = {
         flag: 4
@@ -652,7 +633,6 @@ export default {
     this.getTotal('1');
     this.getTotal('2');
     this.getTotal('4');
-    console.log('userinfo', iLocalStroage.gets("userInfo").roles[0].name)
 
     this.changeCommonOptions()
     //获取业务领域
