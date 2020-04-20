@@ -23,4 +23,5 @@ export const SET_APIHISTORYLIST = "SET_APIHISTORYLIST";
 
 export const SET_LISTPAGE = "SET_LISTPAGE";
 export const SET_ACTIVE_INDEX_STO = "SET_ACTIVE_INDEX_STO";
+export const set_Head_Active_Nav = 'set_Head_Active_Nav';
 

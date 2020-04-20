@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       imgList: [{
-          id:'1',  
+          id:'1',
           url:'@/../static/images/img/cluesReview/pic1.jpg',
           name:'上传文件的名称',
       }
@@ -46,6 +46,4 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-@import "@/assets/css/cluesReview.scss";
-</style>
+<style lang="scss" src="@/assets/css/cluesReview.scss"></style>

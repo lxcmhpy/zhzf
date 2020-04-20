@@ -214,13 +214,6 @@ util.timestampToDay2 = function(val) {
 
 
 
-
-
-
-
-
-
-
 // 首字母大写  处理字符串    用法：$util.uppercase(name)
 util.uppercase = function(str) {
   var reg = new RegExp(

@@ -17,7 +17,7 @@
         <p>
           <span>
             <el-form-item prop="caseName" class="width120">
-              <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength' 
+              <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength'
               v-bind:class="{ over_flow:docData.caseName && docData.caseName.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
               placeholder="\"></el-input>
@@ -40,7 +40,7 @@
           <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">1.现因
           <span>
             <el-form-item :prop="disabledOne ? 'placeholder':'stopReason'" class="width120">
-              <el-input type="textarea" v-model="docData.stopReason"  
+              <el-input type="textarea" v-model="docData.stopReason"
               v-bind:class="{ over_flow:docData.stopReason.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
               v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="\"></el-input>
@@ -58,7 +58,7 @@
           <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">2.现因
           <span>
             <el-form-item :prop="disabledTwo ? 'placeholder':'endReason'" class="width120">
-              <el-input type="textarea" v-model="docData.endReason" v-bind:disabled="disabledTwo" 
+              <el-input type="textarea" v-model="docData.endReason" v-bind:disabled="disabledTwo"
               v-bind:class="{ over_flow:docData.endReason.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
               :maxLength='maxLength' placeholder="\"></el-input>
@@ -69,7 +69,7 @@
           <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">3.你(单位)
           <span>
             <el-form-item prop="caseName2" class="width120">
-              <el-input  type="textarea" v-model="docData.caseName" 
+              <el-input  type="textarea" v-model="docData.caseName"
               v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
               v-bind:disabled="disabledThree" :maxLength='maxLength' placeholder="\"></el-input>
@@ -77,7 +77,7 @@
           </span>一案，本机关于
           <span>
             <el-form-item :prop="disabledThree?'placeholder':'serviceTime'" class="pdf_datapick">
-              <el-date-picker v-model="docData.serviceTime" 
+              <el-date-picker v-model="docData.serviceTime"
               v-bind:disabled="disabledThree" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
@@ -230,7 +230,7 @@ export default {
   },
 
    methods: {
-   
+
     //根据案件ID和文书Id获取数据
      getDocDataByCaseIdAndDocId() {
        this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -311,11 +311,11 @@ export default {
     },
      clearData() {
       this.docData.decisionTime = '';
-      
+
     }
   },
   mounted() {
-   
+
     this.caseDocDataForm.caseBasicinfoId = this.caseId;
     let data = {
       caseId: this.caseId,
@@ -362,7 +362,7 @@ export default {
     //       this.checknames.push("4")
     //       this.caseDocDataForm.note = "恢复行政强制执行通知书";
 
-    //     }     
+    //     }
     // }
     // this.click()
 
@@ -380,7 +380,7 @@ export default {
         this.checknames.push("4")
       this.caseDocDataForm.note = "恢复行政强制执行通知书";
     }
-      
+
 
 
     this.click()

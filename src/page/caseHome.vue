@@ -112,7 +112,7 @@
     <div class="float_left width356">
       <div class="shadow case_home_top">
         <div class="casehome_topic">信息查验
-          <span @click="infoCheck('checkHome')">更多</span>
+          <span @click="infoCheck('case_handle_checkHome')">更多</span>
         </div>
         <div class="icon_content">
           <ul>
@@ -120,7 +120,7 @@
               <img :src="'./static/images/img/icon_lit_yyunc.png'">
               <span>营运车辆</span>
             </li>
-            <li class="imgbox" @click="infoCheck('industry')">
+            <li class="imgbox" @click="infoCheck('case_handle_industry')">
               <img :src="'./static/images/img/icon_lit_jyyehu.png'">
               <span>经营业户</span>
             </li>

@@ -59,9 +59,40 @@
           </div>
         </div>
         <div>
-          <div class="itemOne">
+          <div class="itemOne" v-if="!afddFlag">
             <el-form-item label="案发地点">
               <el-input v-model="inforForm.afdd"></el-input>
+            </el-form-item>
+          </div>
+          <div class="itemFive">
+            <el-form-item v-if="afddFlag" label="案发地点">
+              <el-select v-model="inforForm.routeId" placeholder="公路路线">
+                <el-option v-for="item in routeList" :key="item" :label="item" :value="item" ></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div class="itemFive">
+            <el-form-item v-if="afddFlag" label-width="20px">
+              <el-select v-model="inforForm.direction" placeholder="方向">
+                <el-option v-for="item in directionList" :key="item.name" :label="item.label" :value="item.name" ></el-option>
+              </el-select>
+            </el-form-item>
+            </div>
+          <div class="itemFive">
+            <el-form-item v-if="afddFlag" label-width="20px">
+              <el-select v-model="inforForm.location" placeholder="位置">
+                <el-option v-for="item in locationList" :key="item.name" :label="item.label" :value="item.name" ></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div class="itemFive">
+            <el-form-item v-if="afddFlag" label="K">
+              <el-input v-model="inforForm.kilometre" placeholder="公里数"></el-input>
+            </el-form-item>
+          </div>
+          <div class="itemFive">
+            <el-form-item v-if="afddFlag" label-width="20px">
+              <el-input v-model="inforForm.metre" placeholder="米数"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -684,7 +715,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validateIDNumber, validateAge, validateZIP, validatePhone } from '@/common/js/validator'
 import {
-  getDictListDetailByNameApi, findHistoryBySignApi
+  getDictListDetailByNameApi, findHistoryBySignApi,findRouteManageByOrganIdApi
 } from "@/api/system";
 
 
@@ -782,7 +813,18 @@ export default {
         },
         weightLimit: '',
         overWeight: '',
+        routeId:'',
+        
+        direction:'',
+        
+        location:'',
+        
+        kilometre:'',
+        metre:''
       },
+      routeList:[],
+      directionList:[],
+      locationList:[],
       rules: {
         caseSource: [{ required: true, message: "请选择", trigger: "change" }],
         caseSourceText: [{ required: true, validator: validatecaseSourceText, trigger: "change" }],
@@ -927,7 +969,9 @@ export default {
       disableBtn: false, //提交暂存按钮的禁用
       activeA: [true, false, false, false, false],
       autoSava: true, //自动暂存
-      allTrailerTypeType: [], //挂车类型
+      allTrailerTypeType: [], //挂车类型,
+      //案发地点标志
+      afddFlag:false 
 
     };
   },
@@ -1274,74 +1318,8 @@ export default {
               type: "success",
               message: "暂存成功!"
             });
-            // _this.$store.dispatch("deleteTabs", _this.$route.name);
             _this.$store.commit("setCaseId", res.data.id);
-
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      // 超限
-      _this.inforForm.otherInfo = JSON.stringify(
-        _this.inforForm.otherInfo
-      );
-      console.log(_this.inforForm)
-      _this.inforForm.state = state;
-      _this.inforForm.caseStatus = '未立案';
-      _this.$store
-        .dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm)
-        .then(
-          res => {
-            console.log(res);
-            _this.$message({
-              type: "success",
-              message: "提交成功!"
-            });
-            _this.$store.dispatch("deleteTabs", _this.$route.name);
-            _this.$store.commit("setCaseId", res.data.id);
-            iLocalStroage.removeItem("stageCaseId");
             this.autoSava = false;
-            _this.$router.replace({
-              name: "establish"
-            });
-          },
-          err => {
-            console.log(err);
-          }
-        );
-    },
-    //查询执法人员
-    getAllUserList(list) {
-      console.log("list", list);
-      this.allUserList = list;
-      setTimeout(() => {
-      }, 100);
-    },
-    stageInfo(state) {
-      this.inforForm.agentPartyEcertId = JSON.stringify(
-        this.driverOrAgentInfoList
-      );
-      // 超限
-      this.inforForm.otherInfo = JSON.stringify(
-        this.inforForm.otherInfo
-      );
-      console.log(this.inforForm)
-      this.inforForm.state = state;
-      this.inforForm.caseStatus = '未立案';
-      let _this = this
-      this.$store
-        .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
-        .then(
-          res => {
-            console.log(res);
-            _this.$message({
-              type: "success",
-              message: "暂存成功!"
-            });
-            // _this.$store.dispatch("deleteTabs", _this.$route.name);
-            _this.$store.commit("setCaseId", res.data.id);
-
           },
           err => {
             console.log(err);
@@ -1701,6 +1679,44 @@ export default {
       })
       cb(a);
     },
+    //案发地点-方向
+    getDirectionList() {
+      this.$store.dispatch("getDictListDetail", "004cec030c349c3fcd119f3c2eee948f").then(
+        res => {
+          console.log("字典值列表", res);
+          this.directionList = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+   
+   //案发地点-位置
+   getLocationList() {
+      this.$store.dispatch("getDictListDetail", "a648aef61fdc2e8d578272c4f16d0c4f").then(
+        res => {
+          console.log("字典值列表", res);
+          this.locationList = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    //查找路线
+    findRouteManageByOrganId(){
+      let data = { organId: iLocalStroage.gets("userInfo").organId };
+      findRouteManageByOrganIdApi(data).then(
+          res => {
+          console.log("路线", res);
+          this.routeList = res.data;
+          },
+          err => {
+            console.log(err);
+          })     
+    },
+    
     // 锚点回显-start
     scrool1() {
       let scrolled = this.$refs.link_1.scrollTop;
@@ -1753,6 +1769,12 @@ export default {
     this.inforForm.caseType = someCaseInfo.caseType;
     this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
     this.inforForm.zfmlId = someCaseInfo.cateId;
+    if(this.inforForm.zfmlId=="1002000100000000"){
+      this.afddFlag = true;
+    }else{
+      this.afddFlag = false;
+    }
+
     this.inforForm.zfml = someCaseInfo.cateName;
     console.log("标志", someCaseInfo.illageAct)
     this.showOverrun =
@@ -1778,10 +1800,11 @@ export default {
 
   },
   created() {
-
-
+    this.getDirectionList();
+    this.getLocationList();
     this.findJudgFreedomList();
     this.getTrailerType();
+    this.findRouteManageByOrganId();
     // this.setLawPerson(
     //   [iLocalStroage.gets('userInfo').username]
     // )

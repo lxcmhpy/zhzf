@@ -108,7 +108,7 @@ export default {
       let _this = this
       getDeliverReceiptByCaseIdApi(data).then(
         res => {
-           
+
           console.log(res);
           _this.caseList = res.data;
         },
@@ -130,7 +130,7 @@ export default {
         findByCaseIdAndDocIdApi(data).then(res=>{
             debugger
             _that.mlList = _that.host + res.data[0].storageId;
-                
+
         },err=>{
             console.log(err);
         })
@@ -139,9 +139,9 @@ export default {
     },
     //显示封面
     showCover(){
-      if(this.$route.name!='archiveCover'){
+      if(this.$route.name!='case_handle_archiveCover'){
         let item={name:'cover'}
-        this.$router.push({name:'archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
+        this.$router.push({name:'case_handle_archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
         return;
       }
       this.$emit('showCoverEmit')
