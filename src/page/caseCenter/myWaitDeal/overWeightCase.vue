@@ -21,7 +21,7 @@
         <div class="handlePart caseHandleSearchPart">
           <el-form :inline="true" :model="form" label-width="80px" ref="form">
             <el-form-item label="车牌号">
-              <el-select v-model="form.vehicleColor" class="w-80" placeholder="请选择">
+              <el-select v-model="form.vehicleColor"  placeholder="请选择">
                 <el-option v-for="item in vehicleColorList" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
