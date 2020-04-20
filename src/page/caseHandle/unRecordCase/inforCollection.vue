@@ -2,7 +2,7 @@
   <div id="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
-        <a :class="activeA[0]? 'activeA' :''" @click="jump(1)">案件情况</a>
+        <a :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv">案件情况</a>
         <a :class="activeA[1]? 'activeA' :''" @click="jump(2)">当事人</a>
         <a :class="activeA[2]? 'activeA' :''" @click="jump(3)">车辆信息</a>
         <a :class="activeA[3]? 'activeA' :''" v-if="showOverrun" @click="jump(4)">超限信息</a>
@@ -11,7 +11,7 @@
       </div>
     </div>
     <el-form :model="inforForm" :rules="rules" ref="inforForm" class="caseInfoForm" label-width="100px" :disabled="isHandleCase">
-      <div class="caseFormBac" id="link_1">
+      <div class="caseFormBac" id="link_1" ref="link_1" @mousewheel="scrool1">
         <p>案件情况</p>
         <div>
           <div class="item">
@@ -79,7 +79,7 @@
         </div>
       </div>
 
-      <div class="caseFormBac" id="link_2">
+      <div class="caseFormBac" id="link_2" ref="link_2" @mousewheel="scrool2">
         <p>当事人信息</p>
         <div>
           <div class="itemOne">
@@ -296,7 +296,7 @@
         </div>
       </div>
 
-      <div class="caseFormBac" id="link_3">
+      <div class="caseFormBac" id="link_3" ref="link_3" @mousewheel="scrool3">
         <p>车辆信息</p>
         <div>
           <div class="item">
@@ -382,7 +382,7 @@
           <el-button type="primary" size="medium" icon="el-icon-plus">添加其他</el-button>
         </div>
       </div>-->
-      <div class="caseFormBac" id="link_4" v-if="showOverrun">
+      <div class="caseFormBac" id="link_4" v-if="showOverrun" ref="link_4" @mousewheel="scrool4">
         <p>超限信息</p>
         <div>
           <div class="itemBig">
@@ -585,7 +585,7 @@
           </div>
         </div>
       </div>
-      <div class="caseFormBac" id="link_5">
+      <div class="caseFormBac" id="link_5" ref="link_5" @mousewheel="scrool5">
         <p>违法事实</p>
         <div>
           <div class="itemOne">
@@ -1154,6 +1154,8 @@ export default {
           let elPageOt = this.$el.querySelector(`#link_${i}`) ? this.$el.querySelector(`#link_${i}`).offsetHeight : 0;
           numTotal += elPageOt;
         }
+        console.log('numTotal', numTotal);
+        document.getElementById("inforCollectionBox").scrollTop = numTotal;
       }
     },
     //提交信息
@@ -1672,7 +1674,7 @@ export default {
     querySearch(queryString, cb) {
       console.log("输入搜索");
       let checkStastions = this.recentCheckStastions;
-      var results = queryString ? checkStastions.filter(this.createFilter(queryString)) : checkStastions;
+      var results = queryString ? checkStastions.filter(this.createFilter(queryString, checkStastions)) : checkStastions;
       let a = [];
       results.forEach(item => {
         a.push({ value: item.inputValue })
@@ -1682,7 +1684,7 @@ export default {
     //检测人员 可输入也可以选择
     queryCheckWorker(queryString, cb) {
       let checkWorker = this.recentCheckWorkers;
-      var results = queryString ? checkWorker.filter(this.createFilter(queryString)) : checkWorker;
+      var results = queryString ? checkWorker.filter(this.createFilter(queryString, checkWorker)) : checkWorker;
       let a = [];
       results.forEach(item => {
         a.push({ value: item.inputValue })
@@ -1692,14 +1694,42 @@ export default {
     //品牌 可输入也可以选择
     queryBrand(queryString, cb) {
       let brand = this.brandList;
-      var results = queryString ? brand.filter(this.createFilter(queryString)) : brand;
+      var results = queryString ? brand.filter(this.createFilter(queryString, brand)) : brand;
       let a = [];
       results.forEach(item => {
         a.push({ value: item.inputValue })
       })
       cb(a);
     },
+    // 锚点回显-start
+    scrool1() {
+      let scrolled = this.$refs.link_1.scrollTop;
+      this.activeA = [true, false, false, false, false]
+    },
+    scrool2() {
+      let scrolled = this.$refs.link_1.scrollTop;
+      this.activeA = [false, true, false, false, false]
+    },
+    scrool3() {
+      let scrolled = this.$refs.link_1.scrollTop;
+      this.activeA = [false, false, true, false, false]
+    },
+    scrool4() {
+      let scrolled = this.$refs.link_1.scrollTop;
+      this.activeA = [false, false, false, true, false]
+    },
+    scrool5() {
+      let scrolled = this.$refs.link_1.scrollTop;
+      this.activeA = [false, false, false, false, true]
+    },
+    // 锚点回显-end
+    createFilter(queryString, data) {
+      return (data) => {
+        return (data.inputValue.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+      };
+    },
   },
+
   mounted() {
     // 事务中心跳转
     let overWeightCaseData = iLocalStroage.gets("overWeightCaseData")
@@ -1709,9 +1739,15 @@ export default {
       this.inforForm.caseCauseName = overWeightCaseData.caseCauseName
       this.inforForm.programType = overWeightCaseData.programType
       this.inforForm.partyType = overWeightCaseData.partyType
-      this.showOverrun=true
+      this.showOverrun = true
       return
     }
+    // 鼠标滚动
+    this.$refs.link_1.addEventListener('scroll', this.scrool1);
+    this.$refs.link_2.addEventListener('scroll', this.scrool2);
+    this.$refs.link_3.addEventListener('scroll', this.scrool3);
+    this.$refs.link_4.addEventListener('scroll', this.scrool4);
+    this.$refs.link_5.addEventListener('scroll', this.scrool5);
 
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
     console.log(someCaseInfo);
@@ -1732,10 +1768,10 @@ export default {
     this.inforForm.otherInfo.checkResult = '1'
     this.inforForm.trailerColor = '1'
 
-
-
   },
   created() {
+
+
     this.findJudgFreedomList();
     this.getTrailerType();
     // this.setLawPerson(
