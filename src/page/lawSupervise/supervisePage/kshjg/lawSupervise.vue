@@ -25,7 +25,8 @@
                   <p>在线</p>
                 </div>
               </div>
-              <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+
             </div>
             <!-- 1执法机构 -->
             <div v-else-if="curWindow.category == 1">
@@ -76,7 +77,8 @@
                   <p>在线</p>
                 </div>
               </div>
-              <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -104,7 +106,8 @@
                   <p>在线</p>
                 </div>
               </div>
-              <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -167,7 +170,7 @@
                   <p>在线</p>
                 </div>
               </div>
-              <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -192,7 +195,7 @@
                   <p>在线</p>
                 </div>
               </div>
-              <externalVideoBtns @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -221,7 +224,7 @@
             location: lng = {{ lng }} lat = {{ lat }}
             </span>
         <span v-else>正在定位</span>-->
-        <!-- <externalVideoBtns style="position:absolute;z-index:300"></externalVideoBtns> -->
+        <!-- <externalVideoBtns :doing="videoDoing"  style="position:absolute;z-index:300"></externalVideoBtns> -->
       </div>
       <!-- 右侧浮动栏 -->
       <div class="amap-position" :class="'amap-' + direction + '-box'">
@@ -302,43 +305,12 @@
         </transition>
       </el-button>
     </div>
-    <transition name="el-fade-in">
-      <div v-show="makePhoneStatus">
-        <!--  -->
-        <div class="makePhoneBox" id="phoneBox">
-          <div>
-            <div class="echarts-box">
-              <i class="el-icon-close right" id="closePhone" @click="ringOff"></i>
-              <i class="el-icon-rank right" @mousedown="event=>start(event,'phoneBox')"></i>
-              <div class="videoBox" v-if="doing == 2">
-                <video class="video" width="200px" height="200px" id="video_local" autoplay="autoplay" muted></video>
-                <video class="video" width="200px" height="200px" id="video_remote" autoplay="autoplay"></Video>
-              </div>
-            </div>
-            <div class="phoneBtns">
-              <span @click="ringOff">
-                <img :src="'./static/images/img/lawSupervise/ring_off.png'">
-                <br> <span style="color:white;line-height: 40px;">取消</span>
-              </span>
-              <!-- <img :src="'./static/images/img/lawSupervise/ring_off.png'" v-if="doing" @click="ringOff"> -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </transition>
-    <a id="getPhone" @click="makePhoneStatus=!makePhoneStatus"></a>
-    <div v-show="showVideo">
-      <audio id="audio_remote" ref="audio_remote" autoplay="autoplay"> </audio>
-      <audio id="ringtone" loop ref="ringtone" :src="require('../../../../../static/sounds/ringtone.wav')"> </audio>
-      <audio id="ringbacktone" ref="ringbacktone" loop :src="require('../../../../../static/sounds/ringbacktone.wav')"> </audio>
-      <audio id="dtmfTone" ref="dtmfTone" :src="require('../../../../../static/sounds/dtmf.wav')"> </audio>
-
-    </div>
   </div>
 </template>
 <script>
 import Vue from "vue";
-require("@/common/js/call.js");
+import { mapGetters } from "vuex";
+// require("@/common/js/call.js");
 import audioPhone from "../../componentCommon/audioPhone.vue";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";
@@ -379,14 +351,8 @@ export default {
   data() {
     let self = this;
     return {
-      // audioPosition: {
-      //     dtmfTone: './static/assets/sounds/dtmf.wav',
-      //     ringbacktone: './static/sounds/ringbacktone.wav',
-      //     ringtone: './static/sounds/ringtone.wav'
-      // },
-      doing: null,
+      videoDoing: null,
       showVideo: false,
-      makePhoneStatus: false,
       show: true,
       categorySelect: -1,
       direction: "rtl",
@@ -520,15 +486,18 @@ export default {
     };
   },
   methods: {
-    updateMakePhoneStatus(code) {
-      this.doing = code;
-      this.makePhoneStatus = !this.makePhoneStatus;
-      this.showVideo = true;
+    updateMakePhoneStatus (code) {
+        this.videoDoing = code;
+        // this.makePhoneStatus = !this.makePhoneStatus;
+        this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
+        this.$store.commit('setDoing', code);
+        this.showVideo = true;
     },
     ringOff() {
-      this.doing = null;
+      this.videoDoing = null;
       window.PhoneCallModule.sipHangUp();
-      this.makePhoneStatus = false;
+      this.$store.commit('setMakePhoneStatus', false);
+      this.$store.commit('setDoing', null);
     },
     start(e, id) {
       let odiv = e.target;        //获取目标元素
@@ -770,24 +739,21 @@ export default {
     }
   },
   mounted() {
-    //   debugger;
-    // window.PhoneCallModule.sipRegister();
-    // let _this = this;
-    // this.$nextTick(() => {
-    //     _this.$refs.audio_remote.load();
-    //     _this.$refs.dtmfTone.load();
-    //     _this.$refs.ringbacktone.load();
-    //     _this.$refs.ringtone.load();
-    // })
-    // window.PhoneCallModule.onCallStateChanged = function onCallStateChanged(e){
-    //     // alert(e.type)
-    // }
+      window.PhoneCallModule.sipRegister();
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {
     // echarts,
     externalVideoBtns, audioPhone
-  }
+  },
+   watch: {
+        makePhoneStatus (val, oldVal) {
+            this.videoDoing = null;
+        }
+    },
+    computed: {
+        ...mapGetters(["makePhoneStatus", "doing"])
+    }
 };
 </script>
 

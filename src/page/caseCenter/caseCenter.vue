@@ -1,5 +1,6 @@
 <template>
     <div>
-        事务中心首页-待定
+        <img :src="'./static/images/img/cluesReview/swzx.jpg'" alt=""
+        style="width:100%;height:100%">
     </div>
 </template>

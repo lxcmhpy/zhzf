@@ -55,7 +55,7 @@
       </el-button>
       <el-button type="primary" @click="approvalBtn" v-if="formOrDocData.showBtn[7]">
         <i class="iconfont law-edit"></i>
-        <br />审批 
+        <br />审批
       </el-button>
       <el-button type="primary" @click="backHuanjieBtn" v-if="formOrDocData.showBtn[9]">
         <i class="iconfont law-back"></i>
@@ -112,7 +112,7 @@ export default {
       // //当前环节为文书时
       // if(this.formOrDocData.isHuanjie){
       //   this.com_submitCaseForm(handleType, this.formOrDocData.formRef, this.formOrDocData.nextShowPdf);
-      // }else{ 
+      // }else{
       //   //文书保存
       //   this.com_addDocData(handleType, this.formOrDocData.formRef);
       // }
@@ -142,9 +142,9 @@ export default {
     //       _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
     //       _this.$router.push({
     //         name: 'caseDoc',
-           
+
     //         params: {
-            
+
     //         }
     //       });
     //     },
@@ -155,7 +155,7 @@ export default {
     // },
     // 跳转到pdf页面
     viewPDF () {
-      this.$router.push({name: "viewPDF"})
+      this.$router.push({name: "case_handle_viewPDF"})
     },
     showApprovePeopleListBtn(){
       this.$emit('showApprovePeopleList');

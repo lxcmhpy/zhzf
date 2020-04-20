@@ -7,9 +7,10 @@
         </ul> -->
         <!-- @tab-click="activeAndSearch" -->
         <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="search">
-          <el-tab-pane v-for="(item, index) in processStatus" :key="item.value" :name="item.value">
+          <el-tab-pane v-for="(item,index) in processStatus" :key="item.value" :name="item.value">
             <span slot="label">
-              <el-badge :value="index==0?null:index">
+              <!-- <el-badge :value="index==0?null:index"> -->
+              <el-badge :value="index+1">
                 {{item.value}}
               </el-badge>
             </span>
@@ -28,7 +29,7 @@
               <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
             </el-form-item>
             <el-form-item label="任务时间">
-              <el-date-picker v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker size="small" v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item label=" " label-width="13px">
@@ -205,6 +206,7 @@
 }
 </style>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
 import { queryListPage, findAllDrawerById, overWeightCaseList } from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
@@ -228,14 +230,14 @@ export default {
         // checkStartTime: ''
       },
       total: 0, // 总条数
-      tabActiveValue: '无效信息',
+      tabActiveValue: '待办',
       timeList: ['', ''],
       processStatus: [{
         value: '待办'
       }, {
-        value: '已回退'
-      }, {
         value: '在办'
+      }, {
+        value: '已回退'
       }, {
         value: '办结'
       }, {
@@ -303,18 +305,18 @@ export default {
       this.form.checkEndTime = this.timeList[1];
       this.form.status = this.tabActiveValue;
       let _this = this
-      new Promise((resolve, reject) => {
-        overWeightCaseList(_this.form).then(
-          res => {
-            resolve(res)
-            _this.tableData = res.data.records
-          },
-          error => {
-            //  _this.errorMsg(error.toString(), 'error')
-            return
-          }
-        )
-      })
+      // new Promise((resolve, reject) => {
+      //   overWeightCaseList(_this.form).then(
+      //     res => {
+      //       resolve(res)
+      //       _this.tableData = res.data.records
+      //     },
+      //     error => {
+      //       //  _this.errorMsg(error.toString(), 'error')
+      //       return
+      //     }
+      //   )
+      // })
     },
     findAllDrawerById(data, obj) {
       let _this = this
@@ -332,13 +334,32 @@ export default {
       })
     },
     reset() {
-
+      this.form.siteName= '';
+      this.form.vehicleColor= '';
+      this.form.vehicleNumber= '';
+      this.form.overload= '';
+      this.form.status= '';
+      this.timeList=['', ''];
     },
     routerDetail(row) {
+      console.log(this.tabActiveValue)
       this.$store.commit('setOffSiteManageId', row.id);
+      let data = {
+        id: '',
+        path: this.$route.path,
+        value: this.tabActiveValue
+      }
+      iLocalStroage.sets('caseCenterDentails', data);
       this.$router.push({
-        name: 'overWeightCaseDentail'
+        name: 'dentails-index'
       })
+      let setCaseNumber = '超限案件详情';
+      this.$store.commit("setCaseNumber", setCaseNumber);
+      // let changeTabData = {
+      //         tabIndex: '',
+      //         title: '超限案件详情'
+      //       };
+      // this.$store.commit("changeOneTabName", changeTabData);
     },
     routerEvidenceDetail() {
       this.$router.push({

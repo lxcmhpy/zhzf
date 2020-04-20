@@ -301,58 +301,7 @@
      width: 280px;
 
  }
- .makePhoneBox {
-    position:absolute;
-    left: 50%;
-    margin-left: -230px;
-    top: 150px;
-    z-index:3000;
-    height: auto;
-    width: 430px;
-    background: linear-gradient(90deg, #272829 0%, #413f3d 100%);
-    box-shadow: 0px 2px 3px 0px rgba(6,10,19,.28);
-    cursor: default;
 
-    @include echartsStyle(300px, false);
-    .echarts-box {
-        background:none;
-        color:white;
-        width: 100%;
-        margin: 17px 0px 17px 0px;
-        i {
-            color:white !important;
-            top:0px;
-            font-size: 18px;
-            margin: 0 10px;
-        }
-        .el-icon-close {
-            font-weight:bolder;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .el-icon-rank {
-            cursor: move;
-        }
-        .videoBox {
-            display:flex;
-            margin-top:80px;
-            margin-left: 13px;
-            width: 100%;
-            background: none;
-            position: relative;
-            top:0px;
-            left: 0px;
-            height: 205px;
-            video {
-                border:1px solid gray;
-            }
-        }
-    }
-    .phoneBtns {
-        text-align: center;
-        margin: 50px 20px  27px 20px;
-    }
- }
 .amap-position {
     position: absolute;
     z-index:2000;

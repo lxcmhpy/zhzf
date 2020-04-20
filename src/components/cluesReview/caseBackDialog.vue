@@ -1,23 +1,19 @@
 <template >
-  <el-dialog class='mini-dialog-title' title="无效信息" :visible.sync="visible" :show-close='false' :close-on-click-modal="false" width="420px">
+  <el-dialog class='mini-dialog-title' title="任务回退" :visible.sync="visible" :show-close='false' :close-on-click-modal="false" width="420px">
     <div class="error-message">
       <div class="">
         <img src="@/../static/images/img/cluesReview/icon_wuxiao.png" alt="">
       </div>
-      <p>当前线索为无效信息</p>
+      <p>当前任务指派有误，请求回退</p>
     </div>
     <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="0">
       <div class="invalidinfo">
-        <el-select v-model="checkSearchForm.number" placeholder="选择无效线索类型">
-          <el-option :value='0' label="无效线索类型1"></el-option>
-          <el-option :value='1' label='无效线索类型2'></el-option>
-        </el-select>
-        <p>备注说明</p>
-        <el-input v-model="checkSearchForm.color" type="textarea" ></el-input>
+        <p>回退说明:</p>
+        <el-input v-model="checkSearchForm.color" type="textarea"></el-input>
       </div>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="visible = false">确认</el-button>
+      <el-button type="primary" @click="goBackSure">确认</el-button>
       <el-button @click="visible = false">取消</el-button>
     </span>
   </el-dialog>
@@ -45,9 +41,13 @@ export default {
     closeDialog() {
       this.visible = false;
     },
-    gotoCoerciveMeasureDoc() {
+    goBackSure() {
       this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: 'removeOrPrelong' })
+      this.$message({
+        type: "success",
+        message: "回退成功"
+      });
+      this.$router.push({ name: 'overWeightCase' })
     }
   },
   mounted() { }

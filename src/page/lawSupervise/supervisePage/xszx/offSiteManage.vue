@@ -24,7 +24,7 @@
                     <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
                 <el-form-item label="车牌号">
-                    <el-select v-model="form.vehicleColor" class="w-80" placeholder="请选择">
+                    <el-select v-model="form.vehicleColor" placeholder="请选择">
                         <el-option
                         v-for="item in vehicleColorList"
                         :key="item.id"
@@ -36,23 +36,88 @@
                 <el-form-item label=" " label-width="0px">
                     <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
-                <el-form-item label=" " label-width="13px">
-                    <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
-                    <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
-                    <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow" >
-                    </el-button>
-                    <!-- <a href="javascript:void(0)" @click="routerDetail">
-                        详情
-                    </a>
-                    <a href="javascript:void(0)" @click="routerEvidenceDetail">
-                        证据
-                    </a> -->
-                </el-form-item>
-                <el-collapse-transition>
+                <el-form-item label="超限率">
+                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
+                            <el-select v-model="form.overload" placeholder="请选择">
+                                <el-option
+                                v-for="item in cxlList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.name"
+                                ></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="超限率">
+                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
+                            <el-select v-model="form.overload" placeholder="请选择">
+                                <el-option
+                                v-for="item in cxlList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.name"
+                                ></el-option>
+                            </el-select>
+                        </el-form-item>
+                  <el-collapse-transition>
                     <div v-show="isShow" :class="{'ransition-box':true}">
                         <el-form-item label="超限率">
                             <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" class="w-80" placeholder="请选择">
+                            <el-select v-model="form.overload" placeholder="请选择">
+                                <el-option
+                                v-for="item in cxlList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.name"
+                                ></el-option>
+                            </el-select>
+                        </el-form-item>
+                         <el-form-item label="超限率">
+                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
+                            <el-select v-model="form.overload" placeholder="请选择">
+                                <el-option
+                                v-for="item in cxlList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.name"
+                                ></el-option>
+                            </el-select>
+                        </el-form-item>
+                         <el-form-item label="超限率">
+                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
+                            <el-select v-model="form.overload" placeholder="请选择">
+                                <el-option
+                                v-for="item in cxlList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.name"
+                                ></el-option>
+                            </el-select>
+                        </el-form-item>
+                         <el-form-item label="超限率">
+                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
+                            <el-select v-model="form.overload" placeholder="请选择">
+                                <el-option
+                                v-for="item in cxlList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.name"
+                                ></el-option>
+                            </el-select>
+                        </el-form-item>
+                         <el-form-item label="超限率">
+                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
+                            <el-select v-model="form.overload" placeholder="请选择">
+                                <el-option
+                                v-for="item in cxlList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.name"
+                                ></el-option>
+                            </el-select>
+                        </el-form-item>
+                         <el-form-item label="超限率">
+                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
+                            <el-select v-model="form.overload" placeholder="请选择">
                                 <el-option
                                 v-for="item in cxlList"
                                 :key="item.id"
@@ -85,13 +150,20 @@
                         </el-form-item> -->
                     </div>
                 </el-collapse-transition>
+
             </el-form>
+            <div class="float:right;">
+                 <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
+                    <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
+                    <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow" >
+                    </el-button>
+            </div>
         </div>
         <div class="handlePart" style="margin-left: 0px;">
             <el-button type="primary" size="medium" @click="yjVisible=true">
                 <i class="iconfont law-submit-o f12"></i> 预警推送
             </el-button>
-             <el-button type="primary" size="medium" @click="routerTransferManage">
+             <el-button v-if="tabActiveValue == '已审核'" type="primary" size="medium" @click="routerTransferManage">
                 <i class="iconfont law-submit-o f12"></i> 转办
             </el-button>
             <el-dialog class="mini-dialog-title" title="预警推送" :visible.sync="yjVisible" :show-close="false"
@@ -214,6 +286,13 @@
 <style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
 <style lang="scss" src="@/assets/css/cluesReview.scss"></style>
 <style lang="scss" scoped>
+.ransition-box {
+    // float:left;
+    display:inline;
+}
+div.el-form-item{
+    float:left;
+}
 .vehicle-black {
     width:100%;
     height: 100%;

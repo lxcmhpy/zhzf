@@ -18,6 +18,7 @@ import person from './modules/person';
 import checkInfo from './modules/checkInfo';
 // 监管
 import supervise from './modules/supervise';
+import phoneVideo from './modules/phoneVideo';
 
 Vue.use(Vuex);
 
@@ -60,7 +61,8 @@ const store = new Vuex.Store({
         uploadFile,
         person,
         checkInfo,
-        supervise
+        supervise,
+        phoneVideo
     },
     plugins: [createPersistedState({
         storage: window.sessionStorage,
@@ -68,7 +70,8 @@ const store = new Vuex.Store({
             return {
                 supervise: val.supervise,
                 caseHandle: val.caseHandle,
-                openTab: val.openTab
+                openTab: val.openTab,
+                phoneVideo: val.phoneVideo
             }
         }
     })],

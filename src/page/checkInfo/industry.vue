@@ -4,7 +4,7 @@
       <div class="title_content">
         <div class="title_back float" @click="goBack">&lt;返回
         </div>
-        <div class="float title_box title">经营业户查验</div>
+        <div class="float title_box title">经营业户查验111</div>
 
       </div>
 
@@ -324,6 +324,7 @@ export default {
     },
     //查询违法行为
     getCheck() {
+      this.yehuAmount="0"
         let _this = this
       this.$store.dispatch("yehuCheck", this.checkData).then(
         res => {
@@ -358,10 +359,10 @@ export default {
   }
 }
 </script>
-<!--<style lang='scss' scoped>
+<style lang='scss' scoped>
 @import "@/assets/css/checkInfo.scss";
 </style>
--->
+
 
 
 

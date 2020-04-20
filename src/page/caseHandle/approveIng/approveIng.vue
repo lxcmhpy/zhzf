@@ -99,7 +99,7 @@
           this.$store.commit("setCaseApproval", false);
           console.log(this.$store.state.caseId);
           this.$router.push({
-            name: "caseInfo",
+            name: "case_handle_caseInfo",
             params: {
               caseInfo: row
             }

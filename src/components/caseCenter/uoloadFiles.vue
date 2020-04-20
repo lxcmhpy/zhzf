@@ -1,7 +1,5 @@
 <template>
-  <div class="main-box">
-    <dealNotes></dealNotes>
-    <div class="shadow-box bg-white" style="margin-top:22px">
+    <div class="shadow-box bg-white">
       <div class="info-box">
         <div class="title-box">
           <span class="title-blue">&nbsp;</span>
@@ -14,23 +12,14 @@
           </el-input>
         </el-form-item>
         </el-form>
-       
-
       </div>
-
     </div>
-    <evidencePackage style="margin-top:22px"></evidencePackage>
-
-  </div>
 </template>
 <script>
-import dealNotes from '@/components/cluesReview/dealNotes.vue'
-import evidencePackage from '@/components/cluesReview/evidencePackage.vue'
+import dealNotes from '@/components/caseCenter/dealNotes.vue'
+import evidencePackage from '@/components/caseCenter/evidencePackage.vue'
 export default {
-  components: {
-    dealNotes,
-    evidencePackage
-  },
+
   data() {
     return {
       input2: ''
@@ -38,12 +27,7 @@ export default {
   },
 }
 </script>
-<style scoped>
-.main-box {
-  padding: 22px;
-}
-</style>
+
 <style lang="scss">
-@import "@/assets/css/dialogStyle.scss";
+@import "@/assets/css/cluesReview.scss";
 </style>
-<style lang="scss" src="@/assets/css/cluesReview.scss"></style>

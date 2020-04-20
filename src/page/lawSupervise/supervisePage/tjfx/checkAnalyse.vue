@@ -15,8 +15,12 @@
               <el-date-picker v-model="checkEndTime" type="date" format="yyyy-MM-dd" placeholder="结束日期">
               </el-date-picker>
             </el-form-item> -->
+            <!-- {{aa}},{{bb}} -->
             <el-form-item>
-              <el-date-picker style='width:280px' v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker style='width:240px'
+              :picker-options="pickerOptions"
+               v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
+
               </el-date-picker>
             </el-form-item>
             <el-form-item label="时间段">
@@ -40,13 +44,13 @@
                   <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
                 <el-form-item label="超限率">
-                   <el-select v-model="form.overanlyse" prop="type">
+                  <el-select v-model="form.overanlyse" prop="type">
                     <el-option v-for="item in overanlyseList" :key="item.value" :label="item.value" :value="item.value"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="黑名单">
                   <el-checkbox v-model="form.status">是</el-checkbox>
-                
+
                 </el-form-item>
               </div>
             </el-collapse-transition>
@@ -201,7 +205,14 @@ import { mapGetters } from "vuex";
 export default {
   inject: ["reload"],
   data() {
+      let _this =this;
     return {
+    pickerOptions:  {
+            onPick:  ({  maxDate,  minDate  })  =>  {
+                _this.$set(_this.timeList,0,minDate);
+                _this.$set(_this.timeList,1,minDate);
+            }
+        },
       tabActiveIndex: '0',
       vehicleColorList: null,
       cxlList: null,
@@ -232,12 +243,12 @@ export default {
       }],
       isShow: false,
       tableData: [],
-      overanlyseList:[{
-        value:'50%'
-      },{
-        value:'100%'
-      },{
-        value:'200%'
+      overanlyseList: [{
+        value: '50%'
+      }, {
+        value: '100%'
+      }, {
+        value: '200%'
       }],
       vehicleColorObj: {
         '黑色': 'vehicle-black',
@@ -248,9 +259,44 @@ export default {
         '灰色': 'vehicle-gray',
         '渐变绿': 'vehicle-gradient-green',
         '黄绿色': 'vehicle-yelloe-green',
-      }
+      },
+      // pickerOptions: {
+      //   shortcuts: [{
+      //     text: '确定',
+      //     onclick(picker) {
+      //       picker.$emit('pick', [_this.aa, _this.bb])
+      //     }
+      //   }],
+      //   onPick: ({ maxDate, minDate }) => {
+      //     // debugger
+      //     // console.log('11111')
+      //     _this.aa = maxDate
+      //     _this.bb = minDate
+      //     // _this.timeList=[minDate,minDate]
+      //     _this.$set(_this.timeList, 0, '2020-10-10 23:00:00');
+
+      //     // _this.$set(_this.timeList,0,'2020-10-10 23:00:00');
+
+      //   }
+      // },
+
+      pickerOptions: {
+        //  shortcuts: [{
+        //   text: '确定',
+        //   onclick(picker) {
+        //     picker.$emit('pick', [_this.aa, _this.bb])
+        //   }
+        // }],
+        onPick: ({ maxDate, minDate }) => {
+          _this.$set(_this.timeList, 0, minDate);
+          _this.$set(_this.timeList, 1, minDate);
+        }
+      },
+      aa: null,
+      bb: null,
     }
   },
+
   methods: {
     activeAndSearch(item, index) {
       this.tabActiveIndex = index;
@@ -258,6 +304,8 @@ export default {
     search() {
       this.form.checkStartTime = this.timeList[0];
       this.form.checkEndTime = this.timeList[1];
+      // this.aa = this.timeList[0];
+      // this.bb = this.timeList[1];
       let _this = this
       new Promise((resolve, reject) => {
         queryListPage(_this.form).then(

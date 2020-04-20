@@ -196,7 +196,7 @@
           </el-col>
           <el-col :span="22">
             <p style="line-height:28px">
-              提交成功后，案件将抄告至目标机构。<br/>
+              提交成功后，案件将移送至目标机构。<br/>
               是否确认提交?
             </p>
           </el-col>
