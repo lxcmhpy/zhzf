@@ -415,19 +415,14 @@ export default {
     },
     //下一环节
     continueHandle() {
-      // console.log('this.unfinishFlag', this.unfinishFlag)
-      // console.log('分期文书', this.isComplete())
-      // console.log('催告书', this.isComplete2())
       this.unfinishFlag = []
+       let unfinishFlag = []
       if (this.isComplete() == false) {
-        this.unfinishFlag.push('分期（延期）缴纳罚款通知书')
+        unfinishFlag.push('分期（延期）缴纳罚款通知书')
       }
       if (this.isComplete2() == false) {
-        this.unfinishFlag.push('催告书')
+        unfinishFlag.push('催告书')
       }
-
-      let unfinishFlag = this.unfinishFlag
-      
       let caseData = {
         caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
@@ -437,9 +432,7 @@ export default {
         this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
       }
       else {
-        console.log('传的数据', unfinishFlag)
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
-
       }
     },
     // 进入文书
