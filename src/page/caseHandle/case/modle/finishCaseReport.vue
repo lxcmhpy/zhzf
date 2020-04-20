@@ -242,6 +242,10 @@
               {{formData.approveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
+                <p>
+                    <span v-if="formData.approveTime">{{formData.approveTime}}</span>
+                    <span v-else>年 月 日</span>
+                  </p>
               </div>
             </td>
           </tr>
@@ -258,6 +262,10 @@
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
+                <p>
+                    <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
+                    <span v-else>年 月 日</span>
+                  </p>
               </div>
             </td>
           </tr>

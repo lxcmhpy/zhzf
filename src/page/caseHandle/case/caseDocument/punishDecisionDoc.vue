@@ -250,14 +250,14 @@
           <div class="overflow_lins">
             <el-form-item prop="otherWay">
               <el-input
-                class="text_indent10 overflow_lins_textarea"
+                class="text_indent11 overflow_lins_textarea"
                 type="textarea"
                 v-model="formData.otherWay"
                 rows="3"
                 maxlength="90"
               ></el-input>
-              <span class="overflow_describe" style="text-indent:0em">其他执行方式和期限：</span>
-              <span class="span_bg span_bg_top"  @click="overFlowEdit" style="padding-left:20px;">&nbsp;</span>
+              <span class="overflow_describe" >其他执行方式和期限：</span>
+              <span class="span_bg span_bg_top"  @click="overFlowEdit">&nbsp;</span>
               <span
                 v-for="item in overFlowEditList"
                 :key="item.id"
