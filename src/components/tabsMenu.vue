@@ -55,11 +55,9 @@ export default {
     // 当前路由不是首页时，添加首页以及另一页到store里，并设置激活状态
     // 当当前路由是首页时，添加首页到store，并设置激活状态
     // this.activeIndexStr = this.activeIndexSto;
-    let _this = this;
-    debugger;
     if (this.$route.path !== "/" && this.$route.name !== "case_handle_home_index") {
-        this.activeIndexStr = _this.$route.name;
-        this.$store.commit("SET_ACTIVE_INDEX_STO", _this.$route.name);
+        this.activeIndexStr = this.$route.name;
+        this.$store.commit("SET_ACTIVE_INDEX_STO", this.$route.name);
     } else {
         this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
     }
