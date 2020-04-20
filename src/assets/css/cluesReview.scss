@@ -181,7 +181,21 @@
             color           : #20232B;
             border          : 1px 0 solid #DCDFE6;
             border-radius   : 0;
-            padding         : 0 20px;
+            padding         : 0 8px;
+            .el-input__inner {
+                width: 100%;
+                padding:0px;
+                right: 0px;
+                line-height: 20px;
+            }
+            .el-select {
+                height: 30px;
+                margin:0px;
+            }
+            .el-input__icon {
+                width:8px;
+                line-height: 30px;
+            }
         }
 
         .el-input-group__prepend {
@@ -469,7 +483,7 @@
 
     .title-text {
         font-size  : 18px;
-        font-weight: 500;
+        font-weight: bold;
         color      : rgba(32, 35, 43, 1);
         line-height: 25px;
     }
@@ -872,17 +886,26 @@
         // margin-left: -10px;
       }
     }
-    .blueBtn {
-      background: rgba(69, 115, 208, 1);
-      box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
-      color: white;
+}
+.blueBtn {
+    background: rgba(69, 115, 208, 1);
+    box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
+    color: white;
+    &:hover{
+        background: rgba(69, 115, 208, 1);
+        color: white;
     }
-    .greenBtn {
-      background: rgba(74, 175, 167, 1);
-      box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
-      color: white;
+}
+.grayBtn {
+    background: rgb(197, 197, 197);
+    box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
+    color: white;
     }
-  }
+.greenBtn {
+    background: rgba(74, 175, 167, 1);
+    box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
+    color: white;
+}
   .transferDetail {
     position:fixed;
     top: 200px;
@@ -931,4 +954,10 @@
     display: inline-block;
     background: url('../../../static/images/img/lawSupervise/icon_zt_sh.png') no-repeat;
 
+  }
+  span:focus {
+      outline: none;
+  }
+  .el-textarea__inner {
+      border-radius: 0px;
   }

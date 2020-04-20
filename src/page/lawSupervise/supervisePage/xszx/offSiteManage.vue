@@ -100,7 +100,7 @@
                                                 :default-expanded-keys="defaultExpandedKeys"
                                                 @node-expand="nodeExpand"
                                                 ref="tree"
-                                                @node-click="handleNodeClick"
+                                                @node-click="handleNodeClick1"
                                                 >
                                                 <span class="custom-tree-node" slot-scope="{ node,data }">
                                                     <span>
@@ -124,7 +124,7 @@
                                 <td width="260px">
                                     <el-input
                                             type="textarea"
-                                            :rows="4"
+                                            :rows="2"
                                             placeholder="请输入内容"
                                             v-model="form.load">
                                     </el-input>
@@ -391,6 +391,7 @@ export default {
             status: '',
             current: 1, //当前页
             size: 10, //每页显示条数
+            lane: ''
             // checkEndTime: '',
             // checkStartTime: ''
         },
@@ -423,10 +424,11 @@ export default {
     }
   },
   methods: {
-    handleNodeClick(data) {
+    handleNodeClick1(data) {
+        debugger;
       console.log(data);
-      this.selectCurrentTreeName = data.label;
-      this.currentOrganId = data.id;
+    //   this.selectCurrentTreeName = data.label;
+    //   this.currentOrganId = data.id;
       this.form.lane = data.label;
     //   this.getSelectOrgan(this.currentOrganId);
     },

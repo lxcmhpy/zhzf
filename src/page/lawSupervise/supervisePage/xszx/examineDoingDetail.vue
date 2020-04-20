@@ -72,6 +72,7 @@ export default {
             })
         },
         init () {
+            debugger;
             this.getDetailById(this.offSiteManageId);
             this.tabActiveValue = this.$route.params.status;
         }

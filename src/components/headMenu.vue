@@ -31,10 +31,13 @@ import { mapGetters } from "vuex";
         this.$store.commit("SET_ACTIVE_INDEX_STO", keyStr[2]);
         this.$store.commit("set_Head_Active_Nav", keyStr[2]);
         //将当前选中的一级菜单名传到父组件
-        this.$emit("selectHeadMenu", keyStr[2]);
+        // keyStr[2]待改正，菜单关联用name;路由跳转用path
+        this.$emit("selectHeadMenu",  keyStr[2]);
         //删除之前的tab页签
         // this.$store.dispatch("deleteAllTabs");
-        if (keyStr[2] && keyStr[2] !== 'null') {
+        // debugger;
+        // 待调整，因数据库缓存
+        if (keyStr[2] && keyStr[2] !== 'null'&&keyStr[2] !='sys_xboot') {
             // debugger;
             this.$router.push({ name: keyStr[2] });
         }
