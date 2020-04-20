@@ -9,16 +9,19 @@
                             <i class="el-icon-close right" id="closePhone" @click="ringOff"></i>
                             <i class="el-icon-rank right" @mousedown="event=>start(event,'phoneBox')"></i>
                                  <!-- style="position:absolute;z-index:3500;top:200px;left: 200px;border:1px solid #ccc;"  -->
-                            <div class="videoBox" :class="{'noHeight': !videoDoing}">
+                            <div class="videoBox" :class="{'noHeight': doing !== '2'}">
                                 <video class="video" width="200px" height="200px" id="video_local" autoplay="autoplay" muted></video>
                                 <video class="video" width="200px" height="200px" id="video_remote" autoplay="autoplay" muted></Video>
                             </div>
                         </div>
                         <div class="phoneBtns">
-                            <span @click="ringOff">
-                            <img :src="'./static/images/img/lawSupervise/ring_off.png'" >
-                            <br> <span style="color:white;line-height: 40px;">取消</span>
-                            </span>
+                            <div @click="ringOff">
+                                <img :src="'./static/images/img/lawSupervise/ring_off.png'" >
+
+                                <br> <span style="color:white;line-height: 40px;">取消</span>
+                                </div>
+                                <br><br>
+                            <div style="color:white;line-height: 40px;" @click="get">点击接听</div>
                             <!-- <img :src="'./static/images/img/lawSupervise/ring_off.png'" v-if="doing" @click="ringOff"> -->
                         </div>
                     </div>
@@ -48,10 +51,9 @@ export default {
         answer (code) {
             this.show = true;
             this.$store.commit('setMakePhoneStatus', true);
-            setTimeout(function(){
-                window.PhoneCallModule.sipAnswer();
-            }, 1000)
-
+        },
+        get () {
+            window.PhoneCallModule.sipAnswer();
         },
         ringOff () {
             // this.doing = null;
@@ -66,13 +68,13 @@ export default {
             document.onmousemove = (e)=>{       //鼠标按下并移动的事件
             // "phoneBox"
                 let obj = document.getElementById(id).style;
-                obj.left = e.clientX < 325 ? '0px' : (e.clientX -350 )+ 'px';
-                obj.top = e.clientY < 90 ? '0px' : (e.clientY -110) + 'px';
+                obj.left = e.clientX < 325 ? '0px' : (e.clientX -140 )+ 'px';
+                obj.top = e.clientY < 90 ? '0px' : (e.clientY -30) + 'px';
                 if (e.clientY >= (document.body.clientHeight - 60)) {
-                     obj.top = (document.body.clientHeight - 210) +'px';
+                     obj.top = (document.body.clientHeight - 170) +'px';
                 }
-                if (e.clientX >= (document.body.clientWidth-400)) {
-                    obj.left = (document.body.clientWidth-400) + 'px';
+                if (e.clientX >= (document.body.clientWidth-180)) {
+                    obj.left = (document.body.clientWidth-180) + 'px';
                 }
             };
             document.onmouseup = (e) => {
@@ -84,11 +86,7 @@ export default {
     watch: {
         makePhoneStatus (val, oldVal) {
             this.show = val;
-        },
-        doing (val, oldVal) {
-            debugger;
-            this.videoDoing = val === '2';
-        },
+        }
     },
     computed: {
         ...mapGetters(["makePhoneStatus", "doing"])

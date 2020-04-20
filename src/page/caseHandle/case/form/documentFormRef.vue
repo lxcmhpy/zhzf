@@ -171,9 +171,9 @@ export default {
     },
     //显示封面
     showCover(){
-      if(this.$route.name!='archiveCover'){
+      if(this.$route.name!='case_handle_archiveCover'){
         let item={name:'cover'}
-        this.$router.push({name:'archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
+        this.$router.push({name:'case_handle_archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
         return;
       }
       this.$emit('showCoverEmit')

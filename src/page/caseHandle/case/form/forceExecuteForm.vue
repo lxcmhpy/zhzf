@@ -527,7 +527,7 @@
 //        console.log("djhafiufh执行方法")
         this.docTableDatas = [];
         this.allAskDocList = [];
-        this.docTableDatas.push({ name: '中止（终结、恢复）行政强制执行通知书', status: '中止', openRow: true, url: "enforceDoc", docId: "2c902908696a1fc501696a754e3b0002" , note: '' });
+        this.docTableDatas.push({ name: '中止（终结、恢复）行政强制执行通知书', status: '中止', openRow: true, url: "case_handle_enforceDoc", docId: "2c902908696a1fc501696a754e3b0002" , note: '' });
 
         this.docTableDatasCopy.forEach(item => {
           console.log('名字啊啊啊', item.name)

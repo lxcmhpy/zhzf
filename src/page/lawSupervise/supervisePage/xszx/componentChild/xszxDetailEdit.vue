@@ -1,5 +1,6 @@
 <template>
     <div>
+         <!-- <span :class="$route.name">待审核</span> -->
         <div class="shadow">
             <div class="box w-2">
                 <div class="box_title">
@@ -31,7 +32,7 @@
                             <el-button @click="visible = false">取消</el-button>
                         </span>
                     </el-dialog>
-                     <el-drawer 
+                     <el-drawer
                      class="el-drawer-title-noborder"
                             title="车辆查验"
                             direction="rtl"
@@ -563,32 +564,21 @@
                         <img class="img" :src="'./static/images/img/temp/sp.jpg'">
                     </li>
                     <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
-                        <i class="iconfont law-bofang"></i>
+                        <el-upload
+                             class="avatar-uploader uploadFile"
+                             drag
+                             list-type="picture-card"
+                            action="https://jsonplaceholder.typicode.com/posts/"
+                            :limit="1"
+                        >
+                            <i class="el-icon-picture"></i>
+                        </el-upload>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <el-upload
-            class="upload-demo"
-            id="catalogueUpload"
-            drag
-            :http-request="saveFile"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-remove="handleRemoveFile"
-            :limit="1"
-          >
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">
-              <em>点击上传附件</em>
-            </div>
-            <!-- <div
-              class="el-upload__tip"
-              slot="tip"
-              style="text-align: center"
-            >只能上传jpg/png文件，且不超过500kb</div> -->
-          </el-upload>
+
     </div>
 </template>
 <script>
@@ -706,10 +696,43 @@ export default {
     }
 }
 </script>
-<style lang='css'>
+<style lang='scss'>
 
-.el-drawer-title-noborder /deep/ span:focus {
+.el-drawer-title-noborder ::deep span:focus {
     outline: 0
+}
+.uploadFile {
+    border:0px;
+    .el-upload-dragger {
+        width: 188px;
+        height: 110px;
+        background:#edf0fa;
+        border-radius: 0px;
+        border: 1px dotted #ccc;
+        line-height:110px;
+        .el-icon-picture {
+            color: #a1b1e3;
+            font-size: 30px;
+        }
+    }
+    .el-upload-list__item-actions,.el-upload-list__item-thumbnail{
+        width: 188px;
+        height: 110px;
+    }
+    .el-upload-list__item,.el-upload-list__item-actions{
+        width: 188px;
+        height: 110px;
+        border-radius: 0px;
+        margin-bottom: 22px;
+        border: 1px solid #ccc;
+    }
+    .el-upload--picture-card {
+         width: 188px;
+        height: 110px;
+         border: 0px;
+    }
+    .el-upload-list {
+    }
 }
 </style>
 

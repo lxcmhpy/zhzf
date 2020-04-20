@@ -22,7 +22,7 @@
 
     <evidenceTransfer v-if="showFlag==='/overWeightCase'&&
     (value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')||showFlag==='/transferAndRegisterCase'"></evidenceTransfer>
-    <!-- 
+    <!--
     <evidencePackage v-if="showFlag==='/overWeightCase'&&
     value=='待办'"></evidencePackage> -->
 
@@ -121,6 +121,4 @@ export default {
 
 }
 </script>
-<style lang="scss">
-@import "@/assets/css/cluesReview.scss";
-</style>
+<style lang="scss" src="@/assets/css/cluesReview.scss"></style>

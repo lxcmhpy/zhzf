@@ -19,7 +19,7 @@ const system = {
     state: {
         menu: '',
         activeIndexSto: '',
-        headActiveNav:'case_handle_home_index', //当前选中的header
+        headActiveNav:'', //当前选中的header
     },
     mutations: {
         SET_MENU(state, data) {

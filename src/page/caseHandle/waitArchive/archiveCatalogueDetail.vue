@@ -16,9 +16,9 @@
         <el-table-column label="顺序调整" align="center" >
           <template slot-scope="scope">
             <div>
-                <span v-show="!scope.$index" class="iconfont law-desc"></span> 
+                <span v-show="!scope.$index" class="iconfont law-desc"></span>
                 <span v-show="scope.$index" @click="byAsc(scope.row,scope.$index)" class="iconfont law-desc blueC"></span>
-                <span v-show="scope.$index == caseList.length-1" class="iconfont law-asc"></span> 
+                <span v-show="scope.$index == caseList.length-1" class="iconfont law-asc"></span>
                 <span v-show="scope.$index != caseList.length-1" @click="byDesc(scope.row,scope.$index)" class="iconfont law-asc blueC"></span>
                 <!-- 删除 -->
                 <span v-if="scope.row.category == '证据'" @click="deleteEvidence(scope.row,scope.$index)" class="iconfont law-delete blueC"></span>
@@ -144,7 +144,7 @@
       :visible.sync="relationFileVisible"
       custom-class="dialog1 fullscreen"
       size="900px"
-     
+
     >
       <div style="height:100%">
         <div class="relationFileVisibleBox">
@@ -305,12 +305,12 @@ export default {
   methods: {
     router() {
       this.$router.push({
-        name: "archiveCover"
+        name: "case_handle_archiveCover"
       });
     },
     byDesc(row,rowIndx) {
         console.log(row);
-        let a = JSON.parse(JSON.stringify(this.caseList)) 
+        let a = JSON.parse(JSON.stringify(this.caseList))
         let temp =  a[rowIndx];
         a[rowIndx] = a[rowIndx+1]
         a[rowIndx+1] = temp;
@@ -319,7 +319,7 @@ export default {
     },
     byAsc(row,rowIndx) {
         console.log(row);
-        let a = JSON.parse(JSON.stringify(this.caseList)) 
+        let a = JSON.parse(JSON.stringify(this.caseList))
         let temp =  a[rowIndx];
         a[rowIndx] = a[rowIndx-1]
         a[rowIndx-1] = temp;
@@ -363,7 +363,7 @@ export default {
               item.num+this.multipleSelection.length+1
             }
           });
-         this.multipleSelection.forEach((item,index)=>{  
+         this.multipleSelection.forEach((item,index)=>{
            let addEviData = {
                  caseBasicInfoId:item.caseId,
                  fid:item.fileId,
@@ -372,8 +372,8 @@ export default {
             }
             a.splice(this.handleIndex+index+1,0,addEviData);
          })
-               
-               
+
+
               //  a.splice(this.handleIndex+1,0,addEviData);
                this.caseList = a;
                 console.log('this.caseList',this.caseList);
@@ -436,7 +436,7 @@ export default {
           console.log('上传证据参数recordPlace',fd.get('recordPlace'));
           console.log('上传证据参数userName',fd.get('userName'));
 
-          uploadEvdence(fd).then( 
+          uploadEvdence(fd).then(
             res => {
               console.log('上传证据',res);
                console.log('上传证据2',res.data);
@@ -446,7 +446,7 @@ export default {
               // this.addEvidence(res.data, param, category, 0)
               // this.formData.payEvidence = res.data;
               // this.formData.payEvidence.push(res.data);
-               let a = JSON.parse(JSON.stringify(this.caseList)) 
+               let a = JSON.parse(JSON.stringify(this.caseList))
                let addEviData = {
                  caseBasicInfoId:eviData.caseId,
                  fid:eviData.id,
@@ -532,7 +532,7 @@ export default {
             if(!item.name){
               item.name = item.evName;
             }
-          })  
+          })
           this.caseList = res.data;
         },
         err => {
@@ -637,7 +637,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped> 
+<style lang="scss" scoped>
 @import "@/assets/css/searchPage.scss";
 @import "@/assets/css/documentForm.scss";
 @import "@/assets/css/basicStyles/common.scss";
