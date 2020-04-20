@@ -626,6 +626,13 @@ export const mixinGetCaseApiList = {
           this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
         }
       } else if(data.curLinkState == 'unLock'){
+        //行政强制措施即将到期,从零点开始提示
+        console.log('this.measureDateEndTime',new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
+        let  measureDateEndTimeStart= new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
+        if(this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)){
+          this.$refs.pleaseRemoveMDiaRef.showModal();
+          return;
+        }
         // 行政强制措施即将到期，请前往解除行政强制措施
         if (data.linkID != 'a36b59bd27ff4b6fe96e1b06390d204h' && data.linkID != '2c9029ee6cac9281016cacaadf990006') {
           this.$router.push({ name: data2.nextLink })
@@ -637,6 +644,13 @@ export const mixinGetCaseApiList = {
           }
         }
       }else if(data.curLinkState == 'doing'){  //进行中的环节
+        //行政强制措施即将到期,从零点开始提示
+        console.log('this.measureDateEndTime',new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
+        let  measureDateEndTimeStart= new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
+        if(this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)){
+          this.$refs.pleaseRemoveMDiaRef.showModal();
+          return;
+        }
         if(caseIsApprovaling && (data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006')){    
           this.$router.push({ name: 'myPDF', params: { docId: data2.docId, isComplete: true } })
         }else{
