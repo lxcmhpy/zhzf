@@ -1674,7 +1674,7 @@ export default {
     querySearch(queryString, cb) {
       console.log("输入搜索");
       let checkStastions = this.recentCheckStastions;
-      var results = queryString ? checkStastions.filter(this.createFilter(queryString)) : checkStastions;
+      var results = queryString ? checkStastions.filter(this.createFilter(queryString, checkStastions)) : checkStastions;
       let a = [];
       results.forEach(item => {
         a.push({ value: item.inputValue })
@@ -1684,7 +1684,7 @@ export default {
     //检测人员 可输入也可以选择
     queryCheckWorker(queryString, cb) {
       let checkWorker = this.recentCheckWorkers;
-      var results = queryString ? checkWorker.filter(this.createFilter(queryString)) : checkWorker;
+      var results = queryString ? checkWorker.filter(this.createFilter(queryString, checkWorker)) : checkWorker;
       let a = [];
       results.forEach(item => {
         a.push({ value: item.inputValue })
@@ -1694,29 +1694,14 @@ export default {
     //品牌 可输入也可以选择
     queryBrand(queryString, cb) {
       let brand = this.brandList;
-      var results = queryString ? brand.filter(this.createFilter(queryString)) : brand;
+      var results = queryString ? brand.filter(this.createFilter(queryString, brand)) : brand;
       let a = [];
       results.forEach(item => {
         a.push({ value: item.inputValue })
       })
       cb(a);
     },
-
-    menu() {
-      // this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
-      // console.log(this.scroll)
-      //获取节点
-      var scrollDiv = document.getElementById('scrollDiv');
-      //绑定事件
-      scrollDiv.addEventListener('scroll', function () {
-        console.log(scrollDiv.scrollTop);
-      });
-      // this.document.getElementById('scrollDiv').click()
-    },
-    handleScroll(el) {
-      this.scrollTop = this.$refs.content.scrollTop
-      console.log(this.$refs.content.scrollTop)
-    },
+    // 锚点回显-start
     scrool1() {
       let scrolled = this.$refs.link_1.scrollTop;
       this.activeA = [true, false, false, false, false]
@@ -1737,7 +1722,14 @@ export default {
       let scrolled = this.$refs.link_1.scrollTop;
       this.activeA = [false, false, false, false, true]
     },
+    // 锚点回显-end
+    createFilter(queryString, data) {
+      return (data) => {
+        return (data.inputValue.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+      };
+    },
   },
+
   mounted() {
     // 事务中心跳转
     let overWeightCaseData = iLocalStroage.gets("overWeightCaseData")
