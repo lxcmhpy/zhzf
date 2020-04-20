@@ -16,15 +16,21 @@
         <p class="p_begin">
           讨论时间：
           <span>
-            <el-form-item prop="discussionStartTime" class="pdf_datapick inputwidth" style="width:220px">
-              <el-date-picker v-model="docData.discussionStartTime" type="datetime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分">
-              </el-date-picker>
+            <el-form-item prop="discussionStartTime" class="pdf_datapick inputwidth dataTimeReplaceBox" style="width:220px">
+              <el-date-picker v-model="docData.discussionStartTime" type="datetime" 
+                format="yyyy-MM-dd HH:mm"
+                value-format="yyyy年MM月dd日HH时mm分">
+              </el-date-picker> 
+              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.discussionStartTime"></el-input> 
             </el-form-item>
-          </span>至
+          </span> 至
           <span>
-            <el-form-item prop="discussionEndTime" class="pdf_datapick inputwidth" style="width:220px">
-              <el-date-picker v-model="docData.discussionEndTime" type="datetime" format="yyyy年MM月dd日HH时mm分" placeholder="    年  月  日  时  分">
+            <el-form-item prop="discussionEndTime" class="pdf_datapick inputwidth dataTimeReplaceBox" style="width:220px">
+              <el-date-picker v-model="docData.discussionEndTime" type="datetime"
+                format="yyyy-MM-dd HH:mm"
+                value-format="yyyy年MM月dd日HH时mm分">
               </el-date-picker>
+              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.discussionEndTime"></el-input> 
             </el-form-item>
           </span>
         </p>
@@ -151,6 +157,24 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   data() {
+    //验证开始时间
+    var validateStartTime = (rule, value, callback) => {
+      console.log(Date.parse(this.docData.discussionStartTime))
+      console.log(Date.parse(this.docData.discussionEndTime))
+      let parseStartTime = this.docData.discussionStartTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
+      let parseEndTime = this.docData.discussionEndTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
+      if(Date.parse(parseStartTime)>Date.parse(parseEndTime)){
+        this.$message({
+              showClose: true,
+              message: '开始时间不得大于结束时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        return callback(new Error("开始时间不得大于结束时间"));
+      }
+      callback();
+    };
     return {
       docData: {
         caseNumber: '',
@@ -182,9 +206,11 @@ export default {
         ],
         discussionStartTime: [
           { required: true, message: '请输入开始讨论时间', trigger: 'blur' },
+          { validator: validateStartTime, trigger: "blur" }
         ],
         discussionEndTime: [
           { required: true, message: '请输入结束讨论时间', trigger: 'blur' },
+          { validator: validateStartTime, trigger: "blur" }
         ],
         discussionPlace: [
           { required: true, message: '请输入地点', trigger: 'blur' },
@@ -289,4 +315,20 @@ export default {
 </script>
 <style lang="scss">
 @import "@/assets/css/caseHandle/caseDocModle.scss";
+#importantCaseTeamDissDoc-print{
+  .dataTimeReplaceBox{
+    position: relative;
+    height: 35px;
+    .el-form-item__content .el-date-editor--datetime{
+      opacity:0;
+      position: absolute;
+      z-index: 2;
+    }
+    .replaceTime{
+      position:absolute;
+      top:0;
+      left:10px;
+    }
+  }
+}
 </style>

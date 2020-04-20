@@ -129,7 +129,7 @@ export default {
     newAdd() {
       //   this.$emit("caseRecord");
       this.$router.push({
-        name: 'addSelect',
+        name: 'case_handle_addSelect',
         params: {
           fromSlide: true
         }

@@ -284,7 +284,7 @@
       reSelect() {
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.replace({
-          name: "addSelect",
+          name: "case_handle_addSelect",
         });
       },
       changOrganType() {
