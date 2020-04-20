@@ -511,6 +511,8 @@ export default {
           this.findPaymentVoucher(item, false);
         })
       }
+      this.changeStepPay()
+      this.changePerformance()
 
       //分期延期缴纳单选按钮默认不选，  选中后列表中展示分期延期缴纳罚款通知书 执行情况为催告时  列表中展示催告书
     },
