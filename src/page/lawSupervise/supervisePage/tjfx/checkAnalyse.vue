@@ -206,11 +206,17 @@ export default {
   inject: ["reload"],
   data() {
       let _this =this;
-    return {
-    pickerOptions:  {
-            onPick:  ({  maxDate,  minDate  })  =>  {
-                _this.$set(_this.timeList,0,minDate);
-                _this.$set(_this.timeList,1,minDate);
+      return {
+        pickerOptions:  {
+            onPick:  ({maxDate, minDate}) => {
+                if (minDate) {
+                    _this.$set(_this.timeList,0,minDate);
+                    _this.$set(_this.timeList,1,minDate);
+                }
+                if(maxDate) {
+                    //  _this.$set(_this.timeList,0,minDate);
+                    _this.$set(_this.timeList,1,maxDate);
+                }
             }
         },
       tabActiveIndex: '0',
@@ -279,19 +285,6 @@ export default {
 
       //   }
       // },
-
-      pickerOptions: {
-        //  shortcuts: [{
-        //   text: '确定',
-        //   onclick(picker) {
-        //     picker.$emit('pick', [_this.aa, _this.bb])
-        //   }
-        // }],
-        onPick: ({ maxDate, minDate }) => {
-          _this.$set(_this.timeList, 0, minDate);
-          _this.$set(_this.timeList, 1, minDate);
-        }
-      },
       aa: null,
       bb: null,
     }

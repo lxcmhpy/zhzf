@@ -49,7 +49,14 @@
                 </el-form-item>
                 <el-collapse-transition>
                     <div v-show="isShow" :class="{'ransition-box':true}">
+                        <el-form-item label="时间段">
+                            <el-date-picker style='width:240px'
+                                :picker-options="pickerOptions"
+                                v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期"
+                                :default-time="['00:00:00', '23:59:59']">
 
+                            </el-date-picker>
+                        </el-form-item>
                     </div>
                 </el-collapse-transition>
             </el-form>
@@ -298,7 +305,39 @@ import { mapGetters } from "vuex";
 export default {
   inject: ["reload"],
   data() {
+    let _this =this;
     return {
+        pickerOptions:  {
+            // shortcuts: [{
+            //     text: "确定",
+            //     onClick: function(picker) {
+            //         debugger;
+            //         picker.click();
+            //         // _this.$nextTick(function(){
+            //         //     document.getElementsByTagName('body')[0].onclick = function(){alert(1)};
+            //         //     document.getElementsByTagName('body')[0].click();
+            //         // })
+            //     }
+            // }],
+            onPick:  ({  maxDate,  minDate  })  =>  {
+                if (minDate) {
+                    let max = new Date(minDate);
+                    max.setHours(23);
+                    max.setMinutes(59);
+                    max.setSeconds(59);
+                    _this.$set(_this.timeList,0,minDate);
+                    _this.$set(_this.timeList,1,max);
+                }
+                if(maxDate) {
+                    let max = new Date(maxDate);
+                    max.setHours(23);
+                    max.setMinutes(59);
+                    max.setSeconds(59);
+                    //  _this.$set(_this.timeList,0,minDate);
+                    _this.$set(_this.timeList,1,max);
+                }
+            }
+        },
         yjVisible: false,
         vehicleColorList: null,
         cxlList: null,
@@ -344,8 +383,8 @@ export default {
   },
   methods: {
     search () {
-        this.form.checkStartTime = this.timeList[0];
-        this.form.checkEndTime = this.timeList[1];
+        this.form.checkStartTime = typeof this.timeList[0] == 'object' ? this.timeList[0].format('yyyy-MM-dd HH:mm:ss'): this.timeList[0];
+        this.form.checkEndTime = typeof this.timeList[1] == 'object' ?this.timeList[1].format('yyyy-MM-dd HH:mm:ss'): this.timeList[1];
         this.form.status = this.tabActiveValue;
         let _this = this;
         new Promise((resolve, reject) => {
