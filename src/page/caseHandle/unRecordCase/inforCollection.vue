@@ -70,7 +70,9 @@
             <el-form-item label="执法人员" id="lawPersonBox" prop="lawPersonListId">
               <!-- <el-input> -->
               <el-select v-model="lawPersonListId" multiple @remove-tag="removeLawPersontag">
-                <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加"></el-option>
+                <el-option v-for="item in alreadyChooseLawPerson" 
+                :key="item.id" :label="item.lawOfficerName" 
+                :value="item.id" :disabled="item.disabled" placeholder="请添加"></el-option>
               </el-select>
               <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
               <!-- </el-input> -->
@@ -387,14 +389,8 @@
         <p>超限信息</p>
         <div>
           <div class="itemBig">
-<<<<<<< HEAD
             <el-form-item label="检测站" class = "is-required">
               <el-select v-model="inforForm.otherInfo.checkStastions">
-=======
-            <el-form-item label="检测站">
-              <el-autocomplete style="width: 100%" v-model="inforForm.otherInfo.checkStastions" :fetch-suggestions="querySearch"></el-autocomplete>
-              <!--<el-select v-model="inforForm.otherInfo.checkStastions">
->>>>>>> 20def7be2952497249e0b94f1bc0b039166c720d
                 <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>-->
               <!-- <el-input v-model="inforForm.otherInfo.checkStastions"></el-input> -->
@@ -454,16 +450,10 @@
             </el-form-item>
           </div>
           <div class="itemThird">
-<<<<<<< HEAD
             <el-form-item label="车型"  class = "is-required">
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
                 <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label"
                            :value="item.value"></el-option>
-=======
-            <el-form-item label="车型">
-              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit">
-                <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
->>>>>>> 20def7be2952497249e0b94f1bc0b039166c720d
                 <!-- <el-option label="中置轴挂车列车"></el-option>
                 <el-option label="铰列车"></el-option>
                 <el-option label="全挂汽车列车"></el-option> -->
@@ -1024,9 +1014,11 @@ export default {
         );
     },
     removeLawPersontag(val) {
+      debugger
       console.log(val);
       if (this.currentUserLawId == val) {
         this.lawPersonListId.push(val);
+         this.$message('该执法人员不能删除！');
       }
     },
     //更改当事人类型
