@@ -2,7 +2,7 @@ import MainContent from '@/components/mainContent'
 import Layout from '@/page/lagout/mainLagout' //Layout 是架构组件，不在后台返回，在文件里单独引入
 export default [
   {
-    name: "xboot",
+    name: "sys_xboot",
     path: "/main",
     component: Layout,
     children: [

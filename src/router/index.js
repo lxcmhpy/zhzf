@@ -25,6 +25,7 @@ router.beforeEach((to, from, next) => {
     //   next({name: "case_handle_home_index"});
     this.$router.redirect("case_handle_home_index");
     } else {
+        // debugger;
       next();
     }
   } else {
