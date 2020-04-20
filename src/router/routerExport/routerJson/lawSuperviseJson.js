@@ -4,6 +4,10 @@ export default  [
         //可视化监管
         path: '/lawSupervise',
         name: 'lawSupervise1',
+        meta: {
+            title: "执法监管",
+            oneTab:true,
+        },
         component: MainContent,
         children: [{
              //执法监管

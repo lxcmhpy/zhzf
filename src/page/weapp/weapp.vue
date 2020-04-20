@@ -7,12 +7,12 @@
   export default {
     data() {
       return {
-        
+
       }
     },
     methods: {
       btnAddTab(){
-        
+
         let hasTab = false;
         this.$store.state.openTab.forEach(item=>{
           if(item.name=='xiangqing'){
@@ -23,9 +23,10 @@
         if(!hasTab){
           this.$store.dispatch("addTabs", {route: '', name: 'xiangqing',title:'详情'});
         }
-        this.$store.dispatch("setActiveIndex", 'xiangqing');
+        // this.$store.dispatch("setActiveIndex", 'xiangqing');
+          this.$store.commit('SET_ACTIVE_INDEX', 'xiangqing');
       }
-      
+
     }
   }
 </script>

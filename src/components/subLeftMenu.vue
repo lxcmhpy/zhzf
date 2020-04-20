@@ -26,14 +26,12 @@
   </div>
 </template>
 <script>
-  import Cookies from "@/common/js/cookies";
-  import iLocalStroage from "@/common/js/localStroage";
-
+import { mapGetters } from "vuex";
   export default {
     name: "backSubmenu",
     data() {
       return {
-        allMenuList: iLocalStroage.gets('menu'),
+        allMenuList: null,
         currentSlideMenu: [],
         isCollapse: false,
       };
@@ -41,12 +39,11 @@
     props: {
       selectedHeadMenu: String
     },
-    computed: {},
     methods: {
       //切换菜单
       changeMenu(key, keyPath) {
-         this.$store.dispatch("setActiveIndex", key);
-         this.$router.push({name: key});
+        this.$store.commit('SET_ACTIVE_INDEX_STO', key);
+        this.$router.push({name: key});
       },
       //展开菜单
       handleOpen(key, keyPath) {
@@ -62,23 +59,29 @@
 //      console.log(val);
         this.currentSlideMenu = [];
         let _this = this
-        this.allMenuList.forEach(item => {
-          if (item.name == val) {
-            if (item.children && item.children.length) {
-              item.children.forEach(item2 => {
-                _this.currentSlideMenu.push(item2);
-              })
+        for(let i =0;i<this.allMenuList.length;i++) {
+            let item = this.allMenuList[i];
+            if (item.path == val) {
+                if (item.children && item.children.length) {
+                    item.children.forEach(item2 => {
+                    _this.currentSlideMenu.push(item2);
+                })
+                }
             }
-          }
-        });
+        }
 //      console.log('currentSlideMenu',this.currentSlideMenu)
       }
     },
     mounted() {
+        this.allMenuList=this.menu;
+        // debugger;
+        this.getSlideMenu(this.selectedHeadMenu); //默认加载案件办理的二级菜单
       // console.log('selectedHeadMenu', this.selectedHeadMenu);
     },
     created() {
-      this.getSlideMenu(this.selectedHeadMenu); //默认加载案件办理的二级菜单
+    },
+    computed: {
+        ...mapGetters(['menu', 'activeIndexSto'])
     },
     watch: {
       selectedHeadMenu: function (val, oldVal) {

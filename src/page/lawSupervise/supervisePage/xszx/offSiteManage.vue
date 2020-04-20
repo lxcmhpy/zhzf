@@ -19,11 +19,11 @@
     </div>
     <div class="searchAndpageBox toggleBox">
         <div class="handlePart caseHandleSearchPart">
-            <el-form :inline="true" :model="form" label-width="80px"  ref="form">
-                <el-form-item label="检测站点">
+            <el-form :inline="true" :model="form" label-width="80px"  ref="offsiteManageform">
+                <el-form-item label="检测站点" prop="siteName">
                     <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
-                <el-form-item label="车牌号">
+                <el-form-item label="车牌号" prop="vehicleColor">
                     <el-select v-model="form.vehicleColor" placeholder="请选择">
                         <el-option
                         v-for="item in vehicleColorList"
@@ -33,128 +33,36 @@
                         ></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label=" " label-width="0px">
+                <el-form-item label=" " label-width="0px" prop="vehicleNumber">
                     <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
-                <el-form-item label="超限率">
+                <el-form-item label="超限率" prop="overload">
                             <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                  <el-collapse-transition>
+                    <el-select v-model="form.overload" placeholder="请选择">
+                        <el-option
+                        v-for="item in cxlList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.name"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-collapse-transition>
                     <div v-show="isShow" :class="{'ransition-box':true}">
-                        <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                         <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                         <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                         <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                         <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                         <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="过检时间" >
-                             <el-date-picker
-                                v-model="timeList"
-                                type="daterange"
-                                range-separator="—"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                format="yyyy-MM-dd"
-                                :default-time="['00:00:00', '23:59:59']"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期">
+                        <el-form-item label="时间段">
+                            <el-date-picker style='width:240px'
+                                :picker-options="pickerOptions"
+                                v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期"
+                                :default-time="['00:00:00', '23:59:59']">
+
                             </el-date-picker>
                         </el-form-item>
-                        <!-- <el-form-item label="处理状态">
-                            <el-select v-model="form.status" prop="type">
-                                <el-option
-                                v-for="item in processStatus"
-                                :key="item.value"
-                                :label="item.value"
-                                :value="item.value"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item> -->
                     </div>
                 </el-collapse-transition>
-
             </el-form>
-            <div class="float:right;">
+            <div class="search-btns">
                  <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
-                    <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
+                    <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset('offsiteManageform')"></el-button>
                     <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow" >
                     </el-button>
             </div>
@@ -397,7 +305,39 @@ import { mapGetters } from "vuex";
 export default {
   inject: ["reload"],
   data() {
+    let _this =this;
     return {
+        pickerOptions:  {
+            // shortcuts: [{
+            //     text: "确定",
+            //     onClick: function(picker) {
+            //         debugger;
+            //         picker.click();
+            //         // _this.$nextTick(function(){
+            //         //     document.getElementsByTagName('body')[0].onclick = function(){alert(1)};
+            //         //     document.getElementsByTagName('body')[0].click();
+            //         // })
+            //     }
+            // }],
+            onPick:  ({  maxDate,  minDate  })  =>  {
+                if (minDate) {
+                    let max = new Date(minDate);
+                    max.setHours(23);
+                    max.setMinutes(59);
+                    max.setSeconds(59);
+                    _this.$set(_this.timeList,0,minDate);
+                    _this.$set(_this.timeList,1,max);
+                }
+                if(maxDate) {
+                    let max = new Date(maxDate);
+                    max.setHours(23);
+                    max.setMinutes(59);
+                    max.setSeconds(59);
+                    //  _this.$set(_this.timeList,0,minDate);
+                    _this.$set(_this.timeList,1,max);
+                }
+            }
+        },
         yjVisible: false,
         vehicleColorList: null,
         cxlList: null,
@@ -443,8 +383,8 @@ export default {
   },
   methods: {
     search () {
-        this.form.checkStartTime = this.timeList[0];
-        this.form.checkEndTime = this.timeList[1];
+        this.form.checkStartTime = typeof this.timeList[0] == 'object' ? this.timeList[0].format('yyyy-MM-dd HH:mm:ss'): this.timeList[0];
+        this.form.checkEndTime = typeof this.timeList[1] == 'object' ?this.timeList[1].format('yyyy-MM-dd HH:mm:ss'): this.timeList[1];
         this.form.status = this.tabActiveValue;
         let _this = this;
         new Promise((resolve, reject) => {
@@ -476,8 +416,8 @@ export default {
             )
         })
     },
-    reset () {
-
+    reset (formName) {
+        this.$refs[formName].resetFields();
     },
     routerDetail (row) {
         this.$store.commit('setOffSiteManageId', row.id);

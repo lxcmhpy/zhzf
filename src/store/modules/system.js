@@ -17,13 +17,20 @@ import Cookies from "@/common/js/cookies";
 
 const system = {
     state: {
-
+        menu: '',
+        activeIndexSto: '',
+        headActiveNav:'case_handle_home_index', //当前选中的header
     },
     mutations: {
-
+        SET_MENU(state, data) {
+            state.menu = data;
+        },
+        //设置选中的tab
+        SET_ACTIVE_INDEX_STO (state, data) {
+            state.activeIndexSto = data;
+        }
     },
     actions: {
-
         //获取验证码
         getCaptcha() {
             return new Promise((resolve, reject) => {
@@ -120,14 +127,6 @@ const system = {
         deleteAllTabs({ commit }) {
             commit(types.DELETE_ALLTABS);
         },
-        //设置选中的tab
-        setActiveIndex({ commit }, data) {
-            commit(types.SET_ACTIVE_INDEX, data);
-        },
-
-
-
-
         addWhiteList({ commit }, val) {
             commit(types.SET_WHITELIST, val);
         },
