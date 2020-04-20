@@ -7,7 +7,6 @@ const state = {
         loadingTime:'',//加载load记录时间
         loadingType:'', //loading 类型
         authToken: "", //token值
-        headActiveNav:'xboot', //当前选中的header
         activeSlideMenu:"",  //当前选中的侧边栏菜单
         openTab:[{name:'case_handle_home_index',title:'首页',route:'/index'}],//tabs所有打开的路由
         activeIndex:'', //tab激活状态
@@ -19,6 +18,7 @@ const state = {
         whiteList:[],  //白名单
         imgIp:'',  //图片的地址
         listPage:''   //当前page
+
 };
 
 export default state;

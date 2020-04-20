@@ -53,6 +53,9 @@ const mutations = {
   [types.SET_ACTIVE_INDEX](state, name) {
     state.activeIndex = name;
   },
+  [types.SET_ACTIVE_INDEX_STO](state, name) {
+    state.activeIndexSto = name;
+  },
   setHeadActiveNav(state,name){
     state.headActiveNav = name;
   },

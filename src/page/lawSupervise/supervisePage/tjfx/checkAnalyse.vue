@@ -27,12 +27,6 @@
               <el-time-picker is-range v-model="form.timeArea" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围" format="HH:mm" style='width:200px'>
               </el-time-picker>
             </el-form-item>
-            <el-form-item label=" " label-width="13px">
-              <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
-              <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
-              <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
-              </el-button>
-            </el-form-item>
             <el-collapse-transition>
               <div v-show="isShow" :class="{'ransition-box':true}">
                 <el-form-item label="车牌号">
@@ -55,6 +49,12 @@
               </div>
             </el-collapse-transition>
           </el-form>
+          <div class="search-btns">
+               <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
+              <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
+              <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
+              </el-button>
+          </div>
         </div>
         <div class="handlePart" style="margin-left: 0px;">
           <el-button type="primary" size="medium">

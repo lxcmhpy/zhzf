@@ -5,6 +5,12 @@
         position: relative;
         padding: 0px 7px;
         display: flex;
+        .el-form {
+            flex:1;
+        }
+        .search-btns {
+            width:200px;
+        }
     }
     .el-input,.el-select {
         width: 130px;

@@ -32,18 +32,6 @@
               <el-date-picker size="small" v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label=" " label-width="13px">
-              <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
-              <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
-              <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
-              </el-button>
-              <!-- <a href="javascript:void(0)" @click="routerDetail">
-                        详情
-                    </a>
-                    <a href="javascript:void(0)" @click="routerEvidenceDetail">
-                        证据
-                    </a> -->
-            </el-form-item>
             <el-collapse-transition>
               <div v-show="isShow" :class="{'ransition-box':true}">
                 <el-form-item label="检测站点">
@@ -57,6 +45,12 @@
               </div>
             </el-collapse-transition>
           </el-form>
+          <div class="search-btns">
+              <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
+              <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
+              <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
+              </el-button>
+          </div>
         </div>
         <!-- <div class="handlePart" style="margin-left: 0px;">
           <el-button type="primary" size="medium">
