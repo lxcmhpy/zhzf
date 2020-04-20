@@ -211,35 +211,15 @@ util.timestampToDay2 = function(val) {
   return newDate.format("yyyy-MM-dd hh:mm");
 };
 
-/**
- * 转换时间格式
- * @param timeStamp 时间戳
- * @returns daytime  格式'dd/MM/yyyy'
- */
-util.dayFormat = function(timeStamp) {
-  // var date = new Date();
-  // date.setTime(timeStamp * 1000);
-  // return date.format("dd/MM/yyyy");
-  let timeZone = parseInt(Cookies.get("timeZone"));
-  let date = util.getLocalTime(timeStamp * 1000, timeZone);
-  var date2 = new Date();
-  date2.setTime(timeStamp * 1000);
-  return date.format("dd/MM/yyyy");
-};
 
-/**
- * 转换时间格式
- * @param timeStamp 时间戳
- * @returns daytime  格式'hh:mm:ss'
- */
-util.timeFormat = function(timeStamp) {
-  // var date = new Date();
-  // date.setTime(timeStamp * 1000);
-  // return date.format("HH:mm:ss");
-  let timeZone = parseInt(Cookies.get("timeZone"));
-  let date = util.getLocalTime(timeStamp * 1000, timeZone);
-  return date.format("HH:mm:ss");
-};
+
+
+
+
+
+
+
+
 
 // 首字母大写  处理字符串    用法：$util.uppercase(name)
 util.uppercase = function(str) {

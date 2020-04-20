@@ -97,7 +97,7 @@ export default {
       // collapsed: false,
       // avatar: Cookies.get("avatar")
       userInfo: iLocalStroage.gets('userInfo'),
-      selectedHeadMenu: 'caseHandle'   //接收headMenu传来的选中的一级菜单
+      selectedHeadMenu: 'case_handle_home_index'   //接收headMenu传来的选中的一级菜单
     };
   },
   components: {
@@ -137,6 +137,7 @@ export default {
     },
 
     getSelectHeadMenu(name) {
+        debugger;
       this.selectedHeadMenu = name;
     }
 
