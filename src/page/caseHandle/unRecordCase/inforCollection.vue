@@ -1742,12 +1742,7 @@ export default {
       this.showOverrun = true
       return
     }
-    // 鼠标滚动
-    this.$refs.link_1.addEventListener('scroll', this.scrool1);
-    this.$refs.link_2.addEventListener('scroll', this.scrool2);
-    this.$refs.link_3.addEventListener('scroll', this.scrool3);
-    this.$refs.link_4.addEventListener('scroll', this.scrool4);
-    this.$refs.link_5.addEventListener('scroll', this.scrool5);
+
 
     let someCaseInfo = iLocalStroage.gets("someCaseInfo");
     console.log(someCaseInfo);
@@ -1767,6 +1762,19 @@ export default {
     this.driverOrAgentInfo.relationWithParty = '1';
     this.inforForm.otherInfo.checkResult = '1'
     this.inforForm.trailerColor = '1'
+
+    // 鼠标滚动
+    this.$refs.link_1.addEventListener('scroll', this.scrool1);
+    this.$refs.link_2.addEventListener('scroll', this.scrool2);
+    this.$refs.link_3.addEventListener('scroll', this.scrool3);
+    if (this.showOverrun) {
+       this.$nextTick(() => {
+      this.$refs.link_4.addEventListener('scroll', this.scrool4);
+
+       })
+
+    }
+    this.$refs.link_5.addEventListener('scroll', this.scrool5);
 
   },
   created() {
