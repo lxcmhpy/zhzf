@@ -116,7 +116,7 @@ export default {
       if(this.nextStepFlag){
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.replace({
-        name: "addCopyTwo",
+        name: "case_handle_addCopyTwo",
         params: {
             caseData:this.caseData
          }

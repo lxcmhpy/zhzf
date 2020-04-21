@@ -101,7 +101,7 @@
             <el-form-item label="执法人员" id="lawPersonBox" prop="lawPersonListId">
               <!-- <el-input> -->
               <el-select v-model="lawPersonListId" multiple @remove-tag="removeLawPersontag">
-                <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加"></el-option>
+                <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
               <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
               <!-- </el-input> -->
@@ -971,7 +971,7 @@ export default {
       autoSava: true, //自动暂存
       allTrailerTypeType: [], //挂车类型,
       //案发地点标志
-      afddFlag:false 
+      afddFlag:false,
 
     };
   },

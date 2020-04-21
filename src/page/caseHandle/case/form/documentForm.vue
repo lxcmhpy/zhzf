@@ -209,7 +209,7 @@ import {
               };
               debugger
               this.$store.dispatch("deleteTabs", this.$route.name);
-              this.$router.push({ name: "myPDF", params: routerData });
+              this.$router.push({ name: "case_handle_myPDF", params: routerData });
             },
         },
         mounted() {

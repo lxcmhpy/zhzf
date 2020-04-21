@@ -34,7 +34,7 @@
             </el-col>
             <el-col :span="17">
               <el-form-item prop="organMb">
-                <el-input :disabled=" caseData.organType ? false : true " v-model="caseData.organMb"
+                <el-input :disabled=" caseData.organType ? false : true " v-model="caseData.organMb" @input='changeInput'
                           v-if="caseData.organType!='执法机构'"></el-input>
                 <div v-if="caseData.organType=='执法机构'" @click="visibleOrgan = true">
                   <el-input disabled v-model="caseData.organMb" @input='changeInput'
@@ -113,7 +113,7 @@
               </el-col>
               <el-col :span="19">
                 <el-form-item :prop="caseData.copyReason == '其他原因' ? 'otherReason' :''">
-                  <el-input v-model="caseData.otherReason" @input='changeInput'
+                  <el-input v-model="otherReason" @input='changeInput'
                             :disabled="caseData.copyReason == '其他原因' ? false :true"></el-input>
                 </el-form-item>
               </el-col>
@@ -231,6 +231,7 @@
           notes: '',
           // createTime: new Date()
         },
+        otherReason: '',
         checkAll: false,
         checkAll2: false,
         checkedFiles: [],
@@ -529,8 +530,11 @@
       },
       // 原因变化
       changeReason() {
-        console.log('reson')
-        this.caseData.otherReason = "";
+        console.log('reson',this.caseData.copyReason)
+        if(this.caseData.copyReason!='其他原因'){
+        this.otherReason='';
+
+        }
       },
       changeInput(){
         this.$forceUpdate()

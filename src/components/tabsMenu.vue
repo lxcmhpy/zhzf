@@ -71,7 +71,7 @@ export default {
       for (let i = 0; i < this.openTab.length; i++) {
         //下一个路由已经在tab中，是案件的话替换tab title
         if ( (to.name == this.openTab[i].name) || (to.meta.oneTab && this.openTab[i].isCase)) {
-            debugger;
+            // debugger;
         //   this.$store.dispatch("setActiveIndex", this.openTab[i].name); //设置active tab
         this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[i].name);
           if (this.openTab[i].isCase) {
@@ -106,7 +106,7 @@ export default {
       //     break;
       //   }
       // }
-      debugger;
+      // debugger;
       if (!flag) {
         let tabTitle = "";
         let isCase = false;

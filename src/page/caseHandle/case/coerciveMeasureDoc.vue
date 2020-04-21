@@ -388,7 +388,7 @@ export default {
         hasBack: true,
       }
       this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: 'myPDF', params: routerData })
+      this.$router.push({ name: 'case_handle_myPDF', params: routerData })
     },
     //清空文书
     delDocDataByDocId(data){
