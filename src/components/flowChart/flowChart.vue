@@ -55,6 +55,7 @@ export default {
       showREBtn:false,
       measureDate:"",
       alReadyFinishCoerciveM:false, //解除（延长）强制措施已完成
+      measureDateEndTime:'', //解除（延长）强制措施截止时间
     }
   },
   mixins:[mixinGetCaseApiList],
@@ -638,7 +639,7 @@ export default {
     //解除或延长强制措施跳转
     showRemoveOrExtend(){
       this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({name:'removeOrPrelong'})
+      this.$router.push({name:'case_handle_removeOrPrelong'})
     },
     //显示解除或延长强制措施按钮
     showRemoveOrExtendBtn(link){
@@ -666,15 +667,18 @@ export default {
           console.log('获取强制措施时间',res);
           let formData= JSON.parse(res.data.formData);
           console.log('formData',formData);
+          
           let measureStartDate = new Date(formData.measureStartDate);
           let Y = measureStartDate.getFullYear() + '-';
           let M = measureStartDate.getMonth() + 1 < 10 ? '0' + (measureStartDate.getMonth() + 1) + '-' : measureStartDate.getMonth() + 1 + '-';
           let D = measureStartDate.getDate() < 10 ? '0' + measureStartDate.getDate() + ' ' : measureStartDate.getDate() + ' ';
           let startData = Y + M + D;
+
           let measureEndDate = new Date(formData.measureEndDate);
+          this.measureDateEndTime = formData.measureEndDate;
           let y = measureEndDate.getFullYear() + '-';
-          let m = measureEndDate.getMonth() + 1 < 10 ? '0' + (measureEndDate.getMonth() + 1) + '-' : measureStartDate.getMonth() + 1 + '-';
-          let d = measureEndDate.getDate() < 10 ? '0' + measureEndDate.getDate() + ' ' : measureStartDate.getDate() + ' ';
+          let m = measureEndDate.getMonth() + 1 < 10 ? '0' + (measureEndDate.getMonth() + 1) + '-' : measureEndDate.getMonth() + 1 + '-';
+          let d = measureEndDate.getDate() < 10 ? '0' + measureEndDate.getDate() + ' ' : measureEndDate.getDate() + ' ';
           let endDate = y + m + d;
           this.measureDate = startData + " 至 "+ endDate;
 

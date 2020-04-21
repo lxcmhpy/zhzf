@@ -126,7 +126,7 @@
 
 <script>
 
-// import { mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import Cookies from "@/common/js/cookies";
 import iLocalStroage from "@/common/js/localStroage";
 import { drawCodeImage } from "@/api/login";
@@ -183,7 +183,7 @@ export default {
       weChatFlag: false,
       resetFlag: false,
       timeOutFlag: "",
-      menuList: menuList
+      menuList: null
     };
   },
   methods: {
@@ -289,7 +289,9 @@ export default {
         res => {
 //            debugger
           _this.menuList = [...res.data, ...menuList];
-          iLocalStroage.sets('menu', _this.menuList);
+          _this.$store.commit("SET_MENU", _this.menuList);
+          debugger;
+          _this.$store.commit('set_Head_Active_Nav',"case_handle_home_index");
           _this.$router.push({ name: "case_handle_home_index" });
         },
         err => {

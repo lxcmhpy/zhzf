@@ -19,11 +19,11 @@
     </div>
     <div class="searchAndpageBox toggleBox">
         <div class="handlePart caseHandleSearchPart">
-            <el-form :inline="true" :model="form" label-width="80px"  ref="form">
-                <el-form-item label="检测站点">
+            <el-form :inline="true" :model="form" label-width="80px"  ref="offsiteManageform">
+                <el-form-item label="检测站点" prop="siteName">
                     <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
-                <el-form-item label="车牌号">
+                <el-form-item label="车牌号" prop="vehicleColor">
                     <el-select v-model="form.vehicleColor" placeholder="请选择">
                         <el-option
                         v-for="item in vehicleColorList"
@@ -33,134 +33,42 @@
                         ></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label=" " label-width="0px">
+                <el-form-item label=" " label-width="0px" prop="vehicleNumber">
                     <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
-                <el-form-item label="超限率">
+                <el-form-item label="超限率" prop="overload">
                             <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                  <el-collapse-transition>
+                    <el-select v-model="form.overload" placeholder="请选择">
+                        <el-option
+                        v-for="item in cxlList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.name"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-collapse-transition>
                     <div v-show="isShow" :class="{'ransition-box':true}">
-                        <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                         <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                         <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                         <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                         <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                         <el-form-item label="超限率">
-                            <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-                            <el-select v-model="form.overload" placeholder="请选择">
-                                <el-option
-                                v-for="item in cxlList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="过检时间" >
-                             <el-date-picker
-                                v-model="timeList"
-                                type="daterange"
-                                range-separator="—"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                format="yyyy-MM-dd"
-                                :default-time="['00:00:00', '23:59:59']"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期">
+                        <el-form-item label="时间段">
+                            <el-date-picker style='width:240px'
+                                :picker-options="pickerOptions"
+                                v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期"
+                                :default-time="['00:00:00', '23:59:59']">
+
                             </el-date-picker>
                         </el-form-item>
-                        <!-- <el-form-item label="处理状态">
-                            <el-select v-model="form.status" prop="type">
-                                <el-option
-                                v-for="item in processStatus"
-                                :key="item.value"
-                                :label="item.value"
-                                :value="item.value"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item> -->
                     </div>
                 </el-collapse-transition>
-
             </el-form>
-            <div class="float:right;">
+            <div class="search-btns">
                  <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
-                    <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset"></el-button>
+                    <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset('offsiteManageform')"></el-button>
                     <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow" >
                     </el-button>
             </div>
         </div>
         <div class="handlePart" style="margin-left: 0px;">
-            <el-button type="primary" size="medium" @click="yjVisible=true">
+            <el-button type="primary" size="medium" @click="getAllOrganDialog()">
                 <i class="iconfont law-submit-o f12"></i> 预警推送
             </el-button>
              <el-button v-if="tabActiveValue == '已审核'" type="primary" size="medium" @click="routerTransferManage">
@@ -177,11 +85,37 @@
                                     执法机构
                                 </td>
                                 <td>
-                                    <el-select v-model="form.lane" placeholder="请选择执法机构">
-                                        <el-option :value="0" label="无效线索类型1"></el-option>
-                                        <el-option :value="1" label="无效线索类型2"></el-option>
-                                    </el-select>
-                                </td>
+                                     <el-popover
+                                        placement="bottom"
+                                          trigger="click"
+                                       >
+                                       <div class="departOrUserTree" style="width:426px">
+                                            <div class="treeBox">
+                                                <el-tree
+                                                class="filter-tree"
+                                                :data="organData"
+                                                :props="defaultProps"
+                                                node-key="id"
+                                                :filter-node-method="filterNode"
+                                                :default-expanded-keys="defaultExpandedKeys"
+                                                @node-expand="nodeExpand"
+                                                ref="tree"
+                                                @node-click="handleNodeClick1"
+                                                >
+                                                <span class="custom-tree-node" slot-scope="{ node,data }">
+                                                    <span>
+                                                    <i
+                                                        :class="data.children && data.children.length>0 ? 'iconfont law-icon_shou_bag' : ''"
+                                                    ></i>
+                                                    <span :class="data.children ? '' : 'hasMarginLeft'">{{ node.label }}</span>
+                                                    </span>
+                                                </span>
+                                                </el-tree>
+                                            </div>
+                                        </div>
+                                        <el-input v-model="form.lane" style="width:100%" slot="reference" placeholder="请选择执法机构"></el-input>
+                                    </el-popover>
+                                    </td>
                             </tr>
                             <tr>
                                 <td class="color_ff w-1">
@@ -190,7 +124,7 @@
                                 <td width="260px">
                                     <el-input
                                             type="textarea"
-                                            :rows="4"
+                                            :rows="2"
                                             placeholder="请输入内容"
                                             v-model="form.load">
                                     </el-input>
@@ -202,7 +136,7 @@
                     </div>
                     <div class="tablePart">
                         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
-                            <el-table-column type="selection" width="55" align="center"></el-table-column>
+                            <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
                             <el-table-column prop="checkTime" label="检测时间" align="center" width="100"></el-table-column>
                             <el-table-column prop="organName" label="执法点" align="center"></el-table-column>
                             <el-table-column prop="lane" label="车牌号" align="center"></el-table-column>
@@ -227,7 +161,7 @@
                 <el-table-column prop="lane" label="车道" align="center"></el-table-column>
                 <el-table-column label="车牌号" align="center"  width="120">
                     <template slot-scope="scope">
-                        <div :class="vehicleColorObj[scope.row.vehicleColor]">
+                        <div class="otherColor" :class="vehicleColorObj[scope.row.vehicleColor]">
                             <div class="border">
                                 {{scope.row.vehicleNumber}}
                             </div>
@@ -292,6 +226,14 @@
 }
 div.el-form-item{
     float:left;
+}
+.otherColor {
+    width:100%;
+    height: 100%;
+    border: 1px solid #101010;
+    line-height: 30px;
+    padding: 7px;
+    box-sizing: border-box;
 }
 .vehicle-black {
     width:100%;
@@ -397,7 +339,46 @@ import { mapGetters } from "vuex";
 export default {
   inject: ["reload"],
   data() {
+    let _this =this;
     return {
+        selectCurrentTreeName: "",
+        defaultExpandedKeys: [],
+        organData: [],
+        defaultProps: {
+            children: "children",
+            label: "label"
+        },
+        pickerOptions:  {
+            // shortcuts: [{
+            //     text: "确定",
+            //     onClick: function(picker) {
+            //         debugger;
+            //         picker.click();
+            //         // _this.$nextTick(function(){
+            //         //     document.getElementsByTagName('body')[0].onclick = function(){alert(1)};
+            //         //     document.getElementsByTagName('body')[0].click();
+            //         // })
+            //     }
+            // }],
+            onPick:  ({  maxDate,  minDate  })  =>  {
+                if (minDate) {
+                    let max = new Date(minDate);
+                    max.setHours(23);
+                    max.setMinutes(59);
+                    max.setSeconds(59);
+                    _this.$set(_this.timeList,0,minDate);
+                    _this.$set(_this.timeList,1,max);
+                }
+                if(maxDate) {
+                    let max = new Date(maxDate);
+                    max.setHours(23);
+                    max.setMinutes(59);
+                    max.setSeconds(59);
+                    //  _this.$set(_this.timeList,0,minDate);
+                    _this.$set(_this.timeList,1,max);
+                }
+            }
+        },
         yjVisible: false,
         vehicleColorList: null,
         cxlList: null,
@@ -410,23 +391,24 @@ export default {
             status: '',
             current: 1, //当前页
             size: 10, //每页显示条数
+            lane: ''
             // checkEndTime: '',
             // checkStartTime: ''
         },
         total: 0, // 总条数
         timeList: ['',''],
         processStatus: [{
-            value: '无效信息'
-        }, {
             value: '待审核'
         }, {
             value: '审核中'
         }, {
+            value: '已审核'
+        }, {
             value: '已转办'
         }, {
-            value: '已审核'
+            value: '无效信息'
         }],
-        tabActiveValue: '无效信息',
+        tabActiveValue: '待审核',
         isShow: false,
         tableData: [],
         vehicleColorObj: {
@@ -442,9 +424,58 @@ export default {
     }
   },
   methods: {
+    handleNodeClick1(data) {
+        debugger;
+      console.log(data);
+    //   this.selectCurrentTreeName = data.label;
+    //   this.currentOrganId = data.id;
+      this.form.lane = data.label;
+    //   this.getSelectOrgan(this.currentOrganId);
+    },
+    getAllOrgan(organId) {
+      let _this = this
+      this.$store.dispatch("getAllOrgan").then(
+        res => {
+          _this.defaultExpandedKeys.push(res.data[0].id);
+          _this.selectCurrentTreeName = _this.selectCurrentTreeName
+            ? _this.selectCurrentTreeName
+            : res.data[0].label;
+          if (res.data[0].children && res.data[0].children.length > 0) {
+            res.data[0].children.forEach(item => {
+              _this.defaultExpandedKeys.push(item.id);
+            });
+          }
+          _this.organData = res.data;
+          console.log(_this.defaultExpandedKeys);
+          console.log(_this.organData);
+          if (organId == "root") {
+            _this.currentOrganId = res.data[0].id;
+          } else {
+            _this.currentOrganId = organId;
+          }
+          _this.getSelectOrgan();
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    getAllOrganDialog () {
+        this.getAllOrgan('root');
+        this.yjVisible=true;
+    },
+    nodeExpand(data, node, jq) {
+      console.log(data);
+      console.log(node);
+      console.log(jq);
+    },
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
     search () {
-        this.form.checkStartTime = this.timeList[0];
-        this.form.checkEndTime = this.timeList[1];
+        this.form.checkStartTime = typeof this.timeList[0] == 'object' ? this.timeList[0].format('yyyy-MM-dd HH:mm:ss'): this.timeList[0];
+        this.form.checkEndTime = typeof this.timeList[1] == 'object' ?this.timeList[1].format('yyyy-MM-dd HH:mm:ss'): this.timeList[1];
         this.form.status = this.tabActiveValue;
         let _this = this;
         new Promise((resolve, reject) => {
@@ -476,8 +507,8 @@ export default {
             )
         })
     },
-    reset () {
-
+    reset (formName) {
+        this.$refs[formName].resetFields();
     },
     routerDetail (row) {
         this.$store.commit('setOffSiteManageId', row.id);
@@ -553,6 +584,7 @@ export default {
     this.search();
     this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
     this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'vehicleColorList');
+
   },
   mounted () {
 

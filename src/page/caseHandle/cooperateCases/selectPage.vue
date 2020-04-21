@@ -135,7 +135,7 @@
       nextStep() {
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.replace({
-          name: "addTransfer",
+          name: "case_handle_addTransfer",
           params: {
             caseData: this.caseData
           }

@@ -8,6 +8,9 @@
                     <span class="titleflag">
                     </span>
                     <span class="title">转办说明</span>
+                    <el-button type="button" class="submitBtn blueBtn"  style="position:absolute;right:-100px;top: 130px;">
+                        <div>查 看</div>
+                    </el-button>
                 </div>
                 <table class="table_style" v-if="obj">
                     <tr>
@@ -29,6 +32,7 @@
                         <td></td>
                     </tr>
                 </table>
+
             </div>
         </div>
         <xszxDetailView v-if="obj" :obj="obj"></xszxDetailView>
@@ -50,6 +54,8 @@
             </div>
         </div>
     </div>
+    <span class="transferDetail">已转办</span>
+
     <!-- <btns></btns> -->
 </div>
 </template>

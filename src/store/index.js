@@ -71,7 +71,8 @@ const store = new Vuex.Store({
                 supervise: val.supervise,
                 caseHandle: val.caseHandle,
                 openTab: val.openTab,
-                phoneVideo: val.phoneVideo
+                phoneVideo: val.phoneVideo,
+                system: val.system,
             }
         }
     })],

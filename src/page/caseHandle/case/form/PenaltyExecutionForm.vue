@@ -24,7 +24,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="punishType" label="处罚类型">
-                  <el-input ref="punishType" clearable class="w-120" v-model="formData.punishType" size="small" placeholder="-"  disabled></el-input>
+                  <el-input ref="punishType" clearable class="w-120" v-model="formData.punishType" size="small" placeholder="-" disabled></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -85,7 +85,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="performance" label="执行情况">
-                  <el-select v-model="formData.performance">
+                  <el-select v-model="formData.performance" @change="changePerformance">
                     <el-option label="未完成" value="未完成"></el-option>
                     <el-option label="已完成" value="已完成"></el-option>
                     <el-option label="催告" value="催告"></el-option>
@@ -95,7 +95,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="checkbox">
-                  <el-checkbox v-model="formData.stepPay"></el-checkbox> 分期（延期）缴纳
+                  <el-checkbox v-model="formData.stepPay" @change='changeStepPay'></el-checkbox> 分期（延期）缴纳
                 </el-form-item>
               </div>
             </div>
@@ -311,6 +311,7 @@ export default {
         status: ""
       },
       docTableDatas: [],
+      docTableDatasSave: [],
       rules: {
         paidAmount: [
           { validator: validatePaid, trigger: 'blur' }
@@ -323,7 +324,7 @@ export default {
       needDealData: true,
       docTableDatasCopy: [],
       allAskDocList: [],  //分期延期
-      unfinishFlag: '',
+      unfinishFlag: [],
       isfinishFlag: true,
       finishDocCount: 0,//完成文书数
       allDocCount: 0,
@@ -351,14 +352,14 @@ export default {
     },
     // 判断文书是否完成
     isComplete() {
-      this.unfinishFlag = '';
-      console.log('分期延期:', this.formData.stepPay, '，催告：', this.formData.performance)
+      // this.unfinishFlag = [];
+      // console.log('分期延期:', this.formData.stepPay, '，催告：', this.formData.performance)
       if (this.formData.stepPay) {
         // 分期延期缴纳通知书必做
-        console.log(this.allAskDocList)
+        // console.log(this.allAskDocList)
         let flag = true
         if (this.allAskDocList.length == 0) {
-          this.unfinishFlag = '分期（延期）缴纳罚款通知书';
+          // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
           flag = false;
           return false;
         }
@@ -366,11 +367,11 @@ export default {
           this.allAskDocList.forEach(element => {
             if (element.name == '分期（延期）缴纳罚款通知书【2016】') {
               console.log('element.name', element.status)
-              this.unfinishFlag = '分期（延期）缴纳罚款通知书';
-              console.log('lement.status,element.status', element.status)
+              // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
+              // console.log('lement.status,element.status', element.status)
               if (element.status != 1) {
-                this.unfinishFlag = '分期（延期）缴纳罚款通知书';
-                console.log('执行')
+                // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
+                // console.log('执行')
                 let caseData = {}
                 this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
                 flag = false;
@@ -386,7 +387,7 @@ export default {
       }
     },
     isComplete2() {
-      this.unfinishFlag = '';
+      this.unfinishFlag = [];
       console.log('分期延期:', this.formData.stepPay, '，催告：', this.formData.performance)
       if (this.formData.performance == '催告') {
         // 催告书必做
@@ -395,8 +396,8 @@ export default {
         this.docTableDatas.forEach(element => {
           if (element.name == '催告书') {
             if (element.status != 1) {
-              this.unfinishFlag = ' 催告书';
-              console.log('this.unfinishFlag', this.unfinishFlag)
+              // this.unfinishFlag = [' 催告书'];
+              // console.log('this.unfinishFlag', this.unfinishFlag)
               let caseData = {}
               this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
 
@@ -414,10 +415,14 @@ export default {
     },
     //下一环节
     continueHandle() {
-      console.log('this.unfinishFlag', this.unfinishFlag)
-      console.log('分期文书', this.isComplete())
-      console.log('催告书', this.isComplete2())
-      console.log('this.unfinishFlag', this.unfinishFlag)
+      this.unfinishFlag = []
+       let unfinishFlag = []
+      if (this.isComplete() == false) {
+        unfinishFlag.push('分期（延期）缴纳罚款通知书')
+      }
+      if (this.isComplete2() == false) {
+        unfinishFlag.push('催告书')
+      }
       let caseData = {
         caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
@@ -427,11 +432,7 @@ export default {
         this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
       }
       else {
-        // this.$message({ message: '请完成对应文书', type: 'error' });
-        console.log(this.unfinishFlag)
-        let unfinishFlag = this.unfinishFlag || ""
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
-
       }
     },
     // 进入文书
@@ -483,7 +484,7 @@ export default {
       };
       console.log('routerData,routerData', routerData)
       this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: "myPDF", params: routerData });
+      this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
     //执行方式
     changePayWay(val) {
@@ -496,7 +497,7 @@ export default {
       }
     },
     getDataAfter() {
-      console.log('this.formData.tempPunishAmount',this.formData.tempPunishAmount)
+      console.log('this.formData.tempPunishAmount', this.formData.tempPunishAmount)
       if (this.formData.tempPunishAmount) {
         this.formData.paidAmount = this.formData.paidAmount ? this.formData.paidAmount : 0;
       }
@@ -510,6 +511,8 @@ export default {
           this.findPaymentVoucher(item, false);
         })
       }
+      this.changeStepPay()
+      this.changePerformance()
 
       //分期延期缴纳单选按钮默认不选，  选中后列表中展示分期延期缴纳罚款通知书 执行情况为催告时  列表中展示催告书
     },
@@ -581,10 +584,9 @@ export default {
       }
     },
     setMoreDocTableTitle() {
-      console.log("djhafiufh执行方法")
       this.docTableDatas = [];
       this.allAskDocList = [];
-      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, url: "payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001", note: '' });
+      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, url: "case_handle_payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001", note: '' });
 
       this.docTableDatasCopy.forEach(item => {
         console.log('名字啊啊啊', item.name)
@@ -603,8 +605,13 @@ export default {
         }
       });
       this.allDocCount = this.allAskDocList.length
-      console.log('this.docTableDatas', this.docTableDatas)
-      console.log('this.allAskDocList', this.allAskDocList)
+      // console.log('this.docTableDatas', this.docTableDatas)
+      // console.log('this.allAskDocList', this.allAskDocList)
+
+      this.docTableDatasSave = this.docTableDatas
+      this.docTableDatas = []
+      this.changeStepPay()
+      this.changePerformance()
     },
     //通过案件ID和文书ID查询附件
     findFileList() {
@@ -652,13 +659,40 @@ export default {
       //   if (this.formData.toPayAmount == 0) {
       //     this.formData.performance = '已完成'
       //   }
-    }
+    },
+    // 分期延期缴纳
+    changeStepPay() {
+      console.log('分期延期缴纳')
+      this.docTableDatas = []
+      if (this.formData.stepPay == true) {
+        this.docTableDatas.push(this.docTableDatasSave[0])
+      }
+      console.log('this.docTableDatas', this.docTableDatas)
+      if (this.formData.performance == '催告') {
+        this.docTableDatas.push(this.docTableDatasSave[1])
+      }
+
+    },
+    // 催告
+    changePerformance() {
+      console.log('催告', this.formData.performance)
+      this.docTableDatas = []
+
+      console.log('this.docTableDatas', this.docTableDatas)
+      if (this.formData.stepPay == true) {
+        this.docTableDatas.push(this.docTableDatasSave[0])
+      }
+      if (this.formData.performance == '催告') {
+        this.docTableDatas.push(this.docTableDatasSave[1])
+      }
+    },
   },
 
 
   mounted() {
     // this.getCaseBasicInfo();
     this.findIsOrder()
+
   },
   created() {
     //获取表单数据

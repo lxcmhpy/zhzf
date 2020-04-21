@@ -116,30 +116,30 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status === '1'">
+                  <span v-if="scope.row.status == '1'">
                     已完成
                   </span>
-                  <span v-if="scope.row.status === '0'">
+                  <span v-if="scope.row.status == '0'">
                     未完成
                   </span>
-                  <span v-if="scope.row.status === ''">
+                  <span v-if="scope.row.status == ''">
                     -
                   </span>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status === '1'" class="tableHandelcase">
+                  <span v-if="scope.row.status == '1'" class="tableHandelcase">
                     <!-- 已完成 -->
                     <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
                     <i class="iconfont law-print"></i>
                   </span>
-                  <span v-if="scope.row.status === '0'" class="tableHandelcase">
+                  <span v-if="scope.row.status == '0'" class="tableHandelcase">
                     <!-- 未完成 -->
                     <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
                     <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
                   </span>
-                  <span v-if="scope.row.status === ''" class="tableHandelcase">
+                  <span v-if="scope.row.status == ''" class="tableHandelcase">
                     <!-- 无状态 -->
                     <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
                   </span>
@@ -336,7 +336,7 @@
           hasBack: true,
         }
         this.$store.dispatch("deleteTabs", this.$route.name);
-        this.$router.push({name: 'myPDF', params: routerData})
+        this.$router.push({name: 'case_handle_myPDF', params: routerData})
       },
       //通过案件id和表单类型Id查询已绑定文书
       getDocListByCaseIdAndFormId() {

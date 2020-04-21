@@ -181,7 +181,21 @@
             color           : #20232B;
             border          : 1px 0 solid #DCDFE6;
             border-radius   : 0;
-            padding         : 0 20px;
+            padding         : 0 8px;
+            .el-input__inner {
+                width: 100%;
+                padding:0px;
+                right: 0px;
+                line-height: 20px;
+            }
+            .el-select {
+                height: 30px;
+                margin:0px;
+            }
+            .el-input__icon {
+                width:8px;
+                line-height: 30px;
+            }
         }
 
         .el-input-group__prepend {
@@ -469,7 +483,7 @@
 
     .title-text {
         font-size  : 18px;
-        font-weight: 500;
+        font-weight: bold;
         color      : rgba(32, 35, 43, 1);
         line-height: 25px;
     }
@@ -842,3 +856,108 @@
         float:right;
     }
 }
+.el-drawer__title {
+    span:focus {
+      outline: 0;
+    }
+  }
+
+
+  .superviseBtns {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    z-index: 2100;
+    .submitBtn {
+      display: block;
+      margin: 8px;
+      width: 50px;
+      height: 73px;
+      padding: 0px;
+      margin: 8px 0px;
+      line-height: 16px;
+      font-size: 12px;
+      z-index: 2000;
+      i {
+        font-size: 20px;
+      }
+      div {
+        margin-top: 4px;
+        // margin-left: -10px;
+      }
+    }
+}
+.blueBtn {
+    background: rgba(69, 115, 208, 1);
+    box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
+    color: white;
+    &:hover{
+        background: rgba(69, 115, 208, 1);
+        color: white;
+    }
+}
+.grayBtn {
+    background: rgb(197, 197, 197);
+    box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
+    color: white;
+    }
+.greenBtn {
+    background: rgba(74, 175, 167, 1);
+    box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
+    color: white;
+}
+  .transferDetail {
+    position:fixed;
+    top: 200px;
+    right: 28px;
+    width: 121px;
+    height: 50px;
+    color:#646974;
+    font-weight:500;
+    font-size: 16px;
+    line-height: 35px;
+    letter-spacing: 1px;
+    text-align: center;
+//   background: #12223d;
+    display: inline-block;
+      background: url('../../../static/images/img/lawSupervise/icon_zt_zb.png') no-repeat;
+  }
+  .invalidCueDetail {
+    position:fixed;
+    top: 200px;
+    right: 28px;
+    width: 121px;
+    height: 50px;
+    color:#646974;
+    font-weight:500;
+    font-size: 16px;
+    line-height: 35px;
+    letter-spacing: 1px;
+    text-align: center;
+  //   background: #12223d;
+    display: inline-block;
+    background: url('../../../static/images/img/lawSupervise/icon_zt_wsh.png') no-repeat;
+  }
+  .examineDoingDetail {
+    position:fixed;
+    top: 200px;
+    right: 28px;
+    width: 121px;
+    height: 50px;
+    color:#646974;
+    font-weight:500;
+    font-size: 16px;
+    line-height: 35px;
+    letter-spacing: 1px;
+    text-align: center;
+  //   background: #12223d;
+    display: inline-block;
+    background: url('../../../static/images/img/lawSupervise/icon_zt_sh.png') no-repeat;
+
+  }
+  span:focus {
+      outline: none;
+  }
+  .el-textarea__inner {
+      border-radius: 0px;
+  }

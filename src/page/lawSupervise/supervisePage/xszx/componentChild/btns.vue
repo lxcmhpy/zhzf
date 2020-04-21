@@ -1,7 +1,7 @@
 <template>
   <div class="superviseBtns">
     <div v-if="['0', '1'].indexOf(tabActiveValue) > -1">
-      <el-button type="button" class="submitBtn blueBtn" @click="showInvalidCue" >
+      <el-button type="button" class="submitBtn grayBtn" @click="showInvalidCue" >
         <i class="el-icon-warning-outline"></i>
         <div>无效<br />信息</div>
       </el-button>
@@ -15,9 +15,21 @@
         <div>完成</div>
       </el-button>
     </div>
-    <div>
-        <span></span>
-    </div>
+    <span :class="$route.name">
+        <template v-if="$route.name=='invalidCueDetail'">
+         无效
+        </template>
+         <template v-else-if="$route.params.status == '0'">
+        待审核
+        </template>
+        <template v-else-if="$route.params.status == '2'">
+            已完成
+        </template>
+        <template v-else-if="$route.params.status == '1'">
+            审核中
+        </template>
+    </span>
+
     <div>
         <el-dialog class="mini-dialog-title" title="无效信息" :visible.sync="visible" :show-close="false"
             :close-on-click-modal="false" width="420px" >
@@ -63,44 +75,10 @@
             </span>
         </el-dialog>
     </div>
+
+
   </div>
 </template>
-<style scoped lang="scss">
-.superviseBtns {
-  position: fixed;
-  right: 50px;
-  bottom: 50px;
-  z-index: 2100;
-  .submitBtn {
-    display: block;
-    margin: 8px;
-    width: 50px;
-    height: 73px;
-    padding: 0px;
-    margin: 8px 0px;
-    line-height: 16px;
-    font-size: 12px;
-    z-index: 2000;
-    i {
-      font-size: 20px;
-    }
-    div {
-      margin-top: 4px;
-      // margin-left: -10px;
-    }
-  }
-  .blueBtn {
-    background: rgba(69, 115, 208, 1);
-    box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
-    color: white;
-  }
-  .greenBtn {
-    background: rgba(74, 175, 167, 1);
-    box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
-    color: white;
-  }
-}
-</style>
 <style lang="scss" src="@/assets/css/cluesReview.scss"></style>
 <script>
 import {mapGetters} from "vuex";
@@ -114,7 +92,8 @@ export default {
       checkSearchForm: {
         number: '',
         color: ''
-      }
+      },
+      icon: ['']
     };
   },
   methods: {

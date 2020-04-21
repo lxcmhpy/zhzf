@@ -110,7 +110,7 @@ export default {
     view(row) {
       console.log("案号", row.caseNumber)
       this.$router.replace({
-        name: "caseCopyDentails",
+        name: "case_handle_caseCopyDentails",
         params: {
           caseInfo: row
         }

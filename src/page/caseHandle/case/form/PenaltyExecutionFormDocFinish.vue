@@ -11,7 +11,7 @@
       </el-col>
     </el-row>
 
-    <el-row class="info" :gutter="20">
+    <el-row class="info" :gutter="20" v-for="item in unfinishFlag" :key="item">
       <el-col :span="2">
         <span>
           <svg t="1578386502452" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1278" width="14" height="14">
@@ -21,7 +21,7 @@
         </span>
       </el-col>
       <el-col :span="18">
-        {{unfinishFlag}}
+        {{item}}
       </el-col>
     </el-row>
     <p>无法进入下一环节！</p>
@@ -47,7 +47,7 @@ export default {
         caseBasicinfoId: '',
         caseLinktypeId: ''
       },
-      unfinishFlag: ''
+      unfinishFlag: []
     };
   },
   mixins: [mixinGetCaseApiList],
@@ -58,7 +58,6 @@ export default {
     //新增
     showModal(data, caseData,unfinishFlag) {
       //显示弹框
-      console.log(data);
       this.caseLinkDataForm.caseLinktypeId = caseData.caseLinktypeId;
       this.caseLinkDataForm.caseBasicinfoId = caseData.caseBasicinfoId;
       this.visible = true;
@@ -66,9 +65,7 @@ export default {
         if (item.isRequired === 0) //后台数据原因 要写===0
           this.checkList.push(item);
       })
-      console.log('unfinishFlag',unfinishFlag)
       this.unfinishFlag= unfinishFlag;
-      console.log('this.checkList', this.checkList);
       // this.checkList = data
     },
     //关闭弹窗的时候清除数据

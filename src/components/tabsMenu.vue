@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-tabs
-      v-model="activeIndex"
+      v-model="activeIndexStr"
       type="border-card"
       closable
       v-if="openTab.length"
@@ -17,35 +17,25 @@ import { mapGetters } from "vuex";
 export default {
   name: "",
   data() {
-    return {};
+    return {
+        activeIndexStr: ''
+    };
   },
   methods: {
-    //   getTabName (item) {
-    //       debugger;
-    //       if (item) {
-    //         return item.name.indexof('case_handle_') > -1 ? item.name + this.caseHandle.caseNumber:item.name;
-    //       }
-    //   }
   },
   computed: {
-    openTab() {
-      // console.log('openTab', this.$store.state.openTab)
-      return this.openTab;
-    },
-    activeIndex: {
-      get() {
-        return this.$store.state.activeIndex;
-      },
-      set(val) {
-        //   case_handle_
-        this.$store.dispatch("setActiveIndex", val);
-      }
-    }
   },
   methods: {
     //tab标签点击时，切换相应的路由
     tabClick(tab) {
-      this.$router.push({ name: this.activeIndex });
+        this.activeIndexStr = tab.name;
+        this.$store.commit("SET_ACTIVE_INDEX_STO", tab.name);
+        debugger;
+        if (tab.params) {
+            this.$router.push({ name: tab.name,params:tab.params});
+        } else {
+            this.$router.push({ name: tab.name});
+        }
     },
     //移除tab标签
     tabRemove(targetName) {
@@ -54,14 +44,11 @@ export default {
         return;
       }
       this.$store.dispatch("deleteTabs", targetName);
-      if (this.activeIndex === targetName) {
+      if (this.activeIndexSto === targetName) {
         // 设置当前激活的路由
         if (this.openTab && this.openTab.length >= 1) {
-          this.$store.dispatch(
-            "setActiveIndex",
-            this.openTab[this.openTab.length - 1].name
-          );
-          this.$router.push({ name: this.activeIndex });
+          this.$store.commit("SET_ACTIVE_INDEX_STO", this.openTab[this.openTab.length - 1].name);
+          this.$router.push({ name: this.activeIndexSto });
         } else {
           this.$router.push({ path: "/" });
         }
@@ -72,17 +59,12 @@ export default {
     // 刷新时以当前路由做为tab加入tabs
     // 当前路由不是首页时，添加首页以及另一页到store里，并设置激活状态
     // 当当前路由是首页时，添加首页到store，并设置激活状态
-    let _this = this
+    // this.activeIndexStr = this.activeIndexSto;
     if (this.$route.path !== "/" && this.$route.name !== "case_handle_home_index") {
-      this.$store.dispatch("deleteAllTabs");
-      this.$store.dispatch("addTabs", {
-        route: _this.$route.path,
-        name: _this.$route.name,
-        title: _this.$route.meta.title
-      });
-      this.$store.dispatch("setActiveIndex", _this.$route.name);
+        this.activeIndexStr = this.$route.name;
+        this.$store.commit("SET_ACTIVE_INDEX_STO", this.$route.name);
     } else {
-      this.$store.dispatch("setActiveIndex", "case_handle_home_index");
+        this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
     }
   },
   watch: {
@@ -91,11 +73,12 @@ export default {
       //已经打开的 ，将其置为active
       //未打开的，将其放入队列里
       let flag = false;
-      debugger;
       for (let i = 0; i < this.openTab.length; i++) {
         //下一个路由已经在tab中，是案件的话替换tab title
         if ( (to.name == this.openTab[i].name) || (to.meta.oneTab && this.openTab[i].isCase)) {
-          this.$store.dispatch("setActiveIndex", this.openTab[i].name); //设置active tab
+            // debugger;
+        //   this.$store.dispatch("setActiveIndex", this.openTab[i].name); //设置active tab
+        this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[i].name);
           if (this.openTab[i].isCase) {
             let changeTabData = {
               tabIndex: i,
@@ -128,6 +111,7 @@ export default {
       //     break;
       //   }
       // }
+      // debugger;
       if (!flag) {
         let tabTitle = "";
         let isCase = false;
@@ -145,14 +129,19 @@ export default {
           route: to.path,
           name: to.name,
           title: tabTitle,
-          isCase: isCase
+          isCase: isCase,
+          params: to.params
         });
-        this.$store.dispatch("setActiveIndex", to.name);
+        // this.$store.dispatch("setActiveIndex", to.name);
+        this.$store.commit("SET_ACTIVE_INDEX_STO",to.name);
       }
+    },
+    activeIndexSto(val,oldVal) {
+        this.activeIndexStr = val;
     }
   },
   computed: {
-        ...mapGetters(["caseHandle", "openTab"])
+        ...mapGetters(["caseHandle", "openTab", "activeIndexSto"])
   }
 };
 </script>

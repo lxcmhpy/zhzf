@@ -17,22 +17,25 @@
           根据你（单位）申请，关于
           <span>
             <el-form-item style="width:329px" prop="caseName">
-              <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength' v-bind:class="{ over_flow:docData.caseName.length>30?true:false }" :autosize="{ minRows: 1, maxRows: 3}" disabled></el-input>
+              <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength'
+                        v-bind:class="{ over_flow:docData.caseName.length>30?true:false }"
+                        :autosize="{ minRows: 1, maxRows: 3}" disabled></el-input>
             </el-form-item>
           </span>一案，现定于
           <span>
             <el-form-item style="width:136px" prop="hearingTime" class="pdf_datapick listen_data">
-              <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日 HH时" placeholder="    年  月  日  时">
+              <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日 HH时"
+                              placeholder="    年  月  日  时">
               </el-date-picker>
             </el-form-item>
           </span>在
           <span>
-            <el-form-item prop="hearingPlace" style="width:379px" >
+            <el-form-item prop="hearingPlace" style="width:379px">
               <el-input v-model="docData.hearingPlace" :maxLength='maxLength'></el-input>
             </el-form-item>
           </span>（
           <span class="single_check">
-            <el-form-item prop="radio" >
+            <el-form-item prop="radio">
               <el-radio v-model="docData.radio" label="1">公开</el-radio>
               <el-radio v-model="docData.radio" label="2">不公开</el-radio>
             </el-form-item>
@@ -178,194 +181,203 @@
             </el-button>
           </div> -->
     <!-- 悬浮按钮 -->
-    <casePageFloatBtns :pageDomId="'hearingNoticeDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'hearingNoticeDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData"
+                       @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
     <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
 <script>
-import overflowInput from "./overflowInput";
-import { mixinGetCaseApiList } from "@/common/js/mixins";
-import { mapGetters } from "vuex";
-import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-// import signture from "../../../../js/signture";
-import mySignture from "@/common/js/mySignture";
-import {
-  validatePhone,
-} from "@/common/js/validator";
-import iLocalStroage from "@/common/js/localStroage";
-import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
+  import overflowInput from "./overflowInput";
+  import {mixinGetCaseApiList} from "@/common/js/mixins";
+  import {mapGetters} from "vuex";
+  import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+  // import signture from "../../../../js/signture";
+  import mySignture from "@/common/js/mySignture";
+  import {
+    validatePhone,
+  } from "@/common/js/validator";
+  import iLocalStroage from "@/common/js/localStroage";
+  import {getOrganDetailApi, getOrganIdApi} from "@/api/system";
 
-export default {
-  components: {
-    overflowInput,
-    casePageFloatBtns
-  },
-  mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId']) },
-  data() {
-    return {
-      docData: {
-        caseNumber: '',
-        party: '',
-        partyName: '',
-        caseName: '',
-        hearingTime: '',
-        hearingPlace: '',
-        presidingHearer: '',
-        presidingHearerPosition: '',
-        hearingOfficer: '',
-        hearingOfficerPosition: '',
-        recorderSix: '',
-        recorderPositionSix: '',
-        organAddress: '',
-        organZipCode: '',
-        organContactor: '',
-        organTel: '',
-        signatureDate: '',
-        radio: ''
+  export default {
+    components: {
+      overflowInput,
+      casePageFloatBtns
+    },
+    mixins: [mixinGetCaseApiList],
+    computed: {...mapGetters(['caseId'])},
+    data() {
+      return {
+        docData: {
+          caseNumber: '',
+          party: '',
+          partyName: '',
+          caseName: '',
+          hearingTime: '',
+          hearingPlace: '',
+          presidingHearer: '',
+          presidingHearerPosition: '',
+          hearingOfficer: '',
+          hearingOfficerPosition: '',
+          recorderSix: '',
+          recorderPositionSix: '',
+          organAddress: '',
+          organZipCode: '',
+          organContactor: '',
+          organTel: '',
+          signatureDate: '',
+          radio: ''
+        },
+        radio: '1',
+        handleType: 0, //0  暂存     1 提交
+        caseDocDataForm: {
+          id: "", //修改的时候用
+          caseBasicinfoId: '', //
+          caseDoctypeId: this.$route.params.docId, //表单类型IDer
+          //表单数据
+          docData: "",
+          status: "",
+          linkTypeId: '2c9029ac6c26fd72016c27247b290003'
+        },
+        needDealData: true,
+        rules: {
+          caseNumber: [
+            {required: true, message: '请输入案号', trigger: 'blur'},
+          ],
+          party: [
+            {required: true, message: '请输入当事人（个人姓名或单位名称）', trigger: 'blur'},
+          ],
+          caseName: [
+            {required: true, message: '请输入案由', trigger: 'blur'},
+          ],
+          hearingTime: [
+            {required: true, message: '请输入听证时间', trigger: 'blur'},
+          ],
+          hearingPlace: [
+            {required: true, message: '请输入听证地点', trigger: 'blur'},
+          ],
+          presidingHearer: [
+            {required: true, message: '请输入听证主持人姓名', trigger: 'blur'},
+          ],
+          presidingHearerPosition: [
+            {required: true, message: '请输入听证主持人职务', trigger: 'blur'},
+          ],
+          hearingOfficer: [
+            {required: true, message: '请输入听证员姓名', trigger: 'blur'},
+          ],
+          hearingOfficerPosition: [
+            {required: true, message: '请输入听证员职务', trigger: 'blur'},
+          ],
+          recorderSix: [
+            {required: true, message: '请输入记录员姓名', trigger: 'blur'},
+          ],
+          recorderPositionSix: [
+            {required: true, message: '请输入记录员职务', trigger: 'blur'},
+          ],
+          organAddress: [
+            {required: true, message: '请输入联系地址', trigger: 'blur'},
+          ],
+          organContactor: [
+            {required: true, message: '请输入联系人', trigger: 'blur'},
+          ],
+          organTel: [
+            {validator: validatePhone, required: true, message: '请输入联系电话', trigger: 'blur'},
+          ],
+          radio: [
+            {required: true, message: '请选择公开方式', trigger: 'blur'},
+          ],
+        },
+        nameLength: 23,
+        adressLength: 23,
+        maxLength: 23,
+        maxLengthOverLine: 122,
+        formOrDocData: {
+          showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+          pageDomId: 'hearingNoticeDoc_print',
+        },
+        isChange: false
+      };
+    },
+    methods: {
+      //根据案件ID和文书Id获取数据
+      getDocDataByCaseIdAndDocId() {
+        this.caseDocDataForm.caseBasicinfoId = this.caseId;
+        let data = {
+          caseId: this.caseId,
+          docId: this.$route.params.docId
+        };
+        this.com_getDocDataByCaseIdAndDocId(data)
       },
-      radio: '1',
-      handleType: 0, //0  暂存     1 提交
-      caseDocDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: '', //
-        caseDoctypeId: this.$route.params.docId, //表单类型IDer
-        //表单数据
-        docData: "",
-        status: "",
-        linkTypeId:'2c9029ac6c26fd72016c27247b290003'
+      getDataAfter() {
+        let orgData = {
+          id: iLocalStroage.gets("userInfo").organId
+        };
+        getOrganDetailApi(orgData).then(
+          res => {
+            console.log("机构信息", res.data)
+            this.docData.organAddress = res.data.address;
+            this.docData.organTel = res.data.telephone;
+            this.docData.organZipCode = res.data.zipCode;
+            this.docData.organContactor = res.data.contactor;
+          })
       },
-      needDealData: true,
-      rules: {
-        caseNumber: [
-          { required: true, message: '请输入案号', trigger: 'blur' },
-        ],
-        party: [
-          { required: true, message: '请输入当事人（个人姓名或单位名称）', trigger: 'blur' },
-        ],
-        caseName: [
-          { required: true, message: '请输入案由', trigger: 'blur' },
-        ],
-        hearingTime: [
-          { required: true, message: '请输入听证时间', trigger: 'blur' },
-        ],
-        hearingPlace: [
-          { required: true, message: '请输入听证地点', trigger: 'blur' },
-        ],
-        presidingHearer: [
-          { required: true, message: '请输入听证主持人姓名', trigger: 'blur' },
-        ],
-        presidingHearerPosition: [
-          { required: true, message: '请输入听证主持人职务', trigger: 'blur' },
-        ],
-        hearingOfficer: [
-          { required: true, message: '请输入听证员姓名', trigger: 'blur' },
-        ],
-        hearingOfficerPosition: [
-          { required: true, message: '请输入听证员职务', trigger: 'blur' },
-        ],
-        recorderSix: [
-          { required: true, message: '请输入记录员姓名', trigger: 'blur' },
-        ],
-        recorderPositionSix: [
-          { required: true, message: '请输入记录员职务', trigger: 'blur' },
-        ],
-        organAddress: [
-          { required: true, message: '请输入联系地址', trigger: 'blur' },
-        ],
-        organContactor: [
-          { required: true, message: '请输入联系人', trigger: 'blur' },
-        ],
-        organTel: [
-          { validator: validatePhone, required: true, message: '请输入联系电话', trigger: 'blur' },
-        ],
-        radio: [
-          { required: true, message: '请选择公开方式', trigger: 'blur' },
-        ],
+      //保存文书信息
+      addDocData(handleType) {
+        // this.com_addDocData(handleType, 'docForm');
       },
-      nameLength: 23,
-      adressLength: 23,
-      maxLength: 23,
-      maxLengthOverLine: 122,
-      formOrDocData: {
-        showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: 'hearingNoticeDoc_print',
+      // 盖章
+      makeSeal() {
+        console.log('盖章!');
+        mySignture.openURL('oeder');
+      },
+      // 打印
+      print() {
+        console.log('打印!');
+      },
+      // 多行编辑
+      overFlowEdit() {
+        this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
+      },
+      // 获取多行编辑内容
+      getOverFloeEditInfo(edit) {
+        this.docData.illegalFactsEvidence = edit;
+      },
+      //提交
+      submitData(handleType) {
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$router.push({
+          name: this.$route.params.url
+        });
+      },
+      //保存文书信息
+      saveData(handleType) {
+        this.com_addDocData(handleType, "docForm");
+      },
+      //是否是完成状态
+      isOverStatus() {
+        if (this.$route.params.docStatus == '1') {
+          this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        }
       }
-    };
-  },
-  methods: {
-
-    //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
-      this.caseDocDataForm.caseBasicinfoId = this.caseId;
-      let data = {
-        caseId: this.caseId,
-        docId: this.$route.params.docId
-      };
-      this.com_getDocDataByCaseIdAndDocId(data);
     },
-    getDataAfter() {
-      let orgData = {
-        id: iLocalStroage.gets("userInfo").organId
-      };
-      getOrganDetailApi(orgData).then(
-        res => {
-          console.log("机构信息", res.data)
-          this.docData.organAddress = res.data.address;
-          this.docData.organTel = res.data.telephone;
-          this.docData.organZipCode = res.data.zipCode;
-          this.docData.organContactor = res.data.contactor;
-        })
+    mounted() {
+      this.getDocDataByCaseIdAndDocId();
+      this.getDataAfter();
     },
-    //保存文书信息
-    addDocData(handleType) {
-      // this.com_addDocData(handleType, 'docForm');
+    created() {
+      this.isOverStatus();
     },
-    // 盖章
-    makeSeal() {
-      console.log('盖章!');
-      mySignture.openURL('oeder');
-    },
-    // 打印
-    print() {
-      console.log('打印!');
-    },
-    // 多行编辑
-    overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
-    },
-    // 获取多行编辑内容
-    getOverFloeEditInfo(edit) {
-      this.docData.illegalFactsEvidence = edit;
-    },
-    //提交
-    submitData(handleType) {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: this.$route.params.url
-      });
-    },
-    //保存文书信息
-    saveData(handleType) {
-      this.com_addDocData(handleType, "docForm");
-    },
-    //是否是完成状态
-    isOverStatus() {
-      if (this.$route.params.docStatus == '1') {
-        this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+    watch: {
+      'docData.partyName'(val) {
+        if (!this.isChange) {
+          this.docData.party = this.docData.party === '' ? this.docData.partyName : this.docData.party
+          this.isChange = true
+        }
       }
     }
-  },
-  mounted() {
-    this.getDocDataByCaseIdAndDocId();
-
-  },
-  created() {
-    this.isOverStatus();
-  }
-};
+  };
 </script>
 <style lang="scss">
-@import "@/assets/css/caseHandle/caseDocModle.scss";
+  @import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>

@@ -138,7 +138,7 @@
       view(row) {
         console.log(12)
         this.$router.replace({
-          name: "cooperateDentails",
+          name: "case_handle_cooperateDentails",
           params: {
             caseInfo: row
           }

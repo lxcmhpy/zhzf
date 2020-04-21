@@ -24,6 +24,9 @@ const getters = {
   // 语音视频
   makePhoneStatus: state => state.phoneVideo.makePhoneStatus,
   doing: state => state.phoneVideo.doing,
-  caseHandle: state =>state.caseHandle
+  caseHandle: state =>state.caseHandle,
+  headActiveNav: state=> state.system.headActiveNav,
+  menu: state=> state.system.menu,
+  activeIndexSto: state=> state.system.activeIndexSto
 };
 export default getters;

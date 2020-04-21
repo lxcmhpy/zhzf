@@ -17,7 +17,7 @@
       </div>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="gotoCoerciveMeasureDoc">确认</el-button>
+      <el-button type="primary" @click="visible = false">确认</el-button>
       <el-button @click="visible = false">取消</el-button>
     </span>
   </el-dialog>
