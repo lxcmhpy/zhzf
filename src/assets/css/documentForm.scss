@@ -560,7 +560,7 @@
 
         .list {
             margin-top: 48px;
-            padding: 0 12px;
+            padding   : 0 12px;
             height    : 410px;
             overflow  : auto;
 
@@ -734,6 +734,16 @@
         background: #E3EAF9;
     }
 }
-.list-hover :hover{
-background: #E3EAF9;
+
+.list-hover {
+    display: block;
+    width  : 100%;
+}
+
+.list-hover :hover {
+    width     : 100%;
+    background: #E3EAF9;
+    .el-checkbox__input{
+        width: 14px !important;
+    }
 }

@@ -1,74 +1,74 @@
 <!-------长软------->
 <template>
   <div class="print_box">
-    <div class="print_info" id="prolongAdmin-print">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
-        <div class="doc_topic">延长行政强制措施期限通知书</div>
-        <div class="doc_number">案号：{{docData.caseNumber}}</div>
-        <p class="p_begin">
-          当事人（个人姓名或单位名称）
-          <span>
-            <el-form-item prop="party">
-              <el-input disabled v-model="docData.party" :maxLength='maxLength'></el-input>
-            </el-form-item>
-          </span>:
-        </p>
-        <p>
-          因你（单位）
-          <span>
-            <el-form-item prop="caseCauseName">
-              <el-input disabled v-model="docData.caseCauseName" type='textarea' v-bind:class="{ over_flow:docData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
-            </el-form-item>
-          </span>，本机关依法于
-          <span>
-            <el-form-item prop="enforceDate" class="pdf_datapick">
-              <el-date-picker disabled v-model="docData.enforceDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+      <div class="print_info"  id="prolongAdmin-print">
+        <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
+          <div class="doc_topic">延长行政强制措施期限通知书</div>
+          <div class="doc_number">案号：{{docData.caseNumber}}</div>
+          <p class="p_begin">
+            当事人（个人姓名或单位名称）
+            <span>
+              <el-form-item prop="party">
+                <el-input disabled v-model="docData.party" :maxLength='maxLength'></el-input>
+              </el-form-item>
+            </span>:
+          </p>
+          <p>
+            因你（单位）
+            <span>
+              <el-form-item prop="caseCauseName">
+                <el-input disabled v-model="docData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:docData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"   :maxLength='maxLength'></el-input>
+              </el-form-item>
+            </span>，本机关依法于
+            <span>
+              <el-form-item prop="enforceDate" class="pdf_datapick">
+                <el-date-picker disabled v-model="docData.enforceDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                </el-date-picker>
+              </el-form-item>
+            </span>对你（单位）采取了
+            <span>
+              <el-form-item prop="enforceMeasure">
+                <el-input disabled v-model="docData.enforceMeasure" type='textarea'  v-bind:class="{ over_flow:docData.enforceMeasure.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"  :maxLength='maxLength'></el-input>
+              </el-form-item>
+            </span>的行政强制措施，行政强制措施决定书案号：
+            <span>
+              <el-form-item prop="caseNumberCopy">
+                <el-input disabled v-model="docData.caseNumberCopy" :maxLength='maxLength'></el-input>
+              </el-form-item>
+            </span>。
+          </p>
+          <p>
+            现因
+            <span>
+              <el-form-item prop="situationDescription">
+                <el-input v-model="docData.situationDescription"  :maxLength='maxLength'></el-input>
+              </el-form-item>
+            </span>，依据《中华人民共和国行政强制法》第二十五条的规定，决定延长行政强制措施期限至
+            <span>
+              <el-form-item prop="delayDate" class="pdf_datapick">
+                <el-date-picker v-model="docData.delayDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                </el-date-picker>
+              </el-form-item>
+            </span>。
+          </p>
+
+           <div class="pdf_seal">
+            <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+            <el-form-item prop="signatureDate" class="pdf_datapick">
+              <el-date-picker v-model="docData.signatureDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
               </el-date-picker>
             </el-form-item>
-          </span>对你（单位）采取了
-          <span>
-            <el-form-item prop="enforceMeasure">
-              <el-input disabled v-model="docData.enforceMeasure" type='textarea' v-bind:class="{ over_flow:docData.enforceMeasure.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
-            </el-form-item>
-          </span>的行政强制措施，行政强制措施决定书案号：
-          <span>
-            <el-form-item prop="caseNumberCopy">
-              <el-input disabled v-model="docData.caseNumberCopy" :maxLength='maxLength'></el-input>
-            </el-form-item>
-          </span>。
-        </p>
-        <p>
-          现因
-          <span>
-            <el-form-item prop="situationDescription">
-              <el-input v-model="docData.situationDescription" :maxLength='maxLength'></el-input>
-            </el-form-item>
-          </span>，依据《中华人民共和国行政强制法》第二十五条的规定，决定延长行政强制措施期限至
-          <span>
-            <el-form-item prop="delayDate" class="pdf_datapick">
-              <el-date-picker v-model="docData.delayDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
-              </el-date-picker>
-            </el-form-item>
-          </span>。
-        </p>
+          </div>
 
-        <div class="pdf_seal">
-          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
-          <el-form-item prop="signatureDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.signatureDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
-            </el-date-picker>
-          </el-form-item>
-        </div>
+          <div class="notice clear">
+            <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
+          </div>
+        </el-form>
+      </div>
+           <!-- 悬浮按钮 -->
+          <casePageFloatBtns :pageDomId="'prolongAdmin-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
-        <div class="notice clear">
-          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
-        </div>
-      </el-form>
-    </div>
-    <!-- 悬浮按钮 -->
-    <casePageFloatBtns :pageDomId="'prolongAdmin-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
-
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+          <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
   </div>
 </template>
 <script>
@@ -87,6 +87,16 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   data() {
+    //延长日期验证
+    var validateIfDate = (rule, value, callback) => {
+      var diff = new Date(new Date(value).format("yyyy-MM-dd")).getTime() - new Date(this.docData.endDate).getTime();
+      var days = diff/24/60/60/1000;
+      console.log("相差天数",diff/24/60/60/1000)
+      if (days < 1 || days > 29 ) {
+        return callback("延长期限不能超过行政强制措施期限截止日期30日(最多30日,不少于1日)");
+      }
+      callback();
+    };
     return {
       docData: {
         caseNumber: '',
@@ -99,7 +109,9 @@ export default {
         situationDescription: '',
         delayDate: '',
         signatureDate: '',
+        endDate: '',
       },
+      needDealData: true,
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
         id: "", //修改的时候用
@@ -115,6 +127,7 @@ export default {
         ],
         delayDate: [
           { required: true, message: '延期日期不能为空', trigger: 'blur' },
+          { validator: validateIfDate, trigger: "blur" }
         ]
       },
       nameLength: 23,
@@ -124,24 +137,11 @@ export default {
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'prolongAdmin-print',
-      },
-      needDealData:true
+      }
     }
   },
 
-  methods: {
-    //获取截止日期的后30天的时间
-    // getDelayDate(){
-    //   let today = this.formOrDocData.delayDate;
-    //   let targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
-    //   today.setTime(targetday_milliseconds); //注意，这行是关键代码
-    //   let tYear = today.getFullYear();
-    //   let tMonth = today.getMonth();
-    //   let tDate = today.getDate();
-    //   tMonth = util.doHandleMonth(tMonth + 1);
-    //   tDate = util.doHandleMonth(tDate);
-    //   return tYear + "-" + tMonth + "-" + tDate;
-    // },
+   methods: {
     onSubmit(formName) {
       console.log('submit!');
       this.$refs[formName].validate((valid) => {
@@ -162,7 +162,6 @@ export default {
         docId: '2c902934699a6ef801699a7426750001'
       };
       this.com_getDocDataByCaseIdAndDocId(data);
-
     },
     //保存文书信息
     addDocData(handleType) {
@@ -202,18 +201,15 @@ export default {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    getDataAfter() {
-      console.log('measureEndDate', this.docData.delayDate)
-      this.docData.delayDate=new Date()
-      if (this.docData.delayDate) {
-        this.docData.delayDate=new Date(this.docData.delayDate.getTime() + 29 * 24 * 3600 * 1000)
-      }
+    //对原始数据做一下处理
+    getDataAfter(){
+      this.docData.endDate = new Date(this.docData.delayDate).format("yyyy-MM-dd");
+      console.log("asd",this.docData.endDate)
+      this.docData.delayDate = new Date(new Date(new Date(this.docData.delayDate).format("yyyy-MM-dd")).getTime()+29*24*60*60*1000);
     },
- 
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
-
   },
   created() {
     this.isOverStatus();

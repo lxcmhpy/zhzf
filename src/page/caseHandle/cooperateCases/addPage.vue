@@ -37,6 +37,9 @@
                 <el-input :disabled=" caseData.organType ? false : true " v-model="caseData.organMb" @input='changeInput' v-if="caseData.organType!='执法机构'"></el-input>
                 <div v-if="caseData.organType=='执法机构'" @click="visibleOrgan = true">
                   <el-input disabled v-model="caseData.organMb" @input='changeInput' placeholder="选择目标机构" style="cursor: pointer!important;" class="pointer"></el-input>
+                  <el-collapse-transition>
+                    <div v-show="this.caseData.copyReason == '其他原因'&&this.otherReason==''" class="el-form-item__error">{{errorMessage}}</div>
+                  </el-collapse-transition>
                 </div>
                 <el-dialog title="选择目标机构" :visible.sync="visibleOrgan" @close="visibleOrgan = false" :close-on-click-modal="false" width="40%" append-to-body>
                   <div class="chooseLawPer">
@@ -96,6 +99,11 @@
               <el-col :span="19">
                 <el-form-item :prop="caseData.copyReason == '其他原因' ? 'otherReason' :''">
                   <el-input v-model="otherReason" @input='changeInput' :disabled="caseData.copyReason == '其他原因' ? false :true"></el-input>
+                  <div class="forgetPass">
+                    <el-collapse-transition>
+                      <div v-show="this.caseData.copyReason == '其他原因'&&this.otherReason==''" class="el-form-item__error">{{errorMessage}}</div>
+                    </el-collapse-transition>
+                  </div>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -112,8 +120,7 @@
               </li>
             </ul>
           </el-upload> -->
-          <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadPaymentVoucher"
-           :on-preview="handlePreview" :on-remove="handleRemove" :show-file-list="false">
+          <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadPaymentVoucher" :on-preview="handlePreview" :on-remove="handleRemove" :show-file-list="false">
             <el-button size="small" type="primary">选取文件</el-button>
           </el-upload>
           <ul class="file-upload">
@@ -124,6 +131,8 @@
               <span style="float:right;margin-right:8px"><i @click="deleteFile(item)" class="el-icon-close"></i></span>
             </li>
           </ul>
+
+
         </el-form-item>
         <el-form-item label="备注">
           <el-input type="textarea" v-model="caseData.notes"></el-input>
@@ -151,17 +160,19 @@
           <div class="left">
             <div class="title">
               <div class="list_icon"><img src="../../../../static/images/img/personInfo/icon_zhengju.svg" alt=""></div>
-              <center class="list_name">证据附件（0/9）</center>
+              <center class="list_name">证据附件（{{checkedFiles2.length}}/{{evdenceList.length}}）</center>
               <!-- zjfj -->
             </div>
             <div class="list">
               <el-checkbox :indeterminate="isIndeterminate2" v-model="checkAll2" @change="handleCheckAllChange2">全选
               </el-checkbox>
               <el-checkbox-group v-model="checkedFiles2" @change="handleCheckedFilesChange2">
-                <el-checkbox v-for="(item,index) in evdenceList" :label="item.storageId" :key="index">{{item.fileName}}
-                  <!-- {{item.docNote}}
+                <span class="list-hover">
+                  <el-checkbox v-for="(item,index) in evdenceList" :label="item.storageId" :key="index">{{item.fileName}}
+                    <!-- {{item.docNote}}
                   <span v-if="item.docNote==''">{{item.docName}}</span> -->
-                </el-checkbox>
+                  </el-checkbox>
+                </span>
               </el-checkbox-group>
             </div>
           </div>
@@ -264,7 +275,8 @@ export default {
       organList: [],
       checkedOrganName: '',
       filterText: '',
-      showDelete: false
+      showDelete: false,
+      errorMessage: '',
     };
   },
   methods: {
@@ -278,10 +290,20 @@ export default {
       this.caseData.organMb = "";
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.caseData.otherReason = this.otherReason
+      if(this.caseData.copyReason=='其他原因'&&this.otherReason==''){
+        this.errorMessage = '请填写其他原因'
+          this.$message({
+            type: "error",
+            message: "请完善表单信息"
+          });
+          return false;
+      }else{
+        this.$refs[formName].validate((valid) => {
         if (valid) {
           this.visible = true;
         } else {
+          this.errorMessage = '请填写其他原因'
           this.$message({
             type: "error",
             message: "请完善表单信息"
@@ -289,6 +311,8 @@ export default {
           return false;
         }
       })
+      }
+      
     },
     goSubmit(formName) {
       console.log(this.caseData)
