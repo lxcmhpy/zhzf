@@ -74,6 +74,7 @@ export default {
         //下一个路由已经在tab中，是案件的话替换tab title
         if ( (to.name == this.openTab[i].name) || (to.meta.oneTab && this.openTab[i].isCase)) {
           this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[i].name);
+
           if (this.openTab[i].isCase) {
             let changeTabData = {
               tabIndex: i,
@@ -93,10 +94,7 @@ export default {
       if (!flag) {
         let tabTitle = "";
         let isCase = false;
-        if (
-          this.caseHandle.caseNumber &&
-          this.caseHandle.caseNumber != "案件"
-        ) {
+        if (this.caseHandle.caseNumber &&this.caseHandle.caseNumber != "案件") {
           tabTitle = this.caseHandle.caseNumber;
           isCase = true;
         } else {
@@ -105,7 +103,7 @@ export default {
             } else {
                 tabTitle = this.$route.meta.title;
             }
-          isCase = false;
+            isCase = false;
         }
         this.$store.dispatch("addTabs", {
           route: to.path,

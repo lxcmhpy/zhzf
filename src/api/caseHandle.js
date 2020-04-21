@@ -126,7 +126,6 @@ export function findLawOfficerListApi(organId) {
 
 //通过姓名或执法证号查询执法人员列表
 export function findStaffListApi(data) {
-  debugger
   let data2={
     organId:data.organId,
     inputValue:data.inputValue
@@ -584,6 +583,7 @@ export function getHandleRecordApi(data) {
 
 //通过案件ID和文书Id查询案件附件
 export function findByCaseIdAndDocIdApi(data) {
+  debugger
   let params = {
     caseId: data.caseId,
     docId: data.docId

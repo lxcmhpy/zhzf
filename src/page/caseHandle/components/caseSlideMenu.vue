@@ -65,10 +65,10 @@ import deliverReceiptFormRef from "@/page/caseHandle/case/form/deliverReceiptFor
 export default {
   data(){
     return{
-      disabledArchiveCatalogue:false,
-      disabledCaseInfo:false,
-      disabledBeforeEstablish:false,
-      disabledFlow:false,
+      disabledArchiveCatalogue:true,
+      disabledCaseInfo:true,
+      disabledBeforeEstablish:true,
+      disabledFlow:true,
     }
   },
   props:['activeIndex'],
@@ -127,29 +127,46 @@ export default {
     },
     //判断快捷菜单是否可用
     getCaseData(){
-      let data = {
-          id: this.caseId
-      };
-      this.$store.dispatch("getCaseBasicInfo", data).then(
-          res => {
-            console.log('快捷菜单获取案件信息', res);
-            this.menuCanUse(res.data)
-          },
-          err => {
-            console.log(err);
-          }
-      );
+      if(this.caseId){
+        let data = {
+            id: this.caseId
+        };
+        this.$store.dispatch("getCaseBasicInfo", data).then(
+            res => {
+              console.log('快捷菜单获取案件信息', res);
+              this.menuCanUse(res.data)
+            },
+            err => {
+              console.log(err);
+            }
+        );
+      }
+      
     },
     menuCanUse(data){
       //案件状态（办理中，待归档）
       //控制卷宗目录 (归档页面可用)
       this.disabledArchiveCatalogue = data.caseStatus !== "待归档" ;
       //控制案件总览 （提交完立案审批之后可用）方法: 当前环节为立案登记且caseStatus不等于待审批
-      this.disabledCaseInfo = data.currentLinkName == "立案登记" && data.caseStatus != "待审批";
-      //控制案件总览、文书列表、送达回证（两级立案审批通过后可用）方法：判断已完成有没有立案
+      if(data.caseStatus == "未立案"){
+          this.disabledCaseInfo = true;
+      }else{ 
+          if(data.doingLink.includes('2c90293b6c178b55016c17c255a4000d')){
+            this.disabledCaseInfo = false;
+          }else{
+            if(data.completeLink.includes('2c90293b6c178b55016c17c255a4000d')){ //已完成
+              this.disabledCaseInfo = false;
+            }else{
+              this.disabledCaseInfo = true;
+            }
+          }     
+      }
+     
+      //文书列表、送达回证（两级立案审批通过后可用）方法：判断已完成有没有立案
       this.disabledBeforeEstablish = !data.completeLink.includes('2c90293b6c178b55016c17c255a4000d');
       //控制案件流程 （信息采集保存后可用 方法：状态是不是1
       this.disabledFlow = !data.state
+      console.log('控制案件总览', this.disabledCaseInfo)
     }
   },
   mounted(){

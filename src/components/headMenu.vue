@@ -33,8 +33,6 @@ import { mapGetters } from "vuex";
         //将当前选中的一级菜单名传到父组件
         this.$emit("selectHeadMenu",  keyStr[0]);
         //删除之前的tab页签
-        // debugger;
-        // 待调整，因数据库缓存
         if (keyStr[2] && keyStr[2] !== 'null') {
             // debugger;
             this.$router.push({ name: keyStr[2] });

@@ -492,13 +492,13 @@
 /* 协同办案 */
 .add_dialog {
     // margin    : 22px;
-    margin: 0;
-    padding: 22px 22px 0 ;
-    width     : 100%;
-    height    : 100%;
-    overflow  : auto;
-    background: #fff;
-    box-sizing: border-box;
+    margin       : 0;
+    padding      : 22px 22px 0;
+    width        : 100%;
+    height       : 100%;
+    overflow     : auto;
+    background   : #fff;
+    box-sizing   : border-box;
 
     .add_dialog_content {
         width : 818px;
@@ -560,6 +560,7 @@
 
         .list {
             margin-top: 48px;
+            padding   : 0 12px;
             height    : 410px;
             overflow  : auto;
 
@@ -574,12 +575,14 @@
         .el-checkbox {
             margin-top  : 18px;
             display     : block;
-            padding-left: 23px;
+            padding-left: 11px;
             white-space : normal;
             box-sizing  : border-box;
 
 
         }
+
+
     }
 
     .times_info {
@@ -628,14 +631,14 @@
     }
 
     .btm {
-        padding-top:24px;
-        min-height            : calc(100% - 465px);
+        padding-top          : 24px;
+        min-height           : calc(100% - 465px);
         // min-height        : 300px;
-        height: auto;
-        background        : #fff;
+        height               : auto;
+        background           : #fff;
         // overflow          : auto;
-        -webkit-box-shadow: 0 6px 4px 0 rgba(94, 137, 181, .1);
-        box-shadow        : 0 6px 4px 0 rgba(94, 137, 181, 0.1);
+        -webkit-box-shadow   : 0 6px 4px 0 rgba(94, 137, 181, .1);
+        box-shadow           : 0 6px 4px 0 rgba(94, 137, 181, 0.1);
     }
 
     .tans_box {
@@ -718,4 +721,29 @@
 
 .color_7B7B7B {
     color: #7B7B7B;
+}
+
+.file-upload {
+    li {
+        margin     : 4px 0;
+        height     : 28px;
+        line-height: 28px;
+    }
+
+    li:hover {
+        background: #E3EAF9;
+    }
+}
+
+.list-hover {
+    display: block;
+    width  : 100%;
+}
+
+.list-hover :hover {
+    width     : 100%;
+    background: #E3EAF9;
+    .el-checkbox__input{
+        width: 14px !important;
+    }
 }

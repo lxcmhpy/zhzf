@@ -22,7 +22,7 @@
             </span>，本机关依法于
             <span>
               <el-form-item prop="enforceDate" class="pdf_datapick">
-                <el-date-picker disabled v-model="docData.enforceDate" type="date" @blur="starttime" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                <el-date-picker disabled v-model="docData.enforceDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
                 </el-date-picker>
               </el-form-item>
             </span>对你（单位）采取了
@@ -87,6 +87,16 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   data() {
+    //延长日期验证
+    var validateIfDate = (rule, value, callback) => {
+      var diff = new Date(new Date(value).format("yyyy-MM-dd")).getTime() - new Date(this.docData.endDate).getTime();
+      var days = diff/24/60/60/1000;
+      console.log("相差天数",diff/24/60/60/1000)
+      if (days < 1 || days > 29 ) {
+        return callback("延长期限不能超过行政强制措施期限截止日期30日(最多30日,不少于1日)");
+      }
+      callback();
+    };
     return {
       docData: {
         caseNumber: '',
@@ -99,7 +109,9 @@ export default {
         situationDescription: '',
         delayDate: '',
         signatureDate: '',
+        endDate: '',
       },
+      needDealData: true,
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
         id: "", //修改的时候用
@@ -115,6 +127,7 @@ export default {
         ],
         delayDate: [
           { required: true, message: '延期日期不能为空', trigger: 'blur' },
+          { validator: validateIfDate, trigger: "blur" }
         ]
       },
       nameLength: 23,
@@ -129,18 +142,6 @@ export default {
   },
 
    methods: {
-    //获取截止日期的后30天的时间
-    // getDelayDate(){
-    //   let today = this.formOrDocData.delayDate;
-    //   let targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
-    //   today.setTime(targetday_milliseconds); //注意，这行是关键代码
-    //   let tYear = today.getFullYear();
-    //   let tMonth = today.getMonth();
-    //   let tDate = today.getDate();
-    //   tMonth = util.doHandleMonth(tMonth + 1);
-    //   tDate = util.doHandleMonth(tDate);
-    //   return tYear + "-" + tMonth + "-" + tDate;
-    // },
     onSubmit(formName) {
       console.log('submit!');
       this.$refs[formName].validate((valid) => {
@@ -200,13 +201,14 @@ export default {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    starttime(){
-      if (this.docData.enforceDate){
-        this.$set(this.docData, 'delayDate', new Date(this.docData.enforceDate.getTime() + 29 * 24 * 3600 * 1000));
-      }
+    //对原始数据做一下处理
+    getDataAfter(){
+      this.docData.endDate = new Date(this.docData.delayDate).format("yyyy-MM-dd");
+      console.log("asd",this.docData.endDate)
+      this.docData.delayDate = new Date(new Date(new Date(this.docData.delayDate).format("yyyy-MM-dd")).getTime()+29*24*60*60*1000);
     },
   },
-   mounted() {
+  mounted() {
     this.getDocDataByCaseIdAndDocId();
   },
   created() {
