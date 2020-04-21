@@ -165,14 +165,14 @@
           <div class="left">
             <div class="title">
               <div class="list_icon"><img src="../../../../static/images/img/personInfo/icon_zhengju.svg" alt=""></div>
-              <center class="list_name">证据附件（0/9）</center>
+              <center class="list_name">证据附1件（{{checkedFiles2.length}}/{{evdenceList.length}}）</center>
               <!-- zjfj -->
             </div>
             <div class="list">
               <el-checkbox :indeterminate="isIndeterminate2" v-model="checkAll2" @change="handleCheckAllChange2">全选
               </el-checkbox>
               <el-checkbox-group v-model="checkedFiles2" @change="handleCheckedFilesChange2">
-                <el-checkbox v-for="(item,index) in evdenceList" :label="item.storageId" :key="index">{{item.fileName}}
+                <el-checkbox v-for="(item,index) in evdenceList" :label="item" :key="index">{{item.fileName}}
                   <!-- {{item.docNote}}
                   <span v-if="item.docNote==''">{{item.docName}}</span> -->
                 </el-checkbox>
