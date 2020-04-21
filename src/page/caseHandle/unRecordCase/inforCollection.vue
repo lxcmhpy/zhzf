@@ -264,7 +264,8 @@
               <el-form-item label="证件类型" prop="partyIdNo">
                 <el-input placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber" @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)" class="input-with-select hasMargintop" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
                   <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType">
-                    <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-option v-for="item in credentialType" :key="item.value" :label="item.label"
+                               :value="item.value" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -417,9 +418,8 @@
         <p>超限信息</p>
         <div>
           <div class="itemBig">
-            <el-form-item label="检测站">
-              <el-autocomplete style="width: 100%" v-model="inforForm.otherInfo.checkStastions" :fetch-suggestions="querySearch"></el-autocomplete>
-              <!--<el-select v-model="inforForm.otherInfo.checkStastions">
+            <el-form-item label="检测站" class = "is-required">
+              <el-select v-model="inforForm.otherInfo.checkStastions">
                 <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>-->
               <!-- <el-input v-model="inforForm.otherInfo.checkStastions"></el-input> -->
@@ -466,8 +466,9 @@
         </div>
         <div>
           <div class="itemThird">
-            <el-form-item label="车辆轴数">
-              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxleNumber" @change="weightLimit('车辆轴数')">
+            <el-form-item label="车辆轴数"  class = "is-required">
+              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxleNumber"
+                         @change="weightLimit('车辆轴数')">
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
                 <el-option label="4" value="4"></el-option>
@@ -478,9 +479,10 @@
             </el-form-item>
           </div>
           <div class="itemThird">
-            <el-form-item label="车型">
+            <el-form-item label="车型"  class = "is-required">
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleType" @change="weightLimit('车型')">
-                <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="item in vehicleTypeList" :key="item.value" :label="item.label"
+                           :value="item.value"></el-option>
                 <!-- <el-option label="中置轴挂车列车"></el-option>
                 <el-option label="铰列车"></el-option>
                 <el-option label="全挂汽车列车"></el-option> -->
@@ -488,7 +490,7 @@
             </el-form-item>
           </div>
           <div class="itemThird">
-            <el-form-item label="轴数分布">
+            <el-form-item label="轴数分布" class = "is-required">
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxlesType" @change="weightLimit">
                 <el-option v-for="item in vehicleAxlesTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="1+2+3"></el-option>
@@ -499,7 +501,7 @@
         </div>
         <div>
           <div class="item">
-            <el-form-item label="车货总重">
+            <el-form-item label="车货总重" class = "is-required">
               <el-input v-model="inforForm.otherInfo.allWeight" @change="concludeOverWeight">
                 <template slot="append">吨</template>
               </el-input>
@@ -1057,9 +1059,11 @@ export default {
         );
     },
     removeLawPersontag(val) {
+      debugger
       console.log(val);
       if (this.currentUserLawId == val) {
         this.lawPersonListId.push(val);
+         this.$message('该执法人员不能删除！');
       }
     },
     //更改当事人类型

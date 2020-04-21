@@ -35,10 +35,8 @@ import { mapGetters } from "vuex";
         this.$emit("selectHeadMenu",  keyStr[2]);
         //删除之前的tab页签
         // this.$store.dispatch("deleteAllTabs");
-        // debugger;
         // 待调整，因数据库缓存
         if (keyStr[2] && keyStr[2] !== 'null'&&keyStr[2] !='sys_xboot') {
-            // debugger;
             this.$router.push({ name: keyStr[2] });
         }
       }

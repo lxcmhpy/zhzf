@@ -220,6 +220,7 @@ import {
                     current: this.currentPage,
                     size: this.pageSize
                 };
+                debugger
                 let _this = this
                 this.$store.dispatch("getHandleRecord", data).then(res => {
                     _this.tableData = res.data.records;
@@ -230,6 +231,15 @@ import {
             // 日志重置
             resetSearch() {
                 this.$refs["recordForm"].resetFields();
+                let data = {
+                    current: this.currentPage,
+                    size: this.pageSize
+                };
+                let _this = this
+                this.$store.dispatch("getHandleRecord", data).then(res => {
+                    _this.tableData = res.data.records;
+                    _this.total = res.data.total;
+                });
             },
 
             //更改每页显示的条数
@@ -251,9 +261,11 @@ import {
               let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
               let D = date.getDate() < 10 ? '0' + date.getDate() + ' ': date.getDate() + ' ';
               let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
-              let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
-              let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-              return Y + M + D + h + m + s;
+              let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() : date.getMinutes();
+              // let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+              // let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+              // return Y + M + D + h + m + s;
+              return Y + M + D + h + m;
             },
 
              

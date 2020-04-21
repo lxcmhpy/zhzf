@@ -37,7 +37,7 @@ export default {
     },
     gotoCoerciveMeasureDoc(){
         this.$store.dispatch("deleteTabs", this.$route.name);
-        this.$router.push({name:'removeOrPrelong'})
+        this.$router.push({name:'case_handle_removeOrPrelong'})
     }
   },
   mounted() {}
