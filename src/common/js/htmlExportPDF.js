@@ -2,7 +2,6 @@ import html2Canvas from 'html2canvas'
 import JsPDF from 'jspdf'
 
 export async function htmlExportPDF(id, callback) {
-  // debugger;
   let element = document.getElementById(id);
   element.className += ' color_FFFFFF';
   let width = element.offsetWidth; //获取dom 宽度

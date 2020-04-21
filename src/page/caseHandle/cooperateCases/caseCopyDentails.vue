@@ -81,8 +81,10 @@
                   <div class="document_list">
                     <ul>
                       <li v-for="(item,index) in appendixList" :key="index">
-                        <i class="el-icon-document-checked"></i>
-                        {{item}}
+                        <!-- <el-link type="primary" :href="host+scope.row.evPath"> -->
+                          <i class="el-icon-document-checked"></i>
+                          {{item}}
+                        <!-- </el-link> -->
                       </li>
                     </ul>
                   </div>
@@ -124,9 +126,11 @@ export default {
   mounted() {
     this.caseData = this.$route.params.caseInfo,
     this.caseData.person = iLocalStroage.gets("userInfo").organName + '-' + this.caseData.person;  
-    this.caseData = this.$route.params.caseInfo
+    this.caseData = this.$route.params.caseInfo;
+    console.log('this.caseData',this.caseData);
     if (this.caseData.appendix != '') {
       this.appendixList = this.caseData.appendix.split(",")
+      console.log('this.appendixList',this.appendixList)
     }
   }
 }

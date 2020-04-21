@@ -87,7 +87,7 @@ export default {
        )
     },
     routerArchiveCatalogueDetail () {
-        this.$router.push({name:'archiveCatalogueDetail'})
+        this.$router.push({name:'case_handle_archiveCatalogueDetail'})
     },
     //点击卷宗目录列表
     alertPDF (item) {

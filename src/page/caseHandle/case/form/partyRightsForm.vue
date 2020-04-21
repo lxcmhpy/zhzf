@@ -336,7 +336,7 @@
           hasBack: true,
         }
         this.$store.dispatch("deleteTabs", this.$route.name);
-        this.$router.push({name: 'myPDF', params: routerData})
+        this.$router.push({name: 'case_handle_myPDF', params: routerData})
       },
       //通过案件id和表单类型Id查询已绑定文书
       getDocListByCaseIdAndFormId() {

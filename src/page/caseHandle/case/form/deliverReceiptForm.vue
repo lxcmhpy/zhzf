@@ -232,7 +232,7 @@ export default {
       ];
       // this.addVisible = true;
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push('deliveryCertificate');
+      this.$router.push('case_handle_deliveryCertificate');
     },
     handleEdit(index, row) {
     debugger
