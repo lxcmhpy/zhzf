@@ -897,14 +897,23 @@
     }
 }
 .grayBtn {
-    background: rgb(197, 197, 197);
+    background: rgb(160, 160, 160);
     box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
     color: white;
+    cursor: pointer;
+    &:hover{
+        background: rgb(160, 160, 160);
+        color: white;
+    }
     }
 .greenBtn {
     background: rgba(74, 175, 167, 1);
     box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
     color: white;
+    cursor: pointer;
+    &:hover {
+        background: rgba(74, 175, 167, 1);
+    }
 }
   .transferDetail {
     position:fixed;
@@ -920,7 +929,8 @@
     text-align: center;
 //   background: #12223d;
     display: inline-block;
-      background: url('../../../static/images/img/lawSupervise/icon_zt_zb.png') no-repeat;
+      background: url('../../../static/images/img/lawSupervise/icon_zt_zb.jpg') no-repeat;
+      z-index:-1;
   }
   .invalidCueDetail {
     position:fixed;
@@ -936,7 +946,8 @@
     text-align: center;
   //   background: #12223d;
     display: inline-block;
-    background: url('../../../static/images/img/lawSupervise/icon_zt_wsh.png') no-repeat;
+    background: url('../../../static/images/img/lawSupervise/icon_zt_wsh.jpg') no-repeat;
+    z-index:-1;
   }
   .examineDoingDetail {
     position:fixed;
@@ -952,7 +963,8 @@
     text-align: center;
   //   background: #12223d;
     display: inline-block;
-    background: url('../../../static/images/img/lawSupervise/icon_zt_sh.png') no-repeat;
+    background: url('../../../static/images/img/lawSupervise/icon_zt_sh.jpg') no-repeat;
+    z-index:-1;
 
   }
   span:focus {
@@ -960,4 +972,10 @@
   }
   .el-textarea__inner {
       border-radius: 0px;
+  }
+  .el-popover,.el-popper {
+      z-index: 2100 !important;
+  }
+  .ransition-box {
+      display:inline;
   }

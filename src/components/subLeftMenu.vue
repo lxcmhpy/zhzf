@@ -61,7 +61,7 @@ import { mapGetters } from "vuex";
         let _this = this
         for(let i =0;i<this.allMenuList.length;i++) {
             let item = this.allMenuList[i];
-            if (item.path == val) {
+            if (item.name == val) {
                 if (item.children && item.children.length) {
                     item.children.forEach(item2 => {
                     _this.currentSlideMenu.push(item2);

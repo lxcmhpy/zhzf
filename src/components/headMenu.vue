@@ -2,11 +2,11 @@
   <!-- 头部一级菜单 -->
   <div>
     <el-menu
-      :default-active="`menu-${headActiveNav}`"
+      :default-active="`${headActiveNav}-menu-${headActiveNav}`"
       class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect">
-      <el-menu-item v-for="(item) in headMenuList" :index="`menu-${item.path}`" :key="item.id">{{item.title}}</el-menu-item>
+      <el-menu-item v-for="(item) in headMenuList" :index="`${item.name}-menu-${item.path}`" :keyPath="'dd'" :key="item.id">{{item.title}}</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -18,7 +18,7 @@ import { mapGetters } from "vuex";
     data() {
       return {
         headMenuList: null,
-        reg: /(menu-)/gi,
+        reg: /(-menu-)/gi,
       };
     },
     computed: {
@@ -28,18 +28,18 @@ import { mapGetters } from "vuex";
       handleSelect(key, keyPath) {
 
         let keyStr = key.split(this.reg);
-        this.$store.commit("SET_ACTIVE_INDEX_STO", keyStr[2]);
-        this.$store.commit("set_Head_Active_Nav", keyStr[2]);
+        this.$store.commit("SET_ACTIVE_INDEX_STO", keyStr[0]);
+        this.$store.commit("set_Head_Active_Nav", keyStr[0]);
         //将当前选中的一级菜单名传到父组件
-        // keyStr[2]待改正，菜单关联用name;路由跳转用path
-        this.$emit("selectHeadMenu",  keyStr[2]);
+        this.$emit("selectHeadMenu",  keyStr[0]);
         //删除之前的tab页签
-        // this.$store.dispatch("deleteAllTabs");
         // debugger;
         // 待调整，因数据库缓存
-        if (keyStr[2] && keyStr[2] !== 'null'&&keyStr[2] !='sys_xboot') {
+        if (keyStr[2] && keyStr[2] !== 'null') {
             // debugger;
             this.$router.push({ name: keyStr[2] });
+        } else {
+
         }
       }
     },

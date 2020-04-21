@@ -7,14 +7,14 @@
                 <div class="box_title">
                     <span class="titleflag">
                     </span>
-                    <span class="title">相关说明</span>
+                    <span class="title">无效说明</span>
                 </div>
                 <div>
                     <el-input
                             type="textarea"
                             :rows="4"
                             placeholder="请输入内容"
-                            v-model="obj.remarks">
+                            value="车牌号遮挡">
                     </el-input>
                 </div>
             </div>

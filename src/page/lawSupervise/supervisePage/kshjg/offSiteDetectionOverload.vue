@@ -121,13 +121,18 @@
             </div>
             <!-- 4非现场治超检测 -->
             <div v-else-if="curWindow.category == 4">
+              <div>
+                  <img :src="'./static/images/img/lawSupervise/jg_bg.png'">
+              </div>
               <div class="lawWindowTitle">
-                <i class="iconfont law-jiankong"></i>
                 {{curWindow.other.name}}
-                <div class="right">{{curWindow.other.status == 0? '正常': '异常'}}</div>
+                <div class="right">
+                    <i class="iconfont law-jiankong"></i>
+                </div>
               </div>
               <div class="flexBox">
                 <div class="con">
+                   <p>状态：<i class="circle "></i>在线</p>
                   <p>{{curWindow.other.address}}</p>
                   <div>
                     <p>
@@ -137,14 +142,10 @@
                     </p>
                   </div>
                 </div>
-                <div class="status">
-                  <i class="iconfont law-mobile-phone"></i>
-                  <p>在线</p>
-                </div>
               </div>
               <div class="btns">
                 <el-table v-if="curWindow.other.list" style="width: 100%;" :data="curWindow.other.list" resizable stripe>
-                  <el-table-column width="100" prop="checkTime" label="过检时间"></el-table-column>
+                  <el-table-column width=" " prop="checkTime" label="过检时间"></el-table-column>
                   <el-table-column width="100" prop="vehicleNumber" label="车牌号"></el-table-column>
                   <el-table-column width="70" prop="overload" label="超载率"></el-table-column>
                   <el-table-column width="100" prop="area" label="车属地"></el-table-column>
@@ -572,60 +573,90 @@ export default {
                 lngSum += lng;
                 latSum += lat;
                 let that = _this;
-                if (category != -1) {
-                    _this.markers.push({
-                    position: [poi.lng, poi.lat],
-                    other: poi.other,
-                    visible: false,
-                    template: `<img src="/static/images/img/lawSupervise/${
-                        _this.categoryList[category + 1].className
-                        }.png">`,
-                    // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
-                    // content: `<div class="prompt">${ poi.other.username }</div>`,
-                    events: {
-                        click() {
-                        that.windows.forEach(window => {
-                            window.visible = false;
-                        });
-                        that.curWindow = that.windows[length + i];
-                        if (category == 4) {
-                            that.getBySiteId(
-                            that.curWindow.other.id,
-                            that.curWindow.other
-                            );
-                        }
-                        console.log(that.curWindow);
-                        that.$nextTick(() => {
-                            that.curWindow.visible = true;
-                        });
-                        }
-                    }
+                if (category == -1) {
+                _this.markers.push({
+                position: [poi.lng, poi.lat],
+                visible: false,
+                other: poi,
+                // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
+                // content: null,
+                template: `<div><img src="./static/images/img/lawSupervise/map_didian.png"><span style="position:absolute;left:12px;top:8px;color:white">${i +
+                    1}</span></div>`,
+                events: {
+                    click() {
+                    that.windows.forEach(window => {
+                        window.visible = false;
                     });
-                } else {
-                    _this.markers.push({
-                    position: [poi.lng, poi.lat],
-                    visible: false,
-                    other: poi,
-                    // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
-                    // content: null,
-                    template: `<div><img src="./static/images/img/lawSupervise/map_didian.png"><span style="position:absolute;left:12px;top:8px;color:white">${i +
-                        1}</span></div>`,
-                    events: {
-                        click() {
-                        that.windows.forEach(window => {
-                            window.visible = false;
-                        });
 
-                        that.curWindow = that.windows[i];
+                    that.curWindow = that.windows[i];
 
-                        console.log(that.curWindow);
-                        that.$nextTick(() => {
-                            that.curWindow.visible = true;
-                        });
-                        }
-                    }
+                    console.log(that.curWindow);
+                    that.$nextTick(() => {
+                        that.curWindow.visible = true;
                     });
+                    }
                 }
+                });
+
+          } else if (category == 4) {
+                _this.markers.push({
+                  position: [poi.lng, poi.lat],
+                  other: poi.other,
+                  visible: false,
+                  template: `<span><img src="/static/images/img/lawSupervise/${
+                    _this.categoryList[category + 1].className
+                    }.png"><em style="position:absolute;top:7px;font-style:normal;left:5px;font-size: 12px; color: red;">G122</em></span>`,
+                  // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
+                  // content: `<div class="prompt">${ poi.other.username }</div>`,
+                  events: {
+                    click() {
+                      that.windows.forEach(window => {
+                        window.visible = false;
+                      });
+                      that.curWindow = that.windows[length + i];
+                      if (category == 4) {
+                        that.getBySiteId(
+                          that.curWindow.other.id,
+                          that.curWindow.other
+                        );
+                      }
+                      console.log(that.curWindow);
+                      that.$nextTick(() => {
+                        that.curWindow.visible = true;
+                      });
+                    }
+                  }
+                });
+          } else {
+               _this.markers.push({
+                  position: [poi.lng, poi.lat],
+                  other: poi.other,
+                  visible: false,
+                  template: `<img src="/static/images/img/lawSupervise/${
+                    _this.categoryList[category + 1].className
+                    }.png">`,
+                  // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
+                  // content: `<div class="prompt">${ poi.other.username }</div>`,
+                  events: {
+                    click() {
+                      that.windows.forEach(window => {
+                        window.visible = false;
+                      });
+                      that.curWindow = that.windows[length + i];
+                      if (category == 4) {
+                        that.getBySiteId(
+                          that.curWindow.other.id,
+                          that.curWindow.other
+                        );
+                      }
+                      console.log(that.curWindow);
+                      that.$nextTick(() => {
+                        that.curWindow.visible = true;
+                      });
+                    }
+                  }
+                });
+          }
                 let aaa = {
                     position: [poi.lng, poi.lat],
                     category: category,
