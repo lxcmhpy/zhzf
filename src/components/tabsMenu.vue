@@ -27,9 +27,6 @@ export default {
   computed: {
   },
   methods: {
-    tabAdd (tab) {
-        debugger;
-    },
     //tab标签点击时，切换相应的路由
     tabClick(tab) {
         let route = this.openTab[tab.index];
@@ -125,7 +122,6 @@ export default {
         this.activeIndexStr = val;
     },
     openTab (val, oldVal) {
-        debugger;
         return val
     }
   },

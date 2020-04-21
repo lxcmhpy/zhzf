@@ -2,7 +2,7 @@
   <!-- 头部一级菜单 -->
   <div>
     <el-menu
-      :default-active="`${headActiveNav}-menu-${headActiveNav}`"
+      :default-active="`${headActiveNav}`"
       class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect">
@@ -28,8 +28,8 @@ import { mapGetters } from "vuex";
       handleSelect(key, keyPath) {
 
         let keyStr = key.split(this.reg);
-        this.$store.commit("SET_ACTIVE_INDEX_STO", keyStr[0]);
-        this.$store.commit("set_Head_Active_Nav", keyStr[0]);
+        this.$store.commit("SET_ACTIVE_INDEX_STO", key);
+        this.$store.commit("set_Head_Active_Nav", key);
         //将当前选中的一级菜单名传到父组件
         this.$emit("selectHeadMenu",  keyStr[0]);
         //删除之前的tab页签

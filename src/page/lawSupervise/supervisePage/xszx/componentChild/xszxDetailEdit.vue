@@ -281,6 +281,13 @@
                                                     <el-option label="选项二" value="2"></el-option>
                                                     </el-select>
                                                 </el-form-item>
+                                                <el-form-item label="">
+                                                    <el-input
+                                                        placeholder="默认排序"
+                                                        suffix-icon="el-icon-caret-bottom"
+                                                        value="默认排序">
+                                                    </el-input>
+                                                </el-form-item>
                                                 </div>
                                             </div>
                                             <ul class="list-info">
@@ -704,61 +711,6 @@ export default {
 }
 </script>
 <style lang='scss'>
-.el-icon-circle-close {
-    color:white;
-}
-.el-drawer-title-noborder ::deep span:focus {
-    outline: 0
-}
-.uploadFile {
-    border:0px;
-    .el-upload-dragger {
-        width: 188px;
-        height: 110px;
-        background:#edf0fa;
-        border-radius: 0px;
-        border: 1px dotted #ccc;
-        line-height:110px;
-        .el-icon-picture {
-            color: #a1b1e3;
-            font-size: 30px;
-        }
-    }
-    .el-upload-list__item-actions,.el-upload-list__item-thumbnail{
-        width: 188px;
-        height: 110px;
-    }
-    .el-upload-list__item,.el-upload-list__item-actions{
-        width: 188px;
-        height: 110px;
-        border-radius: 0px;
-        margin-bottom: 22px;
-        border: 1px solid #ccc;
-    }
-    .el-upload--picture-card {
-         width: 188px;
-        height: 110px;
-         border: 0px;
-    }
-    .el-upload-list {
-    }
-}
-.demo-image__preview {
-    .img{
-         width: 188px !important;
-        height: 110px !important;
-        img {
-            width: 188px !important;
-            height: 110px !important;
-        }
-        .el-image-viewer__canvas {
-            img {
-                width: auto !important;
-                height: 100% !important;
-            }
-        }
-    }
-}
 </style>
 
 

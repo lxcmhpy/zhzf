@@ -14,7 +14,7 @@ export default  [
                 path: '/lawSupervise',
                 name: 'lawSupervise',
                 meta: {
-                    title: "执法监管首页",
+                    title: "可视化监管",
                     oneTab:true,
                 },
                 component: () => import("@/page/lawSupervise/supervisePage/kshjg/lawSupervise.vue"),

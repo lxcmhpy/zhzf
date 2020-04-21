@@ -61,7 +61,8 @@ import { mapGetters } from "vuex";
         let _this = this
         for(let i =0;i<this.allMenuList.length;i++) {
             let item = this.allMenuList[i];
-            if (item.name == val) {
+            let key = val.split(/(-menu-)/gi);
+            if (item.name == key[0]) {
                 if (item.children && item.children.length) {
                     item.children.forEach(item2 => {
                     _this.currentSlideMenu.push(item2);
@@ -73,11 +74,8 @@ import { mapGetters } from "vuex";
       }
     },
     mounted() {
-        debugger;
         this.allMenuList=this.menu;
-        // debugger;
         this.getSlideMenu(this.headActiveNav); //默认加载案件办理的二级菜单
-      // console.log('selectedHeadMenu', this.selectedHeadMenu);
     },
     created() {
     },

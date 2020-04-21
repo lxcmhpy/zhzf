@@ -286,6 +286,13 @@
                       <el-option label="选项二" value="2"></el-option>
                     </el-select>
                   </el-form-item>
+                   <el-form-item label="">
+                        <el-input
+                            placeholder="默认排序"
+                            suffix-icon="el-icon-caret-bottom"
+                            value="默认排序">
+                        </el-input>
+                    </el-form-item>
                 </div>
               </div>
               <ul class="list-info">

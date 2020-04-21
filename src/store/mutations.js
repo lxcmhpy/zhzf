@@ -47,7 +47,7 @@ const mutations = {
   //删除所有的tabs
   [types.DELETE_ALLTABS](state) {
     // state.openTab = [];
-    state.openTab = [{route: "/index",name: "case_handle_home_index",title: "首页"}];
+    state.openTab = [{route: "/index",name: "case_handle_home_index",title: "案件办理首页"}];
   },
   // 设置当前激活的tab
   [types.SET_ACTIVE_INDEX](state, name) {
