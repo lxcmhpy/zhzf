@@ -639,7 +639,7 @@ export default {
     //解除或延长强制措施跳转
     showRemoveOrExtend(){
       this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({name:'removeOrPrelong'})
+      this.$router.push({name:'case_handle_removeOrPrelong'})
     },
     //显示解除或延长强制措施按钮
     showRemoveOrExtendBtn(link){

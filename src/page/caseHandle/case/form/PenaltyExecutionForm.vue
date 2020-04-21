@@ -484,7 +484,7 @@ export default {
       };
       console.log('routerData,routerData', routerData)
       this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: "myPDF", params: routerData });
+      this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
     //执行方式
     changePayWay(val) {
