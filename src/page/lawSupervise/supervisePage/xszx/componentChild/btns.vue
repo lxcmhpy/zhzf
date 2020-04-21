@@ -1,7 +1,7 @@
 <template>
   <div class="superviseBtns">
     <div v-if="['0', '1'].indexOf(tabActiveValue) > -1">
-      <el-button type="button" class="submitBtn blueBtn" @click="showInvalidCue" >
+      <el-button type="button" class="submitBtn grayBtn" @click="showInvalidCue" >
         <i class="el-icon-warning-outline"></i>
         <div>无效<br />信息</div>
       </el-button>
