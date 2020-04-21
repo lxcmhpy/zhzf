@@ -673,11 +673,12 @@ export default {
           let M = measureStartDate.getMonth() + 1 < 10 ? '0' + (measureStartDate.getMonth() + 1) + '-' : measureStartDate.getMonth() + 1 + '-';
           let D = measureStartDate.getDate() < 10 ? '0' + measureStartDate.getDate() + ' ' : measureStartDate.getDate() + ' ';
           let startData = Y + M + D;
+
           let measureEndDate = new Date(formData.measureEndDate);
           this.measureDateEndTime = formData.measureEndDate;
           let y = measureEndDate.getFullYear() + '-';
-          let m = measureEndDate.getMonth() + 1 < 10 ? '0' + (measureEndDate.getMonth() + 1) + '-' : measureStartDate.getMonth() + 1 + '-';
-          let d = measureEndDate.getDate() < 10 ? '0' + measureEndDate.getDate() + ' ' : measureStartDate.getDate() + ' ';
+          let m = measureEndDate.getMonth() + 1 < 10 ? '0' + (measureEndDate.getMonth() + 1) + '-' : measureEndDate.getMonth() + 1 + '-';
+          let d = measureEndDate.getDate() < 10 ? '0' + measureEndDate.getDate() + ' ' : measureEndDate.getDate() + ' ';
           let endDate = y + m + d;
           this.measureDate = startData + " 至 "+ endDate;
 
