@@ -130,6 +130,7 @@ export default {
   },
   methods: {
     caseRecord() {
+      this.$store.commit("setCaseId", '');
       this.$refs.caseRegisterDiagRef.showModal();
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
