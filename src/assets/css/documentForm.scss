@@ -734,6 +734,14 @@
         background: #E3EAF9;
     }
 }
+.del-icon{
+    display:none;
+}
+.file-upload:hover {
+    .del-icon{
+    display:block;
+}
+}
 
 .list-hover {
     display: block;
