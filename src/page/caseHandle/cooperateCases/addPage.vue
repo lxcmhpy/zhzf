@@ -121,18 +121,15 @@
             </ul>
           </el-upload> -->
           <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadPaymentVoucher" :on-preview="handlePreview" :on-remove="handleRemove" :show-file-list="false">
-            <el-button size="small" type="primary">选取文件</el-button>
+            <el-button size="small" type="primary">选取文件</el-button><span class="upload-limt-text">最多上传三个附件</span>
           </el-upload>
           <ul class="file-upload">
-            <!-- <li v-for="item in fileListArr" :key="item.id" v-on:mouseover="mouseoverFile()" v-on:mouseout="mouseoutFile()"> -->
-            <li v-for="item in fileListArr" :key="item.id" v-on:mouseover="mouseoverFile()" v-on:mouseout="mouseoutFile()">
+            <li class="file-upload-li" v-for="item in fileListArr" :key="item.id">
               <i class="el-icon-document"></i>
               {{item.fileName}}
-              <span style="float:right;margin-right:8px"><i @click="deleteFile(item)" class="el-icon-close"></i></span>
+              <span style="float:right;margin-right:8px" class="del-icon"><i @click="deleteFile(item)" class="el-icon-close"></i></span>
             </li>
           </ul>
-
-
         </el-form-item>
         <el-form-item label="备注">
           <el-input type="textarea" v-model="caseData.notes"></el-input>
@@ -553,12 +550,6 @@ export default {
     changeInput() {
       this.$forceUpdate()
     },
-    mouseoutFile() {
-      this.showDelete = false
-    },
-    mouseoverFile() {
-      this.showDelete = true
-    }
   },
   created() {
     this.getAllOrgan("root");
