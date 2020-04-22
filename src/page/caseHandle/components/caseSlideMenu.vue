@@ -10,7 +10,7 @@
       <el-menu-item index="inforCollect" @click="goTo('case_handle_inforCollect')">
         基本<br>信息
       </el-menu-item>
-      <el-menu-item index="flowChart" :disabled = "disabledFlow" @click="goTo('case_handle_flowChart')">
+      <el-menu-item index="flowChart" :disabled = "disabledFlow" @click="goTo('flowChart')">
         案件<br>流程
       </el-menu-item>
       <el-menu-item index="handleRecordForm" @click="goTo('case_handle_handleRecordForm')">

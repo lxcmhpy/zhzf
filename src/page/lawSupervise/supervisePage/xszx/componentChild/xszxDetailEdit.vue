@@ -12,7 +12,7 @@
                         <span  class="greenC2" @click="checkVisible = true"><img :src="'./static/images/img/lawSupervise/icon_chepai.png'">车辆查验</span>
                     </span>
                     <el-dialog class='mini-dialog-title' title="号牌更正" :visible.sync="visible" :show-close='false' :close-on-click-modal="false" width="420px">
-                        <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="92px">
+                        <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="100px">
                             <div>
                                 <div class="item">
                                 <el-form-item label="图像识别车牌">
@@ -37,6 +37,7 @@
                             title="车辆查验"
                             direction="rtl"
                             size="876px"
+                            :show-close="false"
                             :visible.sync="checkVisible">
                             <div class="vehicle-dialog table-style">
                                 <el-form>
@@ -48,7 +49,7 @@
                                                 <el-option label="选项2" value="2"></el-option>
                                                 <el-option label="选项3" value="3"></el-option>
                                                 </el-select>
-                                                <el-button slot="append" icon="el-icon-search"></el-button>
+                                                <el-button slot="append" style="width:100px" icon="el-icon-search"></el-button>
                                             </el-input>
                                         </div>
                                         <div class="banner">
@@ -279,6 +280,13 @@
                                                     <el-option label="全部" value="1"></el-option>
                                                     <el-option label="选项二" value="2"></el-option>
                                                     </el-select>
+                                                </el-form-item>
+                                                <el-form-item label="">
+                                                    <el-input
+                                                        placeholder="默认排序"
+                                                        suffix-icon="el-icon-caret-bottom"
+                                                        value="默认排序">
+                                                    </el-input>
                                                 </el-form-item>
                                                 </div>
                                             </div>
@@ -703,61 +711,6 @@ export default {
 }
 </script>
 <style lang='scss'>
-.el-icon-circle-close {
-    color:white;
-}
-.el-drawer-title-noborder ::deep span:focus {
-    outline: 0
-}
-.uploadFile {
-    border:0px;
-    .el-upload-dragger {
-        width: 188px;
-        height: 110px;
-        background:#edf0fa;
-        border-radius: 0px;
-        border: 1px dotted #ccc;
-        line-height:110px;
-        .el-icon-picture {
-            color: #a1b1e3;
-            font-size: 30px;
-        }
-    }
-    .el-upload-list__item-actions,.el-upload-list__item-thumbnail{
-        width: 188px;
-        height: 110px;
-    }
-    .el-upload-list__item,.el-upload-list__item-actions{
-        width: 188px;
-        height: 110px;
-        border-radius: 0px;
-        margin-bottom: 22px;
-        border: 1px solid #ccc;
-    }
-    .el-upload--picture-card {
-         width: 188px;
-        height: 110px;
-         border: 0px;
-    }
-    .el-upload-list {
-    }
-}
-.demo-image__preview {
-    .img{
-         width: 188px !important;
-        height: 110px !important;
-        img {
-            width: 188px !important;
-            height: 110px !important;
-        }
-        .el-image-viewer__canvas {
-            img {
-                width: auto !important;
-                height: 100% !important;
-            }
-        }
-    }
-}
 </style>
 
 

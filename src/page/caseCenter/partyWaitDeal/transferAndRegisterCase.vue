@@ -18,7 +18,7 @@
         </el-tabs>
       </div>
       <div class="searchAndpageBox toggleBox">
-        <div class="handlePart caseHandleSearchPart">
+        <div class="handlePart caseHandleSearchPart" :class="{'autoHeight':isShow}">
           <el-form :inline="true" :model="form" label-width="80px" ref="form">
             <el-form-item label="创建时间">
               <el-date-picker size="small" v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :default-time="['00:00:00', '23:59:59']" start-placeholder="开始日期" end-placeholder="结束日期">
@@ -28,7 +28,7 @@
               <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
             </el-form-item>
             <el-collapse-transition>
-              <div v-show="isShow" :class="{'ransition-box':true}">
+              <div :class="{'ransition-box':true}">
                 <el-form-item label="处置人员">
                   <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>

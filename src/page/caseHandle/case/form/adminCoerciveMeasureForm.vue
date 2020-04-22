@@ -24,7 +24,7 @@
                         v-bind:class="{ over_flow:formData.party.length>14?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxlength="nameLength"
-                        :disabled="isParty && originalData.party ? true : false"
+                        disabled
                         placeholder="\"
                       ></el-input>
                     </el-form-item>
@@ -39,7 +39,7 @@
                         :autosize="{ minRows: 1, maxRows: 2}"
                         maxlength="18"
                         placeholder="\"
-                        :disabled="isParty && originalData.partyIdNo ? true : false"
+                        :disabled="isParty && !originalData.partyIdNo ? false : true"
                       ></el-input>
                     </el-form-item>
                   </td>
@@ -54,7 +54,7 @@
                         v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxlength="adressLength"
-                        :disabled="isParty && originalData.partyAddress ? true : false"
+                        :disabled="isParty && !originalData.partyIdNo ? false : true"
                         placeholder="\"
                       ></el-input>
                     </el-form-item>
@@ -65,7 +65,7 @@
                       <el-input
                         v-model="formData.partyTel"
                         :maxLength="maxLength"
-                        :disabled="isParty && originalData.partyTel ? true : false"
+                        :disabled="isParty && !originalData.partyIdNo ? false : true"
                         placeholder="\"
                       ></el-input>
                     </el-form-item>
@@ -79,7 +79,7 @@
                       <el-input
                         v-model="formData.partyName"
                         :maxLength="maxLength"
-                        :disabled="isParty || originalData.partyName? true : false"
+                        disabled
                         placeholder="\"
                       ></el-input>
                     </el-form-item>
@@ -92,7 +92,7 @@
                       <el-input
                         v-model="formData.partyUnitAddress"
                         :maxLength="maxLength"
-                        :disabled="isParty || originalData.partyUnitAddress? true : false"
+                        :disabled="!isParty && !originalData.partyUnitAddress? false : true"
                         placeholder="\"
                       ></el-input>
                     </el-form-item>
@@ -106,7 +106,7 @@
                         v-model="formData.partyUnitTel"
                         minlength="11"
                         :maxLength="maxLength"
-                        :disabled="isParty || originalData.partyUnitTel? true : false"
+                        :disabled="!isParty && !originalData.partyName?  false : true"
                         placeholder="\"
                       ></el-input>
                     </el-form-item>
@@ -117,7 +117,7 @@
                       <el-input
                         v-model="formData.partyManager"
                         :maxLength="maxLength"
-                        :disabled="isParty ||  originalData.partyManager? true : false"
+                        :disabled="!isParty && !originalData.partyManager?  false : true"
                         placeholder="\"
                       ></el-input>
                     </el-form-item>
@@ -130,7 +130,7 @@
                       <el-input
                         v-model="formData.socialCreditCode"
                         :maxLength="maxLength"
-                        :disabled="isParty || originalData.socialCreditCode? true : false"
+                        :disabled="!isParty && !originalData.socialCreditCode?  false : true"
                         placeholder="\"
                       ></el-input>
                     </el-form-item>
@@ -144,7 +144,7 @@
                   </el-form-item>
                 ，你（单位）
                   <el-form-item rows = '2' prop="caseCauseName" style="width: 300px">
-                    <el-input  :disabled="originalData.caseCauseName? true : false" v-model="formData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:formData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxLength='50'></el-input>
+                    <el-input :disabled="originalData.caseCauseName? true : false" v-model="formData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='90'></el-input>
                   </el-form-item>
                 。依据
                 <span>
@@ -157,7 +157,7 @@
                 </span>的规定，本机关决定对你（单位）的
                 <span>
                   <el-form-item prop="detainGoods" style="width: 330px">
-                    <el-input type='textarea' :autosize="{ minRows: 1, maxRows: 3}" v-model="formData.detainGoods" v-bind:class="{ over_flow:formData.detainGoods.length>14?true:false }"  :maxLength='40'></el-input>
+                    <el-input type='textarea' :autosize="{ minRows: 1, maxRows: 3}" v-model="formData.detainGoods" :maxLength='90'></el-input>
                   </el-form-item>
                 </span>（财物、设施或场所的名称及数量）实施
                 <span>
@@ -326,6 +326,16 @@ export default {
       }
       callback();
     };
+    //起止期限日期验证
+    var validateIfDate = (rule, value, callback) => {
+      var diff = new Date(value).getTime() - new Date(this.formData.measureStartDate).getTime();
+      var days = diff/24/60/60/1000;
+      console.log("差几天",days)
+      if (days < 1 || days > 29) {
+        return callback("措施起止期限不得超过30日");
+      } 
+      callback();
+    };
     return {
       formData: {
         caseNumber: '',
@@ -413,6 +423,7 @@ export default {
         ],
         measureEndDate: [
           { required: true, message: '强制措施结束时间不能为空', trigger: 'blur' },
+          { validator: validateIfDate, trigger: "blur" },
         ],
         reconsiderationOrgan: [
           { required: true, message: '复议机构不能为空', trigger: 'blur' },

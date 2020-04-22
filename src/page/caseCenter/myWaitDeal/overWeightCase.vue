@@ -18,7 +18,7 @@
         </el-tabs>
       </div>
       <div class="searchAndpageBox toggleBox">
-        <div class="handlePart caseHandleSearchPart">
+        <div class="handlePart caseHandleSearchPart" :class="{'autoHeight':isShow}">
           <el-form :inline="true" :model="form" label-width="80px" ref="form">
             <el-form-item label="车牌号">
               <el-select v-model="form.vehicleColor"  placeholder="请选择">
@@ -33,7 +33,7 @@
               </el-date-picker>
             </el-form-item>
             <el-collapse-transition>
-              <div v-show="isShow" :class="{'ransition-box':true}">
+              <div :class="{'ransition-box':true}">
                 <el-form-item label="检测站点">
                   <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>

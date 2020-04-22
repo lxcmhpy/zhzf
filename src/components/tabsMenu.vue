@@ -18,7 +18,8 @@ export default {
   name: "",
   data() {
     return {
-        activeIndexStr: ''
+        activeIndexStr: '',
+        openTabList: []
     };
   },
   methods: {
@@ -28,19 +29,15 @@ export default {
   methods: {
     //tab标签点击时，切换相应的路由
     tabClick(tab) {
-        this.activeIndexStr = tab.name;
-        this.$store.commit("SET_ACTIVE_INDEX_STO", tab.name);
-        debugger;
-        if (tab.params) {
-            this.$router.push({ name: tab.name,params:tab.params});
-        } else {
-            this.$router.push({ name: tab.name});
-        }
+        let route = this.openTab[tab.index];
+        this.activeIndexStr = route.name;
+        this.$store.commit("SET_ACTIVE_INDEX_STO", route.name);
+        this.$router.push({ name: route.name,params: route.params});
     },
     //移除tab标签
     tabRemove(targetName) {
       //首页不删
-      if (targetName == "case_handle_home_index") {
+      if (targetName == "caseHandle") {
         return;
       }
       this.$store.dispatch("deleteTabs", targetName);
@@ -48,7 +45,7 @@ export default {
         // 设置当前激活的路由
         if (this.openTab && this.openTab.length >= 1) {
           this.$store.commit("SET_ACTIVE_INDEX_STO", this.openTab[this.openTab.length - 1].name);
-          this.$router.push({ name: this.activeIndexSto });
+          this.$router.push({ name: this.activeIndexSto,params: this.openTab[this.openTab.length - 1].params});
         } else {
           this.$router.push({ path: "/" });
         }
@@ -60,11 +57,11 @@ export default {
     // 当前路由不是首页时，添加首页以及另一页到store里，并设置激活状态
     // 当当前路由是首页时，添加首页到store，并设置激活状态
     // this.activeIndexStr = this.activeIndexSto;
-    if (this.$route.path !== "/" && this.$route.name !== "case_handle_home_index") {
+    if (this.$route.path !== "/" && this.$route.name !== "caseHandle") {
         this.activeIndexStr = this.$route.name;
         this.$store.commit("SET_ACTIVE_INDEX_STO", this.$route.name);
     } else {
-        this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
+        this.$store.commit("SET_ACTIVE_INDEX_STO", "caseHandle");
     }
   },
   watch: {
@@ -76,54 +73,37 @@ export default {
       for (let i = 0; i < this.openTab.length; i++) {
         //下一个路由已经在tab中，是案件的话替换tab title
         if ( (to.name == this.openTab[i].name) || (to.meta.oneTab && this.openTab[i].isCase)) {
-            // debugger;
-        //   this.$store.dispatch("setActiveIndex", this.openTab[i].name); //设置active tab
-        this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[i].name);
+          this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[i].name);
+
           if (this.openTab[i].isCase) {
             let changeTabData = {
               tabIndex: i,
               title: this.caseHandle.caseNumber
             };
             this.$store.commit("changeOneTabName", changeTabData);
+          } else if (to.params.tabTitle) {
+            this.$store.commit("changeOneTabName", {
+                    tabIndex: i,
+                    title: to.params.tabTitle
+            });
           }
           flag = true;
           break;
         }
-        //下一个路由不在tab中，但是它们使用同一个tab
-        // if (to.meta.oneTab && this.openTab[i].isCase) {
-        //   console.log("同一个案件tab");
-        //   this.$store.dispatch("setActiveIndex", this.openTab[i].name); //设置active tab
-        //   let changeTabData = {
-        //     tabIndex: i,
-        //     title: this.$store.state.caseNumber
-        //   };
-        //   this.$store.commit("changeOneTabName", changeTabData);
-        //   flag = true;
-        //   break;
-        // }
       }
-
-      // for (let item of this.openTab) {
-      //   if (item.name === to.name) {
-      //     this.$store.dispatch("setActiveIndex", to.name);   //设置active tab
-
-      //     flag = true;
-      //     break;
-      //   }
-      // }
-      // debugger;
       if (!flag) {
         let tabTitle = "";
         let isCase = false;
-        if (
-          this.caseHandle.caseNumber &&
-          this.caseHandle.caseNumber != "案件"
-        ) {
+        if (this.caseHandle.caseNumber &&this.caseHandle.caseNumber != "案件") {
           tabTitle = this.caseHandle.caseNumber;
           isCase = true;
         } else {
-          tabTitle = this.$route.meta.title;
-          isCase = false;
+            if (this.$route.params.tabTitle) {
+                tabTitle = this.$route.params.tabTitle;
+            } else {
+                tabTitle = this.$route.meta.title;
+            }
+            isCase = false;
         }
         this.$store.dispatch("addTabs", {
           route: to.path,
@@ -138,6 +118,9 @@ export default {
     },
     activeIndexSto(val,oldVal) {
         this.activeIndexStr = val;
+    },
+    openTab (val, oldVal) {
+        return val
     }
   },
   computed: {

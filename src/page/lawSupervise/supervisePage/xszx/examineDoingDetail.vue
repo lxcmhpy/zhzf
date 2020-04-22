@@ -42,7 +42,7 @@ import examineDoingThirdDetail from './componentChild/examineDoingDetail/examine
 export default {
     data () {
         return {
-            examineDoingDetailChildren: ['examineDoingFirstDetail','examineDoingSecondDetail','examineDoingThirdDetail'],
+            examineDoingDetailChildren: ['examineDoingFirstDetail','examineDoingSecondDetail','examineDoingThirdDetail','examineDoingThirdDetail'],
             obj: null,
             processStatus: [{
                 value: '检测数据核对'
