@@ -515,6 +515,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      // this.printContent()
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {

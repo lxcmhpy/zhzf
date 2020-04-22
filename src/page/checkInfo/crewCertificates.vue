@@ -131,6 +131,6 @@ export default {
 }
 </script>
 
-<!--<style lang='scss' scoped>
-// @import "@/assets/css/checkInfo.scss";
-// </style>-->
+
+<style lang='scss' src="@/assets/css/checkInfo.scss" scoped></style>
+

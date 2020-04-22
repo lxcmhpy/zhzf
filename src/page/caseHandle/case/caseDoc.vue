@@ -340,7 +340,8 @@
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <chooseAskPeopleDia ref="chooseAskPeopleDiaRef"></chooseAskPeopleDia>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
-  </div>
+    <caseSlideMenu :activeIndex="''"></caseSlideMenu>
+  </div> 
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
@@ -349,6 +350,8 @@ import checkDocFinish from "../components/checkDocFinish";
 import chooseAskPeopleDia from "@/page/caseHandle/components/chooseAskPeopleDia";
 import resetDocDia from '@/page/caseHandle/components/resetDocDia'
 import iLocalStroage from "@/common/js/localStroage";
+import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
+
 import {
   validateIDNumber,
   validatePhone,
@@ -358,7 +361,8 @@ export default {
   components: {
     checkDocFinish,
     chooseAskPeopleDia,
-    resetDocDia
+    resetDocDia,
+    caseSlideMenu
   },
   data() {
     return {

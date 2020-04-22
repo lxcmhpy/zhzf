@@ -321,7 +321,7 @@
         fd.append('docId', '2c9029e16c753a19016c755fe1340001');
         uploadEvApi(fd).then(
           res => {
-//          console.log(res);
+            console.log('上传文件结果',res);
             this.findFileList(res.data, true);
           },
           error => {
@@ -350,9 +350,8 @@
 //      console.log(data);
         getFile(data).then(
           res => {
-//          console.log("附件列表",res);
-            this.fileListArr = res.data;
-
+         console.log("附件列表",res);
+            this.fileListArr = res.data
           },
           error => {
             console.log(error);
