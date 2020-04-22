@@ -209,7 +209,7 @@ export default [
   {
     // path: '/flowChart/:id',
     path: '/flowChart',
-    name: 'flowChart',
+    name: 'case_handle_flowChart',
     meta: {
       title: '流程图',
       oneTab: true,
