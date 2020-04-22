@@ -732,16 +732,17 @@
 
     li:hover {
         background: #E3EAF9;
+
+        .del-icon {
+            display: block;
+        }
     }
 }
-.del-icon{
-    display:none;
+
+.del-icon {
+    display: none;
 }
-.file-upload:hover {
-    .del-icon{
-    display:block;
-}
-}
+
 
 .list-hover {
     display: block;
@@ -751,7 +752,16 @@
 .list-hover :hover {
     width     : 100%;
     background: #E3EAF9;
-    .el-checkbox__input{
+
+    .el-checkbox__input {
         width: 14px !important;
     }
+}
+
+.upload-limt-text {
+    font-size  : 14px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color      : rgba(165, 165, 165, 1);
+    margin-left: 16px;
 }

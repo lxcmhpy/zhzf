@@ -121,30 +121,15 @@
             </ul>
           </el-upload> -->
           <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadPaymentVoucher" :on-preview="handlePreview" :on-remove="handleRemove" :show-file-list="false">
-            <el-button size="small" type="primary">选取文件</el-button>
+            <el-button size="small" type="primary">选取文件</el-button><span class="upload-limt-text">最多上传三个附件</span>
           </el-upload>
           <ul class="file-upload">
-            <!-- <li v-for="item in fileListArr" :key="item.id" v-on:mouseover="mouseoverFile()" v-on:mouseout="mouseoutFile()"> -->
-            <li class="file-upload-li" v-for="item in fileListArr" :key="item.id" v-on:mouseover="mouseoverFile()" v-on:mouseout="mouseoutFile()">
+            <li class="file-upload-li" v-for="item in fileListArr" :key="item.id">
               <i class="el-icon-document"></i>
               {{item.fileName}}
               <span style="float:right;margin-right:8px" class="del-icon"><i @click="deleteFile(item)" class="el-icon-close"></i></span>
             </li>
           </ul>
-<!-- <el-upload
-  class="upload-demo"
-  action="https://jsonplaceholder.typicode.com/posts/"
-  :http-request="uploadPaymentVoucher"
-  :on-preview="handlePreview"
-  :on-remove="handleRemove"
-  multiple
-  :limit="3"
-  :on-exceed="handleExceed"
-  :file-list="fileList">
-  <el-button size="small" type="primary">点击上传</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-</el-upload> -->
-
         </el-form-item>
         <el-form-item label="备注">
           <el-input type="textarea" v-model="caseData.notes"></el-input>
@@ -565,25 +550,6 @@ export default {
     changeInput() {
       this.$forceUpdate()
     },
-    mouseoutFile() {
-      this.showDelete = false
-    },
-    mouseoverFile() {
-      this.showDelete = true
-    },
-    
-    //  handleRemove(file, fileList) {
-    //     console.log(file, fileList);
-    //   },
-      handlePreview(file) {
-        console.log(file);
-      },
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
-      beforeRemove(file, fileList) {
-        return this.$confirm(`确定移除 ${ file.name }？`);
-      }
   },
   created() {
     this.getAllOrgan("root");
