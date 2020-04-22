@@ -24,7 +24,7 @@
         <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
       </el-table>
     </div>
-    <div class="paginationBox">
+    <div class="paginationBox"  v-if="tableData.length > 0">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handlePageSizeChange"
