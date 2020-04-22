@@ -274,9 +274,6 @@
     width: 100%;
   }
 
-  .el-dialog__footer {
-    position: relative;
-  }
 
   .dialog-footer {
     .el-checkbox {

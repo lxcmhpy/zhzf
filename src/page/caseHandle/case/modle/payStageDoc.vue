@@ -27,7 +27,8 @@
           </span>（案号）《行政处罚决定书》，作出了对你（单位）罚款
           <span>
             <el-form-item prop="fine">
-              <el-input v-model="docData.fine" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.fine" :maxLength='maxLength'
+                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"></el-input>
             </el-form-item>
           </span>（大写）的行政处罚决定，根据你（单位）的申请，本机关依据《中华人民共和国行政处罚法》第五十二条的规定，现决定：
         </p>
@@ -66,12 +67,14 @@
           </span>前，缴纳罚款
           <span>
             <el-form-item :prop="disabledTwo?'placeholder':'payFine'">
-              <el-input v-model="docData.payFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.payFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'
+                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"></el-input>
             </el-form-item>
           </span>元（大写）（每期均应当单独开具本文书）。此外，尚有未缴纳的罚款
           <span>
             <el-form-item :prop="disabledTwo?'placeholder':'debtFine'">
-              <el-input v-model="docData.debtFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
+              <el-input v-model="docData.debtFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'
+                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"></el-input>
             </el-form-item>
           </span>元（大写）。
         </p>
