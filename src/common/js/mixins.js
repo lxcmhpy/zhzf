@@ -205,7 +205,7 @@ export const mixinGetCaseApiList = {
           console.log("更改流程图中的状态", res);
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({
-            name: 'flowChart'
+            name: 'case_handle_flowChart'
           });
         },
         err => {
@@ -616,7 +616,7 @@ export const mixinGetCaseApiList = {
       if (data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204g" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204h") {
         isHuanjieDoc = true;
       }
-      this.$store.dispatch('deleteTabs', 'flowChart');
+      this.$store.dispatch('deleteTabs', 'case_handle_flowChart');
       let data2 = this.com_getCaseRouteName(data.linkID);
       this.$store.commit('setDocId', data.docId);
       if (data.curLinkState == "complete" ) {    //已完成文书显示pdf  审核中也显示pdf

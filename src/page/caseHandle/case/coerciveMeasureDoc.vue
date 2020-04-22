@@ -346,7 +346,7 @@ export default {
           console.log('提交解除或延长表单',res);
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({ 
-            name: 'flowChart'
+            name: 'case_handle_flowChart'
           });
         },err=>{
           console.log(err);

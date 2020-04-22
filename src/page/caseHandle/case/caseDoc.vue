@@ -217,13 +217,12 @@
               <div class="col">
                 <el-form-item label="车辆类型">
                   <!-- <el-input ref="vehicleShipType" clearable class="w-120" v-model="formData.vehicleShipType" size="small" placeholder="请输入" :disabled="originalData.vehicleShipType ? true : false"></el-input> -->
-                  <el-select v-model="formData.vehicleShipType">
+                  <el-select v-model="formData.vehicleShipType"  :disabled="originalData.vehicleShipType ? true : false">
                     <el-option
                       v-for="item in allVehicleShipType"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value"
-                      :disabled="originalData.vehicleShipType ? true : false"
                     ></el-option>
                   </el-select>
                 </el-form-item>

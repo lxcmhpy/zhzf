@@ -57,7 +57,7 @@ export default {
   methods: {
     goFlowChart(id) {
       this.$router.push({
-        name: "flowChart",
+        name: "case_handle_flowChart",
         params: {
           id: id
         }

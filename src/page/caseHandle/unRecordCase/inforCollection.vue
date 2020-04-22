@@ -419,10 +419,7 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测站" class = "is-required">
-              <!-- <el-select v-model="inforForm.otherInfo.checkStastions">
-                <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select> -->
-              <el-input v-model="inforForm.otherInfo.checkStastions"></el-input>
+               <el-autocomplete style="width: 100%" v-model="inforForm.otherInfo.checkStastions" :fetch-suggestions="querySearch"></el-autocomplete>
             </el-form-item>
           </div>
           <div class="itemSmall">
