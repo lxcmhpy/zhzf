@@ -157,6 +157,4 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-@import "@/assets/css/caseHandle/caseDocument.scss";
-</style>
+<style lang="scss" src="@/assets/css/documentForm.scss"></style>

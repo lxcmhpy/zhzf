@@ -165,7 +165,7 @@
               </el-checkbox>
               <el-checkbox-group v-model="checkedFiles2" @change="handleCheckedFilesChange2">
                 <span class="list-hover">
-                  <el-checkbox v-for="(item,index) in evdenceList" :label="item.storageId" :key="index">{{item.fileName}}
+                  <el-checkbox v-for="(item,index) in evdenceList" :label="item" :key="index">{{item.fileName}}
                     <!-- {{item.docNote}}
                   <span v-if="item.docNote==''">{{item.docName}}</span> -->
                   </el-checkbox>
@@ -309,7 +309,7 @@ export default {
         }
       })
       }
-      
+
     },
     goSubmit(formName) {
       console.log(this.caseData)
