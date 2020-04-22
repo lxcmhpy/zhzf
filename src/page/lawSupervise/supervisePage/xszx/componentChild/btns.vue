@@ -109,8 +109,8 @@
 
   </div>
 </template>
-<style lang="scss" src="@/assets/css/cluesReview.scss"></style>
-<style scoped lang="scss">
+<style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>
+<style scoped lang="scss" scoped>
 .el-popover {
     z-index: 3300;
 }

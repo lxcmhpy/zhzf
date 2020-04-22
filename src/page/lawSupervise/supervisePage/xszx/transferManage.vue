@@ -130,7 +130,7 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
-<style lang="scss" src="@/assets/css/cluesReview.scss"></style>
+<style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>
 <style lang="scss" scoped>
 .vehicle-black {
     width:100%;

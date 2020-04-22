@@ -470,7 +470,7 @@ export default {
 
 }
 </script>
-<style lang="scss" src="@/assets/css/cluesReview.scss"></style>
+<style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>
 <style lang='css'>
 
 .el-drawer-title-noborder /deep/ span:focus {
