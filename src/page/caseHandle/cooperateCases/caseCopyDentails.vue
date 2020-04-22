@@ -81,10 +81,13 @@
                   <div class="document_list">
                     <ul>
                       <li v-for="(item,index) in appendixList" :key="index">
-                        <!-- <el-link type="primary" :href="host+scope.row.evPath"> -->
-                          <i class="el-icon-document-checked"></i>
-                          {{item}}
-                        <!-- </el-link> -->
+                        
+                          <el-link type="primary" :href="host+item.storageId" :underline="false" :target="['.jpg','.png','.jpeg'].includes(item.fileType) ? '_blank':'_self'">
+                            <i class="el-icon-document-checked"></i>
+                            {{item.fileName}}
+                          </el-link>
+                      
+                        
                       </li>
                     </ul>
                   </div>
@@ -102,12 +105,15 @@
 import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
 import { getCaseBasicInfoApi } from "@/api/caseHandle";
+import { getFile} from "@/api/upload";
+
 export default {
   computed: { ...mapGetters(['caseId']) },
   data() {
     return {
       caseData: {},
       appendixList: [],
+      host:"",
     }
     
   },
@@ -122,16 +128,33 @@ export default {
         console.log(err);
       })
     },
+    findFileList() {
+        let data = {
+          caseId: this.caseData.caseId,
+          docId: "2c9029e16c753a19016c755fe1340001"
+        }
+//      console.log(data);
+        getFile(data).then(
+          res => {
+            console.log("附件列表",res);
+            this.appendixList = res.data
+          },
+          error => {
+            console.log(error);
+          }
+        )
+      },
   },
   mounted() {
     this.caseData = this.$route.params.caseInfo,
     this.caseData.person = iLocalStroage.gets("userInfo").organName + '-' + this.caseData.person;  
     this.caseData = this.$route.params.caseInfo;
     console.log('this.caseData',this.caseData);
-    if (this.caseData.appendix != '') {
-      this.appendixList = this.caseData.appendix.split(",")
-      console.log('this.appendixList',this.appendixList)
-    }
+    this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST;
+    this.findFileList();
+  },
+  created(){
+    // this.findFileList();
   }
 }
 </script>
