@@ -33,7 +33,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="paginationBox">
+      <div class="paginationBox"  v-if="tableData.length > 0">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
                        background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper"
                        :total="total"></el-pagination>

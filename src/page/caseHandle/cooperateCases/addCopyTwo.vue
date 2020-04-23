@@ -102,11 +102,11 @@
           <!-- appendix -->
           <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/"
                      :http-request="uploadPaymentVoucher" :show-file-list="false">
-            <el-button size="small" type="primary">选取文件</el-button>
+            <el-button size="small" type="primary">选取文件</el-button><span class="upload-limt-text">最多上传三个附件</span>
           </el-upload>
-          <ul>
-            <li v-for="item in fileListArr" :key="item.id">{{item.fileName}}
-              <span><i @click="deleteFile(item)" class="el-icon-circle-close"></i></span>
+          <ul  class="file-upload">
+            <li class="file-upload-li" v-for="item in fileListArr" :key="item.id">{{item.fileName}}
+              <span style="float:right;margin-right:8px" class="del-icon"><i @click="deleteFile(item)" class="el-icon-close"></i></span>
             </li>
           </ul>
         </el-form-item>
@@ -321,7 +321,7 @@
         fd.append('docId', '2c9029e16c753a19016c755fe1340001');
         uploadEvApi(fd).then(
           res => {
-//          console.log(res);
+            console.log('上传文件结果',res);
             this.findFileList(res.data, true);
           },
           error => {
@@ -350,9 +350,8 @@
 //      console.log(data);
         getFile(data).then(
           res => {
-//          console.log("附件列表",res);
-            this.fileListArr = res.data;
-
+         console.log("附件列表",res);
+            this.fileListArr = res.data
           },
           error => {
             console.log(error);
@@ -372,6 +371,7 @@
       this.caseData.caseId = this.$route.params.caseData.id
       this.caseData.person = iLocalStroage.gets("userInfo").nickName
       this.caseData.organSend = iLocalStroage.gets("userInfo").organName
+      this.findFileList();
 //    console.log('表单', this.caseData)
     },
     created() {

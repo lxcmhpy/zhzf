@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
     <!-- sdmaskjdnsjdns -->
-    <el-button type="primary" class="editCaseInfoBtn" @click="gotoEditCase">修改基本信息</el-button>
+    <el-button type="primary" v-if="!disableWhenApproval" id="editCaseInfoBtn" @click="gotoEditCase">修改基本信息</el-button>
     <div class="print_info" id="establish-print">
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
         <div class="doc_topic">立案登记表</div>
@@ -414,6 +414,7 @@ export default {
       needDealData:true,
       disableWhenApproval:false,
       editCaseInfo:'', //修改案件基本信息需要传的数据
+
     };
   },
   components: {
@@ -567,10 +568,9 @@ export default {
   }
 };
 </script>
+ <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
  <style lang="scss">
-// @import "@/assets/css/pdf.scss";
-@import "@/assets/css/caseHandle/caseDocModle.scss";
-.editCaseInfoBtn{
+#editCaseInfoBtn{
   margin: 20px;
 }
 #establish-print{

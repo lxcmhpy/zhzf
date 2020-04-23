@@ -6,14 +6,17 @@
           <span class="title-blue"></span>
           <span class="title-text">处置说明</span>
         </div>
-        <table>
+        <table style="position:relative;">
           <tr>
             <td class="table-bg">车牌号</td>
             <td>12121</td>
             <td class="table-bg">车牌颜色</td>
             <td class="search-tr">
               <span class="search-text">黄色</span>
-              <el-button type="primary" @click="search">查询</el-button>
+
+               <el-button type="button" class="submitBtn blueBtn" @click="search"  style="position:absolute;right:-100px;top: 130px;">
+                    <div>查 看</div>
+                </el-button>
             </td>
           </tr>
 
@@ -40,7 +43,7 @@
 
     </div>
     <!-- <vehicleCheckDialog ref="vehicleCheckDialogRef"></vehicleCheckDialog> -->
-    <el-drawer class="el-drawer-title-noborder" title="车辆查验" direction="rtl" size="876px" :visible.sync="checkVisible">
+    <el-drawer class="el-drawer-title-noborder" title="车辆查验" direction="rtl" size="876px" :visible.sync="checkVisible" :show-close="false">
       <div class="vehicle-dialog table-style">
         <el-form>
           <div class="check-vehicle">
@@ -51,7 +54,7 @@
                   <el-option label="选项2" value="2"></el-option>
                   <el-option label="选项3" value="3"></el-option>
                 </el-select>
-                <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-button slot="append" icon="el-icon-search" style="width:90px;"></el-button>
               </el-input>
             </div>
             <div class="banner">
@@ -283,6 +286,13 @@
                       <el-option label="选项二" value="2"></el-option>
                     </el-select>
                   </el-form-item>
+                   <el-form-item label="">
+                        <el-input
+                            placeholder="默认排序"
+                            suffix-icon="el-icon-caret-bottom"
+                            value="默认排序">
+                        </el-input>
+                    </el-form-item>
                 </div>
               </div>
               <ul class="list-info">
@@ -460,7 +470,7 @@ export default {
 
 }
 </script>
-<style lang="scss" src="@/assets/css/cluesReview.scss"></style>
+<style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>
 <style lang='css'>
 
 .el-drawer-title-noborder /deep/ span:focus {

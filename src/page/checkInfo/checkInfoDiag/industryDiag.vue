@@ -97,8 +97,8 @@ export default {
   }
 };
 </script>
+<style lang='scss' src="@/assets/css/systemManage.scss" scoped></style>
 <style lang="scss">
-@import "@/assets/css/systemManage.scss";
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{font-family:Arial, sans-serif;font-size:16px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
 .tg .tg-0pky{border-color:inherit;text-align:center;vertical-align:center;height: 25px;}

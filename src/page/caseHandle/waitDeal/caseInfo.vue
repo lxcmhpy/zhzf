@@ -224,7 +224,7 @@ export default {
     continueHandle() {
       this.$store.dispatch('deleteTabs', 'caseInfo');
       this.$router.push({
-          name: "flowChart"
+          name: "case_handle_flowChart"
       })
     },
     //获取弹窗中选中的环节id

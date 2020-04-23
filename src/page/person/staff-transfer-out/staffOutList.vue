@@ -4,7 +4,7 @@
     <div class="searchPage toggleBox">
         <div class="handlePart">
             <el-form :inline="true" ref="userForm"  label-width="70px">
-                <el-row>  
+                <el-row>
                      <el-form-item label="姓名" >
                         <el-input v-model="formInline.organCl"></el-input>
                     </el-form-item>
@@ -39,7 +39,7 @@
                     </el-form-item>
                 </el-row>
             </el-form>
-            
+
         </div>
         <div class="tablePart">
             <el-table
@@ -63,8 +63,7 @@
                 </el-table-column>
             </el-table>
         </div>
-        <div class="paginationBox" v-show="totalPage">
-            <div class="paginationBox">
+        <div class="paginationBox"   v-if="tableData.length > 0">
                 <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -74,12 +73,11 @@
                 layout="prev, pager, next,sizes,jumper"
                 :total="totalPage"
                 ></el-pagination>
-            </div>
         </div>
     </div>
  <!-- 新增执法号段管理 -->
         <addParagraph ref="addParagraph" @getAllPersons="getOrgList"></addParagraph>
-  
+
   </div>
 </div>
 </template>
@@ -118,7 +116,7 @@ export default {
 
     //执法号段列表查询
     getOrgList(val) {
- 
+
     alert("执行查询");
     },
     //更改每页显示的条数
@@ -152,14 +150,14 @@ export default {
         },
     //更具id删除
     handleDelete(row) {
- 
+
     },
 // 重置查询条件
   reset() {
       alert("aaa");
       this.$refs["userForm"].resetFields();
     },
-   
+
     //新增
     addOrgApply() {
       let parentNode = {
@@ -172,7 +170,7 @@ export default {
     // this.setDepartTable(this.data)
   },
   created() {
-  
+
   }
 };
 </script>

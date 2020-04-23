@@ -236,9 +236,20 @@
     .lawWindowStyle4 {
         // background: rgba($greenC2,0.9);
         min-width: 445px;
-        padding: 10px 17px 10px 17px;
+        padding: 0px;
         // color:white;
         line-height:35px;
+        .lawWindowTitle {
+            padding: 0 10px;
+            background: rgba($color: black, $alpha: 0.7);
+            margin-top: -14px;
+            color:white;
+            letter-spacing: 1px;
+        }
+        .flexBox {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
     }
     .lawWindowStyle5 {
         // background: rgba(0,155,255,0.9);
@@ -301,7 +312,9 @@
      width: 280px;
 
  }
-
+//  .el-popover {
+//     z-index: 3300 !important;
+// }
 .amap-position {
     position: absolute;
     z-index:2000;
@@ -422,7 +435,6 @@
     margin-right: 10px;
     vertical-align:-2px;
 }
-
 
 
 /////////////////////////////////////待改

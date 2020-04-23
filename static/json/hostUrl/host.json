@@ -1,30 +1,15 @@
 {
-  "CURRENT": "TEST",
-  "ONLINE": {
-    "//": "http://172.16.170.44:8088/catsic",
-    "HOST": "http://124.192.215.4:8088/catsic",
-    "CAPTCHA_HOST": "http://124.192.215.4:8088/catsic"
-  },
+  "CURRENT": "NW",
   "TEST": {
-    "//": "http://172.16.170.44:8080/catsic",
     "HOST": "http://124.192.215.4:9000",
     "CAPTCHA_HOST": "http://124.192.215.4:9000",
-    "PDF_HOST": "http://124.192.215.10:9332/"
+    "PDF_HOST": "http://124.192.215.10:9332/",
+    "LAW_SUPERVISE_HOST": "http://124.192.215.4:8090/"
   },
-  "LOCAL": {
-    "//": "http://172.16.170.44:8080/catsic",
-    "HOST": "http://124.192.215.4:8088/catsic",
-    "CAPTCHA_HOST": "http://124.192.215.4:8088/catsic"
-  },
-  "LXC": {
-    "HOST": "http://172.16.169.83:8888/catsic",
-    "CAPTCHA_HOST": "http://172.16.169.83:8888/catsic"
-  },
-  "WW": {
-    "//": "http://172.16.170.44:8080/catsic",
+  "NW": {
     "HOST": "http://172.16.170.96:9000",
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
-    "PDF_HOST": "http://124.192.215.10:9332/",
+    "PDF_HOST": "http://172.16.170.54:9332/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:8090/"
   }
 }

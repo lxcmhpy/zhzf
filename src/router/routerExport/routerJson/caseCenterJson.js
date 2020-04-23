@@ -11,7 +11,7 @@ export default  [
                    path: '/caseCenter',
                    name: 'caseCenter',
                    meta: {
-                       title: "事务中心首页",
+                       title: "事务中心",
                        oneTab:true,
                    },
                    component: () => import("@/page/caseCenter/caseCenter.vue"),
@@ -21,20 +21,11 @@ export default  [
                 path: "/transferAndRegisterCase",
                 name: "transferAndRegisterCase",
                 meta: {
-                title: "转立案列表",
-                oneTab:true,
+                    title: "转立案列表",
+                    oneTab:true,
                 },
                 component: () => import("@/page/caseCenter/partyWaitDeal/transferAndRegisterCase.vue")
             },
-            // {
-            //     path: "/transferAndRegisterCaseDentail",
-            //     name: "transferAndRegisterCaseDentail",
-            //     meta: {
-            //     title: "转立案列表详情",
-            //     oneTab:true,
-            //     },
-            //     component: () => import("@/page/caseCenter/partyWaitDeal/dentails/dentail.vue")
-            // },
             {
                 path: "/overWeightCase",
                 name: "overWeightCase",
@@ -44,15 +35,6 @@ export default  [
                 },
                 component: () => import("@/page/caseCenter/myWaitDeal/overWeightCase.vue")
             },
-            // {
-            //     path: "/overWeightCaseDentail",
-            //     name: "overWeightCaseDentail",
-            //     meta: {
-            //     title: "超限案件列表详情",
-            //     oneTab:true,
-            //     },
-            //     component: () => import("@/page/caseCenter/myWaitDeal/dentails/dentail.vue")
-            // },
             {
                 path: "/dentails-index",
                 name: "dentails-index",

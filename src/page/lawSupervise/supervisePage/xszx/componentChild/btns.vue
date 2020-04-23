@@ -11,7 +11,7 @@
       </el-button>
     </div>
     <div v-else>
-      <el-button type="button" class="submitBtn blueBtn" @click="showZbDialog">
+      <el-button v-if="tabActiveValue !=='3'" type="button" class="submitBtn blueBtn" @click="showZbDialog">
         <div>完成</div>
       </el-button>
     </div>
@@ -19,14 +19,8 @@
         <template v-if="$route.name=='invalidCueDetail'">
          无效
         </template>
-         <template v-else-if="$route.params.status == '0'">
-        待审核
-        </template>
-        <template v-else-if="$route.params.status == '2'">
-            已完成
-        </template>
-        <template v-else-if="$route.params.status == '1'">
-            审核中
+         <template v-else>
+         {{statusObj[$route.params.status]}}
         </template>
     </span>
 
@@ -39,35 +33,71 @@
             </div>
             <p>当前线索为无效信息</p>
             </div>
-            <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="0">
+            <!-- <el-form :model="checkSearchForm" ref="checkSearchForm1" class="checkSearchForm" label-width="0"> -->
             <div class="invalidinfo">
-                <el-select v-model="checkSearchForm.number" placeholder="选择无效线索类型" class="invalidinfo-margin">
-                <el-option :value="0" label="无效线索类型1"></el-option>
-                <el-option :value="1" label="无效线索类型2"></el-option>
-                </el-select>
-                <p>备注说明</p>
-                <el-input v-model="checkSearchForm.color" type="textarea"></el-input>
+                <el-select v-model="checkSearchForm.number" placeholder="无效类型">
+                          <el-option :value='0' label="男"></el-option>
+                          <el-option :value='1' label='女'></el-option>
+                      </el-select>
+                <p>备注说明cc</p>
+                <el-input v-model="checkSearchForm.color" type="textarea" :autosize="{ minRows: 1}"></el-input>
             </div>
-            </el-form>
+            <!-- </el-form> -->
             <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="routerOffSiteManage">确认</el-button>
             <el-button @click="visible = false">取消</el-button>
             </span>
         </el-dialog>
         <el-dialog class="mini-dialog-title" title="转办说明" :visible.sync="zbVisible" :show-close="false"
-            :close-on-click-modal="false" width="800px" >
+            :close-on-click-modal="false" width="600px" >
             <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="130px">
-                <div class="invalidinfo">
-                    <el-form-item label="立案机构：">
-                        <el-select v-model="checkSearchForm.number" placeholder="选择无效线索类型">
-                            <el-option :value="0" label="无效线索类型1"></el-option>
-                            <el-option :value="1" label="无效线索类型2"></el-option>
-                        </el-select>
-                    </el-form-item>
-                     <el-form-item label="转办说明：">
-                        <el-input v-model="checkSearchForm.color" type="textarea"></el-input>
-                    </el-form-item>
-                </div>
+                <table style="line-height:50px;">
+                    <tr>
+                    <!-- <el-form-item label=""> -->
+                        <td width="100px">立案机构：</td>
+                        <td width="430px">
+                            <el-popover
+                                placement="bottom"
+                                    trigger="click"
+                                    style="z-index:3300"
+                                >
+                                <div class="departOrUserTree" style="width:400px">
+                                    <div class="treeBox">
+                                        <el-tree
+                                        class="filter-tree"
+                                        :data="organData"
+                                        :props="defaultProps"
+                                        node-key="id"
+                                        :filter-node-method="filterNode"
+                                        :default-expanded-keys="defaultExpandedKeys"
+                                        @node-expand="nodeExpand"
+                                        ref="tree"
+                                        @node-click="handleNodeClick1"
+                                        >
+                                        <span class="custom-tree-node" slot-scope="{ node,data }">
+                                            <span>
+                                            <i
+                                                :class="data.children && data.children.length>0 ? 'iconfont law-icon_shou_bag' : ''"
+                                            ></i>
+                                            <span :class="data.children ? '' : 'hasMarginLeft'">{{ node.label }}</span>
+                                            </span>
+                                        </span>
+                                        </el-tree>
+                                    </div>
+                                </div>
+                                <el-input v-model="checkSearchForm.number" style="width:100%" slot="reference" placeholder="请选择执法机构"></el-input>
+                            </el-popover>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >
+                            转办说明：
+                        </td>
+                        <td>
+                            <el-input v-model="checkSearchForm.color" type="textarea"></el-input>
+                        </td>
+                    </tr>
+                </table>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="routerOffSiteManage">确认</el-button>
@@ -79,7 +109,12 @@
 
   </div>
 </template>
-<style lang="scss" src="@/assets/css/cluesReview.scss"></style>
+<style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>
+<style scoped lang="scss" scoped>
+.el-popover {
+    z-index: 3300;
+}
+</style>
 <script>
 import {mapGetters} from "vuex";
 export default {
@@ -87,6 +122,19 @@ export default {
   props: ['tabActiveValue'],
   data() {
     return {
+        statusObj: {
+            '0': '待审核',
+            '1': '审核中',
+            '2': '审核中',
+            '3': '已完成'
+        },
+        selectCurrentTreeName: "",
+        defaultExpandedKeys: [],
+        organData: [],
+        defaultProps: {
+            children: "children",
+            label: "label"
+        },
       visible: false,
       zbVisible: false,
       checkSearchForm: {
@@ -98,7 +146,48 @@ export default {
   },
   methods: {
     showZbDialog () {
+        this.getAllOrgan('root');
         this.zbVisible = true;
+    },
+    handleNodeClick1(data) {
+      this.checkSearchForm.number = data.label;
+    },
+    getAllOrgan(organId) {
+      let _this = this
+      this.$store.dispatch("getAllOrgan").then(
+        res => {
+          _this.defaultExpandedKeys.push(res.data[0].id);
+          _this.selectCurrentTreeName = _this.selectCurrentTreeName
+            ? _this.selectCurrentTreeName
+            : res.data[0].label;
+          if (res.data[0].children && res.data[0].children.length > 0) {
+            res.data[0].children.forEach(item => {
+              _this.defaultExpandedKeys.push(item.id);
+            });
+          }
+          _this.organData = res.data;
+          console.log(_this.defaultExpandedKeys);
+          console.log(_this.organData);
+          if (organId == "root") {
+            _this.currentOrganId = res.data[0].id;
+          } else {
+            _this.currentOrganId = organId;
+          }
+        //   _this.getSelectOrgan();
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    nodeExpand(data, node, jq) {
+      console.log(data);
+      console.log(node);
+      console.log(jq);
+    },
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
     },
     showInvalidCue(data) {
       console.log(data);
@@ -139,7 +228,8 @@ export default {
       this.$router.push({
         name: 'examineDoingDetail',
         params: {
-          status: nextStatus.toString()
+          status: nextStatus.toString(),
+          tabTitle: this.statusObj[nextStatus.toString()]
         }
       });
     }

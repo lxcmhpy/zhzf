@@ -103,6 +103,7 @@ export default {
     },
     //更改每页显示的条数
     handleSizeChange(val) {
+      console.log('11')
       this.pageSize = val;
       this.currentPage = 1;
       this.getIllegaAct();
@@ -166,6 +167,5 @@ export default {
   mounted() { }
 };
 </script>
-<style lang="scss">
-@import "@/assets/css/caseHandle/index.scss";
+<style lang="scss" src="@/assets/css/caseHandle/index.scss">
 </style>

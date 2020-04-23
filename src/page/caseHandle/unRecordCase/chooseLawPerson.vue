@@ -17,7 +17,7 @@
           <el-tag
             :key="tag.id"
             v-for="tag in checkedUser"
-            closable
+            :closable ="tag.userId !=currentUserId"
             :disable-transitions="false"
             @close="deleteUser(tag)"
           >{{tag.lawOfficerName}}</el-tag>
@@ -43,7 +43,7 @@
               v-for="(user,index) in userList"
               :label="user.id"
               :key="user.id"
-              :disabled="user.lawOfficerName == currentUserName ? true : false"
+              :disabled="user.userId == currentUserId ? true : false"
             >
               <span class="name">{{user.lawOfficerName}}</span>
               <el-select
@@ -83,7 +83,8 @@ export default {
       userList: [], //全部人员
       selectedNumber: [],
       alreadyChooseLawPerson: [], //信息采集页传来的
-      currentUserName: iLocalStroage.gets("userInfo").username, //当前登录用户的username
+      currentUserId: iLocalStroage.gets("userInfo").id, //当前登录用户的id
+      currentUser:'', //登录用户的执法信息
       checkedUserId: [],
       staffNameOrCode: "",
     };
@@ -115,6 +116,7 @@ export default {
       this.visible = true;
       // this.alreadyChooseLawPerson = alreadyChooseLawPerson;
       // console.log(this.alreadyChooseLawPerson)
+      console.log(alreadyChooseLawPersonId,inforCollectLawPerson);
       this.checkedUserId = alreadyChooseLawPersonId;
       console.log("alreadyChooseLawPersonId", alreadyChooseLawPersonId);
       console.log("inforCollectLawPerson", inforCollectLawPerson);
@@ -129,15 +131,26 @@ export default {
     handleCheckAllChange(val) {
       console.log(val);
       if (val) {
-        this.userList.forEach(item => {
-          //复选框存入id
-          this.checkedUserId.push(item.id);
-          //tag
-          this.checkedUser.push(item);
-        });
-      } else {
         this.checkedUserId = [];
         this.checkedUser = [];
+        this.userList.forEach(item => {
+          // this.checkedUserId.forEach(item2=>{
+          //   if(item.id != item2){
+          //     //复选框存入id
+          //     this.checkedUserId.push(item.id);
+          //     //tag
+          //     this.checkedUser.push(item);
+          //   }
+          // })
+           //复选框存入id
+            this.checkedUserId.push(item.id);
+            //tag
+            this.checkedUser.push(item);
+          
+        });
+      } else {
+        this.checkedUserId =[this.currentUser.id];
+        this.checkedUser = [this.currentUser];
       }
       this.isIndeterminate = false;
     },
@@ -166,7 +179,7 @@ export default {
     deleteUser(tag) {
       console.log(tag);
       //当前用户不允许删除
-      if (tag.lawOfficerName == this.currentUserName) return;
+      if (tag.userId == this.currentUserId) return;
       this.checkedUser.splice(this.checkedUser.indexOf(tag), 1);
       //更新复选框
       this.checkedUserId.splice(this.checkedUser.indexOf(tag.id), 1);
@@ -198,6 +211,9 @@ export default {
           res => {
             _this.userList = res.data;
             _this.userList.forEach(item => {
+                //查询当前用户的执行信息
+                if(item.userId == this.currentUserId) this.currentUser = item;
+
               //执法证号下拉框
               item.lawOfficerCardsAndId = {
                 id: item.id,

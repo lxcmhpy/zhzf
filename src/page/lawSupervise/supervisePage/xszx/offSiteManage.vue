@@ -18,7 +18,7 @@
         </el-tabs>
     </div>
     <div class="searchAndpageBox toggleBox">
-        <div class="handlePart caseHandleSearchPart">
+        <div class="handlePart caseHandleSearchPart" :class="{'autoHeight':isShow}">
             <el-form :inline="true" :model="form" label-width="80px"  ref="offsiteManageform">
                 <el-form-item label="检测站点" prop="siteName">
                     <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
@@ -48,7 +48,7 @@
                     </el-select>
                 </el-form-item>
                 <el-collapse-transition>
-                    <div v-show="isShow" :class="{'ransition-box':true}">
+                    <div :class="{'ransition-box':true}">
                         <el-form-item label="时间段">
                             <el-date-picker style='width:240px'
                                 :picker-options="pickerOptions"
@@ -115,7 +115,7 @@
                                         </div>
                                         <el-input v-model="form.lane" style="width:100%" slot="reference" placeholder="请选择执法机构"></el-input>
                                     </el-popover>
-                                    </td>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="color_ff w-1">
@@ -218,7 +218,7 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
-<style lang="scss" src="@/assets/css/cluesReview.scss"></style>
+<style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>
 <style lang="scss" scoped>
 .ransition-box {
     // float:left;
@@ -537,21 +537,23 @@ export default {
             name: 'invalidCueDetail'
         })
     },
-    routerExamineDetail (item) {
+    routerExamineDetail (item,status, tabTitle) {
         this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
             name: 'examineDoingDetail',
             params: {
-                status: '2'
+                status: status,
+                tabTitle: tabTitle
             }
         })
     },
-    routerExamineDoingDetail (item) {
+    routerExamineDoingDetail (item,status, tabTitle) {
         this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
             name: 'examineDoingDetail',
             params: {
-                status: '0'
+                status: status,
+                tabTitle: tabTitle
             }
         })
     },
@@ -572,11 +574,11 @@ export default {
     handleNodeClick(data) {
     //    if(this.tabActiveValue == )
         switch (data.status) {
-            case '待审核': this.routerExamineDoingDetail(data); break;
+            case '待审核': this.routerExamineDoingDetail(data, '0', '待审核'); break;
             case '无效信息': this.routerInvalidCueDetail(data); break;
-            case '审核中': this.routerExamineDoingDetail(data); break;
+            case '审核中': this.routerExamineDoingDetail(data, '1', '审核中'); break;
             case '已转办': this.routerTransferDetail(data); break;
-            case '已审核': this.routerExamineDetail(data); break;
+            case '已审核': this.routerExamineDetail(data, '3', '已完成'); break;
         }
     },
   },

@@ -4,7 +4,7 @@
       <div class="title_content">
         <div class="title_back float" @click="goBack">&lt;返回
         </div>
-        <div class="float title_box title">经营业户查验111</div>
+        <div class="float title_box title">经营业户查验</div>
 
       </div>
 
@@ -359,9 +359,9 @@ export default {
   }
 }
 </script>
-<style lang='scss' scoped>
-@import "@/assets/css/checkInfo.scss";
-</style>
+
+<style lang='scss' src="@/assets/css/checkInfo.scss" scoped></style>
+
 
 
 

@@ -104,37 +104,37 @@ export default {
         {
           id: '1',
           lable: "道路运输从业人员",
-          name: 'transportWorker',
+          name: 'case_handle_transportWorker',
           icon: "icon_lit_jyyh",
         },
         {
             id: '2',
           lable: "营运车辆",
-          name: 'commercialVehicle',
+          name: 'case_handle_commercialVehicle',
           icon: "icon_lit_yyunc",
         },
         {
             id: '3',
           lable: "经营业户",
-          name: 'industry',
+          name: 'case_handle_industry',
           icon: "icon_lit_jyyehu",
         },
         {
             id: '4',
           lable: "客运线路标志牌",
-          name: 'vehicleLine',
+          name: 'case_handle_vehicleLine',
           icon: "icon_lit_kyxlu",
         },
         {
             id: '5',
           lable: "船员适任证",
-          name: 'crewCertificates',
+          name: 'case_handle_crewCertificates',
           icon: "icon_lit_cy",
         },
         {
             id: '6',
           lable: "船舶营运证",
-          name: 'shipCertificates',
+          name: 'case_handle_shipCertificates',
           icon: "icon_lit_cbyyzheng",
         },
       ]
@@ -180,6 +180,7 @@ export default {
     },
     // 信息查验
     infoCheck(path) {
+      console.log(path);
       this.$router.push({ name: path });
     },
     // 清空数据
@@ -196,10 +197,7 @@ export default {
   }
 }
 </script>
-<style lang='scss' scoped>
-// @import "@/assets/css/checkInfo.scss";
-@import "../../../static/iconfont/iconfont.css";
-</style>
+<style lang='scss' src="@/assets/css/checkInfo.scss" scoped></style>
 <style type="text/css">
 .icon {
   width: 1em;

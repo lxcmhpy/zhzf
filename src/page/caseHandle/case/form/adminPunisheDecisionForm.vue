@@ -317,7 +317,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "@/assets/css/documentForm.scss";
-// @import "@/assets/css/caseHandle/caseDocument.scss";
-</style>
+<style lang="scss" scoped src="@/assets/css/documentForm.scss"></style>
