@@ -664,7 +664,7 @@ export default {
       }
       this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
         res => {
-          console.log('获取强制措施时间', res);
+          console.log('获取强制措施时间1', res);
           let formData = JSON.parse(res.data.formData);
           console.log('formData', formData);
           if (formData.measureEndDate) {
@@ -681,6 +681,8 @@ export default {
             let d = measureEndDate.getDate() < 10 ? '0' + measureEndDate.getDate() + ' ' : measureEndDate.getDate() + ' ';
             let endDate = y + m + d;
             this.measureDate = startData + " 至 " + endDate;
+            console.log(this.measureDate)
+            debugger
             return
           } else {
             let data = {
@@ -689,7 +691,7 @@ export default {
             }
             this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
               res => {
-                console.log('获取强制措施时间', res);
+                console.log('获取强制措施时间2', formData);
                 let formData = JSON.parse(res.data.formData);
                 console.log('formData', formData);
 
@@ -706,6 +708,8 @@ export default {
                 let d = measureEndDate.getDate() < 10 ? '0' + measureEndDate.getDate() + ' ' : measureEndDate.getDate() + ' ';
                 let endDate = y + m + d;
                 this.measureDate = startData + " 至 " + endDate;
+                     console.log(this.measureDate)
+            debugger
 
               }, err => {
 
