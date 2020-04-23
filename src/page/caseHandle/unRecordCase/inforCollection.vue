@@ -485,7 +485,7 @@
           </div>
           <div class="itemThird">
             <el-form-item label="轴数分布" class="is-required">
-              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxlesType" @change="weightLimit">
+              <el-select placeholder="请选择" v-model="inforForm.otherInfo.vehicleAxlesType" @change="weightLimit"  @input="concludeOverWeight">
                 <el-option v-for="item in vehicleAxlesTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 <!-- <el-option label="1+2+3"></el-option>
                 <el-option label="2+2+2"></el-option> -->
@@ -496,14 +496,14 @@
         <div>
           <div class="item">
             <el-form-item label="车货总重" class="is-required">
-              <el-input v-model="inforForm.otherInfo.allWeight" @change="concludeOverWeight">
+              <el-input v-model="inforForm.otherInfo.allWeight" @input="concludeOverWeight">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="驱动轴" v-show="inforForm.otherInfo.vehicleAxleNumber==6">
-              <el-radio-group v-model="inforForm.otherInfo.vehiclePowerType" @change="weightLimit">
+              <el-radio-group v-model="inforForm.otherInfo.vehiclePowerType" @change="weightLimit" @input="concludeOverWeight">
                 <el-radio label="单轴"></el-radio>
                 <el-radio label="双轴"></el-radio>
               </el-radio-group>
@@ -513,7 +513,7 @@
         <div>
           <div class="item">
             <el-form-item label="总质量限值">
-              <el-input v-model="inforForm.otherInfo.weightLimit" @change="concludeOverWeight">
+              <el-input v-model="inforForm.otherInfo.weightLimit" @input="concludeOverWeight">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -526,6 +526,7 @@
                   </span>
                 <div class="el-input-group__append">吨</div>
               </div> -->
+              {{inforForm.otherInfo.overWeight}}
               <el-input v-model="inforForm.otherInfo.overWeight">
                 <template slot="append">吨</template>
               </el-input>
@@ -1462,7 +1463,7 @@ export default {
           label: '铰接列车',
           value: '铰接列车'
         }, { label: '全挂汽车列车', value: '全挂汽车列车' }];
-        if (inforForm.otherInfo.vehiclePowerType&&inforForm.otherInfo.vehicleAxlesType) {
+        if (inforForm.otherInfo.vehiclePowerType && inforForm.otherInfo.vehicleAxlesType) {
           inforForm.otherInfo.weightLimit = 46;
           if (inforForm.otherInfo.vehiclePowerType == '双轴') {
             inforForm.otherInfo.weightLimit = 49;
@@ -1528,12 +1529,24 @@ export default {
     },
     // 计算超重
     concludeOverWeight() {
-      this.inforForm.otherInfo.overWeight = '';
-      if (this.inforForm.otherInfo.weightLimit < this.inforForm.otherInfo.allWeight) {
-        this.inforForm.otherInfo.overWeight = this.inforForm.otherInfo.allWeight - this.inforForm.otherInfo.weightLimit
-      } else
-        // if (this.inforForm.otherInfo.overWeight < 0) {
-        this.inforForm.otherInfo.overWeight = 0
+      console.log('执行',this.inforForm.otherInfo.overWeight)
+      if(!this.inforForm.otherInfo.overWeight){
+        this.inforForm.otherInfo.overWeight='0'
+      }
+      // if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight) {
+        this.inforForm.otherInfo.overWeight = '';
+        if (this.inforForm.otherInfo.weightLimit > this.inforForm.otherInfo.allWeight) {
+          console.log('正正正数啊啊啊啊啊啊啊啊啊')
+          this.inforForm.otherInfo.overWeight = this.inforForm.otherInfo.allWeight - this.inforForm.otherInfo.weightLimit
+        } else {
+          console.log('服服服数啊啊啊啊啊啊啊啊啊')
+          this.inforForm.otherInfo.overWeight = '0'
+          console.log(' this.inforForm.otherInfo.overWeight', this.inforForm.otherInfo.overWeight)
+
+        // }
+      }
+
+      // if (this.inforForm.otherInfo.overWeight < 0) {
       // }
 
     },
