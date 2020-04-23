@@ -17,6 +17,7 @@
         <div>完成</div>
       </el-button>
     </div>
+
     <span :class="$route.name">
         <template v-if="$route.name=='invalidCueDetail'">
          无效
@@ -25,6 +26,7 @@
          {{statusObj[$route.params.status]}}
         </template>
     </span>
+
 
     <div>
         <el-dialog class="mini-dialog-title" title="无效信息" :visible.sync="visible" :show-close="false"
@@ -128,7 +130,7 @@ export default {
             '0': '待审核',
             '1': '审核中',
             '2': '审核中',
-            '3': '已完成'
+            '3': '已审核'
         },
         selectCurrentTreeName: "",
         defaultExpandedKeys: [],

@@ -54,7 +54,8 @@
           </el-button>
         </div>
         <div class="tablePart">
-          <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;">
+          <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;"
+                @row-click="routerDetail">
             <el-table-column label="序号" width="70px">
               <template slot-scope="scope">
                 {{scope.$index+1}}
@@ -74,13 +75,13 @@
             <el-table-column prop="lane" label="相关说明" align="center"></el-table-column>
             <el-table-column prop="status" label="处理状态" align="center"></el-table-column>
             <el-table-column prop="totalWeight" label="处置机构/人员" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <!-- <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <a href="javascript:void(0)" @click="routerDetail(scope.row)">
                   详情
                 </a>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
         </div>
         <div class="paginationBox">
@@ -327,15 +328,14 @@ export default {
       this.timeList = ['', ''];
     },
     routerDetail(row) {
-      this.$store.commit('setOffSiteManageId', row.id);
-      let data = {
-        id: '',
-        path: this.$route.path,
-        value: this.tabActiveValue
-      }
-      iLocalStroage.sets('caseCenterDentails', data);
+    //   this.$store.commit('setOffSiteManageId', row.id);
       this.$router.push({
-        name: 'dentails-index'
+        name: 'dentails-index',
+        params: {
+            tabTitle: this.processStatus[this.tabActiveIndex].value,
+            path: this.$route.path,
+            value: this.tabActiveValue
+        }
       })
     },
     routerEvidenceDetail() {
