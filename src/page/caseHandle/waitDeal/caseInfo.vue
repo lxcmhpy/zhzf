@@ -266,7 +266,6 @@ export default {
       // })
     },
     init () {
-        debugger;
         this.caseInfo = this.$route.params.caseInfo;
         if(this.$route.params.fromSlide){
         let data ={id:this.caseId}
@@ -285,12 +284,10 @@ export default {
     }
   },
   mounted(){
-      debugger;
       this.init()
   },
   watch: {
     '$route' (to, from) {
-        debugger;
         this.init()
     }
   },

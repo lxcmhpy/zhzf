@@ -12,7 +12,6 @@
     },
     methods: {
       btnAddTab(){
- debugger;
         let hasTab = false;
         this.$store.state.openTab.forEach(item=>{
           if(item.name=='xiangqing'){
@@ -21,7 +20,6 @@
           }
         })
         if(!hasTab){
-            debugger;
           this.$store.dispatch("addTabs", {route: '', name: 'xiangqing',title:'详情'});
         }
         // this.$store.dispatch("setActiveIndex", 'xiangqing');

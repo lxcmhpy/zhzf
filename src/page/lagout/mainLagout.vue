@@ -138,17 +138,15 @@ export default {
     },
 
     getSelectHeadMenu(name) {
-        debugger;
       this.selectedHeadMenu = name;
     },
     router (name, route) {
-        debugger;
-        this.$router.push({ name: name,params: route.params});
+        // debugger;
+        // this.$router.push({ name: name,params: route.params});
     }
   },
   watch: {
     '$route' (to, from) {
-        debugger;
         // this.init()
     }
   },

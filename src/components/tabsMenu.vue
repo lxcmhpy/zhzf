@@ -31,17 +31,26 @@ export default {
   methods: {
     //tab标签点击时，切换相应的路由
     tabClick(tab) {
-        debugger;
+        // debugger;
         let route = this.openTab[tab.index];
         let name = route.isCase ? route.name.split('-and-')[0] :route.name
+        // this.$emit('router',name,route);
+        // this.$store.commit("changeOneTabName", this.activeIndexStr);
+        // let data = {
+        //     index: tab.index,
+        //     num: 1,
+        //     data: route
+        // }
+        // this.$store.dispatch("replaceTabs", data);
+        route.menuUrl = name;
         this.activeIndexStr = route.name;
         this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexStr);
-        this.$emit('router',name,route);
+        this.$router.push(({ name: 'reloadPage',params: route}));
+
 
     },
     //移除tab标签
     tabRemove(targetName) {
-        debugger;
       //首页不删
       if (targetName == "case_handle_home_index") {
         return;
@@ -50,11 +59,14 @@ export default {
       if (this.activeIndexSto === targetName) {
         // 设置当前激活的路由
         if (this.openTab && this.openTab.length >= 1) {
-          this.$store.commit("SET_ACTIVE_INDEX_STO", this.openTab[this.openTab.length - 1].name);
-          this.$router.push({
-              name: this.activeIndexSto.indexOf('-and-') > -1 ? this.activeIndexSto.split('-and-')[0] : this.activeIndexSto,
-                params: this.openTab[this.openTab.length - 1].params
-            });
+            this.$store.commit("SET_ACTIVE_INDEX_STO", this.openTab[this.openTab.length - 1].name);
+            let route = this.openTab[this.openTab.length - 1];
+            route.menuUrl = this.activeIndexSto.indexOf('-and-') > -1 ? this.activeIndexSto.split('-and-')[0] : this.activeIndexSto;
+        //   this.$router.push({
+        //       name: this.activeIndexSto.indexOf('-and-') > -1 ? this.activeIndexSto.split('-and-')[0] : this.activeIndexSto,
+        //         params: this.openTab[this.openTab.length - 1].params
+        //     });
+            this.$router.push(({ name: 'reloadPage',params: route}));
         } else {
           this.$router.push({ name: "case_handle_home_index" });
         }
@@ -63,7 +75,7 @@ export default {
     init () {
         debugger;
         if (this.$route.path !== "/" && this.$route.name !== "case_handle_home_index") {
-            this.activeIndexStr = this.$route.name;
+            this.activeIndexStr = this.activeIndexSto;
         } else {
             this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
         }
@@ -82,7 +94,6 @@ export default {
       //已经打开的 ，将其置为active
       //未打开的，将其放入队列里
         let flag = false;
-        debugger;
         let _this =this;
         let _index = _.findIndex(this.openTab,(chr) => {
             if (chr.isCase) {
@@ -92,6 +103,7 @@ export default {
         })
         if (_index > -1) {
             if (to.params.tabTitle) {
+                debugger;
                 let currentOpenTab = this.openTab[_index];
                 currentOpenTab.params = to.params;
                 currentOpenTab.title = currentOpenTab.params.tabTitle;
