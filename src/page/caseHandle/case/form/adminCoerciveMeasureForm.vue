@@ -144,7 +144,7 @@
                   </el-form-item>
                 ，你（单位）
                   <el-form-item rows = '2' prop="caseCauseName" style="width: 300px">
-                    <el-input :disabled="originalData.caseCauseName? true : false" v-model="formData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='90'></el-input>
+                    <el-input :disabled="originalData.caseCauseName? true : false" v-model="formData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:formData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='90'></el-input>
                   </el-form-item>
                 。依据
                 <span>
@@ -157,7 +157,7 @@
                 </span>的规定，本机关决定对你（单位）的
                 <span>
                   <el-form-item prop="detainGoods" style="width: 330px">
-                    <el-input type='textarea' :autosize="{ minRows: 1, maxRows: 3}" v-model="formData.detainGoods" :maxLength='90'></el-input>
+                    <el-input type='textarea' v-model="formData.detainGoods"  v-bind:class="{ over_flow:formData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='50'></el-input>
                   </el-form-item>
                 </span>（财物、设施或场所的名称及数量）实施
                 <span>
@@ -331,9 +331,12 @@ export default {
       var diff = new Date(value).getTime() - new Date(this.formData.measureStartDate).getTime();
       var days = diff/24/60/60/1000;
       console.log("差几天",days)
-      if (days < 1 || days > 29) {
+      if (days > 30) {
         return callback("措施起止期限不得超过30日");
       } 
+      if(days <=0){
+        return callback("措施起止期限不得为同一天");
+      }
       callback();
     };
     return {
@@ -384,7 +387,7 @@ export default {
           { validator: validatePhone, trigger: "blur" }
         ],
         partyAddress: [
-          { required: true, message: "住址不能为空", trigger: "blur" }
+          // { required: true, message: "住址不能为空", trigger: "blur" }
         ],
         partyManager: [
           { required: true, message: "法定代表人不能为空", trigger: "blur" },
@@ -592,7 +595,7 @@ export default {
 
     startTime(){
       if (this.formData.measureStartDate){
-        this.$set(this.formData, 'measureEndDate', new Date(new Date(this.formData.measureStartDate).getTime() + 29 * 24 * 3600 * 1000));
+        this.$set(this.formData, 'measureEndDate', new Date(new Date(this.formData.measureStartDate).getTime() + 30 * 24 * 3600 * 1000));
       }
     },
     //根据用户的组织机构ID获取复议机构和诉讼机构

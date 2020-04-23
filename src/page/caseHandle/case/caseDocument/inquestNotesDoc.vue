@@ -257,10 +257,12 @@ export default {
         certificateId2:[{ required: true, message: "执法证号不能为空", trigger: "blur" }],
         recorder:[{ required: true, message: "记录人不能为空", trigger: "blur" }],
         inquestResult:[{ required: true, message: "勘验情况及结果不能为空", trigger: "blur" }],
-        inquestEndTime: [
+        inquestStartTime: [
+          { required: true, message: "开始时间不能为空", trigger: "blur" },
           { validator:validateStartTime , trigger: "blur" }
         ],
-        inquestStartTime: [
+        inquestEndTime: [
+          { required: true, message: "结束时间不能为空", trigger: "blur" },
           { validator:validateStartTime , trigger: "blur" }
         ],
       },
@@ -343,6 +345,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      // this.printContent()
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
