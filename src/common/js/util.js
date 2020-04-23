@@ -358,9 +358,7 @@ util.initMenu = function(vm){
 }
 
 util.initUser = function(vm){
-  if(iLocalStroage.gets('userInfo') && vm.$store.state.system.menu){
-  
-  }else{
+  if(!iLocalStroage.gets('userInfo') ||  !vm.$store.state.system.menu){
     console.log('获取信息')
     getCurrentUserApi().then(res=>{
       console.log("当前用户信息",res);
@@ -369,6 +367,8 @@ util.initUser = function(vm){
     },err=>{
       console.log(err);
     }) 
+  }else{
+    
   }
   
 }

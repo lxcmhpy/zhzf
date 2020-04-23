@@ -495,15 +495,21 @@ export default {
         this.$refs[formName].resetFields();
     },
     routerDetail (row) {
-        this.$store.commit('setOffSiteManageId', row.id);
+        // this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
-            name: 'offSiteDetail'
+            name: 'offSiteDetail',
+            params: {
+                offSiteManageId: row.id
+            }
         })
     },
     routerEvidenceDetail (row) {
-        this.$store.commit('setOffSiteManageId', row.id);
+        // this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
-            name: 'evidenceDetail'
+            name: 'evidenceDetail',
+            params: {
+                offSiteManageId: row.id
+            }
         })
     },
       //更改每页显示的条数
@@ -515,39 +521,44 @@ export default {
     handleCurrentChange(val) {
       this.getLogList(val);
     },
-    routerInvalidCueDetail (item) {
-        this.$store.commit('setOffSiteManageId', item.id);
+    routerInvalidCueDetail (row) {
+        // this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
-            name: 'invalidCueDetail'
+            name: 'invalidCueDetail',
+            params: {
+                offSiteManageId: row.id
+            }
         })
     },
-    routerExamineDetail (item,status, tabTitle) {
-        this.$store.commit('setOffSiteManageId', item.id);
+    routerExamineDetail (row,status, tabTitle) {
+        // this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
             name: 'examineDoingDetail',
             params: {
                 status: status,
-                tabTitle: tabTitle
+                tabTitle: tabTitle,
+                offSiteManageId: row.id
             }
         })
     },
-    routerExamineDoingDetail (item,status, tabTitle) {
-        this.$store.commit('setOffSiteManageId', item.id);
+    routerExamineDoingDetail (row,status, tabTitle) {
+        // this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
             name: 'examineDoingDetail',
             params: {
                 status: status,
-                tabTitle: tabTitle
+                tabTitle: tabTitle,
+                offSiteManageId: row.id
             }
         })
     },
-    routerTransferDetail (item) {
-        this.$store.commit('setOffSiteManageId',  item.id);
+    routerTransferDetail (row) {
+        // this.$store.commit('setOffSiteManageId',  item.id);
         this.$router.push({
             name: 'transferDetail',
-            // params: {
-            //     status: '0'
-            // }
+            params: {
+                offSiteManageId: row.id
+            }
         })
     },
     routerTransferManage () {
