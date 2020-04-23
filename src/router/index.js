@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import {routers} from "./router";
 import iLocalStroage from "@/common/js/localStroage";
 
+const vm = new Vue();
 
 Vue.use(VueRouter);
 
@@ -23,9 +24,7 @@ router.beforeEach((to, from, next) => {
     //判断是否登录
     if (to.path === "/login") {
       next({name: "case_handle_home_index"});
-    // this.$router.redirect("caseHandle");
     } else {
-        // debugger;
       next();
     }
   } else {
@@ -40,3 +39,11 @@ router.beforeEach((to, from, next) => {
 router.afterEach(to => {
   window.scrollTo(0, 0);
 });
+
+function aFter(){
+  if (to.path === "/login") {
+    next({name: "case_handle_home_index"});
+  } else {
+    next();
+  }
+}
