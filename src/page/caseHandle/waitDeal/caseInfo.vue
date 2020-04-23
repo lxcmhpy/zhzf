@@ -189,7 +189,7 @@ import {
 export default {
   data() {
     return {
-      caseInfo: this.$route.params.caseInfo,
+      caseInfo: null,
       nextLink:[],
       formData: {
         caseStatus: "",
@@ -264,22 +264,34 @@ export default {
       //       isApproval:true
       //     }
       // })
+    },
+    init () {
+        debugger;
+        this.caseInfo = this.$route.params.caseInfo;
+        if(this.$route.params.fromSlide){
+        let data ={id:this.caseId}
+        getCaseBasicInfoApi(data).then(res=>{
+            console.log(res);
+            let caseData = res.data;
+            for (var key in caseData) {
+                this.formData[key] = caseData[key]
+            }
+        },err=>{
+            console.log(err);
+        })
+        }else{
+        this.formData = this.caseInfo;
+        }
     }
   },
   mounted(){
-    if(this.$route.params.fromSlide){
-      let data ={id:this.caseId}
-      getCaseBasicInfoApi(data).then(res=>{
-        console.log(res);
-        let caseData = res.data;
-         for (var key in caseData) {
-            this.formData[key] = caseData[key]
-          }
-      },err=>{
-        console.log(err);
-      })
-    }else{
-      this.formData = this.caseInfo;
+      debugger;
+      this.init()
+  },
+  watch: {
+    '$route' (to, from) {
+        debugger;
+        this.init()
     }
   },
   created() {}

@@ -291,7 +291,8 @@ export default {
           _this.menuList = [...res.data, ...menuList];
           _this.$store.commit("SET_MENU", _this.menuList);
           debugger;
-          _this.$store.commit('set_Head_Active_Nav',"caseHandle");
+           this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
+          _this.$store.commit('set_Head_Active_Nav',"caseHandle-menu-case_handle_home_index");
           _this.$router.push({ name: "case_handle_home_index" });
         },
         err => {

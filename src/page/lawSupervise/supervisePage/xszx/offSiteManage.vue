@@ -74,6 +74,9 @@
              <el-button v-if="tabActiveValue == '已审核'" type="primary" size="medium" @click="routerTransferManage">
                 <i class="iconfont law-submit-o f12"></i> 转办
             </el-button>
+            <!-- <iframe src='https://view.officeapps.live.com/op/view.aspx?src="http://124.192.215.10:9332/13,0dac31ecdbc0.xls"' width='100%' height='100%' frameborder='1'>
+            </iframe> -->
+            <!-- <a href="https://view.officeapps.live.com/op/view.aspx?src='http://124.192.215.10:9332/13,0dac31ecdbc0.xls'" target="_blank">下载</a> -->
             <el-dialog class="mini-dialog-title" title="预警推送" :visible.sync="yjVisible" :show-close="false"
                 :close-on-click-modal="false" width="800px" >
                 <el-form :model="form" ref="form" class="checkSearchForm" label-width="120px">
@@ -349,34 +352,15 @@ export default {
             label: "label"
         },
         pickerOptions:  {
-            // shortcuts: [{
-            //     text: "确定",
-            //     onClick: function(picker) {
-            //         debugger;
-            //         picker.click();
-            //         // _this.$nextTick(function(){
-            //         //     document.getElementsByTagName('body')[0].onclick = function(){alert(1)};
-            //         //     document.getElementsByTagName('body')[0].click();
-            //         // })
-            //     }
-            // }],
             onPick:  ({  maxDate,  minDate  })  =>  {
                 if (minDate) {
-                    let max = new Date(minDate);
-                    max.setHours(23);
-                    max.setMinutes(59);
-                    max.setSeconds(59);
                     _this.$set(_this.timeList,0,minDate);
-                    _this.$set(_this.timeList,1,max);
                 }
-                if(maxDate) {
-                    let max = new Date(maxDate);
-                    max.setHours(23);
-                    max.setMinutes(59);
-                    max.setSeconds(59);
-                    //  _this.$set(_this.timeList,0,minDate);
-                    _this.$set(_this.timeList,1,max);
-                }
+                let max = new Date(maxDate ? maxDate :minDate);
+                max.setHours(23);
+                max.setMinutes(59);
+                max.setSeconds(59);
+                _this.$set(_this.timeList,1,max);
             }
         },
         yjVisible: false,

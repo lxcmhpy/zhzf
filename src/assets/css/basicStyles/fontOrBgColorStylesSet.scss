@@ -10,8 +10,14 @@
 .blueC {
     color: $blueC;
 }
+.blueC3 {
+    color: $blueC3;
+}
 .greenC2 {
     color: $greenC2;
+}
+.greenC3 {
+    color: $greenC3;
 }
 .orangeC {
     color: $orangeC;
@@ -28,8 +34,15 @@
     background: $blueC;
     color: $white;
 }
+.blueBg3 {
+    background:$blueC3;
+}
 .greenBg2 {
     background: $greenC2;
+    color: $white;
+}
+.greenBg3 {
+    background: $greenC3;
     color: $white;
 }
 .orangeBg {
@@ -37,4 +50,8 @@
 }
 .redBg {
     background: $redC;
+}
+$grayC1: #F0F0F0;
+.grayBg {
+    background: $grayC1;
 }

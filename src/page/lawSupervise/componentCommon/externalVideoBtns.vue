@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="btns">
-      <i class="iconfont law-mobile"  :class="{'greenC2': doing == '1'}" @click="call('1')"></i>
-      <i class="iconfont law-shipin" id="btnPhone2" :class="{'greenC2': doing == '2'}" @click="call('2')"></i>
-      <i class="iconfont law-jiankong"></i>
-      <i class="iconfont law-msg-box"></i>
-      <i class="iconfont law-xianlu"></i>
+      <span class="phoneBtn" @click="call('1')"><i class="el-icon-phone blueC3"  ></i></span>
+      <span  class="phoneBtn"  @click="call('2')"><i class="iconfont law-shipin greenC3" id="btnPhone2" ></i></span>
+      <span  class="phoneBtn" ><i class="iconfont law-jiankong"></i></span>
+      <span  class="phoneBtn" ><i class="iconfont law-msg-box"></i></span>
+      <span  class="phoneBtn" ><i class="iconfont law-xianlu"></i></span>
     </div>
   </div>
 </template>
@@ -55,7 +55,7 @@ export default {
   }
 }
 </script>>
-<style lang="scss" >
+<style lang="scss" scope>
 .videoBox {
     width: 500px;
     height: 200px;

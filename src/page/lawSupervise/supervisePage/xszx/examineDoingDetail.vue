@@ -24,6 +24,7 @@
 
 <style src="@/assets/css/sliderPage.scss" lang="scss"></style>
 <style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
+<style lang="scss" src="@/assets/css/cluesReview.scss"></style>
 <style>
 .main_box .main_content .shadow {
     padding-top: 14px;

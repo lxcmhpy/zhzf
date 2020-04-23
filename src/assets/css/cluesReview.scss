@@ -891,6 +891,8 @@
     background: rgba(69, 115, 208, 1);
     box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
     color: white;
+    margin:0px;
+    cursor: pointer;
     &:hover{
         background: rgba(69, 115, 208, 1);
         color: white;
@@ -901,6 +903,7 @@
     box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
     color: white;
     cursor: pointer;
+    margin:0px;
     &:hover{
         background: rgb(160, 160, 160);
         color: white;
@@ -911,6 +914,7 @@
     box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
     color: white;
     cursor: pointer;
+    margin:0px;
     &:hover {
         background: rgba(74, 175, 167, 1);
     }
