@@ -10,6 +10,7 @@ export const ADD_TABS = "ADD_TABS";
 export const DELETE_TABS = "DELETE_TABS";
 export const DELETE_ALLTABS = "DELETE_ALLTABS";
 export const SET_ACTIVE_INDEX = "SET_ACTIVE_INDEX";
+export const REPLACE_TABS = "REPLACE_TABS";
 
 export const USERNAME = "USERNAME";
 

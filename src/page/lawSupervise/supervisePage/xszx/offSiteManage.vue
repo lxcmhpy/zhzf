@@ -161,7 +161,7 @@
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="checkTime" label="过检时间" align="center" width="100"></el-table-column>
                 <el-table-column prop="organName" label="执法点" align="center"></el-table-column>
-                <el-table-column prop="lane" label="车道" align="center"></el-table-column>
+                <el-table-column prop="lane" label="车道"  width="50"  align="center"></el-table-column>
                 <el-table-column label="车牌号" align="center"  width="120">
                     <template slot-scope="scope">
                         <div class="otherColor" :class="vehicleColorObj[scope.row.vehicleColor]">
@@ -171,10 +171,10 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="totalWeight" label="车货总质量（t）" align="center"></el-table-column>
+                <el-table-column prop="totalWeight" label="车货总质量（t）" width="140" align="center"></el-table-column>
                 <el-table-column prop="load" label="限重（t）" align="center"></el-table-column>
-                <el-table-column prop="overweight" label="超重（kg）" align="center"></el-table-column>
-                <el-table-column prop="overload" label="超限率（kg）" align="center"></el-table-column>
+                <el-table-column prop="overweight" label="超重（kg）"  width="120"  align="center"></el-table-column>
+                <el-table-column prop="overload" label="超限率（kg）"  width="120"  align="center"></el-table-column>
                 <el-table-column prop="key" label="重点监管" align="center"></el-table-column>
                 <!-- <el-table-column prop="status" label="处理状态" align="center"></el-table-column> -->
                 <!-- <el-table-column label="操作" width="300px" align="center">

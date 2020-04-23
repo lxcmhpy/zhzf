@@ -82,7 +82,7 @@ export default {
       //已经打开的 ，将其置为active
       //未打开的，将其放入队列里
         let flag = false;
-
+        debugger;
         let _this =this;
         let _index = _.findIndex(this.openTab,(chr) => {
             if (chr.isCase) {
@@ -91,6 +91,18 @@ export default {
             return chr.name === to.name;
         })
         if (_index > -1) {
+            if (to.params.tabTitle) {
+                let currentOpenTab = this.openTab[_index];
+                currentOpenTab.params = to.params;
+                currentOpenTab.title = currentOpenTab.params.tabTitle;
+                currentOpenTab.route = currentOpenTab.path;
+                let data = {
+                    index: _index,
+                    num: 1,
+                    data: currentOpenTab
+                }
+                this.$store.dispatch("replaceTabs", data);
+            }
             this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[_index].name);
             this.$store.commit("changeOneTabName", this.openTab[_index].name);
         } else {

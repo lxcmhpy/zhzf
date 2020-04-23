@@ -123,6 +123,10 @@ const system = {
         deleteTabs({ commit }, data) {
             commit(types.DELETE_TABS, data);
         },
+        // 替换标签：index:位置，num：个数，data:元素
+        replaceTabs ({ commit }, data) {
+            commit(types.REPLACE_TABS, data);
+        },
         //删除所有的tab
         deleteAllTabs({ commit }) {
             commit(types.DELETE_ALLTABS);
