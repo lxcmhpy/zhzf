@@ -98,7 +98,7 @@
         </p>
         <div class="pager_input quzheng">抽样取证地点：
           <el-form-item prop="evidencePlace">
-            <el-input class='text_indent10 overflow_lins_textarea' v-model="docData.evidencePlace"  maxLength='30' placeholder="\"></el-input>
+            <el-input class='text_indent10 overflow_lins_textarea' v-model="docData.evidencePlace"  maxLength='26' placeholder="\"></el-input>
           </el-form-item>
         </div>
         <el-row :gutter="10" class="pager_input">
@@ -197,7 +197,7 @@
         </div>
         <div class="pager_input quzheng">备注：
           <el-form-item>
-            <el-input class='text_indent10 overflow_lins_textarea' v-model="docData.note" rows="3" maxLength='90' placeholder="\"></el-input>
+            <el-input class='text_indent10 overflow_lins_textarea' v-model="docData.note" rows="3" maxLength='30' placeholder="\"></el-input>
           </el-form-item>
         </div>
         <div class="notice clear">
@@ -457,7 +457,6 @@ export default {
     //保存文书信息
     saveData(handleType) {
       // this.docData.evdenceList = this.evdenceList;
-     
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {

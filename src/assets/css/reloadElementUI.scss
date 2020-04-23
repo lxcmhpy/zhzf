@@ -51,9 +51,11 @@
 
   /* 表单 */
   .el-form-item {
-    margin-bottom: 7px;
+    margin-bottom: 18px;
   }
-
+  .el-form-item__error {
+      padding-top: 2px;
+  }
   .el-input .el-input__inner {
     height: 32px;
     border-radius: 0px;

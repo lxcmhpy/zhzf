@@ -1,10 +1,12 @@
 <template>
   <div class="superviseBtns">
+    <div v-if="tabActiveValue == '0'">
+        <el-button type="button" class="submitBtn grayBtn" @click="showInvalidCue" >
+            <i class="el-icon-warning-outline"></i>
+            <div>无效<br />信息</div>
+        </el-button>
+    </div>
     <div v-if="['0', '1'].indexOf(tabActiveValue) > -1">
-      <el-button type="button" class="submitBtn grayBtn" @click="showInvalidCue" >
-        <i class="el-icon-warning-outline"></i>
-        <div>无效<br />信息</div>
-      </el-button>
       <el-button type="button" class="submitBtn blueBtn" @click="nextRouter">
         <i class="iconfont law-xiayibu"></i>
         <div>下一步</div>

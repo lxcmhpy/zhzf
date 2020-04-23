@@ -74,6 +74,9 @@
              <el-button v-if="tabActiveValue == '已审核'" type="primary" size="medium" @click="routerTransferManage">
                 <i class="iconfont law-submit-o f12"></i> 转办
             </el-button>
+            <!-- <iframe src='https://view.officeapps.live.com/op/view.aspx?src="http://124.192.215.10:9332/13,0dac31ecdbc0.xls"' width='100%' height='100%' frameborder='1'>
+            </iframe> -->
+            <!-- <a href="https://view.officeapps.live.com/op/view.aspx?src='http://124.192.215.10:9332/13,0dac31ecdbc0.xls'" target="_blank">下载</a> -->
             <el-dialog class="mini-dialog-title" title="预警推送" :visible.sync="yjVisible" :show-close="false"
                 :close-on-click-modal="false" width="800px" >
                 <el-form :model="form" ref="form" class="checkSearchForm" label-width="120px">
@@ -158,7 +161,7 @@
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="checkTime" label="过检时间" align="center" width="100"></el-table-column>
                 <el-table-column prop="organName" label="执法点" align="center"></el-table-column>
-                <el-table-column prop="lane" label="车道" align="center"></el-table-column>
+                <el-table-column prop="lane" label="车道"  width="50"  align="center"></el-table-column>
                 <el-table-column label="车牌号" align="center"  width="120">
                     <template slot-scope="scope">
                         <div class="otherColor" :class="vehicleColorObj[scope.row.vehicleColor]">
@@ -168,10 +171,10 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="totalWeight" label="车货总质量（t）" align="center"></el-table-column>
+                <el-table-column prop="totalWeight" label="车货总质量（t）" width="140" align="center"></el-table-column>
                 <el-table-column prop="load" label="限重（t）" align="center"></el-table-column>
-                <el-table-column prop="overweight" label="超重（kg）" align="center"></el-table-column>
-                <el-table-column prop="overload" label="超限率（kg）" align="center"></el-table-column>
+                <el-table-column prop="overweight" label="超重（kg）"  width="120"  align="center"></el-table-column>
+                <el-table-column prop="overload" label="超限率（kg）"  width="120"  align="center"></el-table-column>
                 <el-table-column prop="key" label="重点监管" align="center"></el-table-column>
                 <!-- <el-table-column prop="status" label="处理状态" align="center"></el-table-column> -->
                 <!-- <el-table-column label="操作" width="300px" align="center">
@@ -349,34 +352,15 @@ export default {
             label: "label"
         },
         pickerOptions:  {
-            // shortcuts: [{
-            //     text: "确定",
-            //     onClick: function(picker) {
-            //         debugger;
-            //         picker.click();
-            //         // _this.$nextTick(function(){
-            //         //     document.getElementsByTagName('body')[0].onclick = function(){alert(1)};
-            //         //     document.getElementsByTagName('body')[0].click();
-            //         // })
-            //     }
-            // }],
             onPick:  ({  maxDate,  minDate  })  =>  {
                 if (minDate) {
-                    let max = new Date(minDate);
-                    max.setHours(23);
-                    max.setMinutes(59);
-                    max.setSeconds(59);
                     _this.$set(_this.timeList,0,minDate);
-                    _this.$set(_this.timeList,1,max);
                 }
-                if(maxDate) {
-                    let max = new Date(maxDate);
-                    max.setHours(23);
-                    max.setMinutes(59);
-                    max.setSeconds(59);
-                    //  _this.$set(_this.timeList,0,minDate);
-                    _this.$set(_this.timeList,1,max);
-                }
+                let max = new Date(maxDate ? maxDate :minDate);
+                max.setHours(23);
+                max.setMinutes(59);
+                max.setSeconds(59);
+                _this.$set(_this.timeList,1,max);
             }
         },
         yjVisible: false,

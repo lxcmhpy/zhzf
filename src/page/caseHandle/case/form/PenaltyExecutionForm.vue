@@ -416,7 +416,7 @@ export default {
     //下一环节
     continueHandle() {
       this.unfinishFlag = []
-       let unfinishFlag = []
+      let unfinishFlag = []
       if (this.isComplete() == false) {
         unfinishFlag.push('分期（延期）缴纳罚款通知书')
       }
@@ -708,11 +708,14 @@ export default {
       this.formData.toPayAmount = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
     },
     'formData.toPayAmount'(val) {
-      console.log(val);
+      console.log('aaaaaaaaa', val);
       if (!val) {
         this.formData.performance = '已完成';
       } else {
-        this.formData.performance = '未完成';
+        // this.formData.performance = '未完成';
+        if (this.formData.performance != '催告') {
+          this.formData.performance = '未完成';
+        }
       }
     }
   }

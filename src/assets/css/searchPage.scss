@@ -7,6 +7,9 @@
         display: flex;
         .el-form {
             flex:1;
+            .el-form-item {
+                margin-bottom: 8px;
+            }
         }
         .search-btns {
             width:200px;
