@@ -1,4 +1,12 @@
 import Cookies from "@/common/js/cookies";
+import Vue from "vue";
+// const vm = new Vue();
+
+import {
+  getCurrentUserApi,getMenuApi
+} from "@/api/login";
+import iLocalStroage from "@/common/js/localStroage";
+import {menuList} from "@/common/data/menu";
 
 //公用方法
 let util = {};
@@ -331,6 +339,39 @@ util.openURL = function(pdfPath){
   // MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
 }
 
+util.initMenu = function(vm){
+    let _this = vm;
+    console.log('util获取菜单')
+    getMenuApi().then(
+        res => {
+          let menuListNew = [...res.data, ...menuList];
+          _this.$store.commit("SET_MENU", menuListNew);
+          _this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
+          _this.$store.commit('set_Head_Active_Nav',"caseHandle-menu-case_handle_home_index");
+          _this.$router.push({ name: "case_handle_home_index" });
+          // callback();
+        },
+        err => {
+          console.log(err);
+        }
+      )
+}
+
+util.initUser = function(vm){
+  if(iLocalStroage.gets('userInfo') && vm.$store.state.system.menu){
+  
+  }else{
+    console.log('获取信息')
+    getCurrentUserApi().then(res=>{
+      console.log("当前用户信息",res);
+      iLocalStroage.sets('userInfo', res.data);
+      util.initMenu(vm);
+    },err=>{
+      console.log(err);
+    }) 
+  }
+  
+}
 
 
 

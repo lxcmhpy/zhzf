@@ -154,6 +154,10 @@ export default {
   },
   mounted() {
     console.log(this.userInfo)
+  },
+  created(){
+    //判断有没有menu
+    this.$util.initUser(this);
   }
 };
 </script>
