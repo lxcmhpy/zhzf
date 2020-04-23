@@ -130,10 +130,10 @@ export default {
         }
       });
     },
-    showModal() {
+    showModel(row) {
       this.visible = true;
       // this.alreadyChooseLawPerson = alreadyChooseLawPerson;
-      // console.log(this.alreadyChooseLawPerson)
+      console.log("这一行的数据",row);
     //   this.checkedUserId = alreadyChooseLawPersonId;
     //   console.log("alreadyChooseLawPersonId", alreadyChooseLawPersonId);
     //   console.log("inforCollectLawPerson", inforCollectLawPerson);

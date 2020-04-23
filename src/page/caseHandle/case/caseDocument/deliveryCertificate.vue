@@ -139,7 +139,7 @@
               <el-table-column prop="deliveryMaster" label="送达人" align="center">
                 <template slot-scope="scope">
                   <!-- {{scope.row.deliveryMaster}} -->
-                  <el-input v-model="scope.row.deliveryMaster" v-on:click.native="chooseStaff"></el-input>
+                  <el-input v-model="scope.row.deliveryMaster" v-on:click.native="chooseStaff(scope.row)"></el-input>
                 </template>
               </el-table-column>
 
@@ -507,12 +507,13 @@ export default {
       }
     },
     //选择执法人员
-    chooseStaff(){
-      this.$refs.chooseStaffDiaRef.showModal();
+    chooseStaff(row){
+      console.log("this",row);
+      this.$refs.chooseStaffDiaRef.showModel(row);
     },
     setDeliveryMaster(userlist){
       console.log('选择的执法人员', userlist);
-      this.tableDatas.deliveryMaster = userlist.join(',');
+      // row.deliveryMaster = userlist.join(',');
     }
   },
 
