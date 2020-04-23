@@ -45,15 +45,16 @@
           <el-table-column prop="evType" label="证据类型" align="center"></el-table-column>
           <el-table-column prop="status" label="状态" align="center">
             <template slot-scope="scope">
+              <label>
               <el-switch
                 v-model="scope.row.status"
                 :active-value="0"
                 :inactive-value="1"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
-                @change.native.prevent="updateEviBySwitch(scope.row)"
+                @change.stop="updateEviBySwitch(scope.row)"
               ></el-switch>
-
+              </label>
             </template>
           </el-table-column>
           <el-table-column prop="evPath" label="附件" align="center">
@@ -468,10 +469,10 @@ export default {
       let _this = this;
       this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
         if (res.code == 200) {
-          _this.$message({
-            message: "编辑成功！",
-            type: "success"
-          });
+          // _this.$message({
+          //   message: "编辑成功！",
+          //   type: "success"
+          // });
           _this.editVisible = false;
           _this.currentPage = 1;
           _this.getEviList();
@@ -639,7 +640,7 @@ export default {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 360px;
-  height: 370px;
+  height: 330px;
   text-align: center;
   position: relative;
   overflow: hidden;

@@ -62,8 +62,8 @@
               <div class="col">
                 <el-form-item label="执行方式">
                   <el-radio-group v-model="formData.performWay" @change="changePayWay">
-                    <el-radio :label="1">线下缴费</el-radio>
-                    <el-radio :label="2">电子缴纳</el-radio>
+                    <el-radio :label="线下缴费">线下缴费</el-radio>
+                    <el-radio :label="电子缴纳">电子缴纳</el-radio>
                   </el-radio-group>
                   <el-checkbox v-model="formData.correct" style="magin-left:20px"></el-checkbox> 责令改正
                   <!-- <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input> -->
@@ -416,7 +416,7 @@ export default {
     //下一环节
     continueHandle() {
       this.unfinishFlag = []
-       let unfinishFlag = []
+      let unfinishFlag = []
       if (this.isComplete() == false) {
         unfinishFlag.push('分期（延期）缴纳罚款通知书')
       }
@@ -501,8 +501,8 @@ export default {
       if (this.formData.tempPunishAmount) {
         this.formData.paidAmount = this.formData.paidAmount ? this.formData.paidAmount : 0;
       }
-      this.formData.performWay = this.formData.performWay ? this.formData.performWay : 1;
-      this.isOnlinePay = this.formData.performWay == 1 ? false : true;
+      this.formData.performWay = this.formData.performWay ? this.formData.performWay : "线下缴费";
+      this.isOnlinePay = this.formData.performWay == "线下缴费" ? false : true;
       //显示已上传的缴费凭证
       // this.alreadyLoadPayEvidence = this.formData.payEvidence  ? this.formData.payEvidence.split(',') : [];
       if (this.formData.payEvidence) {
@@ -708,11 +708,14 @@ export default {
       this.formData.toPayAmount = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
     },
     'formData.toPayAmount'(val) {
-      console.log(val);
+      console.log('aaaaaaaaa', val);
       if (!val) {
         this.formData.performance = '已完成';
       } else {
-        this.formData.performance = '未完成';
+        // this.formData.performance = '未完成';
+        if (this.formData.performance != '催告') {
+          this.formData.performance = '未完成';
+        }
       }
     }
   }

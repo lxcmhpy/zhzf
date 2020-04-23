@@ -238,7 +238,8 @@ export default {
     debugger
         let data = {
             caseId:row.caseId,
-            docId: row.caseSerProofId,
+            // docId: row.caseSerProofId,
+            docId:'2c9029cf6931aa5c01693381ac690018'
         };
         let _that = this
         findByCaseIdAndDocIdApi(data).then(res=>{
@@ -348,7 +349,8 @@ export default {
         console.log('row',row)
         let routerData = {
           hasApprovalBtn: false,
-          docId: row.caseSerProofId,
+          // docId: row.caseSerProofId,
+          docId: '2c9029cf6931aa5c01693381ac690018',
           approvalOver: false,
           hasBack: true,
           docDataId:row.caseSerProofId

@@ -4,9 +4,12 @@
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
         <div class="doc_topic">送达回证</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
-        <div>案由:<el-form-item prop="caseName" style="width:585px">
+        <!-- <div>案由:<el-form-item prop="caseName" style="width:585px">
             <el-input type="textarea" v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled style="height:36px;"></el-input>
           </el-form-item>
+        </div> -->
+        <div class="doc_cause">
+          案由：{{docData.caseName}}
         </div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
@@ -62,6 +65,7 @@
             <tr>
             <td colspan="6">
               <div class="pdf_seal">
+                <br/><br/><br/>
                 <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
                 <!-- <el-form-item prop="makeDate" class="pdf_datapick">
                   <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
@@ -485,10 +489,40 @@ export default {
       let canAdd = true;
       for(let i=0; i<this.tableDatas.length; i++){
           if(!this.tableDatas[i].docName || !this.tableDatas[i].address || !this.tableDatas[i].servedDate || !this.tableDatas[i].servedType || !this.tableDatas[i].deliveryMaster){
-            this.$message({
-              message: '数据至少有一项不为空！',
-              type: 'warning'
-            });
+            if(!this.tableDatas[i].docName){
+              this.$message({
+                message: '送达文书名称不能为空！',
+                type: 'warning'
+              });
+            }else
+            if(!this.tableDatas[i].address){
+              this.$message({
+                message: '送达地点不能为空！',
+                type: 'warning'
+              });
+            }else
+            if(!this.tableDatas[i].servedDate){
+              this.$message({
+                message: '送达日期不能为空！',
+                type: 'warning'
+              });
+            }else
+            if(!this.tableDatas[i].servedType){
+              this.$message({
+                message: '送达方式不能为空！',
+                type: 'warning'
+              });
+            }else
+            if(!this.tableDatas[i].deliveryMaster){
+              this.$message({
+                message: '送达人不能为空！',
+                type: 'warning'
+              });
+            }
+            // this.$message({
+            //   message: '数据至少有一项不为空！',
+            //   type: 'warning'
+            // });
             canAdd = false;
             break;
           }

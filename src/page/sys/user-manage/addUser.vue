@@ -85,22 +85,22 @@
         <p class="titleP">证件信息</p>
         <div class="item">
           <el-form-item label="省级证件号">
-            <el-input v-model="addUserForm.Provincial"></el-input>
+            <el-input v-model="addUserForm.provincial"></el-input>
           </el-form-item>
         </div>
         <div class="item">
           <el-form-item label="部级证件号">
-            <el-input v-model="addUserForm.Ministerial"></el-input>
+            <el-input v-model="addUserForm.ministerial"></el-input>
           </el-form-item>
         </div>
         <div class="item">
           <el-form-item label="海事证件号">
-            <el-input v-model="addUserForm.Maritime"></el-input>
+            <el-input v-model="addUserForm.maritime"></el-input>
           </el-form-item>
         </div>
         <div class="item">
           <el-form-item label="其他证件号">
-            <el-input v-model="addUserForm.Other"></el-input>
+            <el-input v-model="addUserForm.other"></el-input>
           </el-form-item>
         </div>
       </div>
@@ -151,10 +151,10 @@ export default {
         organTitle: "",
         departmentId: "",
         departmentTitle: "",
-        Provincial: "",
-        Ministerial: "",
-        Maritime: "",
-        Other: ""
+        provincial: "",
+        ministerial: "",
+        maritime: "",
+        other: ""
       },
       rules: {
         username: [
@@ -283,10 +283,10 @@ export default {
               organTitle: _this.addUserForm.organTitle,
               departmentId: _this.addUserForm.departmentId,
               departmentTitle: _this.addUserForm.departmentTitle,
-              Provincial: _this.addUserForm.Provincial,
-              Ministerial: _this.addUserForm.Ministerial,
-              Maritime: _this.addUserForm.Maritime,
-              Other: _this.addUserForm.Other
+              provincial: _this.addUserForm.provincial,
+              ministerial: _this.addUserForm.ministerial,
+              maritime: _this.addUserForm.maritime,
+              other: _this.addUserForm.other
             };
             _this.$store
               .dispatch("updateUser", _this.addUserForm)
@@ -353,10 +353,10 @@ export default {
           organTitle: "",
           departmentId: "",
           departmentTitle: "",
-          Provincial: "",
-          Ministerial: "",
-          Maritime: "",
-          Other: ""
+          provincial: "",
+          ministerial: "",
+          maritime: "",
+          other: ""
         };
       }
     }

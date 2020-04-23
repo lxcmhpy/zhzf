@@ -58,6 +58,7 @@ export default {
     //新增
     showModal(data, caseData,unfinishFlag) {
       //显示弹框
+      console.log("list",unfinishFlag);
       this.caseLinkDataForm.caseLinktypeId = caseData.caseLinktypeId;
       this.caseLinkDataForm.caseBasicinfoId = caseData.caseBasicinfoId;
       this.visible = true;
