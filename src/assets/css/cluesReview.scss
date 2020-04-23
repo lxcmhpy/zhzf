@@ -934,7 +934,7 @@
 //   background: #12223d;
     display: inline-block;
       background: url('../../../static/images/img/lawSupervise/icon_zt_zb.jpg') no-repeat;
-      z-index:-1;
+      z-index:500;
   }
   .invalidCueDetail {
     position:fixed;
@@ -951,7 +951,7 @@
   //   background: #12223d;
     display: inline-block;
     background: url('../../../static/images/img/lawSupervise/icon_zt_wsh.jpg') no-repeat;
-    z-index:-1;
+    z-index:500;
   }
   .examineDoingDetail {
     position:fixed;
@@ -968,7 +968,7 @@
   //   background: #12223d;
     display: inline-block;
     background: url('../../../static/images/img/lawSupervise/icon_zt_sh.jpg') no-repeat;
-    z-index:-1;
+    z-index:500;
 
   }
   span:focus {

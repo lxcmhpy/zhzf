@@ -24,3 +24,4 @@ export default {
     padding: 22px;
 }
 </style>
+<style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>

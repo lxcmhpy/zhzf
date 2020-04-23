@@ -98,11 +98,10 @@ export default {
         }
     },
     mounted () {
-        // alert(this.offSiteManageId);
-        this.getDetailById(this.offSiteManageId);
+        this.getDetailById(this.$route.params.offSiteManageId);
     },
     computed: {
-        ...mapGetters(["offSiteManageId"])
+        // ...mapGetters(["offSiteManageId"])
     },
     components: {
         btns, xszxDetailView
