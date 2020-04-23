@@ -166,15 +166,15 @@
           <div class="casehome_topic">立案登记
             <div style="float:right;height:20px" class="programType">
               <el-radio-group v-model="caseForm.programType" @change="getIllegaAct">
-                <el-radio :label='1'>简易程序</el-radio>
                 <el-radio :label='0'>一般程序</el-radio>
+                <el-radio :label='1'>简易程序</el-radio>
               </el-radio-group>
             </div>
           </div>
 
           <el-radio-group v-model="caseForm.wayType" size="medium" fill="#E6EAF2" text-color="#0074F5" class="btn_back" @change="changeCommonOptions" style="width:100%">
             <span class='el-radio-button__inner' style="float: right;margin-right: 4px;" @click="moreBtn=!moreBtn">
-              <i v-bind:class="moreBtn?'el-icon-arrow-down':'el-icon-arrow-up'"></i>
+              <i v-bind:class="moreBtn?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
             </span>
             <el-radio-button label="水路运政" style="border-left: 1px solid #DCDFE6;"></el-radio-button>
             <el-radio-button label="公路路政"></el-radio-button>

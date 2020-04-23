@@ -48,8 +48,8 @@
             </el-form-item>
             <el-form-item label="状  态" prop="status" label-width="113px">
               <el-radio-group v-model="form.status">
-                <el-radio :label="0">有效</el-radio>
-                <el-radio :label="1">无效</el-radio>
+                <el-radio :label="0" disabled >有效</el-radio>
+                <el-radio :label="1" disabled >无效</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="备  注" prop="note" label-width="113px">

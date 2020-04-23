@@ -113,7 +113,7 @@
             _this.$store.dispatch("deleteTabs", _this.$route.name);
             _this.$store.commit("setCaseId", _this.caseInfo.caseId);
             _this.$router.push({
-              name: "flowChart"
+              name: "case_handle_flowChart"
             });
           },
           err => {

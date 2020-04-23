@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="选择人员"
+    title="选择执法人员"
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
@@ -15,21 +15,21 @@
         </p>
         <div>
           <el-tag
-            :key="tag.id"
+            :key="tag"
             v-for="tag in checkedUser"
-            :closable ="tag.userId !=currentUserId"
+            closable
             :disable-transitions="false"
             @close="deleteUser(tag)"
-          >{{tag.lawOfficerName}}</el-tag>
+          >{{tag}}</el-tag>
         </div>
       </div>
       <div class="choose">
         <p>
-          <span>本机构人员</span>
+          <span>本案人员</span>
           <span>{{this.userList.length}}</span>
         </p>
         <el-input placeholder="请输入姓名或执法证号" class="input-with-select" v-model="staffNameOrCode">
-          <el-button slot="append" icon="el-icon-search" @click="findStallByCondition()"></el-button>
+          <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <div class="userList">
           <el-checkbox
@@ -41,24 +41,24 @@
           <el-checkbox-group v-model="checkedUserId" @change="handleCheckedUserChange" >
             <el-checkbox
               v-for="(user,index) in userList"
-              :label="user.id"
-              :key="user.id"
-              :disabled="user.userId == currentUserId ? true : false"
+              :label="user"
+              :key="user"             
             >
-              <span class="name">{{user.lawOfficerName}}</span>
-              <el-select
-                v-model="selectedNumber[index]"
+              <span class="name">{{user}}</span>
+              <el-input
+                v-model="userIdList[index]"
                 placeholder="请选择"
                 @change="changeLawOfficerCards($event,user.lawOfficerCardsAndId)"
                 @click.native.prevent
+                style="width:100px;"
               >
-                <el-option
-                  v-for="item in user.lawOfficerCardsAndId.lawOfficerCards"
+                <!-- <el-option
+                  v-for="item in userIdList[index]"
                   :key="item"
                   :label="item"
                   :value="item"
-                ></el-option>
-              </el-select>
+                ></el-option> -->
+              </el-input>
             </el-checkbox>
           </el-checkbox-group>
         </div>
@@ -72,8 +72,10 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import { findStaffListApi } from "@/api/caseHandle";
+import { findStaffListApi,getCaseBasicInfoApi } from "@/api/caseHandle";
+import { mapGetters } from "vuex";
 export default {
+  computed: { ...mapGetters(['caseId']) },
   data() {
     return {
       visible: false,
@@ -81,46 +83,61 @@ export default {
       checkAll: false,
       checkedUser: [], //选中的人员
       userList: [], //全部人员
+      userIdList: [],//执法人员ID
       selectedNumber: [],
       alreadyChooseLawPerson: [], //信息采集页传来的
-      currentUserId: iLocalStroage.gets("userInfo").id, //当前登录用户的id
-      currentUser:'', //登录用户的执法信息
+      currentUserName: iLocalStroage.gets("userInfo").username, //当前登录用户的username
       checkedUserId: [],
       staffNameOrCode: "",
     };
   },
   inject: ["reload"],
   methods: {
-    findStallByCondition(){
-        // findStaffListApi(this.staffNameOrCode);
-        let data = {
-        organId: iLocalStroage.gets("userInfo").organId,
-        inputValue: this.staffNameOrCode
-      };
-        let _this = this
-        findStaffListApi(data).then(res=>{
-            _this.userList = res.data;
-            _this.userList.forEach(item => {
-              //执法证号下拉框
-              item.lawOfficerCardsAndId = {
-                id: item.id,
-                lawOfficerCards: item.lawOfficerCards.split(",")
-              };
-            });
-      },err=>{
-        console.log(err);
-      })
+    // findStallByCondition(){
+    //     // findStaffListApi(this.staffNameOrCode);
+    //     let data = {
+    //     organId: iLocalStroage.gets("userInfo").organId,
+    //     inputValue: this.staffNameOrCode
+    //   };
+    //     let _this = this
+    //     findStaffListApi(data).then(res=>{
+    //         _this.userList = res.data;
+    //         _this.userList.forEach(item => {
+    //           //执法证号下拉框
+    //           item.lawOfficerCardsAndId = {
+    //             id: item.id,
+    //             lawOfficerCards: item.lawOfficerCards.split(",")
+    //           };
+    //         });
+    //   },err=>{
+    //     console.log(err);
+    //   })
 
+    // },
+    //查询本案人员
+    findUserNameList(){
+      let data = {
+        id : this.caseId
+      }
+      getCaseBasicInfoApi(data).then(res => {
+        if (res.code == 200) {
+          console.log("1456",res);
+          this.userList = res.data.staff.split(',');
+          this.userIdList = res.data.staffId.split(',');
+          console.log("this.userNameList",this.userNameList);
+        } else {
+          console.log("fail");
+        }
+      });
     },
-    showModal(alreadyChooseLawPersonId, inforCollectLawPerson) {
+    showModel(row) {
       this.visible = true;
       // this.alreadyChooseLawPerson = alreadyChooseLawPerson;
-      // console.log(this.alreadyChooseLawPerson)
-      console.log(alreadyChooseLawPersonId,inforCollectLawPerson);
-      this.checkedUserId = alreadyChooseLawPersonId;
-      console.log("alreadyChooseLawPersonId", alreadyChooseLawPersonId);
-      console.log("inforCollectLawPerson", inforCollectLawPerson);
-      this.searchLawPerson(alreadyChooseLawPersonId, inforCollectLawPerson);
+      console.log("这一行的数据",row);
+    //   this.checkedUserId = alreadyChooseLawPersonId;
+    //   console.log("alreadyChooseLawPersonId", alreadyChooseLawPersonId);
+    //   console.log("inforCollectLawPerson", inforCollectLawPerson);
+    //   this.searchLawPerson(alreadyChooseLawPersonId, inforCollectLawPerson);
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -131,26 +148,15 @@ export default {
     handleCheckAllChange(val) {
       console.log(val);
       if (val) {
-        this.checkedUserId = [];
-        this.checkedUser = [];
         this.userList.forEach(item => {
-          // this.checkedUserId.forEach(item2=>{
-          //   if(item.id != item2){
-          //     //复选框存入id
-          //     this.checkedUserId.push(item.id);
-          //     //tag
-          //     this.checkedUser.push(item);
-          //   }
-          // })
-           //复选框存入id
-            this.checkedUserId.push(item.id);
-            //tag
-            this.checkedUser.push(item);
-          
+          //复选框存入id
+          this.checkedUserId.push(item.id);
+          //tag
+          this.checkedUser.push(item);
         });
       } else {
-        this.checkedUserId =[this.currentUser.id];
-        this.checkedUser = [this.currentUser];
+        this.checkedUserId = [];
+        this.checkedUser = [];
       }
       this.isIndeterminate = false;
     },
@@ -161,7 +167,7 @@ export default {
        let _this = this
       val.forEach(item => {
         _this.userList.forEach(item2 => {
-          if (item == item2.id) {
+          if (item == item2) {
             //更新tag
             console.log('更新tag',item2);
             _this.checkedUser.push(item2);
@@ -179,7 +185,7 @@ export default {
     deleteUser(tag) {
       console.log(tag);
       //当前用户不允许删除
-      if (tag.userId == this.currentUserId) return;
+      if (tag.lawOfficerName == this.currentUserName) return;
       this.checkedUser.splice(this.checkedUser.indexOf(tag), 1);
       //更新复选框
       this.checkedUserId.splice(this.checkedUser.indexOf(tag.id), 1);
@@ -198,9 +204,9 @@ export default {
     //点击确定关闭弹窗 添加用户到信息采集页
     addUserToForm() {
       this.visible = false;
-      this.$emit("setLawPer", this.checkedUser);
-      console.log("this.checkedUser", this.checkedUser);
-      this.$emit("userList", this.userList);
+      this.$emit("setDeliveryMasterEmit", this.checkedUser);
+    //   console.log("this.checkedUser", this.checkedUser);
+    //   this.$emit("userList", this.userList);
     },
     //查询执法人员
     searchLawPerson(alreadyChooseLawPersonId, inforCollectLawPerson) {
@@ -211,9 +217,6 @@ export default {
           res => {
             _this.userList = res.data;
             _this.userList.forEach(item => {
-                //查询当前用户的执行信息
-                if(item.userId == this.currentUserId) this.currentUser = item;
-
               //执法证号下拉框
               item.lawOfficerCardsAndId = {
                 id: item.id,
@@ -253,10 +256,10 @@ export default {
           }
         );
     }
+  },
+  mounted() {
+    this.findUserNameList();
   }
-  // mounted() {
-  //   this.getSelectNumber();
-  // }
 };
 </script>
 <style lang="scss">

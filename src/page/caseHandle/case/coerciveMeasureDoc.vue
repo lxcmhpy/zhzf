@@ -25,26 +25,26 @@
             <div class="row" v-if="isParty">
               <div class="col">
                 <el-form-item label="个人姓名" :prop="isParty ? 'party' :''">
-                  <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入" :disabled="originalData.party ? true : false"></el-input>
+                  <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入" :disabled=" isParty && originalData.party ? true : false"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="身份证号" :prop="isParty ? 'partyIdNo' :''">
-                  <el-input clearable class="w-120" v-model="formData.partyIdNo" size="small" placeholder="请输入" :disabled="originalData.partyIdNo ? true : false"></el-input>
+                  <el-input clearable class="w-120" v-model="formData.partyIdNo" size="small" placeholder="请输入" :disabled=" isParty && originalData.partyIdNo ? true : false"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
                 <el-form-item label="联系电话" :prop="isParty ? 'partyTel' :''">
-                  <el-input ref="partyTel" clearable class="w-120" v-model="formData.partyTel" size="small" placeholder="请输入" :disabled="originalData.partyTel ? true : false"></el-input>
+                  <el-input ref="partyTel" clearable class="w-120" v-model="formData.partyTel" size="small" placeholder="请输入" :disabled=" isParty && originalData.partyTel ? true : false"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
                 <el-form-item label="联系地址" :prop="isParty ? 'partyAddress' :''">
-                  <el-input ref="partyAddress" clearable class="w-120" v-model="formData.partyAddress" size="small" placeholder="请输入" :disabled="originalData.partyAddress ? true : false"></el-input>
+                  <el-input ref="partyAddress" clearable class="w-120" v-model="formData.partyAddress" size="small" placeholder="请输入" :disabled=" isParty && originalData.partyAddress ? true : false"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -53,31 +53,31 @@
             <div class="row" v-if="!isParty">
               <div class="col">
                 <el-form-item label="单位">
-                  <el-input ref="partyName" clearable class="w-120" v-model="formData.partyName" size="small" placeholder="请输入" :disabled="originalData.partyName ? true : false"></el-input>
+                  <el-input ref="partyName" clearable class="w-120" v-model="formData.partyName" size="small" placeholder="请输入" :disabled=" !isParty && originalData.partyName ? true : false"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="地址">
-                  <el-input ref="partyUnitAddress" clearable class="w-120" v-model="formData.partyUnitAddress" size="small" placeholder="请输入" :disabled="originalData.partyUnitAddress ? true : false"></el-input>
+                  <el-input ref="partyUnitAddress" clearable class="w-120" v-model="formData.partyUnitAddress" size="small" placeholder="请输入" :disabled=" !isParty && originalData.partyUnitAddress ? true : false"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="!isParty">
               <div class="col">
                 <el-form-item label="法定代表人">
-                  <el-input ref="partyManager" clearable class="w-120" v-model="formData.partyManager" size="small" placeholder="请输入" :disabled="originalData.partyManager ? true : false"></el-input>
+                  <el-input ref="partyManager" clearable class="w-120" v-model="formData.partyManager" size="small" placeholder="请输入" :disabled=" !isParty && originalData.partyManager ? true : false"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item label="联系电话">
-                  <el-input ref="partyUnitTel" clearable class="w-120" v-model="formData.partyUnitTel" size="small" placeholder="请输入" :disabled="originalData.partyUnitTel ? true : false"></el-input>
+                  <el-input ref="partyUnitTel" clearable class="w-120" v-model="formData.partyUnitTel" size="small" placeholder="请输入" :disabled=" !isParty && originalData.partyUnitTel ? true : false"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row"  v-if="!isParty">
               <div class="col">
                 <el-form-item label="统一社会信用代码" class="line-height13">
-                  <el-input ref="socialCreditCode" clearable class="w-120" v-model="formData.socialCreditCode" size="small" placeholder="请输入" :disabled="originalData.socialCreditCode ? true : false"></el-input>
+                  <el-input ref="socialCreditCode" clearable class="w-120" v-model="formData.socialCreditCode" size="small" placeholder="请输入" :disabled=" !isParty && originalData.socialCreditCode ? true : false"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -133,20 +133,15 @@
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'" class="tableHandelcase">
                     <!-- 已完成 -->
-                    <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
-                    <i class="iconfont law-print"></i>
-                  </span>
-                  <span v-if="scope.row.status == '0'" class="tableHandelcase">
-                    <!-- 未完成 -->
-                    <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
-                    <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
-                  </span>
-                  <span v-if="scope.row.status != '1' && scope.row.status != '0'" class="tableHandelcase">
+                    <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
+                    <!-- 未完成 暂存 -->
+                    <span v-if="scope.row.status == '0'" class="tableHandelcase">
+                      <span @click="viewDoc(scope.row)">编辑</span>  
+                      <span @click="delDocDataByDocId(scope.row)">清空</span>  
+                    </span>
                     <!-- 无状态 -->
-                    <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
-                  </span>
+                    <span  v-if="scope.row.status != '1' && scope.row.status != '0'" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
                 </template>
               </el-table-column>
             </el-table>
@@ -175,6 +170,7 @@
       </div>
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
+    <saveFormDia ref="saveFormDiaRef"></saveFormDia>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="''" ></caseSlideMenu>
@@ -183,18 +179,20 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import checkDocFinish from '../components/checkDocFinish'
-import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
+import checkDocFinish from '../components/checkDocFinish';
+import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu';
 import {
   submitRelieveApi,getDocDataByCaseIdAndDocIdApi
 } from "@/api/caseHandle";
 import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator';
-import resetDocDia from '@/page/caseHandle/components/resetDocDia'
+import resetDocDia from '@/page/caseHandle/components/resetDocDia';
+import saveFormDia from "./saveFormDia";
 export default {
   components: {
     checkDocFinish,
     caseSlideMenu,
-    resetDocDia
+    resetDocDia,
+    saveFormDia
   },
   data() {
 
@@ -236,6 +234,7 @@ export default {
         formData: "",
         status: ""
       },
+      saveOrSub: true,
       handleType: 0,
       docTableDatas: [],
       rules: {
@@ -310,31 +309,27 @@ export default {
     },
     //提交
     continueHandle() {
-      let caseData = {
-        caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
-        caseLinktypeId: this.caseLinkDataForm.caseLinktypeId,
-      }
-      let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
-      for (let i = 0; i < this.docTableDatas.length; i++) {
-        if (this.docTableDatas[i].isRequired === 0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")) {
-          canGotoNext = false
-          break;
+      if(this.isSaveLink){
+        let caseData = {
+          caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
+          caseLinktypeId: this.caseLinkDataForm.caseLinktypeId,
         }
-      }
-      if (canGotoNext) {
-        // this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
-        //  this.$store.dispatch("deleteTabs", this.$route.name);
-        //   this.$router.push({
-        //     name: 'flowChart'
-        //   });
-        this.submitCoerciveMeasuer();
-        
-      } else {
-        this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+        let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
+        for (let i = 0; i < this.docTableDatas.length; i++) {
+          if (this.docTableDatas[i].isRequired === 0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")) {
+            canGotoNext = false
+            break;
+          }
+        }
+        if (canGotoNext) {
+          this.submitCoerciveMeasuer();
+        } else {
+          this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+        }
+      }else{
+        this.$refs.saveFormDiaRef.showModal();
       }
 
-
-      // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
     //提交
     submitCoerciveMeasuer(){
@@ -346,7 +341,7 @@ export default {
           console.log('提交解除或延长表单',res);
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({ 
-            name: 'flowChart'
+            name: 'case_handle_flowChart'
           });
         },err=>{
           console.log(err);
@@ -369,15 +364,11 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      //为询问笔录时弹出选择框
-      // if (row.docId == "2c9029ca5b71686d015b71a86ead0032") {
-      //   this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
-      // } else {
-      //   this.com_viewDoc(row);
-      // }
-        this.com_viewDoc(row);
-
-
+      if(this.isSaveLink){
+        this.com_viewDoc(row)
+      }else{
+        this.$refs.saveFormDiaRef.showModal(this.saveOrSub);
+      }
     },
     //预览pdf
     viewDocPdf(row) {

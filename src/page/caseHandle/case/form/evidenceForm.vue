@@ -203,7 +203,7 @@
             <el-form-item label="记录时间" prop="recordTime" label-width="113px">
               <el-date-picker
                 v-model="uForm.recordTime"
-                type="datetime"
+                type="date"
                 format="yyyy-MM-dd"
                 placeholder="选择日期时间"
                 style="width: 100%"

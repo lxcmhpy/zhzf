@@ -419,10 +419,7 @@
         <div>
           <div class="itemBig">
             <el-form-item label="检测站" class = "is-required">
-              <el-select v-model="inforForm.otherInfo.checkStastions">
-                <el-option v-for="item in RecentCheckStastions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>-->
-              <!-- <el-input v-model="inforForm.otherInfo.checkStastions"></el-input> -->
+               <el-autocomplete style="width: 100%" v-model="inforForm.otherInfo.checkStastions" :fetch-suggestions="querySearch"></el-autocomplete>
             </el-form-item>
           </div>
           <div class="itemSmall">
@@ -959,7 +956,7 @@ export default {
         { value: "特大型货车", label: "特大型货车" },
         { value: "集装箱车", label: "集装箱车" },
         { value: "摩托车", label: "摩托车" },
-        { value: "", label: "拖拉机" }
+        { value: "拖拉机", label: "拖拉机" }
       ],
       showTrailer: false, //是否显示挂车信息
       judgFreedomList: [], //自由裁量列表
@@ -1039,7 +1036,7 @@ export default {
             _this.lawPersonListId = [];
             _this.alreadyChooseLawPerson = [];
 
-            res.data.forEach(item => {
+            res.data.forEach(item => { 
               if (
                 item.userId == iLocalStroage.gets("userInfo").id
               ) {

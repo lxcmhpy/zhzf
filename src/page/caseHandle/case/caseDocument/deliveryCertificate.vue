@@ -138,7 +138,8 @@
 
               <el-table-column prop="deliveryMaster" label="送达人" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.deliveryMaster"></el-input>
+                  <!-- {{scope.row.deliveryMaster}} -->
+                  <el-input v-model="scope.row.deliveryMaster" v-on:click.native="chooseStaff(scope.row)"></el-input>
                 </template>
               </el-table-column>
 
@@ -159,11 +160,11 @@
     </el-dialog>
     <casePageFloatBtns :pageDomId="'deliverCertificate-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
-    
+    <chooseStaffDia ref="chooseStaffDiaRef" @setDeliveryMasterEmit="setDeliveryMaster"></chooseStaffDia>
   </div>
 </template>
 <script>
-
+import chooseStaffDia from "./chooseStaffDia";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
@@ -172,7 +173,8 @@ import { validatePhone, validateIDNumber } from "@/common/js/validator";
 
 export default {
   components: {
-    casePageFloatBtns
+    casePageFloatBtns,
+    chooseStaffDia
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
@@ -231,6 +233,9 @@ export default {
       addLoading: false,
       tableDatas: [],
       isPdf: '',
+      addDocFormRef:{
+        deliveryMaster:''
+      },
       options: [{
         value: '直接送达',
         label: '直接送达'
@@ -500,6 +505,15 @@ export default {
       if (!this.docData.deliveryCertificatelist.length) {
         this.docData.deliveryCertificatelist = [{ docName: '', receiver: '', address: '', servedDate: '', servedType: '', deliveryMaster: '' }]
       }
+    },
+    //选择执法人员
+    chooseStaff(row){
+      console.log("this",row);
+      this.$refs.chooseStaffDiaRef.showModel(row);
+    },
+    setDeliveryMaster(userlist){
+      console.log('选择的执法人员', userlist);
+      // row.deliveryMaster = userlist.join(',');
     }
   },
 
