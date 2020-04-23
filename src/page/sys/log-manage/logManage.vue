@@ -33,7 +33,7 @@
                     </el-form-item>
                     <el-form-item label="操作日期" >
                                 <!-- type="daterange" -->
-                        <el-form-item prop="startTime">
+                        <el-form-item prop="dateArray">
                              <el-date-picker
                                 v-model="logForm.dateArray"
                                 type="daterange"

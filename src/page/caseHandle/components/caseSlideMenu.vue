@@ -82,7 +82,7 @@ export default {
   methods: {
     goTo(name){
       console.log('name',name)
-      if(this.caseApproval) {
+      if(this.caseApproval ) { 
         this.$message('暂不支持审批人员查看');
       }else{
         this.$store.dispatch('deleteTabs', 'caseInfo');

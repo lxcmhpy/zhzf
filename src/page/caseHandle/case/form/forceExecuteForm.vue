@@ -351,7 +351,7 @@
       // 判断文书是否完成
       isComplete() {
         debugger
-        this.unfinishFlag = '';
+        // this.unfinishFlag = '';
 //        console.log('强制类型:', this.formData.forceType)
         if (this.formData.forceType==='强制执行') {
           // 强制执行书必做
@@ -361,11 +361,11 @@
           this.docTableDatas.forEach(element => {
             if (element.name == '行政强制执行决定书【2016】') {
                debugger
-              this.unfinishFlag = '行政强制执行决定书';
+              // this.unfinishFlag = '行政强制执行决定书';
 //              console.log('lement.status,element.status', element.status)
               if (element.status != 1) {
                  debugger
-                this.unfinishFlag = '行政强制执行决定书';
+                // this.unfinishFlag = '行政强制执行决定书';
 //                console.log('执行')
                 let caseData = {}
                 this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
@@ -382,7 +382,7 @@
 
       isComplete2(){
         debugger
-        this.unfinishFlag = '';
+        // this.unfinishFlag = '';
 //        console.log('强制类型:', this.formData.forceType)
         if (this.formData.forceType==='代履行') {
           // 代履行必做
@@ -393,7 +393,7 @@
                debugger
               if (element.status != 1) {
                  debugger
-                this.unfinishFlag = '代履行决定书';
+                // this.unfinishFlag = '代履行决定书';
 //                console.log('this.unfinishFlag', this.unfinishFlag)
                 let caseData = {}
                 this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
@@ -412,11 +412,14 @@
 
        //下一环节
       continueHandle() {
-        // debugger
-        // console.log('this.unfinishFlag', this.unfinishFlag)
-        // console.log('行政强制执行决定书', this.isComplete())
-        // console.log('代履行决定书', this.isComplete2())
-        // console.log('this.unfinishFlag', this.unfinishFlag)
+        this.unfinishFlag = []
+       let unfinishFlag = []
+      if (this.isComplete() == false) {
+        unfinishFlag.push('行政强制执行决定书')
+      }
+      if (this.isComplete2() == false) {
+        unfinishFlag.push('代履行决定书')
+      }
         let caseData = {
           caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
           caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
@@ -426,9 +429,8 @@
           this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
         }
         else {
-          // this.$message({ message: '请完成对应文书', type: 'error' });
-//          console.log(this.unfinishFlag)
-          let unfinishFlag = this.unfinishFlag || ""
+          // let unfinishFlag = this.unfinishFlag || ""
+          // this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
           this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
         }
       },

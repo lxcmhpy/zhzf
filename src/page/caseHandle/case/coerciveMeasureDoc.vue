@@ -169,7 +169,7 @@
         </div>
       </div>
     </el-form>
-    <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
+    <checkDocAllFinish ref="checkDocAllFinishRef"  @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId" @submitCoerciveMeasuer = "submitCoerciveMeasuer"></checkDocAllFinish>
     <saveFormDia ref="saveFormDiaRef"></saveFormDia>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
     <!--快速入口 -->
@@ -179,7 +179,7 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import checkDocFinish from '../components/checkDocFinish';
+import checkDocAllFinish from './checkDocAllFinish';
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu';
 import {
   submitRelieveApi,getDocDataByCaseIdAndDocIdApi
@@ -189,7 +189,7 @@ import resetDocDia from '@/page/caseHandle/components/resetDocDia';
 import saveFormDia from "./saveFormDia";
 export default {
   components: {
-    checkDocFinish,
+    checkDocAllFinish,
     caseSlideMenu,
     resetDocDia,
     saveFormDia
@@ -315,16 +315,29 @@ export default {
           caseLinktypeId: this.caseLinkDataForm.caseLinktypeId,
         }
         let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
+        let allFinish = true;
+        console.log("canGotoNext",this.docTableDatas)
         for (let i = 0; i < this.docTableDatas.length; i++) {
           if (this.docTableDatas[i].isRequired === 0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")) {
             canGotoNext = false
             break;
           }
+          if (this.docTableDatas[i].isRequired !== 0 && this.docTableDatas[i].status === 0) {
+            allFinish = false
+            break;
+          }
         }
+        console.log("canGotoNext",canGotoNext)
+        console.log("allFinish",allFinish)
         if (canGotoNext) {
-          this.submitCoerciveMeasuer();
+          if(allFinish){
+            this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,1);
+          }
+          else{
+            this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,2);
+          }
         } else {
-          this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+          this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,3);
         }
       }else{
         this.$refs.saveFormDiaRef.showModal();

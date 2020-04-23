@@ -56,7 +56,7 @@
       title="上传证据"
       :visible.sync="addEvidenceVisible"
       custom-class="dialog1"
-      @close="closeDialog"
+      @close="closeAddEvidenceDialog"
       append-to-body
       width="740px"
       :close-on-click-modal="false"
