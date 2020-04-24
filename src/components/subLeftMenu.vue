@@ -86,6 +86,11 @@ import { mapGetters } from "vuex";
     watch: {
       selectedHeadMenu: function (val, oldVal) {
         this.getSlideMenu(val);
+      },
+      //监听menu
+      menu(val){
+        this.allMenuList=this.menu;
+        this.getSlideMenu(this.headActiveNav); //默认加载案件办理的二级菜单
       }
     }
   };

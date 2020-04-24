@@ -638,7 +638,7 @@ export default {
     //获取业务领域
     this.getEnforceLawType()
 
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

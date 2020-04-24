@@ -4,6 +4,7 @@ import Vue from "vue";
 //import { message } from "ant-design-vue";
 import { showFullScreenLoading, tryHideFullScreenLoading } from "./loading";
 import iLocalStroage from '@/common/js/localStroage'
+// import { sync } from "cross-spawn";
 
 var vue = new Vue();
 
@@ -13,23 +14,31 @@ const service = axios.create({
   "Content-Type": "multipart/form-data;charset=UTF-8",
 
 });
+setBASEURL();
 var BASEURL
-service({
-  url: '/static/json/hostUrl/host.json',
-  method: "get", 
-  params: {},
-}).then(
-  res => {
-    BASEURL = res.data;
-    sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
-    iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
-  },
-  error => {
-    console.log(error)
- })
+function setBASEURL(){
+  
+ service({
+    url: '/static/json/hostUrl/host.json',
+    method: "get", 
+    params: {},
+  }).then(
+    res => {
+      BASEURL = res.data;
+      sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
+      iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
+    },
+    error => {
+      console.log(error)
+  })
+ }
+
+
+
 // request interceptor
 service.interceptors.request.use(
   config => {
+    
     if(config.baseUrlType == 1){
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
     } else if(config.baseUrlType == 2){

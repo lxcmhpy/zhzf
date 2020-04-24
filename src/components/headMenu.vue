@@ -44,10 +44,17 @@ debugger;
     watch: {
     },
     created () {
-        },
+    },
     mounted () {
         this.headMenuList = this.menu;
         this.$store.commit("set_Head_Active_Nav", this.headActiveNav);
     },
+    watch:{
+      //监听menu
+      menu(val){
+        this.headMenuList = this.menu;
+        this.$store.commit("set_Head_Active_Nav", this.headActiveNav);
+      }
+    }
   };
 </script>

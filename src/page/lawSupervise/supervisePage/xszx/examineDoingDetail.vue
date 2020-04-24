@@ -73,8 +73,7 @@ export default {
             })
         },
         init () {
-            debugger;
-            this.getDetailById(this.offSiteManageId);
+            this.getDetailById(this.$route.params.offSiteManageId);
             this.tabActiveValue = this.$route.params.status;
         }
     },
@@ -82,7 +81,7 @@ export default {
         this.init()
     },
     computed: {
-        ...mapGetters(["offSiteManageId"])
+        // ...mapGetters(["offSiteManageId"])
     },
     watch: {
         $route (to, from) {

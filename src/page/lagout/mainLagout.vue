@@ -138,22 +138,24 @@ export default {
     },
 
     getSelectHeadMenu(name) {
-        debugger;
       this.selectedHeadMenu = name;
     },
     router (name, route) {
-        debugger;
-        this.$router.push({ name: name,params: route.params});
+        // debugger;
+        // this.$router.push({ name: name,params: route.params});
     }
   },
   watch: {
     '$route' (to, from) {
-        debugger;
         // this.init()
     }
   },
   mounted() {
     console.log(this.userInfo)
+  },
+  created(){
+    //判断有没有menu
+    this.$util.initUser(this);
   }
 };
 </script>

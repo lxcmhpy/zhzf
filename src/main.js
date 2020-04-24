@@ -36,6 +36,6 @@ const v = new Vue({
   router,
   store,
   components: { App },
-  template: "<App/>"
+  template: "<App/>",
 });
 export default v

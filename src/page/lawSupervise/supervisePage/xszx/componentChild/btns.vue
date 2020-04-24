@@ -17,6 +17,7 @@
         <div>完成</div>
       </el-button>
     </div>
+
     <span :class="$route.name">
         <template v-if="$route.name=='invalidCueDetail'">
          无效
@@ -25,6 +26,7 @@
          {{statusObj[$route.params.status]}}
         </template>
     </span>
+
 
     <div>
         <el-dialog class="mini-dialog-title" title="无效信息" :visible.sync="visible" :show-close="false"
@@ -38,9 +40,13 @@
             <!-- <el-form :model="checkSearchForm" ref="checkSearchForm1" class="checkSearchForm" label-width="0"> -->
             <div class="invalidinfo">
                 <el-select v-model="checkSearchForm.number" placeholder="无效类型">
-                          <el-option :value='0' label="男"></el-option>
-                          <el-option :value='1' label='女'></el-option>
-                      </el-select>
+                          <el-option
+                        v-for="item in invalidList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.name"
+                        ></el-option>
+                </el-select>
                 <p>备注说明cc</p>
                 <el-input v-model="checkSearchForm.color" type="textarea" :autosize="{ minRows: 1}"></el-input>
             </div>
@@ -119,6 +125,8 @@
 </style>
 <script>
 import {mapGetters} from "vuex";
+import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
+import {findAllDrawerById} from '@/api/lawSupervise.js';
 export default {
   //tabActiveValue: 1检测数据核对,2违法超限复合,3生成证据包
   props: ['tabActiveValue'],
@@ -128,7 +136,7 @@ export default {
             '0': '待审核',
             '1': '审核中',
             '2': '审核中',
-            '3': '已完成'
+            '3': '已审核'
         },
         selectCurrentTreeName: "",
         defaultExpandedKeys: [],
@@ -143,7 +151,8 @@ export default {
         number: '',
         color: ''
       },
-      icon: ['']
+      icon: [''],
+      invalidList: []
     };
   },
   methods: {
@@ -193,6 +202,7 @@ export default {
     },
     showInvalidCue(data) {
       console.log(data);
+      this.findAllDrawerById(BASIC_DATA_SYS.invalidCode, 'invalidList');
       this.visible = true;
     },
     //关闭弹窗的时候清除数据
@@ -234,7 +244,23 @@ export default {
           tabTitle: this.statusObj[nextStatus.toString()]
         }
       });
-    }
+    },
+    findAllDrawerById (data, obj) {
+        debugger
+        let _this = this
+        new Promise((resolve, reject) => {
+            findAllDrawerById(data).then(
+                res => {
+                    // resolve(res)
+                    _this[obj] = res.data
+                },
+                error => {
+                    //  _this.errorMsg(error.toString(), 'error')
+                        return
+                }
+            )
+        })
+    },
   },
   mounted() {
 

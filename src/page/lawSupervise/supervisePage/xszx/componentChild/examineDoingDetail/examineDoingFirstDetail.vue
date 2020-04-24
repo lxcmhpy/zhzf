@@ -48,7 +48,7 @@ export default {
         // alert(this.offSiteManageId);
     },
     computed: {
-        ...mapGetters(["offSiteManageId"])
+        // ...mapGetters(["offSiteManageId"])
     },
     components: {
         btns, xszxDetailEdit

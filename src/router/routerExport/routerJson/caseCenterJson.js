@@ -36,7 +36,7 @@ export default  [
                 component: () => import("@/page/caseCenter/myWaitDeal/overWeightCase.vue")
             },
             {
-                path: "/dentails-index",
+                path: "/dentails-index/:path/:value",
                 name: "dentails-index",
                 meta: {
                 title: "列表详情",

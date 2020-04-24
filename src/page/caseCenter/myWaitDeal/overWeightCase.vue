@@ -61,7 +61,8 @@
           </el-button>
         </div> -->
         <div class="tablePart">
-          <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;">
+          <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;"
+             @row-click="routerDetail">
             <el-table-column label="序号" width="70px">
               <template slot-scope="scope">
                 {{scope.$index+1}}
@@ -80,13 +81,13 @@
             <el-table-column prop="lane" label="相关说明" align="center"></el-table-column>
             <el-table-column prop="status" label="处理状态" align="center"></el-table-column>
             <el-table-column prop="totalWeight" label="处置机构/人员" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <!-- <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <a href="javascript:void(0)" @click="routerDetail(scope.row)">
                   详情
                 </a>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
         </div>
         <div class="paginationBox">
@@ -337,18 +338,25 @@ export default {
     },
     routerDetail(row) {
       console.log(this.tabActiveValue)
-      this.$store.commit('setOffSiteManageId', row.id);
-      let data = {
-        id: '',
-        path: this.$route.path,
-        value: this.tabActiveValue
-      }
-      iLocalStroage.sets('caseCenterDentails', data);
+    //   this.$store.commit('setOffSiteManageId', row.id);
+    //   let data = {
+    //     id: '',
+    //     path: this.$route.path,
+    //     value: this.tabActiveValue
+    //   }
+    //   iLocalStroage.sets('caseCenterDentails', data);
+    debugger;
+    debugger;
       this.$router.push({
-        name: 'dentails-index'
+        name: 'dentails-index',
+        params: {
+            tabTitle: this.tabActiveValue,
+            path: this.$route.path,
+            value: this.tabActiveValue
+        }
       })
-      let setCaseNumber = '超限案件详情';
-      this.$store.commit("setCaseNumber", setCaseNumber);
+    //   let setCaseNumber = '超限案件详情';
+    //   this.$store.commit("setCaseNumber", setCaseNumber);
       // let changeTabData = {
       //         tabIndex: '',
       //         title: '超限案件详情'
@@ -383,3 +391,4 @@ export default {
   }
 }
 </script>
+<style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>
