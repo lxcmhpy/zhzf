@@ -236,6 +236,7 @@ export default {
       // });
     },
     nextRouter() {
+        debugger;
       let nextStatus=parseInt(this.$route.params.status)+1
       this.$router.push({
         name: 'examineDoingDetail',

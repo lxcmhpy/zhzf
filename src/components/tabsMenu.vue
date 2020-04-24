@@ -94,13 +94,14 @@ export default {
       //已经打开的 ，将其置为active
       //未打开的，将其放入队列里
         let flag = false;
-        let _this =this;
+        let _this = this;
         let _index = _.findIndex(this.openTab,(chr) => {
             if (chr.isCase) {
-                return chr.name === to.name && chr.title == _this.caseHandle.caseNumber;
+                return chr.title == _this.caseHandle.caseNumber;
             }
             return chr.name === to.name;
-        })
+        });
+
         if (_index > -1) {
             if (to.params.tabTitle) {
                 debugger;

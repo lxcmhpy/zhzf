@@ -534,7 +534,7 @@ export default {
   },
   mounted() {
     // this.$refs.archiveCatalogueRef.showModal(true);
-    this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
+    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
     // this.getByMlCaseId(this.caseId)
     this.caseLinkDataForm.caseBasicinfoId = this.caseId;
     this.setFormData();

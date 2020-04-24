@@ -80,11 +80,11 @@
             <el-dialog class="mini-dialog-title" title="预警推送" :visible.sync="yjVisible" :show-close="false"
                 :close-on-click-modal="false" width="800px" >
                 <el-form :model="form" ref="form" class="checkSearchForm" label-width="120px">
+                    <p>推送信息</p>
                     <div class="invalidinfo main_box">
-                        <p>推送信息</p>
                         <table class="table_style" >
                             <tr>
-                                <td class="color_ff w-1"  width="160px">
+                                <td class="color_ff"  width="60px">
                                     执法机构
                                 </td>
                                 <td>
@@ -121,7 +121,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="color_ff w-1">
+                                <td class="color_ff">
                                     相关说明
                                 </td>
                                 <td width="260px">
@@ -135,9 +135,9 @@
                             </tr>
                         </table>
 
-                        <p>预警信息(4条)</p>
                     </div>
-                    <div class="tablePart">
+                    <p>预警信息(4条)</p>
+                    <div class="tablePart" style="padding-top:0px">
                         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
                             <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
                             <el-table-column prop="checkTime" label="检测时间" align="center" width="100"></el-table-column>

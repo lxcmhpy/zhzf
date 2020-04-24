@@ -12,7 +12,7 @@
 <script>
 
 import pdf from 'vue-pdf'
-// import iLocalStroage from "@/common/js/localStroage";
+import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import casePageFloatBtns from '@/components/casePageFloatBtns/casePageFloatBtns.vue'
 import showApprovePeople from "../../components/showApprovePeople";
@@ -60,17 +60,17 @@ export default {
           //多份文书按照docDataId取地址
           for(var i=0;i<res.length;i++) {
               // if(i==0) {
-              //   _that.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
+              //   _that.storagePath.push(JSON.parse(iLocalStroage.gets("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
               // }
               if(this.$route.params.docDataId && this.$route.params.docDataId == res[i].docDataId){
                 console.log('res[i].storageId',res[i].storageId);
-                _that.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
+                _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST+res[i].storageId)
                 break;
              }
           }
           //单份文书取一个
           if(_that.storagePath.length==0){
-            _that.storagePath.push(JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST+res[0].storageId)
+            _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST+res[0].storageId)
           }
         },
         err => {

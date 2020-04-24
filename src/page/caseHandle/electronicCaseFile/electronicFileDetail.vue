@@ -15,12 +15,13 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
         caseList:[],
         docSrc:"",
-        host:JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST,
+        host:iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
         nowShowPdfIndex:0,
     }
   },

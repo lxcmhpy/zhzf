@@ -150,7 +150,7 @@ export default {
     this.caseData.person = iLocalStroage.gets("userInfo").organName + '-' + this.caseData.person;  
     this.caseData = this.$route.params.caseInfo;
     console.log('this.caseData',this.caseData);
-    this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST;
+    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     this.findFileList();
   },
   created(){
