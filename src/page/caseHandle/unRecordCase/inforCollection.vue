@@ -345,7 +345,7 @@
         </div>
         <div>
           <div class="item">
-            <el-form-item label="车牌类型">
+            <el-form-item label="车辆类型">
               <el-select v-model="inforForm.vehicleShipType">
                 <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>

@@ -573,7 +573,7 @@ export default {
             case '无效信息': this.routerInvalidCueDetail(data); break;
             case '审核中': this.routerExamineDoingDetail(data, '1', '审核中'); break;
             case '已转办': this.routerTransferDetail(data); break;
-            case '已审核': this.routerExamineDetail(data, '3', '已完成'); break;
+            case '已审核': this.routerExamineDetail(data, '3', '已审核'); break;
         }
     },
   },
