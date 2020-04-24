@@ -59,7 +59,7 @@
               <td>{{item.address ? item.address : ''}}</td>
               <td>{{item.servedDate ? item.servedDate : ''}}</td>
               <td>{{item.servedType ? item.servedType : ''}}</td>
-              <td>{{item.deliveryMaster ? item.deliveryMaster : ''}}</td>
+              <td>{{item.deliveryMaster ? item.deliveryMaster.join(',') : ''}}</td>
             </tr>
          
             <tr>
@@ -94,7 +94,7 @@
     
 
      <!-- 添加弹出框 -->
-    <el-dialog title="编辑送达详情" :visible.sync="addVisible" width="60%" v-loading="addLoading" :before-close="handleClose">
+    <el-dialog title="编辑送达详情" :visible.sync="addVisible" width="70%" v-loading="addLoading" :before-close="handleClose">
       <div>
         <div>
           <el-form ref="addDocFormRef">
@@ -143,7 +143,17 @@
               <el-table-column prop="deliveryMaster" label="送达人" align="center">
                 <template slot-scope="scope">
                   <!-- {{scope.row.deliveryMaster}} -->
-                  <el-input v-model="scope.row.deliveryMaster" v-on:click.native="chooseStaff(scope.row)"></el-input>
+                  <!-- <el-input v-model="scope.row.deliveryMaster" v-on:click.native="chooseStaff(scope.row)"></el-input> -->
+                  <el-select v-model="scope.row.deliveryMaster" multiple placeholder="请选择">
+                    <el-option
+                      v-for="item in staffData"
+                      :key="item.staffId"
+                      :label="item.name"
+                      :value="item.name">
+                      <span>{{ item.name }}</span>
+                      <span style="margin-left:5px">{{ item.staffId }}</span>
+                    </el-option>
+                  </el-select>
                 </template>
               </el-table-column>
 
@@ -174,7 +184,9 @@ import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import mySignture from "@/common/js/mySignture";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
-
+import {
+  findCaseAllBindPropertyApi,
+} from "@/api/caseHandle";
 export default {
   components: {
     casePageFloatBtns,
@@ -301,7 +313,8 @@ export default {
       }, {
         value: '中止（终结、恢复）行政强制执行通知书',
         label: '中止（终结、恢复）行政强制执行通知书'
-      }]
+      }],
+      staffData:[],
     }
   },
   methods: {
@@ -527,8 +540,17 @@ export default {
             break;
           }
         }
+      
         if(canAdd){
+          // this.tableDatas.forEach(item=>{
+          //   item.deliveryMaster = item.deliveryMaster.join(',');
+          // })
+          // console.log('this.tableDatas',this.tableDatas)
+
           this.docData.deliveryCertificatelist = this.tableDatas;
+          //  this.docData.deliveryCertificatelist.forEach(item=>{
+          //    item.
+          //  })
           this.addVisible = false;
         }
     
@@ -548,6 +570,25 @@ export default {
     setDeliveryMaster(userlist){
       console.log('选择的执法人员', userlist);
       // row.deliveryMaster = userlist.join(',');
+    },
+    //获取执法人员
+    getLawOfficer(){
+      let data = {
+        id: this.caseId
+      };
+      this.$store.dispatch("getCaseBasicInfo", data).then(
+        res => {
+          console.log('获取案件信息', res);
+          let staff = res.data.staff.split(',');
+          let staffId = res.data.staffId.split(',');
+          staff.forEach((item,index)=>{
+             this.staffData.push({name:item,staffId:staffId[index]})
+          })
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
   },
 
@@ -558,18 +599,19 @@ export default {
   },
   created() {
     this.isOverStatus();
-   
+    this.getLawOfficer();
   }
 }
 </script>
 <style lang="scss" >
 @import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>
-<style scoped>
+<style  scoped>
 .print_box .print_info tr td{
   white-space: inherit;
+  
 }
-.color_DBE4EF
+/* .color_DBE4EF
   /deep/
   .el-form-item__content
   /deep/
@@ -578,5 +620,7 @@ export default {
   .el-input__inner {
   padding-left: 0px;
   width: 75%;
-}
+} */
+
+
 </style>

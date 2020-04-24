@@ -23,7 +23,7 @@ var BASEURL
   }).then(
     res => {
       BASEURL = res.data;
-      // sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
+      sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
       iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
     },
     error => {
@@ -36,7 +36,7 @@ var BASEURL
 // request interceptor
 service.interceptors.request.use(
   config => {
-    
+    console.log('请求时',BASEURL[BASEURL.CURRENT])
     if(config.baseUrlType == 1){
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
     } else if(config.baseUrlType == 2){
