@@ -231,7 +231,7 @@ import {
     text-align: center;
   }
   .tablePartF{
-    height: 100%;
+    height: 90%;
     overflow: auto;
     padding-top: 0px;
     box-sizing: border-box;

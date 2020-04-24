@@ -345,7 +345,7 @@
         </div>
         <div>
           <div class="item">
-            <el-form-item label="车牌类型">
+            <el-form-item label="车辆类型">
               <el-select v-model="inforForm.vehicleShipType">
                 <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
@@ -1043,6 +1043,9 @@ export default {
                 _this.alreadyChooseLawPerson.push(currentUserData);
                 _this.lawPersonListId.push(currentUserData.id);
                 _this.currentUserLawId = currentUserData.id;
+                _this.inforForm.staff = item.lawOfficerName;
+                _this.inforForm.staffId = item.id;
+
 
               }
             });
@@ -1309,6 +1312,7 @@ export default {
       this.inforForm.state = state;
       this.inforForm.caseStatus = '未立案';
       let _this = this
+      console.log('暂存信息',this.inforForm);
       this.$store
         .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
         .then(
@@ -1319,7 +1323,8 @@ export default {
               message: "暂存成功!"
             });
             _this.$store.commit("setCaseId", res.data.id);
-            this.autoSava = false;
+            iLocalStroage.set("stageCaseId", res.data.id);
+            // this.autoSava = false;
           },
           err => {
             console.log(err);
@@ -1347,6 +1352,7 @@ export default {
     //处理数据回显问题
     handleCaseData(data) {
       console.log('handleCaseData方法', data);
+      this.showCaseSourceAfterInput(data.caseSource)
       //使当事人类型选中
       if (data.partyType == "1") {
         this.inforForm.partyType = 1;
@@ -1401,6 +1407,14 @@ export default {
         this.alreadyChooseLawPerson.push(newlaw);
       });
 
+    },
+    //案件来源后的输入框是否显示
+    showCaseSourceAfterInput(caseSource){
+      if (caseSource === "行政检查" || caseSource === "投诉举报") {
+        this.caseSourceTextDisable = false;
+      } else {
+        this.caseSourceTextDisable = true;
+      }
     },
     // 超重限制及抽屉表
     weightLimit(type) {
@@ -1862,7 +1876,7 @@ export default {
     //暂存数据后从其他页面回到信息采集页
     if (iLocalStroage.get("stageCaseId")) {
       this.fromSlide();
-      this.autoSava = false;
+      // this.autoSava = false;
     }
     this.findHistoryBySign("checkStastions");
     this.findHistoryBySign("checkWorker");
@@ -1878,9 +1892,10 @@ export default {
     console.log('to', to)
     console.log('from', from)
     console.log('next', next);
+    console.log('this.autoSava',this.autoSava);
     if (this.autoSava) {
       this.stageInfo(0);
-      iLocalStroage.set("stageCaseId", this.caseId);
+      // iLocalStroage.set("stageCaseId", this.caseId);
     }
 
     next(vm => {
