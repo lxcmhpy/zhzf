@@ -11,8 +11,8 @@
                         <span class="blueC" @click="updateHp"><img :src="'./static/images/img/lawSupervise/icon_cheliang1.png'">号牌更正</span>&nbsp;&nbsp;
                         <span  class="greenC2" @click="checkVisible = true"><img :src="'./static/images/img/lawSupervise/icon_chepai.png'">车辆查验</span>
                     </span>
-                    <el-dialog class='mini-dialog-title' title="号牌更正" :visible.sync="visible" :show-close='false' :close-on-click-modal="false" width="420px">
-                        <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="100px">
+                    <el-dialog class='mini-dialog-title' title="号牌更正" :visible.sync="visible" :show-close='false' :close-on-click-modal="false" width="460px">
+                        <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="120px">
                             <div>
                                 <div class="item">
                                 <el-form-item label="图像识别车牌">

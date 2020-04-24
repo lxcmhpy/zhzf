@@ -33,6 +33,7 @@
     /* 无效信息 */
     .error-message {
         text-align: center;
+        margin-bottom: 27px;
 
         img {
             margin: 6px;
@@ -48,8 +49,8 @@
     }
 
     p {
-        line-height: 27px;
-
+        line-height: 37px;
+        // height: 30px;
         .circle {
             border-radius: 50%;
             background   : #ccc;
@@ -75,7 +76,7 @@
     }
 
     .invalidinfo {
-        margin-top: 22px;
+        // margin-top: 22px;
         .el-select {
 
             width: 100%;
@@ -87,8 +88,8 @@
         }
 
         p {
-            height     : 20px;
-            line-height: 20px;
+            height     : 30px;
+            line-height: 37px;
             font-size  : 14px;
             font-weight: 500;
             color      : #7B7B7B;
@@ -100,6 +101,7 @@
 
         }
         .table_style {
+            margin-bottom: 0px;
             .el-textarea {
                 margin: 0px;
             }
@@ -108,6 +110,9 @@
             padding      : 10px 15px;
             resize       : none;
             border-radius: 0;
+        }
+        .tablePart {
+            margin-top:0px;
         }
     }
 
@@ -204,6 +209,8 @@
 
         .el-input-group__prepend {
             width: 92px;
+            padding: 0px;
+
         }
 
         .el-tabs--border-card {
@@ -990,7 +997,8 @@
       display:inline;
   }
   .el-input__suffix {
-      right:0px;
+      right:15px;
+      width:15px;
   }
 
 
