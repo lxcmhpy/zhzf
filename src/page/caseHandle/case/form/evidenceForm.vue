@@ -52,7 +52,7 @@
                 :inactive-value="1"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
-                @change.stop="updateEviBySwitch(scope.row)"
+                @change="updateEviBySwitch(scope.row)"
               ></el-switch>
               </label>
             </template>
