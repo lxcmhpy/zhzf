@@ -23,7 +23,7 @@ var BASEURL
   }).then(
     res => {
       BASEURL = res.data;
-      // sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
+      sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
       iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
     },
     error => {
@@ -37,7 +37,7 @@ var BASEURL
 service.interceptors.request.use(
     config => {
     if (BASEURL) {
-        iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
+        iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
     }
     if(config.baseUrlType == 1){
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
