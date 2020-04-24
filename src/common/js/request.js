@@ -14,10 +14,8 @@ const service = axios.create({
   "Content-Type": "multipart/form-data;charset=UTF-8",
 
 });
-setBASEURL();
+
 var BASEURL
-function setBASEURL(){
-  
  service({
     url: '/static/json/hostUrl/host.json',
     method: "get", 
@@ -31,7 +29,7 @@ function setBASEURL(){
     error => {
       console.log(error)
   })
- }
+
 
 
 
