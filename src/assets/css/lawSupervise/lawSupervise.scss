@@ -1,6 +1,7 @@
 
 @import "../basicStyles/fontOrBgColorStylesSet.scss";
 @import "./lawSuperviseFunc.scss";
+
 .flexBox {
     display: flex;
 }
@@ -288,12 +289,18 @@
             height: 40px;
             display: inline-block;
             text-align: center;
-            line-height: 42px;
+            line-height: 38px;
             margin:0px 7px;
             cursor: pointer;
+            vertical-align: middle;
             i{
                 font-size: 18px;
             }
+        }
+        .lineh {
+            line-height: 15px !important;
+            box-sizing: border-box;
+            padding-top: 5px;
         }
         .el-icon-location {
             margin: 0px;
@@ -304,6 +311,9 @@
         margin-top: 7px;
         p {
             line-height:25px;
+        }
+        .el-table__row {
+            height: 40px;
         }
     }
    .status {
@@ -879,4 +889,12 @@
 .keyVehicleDentails {
     padding   : 22px;
     box-sizing: border-box;
+}
+.lawScreenFull {
+    position: fixed;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:100%;
+    z-index:1000;
 }

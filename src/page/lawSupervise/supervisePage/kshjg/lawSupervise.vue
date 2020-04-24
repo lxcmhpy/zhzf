@@ -46,11 +46,11 @@
                 </div>
               </div>
              <div class="btns">
-                <span class="phoneBtn blueC3" >李静</span>
+                <span class="phoneBtn blueBg" >李静</span>
                 <span  class="phoneBtn" >王玉凤</span>
-                <span  class="phoneBtn blueC3" >迪丽<br>热巴</span>
-                <span  class="phoneBtn blueC3" >欧阳<br>娜娜</span>
-                <span  class="phoneBtn blueC3" >···</span>
+                <span  class="phoneBtn blueBg lineh" >迪丽<br>热巴</span>
+                <span  class="phoneBtn blueBg lineh" >欧阳<br>娜娜</span>
+                <span  class="phoneBtn blueBg" >···</span>
             </div>
               <!-- <div class="btns">
                 <div class="flexBox">
@@ -293,7 +293,6 @@
         <el-option v-for="(item,index) in categoryList" :key="index" :label="item.show" :value="item.code"></el-option>
       </el-select>
       <el-amap-search-box class="search-box" ref="searchAmapBox" :search-option="searchOption" :on-search-result="searchAll"></el-amap-search-box>
-      <el-button size="medium" class="commonBtn searchBtn" icon="el-icon-copy-document" @click="lawScreenFull=!lawScreenFull">全屏切换</el-button>
     </div>
     <div class="amap-tool">
       <el-button v-for="(item,index) in tabList" :key="index" @click="currentTabIndex === index ? currentTabIndex = null : currentTabIndex = index">
@@ -312,6 +311,7 @@
           </div>
         </transition>
       </el-button>
+      <el-button size="medium" class="commonBtn searchBtn" icon="el-icon-copy-document" @click="lawScreenFull=!lawScreenFull">全屏切换</el-button>
     </div>
   </div>
 </template>
@@ -364,7 +364,7 @@ export default {
       show: true,
       categorySelect: -1,
       direction: "rtl",
-      drawer: true,
+      drawer: false,
       windows: [],
       curWindow: null,
       default: "",
@@ -778,6 +778,7 @@ export default {
   },
   mounted() {
       window.PhoneCallModule.sipRegister();
+      this.updateDrawer();
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {
