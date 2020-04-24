@@ -733,7 +733,6 @@ export default {
     };
     //执法人员人数不得少于2个，最多不多与9个
     var validateLawPersonNumber = (rule, value, callback) => {
-      console.log(this.lawPersonListId)
       if (this.lawPersonListId.length < 2) {
         return callback(new Error('执法人员不得少于2人'));
       } else if (this.lawPersonListId.length > 9) {
@@ -850,7 +849,7 @@ export default {
           { required: true, message: "请选择案件关系", trigger: "change" }
         ],
         illegalLaw: [
-          { required: true, message: "请选择违法条款", trigger: "blur" }
+          { required: true, message: "请选择违法条款", trigger: "change" }
         ],
         punishLaw: [
           { required: true, message: "请选择处罚依据", trigger: "change" }
