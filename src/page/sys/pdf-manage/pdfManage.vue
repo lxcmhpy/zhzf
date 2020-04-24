@@ -16,6 +16,9 @@
           <el-form-item>
             <el-button type="primary" size="medium" @click="getPdfAndFormList">确认选择</el-button>
           </el-form-item>
+          <!-- <el-form-item>
+            <el-button type="primary" size="medium" @click="getPdfAndFormList">添加字段</el-button>
+          </el-form-item> -->
         </el-form>
       </div>
       <div class="tablePart">
@@ -77,7 +80,12 @@
               </el-switch>
             </template>
           </el-table-column>
-          <el-table-column prop="organ" label="对应关系描述" align="center"></el-table-column>
+          <el-table-column prop="organ" label="对应关系描述" align="center">
+             <template slot-scope="scope">
+              <el-input v-model="scope.value" clearable>
+              </el-input>
+            </template>
+          </el-table-column>
 
         </el-table>
       </div>
