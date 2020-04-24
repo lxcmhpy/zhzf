@@ -69,20 +69,20 @@ export default [
             component: () => import("@/page/sys/organ-manage/organManage.vue")
           },
           {
-            name: "违法行为法律法规管理",
-            path: "/casecause",
-            meta: {
-              title: "违法行为法律法规管理"
-            },
-            // component: () => import("@/page/sys/dict-manage/dictManage.vue")
-          },
-          {
             name: "表单及文书配置",
             path: "/pdf-manage",
             meta: {
               title: "表单及文书配置"
             },
             component: () => import("@/page/sys/pdf-manage/pdfManage.vue")
+          },
+          {
+            name: "违法行为法律法规管理",
+            path: "/casecause",
+            meta: {
+              title: "违法行为法律法规管理"
+            },
+            // component: () => import("@/page/sys/dict-manage/dictManage.vue")
           }
         ]
       },
