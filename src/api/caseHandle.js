@@ -465,7 +465,32 @@ export function findAskNumApi(params) {
   });
 }
 
+//通过条件查询文书列表
+export function getAllPdfListApi(data) {
+  return request({
+    url: "/case/doc/type/findByCondition",
+    method: "POST",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
+// 通过条件查询绑定列表(分页)
+export function findSetListApi(params) {
+  let data = {
+    bindName:params.bindName
+  }
+  return request({
+    url: "/case/doc/propertyBind/findByCondition",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
 
 
