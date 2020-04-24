@@ -240,7 +240,7 @@
           <div>
             <div class="item">
               <el-form-item label="与当事人关系">
-                <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
+                <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty($event,index)">
                   <el-option v-for="item in index === 0?allRelationWithParty:allRelationWithParty_" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
@@ -1089,34 +1089,32 @@ export default {
       }
     },
     //更改与当事人关系   为同一人时自动赋值且不可编辑
-    changeRelationWithParty(val) {
-      console.log(this.driverOrAgentInfoList[0].relationWithParty === '同一人');
-      if (val === "0") {
-        console.log(val);
-        this.driverOrAgentInfoList[0].name = this.inforForm.party;
-        this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
-        this.driverOrAgentInfoList[0].zhengjianNumber = this.inforForm.partyIdNo;
-        this.driverOrAgentInfoList[0].sex = this.inforForm.partySex;
-        this.driverOrAgentInfoList[0].age = this.inforForm.partyAge;
-        this.driverOrAgentInfoList[0].tel = this.inforForm.partyTel;
-        this.driverOrAgentInfoList[0].adress = this.inforForm.partyAddress;
-        this.driverOrAgentInfoList[0].adressCode = this.inforForm.partyZipCode;
-        this.driverOrAgentInfoList[0].company = this.inforForm.partyUnitPosition;
-        this.driverOrAgentInfoList[0].position = this.inforForm.occupation;
-        this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
+    changeRelationWithParty(event,index) {
+      if (event === "0") {
+        this.driverOrAgentInfoList[index].name = this.inforForm.party;
+        this.driverOrAgentInfoList[index].zhengjianType = this.inforForm.partyIdType;
+        this.driverOrAgentInfoList[index].zhengjianNumber = this.inforForm.partyIdNo;
+        this.driverOrAgentInfoList[index].sex = this.inforForm.partySex;
+        this.driverOrAgentInfoList[index].age = this.inforForm.partyAge;
+        this.driverOrAgentInfoList[index].tel = this.inforForm.partyTel;
+        this.driverOrAgentInfoList[index].adress = this.inforForm.partyAddress;
+        this.driverOrAgentInfoList[index].adressCode = this.inforForm.partyZipCode;
+        this.driverOrAgentInfoList[index].company = this.inforForm.partyUnitPosition;
+        this.driverOrAgentInfoList[index].position = this.inforForm.occupation;
+        this.driverOrAgentInfoList[index].zigeNumber = this.inforForm.partyEcertId;
         this.relationWithPartyIsOne = true;
       } else {
-        this.driverOrAgentInfoList[0].name = "";
-        this.driverOrAgentInfoList[0].zhengjianType = "";
-        this.driverOrAgentInfoList[0].zhengjianNumber = "";
-        this.driverOrAgentInfoList[0].sex = "";
-        this.driverOrAgentInfoList[0].age = "";
-        this.driverOrAgentInfoList[0].tel = "";
-        this.driverOrAgentInfoList[0].adress = "";
-        this.driverOrAgentInfoList[0].adressCode = "";
-        this.driverOrAgentInfoList[0].company = "";
-        this.driverOrAgentInfoList[0].position = "";
-        this.driverOrAgentInfoList[0].zigeNumber = "";
+        this.driverOrAgentInfoList[index].name = "";
+        this.driverOrAgentInfoList[index].zhengjianType = "";
+        this.driverOrAgentInfoList[index].zhengjianNumber = "";
+        this.driverOrAgentInfoList[index].sex = "";
+        this.driverOrAgentInfoList[index].age = "";
+        this.driverOrAgentInfoList[index].tel = "";
+        this.driverOrAgentInfoList[index].adress = "";
+        this.driverOrAgentInfoList[index].adressCode = "";
+        this.driverOrAgentInfoList[index].company = "";
+        this.driverOrAgentInfoList[index].position = "";
+        this.driverOrAgentInfoList[index].zigeNumber = "";
         this.relationWithPartyIsOne = false;
       }
     },

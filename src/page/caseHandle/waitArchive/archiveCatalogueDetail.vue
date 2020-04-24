@@ -627,7 +627,7 @@ export default {
   },
   mounted() {
     // console.log(this.caseList);
-    this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
+    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
     this.getByMlCaseId(this.caseId);
   },
   components: {

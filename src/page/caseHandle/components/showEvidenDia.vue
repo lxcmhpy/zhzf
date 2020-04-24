@@ -59,7 +59,7 @@
         this.srcImg = ''
       },
       setSrc(evPath) {
-        let srcImg = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST + evPath;
+        let srcImg = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + evPath;
 //       console.log('srcImg',srcImg);
         this.srcImg = srcImg;
       }

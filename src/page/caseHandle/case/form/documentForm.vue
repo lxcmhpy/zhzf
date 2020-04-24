@@ -99,6 +99,7 @@ import { mapGetters } from "vuex";
 import {
   findByCaseIdAndDocIdApi
 } from "@/api/caseHandle";
+import iLocalStroage from "@/common/js/localStroage";
     export default {
         data() {
             return {
@@ -214,7 +215,7 @@ import {
         },
         mounted() {
             // this.setDepartTable(this.data)
-            this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
+            this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
         },
         created() {
             this.getDocList();
