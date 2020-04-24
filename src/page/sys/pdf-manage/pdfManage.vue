@@ -23,6 +23,7 @@
           <!-- <el-table-column type="selection" width="55" align="center"></el-table-column>-->
           <el-table-column prop="organ" label="属性名称" align="center"></el-table-column>
           <el-table-column prop="ip" label="中文名称" align="center"></el-table-column>
+          <el-table-column prop="organ" label="校验规则" align="center"></el-table-column>
           <el-table-column prop="type" label="是否可编辑" align="center">
             <template slot-scope="scope">
               <el-switch v-model="scope.value" active-color="#13ce66" inactive-color="#ff4949">
@@ -46,7 +47,7 @@
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
     </div>
-    <el-dialog title="绑定值" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+    <el-dialog title="绑定值" :visible.sync="dialogVisible" width="30%">
       
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="80px" ref="logForm">
@@ -61,7 +62,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" @click="getPdfAndFormList">确认选择</el-button>
+            <el-button type="primary" size="medium" @click="getPdfAndFormList" style="margin-left:20px">确认选择</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -69,13 +70,15 @@
         <el-table :data="tableData" stripe resizable border style="width: 100%;height:400px;">
           <!-- <el-table-column type="selection" width="55" align="center"></el-table-column>-->
           <el-table-column prop="organ" label="属性名称" align="center"></el-table-column>
-          <el-table-column prop="ip" label="中文名称" align="center"></el-table-column>
+          <el-table-column prop="organ" label="中文名称" align="center"></el-table-column>
           <el-table-column prop="type" label="选择属性" align="center">
             <template slot-scope="scope">
               <el-switch v-model="scope.value" active-color="#13ce66" inactive-color="#ff4949">
               </el-switch>
             </template>
           </el-table-column>
+          <el-table-column prop="organ" label="对应关系描述" align="center"></el-table-column>
+
         </el-table>
       </div>
       <span slot="footer" class="dialog-footer">

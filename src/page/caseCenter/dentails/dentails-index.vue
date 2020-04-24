@@ -111,6 +111,7 @@ export default {
     // console.log(iLocalStroage.gets("caseCenterDentails"));
     // this.showFlag = iLocalStroage.gets("caseCenterDentails").path
     // this.value = iLocalStroage.gets("caseCenterDentails").value
+    debugger;
     this.showFlag = this.$route.params.path,
     this.value = this.$route.params.value
   },

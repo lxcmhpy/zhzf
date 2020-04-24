@@ -55,22 +55,6 @@ const store = new Vuex.Store({
         },
         LOGOUT (state) {
             window.sessionStorage.clear();
-            for (let i in state) {
-                if (typeof state[i] === 'object') {
-                    let jStateObj = state[i];
-                    for (let j in jStateObj) {
-                        if (typeof jStateObj[j] === 'string') {
-                            jStateObj[j] = '';
-                        } else {
-                            jStateObj[j] = null;
-                        }
-                    }
-                } else if (typeof state[i] === 'string') {
-                    state[i] = '';
-                } else {
-                    state[i] = null;
-                }
-            }
         }
     },
     modules: {

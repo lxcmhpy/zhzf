@@ -14,5 +14,5 @@ export const BASIC_DATA_SYS = {
     // 车牌颜色
     vehicleColor: '388c5ac24cde480df1a54bc97829a481',
     // 无效信息类型
-    invalidList:'a0a2d83376fe7695f76fbba69545c056'
+    invalidCode:'a0a2d83376fe7695f76fbba69545c056'
 }
