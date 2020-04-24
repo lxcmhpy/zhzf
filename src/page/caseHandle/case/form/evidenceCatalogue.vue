@@ -167,7 +167,7 @@ export default {
       class2.style.right = '60px';
       class2.style.top = '60px';
       class2.style.overflow = 'hidden';
-      this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST;
+      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
       console.log(this.host);
   }
 };

@@ -1046,7 +1046,6 @@
       },
       //选择执法人员
       addLawPerson() {
-        console.log(this.lawPersonListId);
         this.$refs.chooseLawPersonRef.showModal(this.lawPersonListId, this.alreadyChooseLawPerson);
       },
       //设置执法人员
@@ -1107,8 +1106,6 @@
           );
       },
       removeLawPersontag(val) {
-        debugger
-        console.log(val);
         if (this.currentUserLawId == val) {
           this.lawPersonListId.push(val);
           this.$message('该执法人员不能删除！');
