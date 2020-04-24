@@ -23,7 +23,7 @@
     value=='待办'"></evidencePackage> -->
 
     <!-- 悬浮按钮 -->
-    <div class="float-btns" style="bottom:250px">
+    <div class="float-btns" style="bottom:50px">
       <el-button type="success" @click="goBack" v-if="showFlag==='/overWeightCase'&&
     (value=='待办')">
         <i class="iconfont law-back"></i>
