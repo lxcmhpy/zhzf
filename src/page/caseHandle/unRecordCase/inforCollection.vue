@@ -520,13 +520,6 @@
           </div>
           <div class="item">
             <el-form-item label="超限">
-              <!-- <div class="el-input el-input-group el-input-group--append">
-                <span class="el-input__inner">
-                  {{inforForm.otherInfo.overWeight>0?inforForm.otherInfo.overWeight:0}}
-                  </span>
-                <div class="el-input-group__append">吨</div>
-              </div> -->
-              {{inforForm.otherInfo.overWeight}}
               <el-input v-model="inforForm.otherInfo.overWeight">
                 <template slot="append">吨</template>
               </el-input>
@@ -1269,9 +1262,8 @@ export default {
           );
           // 超限
           _this.inforForm.otherInfo = JSON.stringify(
-            // _this.inforForm.otherInfo
+            _this.inforForm.otherInfo
           );
-          console.log(_this.inforForm)
           _this.inforForm.state = state;
           _this.inforForm.caseStatus = '未立案';
           _this.$store
@@ -1524,18 +1516,28 @@ export default {
         }
       }
 
-      if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight)
+      if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight){
+        if(this.inforForm.otherInfo.weightLimit < this.inforForm.otherInfo.allWeight){
         inforForm.otherInfo.overWeight = this.inforForm.otherInfo.allWeight - this.inforForm.otherInfo.weightLimit
+
+        }
+        else{
+          inforForm.otherInfo.overWeight =0
+        }
+      }
+      else{
+        inforForm.otherInfo.overWeight = ''
+      }
     },
     // 计算超重
     concludeOverWeight() {
       console.log('执行',this.inforForm.otherInfo.overWeight)
-      if(!this.inforForm.otherInfo.overWeight){
-        this.inforForm.otherInfo.overWeight='0'
-      }
-      // if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight) {
+      // if(!this.inforForm.otherInfo.overWeight&& this.inforForm.otherInfo.allWeight){
+      //   this.inforForm.otherInfo.overWeight='0'
+      // }
+      if (this.inforForm.otherInfo.weightLimit && this.inforForm.otherInfo.allWeight) {
         this.inforForm.otherInfo.overWeight = '';
-        if (this.inforForm.otherInfo.weightLimit > this.inforForm.otherInfo.allWeight) {
+        if (this.inforForm.otherInfo.weightLimit < this.inforForm.otherInfo.allWeight) {
           console.log('正正正数啊啊啊啊啊啊啊啊啊')
           this.inforForm.otherInfo.overWeight = this.inforForm.otherInfo.allWeight - this.inforForm.otherInfo.weightLimit
         } else {
@@ -1543,12 +1545,8 @@ export default {
           this.inforForm.otherInfo.overWeight = '0'
           console.log(' this.inforForm.otherInfo.overWeight', this.inforForm.otherInfo.overWeight)
 
-        // }
+        }
       }
-
-      // if (this.inforForm.otherInfo.overWeight < 0) {
-      // }
-
     },
     //自动计算年龄
     changePartyIdType(idCard) {
