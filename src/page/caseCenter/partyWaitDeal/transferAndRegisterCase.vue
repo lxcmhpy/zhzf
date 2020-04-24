@@ -329,18 +329,24 @@ export default {
     },
     routerDetail(row) {
     //   this.$store.commit('setOffSiteManageId', row.id);
+    debugger;
+    this.tabActiveValue = this.processStatus[this.tabActiveIndex].value;
       this.$router.push({
         name: 'dentails-index',
         params: {
-            tabTitle: this.processStatus[this.tabActiveIndex].value,
+            tabTitle: this.tabActiveValue,
             path: this.$route.path,
             value: this.tabActiveValue
         }
       })
     },
     routerEvidenceDetail() {
+    this.tabActiveValue = this.processStatus[this.tabActiveIndex].value;
       this.$router.push({
-        name: 'evidenceDetail'
+        name: 'evidenceDetail',
+        params: {
+            tabTitle: this.tabActiveValue
+        }
       })
     },
     //更改每页显示的条数
@@ -353,8 +359,12 @@ export default {
       this.getLogList(val);
     },
     routerInvalidCue(item) {
+        this.tabActiveValue = this.processStatus[this.tabActiveIndex].value;
       this.$router.push({
-        name: 'invalidCue'
+        name: 'invalidCue',
+        params: {
+            tabTitle: this.tabActiveValue
+        }
       })
     }
   },
