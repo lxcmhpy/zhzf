@@ -1,6 +1,6 @@
 <template>
   <!--  执法监管首页 by-jingli -->
-  <div id="lawSupervise" ref="lawSupervise" class="mainBox">
+  <div id="lawSupervise" ref="lawSupervise" class="mainBox" :class="{'lawScreenFull':lawScreenFull}">
     <div class="amap-page-container">
       <!-- amap://styles/whitesmoke -->
       <!-- :features="['road','bg', 'building']" -->
@@ -45,8 +45,14 @@
                   <p>{{curWindow.other.status}}</p>
                 </div>
               </div>
-
-              <div class="btns">
+             <div class="btns">
+                <span class="phoneBtn blueC3" >李静</span>
+                <span  class="phoneBtn" >王玉凤</span>
+                <span  class="phoneBtn blueC3" >迪丽<br>热巴</span>
+                <span  class="phoneBtn blueC3" >欧阳<br>娜娜</span>
+                <span  class="phoneBtn blueC3" >···</span>
+            </div>
+              <!-- <div class="btns">
                 <div class="flexBox">
                   <div class="con">
                     <p>{{curWindow.other.address}}</p>
@@ -59,7 +65,7 @@
                     <span>{{curWindow.other.position}}</span>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
             <!-- 2执法车辆 -->
             <div v-else-if="curWindow.category == 2">
@@ -141,7 +147,7 @@
                 </div>
               </div>
               <div class="con ">
-                <el-table v-if="curWindow.other.list" style="width: 100%;" :data="curWindow.other.list" resizable stripe>
+                <el-table v-if="curWindow.other.list" style="width: 100%;line-height: 40px;" :data="curWindow.other.list.splice(0,5)" resizable stripe>
                   <el-table-column width="170" align="center" prop="checkTime" label="过检时间"></el-table-column>
                   <el-table-column width="100" align="center" prop="vehicleNumber" label="车牌号"></el-table-column>
                   <el-table-column width="80" align="center" prop="overload" label="超载率"></el-table-column>
@@ -287,6 +293,7 @@
         <el-option v-for="(item,index) in categoryList" :key="index" :label="item.show" :value="item.code"></el-option>
       </el-select>
       <el-amap-search-box class="search-box" ref="searchAmapBox" :search-option="searchOption" :on-search-result="searchAll"></el-amap-search-box>
+      <el-button size="medium" class="commonBtn searchBtn" icon="el-icon-copy-document" @click="lawScreenFull=!lawScreenFull">全屏切换</el-button>
     </div>
     <div class="amap-tool">
       <el-button v-for="(item,index) in tabList" :key="index" @click="currentTabIndex === index ? currentTabIndex = null : currentTabIndex = index">
@@ -351,12 +358,13 @@ export default {
   data() {
     let self = this;
     return {
+      lawScreenFull: false,
       videoDoing: null,
       showVideo: false,
       show: true,
       categorySelect: -1,
       direction: "rtl",
-      drawer: false,
+      drawer: true,
       windows: [],
       curWindow: null,
       default: "",
