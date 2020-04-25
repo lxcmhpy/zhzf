@@ -620,7 +620,7 @@ export default {
         this.docData.scenePeopelSex = Number(dailiData.sex);
         this.docData.scenePeopelIdNo = dailiData.zhengjianNumber;
         this.docData.scenePeopeRelation = dailiData.relationWithCase;
-        this.docData.scenePeopeUnitPosition = dailiData.company + " " + dailiData.position;
+        this.docData.scenePeopeUnitPosition = dailiData.company ;
         this.docData.scenePeopeAddress = dailiData.adress;
         this.docData.scenePeopeTel = dailiData.tel;
 
