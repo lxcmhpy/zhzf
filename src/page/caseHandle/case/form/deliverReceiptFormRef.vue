@@ -122,14 +122,12 @@ export default {
         this.$router.push({name:'case_handle_archiveCatalogueDetail'})
     },
     alertPDF (item) {
-        debugger
         let data = {
             caseId:item.caseId,
             docId: item.caseSerProofId,
         };
         let _that = this
         findByCaseIdAndDocIdApi(data).then(res=>{
-            debugger
             _that.mlList = _that.host + res.data[0].storageId;
 
         },err=>{

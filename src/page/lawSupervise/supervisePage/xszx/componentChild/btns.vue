@@ -12,12 +12,18 @@
         <div>下一步</div>
       </el-button>
     </div>
-    <div v-else>
-      <el-button v-if="tabActiveValue !=='3'" type="button" class="submitBtn blueBtn" @click="showZbDialog">
-        <div>完成</div>
+    <div v-if="tabActiveValue == '3'">
+      <el-button type="button" class="submitBtn blueBtn"  @click="showZbDialog">
+        <i class="iconfont law-xiayibu"></i>
+        <div>转办</div>
       </el-button>
     </div>
 
+    <div v-else>
+      <el-button v-if="tabActiveValue ==='2' && $route.name!='invalidCueDetail'" type="button" class="submitBtn blueBtn" @click="showZbDialog">
+        <div>完成</div>
+      </el-button>
+    </div>
     <span :class="$route.name">
         <template v-if="$route.name=='invalidCueDetail'">
          无效
@@ -47,7 +53,7 @@
                         :value="item.name"
                         ></el-option>
                 </el-select>
-                <p>备注说明cc</p>
+                <p>备注说明</p>
                 <el-input v-model="checkSearchForm.color" type="textarea" :autosize="{ minRows: 1}"></el-input>
             </div>
             <!-- </el-form> -->
@@ -57,7 +63,7 @@
             </span>
         </el-dialog>
         <el-dialog class="mini-dialog-title" title="转办说明" :visible.sync="zbVisible" :show-close="false"
-            :close-on-click-modal="false" width="600px" >
+            :close-on-click-modal="false" width="600px" append-to-body>
             <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="130px">
                 <table style="line-height:50px;">
                     <tr>
@@ -214,6 +220,7 @@ export default {
       this.$router.push({ name: 'removeOrPrelong' })
     },
     routerOffSiteManage () {
+        this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.push({
             name: 'offSiteManage'
         })

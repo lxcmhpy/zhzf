@@ -140,14 +140,14 @@ import iLocalStroage from "@/common/js/localStroage";
             },
             //查看  打印方法
             handleEdit(index, row) {
-              debugger
+
               let data = {
                     caseId:this.caseId,
                     docId: this.tableData[index].caseDoctypeId,
                 };
                 let _that = this
               findByCaseIdAndDocIdApi(data).then(res=>{
-                debugger
+
                 _that.mlList = _that.host + res.data[0].storageId;
                 // _that.mlList.push(_that.host + res.data[0].storageId)
                 //   res.data.forEach((v)=>{
@@ -157,7 +157,7 @@ import iLocalStroage from "@/common/js/localStroage";
               },err=>{
                 console.log(err);
               })
-               debugger
+
                console.log(_that.mlList);
               this.indexPdf = 0;
               this.pdfVisible = true
@@ -165,7 +165,7 @@ import iLocalStroage from "@/common/js/localStroage";
             },
             //表单筛选
             getDocList() {
-              debugger
+
                 let data = {
                     caseBasicinfoId:this.caseId,
                     current: this.currentPage,
@@ -174,7 +174,6 @@ import iLocalStroage from "@/common/js/localStroage";
                 let _this = this
                 this.$store.dispatch("getDocument", data).then(res => {
                     _this.tableData = res.data.records;
-                    debugger
                     _this.total = res.data.total;
                 });
             },
@@ -199,8 +198,7 @@ import iLocalStroage from "@/common/js/localStroage";
               this.$refs.documentFormRef.showModal();
             },
             viewDocPdf(row) {
-              debugger
-              console.log('row',row) 
+              console.log('row',row)
               let routerData = {
                 hasApprovalBtn: false,
                 docId: row.caseDoctypeId,
@@ -208,7 +206,6 @@ import iLocalStroage from "@/common/js/localStroage";
                 hasBack: true,
                 docDataId:row.id
               };
-              debugger
               this.$store.dispatch("deleteTabs", this.$route.name);
               this.$router.push({ name: "case_handle_myPDF", params: routerData });
             },

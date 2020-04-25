@@ -9,7 +9,7 @@
                     <span class="title">称重检测数据</span>
                     <span class="right btns">
                         <span class="blueC" @click="updateHp"><img :src="'./static/images/img/lawSupervise/icon_cheliang1.png'">号牌更正</span>&nbsp;&nbsp;
-                        <span  class="greenC2" @click="checkVisible = true"><img :src="'./static/images/img/lawSupervise/icon_chepai.png'">车辆查验</span>
+                        <span  class="greenC2" @click="check"><img :src="'./static/images/img/lawSupervise/icon_chepai.png'">车辆查验</span>
                     </span>
                     <el-dialog class='mini-dialog-title' title="号牌更正" :visible.sync="visible" :show-close='false'
                     :close-on-click-modal="false" width="460px" append-to-body>
@@ -25,7 +25,11 @@
                                     <el-input v-model="checkSearchForm.color"></el-input>
                                 </el-form-item>
                                 </div>
-
+                                <div class="item">
+                                <el-form-item label="ETC识别车牌">
+                                    <el-input v-model="checkSearchForm.color"></el-input>
+                                </el-form-item>
+                                </div>
                             </div>
                         </el-form>
                         <span slot="footer" class="dialog-footer">
@@ -46,9 +50,12 @@
                                         <div class="top">
                                             <el-input ref="TOORGANID" class="focusHide" v-model="checkSearchForm.number" placeholder="请输入车牌号">
                                                 <el-select v-model="checkSearchForm.color" slot="prepend">
-                                                <el-option label="全部" value="1"></el-option>
-                                                <el-option label="选项2" value="2"></el-option>
-                                                <el-option label="选项3" value="3"></el-option>
+                                                    <el-option
+                                                    v-for="item in colorList"
+                                                    :key="item.id"
+                                                    :label="item.name"
+                                                    :value="item.name"
+                                                    ></el-option>
                                                 </el-select>
                                                 <el-button slot="append" style="width:100px" icon="el-icon-search"></el-button>
                                             </el-input>
@@ -602,7 +609,8 @@ import echarts from 'echarts';
 import 'echarts/lib/chart/graph';
 import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
-
+import {findAllDrawerById} from '@/api/lawSupervise.js';
+import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 Vue.use(AMap);
 AMap.initAMapApiLoader({
   key: '2fab5dfd6958addd56c89e58df8cbb37',
@@ -624,8 +632,6 @@ export default {
                 color: ''
             },
             checkVisible: false,
-
-
             activeName: '道路运输证',
             percentage: 30,
             formInline: {
@@ -651,7 +657,7 @@ export default {
                 // });
                 }
             },
-
+            colorList: [],
             plugin: [{
                 pName: 'ToolBar',
                 position: 'RB'
@@ -699,9 +705,25 @@ export default {
             this.visible = true;
         },
         check () {
-            this.checkVisible = true
+            this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'colorList');
+            this.checkVisible = true;
         },
         handleClick(tab, event) {
+        },
+        findAllDrawerById (data, obj) {
+            let _this = this
+            new Promise((resolve, reject) => {
+                findAllDrawerById(data).then(
+                    res => {
+                        // resolve(res)
+                        _this[obj] = res.data
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
         },
         saveHp () {
             this.obj.vehicleNumber = this.checkSearchForm.number;

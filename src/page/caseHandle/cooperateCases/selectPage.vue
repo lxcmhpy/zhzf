@@ -51,7 +51,10 @@
           <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
           <el-table-column prop="caseStatus" label="当前环节" align="center" width="100">
             <template slot-scope="scope">
-              {{scope.row.caseStatus === '未立案'?'信息采集':scope.row.currentLinkName}}
+              {{scope.row.currentLinkName}}
+
+              <!-- {{scope.row.caseStatus === '未立案'?'信息采集':scope.row.currentLinkName}} -->
+
             </template>
           </el-table-column>
         </el-table>

@@ -247,10 +247,11 @@
     },
     data() {
       var validatePaid = (rule, value, callback) => {
-        debsugger
-        // value = value.replace("\"","").replace("\"","");
+        debugger
+        // value = value.replace("\"","");
         //去除字符串两边的引号
-        value = value.substring(1, oldStr.length()-1);
+        // value = value.substring(1, value.length-1);
+        value = parseInt(value);
         if(value && typeof(value) != 'number'){
           callback(new Error('必须为数字!'));
         }

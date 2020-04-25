@@ -157,14 +157,12 @@ import iLocalStroage from "@/common/js/localStroage";
       //     console.log('选中的id',this.checkedDocId)
       // },
       alertPDF(item) {
-        debugger
         let data = {
           caseId: item.caseBasicinfoId,
           docId: item.caseDoctypeId,
         };
         let _that = this
         findByCaseIdAndDocIdApi(data).then(res => {
-          debugger
           _that.mlList = _that.host + res.data[0].storageId;
 
         }, err => {
@@ -184,19 +182,14 @@ import iLocalStroage from "@/common/js/localStroage";
       },
       //上下翻页显示pdf
       showNext(flag) {
-        debugger
         if (flag == 'last') {
-          debugger
           if (this.nowShowPdfIndex) {
-            debugger
             this.nowShowPdfIndex--;
             this.docSrc = this.host + this.checkedDocId[this.nowShowPdfIndex];
           }
         } else {
-          debugger
           if (this.nowShowPdfIndex != this.checkedDocId.length - 1) {
             this.nowShowPdfIndex++;
-            debugger
             this.docSrc = this.host + this.checkedDocId[this.nowShowPdfIndex];
           }
         }
@@ -206,9 +199,7 @@ import iLocalStroage from "@/common/js/localStroage";
 //      debugger
 //      console.log(val);
         if (val) {
-          debugger
           this.caseList.forEach(item => {
-            debugger
             //复选框存入id
             this.checkedDocId.push(item.storageId);
           });
