@@ -33,36 +33,28 @@
             </div>
             <!-- 1执法机构 -->
             <div v-else-if="curWindow.category == 1">
-              <div class="lawWindowTitle">
-                <i class="iconfont law-zfj"></i>
-                {{curWindow.other.name}}
-                <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
-              </div>
-              <div class="flexBox">
-                <div class="con">
-                  <p>{{curWindow.other.address}}</p>
-                  <p>{{curWindow.other.contact}}&nbsp;&nbsp;{{curWindow.other.phone}}</p>
+                <div class="lawWindowTitle">
+                    <i class="iconfont law-zfj"></i>
+                    {{curWindow.other.name}}
+                    <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
                 </div>
-                <div class="status">
-                  <i class="iconfont law-mobile-phone"></i>
-                  <p>{{curWindow.other.status}}</p>
-                </div>
-              </div>
-
-              <div class="btns">
                 <div class="flexBox">
-                  <div class="con">
+                    <div class="con">
                     <p>{{curWindow.other.address}}</p>
                     <p>{{curWindow.other.contact}}&nbsp;&nbsp;{{curWindow.other.phone}}</p>
-                  </div>
+                    </div>
+                    <div class="status">
+                    <i class="iconfont law-mobile-phone"></i>
+                    <p>{{curWindow.other.status}}</p>
+                    </div>
                 </div>
-                <div class="flexBox">
-                  <div class="con">
-                    <i class="el-icon-location"></i>
-                    <span>{{curWindow.other.position}}</span>
-                  </div>
+                <div class="btns">
+                    <span class="phoneBtn blueBg" >李静</span>
+                    <span  class="phoneBtn" >王玉凤</span>
+                    <span  class="phoneBtn blueBg lineh" >迪丽<br>热巴</span>
+                    <span  class="phoneBtn blueBg lineh" >欧阳<br>娜娜</span>
+                    <span  class="phoneBtn blueBg" >···</span>
                 </div>
-              </div>
             </div>
             <!-- 2执法车辆 -->
             <div v-else-if="curWindow.category == 2">
