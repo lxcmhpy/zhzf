@@ -31,7 +31,7 @@
         </div>
       </el-form>
       <div style="height:calc(100% - 170px);">
-        <el-table :data="tableData" stripe :height="tableHeight" border highlight-current-row @current-change="selectIllegaAct">
+        <el-table :data="tableData" stripe :height="tableHeight" border highlight-current-row @row-click="selectIllegaAct">
           <el-table-column prop="strNumber" label="代码" width="180"></el-table-column>
           <el-table-column prop="strContent" label="违法行为"></el-table-column>
         </el-table>
@@ -159,6 +159,7 @@ export default {
     //选中违法行为并跳转到立案登记
     selectIllegaAct(val) {
       console.log(val);
+      debugger
       this.currentIllegaAct = val;
       this.table = false;
       this.$emit('toCaseRegister', this.currentIllegaAct)
