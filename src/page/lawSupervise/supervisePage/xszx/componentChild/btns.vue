@@ -30,7 +30,7 @@
 
     <div>
         <el-dialog class="mini-dialog-title" title="无效信息" :visible.sync="visible" :show-close="false"
-            :close-on-click-modal="false" width="420px" >
+            :close-on-click-modal="false" width="420px"  append-to-body>
             <div class="error-message">
             <div class="">
                 <img src="@/../static/images/img/cluesReview/icon_wuxiao.png"  alt="" />
@@ -236,7 +236,6 @@ export default {
       // });
     },
     nextRouter() {
-        debugger;
       let nextStatus=parseInt(this.$route.params.status)+1
       this.$router.push({
         name: 'examineDoingDetail',
@@ -247,7 +246,6 @@ export default {
       });
     },
     findAllDrawerById (data, obj) {
-        debugger
         let _this = this
         new Promise((resolve, reject) => {
             findAllDrawerById(data).then(

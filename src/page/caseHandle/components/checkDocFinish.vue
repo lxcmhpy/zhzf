@@ -87,7 +87,7 @@ export default {
       //强制执行后台数据原因
       if(this.caseLinkDataForm.caseLinktypeId=='a36b59bd27ff4b6fe96e1b06390d204h'){
         data.forEach(item=>{
-        if(item.isRequired == "") 
+        if(item.isRequired == "")
           this.checkList.push(item);
       });
       }
@@ -96,7 +96,6 @@ export default {
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
-      debugger
       this.visible = false;
       this.checkList = [];
     },

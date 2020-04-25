@@ -409,7 +409,6 @@ export default {
   },
   methods: {
     handleNodeClick1(data) {
-        debugger;
       console.log(data);
     //   this.selectCurrentTreeName = data.label;
     //   this.currentOrganId = data.id;

@@ -74,7 +74,6 @@ export default {
       let _this = this
       this.$refs["evidenceForm"].validate(valid => {
         if (valid) {
-          debugger
           var fd = new FormData();
           console.log('fileName', _this.evidenceForm.evName);
           console.log('file', _this.evfile);

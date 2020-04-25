@@ -56,7 +56,6 @@ export default {
           caseId: this.caseId,
         }).then(
         res => {
-          debugger
           //多份文书按照docDataId取地址
           for(var i=0;i<res.length;i++) {
               // if(i==0) {

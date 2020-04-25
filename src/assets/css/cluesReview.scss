@@ -120,7 +120,7 @@
 }
 
 .el-drawer__wrapper {
-    z-index: 3000 !important;
+    // z-index: 3000 !important;
 
     .list {
         ul {
@@ -879,7 +879,7 @@
     position: fixed;
     right: 50px;
     bottom: 50px;
-    z-index: 2100;
+    z-index: 100;
     .submitBtn {
       display: block;
       margin: 8px;
@@ -947,7 +947,7 @@
 //   background: #12223d;
     display: inline-block;
       background: url('../../../static/images/img/lawSupervise/icon_zt_zb.jpg') no-repeat;
-      z-index:500;
+      z-index:3;
   }
   .invalidCueDetail {
     position:fixed;
@@ -964,7 +964,7 @@
   //   background: #12223d;
     display: inline-block;
     background: url('../../../static/images/img/lawSupervise/icon_zt_wsh.jpg') no-repeat;
-    z-index:500;
+    z-index:3;
   }
   .examineDoingDetail {
     position:fixed;
@@ -981,7 +981,7 @@
   //   background: #12223d;
     display: inline-block;
     background: url('../../../static/images/img/lawSupervise/icon_zt_sh.jpg') no-repeat;
-    z-index:500;
+    z-index:3;
 
   }
   span:focus {

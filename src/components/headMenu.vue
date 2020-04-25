@@ -26,7 +26,6 @@ import { mapGetters } from "vuex";
     },
     methods: {
       handleSelect(key, keyPath) {
-debugger;
         let keyStr = key.split(this.reg);
         this.$store.commit("SET_ACTIVE_INDEX_STO", key);
         this.$store.commit("set_Head_Active_Nav", key);

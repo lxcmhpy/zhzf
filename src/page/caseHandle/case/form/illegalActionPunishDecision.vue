@@ -54,7 +54,7 @@ export default {
             this.cont4 = '';
             this.cont5 = '';
             this.cont6 = '';
-            
+
         },
         markPunishDecision(){
             console.log("111",this.checkDec)
@@ -71,11 +71,10 @@ export default {
         //    }else if(this.checkDec[0] == '责令停产停业、暂扣或吊销许可整合执照'){
         //        this.fullDecision = this.checkDec[0] + this.cont6
         //    }
-            
+
            for(let i = 0; i < this.checkDec.length; i++){
-               debugger
                if(this.checkDec[i] == '罚款'){
-                    this.fullDecision += this.checkDec[i] + this.cont1  
+                    this.fullDecision += this.checkDec[i] + this.cont1
                 }else if(this.checkDec[i] == '责令整改'){
                     this.fullDecision += "," + this.checkDec[i] + this.cont2
                 }else if(this.checkDec[i] == '警告'){
