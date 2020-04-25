@@ -550,7 +550,8 @@ export default {
                 fid:item.fid,
                 id:item.id,
                 num:index+1,
-                page:item.page
+                page:item.page,
+                paperSize:item.paperSize
             }
             data.push(param)
         })
