@@ -187,6 +187,7 @@ import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import {
   findCaseAllBindPropertyApi,
 } from "@/api/caseHandle";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: {
     casePageFloatBtns,
@@ -206,7 +207,7 @@ export default {
       docData: {
         caseName: "",
         caseNumber: "",
-        servedOrg: "",
+        servedOrg: iLocalStroage.gets("userInfo").organName,
         recivePerson: "",
         recivePersonInstead: "",
         docNote: '',
@@ -600,6 +601,7 @@ export default {
     this.getDocDataByCaseIdAndDocId();
     this.getDataAfter();
     // this.getCaseBasicInfo();
+    // let organName = iLocalStroage.gets("userInfo").organName;
   },
   created() {
     this.isOverStatus();
