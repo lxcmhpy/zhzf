@@ -12,8 +12,8 @@
           <el-row>
             <el-col :span="9">
               <el-form-item style="width:520px">
-                <el-input v-model="formLabelAlign.caseNumber" @keyup.enter.native="getUnRecordCase" placeholder="请输入抄告案件的案号">
-                  <el-button slot="append" icon="el-icon-search" @click="getUnRecordCase"></el-button>
+                <el-input v-model="formLabelAlign.caseNumber" @keyup.enter.native="getSearchUnRecordCase" placeholder="请输入抄告案件的案号">
+                  <el-button slot="append" icon="el-icon-search" @click="getSearchUnRecordCase"></el-button>
                 </el-input>
               </el-form-item>
             </el-col>
@@ -85,11 +85,18 @@ export default {
     caseRecord() {
       this.$refs.caseRegisterDiagRef.showModal();
     },
+    getSearchUnRecordCase() {
+      this.currentPage = 1;
+      this.getUnRecordCase({})
+    },
     //获取机构下的未立案数据
     getUnRecordCase(searchData) {
       let data = searchData;
       data.userTd = iLocalStroage.gets("userInfo").id;
       data.caseNumber = this.formLabelAlign.caseNumber;
+      if (data.current) {
+        this.currentPage = data.current;
+      }
       data.current = this.currentPage;
       data.size = this.pageSize;
       console.log(data);

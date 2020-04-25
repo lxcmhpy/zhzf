@@ -12,8 +12,8 @@
           <el-row>
             <el-col :span="9">
               <el-form-item style="width:520px">
-                <el-input v-model="formLabelAlign.caseNumber" @keyup.enter.native="getUnRecordCase" placeholder="请输入移送案件的案号">
-                  <el-button slot="append" icon="el-icon-search" @click="getUnRecordCase"></el-button>
+                <el-input v-model="formLabelAlign.caseNumber" @keyup.enter.native="getSearchUnRecordCase" placeholder="请输入移送案件的案号">
+                  <el-button slot="append" icon="el-icon-search" @click="getSearchUnRecordCase"></el-button>
                 </el-input>
               </el-form-item>
             </el-col>
@@ -102,6 +102,10 @@ export default {
     caseRecord() {
       this.$refs.caseRegisterDiagRef.showModal();
       // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
+    },
+    getSearchUnRecordCase() {
+      this.currentPage = 1;
+      this.getUnRecordCase({})
     },
     //获取机构下的未立案数据
     getUnRecordCase(searchData) {
