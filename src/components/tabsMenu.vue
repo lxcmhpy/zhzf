@@ -73,7 +73,6 @@ export default {
       }
     },
     init () {
-        debugger;
         if (this.$route.path !== "/" && this.$route.name !== "case_handle_home_index") {
             this.activeIndexStr = this.activeIndexSto;
         } else {
@@ -104,7 +103,6 @@ export default {
 
         if (_index > -1) {
             if (to.params.tabTitle) {
-                debugger;
                 let currentOpenTab = this.openTab[_index];
                 currentOpenTab.params = to.params;
                 currentOpenTab.title = currentOpenTab.params.tabTitle;
@@ -134,7 +132,6 @@ export default {
                 }
                 isCase = false;
             }
-            debugger;
             name = name? name : to.name;
             this.$store.dispatch("addTabs", {
                 route: to.path,

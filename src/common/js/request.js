@@ -71,7 +71,6 @@ service.interceptors.request.use(
 // respone interceptor
 service.interceptors.response.use(
    response => {
-       debugger;
     if (response.status == 200) {
       if (response.data.code == 200) {
         tryHideFullScreenLoading();
