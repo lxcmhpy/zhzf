@@ -357,7 +357,10 @@ export default {
     },
   // 提交文书表单
     saveData(handleType, docForm) {
-      debugger
+      let newdeliveryCertificatelist =JSON.parse(JSON.stringify(this.docData.deliveryCertificatelist));
+      newdeliveryCertificatelist.forEach(item=>{
+        item.deliveryMaster = item.deliveryMaster.join(',');
+      })
       let data = {
             caseId: this.caseId, //流程里的案件id
             caseNumber: this.docData.caseNumber,
@@ -367,9 +370,10 @@ export default {
             server: this.docData.recivePerson,
             // recivePersonInstead: this.docData.recivePersonInstead,//代收人
             collector: this.docData.recivePersonInstead,
-            deliveryCertificatelist: this.docData.deliveryCertificatelist,//送达文书列表
+            deliveryCertificatelist:newdeliveryCertificatelist,//送达文书列表
             docNote: this.docData.docNote//备注
       };
+      console.log('送达回证',data);
       if (handleType==1) {
          debugger
         this.$refs['docForm'].validate((valid, noPass) => {
