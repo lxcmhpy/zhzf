@@ -433,7 +433,7 @@ export default {
       fd.append("fileId", this.form.fileId);
       fd.append("userName", this.form.userName);
       fd.append("recordPlace", this.form.recordPlace);
-      fd.append("recordTime", this.form.recordTime);
+      fd.append("recordTime", this.form.recordTime?this.form.recordTime:'');
       // fd.append("id", this.form.id);
       let _this = this;
       // this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
@@ -461,7 +461,7 @@ export default {
         evName: row.evName,
         evType: row.evType,
         userName: row.userName,
-        recordTime: row.recordTime,
+        recordTime: row.recordTime?row.recordTime:'',
         recordPlace: row.recordPlace,
         status: row.status,
         note: row.note
@@ -489,7 +489,7 @@ export default {
         evName: this.uForm.evName,
         evType: this.uForm.evType,
         userName: this.uForm.userName,
-        recordTime: this.uForm.recordTime,
+        recordTime: this.uForm.recordTime?this.uForm.recordTime:'',
         recordPlace: this.uForm.recordPlace,
         status: this.uForm.status,
         note: this.uForm.note
