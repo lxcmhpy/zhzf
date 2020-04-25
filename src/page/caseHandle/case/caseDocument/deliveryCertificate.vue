@@ -94,7 +94,7 @@
     
 
      <!-- 添加弹出框 -->
-    <el-dialog title="编辑送达详情" :visible.sync="addVisible" width="70%" v-loading="addLoading" :before-close="handleClose">
+    <el-dialog title="编辑送达详情" :visible.sync="addVisible" width="75%" v-loading="addLoading" :before-close="handleClose">
       <div>
         <div>
           <el-form ref="addDocFormRef">
@@ -140,18 +140,18 @@
                 </template>
               </el-table-column>
 
-              <el-table-column prop="deliveryMaster" label="送达人" align="center">
+              <el-table-column prop="deliveryMaster" label="送达人" align="center" width="210px">
                 <template slot-scope="scope">
                   <!-- {{scope.row.deliveryMaster}} -->
                   <!-- <el-input v-model="scope.row.deliveryMaster" v-on:click.native="chooseStaff(scope.row)"></el-input> -->
-                  <el-select v-model="scope.row.deliveryMaster" multiple placeholder="请选择">
+                  <el-select v-model="scope.row.deliveryMaster" multiple placeholder="请选择" style="width:200px">
                     <el-option
                       v-for="item in staffData"
-                      :key="item.staffId"
+                      :key="item.certificateId"
                       :label="item.name"
                       :value="item.name">
                       <span>{{ item.name }}</span>
-                      <span style="margin-left:5px">{{ item.staffId }}</span>
+                      <span style="margin-left:5px">{{ item.certificateId }}</span>
                     </el-option>
                   </el-select>
                 </template>
@@ -584,9 +584,9 @@ export default {
         res => {
           console.log('获取案件信息', res);
           let staff = res.data.staff.split(',');
-          let staffId = res.data.staffId.split(',');
+          let certificateId = res.data.certificateId.split(',');
           staff.forEach((item,index)=>{
-             this.staffData.push({name:item,staffId:staffId[index]})
+             this.staffData.push({name:item,certificateId:certificateId[index]})
           })
         },
         err => {
