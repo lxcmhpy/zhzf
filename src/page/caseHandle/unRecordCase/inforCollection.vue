@@ -1272,7 +1272,9 @@
               let fields = _this.$refs[field].elForm.fields
               for (let i in fields) {
                 if (fields[i].labelFor === field) {
-                  this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
+                  if(fields[i].label){
+                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
+                  }
                 }
               }
               return result
