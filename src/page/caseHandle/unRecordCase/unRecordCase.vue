@@ -158,6 +158,8 @@ export default {
     //跳转立案登记
     handleCase(row) {
       console.log(row);
+      let setCaseNumber = row.caseNumber!='' ? row.caseNumber : row.tempNo;
+      this.$store.commit("setCaseNumber", setCaseNumber);
       //暂存案件跳转信息采集
       if(row.state == 0){
         this.$store.commit("setCaseId", row.id);

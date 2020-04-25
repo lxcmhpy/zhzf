@@ -89,12 +89,14 @@
       },
       clickCase(row) {
         console.log(row);
-        this.$store.commit('setCaseId', row.id);
+        this.$store.commit('setCaseId', row.id); 
         //设置案件状态不为审批中
         this.$store.commit("setCaseApproval", false);
         this.$router.push({
           name: "case_handle_archiveCover"
         });
+         let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+        this.$store.commit("setCaseNumber", setCaseNumber);
       }
     },
     created() {
