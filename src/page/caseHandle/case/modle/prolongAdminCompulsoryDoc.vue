@@ -205,7 +205,7 @@ export default {
     getDataAfter(){
       this.docData.endDate = new Date(this.docData.delayDate).format("yyyy-MM-dd");
       console.log("asd",this.docData.endDate)
-      this.docData.delayDate = new Date(new Date(new Date(this.docData.delayDate).format("yyyy-MM-dd")).getTime()+29*24*60*60*1000);
+      this.docData.delayDate = new Date(new Date(new Date(this.docData.delayDate).format("yyyy-MM-dd")).getTime()+30*24*60*60*1000);
     },
   },
   mounted() {
