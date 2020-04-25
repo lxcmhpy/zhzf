@@ -57,7 +57,7 @@
             </span>
         </el-dialog>
         <el-dialog class="mini-dialog-title" title="转办说明" :visible.sync="zbVisible" :show-close="false"
-            :close-on-click-modal="false" width="600px" >
+            :close-on-click-modal="false" width="600px" append-to-body>
             <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="130px">
                 <table style="line-height:50px;">
                     <tr>
