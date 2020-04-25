@@ -747,14 +747,17 @@
 .list-hover {
     display: block;
     width  : 100%;
+    .el-checkbox {
+        margin-right: 0;
+    }
+
 }
 
 .list-hover :hover {
-    width     : 100%;
-    background: #E3EAF9;
+    background-color: #E3EAF9;
 
-    .el-checkbox__input {
-        width: 14px !important;
+    .el-checkbox__inner :hover {
+        background-color: #409EFF !important;
     }
 }
 
