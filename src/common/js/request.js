@@ -18,7 +18,7 @@ const service = axios.create({
 var BASEURL
  service({
     url: '/static/json/hostUrl/host.json',
-    method: "get", 
+    method: "get",
     params: {},
   }).then(
     res => {
@@ -35,8 +35,10 @@ var BASEURL
 
 // request interceptor
 service.interceptors.request.use(
-  config => {
-    console.log('请求时',BASEURL[BASEURL.CURRENT])
+    config => {
+    if (BASEURL) {
+        iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
+    }
     if(config.baseUrlType == 1){
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
     } else if(config.baseUrlType == 2){
@@ -69,6 +71,7 @@ service.interceptors.request.use(
 // respone interceptor
 service.interceptors.response.use(
    response => {
+       debugger;
     if (response.status == 200) {
       if (response.data.code == 200) {
         tryHideFullScreenLoading();
