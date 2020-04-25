@@ -46,14 +46,14 @@
           <el-table-column prop="status" label="状态" align="center">
             <template slot-scope="scope">
               <label>
-              <el-switch
-                v-model="scope.row.status"
-                :active-value="0"
-                :inactive-value="1"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                @change="updateEviBySwitch(scope.row)"
-              ></el-switch>
+                <el-switch
+                  v-model="scope.row.status"
+                  :active-value="0"
+                  :inactive-value="1"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  @change="updateEviBySwitch(scope.row)"
+                ></el-switch>
               </label>
             </template>
           </el-table-column>
@@ -68,7 +68,8 @@
                 type="text"
                 icon="el-icon-edit"
                 @click.stop="handleEdit(scope.$index, scope.row)"
-              >编辑</el-button>
+              >编辑
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -111,7 +112,8 @@
               class="el-upload__tip"
               slot="tip"
               style="text-align: center"
-            >只能上传jpg/png文件，且不超过500kb</div>
+            >只能上传jpg/png文件，且不超过500kb
+            </div>
           </el-upload>
         </div>
         <div style="float: right;width: 55%">
@@ -131,8 +133,8 @@
             </el-form-item>
             <el-form-item label="记 录 人" prop="userName" label-width="113px">
               <!-- <el-input v-model="form.userName" placeholder="请输入"></el-input> -->
-              <el-select v-model="form.userName" prop="userName" >
-                <el-option v-for="(item,index) in userNameList" :key="index" :value="item" :label="item" ></el-option>
+              <el-select v-model="form.userName" prop="userName">
+                <el-option v-for="(item,index) in userNameList" :key="index" :value="item" :label="item"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="记录时间" prop="recordTime" label-width="113px">
@@ -180,8 +182,8 @@
       <div>
         <div style="float: left;width: 45%">
           <el-form :model="uForm">
-          <img :src="host+uForm.evPath" width="350px" height="400" align="center"/>
-        </el-form>
+            <img :src="host+uForm.evPath" width="350px" height="400" align="center"/>
+          </el-form>
         </div>
         <div style="float: right;width: 55%">
           <el-form ref="uForm" :model="uForm" :rules="addrules">
@@ -247,407 +249,415 @@
   </div>
 </template>
 <script>
-import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
-import { mapGetters } from "vuex";
-import evidenceCatalogue from "./evidenceCatalogue";
-import { uploadEvApi, findFileByIdApi, uploadEvdence } from "@/api/upload";
+  import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
+  import {mapGetters} from "vuex";
+  import evidenceCatalogue from "./evidenceCatalogue";
+  import {uploadEvApi, findFileByIdApi, uploadEvdence} from "@/api/upload";
 
-import {getCaseBasicInfoApi} from "@/api/caseHandle";
-import iLocalStroage from "@/common/js/localStroage.js";
-import evidenceDetail from "./evidenceDetail";
-import evidenceImageDetail from "./evidenceImageDetail";
-// import {saveOrUpdateEvdencenApi2, } from "@/api/caseHandle";
-// import { getEviByCaseIdApi } from "@api/caseHandle";
-export default {
-  data() {
-    const isSelect = (rule, value, callback) => {
-      if (value == undefined) {
-        return callback(new Error("请选择"));
-      } else {
-        callback();
-      }
-    };
-    return {
-      fileList:[],
-      host: "",
-      evfile: "",
-      evTypeOptions: [],
-      statusOptions: [],
-      value: "",
-      //activeName: '1',
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      total: 0, //总数
-      tableData: [],
-      srcImgList: [],
-      userNameList:[],
-      evidenceForm: {
-        evName: "",
-        evType: "",
-        status: ""
-      },
-      form: {
-        id: "",
-        caseId: "",
-        evName: "",
-        evType: "",
-        status: "",
-        fileId: "",
-        remark: "",
-        file: null,
-        docId: "",
-        category: "",
-        userId: ""
-      },
-      uForm: {},
-      addVisible: false,
-      editVisible: false,
-      addLoading: false,
-      editLoading: false,
-      addrules: {
-        evType: [
-          {
-            required: true,
-            message: "证据类型不能为空",
-            trigger: "blur",
-            validator: isSelect
-          },
-          {
-            required: true,
-            message: "证据类型不能为空",
-            trigger: "change",
-            validator: isSelect
+  import {getCaseBasicInfoApi} from "@/api/caseHandle";
+  import iLocalStroage from "@/common/js/localStroage.js";
+  import evidenceDetail from "./evidenceDetail";
+  import evidenceImageDetail from "./evidenceImageDetail";
+  // import {saveOrUpdateEvdencenApi2, } from "@/api/caseHandle";
+  // import { getEviByCaseIdApi } from "@api/caseHandle";
+  export default {
+    data() {
+      const isSelect = (rule, value, callback) => {
+        if (value == undefined) {
+          return callback(new Error("请选择"));
+        } else {
+          callback();
+        }
+      };
+      return {
+        fileList: [],
+        host: "",
+        evfile: "",
+        evTypeOptions: [],
+        statusOptions: [],
+        value: "",
+        //activeName: '1',
+        currentPage: 1, //当前页
+        pageSize: 10, //pagesize
+        total: 0, //总数
+        tableData: [],
+        srcImgList: [],
+        userNameList: [],
+        evidenceForm: {
+          evName: "",
+          evType: "",
+          status: ""
+        },
+        form: {
+          id: "",
+          caseId: "",
+          evName: "",
+          evType: "",
+          status: "",
+          fileId: "",
+          remark: "",
+          file: null,
+          docId: "",
+          category: "",
+          userId: ""
+        },
+        uForm: {},
+        addVisible: false,
+        editVisible: false,
+        addLoading: false,
+        editLoading: false,
+        addrules: {
+          evType: [
+            {
+              required: true,
+              message: "证据类型不能为空",
+              trigger: "blur",
+              validator: isSelect
+            },
+            {
+              required: true,
+              message: "证据类型不能为空",
+              trigger: "change",
+              validator: isSelect
+            }
+          ],
+          // evName: [
+          //   { required: true, message: "证据名称不能为空", trigger: "blur" }
+          // ],
+          // userName: [
+          //   { required: true, message: "记录人不能为空", trigger: "blur" }
+          // ],
+          // recordTime: [
+          //   { required: true, message: "记录时间不能为空", trigger: "blur" }
+          // ],
+          // recordPlace: [
+          //   { required: true, message: "取证地点不能为空", trigger: "blur" }
+          // ],
+          status: [{required: true, message: "状态不能为空", trigger: "blur"}]
+        }
+      };
+    },
+    computed: {...mapGetters(["caseId"])},
+    components: {
+      caseSlideMenu,
+      evidenceCatalogue,
+      evidenceDetail,
+      evidenceImageDetail
+    },
+    methods: {
+      submitForm(formName) {
+        let _this = this;
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            _this.insertEvi();
           }
-        ],
-        // evName: [
-        //   { required: true, message: "证据名称不能为空", trigger: "blur" }
-        // ],
-        // userName: [
-        //   { required: true, message: "记录人不能为空", trigger: "blur" }
-        // ],
-        // recordTime: [
-        //   { required: true, message: "记录时间不能为空", trigger: "blur" }
-        // ],
-        // recordPlace: [
-        //   { required: true, message: "取证地点不能为空", trigger: "blur" }
-        // ],
-        status: [{ required: true, message: "状态不能为空", trigger: "blur" }]
-      }
-    };
-  },
-  computed: { ...mapGetters(["caseId"]) },
-  components: {
-    caseSlideMenu,
-    evidenceCatalogue,
-    evidenceDetail,
-    evidenceImageDetail
-  },
-  methods: {
-    submitForm(formName) {
-      let _this = this;
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          _this.insertEvi();
-        }
-      });
-    },
-    submitUForm(formName) {
-      let _this = this;
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          _this.updateEvi();
-        }
-      });
-    },
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-          this.$nextTick(() => {
-          this.$refs['form'].resetFields();
-          this.fileList=[];
-      })
-        })
-        .catch(_ => {});
-    },
-    handleAdd(index, row) {
-      this.form = {};
-      this.addVisible = true;
-    },
-    handleEdit(index, row) {
-      const item = this.tableData[index];
-      console.log("编辑证据", item);
-      this.uForm = {
-        id: item.id,
-        caseId: item.caseId,
-        evName: item.evName,
-        evPath: item.evPath,
-        evType: item.evType,
-        userName: item.userName,
-        recordTime: item.recordTime,
-        recordPlace: item.recordPlace,
-        status: item.status,
-        note: item.note,
-      };
-      this.editVisible = true;
-    },
-    //表单筛选
-    getEviList() {
-      let data = {
-        caseId: this.caseId,
-        evName: this.evidenceForm.evName,
-        evType: this.evidenceForm.evType,
-        status: this.evidenceForm.status,
-        current: this.currentPage,
-        size: this.pageSize
-      };
-      console.log("证据目录参数", data);
-      let _this = this;
-      this.$store.dispatch("getEvidence", data).then(res => {
-        _this.tableData = res.data.records;
-      });
-    },
-    saveFile(param) {
-      console.log(param);
-      // this.formUpload = {
-      (this.form.file = param.file),
-        (this.form.caseId = this.caseId),
-        (this.form.docId = "000"),
-        (this.form.category = "证据"),
-        (this.form.userId = iLocalStroage.gets("userInfo").id),
-        (this.form.evName = param.file.name);
-      // }
-    },
-    //插入证据表
-    insertEvi() {
-      var fd = new FormData();
-      fd.append("file", this.form.file);
-      fd.append("caseId", this.form.caseId);
-      fd.append("docId", this.form.docId);
-      fd.append("category", this.form.category);
-      fd.append("userId", this.form.userId);
-      fd.append("evName", this.form.evName);
-      fd.append("evType", this.form.evType);
-      fd.append("status", this.form.status);
-      fd.append("note", this.form.note);
-      fd.append("fileId", this.form.fileId);
-      fd.append("userName", this.form.userName);
-      fd.append("recordPlace", this.form.recordPlace);
-      fd.append("recordTime", this.form.recordTime?this.form.recordTime:'');
-      // fd.append("id", this.form.id);
-      let _this = this;
-      // this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
-      uploadEvdence(fd).then(res => {
-        console.log("1111111", res);
-        if (res.code == 200) {
-          _this.$message({
-            message: "添加成功！",
-            type: "success"
+        });
+      },
+      submitUForm(formName) {
+        let _this = this;
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            _this.updateEvi();
+          }
+        });
+      },
+      handleClose(done) {
+        this.$confirm("确认关闭？")
+          .then(_ => {
+            done();
+            this.$nextTick(() => {
+              this.$refs['form'].resetFields();
+              this.fileList = [];
+            })
+          })
+          .catch(_ => {
           });
-          _this.addVisible = false;
-          _this.currentPage = 1;
-          _this.getEviList();
-        } else {
-          _this.$message.error("出现异常，添加失败！");
+      },
+      handleAdd(index, row) {
+        this.form = {};
+        this.addVisible = true;
+      },
+      handleEdit(index, row) {
+        const item = this.tableData[index];
+        console.log("编辑证据", item);
+        this.uForm = {
+          id: item.id,
+          caseId: item.caseId,
+          evName: item.evName,
+          evPath: item.evPath,
+          evType: item.evType,
+          userName: item.userName,
+          recordTime: item.recordTime,
+          recordPlace: item.recordPlace,
+          status: item.status,
+          note: item.note,
+        };
+        this.editVisible = true;
+      },
+      //表单筛选
+      getEviList() {
+        let data = {
+          caseId: this.caseId,
+          evName: this.evidenceForm.evName,
+          evType: this.evidenceForm.evType,
+          status: this.evidenceForm.status,
+          current: this.currentPage,
+          size: this.pageSize
+        };
+        console.log("证据目录参数", data);
+        let _this = this;
+        this.$store.dispatch("getEvidence", data).then(res => {
+          _this.tableData = res.data.records;
+        });
+      },
+      saveFile(param) {
+        console.log(param);
+        // this.formUpload = {
+        (this.form.file = param.file),
+          (this.form.caseId = this.caseId),
+          (this.form.docId = "000"),
+          (this.form.category = "证据"),
+          (this.form.userId = iLocalStroage.gets("userInfo").id),
+          (this.form.evName = param.file.name);
+        // }
+      },
+      //插入证据表
+      insertEvi() {
+        var fd = new FormData();
+        fd.append("file", this.form.file);
+        fd.append("caseId", this.form.caseId);
+        fd.append("docId", this.form.docId);
+        fd.append("category", this.form.category);
+        fd.append("userId", this.form.userId);
+        fd.append("evName", this.form.evName);
+        fd.append("evType", this.form.evType);
+        fd.append("status", this.form.status);
+        fd.append("note", this.form.note);
+        if (!this.form.fileId) {
+          this.form.fileId = ''
         }
-      });
-    },
-    //通过switch开关修改状态
-    updateEviBySwitch(row){
-      console.log("data",row);
-      let data = {
-        id: row.id,
-        caseId: row.caseId,
-        evName: row.evName,
-        evType: row.evType,
-        userName: row.userName,
-        recordTime: row.recordTime?row.recordTime:'',
-        recordPlace: row.recordPlace,
-        status: row.status,
-        note: row.note
-      };
-      let _this = this;
-      this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
-        if (res.code == 200) {
-          // _this.$message({
-          //   message: "编辑成功！",
-          //   type: "success"
-          // });
-          _this.editVisible = false;
-          _this.currentPage = 1;
-          _this.getEviList();
-        } else {
-          _this.$message.error("出现异常，添加失败！");
-        }
-      });
-    },
-    //修改证据
-    updateEvi() {
-      let data = {
-        id: this.uForm.id,
-        caseId: this.uForm.caseId,
-        evName: this.uForm.evName,
-        evType: this.uForm.evType,
-        userName: this.uForm.userName,
-        recordTime: this.uForm.recordTime?this.uForm.recordTime:'',
-        recordPlace: this.uForm.recordPlace,
-        status: this.uForm.status,
-        note: this.uForm.note
-      };
-      let _this = this;
-      this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
-        if (res.code == 200) {
-          _this.$message({
-            message: "编辑成功！",
-            type: "success"
-          });
-          _this.editVisible = false;
-          _this.currentPage = 1;
-          _this.getEviList();
-        } else {
-          _this.$message.error("出现异常，添加失败！");
-        }
-      });
-    },
-    // 重置
-    resetSearch() {
-      this.$refs["evidenceForm"].resetFields();
-      this.getEviList();
-    },
+        fd.append("fileId", this.form.fileId);
+        fd.append("userName", this.form.userName);
+        fd.append("recordPlace", this.form.recordPlace);
+        fd.append("recordTime", this.form.recordTime ? this.form.recordTime : '');
+        // fd.append("id", this.form.id);
+        let _this = this;
+        // this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
+        uploadEvdence(fd).then(res => {
+          console.log("1111111", res);
+          if (res.code == 200) {
+            _this.$message({
+              message: "添加成功！",
+              type: "success"
+            });
+            _this.addVisible = false;
+            _this.currentPage = 1;
+            _this.getEviList();
+          } else {
+            _this.$message.error("出现异常，添加失败！");
+          }
+        });
+      },
+      //通过switch开关修改状态
+      updateEviBySwitch(row) {
+        console.log("data", row);
+        let data = {
+          id: row.id,
+          caseId: row.caseId,
+          evName: row.evName,
+          evType: row.evType,
+          userName: row.userName,
+          recordTime: row.recordTime ? row.recordTime : '',
+          recordPlace: row.recordPlace,
+          status: row.status,
+          note: row.note
+        };
+        let _this = this;
+        this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
+          if (res.code == 200) {
+            // _this.$message({
+            //   message: "编辑成功！",
+            //   type: "success"
+            // });
+            _this.editVisible = false;
+            _this.currentPage = 1;
+            _this.getEviList();
+          } else {
+            _this.$message.error("出现异常，添加失败！");
+          }
+        });
+      },
+      //修改证据
+      updateEvi() {
+        let data = {
+          id: this.uForm.id,
+          caseId: this.uForm.caseId,
+          evName: this.uForm.evName,
+          evType: this.uForm.evType,
+          userName: this.uForm.userName,
+          recordTime: this.uForm.recordTime ? this.uForm.recordTime : '',
+          recordPlace: this.uForm.recordPlace,
+          status: this.uForm.status,
+          note: this.uForm.note
+        };
+        let _this = this;
+        this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
+          if (res.code == 200) {
+            _this.$message({
+              message: "编辑成功！",
+              type: "success"
+            });
+            _this.editVisible = false;
+            _this.currentPage = 1;
+            _this.getEviList();
+          } else {
+            _this.$message.error("出现异常，添加失败！");
+          }
+        });
+      },
+      // 重置
+      resetSearch() {
+        this.$refs["evidenceForm"].resetFields();
+        this.getEviList();
+      },
 
-    //更改每页显示的条数
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.getEviList();
-    },
-    //更换页码
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getEviList();
-    },
-    randomString(e) {
-      e = e || 32;
-      const t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
-        a = t.length;
-      let res = "";
-      for (let i = 0; i < e; i++) {
-        res += t.charAt(Math.floor(Math.random() * a));
-      }
-      return res;
-    },
-    formatDateStr(val) {
-      if (val == null) {
-        return null;
-      }
-      let date = new Date(val);
-      let Y = date.getFullYear() + "-";
-      let M =
-        date.getMonth() + 1 < 10
-          ? "0" + (date.getMonth() + 1) + "-"
-          : date.getMonth() + 1 + "-";
-      let D =
-        date.getDate() < 10 ? "0" + date.getDate() + " " : date.getDate() + " ";
-      // let h =
-      //   date.getHours() < 10
-      //     ? "0" + date.getHours() + ":"
-      //     : date.getHours() + ":";
-      // let m =
-      //   date.getMinutes() < 10
-      //     ? "0" + date.getMinutes() + ":"
-      //     : date.getMinutes() + ":";
-      // let s =
-      //   date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-      // return Y + M + D + h + m + s;
-      return Y + M + D;
-    },
-    //鼠标hover证据目录后 显示证据目录
-    showEvidenceCatalogue() {
-      this.$refs.evidenceCatalogueRef.showModal();
-    },
-    fileChange(file) {
-      console.log(file);
-      this.evfile = file.raw;
-    },
-    //显示证据详情
-    evidenceDetail(row){
-        console.log("证据详情",row)        
-        this.$refs.evidenceDetailRef.showModal(row); 
-    },
-    imgDetail(row){
-      this.$refs.evidenceImageDetailRef.showModal(row);
-    },
-    //查询记录人列表
-    findUserNameList(){
-      let data = {
-        id : this.caseId
-      }
-      getCaseBasicInfoApi(data).then(res => {
-        if (res.code == 200) {
-          console.log("1456",res);
-          this.userNameList = res.data.staff.split(',');
-          console.log("this.userNameList",this.userNameList);
-        } else {
-          console.log("fail");
+      //更改每页显示的条数
+      handleSizeChange(val) {
+        this.pageSize = val;
+        this.getEviList();
+      },
+      //更换页码
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.getEviList();
+      },
+      randomString(e) {
+        e = e || 32;
+        const t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
+          a = t.length;
+        let res = "";
+        for (let i = 0; i < e; i++) {
+          res += t.charAt(Math.floor(Math.random() * a));
         }
-      });
+        return res;
+      },
+      formatDateStr(val) {
+        if (val == null) {
+          return null;
+        }
+        let date = new Date(val);
+        let Y = date.getFullYear() + "-";
+        let M =
+          date.getMonth() + 1 < 10
+            ? "0" + (date.getMonth() + 1) + "-"
+            : date.getMonth() + 1 + "-";
+        let D =
+          date.getDate() < 10 ? "0" + date.getDate() + " " : date.getDate() + " ";
+        // let h =
+        //   date.getHours() < 10
+        //     ? "0" + date.getHours() + ":"
+        //     : date.getHours() + ":";
+        // let m =
+        //   date.getMinutes() < 10
+        //     ? "0" + date.getMinutes() + ":"
+        //     : date.getMinutes() + ":";
+        // let s =
+        //   date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+        // return Y + M + D + h + m + s;
+        return Y + M + D;
+      },
+      //鼠标hover证据目录后 显示证据目录
+      showEvidenceCatalogue() {
+        this.$refs.evidenceCatalogueRef.showModal();
+      },
+      fileChange(file) {
+        console.log(file);
+        this.evfile = file.raw;
+      },
+      //显示证据详情
+      evidenceDetail(row) {
+        console.log("证据详情", row)
+        this.$refs.evidenceDetailRef.showModal(row);
+      },
+      imgDetail(row) {
+        this.$refs.evidenceImageDetailRef.showModal(row);
+      },
+      //查询记录人列表
+      findUserNameList() {
+        let data = {
+          id: this.caseId
+        }
+        getCaseBasicInfoApi(data).then(res => {
+          if (res.code == 200) {
+            console.log("1456", res);
+            this.userNameList = res.data.staff.split(',');
+            console.log("this.userNameList", this.userNameList);
+          } else {
+            console.log("fail");
+          }
+        });
+      }
+
+    },
+    mounted() {
+      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+    },
+    created() {
+      this.getEviList();
+      this.findUserNameList();
+      let _this = this;
+      //初始化代码集
+      this.$store
+        .dispatch("getDictionary", "574a5a05d004e32fe5d7f73c4b6a22ef")
+        .then(res => {
+          for (let item of res.data) {
+            _this.evTypeOptions.push({value: item.name, label: item.notes});
+          }
+        });
+      this.$store
+        .dispatch("getDictionary", "02204fe639c86edbae51e3dfccad36d9")
+        .then(res => {
+          for (let item of res.data) {
+            _this.statusOptions.push({value: item.name, label: item.notes});
+          }
+        });
     }
-    
-  },
-  mounted() {
-    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-  },
-  created() {
-    this.getEviList();
-    this.findUserNameList();
-    let _this = this;
-    //初始化代码集
-    this.$store
-      .dispatch("getDictionary", "574a5a05d004e32fe5d7f73c4b6a22ef")
-      .then(res => {
-        for (let item of res.data) {
-          _this.evTypeOptions.push({ value: item.name, label: item.notes });
-        }
-      });
-    this.$store
-      .dispatch("getDictionary", "02204fe639c86edbae51e3dfccad36d9")
-      .then(res => {
-        for (let item of res.data) {
-          _this.statusOptions.push({ value: item.name, label: item.notes });
-        }
-      });
-  }
-};
+  };
 </script>
 <style lang="scss">
-@import "@/assets/css/systemManage.scss";
-.paginationF {
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
-  margin: auto;
-  text-align: center;
-}
-.tablePartF {
-  height: 100%;
-  overflow: auto;
-  box-sizing: border-box;
-  padding-top: 4%;
-}
-.el-upload-dragger {
-  background-color: #fff;
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 360px;
-  height: 330px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.fullscreen {
-  .hasBigMarginRight {
-    margin-right: 65px;
+  @import "@/assets/css/systemManage.scss";
+
+  .paginationF {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    margin: auto;
+    text-align: center;
   }
-}
+
+  .tablePartF {
+    height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+    padding-top: 4%;
+  }
+
+  .el-upload-dragger {
+    background-color: #fff;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 360px;
+    height: 330px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fullscreen {
+    .hasBigMarginRight {
+      margin-right: 65px;
+    }
+  }
 </style>
