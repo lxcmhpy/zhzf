@@ -480,7 +480,10 @@ export function getAllPdfListApi(data) {
 // 通过条件查询绑定列表(分页)
 export function findSetListApi(params) {
   let data = {
-    bindName:params.bindName
+    bindName:params.bindName,
+    bindType:params.bindType,
+    resourceName:params.resourceName,
+    resourceType:params.resourceType,
   }
   return request({
     url: "/case/doc/propertyBind/findByCondition",
@@ -491,8 +494,35 @@ export function findSetListApi(params) {
     cancelToken: setCancelSource()
   });
 }
+// 通过条件查询绑定列表(所有)
+export function findAllSetListApi(params) {
+  let data = {
+    bindName:params.bindName,
+    bindType:params.bindType,
+    resourceName:params.resourceName,
+    resourceType:params.resourceType,
+  }
+  return request({
+    url: "/case/doc/propertyBind/queryByCondition",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
-
+//通过条件查询文书列表
+export function saveOrUpdatePropertyApi(data) {
+  return request({
+    url: "/case/doc/propertyBind/saveOrUpdatePropertyBindTemplate",
+    method: "POST",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tbs">
     <el-tabs
       v-model="activeIndexStr"
       type="border-card"
@@ -157,3 +157,11 @@ export default {
   }
 };
 </script>
+<style scoped>
+.tbs /deep/ .el-tabs__nav-wrap{
+padding: 0 290px 0 20px;
+}
+.tbs /deep/ .el-tabs__nav-next {
+    right: 260px;
+}
+</style>
