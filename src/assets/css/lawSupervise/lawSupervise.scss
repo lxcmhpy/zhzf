@@ -353,7 +353,8 @@
     .el-drawer__wrapper {
         top: 92px;
         right:0px !important;
-        width: 380px;
+        // width: 40%;
+        // min-width: 400px;
         left: auto;
     }
     .amap-main-content {
@@ -429,6 +430,12 @@
     }
      .amap-drawer {
         overflow: visible;
+        .w-400 {
+            width: 400px;
+        }
+        .w-600 {
+            width: 600px;
+        }
         .drawerBtn {
             margin-left: 50%;
             width: 26px;
