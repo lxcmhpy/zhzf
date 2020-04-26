@@ -75,9 +75,15 @@
               <el-option v-for="item in resourceTypeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="名称" prop="type">
+          <el-form-item label="名称" prop="type" v-if="pdfForm.resourceType=='2'">
             <el-select v-model="setForm.resourceName" prop="type" style='width:240px'>
               <el-option v-for="item in resourceNameList" :key="item.id" :label="item.bindName" :value="item.bindName"></el-option>
+            </el-select>
+          </el-form-item>
+  
+          <el-form-item label="名称" prop="bindName" v-if="pdfForm.resourceType=='3'">
+            <el-select v-model="setForm.resourceName" >
+              <el-option v-for="item in resourceNameList" :key="item.id" :label="item.name" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -189,10 +195,7 @@ export default {
         }],
       pdfAndFormList: [],
       resourceNameList: [],
-      resourceTypeList: [{
-        id: '1',
-        name: '基本信息'
-      },
+      resourceTypeList: [
       {
         id: '2',
         name: '表单'
@@ -200,6 +203,9 @@ export default {
       {
         id: '3',
         name: '文书'
+      },{
+        id: '1',
+        name: '基本信息'
       }],
       isShow: false,
       dialogVisible: false,
@@ -241,6 +247,8 @@ export default {
         bindType: [{ required: true, message: "请选择类型", trigger: "blur" }],
         bindName: [{ required: true, message: "请选择名称", trigger: "blur" }],
       },
+      bindList:[],
+      bindPdfList:[],
     };
   },
   methods: {
@@ -249,30 +257,37 @@ export default {
       this.pdfAndFormList = '';
       console.log(this.pdfForm.bindType)
       if(this.pdfForm.bindType=='2'){
-        this.getFormList()
+        this.pdfAndFormList=this.bindList
       }
       if(this.pdfForm.bindType=='3'){
-        this.getPdfList()
+        this.pdfAndFormList=this.bindPdfList
       }
       
       // this.getPdfAndFormList()
     },
     changeResourceType() {
-      this.pdfForm.bindName = '';
-      this.pdfAndFormList = ''
-      let data = {
-        bindName: this.pdfForm.bindName,
-        bindType: this.pdfForm.bindType,
-        resourceName: this.pdfForm.resourceName,
-        resourceType: this.pdfForm.resourceType
+      this.pdfForm.resourceName = '';
+      this.resourceNameList = ''
+
+       if(this.pdfForm.resourceType=='2'){
+        this.resourceNameList=this.bindList
       }
-      findSetListApi(data).then(
-        res => {
-          console.log('可移送列表', res)
-          this.resourceNameList = res.data.records
-          console.log('pdfAndFormList', this.pdfAndFormList)
-          this.resourceData = res.data.records
-        });
+      if(this.pdfForm.resourceType=='3'){
+        this.resourceNameList=this.bindPdfList
+      }
+      // let data = {
+      //   bindName: this.pdfForm.bindName,
+      //   bindType: this.pdfForm.bindType,
+      //   resourceName: this.pdfForm.resourceName,
+      //   resourceType: this.pdfForm.resourceType
+      // }
+      // findSetListApi(data).then(
+      //   res => {
+      //     console.log('可移送列表', res)
+      //     this.resourceNameList = res.data.records
+      //     console.log('pdfAndFormList', this.pdfAndFormList)
+      //     this.resourceData = res.data.records
+      //   });
     },
     //表单筛选
     getPdfAndFormList() {
@@ -384,8 +399,8 @@ export default {
       getQueryLinkListApi(data).then(
         res => {
           console.log('抽屉表', res)
-
           this.pdfAndFormList = res.data
+          this.bindList = res.data
         });
     },
     //  文书抽屉表 
@@ -394,7 +409,8 @@ export default {
       getAllPdfListApi(data).then(res => {
         if (res.code == 200) {
           console.log('文书抽屉表', res)
-          this.pdfAndFormList = res.data.records
+          // this.pdfAndFormList = res.data.records
+          this.bindPdfList = res.data.records
         } else {
           console.log("fail");
         }
@@ -404,6 +420,7 @@ export default {
   mounted() {
     // this.setDepartTable(this.data)
     this.getFormList();
+    this.getPdfList();
     this.pdfForm.bindType = this.typeList[0].id
   },
   created() {
