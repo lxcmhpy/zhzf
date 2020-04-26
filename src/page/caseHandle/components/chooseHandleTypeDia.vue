@@ -8,7 +8,7 @@
               <div v-for="(item,index) in handleTypeList" :key="index"><el-radio :label="item.value">{{item.label}}</el-radio></div>
             </div>
           </el-radio-group>
-        </el-form-item> 
+        </el-form-item>
       </el-form>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -66,7 +66,6 @@ export default {
       this.visible = false;
     },
     approvalSure() {
-      debugger
       console.log('文书信息', this.caseData)
       // 进入文书
       console.log('代入信息', this.approvalForm)

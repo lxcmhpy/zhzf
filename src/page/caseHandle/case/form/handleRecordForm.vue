@@ -220,7 +220,6 @@ import {
                     current: this.currentPage,
                     size: this.pageSize
                 };
-                debugger
                 let _this = this
                 this.$store.dispatch("getHandleRecord", data).then(res => {
                     _this.tableData = res.data.records;
@@ -268,7 +267,7 @@ import {
               return Y + M + D + h + m;
             },
 
-             
+
             starttime(){
               if (this.recordForm.operateEndTime){
                 if(this.recordForm.operateStartTime > this.recordForm.operateEndTime){

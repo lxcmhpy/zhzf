@@ -651,7 +651,7 @@ export const mixinGetCaseApiList = {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }
-        if(caseIsApprovaling && (data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006')){    
+        if(caseIsApprovaling && (data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006')){
           this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
         }else{
           this.searchHuanjiePdf(data2,data.linkID);
@@ -726,5 +726,11 @@ export const mixinGetCaseApiList = {
   created() {
     // this.getApiList();
     this.isCompete();
+  },
+  watch: {
+    '$route' (to, from) {
+        debugger;
+        this.init()
+    }
   }
 }

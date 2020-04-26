@@ -46,7 +46,13 @@
         </el-table>
       </div>
       <div class="paginationBox">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
+        <el-pagination 
+        @size-change="handleSizeChange" 
+        @current-change="handleCurrentChange" 
+        :current-page="currentPage" 
+        background :page-sizes="[10, 20, 30, 40]" 
+        layout="prev, pager, next,sizes,jumper" 
+        :total="total"></el-pagination>
       </div>
     </div>
     <!-- 添加弹出框 -->
@@ -158,6 +164,7 @@ import { mapGetters } from "vuex";
 import {
   findByCaseIdAndDocIdApi
 } from "@/api/caseHandle";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     const isSelect = (rule, value, callback) => {
@@ -238,7 +245,8 @@ export default {
     debugger
         let data = {
             caseId:row.caseId,
-            docId: row.caseSerProofId,
+            // docId: row.caseSerProofId,
+            docId:'2c9029cf6931aa5c01693381ac690018'
         };
         let _that = this
         findByCaseIdAndDocIdApi(data).then(res=>{
@@ -252,9 +260,10 @@ export default {
         this.pdfVisible = true
     },
     //表单筛选
-    getDeliverReList() {
+    getDeliverReList(val) {
       debugger
       console.log('caseId=',this.caseId)
+      this.currentPage = val;
       let data = {
         caseId: this.caseId,
         docName: this.deliverReForm.docName,
@@ -263,12 +272,11 @@ export default {
         servedType: this.deliverReForm.servedType,
         current: this.currentPage,
         size: this.pageSize
-      };
-      debugger
+      };      
       console.log('data',data)
       let _this = this
       this.$store.dispatch("getDeliverReceipt", data).then(res => {
-        debugger
+        console.log("111",res.data.records);
         _this.tableData = res.data.records;
         _this.total = res.data.total;
       });
@@ -306,13 +314,11 @@ export default {
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getDeliverReList();
+      this.getDeliverReList(1);
     },
     //更换页码
     handleCurrentChange(val) {
-      debugger
-      this.currentPage = val;
-      this.getDeliverReList();
+      this.getDeliverReList(val);
     },
     randomString(e) {
       e = e || 32;
@@ -348,7 +354,8 @@ export default {
         console.log('row',row)
         let routerData = {
           hasApprovalBtn: false,
-          docId: row.caseSerProofId,
+          // docId: row.caseSerProofId,
+          docId: '2c9029cf6931aa5c01693381ac690018',
           approvalOver: false,
           hasBack: true,
           docDataId:row.caseSerProofId
@@ -360,7 +367,7 @@ export default {
   },
   mounted() {
     // this.setDepartTable(this.data)
-    this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
+    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
   },
   created() {
     this.getDeliverReList();

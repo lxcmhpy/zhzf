@@ -69,10 +69,11 @@
         </el-aside>
         <el-container>
           <el-header id="tabsHeader" style="height:33px">
-            <tabsMenu></tabsMenu>
+            <tabsMenu @router="router"></tabsMenu>
           </el-header>
           <el-main>
-            <mainContent></mainContent>
+            <!-- <mainContent></mainContent> -->
+              <router-view></router-view>
           </el-main>
         </el-container>
 
@@ -137,18 +138,24 @@ export default {
     },
 
     getSelectHeadMenu(name) {
-        debugger;
       this.selectedHeadMenu = name;
+    },
+    router (name, route) {
+        // debugger;
+        // this.$router.push({ name: name,params: route.params});
     }
-
   },
   watch: {
-    $router(a, b) {
-      console.log(a, b)
+    '$route' (to, from) {
+        // this.init()
     }
   },
   mounted() {
     console.log(this.userInfo)
+  },
+  created(){
+    //判断有没有menu
+    this.$util.initUser(this);
   }
 };
 </script>

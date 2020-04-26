@@ -69,6 +69,14 @@ const route = [
       ...caseCenterJson
     ]
   },
+  {
+    path: '/reloadPage',
+    name: 'reloadPage',
+    meta: {
+        oneTab:false
+    },
+    component: () => import("@/router/reload.vue")
+}
   //主页的路由
   // {
   //   path: '/main',

@@ -311,7 +311,6 @@ export default {
             _this.$set(_this.timeList,1,minDate);
           }
           if(maxDate) {
-            //  _this.$set(_this.timeList,0,minDate);
             _this.$set(_this.timeList,1,maxDate);
           }
         }

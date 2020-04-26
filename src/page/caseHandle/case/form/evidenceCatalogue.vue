@@ -161,13 +161,14 @@ export default {
     },
   },
   mounted () {
-      this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST;
-      console.log(this.host);
+      
        let class1 =  document.getElementsByClassName("evidenceCatalogueBox");
       let class2 = class1[0].parentNode;
       class2.style.right = '60px';
       class2.style.top = '60px';
       class2.style.overflow = 'hidden';
+      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+      console.log(this.host);
   }
 };
 </script>

@@ -2,7 +2,7 @@
   <!-- 头部一级菜单 -->
   <div>
     <el-menu
-      :default-active="`${headActiveNav}`"
+      :default-active="headActiveNav"
       class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect">
@@ -26,7 +26,6 @@ import { mapGetters } from "vuex";
     },
     methods: {
       handleSelect(key, keyPath) {
-
         let keyStr = key.split(this.reg);
         this.$store.commit("SET_ACTIVE_INDEX_STO", key);
         this.$store.commit("set_Head_Active_Nav", key);
@@ -44,10 +43,17 @@ import { mapGetters } from "vuex";
     watch: {
     },
     created () {
-        },
+    },
     mounted () {
         this.headMenuList = this.menu;
-        // this.$store.commit("set_Head_Active_Nav", this.headActiveNav);
+        this.$store.commit("set_Head_Active_Nav", this.headActiveNav);
     },
+    watch:{
+      //监听menu
+      menu(val){
+        this.headMenuList = this.menu;
+        this.$store.commit("set_Head_Active_Nav", this.headActiveNav);
+      }
+    }
   };
 </script>

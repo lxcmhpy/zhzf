@@ -1,6 +1,6 @@
 <template>
   <!--  执法监管首页 by-jingli -->
-  <div id="lawSupervise" ref="lawSupervise" class="mainBox">
+  <div id="lawSupervise" ref="lawSupervise" class="mainBox" :class="{'lawScreenFull':lawScreenFull}">
     <div class="amap-page-container">
       <!-- amap://styles/whitesmoke -->
       <!-- :features="['road','bg', 'building']" -->
@@ -20,7 +20,7 @@
                   <p>{{curWindow.other.address}}</p>
                   <p>{{curWindow.other.mobile}}</p>
                 </div>
-                <div class="status">
+                <div class="status greenC2">
                   <i class="iconfont law-mobile-phone"></i>
                   <p>在线</p>
                 </div>
@@ -45,8 +45,14 @@
                   <p>{{curWindow.other.status}}</p>
                 </div>
               </div>
-
-              <div class="btns">
+             <div class="btns">
+                <span class="phoneBtn blueBg" >李静</span>
+                <span  class="phoneBtn" >王玉凤</span>
+                <span  class="phoneBtn blueBg lineh" >迪丽<br>热巴</span>
+                <span  class="phoneBtn blueBg lineh" >欧阳<br>娜娜</span>
+                <span  class="phoneBtn blueBg" >···</span>
+            </div>
+              <!-- <div class="btns">
                 <div class="flexBox">
                   <div class="con">
                     <p>{{curWindow.other.address}}</p>
@@ -59,7 +65,7 @@
                     <span>{{curWindow.other.position}}</span>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
             <!-- 2执法车辆 -->
             <div v-else-if="curWindow.category == 2">
@@ -72,7 +78,7 @@
                   <p>{{curWindow.other.organName}}</p>
                   <!-- <p>{{curWindow.other.mobile}}</p> -->
                 </div>
-                <div class="status">
+                <div class="status greenC2">
                   <i class="iconfont law-mobile-phone"></i>
                   <p>在线</p>
                 </div>
@@ -101,7 +107,7 @@
                   <br />
                   {{curWindow.other.organName}}
                 </div>
-                <div class="status">
+                <div class="status greenC2">
                   <i class="iconfont law-mobile-phone"></i>
                   <p>在线</p>
                 </div>
@@ -119,7 +125,7 @@
             <!-- 4非现场治超检测 -->
             <div v-else-if="curWindow.category == 4">
               <div>
-                  <img :src="'./static/images/img/lawSupervise/jg_bg.png'">
+                  <img width="100%" :src="'./static/images/img/lawSupervise/jg_bg.png'">
               </div>
               <div class="lawWindowTitle">
                 {{curWindow.other.name}}
@@ -140,13 +146,13 @@
                   </div>
                 </div>
               </div>
-              <div class="btns">
-                <el-table v-if="curWindow.other.list" style="width: 100%;" :data="curWindow.other.list" resizable stripe>
-                  <el-table-column width=" " prop="checkTime" label="过检时间"></el-table-column>
-                  <el-table-column width="100" prop="vehicleNumber" label="车牌号"></el-table-column>
-                  <el-table-column width="70" prop="overload" label="超载率"></el-table-column>
-                  <el-table-column width="100" prop="area" label="车属地"></el-table-column>
-                  <el-table-column width="80" label="重点监管">
+              <div class="con ">
+                <el-table v-if="curWindow.other.list" style="width: 100%;line-height: 40px;" :data="curWindow.other.list.splice(0,5)" resizable stripe>
+                  <el-table-column width="170" align="center" prop="checkTime" label="过检时间"></el-table-column>
+                  <el-table-column width="100" align="center" prop="vehicleNumber" label="车牌号"></el-table-column>
+                  <el-table-column width="80" align="center" prop="overload" label="超载率"></el-table-column>
+                  <el-table-column width="80" align="center" prop="area" label="车属地"></el-table-column>
+                  <el-table-column width="80" align="center" label="重点监管">
                     <template>
                       <span>是</span>
                     </template>
@@ -305,6 +311,7 @@
           </div>
         </transition>
       </el-button>
+      <el-button size="medium" class="commonBtn searchBtn" icon="el-icon-copy-document" @click="lawScreenFull=!lawScreenFull">全屏切换</el-button>
     </div>
   </div>
 </template>
@@ -351,6 +358,7 @@ export default {
   data() {
     let self = this;
     return {
+      lawScreenFull: false,
       videoDoing: null,
       showVideo: false,
       show: true,
@@ -770,6 +778,7 @@ export default {
   },
   mounted() {
       window.PhoneCallModule.sipRegister();
+      this.updateDrawer();
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {

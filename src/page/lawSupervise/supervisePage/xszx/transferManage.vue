@@ -9,7 +9,7 @@
                     <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
                 </el-form-item>
                 <el-form-item label="车牌号">
-                    <el-select v-model="form.vehicleColor" class="w-80" placeholder="请选择">
+                    <el-select v-model="form.vehicleColor" placeholder="请选择">
                         <el-option
                         v-for="item in vehicleColorList"
                         :key="item.id"

@@ -97,7 +97,7 @@
             <el-table-column type="selection" align="center"></el-table-column>
             <el-table-column prop="username" label="用户名"></el-table-column>
             <el-table-column prop="nickName" label="姓名"></el-table-column>
-            <el-table-column prop="enforceNo" label="执法证号"></el-table-column>
+            <el-table-column prop="ministerial" label="执法证号"></el-table-column>
             <el-table-column prop="mobile" label="联系电话"></el-table-column>
             <el-table-column prop="roleNames" label="角色"></el-table-column>
             <el-table-column prop="userOrgan" label="所属机构"></el-table-column>

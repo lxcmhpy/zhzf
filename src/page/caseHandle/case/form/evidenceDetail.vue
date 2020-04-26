@@ -68,6 +68,7 @@
 </div>
 </template>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
 export default {
     data(){        
         return{
@@ -95,7 +96,7 @@ export default {
         },
     },
     mounted(){
-      this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST;
+      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
 }
 </script>

@@ -63,6 +63,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { findByCaseBasicInfoIdApi,findByCaseIdAndDocIdApi,getDeliverReceiptByCaseIdApi } from "@/api/caseHandle";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
@@ -121,14 +122,12 @@ export default {
         this.$router.push({name:'case_handle_archiveCatalogueDetail'})
     },
     alertPDF (item) {
-        debugger
         let data = {
             caseId:item.caseId,
             docId: item.caseSerProofId,
         };
         let _that = this
         findByCaseIdAndDocIdApi(data).then(res=>{
-            debugger
             _that.mlList = _that.host + res.data[0].storageId;
 
         },err=>{
@@ -148,7 +147,7 @@ export default {
     }
   },
   mounted () {
-     this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST;
+     this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
       let class1 =  document.getElementsByClassName("deliverCaBox");
       let class2 = class1[0].parentNode;
       class2.style.right = '60px';

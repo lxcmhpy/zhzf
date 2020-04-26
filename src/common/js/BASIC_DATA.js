@@ -12,5 +12,7 @@ export const BASIC_DATA_SYS = {
     // 监管 超限率
     cxl: '28bc01c6fb9ddd92db25ab764e605c90',
     // 车牌颜色
-    vehicleColor: '388c5ac24cde480df1a54bc97829a481'
+    vehicleColor: '388c5ac24cde480df1a54bc97829a481',
+    // 无效信息类型
+    invalidCode:'a0a2d83376fe7695f76fbba69545c056'
 }

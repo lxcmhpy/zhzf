@@ -53,21 +53,21 @@ export default  [
                },
                component: () => import("@/page/lawSupervise/supervisePage/xszx/offSiteManage.vue"),
            }, {
-               path: '/offSiteDetail',
+               path: '/offSiteDetail/:offSiteManageId',
                name: 'offSiteDetail',
                meta: {
                    title: '线索详情'
                },
                component: () => import("@/page/lawSupervise/supervisePage/xszx/offSiteDetail.vue")
            }, {
-                path: '/evidenceDetail',
+                path: '/evidenceDetail/:offSiteManageId',
                 name: 'evidenceDetail',
                 meta: {
                     title: '证据详情'
                 },
                 component: () => import("@/page/lawSupervise/supervisePage/xszx/evidenceDetail.vue")
            }, {
-            path: '/invalidCueDetail',
+            path: '/invalidCueDetail/:offSiteManageId',
             name: 'invalidCueDetail',
             meta: {
                 title: '无效信息'
@@ -75,7 +75,7 @@ export default  [
             component: () => import("@/page/lawSupervise/supervisePage/xszx/invalidCueDetail.vue")
         },
         {
-            path: '/examineDoingDetail/:status',
+            path: '/examineDoingDetail/:status/:offSiteManageId',
             name: 'examineDoingDetail',
             meta: {
                 title: '待审核'
@@ -83,7 +83,7 @@ export default  [
             component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDoingDetail.vue")
         },
         {
-            path: '/transferDetail',
+            path: '/transferDetail/:offSiteManageId',
             name: 'transferDetail',
             meta: {
                 title: '已转办详情'

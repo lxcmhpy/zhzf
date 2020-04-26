@@ -201,7 +201,7 @@
                <span> 现场情况：（如实施行政强制措施的，包括当场告知当事人采取行政强制措施
                <br>的理由、依据以及当事人依法享有的权利、救济途径，听取当事人陈述、申
                <br>辩情况。）</span>
-                <div class="overflow_lins_style">
+                <div class="overflow_lins_style" id="noteDesCon">
                   <div class="overflow_lins">
                     <el-form-item prop="illegalFacts">
                       <el-input
@@ -212,18 +212,18 @@
                         maxlength="400"
                         placeholder="\"
                       ></el-input>
-                      <p class="span_bg" @click="overFlowEdit">&nbsp;</p>
-                      <p class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</p>
-                      <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-                      <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-                      <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-                      <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-                      <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-                      <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-                      <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-                      <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-                      <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-                      <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
+                      <p class="span_bg" >&nbsp;</p>
+                      <p class="span_bg">&nbsp;</p>
+                      <p class="span_bg">&nbsp;</p>
+                      <p class="span_bg">&nbsp;</p>
+                      <p class="span_bg" >&nbsp;</p>
+                      <p class="span_bg" >&nbsp;</p>
+                      <p class="span_bg" >&nbsp;</p>
+                      <p class="span_bg">&nbsp;</p>
+                      <p class="span_bg">&nbsp;</p>
+                      <p class="span_bg">&nbsp;</p>
+                      <p class="span_bg">&nbsp;</p>
+                      <p class="span_bg">&nbsp;</p>
 
                     </el-form-item>
                   </div>
@@ -620,7 +620,7 @@ export default {
         this.docData.scenePeopelSex = Number(dailiData.sex);
         this.docData.scenePeopelIdNo = dailiData.zhengjianNumber;
         this.docData.scenePeopeRelation = dailiData.relationWithCase;
-        this.docData.scenePeopeUnitPosition = dailiData.company + " " + dailiData.position;
+        this.docData.scenePeopeUnitPosition = dailiData.company ;
         this.docData.scenePeopeAddress = dailiData.adress;
         this.docData.scenePeopeTel = dailiData.tel;
 
@@ -701,6 +701,23 @@ export default {
       top:0;
       left:10px;
     }
+  }
+  #noteDesCon{
+    .overflow_lins_textarea{
+        padding-top: 4px;
+        textarea{
+          line-height: 24px !important;
+        }
+    }
+    span.overflow_lins_textarea{
+      line-height: 24px;
+    }
+    .span_bg{
+        box-sizing: border-box;
+        margin: 4px 0;
+        height: 20px;
+      }
+
   }
 
 }

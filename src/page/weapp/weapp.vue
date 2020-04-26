@@ -12,7 +12,6 @@
     },
     methods: {
       btnAddTab(){
-
         let hasTab = false;
         this.$store.state.openTab.forEach(item=>{
           if(item.name=='xiangqing'){

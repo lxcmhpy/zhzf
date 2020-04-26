@@ -4,9 +4,12 @@
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
         <div class="doc_topic">送达回证</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
-        <div>案由:<el-form-item prop="caseName" style="width:585px">
+        <!-- <div>案由:<el-form-item prop="caseName" style="width:585px">
             <el-input type="textarea" v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled style="height:36px;"></el-input>
           </el-form-item>
+        </div> -->
+        <div class="doc_cause">
+          案由：{{docData.caseName}}
         </div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
@@ -56,13 +59,17 @@
               <td>{{item.address ? item.address : ''}}</td>
               <td>{{item.servedDate ? item.servedDate : ''}}</td>
               <td>{{item.servedType ? item.servedType : ''}}</td>
-              <td>{{item.deliveryMaster ? item.deliveryMaster : ''}}</td>
+              <td>{{item.deliveryMaster ? item.deliveryMaster.join(',') : ''}}</td>
             </tr>
          
             <tr>
             <td colspan="6">
               <div class="pdf_seal">
+<<<<<<< HEAD
                 <br/><br/>
+=======
+                <br/><br/><br/>
+>>>>>>> df961f075404c3a8c08ff67530484d858a21f570
                 <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
                 <!-- <el-form-item prop="makeDate" class="pdf_datapick">
                   <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
@@ -91,7 +98,7 @@
     
 
      <!-- 添加弹出框 -->
-    <el-dialog title="编辑送达详情" :visible.sync="addVisible" width="60%" v-loading="addLoading" :before-close="handleClose">
+    <el-dialog title="编辑送达详情" :visible.sync="addVisible" width="75%" v-loading="addLoading" :before-close="handleClose">
       <div>
         <div>
           <el-form ref="addDocFormRef">
@@ -137,10 +144,20 @@
                 </template>
               </el-table-column>
 
-              <el-table-column prop="deliveryMaster" label="送达人" align="center">
+              <el-table-column prop="deliveryMaster" label="送达人" align="center" width="210px">
                 <template slot-scope="scope">
                   <!-- {{scope.row.deliveryMaster}} -->
-                  <el-input v-model="scope.row.deliveryMaster" v-on:click.native="chooseStaff(scope.row)"></el-input>
+                  <!-- <el-input v-model="scope.row.deliveryMaster" v-on:click.native="chooseStaff(scope.row)"></el-input> -->
+                  <el-select v-model="scope.row.deliveryMaster" multiple placeholder="请选择" style="width:200px">
+                    <el-option
+                      v-for="item in staffData"
+                      :key="item.certificateId"
+                      :label="item.name"
+                      :value="item.name">
+                      <span>{{ item.name }}</span>
+                      <span style="margin-left:5px">{{ item.certificateId }}</span>
+                    </el-option>
+                  </el-select>
                 </template>
               </el-table-column>
 
@@ -171,7 +188,10 @@ import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import mySignture from "@/common/js/mySignture";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
-
+import {
+  findCaseAllBindPropertyApi,
+} from "@/api/caseHandle";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: {
     casePageFloatBtns,
@@ -191,7 +211,7 @@ export default {
       docData: {
         caseName: "",
         caseNumber: "",
-        servedOrg: "",
+        servedOrg: iLocalStroage.gets("userInfo").organName,
         recivePerson: "",
         recivePersonInstead: "",
         docNote: '',
@@ -227,7 +247,7 @@ export default {
       maxLengthOverLine: 122,
       maxLength: 23,
       formOrDocData: {
-        showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+        showBtn: [false, true, false, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'deliverCertificate-print',
       },
       addVisible: false,
@@ -298,7 +318,8 @@ export default {
       }, {
         value: '中止（终结、恢复）行政强制执行通知书',
         label: '中止（终结、恢复）行政强制执行通知书'
-      }]
+      }],
+      staffData:[],
     }
   },
   methods: {
@@ -341,7 +362,10 @@ export default {
     },
   // 提交文书表单
     saveData(handleType, docForm) {
-      debugger
+      let newdeliveryCertificatelist =JSON.parse(JSON.stringify(this.docData.deliveryCertificatelist));
+      newdeliveryCertificatelist.forEach(item=>{
+        item.deliveryMaster = item.deliveryMaster.join(',');
+      })
       let data = {
             caseId: this.caseId, //流程里的案件id
             caseNumber: this.docData.caseNumber,
@@ -351,9 +375,10 @@ export default {
             server: this.docData.recivePerson,
             // recivePersonInstead: this.docData.recivePersonInstead,//代收人
             collector: this.docData.recivePersonInstead,
-            deliveryCertificatelist: this.docData.deliveryCertificatelist,//送达文书列表
+            deliveryCertificatelist:newdeliveryCertificatelist,//送达文书列表
             docNote: this.docData.docNote//备注
       };
+      console.log('送达回证',data);
       if (handleType==1) {
          debugger
         this.$refs['docForm'].validate((valid, noPass) => {
@@ -486,16 +511,55 @@ export default {
       let canAdd = true;
       for(let i=0; i<this.tableDatas.length; i++){
           if(!this.tableDatas[i].docName || !this.tableDatas[i].address || !this.tableDatas[i].servedDate || !this.tableDatas[i].servedType || !this.tableDatas[i].deliveryMaster){
-            this.$message({
-              message: '数据至少有一项不为空！',
-              type: 'warning'
-            });
+            if(!this.tableDatas[i].docName){
+              this.$message({
+                message: '送达文书名称不能为空！',
+                type: 'warning'
+              });
+            }else
+            if(!this.tableDatas[i].address){
+              this.$message({
+                message: '送达地点不能为空！',
+                type: 'warning'
+              });
+            }else
+            if(!this.tableDatas[i].servedDate){
+              this.$message({
+                message: '送达日期不能为空！',
+                type: 'warning'
+              });
+            }else
+            if(!this.tableDatas[i].servedType){
+              this.$message({
+                message: '送达方式不能为空！',
+                type: 'warning'
+              });
+            }else
+            if(!this.tableDatas[i].deliveryMaster){
+              this.$message({
+                message: '送达人不能为空！',
+                type: 'warning'
+              });
+            }
+            // this.$message({
+            //   message: '数据至少有一项不为空！',
+            //   type: 'warning'
+            // });
             canAdd = false;
             break;
           }
         }
+      
         if(canAdd){
+          // this.tableDatas.forEach(item=>{
+          //   item.deliveryMaster = item.deliveryMaster.join(',');
+          // })
+          // console.log('this.tableDatas',this.tableDatas)
+
           this.docData.deliveryCertificatelist = this.tableDatas;
+          //  this.docData.deliveryCertificatelist.forEach(item=>{
+          //    item.
+          //  })
           this.addVisible = false;
         }
     
@@ -515,6 +579,25 @@ export default {
     setDeliveryMaster(userlist){
       console.log('选择的执法人员', userlist);
       // row.deliveryMaster = userlist.join(',');
+    },
+    //获取执法人员
+    getLawOfficer(){
+      let data = {
+        id: this.caseId
+      };
+      this.$store.dispatch("getCaseBasicInfo", data).then(
+        res => {
+          console.log('获取案件信息', res);
+          let staff = res.data.staff.split(',');
+          let certificateId = res.data.certificateId.split(',');
+          staff.forEach((item,index)=>{
+             this.staffData.push({name:item,certificateId:certificateId[index]})
+          })
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
   },
 
@@ -522,21 +605,23 @@ export default {
     this.getDocDataByCaseIdAndDocId();
     this.getDataAfter();
     // this.getCaseBasicInfo();
+    // let organName = iLocalStroage.gets("userInfo").organName;
   },
   created() {
     this.isOverStatus();
-   
+    this.getLawOfficer();
   }
 }
 </script>
 <style lang="scss" >
 @import "@/assets/css/caseHandle/caseDocModle.scss";
 </style>
-<style scoped>
+<style  scoped>
 .print_box .print_info tr td{
   white-space: inherit;
+  
 }
-.color_DBE4EF
+/* .color_DBE4EF
   /deep/
   .el-form-item__content
   /deep/
@@ -545,5 +630,7 @@ export default {
   .el-input__inner {
   padding-left: 0px;
   width: 75%;
-}
+} */
+
+
 </style>

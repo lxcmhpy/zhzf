@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
 export default {
   name: "",
   data() {
@@ -12,6 +13,15 @@ export default {
   },
   methods: {
 
+  },
+  watch: {
+    '$route' (to, from) {
+        // debugger;
+        // this.init()
+    }
+  },
+  destroyed () {
+      this.$store.dispatch("LOGOUT");
   }
 }
-</script>  
+</script>

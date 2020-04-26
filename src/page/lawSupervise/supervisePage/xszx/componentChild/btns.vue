@@ -1,17 +1,26 @@
 <template>
   <div class="superviseBtns">
+    <div v-if="tabActiveValue == '0'">
+        <el-button type="button" class="submitBtn grayBtn" @click="showInvalidCue" >
+            <i class="el-icon-warning-outline"></i>
+            <div>无效<br />信息</div>
+        </el-button>
+    </div>
     <div v-if="['0', '1'].indexOf(tabActiveValue) > -1">
-      <el-button type="button" class="submitBtn grayBtn" @click="showInvalidCue" >
-        <i class="el-icon-warning-outline"></i>
-        <div>无效<br />信息</div>
-      </el-button>
       <el-button type="button" class="submitBtn blueBtn" @click="nextRouter">
         <i class="iconfont law-xiayibu"></i>
         <div>下一步</div>
       </el-button>
     </div>
+    <div v-if="tabActiveValue == '3'">
+      <el-button type="button" class="submitBtn blueBtn"  @click="showZbDialog">
+        <i class="iconfont law-xiayibu"></i>
+        <div>转办</div>
+      </el-button>
+    </div>
+
     <div v-else>
-      <el-button v-if="tabActiveValue !=='3'" type="button" class="submitBtn blueBtn" @click="showZbDialog">
+      <el-button v-if="tabActiveValue ==='2' && $route.name!='invalidCueDetail'" type="button" class="submitBtn blueBtn" @click="showZbDialog">
         <div>完成</div>
       </el-button>
     </div>
@@ -24,9 +33,10 @@
         </template>
     </span>
 
+
     <div>
         <el-dialog class="mini-dialog-title" title="无效信息" :visible.sync="visible" :show-close="false"
-            :close-on-click-modal="false" width="420px" >
+            :close-on-click-modal="false" width="420px"  append-to-body>
             <div class="error-message">
             <div class="">
                 <img src="@/../static/images/img/cluesReview/icon_wuxiao.png"  alt="" />
@@ -36,10 +46,14 @@
             <!-- <el-form :model="checkSearchForm" ref="checkSearchForm1" class="checkSearchForm" label-width="0"> -->
             <div class="invalidinfo">
                 <el-select v-model="checkSearchForm.number" placeholder="无效类型">
-                          <el-option :value='0' label="男"></el-option>
-                          <el-option :value='1' label='女'></el-option>
-                      </el-select>
-                <p>备注说明cc</p>
+                          <el-option
+                        v-for="item in invalidList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.name"
+                        ></el-option>
+                </el-select>
+                <p>备注说明</p>
                 <el-input v-model="checkSearchForm.color" type="textarea" :autosize="{ minRows: 1}"></el-input>
             </div>
             <!-- </el-form> -->
@@ -49,7 +63,7 @@
             </span>
         </el-dialog>
         <el-dialog class="mini-dialog-title" title="转办说明" :visible.sync="zbVisible" :show-close="false"
-            :close-on-click-modal="false" width="600px" >
+            :close-on-click-modal="false" width="600px" append-to-body>
             <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="130px">
                 <table style="line-height:50px;">
                     <tr>
@@ -117,6 +131,8 @@
 </style>
 <script>
 import {mapGetters} from "vuex";
+import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
+import {findAllDrawerById} from '@/api/lawSupervise.js';
 export default {
   //tabActiveValue: 1检测数据核对,2违法超限复合,3生成证据包
   props: ['tabActiveValue'],
@@ -126,7 +142,7 @@ export default {
             '0': '待审核',
             '1': '审核中',
             '2': '审核中',
-            '3': '已完成'
+            '3': '已审核'
         },
         selectCurrentTreeName: "",
         defaultExpandedKeys: [],
@@ -141,7 +157,8 @@ export default {
         number: '',
         color: ''
       },
-      icon: ['']
+      icon: [''],
+      invalidList: []
     };
   },
   methods: {
@@ -191,6 +208,7 @@ export default {
     },
     showInvalidCue(data) {
       console.log(data);
+      this.findAllDrawerById(BASIC_DATA_SYS.invalidCode, 'invalidList');
       this.visible = true;
     },
     //关闭弹窗的时候清除数据
@@ -202,6 +220,7 @@ export default {
       this.$router.push({ name: 'removeOrPrelong' })
     },
     routerOffSiteManage () {
+        this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.push({
             name: 'offSiteManage'
         })
@@ -232,7 +251,22 @@ export default {
           tabTitle: this.statusObj[nextStatus.toString()]
         }
       });
-    }
+    },
+    findAllDrawerById (data, obj) {
+        let _this = this
+        new Promise((resolve, reject) => {
+            findAllDrawerById(data).then(
+                res => {
+                    // resolve(res)
+                    _this[obj] = res.data
+                },
+                error => {
+                    //  _this.errorMsg(error.toString(), 'error')
+                        return
+                }
+            )
+        })
+    },
   },
   mounted() {
 

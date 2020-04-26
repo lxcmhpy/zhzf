@@ -44,6 +44,10 @@ const mutations = {
     }
     state.openTab.splice(index, 1);
   },
+  // 替换tab
+  [types.REPLACE_TABS](state, data) {
+    state.openTab.splice(data.index, data.num, data.data);
+  },
   //删除所有的tabs
   [types.DELETE_ALLTABS](state) {
     // state.openTab = [];

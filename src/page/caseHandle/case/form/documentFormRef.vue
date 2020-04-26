@@ -74,7 +74,7 @@
 <script>
   import {mapGetters} from "vuex";
   import {findByCaseBasicInfoIdApi, findByCaseIdAndDocIdApi, findVoByDocCaseIdApi} from "@/api/caseHandle";
-
+import iLocalStroage from "@/common/js/localStroage";
   export default {
     data() {
       return {
@@ -157,14 +157,12 @@
       //     console.log('选中的id',this.checkedDocId)
       // },
       alertPDF(item) {
-        debugger
         let data = {
           caseId: item.caseBasicinfoId,
           docId: item.caseDoctypeId,
         };
         let _that = this
         findByCaseIdAndDocIdApi(data).then(res => {
-          debugger
           _that.mlList = _that.host + res.data[0].storageId;
 
         }, err => {
@@ -184,19 +182,14 @@
       },
       //上下翻页显示pdf
       showNext(flag) {
-        debugger
         if (flag == 'last') {
-          debugger
           if (this.nowShowPdfIndex) {
-            debugger
             this.nowShowPdfIndex--;
             this.docSrc = this.host + this.checkedDocId[this.nowShowPdfIndex];
           }
         } else {
-          debugger
           if (this.nowShowPdfIndex != this.checkedDocId.length - 1) {
             this.nowShowPdfIndex++;
-            debugger
             this.docSrc = this.host + this.checkedDocId[this.nowShowPdfIndex];
           }
         }
@@ -206,9 +199,7 @@
 //      debugger
 //      console.log(val);
         if (val) {
-          debugger
           this.caseList.forEach(item => {
-            debugger
             //复选框存入id
             this.checkedDocId.push(item.storageId);
           });
@@ -219,7 +210,7 @@
       },
     },
     mounted() {
-      this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
+      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
       let class1 = document.getElementsByClassName("documentFormCat");
       let class2 = class1[0].parentNode;
       class2.style.right = '60px';

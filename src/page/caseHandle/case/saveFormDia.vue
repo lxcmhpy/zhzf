@@ -1,6 +1,6 @@
 <template>
   <el-dialog :title="title" width="420px" :visible.sync="visible" :close-on-click-modal="false">
-    <p><i class="el-icon-warning">请保存表单内容后再试!</i></p>
+    <p><i class="el-icon-warning " style="color:#E6A23C"></i>请保存表单内容后再试!</p>
     <br><br>
     <span slot="footer" class="dialog-footer">
       <el-button type="primary" @click="closeDoc">确认</el-button>

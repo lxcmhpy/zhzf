@@ -79,7 +79,7 @@
       </div>
       <div class="padding22 tablebox">
         <el-table :data="tableData" stripe height="100%" highlight-current-row @current-change="clickCase">
-          <el-table-column :prop="moreFlag != 'unRecordCase' ? 'caseNumber'  :'tempNo' " label="案号" align="center"></el-table-column>
+          <el-table-column :prop="moreFlag != 'unRecordCase'&&moreFlag !='approveIng' ? 'caseNumber'  :'tempNo' " label="案号" align="center"></el-table-column>
           <el-table-column prop="name" label="当事人" align="center"></el-table-column>
           <!-- <el-table-column prop="vehicleShipId" label="车/船号" align="center"></el-table-column> -->
           <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
@@ -219,6 +219,7 @@
 
     <caseRegisterDiag ref="caseRegisterDiagRef"></caseRegisterDiag>
     <chooseillegalAct ref="chooseillegalActRef" @toCaseRegister="toCaseRegister"></chooseillegalAct>
+    <tansferAtentionDialog ref="tansferAtentionDialogRef"></tansferAtentionDialog>
   </div>
 </template>
 <script>
@@ -228,6 +229,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import caseRegisterDiag from "@/page/caseHandle/unRecordCase/caseRegisterDiag.vue";
 import chooseillegalAct from "./chooseIllegegaDialog.vue";
+import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
 
 export default {
   mixins: [mixinGetCaseApiList],
@@ -463,6 +465,26 @@ export default {
         this.$router.push({
           name: "case_handle_archiveCover"
         });
+      } else {
+        if (row.caseStatus === '已移送') {
+          let message = '该案件正在移送中，移送完成后才可与继续办理'
+          this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
+        }
+        else {
+          this.$store.commit("setCaseId", row.id);
+          //设置案件状态不为审批中
+          this.$store.commit("setCaseApproval", false);
+          console.log(this.$store.state.caseId);
+          this.$router.push({
+            name: "case_handle_caseInfo",
+            params: {
+              caseInfo: row
+            }
+          });
+          let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+          this.$store.commit("setCaseNumber", setCaseNumber);
+        }
+
       }
     },
     //获取机构下数据
@@ -638,7 +660,7 @@ export default {
     //获取业务领域
     this.getEnforceLawType()
 
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

@@ -53,6 +53,9 @@ const store = new Vuex.Store({
                 }
             }
         },
+        LOGOUT (state) {
+            window.sessionStorage.clear();
+        }
     },
     modules: {
         system,

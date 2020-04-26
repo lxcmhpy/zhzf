@@ -56,7 +56,7 @@
       title="上传证据"
       :visible.sync="addEvidenceVisible"
       custom-class="dialog1"
-      @close="closeDialog"
+      @close="closeAddEvidenceDialog"
       append-to-body
       width="740px"
       :close-on-click-modal="false"
@@ -550,7 +550,8 @@ export default {
                 fid:item.fid,
                 id:item.id,
                 num:index+1,
-                page:item.page
+                page:item.page,
+                paperSize:item.paperSize
             }
             data.push(param)
         })
@@ -627,7 +628,7 @@ export default {
   },
   mounted() {
     // console.log(this.caseList);
-    this.host = JSON.parse(sessionStorage.getItem("CURRENT_BASE_URL")).PDF_HOST
+    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
     this.getByMlCaseId(this.caseId);
   },
   components: {

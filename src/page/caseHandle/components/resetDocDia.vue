@@ -54,7 +54,6 @@ export default {
       this.visible = false;
     },
     deleteDoc(){
-      debugger
       console.log(this.id);
         deleteDocByIdApi(this.id).then(
           res => {

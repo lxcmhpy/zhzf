@@ -322,13 +322,11 @@ export default {
       docId: this.$route.params.docId
     };
 
-    debugger;
     //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
     if (this.$route.params.handelType == 'isAddMore') {
       console.log('多份文书', this.$route.params.handelType)
       this.com_getCaseBasicInfo(data.caseId, data.docId);
     } else {
-      debugger
       // this.getDocDetailById(this.$route.params.docDataId)
       let currentDocDataId = iLocalStroage.get("currentDocDataId");
       if(currentDocDataId){
