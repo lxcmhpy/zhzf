@@ -1273,7 +1273,7 @@
               for (let i in fields) {
                 if (fields[i].labelFor === field) {
                   if(fields[i].label){
-                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
+//                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
                   }
                 }
               }
