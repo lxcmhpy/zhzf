@@ -1,5 +1,5 @@
 {
-  "CURRENT": "NW",
+  "CURRENT": "TEST",
   "TEST": {
     "HOST": "http://124.192.215.4:9000",
     "CAPTCHA_HOST": "http://124.192.215.4:9000",
@@ -10,7 +10,11 @@
     "HOST": "http://172.16.170.96:9000",
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
     "PDF_HOST": "http://172.16.170.54:9332/",
+<<<<<<< HEAD
     "LAW_SUPERVISE_HOST": "http://172.16.170.44:8090/"
+=======
+    "LAW_SUPERVISE_HOST": "http://172.16.170.96:8090/"
+>>>>>>> d74169e66d559571b280cce5e5be36abf6a217d3
   },
   "LOCAL": {
     "HOST": "http://127.0.0.1:9000",
