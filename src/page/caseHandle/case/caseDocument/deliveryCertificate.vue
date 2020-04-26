@@ -65,7 +65,11 @@
             <tr>
             <td colspan="6">
               <div class="pdf_seal">
+<<<<<<< HEAD
+                <br/><br/>
+=======
                 <br/><br/><br/>
+>>>>>>> df961f075404c3a8c08ff67530484d858a21f570
                 <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
                 <!-- <el-form-item prop="makeDate" class="pdf_datapick">
                   <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">

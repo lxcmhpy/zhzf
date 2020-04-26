@@ -104,7 +104,7 @@
                   <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
                 </el-form-item> -->
                  <el-form-item label="单位及职务">
-                     <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
+                     <el-input ref="partyUnitPositionAndCom" clearable class="w-120" v-model="formData.partyUnitPositionAndCom" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition || originalData.occupation ? true : false"></el-input>
                  </el-form-item>
               </div>
             </div>
@@ -373,7 +373,7 @@ export default {
         partyIdNo: "",
         partyAge: "",
         partyTel: "",
-        partyUnitPosition: "",
+        partyUnitPositionAndCom: "",
         partyAddress: "",
         partyZipCode: "",
         partyName: "",
@@ -585,7 +585,7 @@ export default {
       console.log("this.allAskDocList", this.allAskDocList);
     },
     getDataAfter(){
-      this.formData.partyUnitPosition = `${this.formData.partyUnitPosition} ${this.formData.occupation}`;
+      this.formData.partyUnitPositionAndCom = `${this.formData.partyUnitPosition} ${this.formData.occupation}`;
     }
   },
   created() {

@@ -12,8 +12,9 @@ export function getToken(tokenName) {
  * @param {*} expires 如果传入Number，那么单位为天，你也可以传入一个Date对象，表示有效期至Date指定时间
  */
 export function setToken(tokenName, tokenVal, expires = 1) {
-  let date = new Date()
-  date.setDate(date.getDate()+1)//1表示1天
+  // let date = new Date() 
+  // date.setDate(date.getDate()+1)//1表示1天
+  let date = new Date(new Date().getTime() + 12 * 60 * 60 * 1000) //12小时后过期
   return iLocalStroage.setExpired(tokenName, tokenVal, date.getTime().toString());
 }
 
