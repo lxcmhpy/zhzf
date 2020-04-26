@@ -10,13 +10,13 @@
             </el-select>
           </el-form-item>
           <el-form-item label="名称" prop="bindName" v-if="pdfForm.bindType=='2'">
-            <el-select v-model="pdfForm.bindName" >
-              <el-option v-for="item in pdfAndFormList" :key="item.id" :label="item.linkName" :value="item.linkName"></el-option>
+            <el-select v-model="pdfForm.bindName">
+              <el-option v-for="item in bindList" :key="item.id" :label="item.linkName" :value="item.linkName"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="名称" prop="bindName" v-if="pdfForm.bindType=='3'">
-            <el-select v-model="pdfForm.bindName" >
-              <el-option v-for="item in pdfAndFormList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+            <el-select v-model="pdfForm.bindName">
+              <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -57,7 +57,7 @@
             <template slot-scope="scope">
               <el-button type="text" @click="getRelation(scope.row)">值绑定</el-button>
               <el-button type="text" @click="goAddEditDia(scope.row)">修改属性</el-button>
-              <el-button type="text" @click="goAddEditDia(scope.row)">删除</el-button>
+              <!-- <el-button type="text" @click="goAddEditDia(scope.row)">删除</el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -70,24 +70,24 @@
     <el-dialog title="绑定值" :visible.sync="dialogVisible" width="800px">
       <div class="handlePart">
         <el-form :inline="true" :model="setForm" label-width="80px" ref="setFormRef">
-          <el-form-item label="类型" prop="type">
+          <el-form-item label="类型" prop="resourceType">
             <el-select v-model="setForm.resourceType" prop="type" style='width:120px' @change="changeResourceType">
               <el-option v-for="item in resourceTypeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="名称" prop="type" v-if="pdfForm.resourceType=='2'">
-            <el-select v-model="setForm.resourceName" prop="type" style='width:240px'>
-              <el-option v-for="item in resourceNameList" :key="item.id" :label="item.bindName" :value="item.bindName"></el-option>
+          <el-form-item label="名称" prop="resourceName" v-if="setForm.resourceType=='2'">
+            <el-select v-model="setForm.resourceName" style='width:240px'>
+              <el-option v-for="item in bindList" :key="item.id" :label="item.linkName" :value="item.linkName" :disabled="item.name==pdfForm.bindName"></el-option>
             </el-select>
           </el-form-item>
-  
-          <el-form-item label="名称" prop="bindName" v-if="pdfForm.resourceType=='3'">
-            <el-select v-model="setForm.resourceName" >
-              <el-option v-for="item in resourceNameList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+
+          <el-form-item label="名称" prop="resourceName" v-if="setForm.resourceType=='3'">
+            <el-select v-model="setForm.resourceName" style='width:240px'>
+              <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.name" :disabled="item.name==pdfForm.bindName"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" @click="getPdfAndFormList" style="margin-left:20px">确认选择</el-button>
+            <el-button type="primary" size="medium" @click="getPdfAndFormSetList" style="margin-left:20px">确认选择</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -113,10 +113,12 @@
               {{scope.row.itemValue ||noValue}}
             </template>
           </el-table-column>
-          <el-table-column label="选择属性" align="center">
+          <el-table-column label="添加绑定" align="center">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.relation" active-color="#13ce66" inactive-color="#ff4949">
-              </el-switch>
+              <span @click="changeSet(scope.row)">
+                <i class="el-icon-circle-plus"></i>添加
+
+              </span>
             </template>
           </el-table-column>
         </el-table>
@@ -128,7 +130,7 @@
     </el-dialog>
 
     <!-- 添加字段 -->
-    <el-dialog :title="dialogTitle" :visible.sync="addVisible" width="400px">
+    <el-dialog :title="dialogTitle" :visible.sync="addVisible" width="400px" :before-close="handleBeforeClose">
       <el-form :model="editForm" label-width="85px" ref="editFormRef">
         <el-form-item label="属性名称">
           <el-input v-model="editForm.bindProperty" autocomplete="off"></el-input>
@@ -193,20 +195,19 @@ export default {
           id: '1',
           name: '基本信息'
         }],
-      pdfAndFormList: [],
       resourceNameList: [],
       resourceTypeList: [
-      {
-        id: '2',
-        name: '表单'
-      },
-      {
-        id: '3',
-        name: '文书'
-      },{
-        id: '1',
-        name: '基本信息'
-      }],
+        {
+          id: '2',
+          name: '表单'
+        },
+        {
+          id: '3',
+          name: '文书'
+        }, {
+          id: '1',
+          name: '基本信息'
+        }],
       isShow: false,
       dialogVisible: false,
       addVisible: false,
@@ -247,47 +248,16 @@ export default {
         bindType: [{ required: true, message: "请选择类型", trigger: "blur" }],
         bindName: [{ required: true, message: "请选择名称", trigger: "blur" }],
       },
-      bindList:[],
-      bindPdfList:[],
+      bindList: [],
+      bindPdfList: [],
     };
   },
   methods: {
     changeBindType() {
       this.pdfForm.bindName = '';
-      this.pdfAndFormList = '';
-      console.log(this.pdfForm.bindType)
-      if(this.pdfForm.bindType=='2'){
-        this.pdfAndFormList=this.bindList
-      }
-      if(this.pdfForm.bindType=='3'){
-        this.pdfAndFormList=this.bindPdfList
-      }
-      
-      // this.getPdfAndFormList()
     },
     changeResourceType() {
-      this.pdfForm.resourceName = '';
-      this.resourceNameList = ''
-
-       if(this.pdfForm.resourceType=='2'){
-        this.resourceNameList=this.bindList
-      }
-      if(this.pdfForm.resourceType=='3'){
-        this.resourceNameList=this.bindPdfList
-      }
-      // let data = {
-      //   bindName: this.pdfForm.bindName,
-      //   bindType: this.pdfForm.bindType,
-      //   resourceName: this.pdfForm.resourceName,
-      //   resourceType: this.pdfForm.resourceType
-      // }
-      // findSetListApi(data).then(
-      //   res => {
-      //     console.log('可移送列表', res)
-      //     this.resourceNameList = res.data.records
-      //     console.log('pdfAndFormList', this.pdfAndFormList)
-      //     this.resourceData = res.data.records
-      //   });
+      this.setForm.resourceName = '';
     },
     //表单筛选
     getPdfAndFormList() {
@@ -298,7 +268,7 @@ export default {
       findSetListApi(data).then(
         res => {
           console.log('可移送列表', res)
-          this.pdfAndFormList = res.data.records
+          // this.pdfAndFormList = res.data.records
           console.log('pdfAndFormList', this.pdfAndFormList)
           this.tableData = res.data.records
           this.totalPage = res.data.total
@@ -320,14 +290,31 @@ export default {
 
         });
     },
+    getPdfAndFormSetList() {
+      let data = {
+        bindName: this.setForm.resourceName,
+        bindType: this.setForm.resourceType
+      }
+      findSetListApi(data).then(
+        res => {
+          console.log('可移送列表', res)
+          this.resourceData = res.data.records
+        });
+    },
     getList() {
 
     },
     // 值绑定
     getRelation(val) {
       this.dialogVisible = true;
-      this.setForm = val;
-
+      console.log('值绑定', val)
+      this.setForm = JSON.parse(JSON.stringify(val));
+      if (this.setForm.resourceType == '2') {
+        this.resourceNameList = this.bindList
+      }
+      if (this.setForm.resourceType == '3') {
+        this.resourceNameList = this.bindPdfList
+      }
     },
 
     // 添加修改字段
@@ -337,6 +324,19 @@ export default {
           this.pdfAndFormList = res.data.records
           this.addVisible = false;
           this.getPdfAndFormList(this.pdfForm.bindType);
+        } else {
+          console.log("fail");
+        }
+      });
+    },
+    changeSet(val) {
+      console.log(val)
+      this.setForm.resourceProperty += '{' + val.bindProperty + '}'
+      saveOrUpdatePropertyApi(this.setForm).then(res => {
+        if (res.code == 200) {
+          this.resourceData = res.data.records
+          this.addVisible = false;
+          // this.getPdfAndFormList(this.pdfForm.bindType);
         } else {
           console.log("fail");
         }
@@ -368,7 +368,10 @@ export default {
     goAddEditDia(val) {
       this.dialogTitle = '修改字段';
       this.addVisible = true;
-      this.editForm = val;
+      this.editForm = JSON.parse(JSON.stringify(val));
+    },
+    changSet() {
+
     },
     // 关闭弹窗前
     handleClose() {
@@ -385,7 +388,7 @@ export default {
     },
     //更改每页显示的条数
     handleSizeChange(val) {
-      this.pageSize = val;
+      this.pageSize = JSON.parse(JSON.stringify(val));
       this.getPdfAndFormList(1);
     },
     //更换页码
@@ -416,6 +419,11 @@ export default {
         }
       });
     },
+
+    handleBeforeClose(done) {
+      this.$refs['editFormRef'].resetFields()
+      done()
+    }
   },
   mounted() {
     // this.setDepartTable(this.data)

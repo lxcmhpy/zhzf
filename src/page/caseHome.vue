@@ -236,7 +236,8 @@ export default {
   components: {
     caseListSearch,
     caseRegisterDiag,
-    chooseillegalAct
+    chooseillegalAct,
+    tansferAtentionDialog
   },
   data() {
     return {
