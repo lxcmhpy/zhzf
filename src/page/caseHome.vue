@@ -10,13 +10,13 @@
             <span slot="label">
               <div class="case_number">{{waitDeal}}</div>
               <div class="case_discribe">
-                <i class="iconfont law-approval"></i> 待办理
+                <i class="iconfont law-method-draw-image"></i> 待办理
               </div>
               <div class="hideen">112</div>
               <span class="borderLine"></span>
             </span>
             <center>
-              <div style="margin-top: 15px;width:60%;">
+              <div style="margin-top: 15px;width:60%;" class="searchCaseBox">
                 <el-input placeholder="请输入案件关键字" v-model="waitDealSearch" @keyup.enter.native="search(0,waitDealSearch)">
                   <el-button slot="append" icon="el-icon-search" @click="search(0,waitDealSearch)"></el-button>
                 </el-input>
@@ -26,12 +26,12 @@
           <el-tab-pane label="未立案" name="second">
             <span slot="label">
               <div class="case_number">{{unRecord}}</div>
-              <div class="case_discribe"><i class="iconfont law-submit-o"></i> 未立案</div>
+              <div class="case_discribe"><i class="iconfont law-fasongzhifeiji"></i> 未立案</div>
               <div class="hideen">112</div>
               <span class="borderLine"></span>
             </span>
             <center>
-              <div style="margin-top: 15px;width:60%">
+              <div style="margin-top: 15px;width:60%" class="searchCaseBox">
                 <el-input placeholder="请输入案件关键字" v-model="unRecordCaseSearch" @keyup.enter.native="search(1,unRecordCaseSearch)">
                   <el-button slot="append" icon="el-icon-search" @click="search(1,unRecordCaseSearch)"></el-button>
                 </el-input>
@@ -43,12 +43,12 @@
               <div class="case_number">
                 {{waitArchive}}
               </div>
-              <div class="case_discribe"><i class="iconfont law-save"></i> 待归档</div>
+              <div class="case_discribe"><i class="iconfont law-icon_daiguidang1"></i> 待归档</div>
               <div class=" hideen">112</div>
               <span class="borderLine"></span>
             </span>
             <center>
-              <div style="margin-top: 15px;width:60%">
+              <div style="margin-top: 15px;width:60%" class="searchCaseBox">
                 <el-input placeholder="请输入案件关键字" v-model="waitArchiveSearch" @keyup.enter.native="search(2,waitArchiveSearch)">
                   <el-button slot="append" icon="el-icon-search" @click="search(2,waitArchiveSearch)"></el-button>
                 </el-input>
@@ -59,14 +59,14 @@
             <span slot="label">
               <div class="case_number">{{approveIng}}</div>
               <div class="case_discribe">
-                <i class="iconfont law-save"></i> 待审批
+                <i class="iconfont law-shijian"></i> 待审批
               </div>
               <div class="hideen">112</div>
               <!-- <span class="borderLine"></span> -->
             </span>
 
             <center>
-              <div style="margin-top: 15px;width:60%">
+              <div style="margin-top: 15px;width:60%" class="searchCaseBox">
 
                 <el-input placeholder="请输入案件关键字" v-model="approveIngSearch" @keyup.enter.native="search(3,approveIngSearch)">
                   <el-button slot="append" icon="el-icon-search" @click="search(3,approveIngSearch)"></el-button>
@@ -671,6 +671,11 @@ export default {
   position: absolute;
   box-sizing: border-box;
   overflow: auto;
+  .searchCaseBox{
+    .el-input-group__append{
+      border-radius: 0;
+    }
+  }
 }
 
 .float_left {

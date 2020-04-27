@@ -141,7 +141,7 @@ export default {
       }
       if(!validate || validatePass){
         this.$store.dispatch("getIllegaAct", this.illegalActSearchForm).then(
-          res => {
+          res => { 
             _this.tableData = res.data.records;
             _this.totalPage = res.data.total
           },

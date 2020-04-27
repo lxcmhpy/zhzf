@@ -227,13 +227,6 @@ export default {
           name: "case_handle_flowChart"
       })
     },
-    //获取弹窗中选中的环节id
-    // getMyChooseNext(targetLink){
-    //     console.log(targetLink);
-    //     let nextLink = this.com_getCaseRouteName(targetLink);
-    //     console.log(nextLink);
-    //     this.$router.push({name:nextLink,params:{id:this.caseInfo.id}})
-    // },
     //案件审批
     approvalCase(){
       this.$store.dispatch('deleteTabs', 'caseInfo');
@@ -255,15 +248,6 @@ export default {
           break;
       }
       this.getFileIdByDocId(docId,approvalLink);
-
-      //显示pdf页面
-      // this.$router.push({
-      //     name: 'myPDF',
-      //     params:{
-      //       docId:docId,
-      //       isApproval:true
-      //     }
-      // })
     },
     init () {
         this.caseInfo = this.$route.params.caseInfo;
