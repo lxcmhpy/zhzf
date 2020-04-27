@@ -23,14 +23,18 @@
           </div>
           <div class="item">
             <el-form-item label="行业类别" prop="hyTypeId">
-              <el-select v-model="illegalActSearchForm.hyTypeId" placeholder="请选择" @change="changehyType">
-              <el-option
-                v-for="item in industryCategoryList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
-            </el-select>
+              <el-select
+                v-model="illegalActSearchForm.hyTypeId"
+                placeholder="请选择"
+                @change="changehyType"
+              >
+                <el-option
+                  v-for="item in industryCategoryList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </div>
           <div class="item">
@@ -50,8 +54,14 @@
           </div>
         </div>
       </el-form>
-      <el-table :data="tableData" height="250" border style="width: 100%" highlight-current-row
-    @current-change="selectIllegaAct">
+      <el-table
+        :data="tableData"
+        height="250"
+        border
+        style="width: 100%"
+        highlight-current-row
+        @current-change="selectIllegaAct"
+      >
         <el-table-column prop="strNumber" label="代码" width="180"></el-table-column>
         <el-table-column prop="strContent" label="违法行为"></el-table-column>
       </el-table>
@@ -78,39 +88,38 @@ export default {
   data() {
     return {
       visible: false,
-      showcateId:false,
+      showcateId: false,
       illegalActSearchForm: {
-        categoryId:"",
-        hyTypeId:"",
-        strNumber:"",
-        strContent:""
+        categoryId: "",
+        hyTypeId: "",
+        strNumber: "",
+        strContent: ""
       },
-      cateName:"", //执法门类名称
-      tableData:[],
+      cateName: "", //执法门类名称
+      tableData: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
-      industryCategoryList:[], //行业类别下拉框
-      currentIllegaAct:"", //选中的违法行为
+      industryCategoryList: [], //行业类别下拉框
+      currentIllegaAct: "" //选中的违法行为
     };
   },
   inject: ["reload"],
   methods: {
     showModal(data) {
-      console.log(data)
+      console.log(data);
       this.illegalActSearchForm.categoryId = data.cateId;
       this.cateName = data.cateName;
-      console.log(this.cateName)
+      console.log(this.cateName);
       this.visible = true;
       this.getIndustryCategory();
-
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
       this.$nextTick(() => {
-        this.$refs['illegalActSearchForm'].resetFields()
-      })
+        this.$refs["illegalActSearchForm"].resetFields();
+      });
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -124,27 +133,29 @@ export default {
       this.getIllegaAct();
     },
     //获取行业类别 根据执法门类
-    getIndustryCategory(){
-      let _this = this
-      this.$store.dispatch("getIndustryCategory",this.illegalActSearchForm.categoryId).then(
-        res => {
-         _this.industryCategoryList = res.data;
-         _this.getIllegaAct();
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    getIndustryCategory() {
+      let _this = this;
+      this.$store
+        .dispatch("getIndustryCategory", this.illegalActSearchForm.categoryId)
+        .then(
+          res => {
+            _this.industryCategoryList = res.data;
+            _this.getIllegaAct();
+          },
+          err => {
+            console.log(err);
+          }
+        );
     },
     //查询违法行为
-    getIllegaAct(){
+    getIllegaAct() {
       this.illegalActSearchForm.size = this.pageSize;
       this.illegalActSearchForm.current = this.currentPage;
-      let _this = this
-      this.$store.dispatch("getIllegaAct",this.illegalActSearchForm).then(
+      let _this = this;
+      this.$store.dispatch("getIllegaAct", this.illegalActSearchForm).then(
         res => {
-         _this.tableData = res.data.records;
-         _this.totalPage=res.data.total
+          _this.tableData = res.data.records;
+          _this.totalPage = res.data.total;
         },
         err => {
           console.log(err);
@@ -152,18 +163,18 @@ export default {
       );
     },
     //更改行业类别
-    changehyType(){
-      this.getIllegaAct()
+    changehyType() {
+      this.getIllegaAct();
     },
     //选中违法行为
-    selectIllegaAct(val){
+    selectIllegaAct(val) {
       console.log(val);
       this.currentIllegaAct = val;
     },
     //返回立案登记
     backCaseRegister() {
       this.visible = false;
-      this.$emit('setIllegaAct',this.currentIllegaAct)
+      this.$emit("setIllegaAct", this.currentIllegaAct);
     }
   },
   mounted() {}

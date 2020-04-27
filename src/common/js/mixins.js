@@ -18,7 +18,7 @@ export const mixinGetCaseApiList = {
       let data = params;
       this.$store.dispatch("queryCaseBasicInfoListPage", data).then(
         res => {
-          this.tableData = res.data.records;
+          this.tableData = res.data.records || [];
           this.tableData.forEach(item => {
             item.name = item.party ? item.party : item.partyName;
 
