@@ -43,12 +43,16 @@
           </el-table-column>
           <el-table-column prop="isEditable" label="是否可编辑" align="center">
             <template slot-scope="scope">
-              {{scope.row.isEditable||noValue}}
+              <span v-if="scope.row.isEditable===true">是</span>
+              <span v-if="scope.row.isEditable===false">否</span>
+              <span v-if="scope.row.isEditable===''">{{noValue}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="isRequired" label="是否必填" align="center">
             <template slot-scope="scope">
-              {{scope.row.isRequired ||noValue}}
+                 <span v-if="scope.row.isRequired===true">是</span>
+              <span v-if="scope.row.isRequired===false">否</span>
+              <span v-if="scope.row.isRequired===''">{{noValue}}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
@@ -288,16 +292,16 @@ export default {
               // 类型转换
               this.tableData.forEach(element => {
                 if (element.isEditable == 'true') {
-                  element.isEditable = '是'
+                  element.isEditable = true
                 }
                 if (element.isEditable == 'false') {
-                  element.isEditable = '否'
+                  element.isEditable = false
                 }
                 if (element.isRequired == 'true') {
-                  element.isRequired = '是'
+                  element.isRequired = true
                 }
                 if (element.isRequired == 'false') {
-                  element.isRequired = '否'
+                  element.isRequired = false
                 }
               });
 
@@ -341,13 +345,18 @@ export default {
     goAddEdit(formName) {
       this.editForm.bindName = this.pdfForm.bindName;
       this.editForm.bindType = this.pdfForm.bindType;
+      
+      if(this.editForm.isEditable===''){
+        this.editForm.isEditable=true
+      }
+      if(this.editForm.isRequired===''){
+        this.editForm.isRequired=true
+      }
       saveOrUpdatePropertyApi(this.editForm).then(res => {
         if (res.code == 200) {
           this.pdfAndFormList = res.data.records
           this.addVisible = false;
-           this.$nextTick(() => {
-        this.$refs['editFormRef'].clearValidate()
-      })
+          this.$refs.editFormRef.resetFields();
           this.getPdfAndFormList('pdfForm');
           this.$message({
             type: "success",
@@ -448,11 +457,14 @@ export default {
     },
 
     handleBeforeClose(done) {
-      this.$refs['editFormRef'].resetFields()
-      done()
+      // this.$refs['editFormRef'].resetFields()
+      this.$refs.editFormRef.resetFields();
+      console.log('清空', this.editForm)
+      // done()
     },
     handleBeforeCloseSet(done) {
       this.$refs['setFormRef'].resetFields()
+      console.log('清空11111', this.editForm)
       done()
     },
     // 重置
