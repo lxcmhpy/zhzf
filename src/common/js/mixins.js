@@ -100,22 +100,25 @@ export const mixinGetCaseApiList = {
           console.log('获取案件表单信息', caseData);
           if(this.hasPropertyFeatures){
               this.searchPropertyFeatures(formOrDocId,caseData);
-              return;
-          }
-          if (this.formData) {
-            for (var key in caseData) {
-              this.formData[key] = caseData[key]
+             
+          }else{
+            if (this.formData) {
+              for (var key in caseData) {
+                this.formData[key] = caseData[key]
+              }
+              this.setSomeData(this.formData);
+            } else {
+              for (var key in caseData) {
+                this.docData[key] = caseData[key]
+              }
+              this.setSomeData(this.docData);
             }
-            this.setSomeData(this.formData);
-          } else {
-            for (var key in caseData) {
-              this.docData[key] = caseData[key]
+            if (this.needDealData) {
+              this.getDataAfter();
             }
-            this.setSomeData(this.docData);
           }
-          if (this.needDealData) {
-            this.getDataAfter();
-          }
+          
+          
         },
         error => {
           console.log(error)
@@ -322,28 +325,31 @@ export const mixinGetCaseApiList = {
         this.$refs[docForm].validate((valid, noPass) => {
 
           if (valid) {
-            this.$store.dispatch("addDocData", this.caseDocDataForm).then(
-              res => {
-                console.log("保存文书", res);
-                this.$message({
-                  type: "success",
-                  message: "提交成功"
-                });
-                //为多份文书赋值id，提交多份文书的pdf时需要用到
-                if (this.caseDocDataForm.docDataId != undefined) {
-                  this.caseDocDataForm.docDataId = res.data.id;
-                }
+            console.log('通过')
+            // this.$store.dispatch("addDocData", this.caseDocDataForm).then(
+            //   res => {
+            //     console.log("保存文书", res);
+            //     this.$message({
+            //       type: "success",
+            //       message: "提交成功"
+            //     });
+            //     //为多份文书赋值id，提交多份文书的pdf时需要用到
+            //     if (this.caseDocDataForm.docDataId != undefined) {
+            //       this.caseDocDataForm.docDataId = res.data.id;
+            //     }
 
-                console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
-                this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-                //提交成功后提交pdf到服务器，后打开pdf
-                this.printContent();
-              },
-              err => {
-                console.log(err);
-              }
-            );
+            //     console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
+            //     this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+            //     //提交成功后提交pdf到服务器，后打开pdf
+            //     this.printContent();
+            //   },
+            //   err => {
+            //     console.log(err);
+            //   }
+            // );
           } else {
+            console.log('不通过')
+
             // noPass[Object.keys(v)[0]]
             let a = Object.values(noPass)[0];
             console.log(a);
@@ -729,8 +735,32 @@ export const mixinGetCaseApiList = {
     let data = {
       typeId:typeId
     }
+    let newCaseData = {};
+    for (let key in caseData) {
+      newCaseData[key] = {value:caseData[key]}
+    }
+    console.log('newCaseData',newCaseData);
     findAllSetListApi(data).then(res=>{
-      console.log('查询文书或表单是否禁用及必填',res)
+      console.log('查询文书或表单是否禁用及必填',res);
+      let propertyList = res.data || [];
+      for (let key in newCaseData) {
+        propertyList.forEach(propertys=>{
+          if(propertys.bindProperty == key){
+            newCaseData[key].checkRule = propertys.checkRule; //验证规则
+            newCaseData[key].isEditable = propertys.isEditable; //是否可编辑
+            newCaseData[key].isRequired = propertys.isRequired; //是否必填
+            return;
+          }
+        })
+      }
+      console.log('newCaseData2',newCaseData);
+      if (this.formData) {
+        this.formData = newCaseData
+        // this.setSomeData(this.formData);
+      } else {
+        this.docData = newCaseData
+        // this.setSomeData(this.docData);
+      }
     }).catch(err=>{
       console.log(err);
     })

@@ -261,7 +261,8 @@
             <div class="item">
               <!-- 需要完善验证 -->
               <el-form-item label="与案件关系" class="is-required">
-                <el-select v-model="driverOrAgentInfo.relationWithCase">
+                <el-select v-model="driverOrAgentInfo.relationWithCase" 
+                :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
                   <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label"
                              :value="item.value"></el-option>
                 </el-select>
@@ -1141,6 +1142,8 @@
         console.log(this.driverOrAgentInfoList[0].relationWithParty === '同一人');
         if (val === "0") {
           console.log(val);
+          debugger
+          this.driverOrAgentInfoList[val].relationWithCase = "0";
           this.driverOrAgentInfoList[0].name = this.inforForm.party;
           this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
           this.driverOrAgentInfoList[0].zhengjianNumber = this.inforForm.partyIdNo;
@@ -1154,6 +1157,7 @@
           this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
           this.relationWithPartyIsOne = true;
         } else {
+          this.driverOrAgentInfoList[0].relationWithCase = "";
           this.driverOrAgentInfoList[0].name = "";
           this.driverOrAgentInfoList[0].zhengjianType = "";
           this.driverOrAgentInfoList[0].zhengjianNumber = "";
