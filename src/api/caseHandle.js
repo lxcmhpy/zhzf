@@ -484,6 +484,8 @@ export function findSetListApi(params) {
     bindType:params.bindType,
     resourceName:params.resourceName,
     resourceType:params.resourceType,
+    size:params.pageSize,
+    currentPage:params.currentPage
   }
   return request({
     url: "/case/doc/propertyBind/findByCondition",

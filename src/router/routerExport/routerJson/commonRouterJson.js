@@ -148,14 +148,22 @@ export default [
             },
             component: () => import("@/page/product-template/banner/Banner.vue")
           },
-          {
+          // {
+          //   name: "绑定属性管理",
+          //   path: "bind",
+          //   meta: {
+          //     title: "绑定属性管理"
+          //   },
+          //   component: () => import("@/page/product-template/banner/Banner.vue")
+          // },
+           {
             name: "绑定属性管理",
             path: "bind",
             meta: {
               title: "绑定属性管理"
             },
-            component: () => import("@/page/product-template/banner/Banner.vue")
-          }
+            component: () => import("@/page/sys/pdf-manage/pdfManage.vue")
+          },
         ]
       },
       {
