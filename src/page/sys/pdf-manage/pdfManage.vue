@@ -9,14 +9,14 @@
               <el-option v-for="item in typeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="名称" prop="bindName" v-if="pdfForm.bindType=='2'">
-            <el-select v-model="pdfForm.bindName">
-              <el-option v-for="item in bindList" :key="item.id" :label="item.linkName" :value="item.linkName"></el-option>
+          <el-form-item label="名称" prop="typeId" v-if="pdfForm.bindType=='2'">
+            <el-select v-model="pdfForm.typeId">
+              <el-option v-for="item in bindList" :key="item.id" :label="item.linkName" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="名称" prop="bindName" v-if="pdfForm.bindType=='3'">
-            <el-select v-model="pdfForm.bindName">
-              <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+          <el-form-item label="名称" prop="typeId" v-if="pdfForm.bindType=='3'">
+            <el-select v-model="pdfForm.typeId">
+              <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -50,7 +50,7 @@
           </el-table-column>
           <el-table-column prop="isRequired" label="是否必填" align="center">
             <template slot-scope="scope">
-                 <span v-if="scope.row.isRequired===true">是</span>
+              <span v-if="scope.row.isRequired===true">是</span>
               <span v-if="scope.row.isRequired===false">否</span>
               <span v-if="scope.row.isRequired===''">{{noValue}}</span>
             </template>
@@ -175,14 +175,9 @@ export default {
       tableData: [],
       resourceData: [],
       pdfForm: {
-        organ: "",
         bindType: '1',
         bindName: "",
-        operation: "",
-        username: "",
-        startTime: "",
-        endTime: "",
-        dateArray: ""
+        typeId:''
       },
       relation: '',
       typeList: [
@@ -252,7 +247,7 @@ export default {
       ],
       pdfRule: {
         bindType: [{ required: true, message: "请选择类型", trigger: "blur" }],
-        bindName: [{ required: true, message: "请选择名称", trigger: "blur" }],
+        typeId: [{ required: true, message: "请选择名称", trigger: "blur" }],
       },
       bindList: [],
       bindPdfList: [],
@@ -260,7 +255,7 @@ export default {
   },
   methods: {
     changeBindType() {
-      this.pdfForm.bindName = '';
+      this.pdfForm.typeId = '';
     },
     changeResourceType() {
       this.setForm.resourceName = '';
@@ -277,8 +272,9 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let data = {
-            bindName: this.pdfForm.bindName,
-            bindType: this.pdfForm.bindType,
+            // bindName: this.pdfForm.bindName,
+            // bindType: this.pdfForm.bindType,
+            typeId:this.pdfForm.typeId,
             pageSize: this.pageSize,
             currentPage: this.currentPage,
           }
@@ -345,12 +341,12 @@ export default {
     goAddEdit(formName) {
       this.editForm.bindName = this.pdfForm.bindName;
       this.editForm.bindType = this.pdfForm.bindType;
-      
-      if(this.editForm.isEditable===''){
-        this.editForm.isEditable=true
+
+      if (this.editForm.isEditable === '') {
+        this.editForm.isEditable = true
       }
-      if(this.editForm.isRequired===''){
-        this.editForm.isRequired=true
+      if (this.editForm.isRequired === '') {
+        this.editForm.isRequired = true
       }
       saveOrUpdatePropertyApi(this.editForm).then(res => {
         if (res.code == 200) {
@@ -367,6 +363,7 @@ export default {
         }
       });
     },
+
     changeSet(val) {
       console.log(val)
       this.setForm.resourceProperty += '{' + val.bindProperty + '}'
@@ -392,9 +389,25 @@ export default {
         if (valid) {
           this.dialogTitle = '添加字段';
           this.addVisible = true;
+          this.editForm = {
+            resourceName: '',
+            resourceType: '',
+            resourceProperty: '',
+            bindName: '',
+            bindType: '',
+            bindProperty: '',
+            itemValue: '',
+            typeId: '',
+            isEditable: '',
+            isRequired: '',
+            checkRule: '',
+          },
           this.editForm.isRequired = false;
           this.editForm.isEditable = true;
-
+          this.editForm.resourceType = '1';
+          console.log('id',this.editForm)
+          this.editForm.typeId = this.pdfForm.typeId;
+          console.log(this.editForm)
         } else {
           console.log('error submit!!');
           return false;
@@ -460,7 +473,7 @@ export default {
       // this.$refs['editFormRef'].resetFields()
       this.$refs.editFormRef.resetFields();
       console.log('清空', this.editForm)
-      // done()
+      done()
     },
     handleBeforeCloseSet(done) {
       this.$refs['setFormRef'].resetFields()
