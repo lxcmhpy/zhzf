@@ -485,7 +485,7 @@ export function findSetListApi(params) {
     resourceName:params.resourceName,
     resourceType:params.resourceType,
     size:params.pageSize,
-    currentPage:params.currentPage
+    current:params.currentPage
   }
   return request({
     url: "/case/doc/propertyBind/findByCondition",
@@ -521,6 +521,19 @@ export function saveOrUpdatePropertyApi(data) {
     url: "/case/doc/propertyBind/saveOrUpdatePropertyBindTemplate",
     method: "POST",
     params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过id删除绑定属性
+export function delBindApi(data) {
+
+  return request({
+    url: "/case/doc/propertyBind/deleteById/"+data.id,
+    method: "get",
+    params:data,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -863,3 +876,13 @@ export function deleteFileByCaseAndHuanjieApi(data) {
   });
 }
 
+//通过表单（文书）类型Id查询表单（文书）绑定的案件基本信息属性
+export function findBindPropertyRuleApi(data) {
+  return request({
+    url: "/case/doc/propertyBind/findBindPropertyRule/"+data.typeId+"/"+data.caseBasicInfoId,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

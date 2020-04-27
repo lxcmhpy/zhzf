@@ -10,17 +10,17 @@
           :model="docData"
         >
           <div class="doc_topic">现场笔录</div>
-          <div class="doc_number">案号：{{docData.caseNumber.value}}</div>
+          <div class="doc_number">案号：{{docData.caseNumber.val}}</div>
          
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
               <td>执法地点</td>
               <td colspan="3" class="color_DBE4EF">
-                <el-form-item :prop="docData.afdd.isRequired ? afdd.value:''">
+                <el-form-item :prop="docData.afdd.required ? 'afdd.val':''">
                   <el-input
                     type="textarea"
-                    v-model="docData.afdd.value"
-                    v-bind:class="{ over_flow:docData.afdd.value.length>14?true:false }"
+                    v-model="docData.afdd.val"
+                    v-bind:class="{ over_flow:docData.afdd.val.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="nameLength"
                     error
@@ -378,7 +378,7 @@ export default {
         readState:[],
       },
       rules: {
-        'afdd.value': [{ required: true, message: '执法地点不能为空', trigger: "blur" }],
+        'afdd.val': [{ required: true, message: '执法地点不能为空', trigger: "blur" }],
         enforceStartTime: [
           { required: true, message: "执法开始时间不能为空", trigger: "blur" },
           { validator: validateStartTime, trigger: "blur" }

@@ -2,7 +2,7 @@ import { mapGetters } from "vuex";
 import { htmlExportPDF } from '@/common/js/htmlExportPDF';
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi, getDocDetailByIdApi,findAllSetListApi,
+  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi, getDocDetailByIdApi,findAllSetListApi,findBindPropertyRuleApi,
 } from "@/api/caseHandle";
 export const mixinGetCaseApiList = {
   data() {
@@ -93,37 +93,38 @@ export const mixinGetCaseApiList = {
         typeId: formOrDocId
       };
       console.log('data', data);
-      findCaseAllBindPropertyApi(data).then(
-        res => {
-          console.log('获取案件信息', res)
-          let caseData = JSON.parse(res.data.propertyData);
-          console.log('获取案件表单信息', caseData);
-          if(this.hasPropertyFeatures){
-              this.searchPropertyFeatures(formOrDocId,caseData);
-             
-          }else{
-            if (this.formData) {
-              for (var key in caseData) {
-                this.formData[key] = caseData[key]
+
+      if(this.hasPropertyFeatures){
+        this.searchPropertyFeatures(data);
+      }else{
+        findCaseAllBindPropertyApi(data).then(
+          res => {
+            console.log('获取案件信息', res)
+            let caseData = JSON.parse(res.data.propertyData);
+            console.log('获取案件表单信息', caseData);
+            
+              if (this.formData) {
+                for (var key in caseData) {
+                  this.formData[key] = caseData[key]
+                }
+                this.setSomeData(this.formData);
+              } else {
+                for (var key in caseData) {
+                  this.docData[key] = caseData[key]
+                }
+                this.setSomeData(this.docData);
               }
-              this.setSomeData(this.formData);
-            } else {
-              for (var key in caseData) {
-                this.docData[key] = caseData[key]
-              }
-              this.setSomeData(this.docData);
-            }
-            if (this.needDealData) {
-              this.getDataAfter();
-            }
+              if (this.needDealData) {
+                this.getDataAfter();
+              }   
+          },
+          error => {
+            console.log(error)
           }
-          
-          
-        },
-        error => {
-          console.log(error)
-        }
-      );
+        );
+      }
+
+      
     },
     //提交文书表单信息，跳转到pdf文书
     com_submitCaseForm(handleType, docForm, hasNextBtn) {
@@ -729,41 +730,52 @@ export const mixinGetCaseApiList = {
     .catch(err=>{console.log(err)})
   },
   //查询文书或表单是否禁用及必填等
-  searchPropertyFeatures(typeId,caseData){
-    console.log('caseData',caseData);
-    console.log('typeId',typeId);
-    let data = {
-      typeId:typeId
-    }
-    let newCaseData = {};
-    for (let key in caseData) {
-      newCaseData[key] = {value:caseData[key]}
-    }
-    console.log('newCaseData',newCaseData);
-    findAllSetListApi(data).then(res=>{
-      console.log('查询文书或表单是否禁用及必填',res);
-      let propertyList = res.data || [];
-      for (let key in newCaseData) {
-        propertyList.forEach(propertys=>{
-          if(propertys.bindProperty == key){
-            newCaseData[key].checkRule = propertys.checkRule; //验证规则
-            newCaseData[key].isEditable = propertys.isEditable; //是否可编辑
-            newCaseData[key].isRequired = propertys.isRequired; //是否必填
-            return;
-          }
-        })
-      }
-      console.log('newCaseData2',newCaseData);
+  searchPropertyFeatures(caseBasicInfoIdAndtypeId){
+    // console.log('caseData',caseData);
+    // let newCaseData = {};
+    // for (let key in caseData) {
+    //   newCaseData[key] = {value:caseData[key]}
+    // }
+    // console.log('newCaseData',newCaseData);
+    // console.log('caseBasicInfoIdAndtypeId',caseBasicInfoIdAndtypeId)
+    findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res=>{
+      console.log('通过案件Id级文书类型Id查询案件基本信息及规则',res);
+      let data = JSON.parse(res.data.propertyData);
+      console.log(data);
       if (this.formData) {
-        this.formData = newCaseData
-        // this.setSomeData(this.formData);
+        this.formData = data
+       
       } else {
-        this.docData = newCaseData
-        // this.setSomeData(this.docData);
+        this.docData = data
+      
       }
     }).catch(err=>{
       console.log(err);
     })
+    // findAllSetListApi(data).then(res=>{
+    //   console.log('查询文书或表单是否禁用及必填',res);
+    //   let propertyList = res.data || [];
+    //   for (let key in newCaseData) {
+    //     propertyList.forEach(propertys=>{
+    //       if(propertys.bindProperty == key){
+    //         newCaseData[key].checkRule = propertys.checkRule; //验证规则
+    //         newCaseData[key].isEditable = propertys.isEditable; //是否可编辑
+    //         newCaseData[key].isRequired = propertys.isRequired; //是否必填
+    //         return;
+    //       }
+    //     })
+    //   }
+    //   console.log('newCaseData2',newCaseData);
+    //   if (this.formData) {
+    //     this.formData = newCaseData
+       
+    //   } else {
+    //     this.docData = newCaseData
+      
+    //   }
+    // }).catch(err=>{
+    //   console.log(err);
+    // })
   }
 
 
