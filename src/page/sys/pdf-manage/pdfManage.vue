@@ -426,7 +426,9 @@ export default {
     },
     //  文书抽屉表 
     getPdfList() {
-      let data = {}
+      let data = {
+        size:100
+      }
       getAllPdfListApi(data).then(res => {
         if (res.code == 200) {
           console.log('文书抽屉表', res)
