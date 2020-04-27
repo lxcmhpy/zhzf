@@ -234,11 +234,11 @@
         <!-- <externalVideoBtns :doing="videoDoing"  style="position:absolute;z-index:300"></externalVideoBtns> -->
       </div>
       <!-- 右侧浮动栏 -->
-      <div class="amap-position" :class="'amap-' + direction + '-box'">
+      <div class="amap-position" :class="'amap-' + direction + '-box'" >
         <div class="drawerBtn" @click="updateDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
-        <el-drawer :direction="direction" size="350px" customClass="amap-drawer" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
+        <el-drawer v-show="!drawer1" modal-append-to-body :direction="direction" :size="380" customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
@@ -283,7 +283,229 @@
             </transition>
           </div>
         </el-drawer>
+        <el-drawer v-show="drawer1"
+                modal-append-to-body
+                :size="580"
+                customClass="amap-drawer w-600"
+                :direction="direction"
+                :wrapperClosable="false"
+                :withHeader="false"
+                :modal="false"
+                :visible.sync="drawer1"
+                >
+                <div class="drawerBtn" @click="drawer1=false">
+                    <i class="el-icon-arrow-right"></i>
+                </div>
+                <div class="amap-main-content" style="padding: 0px 22px">
+                    <transition name="el-fade-in">
+                        <div class="echarts-box" v-show="status1">
+                            <em class="title left"><i class="titleflag"></i>非现场执法点</em>
+                            <i class="iconfont law-delete1 right" @click="status1 = false"></i>
+                            <div class="amap-chart">
+                                <el-table
+                                v-loading="loading"
+                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
+                                    :data="zfdList"
+                                    style="width: 100%;height: 170px;">
+                                    <el-table-column
+                                        prop="name"
+                                        label="站点名称"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="cxchl"
+                                        label="超限查处量"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="blackList"
+                                        label="重点监管"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="gjzl"
+                                        label="过检总量"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="status"
+                                        label="状态"
+                                        >
+                                        <template>
+                                            <div class="orangeBg circle" ></div>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+                    </transition>
+                    <transition name="el-fade-in">
+                        <div class="echarts-box" v-show="status2">
+                            <em class="title left"><i class="titleflag"></i>告警车辆</em>
+                            <i class="iconfont law-delete1 right" @click="status2 = false"></i>
+                            <div class="amap-chart">
+                                <el-table
+                                v-loading="loading"
+                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 6)"
+                                    :data="gjclList"
+                                    style="width: 100%;height: 170px;">
+                                    <el-table-column
+                                        prop="checkTime"
+                                        label="过检时间">
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="vehicleNumber"
+                                        label="车牌号"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="overload"
+                                        label="超载率"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="area"
+                                        label="车属地"
+                                        >
+                                    </el-table-column>
+                                        <!-- prop="blackList" -->
+                                    <el-table-column
+                                        label="重点监管"
+                                        >
+                                        <template>
+                                            <div><i class="iconfont law-star orangeC"></i></div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="lscc"
+                                        label="历史查处"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="siteName"
+                                        label="站点名称"
+                                        >
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+                    </transition>
+                </div>
+            </el-drawer>
       </div>
+      <!-- 底部浮动栏 -->
+        <!-- <div class="amap-position" :class="'amap-' + direction1 + '-box'">
+            <div class="drawerBtn" @click="updateDrawer1">
+                <i class="el-icon-arrow-right"></i>
+            </div>
+            <el-drawer
+                size="350px"
+                customClass="amap-drawer"
+                :direction="direction1"
+                :wrapperClosable="false"
+                :withHeader="false"
+                :modal="false"
+                :visible.sync="drawer1"
+                >
+                <div class="drawerBtn" @click="drawer1=false">
+                    <i class="el-icon-arrow-right"></i>
+                </div>
+                <div class="amap-main-content" style="padding: 0px 22px">
+                    <transition name="el-fade-in">
+                        <div class="echarts-box" v-show="status1">
+                            <em class="title left"><i class="titleflag"></i>非现场执法点</em>
+                            <i class="iconfont law-delete1 right" @click="status1 = false"></i>
+                            <div class="amap-chart">
+                                <el-table
+                                v-loading="loading"
+                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
+                                    :data="zfdList"
+                                    style="width: 100%;height: 170px;">
+                                    <el-table-column
+                                        prop="name"
+                                        label="站点名称"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="cxchl"
+                                        label="超限查处量"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="blackList"
+                                        label="重点监管"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="gjzl"
+                                        label="过检总量"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="status"
+                                        label="状态"
+                                        >
+                                        <template>
+                                            <div class="orangeBg circle" ></div>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+                    </transition>
+                    <transition name="el-fade-in">
+                        <div class="echarts-box" v-show="status2">
+                            <em class="title left"><i class="titleflag"></i>告警车辆</em>
+                            <i class="iconfont law-delete1 right" @click="status2 = false"></i>
+                            <div class="amap-chart">
+                                <el-table
+                                v-loading="loading"
+                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 6)"
+                                    :data="gjclList"
+                                    style="width: 100%;height: 170px;">
+                                    <el-table-column
+                                        prop="checkTime"
+                                        label="过检时间">
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="vehicleNumber"
+                                        label="车牌号"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="overload"
+                                        label="超载率"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="area"
+                                        label="车属地"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        label="重点监管"
+                                        >
+                                        <template>
+                                            <div><i class="iconfont law-star orangeC"></i></div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="lscc"
+                                        label="历史查处"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="siteName"
+                                        label="站点名称"
+                                        >
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+                    </transition>
+                </div>
+            </el-drawer>
+        </div> -->
     </div>
     <div class="amap-search">
       <el-select v-model="styleIndexNumher" placeholder="样式切换">
@@ -322,7 +544,7 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId } from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById } from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 // import externalVideoBtns from '@/page/lawSupervise/componentCommon/externalVideoBtns.vue';
@@ -364,7 +586,9 @@ export default {
       show: true,
       categorySelect: -1,
       direction: "rtl",
+      direction1: 'btt',
       drawer: false,
+      drawer1: false,
       windows: [],
       curWindow: null,
       default: "",
@@ -490,10 +714,64 @@ export default {
         }
       ],
       markers: [],
-      allSearchList: []
+      allSearchList: [],
+      zfdList: null,
+      gjclList: null,
     };
   },
   methods: {
+    positionEvent (row, column, event, category) {
+        // debugger;
+        this.markers.splice(0, this.markers.length);
+        if (this.curWindow) {
+            this.curWindow.visible = false;
+        }
+        this.getById(category, row.id);
+    },
+    getById (type,id) {
+        let _this = this
+        new Promise((resolve, reject) => {
+            getById(type,id).then(
+                res => {
+                    // resolve(res);
+                    let resultList = []
+                    if (res.data) {
+                        _this.errorMsg(`总计1条数据`, 'success');
+                        let position = res.data.position.split(',');
+                        let lng = parseFloat(position[0]);
+                        let lat = parseFloat(position[1]);
+                        _this.category = type;
+                        resultList.push({
+                            address: res.data.area,
+                            distance: null,
+                            id: res.data.id,
+                            lat: lat,
+                            lng: lng,
+                            location: {
+                                O: lng,
+                                P: lat,
+                                lat: lat,
+                                lng: lng
+                            },
+                            name: res.data.vehicleNumber,
+                            shopinfo: '',
+                            tel: '',
+                            type: type,
+                            other: res.data
+                        })
+                    } else {
+                        _this.errorMsg('暂无数据', 'error');
+                    }
+
+
+                    _this.onSearchResult(resultList, _this.category,0)
+                },
+                error => {
+                    //  _this.errorMsg(error.toString(), 'error')
+                    return
+                })
+        })
+    },
     updateMakePhoneStatus (code) {
         this.videoDoing = code;
         // this.makePhoneStatus = !this.makePhoneStatus;
@@ -536,9 +814,45 @@ export default {
           flowChart.setOption(_this.lawSuperviseObj.option);
           var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
           flowChart1.setOption(_this.yjObj);
-          _this.getRealTimeDataByLawSupervise();
+        //   _this.getRealTimeDataByLawSupervise();
         });
       }
+    },
+    updateDrawer1 () {
+        // this.getRealTimeDataByLawSupervise();
+        this.searchPageAll(4, 'zfdList');
+        this.searchPageAll(6, 'gjclList');
+        // this.category = 4;
+        // this.searchByTab(this.tabList[1].children[0]);
+        this.drawer1 = !this.drawer1;
+    },
+    searchPageAll (code, obj) {
+        this.markers.splice(0, this.markers.length);
+        if (this.curWindow) {
+            this.curWindow.visible = false;
+        }
+        // 进入页面加载查询所有初始数据
+        let data = {
+                // area: this.currentAddressObj.province + this.currentAddressObj.district,
+                area: '',
+                current: 1,
+                key: '',
+                size: 0,
+                type: code
+            };
+        let that = this;
+        new Promise((resolve, reject) => {
+                getZfjgLawSupervise(data).then(
+                    res => {
+                        // resolve(res);
+                        let resultList = [];
+                        that[obj] = res.data.records;
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                        return
+                    })
+            })
     },
     onSearchResult(pois, category, length) {
       let latSum = 0;
@@ -703,6 +1017,10 @@ export default {
             _this.getZfjgLawSupervise(v, v.type);
           });
         }
+      }
+
+      if (this.category == '4') {
+          this.updateDrawer1()
       }
     },
     searchAll(pois) {

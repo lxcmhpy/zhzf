@@ -1273,7 +1273,7 @@
               for (let i in fields) {
                 if (fields[i].labelFor === field) {
                   if(fields[i].label){
-                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
+//                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
                   }
                 }
               }
@@ -1993,7 +1993,7 @@
       console.log('from', from)
       console.log('next', next);
       console.log('this.autoSava', this.autoSava);
-      if (this.autoSava) {
+      if (this.autoSava && to.name != 'login') {  //退出登录不自动暂存
         this.stageInfo(0);
         // iLocalStroage.set("stageCaseId", this.caseId);
       }

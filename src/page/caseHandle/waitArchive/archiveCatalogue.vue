@@ -96,42 +96,12 @@ export default {
         this.$router.push({name:'case_handle_archiveCover',params:{clickData:JSON.stringify(item),mulvList:this.caseList}});
         return;
       }
-      // this.$emit('alertPDF', {item:item,mulvList:this.caseList})
       console.log('item',item)
       this.$store.commit("setClickArchiveCatalogue", item);
       this.$store.commit("setArchiveCatalogueList", this.caseList);
 
     },
-    //显示封面
-    // showCover(){
-    //   if(this.$route.name!='archiveCover'){
-    //     let item={name:'cover'}
-    //     this.$router.push({name:'archiveCover',params:{clickIsDoc:JSON.stringify(item)}});
-    //     return;
-    //   }
-    //   this.$emit('showCoverEmit')
-    // },
-    currentPages(row,index){
-      var rowIndex = index;
-      let tempPage = '';
-      let qianPage = 0;
-      let pageStart=0;
-      let pageEnd=0;
-      this.caseList.forEach((item,index)=>{
-        if(rowIndex > index){
-          qianPage = qianPage + Number(item.page);
-        }
-      })
-      if(row.page>1){
-        pageStart = qianPage+1;
-        pageEnd = qianPage+ Number(row.page);
-        tempPage = pageStart + '~' + pageEnd
-      }else{
-        pageStart = qianPage+1;
-        tempPage = pageStart;
-      }
-      return tempPage
-    },
+
     //设置弹窗左偏移
     setRight(){
       console.log('设置弹窗左偏移')
@@ -143,7 +113,6 @@ export default {
     }
   },
   mounted () {
-    // this.getByMlCaseId();
     //设置弹窗遮罩层不要遮到右侧快捷菜单
     this.setRight();
   }

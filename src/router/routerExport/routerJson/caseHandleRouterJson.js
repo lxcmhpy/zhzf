@@ -620,5 +620,12 @@ export default [
       title: "其他附件组件",
     },
     component: () => import("@/page/lawSupervise/supervisePage/zdjg/keyVehicleDentails.vue")
-  },
+  },{
+    path: "/webPdfEditor",
+    name: "case_handle_webPdfEditor",
+    meta: {
+      title: "电子签章",
+    },
+    component: () => import("@/components/htmlExportPDF/webPdfEditor.vue")
+  }
 ]

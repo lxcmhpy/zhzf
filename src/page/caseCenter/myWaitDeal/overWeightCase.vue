@@ -345,8 +345,8 @@ export default {
     //     value: this.tabActiveValue
     //   }
     //   iLocalStroage.sets('caseCenterDentails', data);
-    debugger;
-    debugger;
+    // debugger;
+    // debugger;
       this.$router.push({
         name: 'dentails-index',
         params: {
