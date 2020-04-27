@@ -60,6 +60,9 @@
     height: 32px;
     border-radius: 0px;
   }
+  .el-textarea,.el-textarea__inner{
+    border-radius: 0px;
+  }
 
   /* 表格 */
   .el-table td,
