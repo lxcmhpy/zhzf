@@ -282,7 +282,7 @@
                           @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
                           class="input-with-select hasMargintop"
                           :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
-                  <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType">
+                  <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
                     <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"
                                :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-option>
                   </el-select>
