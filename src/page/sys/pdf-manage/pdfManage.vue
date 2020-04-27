@@ -20,7 +20,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" @click="getPdfAndFormList('pdfForm')">查询</el-button>
+            <el-button type="primary" size="medium" @click="getPdfAndFormList('pdfForm',1)">查询</el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" @click="goAddDia('pdfForm')">添加属性</el-button>
@@ -43,21 +43,19 @@
           </el-table-column>
           <el-table-column prop="isEditable" label="是否可编辑" align="center">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.isEditable" active-color="#13ce66" inactive-color="#ff4949" disabled>
-              </el-switch>
+              {{scope.row.isEditable||noValue}}
             </template>
           </el-table-column>
           <el-table-column prop="isRequired" label="是否必填" align="center">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.isRequired" active-color="#13ce66" inactive-color="#ff4949" disabled>
-              </el-switch>
+              {{scope.row.isRequired ||noValue}}
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="getRelation(scope.row)">值绑定</el-button>
               <el-button type="text" @click="goAddEditDia(scope.row)">修改</el-button>
-              <!-- <el-button type="text" @click="goAddEditDia(scope.row)">删除</el-button> -->
+              <el-button type="text" @click="goDelDia(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -161,11 +159,11 @@
 
 
 <script>
-import { getAllPdfListApi, findSetListApi, saveOrUpdatePropertyApi, findAllSetListApi, getQueryLinkListApi, } from '@/api/caseHandle.js'
+import { getAllPdfListApi, findSetListApi, saveOrUpdatePropertyApi, findAllSetListApi, getQueryLinkListApi, delBindApi } from '@/api/caseHandle.js'
 export default {
   data() {
     return {
-      noValue: '无',
+      noValue: '未设置',
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
@@ -267,14 +265,17 @@ export default {
       this.setForm.resourceProperty = '';
     },
     //表单筛选
-    getPdfAndFormList(formName) {
+    getPdfAndFormList(formName, currentPage) {
+      if (currentPage) {
+        this.currentPage = currentPage
+      }
       this.tableData = [];
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let data = {
             bindName: this.pdfForm.bindName,
             bindType: this.pdfForm.bindType,
-            size: this.pageSize,
+            pageSize: this.pageSize,
             currentPage: this.currentPage,
           }
           findSetListApi(data).then(
@@ -287,16 +288,16 @@ export default {
               // 类型转换
               this.tableData.forEach(element => {
                 if (element.isEditable == 'true') {
-                  element.isEditable = true
+                  element.isEditable = '是'
                 }
-                else {
-                  element.isEditable = false
+                if (element.isEditable == 'false') {
+                  element.isEditable = '否'
                 }
                 if (element.isRequired == 'true') {
-                  element.isRequired = true
+                  element.isRequired = '是'
                 }
-                else {
-                  element.isRequired = false
+                if (element.isRequired == 'false') {
+                  element.isRequired = '否'
                 }
               });
 
@@ -311,7 +312,7 @@ export default {
       let data = {
         bindName: this.setForm.resourceName,
         bindType: this.setForm.resourceType,
-        size: this.pageSize,
+        pageSize: this.pageSize,
         currentPage: this.currentPage,
       }
       findSetListApi(data).then(
@@ -338,11 +339,20 @@ export default {
 
     // 添加修改字段
     goAddEdit(formName) {
+      this.editForm.bindName = this.pdfForm.bindName;
+      this.editForm.bindType = this.pdfForm.bindType;
       saveOrUpdatePropertyApi(this.editForm).then(res => {
         if (res.code == 200) {
           this.pdfAndFormList = res.data.records
           this.addVisible = false;
+           this.$nextTick(() => {
+        this.$refs['editFormRef'].clearValidate()
+      })
           this.getPdfAndFormList('pdfForm');
+          this.$message({
+            type: "success",
+            message: "操作成功"
+          });
         } else {
           console.log("fail");
         }
@@ -351,15 +361,6 @@ export default {
     changeSet(val) {
       console.log(val)
       this.setForm.resourceProperty += '{' + val.bindProperty + '}'
-      // saveOrUpdatePropertyApi(this.setForm).then(res => {
-      //   if (res.code == 200) {
-      //     this.resourceData = res.data.records
-      //     this.addVisible = false;
-      //     // this.getPdfAndFormList(this.pdfForm.bindType);
-      //   } else {
-      //     console.log("fail");
-      //   }
-      // });
     },
     goSetForm() {
       console.log('this.setForm', this.setForm)
@@ -367,6 +368,10 @@ export default {
         if (res.code == 200) {
           this.pdfAndFormList = res.data.records
           this.dialogVisible = false;
+          this.$message({
+            type: "success",
+            message: "绑定成功"
+          });
           this.getPdfAndFormList('pdfForm');
         } else {
           console.log("fail");
@@ -378,7 +383,9 @@ export default {
         if (valid) {
           this.dialogTitle = '添加字段';
           this.addVisible = true;
-          //  this.$refs['editFormRef'].resetFields()
+          this.editForm.isRequired = false;
+          this.editForm.isEditable = true;
+
         } else {
           console.log('error submit!!');
           return false;
@@ -407,11 +414,11 @@ export default {
     handleSizeChange(val) {
       console.log(val)
       this.pageSize = JSON.parse(JSON.stringify(val));
-      this.getPdfAndFormList('pdfForm');
+      this.getPdfAndFormList('pdfForm', val);
     },
     //更换页码
     handleCurrentChange(val) {
-      this.getPdfAndFormList('pdfForm');
+      this.getPdfAndFormList('pdfForm', val);
     },
 
     // 表单抽屉表
@@ -427,7 +434,7 @@ export default {
     //  文书抽屉表 
     getPdfList() {
       let data = {
-        size:100
+        size: 100
       }
       getAllPdfListApi(data).then(res => {
         if (res.code == 200) {
@@ -442,7 +449,6 @@ export default {
 
     handleBeforeClose(done) {
       this.$refs['editFormRef'].resetFields()
-      // debugger
       done()
     },
     handleBeforeCloseSet(done) {
@@ -454,6 +460,21 @@ export default {
       this.$refs["pdfForm"].resetFields();
       getPdfAndFormList('pdfForm');
     },
+    // 删除
+    goDelDia(val) {
+      this.$alert('删除后不可恢复，确认删除？', '确认删除', {
+        confirmButtonText: '确定',
+        callback: action => {
+          delBindApi(val).then(res => {
+            if (res.code == 200) {
+              this.getPdfAndFormList('pdfForm', 1);
+            } else {
+              console.log("fail");
+            }
+          });
+        }
+      });
+    }
   },
   mounted() {
     // this.setDepartTable(this.data)
