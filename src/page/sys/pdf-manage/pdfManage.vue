@@ -20,10 +20,10 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" @click="getPdfAndFormList()">确认选择</el-button>
+            <el-button type="primary" size="medium" @click="getPdfAndFormList('pdfForm')">查询</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" @click="goAddDia('pdfForm')">添加字段</el-button>
+            <el-button type="primary" size="medium" @click="goAddDia('pdfForm')">添加属性</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -56,7 +56,7 @@
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="getRelation(scope.row)">值绑定</el-button>
-              <el-button type="text" @click="goAddEditDia(scope.row)">修改属性</el-button>
+              <el-button type="text" @click="goAddEditDia(scope.row)">修改</el-button>
               <!-- <el-button type="text" @click="goAddEditDia(scope.row)">删除</el-button> -->
             </template>
           </el-table-column>
@@ -67,7 +67,7 @@
       </div>
     </div>
     <!-- 绑定值 -->
-    <el-dialog title="绑定值" :visible.sync="dialogVisible" width="800px">
+    <el-dialog title="绑定值" :visible.sync="dialogVisible" width="800px" :before-close="handleBeforeCloseSet">
       <div class="handlePart">
         <el-form :inline="true" :model="setForm" label-width="80px" ref="setFormRef">
           <el-form-item label="类型" prop="resourceType">
@@ -76,18 +76,18 @@
             </el-select>
           </el-form-item>
           <el-form-item label="名称" prop="resourceName" v-if="setForm.resourceType=='2'">
-            <el-select v-model="setForm.resourceName" style='width:240px'>
+            <el-select v-model="setForm.resourceName" style='width:240px' @change="changeResourceName">
               <el-option v-for="item in bindList" :key="item.id" :label="item.linkName" :value="item.linkName" :disabled="item.name==pdfForm.bindName"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="名称" prop="resourceName" v-if="setForm.resourceType=='3'">
-            <el-select v-model="setForm.resourceName" style='width:240px'>
+            <el-select v-model="setForm.resourceName" style='width:240px' @change="changeResourceName">
               <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.name" :disabled="item.name==pdfForm.bindName"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" @click="getPdfAndFormSetList" style="margin-left:20px">确认选择</el-button>
+            <el-button type="primary" size="medium" @click="getPdfAndFormSetList" style="margin-left:20px">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -197,6 +197,7 @@ export default {
         }],
       resourceNameList: [],
       resourceTypeList: [
+
         {
           id: '2',
           name: '表单'
@@ -207,6 +208,9 @@ export default {
         }, {
           id: '1',
           name: '基本信息'
+        }, {
+          id: '',
+          name: '无'
         }],
       isShow: false,
       dialogVisible: false,
@@ -259,45 +263,60 @@ export default {
     changeResourceType() {
       this.setForm.resourceName = '';
     },
+    changeResourceName() {
+      this.setForm.resourceProperty = '';
+    },
     //表单筛选
-    getPdfAndFormList() {
-      let data = {
-        bindName: this.pdfForm.bindName,
-        bindType: this.pdfForm.bindType
-      }
-      findSetListApi(data).then(
-        res => {
-          console.log('可移送列表', res)
-          // this.pdfAndFormList = res.data.records
-          console.log('pdfAndFormList', this.pdfAndFormList)
-          this.tableData = res.data.records
-          this.totalPage = res.data.total
-          // 类型转换
-          this.tableData.forEach(element => {
-            if (element.isEditable == 'true') {
-              element.isEditable = true
-            }
-            else {
-              element.isEditable = false
-            }
-            if (element.isRequired == 'true') {
-              element.isRequired = true
-            }
-            else {
-              element.isRequired = false
-            }
-          });
+    getPdfAndFormList(formName) {
+      this.tableData = [];
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let data = {
+            bindName: this.pdfForm.bindName,
+            bindType: this.pdfForm.bindType,
+            size: this.pageSize,
+            currentPage: this.currentPage,
+          }
+          findSetListApi(data).then(
+            res => {
+              console.log('列表', res)
+              // this.pdfAndFormList = res.data.records
+              console.log('pdfAndFormList', this.pdfAndFormList)
+              this.tableData = res.data.records
+              this.totalPage = res.data.total
+              // 类型转换
+              this.tableData.forEach(element => {
+                if (element.isEditable == 'true') {
+                  element.isEditable = true
+                }
+                else {
+                  element.isEditable = false
+                }
+                if (element.isRequired == 'true') {
+                  element.isRequired = true
+                }
+                else {
+                  element.isRequired = false
+                }
+              });
 
-        });
+            });
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
     getPdfAndFormSetList() {
       let data = {
         bindName: this.setForm.resourceName,
-        bindType: this.setForm.resourceType
+        bindType: this.setForm.resourceType,
+        size: this.pageSize,
+        currentPage: this.currentPage,
       }
       findSetListApi(data).then(
         res => {
-          console.log('可移送列表', res)
+          console.log('列表', res)
           this.resourceData = res.data.records
         });
     },
@@ -323,7 +342,7 @@ export default {
         if (res.code == 200) {
           this.pdfAndFormList = res.data.records
           this.addVisible = false;
-          this.getPdfAndFormList(this.pdfForm.bindType);
+          this.getPdfAndFormList('pdfForm');
         } else {
           console.log("fail");
         }
@@ -332,22 +351,23 @@ export default {
     changeSet(val) {
       console.log(val)
       this.setForm.resourceProperty += '{' + val.bindProperty + '}'
-      saveOrUpdatePropertyApi(this.setForm).then(res => {
-        if (res.code == 200) {
-          this.resourceData = res.data.records
-          this.addVisible = false;
-          // this.getPdfAndFormList(this.pdfForm.bindType);
-        } else {
-          console.log("fail");
-        }
-      });
+      // saveOrUpdatePropertyApi(this.setForm).then(res => {
+      //   if (res.code == 200) {
+      //     this.resourceData = res.data.records
+      //     this.addVisible = false;
+      //     // this.getPdfAndFormList(this.pdfForm.bindType);
+      //   } else {
+      //     console.log("fail");
+      //   }
+      // });
     },
     goSetForm() {
+      console.log('this.setForm', this.setForm)
       saveOrUpdatePropertyApi(this.setForm).then(res => {
         if (res.code == 200) {
           this.pdfAndFormList = res.data.records
           this.dialogVisible = false;
-          this.getPdfAndFormList(this.pdfForm.bindType);
+          this.getPdfAndFormList('pdfForm');
         } else {
           console.log("fail");
         }
@@ -358,6 +378,7 @@ export default {
         if (valid) {
           this.dialogTitle = '添加字段';
           this.addVisible = true;
+          //  this.$refs['editFormRef'].resetFields()
         } else {
           console.log('error submit!!');
           return false;
@@ -381,19 +402,16 @@ export default {
     showSomeSearch() {
       this.isShow = !this.isShow;
     },
-    // 重置
-    reset() {
-      this.$refs["pdfForm"].resetFields();
-      this.getPdfAndFormList();
-    },
+
     //更改每页显示的条数
     handleSizeChange(val) {
+      console.log(val)
       this.pageSize = JSON.parse(JSON.stringify(val));
-      this.getPdfAndFormList(1);
+      this.getPdfAndFormList('pdfForm');
     },
     //更换页码
     handleCurrentChange(val) {
-      this.getPdfAndFormList(val);
+      this.getPdfAndFormList('pdfForm');
     },
 
     // 表单抽屉表
@@ -422,8 +440,18 @@ export default {
 
     handleBeforeClose(done) {
       this.$refs['editFormRef'].resetFields()
+      // debugger
       done()
-    }
+    },
+    handleBeforeCloseSet(done) {
+      this.$refs['setFormRef'].resetFields()
+      done()
+    },
+    // 重置
+    reset() {
+      this.$refs["pdfForm"].resetFields();
+      getPdfAndFormList('pdfForm');
+    },
   },
   mounted() {
     // this.setDepartTable(this.data)
