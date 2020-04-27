@@ -291,6 +291,7 @@ export default {
       needDealData:true,
       needSetDisabled:true,
       partyOriginalData:"",
+      hasPropertyFeatures:true, //判断是否有禁用必填标识
     }
 
   },

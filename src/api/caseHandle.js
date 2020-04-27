@@ -499,10 +499,11 @@ export function findSetListApi(params) {
 // 通过条件查询绑定列表(所有)
 export function findAllSetListApi(params) {
   let data = {
-    bindName:params.bindName,
-    bindType:params.bindType,
-    resourceName:params.resourceName,
-    resourceType:params.resourceType,
+    // bindName:params.bindName,
+    // bindType:params.bindType,
+    // resourceName:params.resourceName,
+    // resourceType:params.resourceType,
+    typeId:params.typeId
   }
   return request({
     url: "/case/doc/propertyBind/queryByCondition",

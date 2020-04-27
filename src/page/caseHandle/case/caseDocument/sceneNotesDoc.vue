@@ -476,6 +476,8 @@ export default {
         }
       },
       needDealData:true,
+      hasPropertyFeatures:true, //判断是否有禁用必填标识
+
     };
   },
   computed: {

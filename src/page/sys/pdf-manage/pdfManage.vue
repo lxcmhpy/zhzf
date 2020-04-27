@@ -285,7 +285,7 @@ export default {
               this.tableData = res.data.records
               this.totalPage = res.data.total
               // 类型转换
-              this.tableData.forEach(element => {
+              this.tableData.forEach(element => { 
                 if (element.isEditable == 'true') {
                   element.isEditable = true
                 }

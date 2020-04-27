@@ -2,7 +2,7 @@ import { mapGetters } from "vuex";
 import { htmlExportPDF } from '@/common/js/htmlExportPDF';
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi, getDocDetailByIdApi
+  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi, getDocDetailByIdApi,findAllSetListApi,
 } from "@/api/caseHandle";
 export const mixinGetCaseApiList = {
   data() {
@@ -98,6 +98,10 @@ export const mixinGetCaseApiList = {
           console.log('获取案件信息', res)
           let caseData = JSON.parse(res.data.propertyData);
           console.log('获取案件表单信息', caseData);
+          if(this.hasPropertyFeatures){
+              this.searchPropertyFeatures(formOrDocId,caseData);
+              return;
+          }
           if (this.formData) {
             for (var key in caseData) {
               this.formData[key] = caseData[key]
@@ -717,6 +721,19 @@ export const mixinGetCaseApiList = {
       }
     })
     .catch(err=>{console.log(err)})
+  },
+  //查询文书或表单是否禁用及必填等
+  searchPropertyFeatures(typeId,caseData){
+    console.log('caseData',caseData);
+    console.log('typeId',typeId);
+    let data = {
+      typeId:typeId
+    }
+    findAllSetListApi(data).then(res=>{
+      console.log('查询文书或表单是否禁用及必填',res)
+    }).catch(err=>{
+      console.log(err);
+    })
   }
 
 
