@@ -12,6 +12,7 @@ export const mixinsCommon = {
             // type: error错误
             this.$message({
                 iconClass: this.errorObj[type],
+                center: true,
                 customClass: type+'Msg',
                 dangerouslyUseHTMLString: true,
                 message: `${type}：${msg}`

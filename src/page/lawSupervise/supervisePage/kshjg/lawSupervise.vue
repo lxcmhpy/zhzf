@@ -235,12 +235,13 @@
         <span v-else>正在定位</span>-->
         <!-- <externalVideoBtns :doing="videoDoing"  style="position:absolute;z-index:300"></externalVideoBtns> -->
       </div>
+
       <!-- 右侧浮动栏 -->
-      <div class="amap-position amap-rtl-box" :class="{'widthDrawer600': drawer1}" >
+      <div class="amap-position amap-rtl-box" :class="{'widthDrawer600': category == 4}" >
         <div class="drawerBtn" @click="updateDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
-        <el-drawer v-show="!drawer1" modal-append-to-body :direction="direction" size="380px" customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
+        <el-drawer v-if="category != 4" modal-append-to-body :direction="direction" size="380px" customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
@@ -285,7 +286,7 @@
             </transition>
           </div>
         </el-drawer>
-        <el-drawer v-show="drawer1"
+        <el-drawer v-else
                 modal-append-to-body
                 size="580px"
                 customClass="amap-drawer w-600"
@@ -302,13 +303,13 @@
                     <transition name="el-fade-in">
                         <div class="echarts-box" v-show="status1">
                             <em class="title left"><i class="titleflag"></i>非现场执法点</em>
-                            <i class="iconfont law-delete1 right" @click="status1 = false"></i>
-                            <div class="amap-chart">
+                            <i class="iconfont law-delete1 right"></i>
+                            <div>
                                 <el-table
                                 v-loading="loading"
                                     @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
                                     :data="zfdList"
-                                    style="width: 100%;height: 170px;">
+                                    style="width: 100%;">
                                     <el-table-column
                                         prop="name"
                                         label="站点名称"
@@ -823,20 +824,29 @@ export default {
       };
     },
     updateDrawer() {
-      this.drawer = !this.drawer;
-      if (this.drawer) {
-        let _this = this;
-        this.$nextTick(() => {
-          var flowChart = echarts.init(document.getElementById("echartsBox1"));
-          flowChart.setOption(_this.lawSuperviseObj.option);
-          var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
-          flowChart1.setOption(_this.yjObj);
-        //   _this.getRealTimeDataByLawSupervise();
-        });
-      }
+        this.drawer = !this.drawer;
+        if (this.category != 4) {
+            if (this.drawer) {
+              let _this = this;
+              this.$nextTick(() => {
+                var flowChart = echarts.init(document.getElementById("echartsBox1"));
+                flowChart.setOption(_this.lawSuperviseObj.option);
+                var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
+                flowChart1.setOption(_this.yjObj);
+              //   _this.getRealTimeDataByLawSupervise();
+              });
+            }
+        } else {
+            this.updateDrawer1();
+        }
     },
     updateDrawer1 () {
-        this.drawer1 = true;
+        debugger;
+        if (this.category == 4) {
+            this.drawer1 = true;
+        } else {
+            this.drawer1 = false;
+        }
         // this.getRealTimeDataByLawSupervise();
         this.searchPageAll(4, 'zfdList');
         this.searchPageAll(6, 'gjclList');
@@ -929,6 +939,7 @@ export default {
                           that.curWindow.other.id,
                           that.curWindow.other
                         );
+                        debugger;
                       }
                       console.log(that.curWindow);
                       that.$nextTick(() => {
@@ -989,9 +1000,7 @@ export default {
       new Promise((resolve, reject) => {
         getBySiteId(id).then(
           res => {
-            // resolve(res);
-            debugger;
-            obj.list = res.data.splice(0,5);
+            _this.$set(_this.curWindow.other, 'list', res.data.splice(0,5));
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
@@ -1041,7 +1050,9 @@ export default {
       if (this.category == '4') {
           this.updateDrawer1()
       } else {
-          this.drawer1 = false
+          this.drawer1 = false;
+          this.drawer = false;
+          this.updateDrawer();
       }
     },
     searchAll(pois) {

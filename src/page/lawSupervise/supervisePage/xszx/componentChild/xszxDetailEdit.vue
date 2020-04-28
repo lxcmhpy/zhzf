@@ -596,7 +596,10 @@
                             action="https://jsonplaceholder.typicode.com/posts/"
                             :limit="1"
                         >
-                            <i class="el-icon-picture"></i>
+                            <i class="el-icon-picture">
+                                <span style="color: gray;font-size:12px;"><br>上传证据</span>
+                            </i>
+
                         </el-upload>
                     </li>
                 </ul>
