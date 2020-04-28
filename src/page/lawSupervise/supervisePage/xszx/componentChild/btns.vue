@@ -20,12 +20,12 @@
     </div>
 
     <div v-else>
-      <el-button v-if="tabActiveValue ==='2' && $route.name!='invalidCueDetail'" type="button" class="submitBtn blueBtn" @click="showZbDialog">
+      <el-button v-if="tabActiveValue ==='2' && $route.name!='law_supervise_invalidCueDetail'" type="button" class="submitBtn blueBtn" @click="showZbDialog">
         <div>完成</div>
       </el-button>
     </div>
     <span :class="$route.name">
-        <template v-if="$route.name=='invalidCueDetail'">
+        <template v-if="$route.name=='law_supervise_invalidCueDetail'">
          无效
         </template>
          <template v-else>
