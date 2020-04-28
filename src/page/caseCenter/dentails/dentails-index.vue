@@ -1,7 +1,7 @@
 <template>
   <div class="main-box">
       <span class="examineDoingDetail">
-         {{value}}
+         <!-- {{value}} -->
     </span>
     <dealNotes v-if="showFlag==='/caseCenter-overWeightCase'&&(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
 
