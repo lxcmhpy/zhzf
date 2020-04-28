@@ -342,6 +342,10 @@ export default {
       this.editForm.bindName = this.pdfForm.bindName;
       this.editForm.bindType = this.pdfForm.bindType;
 
+      if(this.editForm.resourceProperty===''){
+        this.editForm.resourceProperty='{'+this.editForm.bindProperty+'}'
+      }
+
       if (this.editForm.isEditable === '') {
         this.editForm.isEditable = true
       }
