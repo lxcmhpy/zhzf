@@ -431,8 +431,11 @@ export const mixinGetCaseApiList = {
     },
     async printContent() {
       this.replaceTextArea();
-      // htmlExportPDF(this.formOrDocData.pageDomId, this.uploadFile)
-      this.uploadFile('','')
+      // if(){
+        this.uploadFile('','')
+      // }else{
+        // htmlExportPDF(this.formOrDocData.pageDomId, this.uploadFile)
+      // }
     },
     uploadFile(file, name) {
       // var f = new File([file.output("blob")], name, { type: 'application/pdf' })
