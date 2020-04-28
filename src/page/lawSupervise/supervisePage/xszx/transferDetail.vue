@@ -8,7 +8,7 @@
                     <span class="titleflag">
                     </span>
                     <span class="title">转办说明</span>
-                    <el-button type="button" class="submitBtn blueBtn"  style="position:absolute;right:-100px;top: 130px;">
+                    <el-button type="button" class="submitBtn blueBtn"  style="position:absolute;right:-100px;top: 130px;" @click="goToInforCollect">
                         <div>查 看</div>
                     </el-button>
                 </div>
@@ -95,7 +95,15 @@ export default {
                     }
                 )
             })
-        }
+        },
+         goToInforCollect() {
+            this.$store.commit('setCaseId','3f04ca8748038e4e7fe1b6719f8f8d43');
+            this.$store.commit('setCaseApproval',false);
+            this.$store.commit('setCaseNumber','吐临〔2020〕第00600号');
+            this.$router.push({
+                name: 'case_handle_inforCollect'
+            });
+        },
     },
     mounted () {
         this.getDetailById(this.$route.params.offSiteManageId);

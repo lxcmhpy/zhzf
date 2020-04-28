@@ -41,8 +41,8 @@
                   <p>{{curWindow.other.contact}}&nbsp;&nbsp;{{curWindow.other.phone}}</p>
                 </div>
                 <div class="status">
-                  <i class="iconfont law-mobile-phone"></i>
-                  <p>{{curWindow.other.status}}</p>
+                  <!-- <i class="iconfont law-mobile-phone"></i>
+                  <p>{{curWindow.other.status}}</p> -->
                 </div>
               </div>
              <div class="btns">
@@ -241,7 +241,8 @@
         <div class="drawerBtn" @click="updateDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
-        <el-drawer v-if="category != 4" modal-append-to-body :direction="direction" size="380px" customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
+        <el-drawer v-if="category != 4" modal-append-to-body :direction="direction" size="380px"
+           customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
@@ -288,8 +289,8 @@
         </el-drawer>
         <el-drawer v-else
                 modal-append-to-body
-                size="580px"
-                customClass="amap-drawer w-600"
+                size="620px"
+                customClass="amap-drawer w-680"
                 :direction="direction"
                 :wrapperClosable="false"
                 :withHeader="false"
@@ -351,29 +352,38 @@
                                 v-loading="loading"
                                     @row-click="(row, column, event)=>positionEvent(row, column, event, 6)"
                                     :data="gjclList"
-                                    style="width: 100%;height: 170px;">
-                                    <el-table-column
+                                    style="width: 100%;height: auto;">
+                                    <!-- <el-table-column
                                         prop="checkTime"
                                         label="过检时间">
+                                    </el-table-column> -->
+                                    <el-table-column label="过检时间" width="100" align="center" prop="checkTime">
+                                        <template slot-scope="scope">
+                                            <span >{{scope.row.checkTime.split(' ')[0]}}</span>
+                                        </template>
                                     </el-table-column>
                                     <el-table-column
                                         prop="vehicleNumber"
                                         label="车牌号"
+                                        width="90"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="overload"
                                         label="超载率"
+                                        width="70"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="area"
                                         label="车属地"
+                                         width="70"
                                         >
                                     </el-table-column>
                                         <!-- prop="blackList" -->
                                     <el-table-column
                                         label="重点监管"
+                                        width="80"
                                         >
                                         <template>
                                             <div><i class="iconfont law-star orangeC"></i></div>
@@ -382,11 +392,13 @@
                                     <el-table-column
                                         prop="lscc"
                                         label="历史查处"
+                                        width="80"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="siteName"
                                         label="站点名称"
+                                        width="80"
                                         >
                                     </el-table-column>
                                 </el-table>
@@ -739,6 +751,8 @@ export default {
         })
     },
     positionEvent (row, column, event, category) {
+        debugger;
+        this.category == 4;
         // debugger;
         this.markers.splice(0, this.markers.length);
         if (this.curWindow) {
@@ -758,7 +772,7 @@ export default {
                         let position = res.data.position.split(',');
                         let lng = parseFloat(position[0]);
                         let lat = parseFloat(position[1]);
-                        _this.category = type;
+                        // _this.category = type;
                         resultList.push({
                             address: res.data.area,
                             distance: null,
@@ -782,7 +796,7 @@ export default {
                     }
 
 
-                    _this.onSearchResult(resultList, _this.category,0)
+                    _this.onSearchResult(resultList, type,0)
                 },
                 error => {
                     //  _this.errorMsg(error.toString(), 'error')
@@ -825,7 +839,9 @@ export default {
     },
     updateDrawer() {
         this.drawer = !this.drawer;
+        debugger;
         if (this.category != 4) {
+            this.drawer = false;
             if (this.drawer) {
               let _this = this;
               this.$nextTick(() => {
@@ -837,6 +853,7 @@ export default {
               });
             }
         } else {
+            // this.drawer = true;
             this.updateDrawer1();
         }
     },
