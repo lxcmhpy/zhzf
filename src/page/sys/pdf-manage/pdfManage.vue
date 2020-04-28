@@ -419,6 +419,8 @@ export default {
       this.dialogTitle = '修改字段';
       this.addVisible = true;
       this.editForm = JSON.parse(JSON.stringify(val));
+      // this.editForm.bindId=this.pdfForm.typeId
+      this.editForm.bindName='调查类文书'
     },
     changSet() {
 
