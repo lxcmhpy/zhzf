@@ -350,7 +350,8 @@ export default {
       this.$router.push({
         name: 'law_center_dentails-index',
         params: {
-            tabTitle: this.tabActiveValue,
+            // tabTitle: this.tabActiveValue,
+            tabTitle: '【超限】超限案件列表',
             path: this.$route.path,
             value: this.tabActiveValue
         }
