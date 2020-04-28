@@ -148,7 +148,7 @@
                 </div>
               </div>
               <div class="con ">
-                <el-table v-if="curWindow.other.list" style="width: 100%;line-height: 40px;" :data="curWindow.other.list.splice(0,5)" resizable stripe
+                <el-table style="width: 100%;line-height: 40px;" :data="curWindow.other.list" resizable stripe
                 @row-click="routerXsDetail">
                   <el-table-column width="170" align="center" prop="checkTime" label="过检时间"></el-table-column>
                   <el-table-column width="100" align="center" prop="vehicleNumber" label="车牌号"></el-table-column>
@@ -989,8 +989,9 @@ export default {
       new Promise((resolve, reject) => {
         getBySiteId(id).then(
           res => {
-            resolve(res);
-            obj.list = res.data;
+            // resolve(res);
+            debugger;
+            obj.list = res.data.splice(0,5);
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
