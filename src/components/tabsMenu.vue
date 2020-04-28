@@ -81,7 +81,7 @@ export default {
         return tabsCode;
     },
     init () {
-        debugger;
+//        debugger;
         if (this.$route.path !== "/" && this.$route.name !== "case_handle_home_index") {
             this.activeIndexStr = this.activeIndexSto;
         } else {
