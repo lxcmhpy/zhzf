@@ -198,7 +198,7 @@ export const menuList = [{
         children: [{
             id: "3170101",
             createTime: "2020-03-09 04:15:19",
-            name: "overWeightCase",
+            name: "case_handle_caseCenter-overWeightCase",
             showAlways: true,
             type: 0,
             title: "超限案件列表",
@@ -245,7 +245,7 @@ export const menuList = [{
         children: [{
             id: "3170201",
             createTime: "2020-03-09 04:15:19",
-            name: "transferAndRegisterCase",
+            name: "case_handle_caseCenter-transferAndRegisterCase",
             showAlways: true,
             type: 0,
             title: "转立案列表",
