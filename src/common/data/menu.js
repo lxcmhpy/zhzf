@@ -198,7 +198,7 @@ export const menuList = [{
         children: [{
             id: "3170101",
             createTime: "2020-03-09 04:15:19",
-            name: "case_handle_caseCenter-overWeightCase",
+            name: "law_center_caseCenter-overWeightCase",
             showAlways: true,
             type: 0,
             title: "超限案件列表",
