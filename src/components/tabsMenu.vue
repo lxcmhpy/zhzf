@@ -43,6 +43,7 @@ export default {
         route.menuUrl = name;
         this.activeIndexStr = route.name;
         this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexStr);
+        this.$store.commit("set_Head_Active_Nav", route.headActiveNav);
         this.$router.push(({ name: 'reloadPage',params: route}));
 
 
@@ -71,8 +72,6 @@ export default {
       }
     },
     getTabName (code) {
-      console.log(code,'code')
-      debugger
         let tabsCode = '';
         if (code.indexOf('case_handle_') > -1) {
             tabsCode = this.tabsNameList['case_handle_'];
@@ -125,6 +124,7 @@ export default {
                 }
                 this.$store.dispatch("replaceTabs", data);
             }
+            this.$store.commit("set_Head_Active_Nav", this.openTab[_index].headActiveNav);
             this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[_index].name);
             this.$store.commit("changeOneTabName", this.openTab[_index].name);
         } else {
@@ -151,7 +151,8 @@ export default {
                 name: name,
                 title: tabsCode+tabTitle,
                 isCase: isCase,
-                params: to.params
+                params: to.params,
+                headActiveNav: this.headActiveNav
             });
             this.$store.commit("SET_ACTIVE_INDEX_STO", name);
         }
@@ -164,7 +165,7 @@ export default {
     }
   },
   computed: {
-        ...mapGetters(["caseHandle", "openTab", "activeIndexSto"])
+        ...mapGetters(["caseHandle", "openTab", "activeIndexSto", "headActiveNav"])
   }
 };
 </script>
