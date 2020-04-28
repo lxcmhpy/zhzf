@@ -151,7 +151,8 @@
     .el-tabs--border-card>.el-tabs__header .el-tabs__item {
       color        : #9FA3AF;
       border-right : 1px solid rgb(60, 76, 106);
-      width        : 158px;
+    //   width        : 158px;
+        width: auto;
       height       : 33px;
       overflow     : hidden;
       text-overflow: ellipsis;

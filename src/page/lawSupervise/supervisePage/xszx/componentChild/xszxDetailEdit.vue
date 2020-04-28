@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="item">
                                 <el-form-item label="ETC识别车牌">
-                                    <el-input v-model="checkSearchForm.color"></el-input>
+                                    <el-input v-model="checkSearchForm.color" readonly="readonly"></el-input>
                                 </el-form-item>
                                 </div>
                             </div>
@@ -552,7 +552,10 @@
                     <span class="title">现场照片/视频</span>
                 </div>
                 <ul class="list">
-                    <li v-for="index in 4" :key="index">
+                    <li v-for="index in 2" :key="index">
+                         <img class="img" :src="'./static/images/img/temp/sp.jpg'" @click="dialogPDFVisible = true">
+                    </li>
+                    <li v-for="index in 2" :key="index">
                         <div class="demo-image__preview">
                             <el-image
                             class="img"
@@ -600,7 +603,12 @@
             </div>
         </div>
 
-
+     <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="1200px">
+            <div>
+                <embed class="print_info"
+                style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="storagePath" type="application/pdf" internalinstanceid="29">
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -626,6 +634,7 @@ export default {
     data () {
         let self = this;
         return {
+            dialogPDFVisible: false,
             visible: false,
             checkSearchForm: {
                 number: '',

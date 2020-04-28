@@ -533,6 +533,7 @@ export default {
         })
     },
     routerExamineDetail (row,status, tabTitle) {
+        debugger;
         // this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
             name: 'law_supervise_examineDoingDetail',

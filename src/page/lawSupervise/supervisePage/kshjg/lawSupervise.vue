@@ -142,12 +142,14 @@
                       {{curWindow.other.createTime}} &nbsp;
                       超限{{curWindow.other.cxchl}} &nbsp;
                       黑名单{{curWindow.other.blackList}}
+                    <span class="right" @click="routerXs">详情</span>
                     </p>
                   </div>
                 </div>
               </div>
               <div class="con ">
-                <el-table v-if="curWindow.other.list" style="width: 100%;line-height: 40px;" :data="curWindow.other.list.splice(0,5)" resizable stripe>
+                <el-table style="width: 100%;line-height: 40px;" :data="curWindow.other.list" resizable stripe
+                @row-click="routerXsDetail">
                   <el-table-column width="170" align="center" prop="checkTime" label="过检时间"></el-table-column>
                   <el-table-column width="100" align="center" prop="vehicleNumber" label="车牌号"></el-table-column>
                   <el-table-column width="80" align="center" prop="overload" label="超载率"></el-table-column>
@@ -720,6 +722,21 @@ export default {
     };
   },
   methods: {
+    routerXs () {
+        this.$router.push({
+            name: 'law_supervise_offSiteManage'
+        })
+    },
+    routerXsDetail () {
+        this.$router.push({
+            name: 'law_supervise_examineDoingDetail',
+            params: {
+                status: '0',
+                tabTitle: '待审核',
+                offSiteManageId: '1'
+            }
+        })
+    },
     positionEvent (row, column, event, category) {
         // debugger;
         this.markers.splice(0, this.markers.length);
@@ -972,8 +989,9 @@ export default {
       new Promise((resolve, reject) => {
         getBySiteId(id).then(
           res => {
-            resolve(res);
-            obj.list = res.data;
+            // resolve(res);
+            debugger;
+            obj.list = res.data.splice(0,5);
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
