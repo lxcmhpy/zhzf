@@ -39,7 +39,8 @@ export default {
     //tab标签点击时，切换相应的路由
     tabClick(tab) {
         let route = this.openTab[tab.index];
-        let name = route.isCase ? route.name.split('-and-')[0] :route.name
+        let name = route.isCase ? route.name.split('-and-')[0] :route.name;
+        debugger;
         route.menuUrl = name;
         this.activeIndexStr = route.name;
         this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexStr);
@@ -115,7 +116,7 @@ export default {
             if (to.params.tabTitle) {
                 let currentOpenTab = this.openTab[_index];
                 currentOpenTab.params = to.params;
-                currentOpenTab.title = currentOpenTab.params.tabTitle;
+                currentOpenTab.title = this.getTabName(to.name) + currentOpenTab.params.tabTitle;
                 currentOpenTab.route = currentOpenTab.path;
                 let data = {
                     index: _index,
