@@ -3,7 +3,9 @@
       <span class="examineDoingDetail">
          <!-- {{value}} -->
     </span>
-    <dealNotes v-if="showFlag==='/overWeightCase'&&(value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
+    <dealNotes v-if="showFlag==='/overWeightCase'&&(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
+
+    <dealNotesVeiw v-if="showFlag==='/overWeightCase'&&(value=='待办')"></dealNotesVeiw>
 
     <dealNotesSearch v-if="showFlag==='/transferAndRegisterCase'"></dealNotesSearch>
 
@@ -54,6 +56,7 @@
 <script>
 import dealNotes from '@/components/caseCenter/dealNotes.vue'
 import dealNotesSearch from '@/components/caseCenter/dealNotesSearch.vue'
+import dealNotesVeiw from '@/components/caseCenter/dealNotesVeiw.vue'
 import backNotes from '@/components/caseCenter/backNotes.vue'
 import dealProgress from '@/components/caseCenter/dealProgress.vue'
 import dealInProgress from '@/components/caseCenter/dealInProgress.vue'
@@ -68,6 +71,7 @@ export default {
   components: {
     dealNotes,
     dealNotesSearch,
+    dealNotesVeiw,
     otherEnclosure,
     evidencePackage,
     dealProgress,
