@@ -474,12 +474,12 @@ export default {
         else {
           this.$store.commit("setCaseId", row.id);
           //设置案件状态不为审批中
-          this.$store.commit("setCaseApproval", false);
-          console.log(this.$store.state.caseId);
+          this.$store.commit("setCaseApproval", true);
           this.$router.push({
             name: "case_handle_caseInfo",
             params: {
-              caseInfo: row
+              caseInfo: row,
+              isApproval:true
             }
           });
           let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'

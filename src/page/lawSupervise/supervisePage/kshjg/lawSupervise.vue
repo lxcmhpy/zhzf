@@ -841,7 +841,7 @@ export default {
         this.drawer = !this.drawer;
         debugger;
         if (this.category != 4) {
-            this.drawer = false;
+            this.drawer = true;
             if (this.drawer) {
               let _this = this;
               this.$nextTick(() => {

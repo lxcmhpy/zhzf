@@ -105,9 +105,10 @@ export default {
       //未打开的，将其放入队列里
         let flag = false;
         let _this = this;
+        let tabsCode = this.getTabName(to.name);
         let _index = _.findIndex(this.openTab,(chr) => {
             if (chr.isCase) {
-                return chr.title == _this.caseHandle.caseNumber;
+                return chr.title == tabsCode + _this.caseHandle.caseNumber;
             }
             return chr.name === to.name;
         });
@@ -145,7 +146,6 @@ export default {
                 isCase = false;
             }
             name = name? name : to.name;
-            let tabsCode = this.getTabName(to.name);
 
             this.$store.dispatch("addTabs", {
                 route: to.path,
