@@ -3,9 +3,9 @@
       <span class="examineDoingDetail">
          <!-- {{value}} -->
     </span>
-    <dealNotes v-if="showFlag==='/caseCenter-overWeightCase'&&(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
+    <dealNotes v-if="showFlag==='/caseCenter-overWeightCase'&&(value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
 
-    <dealNotesSearch v-if="showFlag==='/caseCenter-overWeightCase'&&(value=='待办')||showFlag==='/caseCenter-transferAndRegisterCase'"></dealNotesSearch>
+    <dealNotesSearch v-if="showFlag==='/caseCenter-transferAndRegisterCase'"></dealNotesSearch>
 
     <uoloadFiles v-if="showFlag==='/caseCenter-transferAndRegisterCase'"></uoloadFiles>
 

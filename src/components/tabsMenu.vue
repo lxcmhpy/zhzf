@@ -25,7 +25,8 @@ export default {
         openTabList: [],
         tabsNameList: {
             law_supervise_: '【监管】',
-            case_handle_: '【案件】',
+            // case_handle_: '【案件】',
+            case_handle_: '【超限】',
             law_center_: '【超限】'
         }
     };
@@ -70,6 +71,8 @@ export default {
       }
     },
     getTabName (code) {
+      console.log(code,'code')
+      debugger
         let tabsCode = '';
         if (code.indexOf('case_handle_') > -1) {
             tabsCode = this.tabsNameList['case_handle_'];
@@ -81,7 +84,6 @@ export default {
         return tabsCode;
     },
     init () {
-//        debugger;
         if (this.$route.path !== "/" && this.$route.name !== "case_handle_home_index") {
             this.activeIndexStr = this.activeIndexSto;
         } else {

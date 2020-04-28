@@ -162,7 +162,7 @@
         <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="1200px">
             <div>
                 <embed class="print_info"
-                style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="storagePath" type="application/pdf" internalinstanceid="29">
+                style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="storagePath" type="text/html" internalinstanceid="29">
             </div>
         </el-dialog>
     </div>
