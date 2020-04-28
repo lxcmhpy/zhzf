@@ -1917,7 +1917,10 @@
         this.inforForm.caseCauseName = overWeightCaseData.caseCauseName
         this.inforForm.programType = overWeightCaseData.programType
         this.inforForm.partyType = overWeightCaseData.partyType
+        this.caseSourceTextDisable=true
         this.showOverrun = true
+        this.inforForm.afsj=new Date()
+        this.inforForm.afdd='密云检测站 北京市顺密路荆栗园村K24+860'
         return
       }
 
