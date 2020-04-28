@@ -253,7 +253,7 @@ export const menuList = [{
             name: "overWeightCase",
             showAlways: true,
             type: 0,
-            title: "超限案件列表",
+            title: "超限案件",
             path: "overWeightCase",
             component: "caseCenter/overWeightCase",
             icon: "md-home1",
