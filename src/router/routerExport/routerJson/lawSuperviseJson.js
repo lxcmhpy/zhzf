@@ -3,7 +3,7 @@ export default  [
     {
         //可视化监管
         path: '/lawSupervise',
-        name: 'lawSupervise1',
+        name: 'law_supervise_lawSupervise',
         meta: {
             title: "执法监管",
             oneTab:true,
@@ -12,23 +12,22 @@ export default  [
         children: [{
              //执法监管
                 path: '/lawSupervise',
-                name: 'lawSupervise',
+                name: 'law_supervise_lawSupervise',
                 meta: {
                     title: "可视化监管",
                     oneTab:true,
                 },
                 component: () => import("@/page/lawSupervise/supervisePage/kshjg/lawSupervise.vue"),
-            },
-
-            {
-                path: "/offSiteDetectionOverload",
-                name: "offSiteDetectionOverload",
-                meta: {
-                title: "非现场治超检测",
-                oneTab:true,
-                },
-                component: () => import("@/page/lawSupervise/supervisePage/kshjg/offSiteDetectionOverload.vue")
             }
+            // {
+            //     path: "/offSiteDetectionOverload",
+            //     name: "law_supervise_offSiteDetectionOverload",
+            //     meta: {
+            //     title: "非现场治超检测",
+            //     oneTab:true,
+            //     },
+            //     component: () => import("@/page/lawSupervise/supervisePage/kshjg/offSiteDetectionOverload.vue")
+            // }
             // {
             //     path: "/teamStrength",
             //     name: "teamStrength",
@@ -42,11 +41,11 @@ export default  [
     }, {
         //线索中心
         path: '/clueManage',
-        name: 'clueManage',
+        name: 'law_supervise_clueManage',
         component: MainContent,
         children: [{
                path: '/offSiteManage',
-               name: 'offSiteManage',
+               name: 'law_supervise_offSiteManage',
                meta: {
                    title: '非现场治超列表',
                    oneTab:true,
@@ -54,21 +53,21 @@ export default  [
                component: () => import("@/page/lawSupervise/supervisePage/xszx/offSiteManage.vue"),
            }, {
                path: '/offSiteDetail/:offSiteManageId',
-               name: 'offSiteDetail',
+               name: 'law_supervise_offSiteDetail',
                meta: {
                    title: '线索详情'
                },
                component: () => import("@/page/lawSupervise/supervisePage/xszx/offSiteDetail.vue")
            }, {
                 path: '/evidenceDetail/:offSiteManageId',
-                name: 'evidenceDetail',
+                name: 'law_supervise_evidenceDetail',
                 meta: {
                     title: '证据详情'
                 },
                 component: () => import("@/page/lawSupervise/supervisePage/xszx/evidenceDetail.vue")
            }, {
             path: '/invalidCueDetail/:offSiteManageId',
-            name: 'invalidCueDetail',
+            name: 'law_supervise_invalidCueDetail',
             meta: {
                 title: '无效信息'
             },
@@ -76,7 +75,7 @@ export default  [
         },
         {
             path: '/examineDoingDetail/:status/:offSiteManageId',
-            name: 'examineDoingDetail',
+            name: 'law_supervise_examineDoingDetail',
             meta: {
                 title: '待审核'
             },
@@ -84,7 +83,7 @@ export default  [
         },
         {
             path: '/transferDetail/:offSiteManageId',
-            name: 'transferDetail',
+            name: 'law_supervise_transferDetail',
             meta: {
                 title: '已转办详情'
             },
@@ -92,7 +91,7 @@ export default  [
         },
         {
             path: '/transferManage',
-            name: 'transferManage',
+            name: 'law_supervise_transferManage',
             meta: {
                 title: '转办列表'
             },
@@ -101,25 +100,11 @@ export default  [
     }, {
         //统计分析
         path: '/analysis',
-        name: 'analysis',
+        name: 'law_supervise_analysis',
         component: MainContent,
         children: [{
                path: '/checkAnalyse',
-               name: 'checkAnalyse',
-               meta: {
-                   title: '治超检测统计分析',
-                   oneTab:true,
-               },
-               component: () => import("@/page/lawSupervise/supervisePage/tjfx/checkAnalyse.vue")
-           }]
-    }, {
-        //重点监管
-        path: '/analysis',
-        name: 'analysis',
-        component: MainContent,
-        children: [{
-               path: '/checkAnalyse',
-               name: 'checkAnalyse',
+               name: 'law_supervise_checkAnalyse',
                meta: {
                    title: '治超检测统计分析',
                    oneTab:true,

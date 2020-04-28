@@ -8,9 +8,10 @@
       @tab-click="tabClick"
       @tab-remove="tabRemove"
     >
-    <!-- :name="`${item.name}-and-${item.title}`" -->
       <el-tab-pane :key="item.name" v-for="item in openTab" :label="item.title" :name="item.name"></el-tab-pane>
+
     </el-tabs>
+
   </div>
 </template>
 <script>
@@ -21,7 +22,12 @@ export default {
   data() {
     return {
         activeIndexStr: '',
-        openTabList: []
+        openTabList: [],
+        tabsNameList: {
+            law_supervise_: '【监管】',
+            case_handle_: '【案件】',
+            law_center_: '【超限】'
+        }
     };
   },
   methods: {
@@ -31,17 +37,8 @@ export default {
   methods: {
     //tab标签点击时，切换相应的路由
     tabClick(tab) {
-        // debugger;
         let route = this.openTab[tab.index];
         let name = route.isCase ? route.name.split('-and-')[0] :route.name
-        // this.$emit('router',name,route);
-        // this.$store.commit("changeOneTabName", this.activeIndexStr);
-        // let data = {
-        //     index: tab.index,
-        //     num: 1,
-        //     data: route
-        // }
-        // this.$store.dispatch("replaceTabs", data);
         route.menuUrl = name;
         this.activeIndexStr = route.name;
         this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexStr);
@@ -72,7 +69,19 @@ export default {
         }
       }
     },
+    getTabName (code) {
+        let tabsCode = '';
+        if (code.indexOf('case_handle_') > -1) {
+            tabsCode = this.tabsNameList['case_handle_'];
+        } else if (code.indexOf('law_supervise_') > -1) {
+            tabsCode = this.tabsNameList['law_supervise_'];
+        } else if (code.indexOf('law_center_') > -1) {
+            tabsCode = this.tabsNameList['law_center_'];
+        }
+        return tabsCode;
+    },
     init () {
+        debugger;
         if (this.$route.path !== "/" && this.$route.name !== "case_handle_home_index") {
             this.activeIndexStr = this.activeIndexSto;
         } else {
@@ -133,17 +142,17 @@ export default {
                 isCase = false;
             }
             name = name? name : to.name;
+            let tabsCode = this.getTabName(to.name);
+
             this.$store.dispatch("addTabs", {
                 route: to.path,
                 name: name,
-                title: tabTitle,
+                title: tabsCode+tabTitle,
                 isCase: isCase,
                 params: to.params
             });
             this.$store.commit("SET_ACTIVE_INDEX_STO", name);
         }
-
-
     },
     activeIndexSto(val,oldVal) {
         this.activeIndexStr = val;

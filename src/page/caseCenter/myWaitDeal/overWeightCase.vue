@@ -348,7 +348,7 @@ export default {
     // debugger;
     // debugger;
       this.$router.push({
-        name: 'dentails-index',
+        name: 'law_center_dentails-index',
         params: {
             tabTitle: this.tabActiveValue,
             path: this.$route.path,
@@ -365,7 +365,7 @@ export default {
     },
     routerEvidenceDetail() {
       this.$router.push({
-        name: 'evidenceDetail'
+        name: 'law_center_evidenceDetail'
       })
     },
     //更改每页显示的条数
@@ -379,7 +379,7 @@ export default {
     },
     routerInvalidCue(item) {
       this.$router.push({
-        name: 'invalidCueDetail'
+        name: 'law_center_invalidCueDetail'
       })
     }
   },

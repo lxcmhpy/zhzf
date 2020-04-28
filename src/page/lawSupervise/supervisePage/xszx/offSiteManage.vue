@@ -496,7 +496,7 @@ export default {
     routerDetail (row) {
         // this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
-            name: 'offSiteDetail',
+            name: 'law_supervise_offSiteDetail',
             params: {
                 offSiteManageId: row.id
             }
@@ -505,7 +505,7 @@ export default {
     routerEvidenceDetail (row) {
         // this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
-            name: 'evidenceDetail',
+            name: 'law_supervise_evidenceDetail',
             params: {
                 offSiteManageId: row.id
             }
@@ -523,7 +523,7 @@ export default {
     routerInvalidCueDetail (row) {
         // this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
-            name: 'invalidCueDetail',
+            name: 'law_supervise_invalidCueDetail',
             params: {
                 offSiteManageId: row.id
             }
@@ -532,7 +532,7 @@ export default {
     routerExamineDetail (row,status, tabTitle) {
         // this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
-            name: 'examineDoingDetail',
+            name: 'law_supervise_examineDoingDetail',
             params: {
                 status: status,
                 tabTitle: tabTitle,
@@ -543,7 +543,7 @@ export default {
     routerExamineDoingDetail (row,status, tabTitle) {
         // this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
-            name: 'examineDoingDetail',
+            name: 'law_supervise_examineDoingDetail',
             params: {
                 status: status,
                 tabTitle: tabTitle,
@@ -554,7 +554,7 @@ export default {
     routerTransferDetail (row) {
         // this.$store.commit('setOffSiteManageId',  item.id);
         this.$router.push({
-            name: 'transferDetail',
+            name: 'law_supervise_transferDetail',
             params: {
                 offSiteManageId: row.id
             }
@@ -562,7 +562,7 @@ export default {
     },
     routerTransferManage () {
         this.$router.push({
-            name: 'transferManage',
+            name: 'law_supervise_transferManage',
         })
     },
     handleNodeClick(data) {

@@ -96,7 +96,7 @@ export default {
         type: "success",
         message: "指派完成"
       });
-      this.$router.push({ name: 'transferAndRegisterCase' })
+      this.$router.push({ name: 'law_center_transferAndRegisterCase' })
     },
     goBack() {
       this.$refs.goBackDialogRef.showModal();

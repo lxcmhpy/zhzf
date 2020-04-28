@@ -699,7 +699,7 @@ export default {
         },
         gotoCoerciveMeasureDoc() {
             this.$store.dispatch("deleteTabs", this.$route.name);
-            this.$router.push({ name: 'removeOrPrelong' });
+            this.$router.push({ name: 'law_supervise_removeOrPrelong' });
         },
         updateHp () {
             this.visible = true;

@@ -234,11 +234,11 @@
         <!-- <externalVideoBtns :doing="videoDoing"  style="position:absolute;z-index:300"></externalVideoBtns> -->
       </div>
       <!-- 右侧浮动栏 -->
-      <div class="amap-position" :class="'amap-' + direction + '-box'" >
+      <div class="amap-position amap-rtl-box" :class="{'widthDrawer600': drawer1}" >
         <div class="drawerBtn" @click="updateDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
-        <el-drawer v-show="!drawer1" modal-append-to-body :direction="direction" :size="380" customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
+        <el-drawer v-show="!drawer1" modal-append-to-body :direction="direction" size="380px" customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
@@ -285,7 +285,7 @@
         </el-drawer>
         <el-drawer v-show="drawer1"
                 modal-append-to-body
-                :size="580"
+                size="580px"
                 customClass="amap-drawer w-600"
                 :direction="direction"
                 :wrapperClosable="false"
@@ -819,12 +819,13 @@ export default {
       }
     },
     updateDrawer1 () {
+        this.drawer1 = true;
         // this.getRealTimeDataByLawSupervise();
         this.searchPageAll(4, 'zfdList');
         this.searchPageAll(6, 'gjclList');
         // this.category = 4;
         // this.searchByTab(this.tabList[1].children[0]);
-        this.drawer1 = !this.drawer1;
+
     },
     searchPageAll (code, obj) {
         this.markers.splice(0, this.markers.length);
@@ -837,7 +838,7 @@ export default {
                 area: '',
                 current: 1,
                 key: '',
-                size: 0,
+                size: 20,
                 type: code
             };
         let that = this;
@@ -1021,6 +1022,8 @@ export default {
 
       if (this.category == '4') {
           this.updateDrawer1()
+      } else {
+          this.drawer1 = false
       }
     },
     searchAll(pois) {

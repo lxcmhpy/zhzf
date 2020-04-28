@@ -217,12 +217,12 @@ export default {
     },
     gotoCoerciveMeasureDoc() {
       this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: 'removeOrPrelong' })
+      this.$router.push({ name: 'law_supervise_removeOrPrelong' })
     },
     routerOffSiteManage () {
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.push({
-            name: 'offSiteManage'
+            name: 'law_supervise_offSiteManage'
         })
     },
     dialogInvalidCue() {
@@ -245,7 +245,7 @@ export default {
     nextRouter() {
       let nextStatus=parseInt(this.$route.params.status)+1
       this.$router.push({
-        name: 'examineDoingDetail',
+        name: 'law_supervise_examineDoingDetail',
         params: {
           status: nextStatus.toString(),
           tabTitle: this.statusObj[nextStatus.toString()]
