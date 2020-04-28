@@ -346,7 +346,7 @@ export default {
         name: 'law_center_evidenceDetail',
         params: {
             // tabTitle: this.tabActiveValue
-            tabTitle: '【超限】超限案件列表'
+            tabTitle: '超限案件列表'
         }
       })
     },
@@ -363,10 +363,10 @@ export default {
         this.tabActiveValue = this.processStatus[this.tabActiveIndex].value;
       this.$router.push({
         name: 'law_center_invalidCue',
-        params: {
-            // tabTitle: this.tabActiveValue
-            tabTitle: '【超限】超限案件列表'
-        }
+        // params: {
+        //     // tabTitle: this.tabActiveValue
+        //     tabTitle: '【超限】超限案件列表'
+        // }
       })
     }
   },

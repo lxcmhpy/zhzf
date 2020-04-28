@@ -1022,6 +1022,8 @@
         .el-icon-picture {
             color: #a1b1e3;
             font-size: 30px;
+            margin-top: 35px;
+            line-height: 17px;
         }
     }
     .el-upload-list__item-actions,.el-upload-list__item-thumbnail{
@@ -1041,13 +1043,11 @@
          border: 0px !important;
          margin: 0px;
     }
-    .el-upload-list {
-        .el-upload-list__item {
+    .el-upload-list .el-upload-list__item {
             width: 188px;
             height: 110px;
             border-radius: 0px;
-            margin-right: 20px;
-        }
+            margin-right: 20px !important;
     }
 }
 .demo-image__preview {

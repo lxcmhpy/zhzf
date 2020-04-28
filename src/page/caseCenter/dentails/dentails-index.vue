@@ -3,46 +3,48 @@
       <span class="examineDoingDetail">
          <!-- {{value}} -->
     </span>
-    <dealNotes v-if="showFlag==='/caseCenter-overWeightCase'&&(value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
+    <dealNotes v-if="showFlag==='/overWeightCase'&&(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
 
-    <dealNotesSearch v-if="showFlag==='/caseCenter-transferAndRegisterCase'"></dealNotesSearch>
+    <dealNotesVeiw v-if="showFlag==='/overWeightCase'&&(value=='待办')"></dealNotesVeiw>
 
-    <uoloadFiles v-if="showFlag==='/caseCenter-transferAndRegisterCase'"></uoloadFiles>
+    <dealNotesSearch v-if="showFlag==='/transferAndRegisterCase'"></dealNotesSearch>
 
-    <dealInProgress v-if="showFlag==='/caseCenter-overWeightCase'&&(value=='在办')"></dealInProgress>
+    <uoloadFiles v-if="showFlag==='/transferAndRegisterCase'"></uoloadFiles>
 
-    <dealProgress v-if="showFlag==='/caseCenter-overWeightCase'&&(value=='办结')"></dealProgress>
+    <dealInProgress v-if="showFlag==='/overWeightCase'&&(value=='在办')"></dealInProgress>
 
-    <backNotes v-if="showFlag==='/caseCenter-overWeightCase'&&(value=='已回退')">></backNotes>
+    <dealProgress v-if="showFlag==='/overWeightCase'&&(value=='办结')"></dealProgress>
 
-    <otherEnclosure v-if="showFlag==='/caseCenter-overWeightCase'&&(value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></otherEnclosure>
+    <backNotes v-if="showFlag==='/overWeightCase'&&(value=='已回退')">></backNotes>
 
-    <evidenceTransfer v-if="showFlag==='/caseCenter-overWeightCase'&&(value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')||showFlag==='/caseCenter-transferAndRegisterCase'"></evidenceTransfer>
+    <otherEnclosure v-if="showFlag==='/overWeightCase'&&(value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></otherEnclosure>
+
+    <evidenceTransfer v-if="showFlag==='/overWeightCase'&&(value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')||showFlag==='/transferAndRegisterCase'"></evidenceTransfer>
     <!--
-    <evidencePackage v-if="showFlag==='/caseCenter-overWeightCase'&&
+    <evidencePackage v-if="showFlag==='/overWeightCase'&&
     value=='待办'"></evidencePackage> -->
 
     <!-- 悬浮按钮 -->
     <div class="float-btns" style="bottom:50px">
-      <el-button type="success" @click="goBack" v-if="showFlag==='/caseCenter-overWeightCase'&&
+      <el-button type="success" @click="goBack" v-if="showFlag==='/overWeightCase'&&
     (value=='待办')">
         <i class="iconfont law-back"></i>
         <br />任务<br />退回
       </el-button>
 
-      <el-button type="primary" @click="goConfirmCase" v-if="showFlag==='/caseCenter-overWeightCase'&&
+      <el-button type="primary" @click="goConfirmCase" v-if="showFlag==='/overWeightCase'&&
     (value=='待办')">
         <i class="iconfont law-approval"></i>
         <br />案件<br />办理
       </el-button>
 
-      <el-button type="primary" @click="goConfirmCase" v-if="showFlag==='/caseCenter-overWeightCase'&&
+      <el-button type="primary" @click="goConfirmCase" v-if="showFlag==='/overWeightCase'&&
     (value=='机构待办')">
         <i class="iconfont law-approval"></i>
         <br />转立案
       </el-button>
 
-      <el-button type="primary" @click="goSure" v-if="showFlag==='/caseCenter-transferAndRegisterCase'">
+      <el-button type="primary" @click="goSure" v-if="showFlag==='/transferAndRegisterCase'">
         <i class="iconfont law-save"></i>
         <br />确认
       </el-button>
@@ -54,6 +56,7 @@
 <script>
 import dealNotes from '@/components/caseCenter/dealNotes.vue'
 import dealNotesSearch from '@/components/caseCenter/dealNotesSearch.vue'
+import dealNotesVeiw from '@/components/caseCenter/dealNotesVeiw.vue'
 import backNotes from '@/components/caseCenter/backNotes.vue'
 import dealProgress from '@/components/caseCenter/dealProgress.vue'
 import dealInProgress from '@/components/caseCenter/dealInProgress.vue'
@@ -68,6 +71,7 @@ export default {
   components: {
     dealNotes,
     dealNotesSearch,
+    dealNotesVeiw,
     otherEnclosure,
     evidencePackage,
     dealProgress,
@@ -112,8 +116,8 @@ export default {
     // this.showFlag = iLocalStroage.gets("caseCenterDentails").path
     // this.value = iLocalStroage.gets("caseCenterDentails").value
     // debugger;
-    this.showFlag = this.$route.params.path,
-    this.value = this.$route.params.value
+    this.showFlag = this.$route.params.path;
+    this.value = this.$route.params.value;
   },
 
 }

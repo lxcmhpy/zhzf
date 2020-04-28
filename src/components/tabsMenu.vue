@@ -39,10 +39,12 @@ export default {
     //tab标签点击时，切换相应的路由
     tabClick(tab) {
         let route = this.openTab[tab.index];
-        let name = route.isCase ? route.name.split('-and-')[0] :route.name
+        let name = route.isCase ? route.name.split('-and-')[0] :route.name;
+        debugger;
         route.menuUrl = name;
         this.activeIndexStr = route.name;
         this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexStr);
+        this.$store.commit("set_Head_Active_Nav", route.headActiveNav);
         this.$router.push(({ name: 'reloadPage',params: route}));
 
 
@@ -71,8 +73,6 @@ export default {
       }
     },
     getTabName (code) {
-      console.log(code,'code')
-      debugger
         let tabsCode = '';
         if (code.indexOf('case_handle_') > -1) {
             tabsCode = this.tabsNameList['case_handle_'];
@@ -105,9 +105,10 @@ export default {
       //未打开的，将其放入队列里
         let flag = false;
         let _this = this;
+        let tabsCode = this.getTabName(to.name);
         let _index = _.findIndex(this.openTab,(chr) => {
             if (chr.isCase) {
-                return chr.title == _this.caseHandle.caseNumber;
+                return chr.title == tabsCode + _this.caseHandle.caseNumber;
             }
             return chr.name === to.name;
         });
@@ -116,7 +117,7 @@ export default {
             if (to.params.tabTitle) {
                 let currentOpenTab = this.openTab[_index];
                 currentOpenTab.params = to.params;
-                currentOpenTab.title = currentOpenTab.params.tabTitle;
+                currentOpenTab.title = this.getTabName(to.name) + currentOpenTab.params.tabTitle;
                 currentOpenTab.route = currentOpenTab.path;
                 let data = {
                     index: _index,
@@ -125,6 +126,7 @@ export default {
                 }
                 this.$store.dispatch("replaceTabs", data);
             }
+            this.$store.commit("set_Head_Active_Nav", this.openTab[_index].headActiveNav);
             this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[_index].name);
             this.$store.commit("changeOneTabName", this.openTab[_index].name);
         } else {
@@ -144,14 +146,14 @@ export default {
                 isCase = false;
             }
             name = name? name : to.name;
-            let tabsCode = this.getTabName(to.name);
 
             this.$store.dispatch("addTabs", {
                 route: to.path,
                 name: name,
                 title: tabsCode+tabTitle,
                 isCase: isCase,
-                params: to.params
+                params: to.params,
+                headActiveNav: this.headActiveNav
             });
             this.$store.commit("SET_ACTIVE_INDEX_STO", name);
         }
@@ -164,7 +166,7 @@ export default {
     }
   },
   computed: {
-        ...mapGetters(["caseHandle", "openTab", "activeIndexSto"])
+        ...mapGetters(["caseHandle", "openTab", "activeIndexSto", "headActiveNav"])
   }
 };
 </script>
