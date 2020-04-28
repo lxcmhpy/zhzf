@@ -74,6 +74,7 @@
                                 placement="bottom"
                                     trigger="click"
                                     style="z-index:3300"
+                                    v-model="visiblePopover"
                                 >
                                 <div class="departOrUserTree" style="width:400px">
                                     <div class="treeBox">
@@ -158,7 +159,8 @@ export default {
         color: ''
       },
       icon: [''],
-      invalidList: []
+      invalidList: [],
+      visiblePopover: false
     };
   },
   methods: {
@@ -168,6 +170,7 @@ export default {
     },
     handleNodeClick1(data) {
       this.checkSearchForm.number = data.label;
+      this.visiblePopover = false;
     },
     getAllOrgan(organId) {
       let _this = this

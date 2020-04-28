@@ -91,6 +91,7 @@
                                      <el-popover
                                         placement="bottom"
                                           trigger="click"
+                                          v-model="visiblePopover"
                                        >
                                        <div class="departOrUserTree" style="width:426px">
                                             <div class="treeBox">
@@ -404,7 +405,8 @@ export default {
             '灰色': 'vehicle-gray',
             '渐变绿': 'vehicle-gradient-green',
             '黄绿色': 'vehicle-yelloe-green',
-        }
+        },
+        visiblePopover: false
     }
   },
   methods: {
@@ -413,6 +415,7 @@ export default {
     //   this.selectCurrentTreeName = data.label;
     //   this.currentOrganId = data.id;
       this.form.lane = data.label;
+      this.visiblePopover = false;
     //   this.getSelectOrgan(this.currentOrganId);
     },
     getAllOrgan(organId) {
