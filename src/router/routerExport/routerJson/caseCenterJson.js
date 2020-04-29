@@ -3,13 +3,13 @@ export default  [
     {
         //可视化监管
         path: '/caseCenter',
-        name: 'caseCenter1',
+        name: 'law_center_caseCenter1',
         component: MainContent,
         children: [
             {
                  // 事务中心
                    path: '/caseCenter',
-                   name: 'caseCenter',
+                   name: 'law_center_caseCenter',
                    meta: {
                        title: "事务中心",
                        oneTab:true,
@@ -19,7 +19,7 @@ export default  [
 
             {
                 path: "/transferAndRegisterCase",
-                name: "transferAndRegisterCase",
+                name: "law_center_transferAndRegisterCase",
                 meta: {
                     title: "转立案列表",
                     oneTab:true,
@@ -28,7 +28,7 @@ export default  [
             },
             {
                 path: "/overWeightCase",
-                name: "overWeightCase",
+                name: "law_center_overWeightCase",
                 meta: {
                 title: "超限案件列表",
                 oneTab:true,
@@ -37,7 +37,7 @@ export default  [
             },
             {
                 path: "/dentails-index/:path/:value",
-                name: "dentails-index",
+                name: "law_center_dentails-index",
                 meta: {
                 title: "列表详情",
                 oneTab:true,

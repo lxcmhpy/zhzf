@@ -544,7 +544,6 @@ export default {
       } else {
         this.isParty = false;
       }
-      console.log('this.isParty',this.isParty)
     },
     //获取案件基本信息
     getCaseInfo(){

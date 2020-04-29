@@ -5,6 +5,7 @@
           <div class="title-box">
               <span class="title-blue"></span>
               <span class="title-text">执行情况</span>
+               <el-button type="primary" style="float:right;margin-bottom:5px">查询</el-button>
           </div>
         <table>
           <tr>
@@ -26,7 +27,7 @@
             <td class="table-bg">状态</td>
              <td class="search-tr">
               <span class="search-text">办理中</span>
-              <el-button type="primary" >查询</el-button>
+              <!-- <el-button type="primary" >查询</el-button> -->
             </td>
           </tr>
         </table>

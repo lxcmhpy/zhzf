@@ -142,12 +142,14 @@
                       {{curWindow.other.createTime}} &nbsp;
                       超限{{curWindow.other.cxchl}} &nbsp;
                       黑名单{{curWindow.other.blackList}}
+                    <span class="right" @click="routerXs">详情</span>
                     </p>
                   </div>
                 </div>
               </div>
               <div class="con ">
-                <el-table v-if="curWindow.other.list" style="width: 100%;line-height: 40px;" :data="curWindow.other.list.splice(0,5)" resizable stripe>
+                <el-table v-if="curWindow.other.list" style="width: 100%;line-height: 40px;" :data="curWindow.other.list.splice(0,5)" resizable stripe
+                @row-click="routerXsDetail">
                   <el-table-column width="170" align="center" prop="checkTime" label="过检时间"></el-table-column>
                   <el-table-column width="100" align="center" prop="vehicleNumber" label="车牌号"></el-table-column>
                   <el-table-column width="80" align="center" prop="overload" label="超载率"></el-table-column>
@@ -234,11 +236,11 @@
         <!-- <externalVideoBtns :doing="videoDoing"  style="position:absolute;z-index:300"></externalVideoBtns> -->
       </div>
       <!-- 右侧浮动栏 -->
-      <div class="amap-position" :class="'amap-' + direction + '-box'" >
+      <div class="amap-position amap-rtl-box" :class="{'widthDrawer600': drawer1}" >
         <div class="drawerBtn" @click="updateDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
-        <el-drawer v-show="!drawer1" modal-append-to-body :direction="direction" :size="380" customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
+        <el-drawer v-show="!drawer1" modal-append-to-body :direction="direction" size="380px" customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
@@ -285,7 +287,7 @@
         </el-drawer>
         <el-drawer v-show="drawer1"
                 modal-append-to-body
-                :size="580"
+                size="580px"
                 customClass="amap-drawer w-600"
                 :direction="direction"
                 :wrapperClosable="false"
@@ -720,6 +722,21 @@ export default {
     };
   },
   methods: {
+    routerXs () {
+        this.$router.push({
+            name: 'law_supervise_offSiteManage'
+        })
+    },
+    routerXsDetail () {
+        this.$router.push({
+            name: 'law_supervise_examineDoingDetail',
+            params: {
+                status: '0',
+                tabTitle: '待审核',
+                offSiteManageId: '1'
+            }
+        })
+    },
     positionEvent (row, column, event, category) {
         // debugger;
         this.markers.splice(0, this.markers.length);
@@ -819,12 +836,13 @@ export default {
       }
     },
     updateDrawer1 () {
+        this.drawer1 = true;
         // this.getRealTimeDataByLawSupervise();
         this.searchPageAll(4, 'zfdList');
         this.searchPageAll(6, 'gjclList');
         // this.category = 4;
         // this.searchByTab(this.tabList[1].children[0]);
-        this.drawer1 = !this.drawer1;
+
     },
     searchPageAll (code, obj) {
         this.markers.splice(0, this.markers.length);
@@ -837,7 +855,7 @@ export default {
                 area: '',
                 current: 1,
                 key: '',
-                size: 0,
+                size: 20,
                 type: code
             };
         let that = this;
@@ -1021,6 +1039,8 @@ export default {
 
       if (this.category == '4') {
           this.updateDrawer1()
+      } else {
+          this.drawer1 = false
       }
     },
     searchAll(pois) {

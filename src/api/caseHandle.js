@@ -484,6 +484,7 @@ export function findSetListApi(params) {
     bindType:params.bindType,
     resourceName:params.resourceName,
     resourceType:params.resourceType,
+    typeId:params.typeId,
     size:params.pageSize,
     current:params.currentPage
   }

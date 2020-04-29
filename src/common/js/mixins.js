@@ -8,6 +8,7 @@ export const mixinGetCaseApiList = {
   data() {
     return {
       isSaveLink: false, //是否点击了环节保存，未保存不可以操作文书
+      canGoNextLink:false,
     }
   },
   computed: { ...mapGetters(['caseId']) },
@@ -64,7 +65,7 @@ export const mixinGetCaseApiList = {
                 caseBasicInfoId: caseId,
                 typeId: caseLinktypeId
               };
-              this.searchPropertyFeatures(data,res.data);  
+              this.searchPropertyFeatures(data,res.data,refreshDataForPdf);  
             }else{    //表单全部改完之后删掉！！！！
               this.caseLinkDataForm.id = res.data.id;
               //利用属性给this.formData赋值
@@ -308,21 +309,32 @@ export const mixinGetCaseApiList = {
           if (res.data.length == 0) {
             this.com_getCaseBasicInfo(params.caseId, params.docId);
           } else {
-            console.log(res.data[0]);
-            this.caseDocDataForm.id = res.data[0].id;
-            this.docData = JSON.parse(res.data[0].docData);
-            //设置禁用
-            if (this.needSetDisabled) {
-              this.setDisabledData();
+            if(this.propertyFeatures != undefined){
+              let data = {
+                caseBasicInfoId: params.caseId,
+                typeId: params.docId
+              };
+              this.searchPropertyFeatures(data,res.data[0]);  
+            }else{
+              console.log(res.data[0]);
+              this.caseDocDataForm.id = res.data[0].id;
+              this.docData = JSON.parse(res.data[0].docData);
+              //设置禁用
+              if (this.needSetDisabled) {
+                this.setDisabledData();
+              }
+              if (this.docData.party) {
+                this.isParty = true;
+              } else {
+                this.isParty = false;
+              }
             }
+
+
+            
           }
-          //判断当事人类型
-          // console.log("docData",this.docData)
-          if (this.docData.party) {
-            this.isParty = true;
-          } else {
-            this.isParty = false;
-          }
+          
+          
         },
         err => {
           console.log(err);
@@ -339,27 +351,27 @@ export const mixinGetCaseApiList = {
 
           if (valid) {
             console.log('通过')
-            // this.$store.dispatch("addDocData", this.caseDocDataForm).then(
-            //   res => {
-            //     console.log("保存文书", res);
-            //     this.$message({
-            //       type: "success",
-            //       message: "提交成功"
-            //     });
-            //     //为多份文书赋值id，提交多份文书的pdf时需要用到
-            //     if (this.caseDocDataForm.docDataId != undefined) {
-            //       this.caseDocDataForm.docDataId = res.data.id;
-            //     }
+            this.$store.dispatch("addDocData", this.caseDocDataForm).then(
+              res => {
+                console.log("保存文书", res);
+                this.$message({
+                  type: "success",
+                  message: "提交成功"
+                });
+                //为多份文书赋值id，提交多份文书的pdf时需要用到
+                if (this.caseDocDataForm.docDataId != undefined) {
+                  this.caseDocDataForm.docDataId = res.data.id;
+                }
 
-            //     console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
-            //     this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-            //     //提交成功后提交pdf到服务器，后打开pdf
-            //     this.printContent();
-            //   },
-            //   err => {
-            //     console.log(err);
-            //   }
-            // );
+                console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
+                this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+                //提交成功后提交pdf到服务器，后打开pdf
+                this.printContent();
+              },
+              err => {
+                console.log(err);
+              }
+            );
           } else {
             console.log('不通过')
 
@@ -742,7 +754,7 @@ export const mixinGetCaseApiList = {
     .catch(err=>{console.log(err)})
   },
   //查询文书或表单是否禁用及必填等
-  searchPropertyFeatures(caseBasicInfoIdAndtypeId,savedData=''){
+  searchPropertyFeatures(caseBasicInfoIdAndtypeId,savedData='',refreshDataForPdf=false){
     findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res=>{
       console.log('通过案件Id级文书类型Id查询案件基本信息及规则',res);
       let data = JSON.parse(res.data.propertyData);
@@ -752,7 +764,15 @@ export const mixinGetCaseApiList = {
       if (this.formData) {
         if(savedData){
           this.caseLinkDataForm.id = savedData.id;
-          this.formData = JSON.parse(savedData.formData)
+          this.formData = JSON.parse(savedData.formData);
+          this.isSaveLink = true;
+          this.canGoNextLink = savedData.status == '1' ? true : false
+          if (refreshDataForPdf) {
+            // 提交pdf页
+            setTimeout(() => {
+              this.printContent();
+            }, 1500)
+          }
         }else{
           for (var key in data) {
             this.formData[key] = data[key].val;
@@ -761,7 +781,14 @@ export const mixinGetCaseApiList = {
         
         
       } else {
-        this.docData = data
+        if(savedData){
+          this.caseDocDataForm.id = savedData.id;
+          this.docData = JSON.parse(savedData.docData);
+        }else{
+          for (var key in data) {
+            this.docData[key] = data[key].val || '';
+          }
+        }
       
       }
       if (this.needDealData) {

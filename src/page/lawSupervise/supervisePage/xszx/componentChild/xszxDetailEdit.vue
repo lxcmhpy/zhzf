@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="item">
                                 <el-form-item label="ETC识别车牌">
-                                    <el-input v-model="checkSearchForm.color"></el-input>
+                                    <el-input v-model="checkSearchForm.color" readonly="readonly"></el-input>
                                 </el-form-item>
                                 </div>
                             </div>
@@ -699,7 +699,7 @@ export default {
         },
         gotoCoerciveMeasureDoc() {
             this.$store.dispatch("deleteTabs", this.$route.name);
-            this.$router.push({ name: 'removeOrPrelong' });
+            this.$router.push({ name: 'law_supervise_removeOrPrelong' });
         },
         updateHp () {
             this.visible = true;

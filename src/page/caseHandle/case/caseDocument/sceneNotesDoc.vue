@@ -10,50 +10,50 @@
           :model="docData"
         >
           <div class="doc_topic">现场笔录</div>
-          <div class="doc_number">案号：{{docData.caseNumber.val}}</div>
-         
+          <div class="doc_number">案号：{{docData.caseNumber}}</div>
+          <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
               <td>执法地点</td>
               <td colspan="3" class="color_DBE4EF">
-                <el-form-item :prop="docData.afdd.required ? 'afdd.val':''">
+                <el-form-item prop="afdd">
                   <el-input
                     type="textarea"
-                    v-model="docData.afdd.val"
-                    v-bind:class="{ over_flow:docData.afdd.val.length>14?true:false }"
+                    v-model="docData.afdd"
+                    v-bind:class="{ over_flow:docData.afdd.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="nameLength"
                     error
                     placeholder="\"
                   ></el-input>
-                
+                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
                 </el-form-item>
               </td>
               <td>执法时间</td>
-              <!-- <td colspan="3" id="scenetimeBox">
+              <td colspan="3" id="scenetimeBox">
                 <el-form-item prop="enforceStartTime" class="pdf_datapick dataTimeReplaceBox">
                   <el-date-picker
-                    v-model="docData.enforceStartTime.value"
+                    v-model="docData.enforceStartTime"
                     type="datetime"
                     format="yyyy-MM-dd HH:mm"
                     value-format="yyyy年MM月dd日HH时mm分"
                     style="width:235px"
                     :default-time="defaultStartTime" 
                   ></el-date-picker>
-                   <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.enforceStartTime.value"></el-input> 
+                   <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.enforceStartTime"></el-input> 
                 </el-form-item>
                 <br><span style="display:inline-block;width:20px;margin-top:10px;">至</span><el-form-item prop="enforceEndTime" class="pdf_datapick" style="width:100px">
                   <el-time-picker
                     placeholder="时 分"
-                    v-model="docData.enforceEndTime.value"
+                    v-model="docData.enforceEndTime"
                     format="HH时mm分" 
                     value-format="HH:mm"
                   >
                   </el-time-picker>
                 </el-form-item>
-              </td> -->
+              </td>
             </tr>
-            <!-- <tr>
+            <tr>
               <td rowspan="2">执法人员</td>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="staff1">
@@ -271,7 +271,7 @@
                   </el-col>
                 </el-row>
               </td>
-            </tr> -->
+            </tr>
           </table>
         </el-form>
       </div>
@@ -378,7 +378,7 @@ export default {
         readState:[],
       },
       rules: {
-        'afdd.val': [{ required: true, message: '执法地点不能为空', trigger: "blur" }],
+        afdd: [{ required: true, message: '执法地点不能为空', trigger: "blur" }],
         enforceStartTime: [
           { required: true, message: "执法开始时间不能为空", trigger: "blur" },
           { validator: validateStartTime, trigger: "blur" }
@@ -476,7 +476,7 @@ export default {
         }
       },
       needDealData:true,
-      hasPropertyFeatures:true, //判断是否有禁用必填标识
+      propertyFeatures:'', //字段属性配置
 
     };
   },

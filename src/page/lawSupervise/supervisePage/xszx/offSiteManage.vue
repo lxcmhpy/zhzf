@@ -91,6 +91,7 @@
                                      <el-popover
                                         placement="bottom"
                                           trigger="click"
+                                          v-model="visiblePopover"
                                        >
                                        <div class="departOrUserTree" style="width:426px">
                                             <div class="treeBox">
@@ -404,7 +405,8 @@ export default {
             '灰色': 'vehicle-gray',
             '渐变绿': 'vehicle-gradient-green',
             '黄绿色': 'vehicle-yelloe-green',
-        }
+        },
+        visiblePopover: false
     }
   },
   methods: {
@@ -413,6 +415,7 @@ export default {
     //   this.selectCurrentTreeName = data.label;
     //   this.currentOrganId = data.id;
       this.form.lane = data.label;
+      this.visiblePopover = false;
     //   this.getSelectOrgan(this.currentOrganId);
     },
     getAllOrgan(organId) {
@@ -496,7 +499,7 @@ export default {
     routerDetail (row) {
         // this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
-            name: 'offSiteDetail',
+            name: 'law_supervise_offSiteDetail',
             params: {
                 offSiteManageId: row.id
             }
@@ -505,7 +508,7 @@ export default {
     routerEvidenceDetail (row) {
         // this.$store.commit('setOffSiteManageId', row.id);
         this.$router.push({
-            name: 'evidenceDetail',
+            name: 'law_supervise_evidenceDetail',
             params: {
                 offSiteManageId: row.id
             }
@@ -523,16 +526,17 @@ export default {
     routerInvalidCueDetail (row) {
         // this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
-            name: 'invalidCueDetail',
+            name: 'law_supervise_invalidCueDetail',
             params: {
                 offSiteManageId: row.id
             }
         })
     },
     routerExamineDetail (row,status, tabTitle) {
+        debugger;
         // this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
-            name: 'examineDoingDetail',
+            name: 'law_supervise_examineDoingDetail',
             params: {
                 status: status,
                 tabTitle: tabTitle,
@@ -543,7 +547,7 @@ export default {
     routerExamineDoingDetail (row,status, tabTitle) {
         // this.$store.commit('setOffSiteManageId', item.id);
         this.$router.push({
-            name: 'examineDoingDetail',
+            name: 'law_supervise_examineDoingDetail',
             params: {
                 status: status,
                 tabTitle: tabTitle,
@@ -554,7 +558,7 @@ export default {
     routerTransferDetail (row) {
         // this.$store.commit('setOffSiteManageId',  item.id);
         this.$router.push({
-            name: 'transferDetail',
+            name: 'law_supervise_transferDetail',
             params: {
                 offSiteManageId: row.id
             }
@@ -562,7 +566,7 @@ export default {
     },
     routerTransferManage () {
         this.$router.push({
-            name: 'transferManage',
+            name: 'law_supervise_transferManage',
         })
     },
     handleNodeClick(data) {

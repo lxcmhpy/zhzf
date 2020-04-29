@@ -5,6 +5,7 @@
         <div class="title-box">
           <span class="title-blue"></span>
           <span class="title-text">处置说明</span>
+           <el-button type="primary" style="float:right;margin-bottom:5px" @click="goConfirmCase">查看</el-button>
         </div>
         <table style="position:relative;">
           <tr>
@@ -14,9 +15,9 @@
             <td class="search-tr">
               <span class="search-text">黄色</span>
 
-               <el-button type="button" class="submitBtn blueBtn" @click="search"  style="position:absolute;right:-100px;top: 130px;">
+               <!-- <el-button type="button" class="submitBtn blueBtn" @click="search"  style="position:absolute;right:-100px;top: 130px;">
                     <div>查 看</div>
-                </el-button>
+                </el-button> -->
             </td>
           </tr>
 
@@ -429,13 +430,16 @@
       </div>
       <!-- </el-dialog> -->
     </el-drawer>
+    <confirmCaseDialog ref="confirmCaseDialogRef" @getNewData="goConfirmCaseData"></confirmCaseDialog>
   </div>
 </template>
 <script>
 import vehicleCheckDialog from '@/components/cluesReview/vehicleCheckDialog.vue';
+import confirmCaseDialog from '@/components/cluesReview/confirmCase.vue'
 export default {
   components: {
     vehicleCheckDialog,
+    confirmCaseDialog
   },
   data() {
     let self = this;
@@ -465,6 +469,16 @@ export default {
     },
     handleClick(tab, event) {
     },
+    goConfirmCaseData(){},
+    getNewData(){},
+    goConfirmCase(){
+      console.log('跳转案件')
+      let data={
+        title:'查看案件详情',
+        message:'是否进入案件办理系统，查看当前案件详情'
+      }
+         this.$refs.confirmCaseDialogRef.showModal(data);
+    }
   },
 
 
