@@ -78,7 +78,7 @@
                 <!-- <el-form-item label="年龄" prop="partyAge">
                   <el-input ref="partyAge" clearable class="w-120" type="number" v-model="formData.partyAge" size="small" placeholder="请输入" :disabled="originalData.partyAge ? true : false"></el-input>
                 </el-form-item> -->
-                <el-form-item label="与案件关系" prop="relationWithCase" :rules="propertyFeatures['relationWithCase'] && propertyFeatures['relationWithCase'].required ? rules.relationWithCase : [{ required: false, trigger: 'blur' }]">
+                <el-form-item label="与案件关系" prop="relationWithCase" :rules="propertyFeatures['relationWithCase'] && propertyFeatures['relationWithCase'].required ? rules.relationWithCase : [{ required: false, trigger: 'change' }]">
                     <el-select ref="relationWithCase" v-model="formData.relationWithCase" :disabled="propertyFeatures['relationWithCase'] && propertyFeatures['relationWithCase'].editable==false">
                       <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
