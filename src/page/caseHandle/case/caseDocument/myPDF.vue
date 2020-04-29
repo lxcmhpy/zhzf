@@ -3,7 +3,7 @@
       <!-- <div class="print_info"> -->
         <embed v-for="(item,index) in storagePath" :key="index" class="print_info" style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="item" type="application/pdf" internalinstanceid="29">
       <!-- </div>  -->
-    <casePageFloatBtns :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @backHuanjie="backHuanjie" @showApprovePeopleList="showApprovePeopleList"></casePageFloatBtns>
+    <casePageFloatBtns :storagePath="storagePath" :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @backHuanjie="backHuanjie" @showApprovePeopleList="showApprovePeopleList"></casePageFloatBtns>
 
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
