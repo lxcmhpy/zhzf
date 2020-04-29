@@ -251,7 +251,7 @@ export default {
         name: 'law_supervise_examineDoingDetail',
         params: {
           status: nextStatus.toString(),
-          tabTitle: this.statusObj[nextStatus.toString()]
+          tabTitle: '【监管】'+this.statusObj[nextStatus.toString()]
         }
       });
     },

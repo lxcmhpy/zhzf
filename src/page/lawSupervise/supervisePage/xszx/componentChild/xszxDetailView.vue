@@ -150,19 +150,33 @@
                         </div>
                     </li>
                     <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
+                        <img  class="img" :src="'./static/images/img/temp/sp.jpg'" @click="dialogPDFVisible = true">
                     </li>
                     <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
+                        <img class="img" :src="'./static/images/img/temp/sp.jpg'" @click="dialogPDFVisible = true">
                         <i class="iconfont law-bofang"></i>
                     </li>
                 </ul>
             </div>
         </div>
+        <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="770px">
+            <div>
+                <embed name="plugin" id="plugin" src="http://172.16.170.54:9332/11,1083f85ef928"
+                type="application/pdf" internalinstanceid="29" class="print_info"
+                style="padding: 0px; width: 730px; height:1100px; position: relative;">
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
 export default {
-    props: ['obj']
+    props: ['obj'],
+    data () {
+        return {
+            dialogPDFVisible: false,
+            storagePath: 'http://172.16.170.54:9332/12,3b11e8faa6 '
+        }
+    }
 }
 </script>
+<style lang="scss" src="@/assets/css/cluesReview.scss"></style>

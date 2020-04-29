@@ -552,7 +552,10 @@
                     <span class="title">现场照片/视频</span>
                 </div>
                 <ul class="list">
-                    <li v-for="index in 4" :key="index">
+                    <li v-for="index in 2" :key="index">
+                         <img class="img" :src="'./static/images/img/temp/sp.jpg'" @click="dialogPDFVisible = true">
+                    </li>
+                    <li v-for="index in 2" :key="index">
                         <div class="demo-image__preview">
                             <el-image
                             class="img"
@@ -593,14 +596,22 @@
                             action="https://jsonplaceholder.typicode.com/posts/"
                             :limit="1"
                         >
-                            <i class="el-icon-picture"></i>
+                            <i class="el-icon-picture">
+                                <span style="color: gray;font-size:12px;"><br>上传证据</span>
+                            </i>
+
                         </el-upload>
                     </li>
                 </ul>
             </div>
         </div>
-
-
+        <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="770px">
+            <div>
+                <embed name="plugin" id="plugin" src="http://172.16.170.54:9332/11,1083f85ef928"
+                type="application/pdf" internalinstanceid="29" class="print_info"
+                style="padding: 0px; width: 730px; height:1100px; position: relative;">
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -626,6 +637,7 @@ export default {
     data () {
         let self = this;
         return {
+            dialogPDFVisible: false,
             visible: false,
             checkSearchForm: {
                 number: '',
@@ -735,5 +747,5 @@ export default {
 </script>
 <style lang='scss'>
 </style>
-
+<style lang="scss" src="@/assets/css/cluesReview.scss"></style>
 

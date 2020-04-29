@@ -466,14 +466,18 @@ export const mixinGetCaseApiList = {
     },
     async printContent() {
       this.replaceTextArea();
-      htmlExportPDF(this.formOrDocData.pageDomId, this.uploadFile)
+      // if(){
+        this.uploadFile('','')
+      // }else{
+        // htmlExportPDF(this.formOrDocData.pageDomId, this.uploadFile)
+      // }
     },
     uploadFile(file, name) {
-      var f = new File([file.output("blob")], name, { type: 'application/pdf' })
-      var fd = new FormData()
-      fd.append("file", f)
-      fd.append('caseId', this.caseId);
-      fd.append('category', '文书');
+      // var f = new File([file.output("blob")], name, { type: 'application/pdf' })
+      // var fd = new FormData()
+      // fd.append("file", f)
+      // fd.append('caseId', this.caseId);
+      // fd.append('category', '文书');
 
       let docId = '';  //文书 id
 
@@ -482,34 +486,28 @@ export const mixinGetCaseApiList = {
         docId = this.caseDocDataForm.caseDoctypeId;
         //涉及到多份文书时，需要多加一个docDataId
         if (this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) {
-          fd.append('docDataId', this.caseDocDataForm.docDataId);
+          // fd.append('docDataId', this.caseDocDataForm.docDataId);
         }
       } else {
         //即是环节也是文书
         docId = this.huanjieAndDocId;
       }
-      fd.append('docId', docId);
+      // fd.append('docId', docId);
 
 
       //已经上传过了，
-      if (iLocalStroage.gets("currrentPdfData")) {
-        fd.append('id', iLocalStroage.gets("currrentPdfData").id);
-        fd.append('storageId', iLocalStroage.gets("currrentPdfData").storageId);
-      }
+      // if (iLocalStroage.gets("currrentPdfData")) {
+      //   fd.append('id', iLocalStroage.gets("currrentPdfData").id);
+      //   fd.append('storageId', iLocalStroage.gets("currrentPdfData").storageId);
+      // }
       let caseLinktypeId = ""; //环节id
       if (this.caseLinkDataForm) {
         caseLinktypeId = this.caseLinkDataForm.caseLinktypeId
       }
 
-      console.log('fd', fd.get('docId'));
-      console.log('currrentPdfId', fd.get('id'));
-      console.log('currrentPdfstorageId', fd.get('storageId'));
-      console.log('docDataId', fd.get('docDataId'));
-
-
-      this.$store.dispatch("uploadFile", fd).then(
-        res => {
-          console.log('上传', res);
+      // this.$store.dispatch("uploadFile", fd).then(
+      //   res => {
+      //     console.log('上传', res);
           //上传pdf之后显示pdf
           let routerData = {
             hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
@@ -520,11 +518,11 @@ export const mixinGetCaseApiList = {
           }
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({ name: 'case_handle_myPDF', params: routerData })
-        },
-        err => {
-          console.log(err);
-        }
-      );
+        // },
+        // err => {
+        //   console.log(err);
+        // }
+      // );
     },
     uploadFileGD(file, name) {
       var f = new File([file.output("blob")], name, { type: 'application/pdf' })

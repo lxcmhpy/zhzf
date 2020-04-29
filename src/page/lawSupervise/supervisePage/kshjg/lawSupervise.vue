@@ -41,8 +41,8 @@
                   <p>{{curWindow.other.contact}}&nbsp;&nbsp;{{curWindow.other.phone}}</p>
                 </div>
                 <div class="status">
-                  <i class="iconfont law-mobile-phone"></i>
-                  <p>{{curWindow.other.status}}</p>
+                  <!-- <i class="iconfont law-mobile-phone"></i>
+                  <p>{{curWindow.other.status}}</p> -->
                 </div>
               </div>
              <div class="btns">
@@ -148,7 +148,7 @@
                 </div>
               </div>
               <div class="con ">
-                <el-table v-if="curWindow.other.list" style="width: 100%;line-height: 40px;" :data="curWindow.other.list.splice(0,5)" resizable stripe
+                <el-table style="width: 100%;line-height: 40px;" :data="curWindow.other.list" resizable stripe
                 @row-click="routerXsDetail">
                   <el-table-column width="170" align="center" prop="checkTime" label="过检时间"></el-table-column>
                   <el-table-column width="100" align="center" prop="vehicleNumber" label="车牌号"></el-table-column>
@@ -235,12 +235,14 @@
         <span v-else>正在定位</span>-->
         <!-- <externalVideoBtns :doing="videoDoing"  style="position:absolute;z-index:300"></externalVideoBtns> -->
       </div>
+
       <!-- 右侧浮动栏 -->
-      <div class="amap-position amap-rtl-box" :class="{'widthDrawer600': drawer1}" >
+      <div class="amap-position amap-rtl-box" :class="{'widthDrawer600': category == 4}" >
         <div class="drawerBtn" @click="updateDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
-        <el-drawer v-show="!drawer1" modal-append-to-body :direction="direction" size="380px" customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
+        <el-drawer v-if="category != 4" modal-append-to-body :direction="direction" size="380px"
+           customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
@@ -285,10 +287,10 @@
             </transition>
           </div>
         </el-drawer>
-        <el-drawer v-show="drawer1"
+        <el-drawer v-else
                 modal-append-to-body
-                size="580px"
-                customClass="amap-drawer w-600"
+                size="620px"
+                customClass="amap-drawer w-680"
                 :direction="direction"
                 :wrapperClosable="false"
                 :withHeader="false"
@@ -302,13 +304,13 @@
                     <transition name="el-fade-in">
                         <div class="echarts-box" v-show="status1">
                             <em class="title left"><i class="titleflag"></i>非现场执法点</em>
-                            <i class="iconfont law-delete1 right" @click="status1 = false"></i>
-                            <div class="amap-chart">
+                            <i class="iconfont law-delete1 right"></i>
+                            <div>
                                 <el-table
                                 v-loading="loading"
                                     @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
                                     :data="zfdList"
-                                    style="width: 100%;height: 170px;">
+                                    style="width: 100%;">
                                     <el-table-column
                                         prop="name"
                                         label="站点名称"
@@ -350,29 +352,38 @@
                                 v-loading="loading"
                                     @row-click="(row, column, event)=>positionEvent(row, column, event, 6)"
                                     :data="gjclList"
-                                    style="width: 100%;height: 170px;">
-                                    <el-table-column
+                                    style="width: 100%;height: auto;">
+                                    <!-- <el-table-column
                                         prop="checkTime"
                                         label="过检时间">
+                                    </el-table-column> -->
+                                    <el-table-column label="过检时间" width="100" align="center" prop="checkTime">
+                                        <template slot-scope="scope">
+                                            <span >{{scope.row.checkTime.split(' ')[0]}}</span>
+                                        </template>
                                     </el-table-column>
                                     <el-table-column
                                         prop="vehicleNumber"
                                         label="车牌号"
+                                        width="90"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="overload"
                                         label="超载率"
+                                        width="70"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="area"
                                         label="车属地"
+                                         width="70"
                                         >
                                     </el-table-column>
                                         <!-- prop="blackList" -->
                                     <el-table-column
                                         label="重点监管"
+                                        width="80"
                                         >
                                         <template>
                                             <div><i class="iconfont law-star orangeC"></i></div>
@@ -381,11 +392,13 @@
                                     <el-table-column
                                         prop="lscc"
                                         label="历史查处"
+                                        width="80"
                                         >
                                     </el-table-column>
                                     <el-table-column
                                         prop="siteName"
                                         label="站点名称"
+                                        width="80"
                                         >
                                     </el-table-column>
                                 </el-table>
@@ -738,6 +751,8 @@ export default {
         })
     },
     positionEvent (row, column, event, category) {
+        debugger;
+        this.category == 4;
         // debugger;
         this.markers.splice(0, this.markers.length);
         if (this.curWindow) {
@@ -757,7 +772,7 @@ export default {
                         let position = res.data.position.split(',');
                         let lng = parseFloat(position[0]);
                         let lat = parseFloat(position[1]);
-                        _this.category = type;
+                        // _this.category = type;
                         resultList.push({
                             address: res.data.area,
                             distance: null,
@@ -781,7 +796,7 @@ export default {
                     }
 
 
-                    _this.onSearchResult(resultList, _this.category,0)
+                    _this.onSearchResult(resultList, type,0)
                 },
                 error => {
                     //  _this.errorMsg(error.toString(), 'error')
@@ -823,20 +838,32 @@ export default {
       };
     },
     updateDrawer() {
-      this.drawer = !this.drawer;
-      if (this.drawer) {
-        let _this = this;
-        this.$nextTick(() => {
-          var flowChart = echarts.init(document.getElementById("echartsBox1"));
-          flowChart.setOption(_this.lawSuperviseObj.option);
-          var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
-          flowChart1.setOption(_this.yjObj);
-        //   _this.getRealTimeDataByLawSupervise();
-        });
-      }
+        this.drawer = !this.drawer;
+        debugger;
+        if (this.category != 4) {
+            this.drawer = true;
+            if (this.drawer) {
+              let _this = this;
+              this.$nextTick(() => {
+                var flowChart = echarts.init(document.getElementById("echartsBox1"));
+                flowChart.setOption(_this.lawSuperviseObj.option);
+                var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
+                flowChart1.setOption(_this.yjObj);
+              //   _this.getRealTimeDataByLawSupervise();
+              });
+            }
+        } else {
+            // this.drawer = true;
+            this.updateDrawer1();
+        }
     },
     updateDrawer1 () {
-        this.drawer1 = true;
+        debugger;
+        if (this.category == 4) {
+            this.drawer1 = true;
+        } else {
+            this.drawer1 = false;
+        }
         // this.getRealTimeDataByLawSupervise();
         this.searchPageAll(4, 'zfdList');
         this.searchPageAll(6, 'gjclList');
@@ -929,6 +956,7 @@ export default {
                           that.curWindow.other.id,
                           that.curWindow.other
                         );
+                        debugger;
                       }
                       console.log(that.curWindow);
                       that.$nextTick(() => {
@@ -989,8 +1017,7 @@ export default {
       new Promise((resolve, reject) => {
         getBySiteId(id).then(
           res => {
-            resolve(res);
-            obj.list = res.data;
+            _this.$set(_this.curWindow.other, 'list', res.data.splice(0,5));
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
@@ -1040,7 +1067,9 @@ export default {
       if (this.category == '4') {
           this.updateDrawer1()
       } else {
-          this.drawer1 = false
+          this.drawer1 = false;
+          this.drawer = false;
+          this.updateDrawer();
       }
     },
     searchAll(pois) {

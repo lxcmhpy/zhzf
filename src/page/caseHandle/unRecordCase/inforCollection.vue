@@ -180,7 +180,7 @@
           </div>
           <div class="itemSmall">
             <el-form-item label="邮编" prop="partyZipCode">
-              <el-input ref="partyZipCode" v-model="inforForm.partyZipCode"></el-input>
+              <el-input ref="partyZipCode" v-model="inforForm.partyZipCode" @blur="blur3($event.target.value)"></el-input>
             </el-form-item>
           </div>
         </div>

@@ -369,12 +369,12 @@
       this.isOverStatus();
     },
     watch: {
-      'docData.partyName'(val) {
-        if (!this.isChange) {
-          this.docData.party = this.docData.party === '' ? this.docData.partyName : this.docData.party
-          this.isChange = true
-        }
-      }
+//      'docData.partyName'(val) {
+//        if (!this.isChange) {
+//          this.docData.party = this.docData.party === '' ? this.docData.partyName : this.docData.party
+//          this.isChange = true
+//        }
+//      }
     }
   };
 </script>
