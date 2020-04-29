@@ -10,15 +10,18 @@
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "fix-memory-limit": "cross-env LIMIT=2048 increase-memory-limit"
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/runtime": "^7.8.4",
     "axios": "0.18.0",
+    "cross-env": "^7.0.2",
     "css-loader": "^0.28.11",
     "element-ui": "^2.13.0",
     "html2canvas": "^1.0.0-rc.5",
+    "increase-memory-limit": "^1.0.7",
     "js-base64": "^2.5.1",
     "js-cookie": "2.2.0",
     "jspdf": "^1.5.3",
