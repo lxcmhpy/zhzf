@@ -351,15 +351,15 @@ export default {
 
 		//通过AZTBrowser来打开需要的地址
 		 openURL(){
-            //  http://172.16.170.44:8083/iWebPDFEditor-V5.1/MultBrowser.html?path=http://172.16.170.54:9332/12,3b11e8faa6
-            //  http://172.16.170.96:9000/iWebPDFEditor-V5.1/MultBrowser.html?path=http://172.16.170.54:9332/12,3b11e8faa6
-			var ActivexURL="http://172.16.170.44:8083/iWebPDFEditor-V5.1/MultBrowser.html?path=http://172.16.170.54:9332/12,3b11e8faa6";
+
+            var ActivexURL="http://172.16.170.44:8083/iWebPDFEditor-V5.1/MultBrowser.html?path=http://172.16.170.54:9332/12,3b11e8faa6";
+            // http://124.192.215.4:8083/iWebPDFEditor-V5.1/MultBrowser.html?path=http://124.192.215.10:9332/12,3b11e8faa6
 		    alert("请确定您传入的地址，不支持带中文URL！当前传入的路径为："+ActivexURL);
 		    //功能说明：创建AZTBrowser浏览器并打开URL地址
 			//参数1：URL地址
 			//参数2：是否置顶 1表示置顶，0表示不置顶
 			//参数3：回调函数
-            // MultBrowser.openBrowserURL(ActivexURL, "1", this.callBackBrowserURL);
+            MultBrowser.openBrowserURL(ActivexURL, "1", this.callBackBrowserURL);
             // window.opener
 		}
     }

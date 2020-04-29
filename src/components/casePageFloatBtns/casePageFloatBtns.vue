@@ -29,10 +29,12 @@
           </svg>
           <br />编辑
         </el-button> -->
-        <el-button type="success" @click="makeSeal" v-if="formOrDocData.showBtn[5]">
-          <i class="iconfont law-approval"></i>
-          <br />签章
-        </el-button>
+        <a type="success" :href="makeSealStr" target="_blank" v-if="formOrDocData.showBtn[5]">
+            <el-button type="primary">
+             <i class="iconfont law-approval"></i>
+            <br />签章
+            </el-button>
+        </a>
         <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]">
           <i class="iconfont law-upload"></i>
           <br />提交
@@ -63,16 +65,18 @@
       </el-button>
       </div>
 </template>
+<script src="@/common/js/MultBrowser-1.0.2.js"></script>
 <script>
 
 import {htmlExportPDF} from '@/common/js/htmlExportPDF'
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-
+import iLocalStroage from '@/common/js/localStroage';
 export default {
   data(){
     return{
       // docId
+      makeSealStr: ''
     }
   },
   props: ['formOrDocData'],
@@ -101,7 +105,9 @@ export default {
     },
       // 盖章
     makeSeal() {
-      signature.openURL('oeder');
+    //   signature.openURL('oeder');
+        let ActivexURL = "http://172.16.170.44:8083/iWebPDFEditor-V5.1/MultBrowser.html?path=http://172.16.170.54:9332/12,3b11e8faa6"
+        // MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
     },
     submitDataBtn(handleType) {
       //判断是环节的提交还是文书的提交
@@ -167,6 +173,10 @@ export default {
     backHuanjieBtn(){
       this.$emit('backHuanjie');
     }
+  },
+  mounted () {
+      this.makeSealStr = iLocalStroage.gets('CURRENT_BASE_URL').QZ_ACTIVEX_HOST+'iWebPDFEditor-V5.1/MultBrowser.html?path='
+      + iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '12,3b11e8faa6'
   }
 }
 </script>
