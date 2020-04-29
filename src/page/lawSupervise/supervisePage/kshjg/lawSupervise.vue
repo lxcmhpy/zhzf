@@ -760,6 +760,9 @@ export default {
         }
         this.getById(category, row.id);
     },
+    positionEvent1 () {
+        this.routerXsDetail()
+    },
     getById (type,id) {
         let _this = this
         new Promise((resolve, reject) => {
