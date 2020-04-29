@@ -278,9 +278,10 @@
                                             <div class="list-search">
                                                 <div class="el-form demo-form-inline el-form--inline search-box">
                                                 <el-form-item label="立案时间">
-                                                    <el-select v-model="formInline.applyTime">
-                                                    <el-option label="全部" value="1"></el-option>
-                                                    <el-option label="选项二" value="2"></el-option>
+                                                    <el-select v-model="formInline.applyTime" suffix-icon="el-icon-sort">
+                                                    <el-option label="默认排序" value="1"></el-option>
+                                                    <el-option label="正序" value="2"></el-option>
+                                                    <el-option label="倒序" value="2"></el-option>
                                                     </el-select>
                                                 </el-form-item>
                                                 <el-form-item label="处置状态">
@@ -289,13 +290,13 @@
                                                     <el-option label="选项二" value="2"></el-option>
                                                     </el-select>
                                                 </el-form-item>
-                                                <el-form-item label="">
+                                                <!-- <el-form-item label="">
                                                     <el-input
                                                         placeholder="默认排序"
                                                         suffix-icon="el-icon-caret-bottom"
                                                         value="默认排序">
                                                     </el-input>
-                                                </el-form-item>
+                                                </el-form-item> -->
                                                 </div>
                                             </div>
                                             <ul class="list-info">
