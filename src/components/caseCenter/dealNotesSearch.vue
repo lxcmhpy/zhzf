@@ -5,7 +5,7 @@
         <div class="title-box">
           <span class="title-blue"></span>
           <span class="title-text">处置说明</span>
-           <el-button type="primary" style="float:right;margin-bottom:5px" @click="goConfirmCase">查看</el-button>
+           <!-- <el-button type="primary" style="float:right;margin-bottom:5px" @click="goConfirmCase">查看</el-button> -->
         </div>
         <table style="position:relative;">
           <tr>

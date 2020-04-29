@@ -3,17 +3,17 @@
       <span class="examineDoingDetail">
          <!-- {{value}} -->
     </span>
-    <dealNotes v-if="showFlag==='/overWeightCase'&&(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
+    <dealNotes v-if="showFlag==='/overWeightCase'&&(value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
 
-    <dealNotesVeiw v-if="showFlag==='/overWeightCase'&&(value=='待办')"></dealNotesVeiw>
+    <!-- <dealNotesVeiw v-if="showFlag==='/overWeightCase'&&(value=='待办')"></dealNotesVeiw> -->
 
     <dealNotesSearch v-if="showFlag==='/transferAndRegisterCase'"></dealNotesSearch>
 
     <uoloadFiles v-if="showFlag==='/transferAndRegisterCase'"></uoloadFiles>
 
-    <dealInProgress v-if="showFlag==='/overWeightCase'&&(value=='在办')"></dealInProgress>
+    <dealInProgress v-if="showFlag==='/overWeightCase'&&(value=='在办')||(value=='办结')"></dealInProgress>
 
-    <dealProgress v-if="showFlag==='/overWeightCase'&&(value=='办结')"></dealProgress>
+    <!-- <dealProgress v-if="showFlag==='/overWeightCase'&&(value=='办结')"></dealProgress> -->
 
     <backNotes v-if="showFlag==='/overWeightCase'&&(value=='已回退')">></backNotes>
 
