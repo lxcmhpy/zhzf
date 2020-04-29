@@ -62,8 +62,8 @@
               <div class="col">
                 <el-form-item label="执行方式">
                   <el-radio-group v-model="formData.performWay" @change="changePayWay">
-                    <el-radio :label="线下缴费">线下缴费</el-radio>
-                    <el-radio :label="电子缴纳">电子缴纳</el-radio>
+                    <el-radio :label="'线下缴费'">线下缴费</el-radio>
+                    <el-radio :label="'电子缴纳'">电子缴纳</el-radio>
                   </el-radio-group>
                   <el-checkbox v-model="formData.correct" style="magin-left:20px"></el-checkbox> 责令改正
                   <!-- <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input> -->
@@ -489,7 +489,7 @@ export default {
     //执行方式
     changePayWay(val) {
       console.log(val);
-      if (val == 2) {
+      if (val == '电子缴纳') {
         //电子缴纳
         this.isOnlinePay = true;
       } else {

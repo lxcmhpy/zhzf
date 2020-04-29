@@ -124,13 +124,13 @@
               <p>件号</p>
             </td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyIdNo" :rules="isParty && propertyFeatures['partyIdNo'] && propertyFeatures['partyIdNo'].required ? rules.partyIdNo : [{ required: false, trigger: 'blur' }]">
+              <el-form-item prop="partyIdNo" :rules="isParty && propertyFeatures['partyIdNo'] && propertyFeatures['partyIdNo'].required ? rules.partyIdNo : [{ validator:validateIDNumber,trigger: 'blur'}]">
                 <el-input type="textarea" v-model="formData.partyIdNo" :disabled="!isParty || (propertyFeatures['partyIdNo'] && propertyFeatures['partyIdNo'].editable == false)" v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyTel" :rules="isParty && propertyFeatures['partyTel'] && propertyFeatures['partyTel'].required ? rules.partyTel : [{ required: false, trigger: 'blur' }]">
+              <el-form-item prop="partyTel" :rules="isParty && propertyFeatures['partyTel'] && propertyFeatures['partyTel'].required ? rules.partyTel : [{ validator:validatePhone,trigger: 'blur'}]">
                 <el-input type="textarea" v-model="formData.partyTel" :disabled="!isParty || (propertyFeatures['partyTel'] && propertyFeatures['partyTel'].editable == false)" v-bind:class="{ over_flow:formData.partyTel.length>6?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -162,7 +162,7 @@
             </td>
             <td style="width:50px">联系电话</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyUnitTel" :rules="propertyFeatures['partyUnitTel'] && propertyFeatures['partyUnitTel'].required ? rules.partyUnitTel : [{ required: false, trigger: 'blur' }]">
+              <el-form-item prop="partyUnitTel" :rules="propertyFeatures['partyUnitTel'] && propertyFeatures['partyUnitTel'].required ? rules.partyUnitTel : [{ validator:validatePhone,trigger: 'blur'}]">
                 <el-input type="textarea" v-model="formData.partyUnitTel" :disabled="isParty || (propertyFeatures['partyUnitTel'] && propertyFeatures['partyUnitTel'].editable == false)" v-bind:class="{ over_flow:formData.partyUnitTel.length>6?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -296,6 +296,8 @@ export default {
     };
 
     return {
+      validatePhone:validatePhone,
+      validateIDNumber:validateIDNumber,
       caseNumber: "010-123456",
       // tableData: {},
       formData: {

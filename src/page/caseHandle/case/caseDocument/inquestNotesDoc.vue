@@ -17,18 +17,18 @@
         <p>
           勘验时间：<el-form-item  prop="inquestStartTime" class="pdf_datapick dataTimeReplaceBox" style="width:250px" :rules="propertyFeatures['inquestStartTime'] && propertyFeatures['inquestStartTime'].required ? rules.inquestStartTime : [{ required: false, trigger: 'blur' }]"> 
             <el-date-picker v-model="docData.inquestStartTime" type="datetime" format="yyyy-MM-dd HH:mm"
-                value-format="yyyy年MM月dd日HH时mm分" style="width:250px"
+                value-format="yyyy-MM-dd HH:mm" style="width:250px"
                 :disabled="propertyFeatures['inquestStartTime'] && propertyFeatures['inquestStartTime'].editable==false">
             </el-date-picker>
-            <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.inquestStartTime"></el-input>
+            <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="replaceInquestStartTime"></el-input>
           </el-form-item>
           至
           <el-form-item prop="inquestEndTime" class="pdf_datapick dataTimeReplaceBox" style="width:212px" :rules="propertyFeatures['inquestEndTime'] && propertyFeatures['inquestEndTime'].required ? rules.inquestEndTime : [{ required: false, trigger: 'blur' }]">
             <el-date-picker v-model="docData.inquestEndTime" type="datetime" format="yyyy-MM-dd HH:mm"
-              value-format="yyyy年MM月dd日HH时mm分"
+              value-format="yyyy-MM-dd HH:mm"
               :disabled="propertyFeatures['inquestEndTime'] && propertyFeatures['inquestEndTime'].editable==false">
             </el-date-picker>
-            <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="replaceInquestEndTime"></el-input>
+            <el-input class="replaceTime" placeholder=" 日 时 分" v-model="replaceInquestEndTime"></el-input>
           </el-form-item>
         </p>
         <el-row>
@@ -201,10 +201,11 @@ export default {
   data() {
     //验证开始时间
     var validateStartTime = (rule, value, callback) => {
-      console.log('结束时间',parseinquestEndTime);
-      let parseInquestStartTime = this.docData.inquestStartTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
-      let parseinquestEndTime = this.docData.inquestEndTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
-    //  console.log(Date.parse(this.docData.inquestStartTime),Date.parse(this.docData.inquestEndTime))
+
+      // let parseInquestStartTime = this.docData.inquestStartTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
+      // let parseinquestEndTime = this.docData.inquestEndTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
+   let parseInquestStartTime = this.docData.inquestStartTime
+   let parseinquestEndTime = this.docData.inquestEndTime
       if(Date.parse(parseInquestStartTime)>Date.parse(parseinquestEndTime)){
         this.$message({
               showClose: true,
@@ -328,8 +329,14 @@ export default {
     ...mapGetters(['caseId']) ,
     replaceInquestEndTime(){
       if(this.docData.inquestEndTime){
-        let inquestEndTimeArr=this.docData.inquestEndTime.split('月');
-        return inquestEndTimeArr[1]
+        // let inquestEndTimeArr=this.docData.inquestEndTime.split('月');
+        // return inquestEndTimeArr[1]
+        return new Date(this.docData.inquestEndTime).format('dd日HH时mm分')
+      }
+    },
+    replaceInquestStartTime(){
+      if(this.docData.inquestStartTime){
+        return new Date(this.docData.inquestStartTime).format('yyyy年MM月dd日HH时mm分')
       }
     }
   },

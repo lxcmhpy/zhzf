@@ -70,12 +70,13 @@ export function validateIDNumber(rule, value, callback) {
     // }
     // callback();
 
-    if (value.length == 18 && 18 != value.length) callback(new Error('身份证格式错误'));;
-    var number = value.toLowerCase();
-    var d, sum = 0, v = '10x98765432', w = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2], a = '11,12,13,14,15,21,22,23,31,32,33,34,35,36,37,41,42,43,44,45,46,50,51,52,53,54,61,62,63,64,65,71,81,82,91';
-    var re = number.match(/^(\d{2})\d{4}(((\d{2})(\d{2})(\d{2})(\d{3}))|((\d{4})(\d{2})(\d{2})(\d{3}[x\d])))$/);
+    
     
     if(value){
+        if (18 != value.length) callback(new Error('身份证格式错误'));;
+        var number = value.toLowerCase();
+        var d, sum = 0, v = '10x98765432', w = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2], a = '11,12,13,14,15,21,22,23,31,32,33,34,35,36,37,41,42,43,44,45,46,50,51,52,53,54,61,62,63,64,65,71,81,82,91';
+        var re = number.match(/^(\d{2})\d{4}(((\d{2})(\d{2})(\d{2})(\d{3}))|((\d{4})(\d{2})(\d{2})(\d{3}[x\d])))$/);
         if (re == null || a.indexOf(re[1]) < 0) callback(new Error('身份证格式错误'));
         if (re[2].length == 9) {
             number = number.substr(0, 6) + '19' + number.substr(6);

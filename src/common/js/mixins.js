@@ -775,6 +775,7 @@ export const mixinGetCaseApiList = {
           for (var key in data) {
             this.formData[key] = data[key].val;
           }
+          console.log('this.formData',this.formData);
         }
         
         
