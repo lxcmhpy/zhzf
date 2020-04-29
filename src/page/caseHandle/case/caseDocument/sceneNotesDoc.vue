@@ -476,6 +476,8 @@ export default {
         }
       },
       needDealData:true,
+      propertyFeatures:'', //字段属性配置
+
     };
   },
   computed: {

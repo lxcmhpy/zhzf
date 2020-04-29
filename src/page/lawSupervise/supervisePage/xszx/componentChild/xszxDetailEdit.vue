@@ -553,7 +553,8 @@
                 </div>
                 <ul class="list">
                     <li v-for="index in 2" :key="index">
-                         <img class="img" :src="'./static/images/img/temp/sp.jpg'" @click="dialogPDFVisible = true">
+                         <img class="img" :src="'./static/images/img/temp/sp.jpg'" >
+                          <i class="iconfont law-bofang"></i>
                     </li>
                     <li v-for="index in 2" :key="index">
                         <div class="demo-image__preview">
@@ -577,7 +578,7 @@
                     <span class="title">补充证据材料</span>
                 </div>
                 <ul class="list">
-                    <li v-for="index in 2" :key="index">
+                    <li>
                         <div class="demo-image__preview">
                             <el-image
                             class="img"
@@ -587,6 +588,10 @@
                                 >
                             </el-image>
                         </div>
+                    </li>
+                    <li @click="dialogPDFVisible = true">
+                       <img  class="img" :src="'./static/images/img/temp/sp.jpg'" >
+                       <i class="iconfont law-pdf1" ></i>
                     </li>
                     <li>
                         <el-upload
@@ -605,9 +610,9 @@
                 </ul>
             </div>
         </div>
-        <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="770px">
+       <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="770px">
             <div>
-                <embed name="plugin" id="plugin" src="http://172.16.170.54:9332/11,1083f85ef928"
+                <embed name="plugin" id="plugin" :src="storageStr"
                 type="application/pdf" internalinstanceid="29" class="print_info"
                 style="padding: 0px; width: 730px; height:1100px; position: relative;">
             </div>
@@ -622,6 +627,7 @@ import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
 import {findAllDrawerById} from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
+import iLocalStroage from '@/common/js/localStroage';
 Vue.use(AMap);
 AMap.initAMapApiLoader({
   key: '2fab5dfd6958addd56c89e58df8cbb37',
@@ -637,6 +643,7 @@ export default {
     data () {
         let self = this;
         return {
+            storageStr: '',
             dialogPDFVisible: false,
             visible: false,
             checkSearchForm: {
@@ -742,6 +749,9 @@ export default {
             this.obj.vehicleColor = this.checkSearchForm.color;
             this.visible = false;
         }
+    },
+    mounted () {
+        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '12,3b11e8faa6';
     }
 }
 </script>

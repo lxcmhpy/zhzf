@@ -2,12 +2,13 @@ import { mapGetters } from "vuex";
 import { htmlExportPDF } from '@/common/js/htmlExportPDF';
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi, getDocDetailByIdApi
+  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi, getDocDetailByIdApi,findAllSetListApi,findBindPropertyRuleApi,
 } from "@/api/caseHandle";
 export const mixinGetCaseApiList = {
   data() {
     return {
       isSaveLink: false, //是否点击了环节保存，未保存不可以操作文书
+      canGoNextLink:false,
     }
   },
   computed: { ...mapGetters(['caseId']) },
@@ -58,26 +59,35 @@ export const mixinGetCaseApiList = {
             this.com_getCaseBasicInfo(caseId, caseLinktypeId);
           } else {
             console.log(res.data);
-            this.caseLinkDataForm.id = res.data.id;
-            //利用属性给this.formData赋值
-            let formData = JSON.parse(res.data.formData);
-            for (var key in formData) {
-              this.formData[key] = formData[key]
+            console.log('this.propertyFeatures',this.propertyFeatures);
+            if(this.propertyFeatures != undefined){
+              let data = {
+                caseBasicInfoId: caseId,
+                typeId: caseLinktypeId
+              };
+              this.searchPropertyFeatures(data,res.data,refreshDataForPdf);  
+            }else{    //表单全部改完之后删掉！！！！
+              this.caseLinkDataForm.id = res.data.id;
+              //利用属性给this.formData赋值
+              let formData = JSON.parse(res.data.formData);
+              for (var key in formData) {
+                this.formData[key] = formData[key]
+              }
+              //对环节或文书中的一些字段做处理
+              if (this.needDealData) {
+                this.getDataAfter();
+              }
+              console.log('this.formData', this.formData)
+              this.setSomeData(this.formData);
+              this.isSaveLink = true;
+              if (refreshDataForPdf) {
+                // 提交pdf页
+                setTimeout(() => {
+                  this.printContent();
+                }, 1500)
+              }
             }
-            //对环节或文书中的一些字段做处理
-            if (this.needDealData) {
-              this.getDataAfter();
-            }
-            console.log('this.formData', this.formData)
-            this.setSomeData(this.formData);
-            this.isSaveLink = true;
-            if (refreshDataForPdf) {
-              // 提交pdf页
-              setTimeout(() => {
-                this.printContent();
-              }, 1500)
-              // this.printContent();
-            }
+            
 
           }
         },
@@ -93,30 +103,38 @@ export const mixinGetCaseApiList = {
         typeId: formOrDocId
       };
       console.log('data', data);
-      findCaseAllBindPropertyApi(data).then(
-        res => {
-          console.log('获取案件信息', res)
-          let caseData = JSON.parse(res.data.propertyData);
-          console.log('获取案件表单信息', caseData);
-          if (this.formData) {
-            for (var key in caseData) {
-              this.formData[key] = caseData[key]
-            }
-            this.setSomeData(this.formData);
-          } else {
-            for (var key in caseData) {
-              this.docData[key] = caseData[key]
-            }
-            this.setSomeData(this.docData);
+
+      if(this.propertyFeatures != undefined){
+        this.searchPropertyFeatures(data);  
+      }else{    //文书表单都修改完成后可以删掉
+        findCaseAllBindPropertyApi(data).then(
+          res => {
+            console.log('获取案件信息', res)
+            let caseData = JSON.parse(res.data.propertyData);
+            console.log('获取案件表单信息', caseData);
+            
+              if (this.formData) {
+                for (var key in caseData) {
+                  this.formData[key] = caseData[key]
+                }
+                this.setSomeData(this.formData);
+              } else {
+                for (var key in caseData) {
+                  this.docData[key] = caseData[key]
+                }
+                this.setSomeData(this.docData);
+              }
+              if (this.needDealData) {
+                this.getDataAfter();
+              }   
+          },
+          error => {
+            console.log(error)
           }
-          if (this.needDealData) {
-            this.getDataAfter();
-          }
-        },
-        error => {
-          console.log(error)
-        }
-      );
+        );
+      }
+
+      
     },
     //提交文书表单信息，跳转到pdf文书
     com_submitCaseForm(handleType, docForm, hasNextBtn) {
@@ -128,6 +146,7 @@ export const mixinGetCaseApiList = {
       if (handleType) {
         this.$refs[docForm].validate((valid, noPass) => {
           if (valid) {
+            console.log('通过')
             this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
               res => {
                 console.log("保存表单", res);
@@ -165,6 +184,8 @@ export const mixinGetCaseApiList = {
               }
             );
           } else {
+            console.log('不通过')
+
             let a = Object.values(noPass)[0];
             console.log(a);
             this.$message({
@@ -288,21 +309,32 @@ export const mixinGetCaseApiList = {
           if (res.data.length == 0) {
             this.com_getCaseBasicInfo(params.caseId, params.docId);
           } else {
-            console.log(res.data[0]);
-            this.caseDocDataForm.id = res.data[0].id;
-            this.docData = JSON.parse(res.data[0].docData);
-            //设置禁用
-            if (this.needSetDisabled) {
-              this.setDisabledData();
+            if(this.propertyFeatures != undefined){
+              let data = {
+                caseBasicInfoId: params.caseId,
+                typeId: params.docId
+              };
+              this.searchPropertyFeatures(data,res.data[0]);  
+            }else{
+              console.log(res.data[0]);
+              this.caseDocDataForm.id = res.data[0].id;
+              this.docData = JSON.parse(res.data[0].docData);
+              //设置禁用
+              if (this.needSetDisabled) {
+                this.setDisabledData();
+              }
+              if (this.docData.party) {
+                this.isParty = true;
+              } else {
+                this.isParty = false;
+              }
             }
+
+
+            
           }
-          //判断当事人类型
-          // console.log("docData",this.docData)
-          if (this.docData.party) {
-            this.isParty = true;
-          } else {
-            this.isParty = false;
-          }
+          
+          
         },
         err => {
           console.log(err);
@@ -318,6 +350,7 @@ export const mixinGetCaseApiList = {
         this.$refs[docForm].validate((valid, noPass) => {
 
           if (valid) {
+            console.log('通过')
             this.$store.dispatch("addDocData", this.caseDocDataForm).then(
               res => {
                 console.log("保存文书", res);
@@ -340,6 +373,8 @@ export const mixinGetCaseApiList = {
               }
             );
           } else {
+            console.log('不通过')
+
             // noPass[Object.keys(v)[0]]
             let a = Object.values(noPass)[0];
             console.log(a);
@@ -715,6 +750,52 @@ export const mixinGetCaseApiList = {
       }
     })
     .catch(err=>{console.log(err)})
+  },
+  //查询文书或表单是否禁用及必填等
+  searchPropertyFeatures(caseBasicInfoIdAndtypeId,savedData='',refreshDataForPdf=false){
+    findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res=>{
+      console.log('通过案件Id级文书类型Id查询案件基本信息及规则',res);
+      let data = JSON.parse(res.data.propertyData);
+      console.log(data);
+      this.propertyFeatures = data;
+      console.log('savedData',savedData);
+      if (this.formData) {
+        if(savedData){
+          this.caseLinkDataForm.id = savedData.id;
+          this.formData = JSON.parse(savedData.formData);
+          this.isSaveLink = true;
+          this.canGoNextLink = savedData.status == '1' ? true : false
+          if (refreshDataForPdf) {
+            // 提交pdf页
+            setTimeout(() => {
+              this.printContent();
+            }, 1500)
+          }
+        }else{
+          for (var key in data) {
+            this.formData[key] = data[key].val;
+          }
+        }
+        
+        
+      } else {
+        if(savedData){
+          this.caseDocDataForm.id = savedData.id;
+          this.docData = JSON.parse(savedData.docData);
+        }else{
+          for (var key in data) {
+            this.docData[key] = data[key].val || '';
+          }
+        }
+      
+      }
+      if (this.needDealData) {
+        this.getDataAfter();
+      } 
+    }).catch(err=>{
+      console.log(err);
+    })
+   
   }
 
 

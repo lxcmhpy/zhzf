@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="shadow">
+        <!-- <div class="shadow">
             <div class="box w-2">
                 <div class="box_title">
                     <span class="titleflag">
@@ -36,8 +36,6 @@
             </div>
             <div class="box w-2">
                 <div class="box_title">
-                    <!-- <span class="titleflag"></span>
-                    <span class="title">称重检测数据（检测信息）</span> -->
                 </div>
                 <table class="table_style" v-if="obj">
                     <tr>
@@ -77,8 +75,6 @@
             <div class="box w-2">
 
                 <div class="box_title">
-                    <!-- <span class="titleflag"></span>
-                    <span class="title">称重检测数据（站点信息）</span> -->
                 </div>
                 <table class="table_style" v-if="obj">
                     <tr>
@@ -107,6 +103,43 @@
                     </tr>
                 </table>
             </div>
+        </div> -->
+        <div class="shadow">
+            <div class="box w-2">
+                <div class="box_title">
+                    <span class="titleflag">
+                    </span>
+                    <span class="title">驾驶员/车主信息</span>
+                </div>
+                <table class="table_style" v-if="obj">
+                    <tr>
+                        <td class="color_ff w-1">姓名</td>
+                        <td width="260px"><el-input width="300px" v-model="userObj.name"></el-input></td>
+                        <td class="color_ff w-1">联系方式</td>
+                        <td width="260px"><el-input width="300px" v-model="userObj.mobile"></el-input></td>
+                    </tr>
+                     <tr>
+                        <td class="color_ff w-1">备注</td>
+                        <td width="260px" colspan="3"><el-input v-model="userObj.mark" type="textarea" :autosize="{ minRows: 1, maxRows: 2}"></el-input></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="shadow">
+            <div class="box w-2">
+                <div class="box_title">
+                    <span class="titleflag"></span>
+                    <span class="title">电子证据单</span>
+                </div>
+                <ul class="list" >
+                    <!-- style="height: 250px;overflow-y:auto;" -->
+                    <li>
+                        <embed name="plugin" id="plugin" :src="storageStr"
+                type="application/pdf" internalinstanceid="29" class="print_info"
+                style="padding: 0px; width: 815px; height:250px; position: relative;">
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="shadow">
             <div class="box w-2">
@@ -116,7 +149,26 @@
                     <span class="title">现场照片/视频</span>
                 </div>
                 <ul class="list">
-                    <li v-for="index in 4" :key="index">
+                    <li>
+                        <div class="demo-image__preview">
+                            <el-image
+                            class="img"
+                                style="width: 100px; height: 100px"
+                                :src="'./static/images/img/temp/sp.jpg'"
+                                :preview-src-list="['https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg','https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg']"
+                                >
+                            </el-image>
+                        </div>
+                    </li>
+                    <li>
+                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
+                        <i class="iconfont law-bofang"></i>
+                    </li>
+                    <li @click="dialogPDFVisible = true">
+                       <img  class="img" :src="'./static/images/img/temp/sp.jpg'" >
+                       <i class="iconfont law-pdf1" ></i>
+                    </li>
+                    <li>
                         <div class="demo-image__preview">
                             <el-image
                             class="img"
@@ -130,7 +182,7 @@
                 </ul>
             </div>
         </div>
-        <div class="shadow">
+        <!-- <div class="shadow">
             <div class="box w-2">
                 <div class="box_title">
                     <span class="titleflag">
@@ -158,10 +210,10 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div> -->
         <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="770px">
             <div>
-                <embed name="plugin" id="plugin" src="http://172.16.170.54:9332/11,1083f85ef928"
+                <embed name="plugin" id="plugin" :src="storageStr"
                 type="application/pdf" internalinstanceid="29" class="print_info"
                 style="padding: 0px; width: 730px; height:1100px; position: relative;">
             </div>
@@ -169,13 +221,24 @@
     </div>
 </template>
 <script>
+import iLocalStroage from '@/common/js/localStroage';
 export default {
     props: ['obj'],
     data () {
         return {
             dialogPDFVisible: false,
-            storagePath: 'http://172.16.170.54:9332/12,3b11e8faa6 '
+            storageStr: '',
+            currentUrl: '',
+            userObj: {
+                name: '张三',
+                mobile: '13621212121',
+                mark: '备注'
+            }
         }
+    },
+    mounted () {
+        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '12,3b11e8faa6';
+        // debugger;
     }
 }
 </script>
