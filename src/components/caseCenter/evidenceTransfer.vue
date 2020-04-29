@@ -27,7 +27,7 @@
               </li> -->
             <li v-for="index in 2" :key="index+'a'" :class="(index+1)%2==1?'margin-right0':''">
               <div class="demo-image__preview">
-                <el-image class="img" style="width: 100px; height: 100px" :src="'./static/images/img/temp/sp.jpg'" :preview-src-list="['https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg','https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg']">
+                <el-image class="img" style="width: 100px; height: 100px" :src="'./static/images/img/temp/sp.jpg'" :preview-src-list="['./static/images/img/temp/sp.jpg','./static/images/img/temp/sp.jpg']">
                 </el-image>
               </div>
             </li>
