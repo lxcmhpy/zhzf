@@ -752,7 +752,7 @@ export default {
         }
     },
     mounted () {
-        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '12,3b11e8faa6';
+        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '9,10a727c3ada3';
     }
 }
 </script>
