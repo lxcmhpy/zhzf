@@ -29,7 +29,8 @@
       </svg>
       <br />编辑
     </el-button> -->
-    <a type="success" :href="makeSealStr" target="_blank" v-if="formOrDocData.showBtn[5]" style="">
+    <a type="success" :href="makeSealStr" target="_blank" v-if="formOrDocData.showBtn[5]"
+       style="width: 51px;height: 51px;display: block;margin-bottom: 10px;">
       <el-button type="primary">
         <i class="iconfont law-approval"></i>
         <br/>签章

@@ -23,7 +23,7 @@
               <el-time-picker
                 placeholder="时 分"
                 v-model="docData.askdataEnd"
-                format="HH时mm分" 
+                format="HH时mm分"
                 value-format="HH:mm"
               >
               </el-time-picker>
@@ -167,7 +167,7 @@
             </el-form-item>
             <u v-if="lineStyleFlag" >{{docData.certificateId2}}</u>，请你确认。现依法向你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。
           </p>
-          <span v-for="(item, index) in qaList" :key="item.id" @click="QAModleEdit">
+          <span v-for="(item, index) in docData.qaList" :key="item.id" @click="QAModleEdit">
             <p class="side_right_indent" @click="QAModleEdit">
               <span class="side_right" @click="overFlowEdit">
                 <el-form-item prop="illegalFactsEvidence">
@@ -205,7 +205,7 @@
 
       </div>
     </el-form>
-   
+
     <casePageFloatBtns
       :pageDomId="'question_print'"
       :formOrDocData="formOrDocData"
@@ -221,7 +221,7 @@ import QAModle from "./QAModle";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-import iLocalStroage from "@/common/js/localStroage"; 
+import iLocalStroage from "@/common/js/localStroage";
 import {
   findCaseAllBindPropertyApi,
 } from "@/api/caseHandle";
@@ -237,7 +237,7 @@ export default {
       let parseInquestStartTime = this.docData.askdataStart.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
       let a = parseInquestStartTime.split(' ');
       let parseinquestEndTime = a[0] + ' ' + this.docData.askdataEnd;
-      
+
       if((Date.parse(parseInquestStartTime)>Date.parse(parseinquestEndTime)) && this.docData.askdataEnd){
         this.$message({
               showClose: true,
@@ -283,7 +283,6 @@ export default {
         inquiriedTel: "",
         inquiriedIdNo: "",
         inquiriedUnitPosition: "",
-        inquiried: "",
         organName: "",
         inquiriedAddress: "",
         staff1: "",
@@ -291,7 +290,7 @@ export default {
         certificateId1: "",
         certificateId2: "",
         askTime: 1,
-        qaList: [{},{}],//弹出框问答数组，如请求时未返回即数组未定义，可能回显失败，刷新即可查看效果
+        qaList: [],//弹出框问答数组，如请求时未返回即数组未定义，可能回显失败，刷新即可查看效果
         askdataStart:"",
         askdataEnd:""
       },
@@ -381,7 +380,7 @@ export default {
       };
       //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
       let addMoreData = JSON.parse(this.$route.params.addMoreData);
-    
+
       if(addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")){
         //设置询问笔录名称
         console.log('添加')
@@ -417,13 +416,13 @@ export default {
     QAModleEdit() {
       this.$refs.QAModleInfoRef.showModal(this.qaList);
     },
-    // 获取问答内容
+    // 获取问答内容决定执行
     getQAModleInfo(edit) {
       console.log('回显', edit)
-      this.qaList = JSON.parse(edit);
-    
-      if(this.qaList.length<2){
-        this.qaList.push({question:'',answer:''})
+      this.docData.qaList = JSON.parse(edit);
+
+      if(this.docData.qaList.length<2){
+        this.docData.qaList.push({question:'',answer:''})
       }
 
       // this.docData.QAModleInfo = edit;
@@ -498,7 +497,7 @@ export default {
     setDataForPelple(){
        let selectPeo = JSON.parse(this.$route.params.addMoreData).askData.peopleAndRelationType;
       //  console.log('addMoreData',selectPeo);
-       
+
        let selectPeo2 = selectPeo.split('-'); //[name,relation]
        console.log('addMoreData',selectPeo2);
        let dailiDataList = JSON.parse(this.docData.agentPartyEcertId);
@@ -523,12 +522,12 @@ export default {
           sex: this.docData.partySex,
           zhengjianNumber: this.docData.partyIdNo,
           age:this.docData.partyAge,
-          company: this.docData.partyUnitPosition, 
+          company: this.docData.partyUnitPosition,
           position: this.docData.occupation,
           tel: this.docData.partyTel,
           adress: this.docData.partyAddress,
         }
-        
+
         this.docData.inquiriedRelation = "0";
        }
       //与案件关系选择以上都不是时
@@ -538,7 +537,7 @@ export default {
           sex: '',
           zhengjianNumber: '',
           age:'',
-          company: '', 
+          company: '',
           position: '',
           tel: '',
           adress: '',
@@ -546,7 +545,7 @@ export default {
         this.docData.inquiriedRelation = "";
       }
       this.setDataForPelpleDetail(dailiData);
-       
+
     },
     setDataForPelpleDetail(dailiData){
       console.log('dailiData',dailiData);
