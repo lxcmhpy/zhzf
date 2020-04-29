@@ -131,13 +131,12 @@
 			}
 		}
         function openURL(){
-            debugger;
 			var pdfPath = getParam("paramName");
 			var test = window.location.href;
 			var string =test.split("/");
             var path = string[0]+"//"+string[2]+"/";
             // path +
-			var ActivexURL=path + "/static/js/iWebPDFEditor.html?path=http://124.192.215.10:9332/9,10a727c3ada3";
+			var ActivexURL=path + "/static/js/iWebPDFEditor.html?pdfPath=http://124.192.215.10:9332/9,10a727c3ada3";
 			MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
 		}
         function getParam(paramName) {
