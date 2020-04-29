@@ -350,7 +350,7 @@
                             <div class="amap-chart">
                                 <el-table
                                 v-loading="loading"
-                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 6)"
+                                    @row-click="(row, column, event)=>positionEvent1(row, column, event, 6)"
                                     :data="gjclList"
                                     style="width: 100%;height: auto;">
                                     <!-- <el-table-column
@@ -759,6 +759,9 @@ export default {
             this.curWindow.visible = false;
         }
         this.getById(category, row.id);
+    },
+    positionEvent1 () {
+        this.routerXsDetail()
     },
     getById (type,id) {
         let _this = this

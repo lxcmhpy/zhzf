@@ -6,7 +6,6 @@
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
         <div class="doc_topic">立案登记表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
-
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td>
@@ -15,7 +14,8 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <div class="text-left">
-                <el-checkbox-group v-model="formData.checkBox" :disabled="true">
+              <el-form-item prop="checkBox" :rules="propertyFeatures['checkBox'] && propertyFeatures['checkBox'].required ? rules.checkBox : [{ required: false, trigger: 'change' }]">
+                <el-checkbox-group v-model="formData.checkBox" :disabled="propertyFeatures['checkBox'] && propertyFeatures['checkBox'].editable==false">
                   <p>
                     <el-checkbox label="行政检查">1.在行政检查中发现的；</el-checkbox>
                   </p>
@@ -49,15 +49,15 @@
                     </el-checkbox>
                   </p>
                 </el-checkbox-group>
+                </el-form-item>
               </div>
             </td>
           </tr>
           <tr>
             <td rowspan="2">案由</td>
             <td rowspan="2" colspan="8" class="color_DBE4EF">
-              <el-form-item prop="caseName">
-                <el-input  type="textarea" v-model="formData.caseName" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>
-               
+              <el-form-item prop="caseName" :rules="propertyFeatures['caseName'] && propertyFeatures['caseName'].required ? rules.caseName : [{ required: false, trigger: 'blur' }]">
+                <el-input  type="textarea" v-model="formData.caseName" :disabled="propertyFeatures['caseName'] && propertyFeatures['caseName'].editable==false" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>  
               </el-form-item>
             </td>
           </tr>
@@ -68,8 +68,8 @@
               <p>时间</p>
             </td>
             <td colspan="8" class="color_DBE4EF">
-              <el-form-item prop="acceptTime" class="pdf_datapick">
-                <el-date-picker v-model="formData.acceptTime" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd HH:mm" disabled></el-date-picker>
+              <el-form-item prop="acceptTime" :rules="propertyFeatures['acceptTime'] && propertyFeatures['acceptTime'].required ? rules.caseName : [{ required: false, trigger: 'blur' }]" class="pdf_datapick">
+                <el-date-picker v-model="formData.acceptTime" :disabled="propertyFeatures['acceptTime'] && propertyFeatures['acceptTime'].editable==false" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
               </el-form-item>
             </td>
           </tr>
@@ -87,22 +87,13 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party">
-                <el-input type="textarea" v-model="formData.party" v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" disabled></el-input>
+                <el-input type="textarea" v-model="formData.party" :disabled="!isParty || (propertyFeatures['party'] && propertyFeatures['party'].editable == false)" v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td>性别</td>
             <td class="color_DBE4EF">
-              <el-form-item :prop="isParty ? 'partySex' :''">
-                <!-- <el-input
-                  type="textarea"
-                  v-model="formData.partySex"
-                  v-bind:class="{ over_flow:formData.partySex.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
-                  maxlength="2"
-                  placeholder="\"
-                  :disabled="isParty ? false : true"
-                ></el-input> -->
-                <el-select v-model="formData.partySex" :disabled="isParty && !originalData.partySex ? false : true" placeholder="\">
+              <el-form-item prop="partySex" :rules="isParty && propertyFeatures['partySex'] && propertyFeatures['partySex'].required ? rules.partySex : [{ required: false, trigger: 'blur' }]">
+                <el-select v-model="formData.partySex" :disabled="!isParty || (propertyFeatures['partySex'] && propertyFeatures['partySex'].editable == false)" placeholder="\">
                   <el-option value="0" label="男"></el-option>
                   <el-option value="1" label="女"></el-option>
                 </el-select>
@@ -110,16 +101,21 @@
             </td>
             <td>年龄</td>
             <td class="color_DBE4EF">
-              <el-form-item :prop="isParty ? 'partyAge' :''">
-                <el-input type="textarea" v-model="formData.partyAge" v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="3" :disabled="isParty && !originalData.partyAge ? false : true" placeholder="\"></el-input>
+              <el-form-item prop="partyAge" :rules="isParty && propertyFeatures['partyAge'] && propertyFeatures['partyAge'].required ? rules.partyAge : [{ required: false, trigger: 'blur' }]">
+                <el-input type="textarea" v-model="formData.partyAge" 
+                :disabled="!isParty || (propertyFeatures['partyAge'] && propertyFeatures['partyAge'].editable == false)"
+                v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="3" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item :prop="isParty ? 'partyAddress' :''">
-                <el-input  type="textarea" v-model="formData.partyAddress" v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="isParty && !originalData.partyAddress ? false : true"></el-input>
+                
+              <el-form-item prop="partyAddress" :rules="isParty && propertyFeatures['partyAddress'] && propertyFeatures['partyAddress'].required ? rules.partyAddress : [{ required: false, trigger: 'blur' }]">
+                <el-input  type="textarea" v-model="formData.partyAddress" :disabled="!isParty || (propertyFeatures['partyAddress'] && propertyFeatures['partyAddress'].editable == false)" 
+                v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"
+                ></el-input>
                
               </el-form-item>
             </td>
@@ -128,15 +124,14 @@
               <p>件号</p>
             </td>
             <td class="color_DBE4EF">
-              <el-form-item :prop="isParty ? 'partyIdNo' :''">
-                <el-input type="textarea" v-model="formData.partyIdNo" v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="isParty && !originalData.partyIdNo ? false : true"></el-input>
-               
+              <el-form-item prop="partyIdNo" :rules="isParty && propertyFeatures['partyIdNo'] && propertyFeatures['partyIdNo'].required ? rules.partyIdNo : [{ required: false, trigger: 'blur' }]">
+                <el-input type="textarea" v-model="formData.partyIdNo" :disabled="!isParty || (propertyFeatures['partyIdNo'] && propertyFeatures['partyIdNo'].editable == false)" v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td class="color_DBE4EF">
-              <el-form-item :prop="isParty ? 'partyTel' :''">
-                <el-input type="textarea" v-model="formData.partyTel" v-bind:class="{ over_flow:formData.partyTel.length>6?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="isParty && !originalData.partyTel? false : true"></el-input>
+              <el-form-item prop="partyTel" :rules="isParty && propertyFeatures['partyTel'] && propertyFeatures['partyTel'].required ? rules.partyTel : [{ required: false, trigger: 'blur' }]">
+                <el-input type="textarea" v-model="formData.partyTel" :disabled="!isParty || (propertyFeatures['partyTel'] && propertyFeatures['partyTel'].editable == false)" v-bind:class="{ over_flow:formData.partyTel.length>6?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -144,8 +139,8 @@
             <td rowspan="3">单位</td>
             <td>名称</td>
             <td colspan="4" class="color_DBE4EF">
-              <el-form-item prop="partyName">
-                <el-input type="textarea" v-model="formData.partyName" v-bind:class="{ over_flow:formData.partyName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" disabled></el-input>
+              <el-form-item prop="partyName" :rules="propertyFeatures['partyName'] && propertyFeatures['partyName'].required ? rules.partyName : [{ required: false, trigger: 'blur' }]">
+                <el-input type="textarea" v-model="formData.partyName" :disabled="isParty || (propertyFeatures['partyName'] && propertyFeatures['partyName'].editable == false)" v-bind:class="{ over_flow:formData.partyName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td>
@@ -153,30 +148,30 @@
               <p>代表人</p>
             </td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyManager">
-                <el-input type="textarea" v-model="formData.partyManager" v-bind:class="{ over_flow:formData.partyManager.length>3?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="10" placeholder="\" :disabled="!isParty && !originalData.partyManager ? false : true"></el-input>
+              <el-form-item prop="partyManager" :rules="propertyFeatures['partyManager'] && propertyFeatures['partyManager'].required ? rules.partyManager : [{ required: false, trigger: 'blur' }]">
+                <el-input type="textarea" v-model="formData.partyManager" :disabled="isParty || (propertyFeatures['partyManager'] && propertyFeatures['partyManager'].editable == false)" v-bind:class="{ over_flow:formData.partyManager.length>3?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="10" placeholder="\" ></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
-              <el-form-item prop="partyUnitAddress">
-                <el-input type="textarea" v-model="formData.partyUnitAddress" v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="45" placeholder="\" :disabled="!isParty && !originalData.partyUnitAddress ? false : true"></el-input>
+              <el-form-item prop="partyUnitAddress" :rules="propertyFeatures['partyUnitAddress'] && propertyFeatures['partyUnitAddress'].required ? rules.partyUnitAddress : [{ required: false, trigger: 'blur' }]">
+                <el-input type="textarea" v-model="formData.partyUnitAddress" :disabled="isParty || (propertyFeatures['partyUnitAddress'] && propertyFeatures['partyUnitAddress'].editable == false)" v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="45" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td style="width:50px">联系电话</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyUnitTel">
-                <el-input type="textarea" v-model="formData.partyUnitTel" v-bind:class="{ over_flow:formData.partyUnitTel.length>6?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="!isParty && !originalData.partyUnitTel ? false : true"></el-input>
+              <el-form-item prop="partyUnitTel" :rules="propertyFeatures['partyUnitTel'] && propertyFeatures['partyUnitTel'].required ? rules.partyUnitTel : [{ required: false, trigger: 'blur' }]">
+                <el-input type="textarea" v-model="formData.partyUnitTel" :disabled="isParty || (propertyFeatures['partyUnitTel'] && propertyFeatures['partyUnitTel'].editable == false)" v-bind:class="{ over_flow:formData.partyUnitTel.length>6?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td colspan="2">统一社会信用代码</td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item prop="socialCreditCode">
-                <el-input type="textarea" v-model="formData.socialCreditCode" v-bind:class="{ over_flow:formData.socialCreditCode.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\" :disabled="!isParty && !originalData.socialCreditCode ? false : true"></el-input>
+              <el-form-item prop="socialCreditCode" :rules="propertyFeatures['socialCreditCode'] && propertyFeatures['socialCreditCode'].required ? rules.socialCreditCode : [{ required: false, trigger: 'blur' }]"> 
+                <el-input type="textarea" v-model="formData.socialCreditCode" :disabled="isParty || (propertyFeatures['socialCreditCode'] && propertyFeatures['socialCreditCode'].editable == false)" v-bind:class="{ over_flow:formData.socialCreditCode.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -186,9 +181,10 @@
               <p>本情况</p>
             </td>
             <td colspan="8" class="color_DBE4EF">
-              <el-form-item prop="caseSituation">
-                <el-input type='textarea' v-model="formData.caseSituation" v-bind:class="{ over_flow:formData.caseSituation && formData.caseSituation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 5}" maxlength="200" placeholder="\"></el-input>
-                <!-- <el-input type="textarea" ></el-input> -->
+              <el-form-item prop="caseSituation" :rules="propertyFeatures['caseSituation'] && propertyFeatures['caseSituation'].required ? rules.caseSituation : [{ required: false, trigger: 'blur' }]">
+                <el-input type='textarea' v-model="formData.caseSituation" 
+                :disabled="propertyFeatures['caseSituation'] && propertyFeatures['caseSituation'].editable == false"
+                v-bind:class="{ over_flow:formData.caseSituation && formData.caseSituation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 5}" maxlength="200" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -200,9 +196,10 @@
               <p class="center_similar">据</p>
             </td>
             <td colspan="4" class="color_DBE4EF">
-              <el-form-item prop="illegalLaw">
-                <!-- <el-input type='textarea' v-model="formData.caseReplay" v-bind:class="{ over_flow:formData.caseReplay.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input> -->
-                <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" v-model="formData.illegalLaw" disabled></el-input>
+              <el-form-item prop="illegalLaw" :rules="propertyFeatures['illegalLaw'] && propertyFeatures['illegalLaw'].required ? rules.illegalLaw : [{ required: false, trigger: 'blur' }]">
+                <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" v-model="formData.illegalLaw"
+                :disabled="propertyFeatures['illegalLaw'] && propertyFeatures['illegalLaw'].editable == false"
+                ></el-input>
               </el-form-item>
             </td>
             <td>
@@ -338,6 +335,9 @@ export default {
         status: ""
       },
       rules: {
+        checkBox: [
+          { required: true, message: "案件来源不能为空", trigger: "change" }
+        ],
         caseName: [
           { required: true, message: "案由不能为空", trigger: "blur" }
         ],
@@ -373,6 +373,9 @@ export default {
         ],
         caseSituation: [
           { required: true, message: "案件基本情况不能为空", trigger: "blur" }
+        ],
+        illegalLaw: [
+          { required: true, message: "立案依据不能为空", trigger: "blur" }
         ],
         
 
@@ -414,7 +417,7 @@ export default {
       needDealData:true,
       disableWhenApproval:false,
       editCaseInfo:'', //修改案件基本信息需要传的数据
-
+      propertyFeatures:'', //字段属性配置
     };
   },
   components: {
@@ -535,6 +538,11 @@ export default {
       }
       if (typeof (this.formData.checkBox) == 'string') {
         this.formData.checkBox = [this.formData.checkBox];
+      }
+      if (this.formData.party) {
+        this.isParty = true;
+      } else {
+        this.isParty = false;
       }
     },
     //获取案件基本信息

@@ -278,9 +278,10 @@
                                             <div class="list-search">
                                                 <div class="el-form demo-form-inline el-form--inline search-box">
                                                 <el-form-item label="立案时间">
-                                                    <el-select v-model="formInline.applyTime">
-                                                    <el-option label="全部" value="1"></el-option>
-                                                    <el-option label="选项二" value="2"></el-option>
+                                                    <el-select v-model="formInline.applyTime" suffix-icon="el-icon-sort">
+                                                    <el-option label="默认排序" value="1"></el-option>
+                                                    <el-option label="正序" value="2"></el-option>
+                                                    <el-option label="倒序" value="2"></el-option>
                                                     </el-select>
                                                 </el-form-item>
                                                 <el-form-item label="处置状态">
@@ -289,13 +290,13 @@
                                                     <el-option label="选项二" value="2"></el-option>
                                                     </el-select>
                                                 </el-form-item>
-                                                <el-form-item label="">
+                                                <!-- <el-form-item label="">
                                                     <el-input
                                                         placeholder="默认排序"
                                                         suffix-icon="el-icon-caret-bottom"
                                                         value="默认排序">
                                                     </el-input>
-                                                </el-form-item>
+                                                </el-form-item> -->
                                                 </div>
                                             </div>
                                             <ul class="list-info">
@@ -553,7 +554,8 @@
                 </div>
                 <ul class="list">
                     <li v-for="index in 2" :key="index">
-                         <img class="img" :src="'./static/images/img/temp/sp.jpg'" @click="dialogPDFVisible = true">
+                         <img class="img" :src="'./static/images/img/temp/sp.jpg'" >
+                          <i class="iconfont law-bofang"></i>
                     </li>
                     <li v-for="index in 2" :key="index">
                         <div class="demo-image__preview">
@@ -561,7 +563,7 @@
                             class="img"
                                 style="width: 100px; height: 100px"
                                 :src="'./static/images/img/temp/sp.jpg'"
-                                :preview-src-list="['https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg','https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg']"
+                                :preview-src-list="['./static/images/img/temp/sp.jpg','./static/images/img/temp/sp.jpg']"
                                 >
                             </el-image>
                         </div>
@@ -577,16 +579,20 @@
                     <span class="title">补充证据材料</span>
                 </div>
                 <ul class="list">
-                    <li v-for="index in 2" :key="index">
+                    <li>
                         <div class="demo-image__preview">
                             <el-image
                             class="img"
                                 style="width: 100px; height: 100px"
                                 :src="'./static/images/img/temp/sp.jpg'"
-                                :preview-src-list="['https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg','https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg']"
+                                :preview-src-list="['./static/images/img/temp/sp.jpg','./static/images/img/temp/sp.jpg']"
                                 >
                             </el-image>
                         </div>
+                    </li>
+                    <li @click="dialogPDFVisible = true">
+                       <img  class="img" :src="'./static/images/img/temp/sp.jpg'" >
+                       <i class="iconfont law-pdf1" ></i>
                     </li>
                     <li>
                         <el-upload
@@ -605,9 +611,9 @@
                 </ul>
             </div>
         </div>
-        <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="770px">
+       <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="770px">
             <div>
-                <embed name="plugin" id="plugin" src="http://172.16.170.54:9332/11,1083f85ef928"
+                <embed name="plugin" id="plugin" :src="storageStr"
                 type="application/pdf" internalinstanceid="29" class="print_info"
                 style="padding: 0px; width: 730px; height:1100px; position: relative;">
             </div>
@@ -622,6 +628,7 @@ import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
 import {findAllDrawerById} from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
+import iLocalStroage from '@/common/js/localStroage';
 Vue.use(AMap);
 AMap.initAMapApiLoader({
   key: '2fab5dfd6958addd56c89e58df8cbb37',
@@ -637,6 +644,7 @@ export default {
     data () {
         let self = this;
         return {
+            storageStr: '',
             dialogPDFVisible: false,
             visible: false,
             checkSearchForm: {
@@ -742,6 +750,9 @@ export default {
             this.obj.vehicleColor = this.checkSearchForm.color;
             this.visible = false;
         }
+    },
+    mounted () {
+        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '12,3b11e8faa6';
     }
 }
 </script>

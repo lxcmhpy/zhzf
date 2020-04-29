@@ -10,7 +10,8 @@
           <ul>
             <li v-for="(item, index) in imgList" :key="item.id" :class="(index+1)%4==0?'margin-right0':''" @click="dialogPDFVisible = true">
               <div class="img-url">
-                <img :src="item.url" alt="" />
+                <img class="img"  :src="item.url" alt="" />
+                <i class="iconfont law-pdf1" style="position:absolute;margin-top:-70px;z-index:200;font-size:30px;margin-left:-10px;"></i>
               </div>
               <div class="img-title">
                 {{item.name}}
@@ -24,9 +25,9 @@
                   点击上传
                   </div>
               </li> -->
-            <li v-for="index in 2" :key="index" :class="(index+1)%2==1?'margin-right0':''">
+            <li v-for="index in 2" :key="index+'a'" :class="(index+1)%2==1?'margin-right0':''">
               <div class="demo-image__preview">
-                <el-image class="img" style="width: 100px; height: 100px" :src="'./static/images/img/temp/sp.jpg'" :preview-src-list="['https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg','https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg']">
+                <el-image class="img" style="width: 100px; height: 100px" :src="'./static/images/img/temp/sp.jpg'" :preview-src-list="['./static/images/img/temp/sp.jpg','./static/images/img/temp/sp.jpg']">
                 </el-image>
               </div>
             </li>
@@ -35,19 +36,21 @@
       </div>
 
     </div>
-    <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="1200px">
-      <div>   
-       <embed name="plugin" id="plugin" src="http://172.16.170.54:9332/11,1083f85ef928"
+    <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="770px">
+            <div>
+                <embed name="plugin" id="plugin" :src="storageStr"
                 type="application/pdf" internalinstanceid="29" class="print_info"
                 style="padding: 0px; width: 730px; height:1100px; position: relative;">
-      </div>
-    </el-dialog>
+            </div>
+        </el-dialog>
   </div>
 </template>
 <script>
+import iLocalStroage from '@/common/js/localStroage';
 export default {
   data() {
     return {
+      storageStr: '',
       dialogPDFVisible: false,
       storagePath:'',
       imgList: [{
@@ -70,6 +73,9 @@ export default {
         // }
       ],
     }
+  },
+  mounted () {
+        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '12,3b11e8faa6';
   }
 }
 </script>
