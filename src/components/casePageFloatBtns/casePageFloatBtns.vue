@@ -29,8 +29,8 @@
       </svg>
       <br />编辑
     </el-button> -->
-    <!-- <a type="success" :href="makeSealStr" v-if="formOrDocData.showBtn[5]" style=""> -->
-      <el-button type="primary" @click="makeSeal">
+      <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5]" >
+     <!-- -->
         <i class="iconfont law-approval"></i>
         <br/>签章
       </el-button>
@@ -109,8 +109,8 @@
         //   signature.openURL('oeder');
         // let ActivexURL = "http://172.16.170.44:8083/iWebPDFEditor-V5.1/MultBrowser.html?path=http://172.16.170.54:9332/12,3b11e8faa6"
         // MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+    let _this =this;
         openURL();
-
         function callBackBrowserURL(error, id){
 			if(error == 0){  //调用成功
 				MultBrowser.waitStatus(id, "2", callBackWaitStatus);
@@ -136,8 +136,9 @@
 			var string =test.split("/");
             var path = string[0]+"//"+string[2]+"/";
             // path +
-			var ActivexURL=path + "/static/js/iWebPDFEditor.html?pdfPath=http://124.192.215.10:9332/9,10a727c3ada3";
-			MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+            var ActivexURL=path + "/static/js/iWebPDFEditor.html?pdfPath=http://124.192.215.10:9332/9,10a727c3ada3";
+            _this.makeSealStr = ActivexURL;
+			window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
 		}
         function getParam(paramName) {
             let paramValue = "";
