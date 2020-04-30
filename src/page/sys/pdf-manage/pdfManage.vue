@@ -133,8 +133,8 @@
 
     <!-- 添加字段 -->
     <el-dialog :title="dialogTitle" :visible.sync="addVisible" width="400px" :before-close="handleBeforeClose">
-      <el-form :model="editForm" label-width="85px" ref="editFormRef">
-        <el-form-item label="属性名称">
+      <el-form :model="editForm" label-width="85px" ref="editFormRef" :rules="addRule">
+        <el-form-item label="属性名称" prop="bindProperty">
           <el-input v-model="editForm.bindProperty" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="中文名称">
@@ -177,7 +177,7 @@ export default {
       pdfForm: {
         bindType: '1',
         bindName: "",
-        typeId:''
+        typeId: ''
       },
       relation: '',
       typeList: [
@@ -249,6 +249,9 @@ export default {
         bindType: [{ required: true, message: "请选择类型", trigger: "blur" }],
         typeId: [{ required: true, message: "请选择名称", trigger: "blur" }],
       },
+      addRule: {
+        bindProperty: [{ required: true, message: "请输入名称", trigger: "blur" }]
+      },
       bindList: [],
       bindPdfList: [],
     };
@@ -274,7 +277,7 @@ export default {
           let data = {
             // bindName: this.pdfForm.bindName,
             // bindType: this.pdfForm.bindType,
-            typeId:this.pdfForm.typeId,
+            typeId: this.pdfForm.typeId,
             pageSize: this.pageSize,
             currentPage: this.currentPage,
           }
@@ -286,7 +289,7 @@ export default {
               this.tableData = res.data.records
               this.totalPage = res.data.total
               // 类型转换
-              this.tableData.forEach(element => { 
+              this.tableData.forEach(element => {
                 if (element.isEditable == 'true') {
                   element.isEditable = true
                 }
@@ -339,31 +342,39 @@ export default {
 
     // 添加修改字段
     goAddEdit(formName) {
-      this.editForm.bindName = this.pdfForm.bindName;
-      this.editForm.bindType = this.pdfForm.bindType;
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.editForm.bindName = this.pdfForm.bindName;
+          this.editForm.bindType = this.pdfForm.bindType;
 
-      if(this.editForm.resourceProperty===''){
-        this.editForm.resourceProperty='{'+this.editForm.bindProperty+'}'
-      }
+          if (this.editForm.resourceProperty === '') {
+            this.editForm.resourceProperty = '{' + this.editForm.bindProperty + '}'
+          }
 
-      if (this.editForm.isEditable === '') {
-        this.editForm.isEditable = true
-      }
-      if (this.editForm.isRequired === '') {
-        this.editForm.isRequired = true
-      }
-      saveOrUpdatePropertyApi(this.editForm).then(res => {
-        if (res.code == 200) {
-          this.pdfAndFormList = res.data.records
-          this.addVisible = false;
-          this.$refs.editFormRef.resetFields();
-          this.getPdfAndFormList('pdfForm');
-          this.$message({
-            type: "success",
-            message: "操作成功"
+          if (this.editForm.isEditable === '') {
+            this.editForm.isEditable = true
+          }
+          if (this.editForm.isRequired === '') {
+            this.editForm.isRequired = true
+          }
+          saveOrUpdatePropertyApi(this.editForm).then(res => {
+            if (res.code == 200) {
+              this.pdfAndFormList = res.data.records
+              this.addVisible = false;
+              this.$refs.editFormRef.resetFields();
+              this.getPdfAndFormList('pdfForm');
+              this.$message({
+                type: "success",
+                message: "操作成功"
+              });
+            } else {
+              console.log("fail");
+            }
           });
+
         } else {
-          console.log("fail");
+          console.log('error submit!!');
+          return false;
         }
       });
     },
@@ -406,10 +417,10 @@ export default {
             isRequired: '',
             checkRule: '',
           },
-          this.editForm.isRequired = false;
+            this.editForm.isRequired = false;
           this.editForm.isEditable = true;
           this.editForm.resourceType = '1';
-          console.log('id',this.editForm)
+          console.log('id', this.editForm)
           this.editForm.typeId = this.pdfForm.typeId;
           console.log(this.editForm)
         } else {
@@ -424,7 +435,7 @@ export default {
       this.addVisible = true;
       this.editForm = JSON.parse(JSON.stringify(val));
       // this.editForm.bindId=this.pdfForm.typeId
-      this.editForm.bindName='调查类文书'
+      this.editForm.bindName = '调查类文书'
     },
     changSet() {
 
