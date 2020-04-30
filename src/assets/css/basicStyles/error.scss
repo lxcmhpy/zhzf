@@ -1,38 +1,44 @@
-.errorMsg {
+.el-message.errorMsg {
     position: absolute;
     width: 100%;
-    bottom: 0px;
-    background: rgba($color: #c96d68, $alpha: 0.9) !important;
-    background-color: rgba($color: #c96d68, $alpha: 0.9) !important;
+    background: rgba($color: #c96d68, $alpha: 0.9);
+    background-color: rgba($color: #c96d68, $alpha: 0.9);
     border-radius: 0px;
-    margin-left:200px;
-    top: auto !important;
+    margin-left:0px;
+    top: auto  !important;
+    bottom: 0px !important;
     border:0px;
     height: 45px;
     color:white;
+    text-align: center;
+    z-index: 120 !important;
     i.iconfont {
         color:white;
         font-size: 18px;
+        margin-left: 200px;
     }
     .el-message__content {
         margin-left:10px;
     }
 }
-.successMsg {
+.el-message.successMsg {
     position: absolute;
     width: 100%;
-    bottom: 0px;
-    background: rgba($color: #73c968, $alpha: 0.9) !important;
-    background-color: rgba($color: #73c968, $alpha: 0.9) !important;
+    background: rgba($color: #73c968, $alpha: 0.9);
+    background-color: rgba($color: #73c968, $alpha: 0.9);
     border-radius: 0px;
-    margin-left:200px;
-    top: auto !important;
+    margin-left:0px;
+    top: auto  !important;
+    bottom: 0px !important;
     border:0px;
     height: 45px;
     color:white;
+    text-align: center;
+    z-index: 120 !important;
     i.iconfont {
         color:white;
         font-size: 18px;
+        margin-left: 200px;
     }
     .el-message__content {
         margin-left:10px;

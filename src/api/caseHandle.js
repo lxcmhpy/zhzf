@@ -500,10 +500,11 @@ export function findSetListApi(params) {
 // 通过条件查询绑定列表(所有)
 export function findAllSetListApi(params) {
   let data = {
-    bindName:params.bindName,
-    bindType:params.bindType,
-    resourceName:params.resourceName,
-    resourceType:params.resourceType,
+    // bindName:params.bindName,
+    // bindType:params.bindType,
+    // resourceName:params.resourceName,
+    // resourceType:params.resourceType,
+    typeId:params.typeId
   }
   return request({
     url: "/case/doc/propertyBind/queryByCondition",
@@ -876,3 +877,13 @@ export function deleteFileByCaseAndHuanjieApi(data) {
   });
 }
 
+//通过表单（文书）类型Id查询表单（文书）绑定的案件基本信息属性
+export function findBindPropertyRuleApi(data) {
+  return request({
+    url: "/case/doc/propertyBind/findBindPropertyRule/"+data.typeId+"/"+data.caseBasicInfoId,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

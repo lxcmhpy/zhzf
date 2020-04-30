@@ -5,6 +5,7 @@
         <div class="title-box">
           <span class="title-blue"></span>
           <span class="title-text">执行情况</span>
+              <!-- <el-button type="primary" style="float:right;margin-bottom:5px"  @click="goConfirmCase">查看</el-button> -->
         </div>
         <table>
           <tr>
@@ -13,7 +14,7 @@
             <td class="table-bg">案号</td>
             <td class="search-tr">
               <span class="search-text"></span>
-              <el-button type="primary">查看</el-button>
+              <!-- <el-button type="primary" style="position:absolute;right:-100px;top: 130px;">查看</el-button> -->
             </td>
           </tr>
 
@@ -33,7 +34,38 @@
       </div>
 
     </div>
+    <confirmCaseDialog ref="confirmCaseDialogRef" @getNewData="goConfirmCaseData"></confirmCaseDialog>
 
   </div>
 </template>
+<script>
+import vehicleCheckDialog from '@/components/cluesReview/vehicleCheckDialog.vue';
+export default {
+  components: {
+    vehicleCheckDialog
+  },
+  data() {
+    
+    return {
+      
+
+    }
+  },
+  methods: {
+
+    goConfirmCaseData(){},
+    getNewData(){},
+    goConfirmCase(){
+      console.log('跳转案件')
+      let data={
+        title:'查看案件详情',
+        message:'是否进入案件办理系统，查看当前案件详情'
+      }
+         this.$refs.confirmCaseDialogRef.showModal(data);
+    }
+  },
+
+
+}
+</script>
 <style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>

@@ -8,9 +8,21 @@
                     <span class="titleflag">
                     </span>
                     <span class="title">转办说明</span>
-                    <el-button type="button" class="submitBtn blueBtn"  style="position:absolute;right:-100px;top: 130px;">
+                    <el-button type="button" class="submitBtn blueBtn"  style="position:absolute;right:-100px;top: 130px;" @click="visible=true">
                         <div>查 看</div>
                     </el-button>
+                      <el-dialog class='mini-dialog-title' :title="title" :visible.sync="visible" :show-close='false' :close-on-click-modal="false" width="420px">
+                        <div class="error-message">
+                        <div class="">
+                            <img :src="'./static/images/img/cluesReview/icon_wuxiao.png'" alt="">
+                        </div>
+                        <p>是否进入案件系统，查看当前案件详情</p>
+                        </div>
+                        <span slot="footer" class="dialog-footer">
+                        <el-button type="primary" @click="goToInforCollect">确认</el-button>
+                        <el-button @click="visible = false">取消</el-button>
+                        </span>
+                    </el-dialog>
                 </div>
                 <table class="table_style" v-if="obj">
                     <tr>
@@ -76,7 +88,8 @@ import xszxDetailView from './componentChild/xszxDetailView.vue';
 export default {
     data () {
         return {
-            obj: null
+            obj: null,
+            visible: false
         }
     },
     methods: {
@@ -95,7 +108,15 @@ export default {
                     }
                 )
             })
-        }
+        },
+         goToInforCollect() {
+            this.$store.commit('setCaseId','3f04ca8748038e4e7fe1b6719f8f8d43');
+            this.$store.commit('setCaseApproval',false);
+            this.$store.commit('setCaseNumber','吐临〔2020〕第00600号');
+            this.$router.push({
+                name: 'case_handle_inforCollect'
+            });
+        },
     },
     mounted () {
         this.getDetailById(this.$route.params.offSiteManageId);

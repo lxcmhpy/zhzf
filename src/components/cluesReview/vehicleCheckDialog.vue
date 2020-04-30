@@ -232,9 +232,10 @@
           <div class="list-search">
             <div class="el-form demo-form-inline el-form--inline search-box">
               <el-form-item label="立案时间">
-                <el-select v-model="formInline.applyTime">
-                  <el-option label="全部" value="1"></el-option>
-                  <el-option label="选项二" value="2"></el-option>
+                 <el-select v-model="formInline.applyTime">
+                    <el-option label="默认排序" value="1"></el-option>
+                    <el-option label="正序" value="2"></el-option>
+                    <el-option label="倒序" value="2"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="处置状态">

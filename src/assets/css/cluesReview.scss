@@ -1,5 +1,6 @@
 .mini-dialog-title {
     z-index: 3000;
+    top: 20%;
 
     .el-dialog {
         .el-dialog__header {
@@ -200,6 +201,7 @@
             .el-select {
                 height: 30px;
                 margin:0px;
+                padding-left: 7px;
             }
             .el-input__icon {
                 width:8px;
@@ -932,7 +934,7 @@
         color:white !important;
     }
 }
-  .transferDetail {
+  .law_supervise_transferDetail {
     position:fixed;
     top: 200px;
     right: 28px;
@@ -949,7 +951,7 @@
       background: url('../../../static/images/img/lawSupervise/icon_zt_zb.jpg') no-repeat;
       z-index:3;
   }
-  .invalidCueDetail {
+  .law_supervise_invalidCueDetail {
     position:fixed;
     top: 200px;
     right: 28px;
@@ -966,7 +968,7 @@
     background: url('../../../static/images/img/lawSupervise/icon_zt_wsh.jpg') no-repeat;
     z-index:3;
   }
-  .examineDoingDetail {
+  .law_supervise_examineDoingDetail {
     position:fixed;
     top: 200px;
     right: 28px;
@@ -1021,6 +1023,8 @@
         .el-icon-picture {
             color: #a1b1e3;
             font-size: 30px;
+            margin-top: 35px;
+            line-height: 17px;
         }
     }
     .el-upload-list__item-actions,.el-upload-list__item-thumbnail{
@@ -1040,13 +1044,11 @@
          border: 0px !important;
          margin: 0px;
     }
-    .el-upload-list {
-        .el-upload-list__item {
+    .el-upload-list .el-upload-list__item {
             width: 188px;
             height: 110px;
             border-radius: 0px;
-            margin-right: 20px;
-        }
+            margin-right: 20px !important;
     }
 }
 .demo-image__preview {

@@ -180,7 +180,7 @@
           </div>
           <div class="itemSmall">
             <el-form-item label="邮编" prop="partyZipCode">
-              <el-input ref="partyZipCode" v-model="inforForm.partyZipCode"></el-input>
+              <el-input ref="partyZipCode" v-model="inforForm.partyZipCode" @blur="blur3($event.target.value)"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -1917,7 +1917,10 @@
         this.inforForm.caseCauseName = overWeightCaseData.caseCauseName
         this.inforForm.programType = overWeightCaseData.programType
         this.inforForm.partyType = overWeightCaseData.partyType
+        this.caseSourceTextDisable=true
         this.showOverrun = true
+        this.inforForm.afsj=new Date()
+        this.inforForm.afdd='密云检测站 北京市顺密路荆栗园村K24+860'
         return
       }
 

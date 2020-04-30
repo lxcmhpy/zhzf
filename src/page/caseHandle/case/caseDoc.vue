@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="105px">
+    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="115px">
       <div class="content_box">
         <div class="content">
           <div class="content_title">调查类文书</div>
@@ -8,35 +8,35 @@
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseNumber" label="案号">
+                <el-form-item prop="caseNumber" label="案号" :rules="propertyFeatures['caseNumber'] && propertyFeatures['caseNumber'].required ? rules.caseNumber : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     ref="caseNumber"
                     clearable
                     class="w-120"
                     v-model="formData.caseNumber"
                     size="small"
-                    :disabled="true"
+                    :disabled="propertyFeatures['caseNumber'] && propertyFeatures['caseNumber'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="案由">
+                <el-form-item prop="caseCauseName" label="案由" :rules="propertyFeatures['caseCauseName'] && propertyFeatures['caseCauseName'].required ? rules.caseCauseName : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     ref="caseCauseName"
                     clearable
                     class="w-120"
                     v-model="formData.caseCauseName"
                     size="small"
-                    :disabled="true"
+                    :disabled="propertyFeatures['caseCauseName'] && propertyFeatures['caseCauseName'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="姓名">
+                <el-form-item label="姓名" :rules="propertyFeatures['party'] && propertyFeatures['party'].required ? rules.party : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     ref="party"
                     clearable
@@ -44,16 +44,16 @@
                     v-model="formData.party"
                     size="small"
                     placeholder="请输入"
-                    :disabled="originalData.party ? true : false"
+                    :disabled="propertyFeatures['party'] && propertyFeatures['party'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="性别">
+                <el-form-item label="性别" prop="partySex" :rules="propertyFeatures['partySex'] && propertyFeatures['partySex'].required ? rules.partySex : [{ required: false, trigger: 'blur' }]">
                   <el-select
                     placeholder="请选择"
                     v-model="formData.partySex"
-                    :disabled="originalData.partySex ? true : false"
+                    :disabled="propertyFeatures['partySex'] && propertyFeatures['partySex'].editable==false"
                   >
                     <el-option value="0" label="男"></el-option>
                     <el-option value="1" label="女"></el-option>
@@ -63,14 +63,14 @@
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="身份证件号" prop="partyIdNo">
+                <el-form-item label="身份证件号" prop="partyIdNo" :rules="propertyFeatures['partyIdNo'] && propertyFeatures['partyIdNo'].required ? rules.partyIdNo : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     clearable
                     class="w-120"
                     v-model="formData.partyIdNo"
                     size="small"
                     placeholder="请输入"
-                    :disabled="originalData.partyIdNo ? true : false"
+                    :disabled="propertyFeatures['partyIdNo'] && propertyFeatures['partyIdNo'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -78,8 +78,8 @@
                 <!-- <el-form-item label="年龄" prop="partyAge">
                   <el-input ref="partyAge" clearable class="w-120" type="number" v-model="formData.partyAge" size="small" placeholder="请输入" :disabled="originalData.partyAge ? true : false"></el-input>
                 </el-form-item> -->
-                 <el-form-item label="与案件关系">
-                    <el-select ref="relationWithCase" v-model="formData.relationWithCase" :disabled="originalData.relationWithCase ? true : false">
+                <el-form-item label="与案件关系" prop="relationWithCase" :rules="propertyFeatures['relationWithCase'] && propertyFeatures['relationWithCase'].required ? rules.relationWithCase : [{ required: false, trigger: 'change' }]">
+                    <el-select ref="relationWithCase" v-model="formData.relationWithCase" :disabled="propertyFeatures['relationWithCase'] && propertyFeatures['relationWithCase'].editable==false">
                       <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                  </el-form-item>
@@ -87,7 +87,7 @@
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="联系电话" prop="partyTel">
+                <el-form-item label="联系电话" prop="partyTel" :rules="propertyFeatures['partyTel'] && propertyFeatures['partyTel'].required ? rules.partyTel : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     ref="partyTel"
                     clearable
@@ -95,7 +95,7 @@
                     v-model="formData.partyTel"
                     size="small"
                     placeholder="请输入"
-                    :disabled="originalData.partyTel ? true : false"
+                    :disabled="propertyFeatures['partyTel'] && propertyFeatures['partyTel'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -103,14 +103,15 @@
                 <!-- <el-form-item label="所在单位">
                   <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
                 </el-form-item> -->
-                 <el-form-item label="单位及职务">
-                     <el-input ref="partyUnitPositionAndCom" clearable class="w-120" v-model="formData.partyUnitPositionAndCom" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition || originalData.occupation ? true : false"></el-input>
+                <el-form-item label="单位及职务" prop="partyUnitPositionAndCom" :rules="propertyFeatures['partyUnitPositionAndCom'] && propertyFeatures['partyUnitPositionAndCom'].required ? rules.partyUnitPositionAndCom : [{ required: false, trigger: 'blur' }]">
+                     <el-input ref="partyUnitPositionAndCom" clearable class="w-120" v-model="formData.partyUnitPositionAndCom" size="small" placeholder="请输入" 
+                     :disabled="propertyFeatures['partyUnitPositionAndCom'] && propertyFeatures['partyUnitPositionAndCom'].editable==false"></el-input>
                  </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="联系地址">
+                <el-form-item label="联系地址" prop="partyAddress" :rules="propertyFeatures['partyAddress'] && propertyFeatures['partyAddress'].required ? rules.partyAddress : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     ref="partyAddress"
                     clearable
@@ -118,7 +119,7 @@
                     v-model="formData.partyAddress"
                     size="small"
                     placeholder="请输入"
-                    :disabled="originalData.partyAddress ? true : false"
+                    :disabled="propertyFeatures['partyAddress'] && propertyFeatures['partyAddress'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -131,7 +132,7 @@
 
             <div class="row" v-if="!isParty">
               <div class="col">
-                <el-form-item label="单位">
+                <el-form-item label="单位" prop="partyName" :rules="propertyFeatures['partyName'] && propertyFeatures['partyName'].required ? rules.partyName : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     ref="partyName"
                     clearable
@@ -139,12 +140,12 @@
                     v-model="formData.partyName"
                     size="small"
                     placeholder="请输入"
-                    :disabled="originalData.partyName ? true : false"
+                    :disabled="propertyFeatures['partyName'] && propertyFeatures['partyName'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="地址">
+                <el-form-item label="地址" prop="partyUnitAddress" :rules="propertyFeatures['partyUnitAddress'] && propertyFeatures['partyUnitAddress'].required ? rules.partyUnitAddress : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     ref="partyUnitAddress"
                     clearable
@@ -152,14 +153,14 @@
                     v-model="formData.partyUnitAddress"
                     size="small"
                     placeholder="请输入"
-                    :disabled="originalData.partyUnitAddress ? true : false"
+                    :disabled="propertyFeatures['partyUnitAddress'] && propertyFeatures['partyUnitAddress'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="!isParty">
               <div class="col">
-                <el-form-item label="法定代表人">
+                <el-form-item label="法定代表人" prop="partyManager" :rules="propertyFeatures['partyManager'] && propertyFeatures['partyManager'].required ? rules.partyManager : [{ required: false, trigger: 'blur' }]">    
                   <el-input
                     ref="partyManager"
                     clearable
@@ -167,12 +168,12 @@
                     v-model="formData.partyManager"
                     size="small"
                     placeholder="请输入"
-                    :disabled="originalData.partyManager ? true : false"
+                    :disabled="propertyFeatures['partyManager'] && propertyFeatures['partyManager'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="联系电话">
+                <el-form-item label="联系电话" prop="partyUnitTel" :rules="propertyFeatures['partyUnitTel'] && propertyFeatures['partyUnitTel'].required ? rules.partyUnitTel : [{ required: false, trigger: 'blur' }]">    
                   <el-input
                     ref="partyUnitTel"
                     clearable
@@ -180,14 +181,14 @@
                     v-model="formData.partyUnitTel"
                     size="small"
                     placeholder="请输入"
-                    :disabled="originalData.partyUnitTel ? true : false"
+                    :disabled="propertyFeatures['partyUnitTel'] && propertyFeatures['partyUnitTel'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="!isParty">
               <div class="col">
-                <el-form-item label="统一社会信用代码" class="line-height13">
+                <el-form-item label="统一社会信用代码" class="line-height13" prop="socialCreditCode" :rules="propertyFeatures['socialCreditCode'] && propertyFeatures['socialCreditCode'].required ? rules.socialCreditCode : [{ required: false, trigger: 'blur' }]">    
                   <el-input
                     ref="socialCreditCode"
                     clearable
@@ -195,14 +196,14 @@
                     v-model="formData.socialCreditCode"
                     size="small"
                     placeholder="请输入"
-                    :disabled="originalData.socialCreditCode ? true : false"
+                    :disabled="propertyFeatures['socialCreditCode'] && propertyFeatures['socialCreditCode'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="车牌号码">
+                <el-form-item label="车牌号码" prop="vehicleShipId" :rules="propertyFeatures['vehicleShipId'] && propertyFeatures['vehicleShipId'].required ? rules.vehicleShipId : [{ required: false, trigger: 'blur' }]">    
                   <el-input
                     ref="vehicleShipId"
                     clearable
@@ -210,14 +211,14 @@
                     v-model="formData.vehicleShipId"
                     size="small"
                     placeholder="请输入"
-                    :disabled="originalData.vehicleShipId ? true : false"
+                    :disabled="propertyFeatures['vehicleShipId'] && propertyFeatures['vehicleShipId'].editable==false"
                   ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="车辆类型">
+                <el-form-item label="车辆类型" prop="vehicleShipType" :rules="propertyFeatures['vehicleShipType'] && propertyFeatures['vehicleShipType'].required ? rules.vehicleShipType : [{ required: false, trigger: 'change' }]">    
                   <!-- <el-input ref="vehicleShipType" clearable class="w-120" v-model="formData.vehicleShipType" size="small" placeholder="请输入" :disabled="originalData.vehicleShipType ? true : false"></el-input> -->
-                  <el-select v-model="formData.vehicleShipType"  :disabled="originalData.vehicleShipType ? true : false">
+                  <el-select v-model="formData.vehicleShipType"  :disabled="propertyFeatures['vehicleShipType'] && propertyFeatures['vehicleShipType'].editable==false">
                     <el-option
                       v-for="item in allVehicleShipType"
                       :key="item.value"
@@ -304,7 +305,7 @@
         </div>
         <!-- 悬浮按钮 -->
         <div class="float-btns btn-height63">
-          <el-button type="primary" @click="continueHandle" v-if="!this.$route.params.isComplete">
+          <el-button type="primary" @click="continueHandle" :disabled="!canGoNextLink" v-if="!this.$route.params.isComplete">
             <svg
               t="1577515608465"
               class="icon"
@@ -325,7 +326,7 @@
             <br />环节
           </el-button>
 
-          <el-button type="primary" @click="submitCaseDoc(1)" v-if="!this.$route.params.isComplete">
+          <el-button type="primary" @click="submitCaseDoc(1)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete">
             <i class="iconfont law-save"></i>
             <br />保存
           </el-button>
@@ -395,15 +396,57 @@ export default {
       handleType: 0,
       docTableDatas: [],
       rules: {
-        partyIdNo: [{ validator: validateIDNumber, trigger: "blur" }],
-        partyTel: [{ validator: validatePhone, trigger: "blur" }],
-        partyZipCode: [{ validator: validateZIP, trigger: "blur" }],
-        closeResult: [
-          { required: true, message: "处理结果必须填写", trigger: "blur" }
+        caseNumber: [
+          { required: true, message: "案号不能为空", trigger: "blur" }
         ],
-        closeSituation: [
-          { required: true, message: "执行情况必须填写", trigger: "blur" }
-        ]
+        caseName: [
+          { required: true, message: "案由不能为空", trigger: "blur" }
+        ],
+        party: [
+          { required: true, message: "姓名不能为空", trigger: "blur" }
+        ],
+        partySex: [
+          { required: true, message: "性别不能为空", trigger: "change" }
+        ],
+        partyIdNo: [
+          { required: true, message: "身份证号不能为空", trigger: "blur" },
+          { validator: validateIDNumber, trigger: "blur" }
+        ],
+        relationWithCase: [
+          { required: true, message: "与案件关系不能为空", trigger: "change" }
+        ],
+        partyTel: [
+          { required: true, message: "联系电话不能为空", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        partyUnitPositionAndCom: [
+          { required: true, message: "单位及职务不能为空", trigger: "blur" }
+        ],
+        partyAddress: [
+          { required: true, message: "联系地址不能为空", trigger: "blur" }
+        ],
+        vehicleShipId: [
+          { required: true, message: "车牌号码不能为空", trigger: "blur" }
+        ],
+        vehicleShipType: [
+          { required: true, message: "车辆类型不能为空", trigger: "change" }
+        ],
+        partyName: [
+          { required: true, message: "单位不能为空", trigger: "blur" }
+        ],
+        partyUnitAddress: [
+          { required: true, message: "地址不能为空", trigger: "blur" }
+        ],
+        partyManager: [
+          { required: true, message: "法定代表人不能为空", trigger: "blur" }
+        ],
+        partyUnitTel: [
+          { required: true, message: "联系电话不能为空", trigger: "blur" }
+        ],
+        socialCreditCode: [
+          { required: true, message: "统一社会信用代码不能为空", trigger: "blur" }
+        ],
+
       },
       // nextBtnDisab: true
       isParty: true, //当事人类型为个人
@@ -433,6 +476,8 @@ export default {
       askDocListNum:0,  //询问笔录次数
       askDocListFinishNum:0,//已完成询问笔录次数
       needDealData:true,
+      propertyFeatures:'', //字段属性配置
+      
     };
   },
   computed: {

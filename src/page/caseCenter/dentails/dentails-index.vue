@@ -1,17 +1,19 @@
 <template>
   <div class="main-box">
       <span class="examineDoingDetail">
-         {{value}}
+         <!-- {{value}} -->
     </span>
-    <dealNotes v-if="showFlag==='/overWeightCase'&&(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
+    <dealNotes v-if="showFlag==='/overWeightCase'&&(value=='待办')||(value=='在办')||(value=='已回退')||(value=='办结')||(value=='机构待办')"></dealNotes>
 
-    <dealNotesSearch v-if="showFlag==='/overWeightCase'&&(value=='待办')||showFlag==='/transferAndRegisterCase'"></dealNotesSearch>
+    <!-- <dealNotesVeiw v-if="showFlag==='/overWeightCase'&&(value=='待办')"></dealNotesVeiw> -->
+
+    <dealNotesSearch v-if="showFlag==='/transferAndRegisterCase'"></dealNotesSearch>
 
     <uoloadFiles v-if="showFlag==='/transferAndRegisterCase'"></uoloadFiles>
 
-    <dealInProgress v-if="showFlag==='/overWeightCase'&&(value=='在办')"></dealInProgress>
+    <dealInProgress v-if="showFlag==='/overWeightCase'&&(value=='在办')||(value=='办结')"></dealInProgress>
 
-    <dealProgress v-if="showFlag==='/overWeightCase'&&(value=='办结')"></dealProgress>
+    <!-- <dealProgress v-if="showFlag==='/overWeightCase'&&(value=='办结')"></dealProgress> -->
 
     <backNotes v-if="showFlag==='/overWeightCase'&&(value=='已回退')">></backNotes>
 
@@ -54,6 +56,7 @@
 <script>
 import dealNotes from '@/components/caseCenter/dealNotes.vue'
 import dealNotesSearch from '@/components/caseCenter/dealNotesSearch.vue'
+import dealNotesVeiw from '@/components/caseCenter/dealNotesVeiw.vue'
 import backNotes from '@/components/caseCenter/backNotes.vue'
 import dealProgress from '@/components/caseCenter/dealProgress.vue'
 import dealInProgress from '@/components/caseCenter/dealInProgress.vue'
@@ -68,6 +71,7 @@ export default {
   components: {
     dealNotes,
     dealNotesSearch,
+    dealNotesVeiw,
     otherEnclosure,
     evidencePackage,
     dealProgress,
@@ -96,7 +100,7 @@ export default {
         type: "success",
         message: "指派完成"
       });
-      this.$router.push({ name: 'transferAndRegisterCase' })
+      this.$router.push({ name: 'law_center_transferAndRegisterCase' })
     },
     goBack() {
       this.$refs.goBackDialogRef.showModal();
@@ -112,8 +116,8 @@ export default {
     // this.showFlag = iLocalStroage.gets("caseCenterDentails").path
     // this.value = iLocalStroage.gets("caseCenterDentails").value
     // debugger;
-    this.showFlag = this.$route.params.path,
-    this.value = this.$route.params.value
+    this.showFlag = this.$route.params.path;
+    this.value = this.$route.params.value;
   },
 
 }

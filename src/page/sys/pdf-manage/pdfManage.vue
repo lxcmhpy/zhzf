@@ -286,7 +286,7 @@ export default {
               this.tableData = res.data.records
               this.totalPage = res.data.total
               // 类型转换
-              this.tableData.forEach(element => {
+              this.tableData.forEach(element => { 
                 if (element.isEditable == 'true') {
                   element.isEditable = true
                 }
@@ -341,6 +341,10 @@ export default {
     goAddEdit(formName) {
       this.editForm.bindName = this.pdfForm.bindName;
       this.editForm.bindType = this.pdfForm.bindType;
+
+      if(this.editForm.resourceProperty===''){
+        this.editForm.resourceProperty='{'+this.editForm.bindProperty+'}'
+      }
 
       if (this.editForm.isEditable === '') {
         this.editForm.isEditable = true
@@ -419,6 +423,8 @@ export default {
       this.dialogTitle = '修改字段';
       this.addVisible = true;
       this.editForm = JSON.parse(JSON.stringify(val));
+      // this.editForm.bindId=this.pdfForm.typeId
+      this.editForm.bindName='调查类文书'
     },
     changSet() {
 

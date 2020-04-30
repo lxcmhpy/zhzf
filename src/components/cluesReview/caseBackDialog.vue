@@ -47,7 +47,7 @@ export default {
         type: "success",
         message: "回退成功"
       });
-      this.$router.push({ name: 'overWeightCase' })
+      this.$router.push({ name: 'case_handle_caseCenter-overWeightCase' })
     }
   },
   mounted() { }

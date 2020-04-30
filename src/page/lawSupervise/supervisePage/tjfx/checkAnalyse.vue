@@ -409,12 +409,12 @@ export default {
     routerDetail(row) {
       this.$store.commit('setOffSiteManageId',row.id);
       this.$router.push({
-        name: 'offSiteDetail'
+        name: 'law_supervise_offSiteDetail'
       })
     },
     routerEvidenceDetail() {
       this.$router.push({
-        name: 'evidenceDetail'
+        name: 'law_supervise_evidenceDetail'
       })
     },
     //更改每页显示的条数
@@ -428,7 +428,7 @@ export default {
     },
     routerInvalidCue(item) {
       this.$router.push({
-        name: 'invalidCue'
+        name: 'law_supervise_invalidCue'
       })
     }
   },
