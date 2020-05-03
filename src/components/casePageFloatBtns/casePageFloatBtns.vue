@@ -29,7 +29,8 @@
       </svg>
       <br />编辑
     </el-button> -->
-      <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5]" >
+    <!-- v-if="formOrDocData.showBtn[5]" -->
+      <el-button type="primary" @click="makeSeal"  >
      <!-- -->
         <i class="iconfont law-approval"></i>
         <br/>签章

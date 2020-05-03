@@ -69,6 +69,11 @@ export const lawSuperviseMixins = {
                     icon: 'iconfont law-ship',
                     code: 3,
                     select: false
+                },{
+                    name: '外场设备',
+                    icon: 'iconfont law-wx',
+                    code: 3,
+                    select: false
                 }]
             },{
                 name: '应用场景',
