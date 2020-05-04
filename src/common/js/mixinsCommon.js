@@ -70,9 +70,9 @@ export const lawSuperviseMixins = {
                     code: 3,
                     select: false
                 },{
-                    name: '外场设备',
-                    icon: 'iconfont law-wx',
-                    code: 3,
+                    name: '非现场站点',
+                    icon: 'iconfont law-jiankong',
+                    code: 4,
                     select: false
                 }]
             },{

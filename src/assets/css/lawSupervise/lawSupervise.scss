@@ -211,75 +211,18 @@
             border: none;
             cursor: pointer;
         }
+
     }
     .w75 {
         width: 75px;
     }
+    .w100 {
+        width: 100px;
+    }
     .w160 {
         width: 158px;
     }
-    .drop-down-menu {
-       background: white;
-       border-right: 2px solid white;
-       color: $white;
-       width: 100%;
-       position: absolute;
-       left: 0px;
-       top: 45px;
-       border-radius: 0px;
-       box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
-       // z-index: 1500;
 
-       li {
-           height: 40px;
-           line-height: 6px;
-           text-align: left;
-           padding-left: 25px;
-           // border-bottom: 1px solid rgb(52, 110, 177);
-        //    box-shadow: 0px 2px 1px rgba(196, 222, 248, 0.2);
-           color: #5F5F61;
-           &:hover {
-            background: #F3F4FD;
-            // color: #4281D9;
-           }
-           i {
-               font-size: 14px;
-               margin-top: 20px;
-               margin-right: 7px;
-               display:inline-block;
-           }
-           i.el-submenu__icon-arrow {
-               margin-top: -7px;
-           }
-           p {
-               display: inline-block;
-           }
-           .el-submenu__title {
-               height: 100%;
-               line-height: 40px;
-               background: none;
-           }
-           .el-menu {
-               position: absolute;
-               margin-left:132px;
-               background:white;
-               width: 120px;
-               top: 1px;
-               padding: 0px;
-            //    padding-top:10px;
-               border: 1px solid #f2f2f2;
-               .el-menu-item {
-                    width: 100%;
-                    min-width: 100%;
-                    line-height: 40px;
-               }
-
-           }
-       }
-       .select {
-            background: #F3F4FD;
-        }
-    }
     .top-title {
         display: flex;
         .el-button {
@@ -294,6 +237,96 @@
         }
     }
 }
+.drop-down-menu {
+    background: white;
+    border:none;
+    color: $white;
+    width: 100%;
+    // position: absolute;
+    left: 0px;
+    top: 45px;
+    border-radius: 0px;
+    // box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
+    .el-menu {
+        width:100%;
+        border:none;
+    }
+    // z-index: 1500;
+    li {
+        height: 40px;
+        line-height: 40px;
+        text-align: left;
+        padding-left: 15px;
+        cursor: pointer;
+        // border-bottom: 1px solid rgb(52, 110, 177);
+     //    box-shadow: 0px 2px 1px rgba(196, 222, 248, 0.2);
+        color: #5F5F61;
+        &:hover {
+         background: #F3F4FD;
+         // color: #4281D9;
+        }
+        i {
+            font-size: 14px;
+            // margin-top: 20px;
+            margin-right: 7px;
+            display:inline-block;
+        }
+        i.el-submenu__icon-arrow {
+            margin-top: -7px;
+        }
+        p {
+            display: inline-block;
+        }
+        .el-submenu__title {
+            height: 100%;
+            line-height: 40px;
+            background: none;
+        }
+        .el-menu {
+            position: absolute;
+            margin-left:132px;
+            background:white;
+            width: 120px;
+            top: 1px;
+            padding: 0px;
+         //    padding-top:10px;
+            border: 1px solid #f2f2f2;
+            .el-menu-item {
+                 width: 100%;
+                 min-width: 100%;
+                 line-height: 40px;
+            }
+
+        }
+    }
+    .select {
+         background: #F3F4FD;
+     }
+ }
+
+.el-menu--vertical {
+    padding: 10px 0px;
+    .el-menu {
+        padding: 17px 0px;
+        line-height: 22px;
+        li {
+            padding-bottom: 14px;
+            padding-left: 17px;
+            cursor: pointer;
+        }
+        li:hover {
+            background: #ecf5ff;
+            box-sizing: border-box;
+        }
+    }
+}
+.amap-info {
+    position: absolute;
+    left: 26px !important;
+    top: 42px !important;
+    height: 300px;
+    width: 400px;
+}
  .amap-info-content {
     // background: transparent;
     background:rgba(255, 255, 255, 1);
@@ -302,33 +335,90 @@
     padding: 0px;
     color: #7B7B7B;
     font-size: 12px;
+
     // padding: 5px;
+    // .lawWindowTitle {
+    //     font-size: 16px;
+    //     color:#20232B;
+    // }
     .lawWindowTitle {
-        font-size: 16px;
-        color:#20232B;
+        background: #4573D0;
+        color:white;
+        display: flex;
+        justify-content:space-between;
+        padding-left: 10px;
+        img {
+            width: 59px;
+            height: 59px;
+            margin: 20px;
+        }
+        .titleBox {
+            line-height: 25px;
+            padding: 22px 0px;
+            color:white;
+            text-align: left;
+            flex:1;
+            .nickName {
+                font-size: 16px;
+            }
+            .num {
+                color: #DAE3F4;
+
+            }
+        }
+        .title {
+            line-height: 35px;
+            text-align: left;
+            flex:1;
+            margin-left: 10px;
+        }
+        .right {
+            font-size: 12px;
+            width: 65px;
+            text-align: center;
+            box-sizing: border-box;
+            margin-top: 10px;
+            .status {
+                background: white;
+                border-radius: 50%;
+                width:30px;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                .iconfont {
+                    color:#b3b3b3;
+                }
+            }
+            p {
+                color:white;
+            }
+        }
     }
     .lawWindowStyle0 {
         // background: rgba(0,155,255,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
+        width: 402px;
+
     }
     .lawWindowStyle1 {
         // background: rgba($greenC2,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
         white-space: nowrap;
+
     }
     .lawWindowStyle2 {
         // background: rgba($redC,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
     }
     .lawWindowStyle3 {
         // background: rgba($orangeC,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
     }
@@ -352,19 +442,19 @@
     }
     .lawWindowStyle5 {
         // background: rgba(0,155,255,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
     }
     .lawWindowStyle6 {
         // background: rgba(0,155,255,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
     }
     .lawWindowStyle7 {
         // background: rgba(0,155,255,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
     }
@@ -376,10 +466,16 @@
     .noneWindow {
         padding: 10px;
     }
+    .flexBox {
+        margin:0px 22px;
+        font-size: 14px;
+        line-height: 30px;
+    }
     .btns {
-        margin-top: 10px;
+        // margin-top: 10px;
+        margin: 22px;
         border-top: 1px solid #FDFCFF;
-        padding-top: 10px;
+        // padding-top: 10px;
         span.phoneBtn {
             background: $grayC1;
             border-radius: 50%;
@@ -412,7 +508,7 @@
         flex: 1;
         margin-top: 7px;
         p {
-            line-height:25px;
+            line-height:40px;
         }
         .el-table__row {
             height: 40px;
@@ -438,6 +534,7 @@
  }
  .amap-info-sharp {
     //  background: transparent;
+    display: none;
  }
  .mapPointBox {
      width: 280px;
@@ -452,7 +549,7 @@
  }
  .amap-rtl-box {
     right: 0px;
-    top: 30%;
+    // top: 30%;
     .el-drawer__wrapper {
         top: 92px;
         right:0px !important;
@@ -464,6 +561,7 @@
         position: relative;
         overflow:auto;
         height: 82vh;
+        padding: 0px;
         @include echartsStyle(300px, false);
      }
      .drawerBtn {
@@ -473,11 +571,18 @@
         height: 89px;
         background: url('../../../../static/images/img/lawSupervise/btn_norshouqi2.png');
         right:0px;
+        z-index: 10;
         i {
             line-height: 86px;
             margin-left: 6px;
             border-left: 1px;
             color: #868688;
+        }
+    }
+    .amap-tool {
+        .amap-main-content {
+            position: absolute;
+            height: auto;
         }
     }
      .amap-drawer {
@@ -507,9 +612,12 @@
         width: calc(100% - 202px);
         left: 202px;
         top:calc(100% - 380px);
+        .el-drawer__container {
+            // height: 25%;
+        }
     }
     .el-drawer__body {
-        overflow:auto;
+        // overflow:auto;
         .amap-main-content {
             position: relative;
             @include echartsStyle(100%, true);
@@ -525,6 +633,7 @@
         transform:rotate(90deg);
         position: fixed;
         cursor: pointer;
+        z-index: 30;
         i {
             line-height: 86px;
             margin-left: 6px;
@@ -551,6 +660,7 @@
             position: absolute;
             top:-57px;
             cursor: pointer;
+            z-index: 50;
             i {
                 line-height: 86px;
                 margin-left: 6px;
@@ -582,7 +692,12 @@
     margin-right: 10px;
     vertical-align:-2px;
 }
-
+.isCheck{
+    background: #ecf5ff;
+}
+.left-500 {
+    left: -470px !important;
+}
 
 /////////////////////////////////////待改
 /* 车辆查验 */
@@ -1019,8 +1134,16 @@
     left:0px;
     width:100%;
     height:100%;
-    // z-index:1000;
+    z-index:100;
     .el-drawer__wrapper {
         top:0px;
     }
+    .amap-btt-box {
+        .el-drawer__wrapper {
+            width: 100%;
+            left: 0px;
+            top:calc(100% - 380px);
+        }
+    }
+
 }

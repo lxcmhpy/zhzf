@@ -11,40 +11,52 @@
             <!-- 0执法人员 -->
             <div v-if="curWindow.category == 0">
               <div class="lawWindowTitle">
-                <i class="iconfont law-people"></i>
-                {{curWindow.other.nickName}}
-                <div class="right">{{curWindow.other.enforceNo}}</div>
+                <!-- <i class="iconfont law-people"></i> -->
+                <img :src="'./static/images/img/lawSupervise/icon_head.png'">
+                <div class="titleBox">
+                    <div class="nickName">{{curWindow.other.nickName}}</div>
+                    <div class="num">{{curWindow.other.enforceNo}}</div>
+                </div>
+                <div class="right">
+                    <div class="status">
+                        <i class="iconfont law-mobile-phone"></i>
+                    </div>
+                    <p>在线</p>
+                </div>
               </div>
               <div class="flexBox">
                 <div class="con">
                   <p>{{curWindow.other.address}}</p>
                   <p>{{curWindow.other.mobile}}</p>
                 </div>
-                <div class="status greenC2">
+                <!-- <div class="status greenC2">
                   <i class="iconfont law-mobile-phone"></i>
                   <p>在线</p>
-                </div>
+                </div> -->
               </div>
-                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus" :curWindow="curWindow"></externalVideoBtns>
 
             </div>
             <!-- 1执法机构 -->
             <div v-else-if="curWindow.category == 1">
               <div class="lawWindowTitle">
                 <i class="iconfont law-zfj"></i>
-                {{curWindow.other.name}}
+                 <div class="title">{{curWindow.other.name}}</div>
+                <span></span>
                 <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
               </div>
               <div class="flexBox">
                 <div class="con">
-                  <p>{{curWindow.other.address}}</p>
-                  <p>{{curWindow.other.contact}}&nbsp;&nbsp;{{curWindow.other.phone}}</p>
+                  <p>地址：{{curWindow.other.address}}</p>
+                  <p>联系人：{{curWindow.other.contact}}</p>
+                  <p>联系方式：{{curWindow.other.phone}}</p>
                 </div>
                 <div class="status">
                   <!-- <i class="iconfont law-mobile-phone"></i>
                   <p>{{curWindow.other.status}}</p> -->
                 </div>
               </div>
+              <div class="flexBox"><img :src="'./static/images/img/lawSupervise/icon_duiwu.png'">人员在线情况</div>
              <div class="btns">
                 <span class="phoneBtn blueBg" >李静</span>
                 <span  class="phoneBtn" >王玉凤</span>
@@ -83,7 +95,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus" :curWindow="curWindow"></externalVideoBtns>
 
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
@@ -112,7 +124,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus" :curWindow="curWindow"></externalVideoBtns>
 
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
@@ -179,7 +191,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus" :curWindow="curWindow"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -204,7 +216,7 @@
                   <p>在线</p>
                 </div>
               </div>
-                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus"></externalVideoBtns>
+                <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus" :curWindow="curWindow"></externalVideoBtns>
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
                 <i class="iconfont law-shipin"></i>
@@ -238,6 +250,110 @@
 
       <!-- 右侧浮动栏 -->
       <div class="amap-position amap-rtl-box" :class="{'widthDrawer600': category == 4}" >
+        <div class="amap-tool" style="position:relative;z-index:5;left:-80px;top:27px;" :class="{'left-500':drawer}">
+            <div class="amap-main-content amap-position-right" style="right:0px;" v-show="categoryStr == '非现场站点'">
+                <div class="top-title">
+                    <el-button size="medium" class="commonBtn searchBtn" >
+                        <img :src="'./static/images/img/lawSupervise/icon_01.png'" />
+                        非现场治超
+                    </el-button>
+                    <el-button size="medium" class="commonBtn searchBtn" >
+                        <img :src="'./static/images/img/lawSupervise/icon_02.png'" />
+                        入口称重
+                    </el-button>
+                    <el-button size="medium" class="commonBtn searchBtn" >
+                        <img :src="'./static/images/img/lawSupervise/icon_03.png'" />
+                        暂无
+                    </el-button>
+                </div>
+                <transition name="el-fade-in">
+                    <div class="echarts-box" style="width:100%;margin:0px;">
+                        <div>
+                            <el-table
+                            v-loading="loading"
+                                @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
+                                :data="zfdList"
+                                style="width: 100%;">
+                                <el-table-column
+                                    width="150px"
+                                    prop="name"
+                                    label="站点名称"
+                                    >
+                                </el-table-column>
+                                <el-table-column
+                                    width="92px"
+                                    prop="cxchl"
+                                    label="超限查处量"
+                                    >
+                                </el-table-column>
+                                <el-table-column
+                                    prop="blackList"
+                                    label="重点监管"
+                                    >
+                                </el-table-column>
+                                <el-table-column
+                                    prop="gjzl"
+                                    label="过检总量"
+                                    >
+                                </el-table-column>
+                                <el-table-column
+                                    prop="status"
+                                    label="状态"
+                                    width="80px"
+                                    >
+                                    <template>
+                                        <div class="orangeBg circle" ></div>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </div>
+                    </div>
+                </transition>
+            </div>
+            <el-popover
+                placement="bottom-start"
+                trigger="click"
+                >
+                <div class="drop-down-menu transition-box" >
+                    <el-input class="no-border w160" value="" placeholder="城市名称，回车搜索"></el-input>
+                    <el-menu :default-active="activeIndex"  @select="handleSelect" unique-opened :collapse="true">
+                        <el-submenu :index="`${index}`" v-for="(item,index) in areaList" :key="`${index}`">
+                                <template slot="title">{{item.titleName}}</template>
+                                <el-menu-item-group :index="child.titleName" v-for="(child,i) in item.children" :key="i" >{{child.titleName}}</el-menu-item-group>
+                        </el-submenu>
+                    </el-menu>
+                </div>
+                <el-button slot="reference">
+                    <img :src="'./static/images/img/lawSupervise/area.png'"/>
+                    <!-- <el-input class="no-border w75" v-model="areaObj" readonly></el-input> -->
+                    <span>{{areaObj}}</span>
+                    <i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+            </el-popover>
+            <el-popover
+                placement="bottom-start"
+                trigger="click"
+                >
+                <div class="drop-down-menu transition-box">
+                        <ul>
+                        <li v-for="subItem in tabList[0].children" :key="subItem.name" :class="{'select':subItem.select}" @click="searchByTab(subItem)">
+                            <i :class="subItem.icon"></i>
+                            <p>{{subItem.name}}</p>
+                        </li>
+                    </ul>
+                </div>
+                <el-button slot="reference">
+                    <img :src="'./static/images/img/lawSupervise/icon_changjing.png'"/>
+                    <!-- <el-input class="no-border w100" v-model="categoryStr" readonly></el-input> -->
+                    <span>{{categoryStr}}</span>
+                    <i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+            </el-popover>
+            <el-button size="medium" class="commonBtn searchBtn"  @click="lawScreenFull=!lawScreenFull">
+                <img :src="'./static/images/img/lawSupervise/qp.png'" />
+                全屏
+            </el-button>
+        </div>
         <div class="drawerBtn" @click="updateDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
@@ -348,21 +464,21 @@
       </div>
 
 
-     <div class="amap-position" :class="'amap-' + direction1 + '-box'">
+     <!-- <div class="amap-position" :class="'amap-' + direction1 + '-box'">
             <div class="drawerBtn" @click="updateDrawer1">
                 <i class="el-icon-arrow-right"></i>
             </div>
             <el-drawer
-                size="350px"
                 customClass="amap-drawer"
                 :direction="direction1"
                 :wrapperClosable="false"
                 :withHeader="false"
                 :modal="false"
                 :visible.sync="drawer1"
+                modal-append-to-body
                 >
                  <transition name="el-fade-in">
-                    <div class="echarts-box" v-show="status2">
+                    <div class="echarts-box" >
                         <em class="title left"><i class="titleflag"></i>告警车辆</em>
                         <i class="iconfont law-delete1 right" @click="status2 = false"></i>
                         <div class="amap-chart">
@@ -371,11 +487,7 @@
                                 @row-click="(row, column, event)=>positionEvent1(row, column, event, 6)"
                                 :data="gjclList"
                                 style="width: 100%;height: auto;">
-                                <!-- <el-table-column
-                                    prop="checkTime"
-                                    label="过检时间">
-                                </el-table-column> -->
-                                <el-table-column label="过检时间" width="100" align="center" prop="checkTime">
+                                <el-table-column label="过检时间"  align="center" prop="checkTime">
                                     <template slot-scope="scope">
                                         <span >{{scope.row.checkTime.split(' ')[0]}}</span>
                                     </template>
@@ -383,7 +495,6 @@
                                 <el-table-column
                                     prop="vehicleNumber"
                                     label="车牌号"
-                                    width="90"
                                     >
                                 </el-table-column>
                                 <el-table-column
@@ -395,10 +506,8 @@
                                 <el-table-column
                                     prop="area"
                                     label="车属地"
-                                        width="70"
                                     >
                                 </el-table-column>
-                                    <!-- prop="blackList" -->
                                 <el-table-column
                                     label="重点监管"
                                     width="80"
@@ -410,13 +519,11 @@
                                 <el-table-column
                                     prop="lscc"
                                     label="历史查处"
-                                    width="80"
                                     >
                                 </el-table-column>
                                 <el-table-column
                                     prop="siteName"
                                     label="站点名称"
-                                    width="80"
                                     >
                                 </el-table-column>
                             </el-table>
@@ -424,9 +531,9 @@
                     </div>
                 </transition>
             </el-drawer>
-     </div>
+     </div> -->
       <!-- 底部浮动栏 -->
-        <!-- <div class="amap-position" :class="'amap-' + direction1 + '-box'">
+        <div class="amap-position" :class="'amap-' + direction1 + '-box'">
             <div class="drawerBtn" @click="updateDrawer1">
                 <i class="el-icon-arrow-right"></i>
             </div>
@@ -443,7 +550,7 @@
                     <i class="el-icon-arrow-right"></i>
                 </div>
                 <div class="amap-main-content" style="padding: 0px 22px">
-                    <transition name="el-fade-in">
+                    <!-- <transition name="el-fade-in">
                         <div class="echarts-box" v-show="status1">
                             <em class="title left"><i class="titleflag"></i>非现场执法点</em>
                             <i class="iconfont law-delete1 right" @click="status1 = false"></i>
@@ -484,7 +591,7 @@
                                 </el-table>
                             </div>
                         </div>
-                    </transition>
+                    </transition> -->
                     <transition name="el-fade-in">
                         <div class="echarts-box" v-show="status2">
                             <em class="title left"><i class="titleflag"></i>告警车辆</em>
@@ -494,7 +601,7 @@
                                 v-loading="loading"
                                     @row-click="(row, column, event)=>positionEvent(row, column, event, 6)"
                                     :data="gjclList"
-                                    style="width: 100%;height: 170px;">
+                                    style="width: 100%;">
                                     <el-table-column
                                         prop="checkTime"
                                         label="过检时间">
@@ -537,14 +644,26 @@
                     </transition>
                 </div>
             </el-drawer>
-        </div> -->
+        </div>
     </div>
-    <div class="amap-search">
+    <div class="amap-search" @mousemove="toolShow = true" @mouseleave="toolShow = false">
         <el-amap-search-box class="search-box-blue" ref="searchAmapBox" :search-option="searchOption" :on-search-result="searchAll">
         </el-amap-search-box>
-        <span class="iconfont law-skin search-btn-icon"></span>
-        <div class="amap-tool-search" >
-            <el-button size="medium" class="commonBtn searchBtn" >
+         <el-popover
+            placement="bottom-start"
+            trigger="click"
+            >
+                <div class="drop-down-menu transition-box">
+                    <ul>
+                        <li v-for="(item,index) in styleListNumber" :class="{'isCheck':styleIndexNumher==index}" :key="index" @click="styleIndexNumher=index">
+                            <p>{{item}}</p>
+                        </li>
+                    </ul>
+                </div>
+                <span slot="reference" class="iconfont law-skin search-btn-icon"></span>
+         </el-popover>
+        <div class="amap-tool-search" v-if="toolShow">
+            <el-button size="medium" class="commonBtn searchBtn isCheck" >
                 <img :src="'./static/images/img/lawSupervise/icon_04.png'" />
                 <span class="name">人员</span>
             </el-button>
@@ -562,8 +681,8 @@
             </div>
         </div>
     </div>
-    <div class="amap-tool" style="left:auto;right: 450px;z-index:5;">
-        <div class="amap-main-content amap-position-right" style="right:0px;">
+    <!-- <div class="amap-tool" style="left:auto;right: 450px;z-index:5;" >
+        <div class="amap-main-content amap-position-right" style="right:0px;" v-show="categoryStr == '非现场站点'">
             <div class="top-title">
                 <el-button size="medium" class="commonBtn searchBtn" >
                     <img :src="'./static/images/img/lawSupervise/icon_01.png'" />
@@ -580,9 +699,6 @@
             </div>
             <transition name="el-fade-in">
                 <div class="echarts-box" >
-
-                    <!-- <em class="title left"><i class="titleflag"></i>非现场执法点</em>
-                    <i class="iconfont law-delete1 right"></i> -->
                     <div>
                         <el-table
                         v-loading="loading"
@@ -625,51 +741,84 @@
                 </div>
             </transition>
         </div>
-      <el-button>
-
-        <div @click="currentTabIndex === 'show0'?currentTabIndex = null:currentTabIndex = 'show0'">
-            <img :src="'./static/images/img/lawSupervise/area.png'"/>
-            <!-- 区域 -->
-            <el-input class="no-border w75" v-model="areaObj" readonly></el-input>
-            <i class="el-icon-arrow-down el-icon--right"></i>
-        </div>
-         <transition name="el-zoom-in-top" >
-          <div class="drop-down-menu transition-box" v-show="currentTabIndex === 'show0'">
-              <el-input class="no-border w160"  placeholder="城市名称，回车搜索"></el-input>
-              <el-menu :default-active="activeIndex"  @select="handleSelect" unique-opened>
-                  <el-submenu :index="index" v-for="(item,index) in areaList" :key="index">
-                        <template slot="title">{{item.titleName}}</template>
-                        <el-menu-item :index="`${index}-${i}`" v-for="(child,i) in item.children" :key="i">{{child.titleName}}</el-menu-item>
-                  </el-submenu>
-              </el-menu>
-          </div>
-        </transition>
-      </el-button>
-        <el-button>
-            <div @click="currentTabIndex === 'show1'? currentTabIndex=null:currentTabIndex='show1'">
-                <img :src="'./static/images/img/lawSupervise/icon_changjing.png'"/>
-                图层
-                <i class="el-icon-arrow-down el-icon--right"></i>
+         <el-popover
+            placement="bottom-start"
+            trigger="click"
+            >
+            <div class="drop-down-menu transition-box" >
+                <el-input class="no-border w160" value="" placeholder="城市名称，回车搜索"></el-input>
+                <el-menu :default-active="activeIndex"  @select="handleSelect" unique-opened :collapse="true">
+                    <el-submenu :index="`${index}`" v-for="(item,index) in areaList" :key="`${index}`">
+                            <template slot="title">{{item.titleName}}</template>
+                            <el-menu-item-group :index="child.titleName" v-for="(child,i) in item.children" :key="i" >{{child.titleName}}</el-menu-item-group>
+                    </el-submenu>
+                </el-menu>
             </div>
-            <transition name="el-zoom-in-top"  >
-            <div class="drop-down-menu transition-box" v-show="currentTabIndex === 'show1'">
-                <i class="el-icon-caret-top"></i>
-                <ul>
-                <li v-for="subItem in tabList[0].children" :key="subItem.name" :class="{'select':subItem.select}" @click="searchByTab(subItem)">
-                    <i :class="subItem.icon"></i>
-                    <p>{{subItem.name}}</p>
-                </li>
+            <el-button slot="reference">
+                <img :src="'./static/images/img/lawSupervise/area.png'"/>
+                <el-input class="no-border w75" v-model="areaObj" readonly></el-input>
+                <i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+        </el-popover>
+        <el-popover
+            placement="bottom-start"
+            trigger="click"
+            >
+            <div class="drop-down-menu transition-box">
+                    <ul>
+                    <li v-for="subItem in tabList[0].children" :key="subItem.name" :class="{'select':subItem.select}" @click="searchByTab(subItem)">
+                        <i :class="subItem.icon"></i>
+                        <p>{{subItem.name}}</p>
+                    </li>
                 </ul>
             </div>
-            </transition>
-        </el-button>
+            <el-button slot="reference">
+                <img :src="'./static/images/img/lawSupervise/icon_changjing.png'"/>
+                <el-input class="no-border w100" v-model="categoryStr" readonly></el-input>
+                <i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+        </el-popover>
         <el-button size="medium" class="commonBtn searchBtn"  @click="lawScreenFull=!lawScreenFull">
             <img :src="'./static/images/img/lawSupervise/qp.png'" />
             全屏
-            <!-- <i class="el-icon-arrow-down  el-icon--right"></i> -->
         </el-button>
-
-    </div>
+    </div> -->
+            <!-- <el-button>
+            <div slot="reference">
+                <img :src="'./static/images/img/lawSupervise/area.png'"/>
+                <el-input class="no-border w75" v-model="areaObj" readonly></el-input>
+                <i class="el-icon-arrow-down el-icon--right"></i>
+            </div>
+            <transition name="el-zoom-in-top" >
+            <div class="drop-down-menu transition-box" v-show="currentTabIndex === 'show0'">
+                <el-input class="no-border w160"  placeholder="城市名称，回车搜索"></el-input>
+                <el-menu :default-active="activeIndex"  @select="handleSelect" unique-opened>
+                    <el-submenu :index="`${index}`" v-for="(item,index) in areaList" :key="`${index}`">
+                            <template slot="title">{{item.titleName}}</template>
+                            <el-menu-item :index="`${index}-${i}`" v-for="(child,i) in item.children" :key="i">{{child.titleName}}</el-menu-item>
+                    </el-submenu>
+                </el-menu>
+            </div>
+            </transition>
+        </el-button> -->
+        <!-- <el-button @mousemove="currentTabIndex = 'show1'" @mouseleave="currentTabIndex = null">
+            <div>
+                <img :src="'./static/images/img/lawSupervise/icon_changjing.png'"/>
+                <el-input class="no-border w100" v-model="categoryStr" readonly></el-input>
+                <i class="el-icon-arrow-down el-icon--right"></i>
+            </div>
+            <transition name="el-zoom-in-top"  >
+                <div class="drop-down-menu transition-box" v-show="currentTabIndex === 'show1'">
+                    <i class="el-icon-caret-top"></i>
+                    <ul>
+                    <li v-for="subItem in tabList[0].children" :key="subItem.name" :class="{'select':subItem.select}" @click="searchByTab(subItem)">
+                        <i :class="subItem.icon"></i>
+                        <p>{{subItem.name}}</p>
+                    </li>
+                    </ul>
+                </div>
+            </transition>
+        </el-button> -->
     <!-- <div class="amap-search">
       <el-select v-model="styleIndexNumher" placeholder="样式切换">
         <el-option v-for="(item,index) in styleListNumber" :key="index" :label="item" :value="index"></el-option>
@@ -743,31 +892,36 @@ export default {
   data() {
     let self = this;
     return {
+        toolShow: false,
+        defaultProps: {
+          children: 'children',
+          label: 'label'
+        },
         data: [{
-          label: '一级 1',
+          label: '乌鲁木齐路政管理局',
           children: [{
-            label: '二级 1-1',
+            label: '后峡路政管理局',
             children: [{
-              label: '三级 1-1-1'
+              label: '燕尔窝路政队'
             }]
           }]
         }, {
-          label: '一级 2',
+          label: '昌吉路政管理局',
           children: [{
-            label: '二级 2-1',
+            label: '木垒路政管理局',
             children: [{
-              label: '三级 2-1-1'
+              label: '昌吉局路政大队'
             }]
           }, {
-            label: '二级 2-2',
+            label: '奇台路政管理局',
             children: [{
               label: '三级 2-2-1'
             }]
           }]
         }, {
-          label: '一级 3',
+          label: '石河子路政管理局',
           children: [{
-            label: '二级 3-1',
+            label: '卡子弯道班超限监测站',
             children: [{
               label: '三级 3-1-1'
             }]
@@ -778,7 +932,7 @@ export default {
             }]
           }]
         }],
-      areaObj: '北京市',
+      areaObj: '全国',
       activeIndex:'',
       areaList: [
           {
@@ -954,11 +1108,16 @@ export default {
       allSearchList: [],
       zfdList: null,
       gjclList: null,
+      categoryStr: '图层'
     };
   },
   methods: {
     handleSelect (key, keyPath) {
-        this.activeIndex = key;
+        debugger;
+        this.areaObj = key;
+    },
+    handleNodeClick (node) {
+
     },
     routerXs () {
         this.$router.push({
@@ -1066,10 +1225,11 @@ export default {
       };
     },
     updateDrawer() {
+        debugger;
         this.drawer = !this.drawer;
         // debugger;
-        if (this.category != 4) {
-            this.drawer = true;
+        // if (this.category != 4) {
+            // this.drawer = true;
             if (this.drawer) {
               let _this = this;
               this.$nextTick(() => {
@@ -1080,18 +1240,16 @@ export default {
               //   _this.getRealTimeDataByLawSupervise();
               });
             }
-        } else {
-            // this.drawer = true;
-            this.updateDrawer1();
-        }
+        // }
     },
     updateDrawer1 () {
         // debugger;
-        if (this.category == 4) {
-            this.drawer1 = true;
-        } else {
-            this.drawer1 = false;
-        }
+        // if (this.category == 4) {
+        //     this.drawer1 = true;
+        // } else {
+        //     this.drawer1 = false;
+        // }
+         this.drawer1 = !this.drawer1 ;
         // this.getRealTimeDataByLawSupervise();
         this.searchPageAll(4, 'zfdList');
         this.searchPageAll(6, 'gjclList');
@@ -1255,6 +1413,7 @@ export default {
       });
     },
     searchByTab(item) {
+
       // this.markers.splice(0, this.markers.length);
       item.select = !item.select;
       if (item.select && this.allSearchList.length >= 5) {
@@ -1262,6 +1421,7 @@ export default {
         this.errorMsg(`至多选择5条数据`, "error");
         return
       }
+      this.categoryStr = item.name;
       if (item.select) {
         if (this.curWindow) {
           this.curWindow.visible = false;
@@ -1292,13 +1452,13 @@ export default {
         }
       }
 
-      if (this.category == '4') {
-          this.updateDrawer1()
-      } else {
-          this.drawer1 = false;
-          this.drawer = false;
-          this.updateDrawer();
-      }
+    //   if (this.category == '4') {
+    //       this.updateDrawer1()
+    //   } else {
+    //       this.drawer1 = false;
+    //       this.drawer = false;
+    //       this.updateDrawer();
+    //   }
     },
     searchAll(pois) {
       this.markers.splice(0, this.markers.length);
@@ -1373,7 +1533,7 @@ export default {
   },
   mounted() {
       window.PhoneCallModule.sipRegister();
-      this.updateDrawer();
+    //   this.updateDrawer();
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {
