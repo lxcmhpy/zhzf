@@ -6,7 +6,7 @@
       <!-- :features="['road','bg', 'building']" -->
       <el-amap vid="lawSupervise" :mapStyle="style" :center="center" :plugin="plugin" :amap-manager="amapManager" :zoom="zoom" :events="events" class="amap-demo">
         <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :template="marker.template"></el-amap-marker>
-        <el-amap-info-window v-if="curWindow" :visible="curWindow&&curWindow.visible" :position="curWindow.position">
+        <el-amap-info-window v-if="curWindow" :visible="curWindow&&curWindow.visible"  :position="curWindow.position">
           <div :class="'lawWindowStyle'+curWindow.category">
             <!-- 0执法人员 -->
             <div v-if="curWindow.category == 0">
@@ -56,8 +56,12 @@
                   <p>{{curWindow.other.status}}</p> -->
                 </div>
               </div>
-              <div class="flexBox"><img :src="'./static/images/img/lawSupervise/icon_duiwu.png'">人员在线情况</div>
              <div class="btns">
+                <div class="flex-title"><img  :src="'./static/images/img/lawSupervise/icon_duiwu.png'">人员在线情况</div>
+                <span class="phoneBtn blueBg" >李静</span>
+                <span  class="phoneBtn" >王玉凤</span>
+                <span  class="phoneBtn blueBg lineh" >迪丽<br>热巴</span>
+                <span  class="phoneBtn blueBg lineh" >欧阳<br>娜娜</span>
                 <span class="phoneBtn blueBg" >李静</span>
                 <span  class="phoneBtn" >王玉凤</span>
                 <span  class="phoneBtn blueBg lineh" >迪丽<br>热巴</span>
@@ -81,21 +85,32 @@
             </div>
             <!-- 2执法车辆 -->
             <div v-else-if="curWindow.category == 2">
-              <div class="flexBox">
+                <div class="lawWindowTitle">
+                    <i class="iconfont law-car"></i>
+                    <div class="title">{{curWindow.other.vehicleNumber}}</div>
+                    <span></span>
+                    <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
+                </div>
+                <div class="flexBox">
+                    <div class="con">
+                        <p>{{curWindow.other.organName}}</p>
+                    </div>
+                </div>
+              <!-- <div class="flexBox">
                 <div class="con">
                   <p>
                     <i class="iconfont law-car"></i>
                     {{curWindow.other.vehicleNumber}}
                   </p>
                   <p>{{curWindow.other.organName}}</p>
-                  <!-- <p>{{curWindow.other.mobile}}</p> -->
                 </div>
                 <div class="status greenC2">
                   <i class="iconfont law-mobile-phone"></i>
                   <p>在线</p>
                 </div>
-              </div>
+              </div> -->
                 <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus" :curWindow="curWindow"></externalVideoBtns>
+                  <!-- <p>{{curWindow.other.mobile}}</p> -->
 
               <!-- <div class="btns">
                 <i class="iconfont law-mobile"></i>
@@ -112,7 +127,18 @@
                             {{curWindow.other.shipNumber}}<br>
                             {{curWindow.other.organName}}
               </div>-->
-              <div class="flexBox">
+              <div class="lawWindowTitle">
+                    <i class="iconfont law-ship"></i>
+                    <div class="title">{{curWindow.other.shipNumber}}</div>
+                    <span></span>
+                    <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
+                </div>
+                <div class="flexBox">
+                    <div class="con">
+                        <p>{{curWindow.other.organName}}</p>
+                    </div>
+                </div>
+              <!-- <div class="flexBox">
                 <div class="con">
                   <i class="iconfont law-ship"></i>
                   {{curWindow.other.shipNumber}}
@@ -123,7 +149,7 @@
                   <i class="iconfont law-mobile-phone"></i>
                   <p>在线</p>
                 </div>
-              </div>
+              </div> -->
                 <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus" :curWindow="curWindow"></externalVideoBtns>
 
               <!-- <div class="btns">
@@ -162,11 +188,11 @@
               <div class="con ">
                 <el-table style="width: 100%;line-height: 40px;" :data="curWindow.other.list" resizable stripe
                 @row-click="routerXsDetail">
-                  <el-table-column width="170" align="center" prop="checkTime" label="过检时间"></el-table-column>
-                  <el-table-column width="100" align="center" prop="vehicleNumber" label="车牌号"></el-table-column>
-                  <el-table-column width="80" align="center" prop="overload" label="超载率"></el-table-column>
-                  <el-table-column width="80" align="center" prop="area" label="车属地"></el-table-column>
-                  <el-table-column width="80" align="center" label="重点监管">
+                  <el-table-column width="160" align="center" prop="checkTime" label="过检时间"></el-table-column>
+                  <el-table-column width="90" align="center" prop="vehicleNumber" label="车牌号"></el-table-column>
+                  <el-table-column width="65" align="center" prop="overload" label="超载率"></el-table-column>
+                  <el-table-column width="66" align="center" prop="area" label="车属地"></el-table-column>
+                  <el-table-column width="78" align="center" label="重点监管">
                     <template>
                       <span>是</span>
                     </template>
@@ -238,6 +264,66 @@
             <!-- <div v-else></div> -->
 
           </div>
+          <div :class="'lawWindowStyle-po'">
+            <!-- 0执法人员 -->
+            <div v-if="curWindow.category == 0">
+              <div class="lawWindowTitle">
+                <img :src="'./static/images/img/lawSupervise/icon_head.png'">
+                <div class="titleBox">
+                    <div class="nickName">{{curWindow.other.nickName}}</div>
+                </div>
+              </div>
+            </div>
+            <!-- 1执法机构 -->
+            <div v-else-if="curWindow.category == 1">
+              <div class="lawWindowTitle">
+                <i class="iconfont law-zfj"></i>
+                 <div class="title">{{curWindow.other.name}}</div>
+                <span></span>
+              </div>
+            </div>
+            <!-- 2执法车辆 -->
+            <div v-else-if="curWindow.category == 2">
+                <div class="lawWindowTitle">
+                    <i class="iconfont law-car"></i>
+                    <div class="title">{{curWindow.other.vehicleNumber}}</div>
+                    <span></span>
+                </div>
+            </div>
+            <!-- 3执法船舶 -->
+            <div v-else-if="curWindow.category == 3">
+              <div class="lawWindowTitle">
+                    <i class="iconfont law-ship"></i>
+                    <div class="title">{{curWindow.other.shipNumber}}</div>
+                    <span></span>
+                </div>
+            </div>
+            <!-- 4非现场治超检测 -->
+            <div v-else-if="curWindow.category == 4">
+              <div class="lawWindowTitle">
+                   <i class="iconfont law-jiankong"></i>
+                   <div class="title">{{curWindow.other.name}}</div>
+              </div>
+            </div>
+            <!-- 5监管企业 -->
+            <div v-else-if="curWindow.category == 5">
+              <div class="lawWindowTitle">
+                <i class="iconfont law-zfj"></i>
+                <div class="title">{{curWindow.other.nickName}}</div>
+              </div>
+            </div>
+            <!-- 6监管车辆 -->
+            <div v-else-if="curWindow.category == 6">
+              <div class="flexBox">
+                <div class="con">
+                  <p>
+                    <i class="iconfont law-car"></i>
+                    <div class="title">{{curWindow.other.vehicleNumber}}</div>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </el-amap-info-window>
       </el-amap>
       <div class="toolbar">
@@ -247,7 +333,6 @@
         <span v-else>正在定位</span>-->
         <!-- <externalVideoBtns :doing="videoDoing"  style="position:absolute;z-index:300"></externalVideoBtns> -->
       </div>
-
       <!-- 右侧浮动栏 -->
       <div class="amap-position amap-rtl-box" :class="{'widthDrawer600': category == 4}" >
         <div class="amap-tool" style="position:relative;z-index:5;left:-80px;top:27px;" :class="{'left-500':drawer}">
@@ -357,12 +442,13 @@
         <div class="drawerBtn" @click="updateDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
-        <el-drawer v-if="category != 4" modal-append-to-body :direction="direction" size="380px"
+        <!-- v-if="category != 4"  -->
+        <el-drawer modal-append-to-body :direction="direction" size="380px"
            customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
-          <div class="amap-main-content">
+          <div class="amap-main-content" style="padding:0px 17px">
             <transition name="el-fade-in">
               <div class="echarts-box">
                 <em class="title left">近三个月执行情况</em>
@@ -662,13 +748,14 @@
                 </div>
                 <span slot="reference" class="iconfont law-skin search-btn-icon"></span>
          </el-popover>
-        <div class="amap-tool-search" v-if="toolShow">
-            <el-button size="medium" class="commonBtn searchBtn isCheck" >
-                <img :src="'./static/images/img/lawSupervise/icon_04.png'" />
+
+        <div class="amap-tool-search" v-if="toolShow" >
+            <el-button size="medium" class="tabBtn" :class="{'isCheck': isCheck}" @click="isCheck = true">
+                <img :src="'./static/images/img/lawSupervise/icon_renyuan.png'" />
                 <span class="name">人员</span>
             </el-button>
-             <el-button size="medium" class="commonBtn searchBtn" >
-                <img :src="'./static/images/img/lawSupervise/icon_05.png'" />
+             <el-button size="medium" class="tabBtn" :class="{'isCheck': !isCheck}" @click="isCheck = false">
+                <img :src="'./static/images/img/lawSupervise/icon_jigou.png'" />
                 <span class="name">机构</span>
             </el-button>
             <div class="amap-tool-search" style="top:96px;padding: 22px;margin-bottom: 22px;">
@@ -677,6 +764,9 @@
                     :props="defaultProps"
                     accordion
                     @node-click="handleNodeClick">
+                     <span class="custom-tree-node" slot-scope="{ node, data }">
+                        <span><img class="tree-node-icon" :src="'./static/images/img/lawSupervise/'+data.icon+'.png'">{{node.label}}</span>
+                    </span>
                 </el-tree>
             </div>
         </div>
@@ -892,6 +982,7 @@ export default {
   data() {
     let self = this;
     return {
+        isCheck: true,
         toolShow: false,
         defaultProps: {
           children: 'children',
@@ -899,36 +990,71 @@ export default {
         },
         data: [{
           label: '乌鲁木齐路政管理局',
+          icon: 'icon_jc1',
           children: [{
+              label: '执法人员',
+              icon: 'icon_jc11',
+              children: [
+              ]
+            },{
+              label: '执法车辆',
+              icon: 'icon_cl11'
+            },{
+              label: '执法船舶',
+              icon: 'icon_cb11'
+            }, {
             label: '后峡路政管理局',
+            icon: 'icon_jc1',
             children: [{
-              label: '燕尔窝路政队'
+              label: '执法人员',
+              icon: 'icon_jc11',
+              children: [
+              ]
+            },{
+              label: '执法车辆',
+              icon: 'icon_cl11'
+            },{
+              label: '执法船舶',
+              icon: 'icon_cb11'
+            },{
+              label: '燕尔窝路政队',
+              icon: 'icon_jc1'
             }]
           }]
         }, {
           label: '昌吉路政管理局',
+          icon: 'icon_jc1',
           children: [{
             label: '木垒路政管理局',
+            icon: 'icon_jc1',
             children: [{
-              label: '昌吉局路政大队'
+              label: '昌吉局路政大队',
+              icon: 'icon_jc1',
             }]
           }, {
             label: '奇台路政管理局',
+            icon: 'icon_jc1',
             children: [{
-              label: '三级 2-2-1'
+              label: '三级 2-2-1',
+              icon: 'icon_jc1',
             }]
           }]
         }, {
           label: '石河子路政管理局',
+          icon: 'icon_jc1',
           children: [{
             label: '卡子弯道班超限监测站',
+            icon: 'icon_jc1',
             children: [{
-              label: '三级 3-1-1'
+              label: '三级 3-1-1',
+              icon: 'icon_jc1',
             }]
           }, {
             label: '二级 3-2',
+            icon: 'icon_jc1',
             children: [{
-              label: '三级 3-2-1'
+              label: '三级 3-2-1',
+              icon: 'icon_jc1',
             }]
           }]
         }],
@@ -1230,7 +1356,7 @@ export default {
         // debugger;
         // if (this.category != 4) {
             // this.drawer = true;
-            if (this.drawer) {
+            // if (this.drawer) {
               let _this = this;
               this.$nextTick(() => {
                 var flowChart = echarts.init(document.getElementById("echartsBox1"));
@@ -1239,7 +1365,7 @@ export default {
                 flowChart1.setOption(_this.yjObj);
               //   _this.getRealTimeDataByLawSupervise();
               });
-            }
+            // }
         // }
     },
     updateDrawer1 () {
