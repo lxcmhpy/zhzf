@@ -140,7 +140,7 @@
         <p>
           <el-form-item prop="afsj" class="pdf_datapick" style="width: 150px">
             <el-date-picker :disabled="originalData.afsj? true : false" v-model="formData.afsj" type="date"
-                            format="yyyy年MM月dd日" placeholder="  年  月  日">
+                            format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
           ，你（单位）
@@ -177,7 +177,7 @@
           <span>
                   <el-form-item prop="measureStartDate" style="width: 150px" class="pdf_datapick">
                     <el-date-picker v-model="formData.measureStartDate" style="width: 220px" @change="startTime"
-                                    type="date" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" placeholder="  年  月  日">
+                                    type="date" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" placeholder="  年  月  日" >
                     </el-date-picker>
                   </el-form-item>
                 </span>至
@@ -215,7 +215,7 @@
         <div class="pdf_seal">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日">
+            <el-date-picker v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>

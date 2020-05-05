@@ -345,67 +345,67 @@ export const mixinGetCaseApiList = {
     com_addDocData(handleType, docForm) {
       this.caseDocDataForm.docData = JSON.stringify(this.docData);
       this.caseDocDataForm.status = handleType;
-      console.log('caseDocDataForm', this.caseDocDataForm);
-      if (handleType) {
-        this.$refs[docForm].validate((valid, noPass) => {
+      console.log('caseDocDataForm', this.caseDocDataForm.docData);
+      // if (handleType) {
+      //   this.$refs[docForm].validate((valid, noPass) => {
 
-          if (valid) {
-            console.log('通过')
-            this.$store.dispatch("addDocData", this.caseDocDataForm).then(
-              res => {
-                console.log("保存文书", res);
-                this.$message({
-                  type: "success",
-                  message: "提交成功"
-                });
-                //为多份文书赋值id，提交多份文书的pdf时需要用到
-                if (this.caseDocDataForm.docDataId != undefined) {
-                  this.caseDocDataForm.docDataId = res.data.id;
-                }
+      //     if (valid) {
+      //       console.log('通过')
+      //       this.$store.dispatch("addDocData", this.caseDocDataForm).then(
+      //         res => {
+      //           console.log("保存文书", res);
+      //           this.$message({
+      //             type: "success",
+      //             message: "提交成功"
+      //           });
+      //           //为多份文书赋值id，提交多份文书的pdf时需要用到
+      //           if (this.caseDocDataForm.docDataId != undefined) {
+      //             this.caseDocDataForm.docDataId = res.data.id;
+      //           }
 
-                console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
-                this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-                //提交成功后提交pdf到服务器，后打开pdf
-                this.printContent();
-              },
-              err => {
-                console.log(err);
-              }
-            );
-          } else {
-            console.log('不通过')
+      //           console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
+      //           this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+      //           //提交成功后提交pdf到服务器，后打开pdf
+      //           this.printContent();
+      //         },
+      //         err => {
+      //           console.log(err);
+      //         }
+      //       );
+      //     } else {
+      //       console.log('不通过')
 
-            // noPass[Object.keys(v)[0]]
-            let a = Object.values(noPass)[0];
-            console.log(a);
-            this.$message({
-              showClose: true,
-              message: a[0].message,
-              type: 'error',
-              offset: 100,
-              customClass: 'validateErrorTip'
-            });
-            return false;
-          }
+      //       // noPass[Object.keys(v)[0]]
+      //       let a = Object.values(noPass)[0];
+      //       console.log(a);
+      //       this.$message({
+      //         showClose: true,
+      //         message: a[0].message,
+      //         type: 'error',
+      //         offset: 100,
+      //         customClass: 'validateErrorTip'
+      //       });
+      //       return false;
+      //     }
 
-        });
-      } else {
-        this.$store.dispatch("addDocData", this.caseDocDataForm).then(
-          res => {
-            console.log("暂存文书", res);
-            this.$message({
-              type: "success",
-              message: "暂存成功"
-            });
-            //多份文书查询信息需要用到id，先把id保存起来
-            iLocalStroage.set("currentDocDataId", res.data.id);
-            this.reload();
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }
+      //   });
+      // } else {
+      //   this.$store.dispatch("addDocData", this.caseDocDataForm).then(
+      //     res => {
+      //       console.log("暂存文书", res);
+      //       this.$message({
+      //         type: "success",
+      //         message: "暂存成功"
+      //       });
+      //       //多份文书查询信息需要用到id，先把id保存起来
+      //       iLocalStroage.set("currentDocDataId", res.data.id);
+      //       this.reload();
+      //     },
+      //     err => {
+      //       console.log(err);
+      //     }
+      //   );
+      // }
     },
     //通过案件id和表单类型Id查询已绑定文书
     com_getDocListByCaseIdAndFormId(params) {
@@ -434,7 +434,7 @@ export const mixinGetCaseApiList = {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
         console.log('row:', row)
         this.$router.push({
-          name: row.url,
+          name: row.path,
           params: {
             id: row.id,
             docId: row.docId,

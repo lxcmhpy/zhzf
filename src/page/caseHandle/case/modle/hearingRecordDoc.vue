@@ -35,14 +35,14 @@
           听证时间：
           <span class="listen_data">
             <el-form-item prop="hearingStartTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.hearingStartTime" type="datetime" format="yyyy年MM月dd日HH时mm分"
+              <el-date-picker v-model="docData.hearingStartTime" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"
                               placeholder="    年  月  日  时  分">
               </el-date-picker>
             </el-form-item>
           </span>至
           <span class="listen_data">
             <el-form-item prop="hearingEndTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.hearingEndTime" type="datetime" format="yyyy年MM月dd日HH时mm分"
+              <el-date-picker v-model="docData.hearingEndTime" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"
                               placeholder="    年  月  日  时  分">
               </el-date-picker>
             </el-form-item>

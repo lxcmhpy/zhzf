@@ -39,6 +39,7 @@
                 type="date"
                 format="yyyy年MM月dd日"
                 placeholder="    年  月  日"
+                 value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-form-item>
           </span>对你（单位）采取了
@@ -80,6 +81,7 @@
                 type="date"
                 format="yyyy年MM月dd日"
                 placeholder="    年  月  日"
+                 value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-form-item>
           </span>起解除该行政强制措施。
@@ -94,6 +96,7 @@
               type="date"
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
+               value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
         </div>
