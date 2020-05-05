@@ -200,7 +200,7 @@
           如不服本决定，可以在收到本决定书之日起六十日内向<span>
             <el-form-item prop="reconsiderationOrgan">
               <el-select v-model="docData.reconsiderationOrgan" :maxLength='maxLength'>
-                  <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label" :value="item.value">
+                  <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label" :value="item.label">
                   </el-option>
                 </el-select>
               <!-- <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input> -->
@@ -208,7 +208,7 @@
           </span>申请行政复议或者在六个月内依法向<span>
             <el-form-item prop="enforcementOrgan">
               <el-select v-model="docData.enforcementOrgan" :maxLength='maxLength'>
-                  <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label" :value="item.value">
+                  <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label" :value="item.label">
                   </el-option>
                 </el-select>
               <!-- <el-input v-model="docData.enforcementOrgan" :maxLength='maxLength' placeholder="\"></el-input> -->

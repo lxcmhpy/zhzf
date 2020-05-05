@@ -153,7 +153,7 @@
           <span>
                   <el-form-item prop="punishLaw" style="width: 320px">
                     <el-select v-model="formData.punishLaw" :maxLength='maxLength' style="width: 320px">
-                      <el-option v-for="item in laWOptions" :key="item.value" :label="item.label" :value="item.value">
+                      <el-option v-for="item in laWOptions" :key="item.value" :label="item.label" :value="item.label">
                       </el-option>
                     </el-select>
                   </el-form-item>
@@ -196,7 +196,7 @@
                   <el-form-item prop="reconsiderationOrgan" style="width: 230px">
                     <el-select v-model="formData.reconsiderationOrgan" style="width: 230px" :maxLength='maxLength'>
                       <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label"
-                                 :value="item.value">
+                                 :value="item.label">
                       </el-option>
                     </el-select>
                   </el-form-item>
@@ -205,7 +205,7 @@
                   <el-form-item prop="lawsuitOrgan" style="width: 230px">
                     <el-select v-model="formData.lawsuitOrgan" style="width: 230px" :maxLength='maxLength'>
                       <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label"
-                                 :value="item.value">
+                                 :value="item.label">
                       </el-option>
                     </el-select>
                   </el-form-item>
@@ -652,8 +652,10 @@
                     label: orgRes.data.enforcementOrgan2
                   }
                 ];
-                _this.formData.reconsiderationOrgan = 'reconsiderationOrgan1';
-                _this.formData.lawsuitOrgan = 'enforcementOrgan1';
+                // _this.formData.reconsiderationOrgan = 'reconsiderationOrgan1';
+                // _this.formData.lawsuitOrgan = 'enforcementOrgan1';
+                _this.formData.reconsiderationOrgan = '复议机构1';
+                _this.formData.lawsuitOrgan = '诉讼机构1';
               });
           });
 
