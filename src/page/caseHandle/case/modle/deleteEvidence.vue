@@ -14,7 +14,7 @@
         <p>
           本机关依法于<span class="p_datapick">
             <el-form-item prop="makeDate" class="pdf_datapick">
-              <el-date-picker class="big_error" v-model="docData.saveDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker class="big_error" v-model="docData.saveDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>对你（单位）采取了证据登记保存，《证据登记保存清单》案号为：<span contenteditable="true">
@@ -23,7 +23,7 @@
             </el-form-item>
           </span>。依照《中华人民共和国行政处罚法》第三十七条第二款的规定，本机关决定自<span class="p_datapick">
             <el-form-item prop="makeDate" class="pdf_datapick">
-              <el-date-picker class="big_error" v-model="docData.relieveDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker class="big_error" v-model="docData.relieveDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>起解除该证据登记保存。
@@ -32,7 +32,7 @@
         <div class="pdf_seal">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>

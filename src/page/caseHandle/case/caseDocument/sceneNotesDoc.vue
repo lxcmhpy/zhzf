@@ -134,7 +134,7 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="scenePeopeRelation">
                   <el-select v-model="docData.scenePeopeRelation" :maxLength="maxLength" placeholder="\" @change="changeRelationWithCase">
-                    <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>
                   </el-select>
                 </el-form-item>
               </td>
@@ -190,7 +190,7 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="vehicleShipType">
                   <el-select v-model="docData.vehicleShipType">
-                    <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.label"></el-option>
                   </el-select>
                 </el-form-item>
               </td>
@@ -565,7 +565,7 @@ export default {
             name:this.docData.party,
             sex: this.docData.partySex,
             zhengjianNumber: this.docData.partyIdNo,
-            relationWithCase: "0",
+            relationWithCase: "当事人",
             company: this.docData.partyUnitPosition,
             position: this.docData.partyUnitPosition,
             tel: this.docData.partyTel,

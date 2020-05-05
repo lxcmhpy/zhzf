@@ -13,7 +13,7 @@
           </span>一案，本机关于
           <span>
             <el-form-item prop="serviceTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>依法作出了
@@ -38,7 +38,7 @@
           </span>立即停止违法行为并于
           <span>
             <el-form-item prop="forceTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>前自行拆除违法的建筑物、构筑物、设施等。当事人在法定期限内不申请行政复议或者提起行政诉讼，又不拆除的，本机关将依法强制拆除。
@@ -50,7 +50,7 @@
         <div class="pdf_seal">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>

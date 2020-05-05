@@ -159,7 +159,7 @@
         <p>因你（单位）逾期未履行本机关于
           <span>
             <el-form-item prop="serviceTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>作出的
@@ -183,7 +183,7 @@
           </span>的规定，本机关将立即于
           <span>
             <el-form-item prop="forceTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>强制执行：
@@ -200,7 +200,7 @@
           如不服本决定，可以在收到本决定书之日起六十日内向<span>
             <el-form-item prop="reconsiderationOrgan">
               <el-select v-model="docData.reconsiderationOrgan" :maxLength='maxLength'>
-                  <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label" :value="item.value">
+                  <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label" :value="item.label">
                   </el-option>
                 </el-select>
               <!-- <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input> -->
@@ -208,7 +208,7 @@
           </span>申请行政复议或者在六个月内依法向<span>
             <el-form-item prop="enforcementOrgan">
               <el-select v-model="docData.enforcementOrgan" :maxLength='maxLength'>
-                  <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label" :value="item.value">
+                  <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label" :value="item.label">
                   </el-option>
                 </el-select>
               <!-- <el-input v-model="docData.enforcementOrgan" :maxLength='maxLength' placeholder="\"></el-input> -->
@@ -219,7 +219,7 @@
         <div class="pdf_seal">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
