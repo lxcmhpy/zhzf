@@ -232,9 +232,6 @@ export default {
         }, {
           id: '1',
           name: '基本信息'
-        }, {
-          id: '',
-          name: '无'
         }],
       isShow: false,
       dialogVisible: false,
@@ -292,6 +289,7 @@ export default {
     },
     changeResourceType() {
       this.setForm.resourceName = '';
+      this.setForm.bindId=''
     },
     changeResourceName() {
       this.$alert('改变绑定的文书或者表单，原有对应关系将清空', '提示', {
@@ -349,6 +347,9 @@ export default {
     },
     getPdfAndFormSetList(formName) {
       console.log('search',this.setForm)
+      if(this.setForm.resourceType=='1'){
+        this.setForm.bindId='basic36b59bd27ff4b6fe96e1b06390d'
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let data={}

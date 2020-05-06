@@ -518,8 +518,8 @@ export default {
         res => {
           console.log("机构", res);
           let organData = res.data;
-          _this.formData.bank = organData.bank;
-          _this.formData.account = organData.account;
+          _this.formData.bank = organData.bank||'';
+          _this.formData.account = organData.account||'';
           //复议机构 
           if(organData.reconsiderationOrgan1){
              _this.reconsiderationOrganList.push(organData.reconsiderationOrgan1)
