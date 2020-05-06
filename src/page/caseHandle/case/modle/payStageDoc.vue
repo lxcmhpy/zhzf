@@ -16,7 +16,7 @@
         <p>
           <span>
             <el-form-item prop="serviceTime" class="pdf_datapick listen_data width151">
-              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span> ，本机关对你（单位）送达了
@@ -37,7 +37,7 @@
           <span>
             <el-form-item :prop="disabledOne?'placeholder':'delayDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.delayDate" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日"
-                              placeholder="    年  月  日">
+                              placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>。
@@ -61,7 +61,7 @@
           <span>
             <el-form-item :prop="disabledTwo?'placeholder':'instalmentDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.instalmentDate" v-bind:disabled="disabledTwo" type="date"
-                              format="yyyy年MM月dd日" placeholder="    年  月  日">
+                              format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>前，缴纳罚款
@@ -93,7 +93,7 @@
         <div class="pdf_seal" style="margin-top:60px">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="stampTime" class="pdf_datapick">
-            <el-date-picker v-model="docData.stampTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            <el-date-picker v-model="docData.stampTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>

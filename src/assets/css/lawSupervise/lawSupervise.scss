@@ -38,7 +38,7 @@
     left: 27px;
     top: 22px;
     width: 400px;
-    z-index: 1500;
+    // z-index: 1500;
     line-height: 46px;
     display: flex;
     box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
@@ -80,7 +80,7 @@
            color:white;
        }
    }
-   .search-box {
+   .search-box-blue {
        height: 46px;
        border:0px;
     //    border-top: 1px solid #DCDFE6;
@@ -90,21 +90,85 @@
        border-radius: 0px;
        margin-top: 1px;
    }
+   .amap-tool-search{
+    left:0px;
+    z-index:150;
+    top:48px;
+    border-top: 1px solid #f2f2f2;
+    width:100%;
+    background:white;
+    text-align:center;
+    height: auto;
+    position: absolute;
+    box-sizing: border-box;
+    display: visible !important;
+    box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
+    .el-tree-node {
+        // line-height: 35px;
+        // height: 35px;
+        .el-tree-node__content{
+            height: 35px;
+            .custom-tree-node {
+                .tree-node-icon {
+                    margin:0px 7px 0px 3px;
+                    vertical-align: -3px;
+                }
+            }
+        }
+    }
+    .tabBtn{
+        background: none;
+        height:auto;
+        width: 192px;
+        padding:0px;
+        padding-top: 5px;
+        box-sizing: border-box;
+        img {
+            margin-top: 15px;
+        }
+        .name {
+            display: inline-block;
+            // height: 90px;
+            line-height: 90px;
+            vertical-align: middle;
+            padding-left:10px;
+            margin-top: -10px;
+        }
+    }
+    .isCheck{
+        background: #f2f2f2;
+    }
+    .el-tree-node__label_1 {
+        background:url('../../../../static/images/img/lawSupervise/icon_jc1.png') no-repeat;
+        padding-left: 27px;
+        line-height: 25px;
+    }
+   }
 }
-
+.search-btn-icon {
+    position: absolute;
+    font-size: 23px;
+    line-height: 33px;
+    border-left: 1px solid #e0e0e0;
+    padding: 0px 11px;
+    color: #4573D0;
+    left: 309px;
+    z-index: 10;
+    margin-top: 9px;
+}
  .el-vue-search-box-container {
-     flex: 0.8;
+     flex: 1;
     .search-box-wrapper .search-btn {
-        background:none !important;
+        background: #4573D0 !important;
         font-family: 'element-icons';
         color:transparent !important;
         border: 0px;
         border-left:0px;
         &:before{
             content: "\e778" !important;
-            color: #7B7B7B !important;
+            color: white !important;
             font-size: 18px;
-            // margin-left: 12px;
+            margin-left: 14px;
             font-weight: bolder;
         }
     }
@@ -126,7 +190,7 @@
     position: absolute;
     left:450px;
     top: 22px;
-    z-index: 1300;
+    // z-index: 5;
     display: flex;
     box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
     .el-icon-caret-top {
@@ -157,44 +221,139 @@
             padding-right: 7px;
         }
     }
-    .drop-down-menu {
-       background: white;
-       border-right: 2px solid white;
-       color: $white;
-       width: 100%;
-       position: absolute;
-       left: 0px;
-       top: 45px;
-       border-radius: 0px;
-       box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
-       // z-index: 1500;
+    .no-border {
+        border:0px;
+        width: 75px;
+        height:40px;
+        line-height: 40px;
+        margin: -10px -10px 0 -10px;
+        cursor: pointer;
+        input {
+            border: none;
+            cursor: pointer;
+        }
 
-       li {
-           height: 40px;
-           line-height: 6px;
-           text-align: left;
-           padding-left: 25px;
-           // border-bottom: 1px solid rgb(52, 110, 177);
-        //    box-shadow: 0px 2px 1px rgba(196, 222, 248, 0.2);
-           color: #5F5F61;
-           &:hover {
-            background: #F3F4FD;
-            // color: #4281D9;
-           }
-           i {
-               font-size: 14px;
-               margin-top: 20px;
-               margin-right: 7px;
-               display:inline-block;
-           }
-           p {
-               display: inline-block;
-           }
-       }
-       .select {
-            background: #F3F4FD;
+    }
+    .w75 {
+        width: 75px;
+    }
+    .w100 {
+        width: 100px;
+    }
+    .w160 {
+        width: 158px;
+    }
+
+    .top-title {
+        display: flex;
+        .el-button {
+            flex:1;
+            text-align: left;
+            padding-left:30px;
+            line-height: 55px;
+            height: 66px;
+            img {
+                margin-top:11px;
+            }
         }
     }
+}
+.drop-down-menu {
+    background: white;
+    border:none;
+    color: $white;
+    width: 100%;
+    // position: absolute;
+    left: 0px;
+    top: 45px;
+    border-radius: 0px;
+    // box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
+    .el-menu {
+        width:100%;
+        border:none;
+    }
+    // z-index: 1500;
+    li {
+        height: 40px;
+        line-height: 40px;
+        text-align: left;
+        padding-left: 15px;
+        cursor: pointer;
+        // border-bottom: 1px solid rgb(52, 110, 177);
+     //    box-shadow: 0px 2px 1px rgba(196, 222, 248, 0.2);
+        color: #5F5F61;
+        &:hover {
+         background: #F3F4FD;
+         // color: #4281D9;
+        }
+        i {
+            font-size: 14px;
+            // margin-top: 20px;
+            margin-right: 7px;
+            display:inline-block;
+        }
+        i.el-submenu__icon-arrow {
+            margin-top: -7px;
+        }
+        p {
+            display: inline-block;
+        }
+        .el-submenu__title {
+            height: 100%;
+            line-height: 40px;
+            background: none;
+        }
+        .el-menu {
+            position: absolute;
+            margin-left:132px;
+            background:white;
+            width: 120px;
+            top: 1px;
+            padding: 0px;
+         //    padding-top:10px;
+            border: 1px solid #f2f2f2;
+            .el-menu-item {
+                 width: 100%;
+                 min-width: 100%;
+                 line-height: 40px;
+            }
+
+        }
+    }
+    .select {
+         background: #F3F4FD;
+     }
+ }
+
+.el-menu--vertical {
+    padding: 10px 0px;
+    .el-menu {
+        padding: 17px 0px;
+        line-height: 22px;
+        li {
+            padding-bottom: 14px;
+            padding-left: 17px;
+            cursor: pointer;
+        }
+        li:hover {
+            background: #ecf5ff;
+            box-sizing: border-box;
+        }
+    }
+}
+.amap-info {
+    // position: absolute !important;
+    // left: 26px !important;
+    // // top: 85px !important;
+    // bottom: 0px !important;
+    // offset: 0px !important;
+    // top: 50% !important;
+    // margin-top: 390px !important;
+    // height: 20px;
+    // width: 401px;
+    // * {
+    //     // position: relative;
+    // }
 }
  .amap-info-content {
     // background: transparent;
@@ -204,42 +363,127 @@
     padding: 0px;
     color: #7B7B7B;
     font-size: 12px;
+    width: 402px;
+
     // padding: 5px;
+    // .lawWindowTitle {
+    //     font-size: 16px;
+    //     color:#20232B;
+    // }
     .lawWindowTitle {
-        font-size: 16px;
-        color:#20232B;
+        background: #4573D0;
+        color:white;
+        display: flex;
+        justify-content:space-between;
+        padding-left: 10px;
+        img {
+            width: 59px;
+            height: 59px;
+            margin: 20px;
+        }
+        .titleBox {
+            line-height: 25px;
+            padding: 22px 0px;
+            color:white;
+            text-align: left;
+            flex:1;
+            .nickName {
+                font-size: 16px;
+            }
+            .num {
+                color: #DAE3F4;
+
+            }
+        }
+        .title {
+            line-height: 35px;
+            text-align: left;
+            flex:1;
+            margin-left: 10px;
+        }
+        .right {
+            font-size: 12px;
+            width: 65px;
+            text-align: center;
+            box-sizing: border-box;
+            margin-top: 10px;
+            .status {
+                background: white;
+                border-radius: 50%;
+                width:30px;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                .iconfont {
+                    color:#b3b3b3;
+                }
+            }
+            p {
+                color:white;
+            }
+        }
     }
     .lawWindowStyle0 {
         // background: rgba(0,155,255,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
+        width: 400px;
+        position: fixed;
+        top:170px;
+        left:227px;
+        background: white;
+        box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
     }
     .lawWindowStyle1 {
         // background: rgba($greenC2,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
+        width: 400px;
+        position: fixed;
+        top:170px;
+        left:227px;
+        background: white;
         white-space: nowrap;
+        box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
     }
     .lawWindowStyle2 {
         // background: rgba($redC,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
+        width: 400px;
+        position: fixed;
+        top:170px;
+        left:227px;
+        background: white;
         line-height:35px;
+        box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
     }
     .lawWindowStyle3 {
         // background: rgba($orangeC,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
+        width: 400px;
+        position: fixed;
+        top:170px;
+        left:227px;
+        background: white;
+        box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
     }
     .lawWindowStyle4 {
         // background: rgba($greenC2,0.9);
-        min-width: 445px;
+        // min-width: 445px;
         padding: 0px;
+        width: 455px;
+        position: fixed;
+        top:170px;
+        left:227px;
+        background: white;
         // color:white;
         line-height:35px;
+        box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
         .lawWindowTitle {
             padding: 0 10px;
             background: rgba($color: black, $alpha: 0.7);
@@ -254,34 +498,89 @@
     }
     .lawWindowStyle5 {
         // background: rgba(0,155,255,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
+        width: 100%;
     }
     .lawWindowStyle6 {
         // background: rgba(0,155,255,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
+        width: 100%;
     }
     .lawWindowStyle7 {
         // background: rgba(0,155,255,0.9);
-        padding: 10px 17px 10px 17px;
+        // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
+        width: 100%;
     }
-    .amap-info-close {
-        top: 10px;
-        right: 10px;
-        // color: white;
+    .lawWindowStyle-po {
+        // background: white;
+        overflow:hidden;
+        height: 40px;
+        position: absolute;
+        margin-left: -105px;
+        width: 300px;
+        margin-top: -30px;
+        background:white;
+        box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
+        .lawWindowTitle {
+            background: white;
+            // line-height: 40px;
+            // height: 40px;
+            margin: -14px 20px;
+            margin-left: 10px;
+            color: #20232B;
+            img,.iconfont {
+                width: 18px;
+                height:18px;
+                margin: 0px;
+                font-size: 18px;
+                // vertical-align: middle;
+                margin-top:24px;
+                margin-left:10px;
+            }
+            .titleBox {
+                color: #20232B;
+                vertical-align: middle;
+                margin-left:8px;
+            }
+            .title {
+                line-height: 70px;
+            }
+        }
     }
+
     .noneWindow {
         padding: 10px;
     }
+    .flexBox {
+        margin:0px 22px;
+        font-size: 14px;
+        line-height: 30px;
+    }
+    .flex-title {
+        line-height: 25px;
+        vertical-align: -3px;
+        margin-top: -20px;
+        margin-bottom: 15px;
+        font-size: 14px;
+        img {
+            margin-right: 5px;
+            width: 16px;
+            height: 16px;
+            vertical-align: -3px;
+        }
+    }
     .btns {
-        margin-top: 10px;
+        // margin-top: 10px;
+        margin: 22px;
         border-top: 1px solid #FDFCFF;
-        padding-top: 10px;
+        // overflow: hidden;
+        // padding-top: 10px;
         span.phoneBtn {
             background: $grayC1;
             border-radius: 50%;
@@ -290,9 +589,10 @@
             display: inline-block;
             text-align: center;
             line-height: 38px;
-            margin:0px 7px;
+            margin:0px 14px 14px 14px;
             cursor: pointer;
             vertical-align: middle;
+            float: left;
             i{
                 font-size: 18px;
             }
@@ -314,7 +614,7 @@
         flex: 1;
         margin-top: 7px;
         p {
-            line-height:25px;
+            line-height:40px;
         }
         .el-table__row {
             height: 40px;
@@ -333,8 +633,19 @@
        float:right;
    }
  }
+ .amap-info-close {
+    top: -15px !important;
+    left: 150px !important;
+    // color: white;
+}
+ .amap-position-right {
+    position: absolute;
+    top:47px;
+    box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
+ }
  .amap-info-sharp {
     //  background: transparent;
+    display: none;
  }
  .mapPointBox {
      width: 280px;
@@ -345,15 +656,15 @@
 // }
 .amap-position {
     position: absolute;
-    z-index:2000;
+    // z-index:2000;
  }
  .amap-rtl-box {
     right: 0px;
-    top: 30%;
+    // top: 30%;
     .el-drawer__wrapper {
         top: 92px;
         right:0px !important;
-        width: 410px;
+        width: 430px !important;
         // min-width: 400px;
         left: auto;
     }
@@ -361,6 +672,7 @@
         position: relative;
         overflow:auto;
         height: 82vh;
+        padding: 0px;
         @include echartsStyle(300px, false);
      }
      .drawerBtn {
@@ -370,11 +682,18 @@
         height: 89px;
         background: url('../../../../static/images/img/lawSupervise/btn_norshouqi2.png');
         right:0px;
+        z-index: 10;
         i {
             line-height: 86px;
             margin-left: 6px;
             border-left: 1px;
             color: #868688;
+        }
+    }
+    .amap-tool {
+        .amap-main-content {
+            position: absolute;
+            height: auto;
         }
     }
      .amap-drawer {
@@ -404,9 +723,12 @@
         width: calc(100% - 202px);
         left: 202px;
         top:calc(100% - 380px);
+        .el-drawer__container {
+            // height: 25%;
+        }
     }
     .el-drawer__body {
-        overflow:auto;
+        // overflow:auto;
         .amap-main-content {
             position: relative;
             @include echartsStyle(100%, true);
@@ -422,6 +744,7 @@
         transform:rotate(90deg);
         position: fixed;
         cursor: pointer;
+        z-index: 30;
         i {
             line-height: 86px;
             margin-left: 6px;
@@ -448,6 +771,7 @@
             position: absolute;
             top:-57px;
             cursor: pointer;
+            z-index: 50;
             i {
                 line-height: 86px;
                 margin-left: 6px;
@@ -480,6 +804,9 @@
     vertical-align:-2px;
 }
 
+.left-500 {
+    left: -470px !important;
+}
 
 /////////////////////////////////////待改
 /* 车辆查验 */
@@ -916,8 +1243,25 @@
     left:0px;
     width:100%;
     height:100%;
-    z-index:1000;
+    z-index:100;
     .el-drawer__wrapper {
         top:0px;
+    }
+    .amap-btt-box {
+        .el-drawer__wrapper {
+            width: 100%;
+            left: 0px;
+            top:calc(100% - 380px);
+        }
+    }
+    .lawWindowStyle0,.lawWindowStyle1,.lawWindowStyle2,.lawWindowStyle3,.lawWindowStyle4,.lawWindowStyle5,.lawWindowStyle6 {
+        left: 22px;
+        top: 74px;
+    }
+    .lawWindowStyle-po {
+        margin-left: -125px;
+    }
+    .amap-main-content  {
+        height: 92vh;
     }
 }

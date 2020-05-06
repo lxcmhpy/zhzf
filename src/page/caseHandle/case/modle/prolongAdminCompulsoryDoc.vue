@@ -22,7 +22,7 @@
             </span>，本机关依法于
             <span>
               <el-form-item prop="enforceDate" class="pdf_datapick">
-                <el-date-picker disabled v-model="docData.enforceDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                <el-date-picker disabled v-model="docData.enforceDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
                 </el-date-picker>
               </el-form-item>
             </span>对你（单位）采取了
@@ -46,7 +46,7 @@
             </span>，依据《中华人民共和国行政强制法》第二十五条的规定，决定延长行政强制措施期限至
             <span>
               <el-form-item prop="delayDate" class="pdf_datapick">
-                <el-date-picker v-model="docData.delayDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                <el-date-picker v-model="docData.delayDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
                 </el-date-picker>
               </el-form-item>
             </span>。
@@ -55,7 +55,7 @@
            <div class="pdf_seal">
             <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
             <el-form-item prop="signatureDate" class="pdf_datapick">
-              <el-date-picker v-model="docData.signatureDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.signatureDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </div>

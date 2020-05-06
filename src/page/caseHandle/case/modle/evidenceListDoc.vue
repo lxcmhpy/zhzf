@@ -98,13 +98,13 @@
           </span>日（自
           <span>
             <el-form-item prop="acceptTreatmentStartDate" class="pdf_datapick">
-              <el-date-picker v-model="docData.acceptTreatmentStartDate" @blur="starttime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.acceptTreatmentStartDate" @blur="starttime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>至
           <span>
             <el-form-item prop="acceptTreatmentEndDate" class="pdf_datapick">
-              <el-date-picker v-model="docData.acceptTreatmentEndDate" @blur="endtime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.acceptTreatmentEndDate" @blur="endtime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>）。在此期间，当事人或有关人员不得销毁或转移证据。
@@ -155,7 +155,7 @@
         <div class="pdf_seal">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
