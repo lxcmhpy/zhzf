@@ -29,13 +29,10 @@
       </svg>
       <br />编辑
     </el-button> -->
-    <a type="success" :href="makeSealStr" target="_blank" v-if="formOrDocData.showBtn[5]"
-       style="width: 51px;height: 51px;display: block;margin-bottom: 10px;">
-      <el-button type="primary">
-        <i class="iconfont law-approval"></i>
-        <br/>签章
-      </el-button>
-    </a>
+    <el-button type="primary" @click="makeSeal()" v-if="formOrDocData.showBtn[5]">
+      <i class="iconfont law-approval"></i>
+      <br/>签章
+    </el-button>
     <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]">
       <i class="iconfont law-upload"></i>
       <br/>提交
@@ -66,10 +63,11 @@
     </el-button>
   </div>
 </template>
-<script src="@/common/js/MultBrowser-1.0.2.js"></script>
+<!--<script src="@/common/js/MultBrowser-1.0.2.js"></script>-->
 <script>
 
   import {htmlExportPDF} from '@/common/js/htmlExportPDF'
+  import {MultBrowser} from '@/common/js/MultBrowser-1.0.2'
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
   import iLocalStroage from '@/common/js/localStroage';
@@ -81,7 +79,7 @@
         makeSealStr: ''
       }
     },
-    props: ['formOrDocData'],
+    props: ['formOrDocData', 'storagePath'],
     mixins: [mixinGetCaseApiList],
     computed: {...mapGetters(['caseId'])},
     methods: {
@@ -108,8 +106,32 @@
       // 盖章
       makeSeal() {
         //   signature.openURL('oeder');
-        let ActivexURL = "http://172.16.170.44:8083/iWebPDFEditor-V5.1/MultBrowser.html?path=http://172.16.170.54:9332/12,3b11e8faa6"
-        // MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+        this.makeSealStr = iLocalStroage.gets('CURRENT_BASE_URL').QZ_ACTIVEX_HOST + 'iWebPDFEditor-V5.1/MultBrowser.html?path='
+          + iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + this.storagePath[0]
+        MultBrowser.openBrowserURL(this.makeSealStr, "1", this.callBackBrowserURL());
+      },
+      callBackWaitStatus(id, error, status, msg) {
+        if (error == 0) {
+          if (status == "0") {
+            //超时
+            //alert("我啥也不做");
+          }
+          else {
+            //成功
+            alert(status + "---" + msg);  //通过这里的数据进行刷新调用方页面等操作
+          }
+          //继续循环监听
+          MultBrowser.waitStatus(id, "2", this.callBackWaitStatus());
+        }
+      },
+      callBackBrowserURL(error, id) {
+        if (error == 0) {  //调用成功
+          //功能说明：监听AZTBrowser浏览器返回状态和数据
+          //参数1：AZTBrowser浏览器的ID号
+          //参数2：监听间隔时间，以秒位单位
+          //参数3：回调函数
+          MultBrowser.waitStatus(id, "2", this.callBackWaitStatus());
+        }
       },
       submitDataBtn(handleType) {
         //判断是环节的提交还是文书的提交
@@ -177,8 +199,6 @@
       }
     },
     mounted() {
-      this.makeSealStr = iLocalStroage.gets('CURRENT_BASE_URL').QZ_ACTIVEX_HOST + 'iWebPDFEditor-V5.1/MultBrowser.html?path='
-        + iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '13,10a8b0e21ded'
     }
   }
 </script>
