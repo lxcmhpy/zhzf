@@ -87,7 +87,8 @@ export default {
         if (this.$route.path !== "/" && this.$route.name !== "case_handle_home_index") {
             this.activeIndexStr = this.activeIndexSto;
         } else {
-            this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
+            this.$store.commit("SET_ACTIVE_INDEX_STO", "caseHandle-menu-case_handle_home_index");
+            this.$store.commit("set_Head_Active_Nav", "caseHandle-menu-case_handle_home_index");
         }
     }
   },
@@ -100,6 +101,7 @@ export default {
   },
   watch: {
     $route(to, from) {
+        debugger;
       //判断路由是否已经打开
       //已经打开的 ，将其置为active
       //未打开的，将其放入队列里
@@ -128,7 +130,7 @@ export default {
             }
             this.$store.commit("set_Head_Active_Nav", this.openTab[_index].headActiveNav);
             this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[_index].name);
-            this.$store.commit("changeOneTabName", this.openTab[_index].name);
+            // this.$store.commit("changeOneTabName", this.openTab[_index].name);
         } else {
             let tabTitle = "";
             let isCase = false;

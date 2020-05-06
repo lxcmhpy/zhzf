@@ -30,11 +30,11 @@
       <br />编辑
     </el-button> -->
     <!-- v-if="formOrDocData.showBtn[5]" -->
-      <el-button type="primary" @click="makeSeal"  >
-     <!-- -->
-        <i class="iconfont law-approval"></i>
-        <br/>签章
-      </el-button>
+    <el-button type="primary" @click="makeSeal">
+      <!-- -->
+      <i class="iconfont law-approval"></i>
+      <br/>签章
+    </el-button>
     <!-- </a> -->
     <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]">
       <i class="iconfont law-upload"></i>
@@ -66,10 +66,11 @@
     </el-button>
   </div>
 </template>
-<script src="@/common/js/MultBrowser-1.0.2.js"></script>
+<!--<script src="@/common/js/MultBrowser-1.0.2.js"></script>-->
 <script>
 
   import {htmlExportPDF} from '@/common/js/htmlExportPDF'
+  import {MultBrowser} from '@/common/js/MultBrowser-1.0.2'
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
   import iLocalStroage from '@/common/js/localStroage';
@@ -81,7 +82,7 @@
         makeSealStr: ''
       }
     },
-    props: ['formOrDocData'],
+    props: ['formOrDocData', 'storagePath'],
     mixins: [mixinGetCaseApiList],
     computed: {...mapGetters(['caseId'])},
     methods: {
@@ -110,45 +111,49 @@
         //   signature.openURL('oeder');
         // let ActivexURL = "http://172.16.170.44:8083/iWebPDFEditor-V5.1/MultBrowser.html?path=http://172.16.170.54:9332/12,3b11e8faa6"
         // MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
-    let _this =this;
+        let _this = this;
         openURL();
-        function callBackBrowserURL(error, id){
-			if(error == 0){  //调用成功
-				MultBrowser.waitStatus(id, "2", callBackWaitStatus);
-			}
-		}
-		function callBackWaitStatus(id, error, status, msg){
-			if(error == 0){
-				if(status == "0"){
-					//超时
-					//alert("我啥也不做");
-				}
-				else{
-					//成功
-					alert(status + "---" + msg);  //通过这里的数据进行刷新调用方页面等操作
-				}
-				//继续循环监听
-				MultBrowser.waitStatus(id, "2", callBackWaitStatus);
-			}
-		}
-        function openURL(){
-			var pdfPath = getParam("paramName");
-			var test = window.location.href;
-			var string =test.split("/");
-            var path = string[0]+"//"+string[2]+"/";
-            // path +
-            var ActivexURL=path + "/static/js/iWebPDFEditor.html?pdfPath=http://124.192.215.10:9332/9,10a727c3ada3";
-            _this.makeSealStr = ActivexURL;
-			window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
-		}
-        function getParam(paramName) {
-            let paramValue = "";
-            let isFound = !1;
-            if (window.location.search.indexOf("?") == 0 && window.location.search.indexOf("=") > 1) {
-                arrSource = unescape(window.location.search).substring(1, window.location.search.length).split("="), i = 0;
-                paramValue = arrSource[1];
+
+        function callBackBrowserURL(error, id) {
+          if (error == 0) {  //调用成功
+            MultBrowser.waitStatus(id, "2", callBackWaitStatus);
+          }
+        }
+
+        function callBackWaitStatus(id, error, status, msg) {
+          if (error == 0) {
+            if (status == "0") {
+              //超时
+              //alert("我啥也不做");
             }
-            return paramValue == "" && (paramValue = null), paramValue;
+            else {
+              //成功
+              alert(status + "---" + msg);  //通过这里的数据进行刷新调用方页面等操作
+            }
+            //继续循环监听
+            MultBrowser.waitStatus(id, "2", callBackWaitStatus);
+          }
+        }
+
+        function openURL() {
+          var pdfPath = getParam("paramName");
+          var test = window.location.href;
+          var string = test.split("/");
+          var path = string[0] + "//" + string[2] + "/";
+          // path +
+          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=http://124.192.215.10:9332/9,10a727c3ada3";
+          _this.makeSealStr = ActivexURL;
+          window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+        }
+
+        function getParam(paramName) {
+          let paramValue = "";
+          let isFound = !1;
+          if (window.location.search.indexOf("?") == 0 && window.location.search.indexOf("=") > 1) {
+            arrSource = unescape(window.location.search).substring(1, window.location.search.length).split("="), i = 0;
+            paramValue = arrSource[1];
+          }
+          return paramValue == "" && (paramValue = null), paramValue;
         }
       },
       submitDataBtn(handleType) {
@@ -217,8 +222,8 @@
       }
     },
     mounted() {
-    //   this.makeSealStr = iLocalStroage.gets('CURRENT_BASE_URL').QZ_ACTIVEX_HOST + 'iWebPDFEditor-V5.1/MultBrowser.html?path='
-    //     + iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '13,10a8b0e21ded'
+      //   this.makeSealStr = iLocalStroage.gets('CURRENT_BASE_URL').QZ_ACTIVEX_HOST + 'iWebPDFEditor-V5.1/MultBrowser.html?path='
+      //     + iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '13,10a8b0e21ded'
     }
   }
 </script>

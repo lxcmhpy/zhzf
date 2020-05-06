@@ -81,7 +81,7 @@
                 </el-form-item> -->
                 <el-form-item prop="inquiriedRelation" style="width:209px">
                 <el-select v-model="docData.inquiriedRelation" @change="changeRelationWithCase">
-                  <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>
                 </el-select>
                 </el-form-item>
                 <!-- <u v-if="lineStyleFlag">{{docData.inquiriedRelation}}</u> -->
