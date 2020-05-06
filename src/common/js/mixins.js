@@ -434,7 +434,7 @@ export const mixinGetCaseApiList = {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
         console.log('row:', row)
         this.$router.push({
-          name: row.url,
+          name: row.path,
           params: {
             id: row.id,
             docId: row.docId,
