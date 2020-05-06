@@ -140,7 +140,7 @@
         <p>
           <el-form-item prop="afsj" class="pdf_datapick" style="width: 150px">
             <el-date-picker :disabled="originalData.afsj? true : false" v-model="formData.afsj" type="date"
-                            format="yyyy年MM月dd日" placeholder="  年  月  日">
+                            format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
           ，你（单位）
@@ -153,7 +153,7 @@
           <span>
                   <el-form-item prop="punishLaw" style="width: 320px">
                     <el-select v-model="formData.punishLaw" :maxLength='maxLength' style="width: 320px">
-                      <el-option v-for="item in laWOptions" :key="item.value" :label="item.label" :value="item.value">
+                      <el-option v-for="item in laWOptions" :key="item.value" :label="item.label" :value="item.label">
                       </el-option>
                     </el-select>
                   </el-form-item>
@@ -177,7 +177,7 @@
           <span>
                   <el-form-item prop="measureStartDate" style="width: 150px" class="pdf_datapick">
                     <el-date-picker v-model="formData.measureStartDate" style="width: 220px" @change="startTime"
-                                    type="date" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" placeholder="  年  月  日">
+                                    type="date" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" placeholder="  年  月  日" >
                     </el-date-picker>
                   </el-form-item>
                 </span>至
@@ -196,7 +196,7 @@
                   <el-form-item prop="reconsiderationOrgan" style="width: 230px">
                     <el-select v-model="formData.reconsiderationOrgan" style="width: 230px" :maxLength='maxLength'>
                       <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label"
-                                 :value="item.value">
+                                 :value="item.label">
                       </el-option>
                     </el-select>
                   </el-form-item>
@@ -205,7 +205,7 @@
                   <el-form-item prop="lawsuitOrgan" style="width: 230px">
                     <el-select v-model="formData.lawsuitOrgan" style="width: 230px" :maxLength='maxLength'>
                       <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label"
-                                 :value="item.value">
+                                 :value="item.label">
                       </el-option>
                     </el-select>
                   </el-form-item>
@@ -215,7 +215,7 @@
         <div class="pdf_seal">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日">
+            <el-date-picker v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -652,8 +652,10 @@
                     label: orgRes.data.enforcementOrgan2
                   }
                 ];
-                _this.formData.reconsiderationOrgan = 'reconsiderationOrgan1';
-                _this.formData.lawsuitOrgan = 'enforcementOrgan1';
+                // _this.formData.reconsiderationOrgan = 'reconsiderationOrgan1';
+                // _this.formData.lawsuitOrgan = 'enforcementOrgan1';
+                _this.formData.reconsiderationOrgan = '复议机构1';
+                _this.formData.lawsuitOrgan = '诉讼机构1';
               });
           });
 

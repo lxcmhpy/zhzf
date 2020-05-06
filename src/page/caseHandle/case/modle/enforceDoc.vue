@@ -25,7 +25,7 @@
           </span>一案，本机关于
           <span>
             <el-form-item prop="decisionTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.decisionTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.decisionTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>依法作出了行政强制执行决定，并向你（单位）送达了《行政强制执行决定书》(案号：
@@ -48,7 +48,7 @@
           </span>，根据《中华人民共和国行政强制法》第三十九条第一款的规定，本机关决定自
           <span>
             <el-form-item :prop="disabledOne ? 'placeholder':'executeTime'" class="pdf_datapick">
-              <el-date-picker v-model="docData.executeTime" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.executeTime" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>起中止该行政强制执行。中止执行的情形消失后，本机关将恢复执行。
@@ -78,7 +78,7 @@
           <span>
             <el-form-item :prop="disabledThree?'placeholder':'serviceTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.serviceTime"
-              v-bind:disabled="disabledThree" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              v-bind:disabled="disabledThree" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>决定中止执行，现中止执行的情形已消失，根据《中华人民共和国行政强制法》第三十九第二款的规定，决定从即日恢复强制执行。
@@ -87,7 +87,7 @@
           <input type="checkbox" name="measure" value="4" v-model="checknames" @change="click">4.本机关于
           <span>
             <el-form-item :prop="disabledFour?'placeholder':'agreeTime'" class="pdf_datapick">
-              <el-date-picker v-model="docData.agreeTime" v-bind:disabled="disabledFour" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+              <el-date-picker v-model="docData.agreeTime" v-bind:disabled="disabledFour" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>与你（单位）达成执行协议，因你（单位）不履行执行协议，根据《中华人民共和国行政强制法》第四十二条第二款的规定，决定从即日恢复强制执行。
@@ -99,7 +99,7 @@
         <div class="pdf_seal">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>

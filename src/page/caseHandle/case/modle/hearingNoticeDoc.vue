@@ -23,8 +23,8 @@
             </el-form-item>
           </span>一案，现定于
           <span>
-            <el-form-item style="width:136px" prop="hearingTime" class="pdf_datapick listen_data">
-              <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日 HH时"
+            <el-form-item style="width:176px" prop="hearingTime" class="pdf_datapick listen_data">
+              <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日HH时" value-format="yyyy-MM-dd HH"
                               placeholder="    年  月  日  时">
               </el-date-picker>
             </el-form-item>
@@ -138,7 +138,7 @@
         <div class="pdf_seal">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="signatureDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.signatureDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+            <el-date-picker v-model="docData.signatureDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -367,6 +367,7 @@
     },
     created() {
       this.isOverStatus();
+
     },
     watch: {
 //      'docData.partyName'(val) {

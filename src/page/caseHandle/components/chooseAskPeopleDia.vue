@@ -19,7 +19,7 @@
         </el-form-item>
         <el-form-item  label="与案件关系" label-width="115px" v-if="formData.peopleAndRelationType == '以上均不是'" prop="otherPeopleRelation">  
           <el-select placeholder="请选择" v-model="formData.otherPeopleRelation">
-              <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>  
+              <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>  
           </el-select>
         </el-form-item>
         <el-form-item  label="询问次数" label-width="105px" prop="askNum">    
