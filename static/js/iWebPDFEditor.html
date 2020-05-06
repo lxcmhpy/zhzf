@@ -1,717 +1,750 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>
-            PDF控件测试网页
-        </title>
-		<!--控件对象事件-->
-		<script LANGUAGE=javascript FOR=PDF EVENT=Event_AddAnnot(ZSGuid,ZSType,Extend)>     //添加注释后事件
-			  alert("事件添加注释GUID："+ZSGuid+"类型："+ZSType);
-			  g_guid = ZSGuid;
-	    </script>
-
-		<script LANGUAGE=javascript FOR=PDF EVENT=Event_SelectAnnot(ZSGuid,ZSType,Extend)>  //选中注释事件
-			 alert("事件选中注释GUID："+ZSGuid+"类型："+ZSType);
-			 g_guid = ZSGuid;
-		</script>
-
-		<script LANGUAGE=javascript FOR=PDF EVENT=Event_DeleteAnnot(ZSGuid,ZSType,Extend)>  //删除注释事件
-			 alert("事件删除注释GUID："+ZSGuid+"类型："+ZSType);
-			 g_guid = ZSGuid;
-	    </script>
-
-	    <script language="javascript" for=PDF event=Event_IntoAnnot(Guid,AnnotType,Extend)> //鼠标移动到批注上事件
-			 //alert(Extend);
-			 //alert("鼠标移动到批注位置上:"+Guid);
-	    </script>
-
-		<script language="javascript" for=PDF event=Event_OutOfAnnot(Guid,AnnotType,Extend)> //鼠标离开批注上事件
-			 //alert("鼠标移开批注位置上:"+Guid);
-	    </script>
-
-		<script language="javascript" for=PDF event=Event_ChangeAnnot(Guid,AnnotType,Extend)> //批注修改事件
-			//alert("批注修改内容或属性事件触发:"+Guid);
-	    </script>
-
-	    <script language="javascript" for="PDF" event="Event_SignFinish(IsSucceed,SignType,Extend)"> //盖章完成事件
-			if(IsSucceed=="TRUE"){
-			    alert("盖章成功事件");
-		 }
-	    </script>
-
-		<script language="javascript" for="PDF" event="Event_SignDelete(IsSucceed,SignType,Extend)"> //删除印章事件
-			 if(IsSucceed=="TRUE"){
-				 alert("撤章成功事件");
-		 }
-		</script>
-
-		<script language="javascript" for="PDF" event="Event_ChangeFile(IsSucceed,CurrentFilePath,ChangeFilePath,Extend)"> //切换TAB事件
-			 if(IsSucceed=="TRUE")  //成功
-			 {
-			     //alert("当前文档:"+CurrentFilePath+"切换前文档:"+ChangeFilePath);
-			 }
-	    </script>
-
-		<script language="javascript" for="PDF" event="Event_PrintFinish(IsSucceed,Extend)">
-			if(IsSucceed=="TRUE"){
-			    alert("盖章成功事件");
-		 }
-	    </script>
-
-
-
-        <script language="javascript">
-
-			var PDFReader;
-			var g_guid;
-
-            function LoadPage()
-			{
-				var divobj = document.createElement("div");
-				divobj.setAttribute("id", "objdiv1");
-
-				//divobj.setAttribute("height", "100%");
-				var obj = "";
-
-				obj = "<object style='display:inline-block;width:100%;height:740px;vertical-align:top;' classid=clsid:3BCB99FC-44E6-407A-ACE8-9E20BFAA1A0F  id='PDF'></object>";
-
-
-				divobj.innerHTML = obj;
-			    document.getElementById('myDiv').appendChild(divobj);
-			    PDFReader = document.getElementById("PDF");
-            }
-
-            /*设置应用接口*/
-            function SetSafeKey() {
-
-				PDFReader.SetSafeKey("d01fa78a4c3e4fad82703705b618b4c3","ebd91896ce68436cb7a6bbd061824886","MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAPDNdPkKNWhm5gvgJLKqYhYLv7TQctwq3LFZXU+rJn7oBDh7YtsutmdclExZMrKNPq/Sz0iqqEzIymmm6G9nu0UCAwEAAQ==","MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA8M10+Qo1aGbmC+AksqpiFgu/tNBy3CrcsVldT6smfugEOHti2y62Z1yUTFkyso0+r9LPSKqoTMjKaabob2e7RQIDAQABAkEAhEOFtWibDz49q1YxMgWOHKfVY55/CFluoOcB7smGOntrROqwbXZB5H7uigCDpJwQoSQ7al59RY55K+XPyWrInQIhAP79lbpgsbTcugCZPngGivH3yHUxHgo1q9MQJ5UWS/SvAiEA8cF+VjsEwkGZX8jfehxpWornR7fa2U1QMZlTNPGktEsCIQCCUGy1zHblPKzeY3LWelmGIaDTq59zjkxa2HWyLqvwxwIgCFNil3Om4U3DC3Juh9UMp8qa1nR1fABWn66pF+yugGsCIFe4gA5RKbICDQEOU9Pjo+gNQaWK4G/aky7AObjzfGlV","I0CvoKqXVn5lnnVuyiuusA==","");
-            }
-
-			//软证书签章
-			function SoftSign() {
-			    var rit=PDFReader.SetSignImage(7, "", "");				//设置印章图片
-				 if(rit==0)
-				 {
-					rit=PDFReader.SetSignCert(3,"","","");              //设置证书
-
-					if(rit==0)
-					{
-					PDFReader.AddNormalSign(0,"","");                  //手动定位模式
-					}
-				 }
-			}
-
-            /*文档操作接口类*/
-            function GetOCXVersion() {
-                alert(PDFReader.GetOCXVersion());                                    //获取控件版本
-            }
-
-            function OpenFile() {
-                var url="C:\\Users\\admin\\Desktop\\test.pdf";
-                alert("正在打开本地文档："+url);
-                PDFReader.OpenFile(1,"C:\\Users\\admin\\Desktop\\test.pdf","","");  //打开本地文档
-            }
-
-            function OpenWebFile() {
-                // var url="http://124.192.215.10:9332/12,3b11e8faa6";
-                var url ="http://124.192.215.10:9332/9,10a727c3ada3";
-                // alert("正在打开网络文档："+url);
-                PDFReader.OpenFile(2,url,"", "");                    //打开网络文档
-            }
-            OpenWebFile ();
-            function SaveFile() {
-                alert("保存到:D:\\test.pdf");
-                PDFReader.SaveFile(2, "D:\\test.pdf", "");           //保存文档到本地
-            }
-
-            function SaveWebFile() {
-                var url="http://127.0.0.1:8080/FileUpload/FileUploadServlet";   //保存文档到服务器
-                alert("正在保存文档："+url);
-                PDFReader.SaveFile(3,url,"");
-            }
-
-            function CloseFile() {
-                PDFReader.CloseFile(0);                    //关闭当前打开的文档
-            }
-
-            function PrintFile() {
-                PDFReader.PrintFile(1, "", 0, "","");      //打印当前文档
-            }
-
-            function ScrollView() {
-                PDFReader.ScrollView(4, "");               //滚动视图
-            }
-
-            function GetPageCount() {
-                alert(PDFReader.GetPageCount());           //获取文档总页数
-            }
-
-            function SetReadPage() {
-                PDFReader.SetReadPage(3);                  //跳转到指定页码
-            }
-
-            function GetReadPage() {
-                alert(PDFReader.GetReadPage());            //获取当前文档页码
-            }
-
-
-            /*控件外观接口类*/
-            function SetReadZoom() {
-                PDFReader.SetReadZoom(50);                 //设置缩放
-            }
-
-            function SetReadRotate() {
-                PDFReader.SetReadRotate(90);               //设置旋转
-            }
-
-            function SetDocName() {
-                PDFReader.SetDocName("你好，AZT!");        //设置文档显示名称
-            }
-
-            function SetDocToolbarShow() {                 //设置文档工具栏是否显示
-                PDFReader.SetDocToolbarShow(false);
-            }
-
-            function SetToolboxShow() {
-                PDFReader.SetToolboxShow(false);           //设置工具箱是否显示
-            }
-
-            function SetSidebarShow() {
-                PDFReader.SetSidebarShow(false);           //设置边侧栏是否显示
-            }
-
-            function SetDocToolbarButtonShow() {
-                PDFReader.SetDocToolbarButtonShow(1, false, "");    //设置文档工具栏上的按钮显示状态
-            }
-
-            function SetToolboxButtonShow() {
-                PDFReader.SetToolboxButtonShow(1, 2, false, "");    //隐藏工具箱中的按钮
-            }
-
-            function SetTextColor() {
-                PDFReader.SetTextColor(255, 0, 0);      //设置文本颜色
-            }
-
-            function SetBackColor() {
-                PDFReader.SetBackColor(0, 255, 0);      //设置背景颜色
-            }
-
-            function SetTabShow() {
-                PDFReader.SetTabShow(false);            //隐藏Tab标签栏
-            }
-
-
-            /*签章接口类*/
-            function SetSignImage() {
-                alert(PDFReader.SetSignImage(1, "2;", ""));				//设置印章图片来源
-            }
-
-            function SetSignCert() {
-                alert(PDFReader.SetSignCert(1, "", "", ""));			//设置证书来源
-            }
-
-            function AddNormalSign() {
-                PDFReader.AddNormalSign(1, "", "");						//开始普通印章
-            }
-
-            function AddKeyWordSign() {
-                PDFReader.AddKeyWordSign(1, 1, "a", "");				//开始关键字印章
-            }
-
-            function AddMultiSign() {
-                var ret = PDFReader.AddMultiSign(1, 1, 1, -1, 3, "");   //骑缝签章
-                alert(ret);
-            }
-
-            function AddBatchSign() {
-                PDFReader.AddBatchSign(1, "", "", "");					//多页签章
-            }
-
-            function AddTextWaterMark() {
-                PDFReader.AddTextWaterMark("你好，WORLD", 0, 50, -20, "");//插入水印
-            }
-
-            function SetSignWidthHeight() {
-                PDFReader.SetSignWidthHeight(100, 200);					//设置印章宽度和高度（可选）
-            }
-
-            function SetKeyWordOffset() {
-                PDFReader.SetKeyWordOffset(-50, 50);					//设置关键字定位偏移量（可选）
-            }
-
-            function GetSignCount() {
-                alert(PDFReader.GetSignCount(0, 0, ""));				//获取电子签章个数
-            }
-
-
-            /*签章辅助接口类*/
-            function SetOpenVerify() {
-                PDFReader.SetOpenVerify(true);							//设置打开文档是否验证印章
-            }
-
-            function SetSignSubjoin() {
-                PDFReader.SetSignSubjoin(4, "", 1, "", "");				//设置印章附加数据
-            }
-
-            function CallToolboxItem() {
-                PDFReader.CallToolboxItem(1, 2, "");					//触发工具箱上的按钮功能
-            }
-
-            function VerifySign() {
-                var Rit=PDFReader.VerifySign(0, "");					//验证电子签章有效性
-                alert(Rit);
-            }
-
-            function GetAllSignInfo() {
-                alert(PDFReader.GetAllSignInfo(""));					//获取所有印章信息
-            }
-
-
-            var Data;
-            function CrytoDataJiaM() {
-                Data=PDFReader.CrytoData(1, "你好，AZT!", "");			//加密数据
-                alert("加密后数据为:"+Data);
-            }
-
-            function CrytoDataJieM() {
-                Data=PDFReader.CrytoData(2, Data, "");					//解密数据
-                alert("解密后数据为:"+Data);
-            }
-
-
-            /*表单填报接口类*/
-            function SetFormMode() {
-                PDFReader.SetFormMode(1);									//表单模式设置
-            }
-
-            function WriteForm() {
-                var ret = PDFReader.SubmitForm("Text1", "", "TestText");	//接口填写表单内容
-                alert(ret);
-            }
-
-            function GetFormInfo() {
-                alert(PDFReader.GetFormInfo(1, "", ""));					//获取所有表单内容
-            }
-
-            function GetNumberOfUnfilledEssentialForms() {
-                alert(PDFReader.GetNumberOfUnfilledEssentialForms());		//获取未填写表单数量
-            }
-
-            function SetFormModeEnd()
-            {
-                PDFReader.SetFormMode(0);									//表单模式设置
-            }
-
-            /*注释接口类*/
-            function SetAnnotTipWndShow() {
-                PDFReader.SetAnnotTipWndShow(false,"");		//隐藏注释点击弹框接口
-            }
-
-			function GetAllTabAnnotInfo() {
-				var Rit=PDFReader.GetAllTabAnnotInfo(0,"");		// 获取所有打开的文档内的注释
-				alert(Rit);
-			}
-
-			function SetAnnotOptionDlgInfo() {
-				var Rit=PDFReader.SetAnnotOptionDlgInfo(2,80,0,255,0,0,0,255,"");		// 设置笔宽为2，不透明度为80，画笔颜色为绿色，填充颜色为蓝色
-			}
-
-			function SetAnnotMenuVisible() {
-				var Rit=PDFReader.SetAnnotMenuVisible(1,0,"");		// 隐藏注释右键选项
-			}
-
-            function InsertGraphAnnotFZ(){
-                var Rit=PDFReader.CallToolboxItem(2,1,"");  //附注
-            }
-
-            function InsertGraphAnnotYB(){
-                var Rit=PDFReader.CallToolboxItem(3,1,"");  //直线注释
-            }
-
-            function InsertGraphAnnot(){
-                var Rit=PDFReader.CallToolboxItem(3,2,"");  //椭圆注释
-            }
-
-            function InsertGraphAnnotJX(){
-                var Rit=PDFReader.CallToolboxItem(3,3,"");  //矩形注释
-            }
-
-            function InsertGraphAnnotDBX(){
-                var Rit=PDFReader.CallToolboxItem(3,4,"");  //多边形注释
-            }
-
-            function InsertGraphAnnotYX(){
-                var Rit=PDFReader.CallToolboxItem(3,5,"");  //云线注释
-            }
-
-            var AnnotData;
-            function GetAllAnnotInfo()						//获取所有注释信息
-            {
-                AnnotData=PDFReader.GetAllAnnotInfo("");
-                alert(AnnotData);
-            }
-
-            function AddAnnot()								//合并注释信息
-            {
-                PDFReader.AddAnnot(3,AnnotData,"");
-            }
-
-
-            /*测量接口类*/
-            function MeterJL()
-            {
-                var Rit=PDFReader.CallToolboxItem(5,1,"");  //测量距离
-            }
-
-            function MeterJD()
-            {
-                var Rit=PDFReader.CallToolboxItem(5,2,"");  //测量角度
-            }
-
-            function MeterHC()
-            {
-                var Rit=PDFReader.CallToolboxItem(5,3,"");  //测量弧长
-            }
-
-            function MeterBJ()
-            {
-                var Rit=PDFReader.CallToolboxItem(5,4,"");  //测量半径
-            }
-
-            function MeterCX()
-            {
-                var Rit=PDFReader.CallToolboxItem(5,5,"");  //测量垂线
-            }
-
-            function MeterLXXD()
-            {
-                var Rit=PDFReader.CallToolboxItem(5,6,"");  //测量连续线段
-            }
-
-            function MeterTYMJ()
-            {
-                var Rit=PDFReader.CallToolboxItem(5,7,"");  //测量椭圆面积
-            }
-
-            function MeterJXMJ()
-            {
-                var Rit=PDFReader.CallToolboxItem(5,8,"");  //测量矩形面积
-            }
-
-            function MeterYXMJ()
-            {
-                var Rit=PDFReader.CallToolboxItem(5,9,"");  //测量异形面积
-            }
-
-            /*签章扩展-分区域保护*/
-            function SetRegionGuard1()
-            {
-                PDFReader.SetSignImage(1, "", "");     //设置印章,必须放在最前面设置
-                PDFReader.SetSignCert(1, "", "", "");  //设置证书
-                PDFReader.SetDimension(2);             //设置尺寸单位  1-像素 2-毫米 3–英寸
-                PDFReader.SetRegionGuard("1,0,0,200,200","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
-                PDFReader.AddNormalSign(1, "", "");    //开始签章
-            }
-
-            function SetRegionGuard2(){
-                PDFReader.SetSignImage(1, "", "");      //设置印章,必须放在最前面设置
-                PDFReader.SetSignCert(1, "", "", "");   //设置证书
-                PDFReader.SetDimension(2);				//设置尺寸单位  1-像素 2-毫米 3–英寸
-                PDFReader.SetRegionGuard("1,0,0,200,225","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
-                PDFReader.AddNormalSign(1, "", "");     //开始签章
-            }
-
-            function SetRegionGuard3(){
-                PDFReader.SetSignImage(1, "", "");      //设置印章,必须放在最前面设置
-                PDFReader.SetSignCert(1, "", "", "");   //设置证书
-                PDFReader.SetDimension(2);              //设置尺寸单位  1-像素 2-毫米 3–英寸
-                PDFReader.SetRegionGuard("1,0,0,200,250","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
-                PDFReader.AddNormalSign(1, "", "");     //开始签章
-            }
-
-            function SetRegionGuard4(){
-                PDFReader.SetSignImage(1, "", "");      //设置印章,必须放在最前面设置
-                PDFReader.SetSignCert(1, "", "", "");   //设置证书
-                PDFReader.SetDimension(2);              //设置尺寸单位  1-像素 2-毫米 3–英寸
-                PDFReader.SetRegionGuard("1,0,0,200,275","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
-                PDFReader.AddNormalSign(1, "", "");     //开始签章
-            }
-
-        </script>
-
-	</head>
-
-
-    <body onload="LoadPage()">
-
-    <div style="display: inline-block;overflow-y: auto;width: 13%;height: 740px">
-        <div style="display: inline-block;">
-            <table width="100%" style="border-width: 1px; border-color: #000; border-style: solid" border="0">
-
-
-                <fieldset>
-                     <button style="width:108pt;" onclick="SetSafeKey()">
-						设置应用授权
-					 </button>
-
-					  <button style="width:108pt;" onclick="SoftSign()">
-						账号密码签章
-					 </button>
-
-                </fieldset>
-
-                <fieldset>
-                <legend style="color:#0000ff;font-size:14px">文档操作接口</legend>
-
-                <button style="width:108pt;" onclick="GetOCXVersion()">
-                    获取控件版本号
-                </button>
-                <button style="width:108pt;" onclick="OpenFile()">
-                    打开本地文档
-                </button>
-                <button style="width:108pt;" onclick="OpenWebFile()">
-                    打开网络文档
-                </button>
-                <button style="width:108pt;" onclick="SaveFile()">
-                    另存文档到本地
-                </button>
-                <button style="width:108pt;" onclick="SaveWebFile()">
-                    另存文档到后台
-                </button>
-                <button  style="width:108pt;" onclick="CloseFile()">
-                    关闭当前文档
-                </button>
-                <button style="width:108pt;" onclick="PrintFile()">
-                    打印文档
-                </button>
-                <button style="width:108pt;" onclick="ScrollView()">
-                    滚动视图
-                </button>
-                <button style="width:108pt;" onclick="GetPageCount()">
-                    文档总页数
-                </button>
-                <button style="width:108pt;" onclick="SetReadPage()">
-                    跳转到页码
-                </button>
-                <button style="width:108pt;" onclick="GetReadPage()">
-                    获取当前页码
-                </button>
-
-             </fieldset>
-
-                <fieldset>
-                <legend style="color:#0000ff;font-size:14px">外观接口</legend>
-                <button style="width:108pt;" onclick="SetReadZoom()">
-                    设置缩放
-                </button>
-                <button style="width:108pt;" onclick="SetReadRotate()">
-                    设置旋转
-                </button>
-                <button style="width:108pt;" onclick="SetDocName()">
-                    设置文档显示名称
-                </button>
-                <button style="width:108pt;" onclick="SetDocToolbarShow()">
-                    隐藏文档工具栏
-                </button>
-                <button style="width:108pt;" onclick="SetToolboxShow()">
-                    隐藏工具箱
-                </button>
-                <button style="width:108pt;" onclick="SetSidebarShow()">
-                    隐藏左导航栏
-                </button>
-                <button style="width:108pt;" onclick="SetDocToolbarButtonShow()">
-                    隐藏文档工具栏上的按钮
-                </button>
-                <button style="width:108pt;" onclick="SetToolboxButtonShow()">
-                    隐藏工具箱中的按钮
-                </button>
-                <button style="width:108pt;" onclick="SetTextColor()">
-                    设置文字颜色
-                </button>
-                <button style="width:108pt;" onclick="SetBackColor()">
-                    设置背景颜色
-                </button>
-                <button style="width:108pt;" onclick="SetTabShow()">
-                    隐藏Tab标签栏
-                </button>
-            </fieldset>
-
-                <fieldset>
-                <legend style="color:#0000ff;font-size:14px">签章接口</legend>
-                <button style="width:108pt;" onclick="SetSignImage()">
-                    设置印章图片来源
-                </button>
-                <button style="width:108pt;" onclick="SetSignCert()">
-                    设置证书来源
-                </button>
-                <button style="width:108pt;" onclick="SetSignWidthHeight()">
-                    设置印章宽高(可选)
-                </button>
-                <button style="width:108pt;" onclick="AddNormalSign()">
-                    开始普通印章
-                </button>
-                <button style="width:108pt;" onclick="AddMultiSign()">
-                    开始骑缝印章
-                </button>
-                <button style="width:108pt;" onclick="AddBatchSign()">
-                    开始多页印章
-                </button>
-                <button style="width:108pt;" onclick="SetKeyWordOffset()">
-                    设置关键字印章偏移(可选)
-                </button>
-                <button style="width:108pt;" onclick="AddKeyWordSign()">
-                    开始关键字印章
-                </button>
-                <button style="width:108pt;" onclick="AddTextWaterMark()">
-                    文字水印
-                </button>
-            </fieldset>
-
-                <fieldset>
-                <legend style="color:#0000ff;font-size:14px">签章扩展接口</legend>
-                <button style="width:108pt;" onclick="GetSignCount()">
-                    获取印章个数
-                </button>
-                <button style="width:108pt;" onclick="GetAllSignInfo()">
-                    获取当前文档所有印章信息
-                </button>
-                <button style="width:108pt;" onclick="SetOpenVerify()">
-                    设置打开文档是否验证
-                </button>
-                <button style="width:108pt;" style="width:100%;" onclick="SetSignSubjoin()">
-                    设置印章附加数据
-                </button>
-                <button style="width:108pt;" onclick="CallToolboxItem()">
-                    触发工具箱上的按钮
-                </button>
-                <button style="width:108pt;" onclick="VerifySign()">
-                    验证当前文档内的印章
-                </button>
-                <button style="width:108pt;" onclick="CrytoDataJiaM()">
-                    加密数据
-                </button>
-                <button style="width:108pt;" onclick="CrytoDataJieM()">
-                    解密数据
-                </button>
-
-            </fieldset>
-
-                <fieldset>
-                <legend style="color:#0000ff;font-size:14px">注释接口</legend>
-
-                <button style="width:108pt;" onclick="InsertGraphAnnotFZ()">
-                    插入附注
-                </button>
-                <button style="width:108pt;" onclick="InsertGraphAnnotYB()">
-                    插入直线注释
-                </button>
-                <button style="width:108pt;" onclick="InsertGraphAnnot()">
-                    插入圆形注释
-                </button>
-                <button style="width:108pt;" onclick="InsertGraphAnnotJX()">
-                    插入矩形注释
-                </button>
-                <button style="width:108pt;" onclick="InsertGraphAnnotDBX()">
-                    插入多边形注释
-                </button>
-                <button style="width:108pt;" onclick="InsertGraphAnnotYX()">
-                    插入云线注释
-                </button>
-                <button style="width:108pt;" onclick="GetAllAnnotInfo()">
-                    获取所有注释信息
-                </button>
-                <button style="width:108pt;" onclick="AddAnnot()">
-                    合并注释
-                </button>
-                <button style="width:108pt;" onclick="SetAnnotTipWndShow()">
-                    隐藏注释点击弹框
-                </button>
-                <button style="width:108pt;" onclick="GetAllTabAnnotInfo()">
-                    获取所有打开的文档内的注释
-                </button>
-                <button style="width:108pt;" onclick="SetAnnotOptionDlgInfo()">
-                    设置注释选项对话框的信息
-                </button>
-                <button style="width:108pt;" onclick="SetAnnotMenuVisible()">
-                    隐藏注释右键选项
-                </button>
-            </fieldset>
-
-
-                <fieldset>
-                <legend style="color:#0000ff;font-size:14px">测量接口</legend>
-                <button style="width:108pt;" onclick="MeterJL()">
-                    测量距离
-                </button>
-                <button style="width:108pt;" onclick="MeterJD()">
-                    测量角度
-                </button>
-                <button style="width:108pt;" onclick="MeterHC()">
-                    测量弧长
-                </button>
-                <button style="width:108pt;" onclick="MeterBJ()">
-                    测量半径
-                </button>
-                <button style="width:108pt;" onclick="MeterCX()">
-                    测量垂线
-                </button>
-                <button style="width:108pt;" onclick="MeterLXXD()">
-                    测量连续线段
-                </button>
-                <button style="width:108pt;" onclick="MeterTYMJ()">
-                    测量椭圆面积
-                </button>
-                <button style="width:108pt;" onclick="MeterJXMJ()">
-                    测量矩形面积
-                </button>
-                <button style="width:108pt;" onclick="MeterYXMJ()">
-                    测量异形面积
-                </button>
-
-            </fieldset>
-
-                <fieldset>
-                <legend style="color:#0000ff;font-size:14px">表单接口</legend>
-                <button style="width:108pt;" onclick="SetFormMode()">
-                    进入表单编辑模式
-                </button>
-                <button style="width:108pt;" onclick="WriteForm()">
-                    接口自动填写表单
-                </button>
-                <button style="width:108pt;" onclick="GetFormInfo()">
-                    获取所有表单数据
-                </button>
-                <button style="width:108pt; "onclick="GetNumberOfUnfilledEssentialForms()">
-                    获取未填写的必填表单数量
-                </button>
-                <button style="width:108pt;" onclick="SetFormModeEnd()">
-                    退出编辑模式
-                </button>
-            </fieldset>
-
-                <fieldset>
-                <legend style="color:#0000ff;font-size:14px">分区域保护接口</legend>
-                <button style="width:108pt;" onclick="SetRegionGuard1()">
-                    承办人签名
-                </button>
-                <button style="width:108pt;" onclick="SetRegionGuard2()">
-                    法制部门签名
-                </button>
-                <button style="width:108pt;" onclick="SetRegionGuard3()">
-                    承办负责人签名
-                </button>
-                <button style="width:108pt;" onclick="SetRegionGuard4()">
-                    行政负责人签名
-                </button>
-            </fieldset>
-            </table>
-        </div>
-    </div>
-
-	<div id='myDiv' style="display:inline-block; vertical-align:top;height:740px;width:86%;padding:0;margin:0"></div>
-    </body>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>
+    PDF控件测试网页
+  </title>
+
+
+  <!--控件对象事件-->
+  <script LANGUAGE=javascript FOR=PDF EVENT=Event_AddAnnot(ZSGuid,ZSType,Extend)>     //添加注释后事件
+  alert("事件添加注释GUID："+ZSGuid+"类型："+ZSType);
+  g_guid = ZSGuid;
+  </script>
+
+  <script LANGUAGE=javascript FOR=PDF EVENT=Event_SelectAnnot(ZSGuid,ZSType,Extend)>  //选中注释事件
+  alert("事件选中注释GUID："+ZSGuid+"类型："+ZSType);
+  g_guid = ZSGuid;
+  </script>
+
+  <script LANGUAGE=javascript FOR=PDF EVENT=Event_DeleteAnnot(ZSGuid,ZSType,Extend)>  //删除注释事件
+  alert("事件删除注释GUID："+ZSGuid+"类型："+ZSType);
+  g_guid = ZSGuid;
+  </script>
+
+  <script language="javascript" for=PDF event=Event_IntoAnnot(Guid,AnnotType,Extend)> //鼠标移动到批注上事件
+  //alert(Extend);
+  //alert("鼠标移动到批注位置上:"+Guid);
+  </script>
+
+  <script language="javascript" for=PDF event=Event_OutOfAnnot(Guid,AnnotType,Extend)> //鼠标离开批注上事件
+  //alert("鼠标移开批注位置上:"+Guid);
+  </script>
+
+  <script language="javascript" for=PDF event=Event_ChangeAnnot(Guid,AnnotType,Extend)> //批注修改事件
+  //alert("批注修改内容或属性事件触发:"+Guid);
+  </script>
+
+  <script language="javascript" for="PDF" event="Event_SignFinish(IsSucceed,SignType,Extend)"> //盖章完成事件
+  if(IsSucceed=="TRUE"){
+    alert("盖章成功事件");
+  }
+  </script>
+
+  <script language="javascript" for="PDF" event="Event_SignDelete(IsSucceed,SignType,Extend)"> //删除印章事件
+  if(IsSucceed=="TRUE"){
+    alert("撤章成功事件");
+  }
+  </script>
+
+  <script language="javascript" for="PDF" event="Event_ChangeFile(IsSucceed,CurrentFilePath,ChangeFilePath,Extend)"> //切换TAB事件
+  if(IsSucceed=="TRUE")  //成功
+  {
+    //alert("当前文档:"+CurrentFilePath+"切换前文档:"+ChangeFilePath);
+  }
+  </script>
+
+  <script language="javascript" for="PDF" event="Event_PrintFinish(IsSucceed,Extend)">
+    if(IsSucceed=="TRUE"){
+      alert("盖章成功事件");
+    }
+  </script>
+
+
+
+  <script language="javascript">
+
+    var PDFReader;
+    var g_guid;
+    function LoadPage()
+    {
+      var url  = getParam("path");
+      var divobj = document.createElement("div");
+      divobj.setAttribute("id", "objdiv1");
+      var obj = "";
+      obj = "<object style='display:inline-block;width:100%;height:1000px;vertical-align:top;' classid=clsid:3BCB99FC-44E6-407A-ACE8-9E20BFAA1A0F  id='PDF'</object>";
+      divobj.innerHTML = obj;
+      document.getElementById('myDiv').appendChild(divobj);
+      PDFReader = document.getElementById("PDF");
+      //alert(url);
+      PDFReader.OpenFile(2,url,"", ""); //打开网络文档
+      //PDFReader.OpenFile(2,"http://172.16.170.54:9332/12,3b11e8faa6","", ""); //打开网络文档
+    }
+
+    function getParam(paramName) {
+      paramValue = "", isFound = !1;
+      if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
+        arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("="), i = 0;
+        paramValue = arrSource[1];
+      }
+      return paramValue == "" && (paramValue = null), paramValue;
+      //alert(paramValue);
+    }
+
+    /*设置应用接口*/
+    function SetSafeKey() {
+
+      PDFReader.SetSafeKey("d01fa78a4c3e4fad82703705b618b4c3","ebd91896ce68436cb7a6bbd061824886","MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAPDNdPkKNWhm5gvgJLKqYhYLv7TQctwq3LFZXU+rJn7oBDh7YtsutmdclExZMrKNPq/Sz0iqqEzIymmm6G9nu0UCAwEAAQ==","MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA8M10+Qo1aGbmC+AksqpiFgu/tNBy3CrcsVldT6smfugEOHti2y62Z1yUTFkyso0+r9LPSKqoTMjKaabob2e7RQIDAQABAkEAhEOFtWibDz49q1YxMgWOHKfVY55/CFluoOcB7smGOntrROqwbXZB5H7uigCDpJwQoSQ7al59RY55K+XPyWrInQIhAP79lbpgsbTcugCZPngGivH3yHUxHgo1q9MQJ5UWS/SvAiEA8cF+VjsEwkGZX8jfehxpWornR7fa2U1QMZlTNPGktEsCIQCCUGy1zHblPKzeY3LWelmGIaDTq59zjkxa2HWyLqvwxwIgCFNil3Om4U3DC3Juh9UMp8qa1nR1fABWn66pF+yugGsCIFe4gA5RKbICDQEOU9Pjo+gNQaWK4G/aky7AObjzfGlV","I0CvoKqXVn5lnnVuyiuusA==","");
+    }
+
+    //软证书签章
+    function SoftSign() {
+
+      PDFReader.SetSafeKey("d01fa78a4c3e4fad82703705b618b4c3","ebd91896ce68436cb7a6bbd061824886","MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAPDNdPkKNWhm5gvgJLKqYhYLv7TQctwq3LFZXU+rJn7oBDh7YtsutmdclExZMrKNPq/Sz0iqqEzIymmm6G9nu0UCAwEAAQ==","MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA8M10+Qo1aGbmC+AksqpiFgu/tNBy3CrcsVldT6smfugEOHti2y62Z1yUTFkyso0+r9LPSKqoTMjKaabob2e7RQIDAQABAkEAhEOFtWibDz49q1YxMgWOHKfVY55/CFluoOcB7smGOntrROqwbXZB5H7uigCDpJwQoSQ7al59RY55K+XPyWrInQIhAP79lbpgsbTcugCZPngGivH3yHUxHgo1q9MQJ5UWS/SvAiEA8cF+VjsEwkGZX8jfehxpWornR7fa2U1QMZlTNPGktEsCIQCCUGy1zHblPKzeY3LWelmGIaDTq59zjkxa2HWyLqvwxwIgCFNil3Om4U3DC3Juh9UMp8qa1nR1fABWn66pF+yugGsCIFe4gA5RKbICDQEOU9Pjo+gNQaWK4G/aky7AObjzfGlV","I0CvoKqXVn5lnnVuyiuusA==","");
+      var rit=PDFReader.SetSignImage(7, "", "");				//设置印章图片
+      if(rit==0)
+      {
+        rit=PDFReader.SetSignCert(3,"","","");              //设置证书
+
+        if(rit==0)
+        {
+          PDFReader.AddNormalSign(0,"","");                  //手动定位模式
+        }
+      }
+    }
+
+    /*文档操作接口类*/
+    function GetOCXVersion() {
+      alert(PDFReader.GetOCXVersion());                                    //获取控件版本
+    }
+
+    function OpenFile() {
+      var url="C:\\Users\\admin\\Desktop\\test.pdf";
+      alert("正在打开本地文档："+url);
+      PDFReader.OpenFile(1,"C:\\Users\\admin\\Desktop\\test.pdf","","");  //打开本地文档
+    }
+
+    function OpenWebFile() {
+      var url="http://192.168.1.147:8080/pdf/test.pdf";
+      alert("正在打开网络文档："+url);
+      PDFReader.OpenFile(2,url,"", "");                    //打开网络文档
+    }
+
+    function SaveFile() {
+      alert("保存到:D:\\test.pdf");
+      PDFReader.SaveFile(2, "D:\\test.pdf", "");           //保存文档到本地
+    }
+
+    function SaveWebFile() {
+      var fileName = getParam(fileName).split("/");
+      var fileId = fileName[fileName.length-1];
+      //var url = "http://172.16.170.96:9000/case/sys/file/uploadDocDzqz/"+fileId;
+      var url = "http://124.192.215.4:9000/case/sys/file/uploadDocDzqz/"+fileId;
+      //var url = "http://127.0.0.1:9003/sys/file/uploadDocDzqz/"+fileId;
+      //if(PDFReader.GetSignCount(0, 0, "") == 0){
+      //	alert("请先进行签章操作，在保存！");
+      //}else{
+      PDFReader.SaveFile(3,url,"");
+      WebNewRequest(fileId);
+
+      alert("保存成功");
+      //}
+    }
+    function WebNewRequest(fileId){
+      $.ajax({
+        type : "GET",
+        url : "http://124.192.215.4:8083/system/socket/socket",
+        dataType : "json",
+        data : {userName:fileId,message:"1"},
+        success : function(data) {
+          if(!inValidSession(data)){
+            return;
+          }
+        }
+      });
+    }
+
+
+    function CloseFile() {
+      PDFReader.CloseFile(0);                    //关闭当前打开的文档
+    }
+
+    function PrintFile() {
+      PDFReader.PrintFile(1, "", 0, "","");      //打印当前文档
+    }
+
+    function ScrollView() {
+      PDFReader.ScrollView(4, "");               //滚动视图
+    }
+
+    function GetPageCount() {
+      alert(PDFReader.GetPageCount());           //获取文档总页数
+    }
+
+    function SetReadPage() {
+      PDFReader.SetReadPage(3);                  //跳转到指定页码
+    }
+
+    function GetReadPage() {
+      alert(PDFReader.GetReadPage());            //获取当前文档页码
+    }
+
+
+    /*控件外观接口类*/
+    function SetReadZoom() {
+      PDFReader.SetReadZoom(50);                 //设置缩放
+    }
+
+    function SetReadRotate() {
+      PDFReader.SetReadRotate(90);               //设置旋转
+    }
+
+    function SetDocName() {
+      PDFReader.SetDocName("你好，AZT!");        //设置文档显示名称
+    }
+
+    function SetDocToolbarShow() {                 //设置文档工具栏是否显示
+      PDFReader.SetDocToolbarShow(false);
+    }
+
+    function SetToolboxShow() {
+      PDFReader.SetToolboxShow(false);           //设置工具箱是否显示
+    }
+
+    function SetSidebarShow() {
+      PDFReader.SetSidebarShow(false);           //设置边侧栏是否显示
+    }
+
+    function SetDocToolbarButtonShow() {
+      PDFReader.SetDocToolbarButtonShow(1, false, "");    //设置文档工具栏上的按钮显示状态
+    }
+
+    function SetToolboxButtonShow() {
+      PDFReader.SetToolboxButtonShow(1, 2, false, "");    //隐藏工具箱中的按钮
+    }
+
+    function SetTextColor() {
+      PDFReader.SetTextColor(255, 0, 0);      //设置文本颜色
+    }
+
+    function SetBackColor() {
+      PDFReader.SetBackColor(0, 255, 0);      //设置背景颜色
+    }
+
+    function SetTabShow() {
+      PDFReader.SetTabShow(false);            //隐藏Tab标签栏
+    }
+
+
+    /*签章接口类*/
+    function SetSignImage() {
+      alert(PDFReader.SetSignImage(1, "2;", ""));				//设置印章图片来源
+    }
+
+    function SetSignCert() {
+      alert(PDFReader.SetSignCert(1, "", "", ""));			//设置证书来源
+    }
+
+    function AddNormalSign() {
+      PDFReader.AddNormalSign(1, "", "");						//开始普通印章
+    }
+
+    function AddKeyWordSign() {
+      PDFReader.AddKeyWordSign(1, 1, "a", "");				//开始关键字印章
+    }
+
+    function AddMultiSign() {
+      var ret = PDFReader.AddMultiSign(1, 1, 1, -1, 3, "");   //骑缝签章
+      alert(ret);
+    }
+
+    function AddBatchSign() {
+      PDFReader.AddBatchSign(1, "", "", "");					//多页签章
+    }
+
+    function AddTextWaterMark() {
+      PDFReader.AddTextWaterMark("你好，WORLD", 0, 50, -20, "");//插入水印
+    }
+
+    function SetSignWidthHeight() {
+      PDFReader.SetSignWidthHeight(100, 200);					//设置印章宽度和高度（可选）
+    }
+
+    function SetKeyWordOffset() {
+      PDFReader.SetKeyWordOffset(-50, 50);					//设置关键字定位偏移量（可选）
+    }
+
+    function GetSignCount() {
+      alert(PDFReader.GetSignCount(0, 0, ""));				//获取电子签章个数
+    }
+
+
+    /*签章辅助接口类*/
+    function SetOpenVerify() {
+      PDFReader.SetOpenVerify(true);							//设置打开文档是否验证印章
+    }
+
+    function SetSignSubjoin() {
+      PDFReader.SetSignSubjoin(4, "", 1, "", "");				//设置印章附加数据
+    }
+
+    function CallToolboxItem() {
+      PDFReader.CallToolboxItem(1, 2, "");					//触发工具箱上的按钮功能
+    }
+
+    function VerifySign() {
+      var Rit=PDFReader.VerifySign(0, "");					//验证电子签章有效性
+      alert(Rit);
+    }
+
+    function GetAllSignInfo() {
+      alert(PDFReader.GetAllSignInfo(""));					//获取所有印章信息
+    }
+
+
+    var Data;
+    function CrytoDataJiaM() {
+      Data=PDFReader.CrytoData(1, "你好，AZT!", "");			//加密数据
+      alert("加密后数据为:"+Data);
+    }
+
+    function CrytoDataJieM() {
+      Data=PDFReader.CrytoData(2, Data, "");					//解密数据
+      alert("解密后数据为:"+Data);
+    }
+
+
+    /*表单填报接口类*/
+    function SetFormMode() {
+      PDFReader.SetFormMode(1);									//表单模式设置
+    }
+
+    function WriteForm() {
+      var ret = PDFReader.SubmitForm("Text1", "", "TestText");	//接口填写表单内容
+      alert(ret);
+    }
+
+    function GetFormInfo() {
+      alert(PDFReader.GetFormInfo(1, "", ""));					//获取所有表单内容
+    }
+
+    function GetNumberOfUnfilledEssentialForms() {
+      alert(PDFReader.GetNumberOfUnfilledEssentialForms());		//获取未填写表单数量
+    }
+
+    function SetFormModeEnd()
+    {
+      PDFReader.SetFormMode(0);									//表单模式设置
+    }
+
+    /*注释接口类*/
+    function SetAnnotTipWndShow() {
+      PDFReader.SetAnnotTipWndShow(false,"");		//隐藏注释点击弹框接口
+    }
+
+    function GetAllTabAnnotInfo() {
+      var Rit=PDFReader.GetAllTabAnnotInfo(0,"");		// 获取所有打开的文档内的注释
+      alert(Rit);
+    }
+
+    function SetAnnotOptionDlgInfo() {
+      var Rit=PDFReader.SetAnnotOptionDlgInfo(2,80,0,255,0,0,0,255,"");		// 设置笔宽为2，不透明度为80，画笔颜色为绿色，填充颜色为蓝色
+    }
+
+    function SetAnnotMenuVisible() {
+      var Rit=PDFReader.SetAnnotMenuVisible(1,0,"");		// 隐藏注释右键选项
+    }
+
+    function InsertGraphAnnotFZ(){
+      var Rit=PDFReader.CallToolboxItem(2,1,"");  //附注
+    }
+
+    function InsertGraphAnnotYB(){
+      var Rit=PDFReader.CallToolboxItem(3,1,"");  //直线注释
+    }
+
+    function InsertGraphAnnot(){
+      var Rit=PDFReader.CallToolboxItem(3,2,"");  //椭圆注释
+    }
+
+    function InsertGraphAnnotJX(){
+      var Rit=PDFReader.CallToolboxItem(3,3,"");  //矩形注释
+    }
+
+    function InsertGraphAnnotDBX(){
+      var Rit=PDFReader.CallToolboxItem(3,4,"");  //多边形注释
+    }
+
+    function InsertGraphAnnotYX(){
+      var Rit=PDFReader.CallToolboxItem(3,5,"");  //云线注释
+    }
+
+    var AnnotData;
+    function GetAllAnnotInfo()						//获取所有注释信息
+    {
+      AnnotData=PDFReader.GetAllAnnotInfo("");
+      alert(AnnotData);
+    }
+
+    function AddAnnot()								//合并注释信息
+    {
+      PDFReader.AddAnnot(3,AnnotData,"");
+    }
+
+
+    /*测量接口类*/
+    function MeterJL()
+    {
+      var Rit=PDFReader.CallToolboxItem(5,1,"");  //测量距离
+    }
+
+    function MeterJD()
+    {
+      var Rit=PDFReader.CallToolboxItem(5,2,"");  //测量角度
+    }
+
+    function MeterHC()
+    {
+      var Rit=PDFReader.CallToolboxItem(5,3,"");  //测量弧长
+    }
+
+    function MeterBJ()
+    {
+      var Rit=PDFReader.CallToolboxItem(5,4,"");  //测量半径
+    }
+
+    function MeterCX()
+    {
+      var Rit=PDFReader.CallToolboxItem(5,5,"");  //测量垂线
+    }
+
+    function MeterLXXD()
+    {
+      var Rit=PDFReader.CallToolboxItem(5,6,"");  //测量连续线段
+    }
+
+    function MeterTYMJ()
+    {
+      var Rit=PDFReader.CallToolboxItem(5,7,"");  //测量椭圆面积
+    }
+
+    function MeterJXMJ()
+    {
+      var Rit=PDFReader.CallToolboxItem(5,8,"");  //测量矩形面积
+    }
+
+    function MeterYXMJ()
+    {
+      var Rit=PDFReader.CallToolboxItem(5,9,"");  //测量异形面积
+    }
+
+    /*签章扩展-分区域保护*/
+    function SetRegionGuard1()
+    {
+      PDFReader.SetSignImage(1, "", "");     //设置印章,必须放在最前面设置
+      PDFReader.SetSignCert(1, "", "", "");  //设置证书
+      PDFReader.SetDimension(2);             //设置尺寸单位  1-像素 2-毫米 3–英寸
+      PDFReader.SetRegionGuard("1,0,0,200,200","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
+      PDFReader.AddNormalSign(1, "", "");    //开始签章
+    }
+
+    function SetRegionGuard2(){
+      PDFReader.SetSignImage(1, "", "");      //设置印章,必须放在最前面设置
+      PDFReader.SetSignCert(1, "", "", "");   //设置证书
+      PDFReader.SetDimension(2);				//设置尺寸单位  1-像素 2-毫米 3–英寸
+      PDFReader.SetRegionGuard("1,0,0,200,225","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
+      PDFReader.AddNormalSign(1, "", "");     //开始签章
+    }
+
+    function SetRegionGuard3(){
+      PDFReader.SetSignImage(1, "", "");      //设置印章,必须放在最前面设置
+      PDFReader.SetSignCert(1, "", "", "");   //设置证书
+      PDFReader.SetDimension(2);              //设置尺寸单位  1-像素 2-毫米 3–英寸
+      PDFReader.SetRegionGuard("1,0,0,200,250","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
+      PDFReader.AddNormalSign(1, "", "");     //开始签章
+    }
+
+    function SetRegionGuard4(){
+      PDFReader.SetSignImage(1, "", "");      //设置印章,必须放在最前面设置
+      PDFReader.SetSignCert(1, "", "", "");   //设置证书
+      PDFReader.SetDimension(2);              //设置尺寸单位  1-像素 2-毫米 3–英寸
+      PDFReader.SetRegionGuard("1,0,0,200,275","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
+      PDFReader.AddNormalSign(1, "", "");     //开始签章
+    }
+
+  </script>
+
+</head>
+
+
+<body onload="LoadPage()">
+
+<div style="display: inline-block;overflow-y: auto;width: 13%;height: 740px">
+  <div style="display: inline-block;">
+    <table width="100%" style="border-width: 1px; border-color: #000; border-style: solid" border="0">
+
+
+      <fieldset>
+        <!--  <button style="width:108pt;height:30pt;" onclick="SetSafeKey()">
+           设置应用授权
+        </button> -->
+
+        <button style="width:108pt;" onclick="SoftSign()">
+          账号密码签章
+        </button>
+
+      </fieldset>
+      <fieldset>
+        <legend style="color:#0000ff;font-size:14px">文档操作接口</legend>
+
+        <button style="width:108pt;" onclick="GetOCXVersion()">
+          获取控件版本号
+        </button>
+        <button style="width:108pt;" onclick="OpenFile()">
+          打开本地文档
+        </button>
+        <button style="width:108pt;" onclick="OpenWebFile()">
+          打开网络文档
+        </button>
+        <button style="width:108pt;" onclick="SaveFile()">
+          另存文档到本地
+        </button>
+        <button style="width:108pt;" onclick="SaveWebFile()">
+          另存文档到后台
+        </button>
+        <button  style="width:108pt;" onclick="CloseFile()">
+          关闭当前文档
+        </button>
+        <button style="width:108pt;" onclick="PrintFile()">
+          打印文档
+        </button>
+        <button style="width:108pt;" onclick="ScrollView()">
+          滚动视图
+        </button>
+        <button style="width:108pt;" onclick="GetPageCount()">
+          文档总页数
+        </button>
+        <button style="width:108pt;" onclick="SetReadPage()">
+          跳转到页码
+        </button>
+        <button style="width:108pt;" onclick="GetReadPage()">
+          获取当前页码
+        </button>
+
+      </fieldset>
+
+      <fieldset>
+        <legend style="color:#0000ff;font-size:14px">外观接口</legend>
+        <button style="width:108pt;" onclick="SetReadZoom()">
+          设置缩放
+        </button>
+        <button style="width:108pt;" onclick="SetReadRotate()">
+          设置旋转
+        </button>
+        <button style="width:108pt;" onclick="SetDocName()">
+          设置文档显示名称
+        </button>
+        <button style="width:108pt;" onclick="SetDocToolbarShow()">
+          隐藏文档工具栏
+        </button>
+        <button style="width:108pt;" onclick="SetToolboxShow()">
+          隐藏工具箱
+        </button>
+        <button style="width:108pt;" onclick="SetSidebarShow()">
+          隐藏左导航栏
+        </button>
+        <button style="width:108pt;" onclick="SetDocToolbarButtonShow()">
+          隐藏文档工具栏上的按钮
+        </button>
+        <button style="width:108pt;" onclick="SetToolboxButtonShow()">
+          隐藏工具箱中的按钮
+        </button>
+        <button style="width:108pt;" onclick="SetTextColor()">
+          设置文字颜色
+        </button>
+        <button style="width:108pt;" onclick="SetBackColor()">
+          设置背景颜色
+        </button>
+        <button style="width:108pt;" onclick="SetTabShow()">
+          隐藏Tab标签栏
+        </button>
+      </fieldset>
+
+      <fieldset>
+        <legend style="color:#0000ff;font-size:14px">签章接口</legend>
+        <button style="width:108pt;" onclick="SetSignImage()">
+          设置印章图片来源
+        </button>
+        <button style="width:108pt;" onclick="SetSignCert()">
+          设置证书来源
+        </button>
+        <button style="width:108pt;" onclick="SetSignWidthHeight()">
+          设置印章宽高(可选)
+        </button>
+        <button style="width:108pt;" onclick="AddNormalSign()">
+          开始普通印章
+        </button>
+        <button style="width:108pt;" onclick="AddMultiSign()">
+          开始骑缝印章
+        </button>
+        <button style="width:108pt;" onclick="AddBatchSign()">
+          开始多页印章
+        </button>
+        <button style="width:108pt;" onclick="SetKeyWordOffset()">
+          设置关键字印章偏移(可选)
+        </button>
+        <button style="width:108pt;" onclick="AddKeyWordSign()">
+          开始关键字印章
+        </button>
+        <button style="width:108pt;" onclick="AddTextWaterMark()">
+          文字水印
+        </button>
+      </fieldset>
+
+      <fieldset>
+        <legend style="color:#0000ff;font-size:14px">签章扩展接口</legend>
+        <button style="width:108pt;" onclick="GetSignCount()">
+          获取印章个数
+        </button>
+        <button style="width:108pt;" onclick="GetAllSignInfo()">
+          获取当前文档所有印章信息
+        </button>
+        <button style="width:108pt;" onclick="SetOpenVerify()">
+          设置打开文档是否验证
+        </button>
+        <button style="width:108pt;" style="width:100%;" onclick="SetSignSubjoin()">
+          设置印章附加数据
+        </button>
+        <button style="width:108pt;" onclick="CallToolboxItem()">
+          触发工具箱上的按钮
+        </button>
+        <button style="width:108pt;" onclick="VerifySign()">
+          验证当前文档内的印章
+        </button>
+        <button style="width:108pt;" onclick="CrytoDataJiaM()">
+          加密数据
+        </button>
+        <button style="width:108pt;" onclick="CrytoDataJieM()">
+          解密数据
+        </button>
+
+      </fieldset>
+
+      <fieldset>
+        <legend style="color:#0000ff;font-size:14px">注释接口</legend>
+
+        <button style="width:108pt;" onclick="InsertGraphAnnotFZ()">
+          插入附注
+        </button>
+        <button style="width:108pt;" onclick="InsertGraphAnnotYB()">
+          插入直线注释
+        </button>
+        <button style="width:108pt;" onclick="InsertGraphAnnot()">
+          插入圆形注释
+        </button>
+        <button style="width:108pt;" onclick="InsertGraphAnnotJX()">
+          插入矩形注释
+        </button>
+        <button style="width:108pt;" onclick="InsertGraphAnnotDBX()">
+          插入多边形注释
+        </button>
+        <button style="width:108pt;" onclick="InsertGraphAnnotYX()">
+          插入云线注释
+        </button>
+        <button style="width:108pt;" onclick="GetAllAnnotInfo()">
+          获取所有注释信息
+        </button>
+        <button style="width:108pt;" onclick="AddAnnot()">
+          合并注释
+        </button>
+        <button style="width:108pt;" onclick="SetAnnotTipWndShow()">
+          隐藏注释点击弹框
+        </button>
+        <button style="width:108pt;" onclick="GetAllTabAnnotInfo()">
+          获取所有打开的文档内的注释
+        </button>
+        <button style="width:108pt;" onclick="SetAnnotOptionDlgInfo()">
+          设置注释选项对话框的信息
+        </button>
+        <button style="width:108pt;" onclick="SetAnnotMenuVisible()">
+          隐藏注释右键选项
+        </button>
+      </fieldset>
+
+
+      <fieldset>
+        <legend style="color:#0000ff;font-size:14px">测量接口</legend>
+        <button style="width:108pt;" onclick="MeterJL()">
+          测量距离
+        </button>
+        <button style="width:108pt;" onclick="MeterJD()">
+          测量角度
+        </button>
+        <button style="width:108pt;" onclick="MeterHC()">
+          测量弧长
+        </button>
+        <button style="width:108pt;" onclick="MeterBJ()">
+          测量半径
+        </button>
+        <button style="width:108pt;" onclick="MeterCX()">
+          测量垂线
+        </button>
+        <button style="width:108pt;" onclick="MeterLXXD()">
+          测量连续线段
+        </button>
+        <button style="width:108pt;" onclick="MeterTYMJ()">
+          测量椭圆面积
+        </button>
+        <button style="width:108pt;" onclick="MeterJXMJ()">
+          测量矩形面积
+        </button>
+        <button style="width:108pt;" onclick="MeterYXMJ()">
+          测量异形面积
+        </button>
+
+      </fieldset>
+
+      <fieldset>
+        <legend style="color:#0000ff;font-size:14px">表单接口</legend>
+        <button style="width:108pt;" onclick="SetFormMode()">
+          进入表单编辑模式
+        </button>
+        <button style="width:108pt;" onclick="WriteForm()">
+          接口自动填写表单
+        </button>
+        <button style="width:108pt;" onclick="GetFormInfo()">
+          获取所有表单数据
+        </button>
+        <button style="width:108pt; "onclick="GetNumberOfUnfilledEssentialForms()">
+          获取未填写的必填表单数量
+        </button>
+        <button style="width:108pt;" onclick="SetFormModeEnd()">
+          退出编辑模式
+        </button>
+      </fieldset>
+
+      <fieldset>
+        <legend style="color:#0000ff;font-size:14px">分区域保护接口</legend>
+        <button style="width:108pt;" onclick="SetRegionGuard1()">
+          承办人签名
+        </button>
+        <button style="width:108pt;" onclick="SetRegionGuard2()">
+          法制部门签名
+        </button>
+        <button style="width:108pt;" onclick="SetRegionGuard3()">
+          承办负责人签名
+        </button>
+        <button style="width:108pt;" onclick="SetRegionGuard4()">
+          行政负责人签名
+        </button>
+      </fieldset>
+    </table>
+  </div>
+</div>
+
+<div id='myDiv' style="display:inline-block; vertical-align:top;height:740px;width:86%;padding:0;margin:0"></div>
+</body>
 
 </html>
