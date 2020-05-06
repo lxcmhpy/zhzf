@@ -70,7 +70,6 @@
 <script>
 
   import {htmlExportPDF} from '@/common/js/htmlExportPDF'
-  import {MultBrowser} from '@/common/js/MultBrowser-1.0.2'
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
   import iLocalStroage from '@/common/js/localStroage';
@@ -141,7 +140,8 @@
           var string = test.split("/");
           var path = string[0] + "//" + string[2] + "/";
           // path +
-          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=http://124.192.215.10:9332/9,10a727c3ada3";
+          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0];
+          console.log(ActivexURL);
           _this.makeSealStr = ActivexURL;
           window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
         }
