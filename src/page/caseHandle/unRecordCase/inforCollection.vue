@@ -254,17 +254,17 @@
               <el-form-item label="与当事人关系">
                 <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
                   <el-option v-for="item in index === 0?allRelationWithParty:allRelationWithParty_" :key="item.value"
-                             :label="item.label" :value="item.value"></el-option>
+                             :label="item.label" :value="item.label"></el-option>
                 </el-select>
               </el-form-item>
             </div>
             <div class="item">
               <!-- 需要完善验证 -->
               <el-form-item label="与案件关系" class="is-required">
-                <el-select v-model="driverOrAgentInfo.relationWithCase" 
+                <el-select v-model="driverOrAgentInfo.relationWithCase"
                 :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
                   <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label"
-                             :value="item.value"></el-option>
+                             :value="item.label"></el-option>
                 </el-select>
               </el-form-item>
             </div>

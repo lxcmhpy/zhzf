@@ -336,65 +336,6 @@
       <!-- 右侧浮动栏 -->
       <div class="amap-position amap-rtl-box" :class="{'widthDrawer600': category == 4}" >
         <div class="amap-tool" style="position:relative;z-index:5;left:-80px;top:27px;" :class="{'left-500':drawer}">
-            <div class="amap-main-content amap-position-right" style="right:0px;" v-show="categoryStr == '非现场站点'">
-                <div class="top-title">
-                    <el-button size="medium" class="commonBtn searchBtn" >
-                        <img :src="'./static/images/img/lawSupervise/icon_01.png'" />
-                        非现场治超
-                    </el-button>
-                    <el-button size="medium" class="commonBtn searchBtn" >
-                        <img :src="'./static/images/img/lawSupervise/icon_02.png'" />
-                        入口称重
-                    </el-button>
-                    <el-button size="medium" class="commonBtn searchBtn" >
-                        <img :src="'./static/images/img/lawSupervise/icon_03.png'" />
-                        暂无
-                    </el-button>
-                </div>
-                <transition name="el-fade-in">
-                    <div class="echarts-box" style="width:100%;margin:0px;">
-                        <div>
-                            <el-table
-                            v-loading="loading"
-                                @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
-                                :data="zfdList"
-                                style="width: 100%;">
-                                <el-table-column
-                                    width="150px"
-                                    prop="name"
-                                    label="站点名称"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    width="92px"
-                                    prop="cxchl"
-                                    label="超限查处量"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="blackList"
-                                    label="重点监管"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="gjzl"
-                                    label="过检总量"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="status"
-                                    label="状态"
-                                    width="80px"
-                                    >
-                                    <template>
-                                        <div class="orangeBg circle" ></div>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                        </div>
-                    </div>
-                </transition>
-            </div>
             <el-popover
                 placement="bottom-start"
                 trigger="click"
@@ -443,12 +384,12 @@
           <i class="el-icon-arrow-right"></i>
         </div>
         <!-- v-if="category != 4"  -->
-        <el-drawer modal-append-to-body :direction="direction" size="380px"
-           customClass="amap-drawer w-400" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
+        <el-drawer modal-append-to-body :direction="direction" :size="category == 4? '540px': '380px '"
+           customClass="amap-drawer" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
-          <div class="amap-main-content" style="padding:0px 17px">
+          <div class="amap-main-content" style="padding:0px 17px" v-show="categoryStr != '非现场站点'">
             <transition name="el-fade-in">
               <div class="echarts-box">
                 <em class="title left">近三个月执行情况</em>
@@ -488,6 +429,67 @@
               </div>
             </transition>
           </div>
+          <div class="amap-tool" v-show="categoryStr == '非现场站点'">
+            <div class="" style="right:0px;" >
+                    <div class="top-title">
+                        <el-button size="medium" class="commonBtn searchBtn" >
+                            <img :src="'./static/images/img/lawSupervise/icon_01.png'" />
+                            非现场治超
+                        </el-button>
+                        <el-button size="medium" class="commonBtn searchBtn" >
+                            <img :src="'./static/images/img/lawSupervise/icon_02.png'" />
+                            入口称重
+                        </el-button>
+                        <el-button size="medium" class="commonBtn searchBtn" >
+                            <img :src="'./static/images/img/lawSupervise/icon_03.png'" />
+                            暂无
+                        </el-button>
+                    </div>
+                    <transition name="el-fade-in">
+                        <div class="echarts-box" style="width:100%;margin:0px;">
+                            <div>
+                                <el-table
+                                v-loading="loading"
+                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
+                                    :data="zfdList"
+                                    style="width: 100%;">
+                                    <el-table-column
+                                        width="150px"
+                                        prop="name"
+                                        label="站点名称"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        width="92px"
+                                        prop="cxchl"
+                                        label="超限查处量"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="blackList"
+                                        label="重点监管"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="gjzl"
+                                        label="过检总量"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="status"
+                                        label="状态"
+                                        width="80px"
+                                        >
+                                        <template>
+                                            <div class="orangeBg circle" ></div>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+                    </transition>
+                </div>
+            </div>
         </el-drawer>
         <!-- <el-drawer v-else
             modal-append-to-body
@@ -1578,13 +1580,12 @@ export default {
         }
       }
 
-    //   if (this.category == '4') {
-    //       this.updateDrawer1()
-    //   } else {
-    //       this.drawer1 = false;
-    //       this.drawer = false;
-    //       this.updateDrawer();
-    //   }
+      if (this.category == '4') {
+          this.drawer1 = false;
+          this.drawer = false;
+          this.updateDrawer1();
+          this.updateDrawer();
+      }
     },
     searchAll(pois) {
       this.markers.splice(0, this.markers.length);
