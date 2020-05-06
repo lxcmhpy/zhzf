@@ -778,7 +778,6 @@ export const mixinGetCaseApiList = {
           console.log('this.formData',this.formData);
         }
         
-        
       } else {
         if(savedData){
           this.caseDocDataForm.id = savedData.id;
@@ -788,11 +787,15 @@ export const mixinGetCaseApiList = {
             this.docData[key] = data[key].val || '';
           }
         }
-      
       }
       if (this.needDealData) {
         this.getDataAfter();
       } 
+      if (formData.party || docData.party) {
+        this.isParty = true;
+      } else {
+        this.isParty = false;
+      }
     }).catch(err=>{
       console.log(err);
     })

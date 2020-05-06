@@ -3,7 +3,7 @@
     <!-- sdmaskjdnsjdns -->
     <el-button type="primary" v-if="!disableWhenApproval" id="editCaseInfoBtn" @click="gotoEditCase">修改基本信息</el-button>
     <div class="print_info" id="establish-print">
-      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
+      <el-form :rules="rules" ref="esta55556blishForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
         <div class="doc_topic">立案登记表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -14,7 +14,7 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <div class="text-left">
-              <el-form-item prop="checkBox" :rules="propertyFeatures['checkBox'] && propertyFeatures['checkBox'].required ? rules.checkBox : [{ required: false, trigger: 'change' }]">
+              <el-form-item prop="checkBox" :rules="propertyFeatures['checkBox'] && propertyFeatures['checkBox'].required==true ? rules.checkBox : [{ required: false, trigger: 'change' }]">
                 <el-checkbox-group v-model="formData.checkBox" :disabled="propertyFeatures['checkBox'] && propertyFeatures['checkBox'].editable==false">
                   <p>
                     <el-checkbox label="行政检查">1.在行政检查中发现的；</el-checkbox>
