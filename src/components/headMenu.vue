@@ -26,11 +26,12 @@ import { mapGetters } from "vuex";
     },
     methods: {
       handleSelect(key, keyPath) {
+          debugger;
         let keyStr = key.split(this.reg);
         this.$store.commit("SET_ACTIVE_INDEX_STO", key);
         this.$store.commit("set_Head_Active_Nav", key);
         //将当前选中的一级菜单名传到父组件
-        this.$emit("selectHeadMenu",  keyStr[0]);
+        this.$emit("selectHeadMenu",  key);
         //删除之前的tab页签
         if (keyStr[2] && keyStr[2] !== 'null') {
             // debugger;
@@ -40,13 +41,12 @@ import { mapGetters } from "vuex";
         }
       }
     },
-    watch: {
-    },
     created () {
     },
     mounted () {
         this.headMenuList = this.menu;
         this.$store.commit("set_Head_Active_Nav", this.headActiveNav);
+        // this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexSto);
     },
     watch:{
       //监听menu

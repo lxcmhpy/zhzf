@@ -186,78 +186,7 @@
         }
     }
  }
- .amap-tool {
-    position: absolute;
-    left:450px;
-    top: 22px;
-    // z-index: 5;
-    display: flex;
-    box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
-    .el-icon-caret-top {
-        color: white;
-        position: absolute;
-        top: -14px;
-        margin-left: -12px;
-        font-size: 22px;
-    }
-    .el-button{
-        height: 35px;
-        line-height: 26px;
-        border-radius: 4px;
-        background: white;
-        color: #20232B;
-        position:relative;
-        border: 0px;
-        border-radius: 0px;
-        height: 46px;
-        margin:0px;
-        border-right: 2px solid white;
-        // &:hover {
-        //     background: rgba(29, 121, 214, 0.9);
-        //     color: $white;
-        // }
-        img {
-            float:left;
-            padding-right: 7px;
-        }
-    }
-    .no-border {
-        border:0px;
-        width: 75px;
-        height:40px;
-        line-height: 40px;
-        margin: -10px -10px 0 -10px;
-        cursor: pointer;
-        input {
-            border: none;
-            cursor: pointer;
-        }
 
-    }
-    .w75 {
-        width: 75px;
-    }
-    .w100 {
-        width: 100px;
-    }
-    .w160 {
-        width: 158px;
-    }
-
-    .top-title {
-        display: flex;
-        .el-button {
-            flex:1;
-            text-align: left;
-            padding-left:30px;
-            line-height: 55px;
-            height: 66px;
-            img {
-                margin-top:11px;
-            }
-        }
-    }
-}
 .drop-down-menu {
     background: white;
     border:none;
@@ -522,8 +451,8 @@
         overflow:hidden;
         height: 40px;
         position: absolute;
-        margin-left: -105px;
-        width: 300px;
+        margin-left: 0px;
+        width: auto;
         margin-top: -30px;
         background:white;
         box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
@@ -635,7 +564,7 @@
  }
  .amap-info-close {
     top: -15px !important;
-    left: 150px !important;
+    left: 10px !important;
     // color: white;
 }
  .amap-position-right {
@@ -691,9 +620,80 @@
         }
     }
     .amap-tool {
+        position: absolute;
+        // left:450px;
+        right: 27px;
+        top: 22px;
+        // z-index: 5;
+        display: flex;
+        box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
         .amap-main-content {
             position: absolute;
             height: auto;
+        }
+        .el-icon-caret-top {
+            color: white;
+            position: absolute;
+            top: -14px;
+            margin-left: -12px;
+            font-size: 22px;
+        }
+        .el-button{
+            height: 35px;
+            line-height: 26px;
+            border-radius: 4px;
+            background: white;
+            color: #20232B;
+            position:relative;
+            border: 0px;
+            border-radius: 0px;
+            height: 46px;
+            margin:0px;
+            border-right: 2px solid white;
+            // &:hover {
+            //     background: rgba(29, 121, 214, 0.9);
+            //     color: $white;
+            // }
+            img {
+                float:left;
+                padding-right: 7px;
+            }
+        }
+        .no-border {
+            border:0px;
+            width: 75px;
+            height:40px;
+            line-height: 40px;
+            margin: -10px -10px 0 -10px;
+            cursor: pointer;
+            input {
+                border: none;
+                cursor: pointer;
+            }
+
+        }
+        .w75 {
+            width: 75px;
+        }
+        .w100 {
+            width: 100px;
+        }
+        .w160 {
+            width: 158px;
+        }
+
+        .top-title {
+            display: flex;
+            .el-button {
+                flex:1;
+                text-align: left;
+                padding-left:30px;
+                line-height: 55px;
+                height: 66px;
+                img {
+                    margin-top:11px;
+                }
+            }
         }
     }
      .amap-drawer {
@@ -766,7 +766,7 @@
             height: 89px;
             background: url('../../../../static/images/img/lawSupervise/btn_norshouqi2.png');
             bottom: auto;
-            left:0px;
+            left:-23px;
             transform:rotate(90deg);
             position: absolute;
             top:-57px;
@@ -782,11 +782,18 @@
 
  }
  .widthDrawer600 {
+    // .drawerBtn {
+    //     right:530px;
+    //     z-index: 100;
+    // }
     .el-drawer__wrapper {
-        width: 650px;
+        width: 570px !important;
+        // padding:17px;
+        box-sizing: border-box;
         .amap-main-content .echarts-box {
             width: 100%;
         }
+
     }
  }
  .circle {
@@ -805,7 +812,7 @@
 }
 
 .left-500 {
-    left: -470px !important;
+    left: -570px !important;
 }
 
 /////////////////////////////////////待改
@@ -1259,7 +1266,7 @@
         top: 74px;
     }
     .lawWindowStyle-po {
-        margin-left: -125px;
+        // margin-left: -125px;
     }
     .amap-main-content  {
         height: 92vh;

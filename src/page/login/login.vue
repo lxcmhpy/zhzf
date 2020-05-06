@@ -252,7 +252,7 @@ export default {
                 // 登录成功
                   // 清除定时器
                   clearTimeout(_this.timeOutFlag)
-                 
+
                   // _this.getCurrentUser();
                   _this.$util.initUser(_this);
                   _this.success = false
@@ -284,13 +284,13 @@ export default {
 
     //获取菜单
     getMenu() {
-      
+
       let _this = this
       this.$store.dispatch("getMenu").then(
         res => {
           _this.menuList = [...res.data, ...menuList];
           _this.$store.commit("SET_MENU", _this.menuList);
-           this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
+           this.$store.commit("SET_ACTIVE_INDEX_STO", "caseHandle-menu-case_handle_home_index");
           _this.$store.commit('set_Head_Active_Nav',"caseHandle-menu-case_handle_home_index");
           _this.$router.push({ name: "case_handle_home_index" });
         },
@@ -308,7 +308,7 @@ export default {
         this.getMenu();
       },err=>{
         console.log(err);
-      }) 
+      })
     },
 
 
