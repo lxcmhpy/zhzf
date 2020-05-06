@@ -533,7 +533,7 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       console.log("row", row);
       this.$router.push({
-        name: row.url,
+        name: row.path,
         params: {
           id: row.id,
           //案件ID
@@ -555,7 +555,7 @@ export default {
       this.com_viewDoc(row);
     },
     addMoreDoc(row) {
-      console.log("添加");
+      console.log("添加",row);
       iLocalStroage.removeItem("currentDocDataId");
       this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
     },
@@ -606,7 +606,8 @@ export default {
         name: "询问笔录",
         status: "询问",
         openRow: true,
-        url: "case_handle_othermodle",
+        // url: "case_handle_othermodle",
+        path: "case_handle_othermodle",
         docId: "2c9029ca5b71686d015b71a86ead0032"
       });
       let askDocListFinishNum = 0;
