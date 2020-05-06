@@ -80,7 +80,7 @@
                 </el-form-item> -->
                 <el-form-item label="与案件关系" prop="relationWithCase" :rules="propertyFeatures['relationWithCase'] && propertyFeatures['relationWithCase'].required ? rules.relationWithCase : [{ required: false, trigger: 'change' }]">
                     <el-select ref="relationWithCase" v-model="formData.relationWithCase" :disabled="propertyFeatures['relationWithCase'] && propertyFeatures['relationWithCase'].editable==false">
-                      <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                      <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>
                     </el-select>
                  </el-form-item>
               </div>
@@ -104,7 +104,7 @@
                   <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
                 </el-form-item> -->
                 <el-form-item label="单位及职务" prop="partyUnitPositionAndCom" :rules="propertyFeatures['partyUnitPositionAndCom'] && propertyFeatures['partyUnitPositionAndCom'].required ? rules.partyUnitPositionAndCom : [{ required: false, trigger: 'blur' }]">
-                     <el-input ref="partyUnitPositionAndCom" clearable class="w-120" v-model="formData.partyUnitPositionAndCom" size="small" placeholder="请输入" 
+                     <el-input ref="partyUnitPositionAndCom" clearable class="w-120" v-model="formData.partyUnitPositionAndCom" size="small" placeholder="请输入"
                      :disabled="propertyFeatures['partyUnitPositionAndCom'] && propertyFeatures['partyUnitPositionAndCom'].editable==false"></el-input>
                  </el-form-item>
               </div>
@@ -160,7 +160,7 @@
             </div>
             <div class="row" v-if="!isParty">
               <div class="col">
-                <el-form-item label="法定代表人" prop="partyManager" :rules="propertyFeatures['partyManager'] && propertyFeatures['partyManager'].required ? rules.partyManager : [{ required: false, trigger: 'blur' }]">    
+                <el-form-item label="法定代表人" prop="partyManager" :rules="propertyFeatures['partyManager'] && propertyFeatures['partyManager'].required ? rules.partyManager : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     ref="partyManager"
                     clearable
@@ -173,7 +173,7 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="联系电话" prop="partyUnitTel" :rules="propertyFeatures['partyUnitTel'] && propertyFeatures['partyUnitTel'].required ? rules.partyUnitTel : [{ required: false, trigger: 'blur' }]">    
+                <el-form-item label="联系电话" prop="partyUnitTel" :rules="propertyFeatures['partyUnitTel'] && propertyFeatures['partyUnitTel'].required ? rules.partyUnitTel : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     ref="partyUnitTel"
                     clearable
@@ -188,7 +188,7 @@
             </div>
             <div class="row" v-if="!isParty">
               <div class="col">
-                <el-form-item label="统一社会信用代码" class="line-height13" prop="socialCreditCode" :rules="propertyFeatures['socialCreditCode'] && propertyFeatures['socialCreditCode'].required ? rules.socialCreditCode : [{ required: false, trigger: 'blur' }]">    
+                <el-form-item label="统一社会信用代码" class="line-height13" prop="socialCreditCode" :rules="propertyFeatures['socialCreditCode'] && propertyFeatures['socialCreditCode'].required ? rules.socialCreditCode : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     ref="socialCreditCode"
                     clearable
@@ -203,7 +203,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="车牌号码" prop="vehicleShipId" :rules="propertyFeatures['vehicleShipId'] && propertyFeatures['vehicleShipId'].required ? rules.vehicleShipId : [{ required: false, trigger: 'blur' }]">    
+                <el-form-item label="车牌号码" prop="vehicleShipId" :rules="propertyFeatures['vehicleShipId'] && propertyFeatures['vehicleShipId'].required ? rules.vehicleShipId : [{ required: false, trigger: 'blur' }]">
                   <el-input
                     ref="vehicleShipId"
                     clearable
@@ -216,7 +216,7 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="车辆类型" prop="vehicleShipType" :rules="propertyFeatures['vehicleShipType'] && propertyFeatures['vehicleShipType'].required ? rules.vehicleShipType : [{ required: false, trigger: 'change' }]">    
+                <el-form-item label="车辆类型" prop="vehicleShipType" :rules="propertyFeatures['vehicleShipType'] && propertyFeatures['vehicleShipType'].required ? rules.vehicleShipType : [{ required: false, trigger: 'change' }]">
                   <!-- <el-input ref="vehicleShipType" clearable class="w-120" v-model="formData.vehicleShipType" size="small" placeholder="请输入" :disabled="originalData.vehicleShipType ? true : false"></el-input> -->
                   <el-select v-model="formData.vehicleShipType"  :disabled="propertyFeatures['vehicleShipType'] && propertyFeatures['vehicleShipType'].editable==false">
                     <el-option
@@ -341,7 +341,7 @@
     <chooseAskPeopleDia ref="chooseAskPeopleDiaRef"></chooseAskPeopleDia>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
-  </div> 
+  </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
@@ -477,7 +477,7 @@ export default {
       askDocListFinishNum:0,//已完成询问笔录次数
       needDealData:true,
       propertyFeatures:'', //字段属性配置
-      
+
     };
   },
   computed: {
@@ -575,7 +575,7 @@ export default {
         docDataId:row.docDataId
       };
       this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: "case_handle_myPDF", params: routerData }); 
+      this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
