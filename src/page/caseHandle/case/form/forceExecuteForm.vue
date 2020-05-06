@@ -445,7 +445,7 @@
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
 //        console.log("row", row);
         this.$router.push({
-          name: row.url,
+          name: row.path,
           params: {
             id: row.id,
             //案件ID
@@ -461,7 +461,7 @@
           this.com_viewDoc(row);
       },
       addMoreDoc(row) {
-//        console.log("添加");
+       console.log("添加",row);
         iLocalStroage.removeItem("currentDocDataId");
         this.$refs.chooseHandleTypeDiaRef.showModal(row, this.isSaveLink);
       },
@@ -534,7 +534,7 @@
 //        console.log("djhafiufh执行方法")
         this.docTableDatas = [];
         this.allAskDocList = [];
-        this.docTableDatas.push({ name: '中止（终结、恢复）行政强制执行通知书', status: '中止', openRow: true, url: "case_handle_enforceDoc", docId: "2c902908696a1fc501696a754e3b0002" , note: '' });
+        this.docTableDatas.push({ name: '中止（终结、恢复）行政强制执行通知书', status: '中止', openRow: true, path: "case_handle_enforceDoc", docId: "2c902908696a1fc501696a754e3b0002" , note: '' });
 
         this.docTableDatasCopy.forEach(item => {
           console.log('名字啊啊啊', item.name)

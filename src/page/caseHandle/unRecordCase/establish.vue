@@ -3,7 +3,7 @@
     <!-- sdmaskjdnsjdns -->
     <el-button type="primary" v-if="!disableWhenApproval" id="editCaseInfoBtn" @click="gotoEditCase">修改基本信息</el-button>
     <div class="print_info" id="establish-print">
-      <el-form :rules="rules" ref="esta55556blishForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
+      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
         <div class="doc_topic">立案登记表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">

@@ -1,8 +1,9 @@
 // 视频呼叫 by:jingli
 // import v from "@/main.js";
 // import ElementUI from "element-ui";
+
 var PhoneCallModule =(function () {
-	var SERVER_ADDR = 'http://192.168.7.24:80/api/api.class.php?';
+    var SERVER_ADDR = 'http://192.168.7.24:80/api/api.class.php?';
 	function onCallStateChanged(e){
         switch (e.type){
 			//Failed to make call
@@ -131,6 +132,7 @@ var PhoneCallModule =(function () {
 	};
 
 	var videoCall = function(phoneNum, phoneName){
+
 		PhoneCall.sipVideoCall(phoneNum, phoneName);
 		console.log('视频去电')
 		//setDialogTitle('视频去电');
@@ -156,11 +158,13 @@ var PhoneCallModule =(function () {
 	};
 
 	var sipRegister = function(){
+        var urlObj = JSON.parse(localStorage.getItem('CURRENT_BASE_URL'));
         var callCredential = {
                         displayName: 'ecds05',
                         privateIdentity: '100007',
+                        webSocketServerUrl: urlObj.VIDEO_HOST,
                         // webSocketServerUrl: 'wss://172.16.170.47:10062',
-            			webSocketServerUrl: 'wss://124.192.215.9:10062',
+            			// webSocketServerUrl: 'wss://124.192.215.9:10062',
             			sipOutboundProxyUrl: 'udp://172.16.170.47:7766',
             			iceServers:'[]',
             			password: '1234',

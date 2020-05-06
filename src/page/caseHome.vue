@@ -428,18 +428,55 @@ export default {
     },
     clickCase(row) {
       if (this.moreFlag === 'unRecordCase') {
+        let setCaseNumber = row.caseNumber != '' ? row.caseNumber : row.tempNo;
+        this.$store.commit("setCaseNumber", setCaseNumber);
+        //暂存案件跳转信息采集
+        if (row.state == 0) {
+          this.$store.commit("setCaseId", row.id);
+          iLocalStroage.set("stageCaseId", row.id);
+          this.$router.replace({
+            name: "case_handle_inforCollect"
+          });
+          return;
+        }
+
         if (row.caseStatus === '已移送') {
           let message = '该案件正在移送中，移送完成后才可与继续办理'
           this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
         } else {
-          this.$store.commit("setCaseId", row.id);
-          //设置案件状态不为审批中
-          this.$store.commit("setCaseApproval", false);
-          this.$router.replace({
-            name: "case_handle_establish"
-          });
-          let setCaseNumber = row.caseNumber !== '' ? row.caseNumber : '案件'
-          this.$store.commit("setCaseNumber", setCaseNumber);
+          // this.$store.commit("setCaseId", row.id);
+          // //设置案件状态不为审批中
+          // this.$store.commit("setCaseApproval", false);
+          // this.$router.replace({
+          //   name: "case_handle_establish"
+          // });
+          // let setCaseNumber = row.caseNumber !== '' ? row.caseNumber : '案件'
+          // this.$store.commit("setCaseNumber", setCaseNumber);
+          
+          //立案登记表已保存未提交审批时 跳转pdf页面
+
+          this.$store.dispatch("getFile", {
+            docId: '2c9029ae654210eb0165421564970001',
+            caseId: row.id,
+          }).then(res => {
+            console.log('查询环节是否生成了pdf', res);
+            if (res && res.length > 0) {
+              this.$router.push({ name: 'case_handle_myPDF', params: { docId: '2c9029ae654210eb0165421564970001', caseLinktypeId: '2c90293b6c178b55016c17c255a4000d' } })
+            } else {
+              this.$store.commit("setCaseId", row.id);
+              //设置案件状态不为审批中
+              this.$store.commit("setCaseApproval", false);
+              this.$router.replace({
+                name: "case_handle_establish"
+              });
+              let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+              this.$store.commit("setCaseNumber", setCaseNumber);
+            }
+          })
+            .catch(err => { console.log(err) })
+
+
+
         }
       } else if (this.moreFlag === 'waitDeal') {
         if (row.caseStatus === '已移送') {
@@ -479,7 +516,7 @@ export default {
             name: "case_handle_caseInfo",
             params: {
               caseInfo: row,
-              isApproval:true
+              isApproval: true
             }
           });
           let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
@@ -672,8 +709,8 @@ export default {
   position: absolute;
   box-sizing: border-box;
   overflow: auto;
-  .searchCaseBox{
-    .el-input-group__append{
+  .searchCaseBox {
+    .el-input-group__append {
       border-radius: 0;
     }
   }

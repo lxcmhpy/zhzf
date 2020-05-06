@@ -11,7 +11,25 @@ export const mixinGetCaseApiList = {
       canGoNextLink:false,
     }
   },
-  computed: { ...mapGetters(['caseId']) },
+  computed: { 
+    ...mapGetters(['caseId']),
+    // 是否禁用
+    fieldDisabled(fieldProperty){
+      return function(fieldProperty){
+        return  fieldProperty && fieldProperty.editable==false
+      }
+    },
+    // 是否必填
+    fieldRules(field,fieldProperty,validateType='',partyOrCom=''){
+      return function(field,fieldProperty,validateType='',partyOrCom=''){
+        if(partyOrCom !== ''){
+          return  partyOrCom && fieldProperty && fieldProperty.required ? this.rules.field : [{ validator:validateType,trigger: 'blur'}]
+        }else{
+          return  fieldProperty && fieldProperty.required ? this.rules.field : [{ validator:validateType,trigger: 'blur'}]
+        }
+      }
+    }
+  },
   inject: ['reload'],
   methods: {
     //获取列表中的数据  未立案 审批中  待办理
@@ -434,7 +452,7 @@ export const mixinGetCaseApiList = {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
         console.log('row:', row)
         this.$router.push({
-          name: row.url,
+          name: row.path,
           params: {
             id: row.id,
             docId: row.docId,
@@ -608,10 +626,12 @@ export const mixinGetCaseApiList = {
       }
       //判断当事人类型
       if (formData.party) {
+        
         this.isParty = true;
       } else {
         this.isParty = false;
       }
+      console.log('设置当事人类型',this.isParty)
     },
     //环节已完成时只显示返回按钮（在流程图跳环节时）
     isCompete() {
@@ -791,7 +811,7 @@ export const mixinGetCaseApiList = {
       if (this.needDealData) {
         this.getDataAfter();
       } 
-      if (formData.party || docData.party) {
+      if ((this.formData && this.formData.party) || (this.docData && this.docData.party)) {
         this.isParty = true;
       } else {
         this.isParty = false;
