@@ -246,13 +246,14 @@
             </el-form-item>
           </div>
         </div>
-
+        <!-- 分隔线 -->
+        <div class="line"></div>
         <p>驾驶人或代理人</p>
-        <div class="driverOrAgentBox" v-for="(driverOrAgentInfo,index) in driverOrAgentInfoList" :key="index">
+        <div class="driverOrAgentBox" v-for="(driverOrAgentInfo,index) in driverOrAgentInfoList" :key="index" >
           <div>
             <div class="item">
               <el-form-item label="与当事人关系">
-                <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
+                <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty(index)">
                   <el-option v-for="item in index === 0?allRelationWithParty:allRelationWithParty_" :key="item.value"
                              :label="item.label" :value="item.label"></el-option>
                 </el-select>
@@ -262,7 +263,7 @@
               <!-- 需要完善验证 -->
               <el-form-item label="与案件关系" class="is-required">
                 <el-select v-model="driverOrAgentInfo.relationWithCase"
-                :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
+                :disabled="index==0&&relationWithPartyIsOne[index]">
                   <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label"
                              :value="item.label"></el-option>
                 </el-select>
@@ -273,7 +274,7 @@
             <div class="item">
               <el-form-item label="姓名">
                 <el-input v-model="driverOrAgentInfo.name"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
             </div>
             <div class="item appendSelect">
@@ -281,10 +282,10 @@
                 <el-input ref="partyIdNo" placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber"
                           @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
                           class="input-with-select hasMargintop"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
-                  <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
+                          :disabled="index==0&&relationWithPartyIsOne[index]">
+                  <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType" :disabled="index==0&&relationWithPartyIsOne[index]">
                     <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"
-                               :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-option>
+                               :disabled="index==0&&relationWithPartyIsOne[index]"></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -294,7 +295,7 @@
             <div class="itemThird">
               <el-form-item label="性别">
                 <el-select v-model="driverOrAgentInfo.sex"
-                           :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
+                           :disabled="index==0&&relationWithPartyIsOne[index]">
                   <el-option :value="0" label="男"></el-option>
                   <el-option :value="1" label="女"></el-option>
                 </el-select>
@@ -303,14 +304,14 @@
             <div class="itemThird">
               <el-form-item label="年龄">
                 <el-input v-model="driverOrAgentInfo.age" type="number"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
+                          :disabled="index==0&&relationWithPartyIsOne[index]"
                           @change="noFueA(driverOrAgentInfo.age)"></el-input>
               </el-form-item>
             </div>
             <div class="itemThird">
               <el-form-item label="联系电话">
                 <el-input v-model="driverOrAgentInfo.tel"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
+                          :disabled="index==0&&relationWithPartyIsOne[index]"
                           @blur="blur2($event.target.value)"></el-input>
               </el-form-item>
             </div>
@@ -319,13 +320,13 @@
             <div class="itemBig">
               <el-form-item label="联系地址">
                 <el-input v-model="driverOrAgentInfo.adress"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
             </div>
             <div class="itemSmall">
               <el-form-item label="邮编">
                 <el-input v-model="driverOrAgentInfo.adressCode"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
+                          :disabled="index==0&&relationWithPartyIsOne[index]"
                           @blur="blur3($event.target.value)"></el-input>
               </el-form-item>
             </div>
@@ -334,13 +335,13 @@
             <div class="itemBig">
               <el-form-item label="工作单位">
                 <el-input v-model="driverOrAgentInfo.company"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
             </div>
             <div class="itemSmall">
               <el-form-item label="职位">
                 <el-input v-model="driverOrAgentInfo.position"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -348,10 +349,12 @@
             <div class="itemOne">
               <el-form-item label="从业资格证号">
                 <el-input v-model="driverOrAgentInfo.zigeNumber"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
             </div>
           </div>
+          <!-- 分隔线 -->
+          <div class="line" v-if="index<driverOrAgentInfoList.length-1"></div>
         </div>
         <div class="buttonBox">
           <el-button type="primary" size="medium" icon="el-icon-plus" @click="addDriverOrAgent">添加其他人</el-button>
@@ -1010,7 +1013,7 @@
         showTrailer: false, //是否显示挂车信息
         judgFreedomList: [], //自由裁量列表
         caseSourceTextDisable: false,
-        relationWithPartyIsOne: true, //与当事人关系是否为同一人
+        relationWithPartyIsOne: [], //与当事人关系是否为同一人
         isHandleCase: false,
         activeJudgli: "",
         showOverrun: false, //显示超限信息锚点
@@ -1138,38 +1141,40 @@
         }
       },
       //更改与当事人关系   为同一人时自动赋值且不可编辑
-      changeRelationWithParty(val) {
-        console.log(this.driverOrAgentInfoList[0].relationWithParty === '同一人');
-        if (val === "0") {
+      changeRelationWithParty(index) {
+        console.log(index,'index')
+        console.log(this.driverOrAgentInfoList[index].relationWithParty === '同一人');
+        let val=this.driverOrAgentInfoList[index].relationWithParty
+        if (val === '同一人') {
           console.log(val);
-          debugger
-          this.driverOrAgentInfoList[val].relationWithCase = "0";
-          this.driverOrAgentInfoList[0].name = this.inforForm.party;
-          this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
-          this.driverOrAgentInfoList[0].zhengjianNumber = this.inforForm.partyIdNo;
-          this.driverOrAgentInfoList[0].sex = this.inforForm.partySex;
-          this.driverOrAgentInfoList[0].age = this.inforForm.partyAge;
-          this.driverOrAgentInfoList[0].tel = this.inforForm.partyTel;
-          this.driverOrAgentInfoList[0].adress = this.inforForm.partyAddress;
-          this.driverOrAgentInfoList[0].adressCode = this.inforForm.partyZipCode;
-          this.driverOrAgentInfoList[0].company = this.inforForm.partyUnitPosition;
-          this.driverOrAgentInfoList[0].position = this.inforForm.occupation;
-          this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
-          this.relationWithPartyIsOne = true;
+          // debugger
+          this.driverOrAgentInfoList[index].relationWithCase = "当事人";
+          this.driverOrAgentInfoList[index].name = this.inforForm.party;
+          this.driverOrAgentInfoList[index].zhengjianType = this.inforForm.partyIdType;
+          this.driverOrAgentInfoList[index].zhengjianNumber = this.inforForm.partyIdNo;
+          this.driverOrAgentInfoList[index].sex = this.inforForm.partySex;
+          this.driverOrAgentInfoList[index].age = this.inforForm.partyAge;
+          this.driverOrAgentInfoList[index].tel = this.inforForm.partyTel;
+          this.driverOrAgentInfoList[index].adress = this.inforForm.partyAddress;
+          this.driverOrAgentInfoList[index].adressCode = this.inforForm.partyZipCode;
+          this.driverOrAgentInfoList[index].company = this.inforForm.partyUnitPosition;
+          this.driverOrAgentInfoList[index].position = this.inforForm.occupation;
+          this.driverOrAgentInfoList[index].zigeNumber = this.inforForm.partyEcertId;
+          this.relationWithPartyIsOne[index] = true;
         } else {
-          this.driverOrAgentInfoList[0].relationWithCase = "";
-          this.driverOrAgentInfoList[0].name = "";
-          this.driverOrAgentInfoList[0].zhengjianType = "";
-          this.driverOrAgentInfoList[0].zhengjianNumber = "";
-          this.driverOrAgentInfoList[0].sex = "";
-          this.driverOrAgentInfoList[0].age = "";
-          this.driverOrAgentInfoList[0].tel = "";
-          this.driverOrAgentInfoList[0].adress = "";
-          this.driverOrAgentInfoList[0].adressCode = "";
-          this.driverOrAgentInfoList[0].company = "";
-          this.driverOrAgentInfoList[0].position = "";
-          this.driverOrAgentInfoList[0].zigeNumber = "";
-          this.relationWithPartyIsOne = false;
+          this.driverOrAgentInfoList[index].relationWithCase = "";
+          this.driverOrAgentInfoList[index].name = "";
+          this.driverOrAgentInfoList[index].zhengjianType = "";
+          this.driverOrAgentInfoList[index].zhengjianNumber = "";
+          this.driverOrAgentInfoList[index].sex = "";
+          this.driverOrAgentInfoList[index].age = "";
+          this.driverOrAgentInfoList[index].tel = "";
+          this.driverOrAgentInfoList[index].adress = "";
+          this.driverOrAgentInfoList[index].adressCode = "";
+          this.driverOrAgentInfoList[index].company = "";
+          this.driverOrAgentInfoList[index].position = "";
+          this.driverOrAgentInfoList[index].zigeNumber = "";
+          this.relationWithPartyIsOne[index] = false;
         }
       },
       //添加其他人信息
