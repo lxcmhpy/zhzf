@@ -39,7 +39,7 @@ export default {
   position: relative;
   .text {
     font-family: "HYShuYuanHeiJ";
-    color: $mainC;
+    color: $cats-main-color;
     font-size: 220px;
     display: flex;
     margin-top: 140px;

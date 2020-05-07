@@ -477,6 +477,98 @@ export function getAllPdfListApi(data) {
   });
 }
 
+//新增或修改文书类型列表
+export function saveOrUpdateDocTypeApi(data) {
+  return request({
+    url: "/case/doc/type/create",
+    method: "POST",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据ID删除文书类型
+export function deleteDocTypeApi(id) {
+  return request({
+    url: "/case/doc/type/deleteById/"+id,
+    method: "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据模版ID查询问题
+export function getRequestListByModelIdApi(id) {
+  return request({
+    url: "/case/doc/caseRequestModel/findRequestListByModelId/"+id,
+    method: "post",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//新增或修改问题
+export function saveOrUpdateRequestApi(data) {
+  return request({
+    url: "case/doc/caseRequestModel/createRequest",
+    method: "POST",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据ID删除问题
+export function deleteRequestApi(id) {
+  return request({
+    url: "/case/doc/caseRequestModel/deleteRequestById/"+id,
+    method: "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过条件查询问答模板列表
+export function getRequestModelListApi(data) {
+  return request({
+    url: "/case/doc/caseRequestModel/findByCondition",
+    method: "POST",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//新增或修改问答模板
+export function saveOrUpdateRequestModelApi(data) {
+  return request({
+    url: "case/doc/caseRequestModel/create",
+    method: "POST",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据ID删除问答模板
+export function deleteRequestModelApi(id) {
+  return request({
+    url: "/case/doc/caseRequestModel/deleteById/"+id,
+    method: "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 // 通过条件查询绑定列表(分页)
 export function findSetListApi(params) {
   let data = {

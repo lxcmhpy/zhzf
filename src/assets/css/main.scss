@@ -48,7 +48,7 @@
 
         &>.el-menu-item.is-active {
           color        : #fff;
-          border-bottom: 2px solid $blueC;
+          border-bottom: 2px solid $cats-blue-color;
         }
 
         .el-menu-item:focus,
@@ -93,7 +93,7 @@
 
   .el-aside {
     .el-menu {
-      background  : $blackC2;
+      background  : $cats-black2B313E-color;
       border-right: 0;
 
       .el-submenu__title {
@@ -105,7 +105,7 @@
       }
 
       .el-menu-item.is-active {
-        background: $blueC;
+        background: $cats-blue-color;
         color     : #fff;
       }
 
@@ -113,7 +113,7 @@
       .el-menu-item:hover,
       .el-menu-item:focus,
       .el-menu-item:hover {
-        background: $blueC;
+        background: $cats-blue-color;
         color     : #fff;
       }
 
@@ -122,7 +122,7 @@
 
   #tabsHeader {
     height    : 33px;
-    background: $blackC2;
+    background: $cats-black2B313E-color;
     color     : #9FA3AF;
     padding   : 0;
 
@@ -132,7 +132,7 @@
     }
 
     .el-tabs--border-card>.el-tabs__header {
-      background: $blackC2;
+      background: $cats-black2B313E-color;
     }
 
     .el-tabs--border-card {

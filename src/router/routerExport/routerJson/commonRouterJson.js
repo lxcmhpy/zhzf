@@ -124,13 +124,20 @@ export default [
             component: () => import("@/page/product-template/lawCategory/LawCategory.vue")
           },
           {
-            name: "docType",
+            name: "文书管理",
             path: "docType",
-            icon: null,
             meta: {
               title: "文书管理"
             },
             component: () => import("@/page/product-template/docType/docType.vue")
+          },
+          {
+            name: "询问笔录问答模板",
+            path: "requestModel",
+            meta: {
+              title: "询问笔录问答模板"
+            },
+            component: () => import("@/page/product-template/requestModel/requestModel.vue")
           },
           {
             name: "案件编号管理",
