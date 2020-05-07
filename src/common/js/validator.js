@@ -64,28 +64,28 @@ export function validatePhone(rule, value, callback) {
 
 /* 是否是身份证号码   有值时验证*/
 export function validateIDNumber(rule, value, callback) {
-    // var reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
-    // if (!reg.test(value) && value) {
-    //     callback(new Error('身份证格式错误'));
-    // }
-    // callback();
+    var reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
+    if (!reg.test(value) && value) {
+        callback(new Error('身份证格式错误'));
+    }
+    callback();
 
     
     
-    if(value){
-        if (18 != value.length) callback(new Error('身份证格式错误'));;
-        var number = value.toLowerCase();
-        var d, sum = 0, v = '10x98765432', w = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2], a = '11,12,13,14,15,21,22,23,31,32,33,34,35,36,37,41,42,43,44,45,46,50,51,52,53,54,61,62,63,64,65,71,81,82,91';
-        var re = number.match(/^(\d{2})\d{4}(((\d{2})(\d{2})(\d{2})(\d{3}))|((\d{4})(\d{2})(\d{2})(\d{3}[x\d])))$/);
-        if (re == null || a.indexOf(re[1]) < 0) callback(new Error('身份证格式错误'));
-        if (re[2].length == 9) {
-            number = number.substr(0, 6) + '19' + number.substr(6);
-            d = ['19' + re[4], re[5], re[6]].join('-');
-        } else d = [re[9], re[10], re[11]].join('-');
-        if (!isDateTime.call(d, 'yyyy-MM-dd')) callback(new Error('身份证格式错误'));
-        for (var i = 0; i < 17; i++) sum += number.charAt(i) * w[i];
-        if(!(re[2].length == 9 || number.charAt(17) == v.charAt(sum % 11))) callback(new Error('身份证格式错误'));
-    }
+    // if(value){
+    //     if (18 != value.length) callback(new Error('身份证格式错误'));;
+    //     var number = value.toLowerCase();
+    //     var d, sum = 0, v = '10x98765432', w = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2], a = '11,12,13,14,15,21,22,23,31,32,33,34,35,36,37,41,42,43,44,45,46,50,51,52,53,54,61,62,63,64,65,71,81,82,91';
+    //     var re = number.match(/^(\d{2})\d{4}(((\d{2})(\d{2})(\d{2})(\d{3}))|((\d{4})(\d{2})(\d{2})(\d{3}[x\d])))$/);
+    //     if (re == null || a.indexOf(re[1]) < 0) callback(new Error('身份证格式错误'));
+    //     if (re[2] && re[2].length == 9) {
+    //         number = number.substr(0, 6) + '19' + number.substr(6);
+    //         d = ['19' + re[4], re[5], re[6]].join('-');
+    //     } else d = [re[9], re[10], re[11]].join('-');
+    //     if (!isDateTime.call(d, 'yyyy-MM-dd')) callback(new Error('身份证格式错误'));
+    //     for (var i = 0; i < 17; i++) sum += number.charAt(i) * w[i];
+    //     if(!(re[2].length == 9 || number.charAt(17) == v.charAt(sum % 11))) callback(new Error('身份证格式错误'));
+    // }
     
     // if (re == null || a.indexOf(re[1]) < 0) callback(new Error('身份证格式错误'));
     // if (re[2].length == 9) {
@@ -95,7 +95,8 @@ export function validateIDNumber(rule, value, callback) {
     // if (!isDateTime.call(d, 'yyyy-MM-dd')) callback(new Error('身份证格式错误'));
     // for (var i = 0; i < 17; i++) sum += number.charAt(i) * w[i];
 	// if(!(re[2].length == 9 || number.charAt(17) == v.charAt(sum % 11))) callback(new Error('身份证格式错误'));
-    callback();
+    
+    // callback();
 }
 
 var isDateTime = function (format, reObj) {

@@ -153,19 +153,19 @@ body {
 }
 
 ::-webkit-scrollbar-track-piece {
-    background-color: $contentBC;
+    background-color: $cats-content-bg-color;
     @include borderRadius(8px);
 }
 
 ::-webkit-scrollbar-thumb:vertical {
     height: 5px;
-    background-color: $scrollbarC;
+    background-color: $cats-scrollbar-color;
     @include borderRadius(8px);
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
     width: 5px;
-    background-color: $scrollbarC;
+    background-color: $cats-scrollbar-color;
     @include borderRadius(8px);
 }
 

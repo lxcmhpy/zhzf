@@ -79,6 +79,7 @@
                   <el-input ref="partyAge" clearable class="w-120" type="number" v-model="formData.partyAge" size="small" placeholder="请输入" :disabled="originalData.partyAge ? true : false"></el-input>
                 </el-form-item> -->
                 <el-form-item label="与案件关系" prop="relationWithCase" :rules="propertyFeatures['relationWithCase'] && propertyFeatures['relationWithCase'].required ? rules.relationWithCase : [{ required: false, trigger: 'change' }]">
+                <!-- <el-form-item label="与案件关系" prop="relationWithCase"> -->
                     <el-select ref="relationWithCase" v-model="formData.relationWithCase" :disabled="propertyFeatures['relationWithCase'] && propertyFeatures['relationWithCase'].editable==false">
                       <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>
                     </el-select>
@@ -383,7 +384,8 @@ export default {
         partyUnitTel: "",
         socialCreditCode: "",
         vehicleShipId: "",
-        vehicleShipType: ""
+        vehicleShipType: "",
+        relationWithCase:"",
       },
       caseLinkDataForm: {
         id: "", //修改的时候用

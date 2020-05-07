@@ -2,56 +2,56 @@
 @import "./variables.scss";
 /*------------字体颜色设置------------字体颜色设置------------*/
 .blackC {
-    color: $blackC
+    color: $cats-base-black-color
 };
 .blackC2 {
-    color: $blackC2;
+    color: $cats-black2B313E-color;
 }
 .blueC {
-    color: $blueC;
+    color: $cats-blue-color;
 }
 .blueC3 {
-    color: $blueC3;
+    color: $cats-blue4D89FF-color;
 }
 .greenC2 {
-    color: $greenC2;
+    color: $cats-base-green-color;
 }
 .greenC3 {
-    color: $greenC3;
+    color: $cats-green51C5BC-color;
 }
 .orangeC {
-    color: $orangeC;
+    color: $cats-orange-color;
 }
 
 /*------------背景颜色设置------------背景颜色设置------------*/
 .blackBg {
-    background: $blackC;
+    background: $cats-black2B313E-color;
 }
 .blackBg2 {
-    background: $blackC2;
+    background: $cats-black2B313E-color;
 }
 .blueBg {
-    background: $blueC;
-    color: $white;
+    background: $cats-blue-color;
+    color: $cats-white-color;
 }
 .blueBg3 {
-    background:$blueC3;
+    background:$cats-blue4D89FF-color;
 }
 .greenBg2 {
-    background: $greenC2;
-    color: $white;
+    background: $cats-base-green-color;
+    color: $cats-white-color;
 }
 .greenBg3 {
-    background: $greenC3;
-    color: $white;
+    background: $cats-green51C5BC-color;
+    color: $cats-white-color;
 }
 .orangeBg {
-    background: $orangeC;
+    background: $cats-orange-color;
 }
 .redBg {
-    background: $redC;
+    background: $cats-red-color;
 }
-$grayC1: #F0F0F0;
+$cats-grayF0-color: #F0F0F0;
 .grayBg {
-    background: $grayC1;
+    background: $cats-grayF0-color;
 }

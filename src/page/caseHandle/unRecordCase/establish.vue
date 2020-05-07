@@ -14,7 +14,7 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <div class="text-left">
-              <el-form-item prop="checkBox" :rules="propertyFeatures['checkBox'] && propertyFeatures['checkBox'].required ? rules.checkBox : [{ required: false, trigger: 'change' }]">
+              <el-form-item prop="checkBox" :rules="propertyFeatures['checkBox'] && propertyFeatures['checkBox'].required==true ? rules.checkBox : [{ required: false, trigger: 'change' }]">
                 <el-checkbox-group v-model="formData.checkBox" :disabled="propertyFeatures['checkBox'] && propertyFeatures['checkBox'].editable==false">
                   <p>
                     <el-checkbox label="行政检查">1.在行政检查中发现的；</el-checkbox>

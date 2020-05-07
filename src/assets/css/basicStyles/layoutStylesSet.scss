@@ -8,11 +8,11 @@
 .tablePart {
     .el-table {
         .el-table__header {
-            border-top: 1px solid $tableHeaderC;
-            border-bottom: 1px solid $tableHeaderC;
+            border-top: 1px solid $cats-table-header-color;
+            border-bottom: 1px solid $cats-table-header-color;
         }
         th {
-            background: $tableHeaderBg !important;
+            background: $cats-table-header-bg !important;
             padding: 4px 0;
         }
     }
