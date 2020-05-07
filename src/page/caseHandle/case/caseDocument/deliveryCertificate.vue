@@ -28,8 +28,8 @@
               受送达人
             </td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item prop="recivePerson" class="pdf_datapick">
-                <el-input type='textarea' v-model="docData.recivePerson" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              <el-form-item prop="server" class="pdf_datapick">
+                <el-input type='textarea' v-model="docData.server" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
 
             </td>
@@ -39,8 +39,8 @@
               代收人
             </td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item prop="recivePersonInstead" class="pdf_datapick">
-                <el-input type='textarea' v-model="docData.recivePersonInstead" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              <el-form-item prop="collector" class="pdf_datapick">
+                <el-input type='textarea' v-model="docData.collector" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
 
             </td>
@@ -208,8 +208,8 @@ export default {
         caseName: "",
         caseNumber: "",
         servedOrg: iLocalStroage.gets("userInfo").organName,
-        recivePerson: "",
-        recivePersonInstead: "",
+        server: "",
+        collector: "",
         docNote: '',
         deliveryCertificatelist:[], //送达文书列表
         docLength:0, //送达文书列表长度
@@ -228,10 +228,10 @@ export default {
         servedOrg: [
           { required: true, message: '送达单位请输入', trigger: 'blur' },
         ],
-        recivePersonInstead: [
+        collector: [
           {  message: '代收人请输入', trigger: 'blur' },
         ],
-        recivePerson: [
+        server: [
           { required: true, message: '受送达人请输入', trigger: 'blur' },
         ],
         docLength: [
@@ -367,10 +367,10 @@ export default {
             caseNumber: this.docData.caseNumber,
             caseName: this.docData.caseName,
             servedOrg: this.docData.servedOrg,//送达单位
-            // recivePerson: this.docData.recivePerson,//受送达人
-            server: this.docData.recivePerson,
-            // recivePersonInstead: this.docData.recivePersonInstead,//代收人
-            collector: this.docData.recivePersonInstead,
+            // server: this.docData.server,//受送达人
+            server: this.docData.server,
+            // collector: this.docData.collector,//代收人
+            collector: this.docData.collector,
             deliveryCertificatelist:newdeliveryCertificatelist,//送达文书列表
             docNote: this.docData.docNote//备注
       };
@@ -441,10 +441,10 @@ export default {
     //         caseNumber: this.docData.caseNumber,
     //         caseName: this.docData.caseName,
     //         servedOrg: this.docData.servedOrg,//送达单位
-    //         // recivePerson: this.docData.recivePerson,//受送达人
-    //         server: this.docData.recivePerson,
-    //         // recivePersonInstead: this.docData.recivePersonInstead,//代收人
-    //         collector: this.docData.recivePersonInstead,
+    //         // server: this.docData.server,//受送达人
+    //         server: this.docData.server,
+    //         // collector: this.docData.collector,//代收人
+    //         collector: this.docData.collector,
     //         deliveryCertificatelist: this.docData.deliveryCertificatelist,//送达文书列表
     //         docNote: this.docData.docNote//备注
     //       };
