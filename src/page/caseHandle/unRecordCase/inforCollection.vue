@@ -262,7 +262,7 @@
               <!-- 需要完善验证 -->
               <el-form-item label="与案件关系" class="is-required">
                 <el-select v-model="driverOrAgentInfo.relationWithCase"
-                :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
+                :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false">
                   <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label"
                              :value="item.label"></el-option>
                 </el-select>
@@ -273,7 +273,7 @@
             <div class="item">
               <el-form-item label="姓名">
                 <el-input v-model="driverOrAgentInfo.name"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false"></el-input>
               </el-form-item>
             </div>
             <div class="item appendSelect">
@@ -281,10 +281,10 @@
                 <el-input ref="partyIdNo" placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber"
                           @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
                           class="input-with-select hasMargintop"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
-                  <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
+                          :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false">
+                  <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType" :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false">
                     <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"
-                               :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-option>
+                               :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false"></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -294,7 +294,7 @@
             <div class="itemThird">
               <el-form-item label="性别">
                 <el-select v-model="driverOrAgentInfo.sex"
-                           :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
+                           :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false">
                   <el-option :value="0" label="男"></el-option>
                   <el-option :value="1" label="女"></el-option>
                 </el-select>
@@ -303,14 +303,14 @@
             <div class="itemThird">
               <el-form-item label="年龄">
                 <el-input v-model="driverOrAgentInfo.age" type="number"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
+                          :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false"
                           @change="noFueA(driverOrAgentInfo.age)"></el-input>
               </el-form-item>
             </div>
             <div class="itemThird">
               <el-form-item label="联系电话">
                 <el-input v-model="driverOrAgentInfo.tel"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
+                          :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false"
                           @blur="blur2($event.target.value)"></el-input>
               </el-form-item>
             </div>
@@ -319,13 +319,13 @@
             <div class="itemBig">
               <el-form-item label="联系地址">
                 <el-input v-model="driverOrAgentInfo.adress"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false"></el-input>
               </el-form-item>
             </div>
             <div class="itemSmall">
               <el-form-item label="邮编">
                 <el-input v-model="driverOrAgentInfo.adressCode"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
+                          :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false"
                           @blur="blur3($event.target.value)"></el-input>
               </el-form-item>
             </div>
@@ -334,13 +334,13 @@
             <div class="itemBig">
               <el-form-item label="工作单位">
                 <el-input v-model="driverOrAgentInfo.company"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false"></el-input>
               </el-form-item>
             </div>
             <div class="itemSmall">
               <el-form-item label="职位">
                 <el-input v-model="driverOrAgentInfo.position"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -348,7 +348,7 @@
             <div class="itemOne">
               <el-form-item label="从业资格证号">
                 <el-input v-model="driverOrAgentInfo.zigeNumber"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="driverOrAgentInfo.relationWithParty=='同一人'?true : false"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -1140,10 +1140,8 @@
       //更改与当事人关系   为同一人时自动赋值且不可编辑
       changeRelationWithParty(val) {
         console.log(this.driverOrAgentInfoList[0].relationWithParty === '同一人');
-        if (val === "0") {
-          console.log(val);
-          debugger
-          this.driverOrAgentInfoList[val].relationWithCase = "0";
+        if (val === "同一人") {
+          this.driverOrAgentInfoList[0].relationWithCase = "当事人";
           this.driverOrAgentInfoList[0].name = this.inforForm.party;
           this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
           this.driverOrAgentInfoList[0].zhengjianNumber = this.inforForm.partyIdNo;
