@@ -13,7 +13,7 @@
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item label="原因" prop="reason" class="reasonCon">
+                <el-form-item label="原因" prop="reason" class="reasonCon" :rules="fieldRules('reason',propertyFeatures['reason'])">
                   <el-radio-group v-model="formData.reason" @change="changeReason">
                     <p><el-radio :label="1">违法行为轻微</el-radio></p>
                     <p><el-radio :label="2">违法事实不能成立</el-radio></p>
@@ -51,8 +51,9 @@
             </el-row>
             <div class="row">
               <div class="col">
-                <el-form-item prop="notes" label="备注">
-                  <el-input type="textarea" ref="notes" clearable :rows="4" v-model="formData.notes" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="notes" label="备注" :rules="fieldRules('notes',propertyFeatures['notes'])">
+                  <el-input type="textarea" ref="notes" clearable :rows="4" v-model="formData.notes" size="small" placeholder="请输入"
+                  :disabled="fieldDisabled(propertyFeatures['notes'])"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -124,7 +125,11 @@ export default {
         reason: [
           { required: true, message: '原因必须填写', trigger: 'change' }
         ],
+        notes: [
+          { required: true, message: '备注必须填写', trigger: 'change' }
+        ],
       },
+      propertyFeatures:''
     }
   },
   mixins: [mixinGetCaseApiList],

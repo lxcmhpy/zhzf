@@ -8,27 +8,27 @@
         <p class="p_begin">
           当事人（个人姓名或单位名称）
           <span>
-            <el-form-item prop="casepartyName" class="width220">
-              <el-input v-model="docData.party" :maxLength='maxLength'></el-input>
+            <el-form-item prop="party" class="width220" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
+              <el-input v-model="docData.party" :maxLength='maxLength' :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"></el-input>
             </el-form-item>
           </span>:
         </p>
         <p>
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick listen_data width151">
-              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-form-item prop="serviceTime" class="pdf_datapick listen_data width151" :rules="fieldRules('serviceTime',propertyFeatures['serviceTime'])">
+              <el-date-picker v-model="docData.serviceTime" :disabled="fieldDisabled(propertyFeatures['serviceTime'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span> ，本机关对你（单位）送达了
           <span>
-            <el-form-item prop="caseNumber" style="width:165px">
-              <el-input v-model="docData.caseNumber" :maxLength='maxLength' disabled></el-input>
+            <el-form-item prop="caseNumber" style="width:165px" :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
+              <el-input v-model="docData.caseNumber" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNumber'])"></el-input>
             </el-form-item>
           </span>（案号）《行政处罚决定书》，作出了对你（单位）罚款
           <span>
-            <el-form-item prop="fine">
+            <el-form-item prop="fine" :rules="fieldRules('fine',propertyFeatures['fine'])">
               <el-input v-model="docData.fine" :maxLength='maxLength'
-                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"></el-input>
+                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')" :disabled="fieldDisabled(propertyFeatures['fine'])"></el-input>
             </el-form-item>
           </span>（大写）的行政处罚决定，根据你（单位）的申请，本机关依据《中华人民共和国行政处罚法》第五十二条的规定，现决定：
         </p>
@@ -228,7 +228,9 @@
         disabledOne: true,
         disabledTwo: true,
         disabledThree: true,
-        isChange: false
+        isChange: false,
+        propertyFeatures:'',
+        isparty:true
       }
     },
 
