@@ -61,7 +61,7 @@
               <td>{{item.servedType ? item.servedType : ''}}</td>
               <td>{{item.deliveryMaster ? item.deliveryMaster.join(',') : ''}}</td>
             </tr>
-         
+
             <tr>
             <td colspan="6">
               <div class="pdf_seal">
@@ -86,12 +86,12 @@
           <el-input v-model="docData.docLength"></el-input>
         </el-form-item>
         </table>
-       
-        
+
+
       </el-form>
     </div>
 
-    
+
 
      <!-- 添加弹出框 -->
     <el-dialog title="编辑送达详情" :visible.sync="addVisible" width="75%" v-loading="addLoading" :before-close="handleClose">
@@ -321,7 +321,7 @@ export default {
   methods: {
   //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
-      debugger
+      // debugger
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
         caseId: this.caseId,
@@ -350,7 +350,7 @@ export default {
     // },
     //提交
     submitData(handleType) {
-       debugger
+       // debugger
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
         name: this.$route.params.url
@@ -376,9 +376,9 @@ export default {
       };
       console.log('送达回证',data);
       if (handleType==1) {
-         debugger
+         // debugger
         this.$refs['docForm'].validate((valid, noPass) => {
-           debugger
+           // debugger
           if (valid) {
              debugger
             this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(
@@ -501,7 +501,7 @@ export default {
     },
     //删除当前添加行的数据
     // handleRow(row) {
-        
+
     // },
     submitForm(formName){
       let canAdd = true;
@@ -545,7 +545,7 @@ export default {
             break;
           }
         }
-      
+
         if(canAdd){
           // this.tableDatas.forEach(item=>{
           //   item.deliveryMaster = item.deliveryMaster.join(',');
@@ -558,7 +558,7 @@ export default {
           //  })
           this.addVisible = false;
         }
-    
+
     },
     getDataAfter() {
       debugger
@@ -615,7 +615,7 @@ export default {
 <style  scoped>
 .print_box .print_info tr td{
   white-space: inherit;
-  
+
 }
 /* .color_DBE4EF
   /deep/

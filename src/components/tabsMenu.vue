@@ -40,7 +40,7 @@ export default {
     tabClick(tab) {
         let route = this.openTab[tab.index];
         let name = route.isCase ? route.name.split('-and-')[0] :route.name;
-        debugger;
+        // debugger;
         route.menuUrl = name;
         this.activeIndexStr = route.name;
         this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexStr);
@@ -101,7 +101,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-        debugger;
+        // debugger;
       //判断路由是否已经打开
       //已经打开的 ，将其置为active
       //未打开的，将其放入队列里

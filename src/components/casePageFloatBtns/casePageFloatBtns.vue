@@ -111,18 +111,6 @@
 
         let fileName = _this.storagePath[0].split("/");
         let fileId = fileName[fileName.length - 1];
-        $.ajax({
-          type: "GET",
-          url: iLocalStroage.gets('CURRENT_BASE_URL').QZ_ACTIVEX_HOST + "socket/socket",
-          dataType: "json",
-          data: {userName: fileId, message: "1"},
-          success: function (data) {
-            if (!inValidSession(data)) {
-              return;
-            }
-          }
-        });
-        return
 
         let websocket = null;
         //判断当前浏览器是否支持WebSocket
@@ -161,6 +149,10 @@
         //将消息显示在网页上
         function setMessageInnerHTML(innerHTML) {
           console.log(innerHTML);
+          if(innerHTML === '1'){
+            _this.$emit('reInstall');
+          }
+
         }
 
         //关闭连接

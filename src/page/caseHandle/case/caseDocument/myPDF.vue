@@ -6,7 +6,7 @@
            type="application/pdf" internalinstanceid="29">
     <!-- </div>  -->
     <casePageFloatBtns :storagePath="storagePath" :pageDomId="'establish-print'" :formOrDocData="formOrDocData"
-                       @submitData="submitData" @backHuanjie="backHuanjie"
+                       @submitData="submitData" @backHuanjie="backHuanjie" @reInstall="reInstall"
                        @showApprovePeopleList="showApprovePeopleList"></casePageFloatBtns>
 
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
@@ -46,6 +46,9 @@
         for (var i = 0; i < this.storagePath.length; i++) {
           // new PDFObject({ url: this.storagePath[i] }).embed();
         }
+      },
+      reInstall(){
+        this.getFile()
       },
       getFile() {
         // debugger;
