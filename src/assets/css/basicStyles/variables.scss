@@ -1,48 +1,48 @@
 /*---------- 颜色变量-------------------- 颜色变量----------*/
 
 /* 主色调 */
-$blackC : #252526;
-$blackC2: #2B313E;
-$greenC : #52C1B6;
-$greenC2: #4AAFA7;
-$greenC3: #51C5BC;
-$blueC  : #4573D0;
-$blueC2 : #0074F5;
-$blueC3 : #4D89FF;
-$yellowC: #F1C100;
-$grayC  : #EAEDF4;
-$mainC  : #000;
-$grayC: #FAFAFA;
-$grayC1: #F0F0F0;
-$white: #FFFFFF;
-$orangeC: #ffbe3a;
-$redC: #c63d3a;
+$cats-base-black-color : #252526;
+$cats-black2B313E-color: #2B313E;
+$cats-green52C1B6-color : #52C1B6;
+$cats-base-green-color: #4AAFA7;
+$cats-green51C5BC-color: #51C5BC;
+$cats-blue-color  : #4573D0;
+$cats-blue0074F5-color : #0074F5;
+$cats-blue4D89FF-color : #4D89FF;
+$cats-yellow-color: #F1C100;
+$cats-grayEAEDF4-color  : #EAEDF4;
+$cats-main-color  : #000;
+$cats-gray-color  : #FAFAFA;
+$cats-grayF0-color : #F0F0F0;
+$cats-white-color  : #FFFFFF;
+$cats-orange-color: #ffbe3a;
+$cats-red-color   : #c63d3a;
 
 /*  $bgC       : #f2f2f2; */
-$font_hover    : red;
-$lineC         : #d8d8d8;
-$activeTopLineC: #00adb5;
+$cats-font-hover-color      : red;
+$cats-line-color : #d8d8d8;
+$cats-activeTopLine-color  : #00adb5;
 
-$contentBC: #f8f9fe;
+$cats-content-bg-color           : #f8f9fe;
 /* 主背景色 */
-$scrollbarC: #dee2ef;
+$cats-scrollbar-color: #dee2ef;
 /* 滚动条颜色 */
 
-$fontC    : #442b2d;
-$fontBlack: #333;
+$cats-font-color    : #442b2d;
+$cats-font-black-color: #333;
 
-$shadowC: #d7d7d7;
-$mainBtn: #000;
-$color6 : #666;
+$cats-shadow-color: #d7d7d7;
+$cats-mainBtn-color         : #000;
+$cats-gray666-color        : #666;
 
-$grayColor: #ccc;
+$cats-grayccc-color: #ccc;
 /*----------table颜色---------table颜色---------*/
-$tableHeaderC: #E3E3EC;
-$tableHeaderBg: #E9EDF6;
+$cats-table-header-color   : #E3E3EC;
+$cats-table-header-bg  : #E9EDF6;
 
 /*---------- 长度变量-------------------- 长度变量----------*/
-$lenPX1: 380px;
-$lenPX2: 750px;
+$cats-length380px: 380px;
+$cats-length750px: 750px;
 
 
 $f12: 12px;
