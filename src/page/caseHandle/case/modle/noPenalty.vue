@@ -4,7 +4,7 @@
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
     <el-form ref="docForm" :disabled="formData.reason && originalData.reason ? true : false" :model="formData" label-width="105px" :rules="rules">
-      <div class="content_box" style="-webkit-box-shadow：none;box-shadow:none">
+      <div class="content_box">
         <div class="content">
           <div class="content_title">
             不予处罚 
@@ -38,7 +38,6 @@
                       :limit="3"
                       :show-file-list="false"
                       :before-upload="uploadFileValidat"
-                       :on-progress="uploadFileProcess"
                       >
                       <el-button size="small" type="primary">选取文件</el-button> <span class="upLoadNumSpan">最多上传3个附件</span>
 
@@ -286,18 +285,6 @@ export default {
          console.log(err)
       })
     },
-     //文件上传过程中的函数(在这里获取进度条的进度)
-        uploadFileProcess(event, file, fileList){
-            this.fileArr = fileList
-            this.fileArr.forEach(item=>{
-                if (item.percentage == 100) {
-
-                } else {
-                  item.progressFlag = true
-                  item.progressPercent = Math.abs(item.percentage.toFixed(0));
-                }
-            })
-        },
   },
   
   mounted() {
