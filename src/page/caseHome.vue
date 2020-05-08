@@ -430,10 +430,10 @@ export default {
       if (this.moreFlag === 'unRecordCase') {
         let setCaseNumber = row.caseNumber != '' ? row.caseNumber : row.tempNo;
         this.$store.commit("setCaseNumber", setCaseNumber);
+        this.$store.commit("setCaseId", row.id);
+        iLocalStroage.set("stageCaseId", row.id);
         //暂存案件跳转信息采集
         if (row.state == 0) {
-          this.$store.commit("setCaseId", row.id);
-          iLocalStroage.set("stageCaseId", row.id);
           this.$router.replace({
             name: "case_handle_inforCollect"
           });
@@ -452,7 +452,7 @@ export default {
           // });
           // let setCaseNumber = row.caseNumber !== '' ? row.caseNumber : '案件'
           // this.$store.commit("setCaseNumber", setCaseNumber);
-          
+
           //立案登记表已保存未提交审批时 跳转pdf页面
 
           this.$store.dispatch("getFile", {
