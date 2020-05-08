@@ -454,6 +454,7 @@ export default {
           // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
           this.docData.acceptTreatmentNumber = this.docData.acceptTreatmentNumber / (24 * 3600 * 1000);
           // 取整
+          console.log(this.docData.acceptTreatmentNumber,'this.docData.acceptTreatmentNumber')
           this.docData.acceptTreatmentNumber = Math.floor(this.docData.acceptTreatmentNumber) + 1;
           this.$set(this.docData, 'acceptTreatmentNumber',  this.docData.acceptTreatmentNumber);
           // 有问题，第一次点击不回显
@@ -471,8 +472,10 @@ export default {
           this.docData.acceptTreatmentEndDate = '';
           this.docData.acceptTreatmentNumber = '';
         }else{
-          this.docData.acceptTreatmentNumber = this.docData.acceptTreatmentEndDate - this.docData.acceptTreatmentStartDate;
+          console.log('时间',this.docData.acceptTreatmentStartDate,this.docData.acceptTreatmentEndDate)
+          this.docData.acceptTreatmentNumber = new Date(this.docData.acceptTreatmentEndDate) - new Date(this.docData.acceptTreatmentStartDate);
           this.docData.acceptTreatmentNumber = Math.abs(this.docData.acceptTreatmentNumber)
+          console.log('this.docData.acceptTreatmentEndDate',this.docData.acceptTreatmentEndDate)
           // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
           this.docData.acceptTreatmentNumber = this.docData.acceptTreatmentNumber / (24 * 3600 * 1000);
           // 取整

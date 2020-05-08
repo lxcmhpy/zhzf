@@ -171,19 +171,18 @@
               <p>理意</p>
               <p>见</p>
             </td>
-            <td rowspan="6" colspan="6" @click="showLawOfficeOpion">
+            <td rowspan="6" colspan="6" @click="showLawOfficeOpion" class="aprotd">
               <p class="approveDiv">{{formData.lawOfficeOpinions}}</p>
-              <div class="pdf_seal">
-                <!-- <p>执法人员签名：</p>
-                    <p>
-                        时间:
-                        <el-form-item prop="makeDate" class="pdf_datapick">
-                        <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon="el-icon-circle-close"></el-date-picker>
-                        </el-form-item>
-                    </p> -->
-                <p>执法人员签名：{{formData.lawOfficeName}}</p>
-                <p>
-                  {{formData.lawOfficeApprovalTime}}
+              <div class="pdf_seal" style="white-space:nowrap; width:auto;">
+                <p>执法人员签名：
+                  <span class="apro">
+                  {{formData.lawOfficeName||' '}}
+                  </span>、<span class="apro">
+                    {{formData.lawOfficeName1||' '}}
+                  </span>
+                 </p>
+                <p style="text-align: right;">
+                  {{formData.lawOfficeApprovalTime||' 年 月 日 '}}
                 </p>
               </div>
             </td>
@@ -202,12 +201,12 @@
               <p>人意</p>
               <p>见</p>
             </td>
-            <td rowspan="6" colspan="8">
+            <td rowspan="6" colspan="8" class="aprotd">
               <p class="approveDiv">{{formData.approveOpinions}}</p>
-              <div class="pdf_seal">
-                <p>签名：{{formData.approvePeo}}</p>
+              <div class="pdf_seal" style="white-space:nowrap; width:auto;">
+                <p>签名：<span class="apro">{{formData.approvePeo||' '}}</span></p>
                 <p>
-                  {{formData.approveTime}}
+                  {{formData.approveTime||' 年 月 日 '}}
                   <!-- <el-form-item prop="makeDate" class="pdf_datapick">
                         <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
                         </el-date-picker>
@@ -232,16 +231,12 @@
               <p>审核</p>
               <p>意见</p>
             </td>
-            <td rowspan="6" colspan="8">
+            <td rowspan="6" colspan="8" class="aprotd">
               <p class="approveDiv">{{formData.secondApproveOpinions}}</p>
-              <div class="pdf_seal">
-                <p>签名：{{formData.secondApprovePeo}}</p>
+              <div class="pdf_seal" style="white-space:nowrap; width:auto;">
+                <p>签名：<span class="apro">{{formData.secondApprovePeo||' '}}</span></p>
                 <p>
-                  {{formData.secondApproveTime}}
-                  <!-- <el-form-item prop="makeDate" class="pdf_datapick">
-                        <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
-                        </el-date-picker>
-                        </el-form-item>-->
+                  {{formData.secondApproveTime||' 年 月 日 '}}
                 </p>
               </div>
             </td>
@@ -263,16 +258,12 @@
               <p>批意</p>
               <p>见</p>
             </td>
-            <td rowspan="6" colspan="7">
+            <td rowspan="6" colspan="7" class="aprotd">
               <p class="approveDiv">{{formData.thirdApproveOpinions}}</p>
-              <div class="pdf_seal">
-                <p>签名：{{formData.thirdApprovePeo}}</p>
+              <div class="pdf_seal" style="white-space:nowrap; width:auto;">
+                <p>签名：<span class="apro">{{formData.thirdApprovePeo||' '}}</span></p>
                 <p>
-                  {{formData.thirdApproveTime}}
-                  <!-- <el-form-item prop="makeDate" class="pdf_datapick">
-                        <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
-                        </el-date-picker>
-                        </el-form-item>-->
+                  {{formData.thirdApproveTime||' 年 月 日 '}}
                 </p>
               </div>
             </td>
@@ -342,6 +333,7 @@ export default {
         evidenceList: [], //证据材料
         lawOfficeOpinions: '',
         lawOfficeName: '',
+        lawOfficeName1: '',
         lawOfficeApprovalTime: '',
         // investigProcess: "",
         // caseCauseDescrib: "",
@@ -625,4 +617,19 @@ export default {
 <style lang="scss">
 // @import "@/assets/css/documentForm.scss";
 @import "@/assets/css/caseHandle/caseDocModle.scss";
+</style>
+<style scoped>
+.apro{
+  display: inline-block;
+  border-bottom: 1px solid;
+  min-width:60px;
+  width:auto;
+  height:29px;
+  vertical-align: middle;
+}
+.aprotd{
+  word-wrap:break-word;
+  word-break:break-all;
+   white-space:normal !important;
+}
 </style>

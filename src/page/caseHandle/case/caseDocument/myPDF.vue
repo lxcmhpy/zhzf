@@ -47,7 +47,8 @@
           // new PDFObject({ url: this.storagePath[i] }).embed();
         }
       },
-      reInstall(){
+      reInstall() {
+        this.$set(this, 'storagePath', [])
         this.getFile()
       },
       getFile() {

@@ -17,7 +17,14 @@
             </el-tab-pane>
         </el-tabs>
     </div>
+
+
     <div class="searchAndpageBox toggleBox">
+        <!-- <iframe src="http://172.16.170.54:9332/9,105b6779dca4#toolbar=0#" width="900px" height="1000px" style="background:white;"></iframe> -->
+         <!-- <object>
+            <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1200px !important;" name="plugin" id="plugin"
+            src="http://172.16.170.54:9332/9,105b6779dca4#palette='white|white'#" type="application/pdf" internalinstanceid="29">
+        </object> -->
         <div class="handlePart caseHandleSearchPart" :class="{'autoHeight':isShow}">
             <el-form :inline="true" :model="form" label-width="80px"  ref="offsiteManageform">
                 <el-form-item label="检测站点" prop="siteName">

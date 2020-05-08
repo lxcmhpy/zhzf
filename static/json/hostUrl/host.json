@@ -5,7 +5,7 @@
     "CAPTCHA_HOST": "http://124.192.215.4:9000",
     "PDF_HOST": "http://124.192.215.10:9332/",
     "QZ_ACTIVEX_HOST": "http://124.192.215.4:8083/",
-    "LAW_SUPERVISE_HOST": "http://124.192.215.4:8090/", 
+    "LAW_SUPERVISE_HOST": "http://124.192.215.4:8090/",
     "VIDEO_HOST": "wss://124.192.215.9:10062"
   },
   "NW": {
