@@ -880,3 +880,14 @@ export function findBindPropertyRuleApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+export function testApi() {
+  return request({ 
+    url: "/socket/socket?userName=1&message=1",
+    method: "get",
+    showloading: true,
+    baseUrlType:3,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

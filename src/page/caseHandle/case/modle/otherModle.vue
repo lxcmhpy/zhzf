@@ -9,54 +9,56 @@
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <span class="datapick_style">
           <p>
-            时间：<el-form-item prop="askdataStart" class="pdf_datapick" id="askModelDataTimeBox">
+            时间：<el-form-item prop="askdataStart" class="pdf_datapick" id="askModelDataTimeBox" :rules="fieldRules('askdataStart',propertyFeatures['askdataStart'])">
               <el-date-picker
                 v-model="docData.askdataStart"
                 type="datetime"
                 format="yyyy-MM-dd HH:mm"
-                value-format="yyyy年MM月dd日HH时mm分">
+                value-format="yyyy年MM月dd日HH时mm分"
+                :disabled="fieldDisabled(propertyFeatures['askdataStart'])">
               </el-date-picker>
               <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.askdataStart"></el-input>
             </el-form-item>
             至
-            <el-form-item prop="askdataEnd" class="pdf_datapick" style="width:100px">
+            <el-form-item prop="askdataEnd" class="pdf_datapick" style="width:100px" :rules="fieldRules('askdataEnd',propertyFeatures['askdataEnd'])">
               <el-time-picker
                 placeholder="时 分"
                 v-model="docData.askdataEnd"
                 format="HH时mm分"
                 value-format="HH:mm"
+                :disabled="fieldDisabled(propertyFeatures['askdataEnd'])"
               >
               </el-time-picker>
             </el-form-item>
 
             <span style="margin-left:50px">第</span>
-            <el-form-item class="askRecordNumberBox" prop="askRecordNumber">
-              <el-input v-model="docData.askRecordNumber" maxLength='2' placeholder="\"></el-input>
+            <el-form-item class="askRecordNumberBox" prop="askRecordNumber" :rules="fieldRules('askRecordNumber',propertyFeatures['askRecordNumber'])">
+              <el-input v-model="docData.askRecordNumber" maxLength='2' placeholder="\" :disabled="fieldDisabled(propertyFeatures['askRecordNumber'])"></el-input>
             </el-form-item>次询问
 
           </p>
           <p>地点：
-            <el-form-item v-if="!lineStyleFlag" prop="inquiryAddress" class="inquiryAddressBox" style="width:570px">
-              <el-input v-model="docData.inquiryAddress" maxLength='40' placeholder="\"></el-input>
+            <el-form-item v-if="!lineStyleFlag" prop="inquiryAddress" class="inquiryAddressBox" style="width:570px" :rules="fieldRules('inquiryAddress',propertyFeatures['inquiryAddress'])">
+              <el-input v-model="docData.inquiryAddress" maxLength='40' placeholder="\" :disabled="fieldDisabled(propertyFeatures['inquiryAddress'])"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiryAddress}}</u>
           </p>
           <el-row>
             <el-col :span="12">
-              <p>询问人：<el-form-item v-if="!lineStyleFlag" prop="inquiryStaff" class="width212">
+              <p>询问人：<el-form-item v-if="!lineStyleFlag" prop="inquiryStaff" class="width212" :rules="fieldRules('inquiryStaff',propertyFeatures['inquiryStaff'])">
                   <!-- <el-input type='textarea' v-model="docData.inquiryStaff" v-bind:class="{ over_flow:docData.inquiryStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <!-- <el-input type='textarea' v-model="docData.inquiryStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <el-select v-model="docData.inquiryStaff" :maxLength='maxLength'>
+                  <el-select v-model="docData.inquiryStaff" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['inquiryStaff'])">
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option>
                   </el-select>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiryStaff}}</u></p>
             </el-col>
             <el-col :span="12">
-              <p>记录人：<el-form-item v-if="!lineStyleFlag" prop="recordStaff" style="width:246px">
+              <p>记录人：<el-form-item v-if="!lineStyleFlag" prop="recordStaff" style="width:246px" :rules="fieldRules('recordStaff',propertyFeatures['recordStaff'])">
                   <!-- <el-input type='textarea' v-model="docData.recordStaff" v-bind:class="{ over_flow:docData.recordStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <!-- <el-input type='textarea' v-model="docData.recordStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <el-select v-model="docData.recordStaff" :maxLength='maxLength'>
+                  <el-select v-model="docData.recordStaff" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['recordStaff'])">
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option>
                   </el-select>
                 </el-form-item>
@@ -66,9 +68,9 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <p>被询问人： <el-form-item v-if="!lineStyleFlag" prop="inquiried" class="width188">
+              <p>被询问人： <el-form-item v-if="!lineStyleFlag" prop="inquiried" class="width188" :rules="fieldRules('inquiried',propertyFeatures['inquiried'])">
                   <!-- <el-input type='textarea' v-model="docData.inquiried" v-bind:class="{ over_flow:docData.inquiried.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <el-input type='textarea' v-model="docData.inquiried" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                  <el-input type='textarea' v-model="docData.inquiried" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['inquiried'])"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiried}}</u>
               </p>
@@ -79,8 +81,8 @@
 
                   <el-input type='textarea' v-model="docData.inquiriedRelation" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
                 </el-form-item> -->
-                <el-form-item prop="inquiriedRelation" style="width:209px">
-                <el-select v-model="docData.inquiriedRelation" @change="changeRelationWithCase">
+                <el-form-item prop="inquiriedRelation" style="width:209px" :rules="fieldRules('inquiriedRelation',propertyFeatures['inquiriedRelation'])">
+                <el-select v-model="docData.inquiriedRelation" @change="changeRelationWithCase" :disabled="fieldDisabled(propertyFeatures['inquiriedRelation'])">
                   <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>
                 </el-select>
                 </el-form-item>
@@ -92,10 +94,10 @@
           <el-row>
             <el-col :span="12">
               <p>
-                性别：<el-form-item v-if="!lineStyleFlag" prop="inquiriedSex" class="width228">
+                性别：<el-form-item v-if="!lineStyleFlag" prop="inquiriedSex" class="width228" :rules="fieldRules('inquiriedSex',propertyFeatures['inquiriedSex'])">
                   <!-- <el-input type='textarea' v-model="docData.inquiriedSex" v-bind:class="{ over_flow:docData.inquiriedSex.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
                   <!-- <el-input type='textarea' v-model="docData.inquiriedSex" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <el-select v-model="docData.inquiriedSex" :maxLength="maxLength" placeholder="\">
+                  <el-select v-model.number="docData.inquiriedSex" :maxLength="maxLength" placeholder="\" :disabled="fieldDisabled(propertyFeatures['inquiriedSex'])">
                     <el-option :value="0" label="男"></el-option>
                     <el-option :value="1" label="女"></el-option>
                   </el-select>
@@ -106,9 +108,9 @@
             </el-col>
             <el-col :span="12">
               <p>
-                年龄：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAge" style="width:262px">
+                年龄：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAge" style="width:262px" :rules="fieldRules('inquiriedAge',propertyFeatures['inquiriedAge'])">
                   <!-- <el-input type='textarea' v-model="docData.inquiriedAge" v-bind:class="{ over_flow:docData.inquiriedAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <el-input type='textarea' v-model="docData.inquiriedAge" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                  <el-input type='textarea' v-model="docData.inquiriedAge" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['inquiriedAge'])"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedAge}}</u>
               </p>
@@ -117,53 +119,53 @@
           <el-row>
             <el-col :span="12">
               <p>
-                身份证件号：<el-form-item v-if="!lineStyleFlag" prop="inquiriedIdNo" class="width180">
-                  <el-input type='textarea' v-model="docData.inquiriedIdNo" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                身份证件号：<el-form-item v-if="!lineStyleFlag" prop="inquiriedIdNo" class="width180" :rules="fieldRules('inquiriedIdNo',propertyFeatures['inquiriedIdNo'],validateIDNumber)">
+                  <el-input type='textarea' v-model="docData.inquiriedIdNo" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['inquiriedIdNo'])"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedIdNo}}</u>
               </p>
             </el-col>
             <el-col :span="12">
               <p>
-                联系电话：<el-form-item v-if="!lineStyleFlag" prop="inquiriedTel" style="width:230px">
-                  <el-input type='textarea' v-model="docData.inquiriedTel" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                联系电话：<el-form-item v-if="!lineStyleFlag" prop="inquiriedTel" style="width:230px" :rules="fieldRules('inquiriedTel',propertyFeatures['inquiriedTel'],validatePhone)">
+                  <el-input type='textarea' v-model="docData.inquiriedTel" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['inquiriedTel'])"></el-input>
                 </el-form-item>
                 <u v-if="lineStyleFlag">{{docData.inquiriedTel}}</u>
               </p>
             </el-col>
           </el-row>
-          <p>工作单位及职务：<el-form-item v-if="!lineStyleFlag" prop="inquiriedUnitPosition" class="inquiriedUnitPositionBox">
-              <el-input type='textarea' v-model="docData.inquiriedUnitPosition" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+          <p>工作单位及职务：<el-form-item v-if="!lineStyleFlag" prop="inquiriedUnitPosition" class="inquiriedUnitPositionBox" :rules="fieldRules('inquiriedUnitPosition',propertyFeatures['inquiriedUnitPosition'])">
+              <el-input type='textarea' v-model="docData.inquiriedUnitPosition" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['inquiriedUnitPosition'])"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiriedUnitPosition}}</u></p>
-          <p>联系地址：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAddress" class="inquiriedAddressBox">
-              <el-input type='textarea' v-model="docData.inquiriedAddress" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+          <p>联系地址：<el-form-item v-if="!lineStyleFlag" prop="inquiriedAddress" class="inquiriedAddressBox" :rules="fieldRules('inquiriedAddress',propertyFeatures['inquiriedAddress'])">
+              <el-input type='textarea' v-model="docData.inquiriedAddress" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['inquiriedAddress'])"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.inquiriedAddress}}</u></p>
           <p >我们是
-            <el-form-item v-if="!lineStyleFlag" prop="organName">
-              <el-input type='textarea' v-model="docData.organName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item v-if="!lineStyleFlag" prop="organName" :rules="fieldRules('organName',propertyFeatures['organName'])">
+              <el-input type='textarea' v-model="docData.organName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['organName'])"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.organName}}</u>
             的执法人员
-            <el-form-item v-if="!lineStyleFlag" prop="staff1" style="width:100px">
-              <el-input type='textarea' v-model="docData.staff1" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item v-if="!lineStyleFlag" prop="staff1" style="width:100px" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
+              <el-input type='textarea' v-model="docData.staff1" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['staff1'])"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.staff1}}</u>、
-            <el-form-item v-if="!lineStyleFlag" prop="staff2" style="width:100px">
+            <el-form-item v-if="!lineStyleFlag" prop="staff2" style="width:100px" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
               <!-- <el-input type='textarea' v-model="docData.staff2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-              <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff2">
+              <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff2" :disabled="fieldDisabled(propertyFeatures['staff2'])">
                 <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
               </el-select>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.staff2}}</u>，
             这是我们的执法证件，执法证号分别是
-            <el-form-item v-if="!lineStyleFlag" prop="certificateId1">
-              <el-input type='textarea' v-model="docData.certificateId1" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item v-if="!lineStyleFlag" prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
+              <el-input type='textarea' v-model="docData.certificateId1" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['certificateId1'])"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.certificateId1}}</u>、
-            <el-form-item v-if="!lineStyleFlag" prop="certificateId2">
-              <el-input type='textarea' v-model="docData.certificateId2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item v-if="!lineStyleFlag" prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
+              <el-input type='textarea' v-model="docData.certificateId2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['certificateId2'])"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag" >{{docData.certificateId2}}</u>，请你确认。现依法向你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。
           </p>
@@ -222,6 +224,8 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import iLocalStroage from "@/common/js/localStroage";
+import { validateIDNumber, validatePhone } from '@/common/js/validator'
+
 import {
   findCaseAllBindPropertyApi,
 } from "@/api/caseHandle";
@@ -251,6 +255,8 @@ export default {
       callback();
     };
     return {
+      validatePhone:validatePhone,
+      validateIDNumber:validateIDNumber,
       value2: '',
       isOverflow: false,
       isOverLine: false,
@@ -337,6 +343,33 @@ export default {
         inquiried: [
           { required: true, message: '被询问人不能为空', trigger: 'blur' },
         ],
+        inquiriedRelation: [
+          { required: true, message: '与案件关系不能为空', trigger: 'blur' },
+        ],
+        inquiriedSex: [
+          { required: true, message: '性别不能为空', trigger: 'change' },
+        ],
+        inquiriedAge: [
+          { required: true, message: '年龄不能为空', trigger: 'blur' },
+        ],
+        inquiriedIdNo: [
+          { required: true, message: '身份证件号不能为空', trigger: 'blur' },
+          { validator: validateIDNumber, trigger: "blur" }
+        ],
+        inquiriedTel: [
+          { required: true, message: '联系电话不能为空', trigger: 'blur' },
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        inquiriedUnitPosition: [
+          { required: true, message: '工作单位及职务不能为空', trigger: 'blur' },
+        ],
+        inquiriedAddress: [
+          { required: true, message: '联系地址不能为空', trigger: 'blur' },
+        ],
+        organName: [
+          { required: true, message: '执法机构不能为空', trigger: 'blur' },
+        ],
+
         staff1: [
           { required: true, message: '执法人员不能为空', trigger: 'blur' },
         ],
@@ -365,6 +398,8 @@ export default {
       ],
       staffList:[],
       needDealData:true,
+      propertyFeatures:'', //字段属性配置
+
     }
   },
   inject: ["reload"],
