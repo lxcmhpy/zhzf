@@ -68,7 +68,7 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="waitAmount" label="待缴纳金额">
+                <el-form-item prop="waitAmount" label="待缴纳金额" :rules="fieldRules('waitAmount',propertyFeatures['waitAmount'])">
                   <el-input :disabled="fieldDisabled(propertyFeatures['waitAmount'])" ref="waitAmount" clearable class="w-120" v-model.number="formData.waitAmount" size="small"></el-input>
                 </el-form-item>
               </div>

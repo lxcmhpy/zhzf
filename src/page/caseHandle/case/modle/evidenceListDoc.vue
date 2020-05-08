@@ -53,7 +53,7 @@
             <td rowspan="4"> 单位 </td>
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],validatePhone,!isParty)">
+              <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
                 <el-input v-model="docData.partyName" :maxLength='maxLength' 
                 :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])" placeholder="\"></el-input>
               </el-form-item>
