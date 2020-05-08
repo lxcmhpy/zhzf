@@ -363,8 +363,8 @@
                 <div class="drop-down-menu transition-box">
                         <ul>
                             <li>
-                                <span  @click="isCheckAll">
-                                    <el-checkbox v-model="checked">{{radioVal}}</el-checkbox></span>
+                                <span >
+                                    <el-checkbox v-model="checked"  @change="isCheckAll">{{radioVal}}</el-checkbox>&nbsp;</span>
                                  <!-- <el-radio v-model="radioVal" label="2">取消全选</el-radio> -->
                             </li>
                         <li v-for="subItem in tabList[0].children" :key="subItem.name" :class="{'select':subItem.select}" @click="searchByTab(subItem)">
@@ -391,7 +391,7 @@
             >
                 <div class="drop-down-menu transition-box">
                     <ul>
-                        <li v-for="(item,index) in styleListNumber" :class="{'isCheck':styleIndexNumher==index}" :key="index" @click="styleIndexNumher=index">
+                        <li v-for="(item,index) in styleListNumber" :class="{'select':styleIndexNumher==index}" :key="index" @click="styleIndexNumher=index">
                             <p>{{item}}</p>
                         </li>
                     </ul>
