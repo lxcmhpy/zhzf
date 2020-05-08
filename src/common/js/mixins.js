@@ -22,10 +22,16 @@ export const mixinGetCaseApiList = {
     // 是否必填
     fieldRules(field,fieldProperty,validateType='',partyOrCom=''){
       return function(field,fieldProperty,validateType='',partyOrCom=''){
-        if(partyOrCom !== ''){
-          return  partyOrCom && fieldProperty && fieldProperty.required ? this.rules.field : [{ validator:validateType,trigger: 'blur'}]
+        let validateOther = "";
+        if(validateType){
+          validateOther = { validator:validateType,trigger: 'blur'}
         }else{
-          return  fieldProperty && fieldProperty.required ? this.rules.field : [{ validator:validateType,trigger: 'blur'}]
+          validateOther = { required:false}
+        }
+        if(partyOrCom !== ''){
+          return  partyOrCom && fieldProperty && fieldProperty.required ? this.rules.field : [validateOther]
+        }else{
+          return  fieldProperty && fieldProperty.required ? this.rules.field : [validateOther]
         }
       }
     }

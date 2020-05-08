@@ -43,7 +43,7 @@ service.interceptors.request.use(
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
     } else if(config.baseUrlType == 2){
       config.baseURL = BASEURL[BASEURL.CURRENT].LAW_SUPERVISE_HOST
-    } else {
+    }else {
      config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
     }
     if (config.responseType) {

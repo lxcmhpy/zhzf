@@ -6,35 +6,35 @@
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
         <p>案由：
-          <el-form-item v-if="!lineStyleFlag" prop="caseName" style="width:570px" :rules="propertyFeatures['caseName'] && propertyFeatures['caseName'].required ? rules.caseName : [{ required: false, trigger: 'blur' }]">
+          <el-form-item v-if="!lineStyleFlag" prop="caseName" style="width:570px" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
 
-            <el-input type='textarea' v-model="docData.caseName" v-bind:class="{ over_flow:docData.caseName && docData.caseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="90" :disabled="propertyFeatures['caseName'] && propertyFeatures['caseName'].editable==false"></el-input>
+            <el-input type='textarea' v-model="docData.caseName" v-bind:class="{ over_flow:docData.caseName && docData.caseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="90" :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
           </el-form-item>
           <u v-if="lineStyleFlag">{{docData.caseName}}</u>
         </p>
         <p>
-          勘验时间：<el-form-item prop="inquestStartTime" class="pdf_datapick dataTimeReplaceBox" style="width:250px" :rules="propertyFeatures['inquestStartTime'] && propertyFeatures['inquestStartTime'].required ? rules.inquestStartTime : [{ required: false, trigger: 'blur' }]">
-            <el-date-picker v-model="docData.inquestStartTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" style="width:250px" :disabled="propertyFeatures['inquestStartTime'] && propertyFeatures['inquestStartTime'].editable==false">
+          勘验时间：<el-form-item prop="inquestStartTime" class="pdf_datapick dataTimeReplaceBox" style="width:250px" :rules="fieldRules('inquestStartTime',propertyFeatures['inquestStartTime'])">
+            <el-date-picker v-model="docData.inquestStartTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" style="width:250px" :disabled="fieldDisabled(propertyFeatures['inquestStartTime'])">
             </el-date-picker>
             <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="replaceInquestStartTime"></el-input>
           </el-form-item>
           至
-          <el-form-item prop="inquestEndTime" class="pdf_datapick dataTimeReplaceBox" style="width:212px" :rules="propertyFeatures['inquestEndTime'] && propertyFeatures['inquestEndTime'].required ? rules.inquestEndTime : [{ required: false, trigger: 'blur' }]">
-            <el-date-picker v-model="docData.inquestEndTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" :disabled="propertyFeatures['inquestEndTime'] && propertyFeatures['inquestEndTime'].editable==false">
+          <el-form-item prop="inquestEndTime" class="pdf_datapick dataTimeReplaceBox" style="width:212px" :rules="fieldRules('inquestEndTime',propertyFeatures['inquestEndTime'])">
+            <el-date-picker v-model="docData.inquestEndTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" :disabled="fieldDisabled(propertyFeatures['inquestEndTime'])">
             </el-date-picker>
             <el-input class="replaceTime" placeholder=" 日 时 分" v-model="replaceInquestEndTime"></el-input>
           </el-form-item>
         </p>
         <el-row>
           <el-col :span="14">
-            <p>勘验场所：<el-form-item v-if="!lineStyleFlag" prop="inquestAddress" style="width:240px" :rules="propertyFeatures['inquestAddress'] && propertyFeatures['inquestAddress'].required ? rules.inquestAddress : [{ required: false, trigger: 'blur' }]">
-                <el-input type='textarea' v-model="docData.inquestAddress" v-bind:class="{ over_flow:docData.inquestAddress && docData.inquestAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="propertyFeatures['inquestAddress'] && propertyFeatures['inquestAddress'].editable==false"></el-input>
+            <p>勘验场所：<el-form-item v-if="!lineStyleFlag" prop="inquestAddress" style="width:240px" :rules="fieldRules('inquestAddress',propertyFeatures['inquestAddress'])">
+                <el-input type='textarea' v-model="docData.inquestAddress" v-bind:class="{ over_flow:docData.inquestAddress && docData.inquestAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="fieldDisabled(propertyFeatures['inquestAddress'])"></el-input>
               </el-form-item>
               <u v-if="lineStyleFlag">{{docData.inquestAddress}}</u></p>
           </el-col>
           <el-col :span="10">
-            <p>天气状况：<el-form-item prop="weather" style="width:140px" :rules="propertyFeatures['weather'] && propertyFeatures['weather'].required ? rules.weather : [{ required: false, trigger: 'change' }]">
-                <el-select v-model="docData.weather" :maxLength='maxLength' placeholder="\" :disabled="propertyFeatures['weather'] && propertyFeatures['weather'].editable==false">
+            <p>天气状况：<el-form-item prop="weather" style="width:140px" :rules="fieldRules('weather',propertyFeatures['weather'])">
+                <el-select v-model="docData.weather" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['weather'])">
                   <el-option v-for="item in options" :key="item.name" :label="item.label" :value="item.name">
                   </el-option>
                 </el-select>
@@ -43,84 +43,84 @@
           </el-col>
         </el-row>
         <p>
-          勘验人：<el-form-item prop="staff1" style="width:80px" :rules="propertyFeatures['staff1'] && propertyFeatures['staff1'].required ? rules.staff1 : [{ required: false, trigger: 'change' }]">
-            <el-select v-model="docData.staff1" :maxLength='maxLength' @change="changeStaff1" :disabled="propertyFeatures['staff1'] && propertyFeatures['staff1'].editable==false">
+          勘验人：<el-form-item prop="staff1" style="width:80px" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
+            <el-select v-model="docData.staff1" :maxLength='maxLength' @change="changeStaff1" :disabled="fieldDisabled(propertyFeatures['staff1'])">
               <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff2==item"></el-option>
             </el-select>
           </el-form-item>
-          单位及职务：<el-form-item prop="staffUnitAndPosition1" style="width:140px" :rules="propertyFeatures['staffUnitAndPosition1'] && propertyFeatures['staffUnitAndPosition1'].required ? rules.staffUnitAndPosition1 : [{ required: false, trigger: 'blur' }]">
-            <el-input type='textarea' v-model="docData.staffUnitAndPosition1" v-bind:class="{ over_flow:docData.staffUnitAndPosition1 && docData.staffUnitAndPosition1.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="propertyFeatures['staffUnitAndPosition1'] && propertyFeatures['staffUnitAndPosition1'].editable==false"></el-input>
+          单位及职务：<el-form-item prop="staffUnitAndPosition1" style="width:140px" :rules="fieldRules('staffUnitAndPosition1',propertyFeatures['staffUnitAndPosition1'])">
+            <el-input type='textarea' v-model="docData.staffUnitAndPosition1" v-bind:class="{ over_flow:docData.staffUnitAndPosition1 && docData.staffUnitAndPosition1.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="fieldDisabled(propertyFeatures['staffUnitAndPosition1'])"></el-input>
           </el-form-item>
-          执法证号：<el-form-item prop="certificateId1" style="width:150px" :rules="propertyFeatures['certificateId1'] && propertyFeatures['certificateId1'].required ? rules.certificateId1 : [{ required: false, trigger: 'blur' }]">
-            <el-input v-model="docData.certificateId1" :maxLength='maxLength' placeholder="\" :disabled="propertyFeatures['certificateId1'] && propertyFeatures['certificateId1'].editable==false"></el-input>
+          执法证号：<el-form-item prop="certificateId1" style="width:150px" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
+            <el-input v-model="docData.certificateId1" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['certificateId1'])"></el-input>
           </el-form-item>
         </p>
         <p>
-          勘验人：<el-form-item prop="staff2" style="width:80px" :rules="propertyFeatures['staff2'] && propertyFeatures['staff2'].required ? rules.staff2 : [{ required: false, trigger: 'change' }]">
-            <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff2" :disabled="propertyFeatures['staff2'] && propertyFeatures['staff2'].editable==false">
+          勘验人：<el-form-item prop="staff2" style="width:80px" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
+            <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff2" :disabled="fieldDisabled(propertyFeatures['staff2'])">
               <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
             </el-select>
           </el-form-item>
-          单位及职务：<el-form-item prop="staffUnitAndPosition2" style="width:140px" :rules="propertyFeatures['staffUnitAndPosition2'] && propertyFeatures['staffUnitAndPosition2'].required ? rules.staffUnitAndPosition2 : [{ required: false, trigger: 'blur' }]">
-            <el-input type='textarea' v-model="docData.staffUnitAndPosition2" v-bind:class="{ over_flow:docData.staffUnitAndPosition2 && docData.staffUnitAndPosition2.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="propertyFeatures['staffUnitAndPosition2'] && propertyFeatures['staffUnitAndPosition2'].editable==false"></el-input>
+          单位及职务：<el-form-item prop="staffUnitAndPosition2" style="width:140px" :rules="fieldRules('staffUnitAndPosition2',propertyFeatures['staffUnitAndPosition2'])">
+            <el-input type='textarea' v-model="docData.staffUnitAndPosition2" v-bind:class="{ over_flow:docData.staffUnitAndPosition2 && docData.staffUnitAndPosition2.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="fieldDisabled(propertyFeatures['staffUnitAndPosition2'])"></el-input>
           </el-form-item>
-          执法证号：<el-form-item prop="certificateId2" style="width:150px" :rules="propertyFeatures['certificateId2'] && propertyFeatures['certificateId2'].required ? rules.certificateId2 : [{ required: false, trigger: 'blur' }]">
-            <el-input v-model="docData.certificateId2" :maxLength='maxLength' placeholder="\" :disabled="propertyFeatures['certificateId2'] && propertyFeatures['certificateId2'].editable==false"></el-input>
+          执法证号：<el-form-item prop="certificateId2" style="width:150px" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
+            <el-input v-model="docData.certificateId2" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['certificateId2'])"></el-input>
           </el-form-item>
         </p>
         <p>
-          当事人（当事人代理人）姓名：<el-form-item prop="partyPeople" style="width:80px" :rules="propertyFeatures['partyPeople'] && propertyFeatures['partyPeople'].required ? rules.partyPeople : [{ required: false, trigger: 'blur' }]">
-            <el-input type='textarea' v-model="docData.partyPeople" v-bind:class="{ over_flow:docData.partyPeople && docData.partyPeople.length>4?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="10" :disabled="propertyFeatures['partyPeople'] && propertyFeatures['partyPeople'].editable==false"></el-input>
+          当事人（当事人代理人）姓名：<el-form-item prop="partyPeople" style="width:80px" :rules="fieldRules('partyPeople',propertyFeatures['partyPeople'])">
+            <el-input type='textarea' v-model="docData.partyPeople" v-bind:class="{ over_flow:docData.partyPeople && docData.partyPeople.length>4?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="10" :disabled="fieldDisabled(propertyFeatures['partyPeople'])"></el-input>
           </el-form-item>
-          性别：<el-form-item prop="partyPeopleSex" style="width:70px" :rules="propertyFeatures['partyPeopleSex'] && propertyFeatures['partyPeopleSex'].required ? rules.partyPeopleSex : [{ required: false, trigger: 'change' }]">
-            <el-select v-model="docData.partyPeopleSex" :maxLength="maxLength" placeholder="\" :disabled="propertyFeatures['partyPeopleSex'] && propertyFeatures['partyPeopleSex'].editable==false">
+          性别：<el-form-item prop="partyPeopleSex" style="width:70px" :rules="fieldRules('partyPeopleSex',propertyFeatures['partyPeopleSex'])">
+            <el-select v-model="docData.partyPeopleSex" :maxLength="maxLength" placeholder="\" :disabled="fieldDisabled(propertyFeatures['partyPeopleSex'])">
               <el-option value="0" label="男"></el-option>
               <el-option value="1" label="女"></el-option>
             </el-select>
           </el-form-item>
-          年龄：<el-form-item prop="partyPeopleAge" style="width:60px" :rules="propertyFeatures['partyPeopleAge'] && propertyFeatures['partyPeopleAge'].required ? rules.partyPeopleAge : [{ required: false, trigger: 'blur' }]">
-            <el-input v-model="docData.partyPeopleAge" :maxLength='maxLength' placeholder="\" :disabled="propertyFeatures['partyPeopleAge'] && propertyFeatures['partyPeopleAge'].editable==false"></el-input>
+          年龄：<el-form-item prop="partyPeopleAge" style="width:60px" :rules="fieldRules('partyPeopleAge',propertyFeatures['partyPeopleAge'])">
+            <el-input v-model="docData.partyPeopleAge" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['partyPeopleAge'])"></el-input>
           </el-form-item>
         </p>
 
         <p>
-          身份证号：<el-form-item prop="partyPeopleIdNo" style="width:180px" :rules="propertyFeatures['partyPeopleIdNo'] && propertyFeatures['partyPeopleIdNo'].required ? rules.partyPeopleIdNo : [{ validator:validateIDNumber,trigger: 'blur'}]">
-            <el-input v-model="docData.partyPeopleIdNo" :maxLength='maxLength' placeholder="\" :disabled="propertyFeatures['partyPeopleIdNo'] && propertyFeatures['partyPeopleIdNo'].editable==false"></el-input>
+          身份证号：<el-form-item prop="partyPeopleIdNo" style="width:180px" :rules="fieldRules('partyPeopleIdNo',propertyFeatures['partyPeopleIdNo'],validateIDNumber)">
+            <el-input v-model="docData.partyPeopleIdNo" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['partyPeopleIdNo'])"></el-input>
           </el-form-item>
-          单位及职务：<el-form-item prop="partyPeopleUnitAndPosition" style="width180" :rules="propertyFeatures['partyPeopleUnitAndPosition'] && propertyFeatures['partyPeopleUnitAndPosition'].required ? rules.partyPeopleUnitAndPosition : [{ required: false, trigger: 'blur' }]">
-            <el-input type='textarea' v-model="docData.partyPeopleUnitAndPosition" v-bind:class="{ over_flow:docData.partyPeopleUnitAndPosition && docData.partyPeopleUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="propertyFeatures['partyPeopleUnitAndPosition'] && propertyFeatures['partyPeopleUnitAndPosition'].editable==false"></el-input>
-          </el-form-item>
-        </p>
-        <p>
-          住址：<el-form-item prop="partyPeopleAddress" style="width:200px" :rules="propertyFeatures['partyPeopleAddress'] && propertyFeatures['partyPeopleAddress'].required ? rules.partyPeopleAddress : [{ required: false, trigger: 'blur' }]">
-            <el-input type="textarea" v-model="docData.partyPeopleAddress" maxLength='40' placeholder="\" v-bind:class="{ over_flow:docData.partyPeopleAddress && docData.partyPeopleAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" :disabled="propertyFeatures['partyPeopleAddress'] && propertyFeatures['partyPeopleAddress'].editable==false"></el-input>
-          </el-form-item>
-          联系电话：<el-form-item prop="partyPeopleTel" style="width:200px" :rules="propertyFeatures['partyPeopleTel'] && propertyFeatures['partyPeopleTel'].required ? rules.partyPeopleTel : [{ validator:validatePhone,trigger: 'blur'}]">
-            <el-input v-model="docData.partyPeopleTel" :maxLength='maxLength' placeholder="\" :disabled="propertyFeatures['partyPeopleTel'] && propertyFeatures['partyPeopleTel'].editable==false"></el-input>
+          单位及职务：<el-form-item prop="partyPeopleUnitAndPosition" style="width180" :rules="fieldRules('partyPeopleUnitAndPosition',propertyFeatures['partyPeopleUnitAndPosition'])">
+            <el-input type='textarea' v-model="docData.partyPeopleUnitAndPosition" v-bind:class="{ over_flow:docData.partyPeopleUnitAndPosition && docData.partyPeopleUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="fieldDisabled(propertyFeatures['partyPeopleUnitAndPosition'])"></el-input>
           </el-form-item>
         </p>
         <p>
-          被邀请人：<el-form-item prop="invited" style="width:180px" :rules="propertyFeatures['invited'] && propertyFeatures['invited'].required ? rules.invited : [{ required: false, trigger: 'blur' }]">
-            <el-input v-model="docData.invited" maxLength='10' placeholder="\" :disabled="propertyFeatures['invited'] && propertyFeatures['invited'].editable==false"></el-input>
+          住址：<el-form-item prop="partyPeopleAddress" style="width:200px" :rules="fieldRules('partyPeopleAddress',propertyFeatures['partyPeopleAddress'])">
+            <el-input type="textarea" v-model="docData.partyPeopleAddress" maxLength='40' placeholder="\" v-bind:class="{ over_flow:docData.partyPeopleAddress && docData.partyPeopleAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" :disabled="fieldDisabled(propertyFeatures['partyPeopleAddress'])"></el-input>
           </el-form-item>
-          单位及职务：<el-form-item prop="invitedUnitAndPosition" style="width:180px" :rules="propertyFeatures['invitedUnitAndPosition'] && propertyFeatures['invitedUnitAndPosition'].required ? rules.invitedUnitAndPosition : [{ required: false, trigger: 'blur' }]">
-            <el-input type="textarea" v-model="docData.invitedUnitAndPosition" v-bind:class="{ over_flow:docData.invitedUnitAndPosition && docData.invitedUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="propertyFeatures['invitedUnitAndPosition'] && propertyFeatures['invitedUnitAndPosition'].editable==false"></el-input>
+          联系电话：<el-form-item prop="partyPeopleTel" style="width:200px" :rules="fieldRules('partyPeopleTel',propertyFeatures['partyPeopleTel'],validatePhone)">
+            <el-input v-model="docData.partyPeopleTel" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['partyPeopleTel'])"></el-input>
           </el-form-item>
         </p>
         <p>
-          记录人：<el-form-item prop="recorder" :rules="propertyFeatures['recorder'] && propertyFeatures['recorder'].required ? rules.recorder : [{ required: false, trigger: 'blur' }]">
-            <el-autocomplete class="inline-input" v-model="docData.recorder" :fetch-suggestions="querySearch" placeholder="\" :disabled="propertyFeatures['recorder'] && propertyFeatures['recorder'].editable==false"></el-autocomplete>
+          被邀请人：<el-form-item prop="invited" style="width:180px" :rules="fieldRules('invited',propertyFeatures['invited'])">
+            <el-input v-model="docData.invited" maxLength='10' placeholder="\" :disabled="fieldDisabled(propertyFeatures['invited'])"></el-input>
           </el-form-item>
-          单位及职务：<el-form-item prop="recorderUnitAndPosition" :rules="propertyFeatures['recorderUnitAndPosition'] && propertyFeatures['recorderUnitAndPosition'].required ? rules.recorderUnitAndPosition : [{ required: false, trigger: 'blur' }]">
-            <el-input type="textarea" v-model="docData.recorderUnitAndPosition" v-bind:class="{ over_flow:docData.recorderUnitAndPosition && docData.recorderUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="propertyFeatures['recorderUnitAndPosition'] && propertyFeatures['recorderUnitAndPosition'].editable==false"></el-input>
+          单位及职务：<el-form-item prop="invitedUnitAndPosition" style="width:180px" :rules="fieldRules('invitedUnitAndPosition',propertyFeatures['invitedUnitAndPosition'])">
+            <el-input type="textarea" v-model="docData.invitedUnitAndPosition" v-bind:class="{ over_flow:docData.invitedUnitAndPosition && docData.invitedUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="fieldDisabled(propertyFeatures['invitedUnitAndPosition'])"></el-input>
+          </el-form-item>
+        </p>
+        <p>
+          记录人：<el-form-item prop="recorder" :rules="fieldRules('recorder',propertyFeatures['recorder'])">
+            <el-autocomplete class="inline-input" v-model="docData.recorder" :fetch-suggestions="querySearch" placeholder="\" :disabled="fieldDisabled(propertyFeatures['recorder'])"></el-autocomplete>
+          </el-form-item>
+          单位及职务：<el-form-item prop="recorderUnitAndPosition" :rules="fieldRules('recorderUnitAndPosition',propertyFeatures['recorderUnitAndPosition'])">
+            <el-input type="textarea" v-model="docData.recorderUnitAndPosition" v-bind:class="{ over_flow:docData.recorderUnitAndPosition && docData.recorderUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="fieldDisabled(propertyFeatures['recorderUnitAndPosition'])"></el-input>
           </el-form-item>
         </p>
 
         <!-- 多行样式 -->
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="inquestResult" :rules="propertyFeatures['inquestResult'] && propertyFeatures['inquestResult'].required ? rules.inquestResult : [{ required: false, trigger: 'blur' }]">
-              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.inquestResult" rows="3" maxLength='90' placeholder="\" :disabled="propertyFeatures['inquestResult'] && propertyFeatures['inquestResult'].editable==false"></el-input>
+            <el-form-item prop="inquestResult" :rules="fieldRules('inquestResult',propertyFeatures['inquestResult'])">
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.inquestResult" rows="3" maxLength='90' placeholder="\" :disabled="fieldDisabled(propertyFeatures['inquestResult'])"></el-input>
               <span class="overflow_describe" style="text-indent:0">勘验情况及结果：</span>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span>
