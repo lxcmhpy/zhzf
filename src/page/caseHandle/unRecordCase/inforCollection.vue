@@ -67,7 +67,7 @@
           <label  v-if="afddFlag" class="el-form-item__label" style="width: 100px;">案发地点</label>
           <div class="itemFive">
             <el-form-item v-if="afddFlag" label-width="0">
-              <el-select v-model="inforForm.routeId" placeholder="公路路线">
+              <el-select v-model="inforForm.routeId" placeholder="本机构路线编号" filterable allow-create>
                 <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>

@@ -340,15 +340,16 @@ export function getRoleBindOrganApi(data) {
 
 //角色绑定菜单
 export function roleBindMenuApi(data) {
-  let params = {
-    roleId: data.roleId,
-    permissionIds: data.permissionIds.join(',')
-  }
-  console.log("角色绑定菜单params",params)
+  // let params = {
+  //   roleId: data.roleId,
+  //   permissionIds: data.permissionIds.join(',')
+  // }
+  // console.log("角色绑定菜单params",params)
+  let params = vm.$qs.stringify(data);
   return request({
     url: "/system/sys/role/bindMenu",
-    method: "get",
-    params: params,
+    method: "post",
+    data: params,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -357,15 +358,16 @@ export function roleBindMenuApi(data) {
 
 //角色绑定机构
 export function roleBindOrganApi(data) {
-  let params = {
-    roleId: data.roleId,
-    organIds: data.organIds.join(',')
-  }
-  console.log(params);
+  // let params = {
+  //   roleId: data.roleId,
+  //   organIds: data.organIds.join(',')
+  // }
+  // console.log(params);
+  let params = vm.$qs.stringify(data);
   return request({
     url: "/system/sys/role/bindOrgan",
-    method: "get",
-    params: params,
+    method: "post",
+    data: params,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
