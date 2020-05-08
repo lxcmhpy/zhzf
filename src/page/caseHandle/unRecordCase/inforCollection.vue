@@ -64,8 +64,9 @@
               <el-input v-model="inforForm.afdd"></el-input>
             </el-form-item>
           </div>
+          <label  v-if="afddFlag" class="el-form-item__label" style="width: 100px;">案发地点</label>
           <div class="itemFive">
-            <el-form-item v-if="afddFlag" label="案发地点">
+            <el-form-item v-if="afddFlag" label-width="0">
               <el-select v-model="inforForm.routeId" placeholder="公路路线">
                 <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
               </el-select>
@@ -74,14 +75,14 @@
           <div class="itemFive">
             <el-form-item v-if="afddFlag" label-width="20px">
               <el-select v-model="inforForm.direction" placeholder="方向">
-                <el-option v-for="item in directionList" :key="item.name" :label="item.label" :value="item.name"></el-option>
+                <el-option v-for="item in locationList" :key="item.name" :label="item.label" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </div>
           <div class="itemFive">
             <el-form-item v-if="afddFlag" label-width="20px">
               <el-select v-model="inforForm.location" placeholder="位置">
-                <el-option v-for="item in locationList" :key="item.name" :label="item.label" :value="item.name"></el-option>
+                <el-option v-for="item in directionList" :key="item.name" :label="item.label" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -91,8 +92,10 @@
             </el-form-item>
           </div>
           <div class="itemFive">
-            <el-form-item v-if="afddFlag" label-width="20px">
-              <el-input v-model="inforForm.metre" placeholder="米数"></el-input>
+            <el-form-item v-if="afddFlag" label="+" label-width="30px">
+              <el-input v-model="inforForm.metre" placeholder="米数"  style="vertical-align: middle;">
+                <template slot="append">m</template>
+              </el-input>
             </el-form-item>
           </div>
         </div>
