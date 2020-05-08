@@ -1,6 +1,6 @@
 <template>
   <div class="box" id="caseInfoBox">
-    <el-form ref="docForm"  :model="formData" label-width="115px">
+    <el-form ref="docForm" :model="formData" label-width="115px">
 
       <!-- <div class="header-case">
         <div class="header_left">
@@ -10,7 +10,7 @@
           </div>
         </div>
       </div> -->
-      <div class="content_box">
+      <div class="content_box" style="-webkit-box-shadow:none;box-shadow:none">
         <div class="content">
           <div class="content_title">
             案件总览
@@ -58,7 +58,7 @@
               </div>
               <div class="col">
                 <el-form-item prop="partyType" label="车/船信息">
-                {{formData.vehicleShipId}}
+                  {{formData.vehicleShipId}}
                   <!-- <el-input ref="partyType" clearable class="w-120" v-model="formData.partyType" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -74,9 +74,8 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="基本情况">
+                <el-form-item label="基本情况" class="over-line">
                   {{formData.caseInfo}}
-
                   <!-- <el-input type="textarea" class="height106" v-model="formData.caseCauseDescrib" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
@@ -163,8 +162,8 @@
     </el-form>
     <!--快速入口 -->
 
-      <caseSlideMenu :activeIndex="'caseInfo'"></caseSlideMenu>
-       <!-- 置顶 -->
+    <caseSlideMenu :activeIndex="'caseInfo'"></caseSlideMenu>
+    <!-- 置顶 -->
     <el-backtop target="#caseInfoBox" :bottom="46" :right='8' :visibility-height='800'>
       <div class="back-ball">
         <svg t="1581647372853" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1939" width="18" height="22">
@@ -190,7 +189,7 @@ export default {
   data() {
     return {
       caseInfo: null,
-      nextLink:[],
+      nextLink: [],
       formData: {
         caseStatus: "",
         caseNumber: "",
@@ -202,20 +201,20 @@ export default {
         partyAge: "",
         party: "",
         partySex: "",
-        partyName:"",
+        partyName: "",
         investigProcess: "",
         caseCauseDescrib: "",
         isMajorCase: "1",
         punishType: ['警告'],
         investigResult: '',
         dealOpinions: '1212121',
-        tempPunishAmount:"",
+        tempPunishAmount: "",
       },
-      approval:this.$route.params.isApproval ? true : false,
+      approval: this.$route.params.isApproval ? true : false,
     };
   },
   mixins: [mixinGetCaseApiList],
-  computed:{...mapGetters(['caseId'])},
+  computed: { ...mapGetters(['caseId']) },
   components: {
     caseSlideMenu
   },
@@ -224,61 +223,71 @@ export default {
     continueHandle() {
       this.$store.dispatch('deleteTabs', 'caseInfo');
       this.$router.push({
-          name: "case_handle_flowChart"
+        name: "case_handle_flowChart"
       })
     },
     //案件审批
-    approvalCase(){
+    approvalCase() {
       this.$store.dispatch('deleteTabs', 'caseInfo');
       console.log(this.caseInfo);
       let approvalLink = ''
       let docId = ""
-      switch(this.caseInfo.currentLinkId){
+      switch (this.caseInfo.currentLinkId) {
         case "2c90293b6c178b55016c17c255a4000d":
           approvalLink = 'case_handle_establish';
-          docId="2c9029ae654210eb0165421564970001";
+          docId = "2c9029ae654210eb0165421564970001";
           break;
         case "2c9029ee6cac9281016caca7f38e0002":
           approvalLink = 'case_handle_caseInvestig';
-          docId="2c9029ca5b711f61015b71391c9e2420";
+          docId = "2c9029ca5b711f61015b71391c9e2420";
           break;
-          case "2c9029ee6cac9281016cacaadf990006":
+        case "2c9029ee6cac9281016cacaadf990006":
           approvalLink = 'case_handle_finishCaseReport';
-          docId="2c9029d2695c03fd01695c278e7a0001";
+          docId = "2c9029d2695c03fd01695c278e7a0001";
           break;
       }
-      this.getFileIdByDocId(docId,approvalLink);
+      this.getFileIdByDocId(docId, approvalLink);
     },
-    init () {
-        this.caseInfo = this.$route.params.caseInfo;
-        if(this.$route.params.fromSlide){
-        let data ={id:this.caseId}
-        getCaseBasicInfoApi(data).then(res=>{
-            console.log(res);
-            let caseData = res.data;
-            for (var key in caseData) {
-                this.formData[key] = caseData[key]
-            }
-        },err=>{
-            console.log(err);
+    init() {
+      this.caseInfo = this.$route.params.caseInfo;
+      if (this.$route.params.fromSlide) {
+        let data = { id: this.caseId }
+        getCaseBasicInfoApi(data).then(res => {
+          console.log(res);
+          let caseData = res.data;
+          for (var key in caseData) {
+            this.formData[key] = caseData[key]
+          }
+        }, err => {
+          console.log(err);
         })
-        }else{
+      } else {
         this.formData = this.caseInfo;
-        }
+      }
     }
   },
-  mounted(){
-      this.init()
+  mounted() {
+    this.init()
   },
   watch: {
-    '$route' (to, from) {
-        this.init()
+    '$route'(to, from) {
+      this.init()
     }
   },
-  created() {}
+  created() { }
 };
 </script>
 <style lang="scss" scoped>
 @import "@/assets/css/caseHandle/index.scss";
 @import "@/assets/css/documentForm.scss";
+</style>
+<style scoped>
+.el-form-item {
+  margin-bottom: 0px;
+}
+.over-line /deep/ .el-form-item__content {
+  margin-top: 9px;
+  margin-bottom: 8px;
+  line-height: 22px;
+}
 </style>

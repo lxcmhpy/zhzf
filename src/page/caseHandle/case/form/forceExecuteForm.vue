@@ -15,30 +15,30 @@
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" :disabled="true" clearable class="w-120" v-model="formData.caseNumber" size="small"></el-input>
+                <el-form-item prop="caseNumber" label="案号" :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
+                  <el-input ref="caseNumber" :disabled="fieldDisabled(propertyFeatures['caseNumber'])" clearable class="w-120" v-model="formData.caseNumber" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="案由">
-                  <el-input :disabled="true" clearable class="w-120" v-model="formData.caseName" size="small"></el-input>
+                <el-form-item prop="caseName" label="案由" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                  <el-input :disabled="fieldDisabled(propertyFeatures['caseName'])" clearable class="w-120" v-model="formData.caseName" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="punishDecision" label="处罚决定">
-                  <el-input :disabled="originalData.punishDecision ? true : false" type="textarea" ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="punishDecision" label="处罚决定" :rules="fieldRules('punishDecision',propertyFeatures['punishDecision'])">
+                  <el-input :disabled="fieldDisabled(propertyFeatures['punishDecision'])" type="textarea" ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
 
             <div class="row">
               <div class="col">
-                <el-form-item prop="punishTerm" label="处罚期限">
-                  <el-date-picker :disabled="true" ref="punishTerm" format="yyyy-MM-dd" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-date-picker>
+                <el-form-item prop="punishTerm" label="处罚期限" :rules="fieldRules('punishTerm',propertyFeatures['punishTerm'])">
+                  <el-date-picker :disabled="fieldDisabled(propertyFeatures['punishTerm'])" ref="punishTerm" format="yyyy-MM-dd" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-date-picker>
                 </el-form-item>
               </div>
             </div>
@@ -55,21 +55,21 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="处罚金额">
-                  <el-input :disabled="true" ref="tempPunishAmount" clearable class="w-120" v-model.number="formData.tempPunishAmount" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop= "tempPunishAmount" label="处罚金额" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
+                  <el-input :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])" ref="tempPunishAmount" clearable class="w-120" v-model.number="formData.tempPunishAmount" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
 
             <div class="row">
               <div class="col">
-                <el-form-item prop="paidAmount" label="已缴纳金额">
-                  <el-input ref="paidAmount" clearable class="w-120" v-model.number="formData.paidAmount" size="small"></el-input>
+                <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
+                  <el-input clearable class="w-120" v-model.number="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="waitAmount" label="待缴纳金额">
-                  <el-input :disabled="true" ref="waitAmount" clearable class="w-120" v-model.number="formData.waitAmount" size="small"></el-input>
+                  <el-input :disabled="fieldDisabled(propertyFeatures['waitAmount'])" ref="waitAmount" clearable class="w-120" v-model.number="formData.waitAmount" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -302,6 +302,24 @@
         originalData:"",
         docTableDatas: [],
         rules: {
+          caseNumber: [
+            { required: true, message: "案号不能为空", trigger: "blur" }
+          ],
+          caseName: [
+            { required: true, message: "案由不能为空", trigger: "blur" }
+          ],
+          // punishType: [
+          //   { required: true, message: "处罚类型不能为空", trigger: "blur" }
+          // ],
+          punishTerm: [
+            { required: true, message: "处罚期限不能为空", trigger: "blur" }
+          ],
+          punishDecision: [
+            { required: true, message: "处罚决定不能为空", trigger: "blur" }
+          ],
+          tempPunishAmount: [
+            { required: true, message: "处罚金额不能为空", trigger: "blur" }
+          ],
           paidAmount:[
             { validator: validatePaid, trigger: 'blur'}
           ],
@@ -317,6 +335,7 @@
         isfinishFlag: true,
         finishDocCount: 0,//完成文书数
         allDocCount: 0,
+        propertyFeatures:''
       };
     },
     computed: {

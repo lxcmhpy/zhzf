@@ -193,7 +193,7 @@
 .drop-down-menu {
     background: white;
     border:none;
-    color: $white;
+    color: $cats-white-color;
     width: 100%;
     // position: absolute;
     left: 0px;
@@ -368,7 +368,7 @@
         box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
     }
     .lawWindowStyle1 {
-        // background: rgba($greenC2,0.9);
+        // background: rgba($cats-base-green-color,0.9);
         // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
@@ -381,7 +381,7 @@
         box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
     }
     .lawWindowStyle2 {
-        // background: rgba($redC,0.9);
+        // background: rgba($cats-red-color,0.9);
         // padding: 10px 17px 10px 17px;
         // color:white;
         width: 400px;
@@ -393,7 +393,7 @@
         box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
     }
     .lawWindowStyle3 {
-        // background: rgba($orangeC,0.9);
+        // background: rgba($cats-orange-color,0.9);
         // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
@@ -405,7 +405,7 @@
         box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
     }
     .lawWindowStyle4 {
-        // background: rgba($greenC2,0.9);
+        // background: rgba($cats-base-green-color,0.9);
         // min-width: 445px;
         padding: 0px;
         width: 455px;
@@ -514,7 +514,7 @@
         // overflow: hidden;
         // padding-top: 10px;
         span.phoneBtn {
-            background: $grayC1;
+            background: $cats-grayF0-color;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -655,7 +655,7 @@
             border-right: 2px solid white;
             // &:hover {
             //     background: rgba(29, 121, 214, 0.9);
-            //     color: $white;
+            //     color: $cats-white-color;
             // }
             img {
                 float:left;

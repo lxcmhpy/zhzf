@@ -5,7 +5,7 @@
   .login {}
 
   .el-aside {
-    background: $blackC2;
+    background: $cats-black2B313E-color;
     // z-index: 200;
   }
   .el-container{
@@ -36,14 +36,14 @@
   }
 
   .el-button--info {
-    background  : $greenC2;
-    border-color: $greenC2;
+    background  : $cats-base-green-color;
+    border-color: $cats-base-green-color;
     color       : #fff;
   }
 
   .el-button--primary {
-    background  : $blueC;
-    border-color: $blueC;
+    background  : $cats-blue-color;
+    border-color: $cats-blue-color;
   }
 
   .el-button--medium {

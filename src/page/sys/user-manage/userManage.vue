@@ -331,7 +331,8 @@
           type: "warning"
         })
           .then(() => {
-            _this.$store.dispatch("getUserreset", row.id).then(
+            console.log('row,',row)
+            _this.$store.dispatch("getUserreset", row).then(
               res => {
                 _this.getAllOrgan(_this.$refs.addUserRef.id);
                 _this.$message({

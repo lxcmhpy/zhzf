@@ -14,9 +14,9 @@
         <p class="partyBox">
           当事人（个人姓名或单位名称）
           <span class="width_file">
-            <el-form-item prop="party">
+            <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
               <el-input
-                disabled
+                :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
                 v-model="formData.party"
                 v-bind:class="{ over_flow:formData.party.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
@@ -29,9 +29,9 @@
         <p>经调查，你（单位）存在下列违法事实：</p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="caseName">
+            <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
               <el-input
-                disabled
+                :disabled="fieldDisabled(propertyFeatures['caseName'])"
                 class="overflow_lins_textarea"
                 type="textarea"
                 v-model="formData.caseName"
@@ -52,18 +52,19 @@
         <p>
           根据
           <span contenteditable="true">
-            <el-form-item prop="punishLaw" style="width:300px">
+            <el-form-item prop="punishLaw" style="width:300px" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])">
               <el-input
                 type="textarea"
                 v-model="formData.punishLaw"
                 v-bind:class="{ over_flow:formData.punishLaw.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
+                :disabled="fieldDisabled(propertyFeatures['punishLaw'])"
               ></el-input>
             </el-form-item>
           </span>的规定，现责令你（单位）
         </p>
-        <el-form-item prop="correctWay">
+        <el-form-item prop="correctWay" :rules="fieldRules('correctWay',propertyFeatures['correctWay'])">
           <el-radio-group v-model="formData.correctWay" @change="changeCorrectWay">
             <p>
               <el-radio label="1">立即予以改正。</el-radio>
@@ -72,7 +73,7 @@
               <el-radio label="2">
                 <span>在</span>
                 <span class="p_datapick">
-                  <el-form-item v-if="!lineStyleFlag" prop="correctTime" style="margin-top:-6px">
+                  <el-form-item v-if="!lineStyleFlag" :prop="formData.correctWay == 2 ?'correctTime' : 'placeholder'" style="margin-top:-6px">
                     <el-date-picker
                       v-model="formData.correctTime"
                       type="date"
@@ -91,12 +92,12 @@
         <p>
           如不服本决定，可以在六十日内依法向
           <span>
-            <el-form-item prop="reconsiderationOrgan">
+            <el-form-item prop="reconsiderationOrgan" :rules="fieldRules('reconsiderationOrgan',propertyFeatures['reconsiderationOrgan'])">
               <!-- <el-input v-model="formData.reconsiderationOrgan" :maxLength='maxLength' ></el-input> -->
               <el-select
                 v-model="formData.reconsiderationOrgan"
                 :maxLength="maxLength"
-                
+                :disabled="fieldDisabled(propertyFeatures['reconsiderationOrgan'])"
               >
                 <el-option
                   v-for="(item,index) in reconsiderationOptions"
@@ -108,9 +109,9 @@
             </el-form-item>
           </span>申请行政复议，或者在六个月内依法向
           <span>
-            <el-form-item prop="litigationOrgan">
+            <el-form-item prop="litigationOrgan" :rules="fieldRules('litigationOrgan',propertyFeatures['litigationOrgan'])">
               <!-- <el-input v-model="formData.litigationOrgan" :maxLength='maxLength' ></el-input> -->
-              <el-select v-model="formData.litigationOrgan" :maxLength="maxLength" >
+              <el-select v-model="formData.litigationOrgan" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['litigationOrgan'])">
                 <el-option
                   v-for="(item,index) in enforcementOptions"
                   :key="index"
@@ -227,9 +228,9 @@ export default {
       name: "",
       rules: {
         party: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
-        // makeDate: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
+        caseName: [
+          { required: true, message: '违法事实不能为空', trigger: 'blur' },
+        ],
         punishLaw: [
           { required: true, message: "法律条款不能为空", trigger: "blur" }
         ],
@@ -256,7 +257,9 @@ export default {
         pageDomId: "forceCorrect-print"
       },
       isPdf: "",
-      huanjieAndDocId: "2c9029cc6a901fbe016a911e2dae000b" //责令改正违法行为通知书的文书id
+      huanjieAndDocId: "2c9029cc6a901fbe016a911e2dae000b", //责令改正违法行为通知书的文书id
+      isParty: true, //当事人类型为个人
+      propertyFeatures:'', //字段属性配置
     };
   },
   methods: {

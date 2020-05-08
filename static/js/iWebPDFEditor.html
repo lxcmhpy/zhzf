@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <script src="./MultBrowser/jquery-1.11.2.min.js"></script>
   <title>
     PDF控件测试网页
   </title>
@@ -10,17 +11,17 @@
 
   <!--控件对象事件-->
   <script LANGUAGE=javascript FOR=PDF EVENT=Event_AddAnnot(ZSGuid,ZSType,Extend)>     //添加注释后事件
-  alert("事件添加注释GUID："+ZSGuid+"类型："+ZSType);
+  alert("事件添加注释GUID：" + ZSGuid + "类型：" + ZSType);
   g_guid = ZSGuid;
   </script>
 
   <script LANGUAGE=javascript FOR=PDF EVENT=Event_SelectAnnot(ZSGuid,ZSType,Extend)>  //选中注释事件
-  alert("事件选中注释GUID："+ZSGuid+"类型："+ZSType);
+  alert("事件选中注释GUID：" + ZSGuid + "类型：" + ZSType);
   g_guid = ZSGuid;
   </script>
 
   <script LANGUAGE=javascript FOR=PDF EVENT=Event_DeleteAnnot(ZSGuid,ZSType,Extend)>  //删除注释事件
-  alert("事件删除注释GUID："+ZSGuid+"类型："+ZSType);
+  alert("事件删除注释GUID：" + ZSGuid + "类型：" + ZSType);
   g_guid = ZSGuid;
   </script>
 
@@ -38,39 +39,39 @@
   </script>
 
   <script language="javascript" for="PDF" event="Event_SignFinish(IsSucceed,SignType,Extend)"> //盖章完成事件
-  if(IsSucceed=="TRUE"){
+  if (IsSucceed == "TRUE") {
     alert("盖章成功事件");
   }
   </script>
 
   <script language="javascript" for="PDF" event="Event_SignDelete(IsSucceed,SignType,Extend)"> //删除印章事件
-  if(IsSucceed=="TRUE"){
+  if (IsSucceed == "TRUE") {
     alert("撤章成功事件");
   }
   </script>
 
-  <script language="javascript" for="PDF" event="Event_ChangeFile(IsSucceed,CurrentFilePath,ChangeFilePath,Extend)"> //切换TAB事件
-  if(IsSucceed=="TRUE")  //成功
+  <script language="javascript" for="PDF"
+          event="Event_ChangeFile(IsSucceed,CurrentFilePath,ChangeFilePath,Extend)"> //切换TAB事件
+  if (IsSucceed == "TRUE")  //成功
   {
     //alert("当前文档:"+CurrentFilePath+"切换前文档:"+ChangeFilePath);
   }
   </script>
 
   <script language="javascript" for="PDF" event="Event_PrintFinish(IsSucceed,Extend)">
-    if(IsSucceed=="TRUE"){
+    if (IsSucceed == "TRUE") {
       alert("盖章成功事件");
     }
   </script>
-
 
 
   <script language="javascript">
 
     var PDFReader;
     var g_guid;
-    function LoadPage()
-    {
-      var url  = getParam("path");
+
+    function LoadPage() {
+      var url = getParam("path");
       var divobj = document.createElement("div");
       divobj.setAttribute("id", "objdiv1");
       var obj = "";
@@ -79,7 +80,7 @@
       document.getElementById('myDiv').appendChild(divobj);
       PDFReader = document.getElementById("PDF");
       //alert(url);
-      PDFReader.OpenFile(2,url,"", ""); //打开网络文档
+      PDFReader.OpenFile(2, url, "", ""); //打开网络文档
       //PDFReader.OpenFile(2,"http://172.16.170.54:9332/12,3b11e8faa6","", ""); //打开网络文档
     }
 
@@ -96,21 +97,19 @@
     /*设置应用接口*/
     function SetSafeKey() {
 
-      PDFReader.SetSafeKey("d01fa78a4c3e4fad82703705b618b4c3","ebd91896ce68436cb7a6bbd061824886","MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAPDNdPkKNWhm5gvgJLKqYhYLv7TQctwq3LFZXU+rJn7oBDh7YtsutmdclExZMrKNPq/Sz0iqqEzIymmm6G9nu0UCAwEAAQ==","MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA8M10+Qo1aGbmC+AksqpiFgu/tNBy3CrcsVldT6smfugEOHti2y62Z1yUTFkyso0+r9LPSKqoTMjKaabob2e7RQIDAQABAkEAhEOFtWibDz49q1YxMgWOHKfVY55/CFluoOcB7smGOntrROqwbXZB5H7uigCDpJwQoSQ7al59RY55K+XPyWrInQIhAP79lbpgsbTcugCZPngGivH3yHUxHgo1q9MQJ5UWS/SvAiEA8cF+VjsEwkGZX8jfehxpWornR7fa2U1QMZlTNPGktEsCIQCCUGy1zHblPKzeY3LWelmGIaDTq59zjkxa2HWyLqvwxwIgCFNil3Om4U3DC3Juh9UMp8qa1nR1fABWn66pF+yugGsCIFe4gA5RKbICDQEOU9Pjo+gNQaWK4G/aky7AObjzfGlV","I0CvoKqXVn5lnnVuyiuusA==","");
+      PDFReader.SetSafeKey("d01fa78a4c3e4fad82703705b618b4c3", "ebd91896ce68436cb7a6bbd061824886", "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAPDNdPkKNWhm5gvgJLKqYhYLv7TQctwq3LFZXU+rJn7oBDh7YtsutmdclExZMrKNPq/Sz0iqqEzIymmm6G9nu0UCAwEAAQ==", "MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA8M10+Qo1aGbmC+AksqpiFgu/tNBy3CrcsVldT6smfugEOHti2y62Z1yUTFkyso0+r9LPSKqoTMjKaabob2e7RQIDAQABAkEAhEOFtWibDz49q1YxMgWOHKfVY55/CFluoOcB7smGOntrROqwbXZB5H7uigCDpJwQoSQ7al59RY55K+XPyWrInQIhAP79lbpgsbTcugCZPngGivH3yHUxHgo1q9MQJ5UWS/SvAiEA8cF+VjsEwkGZX8jfehxpWornR7fa2U1QMZlTNPGktEsCIQCCUGy1zHblPKzeY3LWelmGIaDTq59zjkxa2HWyLqvwxwIgCFNil3Om4U3DC3Juh9UMp8qa1nR1fABWn66pF+yugGsCIFe4gA5RKbICDQEOU9Pjo+gNQaWK4G/aky7AObjzfGlV", "I0CvoKqXVn5lnnVuyiuusA==", "");
     }
 
     //软证书签章
     function SoftSign() {
 
-      PDFReader.SetSafeKey("d01fa78a4c3e4fad82703705b618b4c3","ebd91896ce68436cb7a6bbd061824886","MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAPDNdPkKNWhm5gvgJLKqYhYLv7TQctwq3LFZXU+rJn7oBDh7YtsutmdclExZMrKNPq/Sz0iqqEzIymmm6G9nu0UCAwEAAQ==","MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA8M10+Qo1aGbmC+AksqpiFgu/tNBy3CrcsVldT6smfugEOHti2y62Z1yUTFkyso0+r9LPSKqoTMjKaabob2e7RQIDAQABAkEAhEOFtWibDz49q1YxMgWOHKfVY55/CFluoOcB7smGOntrROqwbXZB5H7uigCDpJwQoSQ7al59RY55K+XPyWrInQIhAP79lbpgsbTcugCZPngGivH3yHUxHgo1q9MQJ5UWS/SvAiEA8cF+VjsEwkGZX8jfehxpWornR7fa2U1QMZlTNPGktEsCIQCCUGy1zHblPKzeY3LWelmGIaDTq59zjkxa2HWyLqvwxwIgCFNil3Om4U3DC3Juh9UMp8qa1nR1fABWn66pF+yugGsCIFe4gA5RKbICDQEOU9Pjo+gNQaWK4G/aky7AObjzfGlV","I0CvoKqXVn5lnnVuyiuusA==","");
-      var rit=PDFReader.SetSignImage(7, "", "");				//设置印章图片
-      if(rit==0)
-      {
-        rit=PDFReader.SetSignCert(3,"","","");              //设置证书
+      PDFReader.SetSafeKey("d01fa78a4c3e4fad82703705b618b4c3", "ebd91896ce68436cb7a6bbd061824886", "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAPDNdPkKNWhm5gvgJLKqYhYLv7TQctwq3LFZXU+rJn7oBDh7YtsutmdclExZMrKNPq/Sz0iqqEzIymmm6G9nu0UCAwEAAQ==", "MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA8M10+Qo1aGbmC+AksqpiFgu/tNBy3CrcsVldT6smfugEOHti2y62Z1yUTFkyso0+r9LPSKqoTMjKaabob2e7RQIDAQABAkEAhEOFtWibDz49q1YxMgWOHKfVY55/CFluoOcB7smGOntrROqwbXZB5H7uigCDpJwQoSQ7al59RY55K+XPyWrInQIhAP79lbpgsbTcugCZPngGivH3yHUxHgo1q9MQJ5UWS/SvAiEA8cF+VjsEwkGZX8jfehxpWornR7fa2U1QMZlTNPGktEsCIQCCUGy1zHblPKzeY3LWelmGIaDTq59zjkxa2HWyLqvwxwIgCFNil3Om4U3DC3Juh9UMp8qa1nR1fABWn66pF+yugGsCIFe4gA5RKbICDQEOU9Pjo+gNQaWK4G/aky7AObjzfGlV", "I0CvoKqXVn5lnnVuyiuusA==", "");
+      var rit = PDFReader.SetSignImage(7, "", "");				//设置印章图片
+      if (rit == 0) {
+        rit = PDFReader.SetSignCert(3, "", "", "");              //设置证书
 
-        if(rit==0)
-        {
-          PDFReader.AddNormalSign(0,"","");                  //手动定位模式
+        if (rit == 0) {
+          PDFReader.AddNormalSign(0, "", "");                  //手动定位模式
         }
       }
     }
@@ -121,15 +120,15 @@
     }
 
     function OpenFile() {
-      var url="C:\\Users\\admin\\Desktop\\test.pdf";
-      alert("正在打开本地文档："+url);
-      PDFReader.OpenFile(1,"C:\\Users\\admin\\Desktop\\test.pdf","","");  //打开本地文档
+      var url = "C:\\Users\\admin\\Desktop\\test.pdf";
+      alert("正在打开本地文档：" + url);
+      PDFReader.OpenFile(1, "C:\\Users\\admin\\Desktop\\test.pdf", "", "");  //打开本地文档
     }
 
     function OpenWebFile() {
-      var url="http://192.168.1.147:8080/pdf/test.pdf";
-      alert("正在打开网络文档："+url);
-      PDFReader.OpenFile(2,url,"", "");                    //打开网络文档
+      var url = "http://192.168.1.147:8080/pdf/test.pdf";
+      alert("正在打开网络文档：" + url);
+      PDFReader.OpenFile(2, url, "", "");                    //打开网络文档
     }
 
     function SaveFile() {
@@ -139,30 +138,29 @@
 
     function SaveWebFile() {
       var fileName = getParam(fileName).split("/");
-      var fileId = fileName[fileName.length-1];
+      var fileId = fileName[fileName.length - 1];
       //var url = "http://172.16.170.96:9000/case/sys/file/uploadDocDzqz/"+fileId;
-      var url = "http://124.192.215.4:9000/case/sys/file/uploadDocDzqz/"+fileId;
+      var url = "http://124.192.215.4:9000/case/sys/file/uploadDocDzqz/" + fileId;
       //var url = "http://127.0.0.1:9003/sys/file/uploadDocDzqz/"+fileId;
       //if(PDFReader.GetSignCount(0, 0, "") == 0){
       //	alert("请先进行签章操作，在保存！");
       //}else{
-      PDFReader.SaveFile(3,url,"");
-      WebNewRequest(fileId);
-
+      PDFReader.SaveFile(3, url, "");
       alert("保存成功");
+      WebNewRequest(fileId);
       //}
     }
-    function WebNewRequest(fileId){
+
+    function WebNewRequest(fileId) {
       $.ajax({
-        type : "GET",
-        url : "http://124.192.215.4:8083/system/socket/socket",
-        dataType : "json",
-        data : {userName:fileId,message:"1"},
-        success : function(data) {
-          if(!inValidSession(data)){
-            return;
-          }
-        }
+        type: "GET",
+        url: "http://124.192.215.4:8083//socket/socket1/" + fileId + "/1",
+        dataType: "json",
+        data: {},
+        success: function (data) {
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        },
       });
     }
 
@@ -172,7 +170,7 @@
     }
 
     function PrintFile() {
-      PDFReader.PrintFile(1, "", 0, "","");      //打印当前文档
+      PDFReader.PrintFile(1, "", 0, "", "");      //打印当前文档
     }
 
     function ScrollView() {
@@ -295,7 +293,7 @@
     }
 
     function VerifySign() {
-      var Rit=PDFReader.VerifySign(0, "");					//验证电子签章有效性
+      var Rit = PDFReader.VerifySign(0, "");					//验证电子签章有效性
       alert(Rit);
     }
 
@@ -305,14 +303,15 @@
 
 
     var Data;
+
     function CrytoDataJiaM() {
-      Data=PDFReader.CrytoData(1, "你好，AZT!", "");			//加密数据
-      alert("加密后数据为:"+Data);
+      Data = PDFReader.CrytoData(1, "你好，AZT!", "");			//加密数据
+      alert("加密后数据为:" + Data);
     }
 
     function CrytoDataJieM() {
-      Data=PDFReader.CrytoData(2, Data, "");					//解密数据
-      alert("解密后数据为:"+Data);
+      Data = PDFReader.CrytoData(2, Data, "");					//解密数据
+      alert("解密后数据为:" + Data);
     }
 
 
@@ -334,143 +333,133 @@
       alert(PDFReader.GetNumberOfUnfilledEssentialForms());		//获取未填写表单数量
     }
 
-    function SetFormModeEnd()
-    {
+    function SetFormModeEnd() {
       PDFReader.SetFormMode(0);									//表单模式设置
     }
 
     /*注释接口类*/
     function SetAnnotTipWndShow() {
-      PDFReader.SetAnnotTipWndShow(false,"");		//隐藏注释点击弹框接口
+      PDFReader.SetAnnotTipWndShow(false, "");		//隐藏注释点击弹框接口
     }
 
     function GetAllTabAnnotInfo() {
-      var Rit=PDFReader.GetAllTabAnnotInfo(0,"");		// 获取所有打开的文档内的注释
+      var Rit = PDFReader.GetAllTabAnnotInfo(0, "");		// 获取所有打开的文档内的注释
       alert(Rit);
     }
 
     function SetAnnotOptionDlgInfo() {
-      var Rit=PDFReader.SetAnnotOptionDlgInfo(2,80,0,255,0,0,0,255,"");		// 设置笔宽为2，不透明度为80，画笔颜色为绿色，填充颜色为蓝色
+      var Rit = PDFReader.SetAnnotOptionDlgInfo(2, 80, 0, 255, 0, 0, 0, 255, "");		// 设置笔宽为2，不透明度为80，画笔颜色为绿色，填充颜色为蓝色
     }
 
     function SetAnnotMenuVisible() {
-      var Rit=PDFReader.SetAnnotMenuVisible(1,0,"");		// 隐藏注释右键选项
+      var Rit = PDFReader.SetAnnotMenuVisible(1, 0, "");		// 隐藏注释右键选项
     }
 
-    function InsertGraphAnnotFZ(){
-      var Rit=PDFReader.CallToolboxItem(2,1,"");  //附注
+    function InsertGraphAnnotFZ() {
+      var Rit = PDFReader.CallToolboxItem(2, 1, "");  //附注
     }
 
-    function InsertGraphAnnotYB(){
-      var Rit=PDFReader.CallToolboxItem(3,1,"");  //直线注释
+    function InsertGraphAnnotYB() {
+      var Rit = PDFReader.CallToolboxItem(3, 1, "");  //直线注释
     }
 
-    function InsertGraphAnnot(){
-      var Rit=PDFReader.CallToolboxItem(3,2,"");  //椭圆注释
+    function InsertGraphAnnot() {
+      var Rit = PDFReader.CallToolboxItem(3, 2, "");  //椭圆注释
     }
 
-    function InsertGraphAnnotJX(){
-      var Rit=PDFReader.CallToolboxItem(3,3,"");  //矩形注释
+    function InsertGraphAnnotJX() {
+      var Rit = PDFReader.CallToolboxItem(3, 3, "");  //矩形注释
     }
 
-    function InsertGraphAnnotDBX(){
-      var Rit=PDFReader.CallToolboxItem(3,4,"");  //多边形注释
+    function InsertGraphAnnotDBX() {
+      var Rit = PDFReader.CallToolboxItem(3, 4, "");  //多边形注释
     }
 
-    function InsertGraphAnnotYX(){
-      var Rit=PDFReader.CallToolboxItem(3,5,"");  //云线注释
+    function InsertGraphAnnotYX() {
+      var Rit = PDFReader.CallToolboxItem(3, 5, "");  //云线注释
     }
 
     var AnnotData;
+
     function GetAllAnnotInfo()						//获取所有注释信息
     {
-      AnnotData=PDFReader.GetAllAnnotInfo("");
+      AnnotData = PDFReader.GetAllAnnotInfo("");
       alert(AnnotData);
     }
 
     function AddAnnot()								//合并注释信息
     {
-      PDFReader.AddAnnot(3,AnnotData,"");
+      PDFReader.AddAnnot(3, AnnotData, "");
     }
 
 
     /*测量接口类*/
-    function MeterJL()
-    {
-      var Rit=PDFReader.CallToolboxItem(5,1,"");  //测量距离
+    function MeterJL() {
+      var Rit = PDFReader.CallToolboxItem(5, 1, "");  //测量距离
     }
 
-    function MeterJD()
-    {
-      var Rit=PDFReader.CallToolboxItem(5,2,"");  //测量角度
+    function MeterJD() {
+      var Rit = PDFReader.CallToolboxItem(5, 2, "");  //测量角度
     }
 
-    function MeterHC()
-    {
-      var Rit=PDFReader.CallToolboxItem(5,3,"");  //测量弧长
+    function MeterHC() {
+      var Rit = PDFReader.CallToolboxItem(5, 3, "");  //测量弧长
     }
 
-    function MeterBJ()
-    {
-      var Rit=PDFReader.CallToolboxItem(5,4,"");  //测量半径
+    function MeterBJ() {
+      var Rit = PDFReader.CallToolboxItem(5, 4, "");  //测量半径
     }
 
-    function MeterCX()
-    {
-      var Rit=PDFReader.CallToolboxItem(5,5,"");  //测量垂线
+    function MeterCX() {
+      var Rit = PDFReader.CallToolboxItem(5, 5, "");  //测量垂线
     }
 
-    function MeterLXXD()
-    {
-      var Rit=PDFReader.CallToolboxItem(5,6,"");  //测量连续线段
+    function MeterLXXD() {
+      var Rit = PDFReader.CallToolboxItem(5, 6, "");  //测量连续线段
     }
 
-    function MeterTYMJ()
-    {
-      var Rit=PDFReader.CallToolboxItem(5,7,"");  //测量椭圆面积
+    function MeterTYMJ() {
+      var Rit = PDFReader.CallToolboxItem(5, 7, "");  //测量椭圆面积
     }
 
-    function MeterJXMJ()
-    {
-      var Rit=PDFReader.CallToolboxItem(5,8,"");  //测量矩形面积
+    function MeterJXMJ() {
+      var Rit = PDFReader.CallToolboxItem(5, 8, "");  //测量矩形面积
     }
 
-    function MeterYXMJ()
-    {
-      var Rit=PDFReader.CallToolboxItem(5,9,"");  //测量异形面积
+    function MeterYXMJ() {
+      var Rit = PDFReader.CallToolboxItem(5, 9, "");  //测量异形面积
     }
 
     /*签章扩展-分区域保护*/
-    function SetRegionGuard1()
-    {
+    function SetRegionGuard1() {
       PDFReader.SetSignImage(1, "", "");     //设置印章,必须放在最前面设置
       PDFReader.SetSignCert(1, "", "", "");  //设置证书
       PDFReader.SetDimension(2);             //设置尺寸单位  1-像素 2-毫米 3–英寸
-      PDFReader.SetRegionGuard("1,0,0,200,200","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
+      PDFReader.SetRegionGuard("1,0,0,200,200", "");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
       PDFReader.AddNormalSign(1, "", "");    //开始签章
     }
 
-    function SetRegionGuard2(){
+    function SetRegionGuard2() {
       PDFReader.SetSignImage(1, "", "");      //设置印章,必须放在最前面设置
       PDFReader.SetSignCert(1, "", "", "");   //设置证书
       PDFReader.SetDimension(2);				//设置尺寸单位  1-像素 2-毫米 3–英寸
-      PDFReader.SetRegionGuard("1,0,0,200,225","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
+      PDFReader.SetRegionGuard("1,0,0,200,225", "");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
       PDFReader.AddNormalSign(1, "", "");     //开始签章
     }
 
-    function SetRegionGuard3(){
+    function SetRegionGuard3() {
       PDFReader.SetSignImage(1, "", "");      //设置印章,必须放在最前面设置
       PDFReader.SetSignCert(1, "", "", "");   //设置证书
       PDFReader.SetDimension(2);              //设置尺寸单位  1-像素 2-毫米 3–英寸
-      PDFReader.SetRegionGuard("1,0,0,200,250","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
+      PDFReader.SetRegionGuard("1,0,0,200,250", "");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
       PDFReader.AddNormalSign(1, "", "");     //开始签章
     }
 
-    function SetRegionGuard4(){
+    function SetRegionGuard4() {
       PDFReader.SetSignImage(1, "", "");      //设置印章,必须放在最前面设置
       PDFReader.SetSignCert(1, "", "", "");   //设置证书
       PDFReader.SetDimension(2);              //设置尺寸单位  1-像素 2-毫米 3–英寸
-      PDFReader.SetRegionGuard("1,0,0,200,275","");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
+      PDFReader.SetRegionGuard("1,0,0,200,275", "");   //设置保护区域,文档左上角0,0为起点,10,10为一个矩形区域
       PDFReader.AddNormalSign(1, "", "");     //开始签章
     }
 
@@ -514,7 +503,7 @@
         <button style="width:108pt;" onclick="SaveWebFile()">
           另存文档到后台
         </button>
-        <button  style="width:108pt;" onclick="CloseFile()">
+        <button style="width:108pt;" onclick="CloseFile()">
           关闭当前文档
         </button>
         <button style="width:108pt;" onclick="PrintFile()">
@@ -717,7 +706,7 @@
         <button style="width:108pt;" onclick="GetFormInfo()">
           获取所有表单数据
         </button>
-        <button style="width:108pt; "onclick="GetNumberOfUnfilledEssentialForms()">
+        <button style="width:108pt; " onclick="GetNumberOfUnfilledEssentialForms()">
           获取未填写的必填表单数量
         </button>
         <button style="width:108pt;" onclick="SetFormModeEnd()">

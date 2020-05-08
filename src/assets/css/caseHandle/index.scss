@@ -33,7 +33,7 @@
     }
 
     .itemFive {
-      width: 20%;
+      width: calc(20% - 20px);
       float: left;
     }
 
@@ -121,7 +121,7 @@
 
   .linkPart {
     width     : 100%;
-    background: $grayC;
+    background: $cats-gray-color;
     position  : fixed;
     top       : 92px;
     height    : 60px;
