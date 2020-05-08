@@ -504,23 +504,43 @@ export default {
           name: "case_handle_archiveCover"
         });
       } else {
+        console.log('点击的是待审批')
         if (row.caseStatus === '已移送') {
           let message = '该案件正在移送中，移送完成后才可与继续办理'
           this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
         }
         else {
-          this.$store.commit("setCaseId", row.id);
-          //设置案件状态不为审批中
-          this.$store.commit("setCaseApproval", true);
-          this.$router.push({
-            name: "case_handle_caseInfo",
-            params: {
-              caseInfo: row,
-              isApproval: true
-            }
-          });
-          let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
-          this.$store.commit("setCaseNumber", setCaseNumber);
+          // this.$store.commit("setCaseId", row.id);
+          // //设置案件状态不为审批中
+          // this.$store.commit("setCaseApproval", true);
+          // this.$router.push({
+          //   name: "case_handle_caseInfo",
+          //   params: {
+          //     caseInfo: row,
+          //     isApproval: true
+          //   }
+          // });
+          // let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+          // this.$store.commit("setCaseNumber", setCaseNumber);
+          console.log(row)
+          //案件审批
+          let approvalLink = ''
+          let docId = ""
+          switch (row.currentLinkId) {
+            case "2c90293b6c178b55016c17c255a4000d":
+              approvalLink = 'case_handle_establish';
+              docId = "2c9029ae654210eb0165421564970001";
+              break;
+            case "2c9029ee6cac9281016caca7f38e0002":
+              approvalLink = 'case_handle_caseInvestig';
+              docId = "2c9029ca5b711f61015b71391c9e2420";
+              break;
+            case "2c9029ee6cac9281016cacaadf990006":
+              approvalLink = 'case_handle_finishCaseReport';
+              docId = "2c9029d2695c03fd01695c278e7a0001";
+              break;
+          }
+          this.getFileIdByDocId(docId, approvalLink);
         }
 
       }
