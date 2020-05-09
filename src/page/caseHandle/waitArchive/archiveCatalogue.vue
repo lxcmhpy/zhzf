@@ -79,7 +79,24 @@ export default {
             res.data = res.data.sort(function(a,b){
               return a.num - b.num;
             });
-             this.caseList = res.data;
+            //  this.caseList = res.data;
+            let beikaoFlag=true;
+             res.data.forEach(element => {
+             console.log(element,element.name)
+             if(element.name=='备考表'){
+               if(beikaoFlag){
+                 this.caseList.push(element)
+                 beikaoFlag=false;
+               }
+             }else{
+                 this.caseList.push(element)
+
+             }
+               
+             });
+             console.log('caseList',this.caseList)
+
+
          },
          err=>{
            console.log(err)
