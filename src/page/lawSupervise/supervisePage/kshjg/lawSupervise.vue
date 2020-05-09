@@ -318,7 +318,7 @@
                 <div class="con">
                   <p>
                     <i class="iconfont law-car"></i>
-                    <div class="title">{{curWindow.other.vehicleNumber}}</div>
+                    <span class="title">{{curWindow.other.vehicleNumber}}</span>
                   </p>
                 </div>
               </div>
@@ -1257,15 +1257,15 @@ export default {
             this.tabList[0].children.forEach((item)=>{
             // debugger;
                 item.select = false;
-                _this.searchByTab(item);
+                _this.searchAll(item);
 
             })
         } else {
             this.radioVal = '全选';
-this.tabList[0].children.forEach((item)=>{
+            this.tabList[0].children.forEach((item)=>{
             // debugger;
                 item.select = true;
-                _this.searchByTab(item);
+                _this.searchAll(item);
 
             })
         }
@@ -1571,6 +1571,39 @@ this.tabList[0].children.forEach((item)=>{
           }
         );
       });
+    },
+    searchAll (item) {
+        item.select = !item.select;
+        this.categoryStr = item.name;
+        if (item.select) {
+            if (this.curWindow) {
+            this.curWindow.visible = false;
+            }
+            this.category = item.code;
+            let data = {
+            // area: this.currentAddressObj.province + this.currentAddressObj.district,
+            area: "东城区",
+            current: 1,
+            key: "",
+            //   size: 20,
+            type: item.code
+            };
+            this.allSearchList.push(data);
+            this.getZfjgLawSupervise(data, this.category);
+        } else {
+            let _this = this;
+            let _index = _.findIndex(this.allSearchList, function (chr) {
+            return chr.type === item.code;
+            });
+            if (_index > -1) {
+            this.allSearchList.splice(_index, 1);
+            this.markers.splice(0, this.markers.length);
+            this.windows.splice(0, this.windows.length);
+            this.allSearchList.forEach((v, i) => {
+                _this.getZfjgLawSupervise(v, v.type);
+            });
+            }
+        }
     },
     searchByTab(item) {
       // this.markers.splice(0, this.markers.length);

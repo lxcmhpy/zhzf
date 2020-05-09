@@ -6,14 +6,14 @@
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <p class="side_right_indent">
           当事人（个人姓名或单位名称）：
-          <el-form-item prop="party">
+          <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
             <el-input
               type="textarea"
               v-model="formData.party"
               v-bind:class="{ over_flow:formData.party && formData.party.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 2}"
               :maxLength="maxLength"
-              disabled
+              :disabled="fieldDisabled(propertyFeatures['party'])"
             ></el-input>
             <!-- <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :maxLength='maxLength'></el-input> -->
           </el-form-item>
@@ -21,33 +21,34 @@
         <p>
           &nbsp;&nbsp;经调查，本机关认为你（单位）
           <span>
-            <el-form-item prop="caseCauseNameCopy" style="width:250px;">
+            <el-form-item prop="caseCauseNameCopy" style="width:250px;" :rules="fieldRules('caseCauseNameCopy',propertyFeatures['caseCauseNameCopy'])">
               <el-input
                 type="textarea"
                 v-model="formData.caseCauseNameCopy"
                 v-bind:class="{ over_flow:formData.caseCauseNameCopy && formData.caseCauseNameCopy.length>14?true:false }"
                 :autosize="{ minRows: 1, maxRows: 2}"
                 :maxLength="maxLength"
-                disabled
+                :disabled="fieldDisabled(propertyFeatures['caseCauseNameCopy'])"
                 style="width:250px;"
               ></el-input>
             </el-form-item>
           </span>行为，违反了
           <span>
-            <el-form-item prop="illegalBasis">
+            <el-form-item prop="illegalBasis" :rules="fieldRules('illegalBasis',propertyFeatures['illegalBasis'])">
               <el-input
                 type="textarea"
                 v-model="formData.illegalBasis"
                 v-bind:class="{ over_flow:formData.illegalBasis && formData.illegalBasis.length>14?true:false }"
                 :autosize="{ minRows: 1, maxRows: 2}"
                 :maxLength="maxLength"
+                :disabled="fieldDisabled(propertyFeatures['illegalBasis'])"
               ></el-input>
             </el-form-item>
           </span>的规定，依据
           <span>
-            <el-form-item prop="punishLaw">
+            <el-form-item prop="punishLaw" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])">
               <el-input type="textarea" v-model="formData.punishLaw" v-bind:class="{ over_flow:formData.punishLaw && formData.punishLaw.length>14?true:false }"
-              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength"></el-input>
+              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['punishLaw'])"></el-input>
             </el-form-item>
           </span>的规定，本机关拟作出
           <span>
@@ -64,9 +65,9 @@
                   :value="item.value">
                 </el-option>
               </el-select> -->
-            <el-form-item prop="punishDecision">
+            <el-form-item prop="punishDecision" :rules="fieldRules('punishDecision',propertyFeatures['punishDecision'])">
               <el-input type="textarea" v-model="formData.punishDecision" v-bind:class="{ over_flow:formData.punishDecision && formData.punishDecision.length>14?true:false }"
-              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength" @focus="showPunishDecision"></el-input>
+              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength" @focus="showPunishDecision" :disabled="fieldDisabled(propertyFeatures['punishDecision'])"></el-input>
             </el-form-item>
           </span>的处罚决定。
         </p>
@@ -85,7 +86,7 @@
           <el-col :span="12">
             <p>
               联系地址：
-              <el-form-item v-if="!lineStyleFlag" prop="organAddress" style="width:180px">
+              <el-form-item v-if="!lineStyleFlag" prop="organAddress" style="width:180px" :rules="fieldRules('organAddress',propertyFeatures['organAddress'])">
                 <el-input
                   type="textarea"
                   v-model="formData.organAddress"
@@ -93,6 +94,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
+                  :disabled="fieldDisabled(propertyFeatures['organAddress'])"
                 ></el-input>
               </el-form-item>
               <u v-if="lineStyleFlag">{{formData.organAddress}}</u>
@@ -101,7 +103,7 @@
           <el-col :span="12">
             <p>
               邮编：
-              <el-form-item v-if="!lineStyleFlag" prop="organZipCode" style="width:210px">
+              <el-form-item v-if="!lineStyleFlag" prop="organZipCode" style="width:210px" :rules="fieldRules('organZipCode',propertyFeatures['organZipCode'],validateZIP)">
                 <el-input
                   type="textarea"
                   v-model="formData.organZipCode "
@@ -109,6 +111,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
+                  :disabled="fieldDisabled(propertyFeatures['organZipCode'])"
                 ></el-input>
               </el-form-item>
               <u v-if="lineStyleFlag">{{formData.organZipCode }}</u>
@@ -119,7 +122,7 @@
           <el-col :span="12">
             <p>
               联系人：
-              <el-form-item v-if="!lineStyleFlag" prop="organContactor" style="width:200px">
+              <el-form-item v-if="!lineStyleFlag" prop="organContactor" style="width:200px" :rules="fieldRules('organContactor',propertyFeatures['organContactor'])">
                 <el-input
                   type="textarea"
                   v-model="formData.organContactor"
@@ -127,6 +130,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
+                  :disabled="fieldDisabled(propertyFeatures['organContactor'])"
                 ></el-input>
               </el-form-item>
               <u v-if="lineStyleFlag">{{formData.organContactor}}</u>
@@ -135,7 +139,7 @@
           <el-col :span="12">
             <p>
               联系电话：
-              <el-form-item v-if="!lineStyleFlag" prop="organTel" style="width:180px">
+              <el-form-item v-if="!lineStyleFlag" prop="organTel" style="width:180px" :rules="fieldRules('organTel',propertyFeatures['organTel'],validatePhone)">
                 <el-input
                   type="textarea"
                   v-model="formData.organTel"
@@ -143,6 +147,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
                   placeholder="\"
+                  :disabled="fieldDisabled(propertyFeatures['organTel'])"
                 ></el-input>
               </el-form-item>
               <u v-if="lineStyleFlag">{{formData.partyTel}}</u>
@@ -190,6 +195,8 @@ import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
+      validatePhone:validatePhone,
+      validateZIP:validateZIP,
       formData: {
         caseNumber: "",
         party: "",
@@ -235,6 +242,7 @@ export default {
           { validator: validatePhone, trigger: "blur" }
         ],
         organZipCode:[
+          { required: true, message: "邮编必须填写", trigger: "blur" },
           { validator: validateZIP, trigger: "blur" }
         ],
       },
@@ -266,6 +274,8 @@ export default {
       },
       huanjieAndDocId: "2c9029ca5b71686d015b719fe0900026", //违法行为通知书的文书id
       needDealData:true,
+      propertyFeatures:'', //字段属性配置
+
     };
   },
   mixins: [mixinGetCaseApiList],
