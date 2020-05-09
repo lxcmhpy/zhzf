@@ -17,6 +17,7 @@
             </div>
           </el-radio-group>
         </el-form-item>
+        
         <el-form-item  label="与案件关系" label-width="115px" v-if="formData.peopleAndRelationType == '以上均不是'" prop="otherPeopleRelation">  
           <el-select placeholder="请选择" v-model="formData.otherPeopleRelation">
               <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>  
@@ -94,6 +95,7 @@ export default {
       this.visible = false;
     },
     showAskDoc(){
+      console.log('与案件关系',this.formData.peopleAndRelationType)
       this.$refs["askPeopleForm"].validate(valid => {
         if (valid) {
           let addMoreData ={
@@ -101,8 +103,12 @@ export default {
             askData:{
               peopleType:this.formData.peopleType,
               askNum:this.formData.askNum,
-              peopleAndRelationType:this.formData.peopleAndRelationType
+              peopleAndRelationType:this.formData.peopleAndRelationType,
+              otherPeopleRelation:this.formData.otherPeopleRelation
             }
+          }
+          if(addMoreData.askData.otherPeopleRelation==''){
+            addMoreData.askData.otherPeopleRelation='当事人'
           }
           console.log('addMoreData',addMoreData);
           this.com_viewDoc(this.docData,addMoreData);
@@ -119,8 +125,8 @@ export default {
         console.log('ren',res);
         this.peopleTypeList = res.data;
         this.peopleTypeList.forEach(item => {
-          item.relation = this.switchRelate(item.relation);
-          item.all = item.name+ '-' +item.relation
+          // item.relation = this.switchRelate(item.relation);
+          item.all = item.name+ '-' +item.relation;
         });
         this.peopleTypeList.push({name:'',relation:'none',all:'以上均不是'})
         console.log('peopleTypeList',this.peopleTypeList);
