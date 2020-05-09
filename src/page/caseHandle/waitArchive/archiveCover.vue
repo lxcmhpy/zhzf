@@ -401,10 +401,10 @@ export default {
     canArchive(handleType){
       this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
          res=>{
-           let canArchiveFlag = true;
+           let canArchiveFlag = false;
            res.data.forEach(item=>{
              if(item.name=='备考表' && !item.storageId){
-               canArchiveFlag = false;
+               canArchiveFlag = true;
                return
              }
            })

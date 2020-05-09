@@ -90,7 +90,6 @@ export default {
                }
              }else{
                  this.caseList.push(element)
-
              }
                
              });
