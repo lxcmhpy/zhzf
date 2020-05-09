@@ -148,7 +148,7 @@ export default {
             type: "success",
             message: "审批通过"
           });
-
+          iLocalStroage.set('jsonApproveData',params.jsonApproveData)
           _this.$emit("getNewData");
 
           _this.visible = false;
