@@ -34,31 +34,34 @@ export default {
             this.handUp();
             return
         }
-        window.PhoneCallModule.sipRegister();
+        debugger;
+        if (!window.PhoneCallModule.getRegistered()) {
+            window.PhoneCallModule.sipRegister();
+        }
         let zhArray = this.curWindow.other.description.split('&');
         // debugger;
         if (code == '1') {
             // 语音呼叫
-            setTimeout(function(){
-                // window.PhoneCallModule.sipAudioCall("100006","ecds04");
-                // window.PhoneCallModule.sipAudioCall("100008","pad01");
-                // window.PhoneCallModule.sipAudioCall("100001","app01");
-                // window.PhoneCallModule.sipAudioCall("100013","app02");
-                // window.PhoneCallModule.sipAudioCall("100009","pad02");
-                window.PhoneCallModule.sipAudioCall(zhArray[1],zhArray[0]);
+            // setTimeout(function(){
+            //     // window.PhoneCallModule.sipAudioCall("100006","ecds04");
+            //     // window.PhoneCallModule.sipAudioCall("100008","pad01");
+            //     // window.PhoneCallModule.sipAudioCall("100001","app01");
+            //     // window.PhoneCallModule.sipAudioCall("100013","app02");
+            //     // window.PhoneCallModule.sipAudioCall("100009","pad02");
 
-            },3000)
+            // },3000)
+                window.PhoneCallModule.sipAudioCall(zhArray[1],zhArray[0]);
         } else if(code == '2') {
             // 视频呼叫
             // window.PhoneCallModule.sipRegister();
-            setTimeout(function(){
-                // window.PhoneCallModule.sipVideoCall("100006","ecds04");
-                // window.PhoneCallModule.sipVideoCall("100008","pad01");
-                // window.PhoneCallModule.sipVideoCall("100001","app01");
-                // window.PhoneCallModule.sipVideoCall("100013","app02");
-                // window.PhoneCallModule.sipVideoCall("100009","pad02");
+            // setTimeout(function(){
+            //     // window.PhoneCallModule.sipVideoCall("100006","ecds04");
+            //     // window.PhoneCallModule.sipVideoCall("100008","pad01");
+            //     // window.PhoneCallModule.sipVideoCall("100001","app01");
+            //     // window.PhoneCallModule.sipVideoCall("100013","app02");
+            //     // window.PhoneCallModule.sipVideoCall("100009","pad02");
+            // },3000)
                 window.PhoneCallModule.sipVideoCall(zhArray[1],zhArray[0]);
-            },3000)
         }
         this.$emit('updateMakePhoneStatus', code)
     }

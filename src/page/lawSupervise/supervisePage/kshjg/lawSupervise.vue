@@ -1272,7 +1272,7 @@ export default {
 
     },
     handleSelect (key, keyPath) {
-        debugger;
+        // debugger;
         this.areaObj = key;
     },
     handleNodeClick (node) {
@@ -1724,7 +1724,15 @@ export default {
     }
   },
   mounted() {
-      window.PhoneCallModule.sipRegister();
+     this.$nextTick(() => {
+         debugger;
+         window.PhoneCallModule.initialize();
+        if (!window.PhoneCallModule.getRegistered()) {
+            window.PhoneCallModule.sipRegister();
+        }
+     })
+
+
     //   this.updateDrawer();
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
