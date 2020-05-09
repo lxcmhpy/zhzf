@@ -514,11 +514,9 @@ export default {
     saveData(handleType) {
       // this.com_submitCaseForm(handleType, "docForm", true);
       // 预览样式
-      this.isPdf = "color_FFFFFF";
+      // this.isPdf = "color_FFFFFF";
       this.formData.otherWay=this.formData.otherWay||'';
-      setTimeout(() => {
-        this.com_submitCaseForm(handleType, "docForm", true);
-      }, 3000);
+       this.com_submitCaseForm(handleType, "docForm", true);
     },
     //是否是完成状态
     isOverStatus() {

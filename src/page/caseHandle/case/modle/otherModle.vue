@@ -32,7 +32,7 @@
             </el-form-item>
 
             <span style="margin-left:50px">第</span>
-            <el-form-item class="askRecordNumberBox" prop="askRecordNumber" :rules="fieldRules('askRecordNumber',propertyFeatures['askRecordNumber'])">
+            <el-form-item class="askRecordNumberBox" style="width:90px" prop="askRecordNumber" :rules="fieldRules('askRecordNumber',propertyFeatures['askRecordNumber'])">
               <el-input v-model="docData.askRecordNumber" maxLength='2' placeholder="\" :disabled="fieldDisabled(propertyFeatures['askRecordNumber'])"></el-input>
             </el-form-item>次询问
 
@@ -160,11 +160,11 @@
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.staff2}}</u>，
             这是我们的执法证件，执法证号分别是
-            <el-form-item v-if="!lineStyleFlag" prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
+            <el-form-item v-if="!lineStyleFlag" prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])" style="width:170px">
               <el-input type='textarea' v-model="docData.certificateId1" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['certificateId1'])"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.certificateId1}}</u>、
-            <el-form-item v-if="!lineStyleFlag" prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
+            <el-form-item v-if="!lineStyleFlag" prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])" style="width:170px">
               <el-input type='textarea' v-model="docData.certificateId2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['certificateId2'])"></el-input>
             </el-form-item>
             <u v-if="lineStyleFlag" >{{docData.certificateId2}}</u>，请你确认。现依法向你询问，请如实回答所问问题。执法人员与你有直接利害关系的，你可以申请回避。
@@ -415,11 +415,13 @@ export default {
       };
       //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
       let addMoreData = JSON.parse(this.$route.params.addMoreData);
+      console.log('询问笔录',addMoreData.askData)
 
       if(addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")){
         //设置询问笔录名称
-        console.log('添加')
-        this.caseDocDataForm.note = "询问笔录（"+addMoreData.askData.peopleType+")(第"+addMoreData.askData.askNum +"次)";
+        console.log('添加');
+         let myPeopleType = addMoreData.askData.peopleAndRelationType == "以上均不是" ? addMoreData.askData.otherPeopleRelation : addMoreData.askData.peopleType;
+        this.caseDocDataForm.note = "询问笔录（"+myPeopleType+")(第"+addMoreData.askData.askNum +"次)";
         this.com_getCaseBasicInfo(data.caseId,data.docId);
       }else{
         console.log('修改')
@@ -430,6 +432,8 @@ export default {
           this.getDocDetailById(this.$route.params.docDataId)
         }
       }
+
+      this.docData.inquiriedRelation=addMoreData.askData.otherPeopleRelation
       // this.getDocDetailById(this.$route.params.docDataId)
 
       this.docData.qaList.push({
@@ -526,7 +530,8 @@ export default {
       this.setDataForPelple();
       //默认第一次询问
       this.docData.askRecordNumber = JSON.parse(this.$route.params.addMoreData).askData.askNum ? JSON.parse(this.$route.params.addMoreData).askData.askNum : 1;
-      console.log('this.docData.askRecordNumber',this.docData.askRecordNumber);
+      console.log('与案件关系-当事人',JSON.parse(this.$route.params.addMoreData).askData.otherPeopleRelation);
+      this.docData.inquiriedRelation = JSON.parse(this.$route.params.addMoreData).askData.otherPeopleRelation;
     },
     //根据类型
     setDataForPelple(){
@@ -534,12 +539,12 @@ export default {
       //  console.log('addMoreData',selectPeo);
 
        let selectPeo2 = selectPeo.split('-'); //[name,relation]
-       console.log('addMoreData',selectPeo2);
+       console.log('selectPeo2',selectPeo2);
        let dailiDataList = JSON.parse(this.docData.agentPartyEcertId);
         let dailiData = "";
        dailiDataList.forEach(item=>{
-        //  console.log(item);
-          if(this.switchRelate(item.relationWithCase) == selectPeo2[1] && item.name == selectPeo2[0]){
+         console.log('其他人',item);
+          if(item.relationWithCase == selectPeo2[1] && item.name == selectPeo2[0]){
             console.log('不是当事人')
            dailiData = item;
           console.log('dailiData22222',dailiData);
@@ -552,6 +557,7 @@ export default {
        })
        //当事人
        if(!dailiData){
+         console.log('是当事人')
          dailiData ={
           name:this.docData.party,
           sex: this.docData.partySex,
@@ -563,10 +569,11 @@ export default {
           adress: this.docData.partyAddress,
         }
 
-        this.docData.inquiriedRelation = "0";
+        // this.docData.inquiriedRelation = "当事人";
        }
       //与案件关系选择以上都不是时
       if(selectPeo2[0] == '以上均不是'){
+        console.log('以上均不是')
         dailiData ={
           name:'',
           sex: '',
@@ -577,7 +584,7 @@ export default {
           tel: '',
           adress: '',
         }
-        this.docData.inquiriedRelation = "";
+        // this.docData.inquiriedRelation = "";
       }
       this.setDataForPelpleDetail(dailiData);
 

@@ -8,27 +8,34 @@
         <p class="p_begin">
           当事人（个人姓名或单位名称）
           <span>
-            <el-form-item prop="party" class="width220" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
-              <el-input v-model="docData.party" :maxLength='maxLength' :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"></el-input>
+            <el-form-item prop="party" class="width220"
+                          :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
+              <el-input v-model="docData.party" :maxLength='maxLength'
+                        :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"></el-input>
             </el-form-item>
           </span>:
         </p>
         <p>
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick listen_data width151" :rules="fieldRules('serviceTime',propertyFeatures['serviceTime'])">
-              <el-date-picker v-model="docData.serviceTime" :disabled="fieldDisabled(propertyFeatures['serviceTime'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-form-item prop="serviceTime" class="pdf_datapick listen_data width151"
+                          :rules="fieldRules('serviceTime',propertyFeatures['serviceTime'])">
+              <el-date-picker v-model="docData.serviceTime" :disabled="fieldDisabled(propertyFeatures['serviceTime'])"
+                              type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span> ，本机关对你（单位）送达了
           <span>
-            <el-form-item prop="caseNumber" style="width:165px" :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
-              <el-input v-model="docData.caseNumber" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNumber'])"></el-input>
+            <el-form-item prop="caseNumber" style="width:165px"
+                          :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
+              <el-input v-model="docData.caseNumber" :maxLength='maxLength'
+                        :disabled="fieldDisabled(propertyFeatures['caseNumber'])"></el-input>
             </el-form-item>
           </span>（案号）《行政处罚决定书》，作出了对你（单位）罚款
           <span>
             <el-form-item prop="fine" :rules="fieldRules('fine',propertyFeatures['fine'])">
               <el-input v-model="docData.fine" :maxLength='maxLength'
-                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')" :disabled="fieldDisabled(propertyFeatures['fine'])"></el-input>
+                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"
+                        :disabled="fieldDisabled(propertyFeatures['fine'])"></el-input>
             </el-form-item>
           </span>（大写）的行政处罚决定，根据你（单位）的申请，本机关依据《中华人民共和国行政处罚法》第五十二条的规定，现决定：
         </p>
@@ -37,7 +44,7 @@
           <span>
             <el-form-item :prop="disabledOne?'placeholder':'delayDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.delayDate" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日"
-                              placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+                              placeholder="    年  月  日" value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>。
@@ -61,7 +68,7 @@
           <span>
             <el-form-item :prop="disabledTwo?'placeholder':'instalmentDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.instalmentDate" v-bind:disabled="disabledTwo" type="date"
-                              format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+                              format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>前，缴纳罚款
@@ -93,7 +100,8 @@
         <div class="pdf_seal" style="margin-top:60px">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="stampTime" class="pdf_datapick">
-            <el-date-picker v-model="docData.stampTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-date-picker v-model="docData.stampTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"
+                            value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -169,6 +177,7 @@
           debtFine: '',
           reason: '',
           stampTime: '',
+          checknames: []
         },
         handleType: 0, //0  暂存     1 提交
         caseDocDataForm: {
@@ -229,8 +238,8 @@
         disabledTwo: true,
         disabledThree: true,
         isChange: false,
-        propertyFeatures:'',
-        isparty:true
+        propertyFeatures: '',
+        isparty: true
       }
     },
 
@@ -300,6 +309,7 @@
           this.$message("请选择分期延期决定");
           return
         }
+        this.docData.checknames = JSON.parse(JSON.stringify(this.checknames))
         this.com_addDocData(handleType, "docForm");
       },
       //是否是完成状态
