@@ -1,4 +1,5 @@
 import axios from "axios";
+import qs from 'Qs'
 import { getToken, setToken,removeToken } from "@/common/js/auth";
 import Vue from "vue";
 //import { message } from "ant-design-vue";
@@ -32,10 +33,10 @@ var BASEURL
 
 
 
-
 // request interceptor
 service.interceptors.request.use(
     config => {
+      console.log('config',config)
     if (BASEURL) {
         iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
     }
@@ -49,7 +50,15 @@ service.interceptors.request.use(
     if (config.responseType) {
       config["responseType"] = config.responseType
     }
-
+// get方法
+// if(config.method=== 'get'){
+//   debugger
+//   // config.params=qs.stringify(params)
+// }
+// if(config.method=== 'post'){
+//   debugger
+//   // config.params=qs.stringify(params)
+// }
     config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
 
    //token一天后过期
