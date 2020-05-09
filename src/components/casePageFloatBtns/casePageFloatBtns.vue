@@ -149,7 +149,7 @@
         //将消息显示在网页上
         function setMessageInnerHTML(innerHTML) {
           console.log(innerHTML);
-          if(innerHTML === '1'){
+          if (innerHTML === '1') {
             _this.$emit('reInstall');
           }
 
@@ -193,7 +193,7 @@
           var string = test.split("/");
           var path = string[0] + "//" + string[2] + "/";
           // path +
-          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0];
+          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0] + '&Opinion=' + '123' + '&time=' + '124443';
           console.log(ActivexURL);
           _this.makeSealStr = ActivexURL;
           window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
@@ -267,7 +267,6 @@
         this.$emit('showApprovePeopleList');
       },
       approvalBtn() {
-        console.log(1111)
         this.$emit('showApproval');
       },
       backHuanjieBtn() {

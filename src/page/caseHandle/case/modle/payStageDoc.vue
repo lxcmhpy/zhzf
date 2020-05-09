@@ -177,6 +177,7 @@
           debtFine: '',
           reason: '',
           stampTime: '',
+          checknames: []
         },
         handleType: 0, //0  暂存     1 提交
         caseDocDataForm: {
@@ -308,8 +309,7 @@
           this.$message("请选择分期延期决定");
           return
         }
-        debugger
-        this.docForm.checknames = JSON.parse(JSON.stringify(checknames))
+        this.docData.checknames = JSON.parse(JSON.stringify(this.checknames))
         this.com_addDocData(handleType, "docForm");
       },
       //是否是完成状态

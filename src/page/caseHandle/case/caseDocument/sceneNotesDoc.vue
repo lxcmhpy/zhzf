@@ -442,7 +442,55 @@ export default {
         recorder: [
           { required: true, message: "记录人不能为空", trigger: "blur" }
         ],
+        illegalFacts: [
+          { required: true, message: "现场情况不能为空", trigger: "blur" }
+        ],
+        readState: [
+          { required: true, message: "请选择是否看过上述笔录", trigger: "change" }
+        ]
+
       },
+      caseDocDataForm: {
+          id: "", //修改的时候用
+          caseBasicinfoId: "", //案件ID
+          caseDoctypeId: this.$route.params.docId, //文书类型ID
+          //文书数据
+          docData: "",
+          status: "", //提交状态
+          linkTypeId: '2c90293b6c178b55016c17c93326000f' //所属环节的id
+        },
+        handleType: "", // 0 暂存  1  提交
+        dictId: "2dc1e0a3a8ce225c292259da39294847",
+        options: [],
+        nameLength: 23,
+        adressLength: 23,
+        maxLength: 23,
+        formOrDocData: {
+          showBtn: [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+          pageDomId: 'subOutputRank-print'
+        },
+        staffList: [],
+        allRelationWithCase: [
+          //与案件关系下拉框
+          {value: "0", label: "当事人"},
+          {value: "1", label: "驾驶人"},
+          {value: "2", label: "实际所有者"},
+          {value: "3", label: "证人"},
+          {value: "4", label: "承运人"},
+          {value: "5", label: "代理人"}
+        ],
+
       allVehicleShipType: [
         {value: "1", label: "中小客车"},
         {value: "2", label: "大客车"},
