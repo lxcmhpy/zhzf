@@ -16,7 +16,7 @@
             <tr>
               <td>执法地点</td>
               <td colspan="3" class="color_DBE4EF">
-                <el-form-item prop="afdd">
+                <el-form-item prop="afdd" :rules="fieldRules('afdd',propertyFeatures['afdd'])">
                   <el-input
                     type="textarea"
                     v-model="docData.afdd"
@@ -25,13 +25,14 @@
                     :maxlength="nameLength"
                     error
                     placeholder="\"
+                    :disabled="fieldDisabled(propertyFeatures['afdd'])"
                   ></el-input>
                   <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
                 </el-form-item>
               </td>
               <td>执法时间</td>
               <td colspan="3" id="scenetimeBox">
-                <el-form-item prop="enforceStartTime" class="pdf_datapick dataTimeReplaceBox">
+                <el-form-item prop="enforceStartTime" class="pdf_datapick dataTimeReplaceBox" :rules="fieldRules('enforceStartTime',propertyFeatures['enforceStartTime'])">
                   <el-date-picker
                     v-model="docData.enforceStartTime"
                     type="datetime"
@@ -39,15 +40,17 @@
                     value-format="yyyy年MM月dd日HH时mm分"
                     style="width:235px"
                     :default-time="defaultStartTime" 
+                    :disabled="fieldDisabled(propertyFeatures['enforceStartTime'])"
                   ></el-date-picker>
                    <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.enforceStartTime"></el-input> 
                 </el-form-item>
-                <br><span style="display:inline-block;width:20px;margin-top:10px;">至</span><el-form-item prop="enforceEndTime" class="pdf_datapick" style="width:100px">
+                <br><span style="display:inline-block;width:20px;margin-top:10px;">至</span><el-form-item prop="enforceEndTime" class="pdf_datapick" style="width:100px" :rules="fieldRules('enforceEndTime',propertyFeatures['enforceEndTime'])"> 
                   <el-time-picker
                     placeholder="时 分"
                     v-model="docData.enforceEndTime"
                     format="HH时mm分" 
                     value-format="HH:mm"
+                    :disabled="fieldDisabled(propertyFeatures['enforceEndTime'])"
                   >
                   </el-time-picker>
                 </el-form-item>
@@ -56,21 +59,21 @@
             <tr>
               <td rowspan="2">执法人员</td>
               <td colspan="2" class="color_DBE4EF">
-                <el-form-item prop="staff1">
-                  <el-select v-model="docData.staff1" prop="staff1" :maxLength='maxLength' @change="changeStaff1">
+                <el-form-item prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
+                  <el-select v-model="docData.staff1" prop="staff1" :maxLength='maxLength' @change="changeStaff1" :disabled="fieldDisabled(propertyFeatures['staff1'])">
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff2==item"></el-option>
                   </el-select>
                 </el-form-item>
               </td>
               <td rowspan="2">执法证号</td>
               <td colspan="2" class="color_DBE4EF">
-                <el-form-item prop="certificateId1">
-                  <el-input type="textarea" clearable class="w-120" v-model="docData.certificateId1" size="small" placeholder="请输入"  ></el-input>
+                <el-form-item prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
+                  <el-input type="textarea" clearable class="w-120" v-model="docData.certificateId1" size="small" placeholder="请输入"  :disabled="fieldDisabled(propertyFeatures['certificateId1'])"></el-input>
                 </el-form-item>
               </td>
               <td rowspan="2">记录人</td>
               <td rowspan="2" class="color_DBE4EF">
-                <el-form-item prop="recorder">
+                <el-form-item prop="recorder" :rules="fieldRules('recorder',propertyFeatures['recorder'])">
                   <el-input
                     type="textarea"
                     v-model="docData.recorder"
@@ -78,22 +81,23 @@
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="adressLength"
                     placeholder="\"
+                    :disabled="fieldDisabled(propertyFeatures['recorder'])"
                   ></el-input>
                 </el-form-item>
               </td>
             </tr>
             <tr>
               <td colspan="2" class="color_DBE4EF">
-                <el-form-item prop="staff2">
-                  <el-select v-model="docData.staff2" :maxLength='maxLength'  @change="changeStaff2" placeholder="请选择">
+                <el-form-item prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
+                  <el-select v-model="docData.staff2" :maxLength='maxLength'  @change="changeStaff2" placeholder="请选择" :disabled="fieldDisabled(propertyFeatures['staff2'])">
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
                   </el-select>
                 </el-form-item>
               </td>
               <td colspan="2" class="color_DBE4EF">
-                <el-form-item prop="certificateId2">
+                <el-form-item prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
                   <el-input type="textarea" v-model="docData.certificateId2" :maxLength='maxLength' placeholder="\" v-bind:class="{ over_flow:docData.certificateId2.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                    :autosize="{ minRows: 1, maxRows: 2}" :disabled="fieldDisabled(propertyFeatures['certificateId2'])"></el-input>
 
                 </el-form-item>
               </td>
@@ -107,14 +111,14 @@
               </td>
               <td>姓名</td>
               <td colspan="3" class="color_DBE4EF">
-                <el-form-item prop="scenePeopelName">
-                  <el-input v-model="docData.scenePeopelName" :maxLength="maxLength" placeholder="\" @input="changeScenePeopelName"></el-input>
+                <el-form-item prop="scenePeopelName" :rules="fieldRules('scenePeopelName',propertyFeatures['scenePeopelName'])">
+                  <el-input v-model="docData.scenePeopelName" :maxLength="maxLength" placeholder="\" @input="changeScenePeopelName" :disabled="fieldDisabled(propertyFeatures['scenePeopelName'])"></el-input>
                 </el-form-item>
               </td>
               <td>性别</td>
               <td colspan="2" class="color_DBE4EF">
-                <el-form-item prop="scenePeopelSex">
-                  <el-select v-model="docData.scenePeopelSex" :maxLength="maxLength" placeholder="\">
+                <el-form-item prop="scenePeopelSex" :rules="fieldRules('scenePeopelSex',propertyFeatures['scenePeopelSex'])">
+                  <el-select v-model="docData.scenePeopelSex" :maxLength="maxLength" placeholder="\" :disabled="fieldDisabled(propertyFeatures['scenePeopelSex'])">
                     <el-option :value="0" label="男"></el-option>
                     <el-option :value="1" label="女"></el-option>
                   </el-select>
@@ -124,16 +128,17 @@
             <tr>
               <td>身份证件号</td>
               <td colspan="3" class="color_DBE4EF">
-                <el-form-item prop="scenePeopelIdNo">
+                <el-form-item prop="scenePeopelIdNo" :rules="fieldRules('scenePeopelIdNo',propertyFeatures['scenePeopelIdNo'],validateIDNumber)">
                   <el-input type="textarea" v-model="docData.scenePeopelIdNo" :maxLength="maxLength" placeholder="\" v-bind:class="{ over_flow:docData.scenePeopelIdNo.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 2}"
+                    :autosize="{ minRows: 1, maxRows: 2}" 
+                    :disabled="fieldDisabled(propertyFeatures['scenePeopelIdNo'])"
                     ></el-input>
                 </el-form-item>
               </td>
               <td>与案件关系</td>
               <td colspan="2" class="color_DBE4EF">
-                <el-form-item prop="scenePeopeRelation">
-                  <el-select v-model="docData.scenePeopeRelation" :maxLength="maxLength" placeholder="\" @change="changeRelationWithCase">
+                <el-form-item prop="scenePeopeRelation" :rules="fieldRules('scenePeopeRelation',propertyFeatures['scenePeopeRelation'])">
+                  <el-select v-model="docData.scenePeopeRelation" :maxLength="maxLength" placeholder="\" @change="changeRelationWithCase" :disabled="fieldDisabled(propertyFeatures['scenePeopeRelation'])">
                     <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>
                   </el-select>
                 </el-form-item>
@@ -142,7 +147,7 @@
             <tr>
               <td>单位及职务</td>
               <td colspan="3" class="color_DBE4EF">
-                <el-form-item prop="scenePeopeUnitPosition">
+                <el-form-item prop="scenePeopeUnitPosition" :rules="fieldRules('scenePeopeUnitPosition',propertyFeatures['scenePeopeUnitPosition'])">
                   <el-input
                     type="textarea"
                     v-model="docData.scenePeopeUnitPosition"
@@ -150,18 +155,20 @@
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="nameLength"
                     placeholder="\"
+                    :disabled="fieldDisabled(propertyFeatures['scenePeopeUnitPosition'])"
                   ></el-input>
 
                 </el-form-item>
               </td>
               <td>联系电话</td>
               <td colspan="2" class="color_DBE4EF">
-                <el-form-item prop="scenePeopeTel">
+                <el-form-item prop="scenePeopeTel" :rules="fieldRules('scenePeopeTel',propertyFeatures['scenePeopeTel'],validatePhone)">
                   <el-input
                     v-model="docData.scenePeopeTel"
                     minlength="11"
                     :maxLength="maxLength"
                     placeholder="\"
+                    :disabled="fieldDisabled(propertyFeatures['scenePeopeTel'])"
                   ></el-input>
                 </el-form-item>
               </td>
@@ -169,12 +176,13 @@
             <tr>
               <td>联系地址</td>
               <td colspan="6" class="color_DBE4EF">
-                <el-form-item prop="scenePeopeAddress">
+                <el-form-item prop="scenePeopeAddress" :rules="fieldRules('scenePeopeAddress',propertyFeatures['scenePeopeAddress'])">
                   <el-input
                     v-model="docData.scenePeopeAddress"
                     minlength="11"
                     :maxLength="maxLength"
                     placeholder="\"
+                    :disabled="fieldDisabled(propertyFeatures['scenePeopeAddress'])"
                   ></el-input>
                 </el-form-item>
               </td>
@@ -182,14 +190,14 @@
             <tr>
               <td>车(船)号</td>
               <td colspan="3" class="color_DBE4EF">
-                <el-form-item prop="vehicleShipId">
-                  <el-input v-model="docData.vehicleShipId" :maxLength="maxLength" placeholder="\"></el-input>
+                <el-form-item prop="vehicleShipId" :rules="fieldRules('vehicleShipId',propertyFeatures['vehicleShipId'])">
+                  <el-input v-model="docData.vehicleShipId" :maxLength="maxLength" placeholder="\" :disabled="fieldDisabled(propertyFeatures['vehicleShipId'])"></el-input>
                 </el-form-item>
               </td>
               <td>车(船)型</td>
               <td colspan="2" class="color_DBE4EF">
-                <el-form-item prop="vehicleShipType">
-                  <el-select v-model="docData.vehicleShipType">
+                <el-form-item prop="vehicleShipType" :rules="fieldRules('vehicleShipType',propertyFeatures['vehicleShipType'])">
+                  <el-select v-model="docData.vehicleShipType" :disabled="fieldDisabled(propertyFeatures['vehicleShipType'])">
                     <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.label"></el-option>
                   </el-select>
                 </el-form-item>
@@ -203,7 +211,7 @@
                <br>辩情况。）</span>
                 <div class="overflow_lins_style" id="noteDesCon">
                   <div class="overflow_lins">
-                    <el-form-item prop="illegalFacts">
+                    <el-form-item prop="illegalFacts" :rules="fieldRules('illegalFacts',propertyFeatures['illegalFacts'])">
                       <el-input
                         class="text_indent10 overflow_lins_textarea espacle"
                         type="textarea"
@@ -211,6 +219,7 @@
                         rows="4"
                         maxlength="400"
                         placeholder="\"
+                        :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
                       ></el-input>
                       <p class="span_bg" >&nbsp;</p>
                       <p class="span_bg">&nbsp;</p>
@@ -233,8 +242,8 @@
 
             <tr>
               <td colspan="7">
-                <el-form-item prop="readState">
-                  <el-checkbox-group v-model="docData.readState" :max="1">
+                <el-form-item prop="readState" :rules="fieldRules('readState',propertyFeatures['readState'])">
+                  <el-checkbox-group v-model="docData.readState" :max="1" :disabled="fieldDisabled(propertyFeatures['readState'])">
                     <el-checkbox label="0">上述笔录我已看过</el-checkbox>
                     <el-checkbox label="1">或已向我宣读过，情况属实无误。</el-checkbox>
                   </el-checkbox-group>
@@ -250,11 +259,11 @@
             <tr>
               <td colspan="7" class="illegalFactsTip">
                 备注：
-                <el-form-item prop="note" style="width:480px">
+                <el-form-item prop="note" style="width:480px" :rules="fieldRules('note',propertyFeatures['note'])">
                   <el-input type="textarea"
                     v-bind:class="{ over_flow:docData.note.length>30?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
-                    maxlength="60" v-model="docData.note" placeholder="\" ></el-input>
+                    maxlength="60" v-model="docData.note" placeholder="\" :disabled="fieldDisabled(propertyFeatures['note'])"></el-input>
                 </el-form-item>
               </td>
             </tr>
@@ -347,7 +356,8 @@ export default {
       callback();
     };
     return {
-      // overFlowEditList:[{},{}],
+      validatePhone:validatePhone,
+      validateIDNumber:validateIDNumber,
       isOverflow: false,
       isOverLine: false,
       docData: {
@@ -399,8 +409,35 @@ export default {
         certificateId12: [
           { required: true, message: "执法证号不能为空", trigger: "blur" }
         ],
-        scenePeopeTel: [{ validator: validatePhone, trigger: "blur" }],
-        scenePeopelIdNo: [{ validator: validateIDNumber, trigger: "blur" }],
+        scenePeopelName: [
+          { required: true, message: "现场人员姓名不能为空", trigger: "blur" }
+        ],
+        scenePeopelSex: [
+          { required: true, message: "现场人员性别不能为空", trigger: "blur" }
+        ],
+        scenePeopeTel: [
+          { required: true, message: "现场人员联系电话不能为空", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        scenePeopelIdNo: [
+          { required: true, message: "现场人员身份证据号不能为空", trigger: "blur" },
+          { validator: validateIDNumber, trigger: "blur" }
+        ],
+        scenePeopeRelation: [
+          { required: true, message: "现场人员与案件关系不能为空", trigger: "blur" }
+        ],
+        scenePeopeUnitPosition: [
+          { required: true, message: "现场人员单位及职务不能为空", trigger: "blur" }
+        ],
+        scenePeopeAddress: [
+          { required: true, message: "现场人员联系地址不能为空", trigger: "blur" }
+        ],
+        vehicleShipId: [
+          { required: true, message: "车（船）号不能为空", trigger: "blur" }
+        ],
+        vehicleShipType: [
+          { required: true, message: "车（船）型不能为空", trigger: "blur" }
+        ],
         party: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
         recorder: [
           { required: true, message: "记录人不能为空", trigger: "blur" }

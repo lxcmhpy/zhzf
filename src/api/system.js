@@ -348,8 +348,8 @@ export function roleBindOrganApi(data) {
   console.log(params);
   return request({
     url: "/system/sys/role/bindOrgan",
-    method: "get",
-    params: params,
+    method: "post",
+    data: params,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()

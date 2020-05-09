@@ -3,7 +3,7 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="docForm" :model="formData" label-width="120px">
+    <el-form ref="docForm" :rules="rules" :model="formData" label-width="120px">
 
       <!-- <div class="header-case">
         <div class="header_left">
@@ -23,48 +23,48 @@
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" :disabled="true" clearable class="w-120" v-model="formData.caseNumber"
+                <el-form-item prop="caseNumber" label="案号" :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
+                  <el-input ref="caseNumber" :disabled="fieldDisabled(propertyFeatures['caseNumber'])" clearable class="w-120" v-model="formData.caseNumber"
                             size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseCauseName" label="案由">
-                  <el-input :disabled="true" clearable class="w-120" v-model="formData.caseCauseName"
+                <el-form-item prop="caseCauseName" label="案由" :rules="fieldRules('caseCauseName',propertyFeatures['caseCauseName'])">
+                  <el-input :disabled="fieldDisabled(propertyFeatures['caseCauseName'])" clearable class="w-120" v-model="formData.caseCauseName"
                             size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="illegalFact" label="违法事实">
+                <el-form-item prop="illegalFact" label="违法事实" :rules="fieldRules('illegalFact',propertyFeatures['illegalFact'])">
                   <el-input type="textarea" ref="illegalFact" clearable class="height106" v-model="formData.illegalFact"
-                            size="small" placeholder="请输入"></el-input>
+                            size="small" placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['illegalFact'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="违法条款">
+                <el-form-item prop="illegalLaw" label="违法条款" :rules="fieldRules('illegalLaw',propertyFeatures['illegalLaw'])">
                   <el-input ref="illegalLaw" clearable class="w-120" v-model="formData.illegalLaw" size="small"
-                            placeholder="请输入"></el-input>
+                            placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['illegalLaw'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="处罚条款">
+                <el-form-item prop="punishLaw" label="处罚条款" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])">
                   <el-input ref="punishLaw" clearable class="w-120" v-model="formData.punishLaw" size="small"
-                            placeholder="请输入"></el-input>
+                            placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['punishLaw'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="tempPunishAmount" label="拟处罚决定">
-                  <el-input ref="tempPunishAmount" :disabled="true" clearable class="w-120"
+                <el-form-item prop="tempPunishAmount" label="拟处罚决定" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
+                  <el-input ref="tempPunishAmount" :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])" clearable class="w-120"
                             v-model="formData.tempPunishAmount" size="small"></el-input>
                 </el-form-item>
               </div>
@@ -279,6 +279,27 @@
         total: 0, //总数
         rules: {},
         needDealData: true,
+        propertyFeatures:'', //字段属性配置
+        rules: {
+          caseNumber: [
+            { required: true, message: "案号不能为空", trigger: "blur" }
+          ],
+          caseCauseName: [
+            { required: true, message: "案由不能为空", trigger: "blur" }
+          ],
+          illegalFact: [
+            { required: true, message: "违法事实不能为空", trigger: "blur" }
+          ],
+          illegalLaw: [
+            { required: true, message: "违法条款不能为空", trigger: "blur" }
+          ],
+          punishLaw: [
+            { required: true, message: "处罚条款不能为空", trigger: "blur" }
+          ],
+          tempPunishAmount: [
+            { required: true, message: "拟处罚决定不能为空", trigger: "blur" }
+          ],
+        }
       }
     },
     mixins: [mixinGetCaseApiList],
@@ -446,6 +467,7 @@
       // this.setFormData();
     },
     created() {
+      console.log('this.$route.params',this.$route.params);
       this.setFormData();
       //通过案件id和表单类型Id查询已绑定文书
       this.getDocListByCaseIdAndFormId();
