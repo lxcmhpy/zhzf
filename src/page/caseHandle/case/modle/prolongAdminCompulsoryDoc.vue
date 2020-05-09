@@ -8,45 +8,45 @@
           <p class="p_begin">
             当事人（个人姓名或单位名称）
             <span>
-              <el-form-item prop="party">
-                <el-input disabled v-model="docData.party" :maxLength='maxLength'></el-input>
+              <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
+                <el-input :disabled="fieldDisabled(propertyFeatures['party'])" v-model="docData.party" :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>:
           </p>
           <p>
             因你（单位）
             <span>
-              <el-form-item prop="caseCauseName">
-                <el-input disabled v-model="docData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:docData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"   :maxLength='maxLength'></el-input>
+              <el-form-item prop="caseCauseName" :rules="fieldRules('caseCauseName',propertyFeatures['caseCauseName'])">
+                <el-input :disabled="fieldDisabled(propertyFeatures['caseCauseName'])" v-model="docData.caseCauseName" type='textarea'  v-bind:class="{ over_flow:docData.caseCauseName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"   :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>，本机关依法于
             <span>
-              <el-form-item prop="enforceDate" class="pdf_datapick">
-                <el-date-picker disabled v-model="docData.enforceDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+              <el-form-item prop="enforceDate" class="pdf_datapick" :rules="fieldRules('enforceDate',propertyFeatures['enforceDate'])">
+                <el-date-picker :disabled="fieldDisabled(propertyFeatures['enforceDate'])" v-model="docData.enforceDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
                 </el-date-picker>
               </el-form-item>
             </span>对你（单位）采取了
             <span>
-              <el-form-item prop="enforceMeasure">
-                <el-input disabled v-model="docData.enforceMeasure" type='textarea'  v-bind:class="{ over_flow:docData.enforceMeasure.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"  :maxLength='maxLength'></el-input>
+              <el-form-item prop="enforceMeasure" :rules="fieldRules('enforceMeasure',propertyFeatures['enforceMeasure'])">
+                <el-input :disabled="fieldDisabled(propertyFeatures['enforceMeasure'])" v-model="docData.enforceMeasure" type='textarea'  v-bind:class="{ over_flow:docData.enforceMeasure.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}"  :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>的行政强制措施，行政强制措施决定书案号：
             <span>
-              <el-form-item prop="caseNumberCopy">
-                <el-input disabled v-model="docData.caseNumberCopy" :maxLength='maxLength'></el-input>
+              <el-form-item prop="caseNumberCopy" :rules="fieldRules('caseNumberCopy',propertyFeatures['caseNumberCopy'])">
+                <el-input :disabled="fieldDisabled(propertyFeatures['caseNumberCopy'])" v-model="docData.caseNumberCopy" :maxLength='maxLength'></el-input>
               </el-form-item>
             </span>。
           </p>
           <p>
             现因
             <span>
-              <el-form-item prop="situationDescription">
-                <el-input v-model="docData.situationDescription"  :maxLength='maxLength'></el-input>
+              <el-form-item prop="situationDescription" :rules="fieldRules('situationDescription',propertyFeatures['situationDescription'])">
+                <el-input v-model="docData.situationDescription"  :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['situationDescription'])"></el-input>
               </el-form-item>
             </span>，依据《中华人民共和国行政强制法》第二十五条的规定，决定延长行政强制措施期限至
             <span>
-              <el-form-item prop="delayDate" class="pdf_datapick">
-                <el-date-picker v-model="docData.delayDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+              <el-form-item prop="delayDate" class="pdf_datapick" :rules="fieldRules('delayDate',propertyFeatures['delayDate'])">
+                <el-date-picker v-model="docData.delayDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['delayDate'])">
                 </el-date-picker>
               </el-form-item>
             </span>。
@@ -101,7 +101,6 @@ export default {
       docData: {
         caseNumber: '',
         party: '',
-        partyName: '',
         caseCauseName: '',
         enforceDate: '',
         enforceMeasure: '',
@@ -122,6 +121,21 @@ export default {
         status: ""
       },
       rules: {
+        party: [
+          { required: true, message: '当事人不能为空', trigger: 'blur' },
+        ],
+        caseCauseName: [
+          { required: true, message: '案由不能为空', trigger: 'blur' },
+        ],
+        enforceDate: [
+          { required: true, message: '时间不能为空', trigger: 'blur' },
+        ],
+        enforceMeasure: [
+          { required: true, message: '行政强制措施不能为空', trigger: 'blur' },
+        ],
+        caseNumber: [
+          { required: true, message: '案号不能为空', trigger: 'blur' },
+        ],
         situationDescription: [
           { required: true, message: '延期原因不能为空', trigger: 'blur' },
         ],
@@ -137,22 +151,13 @@ export default {
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'prolongAdmin-print',
-      }
+      },
+      propertyFeatures:'', //字段属性配置
+
     }
   },
 
    methods: {
-    onSubmit(formName) {
-      console.log('submit!');
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -162,10 +167,6 @@ export default {
         docId: '2c902934699a6ef801699a7426750001'
       };
       this.com_getDocDataByCaseIdAndDocId(data);
-    },
-    //保存文书信息
-    addDocData(handleType) {
-      this.com_addDocData(handleType, 'docForm');
     },
     // 盖章
     makeSeal() {
@@ -204,8 +205,9 @@ export default {
     //对原始数据做一下处理
     getDataAfter(){
       this.docData.endDate = new Date(this.docData.delayDate).format("yyyy-MM-dd");
-      console.log("asd",this.docData.endDate)
-      this.docData.delayDate = new Date(new Date(new Date(this.docData.delayDate).format("yyyy-MM-dd")).getTime()+30*24*60*60*1000);
+      // this.docData.delayDate = new Date(new Date(new Date(this.docData.delayDate).format("yyyy-MM-dd")).getTime()+30*24*60*60*1000);
+      this.docData.delayDate = new Date(new Date(this.docData.delayDate).getTime()+30*24*60*60*1000).format('yyyy-MM-dd');
+
     },
   },
   mounted() {

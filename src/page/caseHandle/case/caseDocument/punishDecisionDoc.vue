@@ -515,6 +515,7 @@ export default {
       // this.com_submitCaseForm(handleType, "docForm", true);
       // 预览样式
       this.isPdf = "color_FFFFFF";
+      this.formData.otherWay=this.formData.otherWay||'';
       setTimeout(() => {
         this.com_submitCaseForm(handleType, "docForm", true);
       }, 3000);

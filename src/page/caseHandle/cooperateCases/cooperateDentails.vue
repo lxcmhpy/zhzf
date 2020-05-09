@@ -43,7 +43,7 @@
               {{caseData.afdd}}
             </el-form-item>
             <el-form-item label="移送原因">
-              {{caseData.copyReason}}{{caseData.otherReason}}
+              {{caseData.otherReason||caseData.copyReason}}
             </el-form-item>
           </div>
         </div>
