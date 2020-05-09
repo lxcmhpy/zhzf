@@ -543,8 +543,8 @@ export default {
        let dailiDataList = JSON.parse(this.docData.agentPartyEcertId);
         let dailiData = "";
        dailiDataList.forEach(item=>{
-        //  console.log(item);
-          if(this.switchRelate(item.relationWithCase) == selectPeo2[1] && item.name == selectPeo2[0]){
+         console.log('其他人',item);
+          if(item.relationWithCase == selectPeo2[1] && item.name == selectPeo2[0]){
             console.log('不是当事人')
            dailiData = item;
           console.log('dailiData22222',dailiData);

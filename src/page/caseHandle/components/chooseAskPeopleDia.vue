@@ -108,7 +108,7 @@ export default {
             }
           }
           if(addMoreData.askData.otherPeopleRelation==''){
-            addMoreData.askData.otherPeopleRelation='当事人'
+            addMoreData.askData.otherPeopleRelation=this.formData.peopleType
           }
           console.log('addMoreData',addMoreData);
           this.com_viewDoc(this.docData,addMoreData);

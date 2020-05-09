@@ -44,7 +44,7 @@
                 ></el-input>
               </el-form-item>
             </td>
-            <td>性别</td>
+            <td>性别</td> 
             <td class="color_DBE4EF width20">
               <el-form-item prop="partySex" :rules="fieldRules('partySex',propertyFeatures['partySex'],'',isParty)">
                 <!-- <el-input  v-model="formData.partySex" maxlength="2" :disabled="isParty ? false : true" placeholder="\"></el-input> -->
@@ -124,7 +124,7 @@
           <tr>
             <td>单位</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',isParty)">
+              <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyName"
