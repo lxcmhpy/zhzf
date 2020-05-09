@@ -13,7 +13,7 @@
             {{subItem.title}}
           </el-menu-item>
         </el-submenu>
-        <el-menu-item :index="item.name" :key="item.id" v-if="item.children.length==0">
+        <el-menu-item :index="item.name" :key="item.id" v-if="item.children.length==0" >
           <template slot="title">
             <i class="el-icon-location"></i>
             <span slot="title">{{item.title}}</span>
@@ -42,6 +42,7 @@ import { mapGetters } from "vuex";
     methods: {
       //切换菜单
       changeMenu(key, keyPath) {
+          debugger;
         this.$store.commit('SET_ACTIVE_INDEX_STO', key);
         this.$router.push({name: key});
       },

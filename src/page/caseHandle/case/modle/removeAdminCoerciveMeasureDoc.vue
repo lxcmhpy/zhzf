@@ -12,17 +12,17 @@
         <p class="p_begin">
           当事人（个人姓名或单位名称）
           <span>
-            <el-form-item prop="party">
-              <el-input disabled v-model="docData.party" :maxLength="maxLength"></el-input>
+            <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
+              <el-input :disabled="fieldDisabled(propertyFeatures['party'])" v-model="docData.party" :maxLength="maxLength"></el-input>
             </el-form-item>
           </span>:
         </p>
         <p>
           因你（单位）
           <span>
-            <el-form-item prop="caseCauseName">
+            <el-form-item prop="caseCauseName" :rules="fieldRules('caseCauseName',propertyFeatures['caseCauseName'])">
               <el-input
-                disabled
+                :disabled="fieldDisabled(propertyFeatures['caseCauseName'])"
                 v-model="docData.caseCauseName"
                 type="textarea"
                 v-bind:class="{ over_flow:docData.caseCauseName.length>14?true:false }"
@@ -32,9 +32,9 @@
             </el-form-item>
           </span>，本机关依法于
           <span>
-            <el-form-item prop="dateTime" class="pdf_datapick">
+            <el-form-item prop="dateTime" class="pdf_datapick" :rules="fieldRules('dateTime',propertyFeatures['dateTime'])">
               <el-date-picker
-                disabled
+                :disabled="fieldDisabled(propertyFeatures['dateTime'])"
                 v-model="docData.dateTime"
                 type="date"
                 format="yyyy年MM月dd日"
@@ -44,9 +44,9 @@
             </el-form-item>
           </span>对你（单位）采取了
           <span>
-            <el-form-item prop="enforceMeasure">
+            <el-form-item prop="enforceMeasure" :rules="fieldRules('enforceMeasure',propertyFeatures['enforceMeasure'])">
               <el-input
-                disabled
+                :disabled="fieldDisabled(propertyFeatures['enforceMeasure'])"
                 v-model="docData.enforceMeasure"
                 type="textarea"
                 v-bind:class="{ over_flow:docData.enforceMeasure.length>14?true:false }"
@@ -55,16 +55,16 @@
             </el-form-item>
           </span>的行政强制措施，行政强制措施决定书案号：
           <span>
-            <el-form-item prop="caseNumberCopy">
-              <el-input disabled v-model="docData.caseNumberCopy" :maxLength="maxLength"></el-input>
+            <el-form-item prop="caseNumberCopy" :rules="fieldRules('caseNumberCopy',propertyFeatures['caseNumberCopy'])">
+              <el-input :disabled="fieldDisabled(propertyFeatures['caseNumberCopy'])" v-model="docData.caseNumberCopy" :maxLength="maxLength"></el-input>
             </el-form-item>
           </span>。
         </p>
         <p>
           依照《中华人民共和国行政强制法》第二十八条第一款第
           <span>
-            <el-form-item prop="clause" style="width:140px">
-              <el-select v-model="docData.clause" :maxLength="maxLength" placeholder="\">
+            <el-form-item prop="clause" style="width:140px" :rules="fieldRules('clause',propertyFeatures['clause'])">
+              <el-select v-model="docData.clause" :maxLength="maxLength" placeholder="\" :disabled="fieldDisabled(propertyFeatures['clause'])">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -75,13 +75,14 @@
             </el-form-item>
           </span>项的规定， 本机关决定自
           <span>
-            <el-form-item prop="removeDate" class="pdf_datapick">
+            <el-form-item prop="removeDate" class="pdf_datapick" :rules="fieldRules('removeDate',propertyFeatures['removeDate'])">
               <el-date-picker
                 v-model="docData.removeDate"
                 type="date"
                 format="yyyy年MM月dd日"
                 placeholder="    年  月  日"
                  value-format="yyyy-MM-dd"
+                 :disabled="fieldDisabled(propertyFeatures['removeDate'])"
               ></el-date-picker>
             </el-form-item>
           </span>起解除该行政强制措施。
@@ -178,7 +179,6 @@ export default {
       docData: {
         caseNumber: "",
         party: "",
-        partyName: "",
         caseCauseName: "",
         dateTime: "",
         enforceMeasure: "",
@@ -240,6 +240,21 @@ export default {
         }
       ],
       rules: {
+        party: [
+          { required: true, message: "当事人不能为空", trigger: "blur" }
+        ],
+        caseCauseName: [
+          { required: true, message: "案由不能为空", trigger: "blur" }
+        ],
+        dateTime: [
+          { required: true, message: "强制时间不能为空", trigger: "blur" }
+        ],
+        caseNumberCopy: [
+          { required: true, message: "案号不能为空", trigger: "blur" }
+        ],
+        enforceMeasure: [
+          { required: true, message: "强制措施不能为空", trigger: "blur" }
+        ],
         clause: [
           { required: true, message: "请解除依据不能为空", trigger: "blur" }
         ],
@@ -257,7 +272,8 @@ export default {
       },
       addVisible: false,
       addLoading: false,
-      tableDatas: []
+      tableDatas: [],
+      propertyFeatures:'', //字段属性配置
     };
   },
 
