@@ -335,7 +335,7 @@
       </div>
       <!-- 右侧浮动栏 -->
       <div class="amap-position amap-rtl-box" :class="{'widthDrawer600': category == 4}" >
-        <div class="amap-tool" style="position:relative;z-index:5;left:-80px;top:27px;" :class="{'left-500':drawer}">
+        <div class="amap-tool" style="position:relative;z-index:5;left:-120px;top:27px;" :class="{'left-500':drawer}">
             <el-popover
                 placement="bottom-start"
                 trigger="click"
@@ -362,6 +362,11 @@
                 >
                 <div class="drop-down-menu transition-box">
                         <ul>
+                            <li>
+                                <span >
+                                    <el-checkbox v-model="checked"  @change="isCheckAll">{{radioVal}}</el-checkbox>&nbsp;</span>
+                                 <!-- <el-radio v-model="radioVal" label="2">取消全选</el-radio> -->
+                            </li>
                         <li v-for="subItem in tabList[0].children" :key="subItem.name" :class="{'select':subItem.select}" @click="searchByTab(subItem)">
                             <i :class="subItem.icon"></i>
                             <p>{{subItem.name}}</p>
@@ -375,10 +380,26 @@
                     <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
             </el-popover>
+
             <el-button size="medium" class="commonBtn searchBtn"  @click="lawScreenFull=!lawScreenFull">
                 <img :src="'./static/images/img/lawSupervise/qp.png'" />
                 全屏
             </el-button>
+                         <el-popover
+            placement="bottom-start"
+            trigger="click"
+            >
+                <div class="drop-down-menu transition-box">
+                    <ul>
+                        <li v-for="(item,index) in styleListNumber" :class="{'select':styleIndexNumher==index}" :key="index" @click="styleIndexNumher=index">
+                            <p>{{item}}</p>
+                        </li>
+                    </ul>
+                </div>
+                <el-button slot="reference" class="skinBtn">
+                    <i class="iconfont law-skin f22"></i>
+                </el-button>
+           </el-popover>
         </div>
         <div class="drawerBtn" @click="updateDrawer">
           <i class="el-icon-arrow-right"></i>
@@ -737,20 +758,6 @@
     <div class="amap-search" @mousemove="toolShow = true" @mouseleave="toolShow = false">
         <el-amap-search-box class="search-box-blue" ref="searchAmapBox" :search-option="searchOption" :on-search-result="searchAll">
         </el-amap-search-box>
-         <el-popover
-            placement="bottom-start"
-            trigger="click"
-            >
-                <div class="drop-down-menu transition-box">
-                    <ul>
-                        <li v-for="(item,index) in styleListNumber" :class="{'isCheck':styleIndexNumher==index}" :key="index" @click="styleIndexNumher=index">
-                            <p>{{item}}</p>
-                        </li>
-                    </ul>
-                </div>
-                <span slot="reference" class="iconfont law-skin search-btn-icon"></span>
-         </el-popover>
-
         <div class="amap-tool-search" v-if="toolShow" >
             <el-button size="medium" class="tabBtn" :class="{'isCheck': isCheck}" @click="isCheck = true">
                 <img :src="'./static/images/img/lawSupervise/icon_renyuan.png'" />
@@ -986,6 +993,8 @@ export default {
     return {
         isCheck: true,
         toolShow: false,
+        checked: false,
+        radioVal: '全选',
         defaultProps: {
           children: 'children',
           label: 'label'
@@ -1240,6 +1249,28 @@ export default {
     };
   },
   methods: {
+    isCheckAll () {
+        // debugger;
+        let _this = this;
+        if (this.radioVal == '全选') {
+            this.radioVal = '取消全选';
+            this.tabList[0].children.forEach((item)=>{
+            // debugger;
+                item.select = false;
+                _this.searchByTab(item);
+
+            })
+        } else {
+            this.radioVal = '全选';
+this.tabList[0].children.forEach((item)=>{
+            // debugger;
+                item.select = true;
+                _this.searchByTab(item);
+
+            })
+        }
+
+    },
     handleSelect (key, keyPath) {
         debugger;
         this.areaObj = key;
@@ -1271,6 +1302,7 @@ export default {
             this.curWindow.visible = false;
         }
         this.getById(category, row.id);
+        this.routerXsDetail();
     },
     positionEvent1 () {
         this.routerXsDetail()
@@ -1541,11 +1573,11 @@ export default {
       });
     },
     searchByTab(item) {
-
       // this.markers.splice(0, this.markers.length);
       item.select = !item.select;
-      if (item.select && this.allSearchList.length >= 5) {
+      if (item.select && this.allSearchList.length > 5) {
         item.select = false;
+        debugger;
         this.errorMsg(`至多选择5条数据`, "error");
         return
       }
