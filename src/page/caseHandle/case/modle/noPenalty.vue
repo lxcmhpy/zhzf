@@ -39,7 +39,7 @@
                       :show-file-list="false"
                       :before-upload="uploadFileValidat"
                       >
-                      <el-button size="small" type="primary">上传附件</el-button> <span class="upLoadNumSpan">最多上传3个附件</span>
+                      <el-button size="small" type="primary">选取文件</el-button> <span class="upLoadNumSpan">最多上传3个附件</span>
 
                     <!-- <div slot="tip" class="el-upload__tip">最多上传3个附件</div> -->
                     

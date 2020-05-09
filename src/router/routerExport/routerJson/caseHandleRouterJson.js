@@ -612,13 +612,5 @@ export default [
       title: "其他附件组件",
     },
     component: () => import("@/components/caseCenter/otherEnclosure.vue")
-  },
-  {
-    path: "/zdjg-keyVehicleDentails",
-    name: "case_handle_zdjg-keyVehicleDentails",
-    meta: {
-      title: "其他附件组件",
-    },
-    component: () => import("@/page/lawSupervise/supervisePage/zdjg/keyVehicleDentails.vue")
   }
 ]

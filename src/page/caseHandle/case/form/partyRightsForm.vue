@@ -13,7 +13,7 @@
           </div>
         </div>
       </div> -->
-      <div class="content_box">
+      <div class="content_box"> 
         <div class="content">
           <div class="content_title">
             当事人权利
@@ -195,7 +195,7 @@
         <!-- 悬浮按钮 -->
         <div class="float-btns ">
 
-          <el-button type="primary" @click="continueHandle" v-if="!this.$route.params.isComplete">
+          <el-button type="primary" @click="continueHandle" :disabled="!canGoNextLink" v-if="!this.$route.params.isComplete">
             <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  p-id="2285" width="24" height="24">
               <path
@@ -205,12 +205,12 @@
             <br>
             下一<br>环节
           </el-button>
-          <el-button type="primary" @click="submitCaseDoc(1)" v-if="!this.$route.params.isComplete">
+          <el-button type="primary" @click="submitCaseDoc(1)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete">
             <i class="iconfont law-save"></i>
             <br>
             保存
           </el-button>
-          <el-button type="success" @click="submitCaseDoc(0)" v-if="!this.$route.params.isComplete">
+          <el-button type="success" @click="submitCaseDoc(0)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete">
             <i class="iconfont law-save"></i>
             <br>
             暂存

@@ -32,8 +32,8 @@
             </el-form-item>
           </span>的决定，决定书案号为
           <span>
-            <el-form-item prop="caseNmuberCopy" :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
-              <el-input  v-model="docData.caseNumber"  :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNumber'])"></el-input>
+            <el-form-item prop="caseNmuberCopy" :rules="fieldRules('caseNmuberCopy',propertyFeatures['caseNmuberCopy'])">
+              <el-input  v-model="docData.caseNmuberCopy"  :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNmuberCopy'])"></el-input>
             </el-form-item>
           </span>。你（单位）逾期未履行义务，根据《中华人民共和国行政强制法》第三十五条和第五十四条的规定，现就有关事项催告如下，请你（单位）按要求履行：
         </p>
@@ -253,7 +253,8 @@ export default {
       wtInfoDisabled: true,
       otherRemindWayDisabled: true,
       propertyFeatures:'',
-      isParty:true
+      isParty:true,
+      needDealData:true
     }
   },
  methods: {
@@ -308,7 +309,6 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      console.log()
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
@@ -333,6 +333,9 @@ export default {
         this.wtInfoDisabled = true;
         this.otherRemindWayDisabled = true;
       }
+    },
+     getDataAfter(){
+      this.docData.caseNmuberCopy=this.docData.caseNumber
     }
   },
   mounted() {

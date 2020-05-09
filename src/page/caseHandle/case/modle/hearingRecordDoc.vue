@@ -8,42 +8,42 @@
         <p class="p_begin">
           案件名称：
           <span>
-            <el-form-item prop="caseName" class="width537">
+            <el-form-item prop="caseName" class="width537" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
               <el-input v-model="docData.caseName" :maxLength='maxLength' type='textarea'
                         :autosize="{ minRows: 1, maxRows: 3}"
-                        v-bind:class="{ over_flow:docData.caseName.length>31?true:false }" disabled></el-input>
+                        v-bind:class="{ over_flow:docData.caseName.length>31?true:false }" :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
           主持听证机关：
           <span>
-            <el-form-item prop="hearingOrgan" class="width505">
-              <el-input v-model="docData.hearingOrgan" :maxLength='maxLength'></el-input>
+            <el-form-item prop="hearingOrgan" class="width505" :rules="fieldRules('hearingOrgan',propertyFeatures['hearingOrgan'])">
+              <el-input v-model="docData.hearingOrgan" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['hearingOrgan'])"></el-input>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
           听证地点：
           <span>
-            <el-form-item prop="hearingPlace" class="width537">
-              <el-input v-model="docData.hearingPlace" :maxLength='maxLength'></el-input>
+            <el-form-item prop="hearingPlace" class="width537" :rules="fieldRules('hearingPlace',propertyFeatures['hearingPlace'])">
+              <el-input v-model="docData.hearingPlace" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['hearingPlace'])"></el-input>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
           听证时间：
           <span class="listen_data">
-            <el-form-item prop="hearingStartTime" class="pdf_datapick">
+            <el-form-item prop="hearingStartTime" class="pdf_datapick" :rules="fieldRules('hearingStartTime',propertyFeatures['hearingStartTime'])">
               <el-date-picker v-model="docData.hearingStartTime" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"
-                              placeholder="    年  月  日  时  分">
+                              placeholder="    年  月  日  时  分" :disabled="fieldDisabled(propertyFeatures['hearingStartTime'])">
               </el-date-picker>
             </el-form-item>
           </span>至
           <span class="listen_data">
-            <el-form-item prop="hearingEndTime" class="pdf_datapick">
+            <el-form-item prop="hearingEndTime" class="pdf_datapick" :rules="fieldRules('hearingEndTime',propertyFeatures['hearingEndTime'])">
               <el-date-picker v-model="docData.hearingEndTime" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"
-                              placeholder="    年  月  日  时  分">
+                              placeholder="    年  月  日  时  分" :disabled="fieldDisabled(propertyFeatures['hearingEndTime'])">
               </el-date-picker>
             </el-form-item>
           </span>
@@ -51,8 +51,8 @@
         <p class="p_begin">
           主持人：
           <span>
-            <el-form-item prop="persidingHearer" style="width:235px">
-              <el-input v-model="docData.persidingHearer" maxLength='13'></el-input>
+            <el-form-item prop="persidingHearer" style="width:235px" :rules="fieldRules('persidingHearer',propertyFeatures['persidingHearer'])">
+              <el-input v-model="docData.persidingHearer" maxLength='13' :disabled="fieldDisabled(propertyFeatures['persidingHearer'])"></el-input>
             </el-form-item>
           </span>
           听证员：
@@ -421,6 +421,7 @@
         staffList: [],
         staffList_: [],
         needDealData: true,
+        propertyFeatures:''
       };
     },
     methods: {

@@ -77,7 +77,7 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="toPayAmount" label="待缴金额" >
+                <el-form-item prop="toPayAmount" label="待缴金额" :rules="fieldRules('toPayAmount',propertyFeatures['toPayAmount'])">
                   <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" :disabled="fieldDisabled(propertyFeatures['toPayAmount'])"  @change="isFinish"></el-input>
                 </el-form-item>
               </div>

@@ -90,6 +90,11 @@ const caseHandle = {
             return new Promise((resolve, reject) => {
                 saveOrUpdateCaseBasicInfoApi(data).then(
                     res => {
+                        if(res.otherInfo){
+                            res.otherInfo= JSON.parse(res.otherInfo)
+                        console.log('res暂存',res)
+
+                        }
                         resolve(res);
                     },
                     error => {

@@ -15,7 +15,7 @@
             <td rowspan="2">个人</td>
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="party">
+              <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
                 <!-- <el-input type="textarea" v-model="docData.party"  :maxlength="nameLength" placeholder="\"></el-input> -->
                 <el-input
                   type="textarea"
@@ -23,7 +23,7 @@
                   v-bind:class="{ over_flow:docData.party.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  disabled
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -31,7 +31,7 @@
             </td>
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyIdNo">
+              <el-form-item prop="partyIdNo" :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)">
                 <!-- <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input> -->
 
                 <el-input
@@ -41,7 +41,7 @@
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
                   placeholder="\"
-                  :disabled="isParty && !originalData.partyIdNo ? false : true"
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -49,7 +49,7 @@
           <tr>
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyAddress">
+              <el-form-item prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'],'',isParty)">
                 <!-- <el-input v-model="docData.partyAddress"  :maxlength="adressLength" placeholder="\"></el-input> -->
 
                 <el-input
@@ -58,20 +58,20 @@
                   v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
-                  :disabled="isParty && !originalData.partyAddress ? false : true"
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyTel">
+              <el-form-item prop="partyTel" :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone,isParty)">
                 <!-- <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\"></el-input> -->
 
                 <el-input
                   v-model="docData.partyTel"
                   :maxLength="maxLength"
-                  :disabled="isParty && !originalData.partyTel ? false : true"
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -81,13 +81,13 @@
             <td rowspan="4"> 单位 </td>
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item prop="partyName">
+              <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
                 <!-- <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="\"></el-input> -->
 
                  <el-input
                   v-model="docData.partyName"
                   :maxLength="maxLength"
-                  disabled
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -96,13 +96,13 @@
           <tr>
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
-              <el-form-item prop="partyUnitAddress">
+              <el-form-item prop="partyUnitAddress" :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)">
                 <!-- <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="\"></el-input> -->
 
                  <el-input
                   v-model="docData.partyUnitAddress"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyUnitAddress ? false : true"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -111,27 +111,27 @@
           <tr>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyUnitTel">
+              <el-form-item prop="partyUnitTel" :rules="fieldRules('partyUnitTel',propertyFeatures['partyUnitTel'],validatePhone,!isParty)">
                 <!-- <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="\"></el-input> -->
 
                 <el-input
                   v-model="docData.partyUnitTel"
                   minlength="11"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyUnitTel ? false : true"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
             </td>
             <td> 法定代表人 </td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyManager">
+              <el-form-item prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)">
                 <!-- <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="\"></el-input> -->
 
                 <el-input
                   v-model="docData.partyManager"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyManager ? false : true"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -142,13 +142,13 @@
               统一社会信用代码
             </td>
             <td colspan="3" class="color_DBE4EF">
-              <el-form-item prop="socialCreditCode">
+              <el-form-item prop="socialCreditCode" :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)">
                 <!-- <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="\"></el-input> -->
 
                 <el-input
                   v-model="docData.socialCreditCode"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.socialCreditCode ? false : true"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -158,56 +158,57 @@
 
         <p>因你（单位）逾期未履行本机关于
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-form-item prop="serviceTime" class="pdf_datapick" :rules="fieldRules('serviceTime',propertyFeatures['serviceTime'])">
+              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['serviceTime'])">
               </el-date-picker>
             </el-form-item>
           </span>作出的
           <span>
-            <el-form-item prop="punishContent"  class="width120">
-              <el-input  v-model="docData.punishContent" :maxLength='maxLength' disabled></el-input>
+            <el-form-item prop="punishContent"  class="width120" :rules="fieldRules('punishContent',propertyFeatures['punishContent'])">
+              <el-input  v-model="docData.punishContent" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['punishContent'])"></el-input>
             </el-form-item>
           </span>决定，决定书案号为
           <span>
-            <el-form-item prop="caseNumberCopy">
-              <el-input  v-model="docData.caseNumberCopy" :maxLength='maxLength' disabled></el-input>
+            <el-form-item prop="caseNumberCopy" :rules="fieldRules('caseNumberCopy',propertyFeatures['caseNumberCopy'])">
+              <el-input  v-model="docData.caseNumberCopy" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNumberCopy'])"></el-input>
             </el-form-item>
           </span>。经本机关催告后，你（单位）在催告期间有转移或隐匿财物迹象的，仍未履行且无正当理由。依据
           <span>
-            <el-form-item prop="punishmentBasis"  class="width120">
+            <el-form-item prop="punishmentBasis"  class="width120" :rules="fieldRules('punishmentBasis',propertyFeatures['punishmentBasis'])">
               <el-input type="textarea" v-model="docData.punishmentBasis" 
               v-bind:class="{ over_flow:docData.punishmentBasis.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
-              :maxLength='maxLength'></el-input>
+              :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['punishmentBasis'])"></el-input>
             </el-form-item>
           </span>的规定，本机关将立即于
           <span>
-            <el-form-item prop="forceTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-form-item prop="forceTime" class="pdf_datapick" :rules="fieldRules('forceTime',propertyFeatures['forceTime'])">
+              <el-date-picker v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['forceTime'])">
               </el-date-picker>
             </el-form-item>
           </span>强制执行：
           <span>
-            <el-form-item prop="measureAction"  class="width120">
+            <el-form-item prop="measureAction"  class="width120" :rules="fieldRules('measureAction',propertyFeatures['measureAction'])">
               <el-input type="textarea" v-model="docData.measureAction"  :maxLength='maxLength'
               v-bind:class="{ over_flow:docData.measureAction.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
+              :disabled="fieldDisabled(propertyFeatures['measureAction'])"
               ></el-input>
             </el-form-item>
           </span>（强制执行方式）。
         </p>
         <p>
           如不服本决定，可以在收到本决定书之日起六十日内向<span>
-            <el-form-item prop="reconsiderationOrgan">
-              <el-select v-model="docData.reconsiderationOrgan" :maxLength='maxLength'>
+            <el-form-item prop="reconsiderationOrgan" :rules="fieldRules('reconsiderationOrgan',propertyFeatures['reconsiderationOrgan'])">
+              <el-select v-model="docData.reconsiderationOrgan" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['reconsiderationOrgan'])">
                   <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label" :value="item.label">
                   </el-option>
                 </el-select>
               <!-- <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input> -->
             </el-form-item>
           </span>申请行政复议或者在六个月内依法向<span>
-            <el-form-item prop="enforcementOrgan">
-              <el-select v-model="docData.enforcementOrgan" :maxLength='maxLength'>
+            <el-form-item prop="enforcementOrgan" :rules="fieldRules('enforcementOrgan',propertyFeatures['enforcementOrgan'])">
+              <el-select v-model="docData.enforcementOrgan" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['enforcementOrgan'])">
                   <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label" :value="item.label">
                   </el-option>
                 </el-select>
@@ -272,6 +273,7 @@ import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // import signture from "../../../../js/signture";
 import mySignture from "@/common/js/mySignture";
+import { validatePhone,validateIDNumber  } from "@/common/js/validator";
 
 export default {
   components: {
@@ -282,6 +284,8 @@ export default {
   computed: { ...mapGetters(['caseId']) },
   data() {
     return {
+      validatePhone:validatePhone,
+      validateIDNumber :validateIDNumber,
       docData: {
         caseNumber: '',
         party: '',
@@ -319,11 +323,44 @@ export default {
       illegalFactsEvidence: '',
       value1: '',
       rules: {
+        party: [
+          { required: true, message: '当事人姓名不能为空', trigger: 'blur' },
+        ],
+        partyAddress: [
+          { required: true, message: '当事人地址不能为空', trigger: 'blur' },
+        ],
+        partyIdNo: [
+          { required: true, message: '身份证号码不能为空', trigger: 'blur' },
+          { validator:validateIDNumber , trigger: "blur"}
+        ],
+        partyTel: [
+          { required: true, message: '当事人联系电话不能为空', trigger: 'blur' },
+          { validator:validatePhone , trigger: "blur" }
+        ],
+        partyName: [
+          { required: true, message: '单位名称不能为空', trigger: 'blur' },
+        ],
+        partyUnitAddress: [
+          { required: true, message: '单位地址不能为空', trigger: 'blur' },
+        ],
+        partyUnitTel: [
+          { required: true, message: '单位联系电话不能为空', trigger: 'blur' },
+          { validator:validatePhone , trigger: "blur" }
+        ],
+        partyManager: [
+          { required: true, message: '法人不能为空', trigger: 'blur' },
+        ],
+        socialCreditCode: [
+          { required: true, message: '社会信用代码不能为空', trigger: 'blur' },
+        ],
         serviceTime: [
           { required: true, message: '决定时间必须填写', trigger: 'blur' },
         ],
+        caseNumberCopy: [
+          { required: true, message: '决定书案号不能为空', trigger: 'blur' },
+        ],
         punishmentBasis: [
-          { required: true, message: '违法条款必须输入', trigger: 'blur' },
+          { required: true, message: '处罚依据必须输入', trigger: 'blur' },
         ],
         forceTime: [
           { required: true, message: '强制执行时间必须填写', trigger: 'blur' },
@@ -350,6 +387,7 @@ export default {
       originalData:"",
       reconsiderationOptions : [],
       enforcementOptions : [],
+      propertyFeatures:''
     }
   },
    methods: {
