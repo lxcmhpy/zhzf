@@ -419,8 +419,9 @@ export default {
 
       if(addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")){
         //设置询问笔录名称
-        console.log('添加')
-        this.caseDocDataForm.note = "询问笔录（"+addMoreData.askData.peopleType+")(第"+addMoreData.askData.askNum +"次)";
+        console.log('添加');
+         let myPeopleType = addMoreData.askData.peopleAndRelationType == "以上均不是" ? addMoreData.askData.otherPeopleRelation : addMoreData.askData.peopleType;
+        this.caseDocDataForm.note = "询问笔录（"+myPeopleType+")(第"+addMoreData.askData.askNum +"次)";
         this.com_getCaseBasicInfo(data.caseId,data.docId);
       }else{
         console.log('修改')

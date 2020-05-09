@@ -31,7 +31,7 @@ import { mapGetters } from "vuex";
         let keyStr = key.split(this.reg);
         this.$store.commit("SET_ACTIVE_INDEX_STO", key);
         this.$store.commit("set_Head_Active_Nav", key);
-        alert(this.headActiveNav);
+        // alert(this.headActiveNav);
         //将当前选中的一级菜单名传到父组件
         this.$emit("selectHeadMenu",  key);
         //删除之前的tab页签

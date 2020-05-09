@@ -125,8 +125,8 @@ export default {
         console.log('ren',res);
         this.peopleTypeList = res.data;
         this.peopleTypeList.forEach(item => {
-          item.relation = this.switchRelate(item.relation);
-          item.all = item.name+ '-' +item.relation
+          // item.relation = this.switchRelate(item.relation);
+          item.all = item.name+ '-' +item.relation;
         });
         this.peopleTypeList.push({name:'',relation:'none',all:'以上均不是'})
         console.log('peopleTypeList',this.peopleTypeList);
