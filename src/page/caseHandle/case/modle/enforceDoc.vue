@@ -69,7 +69,7 @@
         <p>
           <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">3.你(单位)
           <span>
-            <el-form-item prop="caseName2" class="width120">
+            <el-form-item prop="caseName" class="width120">
               <el-input  type="textarea" v-model="docData.caseName"
               v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
@@ -172,10 +172,10 @@ export default {
         stopReason: '',
         executeTime: '',
         endReason: '',
-        caseName2: '',
         serviceTime: '',
         agreeTime: '',
         makeDate: '',
+        checknames:[]
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -272,6 +272,9 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      this.docData.checknames=this.checknames
+      console.log('docData提交',this.docData)
+
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态

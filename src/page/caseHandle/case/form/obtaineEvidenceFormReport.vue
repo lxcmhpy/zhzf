@@ -251,7 +251,7 @@
 
               <el-table-column width="52%" >
                 <template slot-scope="scope">
-                  <el-button size="mini" icon="el-icon-circle-close" circle @click="deleteEvidence(scope.row)" style="font-size:24px !important"></el-button>
+                  <el-button size="mini" icon="el-icon-circle-close" circle @click="deleteEvidence(scope.row)" style="border-radius: 50px;"></el-button>
                 </template>
               </el-table-column>
             </el-table>
