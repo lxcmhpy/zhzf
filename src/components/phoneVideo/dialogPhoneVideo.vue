@@ -28,8 +28,8 @@
                 </div>
             </div>
         </transition>
-         <div id="btnPhone1" @click="answer(0)"></div>
-        <div id="btnPhone2" @click="answer(1)"></div>
+         <div id="btnPhone1" @click="answerddd(0)"></div>
+        <div id="btnPhone2" @click="answerddd(1)"></div>
     </div>
 </template>
 <style lang="scss" src="@/assets/css/lawSupervise/phone.scss"></style>
@@ -48,7 +48,7 @@ export default {
         }
     },
     methods: {
-        answer (code) {
+        answerddd (code) {
             this.show = true;
             this.$store.commit('setMakePhoneStatus', true);
         },
@@ -60,7 +60,7 @@ export default {
             window.PhoneCallModule.sipHangUp();
             // this.makePhoneStatus = false;
             this.$store.commit('setMakePhoneStatus', false);
-            window.PhoneCallModule.sipUnRegister();
+            // window.PhoneCallModule.sipUnRegister();
         },
         start (e, id) {
             let odiv = e.target;        //获取目标元素

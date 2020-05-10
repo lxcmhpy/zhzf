@@ -24,26 +24,26 @@
                   </p>
                   <p>
                     <el-checkbox label="上级交办"> 3.上级机关
-                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
+                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
                         <el-input v-model="caseSourceText3" :maxLength="maxLength" placeholder="\" disabled></el-input>
                       </el-form-item>交办的；
                     </el-checkbox>
                   </p>
                   <p>
                     <el-checkbox label="下级报请"> 4.下级机关
-                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
+                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
                         <el-input v-model="caseSourceText4" :maxLength="maxLength" placeholder="\" disabled></el-input>
                       </el-form-item>报请查处的；</el-checkbox>
                   </p>
                   <p>
                     <el-checkbox label="部门移送"> 5.有关部门
-                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
+                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
                         <el-input v-model="caseSourceText5" :maxLength="maxLength" placeholder="\" disabled></el-input>
                       </el-form-item>移送的；</el-checkbox>
                   </p>
                   <p>
                     <el-checkbox label="其他途径">6.其他途径发现的：
-                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
+                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
                         <el-input v-model="caseSourceText6" :maxLength="maxLength" placeholder="\" disabled></el-input>
                       </el-form-item>
                     </el-checkbox>

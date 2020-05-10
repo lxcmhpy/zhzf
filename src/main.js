@@ -16,7 +16,6 @@ import { router } from "./router/index";
 import VueSimpleVerify from 'vue-simple-verify'
 import '../node_modules/vue-simple-verify/dist/vue-simple-verify.css'
 
-
 Vue.component('vue-simple-verify', VueSimpleVerify)
 
 Vue.use(ElementUI);
