@@ -1,4 +1,5 @@
 import axios from "axios";
+import qs from 'qs';
 import { getToken, setToken,removeToken } from "@/common/js/auth";
 import Vue from "vue";
 //import { message } from "ant-design-vue";
@@ -9,10 +10,10 @@ import iLocalStroage from '@/common/js/localStroage'
 var vue = new Vue();
 
 const service = axios.create({
-  // baseURL: process.env.BASE_API, // api的base_url
-  timeout: 15000, // request timeout
+  // "Content-Type": "multipart/form-data;charset=UTF-8",
+    // "Content-Type": "application/x-www-form-urlencoded",
+    timeout: 15000, // request timeout
   "Content-Type": "multipart/form-data;charset=UTF-8",
-    // "Content-Type": "application/x-www-form-urlencoded"
 });
 
 var BASEURL
@@ -49,7 +50,18 @@ service.interceptors.request.use(
     if (config.responseType) {
       config["responseType"] = config.responseType
     }
-
+// get方法
+// if(config.method=== 'get'){
+// //   debugger
+// console.log('get',config)
+// if(config.params){
+//   config.params=qs.stringify(config.params)
+// }
+// }
+// if(config.method=== 'post'){
+//   debugger
+//   // config.params=qs.stringify(params)
+// }
     config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
 
    //token一天后过期
@@ -60,7 +72,12 @@ service.interceptors.request.use(
    if (getToken("TokenKey")) {
       config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
    }
+
    console.log('config',config)
+  //  config.headers = {
+  //   'Content-Type': 'application/json' //  注意：设置很关键 
+  // }
+
    return config;
 
   },

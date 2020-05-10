@@ -119,6 +119,7 @@ var PhoneCallModule =(function () {
 	};
 
 	var audioCall = function(phoneNum, phoneName){
+        debugger;
 		PhoneCall.sipAudioCall(phoneNum, phoneName);
 		console.log('语音去电')
 		//setDialogTitle('语音去电');
@@ -132,7 +133,7 @@ var PhoneCallModule =(function () {
 	};
 
 	var videoCall = function(phoneNum, phoneName){
-
+        debugger;
 		PhoneCall.sipVideoCall(phoneNum, phoneName);
 		console.log('视频去电')
 		//setDialogTitle('视频去电');
@@ -158,6 +159,7 @@ var PhoneCallModule =(function () {
 	};
 
 	var sipRegister = function(){
+        debugger;
         var urlObj = JSON.parse(localStorage.getItem('CURRENT_BASE_URL'));
         var callCredential = {
                         displayName: 'ecds05',
@@ -174,7 +176,9 @@ var PhoneCallModule =(function () {
 		PhoneCall.sipRegister(callCredential);
 
 	};
-
+    var isRegistered = function () {
+        return PhoneCall.isRegistered;
+    }
 	var initialize = function(){
 		//设置控件，回调方法等
 		var phoneSettings = {
@@ -189,15 +193,18 @@ var PhoneCallModule =(function () {
         // debugger;
 	};
 
-	window.onload = initialize;
+    // window.onload = initialize;
 
 		return {
+        initialize:initialize,
 		sipRegister: sipRegister,
 		sipAudioCall: audioCall,
 		sipVideoCall: videoCall,
 		sipAnswer: answerCall,
         sipHangUp: hangUp,
-        sipUnRegister: unRegister
+        sipUnRegister: unRegister,
+        getRegistered: isRegistered
 	};
 } ());
+
 

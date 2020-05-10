@@ -103,8 +103,8 @@
               </el-form-item>
             </td>
           </tr>
-          <tr>
-            <td rowspan="6">
+          <tr style="height:190px">
+            <td>
               <p>案件</p>
               <p>调查</p>
               <p>经过</p>
@@ -112,18 +112,13 @@
               <p>法事</p>
               <p>实</p>
             </td>
-            <td rowspan="6" colspan="8" class="color_DBE4EF">
+           <td colspan="8" class="color_DBE4EF">
               <el-form-item prop="illegalFact" :rules="fieldRules('illegalFact',propertyFeatures['illegalFact'])">
                 <el-input type="textarea" v-model="formData.illegalFact" v-bind:class="{ over_flow:formData.illegalFact && formData.illegalFact.length>30?true:false }" :autosize="{ minRows: 1, maxRows: 10}" maxlength="300" placeholder="\"
                   :disabled="fieldDisabled(propertyFeatures['illegalFact'])"></el-input>
               </el-form-item>
             </td>
           </tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
 
           <tr>
             <td rowspan="5">
@@ -141,30 +136,7 @@
             <td colspan="2">{{item.des ? item.des : ''}}</td>
             <td colspan="2">{{item.num ? item.num : ''}}</td>
           </tr>
-          <!-- <tr>
-                <td></td>
-                <td colspan="2">{{formData.evidenceList[1].name}}</td>
-                <td colspan="2">{{formData.evidenceList[1].des}}</td>
-                <td colspan="2">{{formData.evidenceList[1].num}}</td>
-                </tr>
-                <tr>
-                <td></td>
-                <td colspan="2">{{formData.evidenceList[2].name}}</td>
-                <td colspan="2">{{formData.evidenceList[2].des}}</td>
-                <td colspan="2">{{formData.evidenceList[2].num}}</td>
-                </tr>
-                <tr>
-                <td></td>
-                <td colspan="2">{{formData.evidenceList[3].name}}</td>
-                <td colspan="2">{{formData.evidenceList[3].des}}</td>
-                <td colspan="2">{{formData.evidenceList[3].num}}</td>
-                </tr> -->
-        </table>
-      </div>
-
-      <div class="print_info">
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
-          <tr>
+          <tr style="height:180px">
             <td rowspan=6 width="49">
               <p>调查</p>
               <p>结论</p>
@@ -172,8 +144,11 @@
               <p>理意</p>
               <p>见</p>
             </td>
-            <td rowspan="6" colspan="6" @click="showLawOfficeOpion" class="aprotd">
-              <p class="approveDiv">{{formData.lawOfficeOpinions}}</p>
+            <td rowspan="6" colspan="7" class="aprotd">
+              <!-- <p class="approveDiv">{{formData.lawOfficeOpinions}}</p> -->
+              <el-form-item prop="closeResult">
+                <el-input type="textarea" v-model="formData.lawOfficeOpinions" v-bind:class="{ over_flow:formData.lawOfficeOpinions.length>33?true:false }" :rows="5"></el-input>
+              </el-form-item>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;">
                 <p>执法人员签名：
                   <span class="apro">
@@ -183,26 +158,28 @@
                   </span>
                  </p>
                 <p style="text-align: right;">
-                  {{formData.lawOfficeApprovalTime||' 年 月 日 '}}
+                    <el-form-item prop="makeDate" class="pdf_datapick">
+                        <el-date-picker v-model="formData.lawOfficeApprovalTime" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close' value-format="yyyy-MM-dd" >
+                        </el-date-picker>
+                    </el-form-item>
                 </p>
               </div>
             </td>
           </tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
+        </table>
+      </div>
 
-          <tr>
-            <td rowspan="6">
+      <div class="print_info">
+        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+          <tr style="height:310px">
+            <td>
               <p>经办</p>
               <p>机构</p>
               <p>负责</p>
               <p>人意</p>
               <p>见</p>
             </td>
-            <td rowspan="6" colspan="8" class="aprotd">
+            <td colspan="8" class="aprotd">
               <p class="approveDiv">{{formData.approveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;">
                 <p>签名：<span class="apro">{{formData.approvePeo||' '}}</span></p>
@@ -216,14 +193,8 @@
               </div>
             </td>
           </tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-
-          <tr>
-            <td rowspan="6">
+          <tr style="height:310px">
+            <td>
               <p>重大</p>
               <p>案件</p>
               <p>法制</p>
@@ -232,7 +203,7 @@
               <p>审核</p>
               <p>意见</p>
             </td>
-            <td rowspan="6" colspan="8" class="aprotd">
+            <td colspan="8" class="aprotd">
               <p class="approveDiv">{{formData.secondApproveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;">
                 <p>签名：<span class="apro">{{formData.secondApprovePeo||' '}}</span></p>
@@ -242,14 +213,8 @@
               </div>
             </td>
           </tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-
-          <tr>
-            <td rowspan="6" width="49">
+          <tr style="height:310px">
+            <td width="49">
               <p>交通</p>
               <p>运输</p>
               <p>执法</p>
@@ -259,7 +224,7 @@
               <p>批意</p>
               <p>见</p>
             </td>
-            <td rowspan="6" colspan="7" class="aprotd">
+            <td colspan="7" class="aprotd">
               <p class="approveDiv">{{formData.thirdApproveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;">
                 <p>签名：<span class="apro">{{formData.thirdApprovePeo||' '}}</span></p>
@@ -269,11 +234,6 @@
               </div>
             </td>
           </tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
         </table>
       </div>
 
