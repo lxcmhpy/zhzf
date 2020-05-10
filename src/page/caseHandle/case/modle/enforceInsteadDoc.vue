@@ -287,7 +287,7 @@
           <span>
             <el-form-item prop="reconsiderOrgan" :rules="fieldRules('reconsiderOrgan',propertyFeatures['reconsiderOrgan'])">
               <el-select v-model="docData.reconsiderOrgan" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['reconsiderOrgan'])">
-                  <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label" :value="item.value">
+                  <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label" :value="item.label">
                   </el-option>
               </el-select>
               <!-- <el-input v-model="docData.reconsiderOrgan" :maxLength='maxLength' placeholder="\"></el-input> -->
@@ -296,7 +296,7 @@
           <span>
             <el-form-item prop="enforceOrgan" :rules="fieldRules('enforceOrgan',propertyFeatures['enforceOrgan'])">
               <el-select v-model="docData.enforceOrgan" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['enforceOrgan'])">
-                  <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label" :value="item.value">
+                  <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label" :value="item.label">
                   </el-option>
               </el-select>
               <!-- <el-input v-model="docData.enforceOrgan" :maxLength='maxLength' placeholder="\"></el-input> -->
@@ -558,6 +558,9 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      this.docData.checknames=this.checknames;
+      this.docData.peoples=this.peoples;
+      console.log('this.docData',this.docData)
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
