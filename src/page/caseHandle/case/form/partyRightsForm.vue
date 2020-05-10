@@ -116,7 +116,7 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'">
+                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">
                     已完成
                   </span>
                   <span v-if="scope.row.status == '0'">
@@ -129,7 +129,7 @@
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'" class="tableHandelcase">
+                  <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase">
                     <!-- 已完成 -->
                     <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
                     <i class="iconfont law-print"></i>
@@ -355,6 +355,7 @@
           docId: row.docId,
           approvalOver: false,
           hasBack: true,
+          status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
         }
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.push({name: 'case_handle_myPDF', params: routerData})

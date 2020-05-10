@@ -133,13 +133,13 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'">
+                  <span v-if="scope.row.status == '1' || item.status == '2'">
                     完成
                   </span>
                   <span v-if="scope.row.status == '0'">
                     暂存
                   </span>
-                  <span v-if="scope.row.status != '1' && scope.row.status != '0'">
+                  <span v-if="scope.row.status != '1' && scope.row.status != '0'  && scope.row.status != '2'">
                     -
                   </span>
                 </template>
@@ -147,14 +147,14 @@
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <!-- 已完成 -->
-                    <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
+                    <span v-if="scope.row.status == '1' || item.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">
                       <span @click="viewDoc(scope.row)">编辑</span>  
                       <span @click="delDocDataByDocId(scope.row)">清空</span>  
                     </span>
                     <!-- 无状态 -->
-                    <span  v-if="scope.row.status != '1' && scope.row.status != '0'" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
+                    <span  v-if="scope.row.status != '1' && scope.row.status != '0' && scope.row.status != '2'" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
                 </template>
               </el-table-column>
             </el-table>
@@ -414,6 +414,7 @@ export default {
         docId: row.docId,
         approvalOver: false,
         hasBack: true,
+        status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交 
       }
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: 'case_handle_myPDF', params: routerData })
