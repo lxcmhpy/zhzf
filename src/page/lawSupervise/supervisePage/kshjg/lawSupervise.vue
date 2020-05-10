@@ -334,8 +334,14 @@
         <!-- <externalVideoBtns :doing="videoDoing"  style="position:absolute;z-index:300"></externalVideoBtns> -->
       </div>
       <!-- 右侧浮动栏 -->
-      <div class="amap-position amap-rtl-box" :class="{'widthDrawer600': category == 4}" >
+       <!-- :class="{'widthDrawer600': category == 4}" -->
+      <div class="amap-position amap-rtl-box" >
         <div class="amap-tool" style="position:relative;z-index:5;left:-120px;top:27px;" :class="{'left-500':drawer}">
+            <el-carousel :interval="5000" indicator-position="none" height="20px" style="position:absolute;top:-20px;width:100%;font-size:12px;color:#4573D0">
+                <el-carousel-item v-for="item in 22" :key="item">
+                    <span>{{lunarDate}} </span>
+                </el-carousel-item>
+            </el-carousel>
             <el-popover
                 placement="bottom-start"
                 trigger="click"
@@ -405,114 +411,232 @@
           <i class="el-icon-arrow-right"></i>
         </div>
         <!-- v-if="category != 4"  -->
-        <el-drawer modal-append-to-body :direction="direction" :size="category == 4? '540px': '380px '"
+        <el-drawer modal-append-to-body :direction="direction" size="380px"
            customClass="amap-drawer" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
-          <div class="amap-main-content" style="padding:0px 17px" v-show="categoryStr != '非现场站点'">
-            <transition name="el-fade-in">
+          <div class="amap-main-content" style="padding:0px 17px" v-show="category != 4">
+
               <div class="echarts-box">
-                <em class="title left">近三个月执行情况</em>
-                <i v-if="status1 == true" class="iconfont law-youyou right" @click="status1 = false"></i>
-                <i v-if="status1 == false" class="iconfont law-zuozuo right" @click="status1 = true"></i>
-                <div v-show="status1" id="echartsBox1" class="amap-chart" style="height:200px"></div>
+                <div class="title" @click="status1 = !status1">
+                    近三个月执行情况
+                    <i v-if="status1 == true" class="iconfont law-youyou right"></i>
+                    <i v-if="status1 == false" class="iconfont law-zuozuo right" ></i>
+                </div>
+                <el-collapse-transition>
+                    <div v-show="status1" id="echartsBox1" class="amap-chart" style="height:200px"></div>
+                </el-collapse-transition>
               </div>
-            </transition>
-            <transition name="el-fade-in">
+
               <div class="echarts-box">
-                <em class="title left">近三个月查处排行</em>
-                <i v-if="status2 == true" class="iconfont law-youyou right" @click="status2 = false"></i>
-                <i v-if="status2 == false" class="iconfont law-zuozuo right" @click="status2 = true"></i>
-                <span v-show="status2">
-                  <div class="amap-chart">
-                    <ul style="width: 100%">
-                      <li class="mc" v-for="(item,index) in tableData" :key="index">
-                        <div>{{index+1}}</div>
-                        <div>
-                          <i :class="['iconfont',item.icon]"></i>
-                          {{item.name}}
-                        </div>
-                        <div>{{item.num}}</div>
-                      </li>
-                      <li class="ck">查看全部</li>
-                    </ul>
-                  </div>
-                </span>
-              </div>
-            </transition>
-            <transition name="el-fade-in">
-              <div class="echarts-box">
-                <em class="title left">车辆预警</em>
-                <i v-if="status3 == true" class="iconfont law-youyou right" @click="status3 = false"></i>
-                <i v-if="status3 == false" class="iconfont law-zuozuo right" @click="status3 = true"></i>
-                <div v-show="status3" id="echartsBox2" class="amap-chart" style="height:200px"></div>
-              </div>
-            </transition>
-          </div>
-          <div class="amap-tool" v-show="categoryStr == '非现场站点'">
-            <div class="" style="right:0px;" >
-                    <div class="top-title">
-                        <el-button size="medium" class="commonBtn searchBtn" >
-                            <img :src="'./static/images/img/lawSupervise/icon_01.png'" />
-                            非现场治超
-                        </el-button>
-                        <el-button size="medium" class="commonBtn searchBtn" >
-                            <img :src="'./static/images/img/lawSupervise/icon_02.png'" />
-                            入口称重
-                        </el-button>
-                        <el-button size="medium" class="commonBtn searchBtn" >
-                            <img :src="'./static/images/img/lawSupervise/icon_03.png'" />
-                            暂无
-                        </el-button>
-                    </div>
-                    <transition name="el-fade-in">
-                        <div class="echarts-box" style="width:100%;margin:0px;">
+                <div class="title" @click="status2 = !status2">
+                    近三个月查处排行
+                    <i v-if="status2 == true" class="iconfont law-youyou right" ></i>
+                    <i v-if="status2 == false" class="iconfont law-zuozuo right"></i>
+                </div>
+                <el-collapse-transition>
+                    <div class="amap-chart"  v-show="status2">
+                        <ul style="width: 100%">
+                        <li class="mc" v-for="(item,index) in tableData" :key="index">
+                            <div>{{index+1}}</div>
                             <div>
+                            <i :class="['iconfont',item.icon]"></i>
+                            {{item.name}}
+                            </div>
+                            <div>{{item.num}}</div>
+                        </li>
+                        <li class="ck">查看全部</li>
+                        </ul>
+                    </div>
+                </el-collapse-transition>
+              </div>
+
+              <div class="echarts-box">
+                <div class="title" @click="status3 = !status3">
+                    车辆预警
+                    <i v-if="status3 == true" class="iconfont law-youyou right" ></i>
+                    <i v-if="status3 == false" class="iconfont law-zuozuo right" ></i>
+                </div>
+                <el-collapse-transition>
+                    <div v-show="status3" id="echartsBox2" class="amap-chart" style="height:200px"></div>
+                </el-collapse-transition>
+              </div>
+
+          </div>
+          <div class="amap-main-content" style="padding:0px" v-show="category == 4">
+
+                    <div class="echarts-box" >
+                        <div class="title" @click="status4 = !status4">
+                            告警车辆
+                            <i v-if="status4 == true" class="iconfont law-youyou right"></i>
+                            <i v-if="status4 == false" class="iconfont law-zuozuo right" ></i>
+                        </div>
+                        <el-collapse-transition>
+                            <div class="amap-chart" v-show="status4">
                                 <el-table
                                 v-loading="loading"
-                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
-                                    :data="zfdList"
-                                    style="width: 100%;">
+                                    @row-click="(row, column, event)=>positionEvent1(row, column, event, 6)"
+                                    @cell-mouse-enter="positionEventEnter"
+                                    :data="gjclList"
+                                    style="width: 100%;height: auto;">
+                                    <el-table-column label="过检时间"  align="center" prop="checkTime">
+                                        <template slot-scope="scope">
+                                            <span >{{scope.row.checkTime.split(' ')[0]}}</span>
+                                        </template>
+                                    </el-table-column>
                                     <el-table-column
-                                        width="150px"
-                                        prop="name"
+                                        prop="vehicleNumber"
+                                        label="车牌号"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="overload"
+                                        label="超载率"
+                                        width="70"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="area"
+                                        label="车属地"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        label="重点监管"
+                                        width="80"
+                                        >
+                                        <template>
+                                            <div><i class="iconfont law-star orangeC"></i></div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="lscc"
+                                        label="历史查处"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="siteName"
                                         label="站点名称"
                                         >
                                     </el-table-column>
-                                    <el-table-column
-                                        width="92px"
-                                        prop="cxchl"
-                                        label="超限查处量"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="blackList"
-                                        label="重点监管"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="gjzl"
-                                        label="过检总量"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="status"
-                                        label="状态"
-                                        width="80px"
-                                        >
-                                        <template>
-                                            <div class="orangeBg circle" ></div>
-                                        </template>
-                                    </el-table-column>
                                 </el-table>
                             </div>
+                        </el-collapse-transition>
+                    </div>
+                <div class="echarts-box" >
+                     <div class="title" @click="status5 = !status5">
+                        非现场执法点
+                        <i v-if="status5 == true" class="iconfont law-youyou right"></i>
+                        <i v-if="status5 == false" class="iconfont law-zuozuo right" ></i>
+                    </div>
+                     <el-collapse-transition>
+                        <div v-show="status5">
+                            <el-table
+                            v-loading="loading"
+                                @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
+                                :data="zfdList"
+                                style="width: 100%;">
+                                <el-table-column
+                                    width="150px"
+                                    prop="name"
+                                    label="站点名称"
+                                    >
+                                </el-table-column>
+                                <el-table-column
+                                    width="92px"
+                                    prop="cxchl"
+                                    label="超限查处量"
+                                    >
+                                </el-table-column>
+                                <el-table-column
+                                    prop="blackList"
+                                    label="重点监管"
+                                    >
+                                </el-table-column>
+                                <el-table-column
+                                    prop="gjzl"
+                                    label="过检总量"
+                                    >
+                                </el-table-column>
+                                <el-table-column
+                                    prop="status"
+                                    label="状态"
+                                    width="80px"
+                                    >
+                                    <template>
+                                        <div class="orangeBg circle" ></div>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
                         </div>
-                    </transition>
+                     </el-collapse-transition>
                 </div>
-            </div>
+            <!-- <el-collapse-transition> -->
+                <!-- <div class="amap-tool" >
+                    <div class="" style="right:0px;" >
+                        <div class="top-title">
+                            <el-button size="medium" class="commonBtn searchBtn" >
+                                <img :src="'./static/images/img/lawSupervise/icon_01.png'" />
+                                非现场治超
+                            </el-button>
+                            <el-button size="medium" class="commonBtn searchBtn" >
+                                <img :src="'./static/images/img/lawSupervise/icon_02.png'" />
+                                入口称重
+                            </el-button>
+                            <el-button size="medium" class="commonBtn searchBtn" >
+                                <img :src="'./static/images/img/lawSupervise/icon_03.png'" />
+                                暂无
+                            </el-button>
+                        </div>
+                        <el-collapse-transition>
+                            <div class="echarts-box" style="width:100%;margin:0px;">
+                                <div>
+                                    <el-table
+                                    v-loading="loading"
+                                        @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
+                                        :data="zfdList"
+                                        style="width: 100%;">
+                                        <el-table-column
+                                            width="150px"
+                                            prop="name"
+                                            label="站点名称"
+                                            >
+                                        </el-table-column>
+                                        <el-table-column
+                                            width="92px"
+                                            prop="cxchl"
+                                            label="超限查处量"
+                                            >
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="blackList"
+                                            label="重点监管"
+                                            >
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="gjzl"
+                                            label="过检总量"
+                                            >
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="status"
+                                            label="状态"
+                                            width="80px"
+                                            >
+                                            <template>
+                                                <div class="orangeBg circle" ></div>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                </div>
+                            </div>
+                        </el-collapse-transition>
+                    </div>
+                </div> -->
+            <!-- </el-collapse-transition> -->
+          </div>
         </el-drawer>
-        <!-- <el-drawer v-else
+        <!-- <el-drawer
             modal-append-to-body
             size="620px"
             customClass="amap-drawer w-680"
@@ -526,7 +650,7 @@
                 <i class="el-icon-arrow-right"></i>
             </div>
             <div class="amap-main-content" style="padding: 0px 22px">
-                <transition name="el-fade-in">
+                <el-collapse-transition>
                     <div class="echarts-box" v-show="status1">
                         <em class="title left"><i class="titleflag"></i>非现场执法点</em>
                         <i class="iconfont law-delete1 right"></i>
@@ -567,7 +691,7 @@
                             </el-table>
                         </div>
                     </div>
-                </transition>
+                </el-collapse-transition>
             </div>
         </el-drawer> -->
       </div>
@@ -586,7 +710,7 @@
                 :visible.sync="drawer1"
                 modal-append-to-body
                 >
-                 <transition name="el-fade-in">
+                 <el-collapse-transition>
                     <div class="echarts-box" >
                         <em class="title left"><i class="titleflag"></i>告警车辆</em>
                         <i class="iconfont law-delete1 right" @click="status2 = false"></i>
@@ -638,11 +762,11 @@
                             </el-table>
                         </div>
                     </div>
-                </transition>
+                </el-collapse-transition>
             </el-drawer>
      </div> -->
       <!-- 底部浮动栏 -->
-        <div class="amap-position" :class="'amap-' + direction1 + '-box'">
+        <div class="amap-position" :class="'amap-' + direction1 + '-box'" v-if="false">
             <div class="drawerBtn" @click="updateDrawer1">
                 <i class="el-icon-arrow-right"></i>
             </div>
@@ -659,7 +783,7 @@
                     <i class="el-icon-arrow-right"></i>
                 </div>
                 <div class="amap-main-content" style="padding: 0px 22px">
-                    <!-- <transition name="el-fade-in">
+                    <!-- <el-collapse-transition>
                         <div class="echarts-box" v-show="status1">
                             <em class="title left"><i class="titleflag"></i>非现场执法点</em>
                             <i class="iconfont law-delete1 right" @click="status1 = false"></i>
@@ -700,8 +824,8 @@
                                 </el-table>
                             </div>
                         </div>
-                    </transition> -->
-                    <transition name="el-fade-in">
+                    </el-collapse-transition> -->
+                    <el-collapse-transition>
                         <div class="echarts-box" v-show="status2">
                             <em class="title left"><i class="titleflag"></i>告警车辆</em>
                             <i class="iconfont law-delete1 right" @click="status2 = false"></i>
@@ -750,7 +874,7 @@
                                 </el-table>
                             </div>
                         </div>
-                    </transition>
+                    </el-collapse-transition>
                 </div>
             </el-drawer>
         </div>
@@ -796,7 +920,7 @@
                     暂无
                 </el-button>
             </div>
-            <transition name="el-fade-in">
+            <el-collapse-transition>
                 <div class="echarts-box" >
                     <div>
                         <el-table
@@ -838,7 +962,7 @@
                         </el-table>
                     </div>
                 </div>
-            </transition>
+            </el-collapse-transition>
         </div>
          <el-popover
             placement="bottom-start"
@@ -898,7 +1022,7 @@
                     </el-submenu>
                 </el-menu>
             </div>
-            </transition>
+            </el-collapse-transition>
         </el-button> -->
         <!-- <el-button @mousemove="currentTabIndex = 'show1'" @mouseleave="currentTabIndex = null">
             <div>
@@ -916,7 +1040,7 @@
                     </li>
                     </ul>
                 </div>
-            </transition>
+            </el-collapse-transition>
         </el-button> -->
     <!-- <div class="amap-search">
       <el-select v-model="styleIndexNumher" placeholder="样式切换">
@@ -942,7 +1066,7 @@
               </li>
             </ul>
           </div>
-        </transition>
+        </el-collapse-transition>
       </el-button>
       <el-button size="medium" class="commonBtn searchBtn" icon="el-icon-copy-document" @click="lawScreenFull=!lawScreenFull">全屏切换</el-button>
     </div> -->
@@ -958,6 +1082,7 @@ import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/
 import { getZfjgLawSupervise, getBySiteId, getById } from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
+import lunarDate from '@/common/js/lunarDate.js'
 // import externalVideoBtns from '@/page/lawSupervise/componentCommon/externalVideoBtns.vue';
 import _ from "lodash";
 import AMap from "vue-amap";
@@ -991,6 +1116,9 @@ export default {
   data() {
     let self = this;
     return {
+        lunarDate: '',
+        status5:true,
+        status4:true,
         isCheck: true,
         toolShow: false,
         checked: false,
@@ -1245,10 +1373,15 @@ export default {
       allSearchList: [],
       zfdList: null,
       gjclList: null,
-      categoryStr: '图层'
+      categoryStr: '图层',
+      checkTableNum: null
     };
   },
   methods: {
+    positionEventEnter (row, column, cell, event) {
+        // this.checkTableNum = row.in
+        // debugger;
+    },
     isCheckAll () {
         // debugger;
         let _this = this;
@@ -1256,17 +1389,17 @@ export default {
             this.radioVal = '取消全选';
             this.tabList[0].children.forEach((item)=>{
             // debugger;
-                item.select = false;
-                _this.searchAll(item);
-
+                if(!item.select) {
+                    _this.checkAll(item);
+               }
             })
         } else {
             this.radioVal = '全选';
             this.tabList[0].children.forEach((item)=>{
             // debugger;
-                item.select = true;
-                _this.searchAll(item);
-
+                if(item.select) {
+                    _this.checkAll(item);
+                }
             })
         }
 
@@ -1385,7 +1518,7 @@ export default {
       };
     },
     updateDrawer() {
-        debugger;
+        // debugger;
         this.drawer = !this.drawer;
         // debugger;
         // if (this.category != 4) {
@@ -1572,8 +1705,9 @@ export default {
         );
       });
     },
-    searchAll (item) {
+    checkAll (item) {
         item.select = !item.select;
+         this.category = item.code;
         this.categoryStr = item.name;
         if (item.select) {
             if (this.curWindow) {
@@ -1610,11 +1744,12 @@ export default {
       item.select = !item.select;
       if (item.select && this.allSearchList.length > 5) {
         item.select = false;
-        debugger;
+        // debugger;
         this.errorMsg(`至多选择5条数据`, "error");
         return
       }
       this.categoryStr = item.name;
+      this.category = item.code;
       if (item.select) {
         if (this.curWindow) {
           this.curWindow.visible = false;
@@ -1725,13 +1860,13 @@ export default {
   },
   mounted() {
      this.$nextTick(() => {
-         debugger;
+        //  debugger;
          window.PhoneCallModule.initialize();
         if (!window.PhoneCallModule.getRegistered()) {
             window.PhoneCallModule.sipRegister();
         }
      })
-
+    this.lunarDate = lunarDate();
 
     //   this.updateDrawer();
   },
