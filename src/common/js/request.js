@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from 'qs';
-import { getToken, setToken,removeToken } from "@/common/js/auth";
+import { getToken, setToken, removeToken } from "@/common/js/auth";
 import Vue from "vue";
 //import { message } from "ant-design-vue";
 import { showFullScreenLoading, tryHideFullScreenLoading } from "./loading";
@@ -11,24 +11,26 @@ var vue = new Vue();
 
 const service = axios.create({
   // "Content-Type": "multipart/form-data;charset=UTF-8",
-    // "Content-Type": "application/x-www-form-urlencoded",
-    timeout: 15000, // request timeout
-  "Content-Type": "multipart/form-data;charset=UTF-8",
+  "Content-Type": "application/x-www-form-urlencoded",
+  // "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+  // "Content-Type": "multipart/form-data;charset=UTF-8", 
+  timeout: 15000, // request timeout
+
 });
 
 var BASEURL
- service({
-    url: '/static/json/hostUrl/host.json',
-    method: "get",
-    params: {},
-  }).then(
-    res => {
-      BASEURL = res.data;
-      sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
-      iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
-    },
-    error => {
-      console.log(error)
+service({
+  url: '/static/json/hostUrl/host.json',
+  method: "get",
+  params: {},
+}).then(
+  res => {
+    BASEURL = res.data;
+    sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
+    iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
+  },
+  error => {
+    console.log(error)
   })
 
 
@@ -36,49 +38,56 @@ var BASEURL
 
 // request interceptor
 service.interceptors.request.use(
-    config => {
+  config => {
     if (BASEURL) {
-        iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
+      iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
     }
-    if(config.baseUrlType == 1){
+    if (config.baseUrlType == 1) {
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
-    } else if(config.baseUrlType == 2){
+    } else if (config.baseUrlType == 2) {
       config.baseURL = BASEURL[BASEURL.CURRENT].LAW_SUPERVISE_HOST
-    }else {
-     config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
+    } else {
+      config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
     }
     if (config.responseType) {
       config["responseType"] = config.responseType
     }
-// get方法
-// if(config.method=== 'get'){
-// //   debugger
-// console.log('get',config)
-// if(config.params){
-//   config.params=qs.stringify(config.params)
-// }
-// }
-// if(config.method=== 'post'){
-//   debugger
-//   // config.params=qs.stringify(params)
-// }
-    config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
+    // get方法
+    // if(config.method=== 'get'){
+    // //   debugger
+    // console.log('get',config)
+    // if(config.params){
+    //   config.params=qs.stringify(config.params)
+    // }
+    // }
+    // post方法
+    if (config.method === 'post') {
+      console.log('post', config)
+      console.log('config.data', config.data)
+      console.log('config.data.qs', qs.stringify({ a: ['b', 'c', 'd'] }))
 
-   //token一天后过期
-   if (config.showloading != false) {
+      // config.data=qs.stringify(config.data)//报400
+      // console.log('postdeal', config)
+    }
+    // config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
+    config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8"
+    // config["Content-Type"] = config.contentType ? config.contentType : "multipart/form-data;charset=UTF-8"
+
+    //token一天后过期
+    if (config.showloading != false) {
       let loadingType = config.loadingType ? config.loadingType : '';
-     showFullScreenLoading(loadingType);
-   }
-   if (getToken("TokenKey")) {
+      showFullScreenLoading(loadingType);
+    }
+    if (getToken("TokenKey")) {
       config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
-   }
+    }
 
-   console.log('config',config)
-  //  config.headers = {
-  //   'Content-Type': 'application/json' //  注意：设置很关键 
-  // }
+    console.log('config', config)
+    //  config.headers = {
+    //   'Content-Type': 'application/json' //  注意：设置很关键 
+    // }
 
-   return config;
+    return config;
 
   },
   error => {
@@ -87,7 +96,7 @@ service.interceptors.request.use(
 );
 // respone interceptor
 service.interceptors.response.use(
-   response => {
+  response => {
     if (response.status == 200) {
       if (response.data.code == 200) {
         tryHideFullScreenLoading();
@@ -96,12 +105,12 @@ service.interceptors.response.use(
         response.data.code == 400 || response.data.code == 500) {
         tryHideFullScreenLoading();
         return Promise.reject(response.data);
-      }else if(response.data.code == -1){   //重新登录
+      } else if (response.data.code == -1) {   //重新登录
         tryHideFullScreenLoading();
         alertMessage('登陆超时，请重新登录'); //账户在其他地方登录，您被迫下线
         removeToken()
         return Promise.reject(response.data);
-      }else{
+      } else {
         // httpErrorStr(response.data.code);
         tryHideFullScreenLoading();
         return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善
@@ -120,7 +129,7 @@ service.interceptors.response.use(
 
 function httpErrorStr(error) {
   tryHideFullScreenLoading();
-  console.log('error',error.response)
+  console.log('error', error.response)
   if (error.toString().indexOf("Network Error") != -1) {//系统返回 无code 网络错误
     alertMessage("networkError"); //networkError
   } else if (error.toString().indexOf("500") != -1) {
@@ -132,7 +141,7 @@ function httpErrorStr(error) {
     return false;
   } else if (error.response.data.error == 'unauthorized') {
     alertMessage('用户名或密码错误')
-  }else if (error.response.status == 400) {
+  } else if (error.response.status == 400) {
     alertMessage(error.response.data.error_description)
   } else {
     alertMessage("请求失败"); //请求失败
