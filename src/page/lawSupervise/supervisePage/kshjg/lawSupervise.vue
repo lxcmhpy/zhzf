@@ -425,7 +425,7 @@
                     <i v-if="status1 == false" class="iconfont law-zuozuo right" ></i>
                 </div>
                 <el-collapse-transition>
-                    <div v-show="status1" id="echartsBox1" class="amap-chart" style="height:200px"></div>
+                    <div v-show="status1" id="echartsBox1" class="amap-chart" style="height:200px;width:300px"></div>
                 </el-collapse-transition>
               </div>
 
@@ -459,7 +459,7 @@
                     <i v-if="status3 == false" class="iconfont law-zuozuo right" ></i>
                 </div>
                 <el-collapse-transition>
-                    <div v-show="status3" id="echartsBox2" class="amap-chart" style="height:200px"></div>
+                    <div v-show="status3" id="echartsBox2" class="amap-chart" style="height:200px;width:300px"></div>
                 </el-collapse-transition>
               </div>
 
