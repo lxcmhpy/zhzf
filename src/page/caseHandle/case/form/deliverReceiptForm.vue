@@ -358,7 +358,7 @@ export default {
           docId: '2c9029cf6931aa5c01693381ac690018',
           approvalOver: false,
           hasBack: true,
-          docDataId:row.caseSerProofId
+          docDataId:row.caseSerProofId,
         };
         debugger
         this.$store.dispatch("deleteTabs", this.$route.name);

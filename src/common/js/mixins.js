@@ -729,8 +729,21 @@ export const mixinGetCaseApiList = {
         this.caseDocDataForm.id = res.data.id;
         this.caseDocDataForm.note = res.data.note;
         this.docData = JSON.parse(res.data.docData);
+        this.getDocDetailByIdAfter()
       }, err => {
         console.log(err)
+      })
+    },
+    //多文书情况下去获取是否可编辑等属性信息
+    getDocDetailByIdAfter(){
+      let caseBasicInfoIdAndtypeId = {
+        caseBasicInfoId: this.caseId,
+        typeId: this.$route.params.docId
+      };
+      findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res=>{
+        let resdata = JSON.parse(res.data.propertyData);
+        // console.log(data);
+        this.propertyFeatures = resdata;
       })
     },
     //隐藏textarea 显示span

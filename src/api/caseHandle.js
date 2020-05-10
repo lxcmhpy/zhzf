@@ -881,6 +881,16 @@ export function findBindPropertyRuleApi(data) {
   });
 }
 
+export function updateDocStatusApi(id) {
+  return request({
+    url: "/case/doc/data/updateDocStatus/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+} 
+
 export function testApi() {
   return request({ 
     url: "/socket/socket?userName=1&message=1",
