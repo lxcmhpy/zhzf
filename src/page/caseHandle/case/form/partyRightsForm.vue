@@ -353,9 +353,10 @@
         let routerData = {
           hasApprovalBtn: false,
           docId: row.docId,
-          approvalOver: false,
+          approvalOver: false, 
           hasBack: true,
           status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
+          docDataId:row.docDataId
         }
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.push({name: 'case_handle_myPDF', params: routerData})

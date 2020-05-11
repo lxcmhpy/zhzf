@@ -34,7 +34,7 @@
           <span>
             <el-form-item prop="fine" :rules="fieldRules('fine',propertyFeatures['fine'])">
               <el-input v-model="docData.fine" :maxLength='maxLength'
-                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"
+                        @input="checkChinese1()"
                         :disabled="fieldDisabled(propertyFeatures['fine'])"></el-input>
             </el-form-item>
           </span>（大写）的行政处罚决定，根据你（单位）的申请，本机关依据《中华人民共和国行政处罚法》第五十二条的规定，现决定：
@@ -75,13 +75,13 @@
           <span>
             <el-form-item :prop="disabledTwo?'placeholder':'payFine'">
               <el-input v-model="docData.payFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'
-                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"></el-input>
+              @input="checkChinese2()"></el-input>
             </el-form-item>
           </span>元（大写）（每期均应当单独开具本文书）。此外，尚有未缴纳的罚款
           <span>
             <el-form-item :prop="disabledTwo?'placeholder':'debtFine'">
               <el-input v-model="docData.debtFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'
-                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"></el-input>
+                        @input="checkChinese3()"></el-input>
             </el-form-item>
           </span>元（大写）。
         </p>
@@ -239,11 +239,23 @@
         disabledThree: true,
         isChange: false,
         propertyFeatures: '',
-        isparty: true
+        isparty: true,
       }
     },
 
     methods: {
+      // 控制大写只能输入中文
+      checkChinese1(val){
+        this.docData.fine=this.docData.fine.replace(/[^\u4e00-\u9fa5]/g,'')
+      },
+      checkChinese2(val){
+        console.log(val)
+        // val=val.replace(/[^\u4e00-\u9fa5]/g,'')
+        this.docData.payFine=this.docData.payFine.replace(/[^\u4e00-\u9fa5]/g,'')
+      },
+      checkChinese3(val){
+        this.docData.debtFine=this.docData.debtFine.replace(/[^\u4e00-\u9fa5]/g,'')
+      },
       //根据案件ID和文书Id获取数据
       getDocDataByCaseIdAndDocId() {
         this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -309,6 +321,7 @@
           this.$message("请选择分期延期决定");
           return
         }
+        console.log('shuju',this.docData,this.docData.debtFine,this.docData.payFine)
         this.docData.checknames = JSON.parse(JSON.stringify(this.checknames))
         this.com_addDocData(handleType, "docForm");
       },
@@ -440,7 +453,8 @@
         this.docData.debtFine = '';
         this.docData.reason = '';
 
-      }
+      },
+
     },
     mounted() {
       // this.getDocDataByCaseIdAndDocId();

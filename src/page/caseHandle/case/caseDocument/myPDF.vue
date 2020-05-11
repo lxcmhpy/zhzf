@@ -142,6 +142,7 @@
         if (this.$route.params.caseLinktypeId) {
           this.com_goToNextLinkTu(this.caseId, this.$route.params.caseLinktypeId)
         } else {
+          console.log('this.$route.params.docDataId',this.$route.params.docDataId)
           updateDocStatusApi(this.$route.params.docDataId).then(res=>{
             console.log('更新状态',res);
             this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
