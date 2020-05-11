@@ -46,7 +46,13 @@ export  function  addOrganApi(data)  {
     contactor:  data.contactor,
     fundingSource:  data.fundingSource,
     legalBasis:  data.legalBasis,
-    mainPowers:  data.mainPowers
+    mainPowers:  data.mainPowers,
+    bank:data.bank,
+    account:data.account,
+    reconsiderationOrgan1:data.reconsiderationOrgan1,
+    reconsiderationOrgan2:data.reconsiderationOrgan2,
+    enforcementOrgan1:data.enforcementOrgan1,
+    enforcementOrgan2:data.enforcementOrgan2,
   };
   let  data2  =  vm.$qs.stringify(addOrganForm);
   return  request({
