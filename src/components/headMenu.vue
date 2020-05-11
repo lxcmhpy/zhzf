@@ -33,6 +33,7 @@ import { mapGetters } from "vuex";
         this.$store.commit("set_Head_Active_Nav", key);
         // alert(this.headActiveNav);
         //将当前选中的一级菜单名传到父组件
+        console.log('handleSelect',key)
         this.$emit("selectHeadMenu",  key);
         //删除之前的tab页签
         if (keyStr[2] && keyStr[2] !== 'null') {

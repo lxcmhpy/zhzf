@@ -147,12 +147,12 @@
           1.代履行人 ：
           <!-- <input type="checkbox" name="people" value="1" v-model="docData.peoples" @change="clickPeople">本机关
                       <input type="checkbox" name="people" value="2" v-model="docData.peoples" @change="clickPeople">第三人： -->
-          <el-form-item prop="peoples" :rules="fieldRules('peoples',propertyFeatures['peoples'])">
-            <el-checkbox-group v-model="docData.peoples" :max="1" :disabled="fieldDisabled(propertyFeatures['peoples'])">
-              <el-checkbox label="0" checked>本机关</el-checkbox>
-              <el-checkbox label="1">第三人：</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
+                <el-form-item prop="peoples" :rules="fieldRules('peoples',propertyFeatures['peoples'])">
+                  <el-checkbox-group v-model="docData.peoples" :max="1" :disabled="fieldDisabled(propertyFeatures['peoples'])" @change="clickPeople">
+                    <el-checkbox label="0" >本机关</el-checkbox>
+                    <el-checkbox label="1" >第三人：</el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
           <span>
             <el-form-item :prop="disabledThree?'placeholder':'impleAgent'">
               <el-input v-model="docData.impleAgent" v-bind:disabled="disabledThree" :maxLength='maxLength'></el-input>
@@ -509,14 +509,12 @@ export default {
         this.disabledTwo = true;
       }
     },
-    clickPeople() {
-      // if(this.peoples.length > 1){
-      //   this.peoples.shift();
-      // }
-      debugger
-      if (this.peoples == '0') {
+    clickPeople(){
+      console.log(this.docData.peoples);
+      debugger 
+      if(this.docData.peoples == '0'){
         this.disabledThree = true;
-      } else if (this.peoples == '1') {
+      }else if(this.docData.peoples == '1'){
         this.disabledThree = false;
       } else {
         this.disabledThree = true;
@@ -565,7 +563,12 @@ export default {
         });
 
     },
+    getDataAfter(){
+      this.docData.peoples = [];
+      console.log("111",this.docData.peoples);
+    }
   },
+  
   mounted() {
     this.getDocDataByCaseIdAndDocId();
     this.getOrganDetailOptions();

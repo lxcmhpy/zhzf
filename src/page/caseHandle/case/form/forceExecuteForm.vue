@@ -131,8 +131,9 @@
               <!-- 折叠 -->
               <el-table-column type="expand" expand-change v-if="allAskDocList.length>0">
                 <template>
-                  <ul class="moreDocList">
+                  <ul class="moreDocList1">
                     <li v-for="(item,index) in allAskDocList" :key="index">
+                      <div>{{index+1+"）"}}</div>
                       <div>{{item.note}}</div>
                       <div>
                         <span v-if="item.status == '1' || item.status == '2'">完成</span>
