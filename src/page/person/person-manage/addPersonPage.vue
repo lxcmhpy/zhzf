@@ -52,9 +52,9 @@
             </el-form-item>
         </el-row>
         <el-row style="height:36px;">
-            <el-form-item label="所属机构:" prop="oidName">
+            <el-form-item label="所属机构:" prop="oName">
                 <!--<el-input v-model="addPersonForm.oid" style="width:260px;"></el-input>-->
-                <el-select v-model="addPersonForm.oidName" clearable placeholder="选择所属机构" 
+                <el-select v-model="addPersonForm.oName" clearable placeholder="选择所属机构" 
                     remote  style="width:260px;"
                     @focus="getDegreeInfo('0a9499dd0612b0b2950acacedf47b97a','oids')"
                     visible-change
@@ -274,7 +274,7 @@ export default {
                 majorName:"",//专业
                 graduationNo:"",//毕业证书编号
                 oid:"",//所属机构
-                oidName:"",//所属机构
+                oName:"",//所属机构
                 post:"",//职务
                 postName:"",//职务
                 area:"",//执法区域
@@ -628,7 +628,7 @@ export default {
                 this.addPersonForm.nationName=row.nationName;
                 this.addPersonForm.birthDate=row.birthDate;
                 this.addPersonForm.oid=row.oid;
-                this.addPersonForm.oidName=row.oidName;
+                this.addPersonForm.oName=row.oName;
                 this.addPersonForm.branchId=row.branchId;
                 this.addPersonForm.branchIdName=row.branchIdName;
                 this.addPersonForm.school=row.school;
