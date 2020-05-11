@@ -135,13 +135,13 @@
                     <li v-for="(item,index) in allAskDocList" :key="index">
                       <div>{{item.note}}</div>
                       <div>
-                        <span v-if="item.status == '1'">完成</span>
+                        <span v-if="item.status == '1' || item.status == '2'">完成</span>
                         <span v-if="item.status == '0'">暂存</span>
                       </div>
                       <div>
                         <!-- 已完成 -->
                         <!-- <span v-if="item.status == '1'" class="tableHandelcase" @click="viewDocPdf(item)">查看</span> -->
-                        <span v-if="item.status == '1'" class="tableHandelcase">
+                        <span v-if="item.status == '1' || item.status == '2'" class="tableHandelcase">
                           <!-- 已完成 -->
                           <span @click="viewDocPdf(item)">查看</span>
                           <span @click="viewDocPdf(item)">打印</span>
@@ -171,7 +171,7 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'">完成</span>
+                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">完成</span>
                   <span v-if="scope.row.status == '0'">暂存</span>
                   <span v-if="scope.row.status == ''">-</span>
                 </template>
@@ -185,7 +185,7 @@
                   <span v-if="!scope.row.openRow">
                     <!-- 已完成 -->
                     <!-- <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span> -->
-                    <span v-if="scope.row.status == '1'" class="tableHandelcase">
+                    <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase">
                       <!-- 已完成 -->
                       <span @click="viewDocPdf(scope.row)">查看</span>
                       <span @click="viewDocPdf(scope.row)">打印</span>
@@ -505,7 +505,9 @@
           docId: row.docId,
           approvalOver: false,
           hasBack: true,
-          docDataId:row.docDataId
+          docDataId:row.docDataId,
+          status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
+
         };
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.push({ name: "case_handle_myPDF", params: routerData });

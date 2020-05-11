@@ -166,7 +166,7 @@
           <div class="casehome_topic">立案登记
             <div style="float:right;height:20px" class="programType">
               <el-radio-group v-model="caseForm.programType" @change="getIllegaAct">
-                <el-radio :label='0'>一般程序</el-radio>
+                <el-radio :label='0' style="margin-right:7px">一般程序</el-radio>
                 <el-radio :label='1'>简易程序</el-radio>
               </el-radio-group>
             </div>
@@ -808,6 +808,7 @@ export default {
 
 .case_home_bottom .casehome_topic {
   padding-left: 0px;
+  padding-right: 0px;
 }
 
 .case_number {
@@ -850,8 +851,8 @@ export default {
 
 .imgbox span {
   display: block;
-  margin: 8px auto;
-  line-height: 15px;
+  margin: 4px auto;
+  line-height: 16px;
 }
 
 .icon_content ul {

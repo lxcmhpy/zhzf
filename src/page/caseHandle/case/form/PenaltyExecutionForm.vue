@@ -163,12 +163,12 @@
                     <li v-for="(item,index) in allAskDocList" :key="index">
                       <div>{{item.note}}</div>
                       <div>
-                        <span v-if="item.status == '1'">已完成</span>
+                        <span v-if="item.status == '1' || item.status == '2'">已完成</span>
                         <span v-if="item.status == '0'">未完成</span>
                       </div>
                       <div>
                         <!-- 已完成 -->
-                        <span v-if="item.status == '1'" class="tableHandelcase" @click="viewDocPdf(item)">查看</span>
+                        <span v-if="item.status == '1' || item.status == '2'" class="tableHandelcase" @click="viewDocPdf(item)">查看</span>
 
                         <span v-if="item.status == '0'" class="tableHandelcase">
                           <!-- 未完成 -->
@@ -196,7 +196,7 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'">已完成</span>
+                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">已完成</span>
                   <span v-if="scope.row.status == '0'">未完成</span>
                   <span v-if="scope.row.status == ''"></span>
                 </template>
@@ -209,7 +209,7 @@
                   </span>
                   <span v-if="!scope.row.openRow">
                     <!-- 已完成 -->
-                    <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
+                    <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">
                       <span @click="viewDoc(scope.row)">编辑</span>
@@ -505,7 +505,8 @@ export default {
         docId: row.docId,
         approvalOver: false,
         hasBack: true,
-        docDataId: row.docDataId
+        docDataId: row.docDataId,
+        status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
       };
       console.log('routerData,routerData', routerData)
       this.$store.dispatch("deleteTabs", this.$route.name);

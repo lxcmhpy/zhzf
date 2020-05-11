@@ -23,6 +23,9 @@
   import approvalDialog from "../../components/approvalDialog";
   import {mapGetters} from "vuex";
 
+  import {
+    updateDocStatusApi
+  } from "@/api/caseHandle";
   export default {
     data() {
       return {
@@ -31,6 +34,7 @@
           showBtn: [true, false, false, true, false, true, true, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
           pageDomId: "",
         },
+        docFinishQZ:false, //环节下文书是否已完成签章
       };
     },
     mixins: [mixinGetCaseApiList],
@@ -102,7 +106,7 @@
           this.formOrDocData.showBtn = [false, false, false, true, false, true, false, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         }
         //文书预览只有返回按钮
-        if (this.$route.params.hasBack) {
+        if (this.$route.params.hasBack && this.$route.params.status == 2) {
           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         }
       },
@@ -138,8 +142,17 @@
         if (this.$route.params.caseLinktypeId) {
           this.com_goToNextLinkTu(this.caseId, this.$route.params.caseLinktypeId)
         } else {
-          this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-          this.$router.go(-2);
+          updateDocStatusApi(this.$route.params.docDataId).then(res=>{
+            console.log('更新状态',res);
+            this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+            if(this.$route.params.status == 1){
+              this.$router.go(-1);
+            }else{
+               this.$router.go(-2);
+            }
+            
+          }).catch(err=>{console.log(err)})
+          
         }
       },
       backHuanjie() {

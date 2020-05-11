@@ -26,7 +26,7 @@ export default {
         tabsNameList: {
             law_supervise_: '【监管】',
             // case_handle_: '【案件】',
-            case_handle_: '【超限】',
+            case_handle_: '',
             law_center_: '【超限】'
         }
     };

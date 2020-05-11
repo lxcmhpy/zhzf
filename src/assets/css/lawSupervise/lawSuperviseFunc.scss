@@ -13,7 +13,7 @@
         .amap-chart {
             width: 100%;
             color: #20232B;
-            margin-top: 60px;
+            margin-top: 0px;
             overflow:visible;
             ul {
                 overflow:hidden;
@@ -108,6 +108,7 @@
         margin: 23px 0 20px 0px;
         font-style: normal;
         letter-spacing: 1px;
+        cursor: pointer;
     }
     .left {
         float: left;

@@ -298,7 +298,8 @@ export default {
         askTime: 1,
         qaList: [],//弹出框问答数组，如请求时未返回即数组未定义，可能回显失败，刷新即可查看效果
         askdataStart:"",
-        askdataEnd:""
+        askdataEnd:"",
+        staffId:"", //执法人员id
       },
       qaList: [{question:'',answer:''},{question:'',answer:''}],
       caseDocDataForm: {
@@ -515,7 +516,7 @@ export default {
       this.docData.certificateId1 = this.docData.certificateId.split(",")[0];
       this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
       //询问人默认填写文书的人
-      this.docData.inquiryStaff =iLocalStroage.gets('userInfo').username;
+      this.docData.inquiryStaff =iLocalStroage.gets('userInfo').nickName;
       this.docData.organName = iLocalStroage.gets('userInfo').organName;
       //与案件关系默认为当事人
       // this.docData.inquiriedRelation = "0";
@@ -543,8 +544,8 @@ export default {
        let dailiDataList = JSON.parse(this.docData.agentPartyEcertId);
         let dailiData = "";
        dailiDataList.forEach(item=>{
-        //  console.log(item);
-          if(this.switchRelate(item.relationWithCase) == selectPeo2[1] && item.name == selectPeo2[0]){
+         console.log('其他人',item);
+          if(item.relationWithCase == selectPeo2[1] && item.name == selectPeo2[0]){
             console.log('不是当事人')
            dailiData = item;
           console.log('dailiData22222',dailiData);
