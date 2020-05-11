@@ -1,59 +1,66 @@
 <template>
 <div class="com_searchAndpageBoxPadding">
   <div class="searchPageLayout" id="userBox">
-    <div class="searchPage toggleBox">
-        <div class="handlePart">
-            <el-form :inline="true" ref="userForm"  label-width="70px">
-                <el-row>  
-                     <el-form-item label="姓名" >
-                        <el-input ></el-input>
-                    </el-form-item>
-                    <el-form-item label="执法证号" >
-                        <el-input ></el-input>
-                    </el-form-item>
-                    <el-form-item label="执法门类" >
-                    <el-select >
-                        <el-option label="综合执法" ></el-option>
-                        <el-option label="海事执法" ></el-option>
-                        <el-option label="工程质量监督" ></el-option>
-                        <el-option label="道路运政" ></el-option>
-                    </el-select>
-                    </el-form-item>
-                    <el-form-item label="所属机构" label-width="90px">
-                        <el-input ></el-input>
-                    </el-form-item>
+    <div class="searchPage">
+      <div class="handlePart">
+        <el-form class="search-form" :inline="true"  ref="userFormRef"  label-width="70px" :model="formInline">
+          <el-row>  
+            <el-form-item label="姓名" prop="personName">
+              <el-input v-model="formInline.personName" ></el-input>
+            </el-form-item>
+            <el-form-item label="执法证号" prop="ministerialNo" >
+              <el-input v-model="formInline.ministerialNo"></el-input>
+            </el-form-item>
+            <el-form-item label="执法领域" prop="branchId">
+              <el-select
+                v-model="formInline.branchId"
+                placeholder="执法领域"
+                remote
+                @focus="getDepatements('执法门类','branchIdsInfo')">
+                <el-option
+                  v-for="value in branchIdsInfo" :key="value.id" :label="value.name" :value="value.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="所属机构" prop="oid">
+              <!-- <el-select v-model="formInline.oid" placeholder="选择所属机构" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
+                <el-option
+                    v-for="value in oidsInfo" :key="value.id" :label="value.name" :value="value.id">
+                </el-option>
+              </el-select> -->
+              <el-input v-model="formInline.oName"></el-input>
+            </el-form-item>
                  <el-form-item label=" " label-width="13px">
-                        <el-button title="搜索" class="commonBtn searchBtn" size="medium" icon="iconfont law-sousuo"></el-button>
+                        <el-button title="搜索" class="commonBtn searchBtn" size="medium" icon="iconfont law-sousuo"  @click="getPersonList"></el-button>
                         <el-button title="重置" class="commonBtn searchBtn" size="medium" icon="iconfont law-zhongzhi" @click="reset"></el-button>
                     </el-form-item>
                 </el-row>
             </el-form>
             
         </div>
+       
         <div class="tablePart">
             <el-table
                 :data="tableData"
                 stripe
                 style="width: 100%;height:100%"
             >
-                <el-table-column type="selection" align="center"></el-table-column>
-                <el-table-column  label="姓名"></el-table-column>
-                <el-table-column  label="性别"></el-table-column>
-                <el-table-column  label="执法证号"></el-table-column>
-                <el-table-column  label="所属机构"></el-table-column>
-                <el-table-column  label="执法门类"></el-table-column>
-                <el-table-column  label="执法区域"></el-table-column>
-                <el-table-column  label="职务"></el-table-column>
-                <el-table-column label="操作项" width="160">
+                <el-table-column prop="personId" label=" " v-if="false"></el-table-column>
+                <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
+                <el-table-column prop="sex" label="性别" :formatter = "sexFormat" align="center"></el-table-column>
+                <el-table-column prop="ministerialNo" label="执法证号" align="center"></el-table-column>
+                <el-table-column prop="oname" label="所属机构" align="center"></el-table-column>
+                <el-table-column prop="branchName" label="执法领域" align="center"></el-table-column>
+                <el-table-column prop="area" label="执法区域" align="center"></el-table-column>
+                <el-table-column prop="postName" label="职务" align="center"></el-table-column>
+                <el-table-column label="操作项" width="160" align="center">
                 <template slot-scope="scope" >
-                    <div style="width:160px">
-                    <el-button type="text" @click="handleEdit(scope.$index, scope.row)">颁发</el-button>
-                    </div>
+                    <el-button type="text" @click="handleEdit(scope.row)">颁发</el-button>
                 </template>
                 </el-table-column>
             </el-table>
         </div>
-        <div class="paginationBox" v-show="totalPage">
+        <div class="paginationBox" v-show="true">
             <div class="paginationBox">
                 <el-pagination
                 @size-change="handleSizeChange"
@@ -67,15 +74,15 @@
             </div>
         </div>
     </div>
- <!-- 颁发证件 -->
-        <addParagraph ref="addParagraph" @getAllPersons="getOrgList"></addParagraph>
+    <!-- 颁发证件 -->
+    <addParagraph ref="addParagraph" @getAllPersons="getPersonList()"></addParagraph>
   
   </div>
 </div>
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
- <script>
- import addParagraph from "./addParagraph";
+<script>
+import addParagraph from "./addParagraph";
 export default {
   watch: {
     filterText(val) {
@@ -84,6 +91,16 @@ export default {
   },
   data() {
     return {
+      branchIdsInfo:[],//执法领域列表
+      oidsInfo:[],//所属机构列表
+      formInline: {
+        personId:"", 
+        personName: "",  //姓名
+        ministerialNo: "",   //执法证号
+        oName: "",      //所属机构
+        branchName: "", //执法门类
+        post:"",  
+      },
       tableData: [], //表格数据
       defaultExpandedKeys: [], //默认展开的key
       currentPage: 1, //当前页
@@ -98,7 +115,38 @@ export default {
     addParagraph
   },
   methods: {
-
+    getOrgList(){
+      this.getPersonList();
+    },
+    //根据查询条件查询人员基本信息
+    getPersonList() {
+      let _this = this
+      let data = {
+        personName:_this.formInline.personName,
+        ministerialNo: _this.formInline.ministerialNo,
+        branchName: _this.formInline.branchName,
+        oName:_this.formInline.oName,
+        certStatus:_this.formInline.certStatus,
+        personType:_this.formInline.personType,
+        post:_this.formInline.post,
+        current: _this.currentPage,
+        size: _this.pageSize
+      };
+      _this.$store.dispatch("getPerCertListMoudle", data).then(res => {
+        _this.tableData = res.data.records;
+        _this.totalPage = res.data.total;
+      }, err => {
+        this.$message({ type: 'error', message: err.msg || '' });
+      });
+    },
+    //性别转换
+    sexFormat(row, column) {
+      if (row.sex === '0') {
+        return '男'
+      } else if (row.sex === '1') {
+        return '女'
+      } 
+    },
     //更改每页显示的条数
     handleSizeChange(val) {
       console.log("每页显示的条数", val);
@@ -112,29 +160,51 @@ export default {
       this.getOrgList(val);
     },
     // 表格编辑
-    handleEdit(index, row) {
-      this.$refs.addUserRef.handelEdit(row);
+    handleEdit(row) {
+      this.$refs.addParagraph.showModal(row.personId);
       // this.$refs.addUserRef.addUserForm = JSON.parse(JSON.stringify(row));
     },
     // 表格
-// 重置查询条件
-  reset() {
-      alert("aaa");
-      this.$refs["userForm"].resetFields();
+    // 重置查询条件
+    reset() {
+      this.$refs["userFormRef"].resetFields();
     },
-  
-
-  },
-  mounted() {
-    // this.setDepartTable(this.data)
+    //点击下拉框的时候后头获取下拉框数据
+    getDepatements(name,codeName){
+      if(this.branchIdsInfo.length===0){
+        this.$store.dispatch("findAllDrawerByName",name).then(    //查询执法领域
+         res=>{
+          if(res.code===200){
+            if(codeName==='branchIdsInfo'){
+              this.branchIdsInfo=res.data;
+            }
+            if(codeName==='postList'){
+              this.postList=res.data;
+            }
+            if(codeName==='oidsInfo'){
+              this.oidsInfo=res.data;
+            }
+            if(codeName==='reviewScoreList'){
+              this.reviewScoreList=res.data;
+            }
+          }else{
+            console.info("没有查询到数据");
+          }
+        });
+      }
+    },
   },
   created() {
-  
+    this.getPersonList();
   }
 };
 </script>
-<!--
-<style lang="scss">
-@import "@/assets/css/systemManage.scss";
+<style  lang="scss" scoped>
+.search-form{
+  >>>.el-input, >>>.el-select{
+    width: 180px;
+    margin-right: 0;
+  }
+}
 </style>
--->
+

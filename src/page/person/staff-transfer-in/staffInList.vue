@@ -1,183 +1,294 @@
 <template>
-  <div class="com_searchAndpageBoxPadding">
-    <div class="searchPageLayout" id="userBox">
-      <div class="searchPage toggleBox">
+<div class="com_searchAndpageBoxPadding">
+  <div class="searchPageLayout" id="userBox">
+    <div class="searchPage">
         <div class="handlePart">
-          <el-form :inline="true" ref="userForm" label-width="70px">
-            <el-row>
-              <el-form-item label="姓名">
-                <el-input v-model="formInline.organCl"></el-input>
-              </el-form-item>
-              <el-form-item label="执法证号">
-                <el-input v-model="formInline.organCl"></el-input>
-              </el-form-item>
-              <el-form-item label="所属机构">
-                <el-input v-model="formInline.organCl"></el-input>
-              </el-form-item>
-              <el-form-item v-model="formInline.organCl" label="执法门类">
-                <el-select v-model="formInline.organCl">
-                  <el-option label="综合执法" value="0"></el-option>
-                  <el-option label="海事执法" value="1"></el-option>
-                  <el-option label="工程质量监督" value="2"></el-option>
-                  <el-option label="道路运政" value="3"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="职务">
-                <el-select v-model="formInline.organCl">
-                  <el-option label="书记" value="0"></el-option>
-                  <el-option label="副书记" value="1"></el-option>
-                  <el-option label="党委书记" value="2"></el-option>
-                  <el-option label="党委委员" value="3"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label=" " label-width="13px">
-                <el-button title="搜索" class="commonBtn searchBtn" size="medium" icon="iconfont law-sousuo"></el-button>
-                <el-button title="重置" class="commonBtn searchBtn" size="medium" icon="iconfont law-zhongzhi"
-                           @click="reset"></el-button>
-              </el-form-item>
-              <el-form-item label=" " label-width="13px" style="float:right">
-                <el-button type="success" icon="el-icon-success" size="medium">调动接收</el-button>
-                <el-button type="danger" icon="el-icon-error" size="medium">拒绝接收</el-button>
-              </el-form-item>
-            </el-row>
-          </el-form>
-
+            <el-form class="search-form" :inline="true" ref="staffInForm"  label-width="70px">
+                <el-row>  
+                    <el-form-item label="姓名" >
+                        <el-input v-model="staffInForm.personName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="执法证号" >
+                        <el-input v-model="staffInForm.certNo"></el-input>
+                    </el-form-item>
+                    <el-form-item label="调入机构" prop="oid">
+                        <el-input v-model="staffInForm.inOName"></el-input>
+                    </el-form-item>
+                    <el-form-item label=" " label-width="13px">
+                        <el-button title="搜索" class="commonBtn searchBtn" size="medium" icon="iconfont law-sousuo" @click="getStaffinPage"></el-button>
+                        <el-button title="重置" class="commonBtn searchBtn" size="medium" icon="iconfont law-zhongzhi" @click="reset"></el-button>
+                        <el-button
+                            size="medium"
+                            class="commonBtn toogleBtn"
+                            :title="isShow? '点击收缩':'点击展开'"
+                            :icon="isShow? 'iconfont law-top': 'iconfont law-down'"
+                            @click="isShow = !isShow"
+                        ></el-button>
+                    </el-form-item>
+                    <el-form-item label=" " label-width="13px" style="float:right">
+                        <el-button type="primary" icon="el-icon-success" size="medium" @click="acceptStraffIn">调动接收</el-button>
+                        <el-button type="info" icon="el-icon-error" size="medium" @click="refuseStraffIn">拒绝接收</el-button>
+                    </el-form-item>
+                </el-row>
+                <el-row v-show="isShow">
+                    <el-form-item label="执法领域" prop="branchId">
+                        <el-select v-model="staffInForm.branchId" placeholder="执法领域" remote  @focus="getDepatements('执法门类','branchIdsInfo')">
+                            <el-option
+                                v-for="value in branchIdsInfo" :key="value.id" :label="value.name" :value="value.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="职务" prop="post">
+                        <el-select v-model="staffInForm.post" placeholder="职务" remote  @focus="getDepatements('人员信息-职务','postIdsInfo')">
+                            <el-option
+                                v-for="value in postIdsInfo" :key="value.id" :label="value.name" :value="value.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-row>
+            </el-form>
+            
         </div>
         <div class="tablePart">
-          <el-table
-            :data="tableData"
-            stripe
-            style="width: 100%;height:100%"
-          >
-            <el-table-column type="selection" align="center"></el-table-column>
-            <el-table-column prop="data" label="姓名"></el-table-column>
-            <el-table-column prop="data" label="性别"></el-table-column>
-            <el-table-column prop="data" label="职务"></el-table-column>
-            <el-table-column prop="data" label="执法证号"></el-table-column>
-            <el-table-column prop="data" label="所属机构"></el-table-column>
-            <el-table-column prop="data" label="执法门类"></el-table-column>
-            <el-table-column label="操作项" width="160">
-              <template slot-scope="scope">
-                <div style="width:160px">
-                  <el-button type="text" @click="getDetailInfo(scope.row,'0')">查看</el-button>
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
+            <el-table
+                :data="tableData"
+                stripe
+                v-loading="tableLoading"
+                style="width: 100%;height:100%"
+                 @selection-change="selectData">
+                <el-table-column type="selection" align="center"></el-table-column>
+                <el-table-column prop="transferId" v-if="false" label="" align="center"></el-table-column>
+                <el-table-column prop="transferStatusName" label="调岗状态" align="center"></el-table-column>
+                <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
+                <el-table-column prop="idNo" label="身份证号" align="center" min-width="180px"></el-table-column>
+                <el-table-column prop="outOName" label="调出单位" align="center"></el-table-column>
+                <el-table-column prop="outTime" label="调出时间" align="center"></el-table-column>
+                <el-table-column prop="reason" label="调岗原因" align="center"></el-table-column> 
+                <el-table-column prop="inOName" label="调入单位" align="center"></el-table-column>
+                <el-table-column prop="inTime" label="调入时间" align="center"></el-table-column>
+                <el-table-column label="操作项" width="160" align="center">
+                    <template slot-scope="scope" >
+                        <el-button type="text" @click="getDetailInfo(scope.row,'0')">查看</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
         </div>
-        <div class="paginationBox" v-if="tableData.length > 0">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            background
-            :page-sizes="[10, 20, 30, 40]"
-            layout="prev, pager, next,sizes,jumper"
-            :total="totalPage"
-          ></el-pagination>
+        <div class="paginationBox">
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                background
+                :page-sizes="[10, 20, 30, 40]"
+                layout="prev, pager, next,sizes,jumper"
+                :total="totalPage"
+                ></el-pagination>
         </div>
-      </div>
-      <!-- 新增执法号段管理 -->
-      <addParagraph ref="addParagraph" @getAllPersons="getOrgList"></addParagraph>
-
     </div>
   </div>
+  <!-- -->
+  <refuseStaff ref="refuseStaffCompRef" @getRefuseStaff="getStaffinPage"></refuseStaff>
+</div>
 </template>
-<style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
+
 <script>
-  import addParagraph from "./addParagraph";
-
-  export default {
-    watch: {
-      filterText(val) {
-        this.$refs.tree.filter(val);
-      }
+import addParagraph from "./addParagraph";
+import refuseStaff from "./refuseStaff";
+import {mixinPerson} from "@/common/js/personComm"
+import elSelectTree from '@/components/elSelectTree/elSelectTree';
+export default {
+  name:'staffInList',
+  mixins:[mixinPerson],
+  data() {
+    return {
+      isShow: false,
+      staffInForm: {
+          personName: "",  //姓名
+          certNo: "",   //执法证号
+          oid: "",      //所属机构
+          branchName: "", //执法门类
+          post:"",  
+          inOName:"",
+          branchName:"",
+      },
+      tableData: [], //表格数据
+      defaultExpandedKeys: [], //默认展开的key
+      currentPage: 1, //当前页
+      pageSize: 10, //pagesize
+      totalPage: 0, //总数
+      departments: [], //机构下的部门
+      currentOrganId: "",
+      selectUserIdList: [], //选中的userid
+      branchIdsInfo:[],//存储执法领域下拉框数据
+      postIdsInfo:[],//存储职务下拉框数据
+      oidsInfo:[]//存储所属机构下拉框数据
+    };
+  },
+  components: {
+    refuseStaff
+  },
+  methods: {
+    acceptStraffIn(){//接收调动
+        let _this = this
+        if(!_this.selectUserIdList.length){
+            this.$message.warning('请选择调入人员');
+            return false;
+        }else if(_this.selectUserIdList.length > 1){
+            this.$message.warning('每次只能选择一名人员调入');
+            return false;
+        }
+        let data = {
+            transferId:_this.selectUserIdList[0],
+        };
+        _this.$store.dispatch("acceptTransfer",data).then(
+            res=>{
+                if(res.code===200){
+                    _this.$message({
+                        type: "success",
+                        message: "接收成功!"
+                    });
+                    _this.getStaffinPage();
+                }
+            }, err => {
+                this.$message({ type: 'error', message: err.msg || '' });
+            }
+        );
     },
-    data() {
-      return {
-        isShow: false,
-        formInline: {
-          sysOrganId: "",
-          organNp: "",
-          organRealNp: "",
-          organCl: "",
-        },
-        tableData: [{data: "test"}], //表格数据
-        defaultExpandedKeys: [], //默认展开的key
-        currentPage: 1, //当前页
-        pageSize: 10, //pagesize
-        totalPage: 0, //总数
-        departments: [], //机构下的部门
-        currentOrganId: "",
-        selectUserIdList: [], //选中的userid
-      };
+    refuseStraffIn(){//拒绝调动
+        if(!this.selectUserIdList.length){
+            this.$message.warning('请选择拒绝调动人员');
+            return false;
+        }else if(this.selectUserIdList.length > 1){
+           this.$message.warning('每次只能拒绝一名人员');
+            return false;
+        }else{
+            this.$refs.refuseStaffCompRef.showModal(this.selectUserIdList[0]);
+        }
     },
-    components: {
-      addParagraph
+    sexFormat(row, column) {
+        if (row.sex === '0') {
+              return '男'
+        } else if (row.sex === '1') {
+              return '女'
+        } 
     },
-    methods: {
-
-      //执法号段列表查询
-      getOrgList(val) {
-
-        alert("执行查询");
-      },
-      //更改每页显示的条数
-      handleSizeChange(val) {
-        console.log("每页显示的条数", val);
-        this.pageSize = val;
-        this.getOrgList(1);
-      },
-      //更换页码
-      handleCurrentChange(val) {
-        console.log("当前页", val);
-        this.currentPage = val;
-        this.getOrgList(val);
-      },
-      // 表格编辑
-      handleEdit(index, row) {
-        this.$refs.addUserRef.handelEdit(row);
-        // this.$refs.addUserRef.addUserForm = JSON.parse(JSON.stringify(row));
-      },
-      // 表格
-      //点击添加tab标签，查看人员详情信息
-      getDetailInfo(row, param) {
-        this.$store.commit("setPersonInfo", row, param);
-        this.$router.replace({
-          name: 'personDetailPage',
-          params: {
-            personInfo: row,
-            pageStatus: param,
-          }
+    //点击下拉框的时候后头获取下拉框数据
+    getDepatements(name,codeName){
+        let _this = this 
+        if(_this.branchIdsInfo.length===0){
+            _this.$store.dispatch("findAllDrawerByName",name).then(
+                res=>{
+                    if(res.code===200){
+                        if(codeName==='branchIdsInfo'){
+                            _this.branchIdsInfo=res.data;
+                        }
+                        if(codeName==='postIdsInfo'){
+                            _this.postIdsInfo=res.data;
+                        }
+                        if(codeName==='oidsInfo'){
+                            _this.oidsInfo=res.data;
+                        }
+                    }else{
+                        console.info("没有查询到数据");
+                    }
+                }
+            );
+        }
+        _this.$store.dispatch("findAllDrawerByName",name).then(
+            res=>{
+                if(res.code===200){
+                    if(codeName==='branchIdsInfo'){
+                        _this.branchIdsInfo=res.data;
+                    }
+                    if(codeName==='postIdsInfo'){
+                        _this.postIdsInfo=res.data;
+                    }
+                    if(codeName==='oidsInfo'){
+                        _this.oidsInfo=res.data;
+                    }
+                }else{
+                    console.info("没有查询到数据");
+                }
+            }
+        );
+    },
+    getStaffinPage(){//查询列表
+        let _this = this  
+        let data = {
+                    branchId:_this.staffInForm.branchId,
+                    inOName:_this.staffInForm.inOName,
+                    post:_this.staffInForm.post,
+                    certNo:_this.staffInForm.certNo,
+                    personName:_this.staffInForm.personName,
+                    current: _this.currentPage,
+                    size: _this.pageSize
+                };
+        _this.getPageList("getStaffInList",data);
+    },
+    //执法号段列表查询
+    getOrgList(val) {
+ 
+    },
+    //更改每页显示的条数
+    handleSizeChange(val) {
+      console.log("每页显示的条数", val);
+      this.pageSize = val;
+      this.getOrgList(1);
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      console.log("当前页", val);
+      this.currentPage = val;
+      this.getOrgList(val);
+    },
+    // 表格
+    //点击添加tab标签，查看人员详情信息
+    getDetailInfo(row,param){
+        this.openPersonDetail(row, 'view');
+    },
+    //更具id删除
+    handleDelete(row) {
+ 
+    },
+    // 重置查询条件
+    reset() {
+      let _this = this 
+      _this.$refs["userForm"].resetFields();
+      _this.$refs["staffInForm"].resetFields();
+    },
+   
+    //新增
+    addOrgApply() {
+        let _this = this 
+        let parentNode = {
+        };
+        _this.$refs.addParagraph.showModal("1",parentNode);
+    },
+     //获取选中的user
+    selectData(val) {
+        let _this = this
+        _this.selectUserIdList = [];
+        val.forEach((item,index) => {
+            _this.selectUserIdList.push(item.transferId);
         });
-      },
-      //更具id删除
-      handleDelete(row) {
-
-      },
-// 重置查询条件
-      reset() {
-        alert("aaa");
-        this.$refs["userForm"].resetFields();
-      },
-
-      //新增
-      addOrgApply() {
-        let parentNode = {};
-        this.$refs.addParagraph.showModal("1", parentNode);
-      },
-
-    },
-    mounted() {
-      // this.setDepartTable(this.data)
-    },
-    created() {
-
     }
-  };
+  },
+  mounted() {
+    // this.setDepartTable(this.data)
+  },
+  created() {
+    let _this = this;
+    _this.getStaffinPage();
+  }
+};
 </script>
-<!--
-<style lang="scss">
-@import "@/assets/css/systemManage.scss";
+
+<style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
+<style  lang="scss" scoped>
+.search-form{
+    >>>.el-input, >>>.el-select{
+        width: 180px;
+        margin-right: 0;
+    }
+}
 </style>
--->

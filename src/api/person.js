@@ -6,9 +6,34 @@ import  Vue  from  "vue";
 let  vm  =  new  Vue();
 
 //后台查询缓存中的数据字典的值begin
+export function findAllDrawerByNameApi(name){
+  return request({
+    url: "/system/sys/drawer/findAllDrawerByName/"+name,
+    method: "get",
+    params: vm.$qs.stringify(name),
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+}
+export function findOrganTreeByCurrUserApi(){
+  return request({
+    url: "/system/sys/organ/organTreeByCurrUser/",
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+}
+export function findStationApi(){
+  return request({
+    url: "/person/station/allPerStation/",
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+}
 export function getDictInfoByCodeApi(pid){
   return request({
-    url: "/cache/dictInfoById/"+pid,
+    url: "/person/cache/dictInfoById/"+pid,
     method: "get",
     params: vm.$qs.stringify(pid),
     showloading: false,
@@ -17,7 +42,7 @@ export function getDictInfoByCodeApi(pid){
 }
 export function getDictInfoAllApi(data){
   return request({
-    url: "/cache/dictInfoAll",
+    url: "/person/cache/dictInfoAll",
     method: "get",
     params: data,
     showloading: false,
@@ -27,9 +52,18 @@ export function getDictInfoAllApi(data){
 //后台查询缓存中的数据字典的值end
 
 //获取用户所有的用户信息
+export  function  getDetailInfoApi(personId)  {
+  return  request({
+    url:  "/person/person/getPersoninfoDetail/"+personId,
+    method:  "get",
+    params: vm.$qs.stringify(personId),
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
 export  function  getAllPersonApi(data)  {
     return  request({
-      url:  "/person/personPageList",
+      url:  "/person/person/personPageList",
       method:  "get",
       params: data,
       showloading: false,
@@ -39,7 +73,7 @@ export  function  getAllPersonApi(data)  {
 //添加用户信息
 export  function  addPersonApi(data)  {
   return  request({
-    url:  "/person/addPerson",
+    url:  "/person/person/addPerson",
     method:  "get",
     params: data,
     showloading: false,
@@ -50,7 +84,7 @@ export  function  addPersonApi(data)  {
 //修改用户用户信息
 export  function  updatePersonApi(data)  {
   return  request({
-    url:  "/person/updatePerson",
+    url:  "/person/person/updatePerson",
     method:  "get",
     params: data,
     showloading: false,
@@ -61,7 +95,7 @@ export  function  updatePersonApi(data)  {
 //删除所选的所有用户信息
 export  function  deletePersonApi(ids)  {
   return  request({
-    url:  "/person/deletePerson/"+ids,
+    url:  "/person/person/deletePerson/"+ids,
     method:  "get",
     data: vm.$qs.stringify(ids),
     showloading: false,
@@ -72,7 +106,7 @@ export  function  deletePersonApi(ids)  {
 //根据id删除用户用户信息
 export  function  deletePersonByIdApi(personId)  {
   return  request({
-    url:  "/person/deletePersonById/"+personId,
+    url:  "/person/person/deletePersonById/"+personId,
     method:  "get",
     data: vm.$qs.stringify(personId),
     showloading: false,
@@ -83,7 +117,7 @@ export  function  deletePersonByIdApi(personId)  {
 //条件查询
 export  function  getAwardListApi(data)  {
   return  request({
-    url:  "/award/awardPageList",
+    url:  "/person/award/awardPageList",
     method:  "get",
     params: data,
     showloading: false,
@@ -93,7 +127,7 @@ export  function  getAwardListApi(data)  {
 //添加
 export  function  addAwardApi(data)  {
 return  request({
-  url:  "/award/addAward",
+  url:  "/person/award/addAward",
   method:  "get",
   params: data,
   showloading: false,
@@ -104,7 +138,7 @@ return  request({
 //修改用户用户信息
 export  function  updateAwardApi(data)  {
 return  request({
-  url:  "/award/updateAward",
+  url:  "/person/award/updateAward",
   method:  "get",
   params: data,
   showloading: false,
@@ -115,7 +149,7 @@ return  request({
 //删除所选的所有用户信息
 export  function  deleteAwardApi(ids)  {
 return  request({
-  url:  "/award/deleteAward/"+ids,
+  url:  "/person/award/deleteAward/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
   showloading: false,
@@ -126,7 +160,7 @@ return  request({
 //根据id删除用户用户信息
 export  function  deleteAwardByIdApi(awardId)  {
 return  request({
-  url:  "/award/deleteAwardById/"+awardId,
+  url:  "/person/award/deleteAwardById/"+awardId,
   method:  "get",
   data: vm.$qs.stringify(awardId),
   showloading: false,
@@ -136,7 +170,7 @@ return  request({
 /////////////////////////////人员教育begin///////////////////////////////
 export  function  getEducationListApi(data)  {
   return  request({
-    url:  "/education/educationPageList",
+    url:  "/person/education/educationPageList",
     method:  "get",
     params: data,
     showloading: false,
@@ -145,7 +179,7 @@ export  function  getEducationListApi(data)  {
 }
 export  function  addEducationApi(data)  {
 return  request({
-  url:  "/education/addEducation",
+  url:  "/person/education/addEducation",
   method:  "get",
   params: data,
   showloading: false,
@@ -154,7 +188,7 @@ return  request({
 }
 export  function  updateEducationApi(data)  {
 return  request({
-  url:  "/education/updateEducation",
+  url:  "/person/education/updateEducation",
   method:  "get",
   params: data,
   showloading: false,
@@ -163,7 +197,7 @@ return  request({
 }
 export  function  deleteEducationApi(ids)  {
 return  request({
-  url:  "/education/deleteEducation/"+ids,
+  url:  "/person/education/deleteEducation/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
   showloading: false,
@@ -172,7 +206,7 @@ return  request({
 }
 export  function  deleteEducationByIdApi(educationId)  {
 return  request({
-  url:  "/education/deleteEducationById/"+educationId,
+  url:  "/person/education/deleteEducationById/"+educationId,
   method:  "get",
   data: vm.$qs.stringify(educationId),
   showloading: false,
@@ -180,9 +214,26 @@ return  request({
 });
 }
 /////////////////////////////////////////////人员证件信息/////////////////////////////////////
+export  function  queryPersonCertApi(data)  {
+  return  request({
+    url:  "/person/perCert/queryPersonCert/",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  getCertHistoryPageListApi(certId)  {
+  return  request({
+    url:  "/person/certHistory/certHistoryPageList/"+certId,
+    method:  "get",
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
 export  function  getPerCertListApi(data)  {
     return  request({
-      url:  "/perCert/perCertPageList",
+      url:  "/person/perCert/canIssueDocData",
       method:  "get",
       params: data,
       showloading: false,
@@ -191,7 +242,7 @@ export  function  getPerCertListApi(data)  {
 }
 export  function  addPerCertApi(data)  {
   return  request({
-    url:  "/perCert/addPerCert",
+    url:  "/person/perCert/issueDoc",
     method:  "get",
     params: data,
     showloading: false,
@@ -200,7 +251,97 @@ export  function  addPerCertApi(data)  {
 }
 export  function  updatePerCertApi(data)  {
   return  request({
-    url:  "/perCert/updatePerCert",
+    url:  "/person/perCert/perCertPageList",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//证件挂失
+export  function  lossDocApi(data)  {
+  return  request({
+    url:  "/person/perCert/lossDoc",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//解除挂失
+export  function  unLossDocApi(data)  {
+  return  request({
+    url:  "/person/perCert/unLossDoc",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//证件暂扣
+export  function  withholdApi(data)  {
+  return  request({
+    url:  "/person/perCert/withhold",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+
+//解除暂扣
+export  function  unWithholdApi(data)  {
+  return  request({
+    url:  "/person/perCert/unWithhold",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//证件注销
+export  function  logoffApi(data)  {
+  return  request({
+    url:  "/person/perCert/logoff",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//证件吊销
+export  function  revokeApi(data)  {
+  return  request({
+    url:  "/person/perCert/revoke",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//获取证号getCertNoApi
+export  function  getCertNoApi(data)  {
+  return  request({
+    url:  "/person/perCert/getCertNo",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//获取省号
+export  function  getProvinceCode()  {
+  return  request({
+    url:  "/person/enfSection/getProviceCode",
+    method:  "get",
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//到期换证 changeCertByEndDateMoudle
+export  function  changeCertByEndDateApi(data)  {
+  return  request({
+    url:  "/person/perCert/changeCertByEndDate",
     method:  "get",
     params: data,
     showloading: false,
@@ -209,7 +350,7 @@ export  function  updatePerCertApi(data)  {
 }
 export  function  deletePerCertApi(ids)  {
   return  request({
-    url:  "/perCert/deletePerCert/"+ids,
+    url:  "/person/perCert/deletePerCert/"+ids,
     method:  "get",
     data: vm.$qs.stringify(ids),
     showloading: false,
@@ -219,7 +360,7 @@ export  function  deletePerCertApi(ids)  {
 
 export  function  deletePerCertByIdApi(certId)  {
   return  request({
-    url:  "/perCert/deletePerCertById/"+certId,
+    url:  "/person/perCert/deletePerCertById/"+certId,
     method:  "get",
     data: vm.$qs.stringify(certId),
     showloading: false,
@@ -229,7 +370,8 @@ export  function  deletePerCertByIdApi(certId)  {
 ///////////////////////////////////////////查询人员调岗信息//////////////////////////////////////
 export  function  getTransferListApi(data)  {
   return  request({
-    url:  "/transfer/transferPageList",
+    //url:  "/person/transfer/transferPageList",
+    url:  "/person/transfer/getPersonTranList",
     method:  "get",
     params: data,
     showloading: false,
@@ -238,7 +380,7 @@ export  function  getTransferListApi(data)  {
 }
 export  function  addTransferApi(data)  {
 return  request({
-  url:  "/transfer/addTransfer",
+  url:  "/person/transfer/addTransfer",
   method:  "get",
   params: data,
   showloading: false,
@@ -247,7 +389,7 @@ return  request({
 }
 export  function  updateTransferApi(data)  {
 return  request({
-  url:  "/transfer/updateTransfer",
+  url:  "/person/transfer/updateTransfer",
   method:  "get",
   params: data,
   showloading: false,
@@ -256,7 +398,7 @@ return  request({
 }
 export  function  deleteTransferApi(ids)  {
 return  request({
-  url:  "/transfer/deleteTransfer/"+ids,
+  url:  "/person/transfer/deleteTransfer/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
   showloading: false,
@@ -265,35 +407,93 @@ return  request({
 }
 export  function  deleteTransferByIdApi(transferId)  {
 return  request({
-  url:  "/transfer/deleteTransferById/"+transferId,
+  url:  "/person/transfer/deleteTransferById/"+transferId,
   method:  "get",
   data: vm.$qs.stringify(transferId),
   showloading: false,
   cancelToken:  setCancelSource()
 });
 }
-///////////////////////////////////////////////////人员审批信息////////////////////////////////
-export  function  getApproveListApi(data)  {
+///////////////////////////////////////////////////人员审批信息//////////////////////////////// 
+export  function  applyTxApi(personIds)  {//申请退休
   return  request({
-    url:  "/approve/approvePageList",
+    url:  "/person/person/retire/"+personIds,
+    method:  "get",
+    params: vm.$qs.stringify(personIds),
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//审批列表查询
+export  function  getApproveApi(data)  {
+  return  request({
+    url:  "/person/approve/approvePageList",
     method:  "get",
     params: data,
     showloading: false,
     cancelToken:  setCancelSource()
   });
 }
+export  function  getLastApproveRecordApi(data)  {//人员审批列表
+  return  request({
+    url:  "/person/approve/detailApprovePageList",
+    method:  "get",
+    params: {personId: data},
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  applyApproveApi(personIds)  {//申请审批
+  return  request({
+    url:  "/person/approve/applyApprove/"+personIds,
+    method:  "get",
+    params: vm.$qs.stringify(personIds),
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  applyDdApi(data)  {//申请调动 
+  return  request({
+    url:  "/person/person/approveTransfer/",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  applyDlApi(personId)  {//申请调离
+  return  request({
+    url:  "/person/person/removeOrg/"+personId,
+    method:  "get",
+    params: vm.$qs.stringify(personId),
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//分页查询审批列表
+export  function  getApproveListApi(data)  {
+  return  request({
+    url:  "/person/approve/approveHistoryByPersonId",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//执行审批
 export  function  addApproveApi(data)  {
 return  request({
-  url:  "/approve/addApprove",
+  url:  "/person/approve/approve",
   method:  "get",
   params: data,
   showloading: false,
   cancelToken:  setCancelSource()
 });
 }
+//证件颁发
 export  function  updateApproveApi(data)  {
 return  request({
-  url:  "/approve/updateApprove",
+  url:  "/person/approve/issueDoc",
   method:  "get",
   params: data,
   showloading: false,
@@ -302,7 +502,7 @@ return  request({
 }
 export  function  deleteApproveApi(ids)  {
 return  request({
-  url:  "/approve/deleteApprove/"+ids,
+  url:  "/person/approve/deleteApprove/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
   showloading: false,
@@ -311,7 +511,7 @@ return  request({
 }
 export  function  deleteApproveByIdApi(approveId)  {
 return  request({
-  url:  "/approve/deleteApproveById/"+approveId,
+  url:  "/person/approve/deleteApproveById/"+approveId,
   method:  "get",
   data: vm.$qs.stringify(approveId),
   showloading: false,
@@ -320,9 +520,29 @@ return  request({
 }
 
 ////////////////////////////////////////////////人员年审信息////////////////////////////////////
+export  function  getQueryArDataByPersonIdApi(data)  {
+  return  request({
+    url:  "/person/annualreview/queryArDataByPersonId",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//人员年审列表
 export  function  getAnnualreviewListApi(data)  {
   return  request({
-    url:  "/annualreview/annualreviewPageList",
+    url:  "/person/annualreview/queryArData",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//获取年份
+export  function  getYearApi(data)  {
+  return  request({
+    url:  "/person/annualreview/arYear",
     method:  "get",
     params: data,
     showloading: false,
@@ -331,7 +551,7 @@ export  function  getAnnualreviewListApi(data)  {
 }
 export  function  addAnnualreviewApi(data)  {
 return  request({
-  url:  "/annualreview/addAnnualreview",
+  url:  "/person/annualreview/addAnnualreview",
   method:  "get",
   params: data,
   showloading: false,
@@ -340,7 +560,7 @@ return  request({
 }
 export  function  updateAnnualreviewApi(data)  {
 return  request({
-  url:  "/annualreview/updateAnnualreview",
+  url:  "/person/annualreview/updateAnnualreview",
   method:  "get",
   params: data,
   showloading: false,
@@ -349,7 +569,7 @@ return  request({
 }
 export  function  deleteAnnualreviewApi(ids)  {
 return  request({
-  url:  "/annualreview/deleteAnnualreview/"+ids,
+  url:  "/person/annualreview/deleteAnnualreview/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
   showloading: false,
@@ -358,17 +578,84 @@ return  request({
 }
 export  function  deleteAnnualreviewByIdApi(reviewId)  {
 return  request({
-  url:  "/annualreview/deleteAnnualreviewById/"+reviewId,
+  url:  "/person/annualreview/deleteAnnualreviewById/"+reviewId,
   method:  "get",
   data: vm.$qs.stringify(reviewId),
   showloading: false,
   cancelToken:  setCancelSource()
 });
 }
+//执行年审
+  export  function  approveArApi(data)  {
+    return  request({
+      url:  "/person/annualreview/approveAr",
+      method:  "get",
+      params: data,
+      showloading: false,
+      cancelToken:  setCancelSource()
+    });
+    }
+  //执行复审
+  export  function  reApproveArApi(data)  {
+    return  request({
+      url:  "/person/annualreview/reApproveAr",
+      method:  "get",
+      params: data,
+      showloading: false,
+      cancelToken:  setCancelSource()
+    });
+    }  
+
+    //复审查询
+  export  function  queryRArDataApi(data)  {
+    return  request({
+      url:  "/person/annualreview/queryRArData",
+      method:  "get",
+      params: data,
+      showloading: false,
+      cancelToken:  setCancelSource()
+    });
+    }
 //////////////////////////////////////////////人员培训/////////////////////////////////////
+export  function  trainInfoPageListApi(data)  {//培训列表查询
+  return  request({
+    url:  "/person/trainInfo/trainInfoPageList",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  addTrainInfoApi(data)  {//新增培训
+  return  request({
+    url:  "/person/trainInfo/addTrainInfo",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  deleteTrainInfoByIdApi(educationId)  { //删除考试
+  return  request({
+  url:  "/person/trainInfo/deleteTrainInfoById/"+educationId,
+  method:  "get",
+  data: vm.$qs.stringify(educationId),
+  showloading: false,
+  cancelToken:  setCancelSource()
+  });
+}
+export  function  updateTrainInfoApi(data)  {//修改
+  return  request({
+    url:  "/person/trainInfo/updateTrainInfo",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
 export  function  getTrainListApi(data)  {
   return  request({
-    url:  "/train/trainPageList",
+    url:  "/person/train/trainPageList",
     method:  "get",
     params: data,
     showloading: false,
@@ -377,7 +664,7 @@ export  function  getTrainListApi(data)  {
 }
 export  function  addTrainApi(data)  {
 return  request({
-  url:  "/train/addTrain",
+  url:  "/person/train/addTrain",
   method:  "get",
   params: data,
   showloading: false,
@@ -386,7 +673,7 @@ return  request({
 }
 export  function  updateTrainApi(data)  {
 return  request({
-  url:  "/train/updateTrain",
+  url:  "/person/train/updateTrain",
   method:  "get",
   params: data,
   showloading: false,
@@ -395,7 +682,7 @@ return  request({
 }
 export  function  deleteTrainApi(ids)  {
 return  request({
-  url:  "/train/deleteTrain/"+ids,
+  url:  "/person/train/deleteTrain/"+ids,
   method:  "get",
   data: vm.$qs.stringify(ids),
   showloading: false,
@@ -404,10 +691,284 @@ return  request({
 }
 export  function  deleteTrainByIdApi(trainId)  {
     return  request({
-    url:  "/train/deleteTrainById/"+trainId,
+    url:  "/person/train/deleteTrainById/"+trainId,
     method:  "get",
     data: vm.$qs.stringify(trainId),
     showloading: false,
     cancelToken:  setCancelSource()
     });
+}
+//////////////////////////////////////////////人员考试/////////////////////////////////////
+export  function  examInfoPageListApi(data)  {//考试列表查询
+  return  request({
+    url:  "/person/examInfo/examInfoPageList",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  addExamInfoApi(data)  {//新增考试
+  return  request({
+    url:  "/person/examInfo/addExamInfo",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  deleteExamInfoByIdApi(examId)  { //删除考试
+  return  request({
+  url:  "/person/examInfo/deleteExamInfoById/"+examId,
+  method:  "get",
+  data: vm.$qs.stringify(examId),
+  showloading: false,
+  cancelToken:  setCancelSource()
+  });
+}
+export  function  updateExamInfoApi(data)  {//修改
+  return  request({
+    url:  "/person/examInfo/updateExamInfo",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//////////////////////////////////////////////调入调出/////////////////////////////////////
+export  function  getStaffInListApi(data)  {//调入查询列表
+  return  request({
+    url:  "/person/transfer/getTranInList",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  acceptTransferApi(data)  {//接受调动
+  return  request({
+    url:  "/person/transfer/receiveTransfer",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+
+export  function  refuseTransferApi(data)  {//拒绝调动
+  return  request({
+    url:  "/person/transfer/refuseTransfer/",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  cancelTransferApi(data)  {//取消调动
+  return  request({
+    url:  "/person/transfer/recallTransfer",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  getStaffOutListApi(data)  {//调出
+  return  request({
+    url:  "/person/transfer/getTranOutList",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//////////////////////////////////////////////执法号段/////////////////////////////////////
+export  function  getEnfListApi(data)  {//执法号段查询
+  return  request({
+    url:  "/person/enfSection/enfSectionPageList",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  getEnfAddApi(data)  {//添加
+  return  request({
+    url:  "/person/enfSection/addEnfSection",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+
+export  function  getEnfUpdateApi(data)  {//修改
+  return  request({
+    url:  "/person/enfSection/updateEnfSection",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  getEnfDeleteAllApi(id)  {//删除
+  return  request({
+    url:  "/person/enfSection/deleteEnfSectionById/"+id,
+    method:  "get",
+    params: vm.$qs.stringify(id),
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//////////////////////////////////////////////人员系统管理/////////////////////////////////////
+export  function  paramListApi(data)  {//参数列表查询
+  return  request({
+    url:  "/person/params/paramsPageList",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  paramUpdateApi(data)  {//参数修改
+  return  request({
+    url:  "/person/params/updateParams",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+
+export  function  stationListApi(data)  {//岗位列表
+  return  request({
+    url:  "/person/station/perStationPageList",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  stationAddApi(data)  {//岗位添加
+  return  request({
+    url:  "/person/station/addPerStation",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  stationUpdateApi(data)  {//岗位修改
+  return  request({
+    url:  "/person/station/updatePerStation",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+export  function  stationDeleteByIdApi(id)  {//岗位修改
+  return  request({
+    url:  "/person/station/deletePerStationById/"+id,
+    method:  "get",
+    params: id,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+ //流程审批
+export  function  queryByOidApi(data)  {//岗位修改
+  return  request({
+    url:  "/person/approveProcess/queryByOid",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+
+//查询审批列表queryApproveProcessPageApi
+export  function  queryApproveProcessPageApi(data)  {//岗位修改
+  return  request({
+    url:  "/person/approveProcess/queryApproveProcessPage",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+//修改流程审批
+export  function  updateApApi(data)  {
+  return  request({
+    url:  "/person/approveProcess/updateAP",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+
+// 全部初始化流程
+export function initAllApprove(){
+  return  request({
+    url:  "/person/approveProcess/genDefaultProcess",
+    method:  "get",
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+
+// 判断是否可以编辑
+export function personEdabled(data){
+  return  request({
+    url:  "/person/person/isCanUpdate",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource()
+  });
+}
+
+// 上传证明材料文件
+export function uploadMaterial(data){
+  return  request({
+    url:  "/case/sys/file/uploadCommon",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+
+// 保存上传文件到person
+export function savePersonMaterial(data){
+  return  request({
+    url:  "/person/person/updateFile",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+
+// 保存人员照片
+export function savePersonPhoto(data){
+  return  request({
+    url:  "/person/person/uploadPic",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+
+// 获取所有机构树
+export function getAllOrigin(){
+  return  request({
+    url:  "/system/sys/organ/getAllOrgan",
+    method:  "get",
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
 }
