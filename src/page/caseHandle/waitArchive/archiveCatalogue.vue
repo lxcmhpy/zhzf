@@ -97,7 +97,7 @@ export default {
                
              })
              
-               if(beikaoFlag){
+               if(beikaoFlag=true){
                  this.caseList = res.data;
                }
 

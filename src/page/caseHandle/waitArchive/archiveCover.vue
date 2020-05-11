@@ -401,11 +401,14 @@ export default {
     canArchive(handleType){
       this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
          res=>{
-           let canArchiveFlag = false;
+           let canArchiveFlag = true;
            res.data.forEach(item=>{
-             if(item.name=='备考表' && !item.storageId){
-               canArchiveFlag = true;
+             if(item.name=='备考表'){
+               if(item.storageId===""){
+               console.log(item)
+               canArchiveFlag = false;
                return
+               }
              }
            })
            if(canArchiveFlag){
@@ -434,8 +437,7 @@ export default {
             res.data = res.data.sort(function(a,b){
               return a.num - b.num;
             });
-           console.log('getByMlCaseId2',res.data)
-          
+            console.log('getByMlCaseId2',res.data)
 
              this.caseList = res.data;
               console.log('this.caseList[0].storageId',this.caseList[0].storageId)

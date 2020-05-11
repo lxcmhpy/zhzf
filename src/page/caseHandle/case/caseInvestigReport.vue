@@ -36,7 +36,7 @@
             </td>
             <td>性别</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partySex" :rules="fieldRules('partySex',propertyFeatures['partySex'],'',isParty)">
+              <el-form-item prop="partySex" v-if="isParty" :rules="fieldRules('partySex',propertyFeatures['partySex'],'',isParty)">
                 <!-- <el-input
                         v-model="formData.partySex"
                         maxlength="2"
@@ -48,6 +48,7 @@
                   <el-option value="1" label="女"></el-option>
                 </el-select>
               </el-form-item>
+              <span v-else>{{formData.partySex}}</span>
             </td>
             <td>年龄</td>
             <td colspan="2" class="color_DBE4EF">
