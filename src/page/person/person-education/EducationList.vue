@@ -33,9 +33,8 @@
                 <el-table :data="tableData"
                      stripe
                      style="width: 100%;height:100%;"
-                     @selection-change="selectUser"
-                >
-                    <el-table-column type="selection" align="center"></el-table-column>
+                     @selection-change="selectUser">
+                <el-table-column type="selection" align="center"></el-table-column>
 				<el-table-column prop="educationId" v-if="show" label="" align="center"></el-table-column>
                 <el-table-column prop="degree" label="学历" align="center"></el-table-column>
                 <el-table-column prop="school" label="毕业院校" align="center"></el-table-column>
@@ -47,13 +46,12 @@
                 <el-table-column prop="modifyId" label="操作人" align="center"></el-table-column>
                 <el-table-column prop="modifyTime" label="操作日期" align="center"></el-table-column>
                 <el-table-column prop="isDel" label="是否删除" align="center"></el-table-column>
-
-                    <el-table-column prop="opt" label="操作项" align="center">
-                         <template slot-scope="scope">
-                            <el-button  @click="editEducation(scope.row)" type="text">修改</el-button>
-                            <el-button type="text"  @click="deleteEducationById(scope.row)">删除</el-button>
-                        </template>
-                    </el-table-column>
+                <el-table-column prop="opt" label="操作项" align="center">
+                    <template slot-scope="scope">
+                        <el-button  @click="editEducation(scope.row)" type="text">修改</el-button>
+                        <el-button type="text"  @click="deleteEducationById(scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
                 </el-table>
            </div>
            <div class="paginationBox">
@@ -108,7 +106,7 @@ export default {
         //根据id删除单个人员信息
         deleteEducationById(row){
             let _this = this
-            this.$confirm("确定要删除该人员吗?", "提示", {
+            _this.$confirm("确定要删除该人员吗?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
@@ -130,13 +128,14 @@ export default {
         },
         //删除所选择的用户信息
         deleteEducation(){
+            debugger;
             let _this = this
             this.$confirm("确定要删除所选的人员吗?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
             }).then(() => {
-                _this.$store.dispatch("deleteEducationMoudle", _this.selectDataIdList).then(
+                _this.$store.dispatch("deleteEducationByIdMoudle", _this.selectDataIdList).then(
                     res => {
                         _this.$message({
                             type: "success",
@@ -157,15 +156,15 @@ export default {
         },
         //条件查询
         getEducation() {
+            let _this = this 
             let data = {
-                degree:this.listEducationForm.degree,
-                major:this.listEducationForm.major,
-                graduationDate:this.listEducationForm.graduationDate,
-				current: this.currentPage,
-                size: this.pageSize
+                degree:_this.listEducationForm.degree,
+                major:_this.listEducationForm.major,
+                graduationDate:_this.listEducationForm.graduationDate,
+				current: _this.currentPage,
+                size: _this.pageSize
             };
-            let _this = this
-            this.$store.dispatch("getEducationListMoudle", data).then(res => {
+            _this.$store.dispatch("getEducationListMoudle", data).then(res => {
                 _this.tableData = res.data.records;
                 _this.totalPage = res.data.total;
             });

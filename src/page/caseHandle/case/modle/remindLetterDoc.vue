@@ -309,6 +309,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      this.docData.checknames=this.checknames
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态

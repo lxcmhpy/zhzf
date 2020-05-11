@@ -7,7 +7,7 @@
         width="25%">
         <el-form :inline="true" :model="addPersonForm" label-position="right"  label-width="100px" ref="addPersonForm">
             <el-row style="height:36px;">
-                <el-form-item label="年审年份:" prop="attached">
+                <el-form-item label="年审年份:" prop="annuallyTime">
                     <el-select v-model="addPersonForm.attached" style="width: 260px;" placeholder="2019">
                         <el-option label="2018" value="0"></el-option>
                         <el-option label="2017" value="1"></el-option>
@@ -17,7 +17,7 @@
                 </el-form-item>
             </el-row>
             <el-row style="height:36px;">
-                <el-form-item label="年审成绩从" prop="attached">
+                <el-form-item label="年审成绩" prop="annuallyNum">
                     <el-select v-model="addPersonForm.attached" style="width: 260px;" >
                         <el-option label="不合格" value="0"></el-option>
                         <el-option label="基本合格" value="1"></el-option>
@@ -28,8 +28,8 @@
                
             </el-row>
             <el-row style="height:40px;">
-                <el-form-item label="说明:" prop="provinceNo">
-                    <el-input v-model="addPersonForm.provinceNo" style="width:260px;"></el-input>
+                <el-form-item label="说明:" prop="remark">
+                    <el-input v-model="addPersonForm.remark" style="width:260px;"></el-input>
                 </el-form-item>
             </el-row>
             <div class="item" style="text-align:center;margin-top:10px;">
@@ -50,7 +50,10 @@ export default {
             imageUrl: '',
             visible: false,
             addPersonForm: {
-             type:""
+             type:"", 
+             remark:"",  // 备注说明
+             annuallyTime:"", //年审时间
+             annuallyNum:"",  //年审成绩
             },
             dialogTitle: "", //弹出框title
             errorName: false, //添加name时的验证

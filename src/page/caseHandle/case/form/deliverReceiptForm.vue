@@ -350,7 +350,7 @@ export default {
       this.$refs.deliverReceiptFormRef.showModal();
     },
     viewDocPdf(row) {
-        debugger
+        
         console.log('row',row)
         let routerData = {
           hasApprovalBtn: false,
@@ -359,8 +359,10 @@ export default {
           approvalOver: false,
           hasBack: true,
           docDataId:row.caseSerProofId,
+          status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
+        // docDataId:row.docDataId
         };
-        debugger
+        
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.push({ name: "case_handle_myPDF", params: routerData });
       },

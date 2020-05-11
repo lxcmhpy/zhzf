@@ -1,15 +1,13 @@
 <template>
   <div>
     <div>
-        <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
-            <font style="font-size:25px;"><span class="titleflag"></span>审批记录</font> &nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="card-title">
+            <font class="font" style="font-size:25px;"><span class="titleflag"></span>审批记录</font> &nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <el-table
           style="margin-left:25px;width:97%;margin-bottom:35px;"
           :data="tableData"
-          resizable
-          stripe
-          align="center" >
+          resizable  stripe  align="center" >
           <el-table-column prop="oid" label="审批单位"></el-table-column>
           <el-table-column prop="approveStatus" label="审批状态"></el-table-column>
           <el-table-column prop="userId" label="审批人"></el-table-column>
@@ -21,29 +19,26 @@
 </template>
 
 <script>
+    import {mixinPerson} from '@/common/js/personComm';
     export default {
       name: "approvalRecord",//审批记录
+      mixins:[mixinPerson],
       data(){
         return {
-            tableData: [],
-            currentPage: 1, //当前页
-            pageSize: 20,   //pagesize
+           personId:this.$route.params.personInfo.personId,
           }
         },
         methods:{
           getApprovalRecordInfo(){
-            let paramsData={
-              current: this.currentPage,
-              size: this.pageSize,
-              personId: this.$route.params.personInfo.personId,
-            }
             let _this = this
-            this.$store.dispatch("getApproveListMoudle",paramsData).then(res=>{
-                  _this.tableData = res.data.records;
-            });
-            error=>{
-              console.info(error);
-            };
+            let paramsData={
+              current: _this.currentPage,
+              size: _this.pageSize,
+              personId: _this.$route.params.personInfo.personId,
+            }
+             if(_this.$route.params.pageStatus == '0'){
+                _this.getPageList("getApproveListMoudle",paramsData);
+             }
           }
         },
         created(){
