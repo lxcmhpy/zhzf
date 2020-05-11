@@ -385,6 +385,7 @@ export default {
              debugger
             this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(
               res => {
+                console.log("23",res);
                  debugger
                 this.$message({
                   type: "success",
