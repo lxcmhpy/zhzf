@@ -411,7 +411,7 @@
           <i class="el-icon-arrow-right"></i>
         </div>
         <!-- v-if="category != 4"  -->
-        <el-drawer modal-append-to-body :direction="direction" size="380px"
+        <el-drawer modal-append-to-body :direction="direction" size="450px"
            customClass="amap-drawer" :wrapperClosable="false" :withHeader="false" :modal="false" :visible.sync="drawer">
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
@@ -425,7 +425,7 @@
                     <i v-if="status1 == false" class="iconfont law-zuozuo right" ></i>
                 </div>
                 <el-collapse-transition>
-                    <div v-show="status1" id="echartsBox1" class="amap-chart" style="height:200px;width:300px"></div>
+                    <div v-show="status1" id="echartsBox1" class="amap-chart" style="height:200px;width:380px"></div>
                 </el-collapse-transition>
               </div>
 
@@ -459,7 +459,7 @@
                     <i v-if="status3 == false" class="iconfont law-zuozuo right" ></i>
                 </div>
                 <el-collapse-transition>
-                    <div v-show="status3" id="echartsBox2" class="amap-chart" style="height:200px;width:300px"></div>
+                    <div v-show="status3" id="echartsBox2" class="amap-chart" style="height:200px;width:380px"></div>
                 </el-collapse-transition>
               </div>
 
@@ -472,56 +472,76 @@
                             <i v-if="status4 == true" class="iconfont law-youyou right"></i>
                             <i v-if="status4 == false" class="iconfont law-zuozuo right" ></i>
                         </div>
+
                         <el-collapse-transition>
                             <div class="amap-chart" v-show="status4">
-                                <el-table
-                                v-loading="loading"
-                                    @row-click="(row, column, event)=>positionEvent1(row, column, event, 6)"
-                                    @cell-mouse-enter="positionEventEnter"
-                                    :data="gjclList"
-                                    style="width: 100%;height: auto;">
-                                    <el-table-column label="过检时间"  align="center" prop="checkTime">
-                                        <template slot-scope="scope">
-                                            <span >{{scope.row.checkTime.split(' ')[0]}}</span>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="vehicleNumber"
-                                        label="车牌号"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="overload"
-                                        label="超载率"
-                                        width="70"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="area"
-                                        label="车属地"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        label="重点监管"
-                                        width="80"
-                                        >
-                                        <template>
-                                            <div><i class="iconfont law-star orangeC"></i></div>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="lscc"
-                                        label="历史查处"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="siteName"
-                                        label="站点名称"
-                                        >
-                                    </el-table-column>
-                                </el-table>
+                                 <el-popover
+                                    title="告警车辆详情"
+                                    placement="left"
+                                    trigger="hover"
+                                    >
+                                    <div class="leftTabelHoverDiv" v-if="gjObj">
+                                        <p>过检时间：{{gjObj.checkTime}}</p>
+                                        <p>车牌号：{{gjObj.vehicleNumber}}</p>
+                                        <p>超载率{{gjObj.overload}}</p>
+                                        <p>站点名称：{{gjObj.siteName}}</p>
+                                        <p>车属地：{{gjObj.area}}</p>
+                                        <p>重点监管：<i class="iconfont law-star orangeC"></i></p>
+                                        <p>历史查处：{{gjObj.lscc}}</p>
+                                    </div>
+
+                                        <el-table
+                                        slot="reference"
+                                        v-loading="loading"
+                                            @row-click="(row, column, event)=>positionEvent1(row, column, event, 6)"
+                                            @cell-mouse-enter="positionEventEnter"
+                                            :data="gjclList"
+                                            style="width: 100%;height: auto;">
+                                            <el-table-column label="时间"  align="center" prop="checkTime">
+                                                <template slot-scope="scope">
+                                                    <span >{{scope.row.checkTime.split(' ')[0]}}</span>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                prop="vehicleNumber"
+                                                label="车牌号"
+                                                >
+                                            </el-table-column>
+                                            <el-table-column
+                                                prop="overload"
+                                                label="超载率"
+                                                width="70"
+                                                >
+                                            </el-table-column>
+                                            <!-- <el-table-column
+                                                prop="area"
+                                                label="车属地"
+                                                >
+                                            </el-table-column> -->
+                                            <!-- <el-table-column
+                                                label="重点监管"
+                                                width="80"
+                                                >
+                                                <template>
+                                                    <div><i class="iconfont law-star orangeC"></i></div>
+                                                </template>
+                                            </el-table-column> -->
+                                            <el-table-column
+                                                prop="siteName"
+                                                label="站点"
+                                                >
+                                            </el-table-column>
+                                            <el-table-column
+                                                prop="lscc"
+                                                width="55px"
+                                                label="历史"
+                                                >
+                                            </el-table-column>
+                                        </el-table>
+                                 </el-popover>
                             </div>
                         </el-collapse-transition>
+
                     </div>
                 <div class="echarts-box" >
                      <div class="title" @click="status5 = !status5">
@@ -531,43 +551,60 @@
                     </div>
                      <el-collapse-transition>
                         <div v-show="status5">
-                            <el-table
-                            v-loading="loading"
-                                @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
-                                :data="zfdList"
-                                style="width: 100%;">
-                                <el-table-column
-                                    width="150px"
-                                    prop="name"
-                                    label="站点名称"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    width="92px"
-                                    prop="cxchl"
-                                    label="超限查处量"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="blackList"
-                                    label="重点监管"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="gjzl"
-                                    label="过检总量"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="status"
-                                    label="状态"
-                                    width="80px"
-                                    >
-                                    <template>
-                                        <div class="orangeBg circle" ></div>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
+                            <el-popover
+                                title="非现场执法点详情"
+                                placement="left"
+                                trigger="hover"
+                                >
+                                <div class="leftTabelHoverDiv"  v-if="fxcObj">
+                                    <p>站点名称：{{fxcObj.name}}</p>
+                                    <p>超限查处量：{{fxcObj.cxchl}}</p>
+                                    <p>重点监管：{{fxcObj.blackList}}</p>
+                                    <p>过检总量：{{fxcObj.gjzl}}</p>
+                                    <p>状态：{{fxcObj.status}}</p>
+                                    <p>重点监管：<i class="iconfont law-star orangeC"></i></p>
+                                    <p>历史查处：{{fxcObj.lscc}}</p>
+                                </div>
+                                <el-table
+                                slot="reference"
+                                v-loading="loading"
+                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
+                                    @cell-mouse-enter="positionEventEnter1"
+                                    :data="zfdList"
+                                    style="width: 100%;">
+                                    <el-table-column
+                                        width="150px"
+                                        prop="name"
+                                        label="站点"
+                                        >
+                                    </el-table-column>
+                                    <!-- <el-table-column
+                                        width="92px"
+                                        prop="cxchl"
+                                        label="超限查处量"
+                                        >
+                                    </el-table-column> -->
+                                    <el-table-column
+                                        prop="blackList"
+                                        label="告警"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="gjzl"
+                                        label="过检"
+                                        >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="status"
+                                        label="状态"
+                                        width="80px"
+                                        >
+                                        <template>
+                                            <div class="orangeBg circle" ></div>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </el-popover>
                         </div>
                      </el-collapse-transition>
                 </div>
@@ -1374,13 +1411,21 @@ export default {
       zfdList: null,
       gjclList: null,
       categoryStr: '图层',
-      checkTableNum: null
+      checkTableNum: null,
+      gjObj: null,
+      fxcObj: null
     };
   },
   methods: {
     positionEventEnter (row, column, cell, event) {
         // this.checkTableNum = row.in
         // debugger;
+        this.gjObj = row;
+    },
+    positionEventEnter1 (row, column, cell, event) {
+        // this.checkTableNum = row.in
+        // debugger;
+        this.fxcObj = row;
     },
     isCheckAll () {
         // debugger;
