@@ -210,8 +210,15 @@
           本机关依法作出代履行决定如下：
         </p>
         <p>
-          1.代履行人 ：<input type="checkbox" name="people" value="1" v-model="peoples" @change="clickPeople">本机关
-                      <input type="checkbox" name="people" value="2" v-model="peoples" @change="clickPeople">第三人：
+          1.代履行人 ：
+                      <!-- <input type="checkbox" name="people" value="1" v-model="docData.peoples" @change="clickPeople">本机关
+                      <input type="checkbox" name="people" value="2" v-model="docData.peoples" @change="clickPeople">第三人： -->
+                <el-form-item prop="peoples" :rules="fieldRules('peoples',propertyFeatures['peoples'])">
+                  <el-checkbox-group v-model="docData.peoples" :max="1" :disabled="fieldDisabled(propertyFeatures['peoples'])">
+                    <el-checkbox label="0" checked>本机关</el-checkbox>
+                    <el-checkbox label="1">第三人：</el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
           <span>
             <el-form-item :prop="disabledThree?'placeholder':'impleAgent'">
               <el-input v-model="docData.impleAgent"  v-bind:disabled="disabledThree" :maxLength='maxLength'></el-input>
@@ -389,7 +396,7 @@ export default {
         serviceTime: '',
         punishDecision: '',
         caseNumberCopy: '',
-
+        peoples: [],
         punishBasisOne: '',
         punishBasisTwo: '',
         impleAgent: '',
@@ -487,6 +494,9 @@ export default {
         impleAgent: [
           { required: true, message: '请输入代履行人', trigger: 'blur' },
         ],
+        peoples: [
+          { required: true, message: '代履行人必须选择', trigger: 'blur' },
+        ],
       },
       nameLength: 23,
       adressLength: 23,
@@ -499,7 +509,7 @@ export default {
       checknames: [],
       disabledOne: true,
       disabledTwo: true,
-      peoples: [],
+      
       disabledThree: true,
       reconsiderationOptions : [],
       enforcementOptions : [],
@@ -582,12 +592,13 @@ export default {
       }
     },
     clickPeople(){
-      if(this.peoples.length > 1){
-        this.peoples.shift();
-      }
-      if(this.peoples == '1'){
+      // if(this.peoples.length > 1){
+      //   this.peoples.shift();
+      // }
+      debugger 
+      if(this.peoples == '0'){
         this.disabledThree = true;
-      }else if(this.peoples == '2'){
+      }else if(this.peoples == '1'){
         this.disabledThree = false;
       }else{
         this.disabledThree = true;
