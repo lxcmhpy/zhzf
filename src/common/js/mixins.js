@@ -393,7 +393,7 @@ export const mixinGetCaseApiList = {
                 console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
                 this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
                 //提交成功后提交pdf到服务器，后打开pdf
-                this.printContent();
+                this.printContent(res.data.id);
               },
               err => {
                 console.log(err);
@@ -491,15 +491,16 @@ export const mixinGetCaseApiList = {
         }
       );
     },
-    async printContent() {
+    async printContent(docDataId = '') {
+      console.log('printContent docDataId',docDataId)
       this.replaceTextArea();
       // if(){
-        this.uploadFile('','')
+        this.uploadFile('','',docDataId)
       // }else{
         // htmlExportPDF(this.formOrDocData.pageDomId, this.uploadFile)
       // }
     },
-    uploadFile(file, name) {
+    uploadFile(file, name,docDataId) {
       // var f = new File([file.output("blob")], name, { type: 'application/pdf' })
       // var fd = new FormData()
       // fd.append("file", f)
@@ -536,12 +537,15 @@ export const mixinGetCaseApiList = {
       //   res => {
       //     console.log('上传', res);
           //上传pdf之后显示pdf
+          console.log('upload docDataId',docDataId)
           let routerData = {
             hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
             docId: docId,
             approvalOver: this.approvalOver ? true : false,
             caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
-            docDataId: (this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : ''
+            // docDataId: (this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : docDataId
+            docDataId: this.caseDocDataForm ? docDataId : ''
+            
           }
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({ name: 'case_handle_myPDF', params: routerData })

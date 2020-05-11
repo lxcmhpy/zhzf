@@ -115,11 +115,11 @@
   
     </div>
 
-    <el-form ref="beikaoForm" :rules="beikaoRules" :model="docData" label-width="105px" v-show="showCover == 'beikao'">
+    <el-form ref="beikaoForm" :rules="beikaoRules" :model="docData" label-width="145px" v-show="showCover == 'beikao'">
       <div class="content_box">
         <div class="content">
           <div class="content_title">备考表</div>
-          <div class="content_form">
+          <div class="content_form" style="padding-left: 0 !important;">
             <div class="row">
               <div class="col">
                 <el-form-item label="卷内文件情况说明">
