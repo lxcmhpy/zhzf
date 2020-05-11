@@ -603,7 +603,7 @@
     .el-drawer__wrapper {
         top: 92px;
         right:0px !important;
-        width: 430px !important;
+        width: 480px !important;
         // min-width: 400px;
         left: auto;
     }
@@ -612,7 +612,7 @@
         overflow:auto;
         height: 82vh;
         padding: 0px;
-        @include echartsStyle(300px, false);
+        @include echartsStyle(400px, false);
      }
      .drawerBtn {
         position: absolute;
@@ -831,9 +831,11 @@
 }
 
 .left-500 {
-    left: -460px !important;
+    left: -480px !important;
 }
-
+.leftTabelHoverDiv {
+    line-height: 30px;
+}
 /////////////////////////////////////待改
 /* 车辆查验 */
 .vehicle-dialog {
