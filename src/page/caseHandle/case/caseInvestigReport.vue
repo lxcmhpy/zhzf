@@ -14,7 +14,7 @@
               </el-form-item>
             </td>
             <td rowspan="2" width="100">案件调查人员</td>
-            <td colspan="2" rowspan="2" class="color_DBE4EF">
+            <td colspan="2" rowspan="2" class="color_DBE4EF" style="min-width:80px">
               <el-form-item prop="staff" :rules="fieldRules('staff',propertyFeatures['staff'])">
                 <el-input type="textarea" v-model="formData.staff" v-bind:class="{ over_flow:formData.staff && formData.staff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 4}" maxlength="32" placeholder="\" :disabled="fieldDisabled(propertyFeatures['staff'])"></el-input>
               </el-form-item>

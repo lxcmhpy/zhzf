@@ -66,7 +66,7 @@
       <el-container>
         <el-aside width="200px">
             <!-- :selectedHeadMenu="selectedHeadMenu" -->
-          <subLeftMenu ></subLeftMenu>
+          <subLeftMenu :selectedHeadMenu="selectedHeadMenu"></subLeftMenu>
         </el-aside>
         <el-container>
           <el-header id="tabsHeader" style="height:33px">
@@ -140,7 +140,7 @@ export default {
 
     getSelectHeadMenu(name) {
         // debugger;
-    //   this.selectedHeadMenu = name;
+      this.selectedHeadMenu = name;
     },
     router (name, route) {
         // debugger;
