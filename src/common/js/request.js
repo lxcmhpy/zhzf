@@ -55,7 +55,7 @@ service.interceptors.request.use(
     // get方法
     if(config.method=== 'get'){
     //   debugger
-    console.log('get',config)
+    // console.log('get',config)
     // if(config.params){
       // config.params=qs.stringify(config.params)
       // config.params=async qs.stringify(config.params)
@@ -84,7 +84,7 @@ service.interceptors.request.use(
       config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
     }
 
-    console.log('config', config)
+    // console.log('config', config)
     //  config.headers = {
     //   'Content-Type': 'application/json' //  注意：设置很关键 
     // }

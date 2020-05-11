@@ -388,7 +388,7 @@
                debugger
               // this.unfinishFlag = '行政强制执行决定书';
 //              console.log('lement.status,element.status', element.status)
-              if (element.status != 1) {
+              if (element.status == 0) {
                  debugger
                 // this.unfinishFlag = '行政强制执行决定书';
 //                console.log('执行')
@@ -416,7 +416,7 @@
           this.docTableDatas.forEach(element => {
             if (element.name == '代履行决定书【2016】') {
                debugger
-              if (element.status != 1) {
+              if (element.status == 0) {
                  debugger
                 // this.unfinishFlag = '代履行决定书';
 //                console.log('this.unfinishFlag', this.unfinishFlag)

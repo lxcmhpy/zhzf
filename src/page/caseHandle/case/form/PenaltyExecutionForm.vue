@@ -395,7 +395,7 @@ export default {
               console.log('element.name', element.status)
               // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
               // console.log('lement.status,element.status', element.status)
-              if (element.status != 1) {
+              if (element.status == 0) {
                 // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
                 // console.log('执行')
                 let caseData = {}
@@ -421,7 +421,7 @@ export default {
         console.log(this.docTableDatas)
         this.docTableDatas.forEach(element => {
           if (element.name == '催告书') {
-            if (element.status != 1) {
+            if (element.status == 0) {
               // this.unfinishFlag = [' 催告书'];
               // console.log('this.unfinishFlag', this.unfinishFlag)
               let caseData = {}

@@ -1400,6 +1400,7 @@ export default {
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
           _this.inforForm = res.data;
+          console.log('获取案件信息撒大的空间',res.data)
           this.handleCaseData(res.data);
         },
         err => {
@@ -1932,7 +1933,11 @@ export default {
     //   [iLocalStroage.gets('userInfo').username]
     // )
     console.log(this.$route)
-    this.setLawPersonCurrentP();
+  
+    if(!this.$route.params.fromSlide && !iLocalStroage.get("stageCaseId") && !this.$route.params.editFlag){
+       this.setLawPersonCurrentP();
+    }
+   
     if (this.$route.params.fromSlide) {
       this.fromSlide();
       this.disableBtn = true;
