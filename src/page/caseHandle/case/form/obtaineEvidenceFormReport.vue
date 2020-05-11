@@ -89,12 +89,15 @@
           <el-date-picker style="width:430px"  v-model="docData.getEvidenceTime" type="datetimerange" range-separator="至" start-placeholder=" 年  月  日  时  分" end-placeholder=" 年  月  日  时  分" format="yyyy年MM月dd日HH时mm分">
           </el-date-picker>
           </el-form-item> -->
-          <el-form-item prop="getEvidenceTime" :rules="fieldRules('getEvidenceTime',propertyFeatures['getEvidenceTime'])">
-             <el-date-picker style="width:215px" v-model="docData.getEvidenceTime" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm" :disabled="fieldDisabled(propertyFeatures['getEvidenceTime'])"></el-date-picker>
+          <el-form-item prop="getEvidenceTime" class="dataTimeReplaceBox" style="width:215px" :rules="fieldRules('getEvidenceTime',propertyFeatures['getEvidenceTime'])"> 
+             <el-date-picker v-model="docData.getEvidenceTime" type="datetime"  format="yyyy-MM-dd HH:mm" value-format="yyyy年MM月dd日HH时mm分" :disabled="fieldDisabled(propertyFeatures['getEvidenceTime'])"></el-date-picker>
+            <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.getEvidenceTime"></el-input>
           </el-form-item>
           <span>至</span>
-          <el-form-item prop="getEvidenceTimeEnd" :rules="fieldRules('getEvidenceTimeEnd',propertyFeatures['getEvidenceTimeEnd'])">
-             <el-date-picker style="width:215px" v-model="docData.getEvidenceTimeEnd" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm" :disabled="fieldDisabled(propertyFeatures['getEvidenceTimeEnd'])"></el-date-picker>
+          <el-form-item prop="getEvidenceTimeEnd" class="dataTimeReplaceBox" style="width:215px" :rules="fieldRules('getEvidenceTimeEnd',propertyFeatures['getEvidenceTimeEnd'])">
+             <el-date-picker v-model="docData.getEvidenceTimeEnd" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy年MM月dd日HH时mm分" :disabled="fieldDisabled(propertyFeatures['getEvidenceTimeEnd'])"></el-date-picker>
+            <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.getEvidenceTimeEnd"></el-input>
+
           </el-form-item>
         </p>
         <div class="pager_input quzheng">抽样取证地点：
@@ -329,7 +332,8 @@ export default {
         evidenceDepartment: '',
         evidenceDepartmentPhone: '',
         evdenceList: [],
-        evidenceLength:0
+        evidenceLength:0,
+        note:''
       },
      
       caseDocDataForm: {
@@ -534,5 +538,18 @@ export default {
 .print_box .print_info .evidencetable tr td{
   white-space: inherit;
   text-align-last: center;
+}
+.dataTimeReplaceBox {
+    position: relative;
+    .el-form-item__content .el-date-editor--datetime {
+      opacity: 0;
+      position: absolute;
+      z-index: 2;
+    }
+    .replaceTime {
+      position: absolute;
+      top: 0;
+      left: 10px;
+    }
 }
 </style>
