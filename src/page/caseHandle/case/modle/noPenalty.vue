@@ -41,14 +41,18 @@
                       >
                       <el-button size="small" type="primary">选取文件</el-button> <span class="upLoadNumSpan">最多上传3个附件</span>
 
-                    <!-- <div slot="tip" class="el-upload__tip">最多上传3个附件</div> -->
-                    
                   </el-upload>
-                  <ul>
-                    <li v-for="item in fileListArr" :key="item.id" class="fileLiCon"><span>{{item.fileName}}</span><span @click="deleteFile(item)"><i class="iconfont law-delete"></i></span></li>
+                  <ul class="el-upload-list el-upload-list--text">
+                    <li v-for="item in fileListArr" :key="item.id" class="el-upload-list__item is-ready">
+                      <i class="el-icon-document"></i>
+                      <span>{{item.fileName}}</span><span @click="deleteFile(item)">
+                        <i class="el-icon-close" style="float:right"></i>
+                        </span>
+                      </li>
                   </ul>
                 </el-form-item>
             </el-row>
+               
             <div class="row">
               <div class="col">
                 <el-form-item prop="notes" label="备注" :rules="fieldRules('notes',propertyFeatures['notes'])">
@@ -129,13 +133,23 @@ export default {
           { required: true, message: '备注必须填写', trigger: 'change' }
         ],
       },
-      propertyFeatures:''
+      propertyFeatures:'',
+      fileList: []
     }
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   inject: ['reload'],
   methods: {
+     submitUpload() {
+        this.$refs.upload.submit();
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
     //加载表单信息
     setFormData() {
       this.isSave= false;
