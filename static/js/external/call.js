@@ -119,7 +119,7 @@ var PhoneCallModule =(function () {
 	};
 
 	var audioCall = function(phoneNum, phoneName){
-        debugger;
+        // debugger;
 		PhoneCall.sipAudioCall(phoneNum, phoneName);
 		console.log('语音去电')
 		//setDialogTitle('语音去电');
@@ -133,7 +133,7 @@ var PhoneCallModule =(function () {
 	};
 
 	var videoCall = function(phoneNum, phoneName){
-        debugger;
+        // debugger;
 		PhoneCall.sipVideoCall(phoneNum, phoneName);
 		console.log('视频去电')
 		//setDialogTitle('视频去电');
@@ -159,7 +159,7 @@ var PhoneCallModule =(function () {
 	};
 
 	var sipRegister = function(){
-        debugger;
+        // debugger;
         var urlObj = JSON.parse(localStorage.getItem('CURRENT_BASE_URL'));
         var callCredential = {
                         displayName: 'ecds05',

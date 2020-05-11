@@ -68,7 +68,7 @@
                 <br/><br/><br/>
                 <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
                 <el-form-item prop="makeDate" class="pdf_datapick">
-                  <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                  <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
                   </el-date-picker>
                 </el-form-item>
               </div>
@@ -373,7 +373,8 @@ export default {
             // collector: this.docData.collector,//代收人
             collector: this.docData.collector,
             deliveryCertificatelist:newdeliveryCertificatelist,//送达文书列表
-            docNote: this.docData.docNote//备注
+            docNote: this.docData.docNote,//备注
+            makeDate:this.docData.makeDate
       };
       console.log('送达回证',data);
       if (handleType==1) {
@@ -505,8 +506,10 @@ export default {
 
     // },
     submitForm(formName){
+      console.log('数组11',this.tableDatas)
       let canAdd = true;
       for(let i=0; i<this.tableDatas.length; i++){
+        this.tableDatas[i].receiver='';
           if(!this.tableDatas[i].docName || !this.tableDatas[i].address || !this.tableDatas[i].servedDate || !this.tableDatas[i].servedType || !this.tableDatas[i].deliveryMaster){
             if(!this.tableDatas[i].docName){
               this.$message({
@@ -560,7 +563,8 @@ export default {
           this.addVisible = false;
         }
 
-    },
+    
+    console.log('数组',this.tableDatas)},
     getDataAfter() {
       debugger
       console.log(this.docData.deliveryCertificatelist);

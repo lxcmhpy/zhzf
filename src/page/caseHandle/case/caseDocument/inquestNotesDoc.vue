@@ -437,14 +437,14 @@ export default {
       var results = queryString ? userData.filter(this.createFilter(queryString)) : userData;
       let a = [];
       results.forEach(item => {
-        a.push({ value: item.username })
+        a.push({ value: item.nickName })
       })
       cb(a);
     },
     createFilter(queryString) {
       return (userData) => {
         // console.log('userData2',userData)
-        return (userData.username.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        return (userData.nickName.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
     },
     setDataForPelple(dailiData) {

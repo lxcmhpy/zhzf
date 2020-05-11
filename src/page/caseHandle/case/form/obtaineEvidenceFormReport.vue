@@ -119,7 +119,7 @@
         <p>
           依据《中华人民共和国行政处罚法》第三十七条第二款规定，对你（单位）的下列物品进行抽样取证。
         </p>
-        <table class="evidencetable" border="1" bordercolor="black" width="100%" cellspacing="0" @click="handleAdd">
+        <table class="evidencetable" border="1" bordercolor="black" width="100%" cellspacing="0">
           <!-- <tr>
             <td>序号</td>
             <td>被抽样物品名称</td>
@@ -135,7 +135,14 @@
               <td width="10%">数量</td>
               <td width="40%">被抽样物品地点</td>
           </tr>
-          <tr v-for="(item,index) in docData.evdenceList" :key="index">
+           <tr v-if="docData.evdenceList.length==0"  @click="handleAdd">
+            <td></td>
+            <td ></td>
+            <td></td>
+            <td></td>
+            <td ></td>
+          </tr>
+          <tr v-for="(item,index) in docData.evdenceList" :key="index"  @click="handleAdd">
             <td>{{item.evidenceNo}}</td>
             <td >{{item.evidenceName}}</td>
             <td>{{item.spec}}</td>
@@ -244,10 +251,11 @@
 
               <el-table-column width="52%" >
                 <template slot-scope="scope">
-                  <el-button size="mini" icon="el-icon-circle-close" circle @click="deleteEvidence(scope.row)"></el-button>
+                  <el-button size="mini" icon="el-icon-circle-close" circle @click="deleteEvidence(scope.row)" style="border-radius: 50px;"></el-button>
                 </template>
               </el-table-column>
             </el-table>
+
             <el-button icon="el-icon-circle-plus-outline"  circle type="info" @click="addTableData" style="margin-left: 50%;margin-top: 10px"></el-button>
           </el-form>
         </div>

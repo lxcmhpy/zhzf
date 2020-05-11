@@ -24,26 +24,26 @@
                   </p>
                   <p>
                     <el-checkbox label="上级交办"> 3.上级机关
-                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
+                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
                         <el-input v-model="caseSourceText3" :maxLength="maxLength" placeholder="\" disabled></el-input>
                       </el-form-item>交办的；
                     </el-checkbox>
                   </p>
                   <p>
                     <el-checkbox label="下级报请"> 4.下级机关
-                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
+                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
                         <el-input v-model="caseSourceText4" :maxLength="maxLength" placeholder="\" disabled></el-input>
                       </el-form-item>报请查处的；</el-checkbox>
                   </p>
                   <p>
                     <el-checkbox label="部门移送"> 5.有关部门
-                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
+                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
                         <el-input v-model="caseSourceText5" :maxLength="maxLength" placeholder="\" disabled></el-input>
                       </el-form-item>移送的；</el-checkbox>
                   </p>
                   <p>
                     <el-checkbox label="其他途径">6.其他途径发现的：
-                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px">
+                      <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
                         <el-input v-model="caseSourceText6" :maxLength="maxLength" placeholder="\" disabled></el-input>
                       </el-form-item>
                     </el-checkbox>
@@ -92,12 +92,13 @@
             </td>
             <td>性别</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partySex" :rules="fieldRules('partySex',propertyFeatures['partySex'],'',isParty)">
+              <el-form-item prop="partySex" v-if="!approval" :rules="fieldRules('partySex',propertyFeatures['partySex'],'',isParty)">
                 <el-select v-model="formData.partySex" :disabled="!isParty || fieldDisabled(propertyFeatures['partySex'])" placeholder="\">
                   <el-option value="0" label="男"></el-option>
                   <el-option value="1" label="女"></el-option>
                 </el-select>
               </el-form-item>
+              <span v-else>{{formData.partySex == 0 ? '男' :'女'}}</span>
             </td>
             <td>年龄</td>
             <td class="color_DBE4EF">
@@ -210,14 +211,11 @@
             <td colspan="3" class="color_DBE4EF table_seal" style="white-space: pre-wrap;word-break:break-all">
               <div style="word-break:break-all">{{formData.approveOpinions}}</div>
               <div class="pdf_seal">
-                <p>签名：{{formData.approvePeo}}</p>
+                <!-- <p>签名：{{formData.approvePeo}}</p> -->
+                <p>签名：</p>
                 <p>
                   <span v-if="formData.approveTime">{{formData.approveTime}}</span>
                   <span v-else>年 月 日</span>
-                  <!-- <el-form-item prop="makeDate" class="pdf_datapick">
-                    <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
-                    </el-date-picker>
-                  </el-form-item>-->
                 </p>
               </div>
             </td>
@@ -228,21 +226,16 @@
               <p>人审</p>
               <p>批意</p>
               <p>见</p>
-              <!-- <p class="center_similar"></p>
-              <p class="center_similar"></p>
-              <p class="center_similar"></p> -->
+             
             </td>
             <td colspan="8" class="color_DBE4EF table_seal"  style="white-space: pre-wrap;word-break:break-all">
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{formData.secondApprovePeo}}</p>
+                <!-- <p>签名：{{formData.secondApprovePeo}}</p> -->
+                <p>签名：</p>
                 <p>
                   <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
                   <span v-else>年 月 日</span>
-                  <!-- <el-form-item prop="makeDate" class="pdf_datapick">
-                    <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
-                    </el-date-picker>
-                  </el-form-item>-->
                 </p>
               </div>
             </td>

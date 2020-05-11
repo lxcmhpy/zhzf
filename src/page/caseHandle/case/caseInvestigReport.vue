@@ -185,10 +185,7 @@
                 <p>签名：<span class="apro">{{formData.approvePeo||' '}}</span></p>
                 <p>
                   {{formData.approveTime||' 年 月 日 '}}
-                  <!-- <el-form-item prop="makeDate" class="pdf_datapick">
-                        <el-date-picker v-model="formData.makeDate" format="yyyy年MM月dd日" placeholder="    年  月  日" clear-icon='el-icon-circle-close'>
-                        </el-date-picker>
-                        </el-form-item>-->
+                 
                 </p>
               </div>
             </td>
