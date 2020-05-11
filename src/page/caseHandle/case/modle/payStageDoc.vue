@@ -239,7 +239,7 @@
         disabledThree: true,
         isChange: false,
         propertyFeatures: '',
-        isparty: true
+        isparty: true,
       }
     },
 
