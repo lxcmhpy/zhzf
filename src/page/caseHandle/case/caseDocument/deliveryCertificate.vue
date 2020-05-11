@@ -394,7 +394,7 @@ export default {
                 this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
                 // this.$router.push('deliverReceiptForm')
                 //提交成功后提交pdf到服务器，后打开pdf
-                this.printContent();
+                this.printContent(res.data.id);
               },
               err => {
                 console.log(err);
