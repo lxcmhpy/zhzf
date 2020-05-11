@@ -285,10 +285,11 @@ export default {
     //获取菜单
     getMenu() {
 
+      this.menuList = menuList;
       let _this = this
       this.$store.dispatch("getMenu").then(
         res => {
-          _this.menuList = [...res.data, ...menuList];
+            _this.menuList = [...res.data, _this.menuList];
           _this.$store.commit("SET_MENU", _this.menuList);
            this.$store.commit("SET_ACTIVE_INDEX_STO", "caseHandle-menu-case_handle_home_index");
           _this.$store.commit('set_Head_Active_Nav',"caseHandle-menu-case_handle_home_index");

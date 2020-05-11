@@ -3,7 +3,7 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="penaltyExecutionForm" :model="formData" :rules="rules" label-width="105px">
+    <el-form ref="penaltyExecutionForm" :model="formData" :rules="rules" label-width="105px" :disabled="canGoNextLink">
       <!-- <div class="header-case">
         <div class="header_left">
           <div class="triangle"></div>
@@ -223,7 +223,10 @@
             </el-table>
           </div>
         </div>
-        <!-- 悬浮按钮 -->
+       
+      </div>
+    </el-form>
+     <!-- 悬浮按钮 -->
         <div class="float-btns btn-height63">
           <el-button type="primary" @click="continueHandle" :disabled="!canGoNextLink" v-if="!this.$route.params.isComplete">
             <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
@@ -245,8 +248,6 @@
             <br />返回
           </el-button>
         </div>
-      </div>
-    </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <addDialog ref="addDialogRef" @getNewData="goAddPdf"></addDialog>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
