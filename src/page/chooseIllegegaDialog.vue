@@ -6,25 +6,25 @@
         <div>
           <div class="item">
             <el-form-item label="业务领域" prop="category">
-              <el-input v-model="category" disabled></el-input>
+              <el-input v-model="category"  placeholder="请选择业务领域" disabled></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="行业类别" prop="hyType">
-              <el-select v-model="illegalActSearchForm.hyTypeId" placeholder="请选择" @change="changehyType" clearable>
+              <el-select v-model="illegalActSearchForm.hyTypeId" placeholder="请选择行业类别" @change="changehyType" clearable>
                 <el-option v-for="item in industryCategoryList" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="行为代码" prop="strNumber">
-              <el-input v-model="illegalActSearchForm.strNumber" placeholder="请输入违法性代码" maxlength="7"></el-input>
+              <el-input v-model="illegalActSearchForm.strNumber" placeholder="请输入违法行为代码" maxlength="7"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <el-form-item label="违法行为" prop="strContent" style="width:100%">
-            <el-input v-model="illegalActSearchForm.strContent">
+            <el-input v-model="illegalActSearchForm.strContent"  placeholder="请输入违法行为关键字">
               <el-button slot="append" icon="el-icon-search" @click="getIllegaAct(true)"></el-button>
             </el-input>
           </el-form-item>
@@ -99,6 +99,7 @@ export default {
       this.table = false;
       this.$nextTick(() => {
         this.$refs['illegalActSearchFormRef'].resetFields()
+        console.log('reset',this.illegalActSearchForm)
       })
     },
     //更改每页显示的条数

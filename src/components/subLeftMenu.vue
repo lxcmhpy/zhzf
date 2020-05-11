@@ -13,7 +13,7 @@
             {{subItem.title}}
           </el-menu-item>
         </el-submenu>
-        <el-menu-item :index="item.name" :key="item.id" v-if="item.children.length==0">
+        <el-menu-item :index="item.name" :key="item.id" v-if="item.children.length==0" >
           <template slot="title">
             <i class="el-icon-location"></i>
             <span slot="title">{{item.title}}</span>
@@ -42,6 +42,7 @@ import { mapGetters } from "vuex";
     methods: {
       //切换菜单
       changeMenu(key, keyPath) {
+        //   debugger;
         this.$store.commit('SET_ACTIVE_INDEX_STO', key);
         this.$router.push({name: key});
       },
@@ -57,7 +58,7 @@ import { mapGetters } from "vuex";
       //获取侧边栏菜单
       getSlideMenu(val) {
 //      console.log(val);
-debugger;
+// debugger;
         this.currentSlideMenu = [];
         let _this = this
         for(let i =0;i<this.allMenuList.length;i++) {
@@ -89,6 +90,7 @@ debugger;
       },
       //监听menu
       menu(val){
+        console.log('menu',val)
         this.allMenuList=this.menu;
         this.getSlideMenu(this.headActiveNav); //默认加载案件办理的二级菜单
       }

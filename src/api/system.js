@@ -179,14 +179,30 @@ export function getUserdeletesApi(id) {
 
 
 //用户管理   密码初始化
-export function getUserresetApi(id) {
-  console.log(id)
+export function getUserresetApi(params) {
+  // console.log(id)
+  // return request({
+  //   url: "/system/sys/user/reset/" + id,
+  //   method: "GET",
+  //   data: vm.$qs.stringify(id),
+  //   showloading: true,
+  //   loadingType:'loadPart',
+  //   cancelToken: setCancelSource()
+  // });
+  
+  let data = vm.$qs.stringify({
+    username: params.username,
+    nickName: params.nickName,
+    enforceNo: params.enforceNo,
+  })
+  console.log(data)
   return request({
-    url: "/system/sys/user/reset/" + id,
-    method: "GET",
-    data: vm.$qs.stringify(id),
-    showloading: true,
-    loadingType:'loadPart',
+    url: "/system/sys/user/resetPassWord",
+    method: "POST",
+    contentType: 'multipart/form-data',
+    data:data,
+    showloading: false,
+    baseUrlType:1,
     cancelToken: setCancelSource()
   });
 }
@@ -329,10 +345,11 @@ export function roleBindMenuApi(data) {
     permissionIds: data.permissionIds.join(',')
   }
   console.log("角色绑定菜单params",params)
+  let params2 = vm.$qs.stringify(params);
   return request({
     url: "/system/sys/role/bindMenu",
-    method: "get",
-    params: params,
+    method: "post",
+    data: params2,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -346,10 +363,11 @@ export function roleBindOrganApi(data) {
     organIds: data.organIds.join(',')
   }
   console.log(params);
+  let params2 = vm.$qs.stringify(params);
   return request({
     url: "/system/sys/role/bindOrgan",
-    method: "get",
-    params: params,
+    method: "post",
+    data: params2,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()

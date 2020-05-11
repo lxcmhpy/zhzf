@@ -30,7 +30,7 @@
       <br />编辑
     </el-button> -->
     <!-- v-if="formOrDocData.showBtn[5]" -->
-    <el-button type="primary" @click="makeSeal">
+    <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5]">
       <!-- -->
       <i class="iconfont law-approval"></i>
       <br/>签章
@@ -64,6 +64,7 @@
       <i class="iconfont law-back"></i>
       <br/>返回
     </el-button>
+    <img src="" id="show">
   </div>
 </template>
 <!--<script src="@/common/js/MultBrowser-1.0.2.js"></script>-->
@@ -83,7 +84,7 @@
     },
     props: ['formOrDocData', 'storagePath'],
     mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId'])},
+    computed: {...mapGetters(['caseId', 'docId'])},
     methods: {
       //   打印方法
       async printContent() {
@@ -107,10 +108,63 @@
       },
       // 盖章
       makeSeal() {
+        let _this = this;
+
+        let fileName = _this.storagePath[0].split("/");
+        let fileId = fileName[fileName.length - 1];
+
+        let websocket = null;
+        //判断当前浏览器是否支持WebSocket
+        if ('WebSocket' in window) {
+          let _url = "ws://124.192.215.4:8083/socket/" + fileId
+          websocket = new WebSocket(_url);
+        } else {
+          alert('Not support websocket')
+        }
+
+        //连接发生错误的回调方法
+        websocket.onerror = function () {
+          setMessageInnerHTML("error");
+        };
+
+        //连接成功建立的回调方法
+        websocket.onopen = function (event) {
+          setMessageInnerHTML("open");
+        }
+
+        //接收到消息的回调方法
+        websocket.onmessage = function (event) {
+          setMessageInnerHTML(event.data);
+        }
+
+        //连接关闭的回调方法
+        websocket.onclose = function () {
+          setMessageInnerHTML("close");
+        }
+
+        //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+        window.onbeforeunload = function () {
+          websocket.close();
+        }
+
+        //将消息显示在网页上
+        function setMessageInnerHTML(innerHTML) {
+          console.log(innerHTML);
+          if (innerHTML === '1') {
+            _this.$emit('reInstall');
+          }
+
+        }
+
+        //关闭连接
+        function closeWebSocket() {
+          websocket.close();
+        }
+
         //   signature.openURL('oeder');
         // let ActivexURL = "http://172.16.170.44:8083/iWebPDFEditor-V5.1/MultBrowser.html?path=http://172.16.170.54:9332/12,3b11e8faa6"
         // MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
-        let _this = this;
+
         openURL();
 
         function callBackBrowserURL(error, id) {
@@ -140,7 +194,24 @@
           var string = test.split("/");
           var path = string[0] + "//" + string[2] + "/";
           // path +
-          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0];
+          let jsonApproveData = iLocalStroage.gets('jsonApproveData')
+          let opinion = ''
+          let time = ''
+          let step = ''
+          if (jsonApproveData.approveOpinions) {
+            opinion = jsonApproveData.approveOpinions
+            time = jsonApproveData.approveTime
+            step = '1'
+          } else if (jsonApproveData.secondApproveOpinions) {
+            opinion = jsonApproveData.secondApproveOpinions
+            time = jsonApproveData.secondApproveTime
+            step = '2'
+          } else if (jsonApproveData.thirdApproveOpinions) {
+            opinion = jsonApproveData.thirdApproveOpinions
+            time = jsonApproveData.thirdApproveTime
+            step = '3'
+          }
+          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0] + '&Opinion=' + opinion + '&time=' + time + '&docId=' + _this.docId + '&step=' + step;
           console.log(ActivexURL);
           _this.makeSealStr = ActivexURL;
           window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
@@ -214,7 +285,6 @@
         this.$emit('showApprovePeopleList');
       },
       approvalBtn() {
-        console.log(1111)
         this.$emit('showApproval');
       },
       backHuanjieBtn() {

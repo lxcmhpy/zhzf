@@ -22,14 +22,14 @@
             <td rowspan="2">个人</td>
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="party">
+              <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.party"
                   v-bind:class="{ over_flow:formData.party.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  disabled
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
                   placeholder="\"
                 ></el-input>
                 <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
@@ -37,7 +37,7 @@
             </td>
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyIdNo">
+              <el-form-item prop="partyIdNo" :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyIdNo"
@@ -45,7 +45,7 @@
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
                   placeholder="\"
-                  :disabled="isParty && !originalData.partyIdNo ? false : true"
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -53,26 +53,26 @@
           <tr>
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyAddress">
+              <el-form-item prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'],'',isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyAddress"
                   v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
-                  :disabled="isParty && !originalData.partyAddress ? false : true"
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyTel">
+              <el-form-item prop="partyTel" :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone,isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyTel"
                   :maxLength="maxLength"
-                  :disabled="isParty && !originalData.partyTel ? false : true"
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -82,11 +82,11 @@
             <td rowspan="4">单位</td>
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item prop="partyName">
+              <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
                 <el-input
                   v-model="formData.partyName"
                   :maxLength="maxLength"
-                  disabled
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -95,11 +95,11 @@
           <tr>
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
-              <el-form-item prop="partyUnitAddress">
+              <el-form-item prop="partyUnitAddress" :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)">
                 <el-input
                   v-model="formData.partyUnitAddress"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyUnitAddress ? false : true"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -108,23 +108,23 @@
           <tr>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyUnitTel">
+              <el-form-item prop="partyUnitTel" :rules="fieldRules('partyUnitTel',propertyFeatures['partyUnitTel'],validatePhone,!isParty)">
                 <el-input
                   v-model="formData.partyUnitTel"
                   minlength="11"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyUnitTel ? false : true"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
             </td>
             <td>法定代表人</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyManager">
+              <el-form-item prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)">
                 <el-input
                   v-model="formData.partyManager"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.partyManager ? false : true"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -133,11 +133,11 @@
           <tr>
             <td colspan="2">统一社会信用代码</td>
             <td colspan="3" class="color_DBE4EF">
-              <el-form-item prop="socialCreditCode">
+              <el-form-item prop="socialCreditCode" :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)">
                 <el-input
                   v-model="formData.socialCreditCode"
                   :maxLength="maxLength"
-                  :disabled="!isParty && !originalData.socialCreditCode ? false : true"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -160,13 +160,14 @@
         </p>-->
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="illegalFact">
+            <el-form-item prop="illegalFact" :rules="fieldRules('illegalFact',propertyFeatures['illegalFact'])">
               <el-input
                 class="text_indent10 overflow_lins_textarea"
                 type="textarea"
                 v-model="formData.illegalFact"
                 rows="3"
                 maxlength="90"
+                :disabled="fieldDisabled(propertyFeatures['illegalFact'])"
               ></el-input>
               <span class="overflow_describe">违法事实及依据：</span>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
@@ -182,35 +183,38 @@
         <p>
           你(单位)的行为违反了
           <span>
-            <el-form-item prop="illegalLaw">
+            <el-form-item prop="illegalLaw" :rules="fieldRules('illegalLaw',propertyFeatures['illegalLaw'])">
               <el-input
                 type="textarea"
                 v-model="formData.illegalLaw"
                 v-bind:class="{ over_flow:formData.illegalLaw.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
+                :disabled="fieldDisabled(propertyFeatures['illegalLaw'])"
               ></el-input>
             </el-form-item>
           </span>的规定，依据
           <span contenteditable="true">
-            <el-form-item prop="punishLaw" class="width120">
+            <el-form-item prop="punishLaw" class="width120" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])">
               <el-input
                 type="textarea"
                 v-model="formData.punishLaw"
                 v-bind:class="{ over_flow:formData.punishLaw.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
+                :disabled="fieldDisabled(propertyFeatures['punishLaw'])"
               ></el-input>
             </el-form-item>
           </span>的规定，决定给予
           <span>
-            <el-form-item prop="tempPunishAmount">
+            <el-form-item prop="tempPunishAmount" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
               <el-input
                 type="textarea"
                 v-model="formData.tempPunishAmount"
                 v-bind:class="{ over_flow:formData.tempPunishAmount.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
+                :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])"
               ></el-input>
               <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="\"></el-input> -->
             </el-form-item>
@@ -219,15 +223,15 @@
         <p>
           处以罚款的，自收到本决定书之日起十五日内缴至
           <span>
-            <el-form-item prop="bank" style="width:218px;">
+            <el-form-item prop="bank" style="width:218px;" :rules="fieldRules('bank',propertyFeatures['bank'])">
               <el-input type="textarea" v-model="formData.bank" v-bind:class="{ over_flow:formData.bank && formData.bank.length>12?true:false }"
-                :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength" ></el-input>
+                :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['bank'])"></el-input>
             </el-form-item>
           </span>，账号
           <span>
-            <el-form-item prop="account">
+            <el-form-item prop="account" :rules="fieldRules('account',propertyFeatures['account'])">
               <el-input type="textarea" v-model="formData.account" v-bind:class="{ over_flow:formData.account && formData.account.length>12?true:false }"
-                :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
+                :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['account'])"></el-input>
             </el-form-item>
           </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
         </p>
@@ -248,13 +252,14 @@
         </p> -->
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="otherWay">
+            <el-form-item prop="otherWay" :rules="fieldRules('otherWay',propertyFeatures['otherWay'])">
               <el-input
                 class="text_indent11 overflow_lins_textarea"
                 type="textarea"
                 v-model="formData.otherWay"
                 rows="3"
                 maxlength="90"
+                :disabled="fieldDisabled(propertyFeatures['otherWay'])"
               ></el-input>
               <span class="overflow_describe" >其他执行方式和期限：</span>
               <span class="span_bg span_bg_top"  @click="overFlowEdit">&nbsp;</span>
@@ -270,7 +275,7 @@
         <p>
           如果不服本处罚决定，可以在六十日内依法向
           <span>
-            <el-form-item prop="reconsiderationOrgan">
+            <el-form-item prop="reconsiderationOrgan" :rules="fieldRules('reconsiderationOrgan',propertyFeatures['reconsiderationOrgan'])">
               <!-- <el-input
                 type="textarea"
                 v-model="formData.reconsiderationOrgan"
@@ -279,16 +284,16 @@
                 :maxLength="maxLength"
                 placeholder="\"
               ></el-input> -->
-              <el-select v-model="formData.reconsiderationOrgan">
+              <el-select v-model="formData.reconsiderationOrgan" :disabled="fieldDisabled(propertyFeatures['reconsiderationOrgan'])">
                 <el-option v-for="(item,index) in reconsiderationOrganList" :key="index" :value="item" :label="item"></el-option>
               </el-select>
             </el-form-item>
           </span>申请行政复议，或者在六个月内依法向
 
           <span>
-            <el-form-item prop="litigationOrgan">
+            <el-form-item prop="litigationOrgan" :rules="fieldRules('litigationOrgan',propertyFeatures['litigationOrgan'])">
               <!-- <el-input type="textarea" v-model="formData.litigationOrgan" v-bind:class="{ over_flow:formData.litigationOrgan && formData.litigationOrgan.length>12?true:false }" :maxLength="maxLength" :autosize="{ minRows: 1, maxRows: 3}"  placeholder="\"></el-input> -->
-              <el-select v-model="formData.litigationOrgan">
+              <el-select v-model="formData.litigationOrgan" :disabled="fieldDisabled(propertyFeatures['litigationOrgan'])">
                 <el-option v-for="(item,index) in enforcementOrganList" :key="index" :value="item" :label="item"></el-option>
               </el-select>
             </el-form-item>
@@ -345,7 +350,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import mySignture from "@/common/js/mySignture";
-import { validatePhone } from "@/common/js/validator";
+import { validatePhone,validateIDNumber  } from "@/common/js/validator";
 import iLocalStroage from "@/common/js/localStroage";
 
 export default {
@@ -357,6 +362,8 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   data() {
     return {
+      validatePhone:validatePhone,
+      validateIDNumber :validateIDNumber,
       isOverflow: false,
       isOverLine: false,
       formData: {
@@ -394,8 +401,36 @@ export default {
       },
       name: "",
       rules: {
-        partyTel: [{ validator: validatePhone, trigger: "blur" }],
-        partyUnitTel: [{ validator: validatePhone, trigger: "blur" }],
+        party: [
+          { required: true, message: '当事人姓名不能为空', trigger: 'blur' },
+        ],
+        partyAddress: [
+          { required: true, message: '当事人地址不能为空', trigger: 'blur' },
+        ],
+        partyIdNo: [
+          { required: true, message: '身份证号码不能为空', trigger: 'blur' },
+          { validator:validateIDNumber , trigger: "blur"}
+        ],
+        partyTel: [
+          { required: true, message: '当事人联系电话不能为空', trigger: 'blur' },
+          { validator:validatePhone , trigger: "blur" }
+        ],
+        partyName: [
+          { required: true, message: '单位名称不能为空', trigger: 'blur' },
+        ],
+        partyUnitAddress: [
+          { required: true, message: '单位地址不能为空', trigger: 'blur' },
+        ],
+        partyUnitTel: [
+          { required: true, message: '单位联系电话不能为空', trigger: 'blur' },
+          { validator:validatePhone , trigger: "blur" }
+        ],
+        partyManager: [
+          { required: true, message: '法人不能为空', trigger: 'blur' },
+        ],
+        socialCreditCode: [
+          { required: true, message: '社会信用代码不能为空', trigger: 'blur' },
+        ],
         punishLaw: [
           { required: true, message: '处罚依据必须填写', trigger: 'blur' },
         ],
@@ -414,17 +449,15 @@ export default {
         reconsiderationOrgan: [
           { required: true, message: '行政复议机构必须填写', trigger: 'change' },
         ],
-        
-
-        // socialCreditCode: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // illegalFactsEvidence: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
-        // reconsiderationOrgan: [
-        //   { required: true, message: '请输入', trigger: 'blur' },
-        // ],
+        otherWay: [
+          { required: true, message: '其他执行方式和期限必须填写', trigger: 'change' },
+        ],
+        bank:[
+          { required: true, message: '银行名称必须填写', trigger: 'change' },
+        ],
+        account:[
+          { required: true, message: '银行账户必须填写', trigger: 'change' },
+        ],
       },
       nameLength: 23,
       adressLength: 23,
@@ -455,6 +488,7 @@ export default {
       reconsiderationOrganList:[], //复议机构列表
       enforcementOrganList:[], //诉讼机构列表
       originalData:"",
+      propertyFeatures:'',
     };
   },
 
@@ -480,10 +514,9 @@ export default {
     saveData(handleType) {
       // this.com_submitCaseForm(handleType, "docForm", true);
       // 预览样式
-      this.isPdf = "color_FFFFFF";
-      setTimeout(() => {
-        this.com_submitCaseForm(handleType, "docForm", true);
-      }, 3000);
+      // this.isPdf = "color_FFFFFF";
+      this.formData.otherWay=this.formData.otherWay||'';
+       this.com_submitCaseForm(handleType, "docForm", true);
     },
     //是否是完成状态
     isOverStatus() {

@@ -22,10 +22,16 @@ export const mixinGetCaseApiList = {
     // 是否必填
     fieldRules(field,fieldProperty,validateType='',partyOrCom=''){
       return function(field,fieldProperty,validateType='',partyOrCom=''){
-        if(partyOrCom !== ''){
-          return  partyOrCom && fieldProperty && fieldProperty.required ? this.rules.field : [{ validator:validateType,trigger: 'blur'}]
+        let validateOther = "";
+        if(validateType){
+          validateOther = { validator:validateType,trigger: 'blur'}
         }else{
-          return  fieldProperty && fieldProperty.required ? this.rules.field : [{ validator:validateType,trigger: 'blur'}]
+          validateOther = { required:false}
+        }
+        if(partyOrCom !== ''){
+          return  partyOrCom && fieldProperty && fieldProperty.required ? this.rules.field : [validateOther]
+        }else{
+          return  fieldProperty && fieldProperty.required ? this.rules.field : [validateOther]
         }
       }
     }
@@ -84,27 +90,28 @@ export const mixinGetCaseApiList = {
                 typeId: caseLinktypeId
               };
               this.searchPropertyFeatures(data,res.data,refreshDataForPdf);  
-            }else{    //表单全部改完之后删掉！！！！
-              this.caseLinkDataForm.id = res.data.id;
-              //利用属性给this.formData赋值
-              let formData = JSON.parse(res.data.formData);
-              for (var key in formData) {
-                this.formData[key] = formData[key]
-              }
-              //对环节或文书中的一些字段做处理
-              if (this.needDealData) {
-                this.getDataAfter();
-              }
-              console.log('this.formData', this.formData)
-              this.setSomeData(this.formData);
-              this.isSaveLink = true;
-              if (refreshDataForPdf) {
-                // 提交pdf页
-                setTimeout(() => {
-                  this.printContent();
-                }, 1500)
-              }
             }
+            // else{    //表单全部改完之后删掉！！！！
+            //   this.caseLinkDataForm.id = res.data.id;
+            //   //利用属性给this.formData赋值
+            //   let formData = JSON.parse(res.data.formData);
+            //   for (var key in formData) {
+            //     this.formData[key] = formData[key]
+            //   }
+            //   //对环节或文书中的一些字段做处理
+            //   if (this.needDealData) {
+            //     this.getDataAfter();
+            //   }
+            //   console.log('this.formData', this.formData)
+            //   this.setSomeData(this.formData);
+            //   this.isSaveLink = true;
+            //   if (refreshDataForPdf) {
+            //     // 提交pdf页
+            //     setTimeout(() => {
+            //       this.printContent();
+            //     }, 1500)
+            //   }
+            // }
             
 
           }
@@ -121,36 +128,38 @@ export const mixinGetCaseApiList = {
         typeId: formOrDocId
       };
       console.log('data', data);
+      this.searchPropertyFeatures(data);  
 
-      if(this.propertyFeatures != undefined){
-        this.searchPropertyFeatures(data);  
-      }else{    //文书表单都修改完成后可以删掉
-        findCaseAllBindPropertyApi(data).then(
-          res => {
-            console.log('获取案件信息', res)
-            let caseData = JSON.parse(res.data.propertyData);
-            console.log('获取案件表单信息', caseData);
+      // if(this.propertyFeatures != undefined){
+      //   this.searchPropertyFeatures(data);  
+      // }
+      // else{    //文书表单都修改完成后可以删掉
+      //   findCaseAllBindPropertyApi(data).then(
+      //     res => {
+      //       console.log('获取案件信息', res)
+      //       let caseData = JSON.parse(res.data.propertyData);
+      //       console.log('获取案件表单信息', caseData);
             
-              if (this.formData) {
-                for (var key in caseData) {
-                  this.formData[key] = caseData[key]
-                }
-                this.setSomeData(this.formData);
-              } else {
-                for (var key in caseData) {
-                  this.docData[key] = caseData[key]
-                }
-                this.setSomeData(this.docData);
-              }
-              if (this.needDealData) {
-                this.getDataAfter();
-              }   
-          },
-          error => {
-            console.log(error)
-          }
-        );
-      }
+      //         if (this.formData) {
+      //           for (var key in caseData) {
+      //             this.formData[key] = caseData[key]
+      //           }
+      //           this.setSomeData(this.formData);
+      //         } else {
+      //           for (var key in caseData) {
+      //             this.docData[key] = caseData[key]
+      //           }
+      //           this.setSomeData(this.docData);
+      //         }
+      //         if (this.needDealData) {
+      //           this.getDataAfter();
+      //         }   
+      //     },
+      //     error => {
+      //       console.log(error)
+      //     }
+      //   );
+      // }
 
       
     },
@@ -384,7 +393,7 @@ export const mixinGetCaseApiList = {
                 console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
                 this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
                 //提交成功后提交pdf到服务器，后打开pdf
-                this.printContent();
+                this.printContent(res.data.id);
               },
               err => {
                 console.log(err);
@@ -482,15 +491,16 @@ export const mixinGetCaseApiList = {
         }
       );
     },
-    async printContent() {
+    async printContent(docDataId = '') {
+      console.log('printContent docDataId',docDataId)
       this.replaceTextArea();
       // if(){
-        this.uploadFile('','')
+        this.uploadFile('','',docDataId)
       // }else{
         // htmlExportPDF(this.formOrDocData.pageDomId, this.uploadFile)
       // }
     },
-    uploadFile(file, name) {
+    uploadFile(file, name,docDataId) {
       // var f = new File([file.output("blob")], name, { type: 'application/pdf' })
       // var fd = new FormData()
       // fd.append("file", f)
@@ -527,12 +537,15 @@ export const mixinGetCaseApiList = {
       //   res => {
       //     console.log('上传', res);
           //上传pdf之后显示pdf
+          console.log('upload docDataId',docDataId)
           let routerData = {
             hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
             docId: docId,
             approvalOver: this.approvalOver ? true : false,
             caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
-            docDataId: (this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : ''
+            // docDataId: (this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : docDataId
+            docDataId: this.caseDocDataForm ? docDataId : ''
+            
           }
           this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({ name: 'case_handle_myPDF', params: routerData })
@@ -720,8 +733,21 @@ export const mixinGetCaseApiList = {
         this.caseDocDataForm.id = res.data.id;
         this.caseDocDataForm.note = res.data.note;
         this.docData = JSON.parse(res.data.docData);
+        this.getDocDetailByIdAfter()
       }, err => {
         console.log(err)
+      })
+    },
+    //多文书情况下去获取是否可编辑等属性信息
+    getDocDetailByIdAfter(){
+      let caseBasicInfoIdAndtypeId = {
+        caseBasicInfoId: this.caseId,
+        typeId: this.$route.params.docId
+      };
+      findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res=>{
+        let resdata = JSON.parse(res.data.propertyData);
+        // console.log(data);
+        this.propertyFeatures = resdata;
       })
     },
     //隐藏textarea 显示span

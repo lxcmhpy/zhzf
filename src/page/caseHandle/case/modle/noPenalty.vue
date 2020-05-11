@@ -13,7 +13,7 @@
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item label="原因" prop="reason" class="reasonCon">
+                <el-form-item label="原因" prop="reason" class="reasonCon" :rules="fieldRules('reason',propertyFeatures['reason'])">
                   <el-radio-group v-model="formData.reason" @change="changeReason">
                     <p><el-radio :label="1">违法行为轻微</el-radio></p>
                     <p><el-radio :label="2">违法事实不能成立</el-radio></p>
@@ -39,20 +39,25 @@
                       :show-file-list="false"
                       :before-upload="uploadFileValidat"
                       >
-                      <el-button size="small" type="primary">上传附件</el-button> <span class="upLoadNumSpan">最多上传3个附件</span>
+                      <el-button size="small" type="primary">选取文件</el-button> <span class="upLoadNumSpan">最多上传3个附件</span>
 
-                    <!-- <div slot="tip" class="el-upload__tip">最多上传3个附件</div> -->
-                    
                   </el-upload>
-                  <ul>
-                    <li v-for="item in fileListArr" :key="item.id" class="fileLiCon"><span>{{item.fileName}}</span><span @click="deleteFile(item)"><i class="iconfont law-delete"></i></span></li>
+                  <ul class="el-upload-list el-upload-list--text">
+                    <li v-for="item in fileListArr" :key="item.id" class="el-upload-list__item is-ready">
+                      <i class="el-icon-document"></i>
+                      <span>{{item.fileName}}</span><span @click="deleteFile(item)">
+                        <i class="el-icon-close" style="float:right"></i>
+                        </span>
+                      </li>
                   </ul>
                 </el-form-item>
             </el-row>
+               
             <div class="row">
               <div class="col">
-                <el-form-item prop="notes" label="备注">
-                  <el-input type="textarea" ref="notes" clearable :rows="4" v-model="formData.notes" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="notes" label="备注" :rules="fieldRules('notes',propertyFeatures['notes'])">
+                  <el-input type="textarea" ref="notes" clearable :rows="4" v-model="formData.notes" size="small" placeholder="请输入"
+                  :disabled="fieldDisabled(propertyFeatures['notes'])"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -124,13 +129,27 @@ export default {
         reason: [
           { required: true, message: '原因必须填写', trigger: 'change' }
         ],
+        notes: [
+          { required: true, message: '备注必须填写', trigger: 'change' }
+        ],
       },
+      propertyFeatures:'',
+      fileList: []
     }
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   inject: ['reload'],
   methods: {
+     submitUpload() {
+        this.$refs.upload.submit();
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
     //加载表单信息
     setFormData() {
       this.isSave= false;

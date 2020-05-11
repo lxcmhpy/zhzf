@@ -8,27 +8,34 @@
         <p class="p_begin">
           当事人（个人姓名或单位名称）
           <span>
-            <el-form-item prop="casepartyName" class="width220">
-              <el-input v-model="docData.party" :maxLength='maxLength'></el-input>
+            <el-form-item prop="party" class="width220"
+                          :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
+              <el-input v-model="docData.party" :maxLength='maxLength'
+                        :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"></el-input>
             </el-form-item>
           </span>:
         </p>
         <p>
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick listen_data width151">
-              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-form-item prop="serviceTime" class="pdf_datapick listen_data width151"
+                          :rules="fieldRules('serviceTime',propertyFeatures['serviceTime'])">
+              <el-date-picker v-model="docData.serviceTime" :disabled="fieldDisabled(propertyFeatures['serviceTime'])"
+                              type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span> ，本机关对你（单位）送达了
           <span>
-            <el-form-item prop="caseNumber" style="width:165px">
-              <el-input v-model="docData.caseNumber" :maxLength='maxLength' disabled></el-input>
+            <el-form-item prop="caseNumber" style="width:165px"
+                          :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
+              <el-input v-model="docData.caseNumber" :maxLength='maxLength'
+                        :disabled="fieldDisabled(propertyFeatures['caseNumber'])"></el-input>
             </el-form-item>
           </span>（案号）《行政处罚决定书》，作出了对你（单位）罚款
           <span>
-            <el-form-item prop="fine">
+            <el-form-item prop="fine" :rules="fieldRules('fine',propertyFeatures['fine'])">
               <el-input v-model="docData.fine" :maxLength='maxLength'
-                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"></el-input>
+                        @input="checkChinese1()"
+                        :disabled="fieldDisabled(propertyFeatures['fine'])"></el-input>
             </el-form-item>
           </span>（大写）的行政处罚决定，根据你（单位）的申请，本机关依据《中华人民共和国行政处罚法》第五十二条的规定，现决定：
         </p>
@@ -37,7 +44,7 @@
           <span>
             <el-form-item :prop="disabledOne?'placeholder':'delayDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.delayDate" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日"
-                              placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+                              placeholder="    年  月  日" value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>。
@@ -61,20 +68,20 @@
           <span>
             <el-form-item :prop="disabledTwo?'placeholder':'instalmentDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.instalmentDate" v-bind:disabled="disabledTwo" type="date"
-                              format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+                              format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>前，缴纳罚款
           <span>
             <el-form-item :prop="disabledTwo?'placeholder':'payFine'">
               <el-input v-model="docData.payFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'
-                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"></el-input>
+              @input="checkChinese2()"></el-input>
             </el-form-item>
           </span>元（大写）（每期均应当单独开具本文书）。此外，尚有未缴纳的罚款
           <span>
             <el-form-item :prop="disabledTwo?'placeholder':'debtFine'">
               <el-input v-model="docData.debtFine" v-bind:disabled="disabledTwo" :maxLength='maxLength'
-                        onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"></el-input>
+                        @input="checkChinese3()"></el-input>
             </el-form-item>
           </span>元（大写）。
         </p>
@@ -93,7 +100,8 @@
         <div class="pdf_seal" style="margin-top:60px">
           <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
           <el-form-item prop="stampTime" class="pdf_datapick">
-            <el-date-picker v-model="docData.stampTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-date-picker v-model="docData.stampTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"
+                            value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -169,6 +177,7 @@
           debtFine: '',
           reason: '',
           stampTime: '',
+          checknames: []
         },
         handleType: 0, //0  暂存     1 提交
         caseDocDataForm: {
@@ -228,11 +237,25 @@
         disabledOne: true,
         disabledTwo: true,
         disabledThree: true,
-        isChange: false
+        isChange: false,
+        propertyFeatures: '',
+        isparty: true,
       }
     },
 
     methods: {
+      // 控制大写只能输入中文
+      checkChinese1(val){
+        this.docData.fine=this.docData.fine.replace(/[^\u4e00-\u9fa5]/g,'')
+      },
+      checkChinese2(val){
+        console.log(val)
+        // val=val.replace(/[^\u4e00-\u9fa5]/g,'')
+        this.docData.payFine=this.docData.payFine.replace(/[^\u4e00-\u9fa5]/g,'')
+      },
+      checkChinese3(val){
+        this.docData.debtFine=this.docData.debtFine.replace(/[^\u4e00-\u9fa5]/g,'')
+      },
       //根据案件ID和文书Id获取数据
       getDocDataByCaseIdAndDocId() {
         this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -298,6 +321,8 @@
           this.$message("请选择分期延期决定");
           return
         }
+        console.log('shuju',this.docData,this.docData.debtFine,this.docData.payFine)
+        this.docData.checknames = JSON.parse(JSON.stringify(this.checknames))
         this.com_addDocData(handleType, "docForm");
       },
       //是否是完成状态
@@ -428,7 +453,8 @@
         this.docData.debtFine = '';
         this.docData.reason = '';
 
-      }
+      },
+
     },
     mounted() {
       // this.getDocDataByCaseIdAndDocId();

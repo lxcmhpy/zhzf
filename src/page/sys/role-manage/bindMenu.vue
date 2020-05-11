@@ -66,7 +66,7 @@ export default {
     //查询角色下绑定的菜单权限
     getRoleBindMenu(){
       let _this = this
-      this.$store.dispatch("getRoleBindMenu",this.roleId).then(
+      this.$store.dispatch("getRoleBindMenu",this.roleId).then( 
         res => {
           console.log('角色下绑定的菜单权限',res);
           let permissionIds=[];

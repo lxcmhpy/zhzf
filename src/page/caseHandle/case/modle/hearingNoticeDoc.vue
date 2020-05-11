@@ -8,79 +8,80 @@
         <p class="p_begin">
           当事人（个人姓名或单位名称）
           <span>
-            <el-form-item prop="party">
-              <el-input v-model="docData.party" :maxLength='maxLength' disabled></el-input>
+            <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
+              <el-input v-model="docData.party" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['party'])"></el-input>
             </el-form-item>
           </span>:
         </p>
         <p>
           根据你（单位）申请，关于
           <span>
-            <el-form-item style="width:329px" prop="caseName">
+            <el-form-item style="width:329px" prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
               <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength'
                         v-bind:class="{ over_flow:docData.caseName.length>30?true:false }"
-                        :autosize="{ minRows: 1, maxRows: 3}" disabled></el-input>
+                        :autosize="{ minRows: 1, maxRows: 3}" :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
             </el-form-item>
           </span>一案，现定于
           <span>
-            <el-form-item style="width:176px" prop="hearingTime" class="pdf_datapick listen_data">
+            <el-form-item style="width:176px" prop="hearingTime" class="pdf_datapick listen_data" :rules="fieldRules('hearingTime',propertyFeatures['hearingTime'])">
               <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日HH时" value-format="yyyy-MM-dd HH"
-                              placeholder="    年  月  日  时">
+                              placeholder="    年  月  日  时" :disabled="fieldDisabled(propertyFeatures['hearingTime'])">
               </el-date-picker>
             </el-form-item>
           </span>在
           <span>
-            <el-form-item prop="hearingPlace" style="width:379px">
-              <el-input v-model="docData.hearingPlace" :maxLength='maxLength'></el-input>
+            <el-form-item prop="hearingPlace" style="width:379px" :rules="fieldRules('hearingPlace',propertyFeatures['hearingPlace'])">
+              <el-input v-model="docData.hearingPlace" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['hearingPlace'])"></el-input>
             </el-form-item>
           </span>（
           <span class="single_check">
-            <el-form-item prop="radio">
-              <el-radio v-model="docData.radio" label="1">公开</el-radio>
-              <el-radio v-model="docData.radio" label="2">不公开</el-radio>
+            <el-form-item prop="radio" :rules="fieldRules('radio',propertyFeatures['radio'])">
+              <el-radio-group v-model="docData.radio">
+                  <el-radio  label="1">公开</el-radio>
+                  <el-radio  label="2">不公开</el-radio>
+              </el-radio-group>             
             </el-form-item>
-
           </span>）举行听证会议，请准时出席。
         </p>
         <p class="p_begin">
           听证主持人姓名：
           <span>
-            <el-form-item prop="presidingHearer">
-              <el-input v-model="docData.presidingHearer" :maxLength='maxLength'></el-input>
+            <el-form-item prop="presidingHearer" :rules="fieldRules('presidingHearer',propertyFeatures['presidingHearer'])">
+              <el-input v-model="docData.presidingHearer" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['presidingHearer'])"></el-input>
             </el-form-item>
           </span>
           职务：
           <span>
-            <el-form-item prop="presidingHearerPosition" class="width235">
-              <el-input v-model="docData.presidingHearerPosition" :maxLength='maxLength'></el-input>
+            <el-form-item prop="presidingHearerPosition" class="width235" :rules="fieldRules('presidingHearerPosition',propertyFeatures['presidingHearerPosition'])">
+              <el-input v-model="docData.presidingHearerPosition" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['presidingHearerPosition'])"></el-input>
             </el-form-item>
           </span>
         </P>
         <p class="p_begin">
           听证员姓名：
           <span>
-            <el-form-item prop="hearingOfficer" class="width220">
-              <el-input v-model="docData.hearingOfficer" :maxLength='maxLength'></el-input>
+            <el-form-item prop="hearingOfficer" class="width220" :rules="fieldRules('hearingOfficer',propertyFeatures['hearingOfficer'])">
+              <el-input v-model="docData.hearingOfficer" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['hearingOfficer'])"></el-input>
             </el-form-item>
           </span>
           职务：
           <span>
-            <el-form-item prop="hearingOfficerPosition" class="width235">
-              <el-input v-model="docData.hearingOfficerPosition" :maxLength='maxLength'></el-input>
+            <el-form-item prop="hearingOfficerPosition" class="width235" :rules="fieldRules('hearingOfficerPosition',propertyFeatures['hearingOfficerPosition'])">
+              <el-input v-model="docData.hearingOfficerPosition" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['hearingOfficerPosition'])"></el-input>
             </el-form-item>
           </span>
         </P>
         <p class="p_begin">
           记录员姓名：
           <span>
-            <el-form-item prop="recorderSix" class="width220">
-              <el-input v-model="docData.recorderSix" :maxLength='maxLength'></el-input>
+            <el-form-item prop="recorderSix" class="width220" :rules="fieldRules('recorderSix',propertyFeatures['recorderSix'])">
+              <el-input v-model="docData.recorderSix" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['recorderSix'])"></el-input>
             </el-form-item>
           </span>
           职务：
           <span>
-            <el-form-item prop="recorderPositionSix" class="width235">
-              <el-input v-model="docData.recorderPositionSix" :maxLength='maxLength'></el-input>
+            <el-form-item prop="recorderPositionSix" class="width235" :rules="fieldRules('recorderPositionSix',propertyFeatures['recorderPositionSix'])">
+              <el-input v-model="docData.recorderPositionSix" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['recorderPositionSix'])"></el-input>
             </el-form-item>
           </span>
         </P>
@@ -109,28 +110,28 @@
         <p class="p_begin">
           联系地址：
           <span>
-            <el-form-item prop="organAddress" style='width:220px'>
-              <el-input v-model="docData.organAddress" :maxLength='maxLength'></el-input>
+            <el-form-item prop="organAddress" style='width:220px' :rules="fieldRules('organAddress',propertyFeatures['organAddress'])">
+              <el-input v-model="docData.organAddress" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['organAddress'])"></el-input>
             </el-form-item>
           </span>
           邮编：
           <span>
-            <el-form-item prop="organZipCode" style='width:250px'>
-              <el-input v-model="docData.organZipCode" :maxLength='maxLength'></el-input>
+            <el-form-item prop="organZipCode" style='width:250px' :rules="fieldRules('organZipCode',propertyFeatures['organZipCode'])">
+              <el-input v-model="docData.organZipCode" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['organZipCode'])"></el-input>
             </el-form-item>
           </span>
         </P>
         <p class="p_begin">
           联系人：
           <span>
-            <el-form-item prop="organContactor" style='width:235px'>
-              <el-input v-model="docData.organContactor" :maxLength='maxLength'></el-input>
+            <el-form-item prop="organContactor" style='width:235px' :rules="fieldRules('organContactor',propertyFeatures['organContactor'])">
+              <el-input v-model="docData.organContactor" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['organContactor'])"></el-input>
             </el-form-item>
           </span>
           联系电话：
           <span>
-            <el-form-item prop="organTel" style='width:220px'>
-              <el-input v-model="docData.organTel" :maxLength='maxLength'></el-input>
+            <el-form-item prop="organTel" style='width:220px' :rules="fieldRules('organTel',propertyFeatures['organTel'],validatePhone)">
+              <el-input v-model="docData.organTel" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['organTel'])"></el-input>
             </el-form-item>
           </span>
         </P>
@@ -192,7 +193,7 @@
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
   import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-  // import signture from "../../../../js/signture";
+  
   import mySignture from "@/common/js/mySignture";
   import {
     validatePhone,
@@ -209,6 +210,7 @@
     computed: {...mapGetters(['caseId'])},
     data() {
       return {
+        validatePhone:validatePhone,
         docData: {
           caseNumber: '',
           party: '',
@@ -284,6 +286,9 @@
           organTel: [
             {validator: validatePhone, required: true, message: '请输入联系电话', trigger: 'blur'},
           ],
+          organZipCode: [
+            {required: true, message: '请输入机构邮编', trigger: 'blur'},
+          ],
           radio: [
             {required: true, message: '请选择公开方式', trigger: 'blur'},
           ],
@@ -296,7 +301,8 @@
           showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
           pageDomId: 'hearingNoticeDoc_print',
         },
-        isChange: false
+        isChange: false,
+        propertyFeatures:''
       };
     },
     methods: {

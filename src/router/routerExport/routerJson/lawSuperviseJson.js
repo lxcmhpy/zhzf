@@ -111,5 +111,19 @@ export default  [
                },
                component: () => import("@/page/lawSupervise/supervisePage/tjfx/checkAnalyse.vue")
            }]
+    }, {
+        path: "/keyVehicleDentails",
+        name: "law_supervise_keyVehicleDentails",
+        meta: {
+          title: "监管车辆详情",
+        },
+        component: () => import("@/page/lawSupervise/supervisePage/zdjg/keyVehicleDentails.vue")
+    }, {
+        path: "/keyVehicleManage",
+        name: "law_supervise_keyVehicleManage",
+        meta: {
+          title: "监管车辆列表",
+        },
+        component: () => import("@/page/lawSupervise/supervisePage/zdjg/keyVehicleManage.vue")
     }
 ]

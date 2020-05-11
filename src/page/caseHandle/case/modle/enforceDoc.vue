@@ -8,30 +8,31 @@
         <p class="p_begin">
           当事人（个人姓名或单位名称）
           <span>
-            <el-form-item prop="party">
-              <el-input v-model="docData.party" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
+              <el-input v-model="docData.party" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['party'])"></el-input>
             </el-form-item>
           </span>：
         </p>
 
         <p>
           <span>
-            <el-form-item prop="caseName" class="width120">
+            <el-form-item prop="caseName" class="width120" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
               <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength'
               v-bind:class="{ over_flow:docData.caseName && docData.caseName.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
-              placeholder="\"></el-input>
+              placeholder="\" :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
             </el-form-item>
           </span>一案，本机关于
           <span>
-            <el-form-item prop="decisionTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.decisionTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-form-item prop="decisionTime" class="pdf_datapick" :rules="fieldRules('decisionTime',propertyFeatures['decisionTime'])">
+              <el-date-picker  :disabled="fieldDisabled(propertyFeatures['decisionTime'])"
+              v-model="docData.decisionTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>依法作出了行政强制执行决定，并向你（单位）送达了《行政强制执行决定书》(案号：
           <span>
-            <el-form-item prop="caseNumberCopy">
-              <el-input v-model="docData.caseNumberCopy" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="caseNumberCopy" :rules="fieldRules('caseNumberCopy',propertyFeatures['caseNumberCopy'])">
+              <el-input v-model="docData.caseNumberCopy" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['caseNumberCopy'])"></el-input>
             </el-form-item>
           </span>)。
         </p>
@@ -68,7 +69,7 @@
         <p>
           <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">3.你(单位)
           <span>
-            <el-form-item prop="caseName2" class="width120">
+            <el-form-item prop="caseName" class="width120">
               <el-input  type="textarea" v-model="docData.caseName"
               v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
@@ -171,10 +172,10 @@ export default {
         stopReason: '',
         executeTime: '',
         endReason: '',
-        caseName2: '',
         serviceTime: '',
         agreeTime: '',
         makeDate: '',
+        checknames:[]
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -226,6 +227,7 @@ export default {
       disabledTwo: true,
       disabledThree: true,
       disabledFour: true,
+      propertyFeatures:''
     }
   },
 
@@ -270,6 +272,9 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      this.docData.checknames=this.checknames
+      console.log('docData提交',this.docData)
+
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态

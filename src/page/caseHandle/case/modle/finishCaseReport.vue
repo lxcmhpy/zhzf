@@ -18,40 +18,40 @@
             </td>
             <td>个人</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="party">
+              <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.party"
                   v-bind:class="{ over_flow:formData.party.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  disabled
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
             </td>
             <td>年龄</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyAge" style="width:110px">
+              <el-form-item prop="partyAge" style="width:110px" :rules="fieldRules('partyAge',propertyFeatures['partyAge'],'',isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyAge"
                   v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="formData.partyAge ? true : false"
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyAge'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
             </td>
-            <td>性别</td>
+            <td>性别</td> 
             <td class="color_DBE4EF width20">
-              <el-form-item prop="partySex">
+              <el-form-item prop="partySex" :rules="fieldRules('partySex',propertyFeatures['partySex'],'',isParty)">
                 <!-- <el-input  v-model="formData.partySex" maxlength="2" :disabled="isParty ? false : true" placeholder="\"></el-input> -->
                 <!-- 需要完善 -->
                 <el-select
                   v-model="formData.partySex"
-                  :disabled="formData.partySex ? true : false"
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partySex'])"
                   placeholder="\"
                   class="select10"
                 >
@@ -64,28 +64,28 @@
           <tr>
             <td>所在单位</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyUnitPosition">
+              <el-form-item prop="partyUnitPosition" :rules="fieldRules('partyUnitPosition',propertyFeatures['partyUnitPosition'],'',isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyUnitPosition"
                   v-bind:class="{ over_flow:formData.partyUnitPosition.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="formData.partyUnitPosition ? true : false "
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyUnitPosition'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
             </td>
             <td>联系地址</td>
             <td colspan="3" class="color_DBE4EF">
-              <el-form-item prop="partyAddress">
+              <el-form-item prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'],validatePhone,isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyAddress"
                   v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="formData.partyAddress ? true : false "
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -94,28 +94,28 @@
           <tr>
             <td>联系电话</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyTel">
+              <el-form-item prop="partyTel" :rules="fieldRules('partyTel',propertyFeatures['partyTel'],'',isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyTel"
                   v-bind:class="{ over_flow:formData.partyTel.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="formData.partyTel ? true : false"
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
             </td>
             <td>邮编</td>
             <td colspan="3" class="color_DBE4EF">
-              <el-form-item prop="partyZipCode">
+              <el-form-item prop="partyZipCode" :rules="fieldRules('partyZipCode',propertyFeatures['partyZipCode'],'',isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyZipCode"
                   v-bind:class="{ over_flow:formData.partyZipCode && formData.partyZipCode.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="formData.partyZipCode ? true : false"
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyZipCode'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -124,28 +124,28 @@
           <tr>
             <td>单位</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyName">
+              <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyName"
                   v-bind:class="{ over_flow:formData.partyName.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  disabled
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyName'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
             </td>
             <td>地址</td>
             <td colspan="3" class="color_DBE4EF">
-              <el-form-item prop="partyUnitAddress">
+              <el-form-item prop="partyUnitAddress" :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyUnitAddress"
                   v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="isParty ? true : false"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -154,28 +154,28 @@
           <tr>
             <td>法定代表人</td>
             <td class="color_DBE4EF">
-              <el-form-item prop="partyManager">
+              <el-form-item prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyManager"
                   v-bind:class="{ over_flow:formData.partyManager.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="isParty ? true : false"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
             </td>
             <td>职务</td>
             <td colspan="3" class="color_DBE4EF">
-              <el-form-item prop="partyManagerPositions">
+              <el-form-item prop="partyManagerPositions" :rules="fieldRules('partyManagerPositions',propertyFeatures['partyManagerPositions'],'',!isParty)">
                 <el-input
                   type="textarea"
                   v-model="formData.partyManagerPositions"
                   v-bind:class="{ over_flow:formData.partyManagerPositions.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="isParty ? true : false"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyManagerPositions'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -189,7 +189,7 @@
               <p class="center_similar">果</p>
             </td>
             <td colspan="6" class="color_DBE4EF">
-              <el-form-item prop="closeResult">
+              <el-form-item prop="closeResult" :rules="fieldRules('closeResult',propertyFeatures['closeResult'])">
                 <el-input
                   type="textarea"
                   v-model="formData.closeResult"
@@ -197,6 +197,7 @@
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
+                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -291,7 +292,7 @@ import showApprovePeople from "../../components/showApprovePeople";
 import approvalDialog from "../../components/approvalDialog";
 import overflowInput from "./overflowInput";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-
+import { validatePhone,validateIDNumber  } from "@/common/js/validator";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
@@ -305,6 +306,8 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   data() {
     return {
+      validatePhone:validatePhone,
+      validateIDNumber :validateIDNumber ,
       isOverflow: false,
       // isOverLine: false,
       formData: {
@@ -333,7 +336,7 @@ export default {
         socialCreditCode: "",
         caseBasicInfo: "",
         caseReplay: "",
-        partyUnitPosition: "",
+        // partyUnitPosition: "",
         partyZipCode: "",
         partyManagerPositions: "",
         closeResult: "",
@@ -360,6 +363,44 @@ export default {
       illegalFactsEvidence: "",
       value1: "",
       rules: {
+        party: [
+          { required: true, message: '当事人姓名不能为空', trigger: 'blur' },
+        ],
+        partyAge: [
+          { required: true, message: '当事人年龄不能为空', trigger: 'blur' },
+        ],
+        partySex: [
+          { required: true, message: '当时人性别不能为空', trigger: 'blur' },
+        ],
+        partyUnitPosition: [
+          { required: true, message: '当事人所在单位不能为空', trigger: 'blur' },
+        ],
+        partyAddress: [
+          { required: true, message: '当事人联系地址不能为空', trigger: 'blur' },
+        ],
+        partyTel: [
+          { required: true, message: '当事人联系电话不能为空', trigger: 'blur' },
+          { validator:validatePhone , trigger: "blur" }
+        ],
+        partyZipCode: [
+          { required: true, message: '邮政编码不能为空', trigger: 'blur' },
+        ],
+        partyName: [
+          { required: true, message: '单位名称不能为空', trigger: 'blur' },
+        ],
+        partyUnitAddress: [
+          { required: true, message: '单位地址不能为空', trigger: 'blur' },
+        ],
+        partyUnitTel: [
+          { required: true, message: '单位联系电话不能为空', trigger: 'blur' },
+          { validator:validatePhone , trigger: "blur" }
+        ],
+        partyManager: [
+          { required: true, message: '法人不能为空', trigger: 'blur' },
+        ],
+        partyManagerPositions: [
+          { required: true, message: '职务不能为空', trigger: 'blur' },
+        ],
         closeResult: [
           { required: true, message: "处理结果不能为空", trigger: "blur" }
         ],
@@ -388,7 +429,8 @@ export default {
         pageDomId: "finishCase_print"
       },
       huanjieAndDocId: "2c9029d2695c03fd01695c278e7a0001", //结案报告的文书id
-      approvalOver: false //审核完成
+      approvalOver: false,//审核完成
+      propertyFeatures:''
     };
   },
   methods: {

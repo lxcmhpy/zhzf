@@ -9,7 +9,7 @@
     font-weight    : 200;
     /*  line-height: 24px; */
     /* 可解决模板页面多出一行问题 */
-    /* text-shadow: 1px 0px 0px black;  */
+    /* text-shadow : 1px 0px 0px black;  */
 
     /* a4盒子 */
     .print_info {
@@ -158,6 +158,12 @@
                     font-size  : 16px;
                     font-family: SimSun;
                 }
+                /* 表格内日期 */
+                .el-date-editor {
+                    .el-input__inner::-webkit-input-placeholder {
+                        color: #000000;
+                    }
+                }
 
                 /* 不可编辑的表格 */
                 .is-disabled {
@@ -246,11 +252,11 @@
                     text-align     : left;
                     text-align-last: left;
                     /* 新增 */
-                    width: 100%;
+                    width          : 100%;
                 }
 
                 .el-input__inner {
-                    height: 16px;
+                    height: 16px !important;
                 }
 
                 .el-textarea__inner {
@@ -384,7 +390,7 @@
 
 
         .el-textarea__inner {
-            resize: none;
+            resize      : none;
             /* 去掉右下角标 */
             font-size   : 16px;
             font-weight : 600;
@@ -663,7 +669,7 @@
         }
 
         .el-input__suffix {
-            left : auto;
+            left    : auto;
             // right: 5px;
         }
 
@@ -945,6 +951,7 @@
 .width120 {
     width: 120px;
 }
+
 .width130 {
     width: 130px;
 }
@@ -1019,6 +1026,7 @@
         text-indent: 10em;
     }
 }
+
 .text_indent11 {
     .el-textarea__inner {
         text-indent: 12em;
@@ -1131,7 +1139,7 @@
     .el-checkbox__inner::after {
         // content                    : "√";
         // border                     : 1px solid #000 !important;
-        border-color                  : #000;
+        border-color: #000;
     }
 
     .el-checkbox__inner::after {
@@ -1186,7 +1194,8 @@
 }
 
 .approveDiv {
-    text-align-last: auto
+    text-align-last: auto;
+    word-wrap      : break-word;
 }
 
 #establish-print {
@@ -1458,9 +1467,11 @@
         color: black;
 
     }
+
     .el-radio__inner:hover {
         border-color: black;
     }
+
     .is-checked {
         .el-radio__inner {
             border-color: black;
@@ -1468,32 +1479,36 @@
         }
 
     }
-    .el-radio__label{
+
+    .el-radio__label {
         color: black !important;
 
-        }
+    }
 }
-.inputwidth{
 
-        .el-input{
-            width: 100% !important;
+.inputwidth {
+
+    .el-input {
+        width: 100% !important;
 
     }
 }
 
 
-.overflow_lins_style .overflow_lins span.overflow_lins_textarea{
-text-indent: 11em;
-left: 0;
-top:0;
+.overflow_lins_style .overflow_lins span.overflow_lins_textarea {
+    text-indent: 11em;
+    left       : 0;
+    top        : 0;
 }
-.print_box .print_info p .el-form-item__content span.over_flow{
+
+.print_box .print_info p .el-form-item__content span.over_flow {
     line-height: 15px;
-    font-size: 12px;
+    font-size  : 12px;
 }
-.print_box .print_info tr td span.over_flow{
+
+.print_box .print_info tr td span.over_flow {
     white-space: normal;
-    word-break: break-all;
-    font-size: 12px;
+    word-break : break-all;
+    font-size  : 12px;
     line-height: 15px;
 }

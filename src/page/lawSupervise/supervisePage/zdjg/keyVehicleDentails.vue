@@ -25,7 +25,7 @@
               <td class="table-bg">历史查处次数</td>
               <td></td>
               <td class="table-bg">监控状态</td>
-              <td></td>
+              <td>驶入</td>
             </tr>
             <tr>
               <td class="table-bg">监管原因</td>
@@ -57,11 +57,11 @@
           <span class="title-blue"></span>
           <span class="title-text">当前轨迹</span>
         </div>
-      </div>
-      <div class="map-box" style="height:200px">
-        <el-amap vid="lawSupervise" mapStyle="amap://styles/whitesmoke" :center="center" :plugin="plugin" :amap-manager="amapManager" :zoom="zoom" :events="events" class="amap-demo">
-          <!-- <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :template="marker.template"></el-amap-marker> -->
-        </el-amap>
+        <div class="map-box" style="height:200px">
+            <el-amap vid="lawSupervise" mapStyle="amap://styles/whitesmoke" :center="center" :plugin="plugin" :amap-manager="amapManager" :zoom="zoom" :events="events" class="amap-demo">
+            <!-- <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :template="marker.template"></el-amap-marker> -->
+            </el-amap>
+        </div>
       </div>
     </div>
   </div>
@@ -183,6 +183,5 @@ export default {
   mounted() { }
 };
 </script>
-<style lang="scss">
-@import "@/assets/css/dialogStyle.scss";
-</style>
+<style lang="scss" src="@/assets/css/dialogStyle.scss" scoped></style>
+<style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>
