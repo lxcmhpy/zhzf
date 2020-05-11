@@ -138,7 +138,7 @@ export default [
             meta: {
               title: "案件编号管理"
             },
-            component: () => import("@/page/product-template/banner/Banner.vue")
+            component: () => import("@/page/product-template/caseNumber/caseNumber.vue")
           },
           {
             name: "送达回证管理",
