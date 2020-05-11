@@ -107,6 +107,36 @@
             <el-input v-model="addOrganForm.contactor"></el-input>
           </el-form-item>
         </div>
+         <div class="item">
+          <el-form-item label="缴款银行" prop="bank">
+            <el-input v-model="addOrganForm.bank"></el-input>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="账户号" prop="account">
+            <el-input v-model="addOrganForm.account"></el-input>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="复议机构" prop="reconsiderationOrgan1">
+            <el-input v-model="addOrganForm.reconsiderationOrgan1"></el-input>
+          </el-form-item>
+        </div>
+         <div class="item">
+          <el-form-item label="复议机构2" prop="reconsiderationOrgan2">
+            <el-input v-model="addOrganForm.reconsiderationOrgan2"></el-input>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="诉讼机构" prop="enforcementOrgan1">
+            <el-input v-model="addOrganForm.enforcementOrgan1"></el-input>
+          </el-form-item>
+        </div>
+         <div class="item">
+          <el-form-item label="诉讼机构2" prop="enforcementOrgan2">
+            <el-input v-model="addOrganForm.enforcementOrgan2"></el-input>
+          </el-form-item>
+        </div>
       </div>
       <div class="part">
         <p class="titleP">三定要求</p>
@@ -153,7 +183,14 @@ export default {
         contactor: "",
         fundingSource: "",
         legalBasis: "",
-        mainPowers: ""
+        mainPowers: "",
+        bank:'',
+        account:'',
+        reconsiderationOrgan1:'',
+        reconsiderationOrgan2:'',
+        enforcementOrgan1:'',
+        enforcementOrgan2:'',
+        
       },
       rules: {
         name: [{ required: true, message: "请输入机构名称", trigger: "blur" }]
@@ -245,7 +282,6 @@ export default {
         if (valid && !this.errorOrganName) {
           _this.addOrganForm.pid = _this.parentNode.parentNodeId;
           _this.addOrganForm.id = _this.handelType == 0 ? '' :  _this.organId;
-          console.log("数据", this.addOrganForm);
           _this.$store.dispatch("addOrgan", _this.addOrganForm).then(
             res => {
               console.log('this.organId',_this.addOrganForm.pid);

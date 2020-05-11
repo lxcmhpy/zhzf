@@ -627,7 +627,7 @@ export default {
         }
       })
       this.allAskDocList.forEach(element => {
-        if (element.name == '分期（延期）缴纳罚款通知书【2016】' && element.status == '1') {
+        if (element.name == '分期（延期）缴纳罚款通知书【2016】' && (element.status == '1'||element.status == '2')) {
           this.finishDocCount += 1;
         }
       });

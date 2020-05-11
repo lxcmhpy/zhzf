@@ -37,18 +37,24 @@
                       :http-request="uploadFile"
                       :limit="3"
                       :show-file-list="false"
+                      :on-change='fileChange'
                       :before-upload="uploadFileValidat"
                       >
                       <el-button size="small" type="primary">选取文件</el-button> <span class="upLoadNumSpan">最多上传3个附件</span>
 
-                    <!-- <div slot="tip" class="el-upload__tip">最多上传3个附件</div> -->
-                    
                   </el-upload>
-                  <ul>
-                    <li v-for="item in fileListArr" :key="item.id" class="fileLiCon"><span>{{item.fileName}}</span><span @click="deleteFile(item)"><i class="iconfont law-delete"></i></span></li>
+                  <ul class="el-upload-list el-upload-list--text">
+                    <li v-for="item in fileListArr" :key="item.id" class="el-upload-list__item is-ready">
+                      <i class="el-icon-document"></i>
+                      <span>{{item.fileName}}</span><span @click="deleteFile(item)">
+                        <i class="el-icon-close" style="float:right"></i>
+                        </span>
+                      </li>
+                      <el-progress v-if="percentageFlag" :percentage="percentage" class="progress"></el-progress>
                   </ul>
                 </el-form-item>
             </el-row>
+               
             <div class="row">
               <div class="col">
                 <el-form-item prop="notes" label="备注" :rules="fieldRules('notes',propertyFeatures['notes'])">
@@ -129,13 +135,20 @@ export default {
           { required: true, message: '备注必须填写', trigger: 'change' }
         ],
       },
-      propertyFeatures:''
+      propertyFeatures:'',
+      percentage:'',
+      percentageFlag:''
     }
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   inject: ['reload'],
   methods: {
+    fileChange(file){
+      console.log('状态状态状态状态状态状态',file.status)
+      this.percentage=0
+      this.percentageFlag=true
+    },
     //加载表单信息
     setFormData() {
       this.isSave= false;
@@ -172,6 +185,7 @@ export default {
        let isLt2M = file.size / 1024 / 1024 < 10    //这里做文件大小限制
       if(this.fileListArr.length >=3){
         this.$message.warning('最多选择3个文件！');
+        this.percentageFlag=false
         return false;
       }
       if(!isLt2M) {
@@ -179,11 +193,13 @@ export default {
           message: '上传文件大小不能超过 10MB!',
           type: 'warning'
         });
+        this.percentageFlag=false
         return false;
       }
       for(let i=0; i<this.fileListArr.length; i++){
         if(file.name == this.fileListArr[i].fileName){
           this.$message.warning('不能上传同一个文件');
+          this.percentageFlag=false
           return false;
         }
       }
@@ -199,9 +215,16 @@ export default {
         res => {
           console.log(res);
           this.findFileList();
+          if(res.msg=='操作成功'){
+          this.percentage=100
+          setTimeout(() => {
+            this.percentageFlag=false
+          }, 2000);
+          }
         },
         error => {
           console.log(error)
+            this.percentageFlag=false
         }
       );
     },
@@ -334,5 +357,15 @@ export default {
       cursor: pointer;
     }
   }
+
+
 }
+
+</style>
+<style lang="scss">
+  .progress{
+.el-progress-bar__outer{
+  height: 2px !important;
+}
+  }
 </style>
