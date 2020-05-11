@@ -193,6 +193,10 @@
           var string = test.split("/");
           var path = string[0] + "//" + string[2] + "/";
           // path +
+          let jsonApproveData = iLocalStroage.gets('jsonApproveData')
+          console.log(jsonApproveData[0]);
+          debugger
+          return
           var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0] + '&Opinion=' + '123' + '&time=' + '124443';
           console.log(ActivexURL);
           _this.makeSealStr = ActivexURL;
