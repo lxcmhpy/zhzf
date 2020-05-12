@@ -512,9 +512,9 @@ export default {
     clickPeople(){
       console.log(this.docData.peoples);
       debugger 
-      if(this.docData.peoples == '0'){
+      if(this.docData.peoples == '1'){
         this.disabledThree = true;
-      }else if(this.docData.peoples == '1'){
+      }else if(this.docData.peoples == '2'){
         this.disabledThree = false;
       } else {
         this.disabledThree = true;
