@@ -1,5 +1,5 @@
 
-import { PersonDetailRouter } from '@/router/routerExport/routerJson/personRouterJson';
+import { PersonRouter } from '@/router/routerExport/routerJson/personRouterJson';
 
 //公共方法
 export const mixinPerson={
@@ -116,7 +116,7 @@ export const mixinPerson={
      * @param type // 'edit' 新增
      *  */
     openPersonDetail(row, type) {
-      const addRoutes = PersonDetailRouter[0].children[0].children;
+      const addRoutes = PersonRouter[0].children[0].children;
       const currentRoute = addRoutes.findIndex(item => item.path === `/personDetailPage/${type}/${row.personId}`);
       if (currentRoute > -1) {
         this.$router.push({
@@ -129,8 +129,8 @@ export const mixinPerson={
           meta: { title: `个人详情-${row.personName}`, oneTab:true},
           component: resolve => require(["@/page/person/person-manage/personDetailPage.vue"], resolve )
         }
-        PersonDetailRouter[0].children[0].children.push(newRouter);
-        this.$router.addRoutes(PersonDetailRouter);
+        PersonRouter[0].children[0].children.push(newRouter);
+        this.$router.addRoutes(PersonRouter);
         this.$router.push({ path: `/personDetailPage/${type}/${row.personId}`});
       }
     }

@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import {routers} from "./router";
 import iLocalStroage from "@/common/js/localStroage";
+import { personDetailRouter } from './routerExport/routerJson/personRouterJson';
 
 const vm = new Vue();
 
@@ -24,6 +25,9 @@ router.beforeEach((to, from, next) => {
     //判断是否登录
     if (to.path === "/login") {
       next({name: "case_handle_home_index"});
+    } else if (to.path.indexOf('personDetailPage') > -1 && localStorage.getItem('NewRouter') && from.path === '/') {
+      // 人员管理--个人详情动态生成路由刷新
+      personDetailRouter(localStorage.getItem('NewRouter'), router);
     } else {
       next();
     }

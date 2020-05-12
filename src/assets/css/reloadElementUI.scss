@@ -39,11 +39,17 @@
     background  : $cats-base-green-color;
     border-color: $cats-base-green-color;
     color       : #fff;
+    &:hover{
+      background  : $cats-green51C5BC-color;
+    }
   }
 
   .el-button--primary {
     background  : $cats-blue-color;
     border-color: $cats-blue-color;
+    &:hover{
+      background  : $cats-blue4D89FF-color;
+    }
   }
 
   .el-button--medium {
