@@ -8,8 +8,8 @@
             <el-input type="textarea" v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled style="height:36px;"></el-input>
           </el-form-item>
         </div> -->
-        <div class="doc_cause">
-          案由：{{docData.caseName}}
+        <div class="doc_cause" style="padding-bottom:10px;">
+          案由：<span style="margin-top:-8px;border-bottom:1px solid black">{{docData.caseName}}</span>
         </div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
