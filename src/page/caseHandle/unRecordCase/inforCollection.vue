@@ -1313,6 +1313,8 @@
               });
               _this.$store.dispatch("deleteTabs", _this.$route.name);
               _this.$store.commit("setCaseId", res.data.id);
+              //设置
+              _this.$store.commit("setCaseNumber", res.data.tempNo);
               iLocalStroage.removeItem("stageCaseId");
               this.autoSava = false;
               _this.$router.replace({

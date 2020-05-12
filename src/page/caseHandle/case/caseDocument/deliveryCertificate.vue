@@ -8,8 +8,8 @@
             <el-input type="textarea" v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled style="height:36px;"></el-input>
           </el-form-item>
         </div> -->
-        <div class="doc_cause">
-          案由：{{docData.caseName}}
+        <div class="doc_cause" style="padding-bottom:10px;">
+          案由：<span style="margin-top:-8px;border-bottom:1px solid black">{{docData.caseName}}</span>
         </div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
@@ -94,9 +94,9 @@
 
 
      <!-- 添加弹出框 -->
-    <el-dialog title="编辑送达详情" :visible.sync="addVisible" width="75%" v-loading="addLoading" :before-close="handleClose">
+    <el-dialog title="编辑送达详情" :visible.sync="addVisible" append-to-body width="75%" v-loading="addLoading" :before-close="handleClose">
       <div>
-        <div>
+        <div  class="fullscreen">
           <el-form ref="addDocFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <!-- <el-table-column  prop="evidenceNo" label="序号" align="center">

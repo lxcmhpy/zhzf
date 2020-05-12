@@ -188,9 +188,9 @@
     </div>
 
     <!-- 添加弹出框 -->
-    <el-dialog title="登记保存物品" :visible.sync="addVisible" width="60%" v-loading="addLoading" :before-close="handleClose">
+    <el-dialog title="登记保存物品" :visible.sync="addVisible" append-to-body width="60%" v-loading="addLoading" :before-close="handleClose">
       <div>
-        <div>
+        <div  class="fullscreen">
           <el-form ref="addEvidenceFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <el-table-column  prop="evidenceNo" label="序号" align="center">
@@ -223,9 +223,9 @@
                 </template>
               </el-table-column>
 
-              <el-table-column width="52%" >
+              <el-table-column width="52%"  class="evdence-form">
                 <template slot-scope="scope">
-                  <el-button size="mini" icon="el-icon-circle-close" circle @click="handleRow(scope.row)"></el-button>
+                  <el-button size="mini" icon="el-icon-circle-close" circle @click="handleRow(scope.row)" style="border-radius: 50px;"></el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -580,5 +580,9 @@ export default {
   white-space: inherit;
   text-align-last: center;
 }
-
+.evdence-form {
+  .el-icon-circle-close {
+    color: #7b7b7b !important;
+  }
+}
 </style>

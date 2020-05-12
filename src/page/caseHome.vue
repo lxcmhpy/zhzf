@@ -116,7 +116,7 @@
         </div>
         <div class="icon_content">
           <ul>
-            <li class="imgbox">
+            <li class="imgbox" @click="infoCheck('case_handle_commercialVehicle')">
               <img :src="'./static/images/img/icon_lit_yyunc.png'">
               <span>营运车辆</span>
             </li>
@@ -124,38 +124,44 @@
               <img :src="'./static/images/img/icon_lit_jyyehu.png'">
               <span>经营业户</span>
             </li>
-            <li class="imgbox">
+            <li class="imgbox" @click="infoCheck('case_handle_vehicleLine')">
               <img :src="'./static/images/img/icon_lit_kyxlu.png'">
               <span>客运线路<br />标志牌</span>
             </li>
           </ul>
           <ul>
-            <li class="imgbox">
+            <li class="imgbox" @click="infoCheck('case_handle_transportWorker')">
               <img :src="'./static/images/img/icon_lit_jyyh.png'">
               <span>道路运输<br />从业人员</span>
             </li>
+            <el-tooltip class="item" effect="dark" content="正在开发中" placement="top">
             <li class="imgbox">
               <img :src="'./static/images/img/icon_lit_car.png'">
               <span>出租车</span>
             </li>
-            <li class="imgbox">
+            </el-tooltip>
+            <li class="imgbox" @click="infoCheck('case_handle_shipCertificates')">
               <img :src="'./static/images/img/icon_lit_cbyyzheng.png'">
               <span>船舶营运证</span>
             </li>
           </ul>
           <ul>
-            <li class="imgbox" @click="infoCheck('crewCertificates')">
+            <li class="imgbox" @click="infoCheck('case_handle_crewCertificates')">
               <img :src="'./static/images/img/icon_lit_cy.png'">
               <span>船员适任证</span>
             </li>
-            <li class="imgbox">
-              <img :src="'./static/images/img/icon_lit_slu.png'">
-              <span>水路运输经<br />营许可证</span>
-            </li>
+            <el-tooltip class="item" effect="dark" content="正在开发中" placement="top">
+              <li class="imgbox">
+                <img :src="'./static/images/img/icon_lit_slu.png'">
+                <span>水路运输经<br />营许可证</span>
+              </li>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="正在开发中" placement="top">
             <li class="imgbox">
               <img :src="'./static/images/img/icon_lit_zge.png'">
               <span>经营资格证<br />（企业）</span>
             </li>
+            </el-tooltip>
           </ul>
 
         </div>

@@ -131,7 +131,7 @@ export function findStaffListApi(data) {
     inputValue:data.inputValue
   }
   return request({
-    url: "/sys/lawOfficer/listLawOfficer",
+    url: "/case/caseTemplate/lawOfficer/listLawOfficer",
     method: "get",
     showloading: true,
     params:data2,
