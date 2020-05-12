@@ -661,6 +661,17 @@ export function findByCaseIdAndDocIdApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//通过案件ID和文书Id查询案件附件---送达回证
+export function findByCaseIdAndDocIdSongdaApi(data) {
+  return request({
+    url: "/case/sys/file/findVoByDocDataId/"+data.docId,
+    method: "get",
+    // params: params,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
 //案件抄告列表
 export function queryCaseCopyListPageApi(data) {

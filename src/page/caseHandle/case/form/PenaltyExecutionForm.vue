@@ -3,7 +3,7 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="penaltyExecutionForm" :model="formData" :rules="rules" label-width="105px" >
+    <el-form ref="penaltyExecutionForm" :model="formData" :rules="rules" label-width="105px" :disabled="canGoNextLink">
       <!-- <div class="header-case">
         <div class="header_left">
           <div class="triangle"></div>
@@ -37,7 +37,7 @@
               <div class="col">
                 <el-form-item prop="punishTerm" label="处罚期限" :rules="fieldRules('punishTerm',propertyFeatures['punishTerm'])">
                   <!-- <el-input ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-input> -->
-                  <el-date-picker class="w-120" value-format="yyyy-MM-dd" v-model="formData.punishTerm" type="date" placeholder="选择日期" :disabled="fieldDisabled(propertyFeatures['punishTerm'])"></el-date-picker>
+                  <el-date-picker class="w-120" value-format="yyyy-MM-dd HH:mm" v-model="formData.punishTerm" type="date" placeholder="选择日期" :disabled="fieldDisabled(propertyFeatures['punishTerm'])"></el-date-picker>
                 </el-form-item>
               </div>
             </div>
@@ -372,8 +372,8 @@ export default {
     },
     //保存表单数据
     submitCaseDoc(handleType) {
-      // console.log("分期", this.formData.stepPay)
-      console.log("分期",this.formData)
+      console.log("分期", this.formData.stepPay)
+      // console.log(this.formData)
       this.com_submitCaseForm(handleType, "penaltyExecutionForm", false);
     },
     // 判断文书是否完成
@@ -524,7 +524,7 @@ export default {
       }
     },
     getDataAfter() {
-      console.log('时间', this.formData.punishTerm)
+      console.log('this.formData.tempPunishAmount', this.formData.tempPunishAmount)
       if (this.formData.tempPunishAmount) {
         this.formData.paidAmount = this.formData.paidAmount ? this.formData.paidAmount : 0;
       }
@@ -604,7 +604,7 @@ export default {
     getRowClass: function (row, index) {
       console.log("row!!!!!!!!!!!!", row);
       if (row.row.openRow) {
-        // console.log("显示");
+        console.log("显示");
         return "";
       } else {
         return "myhide-expand";
@@ -616,7 +616,7 @@ export default {
       this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, path: "case_handle_payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001", note: '' });
 
       this.docTableDatasCopy.forEach(item => {
-        // console.log('名字啊啊啊', item.name)
+        console.log('名字啊啊啊', item.name)
         if (item.name != '分期（延期）缴纳罚款通知书【2016】') {
           this.docTableDatas.push(item);
         } else {
@@ -732,7 +732,7 @@ export default {
     //代缴金额为0时,执行情况为已完成
     'formData.paidAmount'(val) {
       console.log(val);
-      this.formData.toPayAmount = (Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount))||0;
+      this.formData.toPayAmount = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
     },
     'formData.toPayAmount'(val) {
       console.log('aaaaaaaaa', val);
