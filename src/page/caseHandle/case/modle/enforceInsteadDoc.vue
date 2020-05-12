@@ -483,6 +483,10 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      if (this.disabledOne && this.disabledTwo ) {
+          this.$message("请选择处罚方式");
+          return
+        }
       this.docData.checknames = this.checknames;
       // this.docData.peoples=this.peoples;
       console.log('this.docData', this.docData)
