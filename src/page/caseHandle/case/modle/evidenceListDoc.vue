@@ -223,9 +223,9 @@
                 </template>
               </el-table-column>
 
-              <el-table-column width="52%"  class="evdence-form">
+              <el-table-column width="52%">
                 <template slot-scope="scope">
-                  <el-button size="mini" icon="el-icon-circle-close" circle @click="handleRow(scope.row)" style="border-radius: 50px;"></el-button>
+                  <el-button size="mini" class="evdence-form" icon="el-icon-circle-close" circle @click="handleRow(scope.row)" style="border-radius: 50px;"></el-button>
                 </template>
               </el-table-column>
             </el-table>
