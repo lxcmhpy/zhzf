@@ -191,8 +191,8 @@ export default {
                 this.$router.replace({
                   name: "case_handle_establish"
                 });
-                let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
-                this.$store.commit("setCaseNumber", setCaseNumber);
+                // let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+                // this.$store.commit("setCaseNumber", setCaseNumber);
             }
           })
           .catch(err=>{console.log(err)}) 
