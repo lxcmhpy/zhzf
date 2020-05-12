@@ -94,9 +94,9 @@
 
 
      <!-- 添加弹出框 -->
-    <el-dialog title="编辑送达详情" :visible.sync="addVisible" width="75%" v-loading="addLoading" :before-close="handleClose">
+    <el-dialog title="编辑送达详情" :visible.sync="addVisible" append-to-body width="75%" v-loading="addLoading" :before-close="handleClose">
       <div>
-        <div>
+        <div  class="fullscreen">
           <el-form ref="addDocFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <!-- <el-table-column  prop="evidenceNo" label="序号" align="center">
