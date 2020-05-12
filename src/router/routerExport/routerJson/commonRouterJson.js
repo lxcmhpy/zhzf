@@ -1,5 +1,6 @@
 import MainContent from '@/components/mainContent'
 import Layout from '@/page/lagout/mainLagout' //Layout 是架构组件，不在后台返回，在文件里单独引入
+
 export default [
   {
     name: "sys_xboot",
@@ -190,19 +191,27 @@ export default [
         children: [
           {
             name: "paramManage",
-            path: "person-param",
+            path: "/person-param",
             meta: {
               title: "人员参数管理"
             },
-            // component: () => import("@/page/person/person-param/param-manage.vue")
+            component: () => import("@/page/person/person-param/param-manage.vue")
           },
           {
             name: "md-cart1",
-            path: "person-station",
+            path: "/person-station",
             meta: {
               title: "人员岗位管理"
             },
-            // component: () => import("@/page/person/person-station/station-manage.vue")
+            component: () => import("@/page/person/person-station/station-manage.vue")
+          },
+          {
+            name: "approveFlow",
+            path: "/person-approveFlow",
+            meta: {
+              title: "审批流程"
+            },
+            component: () => import("@/page/person/person-approveFlow/organList.vue")
           }
         ]
       }

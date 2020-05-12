@@ -437,4 +437,7 @@ export default {
 >>>.el-select{
   margin-right: 0;
 }
+.tableHandle{
+  margin-bottom: 10px;
+}
 </style>

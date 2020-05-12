@@ -48,7 +48,7 @@
                   <el-option value="1" label="女"></el-option>
                 </el-select>
               </el-form-item>
-              <span v-else>{{formData.partySex}}</span>
+              <el-form-item prop="partySex" v-else>{{formData.partySex}}</el-form-item>
             </td>
             <td>年龄</td>
             <td colspan="2" class="color_DBE4EF">
@@ -183,7 +183,8 @@
             <td colspan="8" class="aprotd">
               <p class="approveDiv">{{formData.approveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
-                <p>签名：<span class="apro">{{formData.approvePeo||' '}}</span></p>
+                <!-- <p>签名：<span class="apro">{{formData.approvePeo||' '}}</span></p> -->
+                <p>签名：</p>
                 <p>
                   {{formData.approveTime||' 年 月 日 '}}
                  
@@ -204,7 +205,8 @@
             <td colspan="8" class="aprotd">
               <p class="approveDiv">{{formData.secondApproveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
-                <p>签名：<span class="apro">{{formData.secondApprovePeo||' '}}</span></p>
+                <!-- <p>签名：<span class="apro">{{formData.secondApprovePeo||' '}}</span></p> -->
+                <p>签名：</p>
                 <p>
                   {{formData.secondApproveTime||' 年 月 日 '}}
                 </p>
@@ -225,7 +227,8 @@
             <td colspan="7" class="aprotd">
               <p class="approveDiv">{{formData.thirdApproveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
-                <p>签名：<span class="apro">{{formData.thirdApprovePeo||' '}}</span></p>
+                <!-- <p>签名：<span class="apro">{{formData.thirdApprovePeo||' '}}</span></p> -->
+                <p>签名：</p>
                 <p>
                   {{formData.thirdApproveTime||' 年 月 日 '}}
                 </p>
