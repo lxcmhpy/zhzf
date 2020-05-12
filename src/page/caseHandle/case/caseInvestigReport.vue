@@ -183,7 +183,8 @@
             <td colspan="8" class="aprotd">
               <p class="approveDiv">{{formData.approveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
-                <p>签名：<span class="apro">{{formData.approvePeo||' '}}</span></p>
+                <!-- <p>签名：<span class="apro">{{formData.approvePeo||' '}}</span></p> -->
+                <p>签名：</p>
                 <p>
                   {{formData.approveTime||' 年 月 日 '}}
                  
@@ -204,7 +205,8 @@
             <td colspan="8" class="aprotd">
               <p class="approveDiv">{{formData.secondApproveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
-                <p>签名：<span class="apro">{{formData.secondApprovePeo||' '}}</span></p>
+                <!-- <p>签名：<span class="apro">{{formData.secondApprovePeo||' '}}</span></p> -->
+                <p>签名：</p>
                 <p>
                   {{formData.secondApproveTime||' 年 月 日 '}}
                 </p>
@@ -225,7 +227,8 @@
             <td colspan="7" class="aprotd">
               <p class="approveDiv">{{formData.thirdApproveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
-                <p>签名：<span class="apro">{{formData.thirdApprovePeo||' '}}</span></p>
+                <!-- <p>签名：<span class="apro">{{formData.thirdApprovePeo||' '}}</span></p> -->
+                <p>签名：</p>
                 <p>
                   {{formData.thirdApproveTime||' 年 月 日 '}}
                 </p>
