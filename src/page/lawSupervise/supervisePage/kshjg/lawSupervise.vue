@@ -1126,10 +1126,12 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById } from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree } from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
-import lunarDate from '@/common/js/lunarDate.js'
+import lunarDate from '@/common/js/lunarDate.js';
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js'
+
 // import externalVideoBtns from '@/page/lawSupervise/componentCommon/externalVideoBtns.vue';
 import _ from "lodash";
 import AMap from "vue-amap";
@@ -1181,6 +1183,7 @@ export default {
               label: '执法人员',
               icon: 'icon_jc11',
               children: [
+
               ]
             },{
               label: '执法车辆',
@@ -1911,6 +1914,73 @@ export default {
           }
         );
       });
+    },
+    getOrganTree () {
+        let _this = this;
+       new Promise((resolve, reject) => {
+        getOrganTree(BASIC_DATA_SYS.lawSupervise).then(
+          res => {
+            let dataArray = res.data;
+            dataArray.forEach((item,i)=>{
+                addChildren(item);
+            })
+            function addChildren(item) {
+
+                item.icon = item.icon?item.icon:'icon_jc1';
+                if (item.children&&item.children.length>0 ) {
+                    item.children.splice(0,0,{
+                        id: item.id,
+                        pid:item.pid,
+                        label: '执法人员',
+                        icon: 'icon_jc11',
+                    },{
+                        id: item.id,
+                        pid:item.pid,
+                        label: '执法车辆',
+                        icon: 'icon_cl11'
+                    },{
+                        id: item.id,
+                        pid:item.pid,
+                        label: '执法船舶',
+                        icon: 'icon_cb11'
+                    });
+                    let len = item.children.length;
+                    while (len > 0) {
+                        item.children.forEach((obj,i)=> {
+                            addChildren(obj);
+                            len--;
+                        })
+                    }
+                } else if (['执法人员','执法车辆', '执法船舶'].indexOf(item.label) == -1){
+                    // debugger;
+                   item.children = [{
+                         id: item.id,
+                        pid:item.pid,
+                        label: '执法人员',
+                        icon: 'icon_jc11',
+                    },{
+                        id: item.id,
+                        pid:item.pid,
+                        label: '执法车辆',
+                        icon: 'icon_cl11'
+                    },{
+                        id: item.id,
+                        pid:item.pid,
+                        label: '执法船舶',
+                        icon: 'icon_cb11'
+                    }];
+                }
+                // return item
+            }
+            _this.data = dataArray;
+            debugger;
+          },
+          error => {
+            //  _this.errorMsg(error.toString(), 'error')
+            return;
+          }
+        );
+      });
     }
   },
   mounted() {
@@ -1922,7 +1992,7 @@ export default {
         }
      })
     this.lunarDate = lunarDate();
-
+    this.getOrganTree();
     //   this.updateDrawer();
   },
   mixins: [lawSuperviseMixins, mixinsCommon],

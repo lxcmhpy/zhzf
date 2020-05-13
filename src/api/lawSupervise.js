@@ -76,3 +76,14 @@ export function getById(type,id) {
       cancelToken: setCancelSource()
     });
   }
+
+  // 监管获取机构
+  export function getOrganTree (id) {
+    return request({
+        url: "/zfjg/organ/organTree/"+id,
+        method: "get",
+        showloading: false,
+        baseUrlType:2,
+        cancelToken: setCancelSource()
+    });
+  }
