@@ -33,9 +33,9 @@
                     <el-form-item label=" " label-width="13px" style="float:right">
                          <el-button type="primary" icon="el-icon-sort" size="medium" @click="handleEdit('7','hz')">到期换证</el-button>
                     </el-form-item>
-                    <el-form-item label=" " label-width="13px" style="float:right">
+                    <!-- <el-form-item label=" " label-width="13px" style="float:right">
                          <el-button type="primary" icon="el-icon-upload2" size="medium">导出</el-button>
-                    </el-form-item>
+                    </el-form-item> -->
                 </el-row>
             </el-form>
             

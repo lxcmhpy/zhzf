@@ -31,7 +31,7 @@
         </el-form-item>
     </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="visible = false">取 消</el-button>
+            <el-button @click="closeDialog()">取 消</el-button>
             <el-button type="primary" @click="submit('addAwardForm')">保 存</el-button>
         </div>
     </el-dialog>
@@ -101,14 +101,14 @@ export default {
                         _this.$store.dispatch("addAwardMoudle", _this.addAwardForm).then(res => {
                             _this.$emit("getAllReward");
                                 _this.$message({type: "success", message:  "添加成功!"});
-                                _this.visible = false;
+                                _this.closeDialog();
                             });
                         err => {console.log(err);};
                     }else if(_this.handelType===2){//修改
                         _this.$store.dispatch("updateAwardMoudle", _this.addAwardForm).then(res => {
                             _this.$emit("getAllReward");
                                 _this.$message({type: "success", message: "修改成功!" });
-                                _this.visible = false;
+                                _this.closeDialog();
                             });
                         err => {console.log(err);};
                     }
@@ -143,11 +143,20 @@ export default {
         },
         //关闭弹窗的时候清除数据
         closeDialog() {
-            let _this = this 
-            _this.visible = false;
+            let _this = this
             _this.$refs["addAwardForm"].resetFields();
+            _this.emptyForm();
+            _this.visible = false;
             _this.errorName = false;
         },
+        // 清空表单数据
+        emptyForm(){
+            for(const key in this.addAwardForm){
+                this.addAwardForm[key] = '';
+            }
+            this.addAwardForm.personId = this.params.id;
+            this.addAwardForm.dataType = '0';
+        }
     },
     
 }
