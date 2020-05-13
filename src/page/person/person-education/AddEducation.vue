@@ -5,11 +5,24 @@
         @close="closeDialog"
         :close-on-click-modal="false"
         width="35%">
-        <el-form :model="addEducationForm" label-position="right"  label-width="100px" ref="addEducationFormRef"  :rules="rules">
+        <el-form
+            v-if="visible"
+            :model="addEducationForm"
+            label-position="right"
+            label-width="100px"
+            ref="addEducationFormRef"
+            :rules="rules">
             <el-row>
                 <el-form-item label="毕业时间:" prop="graduationDate">
-                    <el-date-picker v-model="addEducationForm.graduationDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
-                        placeholder="请选择毕业时间" :disabled='isDisabled' clearable ></el-date-picker>
+                    <el-date-picker
+                        v-model="addEducationForm.graduationDate"
+                        format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd"
+                        placeholder="请选择毕业时间"
+                        :disabled='isDisabled'
+                        clearable
+                        popper-class="pop-datepicker"
+                    ></el-date-picker>
                 </el-form-item>
             </el-row>
             <el-row>
@@ -24,6 +37,7 @@
                       v-model="addEducationForm.majorName"
                       placeholder="毕业专业"
                       :filterable="majorOptions.length > 5"
+                      :popper-append-to-body="false"
                       @change="selectVal($event,'major')"
                       @focus="getDictInfo('人员信息-毕业专业','majorOptions')">
                       <el-option
@@ -38,6 +52,7 @@
                         v-model="addEducationForm.degreeName"
                         placeholder="学历"
                         filterable
+                        :popper-append-to-body="false"
                         @change="selectVal($event, 'degree')"
                         @focus="getDictInfo('人员信息-学历', 'degreeInfo')">
                         <el-option
@@ -49,11 +64,11 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <div v-if="handelType!=3" style="padding-right: 12px;">
-                <el-button size="medium"  @click="closeDialog">取 消</el-button>
+                <el-button @click="closeDialog">取 消</el-button>
                 <el-button type="primary" @click="submit('addEducationForm')">保 存</el-button>
             </div>
             <div v-if="handelType==3" style="padding-right: 12px;">
-                <el-button type="danger" size="medium" @click="closeDialog">取 消</el-button>
+                <el-button type="danger" @click="closeDialog">取 消</el-button>
             </div>
         </div>
     </el-dialog>
@@ -94,7 +109,6 @@ export default {
                 degreeName: [{ required: true, message: "学历必须填写", trigger: "change" }]
             },
             dialogTitle: "", //弹出框title
-            errorName: false, //添加name时的验证
             handelType: 0, //添加 0  修改2  查看3
         }
     },
@@ -146,6 +160,7 @@ export default {
             let _this=this
             _this.visible = true;
             _this.handelType = type;
+            console.log(_this.addEducationForm);
             if(type==1){//新增
                 _this.dialogTitle = "新增";
                 _this.isDisabled=false;
@@ -167,15 +182,11 @@ export default {
                 _this.addEducationForm.note=row.note;
             }
         },
-         //聚焦清除错误信息
-        focusName() {
-            this.errorName = false;
-        },
         //关闭弹窗的时候清除数据
         closeDialog() {
-            this.visible = false;
             this.$refs["addEducationFormRef"].resetFields();
-            this.errorName = false;
+            this.emptyForm();
+            this.visible = false;
         },
         getDictInfo(name, codeName){//根据数据字典查询
             let _this=this;
@@ -189,6 +200,13 @@ export default {
                     console.log(err);
                 }
             ).catch(()=>{});
+        },
+        // 清空表单数据
+        emptyForm(){
+            for(const key in this.addEducationForm){
+                this.addEducationForm[key] = '';
+            }
+            this.addEducationForm.personId = this.params.id
         }
     }
 }
@@ -199,5 +217,8 @@ export default {
 }
 >>>.el-icon-date{
     line-height: 36px;
+}
+>>>.pop-datepicker{
+    z-index: 5000;
 }
 </style>

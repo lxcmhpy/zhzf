@@ -94,11 +94,12 @@ export default {
             };
             let type = this.addPersonForm.type;
             if(type == 1){ //挂失
-                    this.$store.dispatch("lossDocMoudle", data).then(res => {
-                        console.log("返回参数"+JSON.stringify(res));console.log("返回参数"+JSON.stringify(res));
-                    this.$emit("getAllPersons");
+                this.$store.dispatch("lossDocMoudle", data).then(res => {
+                    console.log("返回参数"+JSON.stringify(res));console.log("返回参数"+JSON.stringify(res));
+                    this.visible = false;
                     if(res.code == '200'){
-                            this.$message({
+                        this.$emit("getAllPersons");
+                        this.$message({
                             type: "success",
                             message:  "挂失成功!",
                         });
@@ -108,17 +109,17 @@ export default {
                             message:  "挂失失败!",
                         });
                     }
+                    }, err => {
                         this.visible = false;
+                        this.$message({ type: 'warning', message: err.msg || '' });
                     });
-                    err => {
-                        console.log(err);
-                };
             }else if(type == 2){ //暂扣
                  this.$store.dispatch("withholdMoudle", data).then(res => {
                      console.log("返回参数"+JSON.stringify(res));
-                    this.$emit("getAllPersons");
+                    this.visible = false;
                     if(res.code == '200'){
-                            this.$message({
+                        this.$emit("getAllPersons");
+                        this.$message({
                             type: "success",
                             message:  "暂扣成功!",
                         });
@@ -128,18 +129,17 @@ export default {
                             message:  "暂扣失败!",
                         });
                     }   
-                        this.visible = false;
-                       
-                    });
-                    err => {
-                        console.log(err);
-                };
+                 }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                 });
             }else if(type == 3){ //解除暂扣
                 this.$store.dispatch("unWithholdMoudle", data).then(res => {
                     console.log("返回参数"+JSON.stringify(res));
-                    this.$emit("getAllPersons");
+                    this.visible = false;
                     if(res.code == '200'){
-                            this.$message({
+                        this.$emit("getAllPersons");
+                        this.$message({
                             type: "success",
                             message:  "解除暂扣成功!",
                         });
@@ -149,16 +149,15 @@ export default {
                             message:  "解除暂扣失败!",
                         });
                     }
-                        this.visible = false;
-                    });
-                    err => {
-                        console.log(err);
-                };
+                }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                });
             }else if(type == 4){ //注销
                 this.$store.dispatch("logoffMoudle", data).then(res => {
-                    this.$emit("getAllPersons");
                     if(res.code == '200'){
-                            this.$message({
+                        this.$emit("getAllPersons");
+                        this.$message({
                             type: "success",
                             message:  "注销成功!",
                         });
@@ -168,16 +167,16 @@ export default {
                             message:  "注销失败!",
                         });
                     }
-                        this.visible = false;
-                    });
-                    err => {
-                        console.log(err);
-                };
+                }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                });
             }else if(type == 5){ //吊销
                 this.$store.dispatch("revokeMoudle", data).then(res => {
-                    this.$emit("getAllPersons");
+                    this.visible = false;
                     if(res.code == '200'){
-                            this.$message({
+                        this.$emit("getAllPersons");
+                        this.$message({
                             type: "success",
                             message:  "吊销成功!",
                         });
@@ -187,17 +186,16 @@ export default {
                             message:  "吊销失败!",
                         });
                     }
-                        this.visible = false;
-                        this.$emit("getAllPersons");
-                    });
-                    err => {
-                        console.log(err);
-                };
+                }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                });
             }else if(type == 6){
                  this.$store.dispatch("unLossDocMoudle", data).then(res => {
-                    this.$emit("getAllPersons");
+                    this.visible = false;
                     if(res.code == '200'){
-                            this.$message({
+                        this.$emit("getAllPersons");
+                        this.$message({
                             type: "success",
                             message:  "解除挂失成功!",
                         });
@@ -207,21 +205,20 @@ export default {
                             message:  "解除挂失失败!",
                         });
                     }
-                        this.visible = false;
-                        this.$emit("getAllPersons");
-                    });
-                    err => {
-                        console.log(err);
-                };
+                 }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                 });
             }else if(type == 7){
                 let data1 = {
                 certId: this.addPersonForm.certId,
               };
               console.info(JSON.stringify(data1))
                  this.$store.dispatch("changeCertByEndDateMoudle", data1).then(res => {
-                    this.$emit("getAllPersons");
+                    this.visible = false;
                     if(res.code == '200'){
-                            this.$message({
+                        this.$emit("getAllPersons");
+                        this.$message({
                             type: "success",
                             message:  "到期换证成功",
                         });
@@ -231,12 +228,10 @@ export default {
                             message:  "到期换证失败!",
                         });
                     }
-                        this.visible = false;
-                        this.$emit("getAllPersons");
-                    });
-                    err => {
-                        console.log(err);
-                };
+                 }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                 });
             }
                 
             },
