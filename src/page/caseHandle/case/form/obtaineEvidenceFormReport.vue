@@ -220,9 +220,9 @@
     <casePageFloatBtns :pageDomId="'obtanEvidence_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
     <!-- 添加弹出框 -->
-    <el-dialog title="抽样取证物品" :visible.sync="addVisible" width="60%" v-loading="addLoading">
+    <el-dialog title="抽样取证物品" :visible.sync="addVisible" append-to-body width="60%" v-loading="addLoading">
       <div>
-        <div>
+        <div class="fullscreen">
           <el-form ref="addEvidenceFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <el-table-column  prop="evidenceNo" label="序号" align="center">
@@ -252,9 +252,9 @@
                 </template>
               </el-table-column>
 
-              <el-table-column width="52%" >
+              <el-table-column width="52%">
                 <template slot-scope="scope">
-                  <el-button size="mini" icon="el-icon-circle-close" circle @click="deleteEvidence(scope.row)" style="border-radius: 50px;"></el-button>
+                  <el-button class="evdence-form" size="mini" icon="el-icon-circle-close" circle @click="deleteEvidence(scope.row)" style="border-radius: 50px;"></el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -551,5 +551,10 @@ export default {
       top: 0;
       left: 10px;
     }
+}
+.evdence-form {
+  .el-icon-circle-close {
+    color: #7b7b7b !important;
+  }
 }
 </style>

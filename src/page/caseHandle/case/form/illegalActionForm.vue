@@ -6,13 +6,14 @@
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <p class="side_right_indent">
           当事人（个人姓名或单位名称）：
-          <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
+          <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])" style="width: 250px;">
             <el-input
               type="textarea"
               v-model="formData.party"
               v-bind:class="{ over_flow:formData.party && formData.party.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 2}"
               :maxLength="maxLength"
+              style="width:250px;"
               :disabled="fieldDisabled(propertyFeatures['party'])"
             ></el-input>
             <!-- <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :maxLength='maxLength'></el-input> -->
@@ -34,21 +35,22 @@
             </el-form-item>
           </span>行为，违反了
           <span>
-            <el-form-item prop="illegalBasis" :rules="fieldRules('illegalBasis',propertyFeatures['illegalBasis'])">
+            <el-form-item prop="illegalBasis" :rules="fieldRules('illegalBasis',propertyFeatures['illegalBasis'])" style="width:250px;">
               <el-input
                 type="textarea"
                 v-model="formData.illegalBasis"
                 v-bind:class="{ over_flow:formData.illegalBasis && formData.illegalBasis.length>14?true:false }"
                 :autosize="{ minRows: 1, maxRows: 2}"
                 :maxLength="maxLength"
+                style="width:250px;"
                 :disabled="fieldDisabled(propertyFeatures['illegalBasis'])"
               ></el-input>
             </el-form-item>
           </span>的规定，依据
           <span>
-            <el-form-item prop="punishLaw" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])">
+            <el-form-item prop="punishLaw" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])" style="width:250px;">
               <el-input type="textarea" v-model="formData.punishLaw" v-bind:class="{ over_flow:formData.punishLaw && formData.punishLaw.length>14?true:false }"
-              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['punishLaw'])"></el-input>
+              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['punishLaw'])" style="width:250px;"></el-input>
             </el-form-item>
           </span>的规定，本机关拟作出
           <span>

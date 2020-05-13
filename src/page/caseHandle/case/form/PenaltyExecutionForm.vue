@@ -37,7 +37,7 @@
               <div class="col">
                 <el-form-item prop="punishTerm" label="处罚期限" :rules="fieldRules('punishTerm',propertyFeatures['punishTerm'])">
                   <!-- <el-input ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-input> -->
-                  <el-date-picker class="w-120" v-model="formData.punishTerm" type="date" placeholder="选择日期" :disabled="fieldDisabled(propertyFeatures['punishTerm'])"></el-date-picker>
+                  <el-date-picker class="w-120" value-format="yyyy-MM-dd HH:mm" v-model="formData.punishTerm" type="date" placeholder="选择日期" :disabled="fieldDisabled(propertyFeatures['punishTerm'])"></el-date-picker>
                 </el-form-item>
               </div>
             </div>
@@ -395,7 +395,7 @@ export default {
               console.log('element.name', element.status)
               // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
               // console.log('lement.status,element.status', element.status)
-              if (element.status != 1) {
+              if (element.status == 0) {
                 // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
                 // console.log('执行')
                 let caseData = {}
@@ -421,7 +421,7 @@ export default {
         console.log(this.docTableDatas)
         this.docTableDatas.forEach(element => {
           if (element.name == '催告书') {
-            if (element.status != 1) {
+            if (element.status == 0) {
               // this.unfinishFlag = [' 催告书'];
               // console.log('this.unfinishFlag', this.unfinishFlag)
               let caseData = {}
@@ -627,7 +627,7 @@ export default {
         }
       })
       this.allAskDocList.forEach(element => {
-        if (element.name == '分期（延期）缴纳罚款通知书【2016】' && element.status == '1') {
+        if (element.name == '分期（延期）缴纳罚款通知书【2016】' && (element.status == '1'||element.status == '2')) {
           this.finishDocCount += 1;
         }
       });

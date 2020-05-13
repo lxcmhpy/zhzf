@@ -62,7 +62,11 @@
           <el-table-column prop="LicenseCode" label="经营许可证号" align="center"></el-table-column>
           <el-table-column prop="LicenseIssueOrgan" label="发证机关" align="center"></el-table-column>
           <el-table-column prop="EconType" label="经营类型" align="center"></el-table-column>
-          <el-table-column prop="xkzyxq" label="许可证有效期" align="center"></el-table-column>
+          <el-table-column label="许可证有效期" align="center">
+            <template slot-scope="scope">
+                <span>{{scope.row.ValidBeginDate}}</span> ~ <span>{{scope.row.ExpireDate}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="OperatingStatus" label="经营状态" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
                 <template slot-scope="scope" >

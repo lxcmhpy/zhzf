@@ -133,7 +133,7 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1' || item.status == '2'">
+                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">
                     完成
                   </span>
                   <span v-if="scope.row.status == '0'">
@@ -147,7 +147,7 @@
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <!-- 已完成 -->
-                    <span v-if="scope.row.status == '1' || item.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
+                    <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">
                       <span @click="viewDoc(scope.row)">编辑</span>  
@@ -342,7 +342,7 @@ export default {
         let allFinish = true;
         console.log("canGotoNext",this.docTableDatas)
         for (let i = 0; i < this.docTableDatas.length; i++) {
-          if (this.docTableDatas[i].isRequired === 0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")) {
+          if (this.docTableDatas[i].isRequired === 0 && Number(this.docTableDatas[i].status) == 0 ) {
             canGotoNext = false
             break;
           }
@@ -415,6 +415,7 @@ export default {
         approvalOver: false,
         hasBack: true,
         status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交 
+        docDataId:row.docDataId
       }
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: 'case_handle_myPDF', params: routerData })

@@ -224,7 +224,7 @@
 
       <div class="print_info">
         <span>查封、扣押场所、设施、财物清单如下: </span><br/><br/>
-        <table class="evidencetable" border="1" bordercolor="black" width="100%" cellspacing="0" @click="handleAdd">
+        <table class="evidencetable" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td width="10%">序号</td>
             <td width="30%">查封、扣押场所、设施、财物名称</td>
@@ -232,7 +232,14 @@
             <td width="15%">数量</td>
             <td width="30%">备注</td>
           </tr>
-          <tr v-for="(item,index) in formData.resList" :key="index">
+          <tr v-if="formData.resList.length==0"  @click="handleAdd">
+            <td></td>
+            <td ></td>
+            <td></td>
+            <td></td>
+            <td ></td>
+          </tr>
+          <tr v-for="(item,index) in formData.resList" :key="index"  @click="handleAdd">
             <td>{{item.resNo}}</td>
             <td>{{item.resName}}</td>
             <td>{{item.spec}}</td>
@@ -264,9 +271,9 @@
     </el-form>
 
     <!-- 添加弹出框 -->
-    <el-dialog title="查封、扣押场所、设施、财物清单" :visible.sync="addVisible" width="60%" v-loading="addLoading">
+    <el-dialog title="查封、扣押场所、设施、财物清单" append-to-body :visible.sync="addVisible" width="60%" v-loading="addLoading">
       <div>
-        <div>
+        <div  class="fullscreen">
           <el-form ref="addResFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <el-table-column prop="resNo" label="序号" align="center">
@@ -302,7 +309,7 @@
               </el-table-column>
             </el-table>
             <el-button icon="el-icon-circle-plus-outline" circle type="info" @click="addTableData"
-                       style="margin-left: 50%;margin-top: 10px"></el-button>
+                   class="evdence-form"     style="margin-left: 50%;margin-top: 10px"></el-button>
           </el-form>
         </div>
         <div style="margin-left: 45%;margin-top: 10px">
@@ -481,8 +488,12 @@ import {
         options: [
           {
             value: '1',
-            label: '(空)'
+            label: ' '
           },
+          // {
+          //   value: '1',
+          //   label: '(空)'
+          // },
           {
             value: '2',
             label: '份'
@@ -705,4 +716,9 @@ import {
     white-space: inherit;
     text-align-last: center;
   }
+  .evdence-form {
+  .el-icon-circle-close {
+    color: #7b7b7b !important;
+  }
+}
 </style>

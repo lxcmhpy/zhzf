@@ -5,6 +5,7 @@ import Vue from "vue";
 let vm = new Vue();
 
 let CHECK_API='http://172.16.170.91:8086/cy';//信息查验
+// let CHECK_API='http://124.192.215.11:8086/cy';//信息查验公网
 //业户查验
 export function yehuCheckApi(data) {
     console.log(data);

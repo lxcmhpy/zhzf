@@ -64,6 +64,7 @@
       <i class="iconfont law-back"></i>
       <br/>返回
     </el-button>
+    <img src="" id="show">
   </div>
 </template>
 <!--<script src="@/common/js/MultBrowser-1.0.2.js"></script>-->
@@ -83,7 +84,7 @@
     },
     props: ['formOrDocData', 'storagePath'],
     mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId'])},
+    computed: {...mapGetters(['caseId', 'docId'])},
     methods: {
       //   打印方法
       async printContent() {
@@ -194,19 +195,23 @@
           var path = string[0] + "//" + string[2] + "/";
           // path +
           let jsonApproveData = iLocalStroage.gets('jsonApproveData')
-          let Opinion = ''
+          let opinion = ''
           let time = ''
+          let step = ''
           if (jsonApproveData.approveOpinions) {
-            Opinion = jsonApproveData.approveOpinions
+            opinion = jsonApproveData.approveOpinions
             time = jsonApproveData.approveTime
+            step = '1'
           } else if (jsonApproveData.secondApproveOpinions) {
-            Opinion = jsonApproveData.secondApproveOpinions
+            opinion = jsonApproveData.secondApproveOpinions
             time = jsonApproveData.secondApproveTime
+            step = '2'
           } else if (jsonApproveData.thirdApproveOpinions) {
-            Opinion = jsonApproveData.thirdApproveOpinions
+            opinion = jsonApproveData.thirdApproveOpinions
             time = jsonApproveData.thirdApproveTime
+            step = '3'
           }
-          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0] + '&Opinion=' + Opinion + '&time=' + time;
+          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0] + '&Opinion=' + opinion + '&time=' + time + '&docId=' + _this.docId + '&step=' + step;
           console.log(ActivexURL);
           _this.makeSealStr = ActivexURL;
           window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);

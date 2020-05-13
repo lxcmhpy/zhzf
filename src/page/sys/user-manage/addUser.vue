@@ -5,6 +5,7 @@
     :visible.sync="visible"
     top="0"
     width="40%"
+    @close="closeDialog"
     :close-on-click-modal="false"
   >
     <el-form
@@ -13,8 +14,6 @@
       ref="addUserForm"
       label-width="100px"
       class="addOrganClass"
-      @close="closeDialog"
-      :close-on-click-modal="false"
     >
       <div class="part">
         <p class="titleP">登录信息</p>

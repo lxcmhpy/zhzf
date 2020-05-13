@@ -92,7 +92,7 @@ export default {
             caseInfo: row
           }
         });
-        let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+        let setCaseNumber = row.caseNumber != '' ? row.caseNumber : row.tempNo;
         this.$store.commit("setCaseNumber", setCaseNumber);
       }
     }

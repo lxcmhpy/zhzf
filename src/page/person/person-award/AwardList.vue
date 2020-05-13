@@ -114,6 +114,7 @@ export default {
                 modifyTime: "",
                 isDel: "",
                 dataType: "",
+                personId:"",
             },
             selectDataIdList:[],//选中执法人员id
             pickerOptions: {
@@ -206,16 +207,17 @@ export default {
         },
         //条件查询
         getAward() {
-            let data = {
-                awardType:this.listAwardForm.awardType,
-                awardDate:this.listAwardForm.awardDate,
-                awardDateInfo: this.listAwardForm.awardDateInfo,
-                dataType:this.listAwardForm.dataType,
-				current: this.currentPage,
-                size: this.pageSize
-            };
             let _this = this
-            this.$store.dispatch("getAwardListMoudle", data).then(res => {
+            let data = {
+                awardType: _this.listAwardForm.awardType,
+                awardDate: _this.listAwardForm.awardDate,
+                awardDateInfo: _this.listAwardForm.awardDateInfo,
+                dataType: _this.listAwardForm.dataType,
+				current: _this.currentPage,
+                size: _this.pageSize,
+                personId: _this.$route.params.personInfo.personId,
+            };
+            _this.$store.dispatch("getAwardListMoudle", data).then(res => {
                 _this.tableData = res.data.records;
                 _this.totalPage = res.data.total;
             });

@@ -52,7 +52,11 @@
           <el-table-column prop="CertificateCode" label="从业资格证号" align="center"></el-table-column>
           <el-table-column prop="WorkTypeCode" label="从业资格类别" align="center"></el-table-column>
           <el-table-column prop="LicenseIssueOrganCode" label="发证机关" align="center"></el-table-column>
-          <el-table-column prop="zjyxq" label="证件有效期" align="center"></el-table-column>
+          <el-table-column label="证件有效期" align="center">
+            <template slot-scope="scope">
+                <span>{{scope.row.CertificateIssueDate}}</span> ~ <span>{{scope.row.CertificateExpireDate}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="CertificateState" label="资格证状态" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
                 <template slot-scope="scope" >
@@ -77,7 +81,7 @@ export default {
     transportWorkerSee
   },
   data() {
-//     OwnerName:北京京版物流有限责任公司
+//     OwnerName:北京京版物流有限责任公司啊
 // LicenseCode:货备110115000169
 // ProvinceCode:110000
     return {
@@ -255,6 +259,7 @@ export default {
       this.$store.dispatch("dlyscyryCheck", this.checkData).then(
         res => {
           console.log('返回', res)
+          res.data[0].staffName = this.checkData.staffName;
           _this.tableData = res.data;
           if (_this.tableData!=null &&  _this.tableData.length > 0) {
              _this.dlyscyryAmount = res.data.length;
@@ -282,6 +287,24 @@ export default {
     },
     //查看
     transportWorkerSee(index, row) {
+      let certificateCode = this.checkData.certificateCode;
+      let sex;
+      let staffSex;
+      let staffBirth;
+      if(certificateCode.length == 15){
+          staffSex = certificateCode.substring(13,14);
+          staffBirth = "19"+certificateCode.substring(6,8)+"-"+certificateCode.substring(8,10)+"-"+certificateCode.substring(10,12);
+      }
+      if(certificateCode.length == 18){
+          sex = certificateCode.substring(16,17);
+          staffBirth = certificateCode.substring(6,10)+"-"+certificateCode.substring(10,12)+"-"+certificateCode.substring(12,14);
+        }
+      if(sex%2 === 0)
+        staffSex = '女';
+      else
+        staffSex = '男';
+      row.staffSex = staffSex;
+      row.staffBirth = staffBirth;
       this.$refs.transportWorkerSeeRef.transportWorkerSee(row);
     }
   }

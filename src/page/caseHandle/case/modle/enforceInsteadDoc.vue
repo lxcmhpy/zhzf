@@ -149,8 +149,8 @@
                       <input type="checkbox" name="people" value="2" v-model="docData.peoples" @change="clickPeople">第三人： -->
                 <el-form-item prop="peoples" :rules="fieldRules('peoples',propertyFeatures['peoples'])">
                   <el-checkbox-group v-model="docData.peoples" :max="1" :disabled="fieldDisabled(propertyFeatures['peoples'])" @change="clickPeople">
-                    <el-checkbox label="0" >本机关</el-checkbox>
-                    <el-checkbox label="1" >第三人：</el-checkbox>
+                    <el-checkbox label="1" >本机关</el-checkbox>
+                    <el-checkbox label="2" >第三人：</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
           <span>
@@ -483,6 +483,10 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      if (this.disabledOne && this.disabledTwo ) {
+          this.$message("请选择处罚方式");
+          return
+        }
       this.docData.checknames = this.checknames;
       // this.docData.peoples=this.peoples;
       console.log('this.docData', this.docData)
@@ -512,9 +516,9 @@ export default {
     clickPeople(){
       console.log(this.docData.peoples);
       debugger 
-      if(this.docData.peoples == '0'){
+      if(this.docData.peoples == '1'){
         this.disabledThree = true;
-      }else if(this.docData.peoples == '1'){
+      }else if(this.docData.peoples == '2'){
         this.disabledThree = false;
       } else {
         this.disabledThree = true;
