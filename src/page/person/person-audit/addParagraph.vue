@@ -108,16 +108,23 @@ export default {
         approveResult: this.dialogTitle,
       };
       this.btnDisabled = true;
-      this.$store.dispatch("addApproveMoudle", data).then(res => {
-        this.btnDisabled = false;
-        if(res.code === 200){
-          this.$message({ type: "success", message: `${this.dialogTitle}!`});
-          this.$emit("getAllPersons");
-          this.visible=false;
+      this.$refs.approveForm.validate((valid) => {
+        if (valid) {
+          this.$store.dispatch("addApproveMoudle", data).then(res => {
+            this.btnDisabled = false;
+            if(res.code === 200){
+              this.$message({ type: "success", message: `${this.dialogTitle}!`});
+              this.$emit("getAllPersons");
+              this.visible=false;
+            }
+          }, err => {
+            this.btnDisabled = false;
+            this.$message({type: 'error', message: err.msg || ''})
+          });
+        } else {
+          this.btnDisabled = false;
+          return false;
         }
-      }, err => {
-        this.btnDisabled = false;
-        this.$message({type: 'error', message: err.msg || ''})
       });
     },
     showModal(approveId, approveStatus) {

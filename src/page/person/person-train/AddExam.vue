@@ -228,6 +228,10 @@ export default {
       let _this = this;
       _this.visible = false;
       _this.$refs["addExamFormRef"].resetFields();
+       for (const key in this.addExamForm) {
+          this.addExamForm[key] = "";
+        }
+        _this.addExamForm.personId = this.params.id;
       _this.errorName = false;
     }
   }

@@ -41,7 +41,7 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="visible = false">取 消</el-button>
+            <el-button @click="closeDialog()">取 消</el-button>
             <el-button type="primary" @click="submit('addPunishmentForm')">保 存</el-button>
         </div>
     </el-dialog>
@@ -111,7 +111,7 @@ export default {
                                     type: "success",
                                     message:  "添加成功!",
                                 });
-                                _this.visible = false;
+                                _this.closeDialog();
                         }, err => {this.$message.error(err.msg)});
                     }else if(_this.handelType===2){
                         _this.$store.dispatch("updateAwardMoudle", _this.addPunishmentForm).then(res => {
@@ -120,7 +120,7 @@ export default {
                                     type: "success",
                                     message:  "修改成功!",
                                 });
-                                _this.visible = false;
+                                _this.closeDialog();
                         }, err => this.$message.error(err.msg));
                     }
                 } else {
@@ -154,10 +154,19 @@ export default {
         //关闭弹窗的时候清除数据
         closeDialog() {
             let _this = this 
-            _this.visible = false;
             _this.$refs["addPunishmentForm"].resetFields();
+            _this.emptyForm();
+            _this.visible = false;
             _this.errorName = false;
         },
+        // 清空表单数据
+        emptyForm(){
+            for(const key in this.addPunishmentForm){
+                this.addPunishmentForm[key] = '';
+            }
+            this.addPunishmentForm.personId = this.params.id;
+            this.addPunishmentForm.dataType = '1';
+        }
     },
     created(){
         let _this = this 

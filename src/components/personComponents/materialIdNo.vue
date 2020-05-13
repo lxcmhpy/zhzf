@@ -116,7 +116,7 @@ export default {
     },
     handleChange(file,fileList){
       const fileIndex = fileList.findIndex(item => item.uid === file.uid);
-      const isGt2M = file.size / 1024 / 1024 > 2
+      const isGt2M = file.size / 1024 / 1024 > 2;
       if(isGt2M) {
         this.$message({ message: '上传文件大小不能超过 2MB!', type: 'warning'});
         fileList.splice(fileIndex, 1);
@@ -162,6 +162,7 @@ export default {
     // 修改图片重新选择图片
     handleEditChange(file, fileList){
       const currentFile = this.idNoFiles.filter(item => item.uid === file.uid);
+      const isGt2M = file.size / 1024 / 1024 > 2;
       if(isGt2M) {
         this.$message({ message: '上传文件大小不能超过 2MB!', type: 'warning'});
         fileList.splice(fileIndex, 1);
