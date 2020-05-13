@@ -1,68 +1,96 @@
 <template>
   <div>
     <div>
-      <div style="margin-top:35px;margin-bottom:25px;margin-left:25px;">
-        <font style="font-size:25px;"><span class="titleflag"></span>调动信息</font> 
+      <div class="card-title">
+        <font class="font" style="font-size:25px;"><span class="titleflag"></span>调动信息</font> 
       </div>
       <el-table
         style="margin-left:25px; width:97%;margin-bottom:35px;"
         :data="tableData"
         resizable
         stripe>
-        <el-table-column prop="date" label="转出单位"></el-table-column>
-        <el-table-column prop="name" label="转出时间"></el-table-column>
-        <el-table-column prop="address" label="转出执法门类"></el-table-column>
-        <el-table-column prop="address" label="执法证号"></el-table-column>
-        <el-table-column prop="address" label="转入单位"></el-table-column>
-        <el-table-column prop="address" label="转入时间"></el-table-column>
-        <el-table-column prop="address" label="转入执法门类"></el-table-column>
-        <el-table-column prop="address" label="调岗状态"></el-table-column>
-        <el-table-column prop="address" label="操作人"></el-table-column>
-        <el-table-column prop="address" label="操作时间"></el-table-column>
+        <el-table-column prop="transferStatusName" label="调岗状态" align="center"></el-table-column>
+        <el-table-column prop="outOName" label="调出机构" align="center"></el-table-column>
+        <el-table-column prop="outTime" label="调出时间" align="center"></el-table-column>
+        <el-table-column prop="createName" label="调出操作人" align="center"></el-table-column>
+        <el-table-column prop="inOName" label="调入机构" align="center"></el-table-column>
+        <el-table-column prop="inTime" label="调入时间" align="center"></el-table-column>
+        <el-table-column prop="modifyName" label="调入操作人" align="center"></el-table-column>
       </el-table>
+      <div class="paginationBox" style="margin-top:-25px;margin-bottom:10px;margin-left:40%;">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          background
+          :page-sizes="[10, 20, 30, 40, 50]"
+          layout="prev, pager, next,sizes,jumper"
+          :total="totalPage"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-    export default {
-        name: "adjustingPosts",//调岗组件
-        data(){
-          return {
-            tableData: [],
-            currentPage: 1, //当前页
-            pageSize: 20,   //pagesize
-          }
-        },
-        methods:{
-          getAdjustingPostsInfo(){
-            let paramsData={
-              current: this.currentPage,
-              size: this.pageSize,
-              personId: this.$route.params.personInfo.personId,
-            }
-            let _this = this
-            this.$store.dispatch("getTransferListMoudle",paramsData).then(res=>{
-                  _this.tableData = res.data.records;
-            });
-            error=>{
-              console.info(error);
-            };
-          }
-        },
-        created(){
-          this.getAdjustingPostsInfo();
-        }
+import {mixinPerson} from '@/common/js/personComm';
+export default {
+  name: "adjustingPosts",//调岗组件
+  mixins:[mixinPerson],
+  props: {
+    params: {
+      type: Object,
+      default: () => {
+        return { type: 'add', id: '' }
+      },
+      required: true
     }
+  },
+  data(){
+    return {
+      personId: this.params.id,
+      tableData:[],
+    }
+  },
+  methods:{
+    //更改每页显示的条数
+    handleSizeChange(val) {
+      let _this = this
+      _this.pageSize = val;
+      this.getAdjustingPostsInfo();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      let _this = this
+      _this.currentPage = val;
+      _this.getAdjustingPostsInfo();
+    },
+    getAdjustingPostsInfo(){
+      let _this = this 
+      let paramsData={
+        current: _this.currentPage,
+        size: _this.pageSize,
+        personId: _this.personId
+      }
+      if(_this.params.type == 'edit' || _this.params.type == 'view'){
+        _this.getPageList("getTransferListMoudle", paramsData);
+      }
+    }
+  },
+  created(){
+    let _this = this 
+    _this.getAdjustingPostsInfo();
+  }
+}
 </script>
 
 <style lang="scss" scoped>
   @import "@/assets/css/personManage.scss";
   .titleflag {
-                width      : 4px;
-                height     : 22px;
-                margin-right: 8px;
-                display    : inline-block;
-                background : #4573D0;
-            }
+    width      : 4px;
+    height     : 22px;
+    margin-right: 8px;
+    display    : inline-block;
+    background : #4573D0;
+  }
 </style>

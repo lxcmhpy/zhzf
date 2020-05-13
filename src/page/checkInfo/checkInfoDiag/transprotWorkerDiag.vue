@@ -14,14 +14,14 @@
                     <td class="tg-y93n" style="width:120px;">姓名</td>
                     <td class="tg-cly1" style="width:130px;">{{dlyscyryForm.staffName}}</td>
                     <td class="tg-y93n" style="width:50px;">性别</td>
-                    <td class="tg-cly1" style="width:120px;"></td>
+                    <td class="tg-cly1" style="width:120px;">{{dlyscyryForm.staffSex}}</td>
                     <td class="tg-y93n" style="width:100px;">出生日期</td>
-                    <td class="tg-cly1" style="width:150px;"></td>
+                    <td class="tg-cly1" style="width:150px;">{{dlyscyryForm.staffBirth}}</td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <td class="tg-y93n">地址</td>
                     <td class="tg-cly1" colspan="5"></td>
-                </tr>
+                </tr> -->
                 <tr>
                     <td class="tg-y93n">从业资格证号</td>
                     <td class="tg-cly1" colspan="2">{{dlyscyryForm.CertificateCode}}</td>
@@ -44,7 +44,7 @@
                     <td class="tg-y93n">户籍地行政区划</td>
                     <td class="tg-cly1" colspan="2">{{dlyscyryForm.StaffZoneCode}}</td>
                     <td class="tg-y93n">从业资格证类别</td>
-                    <td class="tg-cly1" colspan="2"></td>
+                    <td class="tg-cly1" colspan="2">{{dlyscyryForm.WorkTypeCode}}</td>
                 </tr>
             </table>
         </div>

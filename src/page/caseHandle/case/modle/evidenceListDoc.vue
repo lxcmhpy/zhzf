@@ -53,7 +53,7 @@
             <td rowspan="4"> 单位 </td>
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],validatePhone,!isParty)">
+              <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
                 <el-input v-model="docData.partyName" :maxLength='maxLength' 
                 :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])" placeholder="\"></el-input>
               </el-form-item>
@@ -125,7 +125,7 @@
           </span>）。在此期间，当事人或有关人员不得销毁或转移证据。
         </p>
 
-        <div @click="handleAdd">
+        <!-- <div @click="handleAdd"> -->
           <!-- <el-table :data="tableData" border stripe  style="width: 100%">
             <el-table-column prop="evidenceNo" label="序号" width="120"  align="center"></el-table-column>
             <el-table-column prop="evidenceName" label="证据名称"  align="center"></el-table-column>
@@ -142,7 +142,14 @@
               <td width="10%">数量</td>
               <td width="40%">登记保存地点</td>
             </tr>
-            <tr v-for="(item,index) in docData.tableData" :key="index">
+            <tr v-if="docData.tableData.length==0"  @click="handleAdd">
+              <td></td>
+              <td ></td>
+              <td></td>
+              <td></td>
+              <td ></td>
+            </tr>
+            <tr v-for="(item,index) in docData.tableData" :key="index"  @click="handleAdd">
               <td>{{item.evidenceNo}}</td>
               <td >{{item.evidenceName}}</td>
               <td>{{item.spec}}</td>
@@ -151,7 +158,7 @@
             </tr>
          </table>
 
-        </div>
+        <!-- </div> -->
         <el-form-item  prop="evidenceLength" style="visibility:hidden">
           <el-input v-model="docData.evidenceLength"></el-input>
         </el-form-item>
@@ -181,9 +188,9 @@
     </div>
 
     <!-- 添加弹出框 -->
-    <el-dialog title="登记保存物品" :visible.sync="addVisible" width="60%" v-loading="addLoading" :before-close="handleClose">
+    <el-dialog title="登记保存物品" :visible.sync="addVisible" append-to-body width="60%" v-loading="addLoading" :before-close="handleClose">
       <div>
-        <div>
+        <div  class="fullscreen">
           <el-form ref="addEvidenceFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <el-table-column  prop="evidenceNo" label="序号" align="center">
@@ -216,9 +223,9 @@
                 </template>
               </el-table-column>
 
-              <el-table-column width="52%" >
+              <el-table-column width="52%">
                 <template slot-scope="scope">
-                  <el-button size="mini" icon="el-icon-circle-close" circle @click="handleRow(scope.row)"></el-button>
+                  <el-button size="mini" class="evdence-form" icon="el-icon-circle-close" circle @click="handleRow(scope.row)" style="border-radius: 50px;"></el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -449,12 +456,14 @@ export default {
           this.docData.acceptTreatmentStartDate = '';
           this.docData.acceptTreatmentNumber = '';
         }else{
-          this.docData.acceptTreatmentNumber = this.docData.acceptTreatmentEndDate - this.docData.acceptTreatmentStartDate;
+          // this.docData.acceptTreatmentNumber = this.docData.acceptTreatmentEndDate - this.docData.acceptTreatmentStartDate;
+          this.docData.acceptTreatmentNumber = new Date(this.docData.acceptTreatmentEndDate) - new Date(this.docData.acceptTreatmentStartDate);
           this.docData.acceptTreatmentNumber = Math.abs(this.docData.acceptTreatmentNumber)
           // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
           this.docData.acceptTreatmentNumber = this.docData.acceptTreatmentNumber / (24 * 3600 * 1000);
           // 取整
-          this.docData.acceptTreatmentNumber = Math.floor(this.docData.acceptTreatmentNumber) + 1;
+          console.log(this.docData.acceptTreatmentNumber,'this.docData.acceptTreatmentNumber')
+          this.docData.acceptTreatmentNumber = Math.floor(this.docData.acceptTreatmentNumber) ;
           this.$set(this.docData, 'acceptTreatmentNumber',  this.docData.acceptTreatmentNumber);
           // 有问题，第一次点击不回显
           console.log("timestamp", this.docData.acceptTreatmentNumber)
@@ -471,12 +480,14 @@ export default {
           this.docData.acceptTreatmentEndDate = '';
           this.docData.acceptTreatmentNumber = '';
         }else{
-          this.docData.acceptTreatmentNumber = this.docData.acceptTreatmentEndDate - this.docData.acceptTreatmentStartDate;
+          console.log('时间',this.docData.acceptTreatmentStartDate,this.docData.acceptTreatmentEndDate)
+          this.docData.acceptTreatmentNumber = new Date(this.docData.acceptTreatmentEndDate) - new Date(this.docData.acceptTreatmentStartDate);
           this.docData.acceptTreatmentNumber = Math.abs(this.docData.acceptTreatmentNumber)
+          console.log('this.docData.acceptTreatmentEndDate',this.docData.acceptTreatmentEndDate)
           // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
           this.docData.acceptTreatmentNumber = this.docData.acceptTreatmentNumber / (24 * 3600 * 1000);
           // 取整
-          this.docData.acceptTreatmentNumber = Math.floor(this.docData.acceptTreatmentNumber) + 1;
+          this.docData.acceptTreatmentNumber = Math.floor(this.docData.acceptTreatmentNumber) ;
 
           this.$set(this.docData, 'acceptTreatmentNumber',  this.docData.acceptTreatmentNumber);
           // 有问题，第一次点击不回显
@@ -569,5 +580,9 @@ export default {
   white-space: inherit;
   text-align-last: center;
 }
-
+.evdence-form {
+  .el-icon-circle-close {
+    color: #7b7b7b !important;
+  }
+}
 </style>

@@ -4,68 +4,34 @@
         :visible.sync="visible"
         @close="closeDialog"
         :close-on-click-modal="false"
-        width="25%">
-        <el-form :inline="true" :model="addPersonForm" label-position="right"  label-width="100px" ref="addPersonForm">
-            <el-row style="height:1px;">
-                <el-form-item label="id" prop="personId" v-show="false">
-                    <el-input v-model="addPersonForm.personId"></el-input>
+        width="35%">
+        <el-form :model="addPersonForm" label-position="right"  label-width="100px"  ref="addPersonForm">
+            <div v-if="change">是否确认到期换证？</div>
+            <el-row style="height:80px;" v-if="exist">
+                <el-form-item label="变化原因" prop="reason">
+                    <el-input v-model="addPersonForm.reason"  type="textarea" rows=""></el-input>
                 </el-form-item>
             </el-row>
-            <el-row style="height:36px;">
-                <el-form-item label="执法机构:" prop="attached">
-                    <el-select v-model="addPersonForm.attached" style="width: 260px;" placeholder="机构名称">
-                        <el-option label="宁夏回族自治区交通运输厅" value="0"></el-option>
-                        <el-option label="XX交通局" value="1"></el-option>
-                        <el-option label="XX交通局" value="2"></el-option>
-                        <el-option label="XX交通局" value="3"></el-option>
-                    </el-select>
-                </el-form-item>
-               
-            </el-row>
-            <span style="display:inline-block">
-                            <input type="checkbox"  value="0">综合执法
-                        </span>
-                        <span style="display:inline-block">
-                        <input type="checkbox"  value="1">工程质量监督
-                        </span>
-                        <span style="display:inline-block">
-                        <input type="checkbox"  value="2">公路路政
-                        </span>
-                        <span style="display:inline-block">
-                        <input type="checkbox"  value="3">水路交通行政执法
-                        </span>
-                        <span style="display:inline-block">
-                        <input type="checkbox"  value="4">高速公路路政
-                        </span>
-            
-            <el-form-item label="执法门类:" prop="attached">
-                <el-row style="height:36px;">
-                        
-                    </el-row>
+            <el-row style="height:36px;" v-if="false">
+                <el-form-item label="实卡归属" prop="attribution">
+                     <el-select v-model="addPersonForm.attribution" placeholder="实卡归属" remote  @focus="getDepatements('证件信息-实卡归属','attributionList')">
+                        <el-option
+                            v-for="value in attributionList" :key="value.id" :label="value.name" :value="value.id">
+                      </el-option>
+                </el-select>
               </el-form-item>
-           <el-row style="height:36px;">
-                <el-form-item label="号段起:" prop="branchId">
-                    <el-input v-model="addPersonForm.branchId" style="width:260px;"></el-input>
+            </el-row>
+            <el-row style="height:90px;" v-if="false">
+                <el-form-item label="备注:" prop="remark">
+                    <el-input v-model="addPersonForm.remark"  type="textarea" rows=""></el-input>
                 </el-form-item>
             </el-row>
-            <el-row style="height:40px;">
-                <el-form-item label="号段止:" prop="provinceNo">
-                    <el-input v-model="addPersonForm.provinceNo" style="width:260px;"></el-input>
-                </el-form-item>
-            </el-row>
-             <el-row style="height:40px;">
-                <el-form-item label="备注:" prop="ministerialNo">
-                    <el-input v-model="addPersonForm.ministerialNo" style="width:260px;"></el-input>
-                </el-form-item>
-            </el-row>
-          
-            <div class="item" style="text-align:center;margin-top:10px;">
-                <span slot="footer" class="dialog-footer">
-                    <!-- <el-button type="danger"  @click="visible = false" icon="el-icon-close">取 消</el-button> -->
-                    <el-button type="success" @click="submitPerson('addPersonForm')" icon="el-icon-check">提 交</el-button>
-                </span>
-            </div>
+           
         </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="closeDialog">取 消</el-button>
+            <el-button type="primary" @click="submitPerson()">确 定</el-button>
+        </div>
     </el-dialog>
 </template>
 <script>
@@ -74,121 +40,228 @@ export default {
     data(){
         return{
              searchType:[{value:0,label:'本机构'},{value:1,label:'本机构及子机构'}],
-            imageUrl: '',
+            imageUrl: '', 
             visible: false,
+            attributionList:[],//实卡归属列表
             addPersonForm: {
-                personsId:"",//id
-                idNo: "",     //身份证号
-                personName:"",//执法人名
-                birthDate:"",//出生日期
-                nation:"",//民族
-                degree:"",//学历
-                politicalStatus:"",//政治面貌
-                admissionDate:"",//入党日期
-                school:"",//毕业学校
-                major:"",//专业
-                graduationNo:"",//毕业证书编号
-                oid:"",//所属机构
-                post:"",//职务
-                area:"",//执法区域
-                disChannel:"",//分配渠道
-                staffing:"",//人员编制
-                workDate:"",//参加工作时间
-                photo:"",//照片
-                branchId:"",//执法门类
-                enfoceDate:"",//从事执法日期
-                certNo:"",//执法证号
-                qualificationNo:"",//资格证书编号
-                provinceNo:"",//现持省内执法证号
-                ministerialNo:"",//现持部级执法证号
-                maritimeNo:"",//现持海事执法证号
-                note:"",//备注
-                certStatus:"",//证件状态
-                personStatus:"",//人员状态
-                attachedUrl:"",//附件路径
-                attached:"",//附件
-                photoUrl:"",//照片路径
-                personType:"",//人员类型
+                remark:"",//备注
+                attribution:"", //实卡归属
+                certId:"", 
+                reason:"", // 变化原因
+                type:"",//操作类型
             },
+            exist:true,
+            change:false,
+            show:"",
             dialogTitle: "", //弹出框title
             errorName: false, //添加name时的验证
             handelType: 0, //添加 0  修改2
         }
     },
     methods:{
-        handleAvatarSuccess(res, file) {
-            this.imageUrl = URL.createObjectURL(file.raw);
+       
+         //点击下拉框的时候后头获取下拉框数据
+        getDepatements(name,codeName){
+                this.$store.dispatch("findAllDrawerByName",name).then(    //查询执法领域
+                    res=>{
+                        if(res.code===200){
+                            if(codeName==='branchIdsInfo'){
+                                this.branchIdsInfo=res.data;
+                            }
+                            if(codeName==='attributionList'){
+                                console.log("数据字典"+JSON.stringify(res.data))
+                                this.attributionList=res.data;
+                            }
+                            if(codeName==='oidsInfo'){
+                                this.oidsInfo=res.data;
+                            }
+                            if(codeName==='stationStatusInfo'){
+                                this.stationStatusInfo=res.data;
+                            }
+                        }else{
+                            console.info("没有查询到数据");
+                        }
+                    }
+                );
         },
-        beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg';
-            const isLt2M = file.size / 1024 / 1024 < 2;
-
-            if (!isJPG) {
-            this.$message.error('上传头像图片只能是 JPG 格式!');
-            }
-            if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 2MB!');
-            }
-            return isJPG && isLt2M;
-        },
-        //提交怎么
+        //提交
         submitPerson() {
             let data = {
-                personId:this.addPersonForm.personId,
-                idNo: this.addPersonForm.idNo,
-                personName: this.addPersonForm.personName,
-                sex: this.addPersonForm.sex,
-                zfzh: this.addPersonForm.zfzh,
-                zfml:this.addPersonForm.zfml,
-                zjzt:this.addPersonForm.zjzt,
-                ssjg:this.addPersonForm.ssjg,
-                prof:this.addPersonForm.prof
+                remark:this.addPersonForm.remark,
+                attribution: this.addPersonForm.attribution,
+                certId: this.addPersonForm.certId,
+                reason: this.addPersonForm.reason,
             };
-            if(this.handelType==1){
-                this.$store.dispatch("addPersonInfo", this.addPersonForm).then(res => {
-                    this.$emit("getAllPersons");
+            let type = this.addPersonForm.type;
+            if(type == 1){ //挂失
+                this.$store.dispatch("lossDocMoudle", data).then(res => {
+                    console.log("返回参数"+JSON.stringify(res));console.log("返回参数"+JSON.stringify(res));
+                    this.visible = false;
+                    if(res.code == '200'){
+                        this.$emit("getAllPersons");
                         this.$message({
                             type: "success",
-                            message:  "添加成功!",
+                            message:  "挂失成功!",
                         });
+                    }else{
+                         this.$message({
+                            type: "error",
+                            message:  "挂失失败!",
+                        });
+                    }
+                    }, err => {
                         this.visible = false;
+                        this.$message({ type: 'warning', message: err.msg || '' });
                     });
-                    err => {
-                        console.log(err);
-                };
-            }else if(this.handelType==2){
-                this.$store.dispatch("updatePersonInfo", this.addPersonForm).then(res => {
-                    this.$emit("getAllPersons");
+            }else if(type == 2){ //暂扣
+                 this.$store.dispatch("withholdMoudle", data).then(res => {
+                     console.log("返回参数"+JSON.stringify(res));
+                    this.visible = false;
+                    if(res.code == '200'){
+                        this.$emit("getAllPersons");
                         this.$message({
                             type: "success",
-                            message:  "修改成功!",
+                            message:  "暂扣成功!",
                         });
-                        this.visible = false;
-                    });
-                    err => {
-                        console.log(err);
-                };
+                    }else{
+                         this.$message({
+                            type: "error",
+                            message:  "暂扣失败!",
+                        });
+                    }   
+                 }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                 });
+            }else if(type == 3){ //解除暂扣
+                this.$store.dispatch("unWithholdMoudle", data).then(res => {
+                    console.log("返回参数"+JSON.stringify(res));
+                    this.visible = false;
+                    if(res.code == '200'){
+                        this.$emit("getAllPersons");
+                        this.$message({
+                            type: "success",
+                            message:  "解除暂扣成功!",
+                        });
+                    }else{
+                         this.$message({
+                            type: "error",
+                            message:  "解除暂扣失败!",
+                        });
+                    }
+                }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                });
+            }else if(type == 4){ //注销
+                this.$store.dispatch("logoffMoudle", data).then(res => {
+                    if(res.code == '200'){
+                        this.$emit("getAllPersons");
+                        this.$message({
+                            type: "success",
+                            message:  "注销成功!",
+                        });
+                    }else{
+                         this.$message({
+                            type: "error",
+                            message:  "注销失败!",
+                        });
+                    }
+                }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                });
+            }else if(type == 5){ //吊销
+                this.$store.dispatch("revokeMoudle", data).then(res => {
+                    this.visible = false;
+                    if(res.code == '200'){
+                        this.$emit("getAllPersons");
+                        this.$message({
+                            type: "success",
+                            message:  "吊销成功!",
+                        });
+                    }else{
+                         this.$message({
+                            type: "error",
+                            message:  "吊销失败!",
+                        });
+                    }
+                }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                });
+            }else if(type == 6){
+                 this.$store.dispatch("unLossDocMoudle", data).then(res => {
+                    this.visible = false;
+                    if(res.code == '200'){
+                        this.$emit("getAllPersons");
+                        this.$message({
+                            type: "success",
+                            message:  "解除挂失成功!",
+                        });
+                    }else{
+                         this.$message({
+                            type: "error",
+                            message:  "解除挂失失败!",
+                        });
+                    }
+                 }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                 });
+            }else if(type == 7){
+                let data1 = {
+                certId: this.addPersonForm.certId,
+              };
+              console.info(JSON.stringify(data1))
+                 this.$store.dispatch("changeCertByEndDateMoudle", data1).then(res => {
+                    this.visible = false;
+                    if(res.code == '200'){
+                        this.$emit("getAllPersons");
+                        this.$message({
+                            type: "success",
+                            message:  "到期换证成功",
+                        });
+                    }else{
+                         this.$message({
+                            type: "error",
+                            message:  "到期换证失败!",
+                        });
+                    }
+                 }, err => {
+                    this.visible = false;
+                    this.$message({ type: 'warning', message: err.msg || '' });
+                 });
             }
-
-        },
-        showModal(type,row) {
-            alert("aaaa");
+                
+            },
+        showModal(type,data) {
             this.visible = true;
+            this.change = false;
             this.handelType = type;
-            if(type==1){//新增
-                this.dialogTitle = "新增执法号段";
-            }else if(type==2){//修改
-            //     this.addPersonForm.personId=row.personId;
-            //     this.addPersonForm.idNo=row.idNo;
-            //     this.addPersonForm.personName=row.personName;
-            //     this.addPersonForm.zfzh=row.zfzh;
-            //     this.addPersonForm.zfml=row.zfml;
-            //     this.addPersonForm.ssjg=row.ssjg;
-            //     this.addPersonForm.zjzt=row.zjzt;
-            //     this.addPersonForm.set=row.sex;
-            //     this.addPersonForm.prof=row.prof;
+            this.addPersonForm.certId = data.certId;
+            this.addPersonForm.type = type;
+            if(type==1){
+                this.dialogTitle = "证件管理-挂失";
+            }else if(type==2){
+                this.dialogTitle = "证件管理-暂扣";
+            }else if(type==3){
+                this.dialogTitle = "证件管理-解除暂扣";
+            }else if(type==4){
+                this.show=false;
+                this.dialogTitle = "证件管理-注销";
+            }else if(type==5){
+                this.show=false;
+                this.dialogTitle = "证件管理-吊销";
+            }else if(type == 6){
+                this.dialogTitle = "证件管理—解除挂失";
+            }else if(type == 7){
+                 this.dialogTitle = "证件管理—到期换证";
+                 this.exist = false;
+                 this.change = true
             }
 
+        
          },
          //聚焦清除错误信息
         focusName() {
@@ -200,33 +273,17 @@ export default {
             this.$refs["addPersonForm"].resetFields();
             this.errorName = false;
         },
+         },
     }
-}
 </script>
 <style lang="scss">
 @import "@/assets/css/personManage.scss";
-
-.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 260px;
-    height: 150px;
-    line-height: 150px;
-    text-align: center;
-  }
-  .avatar {
-    width: 260px;
-    height: 150px;
-    display: block;
-  }
+</style>
+<style lang="scss" scoped>
+>>>.el-date-editor.el-input, >>>.el-select{
+  width: 100%;
+}
+>>>.el-select{
+  display: block;
+}
 </style>

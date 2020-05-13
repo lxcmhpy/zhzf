@@ -162,7 +162,7 @@
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
 import {
-  findByCaseIdAndDocIdApi
+  findByCaseIdAndDocIdSongdaApi
 } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
@@ -242,15 +242,15 @@ export default {
       this.$router.push({name:'case_handle_deliveryCertificate'});
     },
     handleEdit(index, row) {
-    debugger
         let data = {
             caseId:row.caseId,
             // docId: row.caseSerProofId,
-            docId:'2c9029cf6931aa5c01693381ac690018'
+            docId:row.id
         };
         let _that = this
-        findByCaseIdAndDocIdApi(data).then(res=>{
-            debugger
+ 
+        findByCaseIdAndDocIdSongdaApi(data).then(res=>{
+
             _that.mlList = _that.host + res.data[0].storageId;
 
         },err=>{
@@ -261,7 +261,6 @@ export default {
     },
     //表单筛选
     getDeliverReList(val) {
-      debugger
       console.log('caseId=',this.caseId)
       this.currentPage = val;
       let data = {
@@ -350,7 +349,7 @@ export default {
       this.$refs.deliverReceiptFormRef.showModal();
     },
     viewDocPdf(row) {
-        debugger
+        
         console.log('row',row)
         let routerData = {
           hasApprovalBtn: false,
@@ -358,9 +357,12 @@ export default {
           docId: '2c9029cf6931aa5c01693381ac690018',
           approvalOver: false,
           hasBack: true,
-          docDataId:row.caseSerProofId
+          docDataId:row.caseSerProofId,
+          status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
+        // docDataId:row.docDataId
+          id:row.id
         };
-        debugger
+        
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.push({ name: "case_handle_myPDF", params: routerData });
       },

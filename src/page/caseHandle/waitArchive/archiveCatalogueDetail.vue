@@ -525,9 +525,9 @@ export default {
       this.$store.dispatch("getByMlCaseIdNew", caseId).then(
         res => {
             console.log('文书列表',res)
-          res.data = res.data.sort(function(a,b){
-            return a.num - b.num;
-          });
+          // res.data = res.data.sort(function(a,b){
+          //   return a.num - b.num;
+          // });
           res.data.forEach(item=>{
             if(!item.name){
               item.name = item.evName;

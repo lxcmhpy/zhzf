@@ -123,6 +123,11 @@ export default {
       // this.$store.dispatch("crewCheckApiKyxlbsp", data).then(res => {
         crewCheckApiKyxlbsp(data).then(res => {
           console.log("列表",res);
+          if(res.data==null){
+              this.$message({
+              message: "无数据！",
+            });
+          }
         _this.tableData = res.data;
       });
     },

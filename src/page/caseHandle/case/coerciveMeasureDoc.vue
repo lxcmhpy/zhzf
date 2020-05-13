@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="118px">
+    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="130px">
       <div class="content_box">
         <div class="content">
           <div class="content_title">
@@ -10,41 +10,41 @@
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" :disabled="true"></el-input>
+                <el-form-item prop="caseNumber" label="案号" :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
+                  <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" :disabled="fieldDisabled(propertyFeatures['caseNumber'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="案由">
-                  <el-input ref="caseCauseName" clearable class="w-120" v-model="formData.caseCauseName" size="small" :disabled="true"></el-input>
+                <el-form-item prop="caseCauseName" label="案由" :rules="fieldRules('caseCauseName',propertyFeatures['caseCauseName'])">
+                  <el-input ref="caseCauseName" clearable class="w-120" v-model="formData.caseCauseName" size="small" :disabled="fieldDisabled(propertyFeatures['caseCauseName'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="个人姓名" :prop="isParty ? 'party' :''">
-                  <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入" :disabled=" isParty && originalData.party ? true : false"></el-input>
+                <el-form-item label="个人姓名" prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
+                  <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入" :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="身份证号" :prop="isParty ? 'partyIdNo' :''">
-                  <el-input clearable class="w-120" v-model="formData.partyIdNo" size="small" placeholder="请输入" :disabled=" isParty && originalData.partyIdNo ? true : false"></el-input>
-                </el-form-item>
-              </div>
-            </div>
-            <div class="row" v-if="isParty">
-              <div class="col">
-                <el-form-item label="联系电话" :prop="isParty ? 'partyTel' :''">
-                  <el-input ref="partyTel" clearable class="w-120" v-model="formData.partyTel" size="small" placeholder="请输入" :disabled=" isParty && originalData.partyTel ? true : false"></el-input>
+                <el-form-item label="身份证号" prop="partyIdNo" :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)">
+                  <el-input clearable class="w-120" v-model="formData.partyIdNo" size="small" placeholder="请输入" :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
               <div class="col">
-                <el-form-item label="联系地址" :prop="isParty ? 'partyAddress' :''">
-                  <el-input ref="partyAddress" clearable class="w-120" v-model="formData.partyAddress" size="small" placeholder="请输入" :disabled=" isParty && originalData.partyAddress ? true : false"></el-input>
+                <el-form-item label="联系电话" prop="partyTel" :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone,isParty)">
+                  <el-input ref="partyTel" clearable class="w-120" v-model="formData.partyTel" size="small" placeholder="请输入" :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row" v-if="isParty">
+              <div class="col">
+                <el-form-item label="联系地址" prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'],'',isParty)">
+                  <el-input ref="partyAddress" clearable class="w-120" v-model="formData.partyAddress" size="small" placeholder="请输入" :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -52,60 +52,73 @@
             <!-- 单位 -->
             <div class="row" v-if="!isParty">
               <div class="col">
-                <el-form-item label="单位">
-                  <el-input ref="partyName" clearable class="w-120" v-model="formData.partyName" size="small" placeholder="请输入" :disabled=" !isParty && originalData.partyName ? true : false"></el-input>
+                <el-form-item label="单位" prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
+                  <el-input ref="partyName" clearable class="w-120" v-model="formData.partyName" size="small" placeholder="请输入" :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="地址">
-                  <el-input ref="partyUnitAddress" clearable class="w-120" v-model="formData.partyUnitAddress" size="small" placeholder="请输入" :disabled=" !isParty && originalData.partyUnitAddress ? true : false"></el-input>
+                <el-form-item label="地址" prop="partyUnitAddress" :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)">
+                  <el-input ref="partyUnitAddress" clearable class="w-120" v-model="formData.partyUnitAddress" size="small" placeholder="请输入" :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="!isParty">
               <div class="col">
-                <el-form-item label="法定代表人">
-                  <el-input ref="partyManager" clearable class="w-120" v-model="formData.partyManager" size="small" placeholder="请输入" :disabled=" !isParty && originalData.partyManager ? true : false"></el-input>
+                <el-form-item label="法定代表人" prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)">
+                  <el-input ref="partyManager" clearable class="w-120" v-model="formData.partyManager" size="small" placeholder="请输入" :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item label="联系电话">
-                  <el-input ref="partyUnitTel" clearable class="w-120" v-model="formData.partyUnitTel" size="small" placeholder="请输入" :disabled=" !isParty && originalData.partyUnitTel ? true : false"></el-input>
+                <el-form-item label="联系电话" prop="partyUnitTel" :rules="fieldRules('partyUnitTel',propertyFeatures['partyUnitTel'],validatePhone,!isParty)">
+                  <el-input ref="partyUnitTel" clearable class="w-120" v-model="formData.partyUnitTel" size="small" placeholder="请输入" :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row"  v-if="!isParty">
               <div class="col">
-                <el-form-item label="统一社会信用代码" class="line-height13">
-                  <el-input ref="socialCreditCode" clearable class="w-120" v-model="formData.socialCreditCode" size="small" placeholder="请输入" :disabled=" !isParty && originalData.socialCreditCode ? true : false"></el-input>
+                <el-form-item label="统一社会信用代码" prop="socialCreditCode" class="line-height13" :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)">
+                  <el-input ref="socialCreditCode" clearable class="w-120" v-model="formData.socialCreditCode" size="small" placeholder="请输入" :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="案发日期">
-                  <el-date-picker disabled style="width: 40%" v-model="formData.afsj" type="date" format="yyyy-MM-dd" placeholder=" -- ">
+                <el-form-item label="案发日期" prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])">
+                  <el-date-picker :disabled="fieldDisabled(propertyFeatures['afsj'])" style="width: 40%" v-model="formData.afsj" type="date" format="yyyy-MM-dd" placeholder=" -- ">
                   </el-date-picker>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="违法事实">
-                  <el-input disabled ref="caseCauseName" clearable class="w-120" v-model="formData.caseCauseName" size="small" placeholder="请输入" ></el-input>
+                <el-form-item label="违法事实" prop="illegalBasis" :rules="fieldRules('illegalBasis',propertyFeatures['illegalBasis'])">
+                  <el-input :disabled="fieldDisabled(propertyFeatures['illegalBasis'])" ref="illegalBasis" clearable class="w-120" v-model="formData.caseCauseName" size="small" placeholder="请输入" ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
-              <div class="col">
-                <el-form-item style="width: 100%" label="措施起止期限">
+              <div style="display:inline-block;width: 40%">
+                <el-form-item  prop="measureStartDate" label="措施起止期限" :rules="fieldRules('measureStartDate',propertyFeatures['measureStartDate'])">
+                    <el-date-picker :disabled="fieldDisabled(propertyFeatures['measureStartDate'])"  v-model="formData.measureStartDate" @change="startTime" type="date" format="yyyy-MM-dd" placeholder=" -- ">
+                    </el-date-picker>
+                </el-form-item>
+              </div>
+              <div style="display:inline-block;width: 5%;padding-top: 12px;text-align: center;">至</div>
+              <div style="display:inline-block;width: 30%">
+                <el-form-item  prop="measureEndDate" label-width="0px" :rules="fieldRules('measureEndDate',propertyFeatures['measureEndDate'])">
+                  <el-date-picker :disabled="fieldDisabled(propertyFeatures['measureEndDate'])"  v-model="formData.measureEndDate" type="date" format="yyyy-MM-dd" placeholder=" -- ">
+                    </el-date-picker>
+                </el-form-item>
+              </div>
+              <!-- <div class="col">
+                <el-form-item style="width: 100%" prop="measureStartDate" label="措施起止期限" :rules="fieldRules('measureStartDate',propertyFeatures['measureStartDate'])">
                   <el-date-picker disabled style="width: 40%" v-model="formData.measureStartDate" @change="startTime" type="date" format="yyyy-MM-dd" placeholder=" -- ">
                   </el-date-picker>
                   至
                   <el-date-picker disabled style="width: 40%" v-model="formData.measureEndDate" type="date" format="yyyy-MM-dd" placeholder=" -- ">
                   </el-date-picker>
                 </el-form-item>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -120,13 +133,13 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'">
+                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">
                     完成
                   </span>
                   <span v-if="scope.row.status == '0'">
                     暂存
                   </span>
-                  <span v-if="scope.row.status != '1' && scope.row.status != '0'">
+                  <span v-if="scope.row.status != '1' && scope.row.status != '0'  && scope.row.status != '2'">
                     -
                   </span>
                 </template>
@@ -134,14 +147,14 @@
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <!-- 已完成 -->
-                    <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
+                    <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">
                       <span @click="viewDoc(scope.row)">编辑</span>  
                       <span @click="delDocDataByDocId(scope.row)">清空</span>  
                     </span>
                     <!-- 无状态 -->
-                    <span  v-if="scope.row.status != '1' && scope.row.status != '0'" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
+                    <span  v-if="scope.row.status != '1' && scope.row.status != '0' && scope.row.status != '2'" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
                 </template>
               </el-table-column>
             </el-table>
@@ -204,6 +217,8 @@ export default {
       callback();
     };
     return {
+      validatePhone:validatePhone,
+      validateIDNumber:validateIDNumber,
       formData: {
         caseNumber: '',
         party: '',
@@ -225,6 +240,7 @@ export default {
         reconsiderationOrgan: '',
         lawsuitOrgan: '',
         makeDate: '2019',
+        illegalBasis:'',
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -238,6 +254,12 @@ export default {
       handleType: 0,
       docTableDatas: [],
       rules: {
+        caseNumber: [
+          { required: true, message: '案号不能为空', trigger: 'blur' },
+        ],
+        caseCauseName: [
+          { required: true, message: '案由不能为空', trigger: 'blur' },
+        ],
         party: [
           { required: true, message: '姓名不能为空', trigger: 'blur' },
         ],
@@ -253,24 +275,20 @@ export default {
           { validator: validatePhone, trigger: "blur" }
         ],
         partyName: [
-          { validator: validateIfCom, trigger: "blur" },
+          { required: true, message: "单位名称不能为空", trigger: "blur" },
         ],
         partyManager: [
           { required: true, message: "法定代表人不能为空", trigger: "blur" },
-          { validator: validateIfCom, trigger: "blur" }
         ],
         partyUnitAddress: [
           { required: true, message: "地址不能为空", trigger: "blur" },
-          { validator: validateIfCom, trigger: "blur" }
         ],
         partyUnitTel: [
           { required: true, message: "联系电话不能为空", trigger: "blur" },
-          { validator: validateIfCom, trigger: "blur" },
           { validator: validatePhone, trigger: "blur" }
         ],
         socialCreditCode: [
           { required: true, message: "统一社会信用代码", trigger: "blur" },
-          { validator: validateIfCom, trigger: "blur" }
         ],
         afsj: [
           { required: true, message: '案发时间不能为空', trigger: 'blur' },
@@ -280,11 +298,17 @@ export default {
         ],
         measureEndDate: [
           { required: true, message: '结束时间不能为空', trigger: 'blur' },
-        ]
+        ],
+        illegalBasis: [
+          { required: true, message: '违法事实不能为空', trigger: 'blur' },
+        ],
+        
       },
       // nextBtnDisab: true
       isParty: true,  //当事人类型为个人
       originalData: "",
+      propertyFeatures:'', //字段属性配置
+
     }
   },
   computed: {
@@ -318,7 +342,7 @@ export default {
         let allFinish = true;
         console.log("canGotoNext",this.docTableDatas)
         for (let i = 0; i < this.docTableDatas.length; i++) {
-          if (this.docTableDatas[i].isRequired === 0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")) {
+          if (this.docTableDatas[i].isRequired === 0 && Number(this.docTableDatas[i].status) == 0 ) {
             canGotoNext = false
             break;
           }
@@ -390,6 +414,8 @@ export default {
         docId: row.docId,
         approvalOver: false,
         hasBack: true,
+        status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交 
+        docDataId:row.docDataId
       }
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: 'case_handle_myPDF', params: routerData })

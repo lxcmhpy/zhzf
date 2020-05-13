@@ -8,72 +8,72 @@
         <p>
           当事人（个人姓名或单位名称）
           <span>
-            <el-form-item prop="party" class="width228">
-              <el-input  v-model="docData.party"  :maxLength='maxLength'></el-input>
+            <el-form-item prop="party" class="width228" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
+              <el-input  v-model="docData.party"  :maxLength='maxLength' :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"></el-input>
             </el-form-item>
           </span>:
         </p>
         <p>
           因你（单位）
           <span>
-            <el-form-item prop="caseName">
-              <el-input  v-model="docData.caseName" :maxLength='maxLength'></el-input>
+            <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+              <el-input  v-model="docData.caseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
             </el-form-item>
           </span>，本机关于
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick" style="width:140px">
-              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-form-item prop="serviceTime" class="pdf_datapick" style="width:140px" :rules="fieldRules('serviceTime',propertyFeatures['serviceTime'])">
+              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['serviceTime'])">
               </el-date-picker>
             </el-form-item>
           </span>作出了
           <span>
-            <el-form-item prop="punishContent">
-              <el-input  v-model="docData.punishContent"  :maxLength='maxLength'></el-input>
+            <el-form-item prop="punishContent" :rules="fieldRules('punishContent',propertyFeatures['punishContent'])">
+              <el-input  v-model="docData.punishContent"  :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['punishContent'])"></el-input>
             </el-form-item>
           </span>的决定，决定书案号为
           <span>
-            <el-form-item prop="caseNmuberCopy" >
-              <el-input  v-model="docData.caseNumber"  :maxLength='maxLength'></el-input>
+            <el-form-item prop="caseNmuberCopy" :rules="fieldRules('caseNmuberCopy',propertyFeatures['caseNmuberCopy'])">
+              <el-input  v-model="docData.caseNmuberCopy"  :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNmuberCopy'])"></el-input>
             </el-form-item>
           </span>。你（单位）逾期未履行义务，根据《中华人民共和国行政强制法》第三十五条和第五十四条的规定，现就有关事项催告如下，请你（单位）按要求履行：
         </p>
         <p>
           1.履行标的：
           <span>
-            <el-form-item prop="fulfillSub" class="width476">
-              <el-input v-model="docData.fulfillSub"  :maxLength='maxLength'></el-input>
+            <el-form-item prop="fulfillSub" class="width476" :rules="fieldRules('fulfillSub',propertyFeatures['fulfillSub'])">
+              <el-input v-model="docData.fulfillSub"  :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['fulfillSub'])"></el-input>
             </el-form-item>
           </span>
         </p>
         <p>
           2.履行期限：
           <span>
-            <el-form-item prop="fulfillLimit" class="width476">
-              <el-input v-model="docData.fulfillLimit"  :maxLength='maxLength'></el-input>
+            <el-form-item prop="fulfillLimit" class="width476" :rules="fieldRules('fulfillLimit',propertyFeatures['fulfillLimit'])">
+              <el-input v-model="docData.fulfillLimit"  :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['fulfillLimit'])"></el-input>
             </el-form-item>
           </span>
         </p>
         <p>
           3.履行方式：
           <span>
-            <el-form-item prop="fulfillWay" class="width476">
-              <el-input v-model="docData.fulfillWay"  :maxLength='maxLength'></el-input>
+            <el-form-item prop="fulfillWay" class="width476" :rules="fieldRules('fulfillWay',propertyFeatures['fulfillWay'])">
+              <el-input v-model="docData.fulfillWay"  :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['fulfillWay'])"></el-input>
             </el-form-item>
           </span>
         </p>
         <p>
           4.履行要求：
           <span>
-            <el-form-item prop="fulfillDemand" class="width476">
-              <el-input v-model="docData.fulfillDemand"  :maxLength='maxLength'></el-input>
+            <el-form-item prop="fulfillDemand" class="width476" :rules="fieldRules('fulfillDemand',propertyFeatures['fulfillDemand'])">
+              <el-input v-model="docData.fulfillDemand"  :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['fulfillDemand'])"></el-input>
             </el-form-item>
           </span>
         </p>
         <p>
           5.其他事项：
           <span>
-            <el-form-item prop="otherMatter" class="width476">
-              <el-input  v-model="docData.otherMatter"  :maxLength='maxLength'></el-input>
+            <el-form-item prop="otherMatter" class="width476" :rules="fieldRules('otherMatter',propertyFeatures['otherMatter'])">
+              <el-input  v-model="docData.otherMatter"  :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['otherMatter'])"></el-input>
             </el-form-item>
           </span>
         </p>
@@ -252,6 +252,9 @@ export default {
       checknames: [],
       wtInfoDisabled: true,
       otherRemindWayDisabled: true,
+      propertyFeatures:'',
+      isParty:true,
+      needDealData:true
     }
   },
  methods: {
@@ -271,7 +274,7 @@ export default {
       let data = {
         caseId: this.caseId, //流程里的案件id
         // caseId: '297708bcd8e80872febb61577329194f', //先写死
-        docId: '2c9028ac6946897f0169469156b60000'
+        docId: '2c9029cf698f9e6c01698fd9e9000002'
       };
       this.com_getDocDataByCaseIdAndDocId(data);
 
@@ -306,7 +309,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      console.log()
+      this.docData.checknames=this.checknames
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
@@ -331,6 +334,9 @@ export default {
         this.wtInfoDisabled = true;
         this.otherRemindWayDisabled = true;
       }
+    },
+     getDataAfter(){
+      this.docData.caseNmuberCopy=this.docData.caseNumber
     }
   },
   mounted() {

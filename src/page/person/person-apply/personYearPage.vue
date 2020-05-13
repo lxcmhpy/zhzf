@@ -6,7 +6,7 @@
   </div>
 </template>
 <script>
-import personYearApply from "./personYearApply"
+import personYearApply from "./person-yearApply/personYearApply"
 export default {
   name: 'personDetailPage',
   data() {

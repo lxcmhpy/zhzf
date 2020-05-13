@@ -87,6 +87,8 @@ export default {
       currentUser:'', //登录用户的执法信息
       checkedUserId: [],
       staffNameOrCode: "",
+      saveCheckedUserBeforSearch:[], //在搜索前保存选中的执法人员
+      allUserList:[], //全部人员
     };
   },
   inject: ["reload"],
@@ -107,6 +109,7 @@ export default {
                 lawOfficerCards: item.lawOfficerCards.split(",")
               };
             });
+            this.saveCheckedUserBeforSearch = this.checkedUser;
       },err=>{
         console.log(err);
       })
@@ -131,8 +134,8 @@ export default {
     handleCheckAllChange(val) {
       console.log(val);
       if (val) {
-        this.checkedUserId = [];
-        this.checkedUser = [];
+        // this.checkedUserId = [];
+        // this.checkedUser = [];
         this.userList.forEach(item => {
           // this.checkedUserId.forEach(item2=>{
           //   if(item.id != item2){
@@ -142,29 +145,50 @@ export default {
           //     this.checkedUser.push(item);
           //   }
           // })
+          if(!this.checkedUserId.includes(item.id)){
+               //复选框存入id
+              this.checkedUserId.push(item.id);
+              //tag
+              this.checkedUser.push(item);
+          }
            //复选框存入id
-            this.checkedUserId.push(item.id);
+            // this.checkedUserId.push(item.id);
             //tag
-            this.checkedUser.push(item);
+            // this.checkedUser.push(item);
           
         });
       } else {
-        this.checkedUserId =[this.currentUser.id];
-        this.checkedUser = [this.currentUser];
+        this.userList.forEach(item => {
+          this.checkedUserId.forEach((item2,index2)=>{
+            if(item2 == item.id && item2 != this.currentUser.id){
+              this.checkedUserId.splice(index2,1);
+              this.checkedUser.splice(index2,1);
+
+            }
+          })
+        })
+        // this.checkedUserId =[this.currentUser.id];
+        // this.checkedUser = [this.currentUser];
       }
       this.isIndeterminate = false;
     },
     //更改选中的人员
     handleCheckedUserChange(val) {
       console.log(val);
+      // this.checkedUser = this.saveCheckedUserBeforSearch.length>0 ? this.saveCheckedUserBeforSearch : [];
       this.checkedUser = [];
-       let _this = this
+
+      let _this = this
       val.forEach(item => {
-        _this.userList.forEach(item2 => {
+        _this.allUserList.forEach(item2 => {
           if (item == item2.id) {
             //更新tag
             console.log('更新tag',item2);
             _this.checkedUser.push(item2);
+
+            // if(!_this.checkedUser.includes(item2)){
+            //   _this.checkedUser.push(item2);
+            // }
             return;
           }
         });
@@ -210,6 +234,7 @@ export default {
         .then(
           res => {
             _this.userList = res.data;
+            _this.allUserList = res.data;
             _this.userList.forEach(item => {
                 //查询当前用户的执行信息
                 if(item.userId == this.currentUserId) this.currentUser = item;

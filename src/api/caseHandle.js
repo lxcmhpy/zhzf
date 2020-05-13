@@ -131,7 +131,7 @@ export function findStaffListApi(data) {
     inputValue:data.inputValue
   }
   return request({
-    url: "/sys/lawOfficer/listLawOfficer",
+    url: "/case/caseTemplate/lawOfficer/listLawOfficer",
     method: "get",
     showloading: true,
     params:data2,
@@ -753,6 +753,17 @@ export function findByCaseIdAndDocIdApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//通过案件ID和文书Id查询案件附件---送达回证
+export function findByCaseIdAndDocIdSongdaApi(data) {
+  return request({
+    url: "/case/sys/file/findVoByDocDataId/"+data.docId,
+    method: "get",
+    // params: params,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
 //案件抄告列表
 export function queryCaseCopyListPageApi(data) {
@@ -968,6 +979,27 @@ export function findBindPropertyRuleApi(data) {
     url: "/case/doc/propertyBind/findBindPropertyRule/"+data.typeId+"/"+data.caseBasicInfoId,
     method: "get",
     showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+export function updateDocStatusApi(id) {
+  return request({
+    url: "/case/doc/data/updateDocStatus/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+} 
+
+export function testApi() {
+  return request({ 
+    url: "/socket/socket?userName=1&message=1",
+    method: "get",
+    showloading: true,
+    baseUrlType:3,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });

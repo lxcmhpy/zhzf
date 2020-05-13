@@ -65,6 +65,7 @@
       </el-header>
       <el-container>
         <el-aside width="200px">
+            <!-- :selectedHeadMenu="selectedHeadMenu" -->
           <subLeftMenu :selectedHeadMenu="selectedHeadMenu"></subLeftMenu>
         </el-aside>
         <el-container>
@@ -138,7 +139,7 @@ export default {
     },
 
     getSelectHeadMenu(name) {
-        debugger;
+        // debugger;
       this.selectedHeadMenu = name;
     },
     router (name, route) {

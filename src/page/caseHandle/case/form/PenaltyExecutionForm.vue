@@ -3,7 +3,7 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="penaltyExecutionForm" :model="formData" :rules="rules" label-width="105px">
+    <el-form ref="penaltyExecutionForm" :model="formData" :rules="rules" label-width="105px" :disabled="canGoNextLink">
       <!-- <div class="header-case">
         <div class="header_left">
           <div class="triangle"></div>
@@ -18,40 +18,40 @@
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseNumber" label="案号">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" disabled></el-input>
+                <el-form-item prop="caseNumber" label="案号" :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
+                  <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" :disabled="fieldDisabled(propertyFeatures['caseNumber'])"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="punishType" label="处罚类型">
-                  <el-input ref="punishType" clearable class="w-120" v-model="formData.punishType" size="small" placeholder="-" disabled></el-input>
+                <el-form-item prop="punishType" label="处罚类型" :rules="fieldRules('punishType',propertyFeatures['punishType'])">
+                  <el-input ref="punishType" clearable class="w-120" v-model="formData.punishType" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['punishType'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="案由">
-                  <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" disabled></el-input>
+                <el-form-item prop="caseName" label="案由" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                  <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="punishTerm" label="处罚期限">
+                <el-form-item prop="punishTerm" label="处罚期限" :rules="fieldRules('punishTerm',propertyFeatures['punishTerm'])">
                   <!-- <el-input ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-input> -->
-                  <el-date-picker class="w-120" v-model="formData.punishTerm" type="date" placeholder="选择日期"></el-date-picker>
+                  <el-date-picker class="w-120" value-format="yyyy-MM-dd HH:mm" v-model="formData.punishTerm" type="date" placeholder="选择日期" :disabled="fieldDisabled(propertyFeatures['punishTerm'])"></el-date-picker>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="punishDecision" label="处罚决定">
-                  <el-input ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="-" disabled></el-input>
+                <el-form-item prop="punishDecision" label="处罚决定" :rules="fieldRules('punishDecision',propertyFeatures['punishDecision'])">
+                  <el-input ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['punishDecision'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="处罚金额">
-                  <el-input clearable class="w-120" v-model.number="formData.tempPunishAmount" size="small" placeholder="-" disabled></el-input>
+                <el-form-item label="处罚金额" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
+                  <el-input clearable class="w-120" v-model.number="formData.tempPunishAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -61,7 +61,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="执行方式">
-                  <el-radio-group v-model="formData.performWay" @change="changePayWay">
+                  <el-radio-group v-model="formData.performWay" @change="changePayWay" :rules="fieldRules('performWay',propertyFeatures['performWay'])">
                     <el-radio :label="'线下缴费'">线下缴费</el-radio>
                     <el-radio :label="'电子缴纳'">电子缴纳</el-radio>
                   </el-radio-group>
@@ -72,13 +72,13 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="paidAmount" label="已缴金额">
-                  <el-input clearable class="w-120" v-model.number="formData.paidAmount" size="small" placeholder="-"></el-input>
+                <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
+                  <el-input clearable class="w-120" v-model.number="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="toPayAmount" label="待缴金额">
-                  <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" disabled @change="isFinish"></el-input>
+                <el-form-item prop="toPayAmount" label="待缴金额" :rules="fieldRules('toPayAmount',propertyFeatures['toPayAmount'])">
+                  <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" :disabled="fieldDisabled(propertyFeatures['toPayAmount'])"  @change="isFinish"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -101,8 +101,8 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="note" label="备注">
-                  <el-input ref="note" clearable class="w-120" v-model="formData.note" size="small" placeholder="请输入"></el-input>
+                <el-form-item prop="note" label="备注" :rules="fieldRules('note',propertyFeatures['note'])">
+                  <el-input ref="note" clearable class="w-120" v-model="formData.note" size="small" placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['note'])"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -163,12 +163,12 @@
                     <li v-for="(item,index) in allAskDocList" :key="index">
                       <div>{{item.note}}</div>
                       <div>
-                        <span v-if="item.status == '1'">已完成</span>
+                        <span v-if="item.status == '1' || item.status == '2'">已完成</span>
                         <span v-if="item.status == '0'">未完成</span>
                       </div>
                       <div>
                         <!-- 已完成 -->
-                        <span v-if="item.status == '1'" class="tableHandelcase" @click="viewDocPdf(item)">查看</span>
+                        <span v-if="item.status == '1' || item.status == '2'" class="tableHandelcase" @click="viewDocPdf(item)">查看</span>
 
                         <span v-if="item.status == '0'" class="tableHandelcase">
                           <!-- 未完成 -->
@@ -196,7 +196,7 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1'">已完成</span>
+                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">已完成</span>
                   <span v-if="scope.row.status == '0'">未完成</span>
                   <span v-if="scope.row.status == ''"></span>
                 </template>
@@ -209,7 +209,7 @@
                   </span>
                   <span v-if="!scope.row.openRow">
                     <!-- 已完成 -->
-                    <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
+                    <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">
                       <span @click="viewDoc(scope.row)">编辑</span>
@@ -223,20 +223,23 @@
             </el-table>
           </div>
         </div>
-        <!-- 悬浮按钮 -->
+       
+      </div>
+    </el-form>
+     <!-- 悬浮按钮 -->
         <div class="float-btns btn-height63">
-          <el-button type="primary" @click="continueHandle" v-if="!this.$route.params.isComplete">
+          <el-button type="primary" @click="continueHandle" :disabled="!canGoNextLink" v-if="!this.$route.params.isComplete">
             <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
               <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF" />
             </svg>
             <br />下一
             <br />环节
           </el-button>
-          <el-button type="primary" @click="submitCaseDoc(1)" v-if="!this.$route.params.isComplete">
+          <el-button type="primary" @click="submitCaseDoc(1)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete">
             <i class="iconfont law-save"></i>
             <br />保存
           </el-button>
-          <el-button type="success" @click="submitCaseDoc(0)" v-if="!this.$route.params.isComplete">
+          <el-button type="success" @click="submitCaseDoc(0)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete">
             <i class="iconfont law-save"></i>
             <br />暂存
           </el-button>
@@ -245,8 +248,6 @@
             <br />返回
           </el-button>
         </div>
-      </div>
-    </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <addDialog ref="addDialogRef" @getNewData="goAddPdf"></addDialog>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
@@ -291,8 +292,8 @@ export default {
         performWay: "",
         correct: "",
         performance: "",
-        paidAmount: "",
-        toPayAmount: "",
+        paidAmount: 0,
+        toPayAmount: 0,
         stepPay: "",
         note: "",
         payEvidence: "", //缴费凭证id
@@ -313,12 +314,36 @@ export default {
       docTableDatas: [],
       docTableDatasSave: [],
       rules: {
+        caseNumber: [
+          { required: true, message: "案号不能为空", trigger: "blur" }
+        ],
+        caseName: [
+          { required: true, message: "案由不能为空", trigger: "blur" }
+        ],
+        punishType: [
+          { required: true, message: "处罚类型不能为空", trigger: "blur" }
+        ],
+        punishTerm: [
+          { required: true, message: "处罚期限不能为空", trigger: "blur" }
+        ],
+        punishDecision: [
+          { required: true, message: "处罚决定不能为空", trigger: "blur" }
+        ],
+        tempPunishAmount: [
+          { required: true, message: "处罚金额不能为空", trigger: "blur" }
+        ],
         paidAmount: [
           { validator: validatePaid, trigger: 'blur' }
         ],
         toPayAmount: [
           { validator: validatePaid, trigger: 'blur' }
-        ]
+        ],
+        performWay: [
+          { required: true, message: "执行方式必须选择", trigger: "blur" }
+        ],
+        note: [
+          { required: true, message: "备注必须填写", trigger: "blur" }
+        ],
       },
       isOnlinePay: false, //是否为电子缴纳
       needDealData: true,
@@ -328,6 +353,7 @@ export default {
       isfinishFlag: true,
       finishDocCount: 0,//完成文书数
       allDocCount: 0,
+      propertyFeatures:''
     };
   },
   computed: {
@@ -369,7 +395,7 @@ export default {
               console.log('element.name', element.status)
               // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
               // console.log('lement.status,element.status', element.status)
-              if (element.status != 1) {
+              if (element.status == 0) {
                 // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
                 // console.log('执行')
                 let caseData = {}
@@ -395,7 +421,7 @@ export default {
         console.log(this.docTableDatas)
         this.docTableDatas.forEach(element => {
           if (element.name == '催告书') {
-            if (element.status != 1) {
+            if (element.status == 0) {
               // this.unfinishFlag = [' 催告书'];
               // console.log('this.unfinishFlag', this.unfinishFlag)
               let caseData = {}
@@ -480,7 +506,8 @@ export default {
         docId: row.docId,
         approvalOver: false,
         hasBack: true,
-        docDataId: row.docDataId
+        docDataId: row.docDataId,
+        status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
       };
       console.log('routerData,routerData', routerData)
       this.$store.dispatch("deleteTabs", this.$route.name);
@@ -586,7 +613,7 @@ export default {
     setMoreDocTableTitle() {
       this.docTableDatas = [];
       this.allAskDocList = [];
-      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, url: "case_handle_payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001", note: '' });
+      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, path: "case_handle_payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001", note: '' });
 
       this.docTableDatasCopy.forEach(item => {
         console.log('名字啊啊啊', item.name)
@@ -600,7 +627,7 @@ export default {
         }
       })
       this.allAskDocList.forEach(element => {
-        if (element.name == '分期（延期）缴纳罚款通知书【2016】' && element.status == '1') {
+        if (element.name == '分期（延期）缴纳罚款通知书【2016】' && (element.status == '1'||element.status == '2')) {
           this.finishDocCount += 1;
         }
       });

@@ -8,8 +8,8 @@
             <el-input type="textarea" v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled style="height:36px;"></el-input>
           </el-form-item>
         </div> -->
-        <div class="doc_cause">
-          案由：{{docData.caseName}}
+        <div class="doc_cause" style="padding-bottom:10px;">
+          案由：<span style="margin-top:-8px;border-bottom:1px solid black">{{docData.caseName}}</span>
         </div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
@@ -28,8 +28,8 @@
               受送达人
             </td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item prop="recivePerson" class="pdf_datapick">
-                <el-input type='textarea' v-model="docData.recivePerson" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              <el-form-item prop="server" class="pdf_datapick">
+                <el-input type='textarea' v-model="docData.server" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
 
             </td>
@@ -39,8 +39,8 @@
               代收人
             </td>
             <td colspan="5" class="color_DBE4EF">
-              <el-form-item prop="recivePersonInstead" class="pdf_datapick">
-                <el-input type='textarea' v-model="docData.recivePersonInstead" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+              <el-form-item prop="collector" class="pdf_datapick">
+                <el-input type='textarea' v-model="docData.collector" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
 
             </td>
@@ -61,16 +61,16 @@
               <td>{{item.servedType ? item.servedType : ''}}</td>
               <td>{{item.deliveryMaster ? item.deliveryMaster.join(',') : ''}}</td>
             </tr>
-         
+
             <tr>
             <td colspan="6">
               <div class="pdf_seal">
                 <br/><br/><br/>
                 <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
-                <!-- <el-form-item prop="makeDate" class="pdf_datapick">
-                  <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日">
+                <el-form-item prop="makeDate" class="pdf_datapick">
+                  <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
                   </el-date-picker>
-                </el-form-item> -->
+                </el-form-item>
               </div>
             </td>
 
@@ -86,17 +86,17 @@
           <el-input v-model="docData.docLength"></el-input>
         </el-form-item>
         </table>
-       
-        
+
+
       </el-form>
     </div>
 
-    
+
 
      <!-- 添加弹出框 -->
-    <el-dialog title="编辑送达详情" :visible.sync="addVisible" width="75%" v-loading="addLoading" :before-close="handleClose">
+    <el-dialog title="编辑送达详情" :visible.sync="addVisible" append-to-body width="75%" v-loading="addLoading" :before-close="handleClose">
       <div>
-        <div>
+        <div  class="fullscreen">
           <el-form ref="addDocFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <!-- <el-table-column  prop="evidenceNo" label="序号" align="center">
@@ -208,11 +208,12 @@ export default {
         caseName: "",
         caseNumber: "",
         servedOrg: iLocalStroage.gets("userInfo").organName,
-        recivePerson: "",
-        recivePersonInstead: "",
+        server: "",
+        collector: "",
         docNote: '',
         deliveryCertificatelist:[], //送达文书列表
         docLength:0, //送达文书列表长度
+        makeDate:''
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -228,10 +229,10 @@ export default {
         servedOrg: [
           { required: true, message: '送达单位请输入', trigger: 'blur' },
         ],
-        recivePersonInstead: [
+        collector: [
           {  message: '代收人请输入', trigger: 'blur' },
         ],
-        recivePerson: [
+        server: [
           { required: true, message: '受送达人请输入', trigger: 'blur' },
         ],
         docLength: [
@@ -321,7 +322,7 @@ export default {
   methods: {
   //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
-      debugger
+      // debugger
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
         caseId: this.caseId,
@@ -350,7 +351,7 @@ export default {
     // },
     //提交
     submitData(handleType) {
-       debugger
+       // debugger
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
         name: this.$route.params.url
@@ -367,22 +368,24 @@ export default {
             caseNumber: this.docData.caseNumber,
             caseName: this.docData.caseName,
             servedOrg: this.docData.servedOrg,//送达单位
-            // recivePerson: this.docData.recivePerson,//受送达人
-            server: this.docData.recivePerson,
-            // recivePersonInstead: this.docData.recivePersonInstead,//代收人
-            collector: this.docData.recivePersonInstead,
+            // server: this.docData.server,//受送达人
+            server: this.docData.server,
+            // collector: this.docData.collector,//代收人
+            collector: this.docData.collector,
             deliveryCertificatelist:newdeliveryCertificatelist,//送达文书列表
-            docNote: this.docData.docNote//备注
+            docNote: this.docData.docNote,//备注
+            makeDate:this.docData.makeDate,
+            
       };
       console.log('送达回证',data);
       if (handleType==1) {
-         debugger
+         // debugger
         this.$refs['docForm'].validate((valid, noPass) => {
-           debugger
+           // debugger
           if (valid) {
-             debugger
             this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(
               res => {
+                console.log("23",res);
                  debugger
                 this.$message({
                   type: "success",
@@ -391,7 +394,9 @@ export default {
                 this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
                 // this.$router.push('deliverReceiptForm')
                 //提交成功后提交pdf到服务器，后打开pdf
-                this.printContent();
+                console.log(res.data.id)
+                debugger
+                this.printContent(res.data.id);
               },
               err => {
                 console.log(err);
@@ -441,10 +446,10 @@ export default {
     //         caseNumber: this.docData.caseNumber,
     //         caseName: this.docData.caseName,
     //         servedOrg: this.docData.servedOrg,//送达单位
-    //         // recivePerson: this.docData.recivePerson,//受送达人
-    //         server: this.docData.recivePerson,
-    //         // recivePersonInstead: this.docData.recivePersonInstead,//代收人
-    //         collector: this.docData.recivePersonInstead,
+    //         // server: this.docData.server,//受送达人
+    //         server: this.docData.server,
+    //         // collector: this.docData.collector,//代收人
+    //         collector: this.docData.collector,
     //         deliveryCertificatelist: this.docData.deliveryCertificatelist,//送达文书列表
     //         docNote: this.docData.docNote//备注
     //       };
@@ -501,11 +506,13 @@ export default {
     },
     //删除当前添加行的数据
     // handleRow(row) {
-        
+
     // },
     submitForm(formName){
+      console.log('数组11',this.tableDatas)
       let canAdd = true;
       for(let i=0; i<this.tableDatas.length; i++){
+        this.tableDatas[i].receiver='';
           if(!this.tableDatas[i].docName || !this.tableDatas[i].address || !this.tableDatas[i].servedDate || !this.tableDatas[i].servedType || !this.tableDatas[i].deliveryMaster){
             if(!this.tableDatas[i].docName){
               this.$message({
@@ -545,7 +552,7 @@ export default {
             break;
           }
         }
-      
+
         if(canAdd){
           // this.tableDatas.forEach(item=>{
           //   item.deliveryMaster = item.deliveryMaster.join(',');
@@ -558,8 +565,9 @@ export default {
           //  })
           this.addVisible = false;
         }
+
     
-    },
+    console.log('数组',this.tableDatas)},
     getDataAfter() {
       debugger
       console.log(this.docData.deliveryCertificatelist);
@@ -615,7 +623,7 @@ export default {
 <style  scoped>
 .print_box .print_info tr td{
   white-space: inherit;
-  
+
 }
 /* .color_DBE4EF
   /deep/

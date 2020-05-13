@@ -133,7 +133,15 @@
           罚款的履行方式和期限(见打√处)：
         </p>
         <p>
-          <input type="checkbox">自收到本决定书之日起十五日内缴至<span>
+          <input type="checkbox1">当场缴纳
+          <!-- <span>
+            <el-form-item prop="otherWay">
+              <el-input v-model="docData.otherWay" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>
+          </span>。 -->
+        </p>
+        <p>
+          <input type="checkbox2">自收到本决定书之日起十五日内缴至<span>
             <el-form-item prop="payBank">
               <el-input v-model="docData.payBank" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
@@ -143,14 +151,7 @@
             </el-form-item>
           </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
         </p>
-        <p>
-          <input type="checkbox">其他方式
-          <span>
-            <el-form-item prop="otherWay">
-              <el-input v-model="docData.otherWay" :maxLength='maxLength' placeholder="\"></el-input>
-            </el-form-item>
-          </span>。
-        </p>
+        
         <p>
           如果不服本处罚决定，可以在六十日内依法向<span>
             <el-form-item prop="reconsiderationOrgan">

@@ -132,7 +132,6 @@ export default {
     caseRecord() {
       this.$store.commit("setCaseId", '');
       this.$refs.caseRegisterDiagRef.showModal();
-      // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     //获取机构下的未立案数据
     getUnRecordCase(searchData) {
@@ -191,8 +190,8 @@ export default {
                 this.$router.replace({
                   name: "case_handle_establish"
                 });
-                let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
-                this.$store.commit("setCaseNumber", setCaseNumber);
+                // let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+                // this.$store.commit("setCaseNumber", setCaseNumber);
             }
           })
           .catch(err=>{console.log(err)}) 

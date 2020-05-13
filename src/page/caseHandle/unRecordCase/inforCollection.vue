@@ -69,9 +69,10 @@
               <el-input v-model="inforForm.afdd"></el-input>
             </el-form-item>
           </div>
+          <label v-if="afddFlag" class="el-form-item__label" style="width: 100px;">案发地点</label>
           <div class="itemFive">
-            <el-form-item v-if="afddFlag" label="案发地点">
-              <el-select v-model="inforForm.routeId" placeholder="公路路线">
+            <el-form-item v-if="afddFlag" label-width="0">
+              <el-select v-model="inforForm.routeId" placeholder="本机构路线编号" filterable allow-create>
                 <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
@@ -79,7 +80,7 @@
           <div class="itemFive">
             <el-form-item v-if="afddFlag" label-width="20px">
               <el-select v-model="inforForm.direction" placeholder="方向">
-                <el-option v-for="item in directionList" :key="item.name" :label="item.label"
+                <el-option v-for="item in locationList" :key="item.name" :label="item.label"
                            :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -87,7 +88,7 @@
           <div class="itemFive">
             <el-form-item v-if="afddFlag" label-width="20px">
               <el-select v-model="inforForm.location" placeholder="位置">
-                <el-option v-for="item in locationList" :key="item.name" :label="item.label"
+                <el-option v-for="item in directionList" :key="item.name" :label="item.label"
                            :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -98,8 +99,10 @@
             </el-form-item>
           </div>
           <div class="itemFive">
-            <el-form-item v-if="afddFlag" label-width="20px">
-              <el-input v-model="inforForm.metre" placeholder="米数"></el-input>
+            <el-form-item v-if="afddFlag" label="+" label-width="30px">
+              <el-input v-model="inforForm.metre" placeholder="米数" style="vertical-align: middle;">
+                <template slot="append">m</template>
+              </el-input>
             </el-form-item>
           </div>
         </div>
@@ -162,7 +165,8 @@
           </div>
           <div class="itemThird">
             <el-form-item label="年龄" prop="partyAge">
-              <el-input ref="partyAge" v-model="inforForm.partyAge" type="number" :disabled="inforForm.partyIdNo?true:false"
+              <el-input ref="partyAge" v-model="inforForm.partyAge" type="number"
+                        :disabled="inforForm.partyIdNo?true:false"
                         @change="noFue('inforForm.partyAge',inforForm.partyAge)"></el-input>
             </el-form-item>
           </div>
@@ -180,7 +184,8 @@
           </div>
           <div class="itemSmall">
             <el-form-item label="邮编" prop="partyZipCode">
-              <el-input ref="partyZipCode" v-model="inforForm.partyZipCode" @blur="blur3($event.target.value)"></el-input>
+              <el-input ref="partyZipCode" v-model="inforForm.partyZipCode"
+                        @blur="blur3($event.target.value)"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -246,13 +251,15 @@
             </el-form-item>
           </div>
         </div>
-
+        <!-- 分隔线 -->
+        <div class="line"></div>
         <p>驾驶人或代理人</p>
         <div class="driverOrAgentBox" v-for="(driverOrAgentInfo,index) in driverOrAgentInfoList" :key="index">
+          <div v-show="partyTypePerson=='1'">
           <div>
             <div class="item">
               <el-form-item label="与当事人关系">
-                <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
+                <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty(index)">
                   <el-option v-for="item in index === 0?allRelationWithParty:allRelationWithParty_" :key="item.value"
                              :label="item.label" :value="item.label"></el-option>
                 </el-select>
@@ -262,29 +269,49 @@
               <!-- 需要完善验证 -->
               <el-form-item label="与案件关系" class="is-required">
                 <el-select v-model="driverOrAgentInfo.relationWithCase"
-                :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
+                           :disabled="index==0&&relationWithPartyIsOne[index]">
                   <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label"
                              :value="item.label"></el-option>
                 </el-select>
               </el-form-item>
             </div>
           </div>
+          </div>
+          <div v-show="partyTypePerson!='1'">
+            <div>
+              <div class="item">
+                <el-form-item label="与当事人关系">
+                  <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
+                    <el-option v-for="item in allQYRelationWithParty" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <div class="item">
+                <!-- 需要完善验证 -->
+                <el-form-item label="与案件关系" class="is-required">
+                  <el-select v-model="driverOrAgentInfo.relationWithCase">
+                    <el-option v-for="item in allQYRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </div>
+          </div>
           <div>
             <div class="item">
               <el-form-item label="姓名">
                 <el-input v-model="driverOrAgentInfo.name"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
             </div>
             <div class="item appendSelect">
               <el-form-item label="证件类型" prop="partyIdNo">
                 <el-input ref="partyIdNo" placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber"
                           @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
-                          class="input-with-select hasMargintop"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
-                  <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType" :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
+                          class="input-with-select hasMargintop" :disabled="index==0&&relationWithPartyIsOne[index]">
+                  <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType"
+                             :disabled="index==0&&relationWithPartyIsOne[index]">
                     <el-option v-for="item in credentialType" :key="item.value" :label="item.label" :value="item.value"
-                               :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-option>
+                               :disabled="index==0&&relationWithPartyIsOne[index]"></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -293,8 +320,7 @@
           <div>
             <div class="itemThird">
               <el-form-item label="性别">
-                <el-select v-model="driverOrAgentInfo.sex"
-                           :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false">
+                <el-select v-model="driverOrAgentInfo.sex" :disabled="index==0&&relationWithPartyIsOne[index]">
                   <el-option :value="0" label="男"></el-option>
                   <el-option :value="1" label="女"></el-option>
                 </el-select>
@@ -303,14 +329,13 @@
             <div class="itemThird">
               <el-form-item label="年龄">
                 <el-input v-model="driverOrAgentInfo.age" type="number"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
+                          :disabled="index==0&&relationWithPartyIsOne[index]"
                           @change="noFueA(driverOrAgentInfo.age)"></el-input>
               </el-form-item>
             </div>
             <div class="itemThird">
               <el-form-item label="联系电话">
-                <el-input v-model="driverOrAgentInfo.tel"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
+                <el-input v-model="driverOrAgentInfo.tel" :disabled="index==0&&relationWithPartyIsOne[index]"
                           @blur="blur2($event.target.value)"></el-input>
               </el-form-item>
             </div>
@@ -319,13 +344,12 @@
             <div class="itemBig">
               <el-form-item label="联系地址">
                 <el-input v-model="driverOrAgentInfo.adress"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
             </div>
             <div class="itemSmall">
               <el-form-item label="邮编">
-                <el-input v-model="driverOrAgentInfo.adressCode"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"
+                <el-input v-model="driverOrAgentInfo.adressCode" :disabled="index==0&&relationWithPartyIsOne[index]"
                           @blur="blur3($event.target.value)"></el-input>
               </el-form-item>
             </div>
@@ -334,13 +358,13 @@
             <div class="itemBig">
               <el-form-item label="工作单位">
                 <el-input v-model="driverOrAgentInfo.company"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
             </div>
             <div class="itemSmall">
               <el-form-item label="职位">
                 <el-input v-model="driverOrAgentInfo.position"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -348,10 +372,12 @@
             <div class="itemOne">
               <el-form-item label="从业资格证号">
                 <el-input v-model="driverOrAgentInfo.zigeNumber"
-                          :disabled="driverOrAgentInfo.relationWithParty=='0'?true : false"></el-input>
+                          :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
             </div>
           </div>
+          <!-- 分隔线 -->
+          <div class="line" v-if="index<driverOrAgentInfoList.length-1"></div>
         </div>
         <div class="buttonBox">
           <el-button type="primary" size="medium" icon="el-icon-plus" @click="addDriverOrAgent">添加其他人</el-button>
@@ -479,8 +505,8 @@
           </div>
           <div class="itemSmall">
             <el-form-item label="检测时间" prop="checkTime">
-              <el-date-picker ref="checkTime" v-model="inforForm.otherInfo.checkTime" type="datetime" format="yyyy-MM-dd HH:mm"
-                              value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+              <el-date-picker ref="checkTime" v-model="inforForm.otherInfo.checkTime" type="datetime"
+                              format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
             </el-form-item>
           </div>
         </div>
@@ -643,8 +669,8 @@
           <div class="item">
             <el-form-item label="检测结果">
               <el-select placeholder="请选择" v-model="inforForm.otherInfo.checkResult">
-                <el-option value="0" label="超限"></el-option>
-                <el-option value="1" label="未超限"></el-option>
+                <el-option value="超限" label="超限"></el-option>
+                <el-option value="未超限" label="未超限"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -986,6 +1012,19 @@
           {value: "4", label: "承运人"},
           {value: "5", label: "代理人"}
         ],
+        allQYRelationWithParty: [
+        //与当事人关系下拉框(企业组织)
+        { value: "2", label: "借用车辆" },
+        { value: "3", label: "雇佣关系" },
+        { value: "5", label: "其他" }
+       ],
+        allQYRelationWithCase: [
+        //与案件关系下拉框(企业组织)
+        { value: "1", label: "驾驶人" },
+        { value: "3", label: "证人" },
+        { value: "4", label: "承运人" },
+        { value: "5", label: "代理人" }
+        ],
         allVehicleIdColor: [
           //车牌颜色下拉框
           {value: "1", label: "黄色"},
@@ -1010,7 +1049,7 @@
         showTrailer: false, //是否显示挂车信息
         judgFreedomList: [], //自由裁量列表
         caseSourceTextDisable: false,
-        relationWithPartyIsOne: true, //与当事人关系是否为同一人
+        relationWithPartyIsOne: [], //与当事人关系是否为同一人
         isHandleCase: false,
         activeJudgli: "",
         showOverrun: false, //显示超限信息锚点
@@ -1114,49 +1153,32 @@
       },
       //更改当事人类型
       changePartyType(val) {
-        this.partyTypePerson = val;
-        if (val == "1") {
-          this.inforForm.partyName = "";
-          this.inforForm.partyUnitTel = "";
-          this.inforForm.socialCreditCode = "";
-          this.inforForm.roadTransportLicense = "";
-          this.inforForm.partyManager = "";
-          this.inforForm.partyManagerPositions = "";
-          this.inforForm.partyUnitAddress = "";
-        } else {
-          this.inforForm.party = "";
-          this.inforForm.partyIdType = "";
-          this.inforForm.partyIdNo = "";
-          this.inforForm.partySex = "";
-          this.inforForm.partyAge = "";
-          this.inforForm.partyTel = "";
-          this.inforForm.partyAddress = "";
-          this.inforForm.partyZipCode = "";
-          this.inforForm.partyUnitPosition = "";
-          this.inforForm.occupation = "";
-          this.inforForm.partyEcertId = "";
-        }
-      },
-      //更改与当事人关系   为同一人时自动赋值且不可编辑
-      changeRelationWithParty(val) {
-        console.log(this.driverOrAgentInfoList[0].relationWithParty === '同一人');
-        if (val === "0") {
-          console.log(val);
-          debugger
-          this.driverOrAgentInfoList[val].relationWithCase = "0";
-          this.driverOrAgentInfoList[0].name = this.inforForm.party;
-          this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
-          this.driverOrAgentInfoList[0].zhengjianNumber = this.inforForm.partyIdNo;
-          this.driverOrAgentInfoList[0].sex = this.inforForm.partySex;
-          this.driverOrAgentInfoList[0].age = this.inforForm.partyAge;
-          this.driverOrAgentInfoList[0].tel = this.inforForm.partyTel;
-          this.driverOrAgentInfoList[0].adress = this.inforForm.partyAddress;
-          this.driverOrAgentInfoList[0].adressCode = this.inforForm.partyZipCode;
-          this.driverOrAgentInfoList[0].company = this.inforForm.partyUnitPosition;
-          this.driverOrAgentInfoList[0].position = this.inforForm.occupation;
-          this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
-          this.relationWithPartyIsOne = true;
-        } else {
+      debugger
+      this.partyTypePerson = val;
+      if (val == "1") {
+        this.inforForm.partyName = "";
+        this.inforForm.partyUnitTel = "";
+        this.inforForm.socialCreditCode = "";
+        this.inforForm.roadTransportLicense = "";
+        this.inforForm.partyManager = "";
+        this.inforForm.partyManagerPositions = "";
+        this.inforForm.partyUnitAddress = "";
+      } else {
+        this.inforForm.party = "";
+        this.inforForm.partyIdType = "";
+        this.inforForm.partyIdNo = "";
+        this.inforForm.partySex = "";
+        this.inforForm.partyAge = "";
+        this.inforForm.partyTel = "";
+        this.inforForm.partyAddress = "";
+        this.inforForm.partyZipCode = "";
+        this.inforForm.partyUnitPosition = "";
+        this.inforForm.occupation = "";
+        this.inforForm.partyEcertId = "";
+      }
+      if(this.driverOrAgentInfoList[0].relationWithParty == "同一人" ||this.driverOrAgentInfoList[0].relationWithParty == '近亲戚' || this.driverOrAgentInfoList[0].relationWithParty == '车辆所有人' 
+      || this.driverOrAgentInfoList[0].relationWithParty == '其它' || this.driverOrAgentInfoList[0].relationWithCase == '当事人' || this.driverOrAgentInfoList[0].relationWithCase == '实际所有者'){
+          this.driverOrAgentInfoList[0].relationWithParty = "";
           this.driverOrAgentInfoList[0].relationWithCase = "";
           this.driverOrAgentInfoList[0].name = "";
           this.driverOrAgentInfoList[0].zhengjianType = "";
@@ -1169,7 +1191,43 @@
           this.driverOrAgentInfoList[0].company = "";
           this.driverOrAgentInfoList[0].position = "";
           this.driverOrAgentInfoList[0].zigeNumber = "";
-          this.relationWithPartyIsOne = false;
+      }
+    },
+      //更改与当事人关系   为同一人时自动赋值且不可编辑
+      changeRelationWithParty(index) {
+        console.log(index, 'index')
+        console.log(this.driverOrAgentInfoList[index].relationWithParty === '同一人');
+        let val = this.driverOrAgentInfoList[index].relationWithParty
+        if (val === '同一人') {
+          console.log(val);
+          // debugger
+          this.driverOrAgentInfoList[index].relationWithCase = "当事人";
+          this.driverOrAgentInfoList[index].name = this.inforForm.party;
+          this.driverOrAgentInfoList[index].zhengjianType = this.inforForm.partyIdType;
+          this.driverOrAgentInfoList[index].zhengjianNumber = this.inforForm.partyIdNo;
+          this.driverOrAgentInfoList[index].sex = this.inforForm.partySex;
+          this.driverOrAgentInfoList[index].age = this.inforForm.partyAge;
+          this.driverOrAgentInfoList[index].tel = this.inforForm.partyTel;
+          this.driverOrAgentInfoList[index].adress = this.inforForm.partyAddress;
+          this.driverOrAgentInfoList[index].adressCode = this.inforForm.partyZipCode;
+          this.driverOrAgentInfoList[index].company = this.inforForm.partyUnitPosition;
+          this.driverOrAgentInfoList[index].position = this.inforForm.occupation;
+          this.driverOrAgentInfoList[index].zigeNumber = this.inforForm.partyEcertId;
+          this.relationWithPartyIsOne[index] = true;
+        } else {
+          this.driverOrAgentInfoList[index].relationWithCase = "";
+          this.driverOrAgentInfoList[index].name = "";
+          this.driverOrAgentInfoList[index].zhengjianType = "";
+          this.driverOrAgentInfoList[index].zhengjianNumber = "";
+          this.driverOrAgentInfoList[index].sex = "";
+          this.driverOrAgentInfoList[index].age = "";
+          this.driverOrAgentInfoList[index].tel = "";
+          this.driverOrAgentInfoList[index].adress = "";
+          this.driverOrAgentInfoList[index].adressCode = "";
+          this.driverOrAgentInfoList[index].company = "";
+          this.driverOrAgentInfoList[index].position = "";
+          this.driverOrAgentInfoList[index].zigeNumber = "";
+          this.relationWithPartyIsOne[index] = false;
         }
       },
       //添加其他人信息
@@ -1265,7 +1323,7 @@
         // console.log("lawPersonList", this.lawPersonList)
         console.log("表单数据", this.inforForm)
         let _this = this
-//        this.$refs["inforForm"].validate(valid => {
+        //        this.$refs["inforForm"].validate(valid => {
         let result = true
         for (var field in _this.rules) {
           let obj = this.$refs['inforForm']
@@ -1276,8 +1334,10 @@
               let fields = _this.$refs[field].elForm.fields
               for (let i in fields) {
                 if (fields[i].labelFor === field) {
-                  if(fields[i].label){
-//                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
+                  if (fields[i].label) {
+                    console.log(_this.$refs[field].$el.offsetTop);
+                    document.getElementById('inforCollectionBox').scrollTop = _this.$refs[field].$el.offsetTop
+                    //                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
                   }
                 }
               }
@@ -1304,6 +1364,8 @@
               });
               _this.$store.dispatch("deleteTabs", _this.$route.name);
               _this.$store.commit("setCaseId", res.data.id);
+              //设置
+              _this.$store.commit("setCaseNumber", res.data.tempNo);
               iLocalStroage.removeItem("stageCaseId");
               this.autoSava = false;
               _this.$router.replace({
@@ -1316,7 +1378,7 @@
             }
           );
         }
-//          if (valid) {
+        //          if (valid) {
         // let submitData = {
         //   caseSource: this.inforForm.caseSource,
         //   inforForm: this.inforForm.inforForm,
@@ -1362,37 +1424,37 @@
         //   agentPartyEcertId:JSON.stringify(this.driverOrAgentInfoList),
         //   discretionId:this.inforForm.discretionId
         // };
-//          _this.inforForm.agentPartyEcertId = JSON.stringify(
-//            _this.driverOrAgentInfoList
-//          );
-//          // 超限
-//          _this.inforForm.otherInfo = JSON.stringify(
-//            _this.inforForm.otherInfo
-//          );
-//          _this.inforForm.state = state;
-//          _this.inforForm.caseStatus = '未立案';
-//          _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
-//            res => {
-//              console.log(res);
-//              _this.$message({
-//                type: "success",
-//                message: "提交成功!"
-//              });
-//              _this.$store.dispatch("deleteTabs", _this.$route.name);
-//              _this.$store.commit("setCaseId", res.data.id);
-//              iLocalStroage.removeItem("stageCaseId");
-//              this.autoSava = false;
-//              _this.$router.replace({
-//                name: "case_handle_establish"
-//              });
-//            },
-//            err => {
-//
-//              console.log(err);
-//            }
-//          );
-//          }
-//        });
+        //          _this.inforForm.agentPartyEcertId = JSON.stringify(
+        //            _this.driverOrAgentInfoList
+        //          );
+        //          // 超限
+        //          _this.inforForm.otherInfo = JSON.stringify(
+        //            _this.inforForm.otherInfo
+        //          );
+        //          _this.inforForm.state = state;
+        //          _this.inforForm.caseStatus = '未立案';
+        //          _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
+        //            res => {
+        //              console.log(res);
+        //              _this.$message({
+        //                type: "success",
+        //                message: "提交成功!"
+        //              });
+        //              _this.$store.dispatch("deleteTabs", _this.$route.name);
+        //              _this.$store.commit("setCaseId", res.data.id);
+        //              iLocalStroage.removeItem("stageCaseId");
+        //              this.autoSava = false;
+        //              _this.$router.replace({
+        //                name: "case_handle_establish"
+        //              });
+        //            },
+        //            err => {
+        //
+        //              console.log(err);
+        //            }
+        //          );
+        //          }
+        //        });
       },
       //查询执法人员
       getAllUserList(list) {
@@ -1413,12 +1475,15 @@
         this.inforForm.state = state;
         this.inforForm.caseStatus = '未立案';
         let _this = this
-        console.log('暂存信息', this.inforForm);
+
         this.$store
           .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
           .then(
             res => {
-              console.log(res);
+              console.log(this.inforForm);
+              if (this.inforForm.otherInfo) {
+                this.inforForm.otherInfo = JSON.parse(this.inforForm.otherInfo)
+              }
               _this.$message({
                 type: "success",
                 message: "暂存成功!"
@@ -1441,7 +1506,6 @@
         let _this = this
         this.$store.dispatch("getCaseBasicInfo", data).then(
           res => {
-            console.log('获取案件信息', res)
             _this.inforForm = res.data;
             this.handleCaseData(res.data);
           },
@@ -1450,6 +1514,8 @@
           }
         );
       },
+    
+      
       //处理数据回显问题
       handleCaseData(data) {
         console.log('handleCaseData方法', data);
@@ -1917,10 +1983,10 @@
         this.inforForm.caseCauseName = overWeightCaseData.caseCauseName
         this.inforForm.programType = overWeightCaseData.programType
         this.inforForm.partyType = overWeightCaseData.partyType
-        this.caseSourceTextDisable=true
+        this.caseSourceTextDisable = true
         this.showOverrun = true
-        this.inforForm.afsj=new Date()
-        this.inforForm.afdd='密云检测站 北京市顺密路荆栗园村K24+860'
+        this.inforForm.afsj = new Date()
+        this.inforForm.afdd = '密云检测站 北京市顺密路荆栗园村K24+860'
         return
       }
 
@@ -1947,7 +2013,8 @@
       console.log('showOverrun', this.showOverrun)
 
       this.driverOrAgentInfo.relationWithParty = '1';
-      this.inforForm.otherInfo.checkResult = '1'
+      this.$set(this.inforForm.otherInfo, 'checkResult', '未超限')
+
       this.inforForm.trailerColor = '1'
 
       // 鼠标滚动
@@ -1963,47 +2030,51 @@
       }
       this.$refs.link_5.addEventListener('scroll', this.scrool5);
 
-    },
-    created() {
-      this.getDirectionList();
-      this.getLocationList();
-      this.findJudgFreedomList();
-      this.getTrailerType();
-      this.findRouteManageByOrganId();
-      // this.setLawPerson(
-      //   [iLocalStroage.gets('userInfo').username]
-      // )
-      console.log(this.$route)
-      this.setLawPersonCurrentP();
-      if (this.$route.params.fromSlide) {
-        this.fromSlide();
-        this.disableBtn = true;
-        this.autoSava = false;
-      }
-      //暂存数据后从其他页面回到信息采集页
-      if (iLocalStroage.get("stageCaseId")) {
-        this.fromSlide();
-        // this.autoSava = false;
-      }
-      this.findHistoryBySign("checkStastions");
-      this.findHistoryBySign("checkWorker");
-      this.findHistoryBySign("brand");
-      //修改基本信息
-      if (this.$route.params.editFlag) {
-        this.fromSlide();
-        this.disableZcBtn = true; //暂存按钮禁用
-        this.autoSava = false;
-      }
-    },
-    beforeRouteLeave(to, from, next) {
-      console.log('to', to)
-      console.log('from', from)
-      console.log('next', next);
-      console.log('this.autoSava', this.autoSava);
-      if (this.autoSava && to.name != 'login') {  //退出登录不自动暂存
-        this.stageInfo(0);
-        // iLocalStroage.set("stageCaseId", this.caseId);
-      }
+  },
+  created() {
+    this.getDirectionList();
+    this.getLocationList();
+    this.findJudgFreedomList();
+    this.getTrailerType();
+    this.findRouteManageByOrganId();
+    // this.setLawPerson(
+    //   [iLocalStroage.gets('userInfo').username]
+    // )
+    console.log(this.$route)
+  
+    if(!this.$route.params.fromSlide && !iLocalStroage.get("stageCaseId") && !this.$route.params.editFlag){
+       this.setLawPersonCurrentP();
+    }
+   
+    if (this.$route.params.fromSlide) {
+      this.fromSlide();
+      this.disableBtn = true;
+      this.autoSava = false;
+    }
+    //暂存数据后从其他页面回到信息采集页
+    if (iLocalStroage.get("stageCaseId")) {
+      this.fromSlide();
+      // this.autoSava = false;
+    }
+    this.findHistoryBySign("checkStastions");
+    this.findHistoryBySign("checkWorker");
+    this.findHistoryBySign("brand");
+    //修改基本信息
+    if (this.$route.params.editFlag) {
+      this.fromSlide();
+      this.disableZcBtn = true; //暂存按钮禁用
+      this.autoSava = false;
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log('to', to)
+    console.log('from', from)
+    console.log('next', next);
+    console.log('this.autoSava', this.autoSava);
+    if (this.autoSava && to.name != 'login') {  //退出登录不自动暂存
+      this.stageInfo(0);
+      // iLocalStroage.set("stageCaseId", this.caseId);
+    }
 
       next(vm => {
         console.log(vm)

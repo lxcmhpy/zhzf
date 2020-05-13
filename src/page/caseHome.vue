@@ -116,7 +116,7 @@
         </div>
         <div class="icon_content">
           <ul>
-            <li class="imgbox">
+            <li class="imgbox" @click="infoCheck('case_handle_commercialVehicle')">
               <img :src="'./static/images/img/icon_lit_yyunc.png'">
               <span>营运车辆</span>
             </li>
@@ -124,38 +124,44 @@
               <img :src="'./static/images/img/icon_lit_jyyehu.png'">
               <span>经营业户</span>
             </li>
-            <li class="imgbox">
+            <li class="imgbox" @click="infoCheck('case_handle_vehicleLine')">
               <img :src="'./static/images/img/icon_lit_kyxlu.png'">
               <span>客运线路<br />标志牌</span>
             </li>
           </ul>
           <ul>
-            <li class="imgbox">
+            <li class="imgbox" @click="infoCheck('case_handle_transportWorker')">
               <img :src="'./static/images/img/icon_lit_jyyh.png'">
               <span>道路运输<br />从业人员</span>
             </li>
+            <el-tooltip class="item" effect="dark" content="正在开发中" placement="top">
             <li class="imgbox">
               <img :src="'./static/images/img/icon_lit_car.png'">
               <span>出租车</span>
             </li>
-            <li class="imgbox">
+            </el-tooltip>
+            <li class="imgbox" @click="infoCheck('case_handle_shipCertificates')">
               <img :src="'./static/images/img/icon_lit_cbyyzheng.png'">
               <span>船舶营运证</span>
             </li>
           </ul>
           <ul>
-            <li class="imgbox" @click="infoCheck('crewCertificates')">
+            <li class="imgbox" @click="infoCheck('case_handle_crewCertificates')">
               <img :src="'./static/images/img/icon_lit_cy.png'">
               <span>船员适任证</span>
             </li>
-            <li class="imgbox">
-              <img :src="'./static/images/img/icon_lit_slu.png'">
-              <span>水路运输经<br />营许可证</span>
-            </li>
+            <el-tooltip class="item" effect="dark" content="正在开发中" placement="top">
+              <li class="imgbox">
+                <img :src="'./static/images/img/icon_lit_slu.png'">
+                <span>水路运输经<br />营许可证</span>
+              </li>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="正在开发中" placement="top">
             <li class="imgbox">
               <img :src="'./static/images/img/icon_lit_zge.png'">
               <span>经营资格证<br />（企业）</span>
             </li>
+            </el-tooltip>
           </ul>
 
         </div>
@@ -166,7 +172,7 @@
           <div class="casehome_topic">立案登记
             <div style="float:right;height:20px" class="programType">
               <el-radio-group v-model="caseForm.programType" @change="getIllegaAct">
-                <el-radio :label='0'>一般程序</el-radio>
+                <el-radio :label='0' style="margin-right:7px">一般程序</el-radio>
                 <el-radio :label='1'>简易程序</el-radio>
               </el-radio-group>
             </div>
@@ -430,10 +436,10 @@ export default {
       if (this.moreFlag === 'unRecordCase') {
         let setCaseNumber = row.caseNumber != '' ? row.caseNumber : row.tempNo;
         this.$store.commit("setCaseNumber", setCaseNumber);
+        this.$store.commit("setCaseId", row.id);
+        iLocalStroage.set("stageCaseId", row.id);
         //暂存案件跳转信息采集
         if (row.state == 0) {
-          this.$store.commit("setCaseId", row.id);
-          iLocalStroage.set("stageCaseId", row.id);
           this.$router.replace({
             name: "case_handle_inforCollect"
           });
@@ -452,7 +458,7 @@ export default {
           // });
           // let setCaseNumber = row.caseNumber !== '' ? row.caseNumber : '案件'
           // this.$store.commit("setCaseNumber", setCaseNumber);
-          
+
           //立案登记表已保存未提交审批时 跳转pdf页面
 
           this.$store.dispatch("getFile", {
@@ -504,23 +510,43 @@ export default {
           name: "case_handle_archiveCover"
         });
       } else {
+        console.log('点击的是待审批')
         if (row.caseStatus === '已移送') {
           let message = '该案件正在移送中，移送完成后才可与继续办理'
           this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
         }
         else {
-          this.$store.commit("setCaseId", row.id);
-          //设置案件状态不为审批中
-          this.$store.commit("setCaseApproval", true);
-          this.$router.push({
-            name: "case_handle_caseInfo",
-            params: {
-              caseInfo: row,
-              isApproval: true
-            }
-          });
-          let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
-          this.$store.commit("setCaseNumber", setCaseNumber);
+          // this.$store.commit("setCaseId", row.id);
+          // //设置案件状态不为审批中
+          // this.$store.commit("setCaseApproval", true);
+          // this.$router.push({
+          //   name: "case_handle_caseInfo",
+          //   params: {
+          //     caseInfo: row,
+          //     isApproval: true
+          //   }
+          // });
+          // let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+          // this.$store.commit("setCaseNumber", setCaseNumber);
+          console.log(row)
+          //案件审批
+          let approvalLink = ''
+          let docId = ""
+          switch (row.currentLinkId) {
+            case "2c90293b6c178b55016c17c255a4000d":
+              approvalLink = 'case_handle_establish';
+              docId = "2c9029ae654210eb0165421564970001";
+              break;
+            case "2c9029ee6cac9281016caca7f38e0002":
+              approvalLink = 'case_handle_caseInvestig';
+              docId = "2c9029ca5b711f61015b71391c9e2420";
+              break;
+            case "2c9029ee6cac9281016cacaadf990006":
+              approvalLink = 'case_handle_finishCaseReport';
+              docId = "2c9029d2695c03fd01695c278e7a0001";
+              break;
+          }
+          this.getFileIdByDocId(docId, approvalLink);
         }
 
       }
@@ -788,6 +814,7 @@ export default {
 
 .case_home_bottom .casehome_topic {
   padding-left: 0px;
+  padding-right: 0px;
 }
 
 .case_number {
@@ -830,8 +857,8 @@ export default {
 
 .imgbox span {
   display: block;
-  margin: 8px auto;
-  line-height: 15px;
+  margin: 4px auto;
+  line-height: 16px;
 }
 
 .icon_content ul {

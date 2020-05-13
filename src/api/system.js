@@ -46,7 +46,13 @@ export  function  addOrganApi(data)  {
     contactor:  data.contactor,
     fundingSource:  data.fundingSource,
     legalBasis:  data.legalBasis,
-    mainPowers:  data.mainPowers
+    mainPowers:  data.mainPowers,
+    bank:data.bank,
+    account:data.account,
+    reconsiderationOrgan1:data.reconsiderationOrgan1,
+    reconsiderationOrgan2:data.reconsiderationOrgan2,
+    enforcementOrgan1:data.enforcementOrgan1,
+    enforcementOrgan2:data.enforcementOrgan2,
   };
   let  data2  =  vm.$qs.stringify(addOrganForm);
   return  request({
@@ -179,14 +185,30 @@ export function getUserdeletesApi(id) {
 
 
 //用户管理   密码初始化
-export function getUserresetApi(id) {
-  console.log(id)
+export function getUserresetApi(params) {
+  // console.log(id)
+  // return request({
+  //   url: "/system/sys/user/reset/" + id,
+  //   method: "GET",
+  //   data: vm.$qs.stringify(id),
+  //   showloading: true,
+  //   loadingType:'loadPart',
+  //   cancelToken: setCancelSource()
+  // });
+  
+  let data = vm.$qs.stringify({
+    username: params.username,
+    nickName: params.nickName,
+    enforceNo: params.enforceNo,
+  })
+  console.log(data)
   return request({
-    url: "/system/sys/user/reset/" + id,
-    method: "GET",
-    data: vm.$qs.stringify(id),
-    showloading: true,
-    loadingType:'loadPart',
+    url: "/system/sys/user/resetPassWord",
+    method: "POST",
+    contentType: 'multipart/form-data',
+    data:data,
+    showloading: false,
+    baseUrlType:1,
     cancelToken: setCancelSource()
   });
 }
@@ -329,10 +351,11 @@ export function roleBindMenuApi(data) {
     permissionIds: data.permissionIds.join(',')
   }
   console.log("角色绑定菜单params",params)
+  let params2 = vm.$qs.stringify(params);
   return request({
     url: "/system/sys/role/bindMenu",
-    method: "get",
-    params: params,
+    method: "post",
+    data: params2,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -346,10 +369,11 @@ export function roleBindOrganApi(data) {
     organIds: data.organIds.join(',')
   }
   console.log(params);
+  let params2 = vm.$qs.stringify(params);
   return request({
     url: "/system/sys/role/bindOrgan",
-    method: "get",
-    params: params,
+    method: "post",
+    data: params2,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -612,5 +636,62 @@ export function findRouteManageByOrganIdApi(data) {
     showloading: false,
     params:data,
     cancelToken:  setCancelSource(),
+  });
+}
+
+//获取案件编号配置数据
+export function getCaseNumberApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/doc/caseNumber/findAllByPage",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//查询未配置案件字的机构
+export function getOrganNotInCaseNumberApi() {
+  return request({
+    url: "/system/sys/organ/getOrganNotInCaseNumber",
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//新增 修改 案件编号配置
+export function addCaseNumberApi(data) {
+  let caseNumberForm = {
+    id: data.id,
+    organId: data.organId,
+    organName: data.organName,
+    caseWord: data.caseWord,
+    digit: data.digit,
+    onlineNumberStart: data.onlineNumberStart
+  };
+  console.log('添加字典', caseNumberForm)
+  let data2 = vm.$qs.stringify(caseNumberForm);
+  return request({
+    url: "/case/doc/caseNumber/create",
+    method: "post",
+    data: data2,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除案件字的机构配置
+export function deleteCaseNumberApi(id) {
+  return request({
+    url: "/case/doc/caseNumber/deleteById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
   });
 }

@@ -19,6 +19,9 @@
     height: calc(100% - 0px);
     // border: 20px solid white;
     box-shadow:0px 6px 4px 0px rgba(94,137,181,0.1);
+    .amap-page-container {
+        // height: 100vh;
+    }
  }
  .el-select-dropdown {
     margin-top: -1px !important;
@@ -36,8 +39,8 @@
  .amap-search {
     position: absolute;
     left: 27px;
-    top: 22px;
-    width: 400px;
+    top: 45px;
+    width: 455px;
     // z-index: 1500;
     line-height: 46px;
     display: flex;
@@ -212,7 +215,7 @@
      //    box-shadow: 0px 2px 1px rgba(196, 222, 248, 0.2);
         color: #5F5F61;
         &:hover {
-         background: #F3F4FD;
+        //  background: #F3F4FD;
          // color: #4281D9;
         }
         i {
@@ -250,7 +253,10 @@
         }
     }
     .select {
-         background: #F3F4FD;
+        //  background: #F3F4FD;
+        background:#4573D0;
+        color: white;
+        border-bottom: 1px solid  white;
      }
  }
 
@@ -304,7 +310,7 @@
         color:white;
         display: flex;
         justify-content:space-between;
-        padding-left: 10px;
+        padding-left: 17px;
         img {
             width: 59px;
             height: 59px;
@@ -357,9 +363,9 @@
         // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
-        width: 400px;
+        width: 455px;
         position: fixed;
-        top:170px;
+        top:190px;
         left:227px;
         background: white;
         box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
@@ -369,9 +375,9 @@
         // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
-        width: 400px;
+        width: 455px;
         position: fixed;
-        top:170px;
+        top:190px;
         left:227px;
         background: white;
         white-space: nowrap;
@@ -381,9 +387,9 @@
         // background: rgba($cats-red-color,0.9);
         // padding: 10px 17px 10px 17px;
         // color:white;
-        width: 400px;
+        width: 455px;
         position: fixed;
-        top:170px;
+        top:190px;
         left:227px;
         background: white;
         line-height:35px;
@@ -394,9 +400,9 @@
         // padding: 10px 17px 10px 17px;
         // color:white;
         line-height:35px;
-        width: 400px;
+        width: 455px;
         position: fixed;
-        top:170px;
+        top:190px;
         left:227px;
         background: white;
         box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
@@ -407,7 +413,7 @@
         padding: 0px;
         width: 455px;
         position: fixed;
-        top:170px;
+        top:190px;
         left:227px;
         background: white;
         // color:white;
@@ -455,12 +461,14 @@
         width: auto;
         margin-top: -30px;
         background:white;
+        right: 50%;
+        margin-right: 30px;
         box-shadow: 0px 2px 4px 0px rgba(39, 66, 122, 0.35);
         .lawWindowTitle {
             background: white;
             // line-height: 40px;
             // height: 40px;
-            margin: -14px 20px;
+            margin: -14px 40px 0px 0px;
             margin-left: 10px;
             color: #20232B;
             img,.iconfont {
@@ -564,8 +572,10 @@
  }
  .amap-info-close {
     top: -15px !important;
-    left: 10px !important;
+    right: 50% !important;
+    margin-right: 40px;
     // color: white;
+
 }
  .amap-position-right {
     position: absolute;
@@ -593,7 +603,7 @@
     .el-drawer__wrapper {
         top: 92px;
         right:0px !important;
-        width: 430px !important;
+        width: 480px !important;
         // min-width: 400px;
         left: auto;
     }
@@ -602,7 +612,7 @@
         overflow:auto;
         height: 82vh;
         padding: 0px;
-        @include echartsStyle(300px, false);
+        @include echartsStyle(400px, false);
      }
      .drawerBtn {
         position: absolute;
@@ -657,6 +667,15 @@
             img {
                 float:left;
                 padding-right: 7px;
+            }
+        }
+        .skinBtn {
+            font-size: 22px;
+            // background:#4573D0;
+            color:#4573D0;
+            width: 48px;
+            i {
+                margin-left:-7px;
             }
         }
         .no-border {
@@ -812,9 +831,11 @@
 }
 
 .left-500 {
-    left: -570px !important;
+    left: -480px !important;
 }
-
+.leftTabelHoverDiv {
+    line-height: 30px;
+}
 /////////////////////////////////////待改
 /* 车辆查验 */
 .vehicle-dialog {
@@ -1099,7 +1120,9 @@
         }
     }
 }
-
+.f22 {
+    font-size: 22px;
+}
 /* 表格样式 */
 .table-style {
     table {
@@ -1264,9 +1287,6 @@
     .lawWindowStyle0,.lawWindowStyle1,.lawWindowStyle2,.lawWindowStyle3,.lawWindowStyle4,.lawWindowStyle5,.lawWindowStyle6 {
         left: 22px;
         top: 74px;
-    }
-    .lawWindowStyle-po {
-        // margin-left: -125px;
     }
     .amap-main-content  {
         height: 92vh;

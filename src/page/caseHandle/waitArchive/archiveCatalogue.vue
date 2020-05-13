@@ -76,10 +76,35 @@ export default {
          this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
          res=>{
            console.log('res.data',res.data);
-            res.data = res.data.sort(function(a,b){
-              return a.num - b.num;
-            });
-             this.caseList = res.data;
+            // res.data = res.data.sort(function(a,b){
+            //   return a.num - b.num;
+            // });
+            //  this.caseList = res.data;
+            let beikaoFlag=true;
+             res.data.forEach(element => {
+             console.log(element,element.name,element.storageId)
+             
+             if(element.name=='备考表'){
+               if(beikaoFlag){
+                 if(element.storageId===""){}else{
+                 this.caseList.push(element)
+                 beikaoFlag=false;
+                 }
+               }
+             }else{
+                 this.caseList.push(element)
+             }
+               
+             })
+             
+               if(beikaoFlag=true){
+                 this.caseList = res.data;
+               }
+
+             console.log('caseList',this.caseList)
+             console.log('res.data',res.data)
+
+
          },
          err=>{
            console.log(err)
