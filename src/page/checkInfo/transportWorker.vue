@@ -81,7 +81,7 @@ export default {
     transportWorkerSee
   },
   data() {
-//     OwnerName:北京京版物流有限责任公司
+//     OwnerName:北京京版物流有限责任公司啊
 // LicenseCode:货备110115000169
 // ProvinceCode:110000
     return {
