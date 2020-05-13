@@ -248,7 +248,7 @@ export default {
             docId:row.id
         };
         let _that = this
-        debugger
+ 
         findByCaseIdAndDocIdSongdaApi(data).then(res=>{
 
             _that.mlList = _that.host + res.data[0].storageId;
@@ -360,6 +360,7 @@ export default {
           docDataId:row.caseSerProofId,
           status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
         // docDataId:row.docDataId
+          id:row.id
         };
         
         this.$store.dispatch("deleteTabs", this.$route.name);

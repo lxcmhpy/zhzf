@@ -374,7 +374,8 @@ export default {
             collector: this.docData.collector,
             deliveryCertificatelist:newdeliveryCertificatelist,//送达文书列表
             docNote: this.docData.docNote,//备注
-            makeDate:this.docData.makeDate
+            makeDate:this.docData.makeDate,
+            
       };
       console.log('送达回证',data);
       if (handleType==1) {
@@ -382,7 +383,6 @@ export default {
         this.$refs['docForm'].validate((valid, noPass) => {
            // debugger
           if (valid) {
-             debugger
             this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(
               res => {
                 console.log("23",res);
@@ -394,6 +394,8 @@ export default {
                 this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
                 // this.$router.push('deliverReceiptForm')
                 //提交成功后提交pdf到服务器，后打开pdf
+                console.log(res.data.id)
+                debugger
                 this.printContent(res.data.id);
               },
               err => {

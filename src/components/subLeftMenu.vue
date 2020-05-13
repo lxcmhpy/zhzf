@@ -57,7 +57,7 @@ import { mapGetters } from "vuex";
       },
       //获取侧边栏菜单
       getSlideMenu(val) {
-//      console.log(val);
+     console.log('aksdsjkds',val);
 // debugger;
         this.currentSlideMenu = [];
         let _this = this

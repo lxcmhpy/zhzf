@@ -29,6 +29,7 @@ const system = {
         SET_ACTIVE_INDEX_STO (state, data) {
             state.activeIndexSto = data;
         }
+        
     },
     actions: {
         //获取验证码

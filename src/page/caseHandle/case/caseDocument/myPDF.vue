@@ -57,6 +57,7 @@
       },
       getFile() {
         // debugger;
+        console.log('this.$route.params',this.$route.params)
         if (this.$route.params && this.$route.params.docId) {
           this.$store.commit('setDocId', this.$route.params.docId)
         }
