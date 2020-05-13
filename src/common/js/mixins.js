@@ -607,7 +607,7 @@ export const mixinGetCaseApiList = {
     },
     //通过文书id获取该文书pdf的id
     getFileIdByDocId(docId, approvalLink) {
-      console.log(docId, approvalLink)
+      console.log('min-caseId',this.caseId)
       this.$store.dispatch("getFile", {
         docId: docId,
         caseId: this.caseId,
