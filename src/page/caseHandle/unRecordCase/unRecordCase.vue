@@ -132,7 +132,6 @@ export default {
     caseRecord() {
       this.$store.commit("setCaseId", '');
       this.$refs.caseRegisterDiagRef.showModal();
-      // this.makeRoute('/inforCollect','/inforCollect2','/inforCollect3','inforCollect','inforCollect2','inforCollect3','信息采集','caseHandle/unRecordCase/inforCollection.vue');
     },
     //获取机构下的未立案数据
     getUnRecordCase(searchData) {
