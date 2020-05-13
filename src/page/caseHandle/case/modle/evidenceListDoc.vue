@@ -149,7 +149,7 @@
               <td></td>
               <td ></td>
             </tr>
-            <tr v-for="(item,index) in docData.tableData" :key="index">
+            <tr v-for="(item,index) in docData.tableData" :key="index"  @click="handleAdd">
               <td>{{item.evidenceNo}}</td>
               <td >{{item.evidenceName}}</td>
               <td>{{item.spec}}</td>

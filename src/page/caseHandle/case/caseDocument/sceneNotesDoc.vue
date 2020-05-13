@@ -638,12 +638,27 @@ export default {
         console.log(staffIndex);
       },
       changeRelationWithCase(val) {
-        // if(val){
-        //   this.docData.party = '';
-        // }else{
-        //   this.docData.xianChangPeople = this.docData.party;
-        //   this.xianChangPeopleSex = this.docData.partySex
-        // }
+        console.log(val,this.originalDocData)
+        let dailiData=this.originalDocData
+       if (val=='当事人') {
+          this.docData.scenePeopelName = dailiData.name;
+          this.docData.scenePeopelSex = Number(dailiData.sex);
+          this.docData.scenePeopelIdNo = dailiData.zhengjianNumber;
+          this.docData.scenePeopeRelation = dailiData.relationWithCase;
+          this.docData.scenePeopeUnitPosition = dailiData.company;
+          this.docData.scenePeopeAddress = dailiData.adress;
+          this.docData.scenePeopeTel = dailiData.tel;
+
+        } else {
+          //不为当事人时指标不清空
+          this.docData.scenePeopelName = '';
+          this.docData.scenePeopelSex = '';
+          this.docData.scenePeopelIdNo =  '';
+          this.docData.scenePeopeRelation = '';
+          this.docData.scenePeopeUnitPosition =  '';
+          this.docData.scenePeopeAddress =  '';
+          this.docData.scenePeopeTel =  '';
+        }
       },
       //当姓名的内容修改时，清空自动带入的其他指标内容
       changeScenePeopelName(val) {
