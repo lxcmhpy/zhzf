@@ -17,6 +17,8 @@
         ref="organTree"
         highlight-current
         :props="defaultProps"
+        :check-strictly="true"
+        @check="currentChange"
       ></el-tree>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -102,7 +104,37 @@ export default {
     },
     openDialog() {
       this.getOrgan();
-    }
+    },
+    currentChange(node, checkNode) {
+      let select = checkNode.checkedKeys.includes(node.id);
+      this.childNodesChange(node, select);
+      this.parentNodesChange(node, select);
+    },
+    childNodesChange(node, select) {
+      let len = node.children ? node.children.length : 0;
+      for (let i = 0; i < len; i++) {
+        this.$refs.organTree.setChecked(node.children[i].id, select);
+        this.childNodesChange(node.children[i], select);
+      }
+    },
+    parentNodesChange(node, select) {
+      console.log("node", node);
+      if (node.parentId) {
+        let getCheckedNodes = this.$refs.organTree.getCheckedNodes();
+        console.log("getCheckedNodes", getCheckedNodes);
+        for (let i = 0; i < getCheckedNodes.length; i++) {
+          if (getCheckedNodes[i].parentId == node.parentId) {
+            select = true;
+            break;
+          }
+        }
+        this.$refs.organTree.setChecked(node.parentId, select);
+        let currentParentNode = this.$refs.organTree.getNode(node.parentId).data;
+        console.log("parent node", this.$refs.organTree.getNode(node.parentId));
+        this.parentNodesChange(currentParentNode, select);
+      }
+    },
+
   },
   created() {}
 };
