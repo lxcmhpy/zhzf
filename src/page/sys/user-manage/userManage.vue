@@ -93,6 +93,7 @@
             border
             style="width: 100%;height:100%"
             @selection-change="selectUser"
+            @row-click="showUserDetail"
           >
             <el-table-column type="selection" align="center"></el-table-column>
             <el-table-column prop="username" label="用户名"></el-table-column>
@@ -110,9 +111,9 @@
             <el-table-column label="操作" width="160">
               <template slot-scope="scope">
                 <div style="width:160px">
-                  <el-button type="text" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-                  <el-button type="text" @click="handleDelete(scope.row)">删除</el-button>
-                  <el-button type="text" @click="Initialization(scope.row)">初始化</el-button>
+                  <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button> 
+                  <el-button type="text" @click.stop @click="handleDelete(scope.row)">删除</el-button>
+                  <el-button type="text" @click.stop @click="Initialization(scope.row)">初始化</el-button>
                 </div>
               </template>
             </el-table-column>
@@ -293,7 +294,8 @@
       },
       // 表格编辑
       handleEdit(index, row) {
-        this.$refs.addUserRef.handelEdit(row);
+        let newRow =JSON.parse(JSON.stringify(row));
+        this.$refs.addUserRef.handelEdit(newRow);
         // this.$refs.addUserRef.addUserForm = JSON.parse(JSON.stringify(row));
       },
       // 表格id删除
@@ -379,6 +381,11 @@
           _this.selectUserIdList.push(item.id);
           console.log(_this.selectUserIdList);
         });
+      },
+      //查看用户详情
+      showUserDetail(row){
+        let newRow =JSON.parse(JSON.stringify(row))
+        this.$refs.addUserRef.showUserDetail(newRow);
       }
     },
     mounted() {

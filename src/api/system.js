@@ -141,6 +141,7 @@ export  function  addUserApi(data)  {
 }
 //用户管理   修改用户
 export function updateUserApi(data) {
+  debugger
   console.log('用户', vm.$qs.stringify(data));
   console.log(data);
 

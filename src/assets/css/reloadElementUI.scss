@@ -1,6 +1,6 @@
 @import "./basicStyles/variables.scss";
 @import "./basicStyles/lengthStylesSet.scss";
-
+$dialog-default-height: 560px !default;
 .fullscreen {
   .login {}
 
@@ -220,6 +220,10 @@
     height: auto;
 }
 
+.el-dialog__body{
+  max-height: $dialog-default-height;
+  overflow: auto;
+}
 .el-drawer__title {
   span:focus {
     outline: 0;

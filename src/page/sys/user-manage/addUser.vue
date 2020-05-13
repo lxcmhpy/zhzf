@@ -14,6 +14,7 @@
       ref="addUserForm"
       label-width="100px"
       class="addOrganClass"
+      :disabled="isDisabled"
     >
       <div class="part">
         <p class="titleP">登录信息</p>
@@ -131,7 +132,8 @@ export default {
       //新增or编辑弹框标题(根据点击的新增or编辑按钮显示不同的标题)
       titleMap: {
         addEquipment: "新增用户",
-        editEquipment: "编辑用户"
+        editEquipment: "编辑用户",
+        userDetail: "用户详情"
       },
       //新增和编辑弹框标题
       dialogStatus: "",
@@ -169,6 +171,7 @@ export default {
         idNumber: [{ validator: validateIDNumber, trigger: "blur" }]
       },
       rowData:'',
+      isDisabled:false,
     };
   },
   mounted() {},
@@ -178,6 +181,7 @@ export default {
     showModal(data) {
       //显示弹框
       this.visible = true;
+      this.isDisabled = false;
       this.dialogStatus = "addEquipment";
       let _this = this
       //新增弹框标题
@@ -200,6 +204,7 @@ export default {
       console.log(data);
       //显示弹框
       this.visible = true;
+      this.isDisabled = false;
       //编辑弹框标题
       this.dialogStatus = "editEquipment";
       this.parentNode={
@@ -209,6 +214,27 @@ export default {
       this.getCurrentOrganAndChild();
       // this.rowData = data;
       this.addUserForm = data;
+    },
+    //用户详情，不可编辑
+    showUserDetail(row){
+      console.log(row);
+      //显示弹框
+      this.visible = true;
+      this.dialogStatus = "userDetail";
+      // this.addUserForm.id = row.id;
+      // this.addUserForm.username = row.username;
+      // this.addUserForm.nickName = row.nickName;
+      // this.addUserForm.idNumber = row.idNumber;
+      // this.addUserForm.mobile = row.mobile;
+      // this.addUserForm.category = row.category;
+      // this.addUserForm.organId = row.organId;
+      // this.addUserForm.departmentId = row.departmentId;
+      // this.addUserForm.provincial = row.provincial;
+      // this.addUserForm.ministerial = row.ministerial;
+      // this.addUserForm.maritime = row.maritime;
+      // this.addUserForm.other = row.other;
+      this.addUserForm = row;
+      this.isDisabled = true;
     },
     //获取当前机构及其子机构
     getCurrentOrganAndChild() {

@@ -89,7 +89,7 @@
             <el-table-column prop="postName" label="职务" align="center"></el-table-column>
             <el-table-column prop="ministerialNo" label="执法证号" align="center"></el-table-column>
             <el-table-column prop="personOName" label="所属机构" align="center"></el-table-column>
-            <el-table-column prop="branchName" label="执法门类" align="center"></el-table-column>
+            <el-table-column prop="branchName" label="执法领域" align="center"></el-table-column>
             <el-table-column label="操作项" width="220" align="center">
               <template slot-scope="scope">
                 <div style="width:220px">

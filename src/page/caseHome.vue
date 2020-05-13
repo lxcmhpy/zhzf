@@ -236,7 +236,7 @@ import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import caseRegisterDiag from "@/page/caseHandle/unRecordCase/caseRegisterDiag.vue";
 import chooseillegalAct from "./chooseIllegegaDialog.vue";
 import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
-
+import { mapGetters } from "vuex";
 export default {
   mixins: [mixinGetCaseApiList],
   components: {
@@ -244,6 +244,9 @@ export default {
     caseRegisterDiag,
     chooseillegalAct,
     tansferAtentionDialog
+  },
+  computed: {
+    ...mapGetters(["caseId"])
   },
   data() {
     return {
@@ -510,7 +513,7 @@ export default {
           name: "case_handle_archiveCover"
         });
       } else {
-        console.log('点击的是待审批')
+        console.log('点击的是待审批',row)
         if (row.caseStatus === '已移送') {
           let message = '该案件正在移送中，移送完成后才可与继续办理'
           this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
@@ -546,6 +549,8 @@ export default {
               docId = "2c9029d2695c03fd01695c278e7a0001";
               break;
           }
+
+          this.$store.commit("caseId", row.caseCauseId);
           this.getFileIdByDocId(docId, approvalLink);
         }
 

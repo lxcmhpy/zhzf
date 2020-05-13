@@ -30,7 +30,8 @@
             :params="params"
             :savePic="materialInfo.organPic"
             materialType="organPic"
-            uploadTitle="编制证明"></materialUpload>
+            uploadTitle="编制证明"
+            @saveMaterialSuccess="cacheImage"></materialUpload>
         </template>
         <template>
           <!-- 其他证明材料 -->
@@ -39,7 +40,8 @@
             :params="params"
             :savePic="materialInfo.otherPic"
             materialType="otherPic"
-            uploadTitle="其他证明"></materialUpload>
+            uploadTitle="其他证明"
+            @saveMaterialSuccess="cacheImage"></materialUpload>
         </template>
     </div>
     <!-- <div class="content_right">

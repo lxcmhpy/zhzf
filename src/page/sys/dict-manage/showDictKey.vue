@@ -13,6 +13,11 @@
         <!-- <el-table-column prop="pName" label="字典标签" align="center"></el-table-column> -->
         <el-table-column prop="name" label="字典值" align="center"></el-table-column>
         <el-table-column prop="notes" label="描述" align="center"></el-table-column>
+        <el-table-column prop="status" label="状态" align="center">
+          <template slot-scope="scope">
+            <div>{{scope.row.status === 0?'有效':'无效'}}</div>
+          </template>
+        </el-table-column>
         <el-table-column prop="sort" label="排序" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">

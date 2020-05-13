@@ -400,7 +400,6 @@ export default {
       staffList:[],
       needDealData:true,
       propertyFeatures:'', //字段属性配置
-
     }
   },
   inject: ["reload"],
@@ -487,7 +486,7 @@ export default {
     },
     //更改与案件关系
     changeRelationWithCase(val){
-      if(val == '0'){//为当事人
+      if(val == '0'||val == '当事人'){//为当事人
         this.docData.inquiried = this.docData.party;
         this.docData.inquiriedSex = Number(this.docData.partySex);
         this.docData.inquiriedAge = this.docData.partyAge;

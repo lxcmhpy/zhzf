@@ -264,6 +264,7 @@
                       placeholder="执法领域"
                       :filterable="branchInfo.length > 5"
                       :loading="selectLoading"
+                      clearable
                       @change="selectVal($event,'branchId')"
                       @focus="getDictInfo('执法门类','branchInfo')">
                       <el-option
@@ -604,20 +605,26 @@ export default {
       selectLoading: false,
       showSelectTree: false,
       personClone: {},
-      personAvatarFile: null
+      personAvatarFile: null,
+      isShowAddPerson: false
     }
   },
   computed: {
     uploadDisabled:function() {
       let _this=this;
       return _this.photoList.length > 0
-    },
-    isShowAddPerson: function(){
-      let isShowAddPerson = true;
-      if(this.pageParams.type === 'edit' || this.pageParams.type === 'view'){
-        isShowAddPerson = false;
-      }
-      return isShowAddPerson;
+    }
+  },
+  watch:{
+    pageParams:{
+      handler:function(val, oldval){
+        if(val.type === 'edit' || val.type === 'view'){
+          this.isShowAddPerson = false;
+        }else{
+          this.isShowAddPerson = true;
+        }
+      },
+      deep:true
     }
   },
   components:{

@@ -36,7 +36,7 @@
         <el-table-column prop="component" label="菜单组件" align="center"></el-table-column>
         <el-table-column prop="permTypes" label="授权标识" align="center"></el-table-column>
         <el-table-column prop="sortOrder" label="排序" align="center"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button @click.stop="editItem(scope.row)" type="text">编辑</el-button>
             <el-button type="text" @click.stop="deleteItem(scope.row)">删除</el-button>

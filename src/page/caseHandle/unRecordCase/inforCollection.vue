@@ -255,6 +255,7 @@
         <div class="line"></div>
         <p>驾驶人或代理人</p>
         <div class="driverOrAgentBox" v-for="(driverOrAgentInfo,index) in driverOrAgentInfoList" :key="index">
+          <div v-show="partyTypePerson=='1'">
           <div>
             <div class="item">
               <el-form-item label="与当事人关系">
@@ -273,6 +274,26 @@
                              :value="item.label"></el-option>
                 </el-select>
               </el-form-item>
+            </div>
+          </div>
+          </div>
+          <div v-show="partyTypePerson!='1'">
+            <div>
+              <div class="item">
+                <el-form-item label="与当事人关系">
+                  <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty">
+                    <el-option v-for="item in allQYRelationWithParty" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <div class="item">
+                <!-- 需要完善验证 -->
+                <el-form-item label="与案件关系" class="is-required">
+                  <el-select v-model="driverOrAgentInfo.relationWithCase">
+                    <el-option v-for="item in allQYRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
             </div>
           </div>
           <div>
@@ -991,6 +1012,19 @@
           {value: "4", label: "承运人"},
           {value: "5", label: "代理人"}
         ],
+        allQYRelationWithParty: [
+        //与当事人关系下拉框(企业组织)
+        { value: "2", label: "借用车辆" },
+        { value: "3", label: "雇佣关系" },
+        { value: "5", label: "其他" }
+       ],
+        allQYRelationWithCase: [
+        //与案件关系下拉框(企业组织)
+        { value: "1", label: "驾驶人" },
+        { value: "3", label: "证人" },
+        { value: "4", label: "承运人" },
+        { value: "5", label: "代理人" }
+        ],
         allVehicleIdColor: [
           //车牌颜色下拉框
           {value: "1", label: "黄色"},
@@ -1119,29 +1153,46 @@
       },
       //更改当事人类型
       changePartyType(val) {
-        this.partyTypePerson = val;
-        if (val == "1") {
-          this.inforForm.partyName = "";
-          this.inforForm.partyUnitTel = "";
-          this.inforForm.socialCreditCode = "";
-          this.inforForm.roadTransportLicense = "";
-          this.inforForm.partyManager = "";
-          this.inforForm.partyManagerPositions = "";
-          this.inforForm.partyUnitAddress = "";
-        } else {
-          this.inforForm.party = "";
-          this.inforForm.partyIdType = "";
-          this.inforForm.partyIdNo = "";
-          this.inforForm.partySex = "";
-          this.inforForm.partyAge = "";
-          this.inforForm.partyTel = "";
-          this.inforForm.partyAddress = "";
-          this.inforForm.partyZipCode = "";
-          this.inforForm.partyUnitPosition = "";
-          this.inforForm.occupation = "";
-          this.inforForm.partyEcertId = "";
-        }
-      },
+      debugger
+      this.partyTypePerson = val;
+      if (val == "1") {
+        this.inforForm.partyName = "";
+        this.inforForm.partyUnitTel = "";
+        this.inforForm.socialCreditCode = "";
+        this.inforForm.roadTransportLicense = "";
+        this.inforForm.partyManager = "";
+        this.inforForm.partyManagerPositions = "";
+        this.inforForm.partyUnitAddress = "";
+      } else {
+        this.inforForm.party = "";
+        this.inforForm.partyIdType = "";
+        this.inforForm.partyIdNo = "";
+        this.inforForm.partySex = "";
+        this.inforForm.partyAge = "";
+        this.inforForm.partyTel = "";
+        this.inforForm.partyAddress = "";
+        this.inforForm.partyZipCode = "";
+        this.inforForm.partyUnitPosition = "";
+        this.inforForm.occupation = "";
+        this.inforForm.partyEcertId = "";
+      }
+      if(this.driverOrAgentInfoList[0].relationWithParty == "同一人" ||this.driverOrAgentInfoList[0].relationWithParty == '近亲戚' || this.driverOrAgentInfoList[0].relationWithParty == '车辆所有人' 
+      || this.driverOrAgentInfoList[0].relationWithParty == '其它' || this.driverOrAgentInfoList[0].relationWithCase == '当事人' || this.driverOrAgentInfoList[0].relationWithCase == '实际所有者'){
+          this.driverOrAgentInfoList[0].relationWithParty = "";
+          this.driverOrAgentInfoList[0].relationWithCase = "";
+          this.driverOrAgentInfoList[0].name = "";
+          this.driverOrAgentInfoList[0].zhengjianType = "";
+          this.driverOrAgentInfoList[0].zhengjianNumber = "";
+          this.driverOrAgentInfoList[0].sex = "";
+          this.driverOrAgentInfoList[0].age = "";
+          this.driverOrAgentInfoList[0].tel = "";
+          this.driverOrAgentInfoList[0].adress = "";
+          this.driverOrAgentInfoList[0].adressCode = "";
+          this.driverOrAgentInfoList[0].company = "";
+          this.driverOrAgentInfoList[0].position = "";
+          this.driverOrAgentInfoList[0].zigeNumber = "";
+      }
+    },
       //更改与当事人关系   为同一人时自动赋值且不可编辑
       changeRelationWithParty(index) {
         console.log(index, 'index')
