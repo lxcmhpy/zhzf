@@ -1,6 +1,21 @@
 <template>
   <!--  执法监管首页 by-jingli -->
   <div id="lawSupervise" ref="lawSupervise" class="mainBox" :class="{'lawScreenFull':lawScreenFull}">
+    <el-carousel :interval="8000" indicator-position="none" height="28px" style="position:absolute;top:0px;line-height:28px;width:100%;font-size:12px;color:#20232B">
+        <el-carousel-item :key="1">
+            <div style="background:#F9DAAC;padding-left:17px;">
+                <i class="el-icon-info red"></i>&nbsp;&nbsp;&nbsp;
+                <!-- <span>{{lunarDate}} </span> -->
+                <span>北京市发布大风蓝色预警，局部伴有扬沙，请相关单位注意。</span>
+            </div>
+        </el-carousel-item>
+         <el-carousel-item :key="2">
+            <div style="background:#F9DAAC;padding-left:17px;">
+                <i class="el-icon-info red"></i>&nbsp;&nbsp;&nbsp;
+                <span>{{lunarDate}} </span>
+            </div>
+        </el-carousel-item>
+    </el-carousel>
     <div class="amap-page-container">
       <!-- amap://styles/whitesmoke -->
       <!-- :features="['road','bg', 'building']" -->
@@ -336,12 +351,7 @@
       <!-- 右侧浮动栏 -->
        <!-- :class="{'widthDrawer600': category == 4}" -->
       <div class="amap-position amap-rtl-box" >
-        <div class="amap-tool" style="position:relative;z-index:5;left:-120px;top:27px;" :class="{'left-500':drawer}">
-            <el-carousel :interval="5000" indicator-position="none" height="20px" style="position:absolute;top:-20px;width:100%;font-size:12px;color:#4573D0">
-                <el-carousel-item v-for="item in 22" :key="item">
-                    <span>{{lunarDate}} </span>
-                </el-carousel-item>
-            </el-carousel>
+        <div class="amap-tool" style="position:relative;z-index:5;left:-120px;top:45px;" :class="{'left-500':drawer}">
             <el-popover
                 placement="bottom-start"
                 trigger="click"
@@ -497,9 +507,9 @@
                                             @cell-mouse-enter="positionEventEnter"
                                             :data="gjclList"
                                             style="width: 100%;height: auto;">
-                                            <el-table-column label="时间"  align="center" prop="checkTime">
+                                            <el-table-column label="时间"  align="center" prop="createTime">
                                                 <template slot-scope="scope">
-                                                    <span >{{scope.row.checkTime.split(' ')[0]}}</span>
+                                                    <span >{{scope.row.checkTime?scope.row.checkTime.split(' ')[1]:scope.row.checkTime}}</span>
                                                 </template>
                                             </el-table-column>
                                             <el-table-column
@@ -1494,7 +1504,7 @@ export default {
                     let resultList = []
                     if (res.data) {
                         _this.errorMsg(`总计1条数据`, 'success');
-                        let position = res.data.position.split(',');
+                        let position = res.data.position ? res.data.position.split(','):['',''];
                         let lng = parseFloat(position[0]);
                         let lat = parseFloat(position[1]);
                         // _this.category = type;
@@ -1615,7 +1625,7 @@ export default {
                     res => {
                         // resolve(res);
                         let resultList = [];
-                        that[obj] = res.data.records;
+                        that[obj] = res.data.records.splice(0,5);
                     },
                     error => {
                         //  _this.errorMsg(error.toString(), 'error')
