@@ -15,12 +15,12 @@ import { router } from "./router/index";
 // 滑动验证
 import VueSimpleVerify from 'vue-simple-verify'
 import '../node_modules/vue-simple-verify/dist/vue-simple-verify.css'
-
+// import { message } from '@/common/js/resetMessage';
 Vue.component('vue-simple-verify', VueSimpleVerify)
 
 Vue.use(ElementUI);
 Vue.use(hasPermission);
-
+// Vue.prototype.$message = message;
 
 Vue.config.productionTip = false;
 

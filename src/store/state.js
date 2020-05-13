@@ -8,7 +8,7 @@ const state = {
         loadingType:'', //loading 类型
         authToken: "", //token值
         activeSlideMenu:"",  //当前选中的侧边栏菜单
-        openTab:[{name:'case_handle_home_index',title:'案件办理首页',route:'/index'}],//tabs所有打开的路由
+        openTab:[{name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"}],//tabs所有打开的路由
         activeIndex:'', //tab激活状态
         caseNumber:'', //设置 tab name为案号
         //app部分状态
