@@ -634,7 +634,11 @@ export default {
       console.log("this.allAskDocList", this.allAskDocList);
     },
     getDataAfter(){
-      this.formData.partyUnitPositionAndCom = `${this.formData.partyUnitPosition} ${this.formData.occupation}`;
+      if(`${this.formData.partyUnitPosition}`=='' &&`${this.formData.occupation}` ==''){
+          this.formData.partyUnitPositionAndCom = "无";
+      }else{
+          this.formData.partyUnitPositionAndCom = `${this.formData.partyUnitPosition} ${this.formData.occupation}`;
+      }
     }
   },
   created() {
