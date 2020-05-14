@@ -144,14 +144,46 @@ export default {
       this.$store.dispatch("approvalPdf", params).then(
         res => {
           console.log(res);
-          _this.$message({
-            type: "success",
-            message: "审批通过"
-          });
-          iLocalStroage.set('jsonApproveData',params.jsonApproveData)
-          _this.$emit("getNewData");
+          let jsonApproveData = params.jsonApproveData
+          let opinion = ''
+          let time = ''
+          let step = ''
+          if (jsonApproveData.approveOpinions) {
+            opinion = jsonApproveData.approveOpinions
+            time = jsonA立案登记表
+            pproveData.approveTime
+            step = '1'
+          } else if (jsonApproveData.secondApproveOpinions) {
+            opinion = jsonApproveData.secondApproveOpinions
+            time = jsonApproveData.secondApproveTime
+            step = '2'
+          } else if (jsonApproveData.thirdApproveOpinions) {
+            opinion = jsonApproveData.thirdApproveOpinions
+            time = jsonApproveData.thirdApproveTime
+            step = '3'
+          }
+          let data = {
+            fileId: params.fileId,
+            keyWord: params.keyWord,
+            docOpinion: opinion,
+            date: time,
+            number: step,
+          }
+          this.$store.dispatch("approvalPdf", params).then(
+            res => {
+              console.log(res);
+              _this.$message({
+                type: "success",
+                message: "审批通过"
+              });
+              _this.$emit("getNewData");
 
-          _this.visible = false;
+              _this.visible = false;
+            },
+            err => {
+              console.log(err);
+            }
+          );
         },
         err => {
           console.log(err);
