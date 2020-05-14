@@ -304,12 +304,12 @@
               </el-table-column>
               <el-table-column width="52%">
                 <template slot-scope="scope">
-                  <el-button size="mini" icon="el-icon-circle-close" circle @click="deleteRes(scope.row)"></el-button>
+                  <el-button size="mini" icon="el-icon-circle-close" circle @click="deleteRes(scope.row)"  class="evdence-form" style="border-radius:50px"></el-button>
                 </template>
               </el-table-column>
             </el-table>
             <el-button icon="el-icon-circle-plus-outline" circle type="info" @click="addTableData"
-                   class="evdence-form"     style="margin-left: 50%;margin-top: 10px"></el-button>
+                  style="margin-left: 50%;margin-top: 10px;"></el-button>
           </el-form>
         </div>
         <div style="margin-left: 45%;margin-top: 10px">

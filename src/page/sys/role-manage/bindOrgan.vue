@@ -55,7 +55,9 @@ export default {
       let _this = this
       this.$store.dispatch("getAllOrgan").then(
         res => {
+          
           _this.organData = res.data;
+          console.log('organData',_this.organData)
           _this.getRoleBindOrgan();
         },
         err => {
@@ -110,6 +112,7 @@ export default {
       this.childNodesChange(node, select);
       this.parentNodesChange(node, select);
     },
+    // 更改子节点状态
     childNodesChange(node, select) {
       let len = node.children ? node.children.length : 0;
       for (let i = 0; i < len; i++) {
@@ -117,20 +120,18 @@ export default {
         this.childNodesChange(node.children[i], select);
       }
     },
+    // 更改父节点状态
     parentNodesChange(node, select) {
-      console.log("node", node);
-      if (node.parentId) {
+      if (this.$refs.organTree.getNode(node.pid) && node.pid) {
         let getCheckedNodes = this.$refs.organTree.getCheckedNodes();
-        console.log("getCheckedNodes", getCheckedNodes);
         for (let i = 0; i < getCheckedNodes.length; i++) {
-          if (getCheckedNodes[i].parentId == node.parentId) {
+          if (getCheckedNodes[i].pid == node.pid) {
             select = true;
             break;
           }
         }
-        this.$refs.organTree.setChecked(node.parentId, select);
-        let currentParentNode = this.$refs.organTree.getNode(node.parentId).data;
-        console.log("parent node", this.$refs.organTree.getNode(node.parentId));
+        this.$refs.organTree.setChecked(node.pid, select);
+        let currentParentNode = this.$refs.organTree.getNode(node.pid).data;
         this.parentNodesChange(currentParentNode, select);
       }
     },

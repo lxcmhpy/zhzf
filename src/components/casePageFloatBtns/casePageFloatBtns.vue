@@ -194,24 +194,7 @@
           var string = test.split("/");
           var path = string[0] + "//" + string[2] + "/";
           // path +
-          let jsonApproveData = iLocalStroage.gets('jsonApproveData')
-          let opinion = ''
-          let time = ''
-          let step = ''
-          if (jsonApproveData.approveOpinions) {
-            opinion = jsonApproveData.approveOpinions
-            time = jsonApproveData.approveTime
-            step = '1'
-          } else if (jsonApproveData.secondApproveOpinions) {
-            opinion = jsonApproveData.secondApproveOpinions
-            time = jsonApproveData.secondApproveTime
-            step = '2'
-          } else if (jsonApproveData.thirdApproveOpinions) {
-            opinion = jsonApproveData.thirdApproveOpinions
-            time = jsonApproveData.thirdApproveTime
-            step = '3'
-          }
-          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0] + '&Opinion=' + opinion + '&time=' + time + '&docId=' + _this.docId + '&step=' + step;
+          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0]
           console.log(ActivexURL);
           _this.makeSealStr = ActivexURL;
           window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
