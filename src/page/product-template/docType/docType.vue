@@ -79,11 +79,9 @@ export default {
       //查询所有文书类型
       getAllPdfListApi(data).then(
         res => {
-          console.log('类型',res.data);
           _this.tableData = res.data.records;
           _this.total = res.data.total;
           _this.totalPage = res.data.total;
-          console.log('类型',_this.total , _this.totalPage );
         },
         error => {
           console.log(error)

@@ -125,7 +125,7 @@ export default [
             component: () => import("@/page/product-template/lawCategory/LawCategory.vue")
           },
           {
-            name: "文书管理",
+            name: "docType",
             path: "docType",
             meta: {
               title: "文书管理"
