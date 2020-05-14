@@ -1498,7 +1498,35 @@ export default {
         this.areaObj = key;
     },
     handleNodeClick (node) {
+        this.markers.splice(0, this.markers.length);
 
+        if (node.label === '执法人员') {
+            this.checkAll(this.tabList[0].children[0])
+        } else if (node.position){
+            let resultList = [];
+            let position = node.position ? node.position.split(','):['',''];
+            let lng = parseFloat(position[0]);
+            let lat = parseFloat(position[1]);
+            resultList.push({
+                address: node.label,
+                distance: null,
+                id: node.id,
+                lat: lat,
+                lng: lng,
+                location: {
+                    O: lng,
+                    P: lat,
+                    lat: lat,
+                    lng: lng
+                },
+                name: node.label,
+                shopinfo: '',
+                tel: '',
+                type: '-1',
+                other: null
+            })
+            this.onSearchResult(resultList, -1 ,0)
+        }
     },
     routerXs () {
         this.$router.push({
