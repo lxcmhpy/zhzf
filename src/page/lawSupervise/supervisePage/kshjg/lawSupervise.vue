@@ -73,15 +73,15 @@
               </div>
              <div class="btns">
                 <div class="flex-title"><img  :src="'./static/images/img/lawSupervise/icon_duiwu.png'">人员在线情况</div>
-                <span class="phoneBtn blueBg" >李静</span>
-                <span  class="phoneBtn" >王玉凤</span>
-                <span  class="phoneBtn blueBg lineh" >迪丽<br>热巴</span>
-                <span  class="phoneBtn blueBg lineh" >欧阳<br>娜娜</span>
-                <span class="phoneBtn blueBg" >李静</span>
-                <span  class="phoneBtn" >王玉凤</span>
-                <span  class="phoneBtn blueBg lineh" >迪丽<br>热巴</span>
-                <span  class="phoneBtn blueBg lineh" >欧阳<br>娜娜</span>
-                <span  class="phoneBtn blueBg" >···</span>
+                <span class="phoneBtn blueBg" @click="callName('李玉明')">李玉明</span>
+                <span  class="phoneBtn blueBg" @click="callName('赵一鸣')">赵一鸣</span>
+                <span  class="phoneBtn lineh" >迪丽<br>热巴</span>
+                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span>
+                <span class="phoneBtn " >张悦</span>
+                <span  class="phoneBtn" >李晓艺</span>
+                <span  class="phoneBtn lineh" >王淑华</span>
+                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span>
+                <span  class="phoneBtn " >···</span>
             </div>
               <!-- <div class="btns">
                 <div class="flexBox">
@@ -1463,6 +1463,20 @@ export default {
     };
   },
   methods: {
+       callName(code) {
+        this.doing = '2';
+
+        if (!window.PhoneCallModule.getRegistered()) {
+            window.PhoneCallModule.sipRegister();
+        }
+        // debugger;
+        if (code == '李玉明') {
+            window.PhoneCallModule.sipVideoCall('100013','app02');
+        } else if(code == '赵一鸣') {
+            window.PhoneCallModule.sipVideoCall('100008','pad01');
+        }
+        this.updateMakePhoneStatus('2');
+    },
     positionEventEnter (row) {
         // this.checkTableNum = row.in
         // debugger;
