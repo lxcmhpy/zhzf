@@ -4,6 +4,7 @@
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
+    append-to-body
     width="30%"
   >
     <div>
