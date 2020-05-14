@@ -479,6 +479,7 @@
 
                     <div class="echarts-box" >
                         <div class="title" @click="status4 = !status4">
+                            <img :src="'./static/images/img/lawSupervise/icon_che3.png'">&nbsp;
                             告警车辆
                             <i v-if="status4 == true" class="iconfont law-youyou right"></i>
                             <i v-if="status4 == false" class="iconfont law-zuozuo right" ></i>
@@ -573,6 +574,7 @@
                     </div>
                 <div class="echarts-box" >
                      <div class="title" @click="status5 = !status5">
+                         <img :src="'./static/images/img/lawSupervise/icon_zhifadian.png'">&nbsp;
                         非现场执法点
                         <i v-if="status5 == true" class="iconfont law-youyou right"></i>
                         <i v-if="status5 == false" class="iconfont law-zuozuo right" ></i>
