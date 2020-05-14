@@ -17,7 +17,8 @@
         ref="menuTree"
         highlight-current
         :props="defaultProps"
-        
+        :check-strictly="true"
+        @check="currentChange"
       ></el-tree>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -51,7 +52,7 @@ export default {
     },
     //获取菜单
     getMenu() {
-      let _this = this
+      let _this = this;
       this.$store.dispatch("getTreePermission").then(
         res => {
           console.log("获取菜单", res);
@@ -63,13 +64,43 @@ export default {
         }
       );
     },
+    currentChange(node, checkNode) {
+      let select = checkNode.checkedKeys.includes(node.id);
+      this.childNodesChange(node, select);
+      this.parentNodesChange(node, select);
+    },
+    childNodesChange(node, select) {
+      let len = node.children ? node.children.length : 0;
+      for (let i = 0; i < len; i++) {
+        this.$refs.menuTree.setChecked(node.children[i].id, select);
+        this.childNodesChange(node.children[i], select);
+      }
+    },
+    parentNodesChange(node, select) {
+      console.log("node", node);
+      if (node.parentId) {
+        let getCheckedNodes = this.$refs.menuTree.getCheckedNodes();
+        console.log("getCheckedNodes", getCheckedNodes);
+        for (let i = 0; i < getCheckedNodes.length; i++) {
+          if (getCheckedNodes[i].parentId == node.parentId) {
+            select = true;
+            break;
+          }
+        }
+        this.$refs.menuTree.setChecked(node.parentId, select);
+        let currentParentNode = this.$refs.menuTree.getNode(node.parentId).data;
+        console.log("parent node", this.$refs.menuTree.getNode(node.parentId));
+        this.parentNodesChange(currentParentNode, select);
+      }
+    },
+
     //查询角色下绑定的菜单权限
-    getRoleBindMenu(){
-      let _this = this
-      this.$store.dispatch("getRoleBindMenu",this.roleId).then( 
+    getRoleBindMenu() {
+      let _this = this;
+      this.$store.dispatch("getRoleBindMenu", this.roleId).then(
         res => {
-          console.log('角色下绑定的菜单权限',res);
-          let permissionIds=[];
+          console.log("角色下绑定的菜单权限", res);
+          let permissionIds = [];
           res.data.forEach(item => {
             permissionIds.push(item.permissionId);
           });
@@ -83,11 +114,20 @@ export default {
     //绑定菜单
     bindMenu() {
       console.log(this.$refs.menuTree.getCheckedKeys());
+      console.log(this.$refs.menuTree.getHalfCheckedKeys());
+      console.log([
+        ...this.$refs.menuTree.getCheckedKeys(),
+        ...this.$refs.menuTree.getHalfCheckedKeys()
+      ]);
       let data = {
-          roleId:this.roleId,
-          permissionIds:this.$refs.menuTree.getCheckedKeys()
-      }
-      let _this = this
+        roleId: this.roleId,
+        permissionIds: [
+          ...this.$refs.menuTree.getCheckedKeys(),
+          ...this.$refs.menuTree.getHalfCheckedKeys()
+        ],
+        halfCheckedKeys: this.$refs.menuTree.getHalfCheckedKeys()
+      };
+      let _this = this;
       this.$store.dispatch("roleBindMenu", data).then(
         res => {
           console.log("绑定", res);
@@ -102,11 +142,10 @@ export default {
         }
       );
     },
-    openDialog(){
+    openDialog() {
       this.getMenu();
     }
   },
-  created() {
-  }
+  created() {}
 };
 </script>

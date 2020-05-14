@@ -21,7 +21,7 @@ export default {
   name: "",
   data() {
     return {
-        activeIndexStr: '',
+        activeIndexStr: 'case_handle_home_index',
         openTabList: [],
         tabsNameList: {
             law_supervise_: '【监管】',
@@ -39,10 +39,12 @@ export default {
     //tab标签点击时，切换相应的路由
     tabClick(tab) {
         let route = this.openTab[tab.index];
+        console.log('route',route);
         let name = route.isCase ? route.name.split('-and-')[0] :route.name;
         // debugger;
         route.menuUrl = name;
         this.activeIndexStr = route.name;
+        console.log('this.activeIndexStr',this.activeIndexStr);
         this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexStr);
         this.$store.commit("set_Head_Active_Nav", route.headActiveNav);
         this.$router.push(({ name: 'reloadPage',params: route}));
@@ -87,7 +89,7 @@ export default {
         if (this.$route.path !== "/" && this.$route.name !== "case_handle_home_index") {
             this.activeIndexStr = this.activeIndexSto;
         } else {
-            this.$store.commit("SET_ACTIVE_INDEX_STO", "caseHandle-menu-case_handle_home_index");
+            this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
             this.$store.commit("set_Head_Active_Nav", "caseHandle-menu-case_handle_home_index");
         }
     }

@@ -152,9 +152,9 @@
             }else{
                this.$router.go(-2);
             }
-            
+
           }).catch(err=>{console.log(err)})
-          
+
         }
       },
       backHuanjie() {

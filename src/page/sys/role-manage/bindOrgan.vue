@@ -17,6 +17,8 @@
         ref="organTree"
         highlight-current
         :props="defaultProps"
+        :check-strictly="true"
+        @check="currentChange"
       ></el-tree>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -53,7 +55,9 @@ export default {
       let _this = this
       this.$store.dispatch("getAllOrgan").then(
         res => {
+          
           _this.organData = res.data;
+          console.log('organData',_this.organData)
           _this.getRoleBindOrgan();
         },
         err => {
@@ -102,7 +106,36 @@ export default {
     },
     openDialog() {
       this.getOrgan();
-    }
+    },
+    currentChange(node, checkNode) {
+      let select = checkNode.checkedKeys.includes(node.id);
+      this.childNodesChange(node, select);
+      this.parentNodesChange(node, select);
+    },
+    // 更改子节点状态
+    childNodesChange(node, select) {
+      let len = node.children ? node.children.length : 0;
+      for (let i = 0; i < len; i++) {
+        this.$refs.organTree.setChecked(node.children[i].id, select);
+        this.childNodesChange(node.children[i], select);
+      }
+    },
+    // 更改父节点状态
+    parentNodesChange(node, select) {
+      if (this.$refs.organTree.getNode(node.pid) && node.pid) {
+        let getCheckedNodes = this.$refs.organTree.getCheckedNodes();
+        for (let i = 0; i < getCheckedNodes.length; i++) {
+          if (getCheckedNodes[i].pid == node.pid) {
+            select = true;
+            break;
+          }
+        }
+        this.$refs.organTree.setChecked(node.pid, select);
+        let currentParentNode = this.$refs.organTree.getNode(node.pid).data;
+        this.parentNodesChange(currentParentNode, select);
+      }
+    },
+
   },
   created() {}
 };

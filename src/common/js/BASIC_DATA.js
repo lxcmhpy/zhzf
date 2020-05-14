@@ -14,5 +14,7 @@ export const BASIC_DATA_SYS = {
     // 车牌颜色
     vehicleColor: '388c5ac24cde480df1a54bc97829a481',
     // 无效信息类型
-    invalidCode:'a0a2d83376fe7695f76fbba69545c056'
+    invalidCode:'a0a2d83376fe7695f76fbba69545c056',
+    // 监管机构根节点id
+    lawSupervise: '7D4006C3-3589-4E50-873E-C3778A4D73F7'
 }

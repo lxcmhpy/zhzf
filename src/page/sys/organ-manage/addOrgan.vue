@@ -28,7 +28,7 @@
         </div>
         <div class="item">
           <el-form-item label="上级机构" prop="pidName">
-            <el-input v-model="addOrganForm.pidName"></el-input>
+            <el-input v-model="addOrganForm.pidName" disabled></el-input>
           </el-form-item>
         </div>
         <div class="item">

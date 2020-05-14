@@ -59,6 +59,7 @@ export default {
   methods: {
     showModal(type, data) {
       this.visible = true;
+      
       this.handelType = type;
       if (type == 0) {
         this.dialogTitle = "新增角色";
@@ -81,8 +82,10 @@ export default {
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
-      this.visible = false;
+    
       this.$refs["addRoleForm"].resetFields();
+      console.log('111',this.$refs["addRoleForm"].resetFields());
+      this.visible = false;
       //this.errorOrganName = false;
     },
     //聚焦清除错误信息

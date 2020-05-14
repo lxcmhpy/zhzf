@@ -19,8 +19,7 @@
       <div class="tablePart">
         <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="name" label="角色名称" align="center"></el-table-column>
-          <el-table-column prop="roleGroup" label="角色组" align="center">
-          </el-table-column>
+          <el-table-column prop="roleGroup" label="角色组" align="center"></el-table-column>
           <el-table-column prop="description" label="角色介绍" align="center"></el-table-column>
           <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
@@ -63,7 +62,10 @@ export default {
       },
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
-      totalPage: 0 //总页数
+      totalPage: 0, //总页数
+      info: "",
+      menuList: [],
+      organList: []
     };
   },
   components: {
@@ -79,27 +81,9 @@ export default {
     },
     //删除角色
     deleteRole(id) {
-      let _this = this
-      this.$confirm("确认删除该角色?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          _this.$store.dispatch("deleteRole", id).then(
-            res => {
-              _this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-              _this.reload();
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        })
-        .catch(() => {});
+      this.getRoleBindMenu(id);
+      this.getRoleBindOrgan(id);
+      // let _this = this;
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -119,7 +103,7 @@ export default {
         size: this.pageSize,
         name: this.dicSearchForm.name
       };
-      let _this = this
+      let _this = this;
       this.$store.dispatch("getRoles", data).then(
         res => {
           console.log("角色列表", res);
@@ -142,6 +126,56 @@ export default {
     //角色绑定机构
     bindOrgan(roleId) {
       this.$refs.bindOrganRef.showModal(roleId);
+    },
+    //查询角色下绑定的菜单权限
+    getRoleBindMenu(id) {
+      // let _this = this;
+      this.$store.dispatch("getRoleBindMenu", id).then(
+        res => {
+          console.log("角色下绑定的菜单权限", res);
+          this.menuList = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    //查询角色下绑定的机构
+    getRoleBindOrgan(id) {
+      debugger;
+      this.$store.dispatch("getRoleBindOrgan", id).then(
+        res => {
+          console.log("角色下绑定的机构", res);
+          this.organList = res.data;
+          if (this.menuList.length != 0 || this.organList.length != 0) {
+            this.info = "此角色已关联权限或绑定机构，确认要删除吗？";
+          } else {
+            this.info = "确定删除吗？";
+          }
+          this.$confirm(this.info, "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }).then(() => {
+              this.$store.dispatch("deleteRole", id).then(
+                res => {
+                  this.$message({
+                    type: "success",
+                    message: "删除成功!"
+                  });
+                  this.reload();
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+            })
+            .catch(() => {});
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
   },
   created() {
