@@ -73,15 +73,15 @@
               </div>
              <div class="btns">
                 <div class="flex-title"><img  :src="'./static/images/img/lawSupervise/icon_duiwu.png'">人员在线情况</div>
-                <span class="phoneBtn blueBg" >李静</span>
-                <span  class="phoneBtn" >王玉凤</span>
-                <span  class="phoneBtn blueBg lineh" >迪丽<br>热巴</span>
-                <span  class="phoneBtn blueBg lineh" >欧阳<br>娜娜</span>
-                <span class="phoneBtn blueBg" >李静</span>
-                <span  class="phoneBtn" >王玉凤</span>
-                <span  class="phoneBtn blueBg lineh" >迪丽<br>热巴</span>
-                <span  class="phoneBtn blueBg lineh" >欧阳<br>娜娜</span>
-                <span  class="phoneBtn blueBg" >···</span>
+                <span class="phoneBtn blueBg" @click="callName('李玉明')">李玉明</span>
+                <span  class="phoneBtn blueBg" @click="callName('赵一鸣')">赵一鸣</span>
+                <span  class="phoneBtn lineh" >迪丽<br>热巴</span>
+                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span>
+                <span class="phoneBtn " >张悦</span>
+                <span  class="phoneBtn" >李晓艺</span>
+                <span  class="phoneBtn lineh" >王淑华</span>
+                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span>
+                <span  class="phoneBtn " >···</span>
             </div>
               <!-- <div class="btns">
                 <div class="flexBox">
@@ -479,6 +479,7 @@
 
                     <div class="echarts-box" >
                         <div class="title" @click="status4 = !status4">
+                            <img :src="'./static/images/img/lawSupervise/icon_che3.png'">&nbsp;
                             告警车辆
                             <i v-if="status4 == true" class="iconfont law-youyou right"></i>
                             <i v-if="status4 == false" class="iconfont law-zuozuo right" ></i>
@@ -573,6 +574,7 @@
                     </div>
                 <div class="echarts-box" >
                      <div class="title" @click="status5 = !status5">
+                         <img :src="'./static/images/img/lawSupervise/icon_zhifadian.png'">&nbsp;
                         非现场执法点
                         <i v-if="status5 == true" class="iconfont law-youyou right"></i>
                         <i v-if="status5 == false" class="iconfont law-zuozuo right" ></i>
@@ -1461,6 +1463,20 @@ export default {
     };
   },
   methods: {
+       callName(code) {
+        this.doing = '2';
+
+        if (!window.PhoneCallModule.getRegistered()) {
+            window.PhoneCallModule.sipRegister();
+        }
+        // debugger;
+        if (code == '李玉明') {
+            window.PhoneCallModule.sipVideoCall('100013','app02');
+        } else if(code == '赵一鸣') {
+            window.PhoneCallModule.sipVideoCall('100008','pad01');
+        }
+        this.updateMakePhoneStatus('2');
+    },
     positionEventEnter (row) {
         // this.checkTableNum = row.in
         // debugger;
@@ -1498,7 +1514,35 @@ export default {
         this.areaObj = key;
     },
     handleNodeClick (node) {
+        this.markers.splice(0, this.markers.length);
 
+        if (node.label === '执法人员') {
+            this.checkAll(this.tabList[0].children[0])
+        } else if (node.position){
+            let resultList = [];
+            let position = node.position ? node.position.split(','):['',''];
+            let lng = parseFloat(position[0]);
+            let lat = parseFloat(position[1]);
+            resultList.push({
+                address: node.label,
+                distance: null,
+                id: node.id,
+                lat: lat,
+                lng: lng,
+                location: {
+                    O: lng,
+                    P: lat,
+                    lat: lat,
+                    lng: lng
+                },
+                name: node.label,
+                shopinfo: '',
+                tel: '',
+                type: '-1',
+                other: null
+            })
+            this.onSearchResult(resultList, -1 ,0)
+        }
     },
     routerXs () {
         this.$router.push({
