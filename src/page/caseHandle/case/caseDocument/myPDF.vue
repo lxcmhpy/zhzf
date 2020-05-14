@@ -58,7 +58,7 @@
       getFile() {
         // debugger;
         console.log('this.$route.params',this.$route.params)
-        if (this.$route.params && this.$route.params.docIddocIddocId) {
+        if (this.$route.params && this.$route.params.docId) {
           this.$store.commit('setDocId', this.$route.params.docId)
         }
         console.log('docId', this.docId);
