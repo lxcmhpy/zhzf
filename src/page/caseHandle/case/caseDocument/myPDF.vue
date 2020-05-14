@@ -58,7 +58,7 @@
       getFile() {
         // debugger;
         console.log('this.$route.params',this.$route.params)
-        if (this.$route.params && this.$route.params.docId) {
+        if (this.$route.params && this.$route.params.docIddocIddocId) {
           this.$store.commit('setDocId', this.$route.params.docId)
         }
         console.log('docId', this.docId);
@@ -152,9 +152,9 @@
             }else{
                this.$router.go(-2);
             }
-            
+
           }).catch(err=>{console.log(err)})
-          
+
         }
       },
       backHuanjie() {

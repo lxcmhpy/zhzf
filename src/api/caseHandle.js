@@ -289,7 +289,7 @@ export function approvalPdfApi(data) {
 //审批签章
 export function approvalPdfQzApi(data) {
   return request({
-    url: "/system/sys/file/dzqzSh",
+    url: "/case/sys/file/dzqzSh",
     method: "get",
     params: data,
     showloading: true,
