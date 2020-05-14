@@ -515,7 +515,7 @@
                                     </div>
                                     <div  slot="reference">
                                     <ul style="width: 100%;height: auto;">
-                                        <li v-for="(row,index) in gjclList" :key="index" @click="positionEvent1()" @hover="positionEventEnter(row)">
+                                        <li v-for="(row,index) in gjclList" :key="index" @click="positionEvent1()" @mouseenter="positionEventEnter(row)">
                                             <div class="leftTabelHoverDiv" style="padding: 0px;">
                                                 <div class="lawHoverTitle">
                                                 <div class="cxl" >
@@ -523,7 +523,7 @@
                                                     <span class="bgCgray f12">超限率</span>
                                                 </div>
                                                 <div class="gj-con">
-                                                    {{row.vehicleNumber}}<span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span>
+                                                    <span :class="{'redC': index==1,'orangeC':index==2}">{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span>
                                                      <p><span class="bgCgray">站点：</span>{{row.siteName}}</p>
                                                 </div>
                                                 </div>
@@ -598,13 +598,13 @@
                                             <div class="leftTabelHoverDiv" style="padding: 0px;">
                                                 <div class="lawHoverTitle">
                                                 <div class="cxl" >
-                                                    <span class="blueC f18">{{status}}</span><br>
+                                                    <span class="f18 redC" :class="{'greenC': index ===0}">{{index === 0? '正常': '异常'}}</span><br>
                                                     <span class="bgCgray f12">状态</span>
                                                 </div>
                                                 <div class="gj-con">
                                                      <p>{{row.name}}</p>
                                                     <div class="flexBox">
-                                                        <p><span class="bgCgray">告警（次）：</span>{{row.blackList}}</p>
+                                                        <p><span class="bgCgray">告警（次）：</span>{{row.blackList}}</p>&nbsp;&nbsp;&nbsp;
                                                         <p><span class="bgCgray">过检（次）：</span>{{row.gjzl}}</p>
                                                     </div>
                                                 </div>
@@ -1515,7 +1515,7 @@ export default {
             }
         })
     },
-    positionEvent (row, column, event, category) {
+    positionEvent (row, category) {
         // debugger;
         this.category == 4;
         // debugger;
@@ -1670,6 +1670,7 @@ export default {
     onSearchResult(pois, category, length) {
       let latSum = 0;
       let lngSum = 0;
+      let numG = 100;
       if (pois.length > 0) {
         let _this = this;
         // let windows = []
@@ -1710,7 +1711,7 @@ export default {
                   visible: false,
                   template: `<span><img src="/static/images/img/lawSupervise/${
                     _this.categoryList[category + 1].className
-                    }.png"><em style="position:absolute;top:7px;font-style:normal;left:5px;font-size: 12px; color: red;">G122</em></span>`,
+                    }.png"><em style="position:absolute;top:7px;font-style:normal;left:5px;font-size: 12px; color: red;">G${numG++}</em></span>`,
                   // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
                   // content: `<div class="prompt">${ poi.other.username }</div>`,
                   events: {
