@@ -134,6 +134,14 @@ export default [
             component: () => import("@/page/product-template/docType/docType.vue")
           },
           {
+            name: "询问笔录问答模板",
+            path: "requestModel",
+            meta: {
+              title: "询问笔录问答模板"
+            },
+            component: () => import("@/page/product-template/requestModel/requestModel.vue")
+          },
+          {
             name: "案件编号管理",
             path: "caseNumber",
             meta: {
