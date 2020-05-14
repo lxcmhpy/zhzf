@@ -127,6 +127,7 @@ export default [
           {
             name: "docType",
             path: "docType",
+            icon: null,
             meta: {
               title: "文书管理"
             },
