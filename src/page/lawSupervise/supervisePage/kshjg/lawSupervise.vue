@@ -515,7 +515,7 @@
                                         </div>
                                     </div>
                                     <div  slot="reference">
-                                    <ul style="width: 100%;height: auto;">
+                                    <ul class="addHoverBg" style="width: 100%;height: auto;">
                                         <li v-for="(row,index) in gjclList" :key="index" @click="positionEvent1()" @mouseenter="positionEventEnter(row)">
                                             <div class="leftTabelHoverDiv" style="padding: 0px;">
                                                 <div class="lawHoverTitle">
@@ -1515,7 +1515,11 @@ export default {
     },
     handleNodeClick (node) {
         this.markers.splice(0, this.markers.length);
-
+        this.tabList[0].children.forEach((item)=>{
+            item.select = false;
+        })
+        this.allSearchList.splice(0, this.allSearchList.length);
+        // this.radioVal = '全选';
         if (node.label === '执法人员') {
             this.checkAll(this.tabList[0].children[0])
         } else if (node.position){
@@ -1568,7 +1572,7 @@ export default {
             this.curWindow.visible = false;
         }
         this.getById(category, row.id);
-        this.routerXsDetail();
+        // this.routerXsDetail();
     },
     positionEvent1 () {
         this.routerXsDetail()
@@ -1874,7 +1878,11 @@ export default {
         }
     },
     searchByTab(item) {
-      // this.markers.splice(0, this.markers.length);
+        // if (item.select)
+
+        if (this.allSearchList.length == 0) {
+        this.markers.splice(0, this.markers.length);
+        }
       item.select = !item.select;
       if (item.select && this.allSearchList.length > 5) {
         item.select = false;
