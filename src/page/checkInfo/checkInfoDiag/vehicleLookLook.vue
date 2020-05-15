@@ -11,12 +11,12 @@
   >
     <el-form :model="vehicleForm" :rules="rules" ref="vehicleForm" class="errorTipForm">
         <div align="center">
-            <table class="tg" style="width:900px;">
+            <table class="tg" style="width:100%;">
               <tr>
-                <td class="tg-n6x5" style="width:225px;">车牌号码</td>
-                <td class="tg-cly1" style="width:225px;">{{vehicleForm.VehicleNo}}</td>
-                <td class="tg-n6x5" style="width:225px;">车牌颜色代码</td>
-                <td class="tg-cly1" style="width:225px;">{{vehicleForm.PlateColorCode}}</td>
+                <td class="tg-n6x5" style="width:25%;">车牌号码</td>
+                <td class="tg-cly1" style="width:25%;">{{vehicleForm.VehicleNo}}</td>
+                <td class="tg-n6x5" style="width:25%;">车牌颜色代码</td>
+                <td class="tg-cly1" style="width:25%;">{{vehicleForm.PlateColorCode}}</td>
               </tr>
               <tr>
                 <td class="tg-n6x5">车辆燃料类型</td>
@@ -50,13 +50,13 @@
               </tr>
               <tr>
                 <td class="tg-n6x5">始发客运站行政区划（转汉字）</td>
-                <td class="tg-cly1">{{vehicleForm.StartStationZone}</td>
+                <td class="tg-cly1">{{vehicleForm.StartStationZone}}</td>
                 <td class="tg-n6x5">始发客运站</td>
                 <td class="tg-cly1">{{vehicleForm.StartStation}}</td>
               </tr>
               <tr>
                 <td class="tg-n6x5">讫点客运站行政区划（转汉字）</td>
-                <td class="tg-cly1">{{vehicleForm.EndStationZone}</td>
+                <td class="tg-cly1">{{vehicleForm.EndStationZone}}</td>
                 <td class="tg-n6x5">讫点客运站</td>
                 <td class="tg-cly1">{{vehicleForm.EndStation}}</td>
               </tr>
@@ -108,8 +108,8 @@ export default {
   }
 };
 </script>
+<style lang='scss' src="@/assets/css/checkInfo.scss" scoped></style>
 <style lang="scss">
-@import "@/assets/css/systemManage.scss";
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{font-family:Arial, sans-serif;font-size:16px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
 .tg .tg-cly1{text-align:center;vertical-align:middle;height: 25px;}

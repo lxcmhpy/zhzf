@@ -9,12 +9,12 @@
   >
     <el-form :model="crewCertificatesForm" :rules="rules" ref="crewCertificatesForm" class="errorTipForm">
         <div align="center">
-            <table class="tg" style="width:900px;">
+            <table class="tg" style="width:100%;">
               <tr>
-                <td class="tg-y93n" style="width:225px;">姓名</td>
-                <td class="tg-cly1" style="width:225px;">{{crewCertificatesForm.ANAME}}</td>
-                <td class="tg-y93n" style="width:225px;">性别</td>
-                <td class="tg-cly1" style="width:225px;"></td>
+                <td class="tg-y93n" style="width:25%;">姓名</td>
+                <td class="tg-cly1" style="width:25%;">{{crewCertificatesForm.ANAME}}</td>
+                <td class="tg-y93n" style="width:25%;">性别</td>
+                <td class="tg-cly1" style="width:25%;"></td>
               </tr>
               <tr>
                 <td class="tg-y93n">身份证件号码</td>
@@ -26,7 +26,9 @@
                 <td class="tg-y93n">船员证号码</td>
                 <td class="tg-cly1">{{crewCertificatesForm.CERT_NO}}</td>
                 <td class="tg-y93n">证书状态</td>
-                <td class="tg-cly1">{{crewCertificatesForm.CERT_STATUS}}</td>
+                <td class="tg-cly1">
+                  {{crewCertificatesForm.CERT_STATUS === 0?'有效':'无效'}}
+                </td>
               </tr>
               <tr>
                 <td class="tg-y93n">证书有效期开始日期</td>
