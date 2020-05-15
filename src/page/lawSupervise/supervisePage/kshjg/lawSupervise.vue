@@ -517,8 +517,8 @@
                                                 <p><span class="bgCgray">状态：</span>{{gjObj.status}}</p> -->
                                             </div>
                                             <div class="flexBox">
-                                                 <p><span class="bgCgray">总重（t）：</span>{{gjObj.totalWeight}}</p>
-                                                <p><span class="bgCgray">超重（t）：</span>{{gjObj.overweight}}</p>
+                                                 <p><span class="bgCgray">总重（kg）：</span>{{gjObj.totalWeight}}</p>
+                                                <p><span class="bgCgray">超重（kg）：</span>{{gjObj.overweight}}</p>
                                             </div>
                                             <div class="flexBox">
                                                 <p><span class="bgCgray">站点：</span>{{gjObj.siteName}}</p>
@@ -1596,12 +1596,15 @@ export default {
     positionEvent (row, category) {
         // debugger;
         this.category == 4;
+        // this.curWindow.category = 4;
         // debugger;
-        this.markers.splice(0, this.markers.length);
+        // this.markers.splice(0, this.markers.length);
         if (this.curWindow) {
             this.curWindow.visible = false;
         }
         this.getById(category, row.id);
+        // this.allSearchList.push(data);
+        // this.getZfjgLawSupervise(data, this.category);
         // this.routerXsDetail();
     },
     positionEvent1 () {
@@ -1642,8 +1645,9 @@ export default {
                         _this.errorMsg('暂无数据', 'error');
                     }
 
-
-                    _this.onSearchResult(resultList, type,0)
+                    // _this.allSearchList.push(data);
+                    // _this.getZfjgLawSupervise(data, this.category);
+                    _this.onSearchResult(resultList, 4,  _this.windows.length)
                 },
                 error => {
                     //  _this.errorMsg(error.toString(), 'error')
@@ -1718,7 +1722,7 @@ export default {
 
     },
     searchPageAll (code, obj) {
-        this.markers.splice(0, this.markers.length);
+        // this.markers.splice(0, this.markers.length);
         if (this.curWindow) {
             this.curWindow.visible = false;
         }
@@ -1909,12 +1913,12 @@ export default {
     },
     searchByTab(item) {
         // if (item.select)
-
+// debugger;
         if (this.allSearchList.length == 0) {
         this.markers.splice(0, this.markers.length);
         }
       item.select = !item.select;
-      if (item.select && this.allSearchList.length > 5) {
+      if (item.select && this.allSearchList.length >= 5) {
         item.select = false;
         // debugger;
         this.errorMsg(`至多选择5条数据`, "error");
@@ -1954,9 +1958,9 @@ export default {
 
       if (this.category == '4') {
           this.drawer1 = false;
-          this.drawer = false;
+        //   this.drawer = false;
           this.updateDrawer1();
-          this.updateDrawer();
+        //   this.updateDrawer();
       }
     },
     searchAll(pois) {
