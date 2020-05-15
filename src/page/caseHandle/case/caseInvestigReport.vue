@@ -48,7 +48,7 @@
                   <el-option value="1" label="女"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item  v-else>{{formData.partySex}}</el-form-item>
+              <el-form-item v-else>{{formData.partySex}}</el-form-item>
             </td>
             <td>年龄</td>
             <td colspan="2" class="color_DBE4EF">
