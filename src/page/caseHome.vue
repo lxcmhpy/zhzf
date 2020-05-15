@@ -534,7 +534,8 @@ export default {
           console.log(row)
           //案件审批
           let approvalLink = ''
-          let docId = ""
+          let docId = "";
+                    this.$store.commit("caseId", row.caseCauseId);
           switch (row.currentLinkId) {
             case "2c90293b6c178b55016c17c255a4000d":
               approvalLink = 'case_handle_establish';
@@ -550,7 +551,7 @@ export default {
               break;
           }
 
-          this.$store.commit("caseId", row.caseCauseId);
+
           this.getFileIdByDocId(docId, approvalLink);
         }
 

@@ -102,6 +102,11 @@ export default {
                 }
            }
            console.log("222",this.fullDecision);
+        //    去掉首位逗号
+           this.fullDecision=this.fullDecision;
+           if (this.fullDecision.substr(0,1)==',') 
+           this.fullDecision=this.fullDecision.substr(1);
+
            let punishDecisionData = {
                checkDec:this.checkDec[0],
                amount:this.checkDec[0] == '罚款' ? this.cont1 : '',

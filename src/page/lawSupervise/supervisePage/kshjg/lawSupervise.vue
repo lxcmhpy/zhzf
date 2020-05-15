@@ -73,15 +73,15 @@
               </div>
              <div class="btns">
                 <div class="flex-title"><img  :src="'./static/images/img/lawSupervise/icon_duiwu.png'">人员在线情况</div>
-                <span class="phoneBtn blueBg" >李静</span>
-                <span  class="phoneBtn" >王玉凤</span>
-                <span  class="phoneBtn blueBg lineh" >迪丽<br>热巴</span>
-                <span  class="phoneBtn blueBg lineh" >欧阳<br>娜娜</span>
-                <span class="phoneBtn blueBg" >李静</span>
-                <span  class="phoneBtn" >王玉凤</span>
-                <span  class="phoneBtn blueBg lineh" >迪丽<br>热巴</span>
-                <span  class="phoneBtn blueBg lineh" >欧阳<br>娜娜</span>
-                <span  class="phoneBtn blueBg" >···</span>
+                <span class="phoneBtn blueBg" @click="callName('李玉明')">李玉明</span>
+                <span  class="phoneBtn blueBg" @click="callName('赵一鸣')">赵一鸣</span>
+                <span  class="phoneBtn lineh" >迪丽<br>热巴</span>
+                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span>
+                <span class="phoneBtn " >张悦</span>
+                <span  class="phoneBtn" >李晓艺</span>
+                <span  class="phoneBtn lineh" >王淑华</span>
+                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span>
+                <span  class="phoneBtn " >···</span>
             </div>
               <!-- <div class="btns">
                 <div class="flexBox">
@@ -474,33 +474,65 @@
               </div>
 
           </div>
+
           <div class="amap-main-content" style="padding:0px" v-show="category == 4">
 
                     <div class="echarts-box" >
                         <div class="title" @click="status4 = !status4">
+                            <img :src="'./static/images/img/lawSupervise/icon_che3.png'">&nbsp;
                             告警车辆
                             <i v-if="status4 == true" class="iconfont law-youyou right"></i>
                             <i v-if="status4 == false" class="iconfont law-zuozuo right" ></i>
                         </div>
 
                         <el-collapse-transition>
-                            <div class="amap-chart" v-show="status4">
+                            <div v-show="status4">
                                  <el-popover
-                                    title="告警车辆详情"
                                     placement="left"
                                     trigger="hover"
                                     >
                                     <div class="leftTabelHoverDiv" v-if="gjObj">
-                                        <p>过检时间：{{gjObj.checkTime}}</p>
-                                        <p>车牌号：{{gjObj.vehicleNumber}}</p>
-                                        <p>超载率{{gjObj.overload}}</p>
-                                        <p>站点名称：{{gjObj.siteName}}</p>
-                                        <p>车属地：{{gjObj.area}}</p>
-                                        <p>重点监管：<i class="iconfont law-star orangeC"></i></p>
-                                        <p>历史查处：{{gjObj.lscc}}</p>
+                                        <div class="lawHoverTitle">
+                                            <div class="gj-title">{{gjObj.vehicleNumber}}</div>
+                                            <div class="cxl" >
+                                                <span class="blueC f18">{{gjObj.overload}}%</span><br>
+                                                <span class="bgCgray f12">超限率</span>
+                                            </div>
+                                        </div>
+                                        <div class="lawHoverContent">
+                                            <div class="flexBox">
+                                                <p><span class="bgCgray">过检时间：</span>{{gjObj&&gjObj.checkTime?gjObj.checkTime.split(' ')[1]:''}}</p>
+                                                <p><span class="bgCgray">重点监管：</span><span class="redC">是</span>/否</p>
+                                            </div>
+                                            <div class="flexBox">
+                                                <p><span class="bgCgray">历史告警（次）：</span>{{gjObj.lscc}}</p>
+                                                <!-- <p><span class="bgCgray">检测（次）：</span>{{gjObj.mobile}}</p>
+                                                <p><span class="bgCgray">状态：</span>{{gjObj.status}}</p> -->
+                                            </div>
+                                            <div class="flexBox">
+                                                <p><span class="bgCgray">站点：</span>{{gjObj.siteName}}</p>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                        <el-table
+                                    <div  slot="reference">
+                                    <ul class="addHoverBg" style="width: 100%;height: auto;">
+                                        <li v-for="(row,index) in gjclList" :key="index" @click="positionEvent1()" @mouseenter="positionEventEnter(row)">
+                                            <div class="leftTabelHoverDiv" style="padding: 0px;">
+                                                <div class="lawHoverTitle">
+                                                <div class="cxl" >
+                                                    <span class="blueC f18">{{row.overload}}%</span><br>
+                                                    <span class="bgCgray f12">超限率</span>
+                                                </div>
+                                                <div class="gj-con">
+                                                    <span :class="{'redC': index==1,'orangeC':index==2}">{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span>
+                                                     <p><span class="bgCgray">站点：</span>{{row.siteName}}</p>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    </div>
+                                        <!-- <el-table
                                         slot="reference"
                                         v-loading="loading"
                                             @row-click="(row, column, event)=>positionEvent1(row, column, event, 6)"
@@ -523,19 +555,6 @@
                                                 width="70"
                                                 >
                                             </el-table-column>
-                                            <!-- <el-table-column
-                                                prop="area"
-                                                label="车属地"
-                                                >
-                                            </el-table-column> -->
-                                            <!-- <el-table-column
-                                                label="重点监管"
-                                                width="80"
-                                                >
-                                                <template>
-                                                    <div><i class="iconfont law-star orangeC"></i></div>
-                                                </template>
-                                            </el-table-column> -->
                                             <el-table-column
                                                 prop="siteName"
                                                 label="站点"
@@ -547,7 +566,7 @@
                                                 label="历史"
                                                 >
                                             </el-table-column>
-                                        </el-table>
+                                        </el-table> -->
                                  </el-popover>
                             </div>
                         </el-collapse-transition>
@@ -555,13 +574,14 @@
                     </div>
                 <div class="echarts-box" >
                      <div class="title" @click="status5 = !status5">
+                         <img :src="'./static/images/img/lawSupervise/icon_zhifadian.png'">&nbsp;
                         非现场执法点
                         <i v-if="status5 == true" class="iconfont law-youyou right"></i>
                         <i v-if="status5 == false" class="iconfont law-zuozuo right" ></i>
                     </div>
                      <el-collapse-transition>
                         <div v-show="status5">
-                            <el-popover
+                            <!-- <el-popover
                                 title="非现场执法点详情"
                                 placement="left"
                                 trigger="hover"
@@ -574,8 +594,27 @@
                                     <p>状态：{{fxcObj.status}}</p>
                                     <p>重点监管：<i class="iconfont law-star orangeC"></i></p>
                                     <p>历史查处：{{fxcObj.lscc}}</p>
-                                </div>
-                                <el-table
+                                </div> -->
+                                <ul style="width: 100%;height: auto;" slot="reference">
+                                        <li v-for="(row,index) in zfdList" :key="index" @click="positionEvent(row, 4)" >
+                                            <div class="leftTabelHoverDiv" style="padding: 0px;">
+                                                <div class="lawHoverTitle">
+                                                <div class="cxl" >
+                                                    <span class="f18 redC" :class="{'greenC': index ===0}">{{index === 0? '正常': '异常'}}</span><br>
+                                                    <span class="bgCgray f12">状态</span>
+                                                </div>
+                                                <div class="gj-con">
+                                                     <p>{{row.name}}</p>
+                                                    <div class="flexBox">
+                                                        <p><span class="bgCgray">告警（次）：</span>{{row.blackList}}</p>&nbsp;&nbsp;&nbsp;
+                                                        <p><span class="bgCgray">过检（次）：</span>{{row.gjzl}}</p>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                <!-- <el-table
                                 slot="reference"
                                 v-loading="loading"
                                     @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
@@ -588,12 +627,6 @@
                                         label="站点"
                                         >
                                     </el-table-column>
-                                    <!-- <el-table-column
-                                        width="92px"
-                                        prop="cxchl"
-                                        label="超限查处量"
-                                        >
-                                    </el-table-column> -->
                                     <el-table-column
                                         prop="blackList"
                                         label="告警"
@@ -613,8 +646,8 @@
                                             <div class="orangeBg circle" ></div>
                                         </template>
                                     </el-table-column>
-                                </el-table>
-                            </el-popover>
+                                </el-table> -->
+                            <!-- </el-popover> -->
                         </div>
                      </el-collapse-transition>
                 </div>
@@ -1430,7 +1463,21 @@ export default {
     };
   },
   methods: {
-    positionEventEnter (row, column, cell, event) {
+       callName(code) {
+        this.doing = '2';
+
+        if (!window.PhoneCallModule.getRegistered()) {
+            window.PhoneCallModule.sipRegister();
+        }
+        // debugger;
+        if (code == '李玉明') {
+            window.PhoneCallModule.sipVideoCall('100013','app02');
+        } else if(code == '赵一鸣') {
+            window.PhoneCallModule.sipVideoCall('100008','pad01');
+        }
+        this.updateMakePhoneStatus('2');
+    },
+    positionEventEnter (row) {
         // this.checkTableNum = row.in
         // debugger;
         this.gjObj = row;
@@ -1467,7 +1514,39 @@ export default {
         this.areaObj = key;
     },
     handleNodeClick (node) {
-
+        this.markers.splice(0, this.markers.length);
+        this.tabList[0].children.forEach((item)=>{
+            item.select = false;
+        })
+        this.allSearchList.splice(0, this.allSearchList.length);
+        // this.radioVal = '全选';
+        if (node.label === '执法人员') {
+            this.checkAll(this.tabList[0].children[0])
+        } else if (node.position){
+            let resultList = [];
+            let position = node.position ? node.position.split(','):['',''];
+            let lng = parseFloat(position[0]);
+            let lat = parseFloat(position[1]);
+            resultList.push({
+                address: node.label,
+                distance: null,
+                id: node.id,
+                lat: lat,
+                lng: lng,
+                location: {
+                    O: lng,
+                    P: lat,
+                    lat: lat,
+                    lng: lng
+                },
+                name: node.label,
+                shopinfo: '',
+                tel: '',
+                type: '-1',
+                other: null
+            })
+            this.onSearchResult(resultList, -1 ,0)
+        }
     },
     routerXs () {
         this.$router.push({
@@ -1484,7 +1563,7 @@ export default {
             }
         })
     },
-    positionEvent (row, column, event, category) {
+    positionEvent (row, category) {
         // debugger;
         this.category == 4;
         // debugger;
@@ -1493,7 +1572,7 @@ export default {
             this.curWindow.visible = false;
         }
         this.getById(category, row.id);
-        this.routerXsDetail();
+        // this.routerXsDetail();
     },
     positionEvent1 () {
         this.routerXsDetail()
@@ -1639,6 +1718,7 @@ export default {
     onSearchResult(pois, category, length) {
       let latSum = 0;
       let lngSum = 0;
+      let numG = 100;
       if (pois.length > 0) {
         let _this = this;
         // let windows = []
@@ -1679,7 +1759,7 @@ export default {
                   visible: false,
                   template: `<span><img src="/static/images/img/lawSupervise/${
                     _this.categoryList[category + 1].className
-                    }.png"><em style="position:absolute;top:7px;font-style:normal;left:5px;font-size: 12px; color: red;">G122</em></span>`,
+                    }.png"><em style="position:absolute;top:7px;font-style:normal;left:5px;font-size: 12px; color: red;">G${numG++}</em></span>`,
                   // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
                   // content: `<div class="prompt">${ poi.other.username }</div>`,
                   events: {
@@ -1798,7 +1878,11 @@ export default {
         }
     },
     searchByTab(item) {
-      // this.markers.splice(0, this.markers.length);
+        // if (item.select)
+
+        if (this.allSearchList.length == 0) {
+        this.markers.splice(0, this.markers.length);
+        }
       item.select = !item.select;
       if (item.select && this.allSearchList.length > 5) {
         item.select = false;
