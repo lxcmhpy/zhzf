@@ -127,6 +127,7 @@
                     console.log(data);
                     this.dialogTitle = "修改环节";
                     this.addBannerForm = data;
+                    this.addBannerForm.createTime='';
                     // this.addBannerForm.description = data.description;
                     this.editBannerId = data.id;
                 }
