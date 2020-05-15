@@ -515,7 +515,7 @@ export default {
     },
     clickPeople(){
       console.log(this.docData.peoples);
-      debugger 
+      // debugger 
       if(this.docData.peoples == '1'){
         this.disabledThree = true;
       }else if(this.docData.peoples == '2'){

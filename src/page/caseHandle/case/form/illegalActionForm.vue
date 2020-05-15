@@ -67,9 +67,9 @@
                   :value="item.value">
                 </el-option>
               </el-select> -->
-            <el-form-item prop="punishDecision" :rules="fieldRules('punishDecision',propertyFeatures['punishDecision'])">
+            <el-form-item prop="punishDecision" :rules="fieldRules('punishDecision',propertyFeatures['punishDecision'])" style="width:250px;">
               <el-input type="textarea" v-model="formData.punishDecision" v-bind:class="{ over_flow:formData.punishDecision && formData.punishDecision.length>14?true:false }"
-              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength" @focus="showPunishDecision" :disabled="fieldDisabled(propertyFeatures['punishDecision'])"></el-input>
+              :autosize="{ minRows: 1, maxRows: 2}" :maxLength="maxLength" @focus="showPunishDecision" :disabled="fieldDisabled(propertyFeatures['punishDecision'])" style="width:250px;"></el-input>
             </el-form-item>
           </span>的处罚决定。
         </p>
@@ -330,6 +330,8 @@ export default {
       this.formData.punishDecision = val.fullDecision;
       this.formData.tempPunishAmount = val.amount;
       this.formData.punishType = val.checkDec;
+      // 去掉前后逗号
+
     },
     getDataAfter(){
       //获取机构详情
