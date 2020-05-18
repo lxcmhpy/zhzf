@@ -145,14 +145,14 @@
         </p>
         <p>
           1.代履行人 ：
-          <!-- <input type="checkbox" name="people" value="1" v-model="docData.peoples" @change="clickPeople">本机关
-                      <input type="checkbox" name="people" value="2" v-model="docData.peoples" @change="clickPeople">第三人： -->
-                <el-form-item prop="peoples" :rules="fieldRules('peoples',propertyFeatures['peoples'])">
+          <input type="checkbox" name="people" value="1" v-model="docData.peoples" @change="clickPeople">本机关
+          <input type="checkbox" name="people" value="2" v-model="docData.peoples" @change="clickPeople">第三人：
+          <!-- <el-form-item prop="peoples" :rules="fieldRules('peoples',propertyFeatures['peoples'])">
                   <el-checkbox-group v-model="docData.peoples" :max="1" :disabled="fieldDisabled(propertyFeatures['peoples'])" @change="clickPeople">
                     <el-checkbox label="1" >本机关</el-checkbox>
                     <el-checkbox label="2" >第三人：</el-checkbox>
                   </el-checkbox-group>
-                </el-form-item>
+                </el-form-item> -->
           <span>
             <el-form-item :prop="disabledThree?'placeholder':'impleAgent'">
               <el-input v-model="docData.impleAgent" v-bind:disabled="disabledThree" :maxLength='maxLength'></el-input>
@@ -424,6 +424,7 @@ export default {
       enforcementOptions: [],
       propertyFeatures: '',
       needDealData: true,
+      defultData:""
     }
   },
   methods: {
@@ -438,11 +439,6 @@ export default {
     //     }
     //   });
     // },
-    getDataAfter() {
-      console.log('this.docData.peoples', this.docData.peoples)
-      if (typeof (this.docData.peoples))
-        this.docData.peoples = ['0']
-    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -483,10 +479,14 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      if (this.disabledOne && this.disabledTwo ) {
-          this.$message("请选择处罚方式");
-          return
-        }
+      if (this.disabledOne && this.disabledTwo) {
+        this.$message("请选择处罚方式");
+        return
+      }
+      if (this.docData.peoples.length==0) {
+        this.$message("请选择代履行人");
+        return
+      }
       this.docData.checknames = this.checknames;
       // this.docData.peoples=this.peoples;
       console.log('this.docData', this.docData)
@@ -499,29 +499,49 @@ export default {
       }
     },
     click() {
+      console.log('this.checknames',this.checknames)
       if (this.checknames.length > 1) {
         this.checknames.shift();
       }
       if (this.checknames == '1') {
         this.disabledOne = false;
         this.disabledTwo = true;
+        this.docData.punishBasisTwo='';
+        this.docData.caseNumberCopy=this.defultData.caseNumberCopy
+        console.log('切换',this.docData.caseNumberCopy,this.defultData.caseNumberCopy)
       } else if (this.checknames == '2') {
         this.disabledOne = true;
         this.disabledTwo = false;
+        
+        this.docData.punishBasisOne='';
+        this.docData.serviceTime='';
+        this.docData.punishDecision='';
+        this.docData.caseNumberCopy='';
       } else {
         this.disabledOne = true;
         this.disabledTwo = true;
+
+        this.docData.punishBasisTwo='';
+        this.docData.punishBasisOne='';
+        this.docData.serviceTime='';
+        this.docData.punishDecision='';
+        this.docData.caseNumberCopy='';
       }
     },
-    clickPeople(){
+    clickPeople() {
+        if (this.docData.peoples.length > 1) {
+        this.docData.peoples.shift();
+      }
       console.log(this.docData.peoples);
       // debugger 
-      if(this.docData.peoples == '1'){
+      if (this.docData.peoples == '1') {
         this.disabledThree = true;
-      }else if(this.docData.peoples == '2'){
+        this.docData.impleAgent=''
+      } else if (this.docData.peoples == '2') {
         this.disabledThree = false;
       } else {
         this.disabledThree = true;
+        this.docData.impleAgent=''
       }
 
     },
@@ -567,12 +587,18 @@ export default {
         });
 
     },
-    getDataAfter(){
+    getDataAfter() {
+      this.defultData=this.docData;
+      console.log('this.defultData',this.defultData)
       this.docData.peoples = [];
-      console.log("111",this.docData.peoples);
+      console.log("111", this.docData.peoples);
+      console.log('this.docData.peoples', this.docData.peoples)
+      // if (typeof (this.docData.peoples)) {
+      //   this.docData.peoples = ['0']
+      // }
     }
   },
-  
+
   mounted() {
     this.getDocDataByCaseIdAndDocId();
     this.getOrganDetailOptions();

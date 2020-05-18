@@ -733,6 +733,9 @@ export default {
     'formData.paidAmount'(val) {
       console.log(val);
       this.formData.toPayAmount = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
+      if(this.formData.toPayAmount='NAN'){
+        this.formData.toPayAmount=''
+      }
     },
     'formData.toPayAmount'(val) {
       console.log('aaaaaaaaa', val);

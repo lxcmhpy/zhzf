@@ -519,7 +519,7 @@ export default {
           this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
         }
         else {
-          // this.$store.commit("setCaseId", row.id);
+          this.$store.commit("setCaseId", row.id);
           // //设置案件状态不为审批中
           // this.$store.commit("setCaseApproval", true);
           // this.$router.push({
@@ -535,7 +535,7 @@ export default {
           //案件审批
           let approvalLink = ''
           let docId = "";
-                    this.$store.commit("caseId", row.caseCauseId);
+          this.$store.commit("caseId", row.caseCauseId);
           switch (row.currentLinkId) {
             case "2c90293b6c178b55016c17c255a4000d":
               approvalLink = 'case_handle_establish';
@@ -603,6 +603,7 @@ export default {
         cateId: cate,
         cateName: this.caseForm.wayType,
         hyTypeId: this.caseForm.commenCase,
+        resourse:'caseHome'
       };
       this.$refs.chooseillegalActRef.showModal(lawCate);
     },
