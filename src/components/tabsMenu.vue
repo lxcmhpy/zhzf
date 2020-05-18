@@ -75,6 +75,7 @@ export default {
       }
     },
     getTabName (code) {
+      console.log('activeIndexStr',this.activeIndexStr)
         let tabsCode = '';
         if (code.indexOf('case_handle_') > -1) {
             tabsCode = this.tabsNameList['case_handle_'];
@@ -128,6 +129,7 @@ export default {
                     num: 1,
                     data: currentOpenTab
                 }
+                debugger
                 this.$store.dispatch("replaceTabs", data);
             }
             this.$store.commit("set_Head_Active_Nav", this.openTab[_index].headActiveNav);

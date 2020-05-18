@@ -180,8 +180,11 @@ export default {
     },
     // 信息查验
     infoCheck(path) {
-      console.log(path);
-      this.$router.push({ name: path });
+
+      // this.$store.dispatch("replaceTabs", '');
+      this.$store.dispatch("deleteTabsByTitle", '信息查验');
+      // this.$store.dispatch("deleteTabs", targetName);
+      this.$router.push({ name: path ,title:'信息查验'});
     },
     // 清空数据
     clearData() {

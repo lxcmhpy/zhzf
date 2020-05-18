@@ -285,7 +285,8 @@ export default [
     path: "/transportWorker",
     name: "case_handle_transportWorker",
     meta: {
-      title: "道路运输从业人员"
+      // title: "道路运输从业人员"
+      title: "信息查验"
     },
     component: () => import("@/page/checkInfo/transportWorker.vue")
   },
@@ -293,7 +294,9 @@ export default [
     path: "/commercialVehicle",
     name: "case_handle_commercialVehicle",
     meta: {
-      title: "营运车辆"
+      // title: "营运车辆"
+      title: "信息查验"
+
     },
     component: () => import("@/page/checkInfo/commercialVehicle.vue")
   },
@@ -301,7 +304,9 @@ export default [
     path: "/industry",
     name: "case_handle_industry",
     meta: {
-      title: "经营业户"
+      // title: "经营业户"
+      title: "信息查验"
+
     },
     component: () => import("@/page/checkInfo/industry.vue")
   },
@@ -309,7 +314,9 @@ export default [
     path: "/vehicleLine",
     name: "case_handle_vehicleLine",
     meta: {
-      title: "客运线路标志牌"
+      // title: "客运线路标志牌"
+      title: "信息查验"
+
     },
     component: () => import("@/page/checkInfo/vehicleLine.vue")
   },
@@ -317,7 +324,9 @@ export default [
     path: "/crewCertificates",
     name: "case_handle_crewCertificates",
     meta: {
-      title: "船员适任证查验"
+      // title: "船员适任证查验"
+      title: "信息查验"
+
     },
     component: () => import("@/page/checkInfo/crewCertificates.vue")
   },
@@ -326,7 +335,9 @@ export default [
     path: "/shipCertificates",
     name: "case_handle_shipCertificates",
     meta: {
-      title: "国内（国际）船舶查询"
+      // title: "国内（国际）船舶查询"
+      title: "信息查验"
+
     },
     component: () => import("@/page/checkInfo/shipCertificates.vue")
   },

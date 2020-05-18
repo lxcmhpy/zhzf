@@ -132,6 +132,10 @@ const system = {
         deleteAllTabs({ commit }) {
             commit(types.DELETE_ALLTABS);
         },
+        //按照title删除tab
+        deleteTabsByTitle({ commit }, data) {
+            commit(types.DELETE_TABS_BY_TITLE,data);
+        },
         addWhiteList({ commit }, val) {
             commit(types.SET_WHITELIST, val);
         },
