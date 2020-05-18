@@ -128,7 +128,7 @@ export default {
                     num: 1,
                     data: currentOpenTab
                 }
-                this.$store.dispatch("replaceTabs", data);
+                this.$store.dispatch("replaceTabs", data); 
             }
             this.$store.commit("set_Head_Active_Nav", this.openTab[_index].headActiveNav);
             this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[_index].name);

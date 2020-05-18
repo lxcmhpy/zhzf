@@ -303,6 +303,7 @@ export default {
         status: ""
       },
       mulvList:[],
+      propertyFeatures:'',
     };
   },
   inject: ['reload'],
@@ -491,6 +492,7 @@ export default {
     },
     //加载表单信息
     setFormData() {
+      console.log('加载表单数据')
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(
         this.caseLinkDataForm.caseBasicinfoId,
