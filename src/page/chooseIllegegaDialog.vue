@@ -1,12 +1,11 @@
 <template>
-  <div style="height: 100%;" class="dialo">
-    <el-drawer title="选择违法行为" :visible.sync="table" size="50%" class="dialog_unlaw" :before-close='closeDialog'>
-
+<div class="dialo">
+  <el-drawer title="选择违法行为" :visible.sync="table" size="50%" class="dialog_unlaw dialo" :before-close='closeDialog' append-to-body>
       <el-form :model="illegalActSearchForm" :rules="rules" ref="illegalActSearchFormRef" class="illegalActSearchForm" label-width="70px">
         <div>
           <div class="item">
             <el-form-item label="业务领域" prop="category">
-              <el-input v-model="category"  placeholder="请选择业务领域" disabled></el-input>
+              <el-input v-model="category" placeholder="请选择业务领域" disabled></el-input>
             </el-form-item>
           </div>
           <div class="item">
@@ -24,7 +23,7 @@
         </div>
         <div>
           <el-form-item label="违法行为" prop="strContent" style="width:100%">
-            <el-input v-model="illegalActSearchForm.strContent"  placeholder="请输入违法行为关键字">
+            <el-input v-model="illegalActSearchForm.strContent" placeholder="请输入违法行为关键字">
               <el-button slot="append" icon="el-icon-search" @click="getIllegaAct(true)"></el-button>
             </el-input>
           </el-form-item>
@@ -39,8 +38,9 @@
       <div class="paginationBox center">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-    </el-drawer>
-  </div>
+
+  </el-drawer>
+</div>
 </template>
 <script>
 export default {
@@ -48,7 +48,7 @@ export default {
     var valiDatLength = (rule, value, callback) => {
       console.log(value)
       var re = /^[0-9]{7}$/;
-      if(value && !re.test(value)){
+      if (value && !re.test(value)) {
         return callback(new Error("请输入7位数字"));
       }
       callback();
@@ -72,10 +72,11 @@ export default {
       currentIllegaAct: "", //选中的违法行为
       tableHeight: window.innerHeight - 293,
       rules: {
-        strNumber:[
-          {validator:valiDatLength, trigger: "blur"}
+        strNumber: [
+          { validator: valiDatLength, trigger: "blur" }
         ],
       },
+      resourse:''
     };
   },
   inject: ["reload"],
@@ -84,6 +85,7 @@ export default {
       this.illegalActSearchForm.categoryId = data.cateId;
       this.illegalActSearchForm.hyTypeId = data.hyTypeId;
       this.category = data.cateName;
+      this.resourse=data.resourse||''
       this.table = true;
       this.getIndustryCategory();
     },
@@ -99,7 +101,7 @@ export default {
       this.table = false;
       this.$nextTick(() => {
         this.$refs['illegalActSearchFormRef'].resetFields()
-        console.log('reset',this.illegalActSearchForm)
+        console.log('reset', this.illegalActSearchForm)
       })
     },
     //更改每页显示的条数
@@ -115,12 +117,12 @@ export default {
       this.getIllegaAct();
     },
     //获取行业类别 根据执法门类
-    getIndustryCategory(){
+    getIndustryCategory() {
       let _this = this
-      this.$store.dispatch("getIndustryCategory",this.illegalActSearchForm.categoryId).then(
+      this.$store.dispatch("getIndustryCategory", this.illegalActSearchForm.categoryId).then(
         res => {
-         _this.industryCategoryList = res.data;
-         _this.getIllegaAct();
+          _this.industryCategoryList = res.data;
+          _this.getIllegaAct();
         },
         err => {
           console.log(err);
@@ -128,21 +130,21 @@ export default {
       );
     },
     //查询违法行为
-    getIllegaAct(validate=false){
+    getIllegaAct(validate = false) {
       this.illegalActSearchForm.size = this.pageSize;
       this.illegalActSearchForm.current = this.currentPage;
-      let _this = this ;
+      let _this = this;
       let validatePass = false;
-      if(validate){
-           _this.$refs['illegalActSearchFormRef'].validate(valid => {
-            if (valid) {
-              validatePass = true
-            }
-          })
+      if (validate) {
+        _this.$refs['illegalActSearchFormRef'].validate(valid => {
+          if (valid) {
+            validatePass = true
+          }
+        })
       }
-      if(!validate || validatePass){
+      if (!validate || validatePass) {
         this.$store.dispatch("getIllegaAct", this.illegalActSearchForm).then(
-          res => { 
+          res => {
             _this.tableData = res.data.records;
             _this.totalPage = res.data.total
           },
@@ -160,14 +162,18 @@ export default {
     //选中违法行为并跳转到立案登记
     selectIllegaAct(val) {
       console.log(val);
-      debugger
       this.currentIllegaAct = val;
       this.table = false;
+      if(this.resourse=='caseHome'){
       this.$emit('toCaseRegister', this.currentIllegaAct)
+      }else{
+      this.$emit("setIllegaAct", this.currentIllegaAct);
+      }
     }
   },
   mounted() { }
 };
 </script>
+<style lang="scss" src="@/assets/css/main.scss"></style>
 <style lang="scss" src="@/assets/css/caseHandle/index.scss">
 </style>

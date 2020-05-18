@@ -9,14 +9,14 @@
   >
     <el-form :model="cblCyForm" :rules="rules" ref="cblCyForm" class="errorTipForm">
         <div align="center">
-            <table class="tg" style="width:900px;">
+            <table class="tg" style="width:100%;">
                 <tr>
                     <td class="tg-0lax" colspan="6">基本信息</td>
                 </tr>
                 <tr>
-                    <td class="tg-0pky" style="width:120px;">中文船名</td>
-                    <td class="tg-0pky" style="width:220px;">{{cblCyForm.SHIP_NAME_CN}}</td>
-                    <td class="tg-0pky" style="width:120px;">英文船名</td>
+                    <td class="tg-0pky" style="width:13.4%;">中文船名</td>
+                    <td class="tg-0pky" style="width:24.4;">{{cblCyForm.SHIP_NAME_CN}}</td>
+                    <td class="tg-0pky" style="width:13.4%;">英文船名</td>
                     <td class="tg-0pky" colspan="3">{{cblCyForm.SHIP_NAME_EN}}</td>
                 </tr>
                 <tr>
@@ -39,7 +39,7 @@
                 </tr>
                 <tr>
                     <td class="tg-0pky">船舶种类名称</td>
-                    <td class="tg-0pky">{{cblCyForm.SHIP_REGION_TYPE}</td>
+                    <td class="tg-0pky">{{cblCyForm.SHIP_REGION_TYPE}}</td>
                     <td class="tg-0pky">船舶种类代码</td>
                     <td class="tg-0pky" colspan="3">{{cblCyForm.SHIP_TYPE_CODE}}</td>
                 </tr>
@@ -47,8 +47,8 @@
                     <td class="tg-0pky">船舶总长</td>
                     <td class="tg-0pky">{{cblCyForm.SHIP_LENGTH}}</td>
                     <td class="tg-0pky">型宽</td>
-                    <td class="tg-0pky" style="width:120px;">{{cblCyForm.SHIP_BREADTH}}</td>
-                    <td class="tg-0pky" style="width:100px;">型深</td>
+                    <td class="tg-0pky" style="width:13.4%;">{{cblCyForm.SHIP_BREADTH}}</td>
+                    <td class="tg-0pky" style="width:11.1%;">型深</td>
                     <td class="tg-0pky">{{cblCyForm.SHIP_DEPTH}}</td>
                 </tr>
                 <tr>
@@ -66,7 +66,7 @@
                     <td class="tg-0pky" colspan="3">{{cblCyForm.SHIP_BUILT_ADDR_CN}}</td>
                 </tr>
                 <tr>
-                    <td class="tg-0lax" colspan="6"><span style="font-weight:700">其他信息</span></td>
+                    <td class="tg-0lax" colspan="6"><span>其他信息</span></td>
                 </tr>
                 <tr>
                     <td class="tg-0pky">船舶呼号</td>
@@ -137,8 +137,8 @@ export default {
   }
 };
 </script>
+<style lang='scss' src="@/assets/css/checkInfo.scss" scoped></style>
 <style lang="scss">
-@import "@/assets/css/systemManage.scss";
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{font-family:Arial, sans-serif;font-size:16px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
 .tg .tg-0pky{border-color:inherit;text-align:center;vertical-align:center;height: 25px;}

@@ -826,6 +826,7 @@
     height     : 16px;
     display    : inline-block;
     background : #4573D0;
+    // background : rgb(177, 199, 243);
     margin-right: 10px;
     vertical-align:-2px;
 }
@@ -891,6 +892,9 @@
     .greenC {
         color:#18C061;
     }
+}
+.addHoverBg li:hover{
+    background: #F6F8FF;
 }
 /////////////////////////////////////待改
 /* 车辆查验 */

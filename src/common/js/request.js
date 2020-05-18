@@ -26,14 +26,14 @@ service({
 }).then(
   res => {
     BASEURL = res.data;
-    console.log('location.host',location.host);
-    var Ip=returnCitySN['cip'];
-    console.log('ip',Ip);
-    if(Ip == '61.148.243.205'){
-      BASEURL.CURRENT = 'TEST'
-    }else{
-      BASEURL.CURRENT = 'NW'
-    }
+    // console.log('location.host',location.host);
+    // var Ip=returnCitySN['cip'];
+    // console.log('ip',Ip);
+    // if(Ip == '61.148.243.205'){
+    //   BASEURL.CURRENT = 'TEST'
+    // }else{
+    //   BASEURL.CURRENT = 'NW'
+    // }
     console.log('BASEURL.CURRENT',BASEURL.CURRENT);
     sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
     iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])

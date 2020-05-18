@@ -12,7 +12,7 @@ import {
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
 } from "@/api/system";
 
-import { getLawCategoryListApi, getBannerListApi } from "@/api/caseDeploy";
+import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";
 import Cookies from "@/common/js/cookies";
 
 const system = {
@@ -29,7 +29,7 @@ const system = {
         SET_ACTIVE_INDEX_STO (state, data) {
             state.activeIndexSto = data;
         }
-        
+
     },
     actions: {
         //获取验证码
@@ -131,6 +131,10 @@ const system = {
         //删除所有的tab
         deleteAllTabs({ commit }) {
             commit(types.DELETE_ALLTABS);
+        },
+        //按照title删除tab
+        deleteTabsByTitle({ commit }, data) {
+            commit(types.DELETE_TABS_BY_TITLE,data);
         },
         addWhiteList({ commit }, val) {
             commit(types.SET_WHITELIST, val);
@@ -700,6 +704,31 @@ const system = {
                     })
             })
         },
+        //删除环节
+        deleteBanner({ commit }, data) {
+            return new Promise((resolve, reject) => {
+              deleteBannerApi(data).then(
+                res => {
+                  resolve(res);
+                },
+                error => {
+                  reject(error);
+                })
+            })
+          },
+        // 新增或修改环节
+        addOrEditBanner({ commit }, data) {
+            return new Promise((resolve, reject) => {
+              addOrEditBannerApi(data).then(
+                res => {
+                  resolve(res);
+                },
+                error => {
+                  reject(error);
+                })
+            })
+          },
+
     }
 
 }

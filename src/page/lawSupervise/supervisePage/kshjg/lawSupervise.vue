@@ -57,9 +57,15 @@
               <div class="lawWindowTitle">
                 <i class="iconfont law-zfj"></i>
                  <div class="title">{{curWindow.other.name}}</div>
-                <span></span>
+                <!-- <span></span> -->
                 <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
               </div>
+               <div class="right">
+                    <div class="status">
+                        <i class="iconfont law-mobile-phone"></i>
+                    </div>
+                    <p>在线</p>
+                </div>
               <div class="flexBox">
                 <div class="con">
                   <p>地址：{{curWindow.other.address}}</p>
@@ -102,9 +108,10 @@
             <div v-else-if="curWindow.category == 2">
                 <div class="lawWindowTitle">
                     <i class="iconfont law-car"></i>
-                    <div class="title">{{curWindow.other.vehicleNumber}}</div>
-                    <span></span>
+                    <div class="title">{{curWindow.other.vehicleNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
+
                     <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
+
                 </div>
                 <div class="flexBox">
                     <div class="con">
@@ -144,7 +151,7 @@
               </div>-->
               <div class="lawWindowTitle">
                     <i class="iconfont law-ship"></i>
-                    <div class="title">{{curWindow.other.shipNumber}}</div>
+                    <div class="title">{{curWindow.other.shipNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
                     <span></span>
                     <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
                 </div>
@@ -495,14 +502,14 @@
                                         <div class="lawHoverTitle">
                                             <div class="gj-title">{{gjObj.vehicleNumber}}</div>
                                             <div class="cxl" >
-                                                <span class="blueC f18">{{gjObj.overload}}%</span><br>
+                                                <span class="blueC f18">{{gjObj.overload.toFixed(2)}}%</span><br>
                                                 <span class="bgCgray f12">超限率</span>
                                             </div>
                                         </div>
                                         <div class="lawHoverContent">
                                             <div class="flexBox">
                                                 <p><span class="bgCgray">过检时间：</span>{{gjObj&&gjObj.checkTime?gjObj.checkTime.split(' ')[1]:''}}</p>
-                                                <p><span class="bgCgray">重点监管：</span><span class="redC">是</span>/否</p>
+                                                <p><span class="bgCgray">重点监管：</span><span class="redC">是</span></p>
                                             </div>
                                             <div class="flexBox">
                                                 <p><span class="bgCgray">历史告警（次）：</span>{{gjObj.lscc}}</p>
@@ -510,17 +517,21 @@
                                                 <p><span class="bgCgray">状态：</span>{{gjObj.status}}</p> -->
                                             </div>
                                             <div class="flexBox">
+                                                 <p><span class="bgCgray">总重（kg）：</span>{{gjObj.totalWeight}}</p>
+                                                <p><span class="bgCgray">超重（kg）：</span>{{gjObj.overweight}}</p>
+                                            </div>
+                                            <div class="flexBox">
                                                 <p><span class="bgCgray">站点：</span>{{gjObj.siteName}}</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div  slot="reference">
-                                    <ul style="width: 100%;height: auto;">
+                                    <ul class="addHoverBg" style="width: 100%;height: auto;">
                                         <li v-for="(row,index) in gjclList" :key="index" @click="positionEvent1()" @mouseenter="positionEventEnter(row)">
                                             <div class="leftTabelHoverDiv" style="padding: 0px;">
                                                 <div class="lawHoverTitle">
                                                 <div class="cxl" >
-                                                    <span class="blueC f18">{{row.overload}}%</span><br>
+                                                    <span class="blueC f18">{{row.overload.toFixed(2)}}%</span><br>
                                                     <span class="bgCgray f12">超限率</span>
                                                 </div>
                                                 <div class="gj-con">
@@ -959,8 +970,9 @@
             </el-drawer>
         </div>
     </div>
-    <div class="amap-search" @mousemove="toolShow = true" @mouseleave="toolShow = false">
-        <el-amap-search-box class="search-box-blue" ref="searchAmapBox" :search-option="searchOption" :on-search-result="searchAll">
+    <div class="amap-search" @mousemove="toolShow = true" @mousedown="curWindow = null" @mouseleave="toolShow = false">
+        <!-- ref="searchAmapBox"  -->
+        <el-amap-search-box class="search-box-blue" :search-option="searchOption" :on-search-result="searchAll" >
         </el-amap-search-box>
         <div class="amap-tool-search" v-if="toolShow" >
             <el-button size="medium" class="tabBtn" :class="{'isCheck': isCheck}" @click="isCheck = true">
@@ -1159,7 +1171,7 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree } from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail } from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 import lunarDate from '@/common/js/lunarDate.js';
@@ -1515,34 +1527,56 @@ export default {
     },
     handleNodeClick (node) {
         this.markers.splice(0, this.markers.length);
-
+        this.tabList[0].children.forEach((item)=>{
+            item.select = false;
+        })
+        this.allSearchList.splice(0, this.allSearchList.length);
+        // this.radioVal = '全选';
         if (node.label === '执法人员') {
             this.checkAll(this.tabList[0].children[0])
         } else if (node.position){
-            let resultList = [];
-            let position = node.position ? node.position.split(','):['',''];
-            let lng = parseFloat(position[0]);
-            let lat = parseFloat(position[1]);
-            resultList.push({
-                address: node.label,
-                distance: null,
-                id: node.id,
-                lat: lat,
-                lng: lng,
-                location: {
-                    O: lng,
-                    P: lat,
-                    lat: lat,
-                    lng: lng
-                },
-                name: node.label,
-                shopinfo: '',
-                tel: '',
-                type: '-1',
-                other: null
-            })
-            this.onSearchResult(resultList, -1 ,0)
+            this.getOrganDetail(node.id).then(
+                res => {
+                    debugger;
+                    let resultList = [];
+                    let position = node.position ? node.position.split(','):['',''];
+                    let lng = parseFloat(position[0]);
+                    let lat = parseFloat(position[1]);
+                    resultList.push({
+                        address: node.label,
+                        distance: null,
+                        id: node.id,
+                        lat: lat,
+                        lng: lng,
+                        location: {
+                            O: lng,
+                            P: lat,
+                            lat: lat,
+                            lng: lng
+                        },
+                        name: node.label,
+                        shopinfo: '',
+                        tel: '',
+                        type: '-1',
+                        other: res.data
+                    })
+                    this.onSearchResult(resultList, 1,0)
+
+                }
+            )
         }
+    },
+    getOrganDetail (id) {
+        return new Promise((resolve, reject) => {
+            getOrganDetail(id).then(
+                res => {
+                    resolve(res.data);
+                },
+                error => {
+
+                }
+            )
+        })
     },
     routerXs () {
         this.$router.push({
@@ -1562,13 +1596,16 @@ export default {
     positionEvent (row, category) {
         // debugger;
         this.category == 4;
+        // this.curWindow.category = 4;
         // debugger;
-        this.markers.splice(0, this.markers.length);
+        // this.markers.splice(0, this.markers.length);
         if (this.curWindow) {
             this.curWindow.visible = false;
         }
         this.getById(category, row.id);
-        this.routerXsDetail();
+        // this.allSearchList.push(data);
+        // this.getZfjgLawSupervise(data, this.category);
+        // this.routerXsDetail();
     },
     positionEvent1 () {
         this.routerXsDetail()
@@ -1608,8 +1645,9 @@ export default {
                         _this.errorMsg('暂无数据', 'error');
                     }
 
-
-                    _this.onSearchResult(resultList, type,0)
+                    // _this.allSearchList.push(data);
+                    // _this.getZfjgLawSupervise(data, this.category);
+                    _this.onSearchResult(resultList, 4,  _this.windows.length)
                 },
                 error => {
                     //  _this.errorMsg(error.toString(), 'error')
@@ -1684,14 +1722,14 @@ export default {
 
     },
     searchPageAll (code, obj) {
-        this.markers.splice(0, this.markers.length);
+        // this.markers.splice(0, this.markers.length);
         if (this.curWindow) {
             this.curWindow.visible = false;
         }
         // 进入页面加载查询所有初始数据
         let data = {
                 // area: this.currentAddressObj.province + this.currentAddressObj.district,
-                area: '',
+                // area: '',
                 current: 1,
                 key: '',
                 size: 20,
@@ -1850,7 +1888,7 @@ export default {
             this.category = item.code;
             let data = {
             // area: this.currentAddressObj.province + this.currentAddressObj.district,
-            area: "东城区",
+            // area: "东城区",
             current: 1,
             key: "",
             //   size: 20,
@@ -1874,9 +1912,13 @@ export default {
         }
     },
     searchByTab(item) {
-      // this.markers.splice(0, this.markers.length);
+        // if (item.select)
+// debugger;
+        if (this.allSearchList.length == 0) {
+        this.markers.splice(0, this.markers.length);
+        }
       item.select = !item.select;
-      if (item.select && this.allSearchList.length > 5) {
+      if (item.select && this.allSearchList.length >= 5) {
         item.select = false;
         // debugger;
         this.errorMsg(`至多选择5条数据`, "error");
@@ -1891,7 +1933,7 @@ export default {
         this.category = item.code;
         let data = {
           // area: this.currentAddressObj.province + this.currentAddressObj.district,
-          area: "东城区",
+        //   area: "东城区",
           current: 1,
           key: "",
         //   size: 20,
@@ -1916,24 +1958,26 @@ export default {
 
       if (this.category == '4') {
           this.drawer1 = false;
-          this.drawer = false;
+        //   this.drawer = false;
           this.updateDrawer1();
-          this.updateDrawer();
+        //   this.updateDrawer();
       }
     },
     searchAll(pois) {
+
       this.markers.splice(0, this.markers.length);
       if (this.curWindow) {
         this.curWindow.visible = false;
       }
       if (this.category == -1) {
-        this.errorMsg(`总计${pois.length}条数据`, "success");
-        this.onSearchResult(pois, this.category, 0);
+        //   debugger;
+        // this.errorMsg(`总计${pois.length}条数据`, "success");
+        // this.onSearchResult(pois, this.category, 0);
         // 搜索地图位置
       } else {
         // this.currentAddressObj.province + this.currentAddressObj.district
         let data = {
-          area: "",
+        //   area: "",
           current: 1,
           key: this.$refs.searchAmapBox.keyword,
           size: 20,
@@ -2089,3 +2133,8 @@ export default {
 
 <style lang="scss" src="@/assets/css/lawSupervise/lawSupervise.scss"></style>
 <style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
+<style lang="scss">
+.search-tips {
+    display:none;
+}
+</style>
