@@ -575,6 +575,7 @@ export default {
     },
     // 信息查验
     infoCheck(path) {
+      this.$store.dispatch("deleteTabsByTitle", '信息查验');
       this.$router.push({ name: path });
     },
     // 查看更多

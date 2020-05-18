@@ -1,12 +1,13 @@
 {
-  "CURRENT": "TEST",
+  "CURRENT": "NW",
   "TEST": {
     "HOST": "http://124.192.215.4:9000",
     "CAPTCHA_HOST": "http://124.192.215.4:9000",
     "PDF_HOST": "http://124.192.215.10:9332/",
     "QZ_ACTIVEX_HOST": "http://124.192.215.4:8083/",
     "LAW_SUPERVISE_HOST": "http://124.192.215.4:9000/",
-    "VIDEO_HOST": "wss://124.192.215.9:10062"
+    "VIDEO_HOST": "wss://124.192.215.9:10062",
+    "CHECK_API":"http://124.192.215.11:8086/cy"
   },
   "HTTPS_TEST":  {
     "HOST": "https://1m59902m17.iask.in:20411",
@@ -30,7 +31,8 @@
     "PDF_HOST": "http://172.16.170.54:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
-    "VIDEO_HOST": "wss://172.16.170.47:10062"
+    "VIDEO_HOST": "wss://172.16.170.47:10062",
+    "CHECK_API":"http://172.16.170.91:8086/cy"
   },
   "LOCAL": {
     "HOST": "http://127.0.0.1:9000",
