@@ -63,7 +63,10 @@ export default {
       this.handelType = type;
       if (type == 0) {
         this.dialogTitle = "新增角色";
-
+        this.$nextTick(()=>{
+          this.$refs["addRoleForm"].resetFields();
+          console.log('sadsdsf',this.$refs["addRoleForm"].resetFields())
+        })
         // this.parentNode = data;
         // this.addOrganForm.pidName = data.parentNodeName;
         // this.isDisabled = false;
@@ -158,6 +161,13 @@ export default {
     },
     //获取机构详情
     getOrganDetail(id) {}
+  },
+  mounted(){
+    this.$nextTick(()=>{
+          this.$refs["addRoleForm"].resetFields();
+          console.log('sadsdsfthis.$refs["addRoleForm"]',this.$refs["addRoleForm"])
+          console.log('sadsdsf',this.$refs["addRoleForm"].resetFields())
+      })
   }
 };
 </script>

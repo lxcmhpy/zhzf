@@ -82,7 +82,7 @@ export default {
             //  this.caseList = res.data;
             let beikaoFlag=true;
              res.data.forEach(element => {
-             console.log(element,element.name,element.storageId)
+            //  console.log(element,element.name,element.storageId)
              
              if(element.name=='备考表'){
                if(beikaoFlag){

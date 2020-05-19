@@ -493,7 +493,7 @@ export default {
           this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
         }
         else {
-          this.$store.commit("setCaseId", row.id);
+          this.$store.commit("setCaseId", row.id); 
           //设置案件状态不为审批中
           this.$store.commit("setCaseApproval", false);
           this.$router.push({
@@ -575,6 +575,7 @@ export default {
     },
     // 信息查验
     infoCheck(path) {
+      this.$store.dispatch("deleteTabsByTitle", '信息查验');
       this.$router.push({ name: path });
     },
     // 查看更多

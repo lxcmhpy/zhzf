@@ -41,8 +41,16 @@
           <el-table-column prop="ANAME" label="姓名" align="center"></el-table-column>
           <el-table-column prop="ID_CARD_NO" label="身份证号" align="center"></el-table-column>
           <el-table-column prop="CERT_NO" label="船员证号" align="center"></el-table-column>
-          <el-table-column prop="CERT_STATUS" label="证书状态" align="center"></el-table-column>
-          <el-table-column prop="ISSU_DATE" label="证书有效起始日期" align="center"></el-table-column>
+          <el-table-column prop="CERT_STATUS" label="证书状态" align="center">
+              <template slot-scope="scope">
+                <span>{{scope.row.CERT_STATUS === 0?'有效':'无效'}}</span>
+              </template>
+          </el-table-column>
+          <el-table-column prop="ISSU_DATE" label="证书有效起止日期" align="center">
+              <template slot-scope="scope">
+                      <span>{{(scope.row.ISSU_DATE).split(' ')[0]+" ~ "+(scope.row.ISSU_DATE).split(' ')[0]}}</span>
+                </template>
+          </el-table-column>
           <el-table-column prop="ISSU_ORG_CODE" label="签发机关" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">

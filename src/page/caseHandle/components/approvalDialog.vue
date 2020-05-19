@@ -89,7 +89,7 @@
         };
 
         //有三级审批时
-        if (this.caseData.approvalNumber == 3) {
+        if (this.caseData.approvalNumber == 3) { 
           if (this.caseData.firstApproval) {
             //一级审批过
             if (this.caseData.secondApproval) {
