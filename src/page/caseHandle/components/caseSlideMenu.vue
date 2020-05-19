@@ -72,7 +72,7 @@ export default {
     }
   },
   props:['activeIndex'],
-  computed: { ...mapGetters(["caseApproval",'caseId']) },
+  computed: { ...mapGetters(["caseApproval",'caseId','caseHandle']) },
   components: {
     archiveCatalogue,
     evidenceCatalogue,
@@ -85,10 +85,12 @@ export default {
       if(this.caseApproval ) { 
         this.$message('暂不支持审批人员查看');
       }else{
-        this.$store.dispatch('deleteTabs', 'caseInfo'); 
+        // this.$store.dispatch('deleteTabs', 'caseInfo'); 
+        this.caseHandle.caseNumber
         this.$router.push({
             name: name,
             params:{
+              tabTitle:this.caseHandle.caseNumber,
               fromSlide: true
             }
         })
