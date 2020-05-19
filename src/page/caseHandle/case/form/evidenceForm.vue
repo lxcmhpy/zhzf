@@ -6,7 +6,7 @@
         <div class="search">
           <el-form :inline="true" :model="evidenceForm" ref="evidenceForm" label-width="80px">
             <el-form-item>
-              <el-button type="primary" icon="add" size="medium" @click="handleAdd">上传证据</el-button>
+              <el-button type="primary" icon="add" size="medium" @click="handleAdd" v-show="!caseApproval">上传证据</el-button>
             </el-form-item>
             <el-form-item label="证据名称" prop="evName">
               <el-input v-model="evidenceForm.evName"></el-input>
@@ -53,6 +53,7 @@
                   active-color="#13ce66"
                   inactive-color="#ff4949"
                   @change="updateEviBySwitch(scope.row)"
+                  :disabled="caseApproval"
                 ></el-switch>
               </label>
             </template>
@@ -68,6 +69,7 @@
                 type="text"
                 icon="el-icon-edit"
                 @click.stop="handleEdit(scope.$index, scope.row)"
+                :disabled="caseApproval"
               >编辑
               </el-button>
             </template>
@@ -337,7 +339,7 @@
         }
       };
     },
-    computed: {...mapGetters(["caseId"])},
+    computed: {...mapGetters(["caseId",'caseApproval'])},
     components: {
       caseSlideMenu,
       evidenceCatalogue,
