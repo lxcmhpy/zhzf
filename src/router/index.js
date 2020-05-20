@@ -39,6 +39,7 @@ router.beforeEach((to, from, next) => {
     if (whiteList.indexOf(to.path) !== -1) {
       next();
     } else {
+        debugger;
         let arrayPath = to.path.split('/');
         if(arrayPath.length > 1 && regularList[arrayPath[1]]&&regularList[arrayPath[1]].test(to.path)) {
            next();
