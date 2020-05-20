@@ -743,10 +743,68 @@ export function addLawRegulationsApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//添加/修改处罚依据
+export function addLawPunishmentApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/addOrUpdateLawPunishment",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//添加/修改认定依据
+export function addeLawCognizanceApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/addOrUpdateLawCognizance",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//违法行为绑定法条
+export function bindCauseLawRegulationsApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/bindCauseLawRegulations",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //删除法条
 export function deleteLawRegulationsApi(data) {
   return request({
     url: "/bnslaw/sys/bnslawCause/deleteLawRegulationsById/"+data,
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//根据条件分页查询认定依据
+export function findLawCognizanceByPageApi(data) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findLawCognizanceByPage",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//根据条件分页查询处罚依据
+export function findLawPunishmentByPageApi(data) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findLawPunishmentByPage",
     method: "get",
     params: data,
     showloading: true,

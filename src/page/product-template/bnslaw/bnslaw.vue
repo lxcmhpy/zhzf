@@ -287,6 +287,7 @@ export default {
         res => {
           console.log("添加法规", res);
           if (res.code == '200') {
+             this.$message({ message: '添加成功',type: 'success'});
             this.visible = false;
             this.getBtnlawList();
           } else {
@@ -296,7 +297,6 @@ export default {
         },
         error => {
           console.log(error)
-          this.$message.error('添加失败');
         }
       );
     },
