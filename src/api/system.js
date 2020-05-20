@@ -696,3 +696,83 @@ export function deleteCaseNumberApi(id) {
     cancelToken: setCancelSource()
   });
 }
+//根据条件分页查询法规
+export function getBnsLawListApi(data) {
+  console.log(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findBnsLawByPage",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//添加/修改法规
+export function addBnsLawApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/addOrUpdateBnsLaw",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//删除法规
+export function deleteBnslawApi(data) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/deleteBnsLawById/"+data,
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//添加/修改法条
+export function addLawRegulationsApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/addOrUpdateLawRegulations",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//删除法条
+export function deleteLawRegulationsApi(data) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/deleteLawRegulationsById/"+data,
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//根据违法行为id查询绑定的法条
+export function getlawRegulationsListByActionidApi(data) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findLawRegulationsByCauseId/"+data,
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//根据条件分页查询法条
+export function getlawRegulationsListApi(data) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findLawRegulationsByPage",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
