@@ -731,7 +731,7 @@ export function deleteBnslawApi(data) {
     cancelToken: setCancelSource()
   });
 }
-//添加/修改法规
+//添加/修改法条
 export function addLawRegulationsApi(data) {
   data = vm.$qs.stringify(data);
   return request({

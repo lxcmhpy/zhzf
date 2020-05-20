@@ -29,13 +29,12 @@
       </div>
       <div class="tablePart">
         <el-table :data="tableData" stripe style="width: 100%" height="100%">
-          <el-table-column prop="bcode" label="法规编码" align="center" width="80px"></el-table-column>
+          <!-- <el-table-column prop="bcode" label="法规编码" align="center" width="80px"></el-table-column> -->
           <el-table-column prop="strName" label="法规标题" align="center"></el-table-column>
-          <el-table-column prop="strOrgan" label="发布机关" align="center"></el-table-column>
           <el-table-column prop="strNumber" label="发布文号" align="center"></el-table-column>
+          <el-table-column prop="strOrgan" label="发布机关" align="center"></el-table-column>
           <el-table-column prop="dtmDate" label="发布时间" align="center"></el-table-column>
           <el-table-column prop="shiDate" label="实施时间" align="center"></el-table-column>
-          <el-table-column prop="industryType" label="行业类型" align="center"></el-table-column>
           <el-table-column prop="status" label="时效性" align="center">
             <template slot-scope="scope">
               <div>{{scope.row.status === 0?'有效':'无效'}}</div>
@@ -67,13 +66,17 @@
             <el-input v-model="addBtnlawForm.strOrgan"></el-input>
           </el-form-item>
           <el-form-item label="法规效力" prop="drawerName">
-            <el-input v-model="addBtnlawForm.drawerName"></el-input>
+            <el-select v-model="addBtnlawForm.drawerName" placeholder="请选择">
+              <el-option v-for="item in lawLimitList" :key="item.cateId" :label="item.name" :value="item.name"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="网站链接" prop="webLink">
             <el-input v-model="addBtnlawForm.webLink"></el-input>
           </el-form-item>
           <el-form-item label="行业类型" prop="industryType">
-            <el-input v-model="addBtnlawForm.industryType"></el-input>
+            <el-select v-model="addBtnlawForm.industryType" placeholder="请选择">
+              <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateName"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="发布时间" prop="dtmDate">
             <el-date-picker v-model="addBtnlawForm.dtmDate" type="date" placeholder="选择发布时间" value-format="yyyy-MM-dd">
@@ -84,10 +87,13 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="时效性" prop="status">
-            <el-input v-model="addBtnlawForm.status"></el-input>
+            <el-select v-model="addBtnlawForm.status" placeholder="请选择">
+              <el-option label="有效" :value="0"></el-option>
+              <el-option label="无效" :value="1"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="题注" prop="strNote">
-            <el-input v-model="addBtnlawForm.strNote"></el-input>
+            <el-input  type="textarea" :rows="2" v-model="addBtnlawForm.strNote"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -97,7 +103,7 @@
       </el-dialog>
       <!-- 详情 -->
       <el-dialog title="法规详情" :visible.sync="dentailVisible" @close="dentailVisible = false" :close-on-click-modal="false" width="30%">
-        <el-form :model="addBtnlawForm" :rules="rules" ref="addBtnlawForm" label-width="100px" class="dentail-solid">
+        <el-form :model="addBtnlawForm" ref="dentailBtnlawForm" label-width="100px" class="dentail-solid">
           <el-form-item label="法规标题：" prop="strName">
             {{addBtnlawForm.strName}}
           </el-form-item>
@@ -117,7 +123,7 @@
             {{addBtnlawForm.industryType}}
           </el-form-item>
           <el-form-item label="发布时间：" prop="dtmDate">
-            {{addBtnlawForm.statdtmDateus}}
+            {{addBtnlawForm.dtmDate}}
           </el-form-item>
           <el-form-item label="实施时间：" prop="shiDate">
             {{addBtnlawForm.shiDate}}
@@ -141,7 +147,7 @@
 
 import { mapGetters } from "vuex";
 import {
-  getBnsLawListApi, addBnsLawApi, deleteBnslawApi
+  getBnsLawListApi, addBnsLawApi, deleteBnslawApi,getDictListDetailByNameApi
 } from "@/api/system";
 export default {
   data() {
@@ -171,9 +177,16 @@ export default {
         industryType: '',
         shiDate: '',
         strNote: '',
-        status: 1,
+        status: 0,
       },
-      rules: {},
+      lawCateList: [], //业务领域列表
+      lawLimitList: [], //法规效力
+      rules: {
+        strName: [{ required: true, message: "法规标题必须填写", trigger: "blur" }],
+        strNumber: [{ required: true, message: "发布文号必须填写", trigger: "blur" }],
+        strOrgan: [{ required: true, message: "发布机关必须填写", trigger: "blur" }],
+        drawerName: [{ required: true, message: "法规效力必须填写", trigger: "blur" }],
+      }
     };
   },
   inject: ["reload"],
@@ -342,10 +355,28 @@ export default {
           console.log(err);
         }
       );
+    },
+    // 抽屉表
+    getlawCateList() {
+      this.$store.dispatch("getEnforceLawType", "1").then(
+        res => {
+          this.lawCateList = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+       getDictListDetailByNameApi('法规效力').then(res => {
+          console.log('挂车类型', res);
+          this.lawLimitList = res.data;
+        }, err => {
+          console.log(err);
+        })
     }
   },
   created() {
     this.getBtnlawList();
+    this.getlawCateList();
   }
 };
 </script>

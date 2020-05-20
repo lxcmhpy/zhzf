@@ -4,17 +4,17 @@
       <div class="handlePart">
         <div class="search">
           <el-form :inline="true" :model="lawRegulationsSearchForm" ref="lawRegulationsSearchForm">
-            <el-form-item label="法规名称" prop='bnslawNamePun'>
-              <el-input v-model="lawRegulationsSearchForm.bnslawNamePun" placeholder="输入法规名称"></el-input>
+            <el-form-item label="法规名称" prop='bnslawLawName'>
+              <el-input v-model="lawRegulationsSearchForm.bnslawLawName" placeholder="输入法规名称"></el-input>
             </el-form-item>
             <el-form-item label="条" prop="itemPun">
-              <el-input v-model="lawRegulationsSearchForm.itemPun" placeholder="发布文号"></el-input>
+              <el-input v-model="lawRegulationsSearchForm.itemPun" placeholder="条"></el-input>
             </el-form-item>
             <el-form-item label="款" prop="clausePun">
-              <el-input v-model="lawRegulationsSearchForm.clausePun" placeholder="发布文号"></el-input>
+              <el-input v-model="lawRegulationsSearchForm.clausePun" placeholder="款"></el-input>
             </el-form-item>
             <el-form-item label="项" prop="iitemPun">
-              <el-input v-model="lawRegulationsSearchForm.iitemPun" placeholder="发布文号"></el-input>
+              <el-input v-model="lawRegulationsSearchForm.iitemPun" placeholder="项"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="getlawRegulationsListSearch">查询</el-button>
@@ -23,7 +23,7 @@
               <el-button type="primary" size="medium" icon="el-icon-search" @click="resetForm('lawRegulationsSearchForm')">重置</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addlawRegulations">添加(法条)</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-plus" @click="add">添加(法条)</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -61,12 +61,146 @@
       </div>
 
     </div>
+    <el-dialog :title="dialogTitle" :visible.sync="visible" @close="visible = false" :close-on-click-modal="false" width="80%" class="mini-content">
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <div class="graybg">
+            认定依据
+            <el-form :inline="true" :model="lawRegulationsSearchForm" ref="lawRegulationsSearchForm">
+
+              <el-form-item label="条" prop="itemPun">
+                <el-input v-model="lawRegulationsSearchForm.itemPun" placeholder="条"></el-input>
+              </el-form-item>
+              <el-form-item label="款" prop="clausePun">
+                <el-input v-model="lawRegulationsSearchForm.clausePun" placeholder="款"></el-input>
+              </el-form-item>
+              <el-form-item label="项" prop="iitemPun">
+                <el-input v-model="lawRegulationsSearchForm.iitemPun" placeholder="项"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" size="medium" icon="el-icon-search" @click="getlawRegulationsListSearch">查询</el-button>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" size="medium" icon="el-icon-search" @click="resetForm('lawRegulationsSearchForm')">重置</el-button>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" size="medium" icon="el-icon-plus" @click="add">添加</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData" stripe style="width: 100%" height="500px">
+              <el-table-column type="selection" width="55">
+              </el-table-column>
+              <el-table-column prop="bnslawLawName" label="法规名称" align="center"></el-table-column>
+              <el-table-column prop="bnsLawNoteCog" label="认定依据" align="center">
+                <el-table-column prop="itemCog" label="条" align="center"></el-table-column>
+                <el-table-column prop="clauseCog" label="款" align="center"></el-table-column>
+                <el-table-column prop="iitemCog" label="项" align="center"></el-table-column>
+              </el-table-column>
+              <el-table-column prop="upperLimit" label="法规原文" align="center"></el-table-column>
+              <!-- <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="getlawRegulationsVal(scope.row)">法条管理</el-button>
+                  <el-button type="text" @click="deletelawRegulations(scope.row.id)">删除</el-button>
+                </template>
+              </el-table-column> -->
+            </el-table>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="graybg">
+
+            处罚依据
+            <el-form :inline="true" :model="lawRegulationsSearchForm" ref="lawRegulationsSearchForm">
+
+              <el-form-item label="条" prop="itemPun">
+                <el-input v-model="lawRegulationsSearchForm.itemPun" placeholder="条"></el-input>
+              </el-form-item>
+              <el-form-item label="款" prop="clausePun">
+                <el-input v-model="lawRegulationsSearchForm.clausePun" placeholder="款"></el-input>
+              </el-form-item>
+              <el-form-item label="项" prop="iitemPun">
+                <el-input v-model="lawRegulationsSearchForm.iitemPun" placeholder="项"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" size="medium" icon="el-icon-search" @click="getlawRegulationsListSearch">查询</el-button>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" size="medium" icon="el-icon-search" @click="resetForm('lawRegulationsSearchForm')">重置</el-button>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" size="medium" icon="el-icon-plus" @click="add">添加</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData" stripe style="width: 100%" height="500px">
+              <el-table-column type="selection" width="55">
+              </el-table-column>
+              <el-table-column prop="bnslawNamePun" label="法规名称" align="center"></el-table-column>
+              <el-table-column prop="bnsLawNoteCog" label="处罚依据" align="center">
+                <el-table-column prop="itemPun" label="条" align="center"></el-table-column>
+                <el-table-column prop="clausePun" label="款" align="center"></el-table-column>
+                <el-table-column prop="iitemPun" label="项" align="center"></el-table-column>
+              </el-table-column>
+              <el-table-column prop="industryType" label="最高罚款" align="center"></el-table-column>
+              <el-table-column prop="lawerLimit" label="罚款下限" align="center"></el-table-column>
+              <el-table-column prop="upperLimit" label="罚款上限" align="center"></el-table-column>
+              <el-table-column prop="upperLimit" label="处罚标准" align="center"></el-table-column>
+              <el-table-column prop="upperLimit" label="法规原文" align="center"></el-table-column>
+              <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                  <!-- <el-button type="text" @click="editlawRegulations(scope.row)">编辑</el-button> -->
+                  <el-button type="text" @click="getlawRegulationsVal(scope.row)">法条管理</el-button>
+                  <el-button type="text" @click="deletelawRegulations(scope.row.id)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-col>
+      </el-row>
+      <!-- <el-form :model="addLawRegulationsForm" :rules="rules" ref="addLawRegulationsForm" label-width="80px">
+          <el-form-item label="法规标题" prop="strName">
+            <el-input v-model="addLawRegulationsForm.strName"></el-input>
+          </el-form-item>
+          <el-form-item label="发布文号" prop="strNumber">
+            <el-input v-model="addLawRegulationsForm.strNumber"></el-input>
+          </el-form-item>
+          <el-form-item label="发布机关" prop="strOrgan">
+            <el-input v-model="addLawRegulationsForm.strOrgan"></el-input>
+          </el-form-item>
+          <el-form-item label="法规效力" prop="drawerName">
+            <el-input v-model="addLawRegulationsForm.drawerName"></el-input>
+          </el-form-item>
+          <el-form-item label="网站链接" prop="webLink">
+            <el-input v-model="addLawRegulationsForm.webLink"></el-input>
+          </el-form-item>
+          <el-form-item label="行业类型" prop="industryType">
+            <el-input v-model="addLawRegulationsForm.industryType"></el-input>
+          </el-form-item>
+          <el-form-item label="发布时间" prop="dtmDate">
+            <el-date-picker v-model="addLawRegulationsForm.dtmDate" type="date" placeholder="选择发布时间" value-format="yyyy-MM-dd">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="实施时间" prop="shiDate">
+            <el-date-picker v-model="addLawRegulationsForm.shiDate" type="date" placeholder="选择发布时间" value-format="yyyy-MM-dd">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="时效性" prop="status">
+            <el-input v-model="addLawRegulationsForm.status"></el-input>
+          </el-form-item>
+          <el-form-item label="题注" prop="strNote">
+            <el-input v-model="addLawRegulationsForm.strNote"></el-input>
+          </el-form-item>
+        </el-form> -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="visible = false">取 消</el-button>
+        <el-button type="primary" @click="addlawRegulations">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
 import {
-  getlawRegulationsListApi, deleteLawRegulationsApi
+  getlawRegulationsListApi, deleteLawRegulationsApi, addLawRegulationsApi
 } from "@/api/system";
 export default {
   data() {
@@ -81,8 +215,20 @@ export default {
         iitemPun: '',
         clausePun: '',
         itemPun: '',
+        bnslawLawName: ''
       },
-      info: ""
+      info: "",
+      addLawRegulationsForm: {
+
+      },
+      dialogTitle: '添加法条',
+      visible: false,
+      rules: {
+        strName: [{ required: true, message: "法规标题必须填写", trigger: "blur" }],
+        strNumber: [{ required: true, message: "发布文号必须填写", trigger: "blur" }],
+        strOrgan: [{ required: true, message: "发布机关必须填写", trigger: "blur" }],
+        drawerName: [{ required: true, message: "法规效力必须填写", trigger: "blur" }],
+      }
     };
   },
   inject: ["reload"],
@@ -95,7 +241,7 @@ export default {
       let data = this.lawRegulationsSearchForm
       data.current = this.currentPage;
       data.size = this.pageSize;
-      data.bnslawIdPun=this.btnlawId
+      data.bnslawIdPun = this.btnlawId
       let _this = this;
 
       getlawRegulationsListApi(data).then(
@@ -166,13 +312,29 @@ export default {
 
     },
     //添加法规
+    add() {
+      this.visible = true;
+    },
     addlawRegulations() {
-      let data = {
-        id: "",
-        pid: "",
-        leng: this.tableData.length
-      };
-      this.$refs.addEditlawRegulationsRef.showModal(0, data, "list");
+      let data = this.addBtnlawForm;
+      let _this = this;
+      console.log(typeof (this.addBtnlawForm.status))
+      addLawRegulationsApi(data).then(
+        res => {
+          console.log("添加法规", res);
+          if (res.code == '200') {
+            this.visible = false;
+            this.getBtnlawList();
+          } else {
+            this.$message.error('添加失败');
+            return
+          }
+        },
+        error => {
+          console.log(error)
+          this.$message.error('添加失败');
+        }
+      );
     },
     //编辑法规
     editlawRegulations(row) {
@@ -233,11 +395,22 @@ export default {
   },
   created() {
     this.getlawRegulationsList();
-    console.log('adfrae',this.btnlawId)
+    console.log('adfrae', this.btnlawId)
   }
 };
 </script>
 
 <style lang="scss">
 @import "@/assets/css/systemManage.scss";
+.mini-content {
+  .el-input {
+    width: 100px;
+  }
+}
+.graybg {
+  padding: 10px;
+  background: #fcfcfc;
+  border: 1px solid #eee;
+  // box-sizing: border-box;
+}
 </style>
