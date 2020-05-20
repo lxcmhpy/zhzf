@@ -82,20 +82,25 @@ export default {
   methods: {
     goTo(name){
       console.log('name',name)
-      if(this.caseApproval ) { 
-        this.$message('暂不支持审批人员查看');
-      }else{
-        // this.$store.dispatch('deleteTabs', 'caseInfo'); 
-        this.caseHandle.caseNumber
-        this.$router.push({
+      // if(this.caseApproval ) { 
+      //   this.$message('暂不支持审批人员查看');
+      // }else{
+       
+      //   this.$router.push({
+      //       name: name,
+      //       params:{
+      //         tabTitle:this.caseHandle.caseNumber,
+      //         fromSlide: true
+      //       }
+      //   })
+      // }
+      this.$router.push({
             name: name,
             params:{
               tabTitle:this.caseHandle.caseNumber,
               fromSlide: true
             }
-        })
-      }
-
+      })
     },
     scrollToTop() {
         let scrollId = this.$route.meta.scrollId;

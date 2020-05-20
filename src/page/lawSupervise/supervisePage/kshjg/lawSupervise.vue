@@ -1,11 +1,21 @@
 <template>
   <!--  执法监管首页 by-jingli -->
   <div id="lawSupervise" ref="lawSupervise" class="mainBox" :class="{'lawScreenFull':lawScreenFull}">
-    <el-carousel :interval="8000" indicator-position="none" height="28px" style="position:absolute;top:0px;line-height:28px;width:100%;font-size:12px;color:#20232B">
-        <el-carousel-item :key="1">
+    <el-carousel :interval="8000" indicator-position="none" height="28px" v-if="gjclList" style="position:absolute;top:0px;line-height:28px;width:100%;font-size:12px;color:#20232B">
+        <el-carousel-item v-for="(row,index) in gjclList" :key="index.toString()">
+            <div style="background:#F9DAAC;padding-left:17px;">
+                <div class="lawHoverTitle" @click="updateDrawer1" >
+                        <span><i class="el-icon-info red"></i>&nbsp;&nbsp;</span>
+                        <span class="bgCgray">{{row&&row.checkTime?row.checkTime:''}}  </span>
+                        <span class="redC">{{row.vehicleNumber}}  </span>
+                        <span class="bgCgray f12">超限率:<span class="blueC f18">{{row.overload.toFixed(2)}}% </span></span>
+                        <!-- <span><span class="bgCgray">站点：</span>{{row.siteName}}</span> -->
+                </div>
+            </div>
+        </el-carousel-item>
+        <!-- <el-carousel-item :key="1">
             <div style="background:#F9DAAC;padding-left:17px;">
                 <i class="el-icon-info red"></i>&nbsp;&nbsp;&nbsp;
-                <!-- <span>{{lunarDate}} </span> -->
                 <span>北京市发布大风蓝色预警，局部伴有扬沙，请相关单位注意。</span>
             </div>
         </el-carousel-item>
@@ -14,7 +24,7 @@
                 <i class="el-icon-info red"></i>&nbsp;&nbsp;&nbsp;
                 <span>{{lunarDate}} </span>
             </div>
-        </el-carousel-item>
+        </el-carousel-item> -->
     </el-carousel>
     <div class="amap-page-container">
       <!-- amap://styles/whitesmoke -->
@@ -424,7 +434,8 @@
                 </el-button>
            </el-popover>
         </div>
-        <div class="drawerBtn" @click="updateDrawer">
+        <!-- updateDrawer -->
+        <div class="drawerBtn" @click="openDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
         <!-- v-if="category != 4"  -->
@@ -972,9 +983,16 @@
     </div>
     <div class="amap-search" @mousemove="toolShow = true" @mousedown="curWindow = null" @mouseleave="toolShow = false">
         <!-- ref="searchAmapBox"  -->
-        <el-amap-search-box class="search-box-blue" :search-option="searchOption" :on-search-result="searchAll" >
-        </el-amap-search-box>
-        <div class="amap-tool-search" v-if="toolShow" >
+        <!-- <el-amap-search-box class="search-box-blue" :search-option="searchOption" :on-search-result="searchAll" >
+        </el-amap-search-box> -->
+        <div class="search-box-blue" style="z-index:10;display:flex;">
+            <el-input class="w-390"
+                placeholder="输入关键字进行过滤"
+                v-model="filterText">
+            </el-input>
+            <el-button  icon="el-icon-search"></el-button>
+        </div>
+        <div class="amap-tool-search" v-show="toolShow" >
             <el-button size="medium" class="tabBtn" :class="{'isCheck': isCheck}" @click="isCheck = true">
                 <img :src="'./static/images/img/lawSupervise/icon_renyuan.png'" />
                 <span class="name">人员</span>
@@ -984,10 +1002,15 @@
                 <span class="name">机构</span>
             </el-button>
             <div class="amap-tool-search" style="top:96px;padding: 22px;margin-bottom: 22px;">
+                    <!--  -->
+                    <!-- expand-on-click-node -->
                 <el-tree
                     :data="data"
                     :props="defaultProps"
                     accordion
+                    ref="treeFilter"
+                    :default-expand-all="expandTree"
+                    :filter-node-method="filterNode"
                     @node-click="handleNodeClick">
                      <span class="custom-tree-node" slot-scope="{ node, data }">
                         <span><img class="tree-node-icon" :src="'./static/images/img/lawSupervise/'+data.icon+'.png'">{{node.label}}</span>
@@ -1171,11 +1194,12 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail } from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById } from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 import lunarDate from '@/common/js/lunarDate.js';
-import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js'
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
+import {dataJson} from './echarts/dataJson.js';
 
 // import externalVideoBtns from '@/page/lawSupervise/componentCommon/externalVideoBtns.vue';
 import _ from "lodash";
@@ -1203,13 +1227,200 @@ AMap.initAMapApiLoader({
   uiVersion: "1.0.11",
   showLabel: false
 });
+ AMap.setOption(option = {
+        bmap: {
+            center: [116.46, 39.92],
+            zoom: 10,
+            roam: true,
+            mapStyle: {
+              'styleJson': [
+                {
+                  'featureType': 'water',
+                  'elementType': 'all',
+                  'stylers': {
+                    'color': '#031628'
+                  }
+                },
+                {
+                  'featureType': 'land',
+                  'elementType': 'geometry',
+                  'stylers': {
+                    'color': '#000102'
+                  }
+                },
+                {
+                  'featureType': 'highway',
+                  'elementType': 'all',
+                  'stylers': {
+                    'visibility': 'off'
+                  }
+                },
+                {
+                  'featureType': 'arterial',
+                  'elementType': 'geometry.fill',
+                  'stylers': {
+                    'color': '#000000'
+                  }
+                },
+                {
+                  'featureType': 'arterial',
+                  'elementType': 'geometry.stroke',
+                  'stylers': {
+                    'color': '#0b3d51'
+                  }
+                },
+                {
+                  'featureType': 'local',
+                  'elementType': 'geometry',
+                  'stylers': {
+                    'color': '#000000'
+                  }
+                },
+                {
+                  'featureType': 'railway',
+                  'elementType': 'geometry.fill',
+                  'stylers': {
+                    'color': '#000000'
+                  }
+                },
+                {
+                  'featureType': 'railway',
+                  'elementType': 'geometry.stroke',
+                  'stylers': {
+                    'color': '#08304b'
+                  }
+                },
+                {
+                  'featureType': 'subway',
+                  'elementType': 'geometry',
+                  'stylers': {
+                    'lightness': -70
+                  }
+                },
+                {
+                  'featureType': 'building',
+                  'elementType': 'geometry.fill',
+                  'stylers': {
+                    'color': '#000000'
+                  }
+                },
+                {
+                  'featureType': 'all',
+                  'elementType': 'labels.text.fill',
+                  'stylers': {
+                    'color': '#857f7f'
+                  }
+                },
+                {
+                  'featureType': 'all',
+                  'elementType': 'labels.text.stroke',
+                  'stylers': {
+                    'color': '#000000'
+                  }
+                },
+                {
+                  'featureType': 'building',
+                  'elementType': 'geometry',
+                  'stylers': {
+                    'color': '#022338'
+                  }
+                },
+                {
+                  'featureType': 'green',
+                  'elementType': 'geometry',
+                  'stylers': {
+                    'color': '#062032'
+                  }
+                },
+                {
+                  'featureType': 'boundary',
+                  'elementType': 'all',
+                  'stylers': {
+                    'color': '#465b6c'
+                  }
+                },
+                {
+                  'featureType': 'manmade',
+                  'elementType': 'all',
+                  'stylers': {
+                    'color': '#022338'
+                  }
+                },
+                {
+                  'featureType': 'label',
+                  'elementType': 'all',
+                  'stylers': {
+                    'visibility': 'off'
+                  }
+                }
+              ]
+            }
+        },
+        series: [{
+            type: 'lines',
+            coordinateSystem: 'bmap',
+            polyline: true,
+            data: busLines,
+            silent: true,
+            lineStyle: {
+                // color: '#c23531',
+                // color: 'rgb(200, 35, 45)',
+                opacity: 0.2,
+                width: 1
+            },
+            progressiveThreshold: 500,
+            progressive: 200
+        }, {
+            type: 'lines',
+            coordinateSystem: 'bmap',
+            polyline: true,
+            data: busLines,
+            lineStyle: {
+                width: 0
+            },
+            effect: {
+                constantSpeed: 20,
+                show: true,
+                trailLength: 0.1,
+                symbolSize: 1.5
+            },
+            zlevel: 1
+        }]
+    });
 let amapManager = new AMap.AMapManager();
+
+var hStep = 300 / (dataJson.length - 1);
+var busLines = [].concat.apply([], dataJson.map(function (busLine, idx) {
+    var prevPt;
+    var points = [];
+    for (var i = 0; i < busLine.length; i += 2) {
+        var pt = [busLine[i], busLine[i + 1]];
+        if (i > 0) {
+            pt = [
+                prevPt[0] + pt[0],
+                prevPt[1] + pt[1]
+            ];
+        }
+        prevPt = pt;
+
+        points.push([pt[0] / 1e4, pt[1] / 1e4]);
+    }
+    return {
+        coords: points,
+        lineStyle: {
+            normal: {
+                color: AMap.color.modifyHSL('#5A94DF', Math.round(hStep * idx))
+            }
+        }
+    };
+}));
 export default {
   // el: '#lawSupervise',
   name: "lawSupervise",
   data() {
     let self = this;
     return {
+        filterText: '',
         lunarDate: '',
         status5:true,
         status4:true,
@@ -1471,11 +1682,30 @@ export default {
       categoryStr: '图层',
       checkTableNum: null,
       gjObj: null,
-      fxcObj: null
+      fxcObj: null,
+      expandTree:false,
     };
   },
   methods: {
-       callName(code) {
+    filterNode (value, data, node) {
+        // if(value = "") return data;
+        // debugger;
+        // if (!value) return true;
+        if (value === "") {
+            this.expandTree = false;
+            return data;
+        }
+        if (this.isCheck) {
+            if (data.id == value.organId && data.label==="执法人员"||data.id == value.pid) {
+                this.toolShow = true;
+                return true;
+            }
+            return false;
+        } else {
+            return data.label.indexOf(value) > -1;
+        }
+    },
+    callName(code) {
         this.doing = '2';
 
         if (!window.PhoneCallModule.getRegistered()) {
@@ -1532,12 +1762,65 @@ export default {
         })
         this.allSearchList.splice(0, this.allSearchList.length);
         // this.radioVal = '全选';
+            debugger;
         if (node.label === '执法人员') {
-            this.checkAll(this.tabList[0].children[0])
+            // this.checkAll(this.tabList[0].children[0])
+            //  const newChild = { id: value.id,icon:'icon_jc11',pid:value.organId, label: value.nickName, position:value.position, children: [] };
+            // if (data.children) {
+            //   this.$set(data.children,'0', newChild);
+            // }getUserById
+            let _this = this;
+            new Promise((resolve, reject) => {
+                getUserById(node.id).then(
+                    res => {
+                        debugger;
+                        let resultList = [];
+                        if(res.data&&res.data.length>0) {
+                            res.data.forEach((item,i)=>{
+                                let position = item.position ? item.position.split(','):['',''];
+                                let lng = parseFloat(position[0]);
+                                let lat = parseFloat(position[1]);
+                                resultList.push({
+                                    address: item.label,
+                                    distance: null,
+                                    id: item.id,
+                                    lat: lat,
+                                    lng: lng,
+                                    icon: 'icon_jc11',
+                                    icons: 'ry',
+                                    pid: item.organId,
+                                    location: {
+                                        O: lng,
+                                        P: lat,
+                                        lat: lat,
+                                        lng: lng
+                                    },
+                                    name: item.label,
+                                    label: item.nickName,
+                                    position: item.position,
+                                    shopinfo: '',
+                                    tel: '',
+                                    type: '0',
+                                    other: item
+                                })
+                            })
+
+                            this.$nextTick(() => {
+                                _this.$set(node,'children', resultList);
+                                // _this.expandTree = true;
+                            })
+                        }
+                    // this.onSearchResult(resultList, 1,0)
+                    }
+                )
+            })
+        } else if(node.icons == 'ry'){
+            // debugger;
+            this.onSearchResult([node], 0,0);
         } else if (node.position){
             this.getOrganDetail(node.id).then(
                 res => {
-                    debugger;
+                    // debugger;
                     let resultList = [];
                     let position = node.position ? node.position.split(','):['',''];
                     let lng = parseFloat(position[0]);
@@ -1690,7 +1973,8 @@ export default {
     },
     updateDrawer() {
         // debugger;
-        this.drawer = !this.drawer;
+        // this.drawer = !this.drawer;
+        // this.drawer = true;
         // debugger;
         // if (this.category != 4) {
             // this.drawer = true;
@@ -1706,6 +1990,10 @@ export default {
             // }
         // }
     },
+    openDrawer () {
+        this.drawer = true;
+        this.updateDrawer()
+    },
     updateDrawer1 () {
         // debugger;
         // if (this.category == 4) {
@@ -1713,11 +2001,12 @@ export default {
         // } else {
         //     this.drawer1 = false;
         // }
-         this.drawer1 = !this.drawer1 ;
+        //  this.drawer1 = !this.drawer1 ;
+         this.drawer = true;
         // this.getRealTimeDataByLawSupervise();
         this.searchPageAll(4, 'zfdList');
         this.searchPageAll(6, 'gjclList');
-        // this.category = 4;
+        this.category = 4;
         // this.searchByTab(this.tabList[1].children[0]);
 
     },
@@ -1957,10 +2246,12 @@ export default {
       }
 
       if (this.category == '4') {
-          this.drawer1 = false;
+        //   this.drawer1 = false;
         //   this.drawer = false;
           this.updateDrawer1();
-        //   this.updateDrawer();
+      } else {
+          this.updateDrawer();
+
       }
     },
     searchAll(pois) {
@@ -2053,6 +2344,7 @@ export default {
                         pid:item.pid,
                         label: '执法人员',
                         icon: 'icon_jc11',
+                        children: []
                     },{
                         id: item.id,
                         pid:item.pid,
@@ -2078,6 +2370,7 @@ export default {
                         pid:item.pid,
                         label: '执法人员',
                         icon: 'icon_jc11',
+                        children: []
                     },{
                         id: item.id,
                         pid:item.pid,
@@ -2093,7 +2386,7 @@ export default {
                 // return item
             }
             _this.data = dataArray;
-            debugger;
+            // debugger;
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
@@ -2113,7 +2406,10 @@ export default {
      })
     this.lunarDate = lunarDate();
     this.getOrganTree();
-    //   this.updateDrawer();
+    this.updateDrawer();
+  },
+  created () {
+    this.searchPageAll(6, 'gjclList');
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {
@@ -2123,6 +2419,63 @@ export default {
    watch: {
         makePhoneStatus (val, oldVal) {
             this.videoDoing = null;
+        },
+        isCheck (val) {
+            this.toolShow = true;
+            let _that = this;
+            if (val) {
+                // 人员
+                let data = {
+                    key: this.filterText,
+                    type: 0
+                }
+                new Promise((resolve, reject) => {
+                    getZfjgLawSupervise(data).then(
+                        res => {
+                            if(res.data.records && res.data.records.length > 0) {
+                                console.log(111111);
+                                res.data.records.forEach((item,i)=>{
+                                    _that.$refs.treeFilter.filter(item);
+                                })
+                            }
+                        }
+                    )
+                })
+            } else {
+                // 机构
+                _that.$refs.treeFilter.filter(_that.filterText);
+            }
+        },
+        filterText(val) {
+            // debugger;
+            if (val == '') {
+                return this.$refs.treeFilter.filter("");
+            }
+            this.toolShow = true;
+            let _that = this;
+            if (this.isCheck) {
+                // 人员
+                let data = {
+                    key: val,
+                    type: 0
+                }
+                new Promise((resolve, reject) => {
+                    getZfjgLawSupervise(data).then(
+                        res => {
+                            if(res.data.records && res.data.records.length > 0) {
+                                console.log(111111);
+                                res.data.records.forEach((item,i)=>{
+                                    _that.$refs.treeFilter.filter(item);
+                                })
+                            }
+                        }
+                    )
+                })
+            } else {
+                // 机构
+                _that.$refs.treeFilter.filter(val);
+            }
+
         }
     },
     computed: {
