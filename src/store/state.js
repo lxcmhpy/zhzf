@@ -17,7 +17,8 @@ const state = {
         imgSrc:'',
         whiteList:[],  //白名单
         imgIp:'',  //图片的地址
-        listPage:''   //当前page
+        listPage:'',   //当前page
+        // btnlawId:''  //当前法规id
 
 };
 

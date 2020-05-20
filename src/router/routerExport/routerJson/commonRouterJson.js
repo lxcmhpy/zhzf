@@ -93,6 +93,25 @@ export default [
         component: MainContent,
         children: [
           {
+            name: "bnslaw",
+            path: "bnslaw",
+            meta: {
+              title: "法律法规管理"
+            },
+            component: () => import("@/page/product-template/bnslaw/bnslaw.vue"),
+            children: [
+             
+            ]
+          },
+          {
+            name: "lawRegulations",
+            path: "lawRegulations",
+            meta: {
+              title: "法条管理"
+            },
+            component: () => import("@/page/product-template/bnslaw/lawRegulations.vue")
+          },
+          {
             name: "banner",
             path: "banner",
             meta: {
