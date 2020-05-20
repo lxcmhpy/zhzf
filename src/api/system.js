@@ -710,13 +710,6 @@ export function getBnsLawListApi(data) {
 }
 //添加/修改法规
 export function addBnsLawApi(data) {
-  // let caseNumberForm = {
-  //   // id: data.id,
-  //   strName: data.strName,
-  //   dtmDate: data.dtmDate,
-  //   strOrgan: data.strOrgan,
-  // };
-  // console.log('添加字典', caseNumberForm)
   data = vm.$qs.stringify(data);
   return request({
     url: "/bnslaw/sys/bnslawCause/addOrUpdateBnsLaw",
@@ -738,10 +731,33 @@ export function deleteBnslawApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//添加/修改法规
+export function addLawRegulationsApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/addOrUpdateLawRegulations",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //删除法条
 export function deleteLawRegulationsApi(data) {
   return request({
     url: "/bnslaw/sys/bnslawCause/deleteLawRegulationsById/"+data,
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//根据违法行为id查询绑定的法条
+export function getlawRegulationsListByActionidApi(data) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findLawRegulationsByCauseId/"+data,
     method: "get",
     params: data,
     showloading: true,

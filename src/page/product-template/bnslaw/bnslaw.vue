@@ -22,7 +22,7 @@
               <el-button type="primary" size="medium" icon="el-icon-search" @click="resetForm('bnslawSearchForm')">重置</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addBtnlaw">添加</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addBtnlaw">添加(法规)</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -46,7 +46,7 @@
             <template slot-scope="scope">
               <!-- <el-button type="text" @click="editBtnlaw(scope.row)">编辑</el-button> -->
               <el-button type="text" @click="getBtnlawVal(scope.row)">法条管理</el-button>
-              <el-button type="text" @click="getBtnlawVal(scope.row.id)">详情</el-button>
+              <el-button type="text" @click="getBtnlawDentails(scope.row)">详情</el-button>
               <el-button type="text" @click="deleteBtnlaw(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -95,14 +95,50 @@
           <el-button type="primary" @click="addEditbtnlaw">确 定</el-button>
         </span>
       </el-dialog>
-      <!-- <addEditBtnlaw ref="addEditBtnlawRef"></addEditBtnlaw> -->
-      <!-- <showBtnlawKey ref="showBtnlawKeyRef"></showBtnlawKey> -->
+      <!-- 详情 -->
+      <el-dialog title="法规详情" :visible.sync="dentailVisible" @close="dentailVisible = false" :close-on-click-modal="false" width="30%">
+        <el-form :model="addBtnlawForm" :rules="rules" ref="addBtnlawForm" label-width="100px" class="dentail-solid">
+          <el-form-item label="法规标题：" prop="strName">
+            {{addBtnlawForm.strName}}
+          </el-form-item>
+          <el-form-item label="发布文号：" prop="strNumber">
+            {{addBtnlawForm.strNumber}}
+          </el-form-item>
+          <el-form-item label="发布机关：" prop="strOrgan">
+            {{addBtnlawForm.strOrgan}}
+          </el-form-item>
+          <el-form-item label="法规效力：" prop="drawerName">
+            {{addBtnlawForm.drawerName}}
+          </el-form-item>
+          <el-form-item label="网站链接：" prop="webLink">
+            {{addBtnlawForm.webLink}}
+          </el-form-item>
+          <el-form-item label="行业类型：" prop="industryType">
+            {{addBtnlawForm.industryType}}
+          </el-form-item>
+          <el-form-item label="发布时间：" prop="dtmDate">
+            {{addBtnlawForm.statdtmDateus}}
+          </el-form-item>
+          <el-form-item label="实施时间：" prop="shiDate">
+            {{addBtnlawForm.shiDate}}
+          </el-form-item>
+          <el-form-item label="时效性：" prop="status">
+            {{addBtnlawForm.status === 0?'有效':'无效'}}
+          </el-form-item>
+          <el-form-item label="题注：" prop="strNote">
+            {{addBtnlawForm.strNote}}
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dentailVisible = false">关闭</el-button>
+        </span>
+      </el-dialog>
+
     </div>
   </div>
 </template>
 <script>
-import addEditBtnlaw from "./addBnslaw";
-import showBtnlawKey from "./addBnslaw";
+
 import { mapGetters } from "vuex";
 import {
   getBnsLawListApi, addBnsLawApi, deleteBnslawApi
@@ -123,6 +159,7 @@ export default {
       info: "",
       dialogTitle: "添加法规",
       visible: false,
+      dentailVisible: false,
       // 添加、修改
       addBtnlawForm: {
         strName: '',
@@ -134,14 +171,10 @@ export default {
         industryType: '',
         shiDate: '',
         strNote: '',
-        status: '',
+        status: 1,
       },
-      rules: {}
+      rules: {},
     };
-  },
-  components: {
-    addEditBtnlaw,
-    showBtnlawKey
   },
   inject: ["reload"],
   methods: {
@@ -152,7 +185,7 @@ export default {
         size: this.pageSize,
         strName: this.bnslawSearchForm.strName,
         strNumber: this.bnslawSearchForm.strNumber,
-        dtmDate: this.bnslawSearchForm.dtmDate
+        // dtmDate: JSON.stringify(this.bnslawSearchForm.dtmDate)
       };
       let _this = this;
 
@@ -179,6 +212,11 @@ export default {
       this.$refs[formName].resetFields();
       this.currentPage = 1;
       this.getBtnlawList()
+    },
+    //详情
+    getBtnlawDentails(row) {
+      this.addBtnlawForm = row
+      this.dentailVisible = true
     },
     //获取法规值
     getBtnlawVal(row) {
@@ -231,12 +269,13 @@ export default {
     addEditbtnlaw() {
       let data = this.addBtnlawForm;
       let _this = this;
-
+      console.log(typeof (this.addBtnlawForm.status))
       addBnsLawApi(data).then(
         res => {
           console.log("添加法规", res);
-          if (res.status == '200') {
+          if (res.code == '200') {
             this.visible = false;
+            this.getBtnlawList();
           } else {
             this.$message.error('添加失败');
             return

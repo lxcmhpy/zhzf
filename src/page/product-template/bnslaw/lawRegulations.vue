@@ -23,7 +23,7 @@
               <el-button type="primary" size="medium" icon="el-icon-search" @click="resetForm('lawRegulationsSearchForm')">重置</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addlawRegulations">添加</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addlawRegulations">添加(法条)</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -59,14 +59,11 @@
       <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-      <!-- <addEditlawRegulations ref="addEditlawRegulationsRef"></addEditlawRegulations> -->
-      <!-- <showlawRegulationsKey ref="showlawRegulationsKeyRef"></showlawRegulationsKey> -->
+
     </div>
   </div>
 </template>
 <script>
-import addEditlawRegulations from "./addBnslaw";
-import showlawRegulationsKey from "./addBnslaw";
 import { mapGetters } from "vuex";
 import {
   getlawRegulationsListApi, deleteLawRegulationsApi
@@ -80,17 +77,13 @@ export default {
       totalPage: 0, //总页数
       searchName: "", //查询名称
       lawRegulationsSearchForm: {
-        bnslawNamePun: "",
+        // bnslawNamePun: "",
         iitemPun: '',
         clausePun: '',
         itemPun: '',
       },
       info: ""
     };
-  },
-  components: {
-    addEditlawRegulations,
-    showlawRegulationsKey
   },
   inject: ["reload"],
   computed: {
@@ -102,6 +95,7 @@ export default {
       let data = this.lawRegulationsSearchForm
       data.current = this.currentPage;
       data.size = this.pageSize;
+      data.bnslawIdPun=this.btnlawId
       let _this = this;
 
       getlawRegulationsListApi(data).then(
