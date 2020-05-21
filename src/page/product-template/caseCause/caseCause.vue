@@ -50,6 +50,7 @@
         ></el-pagination>
         </div>
          <addCaseCause ref="addCaseCauseRef" @uploadaaa="getCaseCauseList()"></addCaseCause>
+         <bindlawRegulations ref="bindlawRegulationsRef" @uploadaaa="getCaseCauseList()"></bindlawRegulations>
   </div>
 </div>
 </template>
@@ -57,6 +58,7 @@
 <script>
 import {getCaseCauseListApi} from "@/api/system";
 import addCaseCause from "./addCaseCause";
+import bindlawRegulations from "./bindlawRegulations";
 export default {
   data() {
     return {
@@ -75,15 +77,25 @@ export default {
   },
   components: {
     addCaseCause,
+    bindlawRegulations,
   },
   methods: {
+    //新增违法行为界面
      addCaseCause(){
-      debugger
       let data={
             id:'',
             leng:this.tableData.length
       }
       this.$refs.addCaseCauseRef.showModal(0, data,'list');
+    },
+    //绑定法条界面
+    bindlawRegulations(val){
+      debugger
+      let data={
+            causeId:val.id,
+            leng:this.tableData.length
+      }
+      this.$refs.bindlawRegulationsRef.showModal(0, data,'list');
     },
     //表单筛选
     getCaseCauseList(val) {
@@ -141,7 +153,7 @@ export default {
   created() {
     this.getCaseCauseList();
     this.getEnforceLawType();
-  }
+  },
 };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
