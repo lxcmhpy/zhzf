@@ -3,7 +3,7 @@
 <!--审核中、待审核、可编辑-->
 <div class="main_box">
     <xszxDetailEdit :obj="obj"></xszxDetailEdit>
-    <div class="shadow">
+    <!-- <div class="shadow">
         <div class="box w-2">
             <div class="box_title">
                 <span class="titleflag">
@@ -19,7 +19,7 @@
                 </el-input>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 </template>
 

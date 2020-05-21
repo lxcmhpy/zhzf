@@ -36,6 +36,7 @@
     .noMore {
         font-size: 12px;
         color: #ccc;
+        line-height: 20px;
     }
 }
 .searchPage {
@@ -48,11 +49,10 @@
     box-sizing: border-box;
     overflow-y: auto;
     box-shadow:0px 6px 4px 0px rgba(94,137,181,0.1);
-    .paginationBox {
-        flex-shrink:0;
-        height:40px;
-
-    }
+    // .paginationBox {
+    //     flex-shrink:0;
+    //     height:40px;
+    // }
     .handlePart {
         flex-shrink:0;
     }
