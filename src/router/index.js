@@ -10,8 +10,10 @@ Vue.use(VueRouter);
 
 // 路由拦截
 // 需要鉴权
-const whiteList = ["/lawSupervise","/login", "/register", "/service", "/user", '/flowChart', '/case_handle_modle', '/case_handle_othermodle',]; //免登录白名单
-
+const whiteList = ["/login", "/register", "/service", "/user", '/flowChart', '/case_handle_modle', '/case_handle_othermodle',]; //免登录白名单
+const regularList = {
+    loginByToken: /\/loginByToken\/[a-zA-Z0-9\_\-\.]+\/\d{13}$/g
+}
 // 路由配置
 const RouterConfig = {
   mode: "hash",
@@ -33,10 +35,17 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     //未登录  进入登录页面
+    // debugger;
     if (whiteList.indexOf(to.path) !== -1) {
       next();
     } else {
-      next({name: "login"});
+        debugger;
+        let arrayPath = to.path.split('/');
+        if(arrayPath.length > 1 && regularList[arrayPath[1]]&&regularList[arrayPath[1]].test(to.path)) {
+           next();
+        } else {
+           next({name: "login"});
+        }
     }
   }
 });

@@ -61,6 +61,10 @@ const mutations = {
   [types.SET_ACTIVE_INDEX_STO](state, name) {
     state.activeIndexSto = name;
   },
+   //当前法规id
+  [types.SET_BTNLAW_ID](state, name) {
+    state.system.btnlawId = name;
+  },
   [types.set_Head_Active_Nav](state,name){
     state.system.headActiveNav = name;
   },

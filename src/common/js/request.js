@@ -93,9 +93,9 @@ service.interceptors.request.use(
       config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
     }
 
-    // console.log('config', config)
+    console.log('config', config)
     //  config.headers = {
-    //   'Content-Type': 'application/json' //  注意：设置很关键 
+    //   'Content-Type': config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8" //  注意：设置很关键 
     // }
 
     return config;

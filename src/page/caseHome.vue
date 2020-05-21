@@ -190,6 +190,8 @@
               <el-radio-button label="航道行政"></el-radio-button>
               <el-radio-button label="海事行政"></el-radio-button>
               <el-radio-button label="工程质量监督" class="width136px"></el-radio-button>
+              <el-radio-button label="港口行政"></el-radio-button>
+              <el-radio-button label="其他"></el-radio-button>
             </span>
 
           </el-radio-group>

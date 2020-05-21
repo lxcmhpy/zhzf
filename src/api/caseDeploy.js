@@ -47,3 +47,129 @@ export function addOrEditBannerApi(data) {
     cancelToken:  setCancelSource()
   });
 }
+
+ // 获取流程列表
+ export function getFlowListApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/flow/queryFlowCondition",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//新增或修改流程
+export function addOrEditFlowApi(data) {
+  console.log(vm.$qs.stringify(data));
+  return request({
+    url: "/case/caseTemplate/flow/saveOrUpdateFlow",
+    method:  "POST",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource()
+  });
+}
+
+//删除流程
+export function deleteFlowApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/flow/delete/"+data,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据流程Id查询已绑定环节
+export function getLinkListByFlowIdApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/flowBindLink/queryLinkByFlowId",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据流程Id查询已绑定环节、不分页
+export function getLinkListByFlowIdNotPageApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/flowBindLink/queryLinkByFlowIdNotPage",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据流程Id查询未绑定环节
+export function getLinkNotInFlowApi(data) {
+  console.log("参数",data);
+  return request({
+    url: "/case/caseTemplate/flowBindLink/queryLinkNotInFlow/"+data.flowId,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//流程绑定环节
+export function flowBindLinkApi(data) {
+  console.log("123",data);
+  return request({
+    url: "/case/caseTemplate/flowBindLink/flowBindLink",
+    contentType: 'application/json',
+    method:  "POST",
+    data:JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource()
+  });
+}
+
+//删除流程
+export function deleteLinkApi(data) {
+  console.log("要删除的数据",data);
+  return request({
+    url: "/case/caseTemplate/flowBindLink/delete/",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//绑定上一环节、绑定下一环节
+export function linkBindSortApi(data) {
+  console.log("绑定环节",data)
+  let params = vm.$qs.stringify(data);
+  return request({
+    url: "/case/caseTemplate/flowBindLink/linkBindSort",
+    method: "post",
+    data: params,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//查询上一环节、下一环节
+//删除流程
+export function findTargetLinkApi(data) {
+  console.log("查询目标环节",data);
+  return request({
+    url: "/case/caseTemplate/flowBindLink/querytargetLinkByFlowIdAndLinkIdAndFlag/"+data.flowId+"/"+data.linkId+"/"+data.directionFlag,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}

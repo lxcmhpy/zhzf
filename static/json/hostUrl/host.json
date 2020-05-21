@@ -1,5 +1,5 @@
 {
-  "CURRENT": "NW",
+  "CURRENT": "TEST",
   "TEST": {
     "HOST": "http://124.192.215.4:9000",
     "CAPTCHA_HOST": "http://124.192.215.4:9000",
@@ -7,7 +7,8 @@
     "QZ_ACTIVEX_HOST": "http://124.192.215.4:8083/",
     "LAW_SUPERVISE_HOST": "http://124.192.215.4:9000/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
-    "CHECK_API":"http://124.192.215.11:8086/cy"
+    "CHECK_API":"http://124.192.215.11:8086/cy",
+    "QZ_API":"http://124.192.215.4:9000/case/sys/file/uploadDocDzqz/"
   },
   "HTTPS_TEST":  {
     "HOST": "https://1m59902m17.iask.in:20411",
@@ -32,7 +33,18 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086/cy"
+    "CHECK_API":"http://172.16.170.91:8086/cy",
+    "QZ_API":"http://172.16.170.96:9000/case/sys/file/uploadDocDzqz/"
+  },
+  "SGX": {
+    "HOST": "http://172.16.169.49:9000",
+    "CAPTCHA_HOST": "http://172.16.170.96:9000",
+    "PDF_HOST": "http://172.16.170.54:9332/",
+    "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
+    "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
+    "VIDEO_HOST": "wss://172.16.170.47:10062",
+    "CHECK_API":"http://172.16.170.91:8086/cy",
+    "QZ_API":"http://172.16.170.96:9000/case/sys/file/uploadDocDzqz/"
   },
   "LOCAL": {
     "HOST": "http://127.0.0.1:9000",
