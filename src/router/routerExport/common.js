@@ -18,6 +18,11 @@ const route = [
     name: "login",
     component: () => import("@/page/login/login.vue")
   },
+  {
+    path: "/loginByToken/:TokenKey/:TokenKey_expired",
+    name: "loginByToken",
+    component: () => import("@/page/login/loginByToken.vue")
+  },
   // 注册
   {
     path: "/register",

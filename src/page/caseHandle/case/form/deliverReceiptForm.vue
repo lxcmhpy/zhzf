@@ -6,7 +6,7 @@
         <div class="search">
           <el-form :inline="true" :model="deliverReForm" ref="deliverReForm">
             <el-form-item>
-              <el-button type="primary" icon="add" size="medium" @click="handleAdd">新增送达回证</el-button>
+              <el-button type="primary" icon="add" size="medium" @click="handleAdd" v-show="!caseApproval">新增送达回证</el-button>
             </el-form-item>
             <el-form-item label="送达文书名称" prop="docName">
               <el-input v-model="deliverReForm.docName"></el-input>
@@ -203,7 +203,7 @@ export default {
       }
     };
   },
-  computed: { ...mapGetters(['caseId']) },
+  computed: { ...mapGetters(['caseId','caseApproval']) },
   components: {
     caseSlideMenu,
   },

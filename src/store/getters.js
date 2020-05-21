@@ -27,6 +27,9 @@ const getters = {
   caseHandle: state =>state.caseHandle,
   headActiveNav: state=> state.system.headActiveNav,
   menu: state=> state.system.menu,
-  activeIndexSto: state=> state.system.activeIndexSto
+  activeIndexSto: state=> state.system.activeIndexSto,
+
+  // 系统管理
+  btnlawId:state => state.system.btnlawId, //当前法规id
 };
 export default getters;

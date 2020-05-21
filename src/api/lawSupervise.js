@@ -45,6 +45,16 @@ export function getById(type,id) {
       cancelToken: setCancelSource()
     });
   }
+  export function getUserById(id) {
+      return request({
+        url: "/zfjg/user/findByOrganId/" + id,
+        method: "get",
+        showloading: false,
+        //   loadingType:'loadPart',
+        baseUrlType:2,
+        cancelToken: setCancelSource()
+      })
+  }
 //   /zfjg/superviseVehicle/findWeighingRecord/{name}
   export function queryListPage(data) {
     return request({

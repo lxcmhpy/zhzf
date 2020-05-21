@@ -101,14 +101,22 @@
     width:100%;
     background:white;
     text-align:center;
-    height: auto;
     position: absolute;
     box-sizing: border-box;
     display: visible !important;
     box-shadow:0px 2px 3px 0px rgba(6,10,19,0.28);
+    height: 65vh;
+    overflow: hidden;
+    .el-tree {
+        overflow: auto;
+        height: 75%;
+        width: 100%;
+    }
     .el-tree-node {
+        // height:100%;
         // line-height: 35px;
         // height: 35px;
+        // min-height:300px;
         .el-tree-node__content{
             height: 35px;
             .custom-tree-node {
@@ -814,6 +822,16 @@
         }
 
     }
+ }
+ .w-390.el-input{
+     width: 392px;
+     flex: 1;
+     input {
+         width: 100%;
+     }
+     input {
+         width: 100%;
+     }
  }
  .circle {
     width: 16px;
