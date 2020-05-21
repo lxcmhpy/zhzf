@@ -26,6 +26,15 @@ service({
 }).then(
   res => {
     BASEURL = res.data;
+    // console.log('location.host',location.host);
+    // var Ip=returnCitySN['cip'];
+    // console.log('ip',Ip);
+    // if(Ip == '61.148.243.205'){
+    //   BASEURL.CURRENT = 'TEST'
+    // }else{
+    //   BASEURL.CURRENT = 'NW'
+    // }
+    console.log('BASEURL.CURRENT',BASEURL.CURRENT);
     sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
     iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
   },
@@ -107,7 +116,11 @@ service.interceptors.response.use(
         response.data.code == 400 || response.data.code == 500) {
         tryHideFullScreenLoading();
         return Promise.reject(response.data);
-      } else if (response.data.code == -1) {   //重新登录
+      } else if (response.data.code == 401 || response.data.code == 403) {   //无权限
+        tryHideFullScreenLoading();
+        alertMessage('无权限进行此操作');
+        return Promise.reject(response.data);
+      }  else if (response.data.code == -1) {   //重新登录
         tryHideFullScreenLoading();
         alertMessage('登陆超时，请重新登录'); //账户在其他地方登录，您被迫下线
         removeToken()

@@ -3,11 +3,11 @@
     <div class="handlePart">
       <div class="search">
         <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
-          <el-form-item label="环节名称">
+          <!-- <el-form-item label="环节名称">
             <el-input v-model="searchForm.linkName" placeholder="请输入环节名称"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-search">查询</el-button>
+          </el-form-item>-->
+          <el-form-item> 
+            <!-- <el-button type="primary" size="medium" icon="el-icon-search">查询</el-button> -->
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="binkLink">新增环节</el-button>
           </el-form-item>
         </el-form>

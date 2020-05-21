@@ -31,7 +31,7 @@
         action="https://jsonplaceholder.typicode.com/posts/"
         multiple
         >
-        <el-button size="small" type="primary" @click="hidden">上传证据</el-button>
+        <el-button size="small" type="primary" @click="hidden" v-show="!caseApproval">上传证据</el-button>
     </el-upload>
     </span>
   </el-dialog>
@@ -76,7 +76,7 @@ export default {
   },
   inject: ["reload"],
   // props: ["caseInfo"],
-  computed: { ...mapGetters(["caseId"]) },
+  computed: { ...mapGetters(["caseId","caseApproval"]) },
   components: {
         evidenceDetail, 
         evidenceUploadSuccess       

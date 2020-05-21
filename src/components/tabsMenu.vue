@@ -44,6 +44,11 @@ export default {
         // debugger;
         route.menuUrl = name;
         this.activeIndexStr = route.name;
+        //cxx 点击系统管理菜单后再回到案件tab，需设置一下caseNumber
+        if(!this.caseHandle.caseNumber){
+          this.$store.commit("setCaseNumber",route.params.tabTitle || route.title);
+        }
+
         console.log('this.activeIndexStr',this.activeIndexStr);
         this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexStr);
         this.$store.commit("set_Head_Active_Nav", route.headActiveNav);
@@ -75,6 +80,7 @@ export default {
       }
     },
     getTabName (code) {
+      console.log('activeIndexStr',this.activeIndexStr)
         let tabsCode = '';
         if (code.indexOf('case_handle_') > -1) {
             tabsCode = this.tabsNameList['case_handle_'];
@@ -110,9 +116,11 @@ export default {
         let flag = false;
         let _this = this;
         let tabsCode = this.getTabName(to.name);
+       
         let _index = _.findIndex(this.openTab,(chr) => {
-            if (chr.isCase) {
-                return chr.title == tabsCode + _this.caseHandle.caseNumber;
+            //信息查验不走if
+            if (chr.isCase && !to.meta.isNotCase) {
+              return chr.title == tabsCode + _this.caseHandle.caseNumber;
             }
             return chr.name === to.name;
         });
@@ -123,12 +131,31 @@ export default {
                 currentOpenTab.params = to.params;
                 currentOpenTab.title = this.getTabName(to.name) + currentOpenTab.params.tabTitle;
                 currentOpenTab.route = currentOpenTab.path;
+                currentOpenTab.name = to.name;
+
                 let data = {
                     index: _index,
                     num: 1,
                     data: currentOpenTab
                 }
+                
                 this.$store.dispatch("replaceTabs", data);
+            }else{
+              if(to.meta.isNotCase){
+
+                  // tabTitle = this.$route.meta.title;
+                   let currentOpenTab = this.openTab[_index];
+                    currentOpenTab.params = to.params;
+                    currentOpenTab.title = this.$route.meta.title;
+                    currentOpenTab.route = currentOpenTab.path;
+                  let data = {
+                    index: _index,
+                    num: 1,
+                    data: currentOpenTab
+                  }
+                
+                  this.$store.dispatch("replaceTabs", data);
+              }
             }
             this.$store.commit("set_Head_Active_Nav", this.openTab[_index].headActiveNav);
             this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[_index].name);
@@ -137,10 +164,17 @@ export default {
             let tabTitle = "";
             let isCase = false;
             let name = '';
+            // debugger;
             if (to.name.indexOf('case_handle_') > -1 && this.caseHandle.caseNumber &&this.caseHandle.caseNumber != "案件") {
-                tabTitle = this.caseHandle.caseNumber;
-                isCase = true;
-                name = to.name + '-and-' + this.caseHandle.caseNumber;
+                //信息查验需要直接显示title
+                if(to.meta.isNotCase){
+                    tabTitle = this.$route.meta.title;
+                }else{
+                  tabTitle = this.caseHandle.caseNumber;
+                  isCase = true;
+                  name = to.name + '-and-' + this.caseHandle.caseNumber;
+                }
+                
             } else {
                 if (this.$route.params.tabTitle) {
                     tabTitle = this.$route.params.tabTitle;
@@ -150,7 +184,6 @@ export default {
                 isCase = false;
             }
             name = name? name : to.name;
-
             this.$store.dispatch("addTabs", {
                 route: to.path,
                 name: name,

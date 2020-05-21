@@ -46,6 +46,7 @@ const mutations = {
   },
   // 替换tab
   [types.REPLACE_TABS](state, data) {
+    console.log(state,data)
     state.openTab.splice(data.index, data.num, data.data);
   },
   //删除所有的tabs
@@ -60,6 +61,10 @@ const mutations = {
   [types.SET_ACTIVE_INDEX_STO](state, name) {
     state.activeIndexSto = name;
   },
+   //当前法规id
+  [types.SET_BTNLAW_ID](state, name) {
+    state.system.btnlawId = name;
+  },
   [types.set_Head_Active_Nav](state,name){
     state.system.headActiveNav = name;
   },
@@ -73,6 +78,19 @@ const mutations = {
   changeOneTabName(state,data){
     state.openTab[data.tabIndex].title = data.title;
   },
+  // 按titile删除
+  [types.DELETE_TABS_BY_TITLE](state, title) {
+    console.log('title',title)
+    let index = 0;
+    for (let option of state.openTab) {
+      if (option.title === title) {
+        break;
+      }
+      index++;
+    }
+    state.openTab.splice(index, 1);
+  },
+
 
 
 

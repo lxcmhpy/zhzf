@@ -43,10 +43,18 @@
                 <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
                 <el-table-column prop="VehicleNo" label="车牌号" align="center"></el-table-column>
                 <el-table-column prop="SignId" label="标识牌号" align="center"></el-table-column>
-                <el-table-column prop="ValidDate" label="标识牌有效起止日期" align="center"></el-table-column>
+                <el-table-column prop="ValidDate" label="标识牌有效起止日期" align="center">
+                  <template slot-scope="scope">
+                      <span>{{scope.row.ValidDate+" ~ "+(scope.row.LineValidEnd).split(' ')[0]}}</span>
+                  </template>
+                </el-table-column>
                 <el-table-column prop="OperLineName" label="线路名称" align="center"></el-table-column>
                 <el-table-column prop="LineOpStatusCode" label="客运班线类型" align="center"></el-table-column>
-                <el-table-column prop="LineValidBegin" label="线路有效起止日期" align="center"></el-table-column>
+                <el-table-column prop="LineValidBegin" label="线路有效起止日期" align="center">
+                  <template slot-scope="scope">
+                      <span>{{(scope.row.LineValidBegin).split(' ')[0]+" ~ "+(scope.row.LineValidEnd).split(' ')[0]}}</span>
+                  </template>
+                </el-table-column>
                 <el-table-column label="操作" align="center">
                         <template slot-scope="scope" >
                             <div>
