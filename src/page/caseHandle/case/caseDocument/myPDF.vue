@@ -7,7 +7,7 @@
     <!-- </div>  -->
     <casePageFloatBtns :storagePath="storagePath" :pageDomId="'establish-print'" :formOrDocData="formOrDocData"
                        @submitData="submitData" @backHuanjie="backHuanjie" @reInstall="reInstall"
-                       @showApprovePeopleList="showApprovePeopleList"></casePageFloatBtns>
+                       @showApprovePeopleList="showApprovePeopleList" @showApproval="findCurrentApproval"></casePageFloatBtns>
 
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
@@ -24,14 +24,14 @@
   import {mapGetters} from "vuex";
 
   import {
-    updateDocStatusApi
+    updateDocStatusApi,getCurrentApproveApi,
   } from "@/api/caseHandle";
   export default {
     data() {
       return {
         storagePath: [],
         formOrDocData: {
-          showBtn: [true, false, false, true, false, true, true, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+          showBtn: [true, false, false, true, false, true, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
           pageDomId: "",
         },
         docFinishQZ:false, //环节下文书是否已完成签章
@@ -44,7 +44,7 @@
       casePageFloatBtns,
       pdf
     },
-    computed: {...mapGetters(['caseId', 'docId'])},
+    computed: {...mapGetters(['caseId', 'docId','approvalState'])},
     methods: {
       print() {
         for (var i = 0; i < this.storagePath.length; i++) {
@@ -69,6 +69,7 @@
           caseId: this.caseId,
         }).then(
           res => {
+            console.log('地址1',res)
             //多份文书按照docDataId取地址
             for (var i = 0; i < res.length; i++) {
               // if(i==0) {
@@ -91,21 +92,23 @@
         );
       },
       isApproval() {
-        //立案登录有审批按钮
-        if (this.$route.params.hasApprovalBtn) {
-          this.formOrDocData.showBtn = [false, false, false, true, false, true, true, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        } else {
-          this.formOrDocData.showBtn = [true, false, false, true, false, true, false, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-
-        }
-        //审核人员进入 只有审核按钮
-        if (this.$route.params.isApproval) {
+         
+        //审批
+        console.log('this.approvalState',this.approvalState)
+        if(this.approvalState == 'approvaling'){
+          //审核人员进入 只有审核按钮
           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, true, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        }
-        //审核人员审核完成 只有打印按钮
-        if (this.$route.params.approvalOver) {
+        }else if(this.approvalState == 'approvalOver'){
+          //审核人员审核完成 只有打印按钮
           this.formOrDocData.showBtn = [false, false, false, true, false, true, false, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        }else if(this.approvalState == 'approvalBefore'){
+          //执法人员提交审批
+          this.formOrDocData.showBtn = [false, false, false, true, false, false, true, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回  
+        }else if(this.approvalState == 'submitApproval'){
+          //执法人员提交审批之后
+          this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         }
+      
         //文书预览只有返回按钮
         if (this.$route.params.hasBack && this.$route.params.status == 2) {
           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
@@ -114,30 +117,14 @@
       showApprovePeopleList() {
         let data = {
           caseId: this.caseId,
-          caseLinktypeId: this.$route.params.caseLinktypeId
         }
-        console.log('daaaaa', data)
         this.$refs.showApprovePeopleRef.showModal(data);
       },
-      // 审批弹窗
-      // showApproval(){
-      //   let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : '';
-      //   let caseData={
-      //     caseId:this.caseId,
-      //     caseLinktypeId:"2c90293b6c178b55016c17c255a4000d",
-      //     firstApproval:approvePeo,
-      //     approvalNumber:2 //2次审批
-      //   }
-      //   this.$refs.approvalDialogRef.showModal(caseData);
-      // },
+      //审批完成 重新获取pdf
       approvalOver() {
-        // this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-        // this.com_getFormDataByCaseIdAndFormId(this.caseId,'2c90293b6c178b55016c17c255a4000d',true);
-        // this.formOrDocData.showBtn =[false,false,false,true,false,false,false,false,false,false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        this.reload();
       },
-      // setData(){
-      //   this.com_getFormDataByCaseIdAndFormId(this.caseId,'2c90293b6c178b55016c17c255a4000d',false);
-      // },
+  
       //文书提交返回环节
       submitData() {
         if (this.$route.params.caseLinktypeId) {
@@ -161,29 +148,26 @@
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.go(-1);
       },
-      // isCompete(){
-      //   if(this.$route.params.isComplete){
-      //     this.formOrDocData.showBtn = [false,false,false,false,false,false,false,false,false,true]
-      //   }
-      // },
-
-      // 盖章
-      makeSeal() {
-        console.log('盖章!');
-      },
-      // 打印
-      print() {
-        console.log('打印!');
-      },
+     
+      //获取当前是几级审批
+      findCurrentApproval(){
+        getCurrentApproveApi(this.caseId).then(res=>{
+          console.log('几级审批',res);
+          let caseData={
+            caseId:this.caseId,
+            currentApproval:res.data.currentIndex, //当前是几级审批
+            approvalNumber:res.data.amount   //共几级审批
+          }
+          this.$refs.approvalDialogRef.showModal(caseData);
+        }).catch(err=>{console.log(err)})
+      }
 
     },
     mounted() {
       this.getFile();
-      // this.setData();
     },
     created() {
       this.isApproval();
-      // this.isCompete();
     }
   };
 </script>
