@@ -49,8 +49,7 @@
           <el-table-column prop="upperLimit" label="法规原文" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <!-- <el-button type="text" @click="editlawRegulations(scope.row)">编辑</el-button> -->
-              <el-button type="text" @click="getlawRegulationsVal(scope.row)">法条管理</el-button>
+              <el-button type="text" @click="getlawRegulationsDentail(scope.row)">详情</el-button>
               <el-button type="text" @click="deletelawRegulations(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -84,7 +83,7 @@
                 <el-button type="primary" size="medium" icon="el-icon-search" @click="resetForm('lawRegulationsSearchForm')">重置</el-button>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="medium" icon="el-icon-plus" @click="add">添加</el-button>
+                <el-button type="primary" size="medium" icon="el-icon-plus" @click="addLawCognizanceBasis">添加</el-button>
               </el-form-item>
             </el-form>
             <el-table :data="tableData" stripe style="width: 100%" height="500px">
@@ -99,7 +98,7 @@
               <el-table-column prop="upperLimit" label="法规原文" align="center"></el-table-column>
               <!-- <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <el-button type="text" @click="getlawRegulationsVal(scope.row)">法条管理</el-button>
+                  <el-button type="text" @click="getlawRegulationsDentail(scope.row)">法条管理</el-button>
                   <el-button type="text" @click="deletelawRegulations(scope.row.id)">删除</el-button>
                 </template>
               </el-table-column> -->
@@ -128,7 +127,7 @@
                 <el-button type="primary" size="medium" icon="el-icon-search" @click="resetForm('lawRegulationsSearchForm')">重置</el-button>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="medium" icon="el-icon-plus" @click="add">添加</el-button>
+                <el-button type="primary" size="medium" icon="el-icon-plus" @click="addLawPunishmentBasis">添加</el-button>
               </el-form-item>
             </el-form>
             <el-table :data="tableData" stripe style="width: 100%" height="500px">
@@ -147,8 +146,7 @@
               <el-table-column prop="upperLimit" label="法规原文" align="center"></el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <!-- <el-button type="text" @click="editlawRegulations(scope.row)">编辑</el-button> -->
-                  <el-button type="text" @click="getlawRegulationsVal(scope.row)">法条管理</el-button>
+                  <el-button type="text" @click="getlawRegulationsDentail(scope.row)">法条管理</el-button>
                   <el-button type="text" @click="deletelawRegulations(scope.row.id)">删除</el-button>
                 </template>
               </el-table-column>
@@ -156,49 +154,32 @@
           </div>
         </el-col>
       </el-row>
-      <!-- <el-form :model="addLawRegulationsForm" :rules="rules" ref="addLawRegulationsForm" label-width="80px">
-          <el-form-item label="法规标题" prop="strName">
-            <el-input v-model="addLawRegulationsForm.strName"></el-input>
-          </el-form-item>
-          <el-form-item label="发布文号" prop="strNumber">
-            <el-input v-model="addLawRegulationsForm.strNumber"></el-input>
-          </el-form-item>
-          <el-form-item label="发布机关" prop="strOrgan">
-            <el-input v-model="addLawRegulationsForm.strOrgan"></el-input>
-          </el-form-item>
-          <el-form-item label="法规效力" prop="drawerName">
-            <el-input v-model="addLawRegulationsForm.drawerName"></el-input>
-          </el-form-item>
-          <el-form-item label="网站链接" prop="webLink">
-            <el-input v-model="addLawRegulationsForm.webLink"></el-input>
-          </el-form-item>
-          <el-form-item label="行业类型" prop="industryType">
-            <el-input v-model="addLawRegulationsForm.industryType"></el-input>
-          </el-form-item>
-          <el-form-item label="发布时间" prop="dtmDate">
-            <el-date-picker v-model="addLawRegulationsForm.dtmDate" type="date" placeholder="选择发布时间" value-format="yyyy-MM-dd">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="实施时间" prop="shiDate">
-            <el-date-picker v-model="addLawRegulationsForm.shiDate" type="date" placeholder="选择发布时间" value-format="yyyy-MM-dd">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="时效性" prop="status">
-            <el-input v-model="addLawRegulationsForm.status"></el-input>
-          </el-form-item>
-          <el-form-item label="题注" prop="strNote">
-            <el-input v-model="addLawRegulationsForm.strNote"></el-input>
-          </el-form-item>
-        </el-form> -->
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="visible = false">取 消</el-button>
         <el-button type="primary" @click="addlawRegulations">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="法条详情" :visible.sync="dentailVisible" @close="dentailVisible = false" :close-on-click-modal="false" width="30%" class="mini-content">
+      <el-form :model="addlawRegulations" ref="dentailBtnlawForm" label-width="100px" class="dentail-solid">
+        <el-form-item label="法规标题：" prop="strName">
+          {{1212}}
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dentailVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addlawRegulations">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <addLawRegulations ref="addLawRegulationsRef" @getPageComp="getPageInfoList"></addLawRegulations>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
+import addLawCognizanceBasis from "./addLawCognizanceBasis";
+import addLawPunishmentBasis from "./addLawPunishmentBasis";
+import addLawRegulations from "./addLawRegulations";
 import {
   getlawRegulationsListApi, deleteLawRegulationsApi, addLawRegulationsApi
 } from "@/api/system";
@@ -223,6 +204,7 @@ export default {
       },
       dialogTitle: '添加法条',
       visible: false,
+      dentailVisible: false,
       rules: {
         strName: [{ required: true, message: "法规标题必须填写", trigger: "blur" }],
         strNumber: [{ required: true, message: "发布文号必须填写", trigger: "blur" }],
@@ -230,6 +212,9 @@ export default {
         drawerName: [{ required: true, message: "法规效力必须填写", trigger: "blur" }],
       }
     };
+  },
+  components: {
+    addLawRegulations
   },
   inject: ["reload"],
   computed: {
@@ -269,15 +254,8 @@ export default {
       this.getlawRegulationsList()
     },
     //获取法规值
-    getlawRegulationsVal(row) {
-      this.$store.dispatch("lawRegulations", row.id);
-      this.$router.push({
-        name: 'lawRegulations',
-        // params:{
-        //   personInfo:data,
-        //   pageStatus:param
-        // }
-      });
+    getlawRegulationsDentail(row) {
+      this.dentailVisible = true
     },
     //删除法规
     deletelawRegulations(id) {
@@ -291,12 +269,10 @@ export default {
           res => {
             console.log('类型', res);
             if (res.code == 200) {
+             this.$message({ message: '删除成功',type: 'success'});
               this.getlawRegulationsList()
             } else {
-              this.$message({
-                type: 'info',
-                message: '删除失败'
-              });
+              this.$message.error('删除失败');
             }
           },
           error => {
@@ -313,7 +289,9 @@ export default {
     },
     //添加法规
     add() {
-      this.visible = true;
+      // this.visible = true;
+      this.$refs.addLawRegulationsRef.showModal(1, "");
+
     },
     addlawRegulations() {
       let data = this.addBtnlawForm;
@@ -335,14 +313,6 @@ export default {
           this.$message.error('添加失败');
         }
       );
-    },
-    //编辑法规
-    editlawRegulations(row) {
-      let data = {
-        row: row,
-        pid: ""
-      };
-      this.$refs.addEditlawRegulationsRef.showModal(2, data, "list");
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -391,6 +361,20 @@ export default {
           console.log(err);
         }
       );
+    },
+    // 添加处罚依据
+    addLawPunishmentBasis() {
+
+      this.$refs.addLawPunishmentBasisRef.showModal(1, "");
+
+    },
+    // 添加认定依据
+    addLawCognizanceBasis() {
+      this.$refs.addLawRegulationsRef.showModal(1, "");
+
+    },
+    getPageInfoList(){
+      console.log('aa')
     }
   },
   created() {

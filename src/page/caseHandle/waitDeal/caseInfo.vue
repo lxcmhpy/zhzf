@@ -222,6 +222,7 @@ export default {
     //继续办理  跳转流程图
     continueHandle() {
       this.$store.dispatch('deleteTabs', 'caseInfo');
+      this.$store.commit('setApprovalState', '');
       this.$router.push({
         name: "case_handle_flowChart"
       })
@@ -243,10 +244,13 @@ export default {
           break;
         case "2c9029ee6cac9281016cacaadf990006":
           approvalLink = 'case_handle_finishCaseReport';
-          docId = "2c9029d2695c03fd01695c278e7a0001";
+          docId = "2c9029d2695c03fd01695c278e7a0001"; 
           break;
       }
-      this.getFileIdByDocId(docId, approvalLink);
+      //设置案件为审批中
+      this.$store.commit('setApprovalState', 'approvaling')
+      this.$router.push({ name: 'case_handle_myPDF', params: { docId: docId, isApproval: true } })
+
     },
     init() {
       this.caseInfo = this.$route.params.caseInfo;

@@ -181,10 +181,12 @@ export default {
             caseId: row.id,
           }).then(res=>{
             console.log('查询环节是否生成了pdf',res);
+            this.$store.commit("setCaseId", row.id);
             if(res && res.length >0){
-              this.$router.push({ name: 'case_handle_myPDF', params: { docId: '2c9029ae654210eb0165421564970001', caseLinktypeId: '2c90293b6c178b55016c17c255a4000d' } })
+              this.$store.commit('setApprovalState', 'approvalBefore')
+              this.$router.push({ name: 'case_handle_myPDF', params: { docId: '2c9029ae654210eb0165421564970001' } })
             }else{
-               this.$store.commit("setCaseId", row.id);
+              
                 //设置案件状态不为审批中
                 this.$store.commit("setCaseApproval", false);
                 this.$router.replace({

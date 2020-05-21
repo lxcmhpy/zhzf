@@ -9,6 +9,7 @@ export const mixinGetCaseApiList = {
     return {
       isSaveLink: false, //是否点击了环节保存，未保存不可以操作文书
       canGoNextLink:false,
+      submitApproval:false,
     }
   },
   computed: { 
@@ -537,11 +538,16 @@ export const mixinGetCaseApiList = {
       //   res => {
       //     console.log('上传', res);
           //上传pdf之后显示pdf
-          console.log('upload docDataId',docDataId)
+          console.log('upload docDataId',docDataId);
+          if(docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ){
+            this.$store.commit('setApprovalState', 'approvalBefore')
+          }else{
+            this.$store.commit('setApprovalState', '')
+          }
           let routerData = {
-            hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
+            // hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
             docId: docId,
-            approvalOver: this.approvalOver ? true : false,
+            // approvalOver: this.approvalOver ? true : false,
             caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
             // docDataId: (this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : docDataId
             docDataId: this.caseDocDataForm ? docDataId : ''
@@ -625,6 +631,8 @@ export const mixinGetCaseApiList = {
               isApproval: true
             }
           })
+          // this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
+
         },
         err => {
           console.log(err);
@@ -663,6 +671,7 @@ export const mixinGetCaseApiList = {
           let caseIsApprovaling = false;
           if(res.data.caseStatus == "待审批" || res.data.caseStatus == "审批中"){
             caseIsApprovaling = true;
+            this.submitApproval = true;
           }
           this.flowShowPdfOrForm(data, flowChartData,caseIsApprovaling)
         },
@@ -717,12 +726,23 @@ export const mixinGetCaseApiList = {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }
-        if(caseIsApprovaling && (data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006')){
-          this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
+        //有审批的环节
+        if(data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006'){
+          if(caseIsApprovaling){
+            this.$store.commit('setApprovalState', 'submitApproval')
+          }else{
+            this.$store.commit('setApprovalState', 'approvalBefore')
+          }
+          this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId } })
         }else{
           this.searchHuanjiePdf(data2,data.linkID);
-          // this.$router.push({ name: data2.nextLink })
         }
+        // if(caseIsApprovaling && (data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006')){
+        //   this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
+        // }else{
+        //   this.searchHuanjiePdf(data2);
+          
+        // }
       }
     },
     //根据id获取文书信息(使用场景:询问笔录查看详情）
@@ -790,7 +810,7 @@ export const mixinGetCaseApiList = {
     }).then(res=>{
       console.log('查询环节是否生成了pdf',res);
       if(res && res.length >0){
-        this.$router.push({ name: 'case_handle_myPDF', params: { docId: data.docId, caseLinktypeId: linkID } })
+        this.$router.push({ name: 'case_handle_myPDF', params: { docId: data.docId,caseLinktypeId: linkID} })
       }else{
         this.$router.push({ name: data.nextLink })
       }
