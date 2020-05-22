@@ -39,26 +39,30 @@
                   </el-form-item>
                   <i class="el-icon-remove" style="margin-left:18px"></i>
                 </template>
-                <el-col :span="12">
-                  <el-form-item label="业务领域" prop="field101">
-                    <el-select v-model="modleData.region" placeholder="请输入字段组名称，可为空">
-                      <el-option label="公路路政" value="公路路政"></el-option>
-                      <el-option label="道路路政" value="道路路政"></el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item label="业务领域" prop="field101">
-                    <el-select v-model="modleData.region" placeholder="请输入字段组名称，可为空">
-                      <el-option label="公路路政" value="公路路政"></el-option>
-                      <el-option label="道路路政" value="道路路政"></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="模板标题" prop="field101">
-                    <el-input v-model="modleData.name" placeholder="请输入单行文本" clearable :style="{width: '100%'}">
-                    </el-input>
-                  </el-form-item>
-                </el-col>
+                <el-row :gutter="20">
+                  <el-col :span="2">
+                    <el-form-item prop="field101" label-width="0">
+                      <el-checkbox v-model="modleData.region">必填</el-checkbox>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-form-item prop="field101" label-width="0">
+                      <el-input v-model="modleData.name" placeholder="请输入单行文本" clearable :style="{width: '100%'}">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-form-item prop="field101" label-width="0" style="width:calc(100% - 34px)">
+                      <el-select v-model="modleData.region" placeholder="请输入字段组名称，可为空">
+                        <el-option label="公路路政" value="公路路政"></el-option>
+                        <el-option label="道路路政" value="道路路政"></el-option>
+                      </el-select>
+                    </el-form-item>
+                    <i class="el-icon-remove-outline" style="margin-left:18px;margin-top:-38px;float:right"></i>
+                  </el-col>
+
+                </el-row>
+
               </el-collapse-item>
 
               <span class="card-add-ziduan">
