@@ -636,5 +636,14 @@ export default [
       title: "其他附件组件",
     },
     component: () => import("@/components/caseCenter/otherEnclosure.vue")
+  },
+  //流程绑定环节，环节跳转
+  {
+    path: "/caseFlow_link",
+    name: "case_handle_flowBindLink",
+    meta: {
+      title: "流程绑定环节",
+    },
+    component: () => import("@/page/product-template/category/bindLink.vue")
   }
 ]

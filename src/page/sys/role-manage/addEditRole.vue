@@ -2,7 +2,7 @@
   <el-dialog
     :title="dialogTitle"
     :visible.sync="visible"
-    @close="closeDialog"
+    @close="closeDialog2"
     :close-on-click-modal="false"
     width="35%"
   >
@@ -84,11 +84,15 @@ export default {
       }
     },
     //关闭弹窗的时候清除数据
-    closeDialog() {
     
+    closeDialog2() {
+      console.log(this.$refs)
+      console.log(this.$refs.addRoleForm);
+      console.log(this.$refs.addRoleForm.resetFields());
+
       this.$refs["addRoleForm"].resetFields();
       console.log('111',this.$refs["addRoleForm"].resetFields());
-      this.visible = false;
+      // this.visible = false;
       //this.errorOrganName = false;
     },
     //聚焦清除错误信息
@@ -164,10 +168,11 @@ export default {
   },
   mounted(){
     this.$nextTick(()=>{
-          this.$refs["addRoleForm"].resetFields();
-          console.log('sadsdsfthis.$refs["addRoleForm"]',this.$refs["addRoleForm"])
-          console.log('sadsdsf',this.$refs["addRoleForm"].resetFields())
-      })
+           // this.$refs["addRoleForm"].resetFields();
+          //  console.log(this.$refs)
+          // console.log('sadsdsfthis.$refs["addRoleForm"]',this.$refs["addRoleForm"])
+          // console.log('sadsdsf',this.$refs["addRoleForm"].resetFields())
+    })
   }
 };
 </script>

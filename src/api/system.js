@@ -696,6 +696,20 @@ export function deleteCaseNumberApi(id) {
     cancelToken: setCancelSource()
   });
 }
+
+//获取违法行为列表
+export function getCaseCauseListApi(data) {
+  console.log(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findCaseCauseByPage",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //根据条件分页查询法规
 export function getBnsLawListApi(data) {
   console.log(data);
@@ -708,6 +722,20 @@ export function getBnsLawListApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//获取执法门类
+export function getLawCategoryApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/lawCategory/getLawCategoryListVo",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //添加/修改法规
 export function addBnsLawApi(data) {
   data = vm.$qs.stringify(data);
@@ -731,6 +759,20 @@ export function deleteBnslawApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//新增 修改 违法行为
+export function addCaseCauseApi(data) {
+  let _data = vm.$qs.stringify(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/addOrUpdateCaseCause",
+    method: "post",
+    data: _data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //添加/修改法条
 export function addLawRegulationsApi(data) {
   data = vm.$qs.stringify(data);

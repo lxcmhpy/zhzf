@@ -77,14 +77,6 @@ export default [
             },
             component: () => import("@/page/sys/pdf-manage/pdfManage.vue")
           },
-          {
-            name: "违法行为法律法规管理",
-            path: "/casecause",
-            meta: {
-              title: "违法行为法律法规管理"
-            },
-            // component: () => import("@/page/sys/dict-manage/dictManage.vue")
-          }
         ]
       },
       {
@@ -191,6 +183,14 @@ export default [
               title: "绑定属性管理"
             },
             component: () => import("@/page/sys/pdf-manage/pdfManage.vue")
+          },
+          {
+            name: "违法行为管理",
+            path: "caseCause",
+            meta: {
+              title: "违法行为管理"
+            },
+            component: () => import("@/page/product-template/caseCause/caseCause.vue")
           },
         ]
       },

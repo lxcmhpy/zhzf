@@ -1688,16 +1688,20 @@ export default {
   },
   methods: {
     filterNode (value, data, node) {
-        // if(value = "") return data;
-        // debugger;
-        // if (!value) return true;
         if (value === "") {
             this.expandTree = false;
             return data;
         }
         if (this.isCheck) {
-            if (data.id == value.organId && data.label==="执法人员"||data.id == value.pid) {
+            if (data.id == value.organId && data.label==="执法人员") {
                 this.toolShow = true;
+                //  this.checkAll(this.tabList[0].children[0])
+                if (data.children.length == 0) {
+                    const newChild = { id: value.id,icon:'icon_jc11',pid:value.organId, label: value.nickName, position:value.position, children: [] };
+                    this.$set(data.children,data.children.length, newChild);
+                }
+                // if (!data.children) {
+                // }
                 return true;
             }
             return false;
@@ -2406,7 +2410,7 @@ export default {
      })
     this.lunarDate = lunarDate();
     this.getOrganTree();
-    this.updateDrawer();
+    // this.updateDrawer();
   },
   created () {
     this.searchPageAll(6, 'gjclList');
@@ -2437,6 +2441,7 @@ export default {
                                 res.data.records.forEach((item,i)=>{
                                     _that.$refs.treeFilter.filter(item);
                                 })
+                                _that.$refs.treeFilter.filter(_this.filterText);
                             }
                         }
                     )
@@ -2464,8 +2469,11 @@ export default {
                         res => {
                             if(res.data.records && res.data.records.length > 0) {
                                 console.log(111111);
-                                res.data.records.forEach((item,i)=>{
-                                    _that.$refs.treeFilter.filter(item);
+                                _that.$nextTick(()=>{
+                                    res.data.records.forEach((item,i)=>{
+                                        _that.$refs.treeFilter.filter(item);
+                                    })
+                                    _that.$refs.treeFilter.filter(_that.filterText);
                                 })
                             }
                         }

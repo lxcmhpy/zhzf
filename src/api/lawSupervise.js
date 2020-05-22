@@ -108,3 +108,15 @@ export function getById(type,id) {
         cancelToken: setCancelSource()
       })
   }
+
+  // 重点监管-车辆列表
+  export function getVehicleList (data) {
+    return request({
+        url: "/zfjg/keyVehicle/queryKeyVehiclePage",
+        method: "get",
+        showloading: false,
+        baseUrlType:2,
+        params: data,
+        cancelToken: setCancelSource()
+      })
+  }

@@ -1029,14 +1029,15 @@ export function updateDocStatusApi(id) {
     cancelToken: setCancelSource()
   });
 }
-
-export function testApi() {
+//获取当前环节是几级审批
+export function getCurrentApproveApi(id) {
   return request({
-    url: "/socket/socket?userName=1&message=1",
+    url: "/case/doc/caseBasicInfo/getCurrentApproveAndApproveAmount/" + id,
     method: "get",
     showloading: true,
-    baseUrlType: 3,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
   });
 }
+
+

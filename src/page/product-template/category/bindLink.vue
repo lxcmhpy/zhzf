@@ -3,35 +3,30 @@
     <div class="handlePart">
       <div class="search">
         <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
-          <el-form-item label="流程名称">
-            <el-input v-model="searchForm.flowName" placeholder="请输入流程名称"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-search">查询</el-button>
-            <el-button type="primary" size="medium" icon="el-icon-plus" @click="addFlow">新增</el-button>
+          <!-- <el-form-item label="环节名称">
+            <el-input v-model="searchForm.linkName" placeholder="请输入环节名称"></el-input>
+          </el-form-item>-->
+          <el-form-item> 
+            <!-- <el-button type="primary" size="medium" icon="el-icon-search">查询</el-button> -->
+            <el-button type="primary" size="medium" icon="el-icon-plus" @click="binkLink">新增环节</el-button>
           </el-form-item>
         </el-form>
       </div>
     </div>
     <div class="tablePart">
+      <div>已绑定环节列表</div>
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
         <el-table-column type="index" width="60" align="center">
           <template slot="header">序号</template>
         </el-table-column>
-        <el-table-column prop="flowName" label="流程名称" align="center"></el-table-column>
-        <el-table-column prop="flowUrl" label="流程URL" align="center"></el-table-column>
-        <el-table-column prop="basicInfoPage" label="基本信息页面" align="center"></el-table-column>
-        <el-table-column prop="flowStatus" label="流程状态" align="center">
-          <span slot-scope="scope">
-            <span>{{scope.row.flowStatus == 0 ? '启用': '禁用'}}</span>
-          </span>
-        </el-table-column>
-        <el-table-column prop="remark" label="流程备注" align="center"></el-table-column>
+        <el-table-column prop="linkName" label="环节名称" align="center"></el-table-column>
+        <!-- <el-table-column prop="linkId" label="上一环节" align="center"></el-table-column>
+        <el-table-column prop="flowId" label="下一环节" align="center"></el-table-column> -->
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <el-button type="text" @click="editFlow(scope.row)">修改</el-button>
-            <el-button type="text" @click="deleteFlow(scope.row.id)">删除</el-button>
-            <el-button type="text" @click="continueHandle(scope.row)">绑定环节</el-button>
+            <el-button type="text" @click="deleteLink(scope.row)">删除</el-button>
+            <el-button type="text" @click="binkLinkSort('1',scope.row)">绑定上一环节</el-button>
+            <el-button type="text" @click="binkLinkSort('0',scope.row)">绑定下一环节</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -47,18 +42,20 @@
         :total="totalPage"
       ></el-pagination>
     </div>
-    <addEditFlow ref="addEditFlowRef"></addEditFlow>
+    <bindLinkDiag ref="bindLinkDiagRef"></bindLinkDiag>
+    <bindLinkSort ref="bindLinkSortRef"></bindLinkSort>
   </div>
 </template>
 <script>
-import { getFlowListApi, deleteFlowApi } from "@/api/caseDeploy";
-import addEditFlow from "./addEditFlow";
+import { getLinkListByFlowIdApi ,deleteLinkApi} from "@/api/caseDeploy";
+import bindLinkDiag from "./bindLinkDiag";
+import bindLinkSort from "./bindLinkSort";
 export default {
   data() {
     return {
       tableData: [], //表格数据
       searchForm: {
-        flowName: ""
+        linkName: ""
       },
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -66,21 +63,23 @@ export default {
     };
   },
   components: {
-    addEditFlow
+    bindLinkDiag,
+    bindLinkSort
   },
   inject: ["reload"],
   methods: {
-    //查询流程图列表
-    getFlowList() {
+    //查询已绑定环节列表
+    getLinkListByFlowId() {
       let data = {
         current: this.currentPage,
         size: this.pageSize,
-        flowName: this.searchForm.flowName
+        flowId: this.$route.params.flowId
       };
       let _this = this;
-      getFlowListApi(data).then(
+      console.log("参数", data);
+      getLinkListByFlowIdApi(data).then(
         res => {
-          console.log("流程列表", res);
+          console.log("已绑定环节列表", res);
           _this.tableData = res.data.records;
           _this.totalPage = res.data.total;
         },
@@ -89,33 +88,34 @@ export default {
         }
       );
     },
-    //新增流程
-    addFlow() {
-      this.$refs.addEditFlowRef.showModal(0, "");
+    //新增环节
+    binkLink() {
+      let data = {
+        flowId: this.$route.params.flowId
+      };
+      this.$refs.bindLinkDiagRef.showModal(data);
     },
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getFlowList();
+      this.getLinkListByFlowId();
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getFlowList();
+      this.getLinkListByFlowId();
     },
-    //修改流程
-    editFlow(row) {
-      this.$refs.addEditFlowRef.showModal(2, row);
-    },
-    deleteFlow(id) {
-      this.$confirm("确认删除该流程?", "提示", {
+    //删除已绑定环节
+    deleteLink(row) {
+      console.log(row);
+      this.$confirm("确认删除该环节?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          deleteFlowApi(id).then(
+          deleteLinkApi(row).then(
             res => {
               this.$message({
                 type: "success",
@@ -130,17 +130,13 @@ export default {
         })
         .catch(() => {});
     },
-    //绑定环节  跳转页面
-    continueHandle(data) {
-      this.$store.dispatch("deleteTabs", "category");
-      this.$router.push({
-        name: "case_handle_flowBindLink",
-        params: { flowId: data.id }
-      });
+    //绑定上一环、绑定下一环节
+    binkLinkSort(type,data){
+      this.$refs.bindLinkSortRef.showModal(type,data);
     }
   },
   created() {
-    this.getFlowList();
+    this.getLinkListByFlowId();
   }
 };
 </script>
