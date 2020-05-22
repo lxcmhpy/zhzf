@@ -97,6 +97,4 @@ import { mapGetters } from "vuex";
     }
   };
 </script>
-<style lang="scss">
-  @import "@/assets/css/main.scss";
-</style>
+<style lang="scss" src="@/assets/css/main.scss"></style>

@@ -302,20 +302,21 @@
       }
     }
 
-    .paginationBox {
-      position  : relative;
-      // bottom : 10px;
-      // left   : 0;
-      // right  : 0;
-      // margin : auto;
-      text-align: center;
-    }
+    // .paginationBox {
+    //   position  : relative;
+    //   // bottom : 10px;
+    //   // left   : 0;
+    //   // right  : 0;
+    //   // margin : auto;
+    //   text-align: center;
+    // }
 
     .tablePart {
       height       : calc(100% - 170px);
       overflow     : auto;
       /* margin-top: 15px; */
       padding-top  : 15px;
+      padding-bottom: 15px;
       box-sizing   : border-box;
     }
 
@@ -623,4 +624,12 @@
   :focus {
     outline: 0;
   }
+}
+
+/* 标题前有| */
+.border-title{
+  font-size: 16px;
+  font-weight: bold;
+  padding-left: 4px;
+  border-left: 4px solid #4573d0;
 }

@@ -480,6 +480,9 @@ export default {
     handleAdd(evidenceNo, row) {
         this.tableDatas = JSON.parse(JSON.stringify(this.docData.evdenceList));
         this.addVisible = true;
+        if(this.tableDatas.length == 0){
+        this.tableDatas.push({'evidenceNo': 1, 'amount' : 1});
+        }
     },
     addTableData(){
       console.log(this.tableDatas)

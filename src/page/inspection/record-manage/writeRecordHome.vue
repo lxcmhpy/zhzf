@@ -1,0 +1,252 @@
+<template>
+  <div class="com_searchAndpageBoxPadding">
+    <div class="searchAndpageBox">
+      <div style="margin-bottom:24px">
+        <el-button icon="el-icon-plus" type="primary" size="medium" @click="addNewModle">新增模板</el-button>
+        <div class="search-input-right-box">
+          模板名称
+          <span class="search-input-right">
+            <el-input v-model="modleData.name"></el-input>
+          </span>
+          <el-button icon="el-icon-search" type="primary" size="medium" @click="addNewModle"></el-button>
+        </div>
+
+      </div>
+
+      <div v-for="(item,index) in modleList" :key="index" class="card-content">
+        <div class="card-title">{{item.title}}({{item.length}})</div>
+        <ul class="card-ul">
+          <li v-for="(modle,index) in item.dataList" :key="index" @click="checkModle">
+            <div class="card-img-content-box">
+              <div class="card-img-content">
+                <img :src="modle.icon" alt="">
+              </div>
+            </div>
+
+            <div class="card-des">{{modle.name}}</div>
+
+          </li>
+        </ul>
+      </div>
+    </div>
+    <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
+    <preview ref="previewRef" @userList="getAllUserList"></preview>
+    <addModle ref="addModleRef" @userList="getAllUserList"></addModle>
+  </div>
+</template>
+<script>
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
+import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
+import preview from "./previewDialog.vue";
+import addModle from "./addModle.vue";
+export default {
+  components: {
+    chooseLawPerson,
+    preview,
+    addModle
+  },
+  data() {
+    return {
+      newModleTable: false,
+      currentUserLawId: '',
+      activeNames: ['1'],
+      alreadyChooseLawPerson: [],//已选择人员列表
+      compData: [],
+      modleList: [{
+        title: '常用记录表单',
+        length: 4,
+        dataList: [{
+          icon: './static/images/img/record/icon_yzt.png',
+          name: '运政通用记录',
+        }, {
+          icon: './static/images/img/record/icon_hyj.png',
+          name: '货运检查记录表',
+        }, {
+          icon: './static/images/img/record/icon_kyj.png',
+          name: '客运检查记录表',
+        }],
+      }, {
+        title: '公路路政',
+        length: 4,
+        dataList: [{
+          icon: './static/images/img/record/icon_gl.png',
+          name: '公路巡查',
+        }, {
+          icon: './static/images/img/record/icon_lc.png',
+          name: '路产损坏记录',
+        }, {
+          icon: './static/images/img/record/icon_jz.png',
+          name: '建筑控制区记录',
+        }, {
+          icon: './static/images/img/record/icon_qit.png',
+          name: '运政通用记录',
+        }],
+      }, {
+        title: '道路运政',
+        length: 4,
+        dataList: [{
+          icon: './static/images/img/record/icon_yzty.png',
+          name: '运政通用型检查记录',
+        }],
+      }],
+      modleData: {
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: '',
+        staff: "",
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        region: [
+          { required: true, message: '请选择活动区域', trigger: 'change' }
+        ],
+        date1: [
+          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+        ],
+        date2: [
+          { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+        ],
+        type: [
+          { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+        ],
+        resource: [
+          { required: true, message: '请选择活动资源', trigger: 'change' }
+        ],
+        desc: [
+          { required: true, message: '请填写活动形式', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    addNewModle() {
+      this.$refs.addModleRef.showModal();
+     
+    },
+    draw() {
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      ctx.font = "bolder 36px Arial";
+      ctx.textAlign = 'center'
+      ctx.fillStyle = '#6D7B8F'
+      ctx.fillText("好", 32, 42);
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!');
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    // 添加管理者
+    addLawPerson() {
+      this.$refs.chooseLawPersonRef.showModal(this.modleData.lawPersonListId, this.alreadyChooseLawPerson);
+    },
+    //查询执法人员
+    getAllUserList(list) {
+      console.log("list121212", list);
+      this.allUserList = list;
+      setTimeout(() => {
+      }, 100);
+    },
+    //设置执法人员
+    setLawPerson(userlist) {
+      console.log('选择的执法人员', userlist);
+      // this.lawPersonList = userlist;
+      this.alreadyChooseLawPerson = userlist;
+      this.modleData.lawPersonListId = [];
+      let staffIdArr = [];
+      let staffArr = [];
+      let certificateIdArr = [];
+
+      this.alreadyChooseLawPerson.forEach(item => {
+        this.modleData.lawPersonListId.push(item.id);
+        //给表单数据赋值
+        staffIdArr.push(item.id);
+        staffArr.push(item.lawOfficerName);
+        certificateIdArr.push(item.selectLawOfficerCard);
+      });
+      // this.modleData.staffId = staffIdArr.join(',');
+      // this.modleData.staff = staffArr.join(',');
+      // this.modleData.certificateId = certificateIdArr.join(',');
+
+    },
+    //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
+    setLawPersonCurrentP() {
+      let _this = this
+      this.$store
+        .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
+        .then(
+          res => {
+            console.log('执法人员列表', res)
+            _this.userList = res.data;
+            let currentUserData = {};
+            _this.modleData.lawPersonListId = [];
+            _this.alreadyChooseLawPerson = [];
+
+            res.data.forEach(item => {
+              if (
+                item.userId == iLocalStroage.gets("userInfo").id
+              ) {
+                currentUserData.id = item.id;
+                currentUserData.lawOfficerName = item.lawOfficerName;
+                currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
+                _this.alreadyChooseLawPerson.push(currentUserData);
+                _this.modleData.lawPersonListId.push(currentUserData.id);
+                _this.currentUserLawId = currentUserData.id;
+                _this.modleData.staff = item.lawOfficerName;
+                _this.modleData.staffId = item.id;
+
+
+              }
+            });
+          },
+          err => {
+            console.log(err);
+          }
+        );
+    },
+    removeLawPersontag(val) {
+      if (this.currentUserLawId == val) {
+        this.modleData.lawPersonListId.push(val);
+        this.$message('该执法人员不能删除！');
+      }
+    },
+    // 选择模板
+    checkModle() {
+      this.$router.push({
+        name: 'inspection_writeRecordInfo',
+        params: {
+          isApproval: true
+        }
+      })
+    },
+    // 预览
+    preview() {
+      this.$refs.previewRef.showModal(this.compData);
+    },
+    handleChange(val) {
+      console.log(val);
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }
+  },
+  mounted() {
+
+  }
+}
+</script>
+<style lang="scss" src="@/assets/css/card.scss"></style>
