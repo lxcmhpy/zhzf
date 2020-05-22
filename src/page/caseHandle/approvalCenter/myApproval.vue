@@ -102,14 +102,14 @@ export default {
 
       let docId = "";
       switch (row.currentLinkId) {
-        case "2c90293b6c178b55016c17c255a4000d":
-          docId = "2c9029ae654210eb0165421564970001";
+        case this.BASIC_DATA_SYS.establish_caseLinktypeId:
+          docId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
           break;
-        case "2c9029ee6cac9281016caca7f38e0002":
-          docId = "2c9029ca5b711f61015b71391c9e2420";
+        case this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId:
+          docId = this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId;
           break;
-        case "2c9029ee6cac9281016cacaadf990006":
-          docId = "2c9029d2695c03fd01695c278e7a0001";
+        case this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId:
+          docId = this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId;
           break;
       }
       this.$router.push({ name: 'case_handle_myPDF', params: { docId: docId } })

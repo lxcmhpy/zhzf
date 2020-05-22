@@ -396,8 +396,8 @@ import {
         handleType: 0, //0  暂存     1 提交
         caseLinkDataForm: {
           id: "", //修改的时候用
-          caseBasicinfoId: '', //案件id--从流程进入删掉，先写死测试用
-          caseLinktypeId: "2c90293b6c178b55016c17c7ae92000e", //表单类型IDer
+          caseBasicinfoId: '', //案件id
+          caseLinktypeId: this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId, //表单类型IDer
           //表单数据
           formData: "",
           status: ""
@@ -405,7 +405,7 @@ import {
         isPdf: "",
         originalData: "",
         isParty: true,
-        huanjieAndDocId: "4028e4ef63683cd00163684359a10001",  //行政强制措施决定书ID
+        huanjieAndDocId: this.BASIC_DATA_SYS.adminCoerciveMeasure_huanjieAndDocId,  //行政强制措施决定书ID
         rules: {
           party: [
             { required: true, message: "当事人姓名不能为空", trigger: "blur" }
@@ -576,6 +576,9 @@ import {
       handleAdd(resNo, row) {
         this.tableDatas = JSON.parse(JSON.stringify(this.formData.resList));
         this.addVisible = true;
+        if (length == 0) {
+          this.tableDatas.push({'resNo': 1, 'amount': 1});
+        } 
       },
       //添加一行数据
       addTableData() {

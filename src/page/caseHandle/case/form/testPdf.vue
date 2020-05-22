@@ -243,7 +243,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型ID
+        caseLinktypeId: this.BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -303,7 +303,7 @@ export default {
         pageDomId: "adminPunish_print",
         isHuanjie: true
       },
-      huanjieAndDocId: "2c9029ca5b71686d015b71c8a0c10042", //行政处罚决定书的文书id
+      huanjieAndDocId: this.BASIC_DATA_SYS.punishDecisionDoc_huanjieAndDocId, //行政处罚决定书的文书id
       isParty: true, //当事人类型为个人
       isPdf: "",
       overFlowEditList: [{}, {}],

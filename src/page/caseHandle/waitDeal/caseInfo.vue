@@ -234,17 +234,17 @@ export default {
       let approvalLink = ''
       let docId = ""
       switch (this.caseInfo.currentLinkId) {
-        case "2c90293b6c178b55016c17c255a4000d":
+        case this.BASIC_DATA_SYS.establish_caseLinktypeId:
           approvalLink = 'case_handle_establish';
-          docId = "2c9029ae654210eb0165421564970001";
+          docId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
           break;
-        case "2c9029ee6cac9281016caca7f38e0002":
+        case this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId:
           approvalLink = 'case_handle_caseInvestig';
-          docId = "2c9029ca5b711f61015b71391c9e2420";
+          docId = this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId;
           break;
-        case "2c9029ee6cac9281016cacaadf990006":
+        case this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId:
           approvalLink = 'case_handle_finishCaseReport';
-          docId = "2c9029d2695c03fd01695c278e7a0001"; 
+          docId = this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId; 
           break;
       }
       //设置案件为审批中

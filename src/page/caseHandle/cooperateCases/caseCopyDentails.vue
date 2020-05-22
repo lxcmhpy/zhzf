@@ -131,7 +131,7 @@ export default {
     findFileList() {
         let data = {
           caseId: this.caseData.caseId,
-          docId: "2c9029e16c753a19016c755fe1340001"
+          docId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId
         }
 //      console.log(data);
         getFile(data).then(

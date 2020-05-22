@@ -311,7 +311,7 @@ export default {
         status: "",   //提交状态
         note:"",//文书名字
         docDataId:"", //多份文书的id
-        linkTypeId:'2c90293b6c178b55016c17c93326000f' //所属环节的id
+        linkTypeId:this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //所属环节的id
       },
       num4: 1,
       lineStyleFlag: false,

@@ -392,7 +392,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
-        caseLinktypeId: "2c90293b6c178b55016c17c93326000f", //表单类型ID
+        caseLinktypeId: this.BASIC_DATA_SYS.caseDoc_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -583,7 +583,7 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        linkTypeId: "2c90293b6c178b55016c17c93326000f" //环节ID
+        linkTypeId: this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
       };
       this.com_getDocListByCaseIdAndFormId(data);
     },

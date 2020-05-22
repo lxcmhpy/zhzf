@@ -311,7 +311,7 @@ export default {
         //表单数据
         docData: "",
         status: "",
-        linkTypeId:'2c90293b6c178b55016c17c93326000f' //所属环节的id
+        linkTypeId:this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //所属环节的id
       },
       rules: {
         party: [
@@ -510,6 +510,9 @@ export default {
     handleAdd(evidenceNo, row) {
         this.tableDatas = JSON.parse(JSON.stringify(this.docData.tableData));
         this.addVisible = true;
+         if(this.tableDatas.length == 0){
+        this.tableDatas.push({'evidenceNo': 1, 'amount' : 1});
+        }
     },
     handleClose(done) {
         this.$confirm('确认关闭？')
