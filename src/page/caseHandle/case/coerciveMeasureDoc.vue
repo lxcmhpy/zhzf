@@ -245,7 +245,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '', //案件ID
-        caseLinktypeId: "2c9029ee6cac9281016cacaa28760005", //表单类型ID
+        caseLinktypeId: this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -372,7 +372,7 @@ export default {
     submitCoerciveMeasuer(){
       let params = {
         caseId:this.caseId,
-        caseLinktypeId:'2c9029ee6cac9281016cacaa28760005'
+        caseLinktypeId:this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId
       }
         submitRelieveApi(params).then(res=>{
           console.log('提交解除或延长表单',res);
@@ -428,7 +428,7 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        linkTypeId: "2c9029ee6cac9281016cacaa28760005"     //环节ID
+        linkTypeId: this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId     //环节ID
       };
       this.com_getDocListByCaseIdAndFormId(data);
     },

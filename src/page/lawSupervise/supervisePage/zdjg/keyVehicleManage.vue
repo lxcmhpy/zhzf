@@ -15,7 +15,7 @@
                         ></el-option>
                     </el-select>
                 </el-form-item>
-                 <el-form-item label="过检时间" >
+                 <el-form-item label="时间" >
                         <el-date-picker
                         v-model="timeList"
                         type="daterange"
@@ -113,6 +113,8 @@ export default {
             status: '',
             current: 1, //当前页
             size: 5, //每页显示条数
+            warningStartTime: '',
+            warningEndTime: ''
             // checkEndTime: '',
             // checkStartTime: ''
         },
@@ -147,6 +149,9 @@ export default {
   methods: {
     getVehicleList (val) {
         this.form.current = val;
+        this.form.warningStartTime = this.timeList[0];
+        this.form.warningEndTime = this.timeList[1];
+
         let _this = this
         new Promise((resolve, reject) => {
             getVehicleList(_this.form).then(

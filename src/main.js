@@ -11,6 +11,8 @@ import qs from 'qs';
 import hasPermission from "@/common/js/hasPermission"
 import App from "./App";
 import { router } from "./router/index";
+//引入全局变量
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
 // import mySignture from "@/common/js/mySignture";
 // 滑动验证
 import VueSimpleVerify from 'vue-simple-verify'
@@ -26,6 +28,9 @@ Vue.config.productionTip = false;
 
 Vue.prototype.$util = util;
 Vue.prototype.$qs = qs;
+//注册全局变量
+Vue.prototype.BASIC_DATA_SYS = BASIC_DATA_SYS;
+
 // Vue.prototype.$mySignture = mySignture;
 
 /* eslint-disable no-new */

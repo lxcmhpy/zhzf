@@ -271,7 +271,7 @@ import caseSlideMenu from '../components/caseSlideMenu'
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
-
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
 export default {
   data() {
     // partyManager partyUnitAddress  partyUnitTel. socialCreditCode
@@ -319,7 +319,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: "2c90293b6c178b55016c17c255a4000d", //表单类型ID
+        caseLinktypeId: BASIC_DATA_SYS.establish_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -402,7 +402,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId:'establish-print'
       },
-      huanjieAndDocId: "2c9029ae654210eb0165421564970001", //立案登记表的文书id
+      huanjieAndDocId: BASIC_DATA_SYS.establish_huanjieAndDocId, //立案登记表的文书id
       approvalOver: false,//审核完成
       isParty: true, //当事人类型为个人
       caseSourceText3: "",

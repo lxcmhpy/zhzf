@@ -4,6 +4,8 @@ import iLocalStroage from "@/common/js/localStroage";
 import {
   findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi, getDocDetailByIdApi,findAllSetListApi,findBindPropertyRuleApi,
 } from "@/api/caseHandle";
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
+
 export const mixinGetCaseApiList = {
   data() {
     return {
@@ -183,7 +185,7 @@ export const mixinGetCaseApiList = {
                   message: "保存成功"
                 });
                 //立案登记表提交之后调用更新案件信息的接口
-                if (this.caseLinkDataForm.caseLinktypeId == '2c90293b6c178b55016c17c255a4000d') {
+                if (this.caseLinkDataForm.caseLinktypeId == BASIC_DATA_SYS.establish_caseLinktypeId) {
                   let data = {
                     caseName: this.formData.caseName,
                     caseInfo: this.formData.caseSituation,
@@ -269,54 +271,54 @@ export const mixinGetCaseApiList = {
         docId: ''
       }
       switch (caseLinkId) {
-        case "2c90293b6c178b55016c17c255a4000d":   //立案登记
+        case this.BASIC_DATA_SYS.establish_caseLinktypeId:   //立案登记
           data.nextLink = "case_handle_establish";
-          data.docId = "2c9029ae654210eb0165421564970001";
+          data.docId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
           break;
-        case "2c90293b6c178b55016c17c93326000f":   //调查类文书
+        case this.BASIC_DATA_SYS.caseDoc_caseLinktypeId:   //调查类文书
           data.nextLink = "case_handle_caseDoc";
           break;
-        case "2c90293b6c178b55016c17c7ae92000e":   //行政强制措施
+        case this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId:   //行政强制措施
           data.nextLink = "case_handle_adminCoerciveMeasure";
-          data.docId = "4028e4ef63683cd00163684359a10001";
+          data.docId = this.BASIC_DATA_SYS.adminCoerciveMeasure_huanjieAndDocId;
           break;
-        case "2c9029ee6cac9281016caca7f38e0002":   //调查报告
+        case this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId:   //调查报告
           data.nextLink = "case_handle_caseInvestig";
-          data.docId = "2c9029ca5b711f61015b71391c9e2420";
+          data.docId = this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId;
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204e":   //案件审核
           data.nextLink = "";
           break;
-        case "2c9029ee6cac9281016caca8ea500003":   //违法行为通知
+        case this.BASIC_DATA_SYS.illegalActionForm_caseLinktypeId:   //违法行为通知
           data.nextLink = "case_handle_illegalActionForm";
-          data.docId = "2c9029ca5b71686d015b719fe0900026";
+          data.docId = this.BASIC_DATA_SYS.illegalActionForm_huanjieAndDocId;
           break;
-        case "2c9029ee6cac9281016caca9a0000004":   //责令改正
+        case this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId:   //责令改正
           data.nextLink = "case_handle_forceCorrect";
-          data.docId = "2c9029cc6a901fbe016a911e2dae000b";
+          data.docId = this.BASIC_DATA_SYS.forceCorrect_huanjieAndDocId;
           break;
         case "a36b59bd27ff4b6fe96e1b06390d204f":   //移交移送
           data.nextLink = "";
           break;
-        case "a36b59bd27ff4b6fe96e1b06390d204g":   //不予处罚
+        case this.BASIC_DATA_SYS.noPenalty_caseLinktypeId:   //不予处罚
           data.nextLink = "case_handle_noPenalty";
           break;
-        case "2c9029ac6c26fd72016c27247b290003":   //当事人权利
+        case this.BASIC_DATA_SYS.partyRights_caseLinktypeId:   //当事人权利
           data.nextLink = "case_handle_partyRights";
           break;
-        case "2c9029d56c8f7b66016c8f8043c90001":   //处罚决定
+        case this.BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId:   //处罚决定
           data.nextLink = "case_handle_punishDecisionDoc";
-          data.docId = "2c9029ca5b71686d015b71c8a0c10042";
+          data.docId = this.BASIC_DATA_SYS.punishDecisionDoc_huanjieAndDocId;
           break;
-        case "2c9029e16c753a19016c755fe1340001":   //决定执行
+        case this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId:   //决定执行
           data.nextLink = "case_handle_penaltyExecution";
           break;
-        case "a36b59bd27ff4b6fe96e1b06390d204h":   //强制执行
+        case this.BASIC_DATA_SYS.forceExecute_caseLinktypeId:   //强制执行
           data.nextLink = "case_handle_forceExecute";
           break;
-        case "2c9029ee6cac9281016cacaadf990006":   //结案登记
+        case this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId:   //结案登记
           data.nextLink = "case_handle_finishCaseReport";
-          data.docId = "2c9029d2695c03fd01695c278e7a0001";
+          data.docId = this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId;
           break;
         case "2c9029ee6cac9281016cacab478e0007":   //归档
           data.nextLink = "";
@@ -446,7 +448,7 @@ export const mixinGetCaseApiList = {
           this.docTableDatas = res.data;
           this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
           console.log('文书列表', this.docTableDatas);
-          if (params.linkTypeId == '2c90293b6c178b55016c17c93326000f' || params.linkTypeId == '2c9029e16c753a19016c755fe1340001' || params.linkTypeId == 'a36b59bd27ff4b6fe96e1b06390d204h') { //调查类文书和分期延期缴纳、强制执行
+          if (params.linkTypeId == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId) { //调查类文书和分期延期缴纳、强制执行
             this.setMoreDocTableTitle();
           }
         },
@@ -539,13 +541,12 @@ export const mixinGetCaseApiList = {
       //     console.log('上传', res);
           //上传pdf之后显示pdf
           console.log('upload docDataId',docDataId);
-          if(docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ){
+          if(docId == this.BASIC_DATA_SYS.establish_huanjieAndDocId || docId == this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId || docId == this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId ){
             this.$store.commit('setApprovalState', 'approvalBefore')
           }else{
             this.$store.commit('setApprovalState', '')
           }
           let routerData = {
-            // hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
             docId: docId,
             // approvalOver: this.approvalOver ? true : false,
             caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
@@ -598,7 +599,7 @@ export const mixinGetCaseApiList = {
           console.log('上传', res);
           //上传pdf之后显示pdf
           let routerData = {
-            hasApprovalBtn: docId == '2c9029ae654210eb0165421564970001' || docId == '2c9029ca5b711f61015b71391c9e2420' || docId == '2c9029d2695c03fd01695c278e7a0001' ? true : false,
+            hasApprovalBtn: docId == this.BASIC_DATA_SYS.establish_huanjieAndDocId || docId == this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId || docId == this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId ? true : false,
             docId: docId,
             approvalOver: this.approvalOver ? true : false,
             caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
@@ -686,9 +687,9 @@ export const mixinGetCaseApiList = {
       console.log('flowChartData', flowChartData);
       let completeLinkArr = flowChartData.completeLink.split(',');
 
-      //既是环节也是文书的
+      //只是环节
       let isHuanjieDoc = false;
-      if (data.linkID == "2c90293b6c178b55016c17c93326000f" || data.linkID == "2c9029ac6c26fd72016c27247b290003" || data.linkID == "2c9029e16c753a19016c755fe1340001" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204g" || data.linkID == "a36b59bd27ff4b6fe96e1b06390d204h") {
+      if (data.linkID == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.partyRights_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.noPenalty_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId) {
         isHuanjieDoc = true;
       }
       this.$store.dispatch('deleteTabs', 'case_handle_flowChart');
@@ -709,10 +710,10 @@ export const mixinGetCaseApiList = {
           return;
         }
         // 行政强制措施即将到期，请前往解除行政强制措施
-        if (data.linkID != 'a36b59bd27ff4b6fe96e1b06390d204h' && data.linkID != '2c9029ee6cac9281016cacaadf990006') {
+        if (data.linkID != this.BASIC_DATA_SYS.forceExecute_caseLinktypeId && data.linkID != this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId) {
           this.$router.push({ name: data2.nextLink })
         } else {
-          if (completeLinkArr.indexOf('2c90293b6c178b55016c17c7ae92000e') >= 0 && completeLinkArr.indexOf('2c9029ee6cac9281016cacaa28760005') == -1) {
+          if (completeLinkArr.indexOf(this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId) >= 0 && completeLinkArr.indexOf(this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId) == -1) {
             this.$refs.pleaseRemoveMDiaRef.showModal();
           } else {
             this.$router.push({ name: data2.nextLink })
@@ -727,7 +728,7 @@ export const mixinGetCaseApiList = {
           return;
         }
         //有审批的环节
-        if(data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006'){
+        if(data.linkID == BASIC_DATA_SYS.establish_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId){
           if(caseIsApprovaling){
             this.$store.commit('setApprovalState', 'submitApproval')
           }else{
@@ -737,12 +738,7 @@ export const mixinGetCaseApiList = {
         }else{
           this.searchHuanjiePdf(data2,data.linkID);
         }
-        // if(caseIsApprovaling && (data.linkID == '2c90293b6c178b55016c17c255a4000d' || data.linkID == '2c9029ee6cac9281016caca7f38e0002' || data.linkID == '2c9029ee6cac9281016cacaadf990006')){
-        //   this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
-        // }else{
-        //   this.searchHuanjiePdf(data2);
-          
-        // }
+        
       }
     },
     //根据id获取文书信息(使用场景:询问笔录查看详情）

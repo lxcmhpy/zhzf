@@ -149,7 +149,7 @@
                         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
                             <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
                             <el-table-column prop="checkTime" label="检测时间" align="center" width="100"></el-table-column>
-                            <el-table-column prop="organName" label="执法点" align="center"></el-table-column>
+                            <el-table-column prop="siteName" label="执法点" align="center"></el-table-column>
                             <el-table-column prop="lane" label="车牌号" align="center"></el-table-column>
                             <el-table-column prop="vehicleNumber" label="车货总质量" align="center"  width="120">
                                                 </el-table-column>
@@ -168,7 +168,7 @@
             <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @row-click="handleNodeClick">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="checkTime" label="过检时间" align="center" width="100"></el-table-column>
-                <el-table-column prop="organName" label="执法点" align="center"></el-table-column>
+                <el-table-column prop="siteName" label="执法点" align="center"></el-table-column>
                 <el-table-column prop="lane" label="车道"  width="50"  align="center"></el-table-column>
                 <el-table-column label="车牌号" align="center"  width="120">
                     <template slot-scope="scope">
@@ -179,10 +179,10 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="totalWeight" label="车货总质量（t）" width="140" align="center"></el-table-column>
-                <el-table-column prop="load" label="限重（t）" align="center"></el-table-column>
+                <el-table-column prop="totalWeight" label="车货总质量（kg）" width="140" align="center"></el-table-column>
+                <el-table-column prop="load" label="限重（kg）" align="center"></el-table-column>
                 <el-table-column prop="overweight" label="超重（kg）"  width="120"  align="center"></el-table-column>
-                <el-table-column prop="overload" label="超限率（kg）"  width="120"  align="center"></el-table-column>
+                <el-table-column prop="overload" label="超限率（%）"  width="120"  align="center"></el-table-column>
                 <el-table-column prop="key" label="重点监管" align="center"></el-table-column>
             </el-table>
         </div>
@@ -390,11 +390,11 @@ export default {
       //更改每页显示的条数
     handleSizeChange(val) {
         this.form.pageSize = val;
-        this.getLogList(1);
+        this.search(1);
     },
     //更换页码
     handleCurrentChange(val) {
-      this.getLogList(val);
+        this.search(val);
     },
     routerInvalidCueDetail (row) {
         // this.$store.commit('setOffSiteManageId', item.id);

@@ -82,30 +82,14 @@ export default {
             _this.tableData.push(evi);
         });
     },
-    //本地上传
-    // chooseLocalEvidence(param){
-    //     var fd = new FormData()
-    //   fd.append("file", param.file);
-    //   fd.append('caseId',this.caseId)
-    //   fd.append('docId','2c9029ee6cac9281016caca7f38e0002');
-    //   let _this = this
-    //   uploadEvApi(fd).then(
-    //     res => {
-    //       console.log(res);
-    //       _this.findFile(res.data);
-    //     },
-    //     error => {
-    //       console.log(error)
-    //     }
-    //   );
-    // },
+    
     //本地上传，并且上传到证据目录
     chooseLocalEvidence(param){
       console.log(param);
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append('caseId',this.caseId)
-      fd.append('docId',"2c9029ee6cac9281016caca7f38e0002");
+      fd.append('docId',this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId);
       fd.append("category", "证据");
       fd.append("userId", iLocalStroage.gets("userInfo").id);
       fd.append("evName", param.file.name);

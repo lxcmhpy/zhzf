@@ -158,10 +158,10 @@ export default {
       if(data.caseStatus == "未立案"){
           this.disabledCaseInfo = true;
       }else{ 
-          if(data.doingLink.includes('2c90293b6c178b55016c17c255a4000d')){
+          if(data.doingLink.includes(this.BASIC_DATA_SYS.establish_caseLinktypeId)){
             this.disabledCaseInfo = false;
           }else{
-            if(data.completeLink.includes('2c90293b6c178b55016c17c255a4000d')){ //已完成
+            if(data.completeLink.includes(this.BASIC_DATA_SYS.establish_caseLinktypeId)){ //已完成
               this.disabledCaseInfo = false;
             }else{
               this.disabledCaseInfo = true;
@@ -170,7 +170,7 @@ export default {
       }
      
       //文书列表、送达回证（两级立案审批通过后可用）方法：判断已完成有没有立案
-      this.disabledBeforeEstablish = !data.completeLink.includes('2c90293b6c178b55016c17c255a4000d');
+      this.disabledBeforeEstablish = !data.completeLink.includes(this.BASIC_DATA_SYS.establish_caseLinktypeId);
       //控制案件流程 （信息采集保存后可用 方法：状态是不是1
       this.disabledFlow = !data.state
       console.log('控制案件总览', this.disabledCaseInfo)

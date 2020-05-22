@@ -309,7 +309,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
-        caseLinktypeId: "2c9029ee6cac9281016caca7f38e0002",
+        caseLinktypeId: this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId,
         //文书数据
         formData: "",
         status: ""
@@ -373,7 +373,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "caseInvest-print"
       },
-      huanjieAndDocId: "2c9029ca5b711f61015b71391c9e2420", //案件调查报告的文书id
+      huanjieAndDocId: this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId, //案件调查报告的文书id
       approvalOver: false, //审核完成
       nameLength: 10,
       sexLength: 2,
@@ -422,7 +422,7 @@ export default {
 
       let caseData = {
         caseId: this.caseId,
-        caseLinktypeId: "2c9029ee6cac9281016caca7f38e0002",
+        caseLinktypeId: this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId,
         firstApproval: approvePeo,
         secondApproval: secondApprovePeo,
         approvalNumber: 3 //3次审批
