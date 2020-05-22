@@ -624,3 +624,11 @@
     outline: 0;
   }
 }
+
+/* 标题前有| */
+.border-title{
+  font-size: 16px;
+  font-weight: bold;
+  padding-left: 4px;
+  border-left: 4px solid #4573d0;
+}
