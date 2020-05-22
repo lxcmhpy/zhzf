@@ -85,7 +85,7 @@ export default {
           this.checkList.push(item);
       });
       //强制执行后台数据原因
-      if(this.caseLinkDataForm.caseLinktypeId=='a36b59bd27ff4b6fe96e1b06390d204h'){
+      if(this.caseLinkDataForm.caseLinktypeId==this.BASIC_DATA_SYS.forceExecute_caseLinktypeId){
         data.forEach(item=>{
         if(item.isRequired == "")
           this.checkList.push(item);

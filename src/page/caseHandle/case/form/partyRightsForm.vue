@@ -266,7 +266,7 @@
         caseLinkDataForm: {
           id: "", //修改的时候用
           caseBasicinfoId: '', //案件id
-          caseLinktypeId: "2c9029ac6c26fd72016c27247b290003", //表单类型IDer
+          caseLinktypeId: this.BASIC_DATA_SYS.partyRights_caseLinktypeId, //表单类型IDer
           //表单数据
           formData: "",
           status: ""
@@ -324,7 +324,7 @@
 
         let canGotoNext = true; //是否进入下一环节
         for (let i = 0; i < this.docTableDatas.length; i++) {
-          if (this.docTableDatas[i].isRequired === 0 && (this.docTableDatas[i].status != 1 || this.docTableDatas[i].status != "1")) {
+          if (this.docTableDatas[i].isRequired === 0 && (Number(this.docTableDatas[i].status) == 0 )) {
             canGotoNext = false
             break;
           }
@@ -364,7 +364,7 @@
       //通过案件id和表单类型Id查询已绑定文书
       getDocListByCaseIdAndFormId() {
         let data = {
-          linkTypeId: '2c9029ac6c26fd72016c27247b290003'
+          linkTypeId: this.BASIC_DATA_SYS.partyRights_caseLinktypeId
         }
         this.com_getDocListByCaseIdAndFormId(data)
       },
@@ -384,12 +384,12 @@
       },
       //上传证据弹窗
       showUploadEvi() {
-        this.$refs.partyRightsEvidenceRef.showModal('2c9029ac6c26fd72016c27247b290003');
+        this.$refs.partyRightsEvidenceRef.showModal(this.BASIC_DATA_SYS.partyRights_caseLinktypeId);
       },
       //查询证据材料列表
       findEvidence() {
         let data = {
-          docId: '2c9029ac6c26fd72016c27247b290003',
+          docId: this.BASIC_DATA_SYS.partyRights_caseLinktypeId,
           caseId: this.caseId,
         };
         let _this = this

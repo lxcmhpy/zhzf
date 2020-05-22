@@ -187,7 +187,7 @@ export default {
         status: "", //提交状态
         //多份文书的docDataId
         docDataId:"",
-        linkTypeId:"a36b59bd27ff4b6fe96e1b06390d204h"
+        linkTypeId:this.BASIC_DATA_SYS.forceExecute_caseLinktypeId
       },
       name: '',
       inputInfo: '',

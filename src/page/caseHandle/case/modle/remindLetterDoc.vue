@@ -199,7 +199,7 @@ export default {
         //表单数据
         docData: "",
         status: "",
-        linkTypeId: "2c9029e16c753a19016c755fe1340001" //环节ID
+        linkTypeId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId //环节ID
       },
       name: '',
       inputInfo: '',
