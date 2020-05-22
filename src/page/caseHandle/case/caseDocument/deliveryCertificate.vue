@@ -496,6 +496,9 @@ export default {
     handleAdd(row) {
         // this.tableDatas = JSON.parse(JSON.stringify(this.docData.tableData));
         this.addVisible = true;
+        if(this.tableDatas.length == 0){
+        this.tableDatas.push({'servedType':'直接送达','servedDate':new Date().format('yyyy-MM-dd HH:mm')});
+        }
     },
     handleClose(done) {
         this.$confirm('确认关闭？')

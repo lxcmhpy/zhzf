@@ -576,6 +576,9 @@ import {
       handleAdd(resNo, row) {
         this.tableDatas = JSON.parse(JSON.stringify(this.formData.resList));
         this.addVisible = true;
+        if (length == 0) {
+          this.tableDatas.push({'resNo': 1, 'amount': 1});
+        } 
       },
       //添加一行数据
       addTableData() {

@@ -29,82 +29,30 @@
         </ul>
       </div>
     </div>
-    <!-- 创建模板 -->
-    <el-drawer title="创建模板" :visible.sync="newModleTable" direction="rtl" size="50%" class="dialo dialog_unlaw max-group-prepend">
-      <div style="padding：22px">
-        <el-form :model="modleData" :rules="rules" ref="modleData" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="业务领域" prop="name">
-            <el-input v-model="modleData.name"></el-input>
-          </el-form-item>
-          <el-form-item label="模板标题" prop="name">
-            <el-input v-model="modleData.name"></el-input>
-          </el-form-item>
-          <p class="border-title card-title-margin">添加指标</p>
-
-          <el-form-item prop="region" label-width="0">
-            <el-input placeholder="添加字段" v-model="modleData.name" class="input-with-select">
-              <el-select v-model="modleData.region" slot="prepend" placeholder="请输入字段组名称，可为空">
-                <el-option label="当事人信息（姓名、联系方式、证件号码、从业资格证号……）" value="1"></el-option>
-                <el-option label="企业组织信息（名称、联系人、联系方式、统一信用代码……）" value="2"></el-option>
-                <el-option label="车辆相关信息（车牌颜色、车牌号码、道路运输证号……）" value="3"></el-option>
-                <el-option label="是否需要转入案件办理（仅记录；记录并转立案）" value="4"></el-option>
-              </el-select>
-              <el-button slot="append" icon="el-icon-search"></el-button>
-            </el-input>
-
-          </el-form-item>
-          <p class="border-title card-title-margin">应用权限</p>
-          <el-form-item label="模板图标" prop="delivery">
-            <img src="" alt="">
-            <canvas id="myCanvas" width="64" height="64" style="border:1px solid #c3c3c3;">
-              您的浏览器不支持 HTML5 canvas 标签。
-            </canvas>
-          </el-form-item>
-          <el-form-item label="适用范围" prop="resource">
-            <el-radio-group v-model="modleData.resource" style="width:100%" class="card-select">
-              <div class="el-form-item__content">
-                <el-radio label="指定人员使用"></el-radio>
-                <el-form-item v-if="modleData.resource=='指定人员使用'" prop="delivery" class="lawPersonBox" style="width:calc(100% - 150px);float: right;margin-bottom: 0;">
-                  <el-select ref="lawPersonListId" v-model="modleData.lawPersonListId" multiple @remove-tag="removeLawPersontag">
-                    <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
-                  </el-select>
-                  <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
-                </el-form-item>
-              </div>
-              <div class="el-form-item__content">
-                <el-radio label="机构内使用"></el-radio>
-              </div>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="模板管理者" prop="region">
-
-          </el-form-item>
-          <el-form-item>
-            <el-button @click="resetForm('modleData')">重置</el-button>
-            <el-button type="primary" @click="submitForm('modleData')">预览</el-button>
-            <el-button type="primary" @click="submitForm('modleData')">发布</el-button>
-
-          </el-form-item>
-        </el-form>
-      </div>
-
-    </el-drawer>
     <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
+    <preview ref="previewRef" @userList="getAllUserList"></preview>
+    <addModle ref="addModleRef" @userList="getAllUserList"></addModle>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
+import preview from "./previewDialog.vue";
+import addModle from "./addModle.vue";
 export default {
   components: {
     chooseLawPerson,
+    preview,
+    addModle
   },
   data() {
     return {
       newModleTable: false,
       currentUserLawId: '',
+      activeNames: ['1'],
       alreadyChooseLawPerson: [],//已选择人员列表
+      compData: [],
       modleList: [{
         title: '常用记录表单',
         length: 4,
@@ -181,18 +129,15 @@ export default {
   },
   methods: {
     addNewModle() {
-      this.setLawPersonCurrentP()
-      this.newModleTable = true;
-      this.$nextTick(() => {
-        this.draw()
-      });
+      this.$refs.addModleRef.showModal();
+     
     },
     draw() {
       var c = document.getElementById("myCanvas");
       var ctx = c.getContext("2d");
       ctx.font = "bolder 36px Arial";
-      ctx.textAlign='center'
-      ctx.fillStyle='#6D7B8F'
+      ctx.textAlign = 'center'
+      ctx.fillStyle = '#6D7B8F'
       ctx.fillText("好", 32, 42);
     },
     submitForm(formName) {
@@ -287,6 +232,13 @@ export default {
           isApproval: true
         }
       })
+    },
+    // 预览
+    preview() {
+      this.$refs.previewRef.showModal(this.compData);
+    },
+    handleChange(val) {
+      console.log(val);
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
