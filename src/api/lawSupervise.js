@@ -88,16 +88,26 @@ export function getById(type,id) {
   }
 
   // 监管获取机构
-  export function getOrganTree (id) {
+//   export function getOrganTree (id) {
+//     return request({
+//         url: "/zfjg/organ/organTree/"+id,
+//         method: "get",
+//         showloading: false,
+//         baseUrlType:2,
+//         cancelToken: setCancelSource()
+//     });
+//   }
+  // 监管获取机构
+  export function getOrganTree (data) {
     return request({
-        url: "/zfjg/organ/organTree/"+id,
+        url: "/zfjg/queryLike",
         method: "get",
+        params: data,
         showloading: false,
         baseUrlType:2,
         cancelToken: setCancelSource()
     });
   }
-
   // 获取监管机构详情
   export function getOrganDetail (id) {
       return request({
