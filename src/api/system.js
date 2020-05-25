@@ -867,10 +867,37 @@ export function getlawRegulationsListByActionidApi(data) {
 }
 //根据条件分页查询法条
 export function getlawRegulationsListApi(data) {
+  console.log("data",data);
   return request({
     url: "/bnslaw/sys/bnslawCause/findLawRegulationsByPage",
     method: "get",
     params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//解除绑定法条
+export function unbindCauseLawRegulationsApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/unbindCauseLawRegulations",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除违法行为及中间表
+export function deleteCaseCauseByIdApi(data) {
+  console.log("data",data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/deleteCaseCauseById/"+data,
+    method: "get",
+    // params: data,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
