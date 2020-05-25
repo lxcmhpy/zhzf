@@ -51,8 +51,8 @@
               </div>
               <div class="flexBox">
                 <div class="con">
-                  <p>{{curWindow.other.address}}</p>
-                  <p>{{curWindow.other.mobile}}</p>
+                  <p>地址：{{curWindow.other.address}}</p>
+                  <p>联系方式：{{curWindow.other.mobile}}</p>
                 </div>
                 <!-- <div class="status greenC2">
                   <i class="iconfont law-mobile-phone"></i>
@@ -80,6 +80,7 @@
                 <div class="con">
                   <p>地址：{{curWindow.other.address}}</p>
                   <p>联系人：{{curWindow.other.contact}}</p>
+                  <!-- <p>{{JSON.stringify(curWindow)}}</p> -->
                   <p>联系方式：{{curWindow.other.phone}}</p>
                 </div>
                 <div class="status">
@@ -91,12 +92,13 @@
                 <div class="flex-title"><img  :src="'./static/images/img/lawSupervise/icon_duiwu.png'">人员在线情况</div>
                 <span class="phoneBtn blueBg" @click="callName('李玉明')">李玉明</span>
                 <span  class="phoneBtn blueBg" @click="callName('赵一鸣')">赵一鸣</span>
-                <span  class="phoneBtn lineh" >迪丽<br>热巴</span>
+                <span  class="phoneBtn" :class="{'lineh': it.nickName.length>3}" v-for="(it,j) in curWindow.other.users" :key="'s'+j">{{it.nickName}}</span>
+                <!-- <span  class="phoneBtn lineh" >迪丽<br>热巴</span>
                 <span  class="phoneBtn lineh" >欧阳<br>娜娜</span>
                 <span class="phoneBtn " >张悦</span>
                 <span  class="phoneBtn" >李晓艺</span>
                 <span  class="phoneBtn lineh" >王淑华</span>
-                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span>
+                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span> -->
                 <span  class="phoneBtn " >···</span>
             </div>
               <!-- <div class="btns">
@@ -1771,90 +1773,78 @@ export default {
         this.allSearchList.splice(0, this.allSearchList.length);
         // this.radioVal = '全选';
             debugger;
-        if (node.label === '执法人员') {
-            // this.checkAll(this.tabList[0].children[0])
-            //  const newChild = { id: value.id,icon:'icon_jc11',pid:value.organId, label: value.nickName, position:value.position, children: [] };
-            // if (data.children) {
-            //   this.$set(data.children,'0', newChild);
-            // }getUserById
+        if (node.icon === 'icon_jc11' && node.name !== '执法人员') {
+
             let _this = this;
-            new Promise((resolve, reject) => {
-                getUserById(node.id).then(
-                    res => {
-                        debugger;
-                        let resultList = [];
-                        if(res.data&&res.data.length>0) {
-                            res.data.forEach((item,i)=>{
-                                let position = item.position ? item.position.split(','):['',''];
-                                let lng = parseFloat(position[0]);
-                                let lat = parseFloat(position[1]);
-                                resultList.push({
-                                    address: item.label,
-                                    distance: null,
-                                    id: item.id,
-                                    lat: lat,
-                                    lng: lng,
-                                    icon: 'icon_jc11',
-                                    icons: 'ry',
-                                    pid: item.organId,
-                                    location: {
-                                        O: lng,
-                                        P: lat,
-                                        lat: lat,
-                                        lng: lng
-                                    },
-                                    name: item.label,
-                                    label: item.nickName,
-                                    position: item.position,
-                                    shopinfo: '',
-                                    tel: '',
-                                    type: '0',
-                                    other: item
-                                })
-                            })
-
-                            this.$nextTick(() => {
-                                _this.$set(node,'children', resultList);
-                                // _this.expandTree = true;
-                            })
-                        }
-                    // this.onSearchResult(resultList, 1,0)
-                    }
-                )
+             let resultList = [];
+            let position = node.position ? node.position.split(','):['',''];
+            let lng = parseFloat(position[0]);
+            let lat = parseFloat(position[1]);
+            resultList.push({
+                address: node.address,
+                distance: null,
+                id: node.id,
+                lat: lat,
+                lng: lng,
+                icon: 'icon_jc11',
+                // icons: 'ry',
+                pid: node.organId,
+                location: {
+                    O: lng,
+                    P: lat,
+                    lat: lat,
+                    lng: lng
+                },
+                name: node.name,
+                label: node.nickName,
+                position: node.position,
+                shopinfo: '',
+                tel: '',
+                type: '0',
+                other: node
             })
-        } else if(node.icons == 'ry'){
-            // debugger;
-            this.onSearchResult([node], 0,0);
-        } else if (node.position){
-            this.getOrganDetail(node.id).then(
-                res => {
-                    // debugger;
-                    let resultList = [];
-                    let position = node.position ? node.position.split(','):['',''];
-                    let lng = parseFloat(position[0]);
-                    let lat = parseFloat(position[1]);
-                    resultList.push({
-                        address: node.label,
-                        distance: null,
-                        id: node.id,
-                        lat: lat,
-                        lng: lng,
-                        location: {
-                            O: lng,
-                            P: lat,
-                            lat: lat,
-                            lng: lng
-                        },
-                        name: node.label,
-                        shopinfo: '',
-                        tel: '',
-                        type: '-1',
-                        other: res.data
-                    })
-                    this.onSearchResult(resultList, 1,0)
+            // this.curWindow = resultList[0];
+            this.onSearchResult(resultList, 0,0);
+            // new Promise((resolve, reject) => {
+            //     getUserById(node.id).then(
+            //         res => {
+            //             debugger;
 
-                }
-            )
+            //         }
+            //     )
+            // })
+        } else if (node.position){
+
+            let resultList = [];
+            let position = node.position ? node.position.split(','):['',''];
+            let lng = parseFloat(position[0]);
+            let lat = parseFloat(position[1]);
+            resultList.push({
+                address: node.address,
+                distance: null,
+                id: node.id,
+                lat: lat,
+                lng: lng,
+                location: {
+                    O: lng,
+                    P: lat,
+                    lat: lat,
+                    lng: lng
+                },
+                name: node.name,
+                shopinfo: '',
+                tel: '',
+                type: '-1',
+                other: node
+            })
+            // this.curWindow = resultList[0];
+            this.onSearchResult(resultList, 1,0);
+            // this.getOrganDetail(node.id).then(
+            //     res => {
+            //         // debugger;
+
+            //     }
+            // )
         }
     },
     getOrganDetail (id) {
@@ -2090,6 +2080,9 @@ export default {
             })
     },
     onSearchResult(pois, category, length) {
+      if (length == 0) {
+        this.windows.splice(0,this.windows.length);
+      }
       let latSum = 0;
       let lngSum = 0;
       let numG = 100;
@@ -2115,11 +2108,11 @@ export default {
                     that.windows.forEach(window => {
                         window.visible = false;
                     });
-
-                    that.curWindow = that.windows[i];
-
+                    // that.$set(that, 'curWindow', that.windows[i]);
+                    let i_index = i;
                     console.log(that.curWindow);
                     that.$nextTick(() => {
+                        that.curWindow = that.windows[i_index];
                         that.curWindow.visible = true;
                     });
                     }
@@ -2141,16 +2134,18 @@ export default {
                       that.windows.forEach(window => {
                         window.visible = false;
                       });
-                      that.curWindow = that.windows[length + i];
-                      if (category == 4) {
-                        that.getBySiteId(
-                          that.curWindow.other.id,
-                          that.curWindow.other
-                        );
-                        // debugger;
-                      }
                       console.log(that.curWindow);
+                      let i_index = i;
                       that.$nextTick(() => {
+                        that.curWindow = that.windows[length + i_index];
+                            // that.$set(that, 'curWindow', that.windows[length + i]);
+                        if (category == 4) {
+                            that.getBySiteId(
+                            that.curWindow.other.id,
+                            that.curWindow.other
+                            );
+                            // debugger;
+                        }
                         that.curWindow.visible = true;
                       });
                     }
@@ -2171,15 +2166,16 @@ export default {
                       that.windows.forEach(window => {
                         window.visible = false;
                       });
-                      that.curWindow = that.windows[length + i];
-                      if (category == 4) {
-                        that.getBySiteId(
-                          that.curWindow.other.id,
-                          that.curWindow.other
-                        );
-                      }
                       console.log(that.curWindow);
+                      let i_index = i;
                       that.$nextTick(() => {
+                        that.curWindow = that.windows[length + i_index];
+                        if (category == 4) {
+                            that.getBySiteId(
+                            that.curWindow.other.id,
+                            that.curWindow.other
+                            );
+                        }
                         that.curWindow.visible = true;
                       });
                     }

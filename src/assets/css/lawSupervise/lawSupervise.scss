@@ -546,6 +546,8 @@
             line-height: 15px !important;
             box-sizing: border-box;
             padding-top: 5px;
+            word-break: break-all;
+            white-space: normal;
         }
         span.blueBg {
             background: #4573d0;
