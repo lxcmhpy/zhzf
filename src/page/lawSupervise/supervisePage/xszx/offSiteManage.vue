@@ -149,7 +149,7 @@
                         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
                             <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
                             <el-table-column prop="checkTime" label="检测时间" align="center" width="100"></el-table-column>
-                            <el-table-column prop="organName" label="执法点" align="center"></el-table-column>
+                            <el-table-column prop="siteName" label="执法点" align="center"></el-table-column>
                             <el-table-column prop="lane" label="车牌号" align="center"></el-table-column>
                             <el-table-column prop="vehicleNumber" label="车货总质量" align="center"  width="120">
                                                 </el-table-column>
@@ -168,7 +168,7 @@
             <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @row-click="handleNodeClick">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="checkTime" label="过检时间" align="center" width="100"></el-table-column>
-                <el-table-column prop="organName" label="执法点" align="center"></el-table-column>
+                <el-table-column prop="siteName" label="执法点" align="center"></el-table-column>
                 <el-table-column prop="lane" label="车道"  width="50"  align="center"></el-table-column>
                 <el-table-column label="车牌号" align="center"  width="120">
                     <template slot-scope="scope">
@@ -179,44 +179,22 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="totalWeight" label="车货总质量（t）" width="140" align="center"></el-table-column>
-                <el-table-column prop="load" label="限重（t）" align="center"></el-table-column>
+                <el-table-column prop="totalWeight" label="车货总质量（kg）" width="140" align="center"></el-table-column>
+                <el-table-column prop="load" label="限重（kg）" align="center"></el-table-column>
                 <el-table-column prop="overweight" label="超重（kg）"  width="120"  align="center"></el-table-column>
-                <el-table-column prop="overload" label="超限率（kg）"  width="120"  align="center"></el-table-column>
+                <el-table-column prop="overload" label="超限率（%）"  width="120"  align="center"></el-table-column>
                 <el-table-column prop="key" label="重点监管" align="center"></el-table-column>
-                <!-- <el-table-column prop="status" label="处理状态" align="center"></el-table-column> -->
-                <!-- <el-table-column label="操作" width="300px" align="center">
-                    <template slot-scope="scope">
-                         <a href="javascript:void(0)" @click="routerInvalidCueDetail(scope.row)">
-                            无效信息
-                        </a>&nbsp;&nbsp;
-                        <a href="javascript:void(0)" @click="routerExamineDetail(scope.row)">
-                            已审核
-                        </a>&nbsp;&nbsp;
-                        <a href="javascript:void(0)" @click="routerExamineDoingDetail(scope.row)">
-                            待审核
-                        </a>&nbsp;&nbsp;
-                        <a href="javascript:void(0)" @click="routerTransferDetail(scope.row)">
-                            已转办
-                        </a>
-                        <a href="javascript:void(0)" @click="routerDetail(scope.row)">
-                            详情
-                        </a>&nbsp;&nbsp;
-                        <a href="javascript:void(0)" @click="routerEvidenceDetail(scope.row)">
-                            证据
-                        </a>
-                    </template>
-                </el-table-column> -->
             </el-table>
         </div>
         <div class="paginationBox" >
-            <div v-if="total > 10">
+            <div v-if="total/form.size > 1">
                 <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="form.current"
                     background
                     :page-sizes="[10, 20, 30, 40]"
+                    :page-size="form.size"
                     layout="prev, pager, next,sizes,jumper"
                     :total="total"
                 ></el-pagination>
@@ -230,119 +208,6 @@
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
 <style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>
-<style lang="scss" scoped>
-.ransition-box {
-    // float:left;
-    display:inline;
-}
-div.el-form-item{
-    float:left;
-}
-.otherColor {
-    width:100%;
-    height: 100%;
-    border: 1px solid #101010;
-    line-height: 30px;
-    padding: 7px;
-    box-sizing: border-box;
-}
-.vehicle-black {
-    width:100%;
-    height: 100%;
-    background: #101010;
-    line-height: 30px;
-    color:white;
-    padding: 7px;
-    box-sizing: border-box;
-    .border {
-        border: 1px solid white;
-    }
-}
-.vehicle-white {
-    width:100%;
-    height: 100%;
-    background: white;
-    line-height: 30px;
-    color: #0A030B;
-    padding: 7px;
-    box-sizing: border-box;
-    .border {
-        border: 1px solid #E2E2E2;
-    }
-}
-.vehicle-yellow {
-    width:100%;
-    height: 100%;
-    background: #EBBB1F;
-    line-height: 30px;
-    color:#0A030B;
-    padding: 7px;
-    box-sizing: border-box;
-    .border {
-        border: 1px solid #090008;
-    }
-}
-.vehicle-blue {
-    width:100%;
-    height: 100%;
-    background: #1029AA;
-    line-height: 30px;
-    color:white;
-    padding: 7px;
-    box-sizing: border-box;
-    .border {
-        border: 1px solid #FFFFFF;
-    }
-}
-.vehicle-green {
-    width:100%;
-    height: 100%;
-    background: #26914D;
-    line-height: 30px;
-    color:white;
-    padding: 7px;
-    box-sizing: border-box;
-    .border {
-        border: 1px solid white;
-    }
-}
-.vehicle-gray {
-    width:100%;
-    height: 100%;
-    background: #868585;
-    line-height: 30px;
-    color:white;
-    padding: 7px;
-    box-sizing: border-box;
-    .border {
-        border: 1px solid white;
-    }
-}
-.vehicle-gradient-green {
-    width:100%;
-    height: 100%;
-    background: linear-gradient(180deg,rgba(255,255,253,1) 0%, #EBBB1F 100%);
-    line-height: 30px;
-    color:#0A030B;
-    padding: 7px;
-    box-sizing: border-box;
-    .border {
-        border: 1px solid #14150A;
-    }
-}
-.vehicle-yelloe-green{
-    width:100%;
-    height: 100%;
-    background: linear-gradient(90deg, #EBD57F 36%, #73D999 36%);
-    line-height: 30px;
-    color:#0A030B;
-    padding: 7px;
-    box-sizing: border-box;
-    .border {
-        border: 1px solid #14150A;
-    }
-}
-</style>
 <script>
 import {queryListPage, findAllDrawerById} from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
@@ -466,10 +331,11 @@ export default {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
     },
-    search () {
+    search (val) {
         this.form.checkStartTime = typeof this.timeList[0] == 'object' ? this.timeList[0].format('yyyy-MM-dd HH:mm:ss'): this.timeList[0];
         this.form.checkEndTime = typeof this.timeList[1] == 'object' ?this.timeList[1].format('yyyy-MM-dd HH:mm:ss'): this.timeList[1];
         this.form.status = this.tabActiveValue;
+        this.form.current = val;
         let _this = this;
         new Promise((resolve, reject) => {
             queryListPage(_this.form).then(
@@ -524,11 +390,11 @@ export default {
       //更改每页显示的条数
     handleSizeChange(val) {
         this.form.pageSize = val;
-        this.getLogList(1);
+        this.search(1);
     },
     //更换页码
     handleCurrentChange(val) {
-      this.getLogList(val);
+        this.search(val);
     },
     routerInvalidCueDetail (row) {
         // this.$store.commit('setOffSiteManageId', item.id);

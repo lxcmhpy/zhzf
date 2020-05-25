@@ -315,7 +315,7 @@ export default {
         //文书数据
         docData: "",
         status: "" ,//提交状态
-        linkTypeId:"a36b59bd27ff4b6fe96e1b06390d204h"
+        linkTypeId:this.BASIC_DATA_SYS.forceExecute_caseLinktypeId
       },
       name: '',
       inputInfo: '',

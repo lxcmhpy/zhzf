@@ -343,7 +343,7 @@ export default {
         //文书数据
         docData: "",
         status: "", //提交状态
-        linkTypeId:'2c90293b6c178b55016c17c93326000f' //所属环节的id
+        linkTypeId:this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //所属环节的id
       },
       rules: {
         party: [
@@ -480,6 +480,9 @@ export default {
     handleAdd(evidenceNo, row) {
         this.tableDatas = JSON.parse(JSON.stringify(this.docData.evdenceList));
         this.addVisible = true;
+        if(this.tableDatas.length == 0){
+        this.tableDatas.push({'evidenceNo': 1, 'amount' : 1});
+        }
     },
     addTableData(){
       console.log(this.tableDatas)

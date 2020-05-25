@@ -569,69 +569,6 @@ export default {
     },
     async mountedInit() {
       this.getFlowStatusByCaseId(this.caseId);
-      //   this.data = {
-      //     completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002',//已完成
-      //     //责令改正2c9029ee6cac9281016caca9a0000004
-      //     doingLink: '',// 进行中
-      //     //决定执行
-      //     unLockLink: '2c9029ee6cac9281016caca8ea500003,2c9029ee6cac9281016caca9a0000004,a36b59bd27ff4b6fe96e1b06390d204f',// 已解锁
-      //     completeMainLink: '0,1,2',
-      //     doingMainLink: "3"
-      //   }
-      // this.data = {
-      //     completeLink: '2c90293b6c178b55016c17c255a4000d',//已完成
-      //     //责令改正2c9029ee6cac9281016caca9a0000004
-      //     doingLink: '',// 进行中
-      //     //决定执行
-      //     unLockLink: '2c90293b6c178b55016c17c93326000f,2c90293b6c178b55016c17c7ae92000e',// 已解锁
-      //     completeMainLink: '0,1,2',
-      //     doingMainLink: "3"
-      //   }
-      // this.data = {
-      //     completeLink: '2c90293b6c178b55016c17c255a4000d,2c9029ee6cac9281016caca7f38e0002,2c9029ee6cac9281016caca9a0000004,2c90293b6c178b55016c17c93326000f,2c90293b6c178b55016c17c7ae92000e',//已完成
-      //     //责令改正2c9029ee6cac9281016caca9a0000004
-      //     doingLink: '',// 进行中
-      //     //决定执行
-      //     unLockLink: '2c9029e16c753a19016c755fe1340001',// 已解锁
-      //     completeMainLink: '0,1,2',
-      //     doingMainLink: "3"
-      //   }
-      //       this.data = {
-      //     completeLink: 'a36b59bd27ff4b6fe96e1b06390d204h,2c9029ee6cac9281016caca8ea500003,2c9029d56c8f7b66016c8f8043c90001,2c9029e16c753a19016c755fe1340001,2c9029ac6c26fd72016c27247b290003,2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002',//已完成
-      //     //责令改正2c9029ee6cac9281016caca9a0000004
-      //     doingLink: 'a',// 进行中
-      //     //决定执行
-      //     unLockLink: '2c9029ee6cac9281016cacaadf990006',// 已解锁
-      //     completeMainLink: '0,1,2',
-      //     doingMainLink: "3"
-      //   }
-      //   this.data = {
-      //     completeLink: '2c9029ee6cac9281016caca8ea500003,2c9029d56c8f7b66016c8f8043c90001,2c9029e16c753a19016c755fe1340001,2c9029ac6c26fd72016c27247b290003,2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002',//已完成
-      //     //责令改正2c9029ee6cac9281016caca9a0000004
-      //     doingLink: '',// 进行中
-      //     //决定执行
-      //     unLockLink: '2c9029ee6cac9281016cacaadf990006',// 已解锁
-      //     completeMainLink: '0,1,2',
-      //     doingMainLink: "3"
-      //   }
-      // this.data = {
-      //     completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002',//已完成
-      //     //责令改正2c9029ee6cac9281016caca9a0000004
-      //     doingLink: 'a36b59bd27ff4b6fe96e1b06390d204f',// 进行中
-      //     //决定执行
-      //     unLockLink: '2c9029ee6cac9281016cacaadf990006',// 已解锁
-      //     completeMainLink: '0,1,2',
-      //     doingMainLink: "3"
-      //   }
-      //       this.data = {
-      //     completeLink: '2c90293b6c178b55016c17c255a4000d,2c90293b6c178b55016c17c7ae92000e,2c90293b6c178b55016c17c93326000f,2c9029ee6cac9281016caca7f38e0002',//已完成
-      //     //责令改正2c9029ee6cac9281016caca9a0000004
-      //     doingLink: 'a36b59bd27ff4b6fe96e1b06390d204g',// 进行中
-      //     //决定执行
-      //     unLockLink: '2c9029ee6cac9281016cacaadf990006',// 已解锁
-      //     completeMainLink: '0,1,2',
-      //     doingMainLink: "3"
-      //   }
       this.updateLinkData()
       this.updateGraphData()
       this.drawFlowChart()
@@ -644,12 +581,12 @@ export default {
     //显示解除或延长强制措施按钮
     showRemoveOrExtendBtn(link) {
       let linkArr = link.split(',');
-      if (linkArr.indexOf('2c90293b6c178b55016c17c7ae92000e') == -1)
+      if (linkArr.indexOf(this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId) == -1)
         this.showREBtn = false
       else
         this.showREBtn = true
 
-      if (linkArr.indexOf('2c9029ee6cac9281016cacaa28760005') == -1)
+      if (linkArr.indexOf(this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId) == -1)
         this.alReadyFinishCoerciveM = false
       else
         this.alReadyFinishCoerciveM = true
@@ -660,7 +597,7 @@ export default {
       if (!this.showREBtn) return
       let data = {
         casebasicInfoId: this.caseId,
-        caseLinktypeId: '2c9029ee6cac9281016cacaa28760005'
+        caseLinktypeId: this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId
       }
       this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
         res => {
@@ -687,7 +624,7 @@ export default {
           } else {
             let data = {
               casebasicInfoId: this.caseId,
-              caseLinktypeId: '2c90293b6c178b55016c17c7ae92000e'
+              caseLinktypeId: this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId
             }
             this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
               res => {

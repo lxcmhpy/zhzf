@@ -1,8 +1,9 @@
 <template>
-    <div>
+<div class="flex">
+    <div class="b-flex-1">
          <!-- <span :class="$route.name">待审核</span> -->
         <div class="shadow">
-            <div class="box w-2">
+            <div class="box b-w-720">
                 <div class="box_title">
                     <span class="titleflag">
                     </span>
@@ -465,7 +466,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="box w-2">
+            <div class="box b-w-720">
                 <div class="box_title">
                     <!-- <span class="titleflag"></span>
                     <span class="title">称重检测数据（检测信息）</span> -->
@@ -511,7 +512,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="box w-2">
+            <div class="box b-w-720">
 
                 <div class="box_title">
                     <!-- <span class="titleflag"></span>
@@ -545,19 +546,29 @@
                 </table>
             </div>
         </div>
-        <div class="shadow">
-            <div class="box w-2">
+       <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="770px">
+            <div>
+                <embed name="plugin" id="plugin" :src="storageStr"
+                type="application/pdf" internalinstanceid="29" class="print_info"
+                style="padding: 0px; width: 730px; height:1100px; position: relative;">
+            </div>
+        </el-dialog>
+    </div>
+    <div class="b-w-320">
+         <div class="shadow">
+            <div class="box">
                 <div class="box_title">
                     <span class="titleflag">
                     </span>
                     <span class="title">现场照片/视频</span>
                 </div>
                 <ul class="list">
-                    <li v-for="index in 2" :key="index">
+                    <!-- v-for="index in 2" :key="index" -->
+                    <li >
                          <img class="img" :src="'./static/images/img/temp/sp.jpg'" >
                           <i class="iconfont law-bofang"></i>
                     </li>
-                    <li v-for="index in 2" :key="index">
+                    <!-- <li v-for="index in 2" :key="index">
                         <div class="demo-image__preview">
                             <el-image
                             class="img"
@@ -567,19 +578,19 @@
                                 >
                             </el-image>
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
         <div class="shadow">
-            <div class="box w-2">
+            <div class="box">
                 <div class="box_title">
                     <span class="titleflag">
                     </span>
                     <span class="title">补充证据材料</span>
                 </div>
                 <ul class="list">
-                    <li>
+                    <!-- <li>
                         <div class="demo-image__preview">
                             <el-image
                             class="img"
@@ -589,12 +600,12 @@
                                 >
                             </el-image>
                         </div>
-                    </li>
+                    </li> -->
                     <li @click="dialogPDFVisible = true">
                        <img  class="img" :src="'./static/images/img/temp/sp.jpg'" >
                        <i class="iconfont law-pdf1" ></i>
                     </li>
-                    <li>
+                    <!-- <li>
                         <el-upload
                              class="avatar-uploader uploadFile"
                              drag
@@ -607,18 +618,29 @@
                             </i>
 
                         </el-upload>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
-       <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="770px">
-            <div>
-                <embed name="plugin" id="plugin" :src="storageStr"
-                type="application/pdf" internalinstanceid="29" class="print_info"
-                style="padding: 0px; width: 730px; height:1100px; position: relative;">
+          <div class="shadow">
+        <div class="box w-2">
+            <div class="box_title">
+                <span class="titleflag">
+                </span>
+                <span class="title">相关说明</span>
             </div>
-        </el-dialog>
+            <div>
+                <el-input
+                        type="textarea"
+                        :rows="4"
+                        placeholder="请输入内容"
+                        v-model="obj.remarks">
+                </el-input>
+            </div>
+        </div>
     </div>
+    </div>
+</div>
 </template>
 <script>
 import Vue from "vue";
@@ -736,7 +758,8 @@ export default {
                 findAllDrawerById(data).then(
                     res => {
                         // resolve(res)
-                        _this[obj] = res.data
+                        // _this[obj] = res.data
+
                     },
                     error => {
                         //  _this.errorMsg(error.toString(), 'error')

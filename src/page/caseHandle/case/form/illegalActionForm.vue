@@ -251,7 +251,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: "2c9029ee6cac9281016caca8ea500003", //表单类型ID
+        caseLinktypeId: this.BASIC_DATA_SYS.illegalActionForm_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -274,7 +274,7 @@ export default {
         pageDomId: "illegalAction_print",
         isHuanjie: true
       },
-      huanjieAndDocId: "2c9029ca5b71686d015b719fe0900026", //违法行为通知书的文书id
+      huanjieAndDocId: this.BASIC_DATA_SYS.illegalActionForm_huanjieAndDocId, //违法行为通知书的文书id
       needDealData:true,
       propertyFeatures:'', //字段属性配置
 

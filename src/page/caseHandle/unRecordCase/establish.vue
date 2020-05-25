@@ -1,9 +1,9 @@
 <template>
   <div class="print_box">
     <!-- sdmaskjdnsjdns -->
-    <el-button type="primary" v-if="!disableWhenApproval" id="editCaseInfoBtn" @click="gotoEditCase">修改基本信息</el-button>
+    <el-button type="primary"  id="editCaseInfoBtn" @click="gotoEditCase">修改基本信息</el-button>
     <div class="print_info" id="establish-print">
-      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData" :disabled="disableWhenApproval">
+      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">立案登记表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -256,12 +256,7 @@
       </el-form>
     </div>
 
-    <casePageFloatBtns :formOrDocData="formOrDocData" @saveData="saveData" @showApprovePeopleList="showApprovePeopleList" @showApproval="showApproval"></casePageFloatBtns>
-
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
-    <overflowInput1 ref="overflowInputRef1" @overFloeEditInfo="getOverFloeEditInfo1"></overflowInput1>
-    <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
-    <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
+    <casePageFloatBtns :formOrDocData="formOrDocData" @saveData="saveData" ></casePageFloatBtns>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
 </template>
@@ -276,7 +271,7 @@ import caseSlideMenu from '../components/caseSlideMenu'
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
-
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
 export default {
   data() {
     // partyManager partyUnitAddress  partyUnitTel. socialCreditCode
@@ -299,7 +294,7 @@ export default {
         caseName: "",
         acceptTime: "",
         party: "",
-        partySex: "",
+        partySex:'',
         partyAge: "",
         partyAddress: "",
         partyIdNo: "",
@@ -324,7 +319,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: "2c90293b6c178b55016c17c255a4000d", //表单类型ID
+        caseLinktypeId: BASIC_DATA_SYS.establish_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -407,7 +402,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId:'establish-print'
       },
-      huanjieAndDocId: "2c9029ae654210eb0165421564970001", //立案登记表的文书id
+      huanjieAndDocId: BASIC_DATA_SYS.establish_huanjieAndDocId, //立案登记表的文书id
       approvalOver: false,//审核完成
       isParty: true, //当事人类型为个人
       caseSourceText3: "",
@@ -419,7 +414,6 @@ export default {
       // 是否带入电话
       isPartyPhone: false,
       needDealData:true,
-      disableWhenApproval:false,
       editCaseInfo:'', //修改案件基本信息需要传的数据
       propertyFeatures:'', //字段属性配置
     };
@@ -435,15 +429,6 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   mixins: [mixinGetCaseApiList],
   methods: {
-    //返回编辑
-    // goEdit() {
-    //   this.$router.push({
-    //     name: "filingApproval",
-    //     params: {
-    //       id: this.caseId
-    //     }
-    //   });
-    // },
     setData() {
       console.log('setData');
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
@@ -463,72 +448,7 @@ export default {
       //参数  提交类型 、formRef
       this.com_submitCaseForm(handleType, "establishForm", true);
     },
-    showApprovePeopleList() {
-      let data = {
-        caseId: this.caseId,
-        caseLinktypeId: "2c90293b6c178b55016c17c255a4000d"
-      };
-      this.$refs.showApprovePeopleRef.showModal(data);
-    },
-    //审批弹窗
-    showApproval() {
-      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : "";
-      let caseData = {
-        caseId: this.caseId,
-        caseLinktypeId: "2c90293b6c178b55016c17c255a4000d",
-        firstApproval: approvePeo,
-        approvalNumber: 2 //2次审批
-      };
-      this.$refs.approvalDialogRef.showModal(caseData);
-    },
-    // 多行编辑
-    overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, "");
-    },
-    // 获取多行编辑内容
-    getOverFloeEditInfo(edit) {
-      this.formData.secondApproveOpinions = edit;
-
-
-    },
-    // 多行编辑
-    overFlowEdit1() {
-      this.$refs.overflowInputRef1.showModal(0, "");
-    },
-    // 获取多行编辑内容
-    getOverFloeEditInfo1(edit) {
-      this.formData.approveOpinions = edit;
-
-    },
-
-    goToPfd() {
-      //提交pdf 显示pdf页
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.approvalOver = true;
-      this.com_getFormDataByCaseIdAndFormId(
-        this.caseLinkDataForm.caseBasicinfoId,
-        this.caseLinkDataForm.caseLinktypeId,
-        true
-      );
-    },
-    isApproval() {
-      //只有审核按钮
-      if (this.$route.params.isApproval) {
-        this.formOrDocData.showBtn = [
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          true,
-          false,
-          false
-        ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        this.disableWhenApproval = true;
-      }
-    },
+   
     //设置案件来源
     getDataAfter() {
       if (this.formData.checkBox == '上级交办') {
@@ -575,7 +495,6 @@ export default {
   },
   created() {
     this.setData();
-    this.isApproval();
     this.getCaseInfo();
   }
 };

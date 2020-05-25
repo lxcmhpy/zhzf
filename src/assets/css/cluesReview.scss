@@ -465,7 +465,160 @@
     }
 
 }
+.b-w-720 {
+    min-width: 720px;
+    max-width: 760px;
+}
+.b-w-760 {
+    width: 760px;
+}
+.b-w-320 {
+    width: 320px;
+    overflow: hidden;
+    margin-left: 22px;
+    .list {
+        li {
+            width: 280px;
+            height: 165px;
 
+        }
+    }
+}
+.ransition-box {
+    // float:left;
+    display:inline;
+}
+.otherColor {
+    width:100%;
+    height: 100%;
+    border: 1px solid #101010;
+    line-height: 30px;
+    padding: 7px;
+    box-sizing: border-box;
+}
+.vehicle-black {
+    width:100%;
+    height: 100%;
+    background: #101010;
+    line-height: 30px;
+    color:white;
+    padding: 7px;
+    box-sizing: border-box;
+    .border {
+        border: 1px solid white;
+    }
+}
+.vehicle-white {
+    width:100%;
+    height: 100%;
+    background: white;
+    line-height: 30px;
+    color: #0A030B;
+    padding: 7px;
+    box-sizing: border-box;
+    .border {
+        border: 1px solid #E2E2E2;
+    }
+}
+
+.vehicle-gray {
+    width:100%;
+    height: 100%;
+    background: #868585;
+    line-height: 30px;
+    color:white;
+    padding: 7px;
+    box-sizing: border-box;
+    .border {
+        border: 1px solid white;
+    }
+}
+
+.vehicle-yellow-green{
+    width:100%;
+    height: 100%;
+    background: linear-gradient(90deg, #EBD57F 36%, #73D999 36%);
+    line-height: 30px;
+    color:#0A030B;
+    padding: 7px;
+    box-sizing: border-box;
+    .border {
+        border: 1px solid #14150A;
+    }
+}
+
+.vehicle-yellow {
+    width:100%;
+    height: 100%;
+    background: #EBBB1F;
+    line-height: 30px;
+    color:#0A030B;
+    padding: 7px;
+    box-sizing: border-box;
+    .border {
+        border: 1px solid #090008;
+    }
+}
+.vehicle-blue {
+    width:100%;
+    height: 100%;
+    background: #1029AA;
+    line-height: 30px;
+    color:white;
+    padding: 7px;
+    box-sizing: border-box;
+    .border {
+        border: 1px solid #FFFFFF;
+    }
+}
+.vehicle-green {
+    width:100%;
+    height: 100%;
+    background: #26914D;
+    line-height: 30px;
+    color:white;
+    padding: 7px;
+    box-sizing: border-box;
+    .border {
+        border: 1px solid white;
+    }
+}
+.vehicle-gray {
+    width:100%;
+    height: 100%;
+    background: #868585;
+    line-height: 30px;
+    color:white;
+    padding: 7px;
+    box-sizing: border-box;
+    .border {
+        border: 1px solid white;
+    }
+}
+.vehicle-gradient-green {
+    width:100%;
+    height: 100%;
+    background: linear-gradient(180deg,rgba(255,255,253,1) 0%, #EBBB1F 100%);
+    line-height: 30px;
+    color:#0A030B;
+    padding: 7px;
+    box-sizing: border-box;
+    .border {
+        border: 1px solid #14150A;
+    }
+}
+.main_box .main_content .b-w-320 .shadow .box .list li .img {
+    // .img{
+        width: 100%;
+        height: 100%;
+    // }
+}
+.b-flex-1 {
+    flex:1;
+}
+.flex {
+    display: flex;
+}
 /* 阴影盒子样式 */
 .shadow-box {
     margin-bottom: 22px;

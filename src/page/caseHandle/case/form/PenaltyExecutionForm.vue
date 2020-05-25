@@ -306,7 +306,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: "2c9029e16c753a19016c755fe1340001", //表单类型IDer
+        caseLinktypeId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId, //表单类型IDer
         //表单数据
         formData: "",
         status: ""
@@ -495,7 +495,7 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        linkTypeId: "2c9029e16c753a19016c755fe1340001" //环节ID
+        linkTypeId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId //环节ID
       };
       this.com_getDocListByCaseIdAndFormId(data);
     },
@@ -549,7 +549,7 @@ export default {
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append('caseId', this.caseId)
-      fd.append('docId', '2c9029e16c753a19016c755fe1340001');
+      fd.append('docId', this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId);
       uploadEvApi(fd).then(
         res => {
           console.log(res);
@@ -644,7 +644,7 @@ export default {
     findFileList() {
       let data = {
         caseId: this.caseId,
-        docId: "2c9029e16c753a19016c755fe1340001"
+        docId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId
       }
       console.log(data);
       getFile(data).then(

@@ -123,7 +123,7 @@ export default {
       caseDocDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '297708bcd8e80872febb61577329194f', //案件id--从流程进入删掉，先写死测试用
-        caseLinktypeId: "2c9029d56c8f7b66016c8f8043c90001", //表单类型IDer
+        caseLinktypeId: this.BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId, //表单类型IDer
         //表单数据
         docData: "",
         status: ""

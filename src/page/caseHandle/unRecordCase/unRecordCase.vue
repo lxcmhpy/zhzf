@@ -177,14 +177,16 @@ export default {
          //立案登记表已保存未提交审批时 跳转pdf页面
          
           this.$store.dispatch("getFile", {
-            docId: '2c9029ae654210eb0165421564970001',
+            docId: this.BASIC_DATA_SYS.establish_huanjieAndDocId,
             caseId: row.id,
           }).then(res=>{
             console.log('查询环节是否生成了pdf',res);
+            this.$store.commit("setCaseId", row.id);
             if(res && res.length >0){
-              this.$router.push({ name: 'case_handle_myPDF', params: { docId: '2c9029ae654210eb0165421564970001', caseLinktypeId: '2c90293b6c178b55016c17c255a4000d' } })
+              this.$store.commit('setApprovalState', 'approvalBefore')
+              this.$router.push({ name: 'case_handle_myPDF', params: { docId: this.BASIC_DATA_SYS.establish_huanjieAndDocId } })
             }else{
-               this.$store.commit("setCaseId", row.id);
+              
                 //设置案件状态不为审批中
                 this.$store.commit("setCaseApproval", false);
                 this.$router.replace({

@@ -120,7 +120,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '', //案件id
-        caseLinktypeId: "a36b59bd27ff4b6fe96e1b06390d204g", //不予处罚的表单ID
+        caseLinktypeId: this.BASIC_DATA_SYS.noPenalty_caseLinktypeId, //不予处罚的表单ID
         //表单数据
         formData: "",
         status: ""
@@ -210,7 +210,7 @@ export default {
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append('caseId', this.caseId)
-      fd.append('docId', 'a36b59bd27ff4b6fe96e1b06390d204g');
+      fd.append('docId', this.BASIC_DATA_SYS.noPenalty_caseLinktypeId);
       uploadEvApi(fd).then(
         res => {
           console.log(res);
@@ -256,7 +256,7 @@ export default {
     findFileList(){
       let data =  {
         caseId: this.caseId,
-        docId :"a36b59bd27ff4b6fe96e1b06390d204g"
+        docId :this.BASIC_DATA_SYS.noPenalty_caseLinktypeId
       }
       console.log(data);
       getFile(data).then(

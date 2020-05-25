@@ -318,7 +318,7 @@
         var fd = new FormData()
         fd.append("file", param.file);
         fd.append('caseId', this.caseData.caseId)
-        fd.append('docId', '2c9029e16c753a19016c755fe1340001');
+        fd.append('docId', this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId);
         uploadEvApi(fd).then(
           res => {
             console.log('上传文件结果',res);
@@ -345,7 +345,7 @@
       findFileList() {
         let data = {
           caseId: this.caseData.caseId,
-          docId: "2c9029e16c753a19016c755fe1340001"
+          docId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId
         }
 //      console.log(data);
         getFile(data).then(

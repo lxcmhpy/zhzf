@@ -239,6 +239,8 @@ import caseRegisterDiag from "@/page/caseHandle/unRecordCase/caseRegisterDiag.vu
 import chooseillegalAct from "./chooseIllegegaDialog.vue";
 import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
 import { mapGetters } from "vuex";
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
+
 export default {
   mixins: [mixinGetCaseApiList],
   components: {
@@ -441,10 +443,11 @@ export default {
       if (this.moreFlag === 'unRecordCase') {
         let setCaseNumber = row.caseNumber != '' ? row.caseNumber : row.tempNo;
         this.$store.commit("setCaseNumber", setCaseNumber);
-        this.$store.commit("setCaseId", row.id);
-        iLocalStroage.set("stageCaseId", row.id);
+       
         //暂存案件跳转信息采集
         if (row.state == 0) {
+           this.$store.commit("setCaseId", row.id);
+          iLocalStroage.set("stageCaseId", row.id);
           this.$router.replace({
             name: "case_handle_inforCollect"
           });
@@ -455,33 +458,25 @@ export default {
           let message = '该案件正在移送中，移送完成后才可与继续办理'
           this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
         } else {
-          // this.$store.commit("setCaseId", row.id);
-          // //设置案件状态不为审批中
-          // this.$store.commit("setCaseApproval", false);
-          // this.$router.replace({
-          //   name: "case_handle_establish"
-          // });
-          // let setCaseNumber = row.caseNumber !== '' ? row.caseNumber : '案件'
-          // this.$store.commit("setCaseNumber", setCaseNumber);
 
           //立案登记表已保存未提交审批时 跳转pdf页面
 
           this.$store.dispatch("getFile", {
-            docId: '2c9029ae654210eb0165421564970001',
+            docId: this.BASIC_DATA_SYS.establish_huanjieAndDocId,
             caseId: row.id,
           }).then(res => {
             console.log('查询环节是否生成了pdf', res);
+            this.$store.commit("setCaseId", row.id);
             if (res && res.length > 0) {
-              this.$router.push({ name: 'case_handle_myPDF', params: { docId: '2c9029ae654210eb0165421564970001', caseLinktypeId: '2c90293b6c178b55016c17c255a4000d' } })
+              this.$store.commit('setApprovalState', 'approvalBefore')
+              this.$router.push({ name: 'case_handle_myPDF', params: { docId: this.BASIC_DATA_SYS.establish_huanjieAndDocId } })
             } else {
-              this.$store.commit("setCaseId", row.id);
               //设置案件状态不为审批中
               this.$store.commit("setCaseApproval", false);
               this.$router.replace({
                 name: "case_handle_establish"
               });
-              let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
-              this.$store.commit("setCaseNumber", setCaseNumber);
+              
             }
           })
             .catch(err => { console.log(err) })
@@ -522,39 +517,24 @@ export default {
         }
         else {
           this.$store.commit("setCaseId", row.id);
-          // //设置案件状态不为审批中
-          // this.$store.commit("setCaseApproval", true);
-          // this.$router.push({
-          //   name: "case_handle_caseInfo",
-          //   params: {
-          //     caseInfo: row,
-          //     isApproval: true
-          //   }
-          // });
-          // let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
-          // this.$store.commit("setCaseNumber", setCaseNumber);
-          console.log(row)
-          //案件审批
-          let approvalLink = ''
+        
           let docId = "";
-          this.$store.commit("caseId", row.caseCauseId);
           switch (row.currentLinkId) {
-            case "2c90293b6c178b55016c17c255a4000d":
-              approvalLink = 'case_handle_establish';
-              docId = "2c9029ae654210eb0165421564970001";
+            case this.BASIC_DATA_SYS.establish_caseLinktypeId:
+              docId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
               break;
-            case "2c9029ee6cac9281016caca7f38e0002":
-              approvalLink = 'case_handle_caseInvestig';
-              docId = "2c9029ca5b711f61015b71391c9e2420";
+            case this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId:
+              docId = this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId;
               break;
-            case "2c9029ee6cac9281016cacaadf990006":
-              approvalLink = 'case_handle_finishCaseReport';
-              docId = "2c9029d2695c03fd01695c278e7a0001";
+            case this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId:
+              docId = this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId;
               break;
           }
+          let setCaseNumber = row.caseNumber!='' ?  row.caseNumber : row.tempNo;
+          this.$store.commit("setCaseNumber", setCaseNumber);
+          this.$store.commit('setApprovalState', 'approvaling')
+          this.$router.push({ name: 'case_handle_myPDF', params: { docId: docId } })
 
-
-          this.getFileIdByDocId(docId, approvalLink);
         }
 
       }

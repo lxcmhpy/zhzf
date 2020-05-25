@@ -40,7 +40,7 @@
 <script>
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import iLocalStroage from "@/common/js/localStroage";
-
+  import {mapGetters} from "vuex";
   export default {
     data() {
       return {
@@ -59,6 +59,7 @@
     },
     inject: ["reload"],
     mixins: [mixinGetCaseApiList],
+    computed: {...mapGetters(['caseId', 'docId'])},
     methods: {
       showModal(data) {
         console.log(data);
@@ -83,61 +84,31 @@
         let params = {
           caseId: this.caseData.caseId,
           executeHandle: this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
-          caseLinktypeId: this.caseData.caseLinktypeId,
+          // caseLinktypeId: this.caseData.caseLinktypeId,
           approveOpinions: this.approvalForm.approveOpinions,
           jsonApproveData: ""
         };
 
-        //有三级审批时
-        if (this.caseData.approvalNumber == 3) { 
-          if (this.caseData.firstApproval) {
-            //一级审批过
-            if (this.caseData.secondApproval) {
-              //二级审批过  此时为三级审批
-              console.log('此时为三级审批')
-              params.jsonApproveData = JSON.stringify({
-                thirdApproveOpinions: this.approvalForm.approveOpinions,
-                thirdApprovePeo: this.approvalPeopleName,
-                thirdApproveTime: this.approvalForm.approvalTime
-              });
-            } else {
-              // 此时为二级审批
-              console.log('此时为2级审批')
-
-              params.jsonApproveData = JSON.stringify({
-                secondApproveOpinions: this.approvalForm.approveOpinions,
-                secondApprovePeo: this.approvalPeopleName,
-                secondApproveTime: this.approvalForm.approvalTime
-              });
-            }
-          } else {
-            //此时为一级审批
-            console.log('此时为一级审批')
-
+        if (this.caseData.currentApproval == '1') {  //一级审批
             params.jsonApproveData = JSON.stringify({
               approveOpinions: this.approvalForm.approveOpinions,
               approvePeo: this.approvalPeopleName,
               approveTime: this.approvalForm.approvalTime
             });
-          }
-        } else if (this.caseData.approvalNumber == 2) {
-          //有两级审批时
-          if (this.caseData.firstApproval) {
-            // 此时为二级审批
+        }else if(this.caseData.currentApproval == '2'){  //二级审批
             params.jsonApproveData = JSON.stringify({
               secondApproveOpinions: this.approvalForm.approveOpinions,
               secondApprovePeo: this.approvalPeopleName,
               secondApproveTime: this.approvalForm.approvalTime
             });
-          } else {
-            //此时为一级审批
-            params.jsonApproveData = JSON.stringify({
-              approveOpinions: this.approvalForm.approveOpinions,
-              approvePeo: this.approvalPeopleName,
-              approveTime: this.approvalForm.approvalTime
-            });
-          }
+        }else if(this.caseData.currentApproval == '3'){ //三级审批
+          params.jsonApproveData = JSON.stringify({
+              thirdApproveOpinions: this.approvalForm.approveOpinions,
+              thirdApprovePeo: this.approvalPeopleName,
+              thirdApproveTime: this.approvalForm.approvalTime
+          });
         }
+
 
 
         console.log(params);
@@ -162,18 +133,10 @@
               time = jsonApproveData.thirdApproveTime
               step = '3'
             }
-            let docId = ''
-            if (this.caseData.caseLinktypeId === '2c90293b6c178b55016c17c255a4000d') {
-              docId = '2c9029ae654210eb0165421564970001'
-            } else if (this.caseData.caseLinktypeId === '2c9029ee6cac9281016caca7f38e0002') {
-              docId = '2c9029ca5b711f61015b71391c9e2420'
-            } else if (this.caseData.caseLinktypeId === '2c9029ee6cac9281016cacaadf990006') {
-              docId = '2c9029d2695c03fd01695c278e7a0001'
-            }
-
+      
             let data = {
               caseId: this.caseData.caseId,
-              docId: docId,
+              docId: this.docId,
               docOpinion: opinion,
               date: time,
               number: step,
@@ -185,8 +148,10 @@
                   type: "success",
                   message: "审批通过"
                 });
-                _this.$emit("getNewData");
+                _this.$store.commit('setApprovalState', 'approvalOver')
 
+                _this.$emit("getNewData");
+                
                 _this.visible = false;
               },
               err => {

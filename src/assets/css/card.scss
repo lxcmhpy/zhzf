@@ -1,0 +1,223 @@
+@import "./main.scss";
+
+.card-content {
+    height: 208px;
+    color : #20232B;
+}
+
+.card-title {
+    height     : 20px;
+    line-height: 20px;
+    font-size  : 14px;
+    font-weight: 400;
+}
+
+.card-ul {
+    margin: 16px 0 44px;
+
+    li {
+        margin-left: 34px;
+        width      : 202px;
+        height     : 120px;
+        border     : 2px solid #EBEBEB;
+        float      : left;
+        text-align : center;
+        cursor     : pointer;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+}
+
+.card-img-content-box {
+    margin: 15px auto 3px;
+    width : 62px;
+}
+
+.card-img-content {
+    width         : 62px;
+    height        : 62px;
+    text-align    : center;
+    display       : table-cell;
+    vertical-align: middle;
+
+    img {
+        max-width : 62px;
+        max-height: 62px;
+    }
+}
+
+.card-des {
+    height     : 20px;
+    font-size  : 14px;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.card-title-margin {
+    margin: 20px 0;
+}
+
+.search-input-right {
+    width  : 176px;
+    display: inline-block;
+}
+
+.search-input-right-box {
+    width    : 313px;
+    float    : right;
+    font-size: 14px;
+}
+
+.max-group-prepend {
+    .el-input-group__prepend {
+        width: 180px;
+    }
+}
+
+.lawPersonBox {
+    width   : calc(100% - 100px);
+    position: relative;
+
+    .el-form-item__content {
+
+        display: inline-block;
+    }
+
+    .el-form-item__content button {
+        position     : absolute;
+        right        : 0;
+        height       : 32px;
+        width        : 20px;
+        top          : 4px;
+        border-radius: 0;
+
+        i {
+            position: absolute;
+            left    : 13px;
+            top     : 9px;
+        }
+    }
+
+    .el-select {
+        width: calc(100% - 17px);
+    }
+}
+
+.card-select {
+    .el-form-item__content {
+        width: 100%;
+    }
+}
+
+.collapse-title-foem {
+    .el-collapse {
+        border-top   : 0;
+        border-bottom: 0;
+    }
+
+    .el-form-item {
+        margin-bottom: 10px;
+    }
+
+    .el-collapse-item__header {
+        height       : 50px;
+        line-height  : 50px;
+        border-bottom: 0;
+
+        .el-form-item {
+            margin-bottom: 0;
+        }
+    }
+
+    .el-collapse-item__content {
+        margin-bottom: 0;
+        padding-bottom:0;
+    }
+
+    .el-collapse-item__wrap {
+        border-bottom: 0;
+
+    }
+
+    .el-icon-arrow-right {
+        display: none;
+    }
+
+    .el-icon-remove,
+    .el-icon-remove-outline {
+        margin   : 0px 0px 0px auto;
+        font-size: 16px;
+        color    : #4573D0;
+
+    }
+
+    .zhankai,
+    .shousuo {
+        margin-right: 15px;
+        color       : #4573D0;
+    }
+
+    .zhankai {
+        display: none;
+    }
+
+    .is-active {
+        .shousuo {
+            display: none;
+        }
+
+        .zhankai {
+            display: inline;
+        }
+    }
+
+    .el-checkbox__label {
+        color: #20232B !important;
+    }
+
+    .is-checked {
+        .el-checkbox__inner {
+            color           : #4573D0;
+            border-color    : #4573D0;
+            background-color: #fff;
+
+            i {
+                color: #4573D0;
+            }
+        }
+
+
+    }
+
+    .el-checkbox__inner::after {
+
+        border: 1px solid #4573D0;
+    }
+
+    .is-indeterminate {
+        .el-checkbox__inner {
+            color       : #4573D0;
+            border-color: #4573D0;
+        }
+    }
+}
+
+.clear {
+    clear: both;
+}
+
+.card-add-ziduan {
+    color      : #4573D0;
+    height     : 20px;
+    font-size  : 14px;
+    font-weight: 500;
+    display    : inline-block;
+    cursor     : pointer;
+
+    .el-icon-arrow-right {
+        display: inline;
+    }
+}

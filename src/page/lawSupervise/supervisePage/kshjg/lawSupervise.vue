@@ -51,8 +51,8 @@
               </div>
               <div class="flexBox">
                 <div class="con">
-                  <p>{{curWindow.other.address}}</p>
-                  <p>{{curWindow.other.mobile}}</p>
+                  <p>地址：{{curWindow.other.address}}</p>
+                  <p>联系方式：{{curWindow.other.mobile}}</p>
                 </div>
                 <!-- <div class="status greenC2">
                   <i class="iconfont law-mobile-phone"></i>
@@ -80,6 +80,7 @@
                 <div class="con">
                   <p>地址：{{curWindow.other.address}}</p>
                   <p>联系人：{{curWindow.other.contact}}</p>
+                  <!-- <p>{{JSON.stringify(curWindow)}}</p> -->
                   <p>联系方式：{{curWindow.other.phone}}</p>
                 </div>
                 <div class="status">
@@ -91,12 +92,13 @@
                 <div class="flex-title"><img  :src="'./static/images/img/lawSupervise/icon_duiwu.png'">人员在线情况</div>
                 <span class="phoneBtn blueBg" @click="callName('李玉明')">李玉明</span>
                 <span  class="phoneBtn blueBg" @click="callName('赵一鸣')">赵一鸣</span>
-                <span  class="phoneBtn lineh" >迪丽<br>热巴</span>
+                <span  class="phoneBtn" :class="{'lineh': it.nickName.length>3}" v-for="(it,j) in curWindow.other.users" :key="'s'+j">{{it.nickName}}</span>
+                <!-- <span  class="phoneBtn lineh" >迪丽<br>热巴</span>
                 <span  class="phoneBtn lineh" >欧阳<br>娜娜</span>
                 <span class="phoneBtn " >张悦</span>
                 <span  class="phoneBtn" >李晓艺</span>
                 <span  class="phoneBtn lineh" >王淑华</span>
-                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span>
+                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span> -->
                 <span  class="phoneBtn " >···</span>
             </div>
               <!-- <div class="btns">
@@ -538,7 +540,7 @@
                                     </div>
                                     <div  slot="reference">
                                     <ul class="addHoverBg" style="width: 100%;height: auto;">
-                                        <li v-for="(row,index) in gjclList" :key="index" @click="positionEvent1()" @mouseenter="positionEventEnter(row)">
+                                        <li v-for="(row,index) in gjclList" :key="index" @click="positionEvent1(row)" @mouseenter="positionEventEnter(row)">
                                             <div class="leftTabelHoverDiv" style="padding: 0px;">
                                                 <div class="lawHoverTitle">
                                                 <div class="cxl" >
@@ -1015,6 +1017,9 @@
                      <span class="custom-tree-node" slot-scope="{ node, data }">
                         <span><img class="tree-node-icon" :src="'./static/images/img/lawSupervise/'+data.icon+'.png'">{{node.label}}</span>
                     </span>
+                        <!-- <span class="custom-tree-node">
+                            <span><img class="tree-node-icon" :src="'./static/images/img/lawSupervise/icon_jc1.png'">dd</span>
+                        </span> -->
                 </el-tree>
             </div>
         </div>
@@ -1430,79 +1435,80 @@ export default {
         radioVal: '全选',
         defaultProps: {
           children: 'children',
-          label: 'label'
+          label: 'name'
         },
-        data: [{
-          label: '乌鲁木齐路政管理局',
-          icon: 'icon_jc1',
-          children: [{
-              label: '执法人员',
-              icon: 'icon_jc11',
-              children: [
+        data: null,
+        //  [{
+        //   label: '乌鲁木齐路政管理局',
+        //   icon: 'icon_jc1',
+        //   children: [{
+        //       label: '执法人员',
+        //       icon: 'icon_jc11',
+        //       children: [
 
-              ]
-            },{
-              label: '执法车辆',
-              icon: 'icon_cl11'
-            },{
-              label: '执法船舶',
-              icon: 'icon_cb11'
-            }, {
-            label: '后峡路政管理局',
-            icon: 'icon_jc1',
-            children: [{
-              label: '执法人员',
-              icon: 'icon_jc11',
-              children: [
-              ]
-            },{
-              label: '执法车辆',
-              icon: 'icon_cl11'
-            },{
-              label: '执法船舶',
-              icon: 'icon_cb11'
-            },{
-              label: '燕尔窝路政队',
-              icon: 'icon_jc1'
-            }]
-          }]
-        }, {
-          label: '昌吉路政管理局',
-          icon: 'icon_jc1',
-          children: [{
-            label: '木垒路政管理局',
-            icon: 'icon_jc1',
-            children: [{
-              label: '昌吉局路政大队',
-              icon: 'icon_jc1',
-            }]
-          }, {
-            label: '奇台路政管理局',
-            icon: 'icon_jc1',
-            children: [{
-              label: '三级 2-2-1',
-              icon: 'icon_jc1',
-            }]
-          }]
-        }, {
-          label: '石河子路政管理局',
-          icon: 'icon_jc1',
-          children: [{
-            label: '卡子弯道班超限监测站',
-            icon: 'icon_jc1',
-            children: [{
-              label: '三级 3-1-1',
-              icon: 'icon_jc1',
-            }]
-          }, {
-            label: '二级 3-2',
-            icon: 'icon_jc1',
-            children: [{
-              label: '三级 3-2-1',
-              icon: 'icon_jc1',
-            }]
-          }]
-        }],
+        //       ]
+        //     },{
+        //       label: '执法车辆',
+        //       icon: 'icon_cl11'
+        //     },{
+        //       label: '执法船舶',
+        //       icon: 'icon_cb11'
+        //     }, {
+        //     label: '后峡路政管理局',
+        //     icon: 'icon_jc1',
+        //     children: [{
+        //       label: '执法人员',
+        //       icon: 'icon_jc11',
+        //       children: [
+        //       ]
+        //     },{
+        //       label: '执法车辆',
+        //       icon: 'icon_cl11'
+        //     },{
+        //       label: '执法船舶',
+        //       icon: 'icon_cb11'
+        //     },{
+        //       label: '燕尔窝路政队',
+        //       icon: 'icon_jc1'
+        //     }]
+        //   }]
+        // }, {
+        //   label: '昌吉路政管理局',
+        //   icon: 'icon_jc1',
+        //   children: [{
+        //     label: '木垒路政管理局',
+        //     icon: 'icon_jc1',
+        //     children: [{
+        //       label: '昌吉局路政大队',
+        //       icon: 'icon_jc1',
+        //     }]
+        //   }, {
+        //     label: '奇台路政管理局',
+        //     icon: 'icon_jc1',
+        //     children: [{
+        //       label: '三级 2-2-1',
+        //       icon: 'icon_jc1',
+        //     }]
+        //   }]
+        // }, {
+        //   label: '石河子路政管理局',
+        //   icon: 'icon_jc1',
+        //   children: [{
+        //     label: '卡子弯道班超限监测站',
+        //     icon: 'icon_jc1',
+        //     children: [{
+        //       label: '三级 3-1-1',
+        //       icon: 'icon_jc1',
+        //     }]
+        //   }, {
+        //     label: '二级 3-2',
+        //     icon: 'icon_jc1',
+        //     children: [{
+        //       label: '三级 3-2-1',
+        //       icon: 'icon_jc1',
+        //     }]
+        //   }]
+        // }],
       areaObj: '全国',
       activeIndex:'',
       areaList: [
@@ -1688,22 +1694,26 @@ export default {
   },
   methods: {
     filterNode (value, data, node) {
-        // if(value = "") return data;
-        // debugger;
-        // if (!value) return true;
         if (value === "") {
             this.expandTree = false;
             return data;
         }
-        if (this.isCheck) {
-            if (data.id == value.organId && data.label==="执法人员"||data.id == value.pid) {
-                this.toolShow = true;
-                return true;
-            }
-            return false;
-        } else {
-            return data.label.indexOf(value) > -1;
-        }
+        // if (this.isCheck) {
+        //     // if (data.id == value.organId && data.label==="执法人员") {
+        //     //     this.toolShow = true;
+        //     //     //  this.checkAll(this.tabList[0].children[0])
+        //     //     if (data.children.length == 0) {
+        //     //         const newChild = { id: value.id,icon:'icon_jc11',pid:value.organId, label: value.nickName, position:value.position, children: [] };
+        //     //         this.$set(data.children,data.children.length, newChild);
+        //     //     }
+        //     //     // if (!data.children) {
+        //     //     // }
+        //     //     return true;
+        //     // }
+        //     return false;
+        // } else {
+        //     }
+            return data.name.indexOf(value) > -1;
     },
     callName(code) {
         this.doing = '2';
@@ -1763,90 +1773,78 @@ export default {
         this.allSearchList.splice(0, this.allSearchList.length);
         // this.radioVal = '全选';
             debugger;
-        if (node.label === '执法人员') {
-            // this.checkAll(this.tabList[0].children[0])
-            //  const newChild = { id: value.id,icon:'icon_jc11',pid:value.organId, label: value.nickName, position:value.position, children: [] };
-            // if (data.children) {
-            //   this.$set(data.children,'0', newChild);
-            // }getUserById
+        if (node.icon === 'icon_jc11' && node.name !== '执法人员') {
+
             let _this = this;
-            new Promise((resolve, reject) => {
-                getUserById(node.id).then(
-                    res => {
-                        debugger;
-                        let resultList = [];
-                        if(res.data&&res.data.length>0) {
-                            res.data.forEach((item,i)=>{
-                                let position = item.position ? item.position.split(','):['',''];
-                                let lng = parseFloat(position[0]);
-                                let lat = parseFloat(position[1]);
-                                resultList.push({
-                                    address: item.label,
-                                    distance: null,
-                                    id: item.id,
-                                    lat: lat,
-                                    lng: lng,
-                                    icon: 'icon_jc11',
-                                    icons: 'ry',
-                                    pid: item.organId,
-                                    location: {
-                                        O: lng,
-                                        P: lat,
-                                        lat: lat,
-                                        lng: lng
-                                    },
-                                    name: item.label,
-                                    label: item.nickName,
-                                    position: item.position,
-                                    shopinfo: '',
-                                    tel: '',
-                                    type: '0',
-                                    other: item
-                                })
-                            })
-
-                            this.$nextTick(() => {
-                                _this.$set(node,'children', resultList);
-                                // _this.expandTree = true;
-                            })
-                        }
-                    // this.onSearchResult(resultList, 1,0)
-                    }
-                )
+             let resultList = [];
+            let position = node.position ? node.position.split(','):['',''];
+            let lng = parseFloat(position[0]);
+            let lat = parseFloat(position[1]);
+            resultList.push({
+                address: node.address,
+                distance: null,
+                id: node.id,
+                lat: lat,
+                lng: lng,
+                icon: 'icon_jc11',
+                // icons: 'ry',
+                pid: node.organId,
+                location: {
+                    O: lng,
+                    P: lat,
+                    lat: lat,
+                    lng: lng
+                },
+                name: node.name,
+                label: node.nickName,
+                position: node.position,
+                shopinfo: '',
+                tel: '',
+                type: '0',
+                other: node
             })
-        } else if(node.icons == 'ry'){
-            // debugger;
-            this.onSearchResult([node], 0,0);
-        } else if (node.position){
-            this.getOrganDetail(node.id).then(
-                res => {
-                    // debugger;
-                    let resultList = [];
-                    let position = node.position ? node.position.split(','):['',''];
-                    let lng = parseFloat(position[0]);
-                    let lat = parseFloat(position[1]);
-                    resultList.push({
-                        address: node.label,
-                        distance: null,
-                        id: node.id,
-                        lat: lat,
-                        lng: lng,
-                        location: {
-                            O: lng,
-                            P: lat,
-                            lat: lat,
-                            lng: lng
-                        },
-                        name: node.label,
-                        shopinfo: '',
-                        tel: '',
-                        type: '-1',
-                        other: res.data
-                    })
-                    this.onSearchResult(resultList, 1,0)
+            // this.curWindow = resultList[0];
+            this.onSearchResult(resultList, 0,0);
+            // new Promise((resolve, reject) => {
+            //     getUserById(node.id).then(
+            //         res => {
+            //             debugger;
 
-                }
-            )
+            //         }
+            //     )
+            // })
+        } else if (node.position){
+
+            let resultList = [];
+            let position = node.position ? node.position.split(','):['',''];
+            let lng = parseFloat(position[0]);
+            let lat = parseFloat(position[1]);
+            resultList.push({
+                address: node.address,
+                distance: null,
+                id: node.id,
+                lat: lat,
+                lng: lng,
+                location: {
+                    O: lng,
+                    P: lat,
+                    lat: lat,
+                    lng: lng
+                },
+                name: node.name,
+                shopinfo: '',
+                tel: '',
+                type: '-1',
+                other: node
+            })
+            // this.curWindow = resultList[0];
+            this.onSearchResult(resultList, 1,0);
+            // this.getOrganDetail(node.id).then(
+            //     res => {
+            //         // debugger;
+
+            //     }
+            // )
         }
     },
     getOrganDetail (id) {
@@ -1866,15 +1864,58 @@ export default {
             name: 'law_supervise_offSiteManage'
         })
     },
-    routerXsDetail () {
-        this.$router.push({
-            name: 'law_supervise_examineDoingDetail',
-            params: {
-                status: '0',
-                tabTitle: '待审核',
-                offSiteManageId: '1'
-            }
-        })
+    routerXsDetail (row) {
+        debugger;
+        let status = '0';
+          switch (row.status) {
+            case '待审核':
+                this.$router.push({
+                    name: 'law_supervise_examineDoingDetail',
+                    params: {
+                        status: '0',
+                        tabTitle: '待审核',
+                        offSiteManageId: row.id
+                    }
+                });
+                break;
+            case '无效信息':
+                this.$router.push({
+                    name: 'law_supervise_invalidCueDetail',
+                    params: {
+                        offSiteManageId: row.id
+                    }
+                });
+                break;
+            case '审核中':
+                this.$router.push({
+                    name: 'law_supervise_examineDoingDetail',
+                    params: {
+                        status: '1',
+                        tabTitle: '审核中',
+                        offSiteManageId: row.id
+                    }
+                });
+                break;
+            case '已转办':
+                this.$router.push({
+                    name: 'law_supervise_transferDetail',
+                    params: {
+                        offSiteManageId: row.id
+                    }
+                });
+                break;
+            case '已审核':
+                this.$router.push({
+                    name: 'law_supervise_examineDoingDetail',
+                    params: {
+                        status: '3',
+                        tabTitle: '已审核',
+                        offSiteManageId: row.id
+                    }
+                });
+                break;
+        }
+
     },
     positionEvent (row, category) {
         // debugger;
@@ -1890,8 +1931,8 @@ export default {
         // this.getZfjgLawSupervise(data, this.category);
         // this.routerXsDetail();
     },
-    positionEvent1 () {
-        this.routerXsDetail()
+    positionEvent1 (row) {
+        this.routerXsDetail(row)
     },
     getById (type,id) {
         let _this = this
@@ -2039,6 +2080,9 @@ export default {
             })
     },
     onSearchResult(pois, category, length) {
+      if (length == 0) {
+        this.windows.splice(0,this.windows.length);
+      }
       let latSum = 0;
       let lngSum = 0;
       let numG = 100;
@@ -2064,11 +2108,11 @@ export default {
                     that.windows.forEach(window => {
                         window.visible = false;
                     });
-
-                    that.curWindow = that.windows[i];
-
+                    // that.$set(that, 'curWindow', that.windows[i]);
+                    let i_index = i;
                     console.log(that.curWindow);
                     that.$nextTick(() => {
+                        that.curWindow = that.windows[i_index];
                         that.curWindow.visible = true;
                     });
                     }
@@ -2090,16 +2134,18 @@ export default {
                       that.windows.forEach(window => {
                         window.visible = false;
                       });
-                      that.curWindow = that.windows[length + i];
-                      if (category == 4) {
-                        that.getBySiteId(
-                          that.curWindow.other.id,
-                          that.curWindow.other
-                        );
-                        // debugger;
-                      }
                       console.log(that.curWindow);
+                      let i_index = i;
                       that.$nextTick(() => {
+                        that.curWindow = that.windows[length + i_index];
+                            // that.$set(that, 'curWindow', that.windows[length + i]);
+                        if (category == 4) {
+                            that.getBySiteId(
+                            that.curWindow.other.id,
+                            that.curWindow.other
+                            );
+                            // debugger;
+                        }
                         that.curWindow.visible = true;
                       });
                     }
@@ -2120,15 +2166,16 @@ export default {
                       that.windows.forEach(window => {
                         window.visible = false;
                       });
-                      that.curWindow = that.windows[length + i];
-                      if (category == 4) {
-                        that.getBySiteId(
-                          that.curWindow.other.id,
-                          that.curWindow.other
-                        );
-                      }
                       console.log(that.curWindow);
+                      let i_index = i;
                       that.$nextTick(() => {
+                        that.curWindow = that.windows[length + i_index];
+                        if (category == 4) {
+                            that.getBySiteId(
+                            that.curWindow.other.id,
+                            that.curWindow.other
+                            );
+                        }
                         that.curWindow.visible = true;
                       });
                     }
@@ -2328,64 +2375,79 @@ export default {
     },
     getOrganTree () {
         let _this = this;
+        let params = {
+            name: '',
+            organId: BASIC_DATA_SYS.lawSupervise,
+            type: 0
+        }
        new Promise((resolve, reject) => {
-        getOrganTree(BASIC_DATA_SYS.lawSupervise).then(
+        getOrganTree(params).then(
           res => {
             let dataArray = res.data;
-            dataArray.forEach((item,i)=>{
+            dataArray.icon = 'icon_jc1';
+            dataArray.children.forEach((item,i)=>{
                 addChildren(item);
             })
             function addChildren(item) {
 
                 item.icon = item.icon?item.icon:'icon_jc1';
-                if (item.children&&item.children.length>0 ) {
+                if (['执法人员','执法车辆', '执法船舶'].indexOf(item.name) == -1 ) {
+                    if (item.users) {
+                        item.users.forEach((user,i)=>{
+                            user.name = user.nickName;
+                            user.icon = 'icon_jc11';
+                        })
+                    }
+                    item.children = item.children ? item.children : [];
                     item.children.splice(0,0,{
                         id: item.id,
                         pid:item.pid,
-                        label: '执法人员',
+                        name: '执法人员',
                         icon: 'icon_jc11',
-                        children: []
+                        children: item.users
                     },{
                         id: item.id,
                         pid:item.pid,
-                        label: '执法车辆',
+                        name: '执法车辆',
                         icon: 'icon_cl11'
                     },{
                         id: item.id,
                         pid:item.pid,
-                        label: '执法船舶',
+                        name: '执法船舶',
                         icon: 'icon_cb11'
                     });
-                    let len = item.children.length;
+                    let len = item.children.length -3;
                     while (len > 0) {
                         item.children.forEach((obj,i)=> {
-                            addChildren(obj);
-                            len--;
+                            if (i > 2) {
+                                addChildren(obj);
+                                len--;
+                            }
                         })
                     }
                 } else if (['执法人员','执法车辆', '执法船舶'].indexOf(item.label) == -1){
-                    // debugger;
-                   item.children = [{
-                         id: item.id,
-                        pid:item.pid,
-                        label: '执法人员',
-                        icon: 'icon_jc11',
-                        children: []
-                    },{
-                        id: item.id,
-                        pid:item.pid,
-                        label: '执法车辆',
-                        icon: 'icon_cl11'
-                    },{
-                        id: item.id,
-                        pid:item.pid,
-                        label: '执法船舶',
-                        icon: 'icon_cb11'
-                    }];
+                //     // debugger;
+                //    item.children = [{
+                //          id: item.id,
+                //         pid:item.pid,
+                //         name: '执法人员',
+                //         icon: 'icon_jc11',
+                //         children: item.users
+                //     },{
+                //         id: item.id,
+                //         pid:item.pid,
+                //         name: '执法车辆',
+                //         icon: 'icon_cl11'
+                //     },{
+                //         id: item.id,
+                //         pid:item.pid,
+                //         name: '执法船舶',
+                //         icon: 'icon_cb11'
+                //     }];
                 }
                 // return item
             }
-            _this.data = dataArray;
+            _this.data = [dataArray];
             // debugger;
           },
           error => {
@@ -2406,7 +2468,7 @@ export default {
      })
     this.lunarDate = lunarDate();
     this.getOrganTree();
-    this.updateDrawer();
+    // this.updateDrawer();
   },
   created () {
     this.searchPageAll(6, 'gjclList');
@@ -2423,28 +2485,30 @@ export default {
         isCheck (val) {
             this.toolShow = true;
             let _that = this;
-            if (val) {
-                // 人员
-                let data = {
-                    key: this.filterText,
-                    type: 0
-                }
-                new Promise((resolve, reject) => {
-                    getZfjgLawSupervise(data).then(
-                        res => {
-                            if(res.data.records && res.data.records.length > 0) {
-                                console.log(111111);
-                                res.data.records.forEach((item,i)=>{
-                                    _that.$refs.treeFilter.filter(item);
-                                })
-                            }
-                        }
-                    )
-                })
-            } else {
-                // 机构
-                _that.$refs.treeFilter.filter(_that.filterText);
-            }
+            _that.$refs.treeFilter.filter(_that.filterText);
+            // if (val) {
+            //     // 人员
+            //     let data = {
+            //         key: this.filterText,
+            //         type: 0
+            //     }
+            //     new Promise((resolve, reject) => {
+            //         getZfjgLawSupervise(data).then(
+            //             res => {
+            //                 if(res.data.records && res.data.records.length > 0) {
+            //                     console.log(111111);
+            //                     res.data.records.forEach((item,i)=>{
+            //                         _that.$refs.treeFilter.filter(item);
+            //                     })
+            //                     _that.$refs.treeFilter.filter(_this.filterText);
+            //                 }
+            //             }
+            //         )
+            //     })
+            // } else {
+            //     // 机构
+            //     _that.$refs.treeFilter.filter(_that.filterText);
+            // }
         },
         filterText(val) {
             // debugger;
@@ -2454,27 +2518,31 @@ export default {
             this.toolShow = true;
             let _that = this;
             if (this.isCheck) {
+                // _that.$refs.treeFilter.filter(_that.filterText);
                 // 人员
-                let data = {
-                    key: val,
-                    type: 0
-                }
-                new Promise((resolve, reject) => {
-                    getZfjgLawSupervise(data).then(
-                        res => {
-                            if(res.data.records && res.data.records.length > 0) {
-                                console.log(111111);
-                                res.data.records.forEach((item,i)=>{
-                                    _that.$refs.treeFilter.filter(item);
-                                })
-                            }
-                        }
-                    )
-                })
+                // let data = {
+                //     key: val,
+                //     type: 0
+                // }
+                // new Promise((resolve, reject) => {
+                //     getZfjgLawSupervise(data).then(
+                //         res => {
+                //             if(res.data.records && res.data.records.length > 0) {
+                //                 console.log(111111);
+                //                 _that.$nextTick(()=>{
+                //                     res.data.records.forEach((item,i)=>{
+                //                         _that.$refs.treeFilter.filter(item);
+                //                     })
+                //                     _that.$refs.treeFilter.filter(_that.filterText);
+                //                 })
+                //             }
+                //         }
+                //     )
+                // })
             } else {
                 // 机构
-                _that.$refs.treeFilter.filter(val);
             }
+            _that.$refs.treeFilter.filter(val);
 
         }
     },
