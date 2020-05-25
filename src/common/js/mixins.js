@@ -1,40 +1,39 @@
 import { mapGetters } from "vuex";
-import { htmlExportPDF } from '@/common/js/htmlExportPDF';
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  findCaseAllBindPropertyApi, updatePartCaseBasicInfoApi, getDocDetailByIdApi,findAllSetListApi,findBindPropertyRuleApi,
+  updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi,
 } from "@/api/caseHandle";
-import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
+import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 
 export const mixinGetCaseApiList = {
   data() {
     return {
       isSaveLink: false, //是否点击了环节保存，未保存不可以操作文书
-      canGoNextLink:false,
-      submitApproval:false,
+      canGoNextLink: false,
+      submitApproval: false,
     }
   },
-  computed: { 
+  computed: {
     ...mapGetters(['caseId']),
     // 是否禁用
-    fieldDisabled(fieldProperty){
-      return function(fieldProperty){
-        return  fieldProperty && fieldProperty.editable==false
+    fieldDisabled(fieldProperty) {
+      return function (fieldProperty) {
+        return fieldProperty && fieldProperty.editable == false
       }
     },
     // 是否必填
-    fieldRules(field,fieldProperty,validateType='',partyOrCom=''){
-      return function(field,fieldProperty,validateType='',partyOrCom=''){
+    fieldRules(field, fieldProperty, validateType = '', partyOrCom = '') {
+      return function (field, fieldProperty, validateType = '', partyOrCom = '') {
         let validateOther = "";
-        if(validateType){
-          validateOther = { validator:validateType,trigger: 'blur'}
-        }else{
-          validateOther = { required:false}
+        if (validateType) {
+          validateOther = { validator: validateType, trigger: 'blur' }
+        } else {
+          validateOther = { required: false }
         }
-        if(partyOrCom !== ''){
-          return  partyOrCom && fieldProperty && fieldProperty.required ? this.rules.field : [validateOther]
-        }else{
-          return  fieldProperty && fieldProperty.required ? this.rules.field : [validateOther]
+        if (partyOrCom !== '') {
+          return partyOrCom && fieldProperty && fieldProperty.required ? this.rules.field : [validateOther]
+        } else {
+          return fieldProperty && fieldProperty.required ? this.rules.field : [validateOther]
         }
       }
     }
@@ -53,16 +52,16 @@ export const mixinGetCaseApiList = {
             // 处理时间
             let nd = 1000 * 24 * 60 * 60;
             let endTime
-            if(item.closeDate){
+            if (item.closeDate) {
               endTime = new Date(item.closeDate)
             }
-            else{
+            else {
               endTime = new Date()
             }
 
             let day = (endTime - new Date(item.acceptTime)) / nd;
             day = Math.ceil(day)
-            item.caseDealTime = day+'天';
+            item.caseDealTime = day + '天';
             // console.log(item.closeDate,'item.closeDate',day, '天', endTime, item.acceptTime, item.caseDealTime)
           })
           this.total = res.data.total;
@@ -86,36 +85,14 @@ export const mixinGetCaseApiList = {
             this.com_getCaseBasicInfo(caseId, caseLinktypeId);
           } else {
             console.log(res.data);
-            console.log('this.propertyFeatures',this.propertyFeatures);
-            if(this.propertyFeatures != undefined){
+            console.log('this.propertyFeatures', this.propertyFeatures);
+            if (this.propertyFeatures != undefined) {
               let data = {
                 caseBasicInfoId: caseId,
                 typeId: caseLinktypeId
               };
-              this.searchPropertyFeatures(data,res.data,refreshDataForPdf);  
+              this.searchPropertyFeatures(data, res.data, refreshDataForPdf);
             }
-            // else{    //表单全部改完之后删掉！！！！
-            //   this.caseLinkDataForm.id = res.data.id;
-            //   //利用属性给this.formData赋值
-            //   let formData = JSON.parse(res.data.formData);
-            //   for (var key in formData) {
-            //     this.formData[key] = formData[key]
-            //   }
-            //   //对环节或文书中的一些字段做处理
-            //   if (this.needDealData) {
-            //     this.getDataAfter();
-            //   }
-            //   console.log('this.formData', this.formData)
-            //   this.setSomeData(this.formData);
-            //   this.isSaveLink = true;
-            //   if (refreshDataForPdf) {
-            //     // 提交pdf页
-            //     setTimeout(() => {
-            //       this.printContent();
-            //     }, 1500)
-            //   }
-            // }
-            
 
           }
         },
@@ -131,40 +108,9 @@ export const mixinGetCaseApiList = {
         typeId: formOrDocId
       };
       console.log('data', data);
-      this.searchPropertyFeatures(data);  
+      this.searchPropertyFeatures(data);
 
-      // if(this.propertyFeatures != undefined){
-      //   this.searchPropertyFeatures(data);  
-      // }
-      // else{    //文书表单都修改完成后可以删掉
-      //   findCaseAllBindPropertyApi(data).then(
-      //     res => {
-      //       console.log('获取案件信息', res)
-      //       let caseData = JSON.parse(res.data.propertyData);
-      //       console.log('获取案件表单信息', caseData);
-            
-      //         if (this.formData) {
-      //           for (var key in caseData) {
-      //             this.formData[key] = caseData[key]
-      //           }
-      //           this.setSomeData(this.formData);
-      //         } else {
-      //           for (var key in caseData) {
-      //             this.docData[key] = caseData[key]
-      //           }
-      //           this.setSomeData(this.docData);
-      //         }
-      //         if (this.needDealData) {
-      //           this.getDataAfter();
-      //         }   
-      //     },
-      //     error => {
-      //       console.log(error)
-      //     }
-      //   );
-      // }
 
-      
     },
     //提交文书表单信息，跳转到pdf文书
     com_submitCaseForm(handleType, docForm, hasNextBtn) {
@@ -339,13 +285,13 @@ export const mixinGetCaseApiList = {
           if (res.data.length == 0) {
             this.com_getCaseBasicInfo(params.caseId, params.docId);
           } else {
-            if(this.propertyFeatures != undefined){
+            if (this.propertyFeatures != undefined) {
               let data = {
                 caseBasicInfoId: params.caseId,
                 typeId: params.docId
               };
-              this.searchPropertyFeatures(data,res.data[0]);  
-            }else{
+              this.searchPropertyFeatures(data, res.data[0]);
+            } else {
               console.log(res.data[0]);
               this.caseDocDataForm.id = res.data[0].id;
               this.docData = JSON.parse(res.data[0].docData);
@@ -359,12 +305,7 @@ export const mixinGetCaseApiList = {
                 this.isParty = false;
               }
             }
-
-
-            
           }
-          
-          
         },
         err => {
           console.log(err);
@@ -378,7 +319,6 @@ export const mixinGetCaseApiList = {
       console.log('caseDocDataForm', this.caseDocDataForm);
       if (handleType) {
         this.$refs[docForm].validate((valid, noPass) => {
-
           if (valid) {
             console.log('通过')
             this.$store.dispatch("addDocData", this.caseDocDataForm).then(
@@ -392,7 +332,6 @@ export const mixinGetCaseApiList = {
                 if (this.caseDocDataForm.docDataId != undefined) {
                   this.caseDocDataForm.docDataId = res.data.id;
                 }
-
                 console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
                 this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
                 //提交成功后提交pdf到服务器，后打开pdf
@@ -403,11 +342,7 @@ export const mixinGetCaseApiList = {
               }
             );
           } else {
-            console.log('不通过')
-
-            // noPass[Object.keys(v)[0]]
             let a = Object.values(noPass)[0];
-            console.log(a);
             this.$message({
               showClose: true,
               message: a[0].message,
@@ -422,7 +357,6 @@ export const mixinGetCaseApiList = {
       } else {
         this.$store.dispatch("addDocData", this.caseDocDataForm).then(
           res => {
-            console.log("暂存文书", res);
             this.$message({
               type: "success",
               message: "暂存成功"
@@ -495,20 +429,11 @@ export const mixinGetCaseApiList = {
       );
     },
     async printContent(docDataId = '') {
-      console.log('printContent docDataId',docDataId)
+      console.log('printContent docDataId', docDataId)
       this.replaceTextArea();
-      // if(){
-        this.uploadFile('','',docDataId)
-      // }else{
-        // htmlExportPDF(this.formOrDocData.pageDomId, this.uploadFile)
-      // }
+      this.uploadFile('', '', docDataId)
     },
-    uploadFile(file, name,docDataId) {
-      // var f = new File([file.output("blob")], name, { type: 'application/pdf' })
-      // var fd = new FormData()
-      // fd.append("file", f)
-      // fd.append('caseId', this.caseId);
-      // fd.append('category', '文书');
+    uploadFile(file, name, docDataId) {
 
       let docId = '';  //文书 id
 
@@ -523,98 +448,34 @@ export const mixinGetCaseApiList = {
         //即是环节也是文书
         docId = this.huanjieAndDocId;
       }
-      // fd.append('docId', docId);
 
-
-      //已经上传过了，
-      // if (iLocalStroage.gets("currrentPdfData")) {
-      //   fd.append('id', iLocalStroage.gets("currrentPdfData").id);
-      //   fd.append('storageId', iLocalStroage.gets("currrentPdfData").storageId);
-      // }
       let caseLinktypeId = ""; //环节id
       if (this.caseLinkDataForm) {
         caseLinktypeId = this.caseLinkDataForm.caseLinktypeId
       }
 
-      // this.$store.dispatch("uploadFile", fd).then(
-      //   res => {
-      //     console.log('上传', res);
-          //上传pdf之后显示pdf
-          console.log('upload docDataId',docDataId);
-          if(docId == this.BASIC_DATA_SYS.establish_huanjieAndDocId || docId == this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId || docId == this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId ){
-            this.$store.commit('setApprovalState', 'approvalBefore')
-          }else{
-            this.$store.commit('setApprovalState', '')
-          }
-          let routerData = {
-            docId: docId,
-            // approvalOver: this.approvalOver ? true : false,
-            caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
-            // docDataId: (this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : docDataId
-            docDataId: this.caseDocDataForm ? docDataId : ''
-            
-          }
-          this.$store.dispatch("deleteTabs", this.$route.name);
-          this.$router.push({ name: 'case_handle_myPDF', params: routerData })
-        // },
-        // err => {
-        //   console.log(err);
-        // }
-      // );
-    },
-    uploadFileGD(file, name) {
-      var f = new File([file.output("blob")], name, { type: 'application/pdf' })
-      var fd = new FormData()
-      fd.append("file", f)
-      fd.append('caseId', this.caseId);
-      fd.append('category', '文书');
-
-      let docId = '';  //文书 id
-
-      if (this.caseDocDataForm != undefined) {
-        // 只是文书
-        docId = this.caseDocDataForm.caseDoctypeId;
+      //上传pdf之后显示pdf
+      console.log('upload docDataId', docDataId);
+      if (docId == this.BASIC_DATA_SYS.establish_huanjieAndDocId || docId == this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId || docId == this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId) {
+        this.$store.commit('setApprovalState', 'approvalBefore')
       } else {
-        //即是环节也是文书
-        docId = this.huanjieAndDocId;
+        this.$store.commit('setApprovalState', '')
       }
-      fd.append('docId', docId);
-      //已经上传过了，
-      if (iLocalStroage.gets("currrentPdfData")) {
-        fd.append('id', iLocalStroage.gets("currrentPdfData").id);
-        fd.append('storageId', iLocalStroage.gets("currrentPdfData").storageId);
+      let routerData = {
+        docId: docId,
+        // approvalOver: this.approvalOver ? true : false,
+        caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
+        // docDataId: (this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : docDataId
+        docDataId: this.caseDocDataForm ? docDataId : ''
+
       }
-      let caseLinktypeId = ""; //环节id
-      if (this.caseLinkDataForm) {
-        caseLinktypeId = this.caseLinkDataForm.caseLinktypeId
-      }
-
-      console.log('fd', fd.get('docId'));
-      console.log('currrentPdfId', fd.get('id'));
-      console.log('currrentPdfstorageId', fd.get('storageId'));
-
-
-      this.$store.dispatch("uploadFile", fd).then(
-        res => {
-          console.log('上传', res);
-          //上传pdf之后显示pdf
-          let routerData = {
-            hasApprovalBtn: docId == this.BASIC_DATA_SYS.establish_huanjieAndDocId || docId == this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId || docId == this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId ? true : false,
-            docId: docId,
-            approvalOver: this.approvalOver ? true : false,
-            caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
-          }
-          this.$store.dispatch("deleteTabs", this.$route.name);
-          //   this.$router.push({ name: 'myPDF', params: routerData })
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      this.$store.dispatch("deleteTabs", this.$route.name);
+      this.$router.push({ name: 'case_handle_myPDF', params: routerData })
     },
+
     //通过文书id获取该文书pdf的id
     getFileIdByDocId(docId, approvalLink) {
-      console.log('min-caseId',this.caseId)
+      console.log('min-caseId', this.caseId)
       this.$store.dispatch("getFile", {
         docId: docId,
         caseId: this.caseId,
@@ -632,8 +493,6 @@ export const mixinGetCaseApiList = {
               isApproval: true
             }
           })
-          // this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
-
         },
         err => {
           console.log(err);
@@ -648,12 +507,12 @@ export const mixinGetCaseApiList = {
       }
       //判断当事人类型
       if (formData.party) {
-        
+
         this.isParty = true;
       } else {
         this.isParty = false;
       }
-      console.log('设置当事人类型',this.isParty)
+      console.log('设置当事人类型', this.isParty)
     },
     //环节已完成时只显示返回按钮（在流程图跳环节时）
     isCompete() {
@@ -662,7 +521,7 @@ export const mixinGetCaseApiList = {
       }
     },
     //判断流程图跳转pdf文书还是表单 前先获取一下案件基本信息，为了获取是否有环节正在审批中
-    flowShowPdfOrFormBefore(data, flowChartData){
+    flowShowPdfOrFormBefore(data, flowChartData) {
       let casedata = {
         id: this.caseId
       };
@@ -670,11 +529,11 @@ export const mixinGetCaseApiList = {
         res => {
           console.log('判断流程图跳转获取案件信息', res);
           let caseIsApprovaling = false;
-          if(res.data.caseStatus == "待审批" || res.data.caseStatus == "审批中"){
+          if (res.data.caseStatus == "待审批" || res.data.caseStatus == "审批中") {
             caseIsApprovaling = true;
             this.submitApproval = true;
           }
-          this.flowShowPdfOrForm(data, flowChartData,caseIsApprovaling)
+          this.flowShowPdfOrForm(data, flowChartData, caseIsApprovaling)
         },
         err => {
           console.log(err);
@@ -682,7 +541,7 @@ export const mixinGetCaseApiList = {
       );
     },
     //判断流程图跳转pdf文书还是表单
-    flowShowPdfOrForm(data, flowChartData,caseIsApprovaling) {
+    flowShowPdfOrForm(data, flowChartData, caseIsApprovaling) {
       console.log(data);
       console.log('flowChartData', flowChartData);
       let completeLinkArr = flowChartData.completeLink.split(',');
@@ -695,17 +554,17 @@ export const mixinGetCaseApiList = {
       this.$store.dispatch('deleteTabs', 'case_handle_flowChart');
       let data2 = this.com_getCaseRouteName(data.linkID);
       this.$store.commit('setDocId', data.docId);
-      if (data.curLinkState == "complete" ) {    //已完成文书显示pdf  审核中也显示pdf
+      if (data.curLinkState == "complete") {    //已完成文书显示pdf  审核中也显示pdf
         if (!isHuanjieDoc) {
           this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
         } else {
           this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
         }
-      } else if(data.curLinkState == 'unLock'){
+      } else if (data.curLinkState == 'unLock') {
         //行政强制措施即将到期,从零点开始提示
-        console.log('this.measureDateEndTime',new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
-        let  measureDateEndTimeStart= new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
-        if(this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)){
+        console.log('this.measureDateEndTime', new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
+        let measureDateEndTimeStart = new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
+        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)) {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }
@@ -719,26 +578,26 @@ export const mixinGetCaseApiList = {
             this.$router.push({ name: data2.nextLink })
           }
         }
-      }else if(data.curLinkState == 'doing'){  //进行中的环节
+      } else if (data.curLinkState == 'doing') {  //进行中的环节
         //行政强制措施即将到期,从零点开始提示
-        console.log('this.measureDateEndTime',new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
-        let  measureDateEndTimeStart= new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
-        if(this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)){
+        console.log('this.measureDateEndTime', new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
+        let measureDateEndTimeStart = new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
+        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)) {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }
         //有审批的环节
-        if(data.linkID == BASIC_DATA_SYS.establish_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId){
-          if(caseIsApprovaling){
+        if (data.linkID == BASIC_DATA_SYS.establish_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId) {
+          if (caseIsApprovaling) {
             this.$store.commit('setApprovalState', 'submitApproval')
-          }else{
+          } else {
             this.$store.commit('setApprovalState', 'approvalBefore')
           }
           this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId } })
-        }else{
-          this.searchHuanjiePdf(data2,data.linkID);
+        } else {
+          this.searchHuanjiePdf(data2, data.linkID);
         }
-        
+
       }
     },
     //根据id获取文书信息(使用场景:询问笔录查看详情）
@@ -755,22 +614,22 @@ export const mixinGetCaseApiList = {
       })
     },
     //多文书情况下去获取是否可编辑等属性信息
-    getDocDetailByIdAfter(){
+    getDocDetailByIdAfter() {
       let caseBasicInfoIdAndtypeId = {
         caseBasicInfoId: this.caseId,
         typeId: this.$route.params.docId
       };
-      findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res=>{
+      findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res => {
         let resdata = JSON.parse(res.data.propertyData);
         // console.log(data);
         this.propertyFeatures = resdata;
       })
     },
     //隐藏textarea 显示span
-    replaceTextArea(){
+    replaceTextArea() {
       //打印时去掉下拉框的图标
       let selectObjIcon = document.getElementsByClassName('el-select__caret');
-      for(let i=0;i<selectObjIcon.length;i++){
+      for (let i = 0; i < selectObjIcon.length; i++) {
         selectObjIcon[i].style.display = 'none';
       }
 
@@ -779,7 +638,7 @@ export const mixinGetCaseApiList = {
       console.log(obj[0]);
 
 
-      for(let i=0;i<obj.length;i++){
+      for (let i = 0; i < obj.length; i++) {
         //获取textarea的值
         let textAreaValue = obj[i].value;
         //获取textarea 父元素的classname
@@ -789,7 +648,7 @@ export const mixinGetCaseApiList = {
         let newSpan = document.createElement("span");
         newSpan.innerHTML = textAreaValue;
         newSpan.setAttribute("class", textAreaBoxClass);
-        obj[i].parentNode.style.display='none'
+        obj[i].parentNode.style.display = 'none'
         objParent.appendChild(newSpan);
       }
 
@@ -797,72 +656,72 @@ export const mixinGetCaseApiList = {
       //     htmlExportPDF('test_print',function(){})
       // }, 1000)
 
-  },
-  //查询环节是否生成了pdf
-  searchHuanjiePdf(data,linkID){
-    this.$store.dispatch("getFile", {
-      docId: data.docId,
-      caseId: this.caseId,
-    }).then(res=>{
-      console.log('查询环节是否生成了pdf',res);
-      if(res && res.length >0){
-        this.$router.push({ name: 'case_handle_myPDF', params: { docId: data.docId,caseLinktypeId: linkID} })
-      }else{
-        this.$router.push({ name: data.nextLink })
-      }
-    })
-    .catch(err=>{console.log(err)})
-  },
-  //查询文书或表单是否禁用及必填等
-  searchPropertyFeatures(caseBasicInfoIdAndtypeId,savedData='',refreshDataForPdf=false){
-    findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res=>{
-      console.log('通过案件Id级文书类型Id查询案件基本信息及规则',res);
-      let data = JSON.parse(res.data.propertyData);
-      console.log(data);
-      this.propertyFeatures = data;
-      console.log('savedData',savedData);
-      if (this.formData) {
-        if(savedData){
-          this.caseLinkDataForm.id = savedData.id;
-          this.formData = JSON.parse(savedData.formData);
-          this.isSaveLink = true;
-          this.canGoNextLink = savedData.status == '1' ? true : false
-          if (refreshDataForPdf) {
-            // 提交pdf页
-            setTimeout(() => {
-              this.printContent();
-            }, 1500)
-          }
-        }else{
-          for (var key in data) {
-            this.formData[key] = data[key].val;
-          }
-          console.log('this.formData',this.formData);
+    },
+    //查询环节是否生成了pdf
+    searchHuanjiePdf(data, linkID) {
+      this.$store.dispatch("getFile", {
+        docId: data.docId,
+        caseId: this.caseId,
+      }).then(res => {
+        console.log('查询环节是否生成了pdf', res);
+        if (res && res.length > 0) {
+          this.$router.push({ name: 'case_handle_myPDF', params: { docId: data.docId, caseLinktypeId: linkID } })
+        } else {
+          this.$router.push({ name: data.nextLink })
         }
-        
-      } else {
-        if(savedData){
-          this.caseDocDataForm.id = savedData.id;
-          this.docData = JSON.parse(savedData.docData);
-        }else{
-          for (var key in data) {
-            this.docData[key] = data[key].val || '';
+      })
+        .catch(err => { console.log(err) })
+    },
+    //查询文书或表单是否禁用及必填等
+    searchPropertyFeatures(caseBasicInfoIdAndtypeId, savedData = '', refreshDataForPdf = false) {
+      findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res => {
+        console.log('通过案件Id级文书类型Id查询案件基本信息及规则', res);
+        let data = JSON.parse(res.data.propertyData);
+        console.log(data);
+        this.propertyFeatures = data;
+        console.log('savedData', savedData);
+        if (this.formData) {
+          if (savedData) {
+            this.caseLinkDataForm.id = savedData.id;
+            this.formData = JSON.parse(savedData.formData);
+            this.isSaveLink = true;
+            this.canGoNextLink = savedData.status == '1' ? true : false
+            if (refreshDataForPdf) {
+              // 提交pdf页
+              setTimeout(() => {
+                this.printContent();
+              }, 1500)
+            }
+          } else {
+            for (var key in data) {
+              this.formData[key] = data[key].val;
+            }
+            console.log('this.formData', this.formData);
+          }
+
+        } else {
+          if (savedData) {
+            this.caseDocDataForm.id = savedData.id;
+            this.docData = JSON.parse(savedData.docData);
+          } else {
+            for (var key in data) {
+              this.docData[key] = data[key].val || '';
+            }
           }
         }
-      }
-      if (this.needDealData) {
-        this.getDataAfter();
-      } 
-      if ((this.formData && this.formData.party) || (this.docData && this.docData.party)) {
-        this.isParty = true;
-      } else {
-        this.isParty = false;
-      }
-    }).catch(err=>{
-      console.log(err);
-    })
-   
-  }
+        if (this.needDealData) {
+          this.getDataAfter();
+        }
+        if ((this.formData && this.formData.party) || (this.docData && this.docData.party)) {
+          this.isParty = true;
+        } else {
+          this.isParty = false;
+        }
+      }).catch(err => {
+        console.log(err);
+      })
+
+    }
 
 
 
@@ -873,9 +732,9 @@ export const mixinGetCaseApiList = {
     this.isCompete();
   },
   watch: {
-    '$route' (to, from) {
-        debugger;
-        this.init()
+    '$route'(to, from) {
+      debugger;
+      this.init()
     }
   }
 }
