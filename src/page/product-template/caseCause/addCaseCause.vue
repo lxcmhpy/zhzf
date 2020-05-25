@@ -113,20 +113,20 @@ export default {
     this.getEnforceLawType();
   },
   methods: {
-    showModal(type, data, formType) {
+    showModal(type, data) {
       this.visible = true;
       this.handelType = type;
-      this.dictData = data.row;
-      this.formType = formType;
+      // this.dictData = data.row;
+      // this.formType = formType;
       if (type == 0) {
         console.log(data);
         this.isAdd = true;
         this.dialogTitle = "新增";
       } else if (type == 2) {
-        console.log(data);
+        console.log("111",data);
         this.isAdd = false;
         this.dialogTitle = "修改";
-        this.addCaseCauseForm = this.dictData;
+        this.addCaseCauseForm = data;
       }
     },
     //关闭弹窗的时候清除数据
