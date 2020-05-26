@@ -256,6 +256,15 @@ export default [
     component: () => import("@/page/caseHandle/unRecordCase/inforCollection.vue")
   },
   {
+    path: "/inforCollect",
+    name: "case_handle_compensationInforCollection",
+    meta: {
+      title: "信息采集",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/form/inforCollectionPage/compensationInforCollection.vue")
+  },
+  {
     path: "/myPDF",
     name: "case_handle_myPDF",
     meta: {

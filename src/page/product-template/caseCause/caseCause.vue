@@ -179,8 +179,7 @@ export default {
       
     }
   },
-   
-        //添加违法行为
+
   created() {
     this.getCaseCauseList();
     this.getEnforceLawType();

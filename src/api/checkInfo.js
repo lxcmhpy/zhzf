@@ -95,3 +95,14 @@ export function yyclCheckApi(data) {
         cancelToken: setCancelSource()
     });
 }
+
+//营运车辆查验（通过车牌号码和车牌颜色查验，可批量）
+export function vehicleCheckApi(data) {
+  console.log(data);
+  return request({
+    url: CHECK_API + "/yuz/vehicle?json=" + data,
+    method: "GET",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}

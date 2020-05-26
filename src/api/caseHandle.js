@@ -1041,3 +1041,14 @@ export function getCurrentApproveApi(id) {
 }
 
 
+
+//根据案件类型获取案件流程 （包括哪个信息采集页面）
+export function queryFlowBycaseTypeApi(id) {
+  return request({
+    url: "/case/caseTemplate/flow/queryFlowBycaseType/" + id,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

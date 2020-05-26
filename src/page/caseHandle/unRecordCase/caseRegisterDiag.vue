@@ -48,6 +48,9 @@ import chooseillegalAct from "@/page/chooseIllegegaDialog.vue";
 import iLocalStroage from "@/common/js/localStroage";
 import MainContent from "@/components/mainContent";
 import Layout from "@/page/lagout/mainLagout"; //Layout 是架构组件，不在后台返回，在文件里单独引入
+import {
+  queryFlowBycaseTypeApi,
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -212,16 +215,26 @@ export default {
           };
           iLocalStroage.sets("someCaseInfo", someCaseInfo);
           iLocalStroage.removeItem("stageCaseId");
-          _this.$router.push({
-            name: 'case_handle_inforCollect',
-          });
+          this.findInforCollectPageName(caseTypeId);
+          // _this.$router.push({
+          //   name: 'case_handle_inforCollect',
+          // });
         }
       });
+    },
+    //根据案件类型判断进入哪个信息采集页
+    findInforCollectPageName(id){
+      queryFlowBycaseTypeApi(id).then(res=>{
+          console.log('res',res);
+          this.$router.push({
+            name: res.data.basicInfoPage,
+          });
+      }).catch(err=>{console.log(err)})
     }
   },
   mounted() { }
 };
 </script>
-<style lang="scss">
-@import "@/assets/css/caseHandle/index.scss";
+<style lang="scss" src="@/assets/css/caseHandle/index.scss">
+/* @import "@/assets/css/caseHandle/index.scss"; */
 </style>

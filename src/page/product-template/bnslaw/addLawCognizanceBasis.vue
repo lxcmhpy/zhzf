@@ -1,9 +1,8 @@
 <template>
-  <!-- LawCognizanceBasis   认定依据 -->
-  <el-dialog title="认定依据" :visible.sync="visible" :close-on-click-modal="false" width="50%">
+  <el-dialog title="认定依据" :visible.sync="visible" @close="closeDialog" :close-on-click-modal="false" width="25%">
     <el-form :model="addPageForm" label-width="100px" ref="addPageFormRef" :rules="rules">
-      <el-form-item label="法规名称" prop="bnslawNameCog">
-        <el-input v-model="addPageForm.bnslawNameCog" placeholder="法规名称"></el-input>
+      <el-form-item label="法规名称">
+            <el-input v-model="addPageForm.bnslawNameCog"  style = "width:100%" disabled></el-input>
       </el-form-item>
       <el-form-item label="条" prop="itemCog">
         <el-input v-model="addPageForm.itemCog" placeholder="条"></el-input>
@@ -27,7 +26,7 @@
 </template>
 <script>
 import {
-  addeLawCognizanceApi
+  addeLawCognizanceApi,getLawCognizanceByIdApi
 } from "@/api/system";
 import { mapGetters } from "vuex";
 export default {
@@ -44,24 +43,41 @@ export default {
         clauseCog: '',
         bnslawIdCog: ''
       },
+      getBnslawList:[],
       visible: false,
-      rules: {}
+      rules: {
+         
+      },
     }
   },
+  inject: ["reload"],
   methods: {
-    //提交
-    submit() {
-
-    },
     showModal(type, row) {
       this.visible = true;
+      // this.dictData = row.row;
+      if (type == 1) {
+        this.addPageForm.bnslawNameCog = row.strName;
+      } else if (type == 0) {
+        getLawCognizanceByIdApi(row.row.id).then(
+        res => {
+          console.log("查询认定依据", res);
+          if (res.code == '200') {
+            this.addPageForm = res.data;
+          } else {
+            this.$message.error('失败');
+          }
+        },
+        error => {
+          console.log(error)
+        }
+      );
 
+      }
     },
-
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.$refs["addTempleteFormRef"].resetFields();
+      this.$refs["addPageFormRef"].resetFields();
     },
     addSure() {
       this.addPageForm.bnslawIdCog = this.btnlawId;
@@ -69,10 +85,11 @@ export default {
 
       addeLawCognizanceApi(this.addPageForm).then(
         res => {
-          console.log("添加法规", res);
+          console.log("添加认定依据", res);
           if (res.code == '200') {
             this.$message({ message: '添加成功', type: 'success' });
             this.visible = false;
+            this.$emit("getListEmit");
           } else {
             this.$message.error('添加失败');
             return
@@ -86,7 +103,8 @@ export default {
     }
   },
   created() {
-  }
+   
+  },
 }
 </script>
 <style lang="scss" scoped>

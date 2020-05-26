@@ -71,6 +71,13 @@ $dialog-default-height: 560px !default;
     border-radius: 0px;
   }
 
+  /* 小号表单 */
+.el-input--mini {
+  .el-input__inner{
+    height:24px;
+  }
+}
+
   /* 表格 */
   .el-table td,
   .el-table th {
@@ -99,7 +106,9 @@ $dialog-default-height: 560px !default;
   .el-dialog__header {
     background: #E9EDF6;
   }
-
+  .el-drawer__body{
+    overflow: auto;
+  }
 //   .el-dialog__body {
 //     max-height: 450px;
 //     overflow  : auto;

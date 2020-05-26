@@ -92,7 +92,7 @@ export default [
             },
             component: () => import("@/page/product-template/bnslaw/bnslaw.vue"),
             children: [
-             
+
             ]
           },
           {
@@ -199,6 +199,14 @@ export default [
               title: "违法行为管理"
             },
             component: () => import("@/page/product-template/caseCause/caseCause.vue")
+          },
+          {
+            name: "roadLcDeploy",
+            path: "roadLcDeploy",
+            meta: {
+              title: "公路路产配置"
+            },
+            component: () => import("@/page/product-template/road/roadLcDeploy.vue")
           },
         ]
       },

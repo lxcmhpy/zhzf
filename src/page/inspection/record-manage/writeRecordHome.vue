@@ -29,7 +29,6 @@
         </ul>
       </div>
     </div>
-    <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
     <preview ref="previewRef" @userList="getAllUserList"></preview>
     <addModle ref="addModleRef" @userList="getAllUserList"></addModle>
   </div>
@@ -37,12 +36,10 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
-import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
 import preview from "./previewDialog.vue";
 import addModle from "./addModle.vue";
 export default {
   components: {
-    chooseLawPerson,
     preview,
     addModle
   },
@@ -130,15 +127,6 @@ export default {
   methods: {
     addNewModle() {
       this.$refs.addModleRef.showModal();
-     
-    },
-    draw() {
-      var c = document.getElementById("myCanvas");
-      var ctx = c.getContext("2d");
-      ctx.font = "bolder 36px Arial";
-      ctx.textAlign = 'center'
-      ctx.fillStyle = '#6D7B8F'
-      ctx.fillText("好", 32, 42);
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -150,79 +138,12 @@ export default {
         }
       });
     },
-    // 添加管理者
-    addLawPerson() {
-      this.$refs.chooseLawPersonRef.showModal(this.modleData.lawPersonListId, this.alreadyChooseLawPerson);
-    },
-    //查询执法人员
+    //查询
     getAllUserList(list) {
       console.log("list121212", list);
       this.allUserList = list;
       setTimeout(() => {
       }, 100);
-    },
-    //设置执法人员
-    setLawPerson(userlist) {
-      console.log('选择的执法人员', userlist);
-      // this.lawPersonList = userlist;
-      this.alreadyChooseLawPerson = userlist;
-      this.modleData.lawPersonListId = [];
-      let staffIdArr = [];
-      let staffArr = [];
-      let certificateIdArr = [];
-
-      this.alreadyChooseLawPerson.forEach(item => {
-        this.modleData.lawPersonListId.push(item.id);
-        //给表单数据赋值
-        staffIdArr.push(item.id);
-        staffArr.push(item.lawOfficerName);
-        certificateIdArr.push(item.selectLawOfficerCard);
-      });
-      // this.modleData.staffId = staffIdArr.join(',');
-      // this.modleData.staff = staffArr.join(',');
-      // this.modleData.certificateId = certificateIdArr.join(',');
-
-    },
-    //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
-    setLawPersonCurrentP() {
-      let _this = this
-      this.$store
-        .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
-        .then(
-          res => {
-            console.log('执法人员列表', res)
-            _this.userList = res.data;
-            let currentUserData = {};
-            _this.modleData.lawPersonListId = [];
-            _this.alreadyChooseLawPerson = [];
-
-            res.data.forEach(item => {
-              if (
-                item.userId == iLocalStroage.gets("userInfo").id
-              ) {
-                currentUserData.id = item.id;
-                currentUserData.lawOfficerName = item.lawOfficerName;
-                currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
-                _this.alreadyChooseLawPerson.push(currentUserData);
-                _this.modleData.lawPersonListId.push(currentUserData.id);
-                _this.currentUserLawId = currentUserData.id;
-                _this.modleData.staff = item.lawOfficerName;
-                _this.modleData.staffId = item.id;
-
-
-              }
-            });
-          },
-          err => {
-            console.log(err);
-          }
-        );
-    },
-    removeLawPersontag(val) {
-      if (this.currentUserLawId == val) {
-        this.modleData.lawPersonListId.push(val);
-        this.$message('该执法人员不能删除！');
-      }
     },
     // 选择模板
     checkModle() {
