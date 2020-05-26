@@ -23,7 +23,7 @@
                     <td class="tg-y93n" colspan="2">道路运输证字</td>
                     <td class="tg-cly1" colspan="2">{{yyclForm.TransCertificateWord}}</td>
                     <td class="tg-y93n" colspan="2">道路运输证号</td>
-                    <td class="tg-cly1" colspan="2">{{yyclForm.PlateColorCode}}</td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.TransCertificateCode}}</td>
                 </tr>
                 <tr>
                     <td class="tg-y93n" colspan="2">车辆类型代码</td>
@@ -76,7 +76,7 @@
                     <td class="tg-y93n" colspan="2">业户信息ID</td>
                     <td class="tg-cly1" colspan="2"></td>
                     <td class="tg-y93n" colspan="2">省级行政区划代码</td>
-                    <td class="tg-cly1" colspan="2"></td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.ProvinceCode}}</td>
                 </tr>
                 <tr>
                     <td class="tg-y93n" colspan="2">经营许可证字</td>
@@ -149,8 +149,9 @@ export default {
   }
 };
 </script>
-<style lang="scss" src="@/assets/css/systemManage.scss">
+<style lang="scss" src="@/assets/css/systemManage.scss"></style>
 /* @import "@/assets/css/systemManage.scss"; */
+<style lang="scss">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{font-family:Arial, sans-serif;font-size:16px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
 .tg .tg-0pky{border-color:inherit;text-align:center;vertical-align:center;height: 25px;}
