@@ -593,8 +593,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "@/assets/css/personManage.scss";
+<style lang="scss" src="@/assets/css/personManage.scss" scoped>
+  /* @import "@/assets/css/personManage.scss"; */
 </style>
 <style scoped>
   .paper-main {

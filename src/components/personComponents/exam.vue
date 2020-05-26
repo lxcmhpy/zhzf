@@ -130,8 +130,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  @import "@/assets/css/personManage.scss";
+<style lang="scss" src="@/assets/css/personManage.scss">
+ /*  @import "@/assets/css/personManage.scss"; */
   .titleflag {
     width      : 4px;
     height     : 22px;

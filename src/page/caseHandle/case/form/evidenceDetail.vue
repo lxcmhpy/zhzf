@@ -100,8 +100,8 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-@import "@/assets/css/systemManage.scss";
+<style lang="scss" src="@/assets/css/systemManage.scss">
+/* @import "@/assets/css/systemManage.scss"; */
 .detailDialog{
     .el-dialog__body {
         height  :400px;
