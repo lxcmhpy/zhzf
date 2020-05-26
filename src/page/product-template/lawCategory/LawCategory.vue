@@ -1,101 +1,156 @@
 <template>
-   <div class="searchAndpageBox" id="dictBox">
-      <div class="handlePart">
-          <div class="search">
-              <el-form :inline="true" :model="lawCategorySearchForm" >
-                 <el-form-item>
-                 <el-button type="primary" size="medium" icon="el-icon-plus" @click="addLawCategory">添加</el-button>
-                 </el-form-item>
-              </el-form>
-          </div>
+  <div class="searchAndpageBox" id="dictBox">
+    <div class="handlePart">
+      <div class="search">
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
+          <el-form-item label="业务领域名称">
+            <el-input v-model="searchForm.name" placeholder="请输入业务领域名称"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="primary"
+              size="medium"
+              icon="el-icon-search"
+              @click="getLawCategoryList"
+            >查询</el-button>
+            <el-button
+              type="primary"
+              size="medium"
+              icon="el-icon-plus"
+              @click="addLawCategory"
+            >新增业务领域</el-button>
+          </el-form-item>
+        </el-form>
       </div>
-     <div class="tablePart">
+    </div>
+    <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
-        <el-table-column prop="organName" label="机构名称" align="center"></el-table-column>
-        <el-table-column prop="cateName" label="执法门类" align="center"></el-table-column>
-        <el-table-column prop="organTypeName" label="案件类型" align="center"></el-table-column>
+        <el-table-column prop="name" label="执法门类" align="center"></el-table-column>
+        <el-table-column prop="sort" label="排序" align="center"></el-table-column>
+        <el-table-column fixed="right" label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" @click="editLawCategory(scope.row)">修改</el-button>
+            <el-button type="text" @click="hyleDetail(scope.row.id)">行业类别</el-button>
+            <el-button type="text" @click="deleteCategoryById(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
-     </div>
-     <div class="paginationBox">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          background
-          :page-sizes="[10, 20, 30, 40]"
-          layout="prev, pager, next,sizes,jumper"
-          :total="totalPage"
-        ></el-pagination>
+    </div>
+    <div class="paginationBox">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        background
+        :page-sizes="[10, 20, 30, 40]"
+        layout="prev, pager, next,sizes,jumper"
+        :total="totalPage"
+      ></el-pagination>
     </div>
 
     <addLawCategory ref="addLawCategoryRef"></addLawCategory>
-   </div>
+    <hylbDialog ref="hylbDialogRef"></hylbDialog>
+  </div>
 </template>
 <script>
 import addLawCategory from "./addLawCategory";
+import hylbDialog from "./hylbDialog";
+import { getLawCategoryListApi,deleteCategoryByIdApi } from "@/api/caseDeploy";
 
 export default {
-    data() {
+  data() {
     return {
       tableData: [], //表格数据
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
-      searchName:'', //查询名称
-      lawCategorySearchForm:{
-        name:''
+      searchName: "", //查询名称
+      searchForm: {
+        name: ""
       }
     };
+  },
+  components: {
+    addLawCategory,
+    hylbDialog
+  },
+  inject: ["reload"],
+  methods: {
+    //获取列表
+    getLawCategoryList() {
+      let data = {
+        current: this.currentPage,
+        size: this.pageSize,
+        name: this.searchForm.name,
+        pid: ""
+      };
+      let _this = this;
+      getLawCategoryListApi(data).then(
+        res => {
+          console.log("执法门类列表", res);
+          _this.tableData = res.data.records;
+          _this.totalPage = res.data.total;
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
-    components: {
-        addLawCategory
+    //添加
+    addLawCategory() {
+      let data = {
+        leng: this.tableData.length
+      };
+      this.$refs.addLawCategoryRef.showModal(0, data);
     },
-    inject:['reload'],
-    methods: {
-        //获取列表
-        getLawCategoryList() {
-            let data = {
-                current: this.currentPage,
-                size: this.pageSize,
-                // name:this.lawCategorySearchForm.name
-            };
-            let _this = this
-            this.$store.dispatch("getLawCategoryList",data).then(
-                res => {
-                console.log("执法门类管理列表", res);
-                _this.tableData = res.data.records;
-                _this.totalPage = res.data.total;
-                },
-                err => {
-                console.log(err);
-                }
-            );
-        },
-        //添加
-        addLawCategory(){
-            // let data={
-            //         id:'',
-            //         pid:'',
-            //         leng:this.tableData.length
-            // }
-            this.$refs.addLawCategoryRef.showModal(0, '');
-        },
-        //更改每页显示的条数
-        handleSizeChange(val) {
-            this.pageSize = val;
-            this.currentPage = 1;
-            this.getLawCategoryList();
-        },
-        //更换页码
-        handleCurrentChange(val) {
-            this.currentPage = val;
-            this.getLawCategoryList();
-        },
+    //修改
+    editLawCategory(data) {
+      let newRow =JSON.parse(JSON.stringify(data));
+      this.$refs.addLawCategoryRef.showModal(2, newRow);
     },
-    created() {
+    //删除
+    deleteCategoryById(id){
+        this.$confirm("确认删除该业务领域?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          deleteCategoryByIdApi(id).then(
+            res => {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.reload();
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        })
+        .catch(() => {});
+    },
+    //根据id获取行业类别
+    hyleDetail(id){
+        this.$refs.hylbDialogRef.showModal(id);
+    },
+    //更改每页显示的条数
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.currentPage = 1;
+      this.getLawCategoryList();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getLawCategoryList();
+    }
+  },
+  created() {
     this.getLawCategoryList();
   }
-}
+};
 </script>
 <style lang="scss" src="@/assets/css/systemManage.scss">
 /* @import "@/assets/css/systemManage.scss"; */

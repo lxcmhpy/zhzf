@@ -5,7 +5,10 @@
       <div class="search">
         <el-form :inline="true" :model="searchForm" >
           <el-form-item label="名称">
-            <el-input v-model="searchForm.name" placeholder="输入名称"></el-input>
+            <el-input v-model="searchForm.name" clearable placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item label="案件类型">
+            <el-input v-model="searchForm.remark" clearable placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-search" @click="getDocTypeList">查询</el-button>
@@ -23,6 +26,9 @@
         </el-table-column>
         <el-table-column prop="name" label="名称" align="center"></el-table-column>
         <el-table-column prop="path" label="路径" align="center"></el-table-column>
+        <el-table-column prop="linkName" label="环节名称" align="center"></el-table-column>
+        <el-table-column prop="remark" label="案件类型" align="center"></el-table-column>
+        <el-table-column prop="sort" label="排序" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="editDocType(scope.row)" >编辑</el-button>
@@ -60,7 +66,8 @@ export default {
       total: 0,
       searchName:'', //查询名称
       searchForm:{
-        name:''
+        name:'',
+        remark:''
       }
     };
   },
@@ -73,7 +80,8 @@ export default {
       let data = {
         current: this.currentPage,
         size: this.pageSize,
-        name:this.searchForm.name
+        name:this.searchForm.name,
+        remark:this.searchForm.remark
       };
       let _this = this
       //查询所有文书类型

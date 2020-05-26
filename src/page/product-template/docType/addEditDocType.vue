@@ -20,7 +20,19 @@
         </div>
         <div class="item">
           <el-form-item label="所属环节名称" prop="linkName">
-            <el-input ref="linkName" v-model="addDocType.linkName"></el-input>
+            <el-select
+              v-model="addDocType.linkName"
+              @focus="getMainLink('大环节')"
+              filterable
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="(item) in mainLinkList"
+                :key="item.id"
+                :label="item.notes"
+                :value="item.notes"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </div>
         <div class="item">
@@ -29,8 +41,19 @@
           </el-form-item>
         </div>
         <div class="item">
-          <el-form-item label="模板名称" prop="templateName">
-            <el-input v-model="addDocType.templateName"></el-input>
+          <el-form-item label="案件类型" prop="remark">
+            <el-select
+              v-model="addDocType.remark"
+              filterable
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="(res) in caseTypeList"
+                :key="res.id"
+                :label="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
+                :value="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </div>
         <div class="item">
@@ -46,7 +69,7 @@
     </el-dialog>
 </template>
 <script>
-import { saveOrUpdateDocTypeApi } from "@/api/caseHandle";
+import { saveOrUpdateDocTypeApi ,getDocListApi} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -55,14 +78,18 @@ export default {
         id: "",
         name: "",
         linkName: "",
-        templateName:"",
+        remark:"",
         path:"",
         sort:0,
       },
       rules: {
          name: [{ required: true, message: "文书类型名称不能为空", trigger: "blur" }],
-         path: [{ required: true, message: "文书类型地址不能为空", trigger: "blur" }]
+         path: [{ required: true, message: "文书类型地址不能为空", trigger: "blur" }],
+         linkName: [{ required: true, message: "所属环节不能为空", trigger: "blur" }],
+         remark: [{ required: true, message: "所属案件类型名称不能为空", trigger: "blur" }]
       },
+      mainLinkList:[],
+      caseTypeList:[],
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
       handelType: 0, //添加 0  修改2
@@ -74,24 +101,22 @@ export default {
       this.visible = true;
       this.handelType = type;
       if (type == 0) {
-        console.log(data);
         this.dialogTitle = "新增";
         this.addDocType = {
           id: "",
           name: "",
           linkName: "",
-          templateName:"",
+          remark:"",
           path:"",
           sort:data.leng + 1
         };
-        console.log("sds",this.addDocType.sort)
       } else if (type == 2) {
         this.dialogTitle = "修改";
         this.handelType = type;
         this.addDocType.id = data.id;
         this.addDocType.name = data.name;
         this.addDocType.linkName = data.linkName;
-        this.addDocType.templateName = data.templateName;
+        this.addDocType.remark = data.remark;
         this.addDocType.path = data.path;
         this.addDocType.sort = data.sort;
         console.log("修改数据",this.addDocType);
@@ -171,7 +196,36 @@ export default {
         );
       }
 
+    },
+    //通过数据字典获取大环节下拉
+    getMainLink(name) {
+      this.$store.dispatch("findAllDrawerByName", name).then(
+        //查询执法领域
+        res => {
+          if (res.code === 200) {
+            this.mainLinkList = res.data;
+          } else {
+            console.info("没有查询到数据");
+          }
+        }
+      );
+    },
+    //查询案件类型列表
+    getCaseType(){
+      this.$store.dispatch("getCaseTypeList", 0).then(
+        //查询案件类型列表(启用)
+        res => {
+          if (res.code === 200) {
+            this.caseTypeList = res.data;
+          } else {
+            console.info("没有查询到数据");
+          }
+        }
+      );
     }
+  },
+  mounted() {
+    this.getCaseType();
   }
 };
 </script>

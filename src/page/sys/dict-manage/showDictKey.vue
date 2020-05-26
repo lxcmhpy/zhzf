@@ -64,7 +64,7 @@ export default {
     //获取字典值
     getDictKeyList(){
         let _this = this
-        this.$store.dispatch("getDictListDetail",this.dictId).then(
+        this.$store.dispatch("getAllDictListDetail",this.dictId).then(
         res => {
           console.log("字典值列表", res);
           _this.tableData = res.data;

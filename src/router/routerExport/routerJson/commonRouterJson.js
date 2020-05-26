@@ -136,6 +136,14 @@ export default [
             component: () => import("@/page/product-template/lawCategory/LawCategory.vue")
           },
           {
+            name: "configuration",
+            path: "configuration",
+            meta: {
+              title: "业务领域配置"
+            },
+            component: () => import("@/page/product-template/lawCategoryConfiguration/configuration.vue")
+          },
+          {
             name: "docType",
             path: "docType",
             icon: null,
@@ -183,6 +191,14 @@ export default [
               title: "绑定属性管理"
             },
             component: () => import("@/page/sys/pdf-manage/pdfManage.vue")
+          },
+          {
+            name: "卷宗目录管理",
+            path: "catalog",
+            meta: {
+              title: "卷宗目录管理"
+            },
+            component: () => import("@/page/product-template/catalog/catalog.vue")
           },
           {
             name: "违法行为管理",

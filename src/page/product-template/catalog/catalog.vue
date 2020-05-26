@@ -3,15 +3,15 @@
     <div class="handlePart">
       <div class="search">
         <el-form :inline="true" :model="dicSearchForm" class="demo-form-inline" size="mini">
-          <el-form-item label="环节名称">
+          <el-form-item label="模板名称">
             <el-input v-model="dicSearchForm.name" clearable placeholder="请输入环节名称"></el-input>
           </el-form-item>
           <el-form-item label="案件类型">
             <el-input v-model="dicSearchForm.remark" clearable placeholder="请输入环节名称"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-search" @click="getBanner">查询</el-button>
-            <el-button type="primary" size="medium" icon="el-icon-plus" @click="addBanner">新增</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-search" @click="getCatalog">查询</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-plus" @click="addCatalog">新增</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -21,21 +21,19 @@
         <el-table-column type="index" width="60" align="center">
           <template slot="header">序号</template>
         </el-table-column>
-        <el-table-column prop="linkName" label="环节名称" align="center">
+        <el-table-column prop="name" label="模板名称" align="center">
         </el-table-column>
-        <el-table-column prop="mainLinkName" label="所属大环节" align="center">
+        <el-table-column prop="caseType" label="所属案件类型" align="center">
         </el-table-column>
-        <el-table-column prop="docTypeName" label="PDF对应文书" align="center">
+        <el-table-column prop="remark" label="描述" align="center">
         </el-table-column>
-        <el-table-column prop="remark" label="所属案件类型" align="center">
-        </el-table-column>
-        <el-table-column prop="sort" label="排序" align="center">
+        <el-table-column prop="sort" label="顺序" align="center">
         </el-table-column>
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
             <div style="width:160px">
-              <el-button type="text" @click.stop @click="editBanner(scope.row)">修改</el-button>
-              <el-button type="text" @click.stop @click="deleteBanner(scope.row)">删除</el-button>
+              <el-button type="text" @click.stop @click="editCatalog(scope.row)">修改</el-button>
+              <el-button type="text" @click.stop @click="deleteCatalog(scope.row)">删除</el-button>
               <el-button type="text" @click.stop @click="bindDoc(scope.row)">绑定文书</el-button>
             </div>
           </template>
@@ -45,13 +43,13 @@
     <div class="paginationBox">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
     </div>
-    <addEditBanner ref="addEditBannerRef"></addEditBanner>
-    <linkDocList ref="linkDocListRef"></linkDocList>
+    <addEditCatalog ref="addEditCatalogRef"></addEditCatalog>
+    <catalogLinkDocList ref="catalogLinkDocListRef"></catalogLinkDocList>
   </div>
 </template>
 <script>
-    import addEditBanner from "./addEditBanner";
-    import linkDocList from "./linkDocList";
+    import addEditCatalog from "./addEditCatalog";
+    import catalogLinkDocList from "./catalogLinkDocList";
     export default {
         data() {
             return {
@@ -70,28 +68,28 @@
             };
         },
         components: {
-            addEditBanner,
-            linkDocList,
+            addEditCatalog,
+            catalogLinkDocList,
         },
         inject: ['reload'],
         methods: {
             bindDoc(row){
               console.log("row",row.id)
-              this.$refs.linkDocListRef.showModal(row.id);
+              this.$refs.catalogLinkDocListRef.showModal(row.id);
             },
             //编辑环节
-            editBanner(row) {
-                this.$refs.addEditBannerRef.showModal(2, row);
+            editCatalog(row) {
+                this.$refs.addEditCatalogRef.showModal(2, row);
             },
             //删除环节
-            deleteBanner(row) {
+            deleteCatalog(row) {
                 this.$confirm("确认删除该环节?", "提示", {
                   confirmButtonText: "确定",
                   cancelButtonText: "取消",
                   type: "warning"
                 })
                   .then(() => {
-                    this.$store.dispatch("deleteBanner", row.id).then(
+                    this.$store.dispatch("deleteCatalog", row.id).then(
                       res => {
                         this.$message({
                           type: "success",
@@ -110,15 +108,15 @@
             handleSizeChange(val) {
                 this.pageSize = val;
                 this.currentPage = 1;
-                this.getBanner();
+                this.getCatalog();
             },
             //更换页码
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.getBanner();
+                this.getCatalog();
             },
             //获取环节
-            getBanner() {
+            getCatalog() {
                 let data = {
                     current: this.currentPage,
                     size: this.pageSize,
@@ -126,7 +124,7 @@
                     remark: this.dicSearchForm.remark
                 };
                 let _this = this
-                this.$store.dispatch("getBannerList", data).then(
+                this.$store.dispatch("getCatalogList", data).then(
                     res => {
                         console.log("环节列表", res);
                         _this.tableData = res.data.records;
@@ -139,12 +137,12 @@
                 );
             },
             //添加环节
-            addBanner() {
-                this.$refs.addEditBannerRef.showModal(0, this.totalPage);
+            addCatalog() {
+                this.$refs.addEditCatalogRef.showModal(0, this.totalPage);
             },
         },
         created() {
-            this.getBanner();
+            this.getCatalog();
         }
     };
 </script>
