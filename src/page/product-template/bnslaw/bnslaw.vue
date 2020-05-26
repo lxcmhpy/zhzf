@@ -30,9 +30,9 @@
       <div class="tablePart">
         <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <!-- <el-table-column prop="bcode" label="法规编码" align="center" width="80px"></el-table-column> -->
-          <el-table-column prop="strName" label="法规标题" align="center"></el-table-column>
-          <el-table-column prop="strNumber" label="发布文号" align="center"></el-table-column>
-          <el-table-column prop="strOrgan" label="发布机关" align="center"></el-table-column>
+          <el-table-column prop="strName" label="法规标题" align="left"></el-table-column>
+          <el-table-column prop="strNumber" label="发布文号" align="left"></el-table-column>
+          <el-table-column prop="strOrgan" label="发布机关" align="left"></el-table-column>
           <el-table-column prop="dtmDate" label="发布时间" align="center"></el-table-column>
           <el-table-column prop="shiDate" label="实施时间" align="center"></el-table-column>
           <el-table-column prop="status" label="时效性" align="center">
@@ -43,8 +43,8 @@
           <!-- <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column> -->
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <!-- <el-button type="text" @click="editBtnlaw(scope.row)">编辑</el-button> -->
               <el-button type="text" @click="getBtnlawVal(scope.row)">法条管理</el-button>
+              <el-button type="text" @click="editBtnlaw(scope.row)">编辑</el-button>
               <el-button type="text" @click="getBtnlawDentails(scope.row)">详情</el-button>
               <el-button type="text" @click="deleteBtnlaw(scope.row.id)">删除</el-button>
             </template>
@@ -54,10 +54,10 @@
       <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-      <el-dialog :title="dialogTitle" :visible.sync="visible" @close="visible = false" :close-on-click-modal="false" width="30%">
+      <el-dialog :title="dialogTitle" :visible.sync="visible" @close="closeTitle" :close-on-click-modal="false" width="30%">
         <el-form :model="addBtnlawForm" :rules="rules" ref="addBtnlawForm" label-width="80px">
           <el-form-item label="法规标题" prop="strName">
-            <el-input v-model="addBtnlawForm.strName"></el-input>
+            <el-input v-model="addBtnlawForm.strName" :disabled="isAdd?true:false"></el-input>
           </el-form-item>
           <el-form-item label="发布文号" prop="strNumber">
             <el-input v-model="addBtnlawForm.strNumber"></el-input>
@@ -147,7 +147,7 @@
 
 import { mapGetters } from "vuex";
 import {
-  getBnsLawListApi, addBnsLawApi, deleteBnslawApi,getDictListDetailByNameApi
+  getBnsLawListApi, addBnsLawApi, deleteBnslawApi,getDictListDetailByNameApi,getBnsLawByIdApi
 } from "@/api/system";
 export default {
   data() {
@@ -166,6 +166,7 @@ export default {
       dialogTitle: "添加法规",
       visible: false,
       dentailVisible: false,
+      isAdd:false,
       // 添加、修改
       addBtnlawForm: {
         strName: '',
@@ -233,25 +234,20 @@ export default {
     },
     //获取法规值
     getBtnlawVal(row) {
-      // this.$refs.showBtnlawKeyRef.showModal(row);
       this.$store.commit("SET_BTNLAW_ID", row.id);
       this.$router.push({
         name: 'lawRegulations',
-        // params:{
-        //   personInfo:data,
-        //   pageStatus:param
-        // }
+        params: {strName: row.strName}
       });
     },
     //删除法规
     deleteBtnlaw(id) {
-      console.log("12345", id);
       this.$confirm('确认删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        getBnsLawListApi(id).then(
+        deleteBnslawApi(id).then(
           res => {
             console.log('类型', res);
             if (res.code == 200) {
@@ -275,6 +271,26 @@ export default {
       });
 
     },
+    //编辑法规
+    editBtnlaw(row) {
+      this.visible = true;
+      let data = {
+        id :row.id
+      };
+      this.isAdd=true;
+      getBnsLawByIdApi(data).then(
+        res => {
+          console.log("bnslaw",res);
+          this.addBtnlawForm = res.data;
+        });
+        err => {
+          console.log(err);
+        };
+    },
+   closeTitle(){
+      this.visible = false;
+      this.$refs["addBtnlawForm"].resetFields();
+   },
     //添加法规
     addBtnlaw() {
       this.visible = true
@@ -299,14 +315,6 @@ export default {
           console.log(error)
         }
       );
-    },
-    //编辑法规
-    editBtnlaw(row) {
-      let data = {
-        row: row,
-        pid: ""
-      };
-      this.$refs.addEditBtnlawRef.showModal(2, data, "list");
     },
     //更改每页显示的条数
     handleSizeChange(val) {

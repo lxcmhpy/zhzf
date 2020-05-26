@@ -903,3 +903,49 @@ export function deleteCaseCauseByIdApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//根据法规id查询法规信息
+export function getBnsLawByIdApi(data) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findBnsLawById/"+data.id,
+    method: "get", 
+    // params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据条件查询法规信息
+export function getBnsLawByFormApi(data) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/queryListVoByBnslaw",
+    method: "get", 
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除认定依据
+export function deleteLawCognizanceByIdApi(id) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/deleteLawCognizanceById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除处罚依据
+export function deleteLawPunishmentByIdApi(id) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/deleteLawPunishmentById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
