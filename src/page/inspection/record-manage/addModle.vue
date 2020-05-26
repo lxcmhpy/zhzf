@@ -64,7 +64,7 @@
                         <i class="el-icon-remove-outline" @click="delFiled(filed,item.filedList)" style="margin-left:18px;margin-top:-38px;float:right"></i>
                       </el-col>
                     </el-row>
-                    <el-row class="mimi-content" v-if="filed.tag=='el-checkbox-group'">
+                    <!-- <el-row class="mimi-content" v-if="filed.tag=='el-checkbox-group'">
                       <el-col :span="22" :offset="2" class="card-bg-content">
                         <el-form-item prop="field101" label-width="0">
                           <el-input size="mini" v-model="formData.name" placeholder="请输入单行文本" clearable :style="{width: '100%'}">
@@ -75,12 +75,12 @@
                           </el-input>
                         </el-form-item>
                       </el-col>
-                    </el-row>
-                    <el-row class="mimi-content" v-if="filed.tag=='el-radio-group'">
+                    </el-row> -->
+                    <el-row class="mimi-content" v-if="filed.tag=='el-radio-group'||filed.tag=='el-checkbox-group'">
                       <el-col :span="22" :offset="2" class="card-bg-content">
                         <el-form-item v-for="(radio,index) in filed.radioList" :key="index" prop="field101" label-width="0">
                           <i class="el-icon-remove-outline" style="margin-right:14px" @click="delRadioList(radio,filed.radioList)"></i>
-                          <el-input size="mini" v-model="radio.value" placeholder="请输入单行文本" clearable style="width: calc(100% - 70px)">
+                          <el-input size="mini" v-model="radio.value" placeholder="请输入选项" clearable style="width: calc(100% - 70px)">
                           </el-input>
                           <i class="el-icon-circle-plus-outline" style="margin-left:14px" @click="addRadioList(filed.radioList)"></i>
                         </el-form-item>
@@ -128,15 +128,15 @@
           <p class="border-title card-title-margin">应用权限</p>
           <el-form-item label="模板图标" prop="delivery">
             <img src="" alt="">
-            <canvas id="myCanvas" width="64" height="64" style="border:1px solid #c3c3c3;">
+            <!-- <canvas id="myCanvas" width="64" height="64" style="border:1px solid #c3c3c3;">
               您的浏览器不支持 HTML5 canvas 标签。
-            </canvas>
+            </canvas> -->
           </el-form-item>
           <el-form-item label="适用范围" prop="resource">
             <el-radio-group v-model="formData.resource" style="width:100%" class="card-select">
               <div class="el-form-item__content">
                 <el-radio label="指定人员使用"></el-radio>
-                <el-form-item v-if="formData.resource=='指定人员使用'" prop="delivery" class="lawPersonBox" style="width:calc(100% - 150px);float: right;margin-bottom: 0;">
+                <el-form-item v-if="formData.resource=='指定人员使用'" prop="delivery" class="lawPersonBox card-user-box">
                   <el-select ref="lawPersonListId" v-model="formData.lawPersonListId" multiple @remove-tag="removeLawPersontag">
                     <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
                   </el-select>
@@ -311,7 +311,7 @@ export default {
       this.setLawPersonCurrentP();
       this.newModleTable = true;
       this.$nextTick(() => {
-        this.draw()
+        // this.draw()
         this.resetForm('elForm')
 
       });
@@ -472,12 +472,12 @@ export default {
     },
     // form类型
     changeFiledType(filed) {
-      if (filed.tag == 'el-radio-group') {
-        // 单选
-        if (filed.radioList.length == 0) {
-          this.addRadioList
-        }
-      }
+      // if (filed.tag == 'el-radio-group') {
+      //   // 单选
+      //   if (filed.radioList.length == 0) {
+      //     this.addRadioList
+      //   }
+      // }
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();

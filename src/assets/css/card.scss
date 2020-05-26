@@ -259,19 +259,26 @@
 }
 
 .footer_fixed {
-    margin-left: -30px;
+    margin-left  : -30px;
     padding-right: 22px;
-    position  : fixed;
-    bottom    : 0;
-    height    : 85px;
-    width: 50%;
-    line-height    : 85px;
-    background: #F9F9F9;
-    border-top: 1px solid #D6DBE3;
-    text-align: right;
+    position     : fixed;
+    bottom       : 0;
+    height       : 85px;
+    width        : 50%;
+    line-height  : 85px;
+    background   : #F9F9F9;
+    border-top   : 1px solid #D6DBE3;
+    text-align   : right;
 }
-.card-drawer{
-    .el-drawer__body{
+
+.card-drawer {
+    .el-drawer__body {
         padding-bottom: 85px;
     }
+}
+
+.card-user-box {
+    width        : calc(100% - 150px);
+    float        : right;
+    margin-bottom: 0;
 }

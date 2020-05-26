@@ -161,8 +161,8 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-@import "@/assets/css/main.scss";
+<style lang="scss" src="@/assets/css/main.scss">
+/* @import "@/assets/css/main.scss"; */
 .info_top {
   background: url("../../../static/images/img/personInfo/bg.png") no-repeat;
 }
