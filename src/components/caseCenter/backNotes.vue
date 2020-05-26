@@ -28,7 +28,6 @@
 
   </div>
 </template>
-<style lang="scss">
-@import "@/assets/css/dialogStyle.scss";
+<style lang="scss" src="@/assets/css/dialogStyle.scss">
 </style>
 <style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>

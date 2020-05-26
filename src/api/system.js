@@ -709,6 +709,18 @@ export function getCaseCauseListApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//获取案件类型列表
+export function getCaseTypesApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/caseType/list",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
 //根据条件分页查询法规
 export function getBnsLawListApi(data) {
@@ -722,6 +734,18 @@ export function getBnsLawListApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//添加或修改案件类型
+export function addOrUpdateCaseTypeApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/caseType/saveOrUpdateCaseType",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
 //获取执法门类
 export function getLawCategoryApi(data) {
@@ -730,6 +754,17 @@ export function getLawCategoryApi(data) {
     url: "/case/caseTemplate/lawCategory/getLawCategoryListVo",
     method: "get",
     params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//删除案件类型
+export function deleteCaseTypeApi(data) {
+  return request({
+    url: "/case/caseTemplate/caseType/delete/"+data,
+    method: "get",
+    // params: {id: data},
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -915,6 +950,18 @@ export function getBnsLawByIdApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//获取所有流程
+export function getAllFlowApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/flow/queryFlowCondition",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
 //根据条件查询法规信息
 export function getBnsLawByFormApi(data) {
@@ -933,6 +980,18 @@ export function deleteLawCognizanceByIdApi(id) {
   return request({
     url: "/bnslaw/sys/bnslawCause/deleteLawCognizanceById/"+id,
     method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//获取案件类型列表
+export function getRoadLcDeployApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/road/roadLcDeploy/list",
+    method: "get",
+    params:data,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -967,6 +1026,19 @@ export function getLawPunishmentByIdApi(id) {
   return request({
     url: "/bnslaw/sys/bnslawCause/findLawPunishmentById/"+id,
     method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加或修改路产配置
+export function addOrUpdateRoadLcDeployApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/road/roadLcDeploy/saveOrUpdateRoadLcDeploy",
+    method: "get",
+    params:data,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()

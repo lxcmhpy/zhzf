@@ -57,7 +57,7 @@ export default {
   mounted() { }
 };
 </script>
-<style lang="scss">
+<style lang="scss" src="@/assets/css/cluesReview.scss">
 // @import "@/assets/css/dialogStyle.scss";
-@import "@/assets/css/cluesReview.scss";
+/* @import "@/assets/css/cluesReview.scss"; */
 </style>

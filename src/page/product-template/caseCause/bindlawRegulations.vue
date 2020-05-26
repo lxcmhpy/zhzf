@@ -300,8 +300,8 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-@import "@/assets/css/systemManage.scss";
+<style lang="scss" src="@/assets/css/systemManage.scss">
+/* @import "@/assets/css/systemManage.scss"; */
 .graybg {
   padding: 10px;
   background: #fcfcfc;
