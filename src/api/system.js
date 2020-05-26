@@ -543,7 +543,18 @@ export function deleteDictApi(data) {
   });
 }
 
-//获取字典详情  字典值
+//获取字典详情所有字典值
+export function getAllDictListDetailApi(id) {
+  return request({
+    url: "/system/sys/drawer/findAllByPid/" + id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//获取字典详情有效字典值
 export function getDictListDetailApi(id) {
   return request({
     url: "/system/sys/drawer/findAllDrawerById/" + id,

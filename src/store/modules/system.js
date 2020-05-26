@@ -8,7 +8,7 @@ import {
     getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getOrganBindRoleApi,
     getDepartmentsApi, getDepartmentsNoPageApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi,
     getAllMenuListApi, getTreePermissionApi, addPermissionApi, deletePermissionApi,
-    getDictListApi, getDictListDetailApi, addDictApi, deleteDictApi,
+    getDictListApi, getDictListDetailApi, getAllDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
     getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,
 } from "@/api/system";
@@ -647,6 +647,18 @@ const system = {
         getDictListDetail({ commit }, data) {
             return new Promise((resolve, reject) => {
                 getDictListDetailApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //获取所有字典值详情
+        getAllDictListDetail({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getAllDictListDetailApi(data).then(
                     res => {
                         resolve(res);
                     },
