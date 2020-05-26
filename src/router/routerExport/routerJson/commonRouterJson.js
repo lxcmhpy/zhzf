@@ -193,6 +193,14 @@ export default [
             component: () => import("@/page/sys/pdf-manage/pdfManage.vue")
           },
           {
+            name: "卷宗目录管理",
+            path: "catalog",
+            meta: {
+              title: "卷宗目录管理"
+            },
+            component: () => import("@/page/product-template/catalog/catalog.vue")
+          },
+          {
             name: "违法行为管理",
             path: "caseCause",
             meta: {
