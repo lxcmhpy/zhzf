@@ -949,3 +949,26 @@ export function deleteLawPunishmentByIdApi(id) {
     cancelToken: setCancelSource()
   });
 }
+
+
+//通过id查询认定依据
+export function getLawCognizanceByIdApi(id) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findLawCognizanceById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过id查询处罚依据
+export function getLawPunishmentByIdApi(id) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findLawPunishmentById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

@@ -1,6 +1,6 @@
 <template>
   <!-- lawPunishmentBasis   处罚依据 -->
-  <el-dialog title="处罚依据" :visible.sync="visible" :close-on-click-modal="false" width="30%">
+  <el-dialog title="处罚依据" :visible.sync="visible"  @close="closeDialog" :close-on-click-modal="false" width="30%">
     <el-form :model="addPageForm" label-width="100px" ref="addPageFormRef" :rules="rules">
       <el-form-item label="法规名称" prop="bnslawIdPun" v-if="isAdd">
         <el-select
@@ -58,7 +58,7 @@
   </el-dialog>
 </template>
 <script>
-import { addLawPunishmentApi,getBnsLawByFormApi } from "@/api/system";
+import { addLawPunishmentApi,getBnsLawByFormApi,getLawPunishmentByIdApi } from "@/api/system";
 import { mapGetters } from "vuex";
 export default {
   computed: {
@@ -85,6 +85,7 @@ export default {
       rules: {}
     };
   },
+  inject: ["reload"],
   methods: {
      selectGet(vId){ 
         let obj = {};
@@ -95,12 +96,24 @@ export default {
      },
     showModal(type, row) {
       this.visible = true;
-      this.dictData = row.row;
       if (type == 1) {
+        this.isAdd = true;
         this.addPageForm.bnslawLawName = this.btnlawId;
       } else if (type == 0) {
         this.isAdd = false;
-        this.addPageForm = this.dictData;
+        getLawPunishmentByIdApi(row.row.id).then(
+        res => {
+          console.log("查询处罚依据", res);
+          if (res.code == '200') {
+            this.addPageForm = res.data;
+          } else {
+            this.$message.error('失败');
+          }
+        },
+        error => {
+          console.log(error)
+        }
+      );
       }
     },
        //获取法律法规
@@ -121,7 +134,7 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.$refs["addTempleteFormRef"].resetFields();
+      this.$refs["addPageFormRef"].resetFields();
     },
     addSure() {
       this.addPageForm.bnslawNamePun = this.selectGet(this.addPageForm.bnslawIdPun);
@@ -132,6 +145,7 @@ export default {
           if (res.code == "200") {
             this.$message({ message: "添加成功", type: "success" });
             this.visible = false;
+            this.$emit("getListEmit");
           } else {
             this.$message.error("添加失败");
             return;

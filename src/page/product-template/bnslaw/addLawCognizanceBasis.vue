@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="认定依据" :visible.sync="visible" :close-on-click-modal="false" width="25%">
+  <el-dialog title="认定依据" :visible.sync="visible" @close="closeDialog" :close-on-click-modal="false" width="25%">
     <el-form :model="addPageForm" label-width="100px" ref="addPageFormRef" :rules="rules">
       <el-form-item label="法规名称">
             <el-input v-model="addPageForm.bnslawNameCog"  style = "width:100%" disabled></el-input>
@@ -26,7 +26,7 @@
 </template>
 <script>
 import {
-  addeLawCognizanceApi
+  addeLawCognizanceApi,getLawCognizanceByIdApi
 } from "@/api/system";
 import { mapGetters } from "vuex";
 export default {
@@ -50,20 +50,34 @@ export default {
       },
     }
   },
+  inject: ["reload"],
   methods: {
     showModal(type, row) {
       this.visible = true;
-      this.dictData = row.row;
+      // this.dictData = row.row;
       if (type == 1) {
         this.addPageForm.bnslawNameCog = row.strName;
       } else if (type == 0) {
-        this.addPageForm = this.dictData;
+        getLawCognizanceByIdApi(row.row.id).then(
+        res => {
+          console.log("查询认定依据", res);
+          if (res.code == '200') {
+            this.addPageForm = res.data;
+          } else {
+            this.$message.error('失败');
+          }
+        },
+        error => {
+          console.log(error)
+        }
+      );
+
       }
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.$refs["addTempleteFormRef"].resetFields();
+      this.$refs["addPageFormRef"].resetFields();
     },
     addSure() {
       this.addPageForm.bnslawIdCog = this.btnlawId;
@@ -75,6 +89,7 @@ export default {
           if (res.code == '200') {
             this.$message({ message: '添加成功', type: 'success' });
             this.visible = false;
+            this.$emit("getListEmit");
           } else {
             this.$message.error('添加失败');
             return
