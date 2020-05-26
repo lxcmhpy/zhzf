@@ -62,7 +62,6 @@ export default {
   inject: ["reload"],
   methods: {
     showModal(type, data ,orgList) {
-      debugger
       this.visible = true;
       this.handelType = type;
       this.getOrganList = orgList;
