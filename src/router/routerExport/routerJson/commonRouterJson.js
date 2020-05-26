@@ -136,6 +136,14 @@ export default [
             component: () => import("@/page/product-template/lawCategory/LawCategory.vue")
           },
           {
+            name: "configuration",
+            path: "configuration",
+            meta: {
+              title: "业务领域配置"
+            },
+            component: () => import("@/page/product-template/lawCategoryConfiguration/configuration.vue")
+          },
+          {
             name: "docType",
             path: "docType",
             icon: null,
