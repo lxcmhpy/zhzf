@@ -21,17 +21,16 @@
           </el-radio-group>
         </div>
        <el-form-item label="车牌号码">
-          <el-input style="width:600px;padding-left:30px;" v-model="checkData.VehicleNo" placeholder="请输入车辆（挂车）号牌"></el-input>
+          <el-input style="width:300px;padding-left:30px;" v-model="checkData.VehicleNo" placeholder="请输入车辆（挂车）号牌"></el-input>
         </el-form-item>
-        <br/>
         <el-form-item label="道路运输证号" v-if="checkType==1">
-          <el-input style="width:600px" v-model="checkData.TransCertificateCode" placeholder="请输入道路运输证号"></el-input>
+          <el-input style="width:300px;padding-left:10px;" v-model="checkData.TransCertificateCode" placeholder="请输入道路运输证号"></el-input>
         </el-form-item>
         <el-form-item label="VIN号" v-if="checkType==2">
-          <el-input style="width:600px;padding-left:50px;" v-model="checkData.Vin" placeholder="请输入VIN号"></el-input>
+          <el-input style="width:300px;padding-left:30px;" v-model="checkData.Vin" placeholder="请输入VIN号"></el-input>
         </el-form-item>
         <el-form-item label="车牌颜色" v-if="checkType==3">
-          <el-select style="width:600px;padding-left:30px;" v-model="checkData.plateColor" placeholder="请选择车牌颜色">
+          <el-select style="width:300px;padding-left:10px;" v-model="checkData.plateColor" placeholder="请选择车牌颜色">
             <el-option
               v-for="(item,i) in sfList"
               :key="i"
