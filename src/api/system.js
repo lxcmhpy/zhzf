@@ -697,7 +697,6 @@ export function deleteCaseNumberApi(id) {
   });
 }
 
-<<<<<<< Updated upstream
 //获取违法行为列表
 export function getCaseCauseListApi(data) {
   console.log(data);
@@ -705,7 +704,11 @@ export function getCaseCauseListApi(data) {
     url: "/bnslaw/sys/bnslawCause/findCaseCauseByPage",
     method: "get",
     params: data,
-=======
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //获取案件类型列表
 export function getCaseTypesApi(data) {
   console.log(data);
@@ -713,14 +716,12 @@ export function getCaseTypesApi(data) {
     url: "/case/caseTemplate/caseType/list",
     method: "get",
     params:data,
->>>>>>> Stashed changes
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
 
-<<<<<<< Updated upstream
 //根据条件分页查询法规
 export function getBnsLawListApi(data) {
   console.log(data);
@@ -728,7 +729,11 @@ export function getBnsLawListApi(data) {
     url: "/bnslaw/sys/bnslawCause/findBnsLawByPage",
     method: "get",
     params: data,
-=======
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //添加或修改案件类型
 export function addOrUpdateCaseTypeApi(data) {
   console.log(data);
@@ -736,14 +741,12 @@ export function addOrUpdateCaseTypeApi(data) {
     url: "/case/caseTemplate/caseType/saveOrUpdateCaseType",
     method: "get",
     params:data,
->>>>>>> Stashed changes
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
 
-<<<<<<< Updated upstream
 //获取执法门类
 export function getLawCategoryApi(data) {
   console.log(data);
@@ -751,21 +754,23 @@ export function getLawCategoryApi(data) {
     url: "/case/caseTemplate/lawCategory/getLawCategoryListVo",
     method: "get",
     params: data,
-=======
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //删除案件类型
 export function deleteCaseTypeApi(data) {
   return request({
     url: "/case/caseTemplate/caseType/delete/"+data,
     method: "get",
     // params: {id: data},
->>>>>>> Stashed changes
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
 
-<<<<<<< Updated upstream
 //添加/修改法规
 export function addBnsLawApi(data) {
   data = vm.$qs.stringify(data);
@@ -940,7 +945,11 @@ export function getBnsLawByIdApi(data) {
     url: "/bnslaw/sys/bnslawCause/findBnsLawById/"+data.id,
     method: "get", 
     // params: data,
-=======
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //获取所有流程
 export function getAllFlowApi(data) {
   console.log(data);
@@ -948,14 +957,12 @@ export function getAllFlowApi(data) {
     url: "/case/caseTemplate/flow/queryFlowCondition",
     method: "get",
     params:data,
->>>>>>> Stashed changes
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
 
-<<<<<<< Updated upstream
 //根据条件查询法规信息
 export function getBnsLawByFormApi(data) {
   return request({
@@ -973,7 +980,11 @@ export function deleteLawCognizanceByIdApi(id) {
   return request({
     url: "/bnslaw/sys/bnslawCause/deleteLawCognizanceById/"+id,
     method: "get",
-=======
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //获取案件类型列表
 export function getRoadLcDeployApi(data) {
   console.log(data);
@@ -981,20 +992,23 @@ export function getRoadLcDeployApi(data) {
     url: "/case/road/roadLcDeploy/list",
     method: "get",
     params:data,
->>>>>>> Stashed changes
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
 
-<<<<<<< Updated upstream
 //删除处罚依据
 export function deleteLawPunishmentByIdApi(id) {
   return request({
     url: "/bnslaw/sys/bnslawCause/deleteLawPunishmentById/"+id,
     method: "get",
-=======
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //添加或修改路产配置
 export function addOrUpdateRoadLcDeployApi(data) {
   console.log(data);
@@ -1002,13 +1016,8 @@ export function addOrUpdateRoadLcDeployApi(data) {
     url: "/case/road/roadLcDeploy/saveOrUpdateRoadLcDeploy",
     method: "get",
     params:data,
->>>>>>> Stashed changes
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
