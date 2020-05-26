@@ -10,6 +10,7 @@ import {
     getAllMenuListApi, getTreePermissionApi, addPermissionApi, deletePermissionApi,
     getDictListApi, getDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
+    getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";
@@ -733,6 +734,84 @@ const system = {
                 })
             })
           },
+
+        //获取案件类型列表
+        getCaseTypes({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getCaseTypesApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //添加或修改案件类型
+        addOrUpdateCaseType({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                addOrUpdateCaseTypeApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+
+        //删除案件类型
+        deleteCaseType({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                deleteCaseTypeApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+
+        //获取所有流程
+        getAllFlow(data) {
+            console.log('getdata',data)
+            debugger
+            return new Promise((resolve, reject) => {
+                getAllFlowApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //获取路产配置列表
+        getRoadLcDeploy({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getRoadLcDeployApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+
+        //添加或修改路产配置信息
+        addOrUpdateRoadLcDeploy({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                addOrUpdateRoadLcDeployApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
 
     }
 

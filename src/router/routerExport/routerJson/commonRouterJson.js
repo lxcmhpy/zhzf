@@ -185,12 +185,21 @@ export default [
             component: () => import("@/page/sys/pdf-manage/pdfManage.vue")
           },
           {
+<<<<<<< Updated upstream
             name: "违法行为管理",
             path: "caseCause",
             meta: {
               title: "违法行为管理"
             },
             component: () => import("@/page/product-template/caseCause/caseCause.vue")
+=======
+            name: "roadLcDeploy",
+            path: "roadLcDeploy",
+            meta: {
+              title: "公路路产配置"
+            },
+            component: () => import("@/page/product-template/road/roadLcDeploy.vue")
+>>>>>>> Stashed changes
           },
         ]
       },
