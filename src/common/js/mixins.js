@@ -651,11 +651,6 @@ export const mixinGetCaseApiList = {
         obj[i].parentNode.style.display = 'none'
         objParent.appendChild(newSpan);
       }
-
-      // setTimeout(() => {
-      //     htmlExportPDF('test_print',function(){})
-      // }, 1000)
-
     },
     //查询环节是否生成了pdf
     searchHuanjiePdf(data, linkID) {
