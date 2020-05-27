@@ -167,7 +167,7 @@
           selectValue: "",
           region: ""
         },
-        searchType: [{value: 0, label: '本机构'}, {value: 1, label: '本机构及子机构'}],
+        searchType: [{value: 1, label: '本机构'}, {value: 0, label: '本机构及子机构'}],
         filterText: "",
         selectCurrentTreeName: "机构人员列表",
         organData: [],
