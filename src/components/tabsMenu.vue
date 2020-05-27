@@ -21,10 +21,10 @@ export default {
   name: "",
   data() {
     return {
-        activeIndexStr: 'case_handle_home_index',
+        activeIndexStr: 'law_supervise_lawSupervise',
         openTabList: [],
         tabsNameList: {
-            law_supervise_: '【监管】',
+            law_supervise_: '',
             // case_handle_: '【案件】',
             case_handle_: '',
             law_center_: '【超限】'
@@ -59,9 +59,9 @@ export default {
     //移除tab标签
     tabRemove(targetName) {
       //首页不删
-      if (targetName == "case_handle_home_index") {
-        return;
-      }
+    //   if (targetName == "case_handle_home_index") {
+    //     return;
+    //   }
       this.$store.dispatch("deleteTabs", targetName);
       if (this.activeIndexSto === targetName) {
         // 设置当前激活的路由
@@ -75,7 +75,8 @@ export default {
         //     });
             this.$router.push(({ name: 'reloadPage',params: route}));
         } else {
-          this.$router.push({ name: "case_handle_home_index" });
+        //   this.$router.push({ name: "case_handle_home_index" });
+             this.$router.push({ name: "law_supervise_lawSupervise" });
         }
       }
     },
@@ -92,11 +93,11 @@ export default {
         return tabsCode;
     },
     init () {
-        if (this.$route.path !== "/" && this.$route.name !== "case_handle_home_index") {
+        if (this.$route.path !== "/" && this.$route.name !== "law_supervise_lawSupervise") {
             this.activeIndexStr = this.activeIndexSto;
         } else {
-            this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
-            this.$store.commit("set_Head_Active_Nav", "caseHandle-menu-case_handle_home_index");
+            this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
+            this.$store.commit("set_Head_Active_Nav", "lawSupervise-menu-law_supervise_lawSupervise");
         }
     }
   },
@@ -116,7 +117,7 @@ export default {
         let flag = false;
         let _this = this;
         let tabsCode = this.getTabName(to.name);
-       
+
         let _index = _.findIndex(this.openTab,(chr) => {
             //信息查验不走if
             if (chr.isCase && !to.meta.isNotCase) {
@@ -138,7 +139,7 @@ export default {
                     num: 1,
                     data: currentOpenTab
                 }
-                
+
                 this.$store.dispatch("replaceTabs", data);
             }else{
               if(to.meta.isNotCase){
@@ -153,7 +154,7 @@ export default {
                     num: 1,
                     data: currentOpenTab
                   }
-                
+
                   this.$store.dispatch("replaceTabs", data);
               }
             }
@@ -174,7 +175,7 @@ export default {
                   isCase = true;
                   name = to.name + '-and-' + this.caseHandle.caseNumber;
                 }
-                
+
             } else {
                 if (this.$route.params.tabTitle) {
                     tabTitle = this.$route.params.tabTitle;

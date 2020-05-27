@@ -2,7 +2,7 @@
   <div class="fullscreen">
     <el-container id="fullscreenCon">
       <el-header id="mainHeader">
-        <div class="main_logo"><img :src="'./static/images/main/logo.png'" alt=""><span>全国交通运输执法管理系统</span></div>
+        <div class="main_logo"><img :src="'./static/images/main/logo.png'" alt=""><span>治超联网监管系统</span></div>
         <div class="headMenu">
           <headMenu @selectHeadMenu="getSelectHeadMenu"></headMenu>
         </div>
@@ -99,7 +99,7 @@ export default {
       // collapsed: false,
       // avatar: Cookies.get("avatar")
       userInfo: iLocalStroage.gets('userInfo'),
-      selectedHeadMenu: 'caseHandle-menu-case_handle_home_index'   //接收headMenu传来的选中的一级菜单
+      selectedHeadMenu: 'lawSupervise-menu-law_supervise_lawSupervise'   //接收headMenu传来的选中的一级菜单
     };
   },
   components: {
