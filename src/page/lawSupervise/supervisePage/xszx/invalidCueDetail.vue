@@ -148,12 +148,12 @@
                     </li>
                     <li>
                         <video class="img" controls>
-		                    <source :src="'./static/images/img/lawSupervise/temp/link_05.mp4'" type="video/mp4">
+		                    <!-- <source :src="'./static/images/img/lawSupervise/temp/link_05.mp4'" type="video/mp4"> -->
                         </video>
                     </li>
                     <li>
                          <video class="img" controls>
-		                    <source :src="'./static/images/img/lawSupervise/temp/link_05.mp4'" type="video/mp4">
+		                    <!-- <source :src="'./static/images/img/lawSupervise/temp/link_05.mp4'" type="video/mp4"> -->
                         </video>
                     </li>
                 </ul>

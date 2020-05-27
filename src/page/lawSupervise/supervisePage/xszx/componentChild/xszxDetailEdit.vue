@@ -581,7 +581,7 @@
                          <el-carousel direction="vertical" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
                             <el-carousel-item :key="0">
                                 <video width="280px" height="180px" controls>
-                                    <source :src="'./static/images/img/lawSupervise/temp/link_05.mp4'" type="video/mp4">
+                                    <!-- <source :src="'./static/images/img/lawSupervise/temp/link_05.mp4'" type="video/mp4"> -->
                                 </video>
                             </el-carousel-item>
                             <el-carousel-item :key="1">
