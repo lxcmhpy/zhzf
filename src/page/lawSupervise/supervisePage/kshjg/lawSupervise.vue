@@ -2385,9 +2385,10 @@ export default {
           res => {
             let dataArray = res.data;
             dataArray.icon = 'icon_jc1';
-            dataArray.children.forEach((item,i)=>{
-                addChildren(item);
-            })
+            // dataArray.children.forEach((item,i)=>{
+            //     addChildren(item);
+            // })
+            addChildren(dataArray);
             function addChildren(item) {
 
                 item.icon = item.icon?item.icon:'icon_jc1';

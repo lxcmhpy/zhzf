@@ -6,7 +6,8 @@
       class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect">
-      <el-menu-item v-for="(item) in headMenuList" :index="`${item.name}-menu-${item.path}`" :keyPath="'dd'" :key="item.id">
+      <!-- v-show="false" -->
+      <el-menu-item v-for="(item) in headMenuList" :index="`${item.name}-menu-${item.path}`" :keyPath="'dd'" :key="item.id" >
           {{item.title}}</el-menu-item>
     </el-menu>
   </div>

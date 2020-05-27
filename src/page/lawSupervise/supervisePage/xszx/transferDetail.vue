@@ -33,15 +33,15 @@
                     </tr>
                     <tr>
                         <td class="color_ff w-1">转办时间</td>
-                        <td></td>
+                        <td>{{obj.checkTime}}</td>
                         <td class="color_ff w-1">转办说明</td>
                         <td>{{obj.key}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">处置机构</td>
-                        <td>{{obj.checkTime}}</td>
+                        <td>{{obj.organName}}</td>
                         <td class="color_ff w-1">状态</td>
-                        <td></td>
+                        <td>{{obj.status}}</td>
                     </tr>
                 </table>
 

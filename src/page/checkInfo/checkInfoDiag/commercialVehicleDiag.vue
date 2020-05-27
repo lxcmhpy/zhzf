@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td class="tg-y93n" colspan="2">经营范围</td>
-                    <td class="tg-cly1" colspan="2">{{yyclForm.BusinessScopeCode}}</td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.BusinessScopeDesc}}</td>
                     <td class="tg-0pky" colspan="2">  </td>
                     <td class="tg-cly1" colspan="2"></td>
                 </tr>
@@ -69,6 +69,18 @@
                     <td class="tg-y93n" colspan="2">有效期止</td>
                     <td class="tg-cly1" colspan="2">{{yyclForm.CertificateExpireDate}}</td>
                 </tr>
+                <tr>
+                  <td class="tg-y93n" colspan="2">客车类型与等级</td>
+                  <td class="tg-cly1" colspan="2">{{yyclForm.BusType}}</td>
+                  <td class="tg-y93n" colspan="2">发动机</td>
+                  <td class="tg-cly1" colspan="2">{{yyclForm.EngineNo}}</td>
+                </tr>
+              <tr>
+                <td class="tg-y93n" colspan="2">车辆厂牌型号</td>
+                <td class="tg-cly1" colspan="2">{{yyclForm.Model}}</td>
+                <td class="tg-cly1" colspan="2"></td>
+                <td class="tg-cly1" colspan="2"></td>
+              </tr>
                  <tr>
                     <td class="tg-0lax" colspan="8">企业信息</td>
                 </tr>
@@ -116,7 +128,7 @@
                 </tr>
                 <tr>
                     <td class="tg-y93n" colspan="2">经营范围</td>
-                    <td class="tg-cly1" colspan="2">{{yyclForm.BusinessScopeCode}}</td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.BusinessScopeCode_owner}}</td>
                     <td class="tg-cly1" colspan="2"></td>
                     <td class="tg-cly1" colspan="2"></td>
                 </tr>

@@ -34,16 +34,16 @@
                         <td width="260px">{{obj.vehicleColor}}</td>
                     </tr>
                     <tr>
-                        <td class="color_ff w-1">ETC识别车牌</td>
-                        <td></td>
+                         <td class="color_ff w-1">ETC识别车牌</td>
+                        <td>{{obj.etcVehicleNumber}}</td>
                         <td class="color_ff w-1">最大允许总质量</td>
-                        <td>{{obj.key}}</td>
+                        <td>{{obj.load}}</td>
                     </tr>
-                    <tr>
+                            <tr>
                         <td class="color_ff w-1">车辆类型</td>
-                        <td>{{obj.checkTime}}</td>
+                        <td>{{obj.vehicleType}}</td>
                         <td class="color_ff w-1">重点监管</td>
-                        <td></td>
+                        <td>{{obj.key}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">车速（km/h）</td>
@@ -59,35 +59,35 @@
                 <table class="table_style" v-if="obj">
                     <tr>
                         <td class="color_ff w-1">轴数</td>
-                        <td width="260px">6</td>
+                        <td width="260px">{{obj.axleNumber}}</td>
                         <td class="color_ff w-1">驱动轴</td>
                         <td width="260px">
                              双轴
                         </td>
                     </tr>
                     <tr>
-                        <td class="color_ff w-1">轴型</td>
-                        <td >{{obj.vehicleColor}}</td>
-                        <td class="color_ff w-1">总重</td>
-                        <td></td>
+                         <td class="color_ff w-1">轴型</td>
+                        <td >{{obj.axleType}}</td>
+                        <td class="color_ff w-1">总重（KG）</td>
+                        <td>{{obj.totalWeight}}</td>
                     </tr>
                     <tr>
-                        <td class="color_ff w-1">限重</td>
-                        <td>{{obj.key}}</td>
+                        <td class="color_ff w-1">限重（KG）</td>
+                        <td>{{obj.load}}</td>
                         <td class="color_ff w-1">超重（KG）</td>
-                        <td>{{obj.checkTime}}</td>
+                        <td>{{obj.overweight}}</td>
                      </tr>
                     <tr>
                         <td class="color_ff w-1">超限率（%）</td>
-                        <td></td>
-                        <td class="color_ff w-1">车长</td>
-                        <td>{{obj.speed}}</td>
+                        <td>{{obj.overload}}%</td>
+                        <td class="color_ff w-1">车长（mm）</td>
+                        <td>{{obj.length}}</td>
                    </tr>
                     <tr>
-                        <td class="color_ff w-1">车宽</td>
-                        <td>{{obj.direction}}</td>
-                        <td class="color_ff w-1">车高</td>
-                        <td>{{obj.axleNumber}}</td>
+                        <td class="color_ff w-1">车宽（mm）</td>
+                        <td>{{obj.width}}</td>
+                        <td class="color_ff w-1">车高（mm）</td>
+                        <td>{{obj.height}}</td>
                     </tr>
                 </table>
             </div>
@@ -98,27 +98,27 @@
                 <table class="table_style" v-if="obj">
                     <tr>
                         <td class="color_ff w-1">检测时间</td>
-                        <td width="260px">{{obj.vehicleNumber}}</td>
+                        <td width="260px">{{obj.checkTime}}</td>
                         <td class="color_ff w-1">检测站点</td>
-                        <td width="260px">{{obj.vehicleColor}}</td>
+                        <td width="260px">{{obj.siteName}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">检测设备编号</td>
-                        <td></td>
+                        <td>{{obj.checkEquipment}}</td>
                         <td class="color_ff w-1">设备状态</td>
-                        <td>{{obj.key}}</td>
+                        <td>{{obj.status}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">检测位置</td>
-                        <td>{{obj.checkTime}}</td>
+                        <td>{{obj.checkLocation}}</td>
                         <td class="color_ff w-1">车道号</td>
-                        <td></td>
+                        <td>{{obj.lane}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">所属执法机构</td>
-                        <td>{{obj.speed}}</td>
+                        <td>{{obj.organName}}</td>
                         <td class="color_ff w-1">处理状态</td>
-                        <td>{{obj.direction}}</td>
+                        <td>{{obj.status}}</td>
                     </tr>
                 </table>
             </div>
@@ -133,33 +133,28 @@
                 <ul class="list">
                     <li>
                         <div class="demo-image__preview">
-                            <el-image
+                           <el-image
                             class="img"
                                 style="width: 100px; height: 100px"
-                                :src="'./static/images/img/temp/sp.jpg'"
-                                :preview-src-list="['./static/images/img/temp/sp.jpg','./static/images/img/temp/sp.jpg']"
+                                :src="'./static/images/img/lawSupervise/temp/link_01.jpg'"
+                                :preview-src-list="['./static/images/img/lawSupervise/temp/link_01.jpg','./static/images/img/lawSupervise/temp/link_02.jpg','./static/images/img/lawSupervise/temp/link_03.jpg','./static/images/img/lawSupervise/temp/link_04.jpg']"
                                 >
                             </el-image>
                         </div>
                     </li>
                     <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
+                        <img class="img" :src="'./static/images/img/lawSupervise/temp/link_03.jpg'">
                         <i class="iconfont law-bofang"></i>
                     </li>
                     <li>
-                        <div class="demo-image__preview">
-                            <el-image
-                            class="img"
-                                style="width: 100px; height: 100px"
-                                :src="'./static/images/img/temp/sp.jpg'"
-                                :preview-src-list="['./static/images/img/temp/sp.jpg','./static/images/img/temp/sp.jpg']"
-                                >
-                            </el-image>
-                        </div>
+                        <video class="img" controls>
+		                    <!-- <source :src="'./static/images/img/lawSupervise/temp/link_05.mp4'" type="video/mp4"> -->
+                        </video>
                     </li>
                     <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
-                        <i class="iconfont law-bofang"></i>
+                         <video class="img" controls>
+		                    <!-- <source :src="'./static/images/img/lawSupervise/temp/link_05.mp4'" type="video/mp4"> -->
+                        </video>
                     </li>
                 </ul>
             </div>
@@ -174,22 +169,22 @@
                 <ul class="list">
                     <li v-for="index in 2" :key="index">
                         <div class="demo-image__preview">
-                            <el-image
+                           <el-image
                             class="img"
                                 style="width: 100px; height: 100px"
-                                :src="'./static/images/img/temp/sp.jpg'"
-                                :preview-src-list="['./static/images/img/temp/sp.jpg','./static/images/img/temp/sp.jpg']"
+                                :src="'./static/images/img/lawSupervise/temp/link_01.jpg'"
+                                :preview-src-list="['./static/images/img/lawSupervise/temp/link_01.jpg','./static/images/img/lawSupervise/temp/link_02.jpg','./static/images/img/lawSupervise/temp/link_03.jpg','./static/images/img/lawSupervise/temp/link_04.jpg']"
                                 >
                             </el-image>
                         </div>
                     </li>
                     <li @click="dialogPDFVisible = true">
-                       <img  class="img" :src="'./static/images/img/temp/sp.jpg'" >
-                       <i class="iconfont law-pdf1" ></i>
+                       <img class="img" :src="'./static/images/img/lawSupervise/temp/link_03.jpg'">
+                       <i class="iconfont law-pdf1" style="color:white"></i>
                     </li>
                     <li @click="dialogPDFVisible = true">
-                       <img  class="img" :src="'./static/images/img/temp/sp.jpg'" >
-                       <i class="iconfont law-pdf1" ></i>
+                       <img class="img" :src="'./static/images/img/lawSupervise/temp/link_01.jpg'">
+                       <i class="iconfont law-pdf1" style="color:white"></i>
                     </li>
                 </ul>
             </div>
@@ -251,7 +246,7 @@ export default {
     mounted () {
         // alert(this.offSiteManageId);
         this.getDetailById(this.$route.params.offSiteManageId);
-        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '9,10a727c3ada3';
+        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
     },
     computed: {
         // ...mapGetters(["offSiteManageId"])
