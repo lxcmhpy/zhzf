@@ -221,7 +221,7 @@
         </p>
 
         <div class="pdf_seal">
-          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+          <span >交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
             </el-date-picker>
@@ -274,8 +274,6 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-// import signture from "../../../../js/signture";
-import mySignture from "@/common/js/mySignture";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 
 export default {
@@ -448,16 +446,6 @@ export default {
       };
       this.com_getDocDataByCaseIdAndDocId(data)
     },
-    //保存文书信息
-    // addDocData(handleType) {
-
-    //   this.com_addDocData(handleType, 'docForm');
-    // },
-    // 盖章
-    makeSeal() {
-      console.log('盖章!');
-      mySignture.openURL('oeder');
-    },
     // 打印
     print() {
       console.log('打印!');
@@ -512,7 +500,7 @@ export default {
       } else if (this.checknames == '2') {
         this.disabledOne = true;
         this.disabledTwo = false;
-        
+
         this.docData.punishBasisOne='';
         this.docData.serviceTime='';
         this.docData.punishDecision='';
@@ -533,7 +521,7 @@ export default {
         this.docData.peoples.shift();
       }
       console.log(this.docData.peoples);
-      // debugger 
+      // debugger
       if (this.docData.peoples == '1') {
         this.disabledThree = true;
         this.docData.impleAgent=''

@@ -300,8 +300,6 @@
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
   import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-  // import signture from "../../../../js/signture";
-  import mySignture from "@/common/js/mySignture";
   import iLocalStroage from "@/common/js/localStroage";
   import { validatePhone,validateIDNumber  } from "@/common/js/validator";
   export default {
@@ -508,11 +506,6 @@
       //保存文书信息
       addDocData(handleType) {
         this.com_addDocData(handleType, 'docForm');
-      },
-      // 盖章
-      makeSeal() {
-        console.log('盖章!');
-        mySignture.openURL('oeder');
       },
       // 打印
       print() {

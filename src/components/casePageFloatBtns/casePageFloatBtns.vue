@@ -70,7 +70,6 @@
 <!--<script src="@/common/js/MultBrowser-1.0.2.js"></script>-->
 <script>
 
-  import {htmlExportPDF} from '@/common/js/htmlExportPDF'
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
   import iLocalStroage from '@/common/js/localStroage';

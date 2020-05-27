@@ -9,8 +9,6 @@
 
 <script>
 
-import Cookies from "@/common/js/cookies";
-
 export default {
   data() {
     return {

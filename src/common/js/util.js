@@ -1,6 +1,3 @@
-import Cookies from "@/common/js/cookies";
-import Vue from "vue";
-// const vm = new Vue();
 
 import {
   getCurrentUserApi,getMenuApi

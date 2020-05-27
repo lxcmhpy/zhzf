@@ -11,7 +11,6 @@
         <li @click="goSceneNotesDoc">现场笔录</li>
         <li @click="goInquiryNotesDoc">询问笔录</li>
 
-        <li @click="testPdf">pdf测试</li>
         <!----------长软start --------------->
         <li @click="goEvidenceListDoc" style="color:blue">证据登记保存清单（已集成）</li>
         <li @click="goAdminCoerciveMeasureDoc" style="color:blue">行政强制措施决定书</li>
@@ -472,10 +471,6 @@ export default {
     // 送达回证
     goDeliverReceiptForm() {
       this.$router.push({ name: 'case_handle_deliverReceiptForm' });
-    },
-
-    testPdf() {
-      this.$router.push({ name: 'case_handle_testPdf' });
     },
     //--------------长软end-------------------
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {

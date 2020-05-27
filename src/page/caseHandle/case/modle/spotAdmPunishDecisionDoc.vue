@@ -151,7 +151,7 @@
             </el-form-item>
           </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
         </p>
-        
+
         <p>
           如果不服本处罚决定，可以在六十日内依法向<span>
             <el-form-item prop="reconsiderationOrgan">
@@ -185,7 +185,7 @@
           </el-col>
         </el-row>
         <div class="pdf_seal">
-          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+          <span >交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
@@ -238,9 +238,6 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-// import signture from "../../../../js/signture";
-import mySignture from "@/common/js/mySignture";
-// import {signture2} from "@/common/js/signture";
 
 export default {
   components: {
@@ -356,11 +353,6 @@ export default {
     addDocData(handleType) {
 
       this.com_addDocData(handleType, 'docForm');
-    },
-    // 盖章
-    makeSeal() {
-      mySignture.openURL('oeder');
-      // this.$util.openURL('a');
     },
     // 打印
     print() {
