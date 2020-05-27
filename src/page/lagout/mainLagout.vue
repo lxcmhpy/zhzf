@@ -2,7 +2,7 @@
   <div class="fullscreen">
     <el-container id="fullscreenCon">
       <el-header id="mainHeader">
-        <div class="main_logo"><img :src="'./static/images/main/logo.png'" alt=""><span>全国交通运输执法管理系统</span></div>
+        <div class="main_logo"><img :src="'./static/images/main/logo.png'" alt=""><span>治超联网监管系统</span></div>
         <div class="headMenu">
           <headMenu @selectHeadMenu="getSelectHeadMenu"></headMenu>
         </div>
@@ -84,7 +84,7 @@
   </div>
 </template>
 <script>
-import Cookies from "@/common/js/cookies";
+// import Cookies from "@/common/js/cookies";
 import iLocalStroage from "@/common/js/localStroage";
 import headMenu from "@/components/headMenu";
 import subLeftMenu from "@/components/subLeftMenu";
@@ -99,7 +99,7 @@ export default {
       // collapsed: false,
       // avatar: Cookies.get("avatar")
       userInfo: iLocalStroage.gets('userInfo'),
-      selectedHeadMenu: 'caseHandle-menu-case_handle_home_index'   //接收headMenu传来的选中的一级菜单
+      selectedHeadMenu: 'lawSupervise-menu-law_supervise_lawSupervise'   //接收headMenu传来的选中的一级菜单
     };
   },
   components: {
@@ -125,7 +125,7 @@ export default {
     },
     //退出
     loginOut() {
-      Cookies.remove("TokenKey");
+    //   Cookies.remove("TokenKey");
       iLocalStroage.removeAll();
       // this.$store.state.openTab = [];
       this.$store.dispatch('deleteAllTabs');
@@ -133,7 +133,7 @@ export default {
     },
     //个人设置  待完善
     goToUser() {
-      Cookies.set("menu", "personInfor");
+    //   Cookies.set("menu", "personInfor");
       this.reload(); //reload 可以去掉导航菜单选中状态的class
       this.$router.push({ name: "personInfor" });
     },

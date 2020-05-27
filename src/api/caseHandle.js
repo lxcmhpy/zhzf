@@ -249,10 +249,11 @@ export function getDocListByCaseIdAndFormIdApi(data) {
 }
 
 //通过表单类型Id查询已绑定文书
-export function getLinkDocListByLinkTypeIdApi(linkTypeId) {
+export function getLinkDocListByLinkTypeIdApi(data) {
   return request({
-    url: "/case/doc/caseLinkDoc/findListByLinkTypeId/" + linkTypeId,
+    url: "/case/doc/caseLinkDoc/findListByLinkTypeId",
     method: "get",
+    params: data,
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
@@ -1187,10 +1188,11 @@ export function getDocListByTemplateIdApi(data) {
 }
 
 //通过模板Id查询已绑定文书
-export function getLinkDocListByTemplateIdApi(templateId) {
+export function getLinkDocListByTemplateIdApi(data) {
   return request({
-    url: "/case/doc/catalogDetails/findListByTemplateId/" + templateId,
+    url: "/case/doc/catalogDetails/findListByTemplateId",
     method: "get",
+    params: data,
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()

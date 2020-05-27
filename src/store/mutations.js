@@ -1,5 +1,4 @@
 import * as types from "./mutation-types";
-import Cookies from "@/common/js/cookies";
 import Vue from "vue";
 import { getToken, setToken } from "@/common/js/auth";
 /**
@@ -52,7 +51,7 @@ const mutations = {
   //删除所有的tabs
   [types.DELETE_ALLTABS](state) {
     // state.openTab = [];
-    state.openTab = [{route: "/index",name: "case_handle_home_index",title: "案件办理首页",headActiveNav:"caseHandle-menu-case_handle_home_index"}];
+    state.openTab = [{route: "/index",name: "law_supervise_lawSupervise",title: "可视化监管",headActiveNav:"lawSupervise-menu-law_supervise_lawSupervise"}];
   },
   // 设置当前激活的tab
   [types.SET_ACTIVE_INDEX](state, name) {
@@ -98,7 +97,7 @@ const mutations = {
 
 
   [types.USERNAME](state, name) {
-    Cookies.set("username", name); //退出浏览器过期
+    // Cookies.set("username", name); //退出浏览器过期
     state.username = name;
   },
 

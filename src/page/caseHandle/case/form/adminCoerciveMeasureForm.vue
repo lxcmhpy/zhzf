@@ -328,7 +328,6 @@
   import {getOrganDetailApi, getOrganIdApi} from "@/api/system";
   import {mapGetters} from "vuex";
   import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-  import mySignture from "@/common/js/mySignture";
   import {validateIDNumber, validatePhone, validateZIP} from '@/common/js/validator'
 import {
   testApi
@@ -428,7 +427,7 @@ import {
             { required: true, message: '法人不能为空', trigger: 'blur' },
           ],
           partyUnitAddress: [
-            { required: true, message: '单位地址不能为空', trigger: 'blur' }, 
+            { required: true, message: '单位地址不能为空', trigger: 'blur' },
           ],
           partyUnitTel: [
             { required: true, message: '单位联系电话不能为空', trigger: 'blur' },
@@ -578,7 +577,7 @@ import {
         this.addVisible = true;
         if (length == 0) {
           this.tableDatas.push({'resNo': 1, 'amount': 1});
-        } 
+        }
       },
       //添加一行数据
       addTableData() {
@@ -697,7 +696,7 @@ import {
         this.formData.measureStartDate = new Date().format('yyyy-MM-dd');
         this.startTime();
       }
-      
+
 
     },
     mounted() {

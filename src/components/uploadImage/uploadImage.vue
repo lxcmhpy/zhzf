@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import Cookies from "@/common/js/cookies";
 import enlargeImage from "@/components/uploadImage/enlargeImage";
 //图片上传
 export default {

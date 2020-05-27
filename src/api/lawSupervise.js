@@ -24,7 +24,28 @@ export function getBySiteId(sitedId) {
       cancelToken: setCancelSource()
     });
 }
-
+// 详情：第二步骤
+export function findWeighingRecord(name) {
+    return request({
+      url: "/zfjg/superviseVehicle/findWeighingRecord/" + name,
+      method: "get",
+      showloading: true,
+      loadingType:'loadPart',
+      baseUrlType:2,
+      cancelToken: setCancelSource()
+    });
+}
+// 获取状态
+export function getCountStatus () {
+    return request({
+        url: "/zfjg/superviseVehicle/countStatus",
+        method: "get",
+        showloading: false,
+        loadingType:'loadPart',
+        baseUrlType:2,
+        cancelToken: setCancelSource()
+    });
+}
 export function getById(type,id) {
     return request({
       url: "/zfjg/findById/" + type+ '/'+id,
@@ -38,6 +59,16 @@ export function getById(type,id) {
   export function getDetailById(id) {
     return request({
       url: "/zfjg/superviseVehicle/findById/" + id,
+      method: "get",
+      showloading: false,
+    //   loadingType:'loadPart',
+      baseUrlType:2,
+      cancelToken: setCancelSource()
+    });
+  }
+  export function getKeyDetailById(id) {
+    return request({
+      url: "/zfjg/keyVehicle/findById/" + id,
       method: "get",
       showloading: false,
     //   loadingType:'loadPart',

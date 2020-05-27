@@ -137,7 +137,7 @@
         <br />
         <br />
         <div class="pdf_seal">
-          <span @click="makeSeal">交通运输执法部门(印章)</span>
+          <span >交通运输执法部门(印章)</span>
           <br />
           <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker
@@ -148,7 +148,7 @@
               placeholder="    年  月  日"
                value-format="yyyy-MM-dd"
             ></el-date-picker>
-          </el-form-item> 
+          </el-form-item>
         </div>
         <div class="notice clear">
           <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
@@ -169,7 +169,6 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
-import mySignture from "@/common/js/mySignture";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: {
@@ -282,11 +281,7 @@ export default {
       console.log("日期",this.formData.correctWay)
       this.com_submitCaseForm(handleType, "docForm", true);
     },
-    // 盖章
-    makeSeal() {
-      signature.openURL("oeder");
-    },
-    // 打印
+     // 打印
     print() {
       console.log("打印!");
     },
@@ -316,7 +311,7 @@ export default {
         res => {
           console.log("机构", res);
           let organData = res.data;
-          //复议机构 
+          //复议机构
           if(organData.reconsiderationOrgan1){
              _this.reconsiderationOptions.push(organData.reconsiderationOrgan1)
           }
@@ -339,7 +334,7 @@ export default {
           console.log(err);
         }
       );
-      
+
     },
     changeCorrectWay(val){
       if(val == '1'){

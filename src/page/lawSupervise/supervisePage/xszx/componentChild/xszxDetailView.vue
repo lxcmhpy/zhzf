@@ -114,9 +114,9 @@
                 <table class="table_style" v-if="obj">
                     <tr>
                         <td class="color_ff w-1">姓名</td>
-                        <td width="260px"><el-input width="300px" v-model="userObj.name"></el-input></td>
+                        <td width="260px"><el-input width="300px" v-model="userObj.name" placeholder="请输入"></el-input></td>
                         <td class="color_ff w-1">联系方式</td>
-                        <td width="260px"><el-input width="300px" v-model="userObj.mobile"></el-input></td>
+                        <td width="260px"><el-input width="300px" v-model="userObj.mobile" placeholder="请输入"></el-input></td>
                     </tr>
                      <tr>
                         <td class="color_ff w-1">备注</td>
@@ -154,30 +154,25 @@
                             <el-image
                             class="img"
                                 style="width: 100px; height: 100px"
-                                :src="'./static/images/img/temp/sp.jpg'"
-                                :preview-src-list="['./static/images/img/temp/sp.jpg','./static/images/img/temp/sp.jpg']"
+                                :src="'./static/images/img/lawSupervise/temp/link_01.jpg'"
+                                :preview-src-list="['./static/images/img/lawSupervise/temp/link_01.jpg','./static/images/img/lawSupervise/temp/link_02.jpg','./static/images/img/lawSupervise/temp/link_03.jpg','./static/images/img/lawSupervise/temp/link_04.jpg']"
                                 >
                             </el-image>
                         </div>
                     </li>
                     <li>
-                        <img class="img" :src="'./static/images/img/temp/sp.jpg'">
-                        <i class="iconfont law-bofang"></i>
+                        <video class="img" controls>
+		                    <!-- <source :src="'./static/images/img/lawSupervise/temp/link_05.mp4'" type="video/mp4"> -->
+                        </video>
+                        <!-- <i class="iconfont law-bofang"></i> -->
                     </li>
                     <li @click="dialogPDFVisible = true">
-                       <img  class="img" :src="'./static/images/img/temp/sp.jpg'" >
-                       <i class="iconfont law-pdf1" ></i>
+                        <img class="img" :src="'./static/images/img/lawSupervise/temp/link_03.jpg'">
+                       <i class="iconfont law-pdf1" style="color:#ccc;"></i>
                     </li>
-                    <li>
-                        <div class="demo-image__preview">
-                            <el-image
-                            class="img"
-                                style="width: 100px; height: 100px"
-                                :src="'./static/images/img/temp/sp.jpg'"
-                                :preview-src-list="['./static/images/img/temp/sp.jpg','./static/images/img/temp/sp.jpg']"
-                                >
-                            </el-image>
-                        </div>
+                    <li @click="dialogPDFVisible = true">
+                       <img class="img" :src="'./static/images/img/lawSupervise/temp/link_04.jpg'">
+                       <i class="iconfont law-pdf1" style="color:white;"></i>
                     </li>
                 </ul>
             </div>
@@ -230,14 +225,15 @@ export default {
             storageStr: '',
             currentUrl: '',
             userObj: {
-                name: '张三',
-                mobile: '13621212121',
-                mark: '备注'
+                name: '',
+                mobile: '',
+                mark: ''
             }
         }
     },
     mounted () {
-        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '9,10a727c3ada3';
+        // http://172.16.170.54:9332/14,16d92a05edcd   old:9,10a727c3ada3
+        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
         // debugger;
     }
 }

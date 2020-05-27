@@ -7,10 +7,10 @@
             <li v-for="(item, index) in processStatus" :class="{'active': index === tabActiveValue}"  :key="index" @click="activeAndSearch(item,index)">{{item.value}}</li>
         </ul> -->
         <!-- @tab-click="activeAndSearch" -->
-        <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="search">
-            <el-tab-pane v-for="(item, index) in processStatus" :key="item.value"  :name="item.value" >
+        <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="search(1)">
+            <el-tab-pane v-for="(item, index) in processStatus" :key="index.toString()"  :name="item.value" >
                 <span slot="label">
-                    <el-badge :value="index==0?null:index" >
+                    <el-badge :value="item.num" >
                         {{item.value}}
                     </el-badge>
                 </span>
@@ -28,7 +28,7 @@
         <div class="handlePart caseHandleSearchPart" :class="{'autoHeight':isShow}">
             <el-form :inline="true" :model="form" label-width="80px"  ref="offsiteManageform">
                 <el-form-item label="检测站点" prop="siteName">
-                    <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+                    <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input>
                 </el-form-item>
                 <el-form-item label="车牌号" prop="vehicleColor">
                     <el-select v-model="form.vehicleColor" placeholder="请选择">
@@ -41,7 +41,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label=" " label-width="0px" prop="vehicleNumber">
-                    <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search()"></el-input>
+                    <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input>
                 </el-form-item>
                 <el-form-item label="超限率" prop="overload">
                             <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
@@ -209,9 +209,10 @@
 <style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
 <style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>
 <script>
-import {queryListPage, findAllDrawerById} from '@/api/lawSupervise.js';
+import {queryListPage, findAllDrawerById, getCountStatus} from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
+import _ from "lodash";
 export default {
   inject: ["reload"],
   data() {
@@ -255,15 +256,20 @@ export default {
         total: 0, // 总条数
         timeList: ['',''],
         processStatus: [{
-            value: '待审核'
+            value: '待审核',
+            num: ''
         }, {
-            value: '审核中'
+            value: '审核中',
+            num: ''
         }, {
-            value: '已审核'
+            value: '已审核',
+            num: ''
         }, {
-            value: '已转办'
+            value: '已转办',
+            num: ''
         }, {
-            value: '无效信息'
+            value: '无效信息',
+            num: ''
         }],
         tabActiveValue: '待审核',
         isShow: false,
@@ -337,6 +343,7 @@ export default {
         this.form.status = this.tabActiveValue;
         this.form.current = val;
         let _this = this;
+        debugger;
         new Promise((resolve, reject) => {
             queryListPage(_this.form).then(
                 res => {
@@ -452,12 +459,36 @@ export default {
             case '已审核': this.routerExamineDetail(data, '3', '已审核'); break;
         }
     },
+    getCountStatus () {
+        let _this = this;
+        new Promise((resolve, reject) => {
+            getCountStatus().then(
+                res => {
+                    // resolve(res)
+                    // _this[obj] = res.data
+                    res.data.forEach((item,i) => {
+                        let _index = _.findIndex(_this.processStatus, (chr)=>{
+                            return chr.value === item.STATUS;
+                        })
+                        // debugger;
+                        if (_index > -1) {
+                            _this.processStatus[_index].num = item.COUNT;
+                        }
+                    })
+                },
+                error => {
+                    //  _this.errorMsg(error.toString(), 'error')
+                        return
+                }
+            )
+        })
+    }
   },
   created () {
     this.search();
     this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
     this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'vehicleColorList');
-
+    this.getCountStatus()
   },
   mounted () {
 
