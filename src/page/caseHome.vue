@@ -880,7 +880,7 @@ img {
   padding: 0px 20px 15px 20px;
 }
 </style>
-<style lang="scss">
-@import "@/assets/css/caseHandle/caseHome.scss";
+<style lang="scss" src="@/assets/css/caseHandle/caseHome.scss">
+/* @import "@/assets/css/caseHandle/caseHome.scss"; */
 </style>
 

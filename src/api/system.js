@@ -543,7 +543,18 @@ export function deleteDictApi(data) {
   });
 }
 
-//获取字典详情  字典值
+//获取字典详情所有字典值
+export function getAllDictListDetailApi(id) {
+  return request({
+    url: "/system/sys/drawer/findAllByPid/" + id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//获取字典详情有效字典值
 export function getDictListDetailApi(id) {
   return request({
     url: "/system/sys/drawer/findAllDrawerById/" + id,
@@ -709,6 +720,18 @@ export function getCaseCauseListApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//获取案件类型列表
+export function getCaseTypesApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/caseType/list",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
 //根据条件分页查询法规
 export function getBnsLawListApi(data) {
@@ -722,6 +745,18 @@ export function getBnsLawListApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//添加或修改案件类型
+export function addOrUpdateCaseTypeApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/caseType/saveOrUpdateCaseType",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 
 //获取执法门类
 export function getLawCategoryApi(data) {
@@ -730,6 +765,17 @@ export function getLawCategoryApi(data) {
     url: "/case/caseTemplate/lawCategory/getLawCategoryListVo",
     method: "get",
     params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//删除案件类型
+export function deleteCaseTypeApi(data) {
+  return request({
+    url: "/case/caseTemplate/caseType/delete/"+data,
+    method: "get",
+    // params: {id: data},
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -867,10 +913,143 @@ export function getlawRegulationsListByActionidApi(data) {
 }
 //根据条件分页查询法条
 export function getlawRegulationsListApi(data) {
+  console.log("data",data);
   return request({
     url: "/bnslaw/sys/bnslawCause/findLawRegulationsByPage",
     method: "get",
     params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//解除绑定法条
+export function unbindCauseLawRegulationsApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/unbindCauseLawRegulations",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除违法行为及中间表
+export function deleteCaseCauseByIdApi(data) {
+  console.log("data",data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/deleteCaseCauseById/"+data,
+    method: "get",
+    // params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据法规id查询法规信息
+export function getBnsLawByIdApi(data) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findBnsLawById/"+data.id,
+    method: "get", 
+    // params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//获取所有流程
+export function getAllFlowApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/flow/queryFlowCondition",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据条件查询法规信息
+export function getBnsLawByFormApi(data) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/queryListVoByBnslaw",
+    method: "get", 
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除认定依据
+export function deleteLawCognizanceByIdApi(id) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/deleteLawCognizanceById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//获取案件类型列表
+export function getRoadLcDeployApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/road/roadLcDeploy/list",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除处罚依据
+export function deleteLawPunishmentByIdApi(id) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/deleteLawPunishmentById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+
+//通过id查询认定依据
+export function getLawCognizanceByIdApi(id) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findLawCognizanceById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过id查询处罚依据
+export function getLawPunishmentByIdApi(id) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findLawPunishmentById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加或修改路产配置
+export function addOrUpdateRoadLcDeployApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/road/roadLcDeploy/saveOrUpdateRoadLcDeploy",
+    method: "get",
+    params:data,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()

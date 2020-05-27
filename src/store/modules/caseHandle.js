@@ -2,7 +2,8 @@ import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategory
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
     submitPdfApi,approvalPdfApi,approvalPdfQzApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi,
-    findByCondition,findByMlCaseIdNew,saveOrUpdateDocCatalogList,
+    findByCondition,findByMlCaseIdNew,saveOrUpdateDocCatalogList,getCaseTypeListApi,getCatalogListApi,addOrEditCatalogApi,
+    deleteCatalogApi,
     //-----------------长软start-----------
     getHandleRecordApi,getEvidenceApi,saveOrUpdateEvidenceApi,getDocumentApi,getDeliverReceiptApi,saveOrUpdateDeliverReceiptApi,getDictionaryApi
     //-----------------长软end------------
@@ -460,6 +461,66 @@ const caseHandle = {
                 reject(error);
               })
           })
+        },
+        //获取执法门类
+        getCaseTypeList({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getCaseTypeListApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //获取卷宗目录模板
+        getCatalogList({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getCatalogListApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //添加或修改卷宗目录模板
+        getCatalogList({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getCatalogListApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //添加或修改卷宗目录模板
+        addOrEditCatalog({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                addOrEditCatalogApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //删除卷宗目录模板
+        deleteCatalog({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                deleteCatalogApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
         },
         //------------------长软end---------------------
     }

@@ -7,7 +7,7 @@
             <el-input v-model="searchForm.flowName" placeholder="请输入流程名称"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-search">查询</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-search" @click="getFlowList">查询</el-button>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addFlow">新增</el-button>
           </el-form-item>
         </el-form>
@@ -145,6 +145,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import "@/assets/css/systemManage.scss";
+<style lang="scss" src="@/assets/css/systemManage.scss">
+/* @import "@/assets/css/systemManage.scss"; */
 </style>

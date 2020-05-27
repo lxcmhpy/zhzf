@@ -20,6 +20,6 @@ export default {
 }
 
 </script>
-<style lang="scss" scoped>
-@import "@/assets/css/personManageTitle.scss";
+<style lang="scss" src="@/assets/css/personManageTitle.scss" scoped>
+/* @import "@/assets/css/personManageTitle.scss"; */
 </style>

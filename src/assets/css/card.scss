@@ -75,6 +75,11 @@
     .el-input-group__prepend {
         width: 180px;
     }
+
+    i {
+        color    : #4573d0;
+        font-size: 16px;
+    }
 }
 
 .lawPersonBox {
@@ -133,8 +138,8 @@
     }
 
     .el-collapse-item__content {
-        margin-bottom: 0;
-        padding-bottom:0;
+        margin-bottom : 0;
+        padding-bottom: 0;
     }
 
     .el-collapse-item__wrap {
@@ -194,7 +199,9 @@
 
     .el-checkbox__inner::after {
 
-        border: 1px solid #4573D0;
+        border     : 1px solid #4573D0;
+        border-left: 0;
+        border-top : 0;
     }
 
     .is-indeterminate {
@@ -220,4 +227,58 @@
     .el-icon-arrow-right {
         display: inline;
     }
+}
+
+.mimi-content {
+    padding   : 14px 34px 0 5px;
+    box-sizing: border-box;
+
+    .el-form-item {
+        &:first-child {
+            margin-top: 14px;
+        }
+    }
+
+    .el-form-item__content {
+        line-height: 28px;
+
+    }
+
+    .el-radio-group {
+        margin: 16px 0;
+    }
+
+}
+
+.card-bg-content {
+    background   : #F6F7FB;
+    padding      : 1px 20px;
+    margin-top   : -28px;
+    margin-bottom: 14px;
+    margin-right : 34px;
+}
+
+.footer_fixed {
+    margin-left  : -30px;
+    padding-right: 22px;
+    position     : fixed;
+    bottom       : 0;
+    height       : 85px;
+    width        : 50%;
+    line-height  : 85px;
+    background   : #F9F9F9;
+    border-top   : 1px solid #D6DBE3;
+    text-align   : right;
+}
+
+.card-drawer {
+    .el-drawer__body {
+        padding-bottom: 85px;
+    }
+}
+
+.card-user-box {
+    width        : calc(100% - 150px);
+    float        : right;
+    margin-bottom: 0;
 }

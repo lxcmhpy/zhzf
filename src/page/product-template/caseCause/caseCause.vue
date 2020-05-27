@@ -51,14 +51,16 @@
         </div>
          <addCaseCause ref="addCaseCauseRef" @uploadaaa="getCaseCauseList()"></addCaseCause>
          <bindlawRegulations ref="bindlawRegulationsRef" @uploadaaa="getCaseCauseList()"></bindlawRegulations>
+         <lawRegulationsDetail ref="lawRegulationsDetailRef" @uploadaaa="getCaseCauseList()"></lawRegulationsDetail>
   </div>
 </div>
 </template>
 
 <script>
-import {getCaseCauseListApi} from "@/api/system";
+import {getCaseCauseListApi,deleteCaseCauseByIdApi} from "@/api/system";
 import addCaseCause from "./addCaseCause";
 import bindlawRegulations from "./bindlawRegulations";
+import lawRegulationsDetail from "./lawRegulationsDetail";
 export default {
   data() {
     return {
@@ -78,7 +80,9 @@ export default {
   components: {
     addCaseCause,
     bindlawRegulations,
+    lawRegulationsDetail
   },
+  inject: ["reload"],
   methods: {
     //新增违法行为界面
      addCaseCause(){
@@ -86,16 +90,15 @@ export default {
             id:'',
             leng:this.tableData.length
       }
-      this.$refs.addCaseCauseRef.showModal(0, data,'list');
+      this.$refs.addCaseCauseRef.showModal(0, data);
     },
     //绑定法条界面
     bindlawRegulations(val){
-      debugger
       let data={
             causeId:val.id,
             leng:this.tableData.length
       }
-      this.$refs.bindlawRegulationsRef.showModal(0, data,'list');
+      this.$refs.bindlawRegulationsRef.showModal(data);
     },
     //表单筛选
     getCaseCauseList(val) {
@@ -142,14 +145,41 @@ export default {
           console.log(err);
         }
       );
+    },
+    detailCaseCause(data){
+      this.$refs.lawRegulationsDetailRef.showModal(data);
+    },
+    // 表格编辑
+    editCaseCause(row) {
+      let newRow =JSON.parse(JSON.stringify(row));
+      console.log("123",newRow);
+      this.$refs.addCaseCauseRef.showModal(2,newRow);
+    },
+    deleteCaseCause(id){
+      debugger
+      this.$confirm("确认删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        deleteCaseCauseByIdApi(id).then(
+            res => {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.reload();
+            },
+            err => {
+              console.log(err);
+            }
+          );
+
+      })
+      
     }
   },
-   // 表格编辑
-    editCaseCause(index, row) {
-      let newRow =JSON.parse(JSON.stringify(row));
-      this.$refs.addCaseCauseRef.handelEdit(newRow);
-    },
-        //添加违法行为
+
   created() {
     this.getCaseCauseList();
     this.getEnforceLawType();

@@ -4,10 +4,10 @@ import  Vue  from  "vue";
 
 let  vm  =  new  Vue();
 
-//获取用户下的所有机构
+//查询所有业务领域
 export  function  getLawCategoryListApi(data)  {
     return  request({
-      url:  "",
+      url:  "/case/caseTemplate/lawCategory/getLawCategoryPageVo",
       method:  "get",
       params: data,
       showloading:  false,
@@ -163,7 +163,6 @@ export function linkBindSortApi(data) {
 }
 
 //查询上一环节、下一环节
-//删除流程
 export function findTargetLinkApi(data) {
   console.log("查询目标环节",data);
   return request({
@@ -171,5 +170,31 @@ export function findTargetLinkApi(data) {
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
+  });
+}
+
+//删除业务领域
+//根据流程Id查询未绑定环节
+export function deleteCategoryByIdApi(data) {
+  console.log("参数",data);
+  return request({
+    url: "/case/caseTemplate/lawCategory/deleteCategoryById/"+data,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//新增或修改业务领域
+export function addOrEditLawCategoryApi(data) {
+  console.log("111",data);
+  console.log(vm.$qs.stringify(data));
+  return request({
+    url: "/case/caseTemplate/lawCategory/addOrUpdate",
+    method:  "POST",
+    data:vm.$qs.stringify(data),
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource()
   });
 }
