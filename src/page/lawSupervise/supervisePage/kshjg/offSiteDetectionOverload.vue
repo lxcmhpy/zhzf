@@ -365,7 +365,7 @@
 import Vue from "vue";
 import { mapGetters } from "vuex";
 import echarts from 'echarts';
-import 'echarts/lib/chart/graph';
+// import 'echarts/lib/chart/graph';
 import {lawSuperviseObj,yjObj} from '@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js';
 import {getZfjgLawSupervise,getBySiteId, getById} from '@/api/lawSupervise.js';
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";

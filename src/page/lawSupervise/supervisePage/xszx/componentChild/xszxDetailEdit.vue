@@ -675,7 +675,7 @@
 <script>
 import Vue from "vue";
 import echarts from 'echarts';
-import 'echarts/lib/chart/graph';
+// import 'echarts/lib/chart/graph';
 import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
 import {findAllDrawerById} from '@/api/lawSupervise.js';

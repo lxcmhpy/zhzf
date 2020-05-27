@@ -1,5 +1,4 @@
 import * as types from "./mutation-types";
-import Cookies from "@/common/js/cookies";
 import Vue from "vue";
 import { getToken, setToken } from "@/common/js/auth";
 /**
@@ -98,7 +97,7 @@ const mutations = {
 
 
   [types.USERNAME](state, name) {
-    Cookies.set("username", name); //退出浏览器过期
+    // Cookies.set("username", name); //退出浏览器过期
     state.username = name;
   },
 

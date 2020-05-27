@@ -14,7 +14,6 @@ import {
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";
-import Cookies from "@/common/js/cookies";
 
 const system = {
     state: {

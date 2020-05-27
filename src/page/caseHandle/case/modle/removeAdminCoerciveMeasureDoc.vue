@@ -89,7 +89,7 @@
         </p>
 
         <div class="pdf_seal">
-          <span @click="makeSeal">交通运输执法部门(印章)</span>
+          <span>交通运输执法部门(印章)</span>
           <br />
           <el-form-item prop="signatureDate" class="pdf_datapick">
             <el-date-picker
@@ -164,8 +164,6 @@ import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-// import signture from "../../../../js/signture";
-import mySignture from "@/common/js/mySignture";
 
 export default {
   components: {
@@ -299,21 +297,7 @@ export default {
       };
       this.com_getDocDataByCaseIdAndDocId(data);
     },
-    //保存文书信息
-    // addDocData(handleType) {
-    //   this.printContent();
-    //   this.com_addDocData(handleType, "docForm");
-    // },
-    // 盖章
-    makeSeal() {
-      console.log("盖章!");
-    },
-    // 打印
-    print() {
-      console.log("打印!");
-      mySignture.openURL("oeder");
-    },
-    // 多行编辑
+     // 多行编辑
     overFlowEdit() {
       this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
     },

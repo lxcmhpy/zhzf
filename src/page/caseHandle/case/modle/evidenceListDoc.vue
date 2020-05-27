@@ -16,7 +16,7 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
-                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" 
+                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])" placeholder="\"></el-input>
                 <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
@@ -24,10 +24,10 @@
             </td>
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
- 
+
               <!-- <el-form-item prop="partyIdNo" :rules="isParty && propertyFeatures['partyIdNo'] && propertyFeatures['partyIdNo'].required ? rules.partyIdNo : [{ validator:validateIDNumber,trigger: 'blur'}]"> -->
               <el-form-item prop="partyIdNo" :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)">
-                <el-input type="textarea" v-model="docData.partyIdNo" maxLength='18' v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" 
+                <el-input type="textarea" v-model="docData.partyIdNo" maxLength='18' v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -36,7 +36,7 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'],'',isParty)">
-                <el-input type="textarea" v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" 
+                <el-input type="textarea" v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])" placeholder="\"></el-input>
 
               </el-form-item>
@@ -44,7 +44,7 @@
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyTel" :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone,isParty)">
-                <el-input v-model="docData.partyTel" maxLength='11' 
+                <el-input v-model="docData.partyTel" maxLength='11'
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -54,7 +54,7 @@
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
-                <el-input v-model="docData.partyName" :maxLength='maxLength' 
+                <el-input v-model="docData.partyName" :maxLength='maxLength'
                 :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -63,7 +63,7 @@
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="partyUnitAddress" :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)">
-                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' 
+                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength'
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -72,14 +72,14 @@
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyUnitTel" :rules="fieldRules('partyUnitTel',propertyFeatures['partyUnitTel'],validatePhone,!isParty)">
-                <el-input v-model="docData.partyUnitTel"  :maxLength='11' 
+                <el-input v-model="docData.partyUnitTel"  :maxLength='11'
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td> 法定代表人 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)">
-                <el-input v-model="docData.partyManager" maxLength='10' 
+                <el-input v-model="docData.partyManager" maxLength='10'
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -90,7 +90,7 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode" :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)">
-                <el-input v-model="docData.socialCreditCode" maxLength='22' 
+                <el-input v-model="docData.socialCreditCode" maxLength='22'
                   :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -100,7 +100,7 @@
         <p>因调查
           <span>
             <el-form-item prop="caseName" style="width:220px" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength' 
+              <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength'
                 placeholder="\" v-bind:class="{ over_flow:docData.caseName.length>12?true:false }"
                 :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
             </el-form-item>
@@ -109,7 +109,7 @@
             <el-form-item prop="acceptTreatmentNumber" style="width:120px" :rules="fieldRules('acceptTreatmentNumber',propertyFeatures['acceptTreatmentNumber'])">
               <el-input v-model="docData.acceptTreatmentNumber" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['acceptTreatmentNumber'])"></el-input>
             </el-form-item>
-           
+
           </span>日（自
           <span>
             <el-form-item prop="acceptTreatmentStartDate" class="pdf_datapick" :rules="fieldRules('acceptTreatmentStartDate',propertyFeatures['acceptTreatmentStartDate'])">
@@ -175,7 +175,7 @@
           </el-col>
         </el-row>
         <div class="pdf_seal">
-          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+          <span >交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
@@ -238,7 +238,7 @@
         </div>
       </div>
     </el-dialog>
-        
+
          <!-- 悬浮按钮 -->
         <casePageFloatBtns :pageDomId="'evidenceListDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
@@ -250,7 +250,6 @@ import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-import mySignture from "@/common/js/mySignture";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 export default {
   components: {
@@ -258,7 +257,7 @@ export default {
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
-  computed: { 
+  computed: {
     ...mapGetters(['caseId']),
     // fieldDisabled(fieldProperty){
     //   return function(fieldProperty){
@@ -409,12 +408,7 @@ export default {
     // addDocData(handleType) {
     //   this.com_addDocData(handleType, 'docForm');
     // },
-    // 盖章
-    makeSeal() {
-      console.log('盖章!');
-       mySignture.openURL('oeder');
-    },
-    // 打印
+     // 打印
     print() {
       console.log('打印!');
     },
@@ -547,7 +541,7 @@ export default {
           this.docData.tableData = this.tableDatas;
           this.addVisible = false;
         }
-    
+
     },
 
     formatSpec: function(row, column, cellValue) {
@@ -564,7 +558,7 @@ export default {
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
-   
+
     // let formFields = this.$refs.docForm.fields;
     // formFields.forEach(item=>{
     //   console.log('item',item);
