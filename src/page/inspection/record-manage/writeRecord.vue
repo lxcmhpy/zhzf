@@ -2,7 +2,7 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox">
 
-      标题{{formData.title}}
+      写记录-标题{{formData.title}}
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item v-for="(item,index) in formData.formList" :key="index" :label="item.label" :prop="'formList[+'+index+'].value'" :rules="{
       required: true, message: '域名不能为空', trigger: 'blur'}">

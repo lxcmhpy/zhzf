@@ -1,24 +1,9 @@
 <template>
   <!-- LawCognizanceBasis   认定依据 -->
   <el-dialog title="认定依据" :visible.sync="visible" :close-on-click-modal="false" width="50%">
-    <el-form :model="addPageForm" label-width="100px" ref="addPageFormRef" :rules="rules">
-      <el-form-item label="法规名称" prop="bnslawNameCog">
-        <el-input v-model="addPageForm.bnslawNameCog" placeholder="法规名称"></el-input>
-      </el-form-item>
-      <el-form-item label="条" prop="itemCog">
-        <el-input v-model="addPageForm.itemCog" placeholder="条"></el-input>
-      </el-form-item>
-      <el-form-item label="款" prop="clauseCog">
-        <el-input v-model="addPageForm.clauseCog" placeholder="款"></el-input>
-      </el-form-item>
-      <el-form-item label="项" prop="iitemCog">
-        <el-input v-model="addPageForm.iitemCog" placeholder="项"></el-input>
-      </el-form-item>
-      <el-form-item label="法规原文" prop="bnsLawNoteCog">
-        <el-input v-model="addPageForm.bnsLawNoteCog" placeholder="法规原文" type="textarea" :rows="2"></el-input>
-      </el-form-item>
-
-    </el-form>
+   <div>
+     <preview></preview>
+   </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取 消</el-button>
       <el-button type="primary" @click="addSure">确 定</el-button>
@@ -30,9 +15,13 @@ import {
   addeLawCognizanceApi
 } from "@/api/system";
 import { mapGetters } from "vuex";
+import preview from "./writeRecord"
 export default {
   computed: {
     ...mapGetters(["btnlawId"])
+  },
+  components:{
+    preview
   },
   data() {
     return {
