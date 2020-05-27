@@ -1,5 +1,5 @@
-import echarts from 'echarts'
-import 'echarts/lib/chart/graph'
+// import echarts from 'echarts'
+// import 'echarts/lib/chart/graph'
 export const lawSuperviseObj = {
     option: {
         tooltip: {

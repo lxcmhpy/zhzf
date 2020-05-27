@@ -127,11 +127,13 @@
 <script>
 
 import { mapGetters } from "vuex";
-import Cookies from "@/common/js/cookies";
 import iLocalStroage from "@/common/js/localStroage";
 import { drawCodeImage } from "@/api/login";
 import * as types from "@/store/mutation-types";
 import {menuList} from "@/common/data/menu";
+// 滑动验证
+import VueSimpleVerify from 'vue-simple-verify';
+// Vue.component('vue-simple-verify', VueSimpleVerify)
 import {
   getCurrentUserApi
 } from "@/api/login";
@@ -375,6 +377,9 @@ export default {
     this.showLogin = true;
     // this.test()
   },
+  components: {
+      VueSimpleVerify
+  }
   // created: function () {
   //   this.getCaptcha();
   // }
@@ -382,6 +387,8 @@ export default {
 </script>
 
 <style lang="scss" src="@/assets/css/login.scss">
+</style>
+<style lang="scss" src="@/assets/css/verify.scss">
 </style>
 
 

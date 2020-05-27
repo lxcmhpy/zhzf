@@ -13,10 +13,8 @@ import App from "./App";
 import { router } from "./router/index";
 //引入全局变量
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
-// 滑动验证
-import VueSimpleVerify from 'vue-simple-verify'
+
 // import { message } from '@/common/js/resetMessage';
-Vue.component('vue-simple-verify', VueSimpleVerify)
 
 Vue.use(ElementUI);
 Vue.use(hasPermission);

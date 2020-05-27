@@ -84,7 +84,7 @@
   </div>
 </template>
 <script>
-import Cookies from "@/common/js/cookies";
+// import Cookies from "@/common/js/cookies";
 import iLocalStroage from "@/common/js/localStroage";
 import headMenu from "@/components/headMenu";
 import subLeftMenu from "@/components/subLeftMenu";
@@ -125,7 +125,7 @@ export default {
     },
     //退出
     loginOut() {
-      Cookies.remove("TokenKey");
+    //   Cookies.remove("TokenKey");
       iLocalStroage.removeAll();
       // this.$store.state.openTab = [];
       this.$store.dispatch('deleteAllTabs');
@@ -133,7 +133,7 @@ export default {
     },
     //个人设置  待完善
     goToUser() {
-      Cookies.set("menu", "personInfor");
+    //   Cookies.set("menu", "personInfor");
       this.reload(); //reload 可以去掉导航菜单选中状态的class
       this.$router.push({ name: "personInfor" });
     },

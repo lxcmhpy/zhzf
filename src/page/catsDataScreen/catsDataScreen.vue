@@ -26,7 +26,7 @@
 <style src="@/assets/css/catsDataScreen.scss" lang="scss"></style>
 <script>
 import echarts from "echarts";
-import 'echarts/lib/chart/graph';
+// import 'echarts/lib/chart/graph';
 export default {
     methods: {
         drawPie () {

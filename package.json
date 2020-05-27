@@ -19,6 +19,7 @@
     "axios": "0.18.0",
     "babel-polyfill": "^6.26.0",
     "cross-env": "^7.0.2",
+    "echarts": "^4.8.0",
     "element-ui": "^2.13.0",
     "increase-memory-limit": "^1.0.7",
     "js-base64": "^2.5.1",

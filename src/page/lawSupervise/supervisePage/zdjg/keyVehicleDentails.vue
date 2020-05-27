@@ -71,7 +71,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 
 import Vue from "vue";
 import echarts from 'echarts';
-import 'echarts/lib/chart/graph';
+// import 'echarts/lib/chart/graph';
 import { lawSuperviseObj, yjObj } from '@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js';
 import { getKeyDetailById } from '@/api/lawSupervise.js';
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
