@@ -52,6 +52,8 @@
                          @click="addUser"></el-button>
               <el-button size="medium" class="commonBtn searchBtn" icon="iconfont law-link" title="绑定权限"
                          @click="bindRole"></el-button>
+              <el-button size="medium" class="commonBtn searchBtn" icon="iconfont law-submit-o" title="转执法人员"
+                         @click="saveLawOfficel"></el-button>
               <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'"
                          :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="showSomeSearch"></el-button>
             </el-form-item>
@@ -111,7 +113,7 @@
             <el-table-column label="操作" width="160">
               <template slot-scope="scope">
                 <div style="width:160px">
-                  <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button> 
+                  <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button>
                   <el-button type="text" @click.stop @click="handleDelete(scope.row)">删除</el-button>
                   <el-button type="text" @click.stop @click="Initialization(scope.row)">初始化</el-button>
                 </div>
@@ -165,7 +167,7 @@
           selectValue: "",
           region: ""
         },
-        searchType: [{value: 0, label: '本机构'}, {value: 1, label: '本机构及子机构'}],
+        searchType: [{value: 1, label: '本机构'}, {value: 0, label: '本机构及子机构'}],
         filterText: "",
         selectCurrentTreeName: "机构人员列表",
         organData: [],
@@ -372,6 +374,29 @@
           this.$message("请选择用户");
         }
       },
+      //转执法人员
+      saveLawOfficel() {
+      if (this.selectUserIdList.length) {
+          let _this = this;
+          let data = {
+              userId: this.selectUserIdList.join(','),
+          };
+        _this.$store.dispatch("saveLawOfficel", data).then(
+            res => {
+                _this.getAllOrgan(_this.$refs.addUserRef.id);
+                _this.$message({
+                    type: "success",
+                    message: "转执法人员成功!"
+                });
+            },
+            err => {
+                console.log(err);
+            }
+        );
+      } else {
+        this.$message("请选择用户");
+      }
+    },
       //获取选中的user
       selectUser(val) {
         console.log(val);
