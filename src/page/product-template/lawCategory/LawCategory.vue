@@ -55,7 +55,11 @@
 <script>
 import addLawCategory from "./addLawCategory";
 import hylbDialog from "./hylbDialog";
-import { getLawCategoryListApi,deleteCategoryByIdApi } from "@/api/caseDeploy";
+import {
+  getLawCategoryPageApi,
+  deleteCategoryByIdApi,
+  queryOrganByCateApi
+} from "@/api/caseDeploy";
 
 export default {
   data() {
@@ -67,7 +71,8 @@ export default {
       searchName: "", //查询名称
       searchForm: {
         name: ""
-      }
+      },
+      organIdList: ""
     };
   },
   components: {
@@ -85,7 +90,7 @@ export default {
         pid: ""
       };
       let _this = this;
-      getLawCategoryListApi(data).then(
+      getLawCategoryPageApi(data).then(
         res => {
           console.log("执法门类列表", res);
           _this.tableData = res.data.records;
@@ -105,35 +110,52 @@ export default {
     },
     //修改
     editLawCategory(data) {
-      let newRow =JSON.parse(JSON.stringify(data));
+      let newRow = JSON.parse(JSON.stringify(data));
       this.$refs.addLawCategoryRef.showModal(2, newRow);
     },
     //删除
-    deleteCategoryById(id){
-        this.$confirm("确认删除该业务领域?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          deleteCategoryByIdApi(id).then(
-            res => {
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-              this.reload();
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        })
-        .catch(() => {});
+    deleteCategoryById(id) {
+      queryOrganByCateApi(id).then(
+        res => {
+          console.log("绑定的机构", res);
+          this.organIdList = res.data;
+          console.log("11", this.organIdList);
+          if (this.organIdList.length != 0) {
+            this.$message({
+              // type: "success",
+              message: "已有机构绑定该业务领域，禁止删除!"
+            });
+          } else {
+            this.$confirm("确认删除该业务领域?", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+              .then(() => {
+                deleteCategoryByIdApi(id).then(
+                  res => {
+                    this.$message({
+                      type: "success",
+                      message: "删除成功!"
+                    });
+                    this.reload();
+                  },
+                  err => {
+                    console.log(err);
+                  }
+                );
+              })
+              .catch(() => {});
+          }
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     //根据id获取行业类别
-    hyleDetail(id){
-        this.$refs.hylbDialogRef.showModal(id);
+    hyleDetail(id) {
+      this.$refs.hylbDialogRef.showModal(id);
     },
     //更改每页显示的条数
     handleSizeChange(val) {
