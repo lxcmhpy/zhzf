@@ -1,5 +1,5 @@
 <template>
-  <div id="inforCollectionBox">
+  <div class="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
         <a :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv">案件情况</a>
@@ -2072,8 +2072,8 @@
     console.log('next', next);
     console.log('this.autoSava', this.autoSava);
     if (this.autoSava && to.name != 'login') {  //退出登录不自动暂存
-      this.stageInfo(0);
-      // iLocalStroage.set("stageCaseId", this.caseId);
+      // this.stageInfo(0);
+     
     }
 
       next(vm => {

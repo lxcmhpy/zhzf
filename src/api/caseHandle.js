@@ -1052,3 +1052,15 @@ export function queryFlowBycaseTypeApi(id) {
     cancelToken: setCancelSource()
   });
 }
+
+//查询公路路产配置
+export function queryRoadLcDeployApi(data) {
+  return request({
+    url: "/case/road/roadLcDeploy/list",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

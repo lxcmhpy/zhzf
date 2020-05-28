@@ -17,6 +17,7 @@ const caseHandle = {
         clickArchiveCatalogue:'', //当前点击的归档卷宗目录
         archiveCatalogueList:[], //归档卷宗目录
         approvalState:'', //审批状态（审批中approvaling 审批完成approvalOver ）
+        inforCollectionType:'',
     },
     mutations:{
         //设置caseId
@@ -38,6 +39,9 @@ const caseHandle = {
         },
         setApprovalState(state,data) {
             state.approvalState = data
+        },
+        setInforCollectionType(state,data){
+            state.inforCollectionType = data;
         },
     },
     actions:{

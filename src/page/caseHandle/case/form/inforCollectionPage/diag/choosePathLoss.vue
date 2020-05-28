@@ -9,20 +9,28 @@
     >
       <el-form
         :model="pathLossSearchForm"
-        :rules="rules"
-        ref="illegalActSearchFormRef"
-        class="illegalActSearchForm"
+        ref="pathLossSearchFormRef"
+        class="pathLossSearchFormClass"
         label-width="70px"
       >
         <div>
           <div class="item">
             <el-form-item label="所属标准">
-              <el-input v-model="pathLossSearchForm.roadLcBz" placeholder="请选择所属标准"></el-input>
+              <el-select v-model="pathLossSearchForm.roadLcBz" placeholder="请选择" @change="changeBz">
+                <el-option v-for="item in allRoadLcBz" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="类型">
-              <el-input v-model="pathLossSearchForm.roadLcType" placeholder="请输入类型"></el-input>
+              <el-select v-model="pathLossSearchForm.roadLcType" placeholder="请选择">
+                <el-option
+                  v-for="item in allRoadType"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </div>
           <div class="item">
@@ -31,15 +39,19 @@
             </el-form-item>
           </div>
           <div class="item">
-            <el-button type="primary">搜索</el-button>
+            <el-button type="primary" @click="searchPathLoss">搜索</el-button>
           </div>
         </div>
       </el-form>
       <div>
         <el-table :data="tableData" stripe border @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="strNumber" label="代码" width="180"></el-table-column>
-          <el-table-column prop="strContent" label="违法行为"></el-table-column>
+          <el-table-column type="selection" width="55" :selectable="canSelectable"></el-table-column>
+          <el-table-column type="index" width="50" label="序号"></el-table-column>
+          <el-table-column label="路产名称" prop="roadLcName"></el-table-column>
+          <el-table-column label="类型" prop="roadLcType"></el-table-column>
+          <el-table-column label="单价(元)" prop="roadLcPrice"></el-table-column>
+          <el-table-column label="单位" prop="roadLcUnit"></el-table-column>
+          <el-table-column label="所属标准" prop="roadLcBz"></el-table-column>
         </el-table>
       </div>
       <div class="paginationBox center">
@@ -61,6 +73,8 @@
   </div>
 </template>
 <script>
+import { queryRoadLcDeployApi } from "@/api/caseHandle";
+import { getDictListDetailByNameApi } from "@/api/system";
 export default {
   data() {
     var valiDatLength = (rule, value, callback) => {
@@ -73,39 +87,105 @@ export default {
     };
     return {
       visible: false,
-      pathLossSearchForm: {},
-      currentPage:1,
+      pathLossSearchForm: {
+        roadLcBz: "",
+        roadLcType: "",
+        roadLcName: ""
+      },
+      currentPage: 1,
+      tableData: [],
+      totalPage: 0,
+      allRoadLcBz: ["高等级公路标准", "普通公路标准"],
+      allRoadType: [],
+      selectRows: [],
+      alreadyAddData: []
     };
   },
   inject: ["reload"],
   methods: {
-      //选中    
-      handleSelectionChange(val){
-          console.log(val);
-      },
-      //确认
-      selectSure(){
-
-      },
-      showModal() {
-        this.visible = true;
-      },
-      closeDialog(){
-        this.visible = false;
-      },
-       //更改每页显示的条数
+    //选中
+    handleSelectionChange(val) {
+      console.log(val);
+      this.selectRows = val;
+    },
+    //确认
+    selectSure() {
+      this.visible = false;
+      this.$emit("selectData", this.selectRows);
+    },
+    showModal(alreadyAddData) {
+      this.visible = true;
+      this.pathLossSearchForm.roadLcBz = "";
+      this.pathLossSearchForm.roadLcType = "";
+      this.pathLossSearchForm.roadLcName = "";
+      this.alreadyAddData = alreadyAddData;
+      this.searchPathLoss();
+    },
+    closeDialog() {
+      this.visible = false;
+    },
+    searchPathLoss() {
+      this.tableData = [];
+      queryRoadLcDeployApi(this.pathLossSearchForm)
+        .then(res => {
+          console.log(res);
+          this.totalPage = res.data.total;
+          this.tableData = res.data.records;
+          this.canSelectable();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    //更改每页显示的条数
     handleSizeChange(val) {
-      let _this = this
-    //   _this.pageSize = val;
-    //   this.getApprovalRecordInfo();
+      //   _this.pageSize = val;
+      this.searchPathLoss();
     },
     //更换页码
     handleCurrentChange(val) {
-      let _this = this
+      let _this = this;
       _this.currentPage = val;
-    //   _this.getApprovalRecordInfo();
+      _this.searchPathLoss();
     },
+    //更改标准
+    changeBz(val) {
+      getDictListDetailByNameApi(val).then(
+        res => {
+          this.allRoadType = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    //是否禁止选择
+    canSelectable(row, index) {
+      let canSelectableFlag = true;
+      
+      for (let index2 in this.alreadyAddData) {
+          console.log('item',this.alreadyAddData[index2]);
+          console.log('row',row);
+        if (this.alreadyAddData[index2].id == row.id) {
+          canSelectableFlag = false;
+          break;
+        }
+      }
+      return canSelectableFlag;
+    }
   },
   mounted() {}
 };
 </script>
+<style lang="scss">
+.pathLossSearchFormClass > div {
+  display: flex;
+  .item {
+    width: 25%;
+  }
+  .item:last-child {
+    text-align: center;
+  }
+}
+</style>
+

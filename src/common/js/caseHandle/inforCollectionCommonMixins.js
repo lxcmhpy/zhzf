@@ -114,6 +114,7 @@ export const inforCollectionCommonMixins = {
 
         kilometre: '',
         metre: '',
+        latitudeAndLongitude:'', //案发坐标
       },
       routeList: [],
       directionList: [],
@@ -279,7 +280,7 @@ export const inforCollectionCommonMixins = {
       //案发地点标志
       afddFlag: false,
       disableZcBtn: false, //暂存按钮禁用
-
+      hasLatitudeAndLongitude:false, //案发坐标是否已经获取
     };
   },
   components: {
@@ -679,7 +680,7 @@ export const inforCollectionCommonMixins = {
       setTimeout(() => {
       }, 100);
     },
-    stageInfo(state) {
+    stageInfo(state,otherData={}) {
       this.inforForm.agentPartyEcertId = JSON.stringify(
         this.driverOrAgentInfoList
       );
@@ -707,6 +708,8 @@ export const inforCollectionCommonMixins = {
             _this.$store.commit("setCaseId", res.data.id);
             iLocalStroage.set("stageCaseId", res.data.id);
             // this.autoSava = false;
+            //跳转举报记录
+            if(otherData.nextRoute) this.$router.push({name:otherData.nextRoute})
           },
           err => {
             console.log(err);
@@ -793,10 +796,13 @@ export const inforCollectionCommonMixins = {
     },
     //案件来源后的输入框是否显示
     showCaseSourceAfterInput(caseSource) {
-      if (caseSource === "行政检查" || caseSource === "投诉举报") {
+      if (caseSource === "行政检查" || caseSource === "投诉举报" || caseSource =='') {
         this.caseSourceTextDisable = false;
       } else {
         this.caseSourceTextDisable = true;
+      }
+      if(caseSource === "投诉举报"){
+        this.showJBRecord = true;
       }
     },
     // 超重限制及抽屉表
@@ -1287,10 +1293,9 @@ beforeRouteLeave(to, from, next) {
   console.log('from', from)
   console.log('next', next);
   console.log('this.autoSava', this.autoSava);
-  if (this.autoSava && to.name != 'login') {  //退出登录不自动暂存
-    this.stageInfo(0);
-    // iLocalStroage.set("stageCaseId", this.caseId);
-  }
+  // if (this.autoSava && to.name != 'login') {  //退出登录不自动暂存
+  //   this.stageInfo(0);
+  // }
 
     next(vm => {
       console.log(vm)
