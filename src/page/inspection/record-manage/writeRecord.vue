@@ -2,29 +2,20 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox">
 
-      标题{{formData.title}}
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item v-for="(item,index) in formData.formList" :key="index" :label="item.label" :prop="'formList[+'+index+'].value'" :rules="{
-      required: true, message: '域名不能为空', trigger: 'blur'}">
-
-          prop:{{'item.' + index + '.value'}}
-          value:{{item.value}}
-
-          <el-input v-model="item.value"></el-input>
-        </el-form-item>
-
-        <template v-for="(person,index) in Form.List">
-          <el-form-item :prop="'List.'+index + '.code'" :key="person.key" :rules="rules">
-            <el-input v-model="person.code"></el-input>
-          </el-form-item>
-        </template>
-
-      </el-form>
+      写记录-标题{{formData.title}}
+      <div>
+        <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit"></form-create>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import formCreate, { maker } from '@form-create/element-ui'
+import Vue from 'vue'
 export default {
+    components: {
+    formCreate: formCreate.$form()
+  },
   data() {
     return {
       ruleForm: {
@@ -48,12 +39,106 @@ export default {
         },]
 
       },
-      rules: {}
+      rules: {},
+      //表单实例对象
+      $f: {},
+      //表单生成规则
+      formData: {
+
+      },
+      rule: [
+        // 文本框
+        {
+          type: 'input',//必要-字段类型，不可改
+          field: 'goods_name',//必要-字段英文名
+          title: '姓名',//必要-字段中文名
+          col: { span: 16, labelWidth: '50%' },//不必要
+          className: 'total-gross-wt',//不必要-样式名
+          props: {      //不必要-配置
+            type: 'text',
+            clearable: true, // 是否显示清空按钮
+            placeholder: '请输入'
+          },
+          validate: [{  //不必要-验证规则
+            // pattern: /^(0|[1-9]\d*)(\s|$|\.\d{1,3}\b)/, // /^[0-9]+([.]{1}[0-9]{1,3})?$/,
+            message: '请正确输入',
+            required: true,
+            trigger: 'blur'
+          }
+          ]
+        },
+        // 单选框
+        {
+          type: "radio",//必要-字段类型，不可改
+          title: "是否包邮",//必要-字段中文名
+          field: "is_postage",//必要-字段英文名
+          value: "0",//不必要-默认值
+          options: [//必要-选项，至少一个
+            { value: "0", label: "不包邮", disabled: false },
+            { value: "1", label: "包邮", disabled: true },
+          ],
+        },
+        // 多选框
+        {
+          type: "checkbox",//必要-字段类型，不可改
+          title: "标签",//必要-字段英文名
+          field: "label",//必要-字段中文名
+          value: ["1", "2", "3"],//不必要-默认值
+          options: [//必要-选项，至少一个
+            { value: "1", label: "好用", disabled: true },
+            { value: "2", label: "方便", disabled: false },
+            { value: "3", label: "实用", disabled: false },
+            { value: "4", label: "有效", disabled: false },
+          ]
+        },
+        // 下拉选择框
+        {
+          type: "select",//必要-字段类型，不可改
+          field: "cate_select",//必要-字段英文名
+          title: "产品分类",//必要-字段中文名
+          value: ["104"],//不必要-默认值
+          options: [//必要-选项，至少一个
+            { "value": "104", "label": "生态蔬菜", "disabled": false },
+            { "value": "105", "label": "新鲜水果", "disabled": false },
+          ],
+          props: {
+            multiple: true
+          },
+        },
+        // 日期选择器
+        {
+          type: "DatePicker",//必要-字段类型，不可改
+          field: "section_day",//必要-字段英文名
+          title: "活动日期",//必要-字段中文名
+          value: ['2018-02-20', new Date()],//不必要-默认值
+          props: {
+            "type": "date",//必要-配置用，写死，可能的值：year/month/date/dates/ week/datetime/datetimerange/daterange
+            "format": "yyyy-MM-dd HH:mm:ss",//必要-配置格式用-写死
+            "placeholder": "请选择活动日期",
+          }
+        },
+        // 时间选择器
+        {
+          type: "TimePicker",
+          field: "section_time",
+          title: "活动时间",
+          value: [],
+          props: {
+            isRange: true,//时间范围时必填，其他情况不必填
+          },
+        },
+
+
+      ]
+
 
     }
   },
   methods: {
-
+ onSubmit(formData) {
+      //TODO 提交表单
+      console.log(formData)
+    },
   }
 }
 </script>

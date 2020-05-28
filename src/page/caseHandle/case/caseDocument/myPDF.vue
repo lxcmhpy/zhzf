@@ -136,6 +136,7 @@
             if(this.$route.params.status == 1){
               this.$router.go(-1);
             }else{
+              console.log('退回信息采集')
                this.$router.go(-2);
             }
 

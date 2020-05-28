@@ -10,7 +10,7 @@ import {
     getAllMenuListApi, getTreePermissionApi, addPermissionApi, deletePermissionApi,
     getDictListApi, getDictListDetailApi, getAllDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
-    getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,
+    getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,saveLawOfficelApi,
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";
@@ -547,6 +547,18 @@ const system = {
         getloglist({ commit }, data) {
             return new Promise((resolve, reject) => {
                 getloglistApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+      //转执法人员
+      saveLawOfficel({ commit }, data) {
+            return new Promise((resolve, reject) => {
+              saveLawOfficelApi(data).then(
                     res => {
                         resolve(res);
                     },

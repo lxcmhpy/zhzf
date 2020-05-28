@@ -58,4 +58,6 @@ export const BASIC_DATA_SYS = {
     finishCaseReport_caseLinktypeId:'2c9029ee6cac9281016cacaadf990006',
     //结案报告 docId
     finishCaseReport_huanjieAndDocId:'2c9029d2695c03fd01695c278e7a0001',
+    //举报记录 docId
+    reportRecordDoc_caseDoctypeId:'ee967fd019272b7a06aae11cf5901303',
 }
