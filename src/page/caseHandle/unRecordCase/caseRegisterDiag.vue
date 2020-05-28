@@ -69,7 +69,9 @@ export default {
         illageAct: [{ required: true, message: "请选择", trigger: "change" }]
       },
       lawCateList: [], //业务领域列表
-      caseTypeList: [] //案件类型列表
+      caseTypeList: [] ,//案件类型列表
+      staff:'',
+      staffId:'',
     };
   },
   inject: ["reload"],
@@ -226,11 +228,81 @@ export default {
     findInforCollectPageName(id){
       queryFlowBycaseTypeApi(id).then(res=>{
           console.log('res',res);
-          this.$router.push({
-            name: res.data.basicInfoPage,
-          });
+          this.setLawPersonCurrentP(res.data.basicInfoPage);
       }).catch(err=>{console.log(err)})
-    }
+    },
+    //暂存案件 获取案件id和临时案号
+    getCaseInfor(inforName){
+      let someCaseInfo = iLocalStroage.gets("someCaseInfo");
+      let inforForm ={
+        acceptTime: new Date().format('yyyy-MM-dd HH:mm'), //受案时间
+        acceptTime: new Date().format('yyyy-MM-dd HH:mm'), //受案时间
+        partyType: 1, //当事人类型
+        partyIdType: "0", //证件类型
+        organId: iLocalStroage.gets("userInfo").organId,
+        otherInfo:'',
+        agentPartyEcertId:'',
+        state:0,
+        caseStatus:'未立案',
+        caseCauseName :someCaseInfo.illageAct,
+        caseCauseNameCopy :someCaseInfo.illageAct,
+        caseCauseId : someCaseInfo.illageActId,
+        programType : someCaseInfo.programType,
+        caseType : someCaseInfo.caseType,
+        caseTypeId : someCaseInfo.caseTypeId,
+        zfmlId : someCaseInfo.cateId,
+        zfml : someCaseInfo.cateName,
+        staff:this.staff,
+        staffId:this.staffId
+      };
+      this.$store
+        .dispatch("saveOrUpdateCaseBasicInfo",inforForm)
+        .then(res => {
+          console.log('哈哈哈哈');
+          let setCaseNumber = res.data.caseNumber!='' ? res.data.caseNumber : res.data.tempNo;
+          this.$store.commit("setCaseNumber", setCaseNumber);
+          this.$store.commit("setCaseId", res.data.id);
+          iLocalStroage.set("stageCaseId", res.data.id);
+          this.$store.commit("setInforCollectionType", inforName);
+          this.$router.push({
+            name: inforName,
+          });
+        })
+        .catch(err=>{console.log(err)})
+    },
+    setLawPersonCurrentP(inforName) {
+      let _this = this
+      this.$store
+        .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
+        .then(
+          res => {
+            console.log('执法人员列表', res)
+            _this.userList = res.data;
+            // let currentUserData = {};
+            // _this.lawPersonListId = [];
+            // _this.alreadyChooseLawPerson = [];
+
+            res.data.forEach(item => {
+              if (
+                item.userId == iLocalStroage.gets("userInfo").id
+              ) {
+                // currentUserData.id = item.id;
+                // currentUserData.lawOfficerName = item.lawOfficerName;
+                // currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
+                // _this.alreadyChooseLawPerson.push(currentUserData);
+                // _this.lawPersonListId.push(currentUserData.id);
+                // _this.currentUserLawId = currentUserData.id;
+                this.staff = item.lawOfficerName;
+                this.staffId = item.id;
+                this.getCaseInfor(inforName);
+              }
+            });
+          },
+          err => {
+            console.log(err);
+          }
+        );
+    },
   },
   mounted() { }
 };

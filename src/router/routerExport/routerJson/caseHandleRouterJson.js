@@ -256,7 +256,7 @@ export default [
     component: () => import("@/page/caseHandle/unRecordCase/inforCollection.vue")
   },
   {
-    path: "/inforCollect",
+    path: "/compensationInforCollect",
     name: "case_handle_compensationInforCollection",
     meta: {
       title: "信息采集",
@@ -644,5 +644,13 @@ export default [
       title: "流程绑定环节",
     },
     component: () => import("@/page/product-template/category/bindLink.vue")
-  }
+  },
+  {
+    path: "/reportRecordDoc",
+    name: "case_handle_reportRecordDoc",
+    meta: {
+      title: "举报记录"
+    },
+    component: () => import("@/page/caseHandle/case/modle/reportRecordDoc.vue")
+  },
 ]

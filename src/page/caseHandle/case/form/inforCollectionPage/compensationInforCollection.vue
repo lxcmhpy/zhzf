@@ -1,5 +1,5 @@
 <template>
-  <div id="inforCollectionBox">
+  <div class="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
         <a :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv">案件情况</a>
@@ -37,6 +37,7 @@
               </el-select>
             </el-form-item>
           </div>
+         
           <div class="item hasMargintop">
             <el-form-item prop="caseSourceText">
               <el-input
@@ -45,6 +46,7 @@
                 v-show="caseSourceTextDisable"
                 :placeholder="caseSourceTextPla"
               ></el-input>
+                <el-button type="primary" size="small" v-if="showJBRecord" @click="goReportRecordDoc">举报记录</el-button>
             </el-form-item>
           </div>
         </div>
@@ -89,8 +91,8 @@
             </el-form-item>
           </div>
         </div>
-        <div>
-          <label class="el-form-item__label" style="width: 100px;">案发路线</label>
+        <div class="afddBox">
+          <label class="el-form-item__label" style="width: 100px;">案发地点</label>
           <div class="itemFive">
             <el-form-item label-width="0">
               <el-select v-model="inforForm.routeId" placeholder="本机构路线编号" filterable allow-create>
@@ -133,7 +135,8 @@
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
-          </div>
+          </div>     
+          <div class="showMapBtn"><el-button type="primary" icon="iconfont law-weizhi" size="mini" @click="showMap" v-if="!hasLatitudeAndLongitude">请获取坐标</el-button><el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button></div>
         </div>
         <div>
           <div class="itemOne">
@@ -618,37 +621,47 @@
       <div class="caseFormBac" id="link_4" ref="link_4" @mousewheel="scrool4">
         <p>路损清单</p>
         <div>
-            <div class="item">
-                <el-form-item label="赔偿总金额">
-                <el-input v-model="pathLossTotal"></el-input>
-                </el-form-item>
-            </div>
-            <div class="item">
-                <el-button type="primary" @click="addpathLoss">添加</el-button>
-            </div>
+          <div class="item">
+            <el-form-item label="赔偿总金额">
+              <el-input v-model="payTotal"></el-input>
+            </el-form-item>
+          </div>
+          <div class="item">
+            <el-button type="primary" size="small" @click="addpathLoss">添加</el-button>
+          </div>
         </div>
-        
+
         <div>
-            <el-table :data="pathLossList">
-                <el-table-column type="index" width="50" label="序号"></el-table-column>
-                <el-table-column label="路产名称" prop="name"></el-table-column>
-                <el-table-column label="单位" prop="unit"></el-table-column>
-                <el-table-column label="单价(元)" prop="unitPrice"></el-table-column>
-                <el-table-column label="数量">
-                    <template slot-scope="scope">
-                        <el-input v-model="pathLossList[scope.$index].quantity"></el-input>
-                    </template>
-                </el-table-column>
-                <el-table-column label="合计">
-                    <template slot-scope="scope">{{pathLossList[scope.$index].quantity * pathLossList[scope.$index].unitPrice}}</template>
-                </el-table-column>
-                <el-table-column label="备注" prop="note"></el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <i class="iconfont law-delete" @click="deletePathLoss(scope.$index)"></i>
-                    </template>
-                </el-table-column>
-            </el-table>
+          <el-table :data="pathLossList">
+            <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
+            <el-table-column label="路产名称" prop="roadLcName" align="center"></el-table-column>
+            <el-table-column label="单位" prop="roadLcUnit" align="center"></el-table-column>
+            <el-table-column label="单价(元)" prop="roadLcPrice" align="center"></el-table-column>
+            <el-table-column label="数量" width="150" align="center">
+              <template slot-scope="scope">
+                <!-- <el-input v-model="pathLossList[scope.$index].quantity"></el-input> -->
+                <el-input-number v-model="pathLossList[scope.$index].quantity" :min="1" size="mini"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column label="合计" align="center">
+              <template
+                slot-scope="scope"
+              >{{pathLossList[scope.$index].quantity * pathLossList[scope.$index].roadLcPrice}}</template>
+            </el-table-column>
+            <el-table-column label="备注" prop="roadLcNote" align="center">
+              <template slot-scope="scope">
+                <el-tooltip effect="dark" placement="top-start">
+                  <div slot="content" style="max-width:200px">{{scope.row.roadLcNote}}</div>
+                  <span>{{scope.row.roadLcNote}}</span>
+                </el-tooltip>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="50" align="center">
+              <template slot-scope="scope">
+                <i class="iconfont law-delete" @click="deletePathLoss(scope.$index)"></i>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </div>
       <div class="caseFormBac" id="link_5" ref="link_5" @mousewheel="scrool5">
@@ -761,41 +774,115 @@
         </svg>
       </div>
     </el-backtop>
+    <choosePathLoss ref="choosePathLossRef" @selectData="selectRoadData"></choosePathLoss>
+    <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
   </div>
 </template>
 <script>
 import { inforCollectionCommonMixins } from "@/common/js/caseHandle/inforCollectionCommonMixins";
+import choosePathLoss from "./diag/choosePathLoss";
+import mapDiag from "./diag/mapDiag";
+import {mapGetters} from "vuex";
 export default {
   mixins: [inforCollectionCommonMixins],
-  data(){
-      return{
-          pathLossList:[],
-      }
+  data() {
+    return {
+      pathLossList: [],
+      showJBRecord:false,
+    };
   },
-  computed:{
-      pathLossTotal(){
-        let total = 0;
-        for(var i in this.pathLossList){
-            total += this.pathLossList[i].unitPrice * this.pathLossList[i].quantity;
-        } 
-        return total;
-      }
+  computed: {...mapGetters(['caseId'])},
+  components: {
+    choosePathLoss,
+    mapDiag
   },
-  methods:{
-      //添加路损
-      addpathLoss(){
-        //   let item = { name:'', unit:'', unitPrice:'', quantity:'', total:'', note:''}
-        //   this.pathLossList.push(item);
+  computed: {
+    payTotal() {
+      let total = 0;
+      for (var i in this.pathLossList) {
+        total +=
+          this.pathLossList[i].roadLcPrice * this.pathLossList[i].quantity;
+      }
+      return total;
+    }
+  },
+  methods: {
+    //添加路损
+    addpathLoss() {
+      //   let item = { name:'', unit:'', unitPrice:'', quantity:'', total:'', note:''}
+      //   this.pathLossList.push(item);
+      this.$refs.choosePathLossRef.showModal(this.pathLossList);
+    },
+    //删除路损
+    deletePathLoss(lossIndex) {
+      this.pathLossList.splice(lossIndex, 1);
+    },
+    //选中的路损
+    selectRoadData(data) {
+      //   data.forEach(item=>{
+      //       item.quantity = 1;
+      //   })
+      this.pathLossList = [...this.pathLossList, ...data];
+      this.pathLossList.map((v, i) => {
+        let quantity = v.quantity || 0;
+        this.$set(v, "quantity", quantity);
+      });
+    },
+    changeCaseSource(item) {
+        if(item.value === "投诉举报"){
+            this.showJBRecord = true
+        }else{
+            this.showJBRecord = false;
+        }
+      if (item.value === "行政检查" || item.value === "投诉举报") {
+        this.caseSourceTextDisable = false;
+        this.inforForm.caseSourceText = '';
         
-      },
-      //删除路损
-      deletePathLoss(lossIndex){
-          this.pathLossList.splice(lossIndex,1);
+      } else {
+        this.caseSourceTextPla = item.placeholder
+        this.caseSourceTextDisable = true;
       }
+      this.inforForm.caseSource = item.value
+    },
+    //显示地图
+    showMap(){
+      this.$refs.mapDiagRef.showModal();
+    },
+    //获取坐标
+    getLngLat(lngLatStr){
+        this.inforForm.latitudeAndLongitude = lngLatStr;   
+        this.hasLatitudeAndLongitude = true;
+    },
+    //跳转举报记录文书
+    goReportRecordDoc(){
+        let otherData={
+            nextRoute:'case_handle_reportRecordDoc'
+        }
+        this.stageInfo(0,otherData);
+        // this.$router.push({name:'case_handle_reportRecordDoc'})
+    },
+    //查询举报文书有没有生成
+    findReportRecordDocPdf(){
+        this.$store.dispatch("getFile", {
+            docId: this.BASIC_DATA_SYS.reportRecordDoc_caseDoctypeId,
+            caseId: this.caseId,
+          }).then(res=>{
+              console.log('生成了举报文书',res);
+          })
+          .catch(err=>{console.log(err)})
+    }
   },
-  created(){
-      //新增属性
-      this.$set(this.inforForm,'pathLossTotal');
+  created() {
+    //新增属性
+    this.$set(this.inforForm, "payTotal");
+    this.$set(this.inforForm, "roadDamageList");
+    this.findReportRecordDocPdf()
+  },
+  mounted(){
+   
   }
 };
 </script>
+<style lang="scss">
+  @import "@/assets/css/caseHandle/index.scss";
+</style>

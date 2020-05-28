@@ -11,7 +11,7 @@
       <el-button type="primary" size="medium" icon="el-icon-plus" @click="addRequest">新增</el-button>
     </div>
     <div class="tablePart">
-      <el-table :data="tableData" highlight-current-row @current-change="chexkCase" style="width: 100%" height="100%">
+      <el-table :data="tableData" stripe style="width: 100%" height="100%">
         <el-table-column type="index" width="60" align="center">
           <template slot="header">序号</template>
         </el-table-column>
@@ -111,9 +111,6 @@ export default {
 
     closeDialog() {
       this.visible = false;
-    },
-    chexkCase(val){
-
     }
   }
 };
