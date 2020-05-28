@@ -20,6 +20,9 @@
             <div style="width: 500px; height: 500px;position:absolute;top:0px;z-index:1000;">
                 <div style="width: 400px; height: 400px;" ref="echartsPie"></div>
             </div>
+             <div style="width: 500px; height: 500px;position:absolute;top:0px;top: 300px;z-index:1000;">
+                <div style="width: 400px; height: 400px;" ref="echartsPie1"></div>
+            </div>
             <div style="width: 100%;height: 100%;position:absolute;top:0px;">
                 <el-amap vid="map" mapStyle="amap://styles/darkblue" :plugin="plugin" :events="events" :center="[107.4976,32.1697]" :amap-manager="amapManager" :zoom="4" >
                 </el-amap>
@@ -74,6 +77,7 @@ export default {
                 init (o) {
                     lazyAMapApiLoaderInstance.load().then(() => {
                         _self.setLine();
+                        _self.drawPie();
                     });
                 }
             }
@@ -230,9 +234,9 @@ export default {
         });
         },
         drawPie () {
-            var mychart = this.$refs.echartsPie;
+            let mychart = this.$refs.echartsPie;
             if (mychart) {
-                let myChart = echarts.init(mychart);
+                let chart = echarts.init(mychart);
                 let option = {
                     title: {
                         text: '执法持证\n情况',
@@ -288,8 +292,8 @@ export default {
                             // animationEasing: 'quadraticOut',
                             animationType: 'expansion',
                             animationEasing: 'quinticOut',
-                             animationDelay: function (idx) {
-                                return idx * 10;
+                            animationDelay: function (idx) {
+                                return idx * 12 + 1000;
                             },
                             labelLine: {
                                 show: false
@@ -337,12 +341,122 @@ export default {
                         return idx * 10;
                     }
                 };
-                myChart.setOption(option);
+                chart.setOption(option);
+            }
+
+            let mychart1 = this.$refs.echartsPie1;
+            if (mychart1) {
+                let chart1 = echarts.init(mychart1);
+                let option1 = {
+                    title: {
+                        text: '执法持证\n情况',
+                        textStyle: {
+                            color: '#66d7ff',
+                            fontSize: 22,
+                            lineHeight:30
+                        },
+                        textAlign: 'center',
+                        textVerticalAlign: 'middle',
+                        left: '50%',
+                        top: '50%'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{d}%'
+                    },
+                    // legend: {
+                        // orient: 'vertical',
+                        // left: 10,
+                        // selected: ['海事证', '部发证', '省内证']
+                    // },
+                    series: [
+                        {
+                            name: '执法持证情况',
+                            type: 'pie',
+                            hoverOffset: 0,
+                            selectedOffset: 10,
+                            selectedMode:'multiple',
+                            hoverAnimation:false,
+                            radius: ['50%', '61%'],
+                            // selectedMode: '海事证',
+                            avoidLabelOverlap: false,
+                            label: {
+                                show: true,
+                                position: 'outside',
+                                lineHeight: 18,
+                                fontSize: 14,
+                                // padding: 50,
+                                formatter: function(data) {
+                                    // debugger;
+                                    return data.data.title === ''?'': data.data.title + ' \n'+ data.data.value + '%';
+                                },
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    // fontSize: '18',
+                                    fontWeight: 'bold',
+                                }
+                            },
+                              animationType: 'scale',
+                            // animationEasing: 'quadraticOut',
+                            // animationType: 'expansion',
+                            animationEasing: 'quinticOut',
+                            animationDelay: function (idx) {
+                                return idx * 12 + 1000;
+                            },
+                            labelLine: {
+                                show: false
+                                // lineStyle:{
+                                //     color: 'transparent'
+                                // }
+                            },
+                            data: [
+                                {value: 10, title: '海事证', name: '海事证', itemStyle: { color: '#f99513' },selectedMode:true},
+                                {value: 10, title: '', name: '海事证', itemStyle: { color: '#f99513' },selectedMode:true},
+                                {value: 10, title: '',name: '海事证', itemStyle: { color: '#f99513' },selectedMode:true},
+                                {value: 10, title: '部发证',  name: '部发证', itemStyle: { color: '#f7d02f' }},
+                                {value: 10, title: '',name: '部发证', itemStyle: { color: '#f7d02f' }},
+                                {value: 10, title: '',name: '部发证', itemStyle: { color: '#f7d02f' }},
+                                {value: 10, title: '',name: '部发证', itemStyle: { color: '#f7d02f' }},
+                                {value: 10 ,title: '省内证',  name: '省内证', itemStyle: { color: '#66d7ff' }},
+                                {value: 10,title: '', name: '省内证', itemStyle: { color: '#66d7ff' }},
+                                {value: 10, title: '',name: '省内证', itemStyle: { color: '#66d7ff' }},
+                                {value: 10, title: '',name: '省内证', itemStyle: { color: '#66d7ff' }},
+                                {value: 10, title: '',name: '省内证', itemStyle: { color: '#66d7ff' }},
+                                {value: 10,title: '', name: '省内证', itemStyle: { color: '#66d7ff' }},
+                                {value: 10, title: '',name: '省内证', itemStyle: { color: '#66d7ff' }},
+                                {value: 10,title: '', name: '省内证', itemStyle: { color: '#66d7ff' }},
+                                {value: 10, title: '',name: '省内证', itemStyle: { color: '#66d7ff' }},
+                            ],
+                            itemStyle: {
+                                emphasis: {
+                                    shadowOffsetX: 0,
+                                    shadowColor: '#000c14',
+                                    borderWidth: 0,
+                                },
+                                normal: {
+                                    shadowBlur: 0,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'none',
+                                    fontWeight: 'bolder',
+                                    borderWidth: 7,
+                                    borderColor: '#000c14',
+                                },
+                            },
+                        }
+                    ],
+                    animationDelayUpdate: function (idx) {
+                        // 越往后的数据延迟越大
+                        return idx * 10;
+                    }
+                };
+                chart1.setOption(option1);
             }
         }
     },
     mounted () {
-        this.drawPie();
+
     }
 }
 </script>

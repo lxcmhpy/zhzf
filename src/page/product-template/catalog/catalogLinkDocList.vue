@@ -52,14 +52,14 @@
               <template slot-scope="scope">
                 <div>
                   <span
-                    v-show="scope.$index"
-                    @click="goUp(scope.row,scope.$index)"
-                    class="iconfont law-desc blueC"
-                  ></span>
-                  <span
                     v-show="scope.$index != linkDocData.length-1"
                     @click="goDown(scope.row,scope.$index)"
                     class="iconfont law-asc blueC"
+                  ></span>
+                  <span
+                    v-show="scope.$index"
+                    @click="goUp(scope.row,scope.$index)"
+                    class="iconfont law-desc blueC"
                   ></span>
                 </div>
               </template>
@@ -132,7 +132,7 @@ export default {
             id: item.id,
             templateId: item.templateId,
             docId: item.docId,
-            createTime: new Date().format("yyyy-MM-dd"),
+            createTime: new Date().format("yyyy-MM-dd HH:mm:ss"),
             sort: this.linkDocData[index - 1].sort,
             status: item.status
           });
@@ -160,7 +160,7 @@ export default {
         id: row.id,
         templateId: row.templateId,
         docId: row.docId,
-        createTime: new Date().format("yyyy-MM-dd"),
+        createTime: new Date().format("yyyy-MM-dd HH:mm:ss"),
         sort: row.sort,
         status: status
       };
@@ -181,7 +181,7 @@ export default {
         arr.push({
           templateId: _this.templateId,
           docId: item.id,
-          createTime: new Date().format("yyyy-MM-dd"),
+          createTime: new Date().format("yyyy-MM-dd HH:mm:ss"),
           sort: length++,
           status: 0
         });

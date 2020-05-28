@@ -196,7 +196,7 @@ export function getUserresetApi(params) {
   //   loadingType:'loadPart',
   //   cancelToken: setCancelSource()
   // });
-  
+
   let data = vm.$qs.stringify({
     username: params.username,
     nickName: params.nickName,
@@ -954,7 +954,7 @@ export function deleteCaseCauseByIdApi(data) {
 export function getBnsLawByIdApi(data) {
   return request({
     url: "/bnslaw/sys/bnslawCause/findBnsLawById/"+data.id,
-    method: "get", 
+    method: "get",
     // params: data,
     showloading: true,
     loadingType:'loadPart',
@@ -978,7 +978,7 @@ export function getAllFlowApi(data) {
 export function getBnsLawByFormApi(data) {
   return request({
     url: "/bnslaw/sys/bnslawCause/queryListVoByBnslaw",
-    method: "get", 
+    method: "get",
     params: data,
     showloading: true,
     loadingType:'loadPart',
@@ -1049,6 +1049,18 @@ export function addOrUpdateRoadLcDeployApi(data) {
   return request({
     url: "/case/road/roadLcDeploy/saveOrUpdateRoadLcDeploy",
     method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+//用户转执法人员
+export function saveLawOfficelApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/caseTemplate/lawOfficer/userConvertLawOfficer",
+    method: "post",
     params:data,
     showloading: true,
     loadingType:'loadPart',
