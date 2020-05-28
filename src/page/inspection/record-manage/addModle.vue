@@ -20,7 +20,7 @@
 
           <p class="border-title card-title-margin clear">添加指标
             <span class="card-add-btn">
-              <el-button icon="el-icon-plus" size="medium" @click="addGroup(3)">添加新字段组</el-button>
+              <el-button icon="el-icon-plus" size="medium" @click="addGroup()">添加新字段组</el-button>
             </span>
           </p>
           <div class="collapse-title-foem">
@@ -79,6 +79,10 @@
                     </el-row> -->
                     <el-row class="mimi-content" v-if="filed.tag=='el-radio-group'||filed.tag=='el-checkbox-group'">
                       <el-col :span="22" :offset="2" class="card-bg-content">
+                         <el-form-item prop="field101" label="占位符(字段填报说明)：" label-width="165px">
+                          <el-input size="mini" v-model="filed.placeholder" clearable>
+                          </el-input>
+                        </el-form-item>
                         <el-form-item v-for="(radio,index) in filed.radioList" :key="index" prop="field101" label-width="0">
                           <i class="el-icon-remove-outline" style="margin-right:14px" @click="delRadioList(radio,filed.radioList)"></i>
                           <el-input size="mini" v-model="radio.value" placeholder="请输入选项" clearable style="width: calc(100% - 70px)">
@@ -184,8 +188,8 @@
               </div>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="模板管理者" prop="region">
-            <el-form-item prop="delivery" class="lawPersonBox card-user-box-big">
+          <el-form-item label="模板管理者" >
+            <el-form-item prop="delivery" class="lawPersonBox card-user-box-big" style="width:100%">
               <el-select ref="lawPersonListId" v-model="formData.lawPersonListId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
@@ -195,8 +199,8 @@
         </el-form>
       </div>
       <div class="demo-drawer__footer footer_fixed">
-        <el-button type="primary" @click="submitForm('formData')">发布</el-button>
-        <el-button @click="preview('formData')">预览</el-button>
+        <el-button type="primary" @click="submitForm('elForm')">发布</el-button>
+        <el-button @click="preview(formData)">预览</el-button>
         <!-- <el-button @click="resetForm('elForm')">重置</el-button> -->
       </div>
     </el-drawer>
@@ -398,8 +402,9 @@ export default {
 
       });
     },
-    addGroup(index) {
+    addGroup() {
       this.formData.groupList.push({ "value": this.globalCont, filedList: [] })
+      this.activeNames.push(this.globalCont)
       this.globalCont++;
       console.log('formData.groupList', this.formData.groupList)
     },
@@ -456,7 +461,13 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          if(this.formData.groupList.length==0 ||(this.formData.groupList.length==1&&this.formData.groupList[0].filedList.length==0)){
+          this.$message('该请至少添加一个字段！');
+          }
+          else{
           alert('submit!');
+            
+          }
         } else {
           console.log('error submit!!');
           return false;
