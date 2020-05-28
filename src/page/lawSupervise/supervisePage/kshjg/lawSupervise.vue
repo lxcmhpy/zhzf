@@ -1197,7 +1197,7 @@ import Vue from "vue";
 import { mapGetters } from "vuex";
 // require("@/common/js/call.js");
 import echarts from "echarts";
-import "echarts/lib/chart/graph";
+// import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
 import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById } from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
@@ -2385,9 +2385,10 @@ export default {
           res => {
             let dataArray = res.data;
             dataArray.icon = 'icon_jc1';
-            dataArray.children.forEach((item,i)=>{
-                addChildren(item);
-            })
+            // dataArray.children.forEach((item,i)=>{
+            //     addChildren(item);
+            // })
+            addChildren(dataArray);
             function addChildren(item) {
 
                 item.icon = item.icon?item.icon:'icon_jc1';

@@ -62,7 +62,6 @@ export default {
   inject: ["reload"],
   methods: {
     showModal(type, data ,orgList) {
-      debugger
       this.visible = true;
       this.handelType = type;
       this.getOrganList = orgList;
@@ -158,6 +157,6 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-@import "@/assets/css/systemManage.scss";
+<style lang="scss" src="@/assets/css/systemManage.scss">
+/* @import "@/assets/css/systemManage.scss"; */
 </style>

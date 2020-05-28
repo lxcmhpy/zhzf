@@ -2,7 +2,7 @@
   <section class="login">
     <transition name="form-fade" mode="in-out">
       <section class="form_contianer" v-show="showLogin">
-        <!-- <div class="login_logo"><img src="../../../src/assets/image/main/logo.png" alt=""><span>全国交通运输执法管理系统</span></div>-->
+        <!-- <div class="login_logo"><img src="../../../src/assets/image/main/logo.png" alt=""><span>治超联网监管系统</span></div>-->
         <div class="leftC">
           <img src="../../../static/images/img/login/pic_denglu.jpg" alt="">
         </div>
@@ -127,11 +127,13 @@
 <script>
 
 import { mapGetters } from "vuex";
-import Cookies from "@/common/js/cookies";
 import iLocalStroage from "@/common/js/localStroage";
 import { drawCodeImage } from "@/api/login";
 import * as types from "@/store/mutation-types";
 import {menuList} from "@/common/data/menu";
+// 滑动验证
+import VueSimpleVerify from 'vue-simple-verify';
+// Vue.component('vue-simple-verify', VueSimpleVerify)
 import {
   getCurrentUserApi
 } from "@/api/login";
@@ -288,11 +290,12 @@ export default {
       let _this = this
       this.$store.dispatch("getMenu").then(
         res => {
-          _this.menuList = [...res.data, ...menuList];
+            // ...res.data,
+          _this.menuList = [...menuList];
           _this.$store.commit("SET_MENU", _this.menuList);
-          _this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
-          _this.$store.commit('set_Head_Active_Nav',"caseHandle-menu-case_handle_home_index");
-          _this.$router.push({ name: "case_handle_home_index" });
+          _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
+          _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
+          _this.$router.push({ name: "law_supervise_lawSupervise" });
         },
         err => {
           console.log(err);
@@ -374,14 +377,18 @@ export default {
     this.showLogin = true;
     // this.test()
   },
+  components: {
+      VueSimpleVerify
+  }
   // created: function () {
   //   this.getCaptcha();
   // }
 };
 </script>
 
-<style lang="scss">
-@import "@/assets/css/login.scss";
+<style lang="scss" src="@/assets/css/login.scss">
+</style>
+<style lang="scss" src="@/assets/css/verify.scss">
 </style>
 
 

@@ -300,8 +300,6 @@
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
   import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-  // import signture from "../../../../js/signture";
-  import mySignture from "@/common/js/mySignture";
   import iLocalStroage from "@/common/js/localStroage";
   import { validatePhone,validateIDNumber  } from "@/common/js/validator";
   export default {
@@ -509,11 +507,6 @@
       addDocData(handleType) {
         this.com_addDocData(handleType, 'docForm');
       },
-      // 盖章
-      makeSeal() {
-        console.log('盖章!');
-        mySignture.openURL('oeder');
-      },
       // 打印
       print() {
         console.log('打印!');
@@ -567,8 +560,8 @@
     }
   };
 </script>
-<style lang="scss">
-  @import "@/assets/css/caseHandle/caseDocModle.scss";
+<style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 
   #hearingRecordDoc_print {
     .overflow_lins_textarea {

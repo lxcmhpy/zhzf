@@ -28,7 +28,7 @@
                                 </div>
                                 <div class="item">
                                 <el-form-item label="ETC识别车牌">
-                                    <el-input v-model="checkSearchForm.color" readonly="readonly"></el-input>
+                                    <el-input v-model="checkSearchForm.etc" readonly="readonly"></el-input>
                                 </el-form-item>
                                 </div>
                             </div>
@@ -438,7 +438,7 @@
                 <table class="table_style" v-if="obj">
                     <tr>
                         <td class="color_ff w-1">图像识别车牌</td>
-                        <td>
+                        <td width="27%">
                             <el-input width="300px" readonly v-model="obj.vehicleNumber"></el-input>
                         </td>
                         <td class="color_ff w-1">车牌颜色</td>
@@ -448,15 +448,15 @@
                     </tr>
                     <tr>
                         <td class="color_ff w-1">ETC识别车牌</td>
-                        <td></td>
+                        <td>{{obj.etcVehicleNumber}}</td>
                         <td class="color_ff w-1">最大允许总质量</td>
-                        <td>{{obj.key}}</td>
+                        <td>{{obj.load}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">车辆类型</td>
-                        <td>{{obj.checkTime}}</td>
+                        <td>{{obj.vehicleType}}</td>
                         <td class="color_ff w-1">重点监管</td>
-                        <td></td>
+                        <td>{{obj.key}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">车速（km/h）</td>
@@ -474,9 +474,9 @@
                 <table class="table_style" v-if="obj">
                     <tr>
                         <td class="color_ff w-1">轴数</td>
-                        <td width="260px">6</td>
+                        <td width="27%">{{obj.axleNumber}}</td>
                         <td class="color_ff w-1">驱动轴</td>
-                        <td width="260px">
+                        <td >
                              <el-select value="双轴"  placeholder="请选择">
                                 <el-option
                                 label="双轴"
@@ -488,27 +488,27 @@
                     </tr>
                     <tr>
                         <td class="color_ff w-1">轴型</td>
-                        <td >{{obj.vehicleColor}}</td>
-                        <td class="color_ff w-1">总重</td>
-                        <td></td>
+                        <td >{{obj.axleType}}</td>
+                        <td class="color_ff w-1">总重（KG）</td>
+                        <td>{{obj.totalWeight}}</td>
                     </tr>
                     <tr>
-                        <td class="color_ff w-1">限重</td>
-                        <td>{{obj.key}}</td>
+                        <td class="color_ff w-1">限重（KG）</td>
+                        <td>{{obj.load}}</td>
                         <td class="color_ff w-1">超重（KG）</td>
-                        <td>{{obj.checkTime}}</td>
+                        <td>{{obj.overweight}}</td>
                      </tr>
                     <tr>
                         <td class="color_ff w-1">超限率（%）</td>
-                        <td></td>
-                        <td class="color_ff w-1">车长</td>
-                        <td>{{obj.speed}}</td>
+                        <td>{{obj.overload}}%</td>
+                        <td class="color_ff w-1">车长（mm）</td>
+                        <td>{{obj.length}}</td>
                    </tr>
                     <tr>
-                        <td class="color_ff w-1">车宽</td>
-                        <td>{{obj.direction}}</td>
-                        <td class="color_ff w-1">车高</td>
-                        <td>{{obj.axleNumber}}</td>
+                        <td class="color_ff w-1">车宽（mm）</td>
+                        <td>{{obj.width}}</td>
+                        <td class="color_ff w-1">车高（mm）</td>
+                        <td>{{obj.height}}</td>
                     </tr>
                 </table>
             </div>
@@ -521,27 +521,27 @@
                 <table class="table_style" v-if="obj">
                     <tr>
                         <td class="color_ff w-1">检测时间</td>
-                        <td width="260px">{{obj.vehicleNumber}}</td>
+                        <td width="27%">{{obj.checkTime}}</td>
                         <td class="color_ff w-1">检测站点</td>
-                        <td>{{obj.vehicleColor}}</td>
+                        <td>{{obj.siteName}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">检测设备编号</td>
-                        <td></td>
+                        <td>{{obj.checkEquipment}}</td>
                         <td class="color_ff w-1">设备状态</td>
-                        <td>{{obj.key}}</td>
+                        <td>{{obj.status}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">检测位置</td>
-                        <td>{{obj.checkTime}}</td>
+                        <td>{{obj.checkLocation}}</td>
                         <td class="color_ff w-1">车道号</td>
-                        <td></td>
+                        <td>{{obj.lane}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">所属执法机构</td>
-                        <td>{{obj.speed}}</td>
+                        <td>{{obj.organName}}</td>
                         <td class="color_ff w-1">处理状态</td>
-                        <td>{{obj.direction}}</td>
+                        <td>{{obj.status}}</td>
                     </tr>
                 </table>
             </div>
@@ -553,6 +553,16 @@
                 style="padding: 0px; width: 730px; height:1100px; position: relative;">
             </div>
         </el-dialog>
+        <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
+            <div>
+                <img width="100%" :src="'./static/images/img/lawSupervise/temp/link_02.jpg'">
+            </div>
+        </el-dialog>
+        <el-dialog :visible.sync="dialogIMGVisible1" append-to-body width="90%">
+            <div>
+                <img width="100%"  :src="'./static/images/img/lawSupervise/temp/link_01.jpg'">
+            </div>
+        </el-dialog>
     </div>
     <div class="b-w-320">
          <div class="shadow">
@@ -561,12 +571,32 @@
                     <span class="titleflag">
                     </span>
                     <span class="title">现场照片/视频</span>
+                    <span class="right f12"> {{parseInt(acitveCar)+1}} / 3</span>
                 </div>
                 <ul class="list">
                     <!-- v-for="index in 2" :key="index" -->
                     <li >
-                         <img class="img" :src="'./static/images/img/temp/sp.jpg'" >
-                          <i class="iconfont law-bofang"></i>
+                         <!-- <img class="img" :src="'./static/images/img/temp/sp.jpg'" > -->
+
+                         <el-carousel direction="vertical" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
+                            <el-carousel-item :key="0">
+                                <video width="280px" height="180px" controls>
+                                    <!-- <source :src="'./static/images/img/lawSupervise/temp/link_05.mp4'" type="video/mp4"> -->
+                                </video>
+                            </el-carousel-item>
+                            <el-carousel-item :key="1">
+                                <!-- <el-image
+                                :src="'./static/images/img/lawSupervise/temp/link_04.jpg'"
+                                :preview-src-list="['./static/images/img/lawSupervise/temp/link_04.jpg','./static/images/img/lawSupervise/temp/link_01.jpg']"
+                                >
+                                </el-image> -->
+                                <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="'./static/images/img/lawSupervise/temp/link_02.jpg'">
+                            </el-carousel-item>
+                             <el-carousel-item :key="2">
+                                <img width="280px" height="180px" @click="dialogIMGVisible1 = true" :src="'./static/images/img/lawSupervise/temp/link_01.jpg'">
+                            </el-carousel-item>
+                        </el-carousel>
+                          <!-- <i class="iconfont law-bofang"></i> -->
                     </li>
                     <!-- <li v-for="index in 2" :key="index">
                         <div class="demo-image__preview">
@@ -601,11 +631,11 @@
                             </el-image>
                         </div>
                     </li> -->
-                    <li @click="dialogPDFVisible = true">
-                       <img  class="img" :src="'./static/images/img/temp/sp.jpg'" >
+                    <!-- <li @click="dialogPDFVisible = true">
+                       <img  class="img" :src="'./static/images/img/lawSupervise/temp/link_01.jpg'" >
                        <i class="iconfont law-pdf1" ></i>
-                    </li>
-                    <!-- <li>
+                    </li> -->
+                    <li>
                         <el-upload
                              class="avatar-uploader uploadFile"
                              drag
@@ -618,7 +648,7 @@
                             </i>
 
                         </el-upload>
-                    </li> -->
+                    </li>
                 </ul>
             </div>
         </div>
@@ -645,7 +675,7 @@
 <script>
 import Vue from "vue";
 import echarts from 'echarts';
-import 'echarts/lib/chart/graph';
+// import 'echarts/lib/chart/graph';
 import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
 import {findAllDrawerById} from '@/api/lawSupervise.js';
@@ -666,12 +696,14 @@ export default {
     data () {
         let self = this;
         return {
+            dialogIMGVisible: false,
             storageStr: '',
             dialogPDFVisible: false,
             visible: false,
             checkSearchForm: {
                 number: '',
-                color: ''
+                color: '',
+                etc: ''
             },
             checkVisible: false,
             activeName: '道路运输证',
@@ -732,10 +764,22 @@ export default {
                 },
             }
             ],
+            acitveCar: 0,
+            dialogIMGVisible1: false
         }
     },
     methods:{
         //关闭弹窗的时候清除数据
+        setActiveItem () {
+            // this.acitveCar = (parseInt(this.acitveCar) + 1).toString();
+            // if (this.acitveCar == '3') {
+            //     this.acitveCar = '0';
+            // }
+             this.acitveCar++;
+            if (this.acitveCar == 3) {
+                this.acitveCar = 0;
+            }
+        },
         closeDialog() {
             this.visible = false;
         },
@@ -744,6 +788,9 @@ export default {
             this.$router.push({ name: 'law_supervise_removeOrPrelong' });
         },
         updateHp () {
+            this.checkSearchForm.number = this.obj.vehicleNumber;
+            this.checkSearchForm.color = this.obj.vehicleColor;
+            this.checkSearchForm.etc = this.obj.etcVehicleNumber;
             this.visible = true;
         },
         check () {
@@ -752,13 +799,13 @@ export default {
         },
         handleClick(tab, event) {
         },
-        findAllDrawerById (data, obj) {
+        findAllDrawerById (data, listObj) {
             let _this = this
             new Promise((resolve, reject) => {
                 findAllDrawerById(data).then(
                     res => {
                         // resolve(res)
-                        // _this[obj] = res.data
+                        _this[listObj] = res.data
 
                     },
                     error => {
@@ -775,7 +822,7 @@ export default {
         }
     },
     mounted () {
-        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '9,10a727c3ada3';
+        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
     }
 }
 </script>

@@ -311,7 +311,7 @@
           </el-col>
         </el-row> -->
         <div class="pdf_seal">
-          <span @click="makeSeal">交通运输执法部门(印章)</span>
+          <span >交通运输执法部门(印章)</span>
           <br />
           <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker
@@ -343,14 +343,10 @@
 // import { mixinGetCaseApiList } from "@/common/js/mixins";
 // import { mapGetters } from "vuex";
 // import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-// // import signture from "../../../../js/signture";
-// import mySignture from "@/common/js/mySignture";
-// // import {signture2} from "@/common/js/signture";
 import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-import mySignture from "@/common/js/mySignture";
 import { validatePhone,validateIDNumber  } from "@/common/js/validator";
 import iLocalStroage from "@/common/js/localStroage";
 
@@ -494,12 +490,7 @@ export default {
   },
 
   methods: {
-    // 盖章
-    makeSeal() {
-      mySignture.openURL("oeder");
-      // this.$util.openURL('a');
-    },
-    // 打印
+      // 打印
     print() {
       console.log("打印!");
     },
@@ -554,7 +545,7 @@ export default {
           let organData = res.data;
           _this.formData.bank = organData.bank||'';
           _this.formData.account = organData.account||'';
-          //复议机构 
+          //复议机构
           if(organData.reconsiderationOrgan1){
              _this.reconsiderationOrganList.push(organData.reconsiderationOrgan1)
           }
@@ -580,6 +571,6 @@ export default {
   }
 };
 </script>
-<style lang="scss" >
-@import "@/assets/css/caseHandle/caseDocModle.scss";
+<style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 </style>

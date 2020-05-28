@@ -6,14 +6,15 @@
         <div class="handlePart caseHandleSearchPart">
             <el-form :inline="true" :model="form" label-width="80px"  ref="form">
                 <el-form-item label="车牌号">
-                    <el-select v-model="form.vehicleColor" placeholder="请选择">
+                    <el-input v-model="form.vehicleColor" placeholder="请输入车牌号" @keyup.enter.native="getVehicleList(1)"></el-input>
+                    <!-- <el-select v-model="form.vehicleColor" placeholder="请选择">
                         <el-option
                         v-for="item in vehicleColorList"
                         :key="item.id"
                         :label="item.name"
                         :value="item.name"
                         ></el-option>
-                    </el-select>
+                    </el-select> -->
                 </el-form-item>
                  <el-form-item label="时间" >
                         <el-date-picker
@@ -45,7 +46,7 @@
             </el-button>
         </div>
          <div class="tablePart">
-            <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
+            <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @row-click="handleNodeClick">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column label="车牌号" align="center"  width="120">
                     <template slot-scope="scope">
@@ -166,6 +167,14 @@ export default {
                         return
                 }
             )
+        })
+    },
+    handleNodeClick (row) {
+        this.$router.push({
+            name: 'law_supervise_keyVehicleDentails',
+            params: {
+                id: row.id
+            }
         })
     },
       //更改每页显示的条数

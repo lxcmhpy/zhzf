@@ -110,7 +110,7 @@
         </p>
 
         <div class="pdf_seal">
-          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+          <span >交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
@@ -162,8 +162,6 @@ import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-// import signture from "../../../../js/signture";
-import mySignture from "@/common/js/mySignture";
 
 export default {
   components: {
@@ -283,11 +281,6 @@ export default {
     addDocData(handleType) {
       this.com_addDocData(handleType, 'docForm');
     },
-    // 盖章
-    makeSeal() {
-      console.log('盖章!');
-      mySignture.openURL('oeder');
-    },
     // 打印
     print() {
       console.log('打印!');
@@ -348,6 +341,6 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-@import "@/assets/css/caseHandle/caseDocModle.scss";
+<style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 </style>

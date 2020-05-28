@@ -52,6 +52,5 @@ export default {
   mounted() { }
 };
 </script>
-<style lang="scss">
-@import "@/assets/css/dialogStyle.scss";
+<style lang="scss" src="@/assets/css/dialogStyle.scss">
 </style>

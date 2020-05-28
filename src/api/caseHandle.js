@@ -248,6 +248,56 @@ export function getDocListByCaseIdAndFormIdApi(data) {
   });
 }
 
+//通过表单类型Id查询已绑定文书
+export function getLinkDocListByLinkTypeIdApi(data) {
+  return request({
+    url: "/case/doc/caseLinkDoc/findListByLinkTypeId",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加或修改表单文书关联
+export function saveOrUpdateCaseLinkDocApi(data) {
+  return request({
+    url: "/case/doc/caseLinkDoc/saveOrUpdateCaseLinkDoc",
+    method: "post",
+    data: data,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加或修改表单文书关联
+export function updateIsRequiredByIdApi(data) {
+  return request({
+    url: "/case/doc/caseLinkDoc/updateIsRequiredById",
+    method: "post",
+    data: vm.$qs.stringify(data),
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据ID删除表单文书关联
+export function delLinkDocByIdApi(id) {
+  return request({
+    url: "/case/doc/caseLinkDoc/deleteById/" + id,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //pdf页的提交
 export function submitPdfApi(data) {
   return request({
@@ -497,6 +547,42 @@ export function getAllPdfListApi(data) {
     url: "/case/doc/type/findByCondition",
     method: "POST",
     params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据环节ID查询可关联文书列表)
+export function getDocListByLinkTypeIdApi(data) {
+  console.log("dataaa",data)
+  return request({
+    url: "/case/doc/type/findLinkDocByCondition",
+    method: "GET",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过条件查询文书列表(不分页)
+export function getDocListApi(data) {
+  return request({
+    url: "/case/doc/type/findDocTypeList",
+    method: "POST",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//查询案件类型列表(不分页)
+export function getCaseTypeListApi(status) {
+  return request({
+    url: "/case/caseTemplate/caseType/findCaseTypeByStatus?status="+status,
+    method: "get",
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
@@ -1046,6 +1132,93 @@ export function getCurrentApproveApi(id) {
 export function queryFlowBycaseTypeApi(id) {
   return request({
     url: "/case/caseTemplate/flow/queryFlowBycaseType/" + id,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+
+//通过条件卷宗目录模板
+export function getCatalogListApi(data) {
+  return request({
+    url: "/case/doc/catalog/findByCondition",
+    method: "post",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  }); 
+}
+
+//添加或修改卷宗目录
+export function addOrEditCatalogApi(data) {
+  return request({
+    url: "/case/doc/catalog/create",
+    method: "post",
+    data: vm.$qs.stringify(data),
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除卷宗目录
+export function deleteCatalogApi(id) {
+  return request({
+    url: "/case/doc/catalog/deleteById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据模板ID查询可关联文书列表)
+export function getDocListByTemplateIdApi(data) {
+  console.log("dataaa",data)
+  return request({
+    url: "/case/doc/catalog/findLinkDocByCondition",
+    method: "GET",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过模板Id查询已绑定文书
+export function getLinkDocListByTemplateIdApi(data) {
+  return request({
+    url: "/case/doc/catalogDetails/findListByTemplateId",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加或修改表单文书关联
+export function saveOrUpdateCataLogLinkDocApi(data) {
+  return request({
+    url: "/case/doc/catalogDetails/saveOrUpdateCatalogDetails",
+    method: "post",
+    data: data,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据ID删除表单文书关联
+export function deleteCatalogLinkDocByIdApi(id) {
+  return request({
+    url: "/case/doc/catalogDetails/deleteById/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',

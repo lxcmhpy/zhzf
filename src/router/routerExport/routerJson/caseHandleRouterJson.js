@@ -571,16 +571,6 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/deliverReceiptForm.vue")
   },
-  {
-    path: "/testPdf",
-    name: "case_handle_testPdf",
-    meta: {
-      title: "测试pdf",
-      oneTab: true,
-    },
-    component: () => import("@/page/caseHandle/case/form/testPdf.vue")
-  },
-
   //---------------长软end------------
   {
     path: "/electronicFileDetail",

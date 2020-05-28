@@ -603,9 +603,9 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss" src="@/assets/css/documentForm.scss"  scoped>
 /* @import "@/assets/css/caseHandle/index.scss"; */
-@import "@/assets/css/documentForm.scss";
+/* @import "@/assets/css/documentForm.scss"; */
 </style>
 
 <style scoped>

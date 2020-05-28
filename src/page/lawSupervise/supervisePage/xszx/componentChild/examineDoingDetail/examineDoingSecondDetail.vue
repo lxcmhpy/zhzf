@@ -9,20 +9,20 @@
             </div>
             <div>
                <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
-                <el-table-column type="selection" width="35px" align="center"></el-table-column>
-                <el-table-column prop="checkTime" width="55px" label="序号" align="center"></el-table-column>
-                <el-table-column prop="organName" label="检测时间" align="center"></el-table-column>
-                <el-table-column prop="lane" label="检测站点" align="center"></el-table-column>
+                <!-- <el-table-column type="selection" width="35px" align="center"></el-table-column> -->
+                <el-table-column type="index" width="55px" label="序号" align="center"></el-table-column>
+                <el-table-column prop="checkTime" label="检测时间" align="center"></el-table-column>
+                <el-table-column prop="siteName" label="检测站点" align="center"></el-table-column>
                 <el-table-column label="ETC" align="center"  width="55px">
                     <template slot-scope="scope">
-                        <div>{{scope.row}}
+                        <div>{{scope.row.etc}}
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column prop="totalWeight" width="160px" label="最大允许总质量" align="center"></el-table-column>
                 <el-table-column prop="load"  label="车货总质量" align="center"></el-table-column>
                 <el-table-column prop="overweight" width="55px" label="超限" align="center"></el-table-column>
-                <el-table-column prop="overload" label="处理状态" align="center"></el-table-column>
+                <el-table-column prop="status" label="处理状态" align="center"></el-table-column>
             </el-table>
             </div>
             <el-dialog class="mini-dialog-title" title="超限复合" :visible.sync="cxVisible" :show-close="false"
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import {findWeighingRecord} from '@/api/lawSupervise.js';
 export default {
     props: ['obj'],
     data () {
@@ -54,10 +55,26 @@ export default {
         }
     },
     methods: {
-
+        findWeighingRecord (name) {
+            let _this = this;
+            new Promise((resolve, reject) => {
+                findWeighingRecord(name).then(
+                    res => {
+                        // resolve(res);
+                        _this.tableData = res.data;
+                        // obj.list = res.data
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        }
     },
     mounted () {
-        this.cxVisible = true
+        this.cxVisible = true;
+        this.findWeighingRecord('新J35718');
     }
 
 }

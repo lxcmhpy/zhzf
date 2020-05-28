@@ -175,7 +175,7 @@
           </span>。经本机关催告后，你（单位）在催告期间有转移或隐匿财物迹象的，仍未履行且无正当理由。依据
           <span>
             <el-form-item prop="punishmentBasis"  class="width120" :rules="fieldRules('punishmentBasis',propertyFeatures['punishmentBasis'])">
-              <el-input type="textarea" v-model="docData.punishmentBasis" 
+              <el-input type="textarea" v-model="docData.punishmentBasis"
               v-bind:class="{ over_flow:docData.punishmentBasis.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
               :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['punishmentBasis'])"></el-input>
@@ -218,7 +218,7 @@
         </p>
 
         <div class="pdf_seal">
-          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+          <span>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
@@ -271,8 +271,6 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-// import signture from "../../../../js/signture";
-import mySignture from "@/common/js/mySignture";
 import { validatePhone,validateIDNumber  } from "@/common/js/validator";
 
 export default {
@@ -391,7 +389,7 @@ export default {
     }
   },
    methods: {
-    
+
     //根据案件ID和文书Id获取数据
      getDocDataByCaseIdAndDocId() {
        this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -406,12 +404,7 @@ export default {
     //
     //   this.com_addDocData(handleType, 'docForm');
     // },
-    // 盖章
-    makeSeal() {
-      console.log('盖章!');
-      mySignture.openURL('oeder');
-    },
-    // 打印
+      // 打印
     print() {
       console.log('打印!');
     },
@@ -492,6 +485,6 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-@import "@/assets/css/caseHandle/caseDocModle.scss";
+<style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 </style>

@@ -84,9 +84,6 @@ import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-// import signture from "../../../../js/signture";
-import mySignture from "@/common/js/mySignture";
-// import {signture2} from "@/common/js/signture";
 // 验证规则
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 
@@ -274,6 +271,6 @@ export default {
   }
 }
 </script>
-<style lang="scss" >
-@import "@/assets/css/caseHandle/caseDocModle.scss";
+<style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 </style>

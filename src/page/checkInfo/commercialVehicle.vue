@@ -17,20 +17,30 @@
            <el-radio-group v-model="checkType" @change="changeType">
             <el-radio :label="1">道路运输证号查验</el-radio>
             <el-radio :label="2">VIN证号查验</el-radio>
+            <el-radio :label="3">车牌颜色查验</el-radio>
           </el-radio-group>
         </div>
        <el-form-item label="车牌号码">
-          <el-input style="width:600px;padding-left:30px;" v-model="checkData.VehicleNo" placeholder="请输入车辆（挂车）号牌"></el-input>
+          <el-input style="width:300px;padding-left:30px;" v-model="checkData.VehicleNo" placeholder="请输入车辆（挂车）号牌"></el-input>
         </el-form-item>
-        <br/>
         <el-form-item label="道路运输证号" v-if="checkType==1">
-          <el-input style="width:600px" v-model="checkData.TransCertificateCode" placeholder="请输入道路运输证号"></el-input>
+          <el-input style="width:300px;padding-left:10px;" v-model="checkData.TransCertificateCode" placeholder="请输入道路运输证号"></el-input>
         </el-form-item>
         <el-form-item label="VIN号" v-if="checkType==2">
-          <el-input style="width:600px;padding-left:50px;" v-model="checkData.Vin" placeholder="请输入VIN号"></el-input>
+          <el-input style="width:300px;padding-left:30px;" v-model="checkData.Vin" placeholder="请输入VIN号"></el-input>
+        </el-form-item>
+        <el-form-item label="车牌颜色" v-if="checkType==3">
+          <el-select style="width:300px;padding-left:10px;" v-model="checkData.plateColor" placeholder="请选择车牌颜色">
+            <el-option
+              v-for="(item,i) in sfList"
+              :key="i"
+              :label="item.name"
+              :value="item.notes">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="getCheck" size="medium">查询</el-button>
+          <el-button type="primary" @click="getCheck(checkType)" size="medium">查询</el-button>
         </el-form-item>
 
       </div>
@@ -84,8 +94,10 @@ export default {
       checkData: {
         VehicleNo: '',
         TransCertificateCode: '',
-        Vin: ''
+        Vin: '',
+        plateColor:''
       },
+      sfList:[],
       radio: '1',
       checkType: 1,
       yyclAmount:'0',
@@ -113,23 +125,73 @@ export default {
       this.$router.go(-1);//返回上一层
     },
     //查询
-    getCheck() {
+    getCheck(checkType) {
         let _this = this
-      this.$store.dispatch("yyclCheck", this.checkData).then(
-        res => {
-          console.log('返回', res)
-          _this.tableData = res.data;
-          if (_this.tableData!=null && _this.tableData.length > 0) {
-            _this.yyclAmount = _this.tableData.length;
-          }
-          if (_this.tableData!=null && _this.tableData.length > 1) {
-            _this.showFlag = false;
-          }
-        },
-        err => {
-          console.log(err);
+        if(checkType==3){
+            debugger
+            let json=[];
+            let param={
+                vehicleNo:this.checkData.VehicleNo,
+                plateColor:this.checkData.plateColor
+            };
+            json.push(param);
+            this.$store.dispatch("vehicleCheck", JSON.stringify(json)).then(
+                res => {
+                    console.log('返回', res);
+                    let tableData=[];
+                    for(let index in res.data){
+                        let result = {};
+                        let jsonObj=res.data[index];
+                        for(let key in jsonObj){
+                            let keyval = jsonObj[key];
+                            key = key.replace(key[0],key[0].toUpperCase());
+                            result[key] = keyval;
+                        }
+                        tableData.push(result);
+                    }
+
+                    _this.tableData = tableData;
+                    if (_this.tableData!=null && _this.tableData.length > 0) {
+                        _this.yyclAmount = _this.tableData.length;
+                    }
+                    if (_this.tableData!=null && _this.tableData.length > 1) {
+                        _this.showFlag = false;
+                    }
+                },
+                err => {
+                    console.log(err);
+                }
+            );
+        }else{
+          this.$store.dispatch("yyclCheck", this.checkData).then(
+              res => {
+                  console.log('返回', res)
+                  _this.tableData = res.data;
+                  if (_this.tableData!=null && _this.tableData.length > 0) {
+                      _this.yyclAmount = _this.tableData.length;
+                  }
+                  if (_this.tableData!=null && _this.tableData.length > 1) {
+                      _this.showFlag = false;
+                  }
+              },
+              err => {
+                  console.log(err);
+              }
+          );
         }
-      );
+
+    },
+    getDictListDetail(data){
+        let _this = this;
+        this.$store.dispatch("getDictListDetail", data).then(
+            res => {
+                console.log('车牌颜色', res)
+                _this.sfList = res.data;
+            },
+            err => {
+                console.log(err);
+            }
+        );
     },
     changeType() {
       this.clearData()
@@ -148,6 +210,9 @@ export default {
     commercialVehicleSee(index, row) {
       this.$refs.commercialVehicleSeeRef.commercialVehicleSee(row);
     }
+  },
+  created() {
+      this.getDictListDetail("efae9ce1bd95b7698ce57f668d264fae");
   }
 }
 </script>

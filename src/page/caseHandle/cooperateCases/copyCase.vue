@@ -129,8 +129,8 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-@import "@/assets/css/caseHandle/index.scss";
+<style lang="scss" src="@/assets/css/caseHandle/index.scss">
+/* @import "@/assets/css/caseHandle/index.scss"; */
 </style>
 <style scoped>
 .edit {

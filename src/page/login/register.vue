@@ -9,8 +9,6 @@
 
 <script>
 
-import Cookies from "@/common/js/cookies";
-
 export default {
   data() {
     return {
@@ -53,8 +51,8 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import "@/assets/css/login.scss";
+<style lang="scss" src="@/assets/css/login.scss">
+/* @import "@/assets/css/login.scss"; */
 </style>
 
 

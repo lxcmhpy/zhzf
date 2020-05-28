@@ -29,9 +29,9 @@
   </div>
 </template>
 <script>
-import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
-import echarts from 'echarts'
-import 'echarts/lib/chart/graph'
+import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu';
+import echarts from 'echarts';
+// import 'echarts/lib/chart/graph'
 import _ from 'lodash'
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
@@ -604,7 +604,7 @@ export default {
           console.log('获取强制措施时间1', res);
           if (res.data) {
             let formData = JSON.parse(res.data.formData);
-            
+
             let measureStartDate = new Date(formData.measureStartDate);
             let Y = measureStartDate.getFullYear() + '-';
             let M = measureStartDate.getMonth() + 1 < 10 ? '0' + (measureStartDate.getMonth() + 1) + '-' : measureStartDate.getMonth() + 1 + '-';
@@ -676,10 +676,8 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss" src="@/assets/css/documentForm.scss" scoped >
 // @import "@/assets/css/caseHandle/index.scss";
-// @import "@/assets/css/caseHandle/index.scss";
-@import "@/assets/css/documentForm.scss";
 </style>
 <style lang="scss" scoped>
 .chartBg {

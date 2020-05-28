@@ -1,4 +1,5 @@
-import { yehuCheckApi, crewCheckApiIdcard, crewCheckApiCertificates, dlyscyryCheckApi, yyclCheckApi } from "@/api/checkInfo";
+import { yehuCheckApi, crewCheckApiIdcard, crewCheckApiCertificates, dlyscyryCheckApi, yyclCheckApi,vehicleCheckApi } from "@/api/checkInfo";
+import {getDictListDetailApi} from "@/api/system.js";
 
 const person = {
     state: {
@@ -59,7 +60,7 @@ const person = {
                     })
             })
         },
-         //道路运输从业人员查验
+         //营运车辆查验
          yyclCheck({ commit }, data) {
             return new Promise((resolve, reject) => {
                 yyclCheckApi(data).then(
@@ -71,6 +72,18 @@ const person = {
                     })
             })
         },
+      //营运车辆查验
+      vehicleCheck({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          vehicleCheckApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
 
     }
 }

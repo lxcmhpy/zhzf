@@ -8,12 +8,12 @@ import {
     getRolesApi, addRoleApi, deleteRoleApi, editRoleApi, getRoleBindMenuApi, roleBindMenuApi, getRoleBindOrganApi, roleBindOrganApi, getOrganBindRoleApi,
     getDepartmentsApi, getDepartmentsNoPageApi, addDepartmentApi, hasDepartmentNameApi, deleteDepartmentApi,
     getAllMenuListApi, getTreePermissionApi, addPermissionApi, deletePermissionApi,
-    getDictListApi, getDictListDetailApi, addDictApi, deleteDictApi,
+    getDictListApi, getDictListDetailApi, getAllDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
+    getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,saveLawOfficelApi,
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";
-import Cookies from "@/common/js/cookies";
 
 const system = {
     state: {
@@ -555,6 +555,18 @@ const system = {
                     })
             })
         },
+      //转执法人员
+      saveLawOfficel({ commit }, data) {
+            return new Promise((resolve, reject) => {
+              saveLawOfficelApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
 
 
 
@@ -654,6 +666,18 @@ const system = {
                     })
             })
         },
+        //获取所有字典值详情
+        getAllDictListDetail({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getAllDictListDetailApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
         //获取字典值详情
         async getDictListDetailTb({ commit }, data) {
             return await getDictListDetailApi(data);
@@ -733,6 +757,84 @@ const system = {
                 })
             })
           },
+
+        //获取案件类型列表
+        getCaseTypes({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getCaseTypesApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //添加或修改案件类型
+        addOrUpdateCaseType({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                addOrUpdateCaseTypeApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+
+        //删除案件类型
+        deleteCaseType({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                deleteCaseTypeApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+
+        //获取所有流程
+        getAllFlow(data) {
+            console.log('getdata',data)
+            debugger
+            return new Promise((resolve, reject) => {
+                getAllFlowApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //获取路产配置列表
+        getRoadLcDeploy({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getRoadLcDeployApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+
+        //添加或修改路产配置信息
+        addOrUpdateRoadLcDeploy({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                addOrUpdateRoadLcDeployApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
 
     }
 

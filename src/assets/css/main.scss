@@ -287,7 +287,8 @@
     box-sizing: border-box;
     margin    : 22px;
     padding   : 20px;
-    height    : 100%;
+    min-height    : 100%;
+    height: auto;
     background: #fff;
     position  : relative;
 

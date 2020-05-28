@@ -23,7 +23,7 @@
                     <td class="tg-y93n" colspan="2">道路运输证字</td>
                     <td class="tg-cly1" colspan="2">{{yyclForm.TransCertificateWord}}</td>
                     <td class="tg-y93n" colspan="2">道路运输证号</td>
-                    <td class="tg-cly1" colspan="2">{{yyclForm.PlateColorCode}}</td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.TransCertificateCode}}</td>
                 </tr>
                 <tr>
                     <td class="tg-y93n" colspan="2">车辆类型代码</td>
@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td class="tg-y93n" colspan="2">经营范围</td>
-                    <td class="tg-cly1" colspan="2">{{yyclForm.BusinessScopeCode}}</td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.BusinessScopeDesc}}</td>
                     <td class="tg-0pky" colspan="2">  </td>
                     <td class="tg-cly1" colspan="2"></td>
                 </tr>
@@ -69,6 +69,18 @@
                     <td class="tg-y93n" colspan="2">有效期止</td>
                     <td class="tg-cly1" colspan="2">{{yyclForm.CertificateExpireDate}}</td>
                 </tr>
+                <tr>
+                  <td class="tg-y93n" colspan="2">客车类型与等级</td>
+                  <td class="tg-cly1" colspan="2">{{yyclForm.BusType}}</td>
+                  <td class="tg-y93n" colspan="2">发动机</td>
+                  <td class="tg-cly1" colspan="2">{{yyclForm.EngineNo}}</td>
+                </tr>
+              <tr>
+                <td class="tg-y93n" colspan="2">车辆厂牌型号</td>
+                <td class="tg-cly1" colspan="2">{{yyclForm.Model}}</td>
+                <td class="tg-cly1" colspan="2"></td>
+                <td class="tg-cly1" colspan="2"></td>
+              </tr>
                  <tr>
                     <td class="tg-0lax" colspan="8">企业信息</td>
                 </tr>
@@ -76,7 +88,7 @@
                     <td class="tg-y93n" colspan="2">业户信息ID</td>
                     <td class="tg-cly1" colspan="2"></td>
                     <td class="tg-y93n" colspan="2">省级行政区划代码</td>
-                    <td class="tg-cly1" colspan="2"></td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.ProvinceCode}}</td>
                 </tr>
                 <tr>
                     <td class="tg-y93n" colspan="2">经营许可证字</td>
@@ -116,7 +128,7 @@
                 </tr>
                 <tr>
                     <td class="tg-y93n" colspan="2">经营范围</td>
-                    <td class="tg-cly1" colspan="2">{{yyclForm.BusinessScopeCode}}</td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.BusinessScopeCode_owner}}</td>
                     <td class="tg-cly1" colspan="2"></td>
                     <td class="tg-cly1" colspan="2"></td>
                 </tr>
@@ -149,8 +161,9 @@ export default {
   }
 };
 </script>
+<style lang="scss" src="@/assets/css/systemManage.scss"></style>
+/* @import "@/assets/css/systemManage.scss"; */
 <style lang="scss">
-@import "@/assets/css/systemManage.scss";
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{font-family:Arial, sans-serif;font-size:16px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
 .tg .tg-0pky{border-color:inherit;text-align:center;vertical-align:center;height: 25px;}

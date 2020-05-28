@@ -93,7 +93,7 @@
               height="550px"
               @selection-change="handleLawCognizanceChange"
             >
-              <el-table-column type="selection" width="40"></el-table-column>
+              <el-table-column type="selection" width="40" max=1></el-table-column>
               <el-table-column prop="bnslawNameCog" label="法规名称" align="center"></el-table-column>
               <el-table-column prop="bnsLawNoteCog" label="认定依据" align="center" style="width:50px">
                 <el-table-column prop="itemCog" label="条" align="center"></el-table-column>
@@ -300,8 +300,8 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-@import "@/assets/css/systemManage.scss";
+<style lang="scss" src="@/assets/css/systemManage.scss">
+/* @import "@/assets/css/systemManage.scss"; */
 .graybg {
   padding: 10px;
   background: #fcfcfc;

@@ -112,7 +112,7 @@ export default  [
                component: () => import("@/page/lawSupervise/supervisePage/tjfx/checkAnalyse.vue")
            }]
     }, {
-        path: "/keyVehicleDentails",
+        path: "/keyVehicleDentails/:id",
         name: "law_supervise_keyVehicleDentails",
         meta: {
           title: "监管车辆详情",

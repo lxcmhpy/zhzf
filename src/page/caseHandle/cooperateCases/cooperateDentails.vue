@@ -127,8 +127,8 @@
     }
   }
 </script>
-<style lang="scss" scoped>
-  @import "@/assets/css/documentForm.scss";
+<style lang="scss" src="@/assets/css/documentForm.scss" scoped>
+/*   @import "@/assets/css/documentForm.scss"; */
 </style>
 <style scoped>
   .times_content /deep/ .el-timeline-item__node--normal {

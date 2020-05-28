@@ -1167,12 +1167,12 @@
 .uploadFile {
     border:0px;
     .el-upload-dragger {
-        width: 188px;
-        height: 110px;
+        width: 278px;
+        height: 175px;
         background:#edf0fa;
         border-radius: 0px;
         border: 1px dotted #ccc;
-        line-height:110px;
+        line-height:200px;
         .el-icon-picture {
             color: #a1b1e3;
             font-size: 30px;
@@ -1181,25 +1181,25 @@
         }
     }
     .el-upload-list__item-actions,.el-upload-list__item-thumbnail{
-        width: 188px;
-        height: 110px;
+        width: 278px;
+        height: 175px;
     }
     .el-upload-list__item,.el-upload-list__item-actions{
-        width: 188px;
-        height: 110px;
+        width: 278px;
+        height: 175px;
         border-radius: 0px;
         margin-bottom: 22px;
         border: 1px solid #ccc;
     }
     .el-upload--picture-card {
-         width: 188px;
-        height: 110px;
+         width: 278px;
+        height: 175px;
          border: 0px !important;
          margin: 0px;
     }
     .el-upload-list .el-upload-list__item {
-            width: 188px;
-            height: 110px;
+        width: 278px;
+        height: 175px;
             border-radius: 0px;
             margin-right: 20px !important;
     }

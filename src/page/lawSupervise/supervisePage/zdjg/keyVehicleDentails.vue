@@ -11,25 +11,25 @@
           <table>
             <tr>
               <td class="table-bg">车牌号码</td>
-              <td>京B123445</td>
+              <td>{{obj.vehicleNumber}}</td>
               <td class="table-bg">车辆颜色</td>
-              <td></td>
+              <td>{{obj.vehicleColor}}</td>
             </tr>
             <tr>
               <td class="table-bg">车属地</td>
-              <td></td>
+              <td>{{obj.area}}</td>
               <td class="table-bg">从业资格证</td>
-              <td></td>
+              <td>{{obj.certificate}}</td>
             </tr>
             <tr>
               <td class="table-bg">历史查处次数</td>
-              <td></td>
+              <td>{{obj.lscc}}</td>
               <td class="table-bg">监控状态</td>
-              <td>驶入</td>
+              <td>{{obj.reason}}</td>
             </tr>
             <tr>
               <td class="table-bg">监管原因</td>
-              <td></td>
+              <td>{{obj.reason}}</td>
               <td class="table-bg"></td>
               <td></td>
             </tr>
@@ -57,7 +57,7 @@
           <span class="title-blue"></span>
           <span class="title-text">当前轨迹</span>
         </div>
-        <div class="map-box" style="height:200px">
+        <div class="map-box" style="height:200px;width: 820px">
             <el-amap vid="lawSupervise" mapStyle="amap://styles/whitesmoke" :center="center" :plugin="plugin" :amap-manager="amapManager" :zoom="zoom" :events="events" class="amap-demo">
             <!-- <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :template="marker.template"></el-amap-marker> -->
             </el-amap>
@@ -71,9 +71,9 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 
 import Vue from "vue";
 import echarts from 'echarts';
-import 'echarts/lib/chart/graph';
+// import 'echarts/lib/chart/graph';
 import { lawSuperviseObj, yjObj } from '@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js';
-import { getZfjgLawSupervise, getBySiteId, getById } from '@/api/lawSupervise.js';
+import { getKeyDetailById } from '@/api/lawSupervise.js';
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 
 import AMap from 'vue-amap';
@@ -92,6 +92,7 @@ let amapManager = new AMap.AMapManager();
 export default {
   data() {
     return {
+      obj: null,
       visible: false,
       activeName: '道路运输证',
       checkSearchForm: {
@@ -160,6 +161,23 @@ export default {
   inject: ["reload"],
   mixins: [mixinGetCaseApiList],
   methods: {
+    getKeyDetailById () {
+        let _this = this;
+        let id = this.$route.params.id;
+        new Promise((resolve, reject) => {
+            getKeyDetailById(id).then(
+                res => {
+                    // resolve(res);
+                    _this.obj = res.data;
+                    // obj.list = res.data
+                },
+                error => {
+                    //  _this.errorMsg(error.toString(), 'error')
+                        return
+                }
+            )
+        })
+    },
     showModal(data) {
       console.log(data);
       this.visible = true;
@@ -180,7 +198,9 @@ export default {
       // console.log(tab, event);
     }
   },
-  mounted() { }
+  mounted() {
+      this.getKeyDetailById();
+   }
 };
 </script>
 <style lang="scss" src="@/assets/css/dialogStyle.scss" scoped></style>
