@@ -57,6 +57,7 @@ AMap.initAMapApiLoader({
     "Marker",
     "Icon",
     "LngLat",
+    "DistrictSearch"
     // "Object3D",
     // "Object3DLayer",
     // "Object3D.MeshLine"
@@ -68,7 +69,6 @@ AMap.initAMapApiLoader({
     // zoom: 1
 });
 let amapManager = new AMap.AMapManager();
-
 
 export default {
     data () {
@@ -90,6 +90,43 @@ export default {
             // 绘制路径
         setLine() {
             let map = this.amapManager.getMap();
+
+            AMapUI.loadUI(['geo/DistrictExplorer'], DistrictExplorer => {
+                var districtExplorer = new DistrictExplorer({
+                    map: map,
+                    zoom: 0
+                });
+                var adcode = 100000;
+                districtExplorer.loadAreaNode(adcode, function(error, areaNode) {
+                    //清除已有的绘制内容
+                    districtExplorer.clearFeaturePolygons();
+                    //绘制子区域
+                    // districtExplorer.renderSubFeatures(areaNode, function(feature, i) {
+                    //     return {
+                    //         bubble: true,
+                    //         strokeColor: "#002a49", //线颜色
+                    //         strokeOpacity: 3, //线透明度
+                    //         strokeWeight: 2, //线宽
+                    //         fillColor: null, //填充色
+                    //         fillOpacity: 0.1, //填充透明度
+                    //         color:'white'
+                    //     };
+                    // });
+                        //绘制父级区划，仅用黑色描边
+                    districtExplorer.renderParentFeature(areaNode, {
+                        cursor: 'default',
+                        bubble: true,
+                        strokeOpacity: 1,
+                        strokeColor: '#002a49', //线颜色
+                        fillColor: null,
+                        strokeWeight: 5, //线宽
+                        zIndex:0,
+                        zoom:-1
+                    });
+                });
+            })
+
+
             AMapUI.loadUI(['misc/PathSimplifier'], function(PathSimplifier) {
                 if (!PathSimplifier.supportCanvas) {
                 alert('当前环境不支持 Canvas！');
@@ -97,6 +134,7 @@ export default {
                 }
                 var pathSimplifierIns = new PathSimplifier({
                     zIndex: 100,
+                    zoom: 10,
                     autoSetFitView: false,
                     map: map, // 所属的地图实例
                     getPath: function(pathData, pathIndex) {
@@ -165,26 +203,35 @@ export default {
                     name: '北京-巴彦淖尔 线路',
                     path: [
                     [116.405289, 39.904987],
-                    [113.964458, 40.54664],
-                    [111.47836, 41.135964],
-                    [108.949297, 41.670904],
-                    [106.380111, 42.149509],
-                    [103.774185, 42.56996],
-                    [101.135432, 42.930601],
-                    [98.46826, 43.229964],
-                    [95.777529, 43.466798],
-                    [93.068486, 43.64009],
-                    [90.34669, 43.749086],
-                    [87.61792, 43.793308]
+                    // [113.964458, 40.54664],
+                    // [111.47836, 41.135964],
+                    // [108.949297, 41.670904],
+                    // [106.380111, 42.149509],
+                    // [103.774185, 42.56996],
+                    // [101.135432, 42.930601],
+                    // [98.46826, 43.229964],
+                    // [95.777529, 43.466798],
+                    // [93.068486, 43.64009],
+                    // [90.34669, 43.749086],
+                    [127.61792, 43.793308]
                     ]
                 }, {
                     name: '北京-巴彦淖尔 线路',
                     path: [
                         [116.405289, 39.904987],
-                        [110, 38.5],
-                        [105.5, 38],
-                        [100, 37.5],
-                        [97, 37.5],
+                        // [114, 38.65],
+                        // // [113, 38],
+                        // [112, 38],
+                        // [110, 37.8],
+                        // [105.5, 38],
+                        // [102, 37.9],
+                        // [100, 37.8],
+                        // [99, 37.7],
+                        // [97.5, 37.5],
+                        // [97, 37.4],
+                        // [96, 37.5],
+                        // [95, 37.7],
+                        // [94, 37.9],
                         [90.61792,38]
                     ]
                 }]);
@@ -196,17 +243,22 @@ export default {
             //对第一条线路（即索引 0）创建一个巡航器
                 var navg1 = pathSimplifierIns.createPathNavigator(0, {
                     loop: true, // 循环播放
-                    speed: speed// 巡航速度，单位千米/小时
+                    speed: speed,// 巡航速度，单位千米/小时
                     // pathNavigatorStyle: extend({}, pathNavigatorStyles[0])
+                    zoom: 50,
+                    zIndex:100
                 });
                 navg1.start();
                 var navg2 = pathSimplifierIns.createPathNavigator(1, {
                     loop: true, // 循环播放
-                    speed: speed// 巡航速度，单位千米/小时
+                    speed: speed,// 巡航速度，单位千米/小时
+                    zoom: 50,
+                    zIndex:100
                     // pathNavigatorStyle: extend({}, pathNavigatorStyles[0])
                 });
                 navg2.start();
             });
+
         },
         drawPie () {
             let mychart = this.$refs.echartsPie;
