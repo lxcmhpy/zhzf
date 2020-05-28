@@ -162,7 +162,6 @@ export default {
 };
 </script>
 <style lang="scss" src="@/assets/css/systemManage.scss"></style>
-/* @import "@/assets/css/systemManage.scss"; */
 <style lang="scss">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{font-family:Arial, sans-serif;font-size:16px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
