@@ -147,7 +147,8 @@ export default {
 }
 </script>
 
-<style lang="scss" src="@/assets/css/personManage.scss" scoped>
+<style lang="scss" src="@/assets/css/personManage.scss" scoped></style>
+<style lang="scss" scoped>
 /* @import "@/assets/css/personManage.scss"; */
 .titleflag {
   width      : 4px;

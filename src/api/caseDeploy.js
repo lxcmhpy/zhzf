@@ -4,8 +4,8 @@ import  Vue  from  "vue";
 
 let  vm  =  new  Vue();
 
-//查询所有业务领域
-export  function  getLawCategoryListApi(data)  {
+//查询所有业务领域、分页
+export  function  getLawCategoryPageApi(data)  {
     return  request({
       url:  "/case/caseTemplate/lawCategory/getLawCategoryPageVo",
       method:  "get",
@@ -13,8 +13,18 @@ export  function  getLawCategoryListApi(data)  {
       showloading:  false,
       cancelToken:  setCancelSource()
     });
-  }
-  // 获取环节列表
+}
+//查询行业类别、不分页
+export  function  getLawCategoryListApi(data)  {
+  return  request({
+    url:  "/case/caseTemplate/lawCategory/getLawCategoryListVo",
+    method:  "get",
+    params: data,
+    showloading:  false,
+    cancelToken:  setCancelSource()
+  });
+}
+// 获取环节列表
 export function getBannerListApi(data) {
   console.log(data);
   return request({
@@ -174,7 +184,6 @@ export function findTargetLinkApi(data) {
 }
 
 //删除业务领域
-//根据流程Id查询未绑定环节
 export function deleteCategoryByIdApi(data) {
   console.log("参数",data);
   return request({
@@ -196,5 +205,104 @@ export function addOrEditLawCategoryApi(data) {
     showloading: true,
     loadingType:'loadPart',
     cancelToken:  setCancelSource()
+  });
+}
+
+//查询机构已经绑定的执法门类
+export function queryLawCateByOrganIdApi(data) {
+  console.log("机构Id",data);
+  return request({
+    url: "/case/caseTemplate/LawCateConfiguration/findLawCateByOrganId/"+data.organId,
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//查询机构未绑定的执法门类
+export function queryNotBindLawCateByOrganIdApi(data) {
+  console.log("机构Id",data);
+  return request({
+    url: "/case/caseTemplate/LawCateConfiguration/findNotBindLawCateByOrganId/"+data.organId,
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//机构绑定业务领域
+export function organBindLawCateApi(data) {
+  console.log("机构绑定业务领域",data)
+  let params = vm.$qs.stringify(data);
+  return request({
+    url: "/case/caseTemplate/LawCateConfiguration/organBindLawCate",
+    method: "post",
+    data: params,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//查询案件类型
+export function queryCaseTypeApi(data) {
+  console.log("案件类型参数",data);
+  return request({
+    url: "/case/caseTemplate/caseType/listNotPage",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//机构业务领域绑定案件类型
+export function organLawCateBindCaseTypeApi(data) {
+  console.log("机构业务领域案件类型",data)
+  let params = vm.$qs.stringify(data);
+  return request({
+    url: "/case/caseTemplate/LawCateConfiguration/organCateBindCaseType",
+    method: "post",
+    data: params,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//查询机构业务领域已经绑定的案件类型
+export function findBindTypeByOrganCateIdApi(data) {
+  console.log("机构业务领域Id",data);
+  return request({
+    url: "/case/caseTemplate/LawCateConfiguration/findBindTypeByOrganCateId/"+data.organCateId,
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除机构绑定业务领域
+export function deleteOrganCategoryByIdApi(data) {
+  console.log("参数",data);
+  return request({
+    url: "/case/caseTemplate/LawCateConfiguration/deleteLawCateOrganById/"+data,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//查询执法门类绑定的机构
+export function queryOrganByCateApi(data) {
+  console.log("cateId",data);
+  return request({
+    url: "/case/caseTemplate/LawCateConfiguration/findOrganByCateId/"+data,
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
   });
 }
