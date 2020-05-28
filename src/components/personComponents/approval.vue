@@ -119,7 +119,8 @@ export default {
 }
 </script>
 
-<style lang="scss" src="@/assets/css/personManage.scss" scoped>
+<style lang="scss" src="@/assets/css/personManage.scss" scoped></style>
+<style lang="scss" scoped>
 >>>.el-button--text{
   color: #7B7B7B;
   font-weight: 500;
