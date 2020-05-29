@@ -213,7 +213,8 @@ export default {
   }
 }
 </script>
-<style lang="scss" src="@/assets/css/personManageTitle.scss" scoped>
+<style lang="scss" src="@/assets/css/personManageTitle.scss" scoped></style>
+<style lang="scss" scoped>
 /* @import "@/assets/css/personManageTitle.scss"; */
 .dentail_info_box{
   overflow: hidden;

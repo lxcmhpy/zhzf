@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" width="420px" :visible.sync="visible" :close-on-click-modal="false">
+  <el-dialog :title="title" width="420px" :visible.sync="visible" :close-on-click-modal="false" append-to-body>
     <!-- <el-row class="title" :gutter="20">
       <el-col>清空</el-col>
     </el-row> -->

@@ -8,10 +8,23 @@
             <el-input v-model="searchForm.name" clearable placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item label="案件类型">
-            <el-input v-model="searchForm.remark" clearable placeholder="请输入"></el-input>
+            <el-select
+              v-model="searchForm.remark"
+              clearable
+              filterable
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="(res) in caseTypeList"
+                :key="res.id"
+                :label="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
+                :value="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
+              ></el-option>
+            </el-select>
+            <!-- <el-input v-model="searchForm.remark" clearable placeholder="请输入"></el-input> -->
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-search" @click="getDocTypeList">查询</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-search" @click="getDocTypeListSearch">查询</el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addDocType">新增</el-button>
@@ -20,7 +33,7 @@
       </div>
     </div>
     <div class="tablePart">
-      <el-table :data="tableData" highlight-current-row @current-change="chexkCase" style="width: 100%" height="100%">
+      <el-table :data="tableData" stripe style="width: 100%" height="100%">
         <el-table-column type="index" width="60" align="center">
           <template slot="header">序号</template>
         </el-table-column>
@@ -60,6 +73,7 @@ export default {
   data() {
     return {
       tableData: [], //表格数据
+      caseTypeList: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
@@ -87,6 +101,7 @@ export default {
       //查询所有文书类型
       getAllPdfListApi(data).then(
         res => {
+          console.log("error",res)
           _this.tableData = res.data.records;
           _this.total = res.data.total;
           _this.totalPage = res.data.total;
@@ -121,6 +136,8 @@ export default {
     },
     //添加
     addDocType(){
+      let length = this.tableData.length;
+      let sort = this.tableData[length-1].sort;
       let data={
             leng:this.total
         }
@@ -131,9 +148,6 @@ export default {
       let data = row;
       console.log(data);
       this.$refs.addEditDocRef.showModal(2, data);
-    },
-    chexkCase(val){
-      console.log("val",val)
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -146,6 +160,27 @@ export default {
       this.currentPage = val;
       this.getDocTypeList();
     },
+    // 查询
+    getDocTypeListSearch() {
+      this.currentPage = 1;
+      this.getDocTypeList()
+    },
+    //查询案件类型列表
+    getCaseType(){
+      this.$store.dispatch("getCaseTypeList", 0).then(
+        //查询案件类型列表(启用)
+        res => {
+          if (res.code === 200) {
+            this.caseTypeList = res.data;
+          } else {
+            console.info("没有查询到数据");
+          }
+        }
+      );
+    }
+  },
+  mounted() {
+    this.getCaseType();
   },
   created() {
     this.getDocTypeList();

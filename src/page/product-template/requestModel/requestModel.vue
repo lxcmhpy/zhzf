@@ -18,7 +18,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-search" @click="getRequestModelList">查询</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-search" @click="getRequestModelListSearch">查询</el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-close" @click="reset">重置</el-button>
@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="tablePart">
-      <el-table :data="tableData" highlight-current-row @current-change="chexkCase" style="width: 100%" height="100%">
+      <el-table :data="tableData" stripe style="width: 100%" height="100%">
         <el-table-column type="index" width="60" align="center">
           <template slot="header">序号</template>
         </el-table-column>
@@ -148,7 +148,6 @@ export default {
       let orgList = this.getOrganList;
       this.$refs.addRequestModelRef.showModal(2, data, orgList);
     },
-    chexkCase(val){},
     //时间格式化
     dateFormat(row, column, cellValue, index){
       let date = ""
@@ -169,6 +168,11 @@ export default {
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
+      this.getRequestModelList();
+    },
+    //查询
+    getRequestModelListSearch(){
+      this.currentPage = 1;
       this.getRequestModelList();
     },
     //获取当前机构及其子机构

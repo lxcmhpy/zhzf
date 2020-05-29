@@ -11,7 +11,8 @@
       <div>未绑定环节列表</div>
       <el-table :data="tableData" stripe style="width: 100%" height="500px" @selection-change="selectLink">
         <el-table-column type="selection" align="center"></el-table-column>
-        <el-table-column prop="linkName" label="环节名称" align="center"></el-table-column>  
+        <el-table-column prop="linkName" label="环节名称" align="center"></el-table-column>
+        <el-table-column prop="remark" label="所属案件类型" align="center"></el-table-column>  
         <el-table-column prop="order" label="环节顺序" align="center">
             <template slot-scope="scope">
                 <el-input v-model="scope.row.order"></el-input>

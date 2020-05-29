@@ -562,6 +562,8 @@
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
+
   #hearingRecordDoc_print {
     .overflow_lins_textarea {
       & > textarea {

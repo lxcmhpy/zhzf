@@ -390,7 +390,8 @@ export default {
 };
 </script>
 <style lang="scss" src="@/assets/css/systemManage.scss" scoped></style>
- <style lang="scss">
+<style lang="scss" scoped>
+ /*  @import "@/assets/css/systemManage.scss"; */
   .paginationF{
     position: absolute;
     bottom: 10px;

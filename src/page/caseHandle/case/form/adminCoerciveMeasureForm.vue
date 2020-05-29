@@ -713,6 +713,8 @@ import {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
+  /* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
+
   .print_box .print_info .evidencetable tr td {
     white-space: inherit;
     text-align-last: center;

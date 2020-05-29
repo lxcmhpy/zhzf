@@ -94,6 +94,9 @@ import subLeftMenu from "@/components/subLeftMenu";
 import tabsMenu from "@/components/tabsMenu";
 import mainContent from "@/components/mainContent";  
 import { mapGetters } from "vuex";
+import {
+  getDictListDetailByNameApi,
+} from "@/api/system";
 export default {
   name: "mainLagout",
   data() {
@@ -148,6 +151,20 @@ export default {
         // debugger;
         // this.$router.push({ name: name,params: route.params});
     },
+    //获取系统标题
+    getSystemData() {
+      if(this.systemTitle){
+        window.document.title = this.systemTitle;
+        return;
+      } 
+      getDictListDetailByNameApi('系统标题').then(res => {
+        console.log('系统标题', res);
+        this.$store.commit('set_systemTitle',res.data[0].name);
+        window.document.title = res.data[0].name
+      }, err => {
+        console.log(err);
+      })
+    },
   },
   watch: {
     '$route' (to, from) {
@@ -160,7 +177,8 @@ export default {
   created(){
     //判断有没有menu
     this.$util.initUser(this);
-     window.document.title = this.systemTitle;
+    this.getSystemData();
+     
   }
 };
 </script>

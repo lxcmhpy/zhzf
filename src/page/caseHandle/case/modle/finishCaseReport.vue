@@ -547,8 +547,8 @@ export default {
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
-
 <style lang="scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 .textindent0 {
   text-indent: 0 !important;
 }

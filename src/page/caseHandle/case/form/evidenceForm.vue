@@ -628,6 +628,8 @@
 </script>
 <style lang="scss" src="@/assets/css/systemManage.scss"></style>
 <style lang="scss">
+ /*  @import "@/assets/css/systemManage.scss"; */
+
   .paginationF {
     position: absolute;
     bottom: 10px;

@@ -714,6 +714,8 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
+ /*  @import "@/assets/css/caseHandle/caseDocModle.scss"; */
+
   .espacle {
     textarea {
       min-height: 114px !important;

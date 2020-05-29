@@ -519,8 +519,8 @@ export default {
 }
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
-
 <style lang="scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 #inquestNote_print {
   .dataTimeReplaceBox {
     position: relative;
