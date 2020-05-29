@@ -143,7 +143,7 @@ export default {
             //修改
             _this.addOrUpdateRoadLcDeployForm.id= this.editRoadLcDeployeId;
             console.log("要修改的路产配置",_this.addOrUpdateRoadLcDeployForm);
-            _this.$store.dispatch("addOrUpdateRoute.vue", _this.addOrUpdateRoadLcDeployForm).then(
+            _this.$store.dispatch("addOrUpdateRoute", _this.addOrUpdateRoadLcDeployForm).then(
               res => {
                 console.log("修改后的路产配置", res);
                 _this.$message({
@@ -158,7 +158,7 @@ export default {
               }
             );
           } else {
-            _this.$store.dispatch("addOrUpdateRoute.vue", _this.addOrUpdateRoadLcDeployForm).then(
+            _this.$store.dispatch("addOrUpdateRoute", _this.addOrUpdateRoadLcDeployForm).then(
               res => {
                 console.log("路产配置", res);
                 _this.$message({
