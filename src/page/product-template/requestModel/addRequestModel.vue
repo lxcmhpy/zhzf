@@ -68,9 +68,7 @@ export default {
       if (type == 0) {
         this.dialogTitle = "新增";
         this.addRequest = {
-          id: "",modelName: "",
-          createTime:new Date().format('yyyy-MM-dd'),
-          modelTypeId: ""
+          createTime:new Date().format('yyyy-MM-dd')
         };
       } else if (type == 2) {
         this.dialogTitle = "修改";

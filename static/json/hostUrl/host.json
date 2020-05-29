@@ -35,7 +35,7 @@
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "CHECK_API":"http://172.16.170.91:8086/cy",
     "QZ_API":"http://172.16.170.96:9000/case/sys/file/uploadDocDzqz/",
-    "XZJC_HOST":"http://172.16.168.38:8099/"
+    "XZJC_HOST":"http://172.16.168.38:8099/xzjc/"
   },
   "SGX": {
     "HOST": "http://172.16.169.49:9000",

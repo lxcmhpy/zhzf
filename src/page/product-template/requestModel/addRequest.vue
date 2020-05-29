@@ -18,7 +18,12 @@
         <div>
           <div class="item">
             <el-form-item label="问题" prop="request">
-              <el-input v-model="addRequest.request"></el-input>
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 1, maxRows: 4}"
+                placeholder="请输入问题"
+                v-model="addRequest.request">
+              </el-input>
             </el-form-item>
           </div>
         </div>
@@ -57,9 +62,7 @@ export default {
         console.log(data);
         this.dialogTitle = "新增问题";
         this.addRequest = {
-          id: "",
-          modelId: data.modelId,
-          request: ""
+          modelId: data.modelId
         };
       } else if (type == 2) {
         this.dialogTitle = "修改问题";

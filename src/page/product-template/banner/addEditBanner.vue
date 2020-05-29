@@ -6,7 +6,7 @@
     :close-on-click-modal="false"
     width="35%"
   >
-    <el-form :model="addBannerForm" :rules="rules" ref="addBannerForm" label-width="130px">
+    <el-form :model="addBannerForm" :rules="rules" ref="addBannerForm" class="errorTipForm" label-width="130px">
       <div class="item">
         <el-form-item label="环节名称" prop="linkName">
           <el-input v-model="addBannerForm.linkName"></el-input>
@@ -47,7 +47,7 @@
         </div>
       <div class="item">
         <el-form-item label="是否有审批流程">
-          <el-select v-model="addBannerForm.isApproval" placeholder="请选择">
+          <el-select v-model="addBannerForm.isApproval" @change="selectIsApproval" placeholder="请选择">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -57,7 +57,7 @@
           </el-select>
         </el-form-item>
       </div>
-      <div class="item">
+      <div class="item" v-if="isApproval">
         <el-form-item label="绑定工作流">
           <el-input v-model="addBannerForm.activitiId"></el-input>
         </el-form-item>
@@ -145,7 +145,8 @@ export default {
   data() {
     return {
       visible: false,
-      isShow: true,
+      isShow: false,
+      isApproval: false,
       addBannerForm: {
         linkName: "",
         mainLinkName: "",
@@ -193,20 +194,7 @@ export default {
       if (type == 0) {
         this.dialogTitle = "新增环节";
         this.addBannerForm = {
-          linkName: "",
-          mainLinkName: "",
-          isApproval: "",
-          activitiId: "",
-          isPdf: "",
-          docTypeId: "",
-          docTypeName: "",
-          remark: "",
-          sort: data + 1,
-          isFiling: "",
-          isFile: "",
-          linkUrl: "",
-          mainLinkId: "",
-          isCaseNumber: ""
+          sort: data + 1
         };
       } else if (type == 2) {
         this.dialogTitle = "修改环节";
@@ -218,16 +206,23 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.$refs["addBannerForm"].resetFields();
     },
     //是否生成PDF
     selectIsShow(val){
-      console.log(val)
-      if(val === 0){
+      if(val == "0"){
         this.isShow = true;
       }else{
         this.isShow = false;
         this.addBannerForm.docTypeId = '';
+      }
+    },
+    //是否有审批流程
+    selectIsApproval(val){
+      if(val == "0"){
+        this.isApproval = true;
+      }else{
+        this.isApproval = false;
+        this.addBannerForm.activitiId = '';
       }
     },
     //新增环节 修改环节
@@ -236,7 +231,6 @@ export default {
       this.$refs[formName].validate(valid => {
         if (_this.handelType) {
           //修改
-          _this.addBannerForm.id = _this.editBannerId;
           _this.$store.dispatch("addOrEditBanner", _this.addBannerForm).then(
             res => {
               console.log("环节", res);

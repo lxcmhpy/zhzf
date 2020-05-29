@@ -308,7 +308,6 @@ export const inforCollectionCommonMixins = {
     //设置执法人员
     setLawPerson(userlist) {
       console.log('选择的执法人员', userlist);
-      // this.lawPersonList = userlist;
       this.alreadyChooseLawPerson = userlist;
       this.lawPersonListId = [];
       let staffIdArr = [];
@@ -370,7 +369,6 @@ export const inforCollectionCommonMixins = {
     },
     //更改当事人类型
     changePartyType(val) {
-    debugger
     this.partyTypePerson = val;
     if (val == "1") {
       this.inforForm.partyName = "";
@@ -515,8 +513,7 @@ export const inforCollectionCommonMixins = {
       }
       this.inforForm.tempPunishAmount = item.lawerLimit;
     },
-    toNextPart() {
-    },
+  
     //点击滚动
     jump(index) {
       console.log(this.$el);
@@ -570,6 +567,9 @@ export const inforCollectionCommonMixins = {
         _this.inforForm.otherInfo = JSON.stringify(
           _this.inforForm.otherInfo
         );
+        //赔补偿案件
+        this.inforForm.roadDamageList = this.pathLossList ? JSON.stringify(this.pathLossList) : '';
+        this.inforForm.payTotal = this.payTotal;
         _this.inforForm.state = state;
         _this.inforForm.caseStatus = '未立案';
         _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
@@ -595,83 +595,6 @@ export const inforCollectionCommonMixins = {
           }
         );
       }
-      //          if (valid) {
-      // let submitData = {
-      //   caseSource: this.inforForm.caseSource,
-      //   inforForm: this.inforForm.inforForm,
-      //   afsj: this.inforForm.afsj,
-      //   acceptTime: this.inforForm.acceptTime,
-      //   caseCauseId: this.inforForm.caseCauseId,
-      //   caseCauseName: this.inforForm.caseCauseName,
-      //   programType: this.inforForm.programType,
-      //   caseType: this.inforForm.caseType,
-      //   lawPersonList: this.inforForm.lawPersonList,
-      //   partyType: this.inforForm.partyType,
-      //   party: this.inforForm.party,
-      //   partyIdType: this.inforForm.partyIdType,
-      //   partyIdNo: this.inforForm.partyIdNo,
-      //   partySex: this.inforForm.partySex,
-      //   partyAge: this.inforForm.partyAge,
-      //   partyTel: this.inforForm.partyTel,
-      //   partyAddress: this.inforForm.partyAddress,
-      //   partyZipCode: this.inforForm.partyZipCode,
-      //   partyUnitPosition: this.inforForm.partyUnitPosition,
-      //   occupation: this.inforForm.occupation,
-      //   partyEcertId: this.inforForm.partyEcertId,
-      //   partyName: this.inforForm.partyName,
-      //   partyUnitTel: this.inforForm.partyUnitTel,
-      //   socialCreditCode: this.inforForm.socialCreditCode,
-      //   roadTransportLicense: this.inforForm.roadTransportLicense,
-      //   partyManager: this.inforForm.partyManager,
-      //   partyManagerPositions: this.inforForm.partyManagerPositions,
-      //   partyUnitAddress: this.inforForm.partyUnitAddress,
-      //   vehicleShipId: this.inforForm.vehicleShipId,
-      //   vehicleIdColor: this.inforForm.vehicleIdColor,
-      //   vehicleShipType: this.inforForm.vehicleShipType,
-      //   brand: this.inforForm.brand,
-      //   ccertId: this.inforForm.ccertId,
-      //   trailerIdNo: this.inforForm.trailerIdNo,
-      //   trailerColor: this.inforForm.trailerColor,
-      //   trailerType: this.inforForm.trailerType,
-      //   trailerBrand: this.inforForm.trailerBrand,
-      //   trailerCcertId: this.inforForm.trailerCcertId,
-      //   caseCauseNameCopy: this.inforForm.caseCauseNameCopy,
-      //   illegalLaw: this.inforForm.illegalLaw,
-      //   punishLaw: this.inforForm.punishLaw,
-      //   agentPartyEcertId:JSON.stringify(this.driverOrAgentInfoList),
-      //   discretionId:this.inforForm.discretionId
-      // };
-      //          _this.inforForm.agentPartyEcertId = JSON.stringify(
-      //            _this.driverOrAgentInfoList
-      //          );
-      //          // 超限
-      //          _this.inforForm.otherInfo = JSON.stringify(
-      //            _this.inforForm.otherInfo
-      //          );
-      //          _this.inforForm.state = state;
-      //          _this.inforForm.caseStatus = '未立案';
-      //          _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
-      //            res => {
-      //              console.log(res);
-      //              _this.$message({
-      //                type: "success",
-      //                message: "提交成功!"
-      //              });
-      //              _this.$store.dispatch("deleteTabs", _this.$route.name);
-      //              _this.$store.commit("setCaseId", res.data.id);
-      //              iLocalStroage.removeItem("stageCaseId");
-      //              this.autoSava = false;
-      //              _this.$router.replace({
-      //                name: "case_handle_establish"
-      //              });
-      //            },
-      //            err => {
-      //
-      //              console.log(err);
-      //            }
-      //          );
-      //          }
-      //        });
     },
     //查询执法人员
     getAllUserList(list) {
@@ -688,6 +611,9 @@ export const inforCollectionCommonMixins = {
       this.inforForm.otherInfo = JSON.stringify(
         this.inforForm.otherInfo
       );
+      //赔补偿案件
+      this.inforForm.roadDamageList = this.pathLossList ? JSON.stringify(this.pathLossList) : '';
+      this.inforForm.payTotal = this.payTotal;
       console.log(this.inforForm)
       this.inforForm.state = state;
       this.inforForm.caseStatus = '未立案';
@@ -709,7 +635,12 @@ export const inforCollectionCommonMixins = {
             iLocalStroage.set("stageCaseId", res.data.id);
             // this.autoSava = false;
             //跳转举报记录
-            if(otherData.nextRoute) this.$router.push({name:otherData.nextRoute})
+            if(otherData.nextRoute) {
+              this.$router.push({
+                name:otherData.nextRoute,
+                params:otherData.params
+              })
+            }
           },
           err => {
             console.log(err);
@@ -792,7 +723,11 @@ export const inforCollectionCommonMixins = {
         }
         this.alreadyChooseLawPerson.push(newlaw);
       });
-
+      //案发坐标
+      this.hasLatitudeAndLongitude  = data.latitudeAndLongitude !=='';
+      //路损清单
+      this.pathLossList = JSON.parse(data.roadDamageList);
+      this.payTotal = data.payTotal;
     },
     //案件来源后的输入框是否显示
     showCaseSourceAfterInput(caseSource) {
@@ -1264,9 +1199,9 @@ created() {
   // )
   console.log(this.$route)
 
-  if(!this.$route.params.fromSlide && !iLocalStroage.get("stageCaseId") && !this.$route.params.editFlag){
-     this.setLawPersonCurrentP();
-  }
+  // if(!this.$route.params.fromSlide && !iLocalStroage.get("stageCaseId") && !this.$route.params.editFlag){
+  //    this.setLawPersonCurrentP();
+  // }
  
   if (this.$route.params.fromSlide) {
     this.fromSlide();

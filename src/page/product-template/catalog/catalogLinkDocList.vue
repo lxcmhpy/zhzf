@@ -111,6 +111,7 @@ export default {
       linkDocData: [],
       datas: [],
       title: "",
+      caseType: "",
       total: 0,
       visible: false,
       templateId: "",
@@ -206,7 +207,7 @@ export default {
       this.visible = true;
       this.templateId = data.id;
       this.title = data.name;
-      console.log("this",this.title)
+      this.caseType = data.caseType;
       this.getLinkDocList();
       this.getDocList();
     },
@@ -214,8 +215,10 @@ export default {
       let _this = this;
       let data = {
         id: this.templateId,
-        name: this.searchForm.name
+        name: this.searchForm.name,
+        caseType: this.caseType
       };
+      console.log("data",data)
       getDocListByTemplateIdApi(data).then(
         res => {
           _this.docData = res.data;
