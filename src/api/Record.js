@@ -7,8 +7,8 @@ import iLocalStroage from '@/common/js/localStroage'
 let vm = new Vue();
 
 
-let XZJC_HOST = iLocalStroage.gets('CURRENT_BASE_URL').XZJC_HOST
-// let XZJC_HOST = 'http://172.16.168.38:8098/xzjc/'
+// let XZJC_HOST = iLocalStroage.gets('CURRENT_BASE_URL').XZJC_HOST
+let XZJC_HOST = 'http://172.16.168.38:8099/xzjc/'
 
 
 //添加或修改模板
