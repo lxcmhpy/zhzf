@@ -57,7 +57,7 @@ export default {
       let _this = this;
       getLawCategoryListApi(data1).then(
         res => {
-          console.log("执法门类列表", res);
+          console.log("行业类别列表", res);
           _this.tableData = res.data;
           // _this.totalPage = res.data.total;
         },

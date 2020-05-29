@@ -626,7 +626,8 @@
     }
   };
 </script>
-<style lang="scss" src="@/assets/css/systemManage.scss">
+<style lang="scss" src="@/assets/css/systemManage.scss"></style>
+<style lang="scss">
  /*  @import "@/assets/css/systemManage.scss"; */
 
   .paginationF {
