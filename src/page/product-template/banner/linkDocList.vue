@@ -96,6 +96,7 @@ export default {
       linkDocData: [],
       datas: [],
       title: "",
+      remark: "",
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
@@ -178,6 +179,7 @@ export default {
       this.visible = true;
       this.linkTypeId = data.id;
       this.title = data.linkName;
+      this.remark = data.remark;
       this.getLinkDocList();
       this.getDocList();
     },
@@ -185,7 +187,8 @@ export default {
       let _this = this;
       let data = {
         linkTypeId: this.linkTypeId,
-        name: this.searchForm.name
+        name: this.searchForm.name,
+        remark: this.remark
       };
       console.log("canshu", data);
       getDocListByLinkTypeIdApi(data).then(

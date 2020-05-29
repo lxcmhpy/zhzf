@@ -4,7 +4,7 @@
       <div class="search">
         <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
           <el-form-item label="模板名称">
-            <el-input v-model="searchForm.name" clearable placeholder="请输入环节名称"></el-input>
+            <el-input v-model="searchForm.name" clearable placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item label="案件类型">
             <el-select v-model="searchForm.remark" clearable filterable placeholder="请选择">
