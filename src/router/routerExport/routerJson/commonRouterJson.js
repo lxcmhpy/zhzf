@@ -153,7 +153,7 @@ export default [
             component: () => import("@/page/product-template/docType/docType.vue")
           },
           {
-            name: "询问笔录问答模板",
+            name: "requestModel",
             path: "requestModel",
             meta: {
               title: "询问笔录问答模板"

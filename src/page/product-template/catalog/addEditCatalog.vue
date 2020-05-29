@@ -86,9 +86,6 @@ export default {
       if (type == 0) {
         this.dialogTitle = "新增模板";
         this.addCatalogForm = {
-          name: "",
-          caseType: "",
-          remark: "",
           sort: data+1,
           createTime: new Date().format("yyyy-MM-dd"),
           status: 0
