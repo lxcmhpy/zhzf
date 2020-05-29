@@ -21,6 +21,7 @@ const system = {
         activeIndexSto: '',
         headActiveNav:'', //当前选中的header
         btnlawId:'', //当前法规id
+        systemTitle:'', //系统标题
     },
     mutations: {
         SET_MENU(state, data) {
@@ -33,6 +34,9 @@ const system = {
         //设置当前法规id
         SET_BTNLAW_ID (state, data) {
             state.btnlawId = data;
+        },
+        set_systemTitle(state, data) {
+            state.systemTitle = data;
         },
 
     },

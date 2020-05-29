@@ -197,7 +197,7 @@ export default {
     },
     //现场笔录
     goDiao() {
-      this.$router.push({ name: 'case_handle_liveReport' });
+      
     },
     goWen() {
       this.makeRoute(

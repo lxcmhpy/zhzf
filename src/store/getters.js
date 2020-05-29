@@ -32,5 +32,6 @@ const getters = {
 
   // 系统管理
   btnlawId:state => state.system.btnlawId, //当前法规id
+  systemTitle:state => state.system.systemTitle, //系统标题
 };
 export default getters;

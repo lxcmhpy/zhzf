@@ -245,7 +245,7 @@
     }
 
     .el-radio-group {
-        margin: 16px 0;
+        line-height: 28px;
     }
 
 }
@@ -320,4 +320,9 @@
         border-color: transparent;
     }
 
+}
+.min-lable{
+    .el-form-item__label{
+        line-height: 28px;
+    }
 }
