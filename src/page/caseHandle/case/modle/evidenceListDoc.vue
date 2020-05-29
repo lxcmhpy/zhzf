@@ -571,8 +571,8 @@ export default {
   },
 }
 </script>
-<style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss">
-/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
+<style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
+<style lang="scss">
 .print_box .print_info .evidencetable tr td{
   white-space: inherit;
   text-align-last: center;

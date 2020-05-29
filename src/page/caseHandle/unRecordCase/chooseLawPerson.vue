@@ -94,7 +94,6 @@ export default {
   inject: ["reload"],
   methods: {
     findStallByCondition(){
-        // findStaffListApi(this.staffNameOrCode);
         let data = {
         organId: iLocalStroage.gets("userInfo").organId,
         inputValue: this.staffNameOrCode
@@ -117,12 +116,7 @@ export default {
     },
     showModal(alreadyChooseLawPersonId, inforCollectLawPerson) {
       this.visible = true;
-      // this.alreadyChooseLawPerson = alreadyChooseLawPerson;
-      // console.log(this.alreadyChooseLawPerson)
-      console.log(alreadyChooseLawPersonId,inforCollectLawPerson);
       this.checkedUserId = alreadyChooseLawPersonId;
-      console.log("alreadyChooseLawPersonId", alreadyChooseLawPersonId);
-      console.log("inforCollectLawPerson", inforCollectLawPerson);
       this.searchLawPerson(alreadyChooseLawPersonId, inforCollectLawPerson);
     },
     //关闭弹窗的时候清除数据
@@ -134,27 +128,13 @@ export default {
     handleCheckAllChange(val) {
       console.log(val);
       if (val) {
-        // this.checkedUserId = [];
-        // this.checkedUser = [];
         this.userList.forEach(item => {
-          // this.checkedUserId.forEach(item2=>{
-          //   if(item.id != item2){
-          //     //复选框存入id
-          //     this.checkedUserId.push(item.id);
-          //     //tag
-          //     this.checkedUser.push(item);
-          //   }
-          // })
           if(!this.checkedUserId.includes(item.id)){
                //复选框存入id
               this.checkedUserId.push(item.id);
               //tag
               this.checkedUser.push(item);
           }
-           //复选框存入id
-            // this.checkedUserId.push(item.id);
-            //tag
-            // this.checkedUser.push(item);
           
         });
       } else {
@@ -167,15 +147,13 @@ export default {
             }
           })
         })
-        // this.checkedUserId =[this.currentUser.id];
-        // this.checkedUser = [this.currentUser];
+    
       }
       this.isIndeterminate = false;
     },
     //更改选中的人员
     handleCheckedUserChange(val) {
       console.log(val);
-      // this.checkedUser = this.saveCheckedUserBeforSearch.length>0 ? this.saveCheckedUserBeforSearch : [];
       this.checkedUser = [];
 
       let _this = this
@@ -183,22 +161,13 @@ export default {
         _this.allUserList.forEach(item2 => {
           if (item == item2.id) {
             //更新tag
-            console.log('更新tag',item2);
             _this.checkedUser.push(item2);
 
-            // if(!_this.checkedUser.includes(item2)){
-            //   _this.checkedUser.push(item2);
-            // }
             return;
           }
         });
       });
     },
-    // getSelectNumber() {
-    //   this.userList.forEach(item => {
-    //     this.selectedNumber.push("");
-    //   });
-    // },
     //删掉已选中的人员
     deleteUser(tag) {
       console.log(tag);
@@ -210,8 +179,6 @@ export default {
     },
     //更改执法证号
     changeLawOfficerCards(val, personData) {
-      console.log(val);
-      console.log(personData);
       //更新选中的执法证号
       this.userList.forEach(item => {
         if (item.id == personData.id) {
@@ -245,16 +212,20 @@ export default {
                 lawOfficerCards: item.lawOfficerCards.split(",")
               };
               //执法证号默认选中 或 从信息采集页带入
-              //  this.selectedNumber.push(item.lawOfficerCardsAndId.lawOfficerCards[0]);
               let hasChangeCard = false;
               let inforCollectLawPerson2 = '';
               inforCollectLawPerson.forEach(inforCollectLawPersonItem => {
+                console.log('inforCollectLawPersonItem',inforCollectLawPersonItem)
+                //刚进入信息采集页面后获取执法人员数据，当前用户没有设置过selectLawOfficerCard ,需要设置一下
+                inforCollectLawPersonItem.selectLawOfficerCard = !inforCollectLawPersonItem.selectLawOfficerCard ? inforCollectLawPersonItem.lawOfficerCards : inforCollectLawPersonItem.selectLawOfficerCard;
                 if (item.id == inforCollectLawPersonItem.id) {
                   hasChangeCard = true;
                   inforCollectLawPerson2 = inforCollectLawPersonItem;
                 }
               });
+            
               if (hasChangeCard) {
+               
                 _this.selectedNumber.push(
                   inforCollectLawPerson2.selectLawOfficerCard
                 );
@@ -279,11 +250,6 @@ export default {
         );
     }
   }
-  // mounted() {
-  //   this.getSelectNumber();
-  // }
 };
 </script>
-<style lang="scss" src="@/assets/css/caseHandle/index.scss">
-/* @import "@/assets/css/caseHandle/index.scss"; */
-</style>
+<style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>

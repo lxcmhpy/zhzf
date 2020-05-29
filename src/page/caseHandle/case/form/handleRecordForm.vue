@@ -311,8 +311,8 @@ import {
         }
     };
 </script>
-<style lang="scss" src="@/assets/css/systemManage.scss" scoped>
- /*  @import "@/assets/css/systemManage.scss"; */
+<style lang="scss" src="@/assets/css/systemManage.scss" scoped></style>
+ <style lang="scss">
   .paginationF{
     position: absolute;
     bottom: 10px;

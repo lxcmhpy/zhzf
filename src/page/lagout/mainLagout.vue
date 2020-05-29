@@ -2,7 +2,10 @@
   <div class="fullscreen">
     <el-container id="fullscreenCon">
       <el-header id="mainHeader">
-        <div class="main_logo"><img :src="'./static/images/main/logo.png'" alt=""><span>治超联网监管系统</span></div>
+        <div class="main_logo">
+          <!-- <img :src="'./static/images/main/logo.png'" alt=""> -->
+          <span> {{systemTitle}}</span>
+        </div>
         <div class="headMenu">
           <headMenu @selectHeadMenu="getSelectHeadMenu"></headMenu>
         </div>
@@ -89,7 +92,8 @@ import iLocalStroage from "@/common/js/localStroage";
 import headMenu from "@/components/headMenu";
 import subLeftMenu from "@/components/subLeftMenu";
 import tabsMenu from "@/components/tabsMenu";
-import mainContent from "@/components/mainContent";
+import mainContent from "@/components/mainContent";  
+import { mapGetters } from "vuex";
 export default {
   name: "mainLagout",
   data() {
@@ -109,9 +113,7 @@ export default {
     mainContent
   },
   computed: {
-    // curreyRouterName() {
-    //   return this.$route.name;
-    // }
+    ...mapGetters(['systemTitle'])
   },
   inject: ["reload"],
   methods: {
@@ -145,7 +147,7 @@ export default {
     router (name, route) {
         // debugger;
         // this.$router.push({ name: name,params: route.params});
-    }
+    },
   },
   watch: {
     '$route' (to, from) {
@@ -158,11 +160,14 @@ export default {
   created(){
     //判断有没有menu
     this.$util.initUser(this);
+     window.document.title = this.systemTitle;
   }
 };
 </script>
-<style lang="scss" src="@/assets/css/main.scss">
+<style lang="scss" src="@/assets/css/main.scss"></style>
+<style lang="scss">
 /* @import "@/assets/css/main.scss"; */
+
 .info_top {
   background: url("../../../static/images/img/personInfo/bg.png") no-repeat;
 }
