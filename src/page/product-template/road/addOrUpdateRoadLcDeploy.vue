@@ -121,13 +121,13 @@ export default {
         this.addOrUpdateRoadLcDeployForm.roadLcUnit = data.roadLcUnit;
         this.addOrUpdateRoadLcDeployForm.roadLcNote = data.roadLcNote;
         this.editRoadLcDeployeId = data.id;
-        
+
       }
     },
-    
+
     //关闭弹窗的时候清除数据
     closeDialog() {
-    
+
       this.$refs["addOrUpdateRoadLcDeployForm"].resetFields();
       console.log('111',this.$refs["addOrUpdateRoadLcDeployForm"].resetFields());
       this.visible = false;
@@ -143,7 +143,7 @@ export default {
             //修改
             _this.addOrUpdateRoadLcDeployForm.id= this.editRoadLcDeployeId;
             console.log("要修改的路产配置",_this.addOrUpdateRoadLcDeployForm);
-            _this.$store.dispatch("addOrUpdateRoadLcDeploy", _this.addOrUpdateRoadLcDeployForm).then(
+            _this.$store.dispatch("addOrUpdateRoute.vue", _this.addOrUpdateRoadLcDeployForm).then(
               res => {
                 console.log("修改后的路产配置", res);
                 _this.$message({
@@ -158,7 +158,7 @@ export default {
               }
             );
           } else {
-            _this.$store.dispatch("addOrUpdateRoadLcDeploy", _this.addOrUpdateRoadLcDeployForm).then(
+            _this.$store.dispatch("addOrUpdateRoute.vue", _this.addOrUpdateRoadLcDeployForm).then(
               res => {
                 console.log("路产配置", res);
                 _this.$message({

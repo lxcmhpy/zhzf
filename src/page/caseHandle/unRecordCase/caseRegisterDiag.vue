@@ -51,6 +51,7 @@ import Layout from "@/page/lagout/mainLagout"; //Layout 是架构组件，不在
 import {
   queryFlowBycaseTypeApi,
 } from "@/api/caseHandle";
+import { queryLawCateByOrganIdApi} from "@/api/caseDeploy";
 export default {
   data() {
     return {
@@ -72,6 +73,7 @@ export default {
       caseTypeList: [] ,//案件类型列表
       staff:'',
       staffId:'',
+      organId:iLocalStroage.gets('userInfo').organId,
       certificateId:'',
     };
   },
@@ -84,8 +86,12 @@ export default {
       this.visible = true;
       // this.getEnforceLawType();
       this.illageActId = data && data.id || '';
-      let _this = this
-      this.$store.dispatch("getEnforceLawType", "1").then(
+      let _this = this;
+      let data1={
+        organId:this.organId
+      };
+      // this.$store.dispatch("getEnforceLawType", "1").then(
+        queryLawCateByOrganIdApi(data1).then(
         res => {
           _this.lawCateList = res.data;
           if(caseForm){
@@ -162,9 +168,11 @@ export default {
     },
     //获取案件类型
     getCaseType() {
+      this.caseTypeList = [];
       let data = {
         programType: this.caseRegisterForm.programType,
-        cateId: this.caseRegisterForm.cateId
+        cateId: this.caseRegisterForm.cateId,
+        organId: this.organId
       };
       let _this = this
       this.$store.dispatch("getCaseType", data).then(

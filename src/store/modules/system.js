@@ -10,7 +10,8 @@ import {
     getAllMenuListApi, getTreePermissionApi, addPermissionApi, deletePermissionApi,
     getDictListApi, getDictListDetailApi, getAllDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
-    getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,saveLawOfficelApi,
+    getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,saveLawOfficelApi,getRouteListApi,addOrUpdateRouteApi,deleteRouteApi,
+    getSectionListApi,addOrUpdateSectionApi,deleteSectionApi,
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";
@@ -839,6 +840,84 @@ const system = {
                     })
             })
         },
+
+      //获取路产配置列表
+      getRouteList({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          getRouteListApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //添加或修改路线信息
+      addOrUpdateRoute({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          addOrUpdateRouteApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //删除路线
+      deleteRoute({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          deleteRouteApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //获取路段列表
+      getSectionList({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          getSectionListApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //添加或修改路段信息
+      addOrUpdateSection({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          addOrUpdateSectionApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //删除路段
+      deleteSection({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          deleteSectionApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
 
     }
 
