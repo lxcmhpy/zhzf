@@ -1067,3 +1067,77 @@ export function saveLawOfficelApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//获取路线列表
+export function getRouteListApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/doc/routeManagement/list",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加或修改路线信息
+export function addOrUpdateRouteApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/doc/routeManagement/saveOrUpdateRoute",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除路线
+export function deleteRouteApi(id) {
+  return request({
+    url: "/case/doc/routeManagement/delete/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//获取路线列表
+export function getSectionListApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/doc/sectionManagement/list",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加或修改路段信息
+export function addOrUpdateSectionApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/doc/sectionManagement/saveOrUpdateSection",
+    method: "get",
+    params:data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除路段
+export function deleteSectionApi(id) {
+  return request({
+    url: "/case/doc/sectionManagement/delete/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

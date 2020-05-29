@@ -1,5 +1,5 @@
 <template>
-  <div class="inforCollectionBox">
+  <div id="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
         <a :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv">案件情况</a>
@@ -1336,7 +1336,7 @@
                 if (fields[i].labelFor === field) {
                   if (fields[i].label) {
                     console.log(_this.$refs[field].$el.offsetTop);
-                    document.getElementById('inforCollectionBox').scrollTop = _this.$refs[field].$el.offsetTop
+                    // document.getElementById('inforCollectionBox').scrollTop = _this.$refs[field].$el.offsetTop
                     //                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
                   }
                 }
@@ -1349,6 +1349,7 @@
           _this.inforForm.agentPartyEcertId = JSON.stringify(
             _this.driverOrAgentInfoList
           );
+          console.log('_this.inforForm.agentPartyEcertId',_this.inforForm.agentPartyEcertId)
           // 超限
           _this.inforForm.otherInfo = JSON.stringify(
             _this.inforForm.otherInfo
@@ -1577,7 +1578,7 @@
       },
       //案件来源后的输入框是否显示
       showCaseSourceAfterInput(caseSource) {
-        if (caseSource === "行政检查" || caseSource === "投诉举报") {
+        if (caseSource === "行政检查" || caseSource === "投诉举报" || caseSource == '') {
           this.caseSourceTextDisable = false;
         } else {
           this.caseSourceTextDisable = true;

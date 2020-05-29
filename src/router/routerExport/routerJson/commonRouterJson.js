@@ -153,7 +153,7 @@ export default [
             component: () => import("@/page/product-template/docType/docType.vue")
           },
           {
-            name: "询问笔录问答模板",
+            name: "requestModel",
             path: "requestModel",
             meta: {
               title: "询问笔录问答模板"
@@ -215,6 +215,14 @@ export default [
               title: "公路路产配置"
             },
             component: () => import("@/page/product-template/road/roadLcDeploy.vue")
+          },
+          {
+            name: "routeManage",
+            path: "routeManage",
+            meta: {
+              title: "路线管理"
+            },
+            component: () => import("@/page/product-template/route/routeManage.vue")
           },
         ]
       },

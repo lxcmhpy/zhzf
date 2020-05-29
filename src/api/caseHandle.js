@@ -19,7 +19,7 @@ export function getEnforceLawTypeApi(organId) {
 export function getCaseTypeApi(data) {
   let params = {
     programType: data.programType,
-    organId: "1",
+    organId: data.organId,
     cateId: data.cateId
   }
   return request({

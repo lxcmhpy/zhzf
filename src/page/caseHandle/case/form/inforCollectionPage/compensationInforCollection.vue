@@ -1,5 +1,5 @@
 <template>
-  <div class="inforCollectionBox">
+  <div id="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
         <a :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv">案件情况</a>
@@ -46,7 +46,7 @@
                 v-show="caseSourceTextDisable"
                 :placeholder="caseSourceTextPla"
               ></el-input>
-                <el-button type="primary" size="small" v-if="showJBRecord" @click="goReportRecordDoc">举报记录</el-button>
+                <el-button type="primary" size="small" v-if="showJBRecord" @click="findReportRecordDocPdf">举报记录</el-button>
             </el-form-item>
           </div>
         </div>
@@ -623,7 +623,7 @@
         <div>
           <div class="item">
             <el-form-item label="赔偿总金额">
-              <el-input v-model="payTotal"></el-input>
+              <el-input v-model="payTotal" disabled></el-input>
             </el-form-item>
           </div>
           <div class="item">
@@ -639,7 +639,6 @@
             <el-table-column label="单价(元)" prop="roadLcPrice" align="center"></el-table-column>
             <el-table-column label="数量" width="150" align="center">
               <template slot-scope="scope">
-                <!-- <el-input v-model="pathLossList[scope.$index].quantity"></el-input> -->
                 <el-input-number v-model="pathLossList[scope.$index].quantity" :min="1" size="mini"></el-input-number>
               </template>
             </el-table-column>
@@ -853,14 +852,7 @@ export default {
         this.inforForm.latitudeAndLongitude = lngLatStr;   
         this.hasLatitudeAndLongitude = true;
     },
-    //跳转举报记录文书
-    goReportRecordDoc(){
-        let otherData={
-            nextRoute:'case_handle_reportRecordDoc'
-        }
-        this.stageInfo(0,otherData);
-        // this.$router.push({name:'case_handle_reportRecordDoc'})
-    },
+  
     //查询举报文书有没有生成
     findReportRecordDocPdf(){
         this.$store.dispatch("getFile", {
@@ -868,15 +860,31 @@ export default {
             caseId: this.caseId,
           }).then(res=>{
               console.log('生成了举报文书',res);
+              let otherData ={};
+              if(res.length>=1){
+                //显示举报文书的pdf
+                  otherData={
+                      nextRoute:'case_handle_myPDF',
+                      params:{hasBack:true,status:2}
+                  }
+                  this.$store.commit('setDocId', this.BASIC_DATA_SYS.reportRecordDoc_caseDoctypeId);
+              }else{
+                //跳转举报记录文书
+                 otherData={
+                      nextRoute:'case_handle_reportRecordDoc'
+                  }
+              }
+              this.stageInfo(0,otherData);
+
           })
           .catch(err=>{console.log(err)})
     }
   },
   created() {
     //新增属性
-    this.$set(this.inforForm, "payTotal");
+    this.$set(this.inforForm, "payTotal",);
     this.$set(this.inforForm, "roadDamageList");
-    this.findReportRecordDocPdf()
+    // this.findReportRecordDocPdf()
   },
   mounted(){
    
