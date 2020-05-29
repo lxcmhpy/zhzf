@@ -239,7 +239,7 @@ export default {
             //     backgroundColor: 'white',
             //     color: 'white'
             // },
-            data: graphTemp.nodes,
+            data: graphTemp.nodes, 
             links: graphTemp.links,
             draggable: false,   //注意这里设置为false,不然拖拽鼠标和节点有偏移
           }

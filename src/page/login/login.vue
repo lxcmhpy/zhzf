@@ -137,6 +137,9 @@ import VueSimpleVerify from 'vue-simple-verify';
 import {
   getCurrentUserApi
 } from "@/api/login";
+import {
+  getDictListDetailByNameApi,
+} from "@/api/system";
 export default {
   data() {
     return {
@@ -188,6 +191,7 @@ export default {
       menuList: null
     };
   },
+  computed: {...mapGetters(['systemTitle'])},
   methods: {
 
     //获取验证码
@@ -369,13 +373,22 @@ export default {
         }
       });
     },
-    // test() {
-    //   console.log('12212', this.resetForm)
-    // }
+    
+    //获取系统标题
+    getSystemData() {
+      getDictListDetailByNameApi('系统标题').then(res => {
+        console.log('系统标题', res);
+        this.$store.commit('set_systemTitle',res.data[0].name);
+        window.document.title = res.data[0].name
+      }, err => {
+        console.log(err);
+      })
+    },
   },
   mounted() {
     this.showLogin = true;
     // this.test()
+    this.getSystemData();
   },
   components: {
       VueSimpleVerify

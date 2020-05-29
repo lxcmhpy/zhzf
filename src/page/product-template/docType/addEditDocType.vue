@@ -111,11 +111,6 @@ export default {
       if (type == 0) {
         this.dialogTitle = "新增";
         this.addDocType = {
-          id: "",
-          name: "",
-          linkName: "",
-          remark: "",
-          path: "",
           sort: data.leng + 1
         };
       } else if (type == 2) {

@@ -51,6 +51,7 @@ import Layout from "@/page/lagout/mainLagout"; //Layout 是架构组件，不在
 import {
   queryFlowBycaseTypeApi,
 } from "@/api/caseHandle";
+import { queryLawCateByOrganIdApi} from "@/api/caseDeploy";
 export default {
   data() {
     return {
@@ -72,6 +73,8 @@ export default {
       caseTypeList: [] ,//案件类型列表
       staff:'',
       staffId:'',
+      organId:iLocalStroage.gets('userInfo').organId,
+      certificateId:'',
     };
   },
   inject: ["reload"],
@@ -83,8 +86,12 @@ export default {
       this.visible = true;
       // this.getEnforceLawType();
       this.illageActId = data && data.id || '';
-      let _this = this
-      this.$store.dispatch("getEnforceLawType", "1").then(
+      let _this = this;
+      let data1={
+        organId:this.organId
+      };
+      // this.$store.dispatch("getEnforceLawType", "1").then(
+        queryLawCateByOrganIdApi(data1).then(
         res => {
           _this.lawCateList = res.data;
           if(caseForm){
@@ -161,9 +168,11 @@ export default {
     },
     //获取案件类型
     getCaseType() {
+      this.caseTypeList = [];
       let data = {
         programType: this.caseRegisterForm.programType,
-        cateId: this.caseRegisterForm.cateId
+        cateId: this.caseRegisterForm.cateId,
+        organId: this.organId
       };
       let _this = this
       this.$store.dispatch("getCaseType", data).then(
@@ -233,14 +242,32 @@ export default {
     },
     //暂存案件 获取案件id和临时案号
     getCaseInfor(inforName){
+      let driverOrAgentInfoList= [
+        {
+          //驾驶人或代理人
+          relationWithParty: "",
+          relationWithCase: "",
+          name: "",
+          zhengjianType: "",
+          zhengjianNumber: "",
+          sex: "",
+          age: "",
+          tel: "",
+          adress: "",
+          adressCode: "",
+          company: "",
+          position: "",
+          zigeNumber: ""
+        }
+      ];
+      let otherInfo =  {isBigTransfer: '否'};
       let someCaseInfo = iLocalStroage.gets("someCaseInfo");
       let inforForm ={
-        acceptTime: new Date().format('yyyy-MM-dd HH:mm'), //受案时间
         acceptTime: new Date().format('yyyy-MM-dd HH:mm'), //受案时间
         partyType: 1, //当事人类型
         partyIdType: "0", //证件类型
         organId: iLocalStroage.gets("userInfo").organId,
-        otherInfo:'',
+        otherInfo:JSON.stringify(otherInfo),
         agentPartyEcertId:'',
         state:0,
         caseStatus:'未立案',
@@ -253,7 +280,9 @@ export default {
         zfmlId : someCaseInfo.cateId,
         zfml : someCaseInfo.cateName,
         staff:this.staff,
-        staffId:this.staffId
+        staffId:this.staffId,
+        certificateId:this.certificateId,
+        agentPartyEcertId :JSON.stringify(driverOrAgentInfoList),
       };
       this.$store
         .dispatch("saveOrUpdateCaseBasicInfo",inforForm)
@@ -286,14 +315,9 @@ export default {
               if (
                 item.userId == iLocalStroage.gets("userInfo").id
               ) {
-                // currentUserData.id = item.id;
-                // currentUserData.lawOfficerName = item.lawOfficerName;
-                // currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
-                // _this.alreadyChooseLawPerson.push(currentUserData);
-                // _this.lawPersonListId.push(currentUserData.id);
-                // _this.currentUserLawId = currentUserData.id;
                 this.staff = item.lawOfficerName;
                 this.staffId = item.id;
+                this.certificateId = item.lawOfficerCards.split(",")[0];
                 this.getCaseInfor(inforName);
               }
             });
