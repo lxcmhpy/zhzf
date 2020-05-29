@@ -59,53 +59,61 @@
                             <el-option label="文本" value="input"></el-option>
                             <el-option label="抽屉表" value="checkbox"></el-option>
                             <el-option label="单选" value="radio"></el-option>
-                            <el-option label="日期" value="el-time-picker"></el-option>
+                            <el-option label="日期" value="DatePicker"></el-option>
                           </el-select>
                         </el-form-item>
                         <i class="el-icon-remove-outline" @click="delFiled(filed,item.filedList)" style="margin-left:18px;margin-top:-38px;float:right"></i>
                       </el-col>
                     </el-row>
                     <el-row class="mimi-content" v-if="filed.type=='radio'||filed.type=='checkbox'">
-                      <el-col :span="22" :offset="2" class="card-bg-content">
+                      <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                         <el-form-item label="占位符(字段填报说明)：" label-width="165px">
                           <el-input size="mini" v-model="filed.placeholder" clearable>
                           </el-input>
                         </el-form-item>
-                        <el-form-item v-for="(radio,index) in filed.radioList" :key="index" label-width="0">
-                          <i class="el-icon-remove-outline" style="margin-right:14px" @click="delRadioList(radio,filed.radioList)"></i>
+                        <el-form-item v-for="(radio,index) in filed.options" :key="index" label-width="0">
+                          <i class="el-icon-remove-outline" style="margin-right:14px" @click="delRadioList(radio,filed.options)"></i>
                           <el-input size="mini" v-model="radio.value" placeholder="请输入选项" clearable style="width: calc(100% - 70px)">
                           </el-input>
-                          <i class="el-icon-circle-plus-outline" style="margin-left:14px" @click="addRadioList(filed.radioList)"></i>
+                          <i class="el-icon-circle-plus-outline" style="margin-left:14px" @click="addRadioList(filed.options)"></i>
                         </el-form-item>
                       </el-col>
                     </el-row>
-                    <el-row class="mimi-content" v-if="filed.type=='el-time-picker'">
-                      <el-col :span="22" :offset="2" class="card-bg-content">
+                    <el-row class="mimi-content" v-if="filed.type=='DatePicker'">
+                      <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                         <el-row>
+                          <el-form-item label="占位符(字段填报说明)：" label-width="165px">
+                            <el-input size="mini" v-model="filed.placeholder" clearable>
+                            </el-input>
+                          </el-form-item>
                           <el-radio-group v-model="filed.dataType" style="width: 100%;">
                             <el-row>
-                              <el-col :span="12">
+                              <!-- <el-col :span="12">
                                 <el-radio label="el-date-picker,datetime,yyyy-MM-dd HH:mm:ss">精准时间（2020-03-11 12:12:12）</el-radio>
-                              </el-col>
+                              </el-col> -->
                               <el-col :span="12">
                                 <el-radio label="el-date-picker,datetime,yyyy-MM-dd HH:mm">日期和时间（2020-03-11 12:12）</el-radio>
                               </el-col>
-                            </el-row>
-                            <el-row style="margin:15px 0">
                               <el-col :span="12">
                                 <el-radio label="el-date-picker,date">仅日期（2020-03-11 ）</el-radio>
                               </el-col>
                               <el-col :span="12">
                                 <el-radio label="el-time-select">仅时间（09:12）</el-radio>
                               </el-col>
-                            </el-row>
-                            <el-row>
-                              <el-col :span="12">
+                              <!-- <el-col :span="12">
                                 <el-radio label="el-date-picker,daterange">时间段（2020-03-11 12:12-2020-04-11）</el-radio>
-                              </el-col>
+                              </el-col> -->
                             </el-row>
                           </el-radio-group>
                         </el-row>
+                      </el-col>
+                    </el-row>
+                    <el-row class="mimi-content" v-if="filed.type=='input'">
+                      <el-col :span="22" :offset="2" class="card-bg-content min-lable">
+                        <el-form-item label="占位符(字段填报说明)：" label-width="165px">
+                          <el-input size="mini" v-model="filed.placeholder" clearable>
+                          </el-input>
+                        </el-form-item>
                       </el-col>
                     </el-row>
                   </div>
@@ -123,12 +131,13 @@
             <el-popover placement="right" ref="popoverRef" title="选择图标" width="200" trigger="click" content="选择图标">
               <li v-for="icon in iconList" :key="icon.icon" class="record-icon-box" @click="changIcon(icon)">
                 <div class="record-icon-box-content">
-                  <img :src="icon.icon" alt="">
+                  <img :src="'./static/images/img/record/'+icon.icon+'.png'" alt="">
                 </div>
               </li>
               <li slot="reference" class="record-icon-box">
                 <div class="record-icon-box-content" style="line-height: 90px;">
                   <img :src="formData.icon" alt="">
+                  <span class="title-text">{{titleText}}</span>
                 </div>
               </li>
             </el-popover>
@@ -225,32 +234,33 @@ export default {
       },
       visiblePopover: false,
       compData: [],
+      titleText: '',
       iconList: [//图标库
         {
-          icon: './static/images/img/record/icon_yzt.png',
+          icon: 'icon_yzt',
           name: '运政通用记录',
         }, {
-          icon: './static/images/img/record/icon_hyj.png',
+          icon: 'icon_hyj',
           name: '货运检查记录表',
         }, {
-          icon: './static/images/img/record/icon_kyj.png',
+          icon: 'icon_kyj',
           name: '客运检查记录表',
         },
         {
-          icon: './static/images/img/record/icon_gl.png',
+          icon: 'icon_gl',
           name: '公路巡查',
         }, {
-          icon: './static/images/img/record/icon_lc.png',
+          icon: 'icon_lc',
           name: '路产损坏记录',
         }, {
-          icon: './static/images/img/record/icon_jz.png',
+          icon: 'icon_jz',
           name: '建筑控制区记录',
         }, {
-          icon: './static/images/img/record/icon_qit.png',
+          icon: 'icon_qit',
           name: '运政通用记录',
         },
         {
-          icon: './static/images/img/record/icon_yzty.png',
+          icon: 'icon_yzty',
           name: '运政通用型检查记录',
         }
       ],
@@ -258,24 +268,19 @@ export default {
         // category:'',
         // current:'',
         // id:'',
-        remark:'',
+        // remark: '',
         // size:'',
-        templateOrgan:'',
-        templateUser:'',
+        templateOrgan: '',
+        templateUser: '',
         templateType: '记录',//模板类型
         createName: '',//创建人
         organId: '',//创建人机构id
         organName: '',//创建人机构名称
-        resource: '',
-        staff: "",
+        resource: '',//适用范围
+        // staff: "",
         icon: './static/images/img/record/icon_qit.png',
         domain: '',
         title: 'pc测试',
-        modleIcon: '',
-        modleLimit: '',
-        modleLimitUser: '',
-        modleLimitParty: '',
-        templateAdmin: '',
         templateFieldList: [
           {
             value: 1,
@@ -285,9 +290,8 @@ export default {
                 classs: '自定义分组-测试',
                 type: 'input',//必要-字段类型，不可改
                 field: 'field101',//必要-字段英文名
-                fieldValue: '',
                 title: '姓名',//必要-字段中文名
-                // col: { span: 16, labelWidth: '50%' },//不必要
+                col: { span: 16, labelWidth: '50%' },//不必要
                 // className: 'total-gross-wt',//不必要-样式名
                 required: true,
                 props: {      //不必要-配置
@@ -300,14 +304,20 @@ export default {
                   message: '请正确输入',
                   required: true,
                   trigger: 'blur'
-                }]
+                }],
+                value: "iphone 7",
+                class: '',
+                options: [
+                  { "value": "104", "label": "生态蔬菜", "disabled": false },
+                  { "value": "105", "label": "新鲜水果", "disabled": false },
+                ],
               },
               // {
               //   field: "姓名",
               //   type: "input",
               //   tagIcon: "input",
               //   placeholder: "请输入单行文本",
-              //   radioList: [{ value: "" }],
+              //   options: [{ value: "" }],
               //   checkboxList: [],
 
               //   "clearable": true,
@@ -332,7 +342,7 @@ export default {
               //   "tagIcon": "input",
               //   "placeholder": "请输入单行文本",
               //   dataType: 'el-date-picker,datetime,yyyy-MM-dd HH:mm:ss',
-              //   radioList: [{ value: "" }],
+              //   options: [{ value: "" }],
               //   "span": 24,
               //   "style": {
               //     "width": "100%"
@@ -357,7 +367,26 @@ export default {
 
           }],
       },
-      defautfiledList: { filed: "", radioList: [{}] },
+      defautfiledList: {
+        classs: '自定义分组-测试',
+        type: 'input',//必要-字段类型，不可改
+        field: 'field101',//必要-字段英文名
+        title: '',//必要-字段中文名
+        // col: { span: 16, labelWidth: '50%' },//不必要
+        // className: 'total-gross-wt',//不必要-样式名
+        required: true,
+        props: {      //不必要-配置
+          type: 'text',
+          clearable: true, // 是否显示清空按钮
+          placeholder: '请输入'
+        },
+        validate: [{  //不必要-验证规则
+          // pattern: /^(0|[1-9]\d*)(\s|$|\.\d{1,3}\b)/, // /^[0-9]+([.]{1}[0-9]{1,3})?$/,
+          message: '请正确输入',
+          required: true,
+          trigger: 'blur'
+        }]
+      },
       rules: {
         title: [
           { required: true, message: '请输入模板标题', trigger: 'blur' },
@@ -402,9 +431,9 @@ export default {
     },
     // 获取通用字段
     findCommonField() {
-      let data={
-        current:1,
-        size:100,
+      let data = {
+        current: 1,
+        size: 100,
       }
       findCommonFieldApi(data).then(
         res => {
@@ -441,13 +470,13 @@ export default {
         filedList.splice(index, 1)
       }
     },
-    delRadioList(radio, radioList) {
+    delRadioList(radio, options) {
       console.log(radio)
-      if (radioList.length > 1) {
-        var index = radioList.indexOf(radio)
+      if (options.length > 1) {
+        var index = options.indexOf(radio)
         console.log(index)
         if (index !== -1) {
-          radioList.splice(index, 1)
+          options.splice(index, 1)
         }
       }
       else {
@@ -455,9 +484,9 @@ export default {
       }
 
     },
-    addRadioList(radioList) {
-      if (radioList.length <= 5) {
-        radioList.push({ value: '' })
+    addRadioList(options) {
+      if (options.length <= 5) {
+        options.push({ value: '' })
       }
       else {
         this.$message({ message: '最多支持六个选项!', type: 'warning' });
@@ -487,6 +516,15 @@ export default {
             saveOrUpdateRecordModleApi(data).then(
               res => {
                 console.log(res)
+                if (res.code == 200) {
+                  this.$message({
+                    type: "success",
+                    message: res.msg
+                  });
+                  this.newModleTable = false;
+                }else{
+                  this.$message.error(res.msg);
+                }
               },
               error => {
                 // reject(error);
@@ -557,8 +595,8 @@ export default {
                 _this.alreadyChooseLawPerson.push(currentUserData);
                 _this.formData.lawPersonListId.push(currentUserData.id);
                 _this.currentUserLawId = currentUserData.id;
-                _this.formData.staff = item.lawOfficerName;
-                _this.formData.staffId = item.id;
+                _this.formData.templateUser = item.lawOfficerName;
+                // _this.formData.staffId = item.id;
                 // 创建人
                 _this.formData.createName = item.lawOfficerName;
               }
@@ -655,7 +693,7 @@ export default {
     changeFiledType(filed) {
       // if (filed.type == 'el-radio-group') {
       //   // 单选
-      //   if (filed.radioList.length == 0) {
+      //   if (filed.options.length == 0) {
       //     this.addRadioList
       //   }
       // }

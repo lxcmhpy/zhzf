@@ -28,8 +28,9 @@ export default {
 };
 </script>
 
-<style lang="scss" src="@/assets/css/basicStyles/variables.scss">
-/* @import '@/assets/css/basicStyles/variables.scss'; */
+<style lang="scss" >
+ @import '@/assets/css/basicStyles/variables.scss'; 
+
 .error {
   width: 434px;
   height: 420px;

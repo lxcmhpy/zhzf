@@ -318,12 +318,12 @@ export default {
       this.docData.hearingRecord = edit;
     },
     //提交
-    // submitData(handleType) {
-    //   this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-    //   this.$router.push({
-    //     name: this.$route.params.url
-    //   });
-    // },
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
+    },
     //保存文书信息
     saveData(handleType) {
       this.com_addDocData(handleType, "docForm");
