@@ -216,6 +216,14 @@ export default [
             },
             component: () => import("@/page/product-template/road/roadLcDeploy.vue")
           },
+          {
+            name: "routeManage",
+            path: "routeManage",
+            meta: {
+              title: "路线管理"
+            },
+            component: () => import("@/page/product-template/route/routeManage.vue")
+          },
         ]
       },
       {

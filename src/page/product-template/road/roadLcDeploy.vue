@@ -64,7 +64,7 @@
 <script>
 import addOrUpdateRoadLcDeploy from "./addOrUpdateRoadLcDeploy";
 import {
-  getDictListDetailApi, 
+  getDictListDetailApi,
 } from "@/api/system";
 export default {
   data() {
@@ -134,7 +134,7 @@ export default {
     initRoadLcType(){
       let _this = this;
       let bzId = null;
-      if(this.dicSearchForm.roadLcBz == '0'){
+      if(this.dicSearchForm.roadLcBz == '高等级公路标准'){
         bzId = '9fba0079cdcf93994a9dc317f3c8ee0d';
       }else{
         bzId = '0c340250837a8cb58e7ce330266ab5c6';
