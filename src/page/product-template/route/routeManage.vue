@@ -1,7 +1,7 @@
 <template>
   <div class="check check_home">
     <div class="home_top shadow">
-      <div class="center_content">
+      <div class="center_content" style="margin-top: 20px;">
         <span class="title">路线管理</span>
       </div>
       <div class="search">
@@ -10,7 +10,7 @@
             <el-input v-model="dicSearchForm.routeName" placeholder="输入路线编号"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-search" @click="getRouteList">查询</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-search" @click="getRouteListSearch">查询</el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addOrUpdateRoute">添加</el-button>
@@ -18,7 +18,7 @@
         </el-form>
       </div>
       <div class="tablePart">
-        <el-table :data="routeData" highlight-current-row @current-change="handleCurrentRow" stripe style="width: 100%" height="100%">
+        <el-table :data="routeData" highlight-current-row @current-change="handleCurrentRow" stripe style="width: 100%; height:100%">
           <el-table-column type="index" align="center">
             <template slot="header">序号</template>
           </el-table-column>
@@ -59,7 +59,7 @@
       <addOrUpdateRoute ref="addOrUpdateRouteRef"></addOrUpdateRoute>
     </div>
     <div class="home_bottom shadow">
-      <div class="center_content">
+      <div class="center_content" style="margin-top: 20px;">
         <span class="title">路段管理</span>
       </div>
       <div class="search">
@@ -71,7 +71,7 @@
             <el-checkbox v-model="dicSearchForm2.choseFlag"></el-checkbox>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-search"  @click="getSectionList">查询</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-search"  @click="getSectionListSearch">查询</el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addOrUpdateSection">添加</el-button>
@@ -79,7 +79,7 @@
         </el-form>
       </div>
       <div class="tablePart">
-        <el-table :data="sectionData" stripe style="width: 100%" height="100%">
+        <el-table :data="sectionData" stripe style="width: 100%; height:100%" >
           <el-table-column type="index" align="center">
             <template slot="header">序号</template>
           </el-table-column>
@@ -239,6 +239,17 @@
             editSection(row) {
                 this.$refs.addOrUpdateSectionRef.showModal(2, row);
             },
+
+            getRouteListSearch(){
+                this.currentPage = 1;
+                this.getRouteList();
+            },
+
+            getSectionListSearch(){
+                this.currentPage2 = 1;
+                this.getSectionList();
+            },
+
             getRouteList() {
                 let data = {
                     current: this.currentPage,
@@ -259,8 +270,8 @@
             },
             getSectionList() {
                 let data = {
-                    current: this.currentPage,
-                    size: this.pageSize,
+                    current: this.currentPage2,
+                    size: this.pageSize2,
                     sectionName: this.dicSearchForm2.sectionName,
                     choseFlag : this.dicSearchForm2.choseFlag,
                 };
@@ -280,23 +291,23 @@
             handleSizeChange(val) {
                 this.pageSize = val;
                 this.currentPage = 1;
-                // this.getRoadLcDeploy();
+                this.getRouteList();
             },
             //更换页码
             handleCurrentChange(val) {
                 this.currentPage = val;
-                // this.getRoadLcDeploy();
+                this.getRouteList();
             },
             //更改每页显示的条数
             handleSizeChange2(val) {
                 this.pageSize2 = val;
                 this.currentPage2 = 1;
-                // this.getRoadLcDeploy();
+                this.getSectionList();
             },
             //更换页码
             handleCurrentChange2(val) {
                 this.currentPage2 = val;
-                // this.getRoadLcDeploy();
+                this.getSectionList();
             },
         },
         created() {
@@ -305,7 +316,7 @@
         }
     }
 </script>
-<style lang='scss' src="@/assets/css/routeManage.scss" scoped></style>
+<!--<style lang='scss' src="@/assets/css/routeManage.scss" scoped></style>-->
 <style type="text/css">
   .icon {
     width: 1em;
@@ -313,5 +324,11 @@
     vertical-align: -0.15em;
     fill: currentColor;
     overflow: hidden;
+  }
+  .title {
+    height: 65px;
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(32, 35, 43, 1);
   }
 </style>
