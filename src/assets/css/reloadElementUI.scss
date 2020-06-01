@@ -247,21 +247,93 @@ $dialog-default-height: 560px !default;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 152px;
-  height: 90px;
+  width: 55px;
+  height: 44px;
+  text-align: center;
   opacity: 1;
   z-index: 1003;
   border-radius: 10px;
+  background: url('../static/images/img/car.svg') no-repeat center;
   /*设置关键帧的播放时间*/
-  animation:turns2 0.8s infinite linear;
-  @keyframes turns2{
-    from { background:url('../static/images/gif/1.png')}
-    50% { background:url('../static/images/gif/2.png')}
-    100% { background:url('../static/images/gif/3.png') }
+  animation: carLoading 2s infinite linear;
+  @keyframes carLoading{
+    0% { background-size: 15%; }
+    25% { background-size: 25%; }
+    50% { background-size: 50%; }
+    75% { background-size: 75%; }
+    100% { background-size: 100%; }
+  }
+}
+.el-loading-spinner{
+  transform: translateY(-50%);
+  .el-loading-text{
+    margin-top: 60px;
   }
 }
 .loading-box{
   .el-loading-text{
     margin-top: 80px;
+  }
+}
+// 弹窗底部操作栏样式
+.el-dialog__footer{
+  border-top: 1px solid #E9EDF6;
+  padding: 15px 20px;
+}
+
+// 自定义confirm提示框样式修改
+.custom-confirm{
+  border-radius: 0;
+  .el-message-box__header{
+    padding: 15px;
+    background: #E9EDF6;
+  }
+  .el-message-box__content{
+    padding: 30px 15px;
+    .el-message-box__message{
+      font-size: 16px;
+      color: #606060;
+    }
+    .el-icon-question{
+      color: #E0443D;
+    }
+    .custom-question{
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: url('../static/images/img/tip_wenhao.png') no-repeat center;
+    }
+    .custom-remind{
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: url('../static/images/img/exam/remind.png') no-repeat center;
+      background-color: #FEBD0D;
+      border-radius: 4px;
+    }
+    .el-message-box__status{
+      font-size: 20px !important;
+      &.law-success{
+        color: #17C062;
+      }
+    }
+  }
+  .el-message-box__btns{
+    padding: 15px 15px 5px;
+    border-top: 1px solid #E9EDF6;
+    // display: flex;
+    // flex-direction: row-reverse;
+    .el-button{
+      padding: 10px 24px;
+      font-size: 14px;
+      border-radius: 0;
+      &.el-button--primary{
+        background: $cats-blue-color;
+        // margin-right: 10px;
+        &:hover{
+          background: $cats-blue4D89FF-color;
+        }
+      }
+    }
   }
 }
