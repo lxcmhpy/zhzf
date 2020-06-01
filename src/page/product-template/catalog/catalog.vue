@@ -159,7 +159,7 @@ export default {
     //添加环节
     addCatalog() {
       let length = this.tableData.length;
-      let sort = this.tableData[length - 1].sort;
+      let sort = this.totalPage.sort;
       this.$refs.addEditCatalogRef.showModal(0, sort);
     },
     //查询案件类型列表
