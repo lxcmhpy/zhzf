@@ -81,7 +81,14 @@
           </el-form>
         </div>
         <div class="tablePart">
-          <el-table :data="tableData" stripe style="width: 100%;height:100%" @selection-change="getPersonIdFromSel"  v-loading="tableLoading">
+          <el-table
+            :data="tableData"
+            stripe
+            style="width: 100%;height:100%"
+            @selection-change="getPersonIdFromSel"
+            v-loading="tableLoading"
+            element-loading-spinner="car-loading"
+            element-loading-text="加载中...">
             <!-- <el-table-column type="selection" align="center"></el-table-column> -->
             <el-table-column prop="personId" label=" " align="left" v-if="false"></el-table-column>
             <el-table-column prop="personName" label="姓名" align="center"></el-table-column>

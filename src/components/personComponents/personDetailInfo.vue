@@ -743,7 +743,8 @@ export default {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             dangerouslyUseHTMLString: true,
-            type: "warning"
+            iconClass: 'el-icon-question',
+            customClass: 'custom-confirm'
           }).then(() => {
             this.submitPersonInfo(messageName, methodSaveOrUpdate);
           }).catch(() => {});

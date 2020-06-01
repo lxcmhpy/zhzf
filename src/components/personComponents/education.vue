@@ -112,7 +112,8 @@ export default {
       this.$confirm("确定要删除吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        iconClass: 'el-icon-question',
+        customClass: 'custom-confirm'
       }).then(() => {
         this.$store.dispatch('deleteEducationByIdMoudle', row.educationId).then(res => {
           if(res.code === 200){

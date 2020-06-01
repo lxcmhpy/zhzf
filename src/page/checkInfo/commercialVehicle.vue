@@ -30,7 +30,7 @@
           <el-input style="width:300px;padding-left:30px;" v-model="checkData.Vin" placeholder="请输入VIN号"></el-input>
         </el-form-item>
         <el-form-item label="车牌颜色" v-if="checkType==3">
-          <el-select style="width:300px;padding-left:10px;" v-model="checkData.plateColor" placeholder="请选择车牌颜色">
+          <el-select style="width:300px;padding-left:10px;padding-right:20px;" v-model="checkData.plateColor" placeholder="请选择车牌颜色">
             <el-option
               v-for="(item,i) in sfList"
               :key="i"

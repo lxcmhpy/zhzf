@@ -67,6 +67,8 @@
                 style="width: 100%;height:100%"
                 @selection-change="selectDate"
                 v-loading="tableLoading"
+                element-loading-spinner="car-loading"
+                element-loading-text="加载中..."
             >
                 <!-- <el-table-column type="selection" align="center"></el-table-column> -->
                 <el-table-column prop="personId" v-if="false" label=""></el-table-column>

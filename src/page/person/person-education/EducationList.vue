@@ -109,7 +109,8 @@ export default {
             _this.$confirm("确定要删除该人员吗?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
-                type: "warning"
+                iconClass: 'el-icon-question',
+                customClass: 'custom-confirm'
             }).then(() => {
                 _this.$store.dispatch("deleteEducationByIdMoudle", row.educationId).then(
                     res => {
@@ -133,7 +134,8 @@ export default {
             this.$confirm("确定要删除所选的人员吗?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
-                type: "warning"
+                iconClass: 'el-icon-question',
+                customClass: 'custom-confirm'
             }).then(() => {
                 _this.$store.dispatch("deleteEducationByIdMoudle", _this.selectDataIdList).then(
                     res => {
@@ -199,6 +201,6 @@ export default {
     }
 }
 </script>
-<style lang="scss" src="@/assets/css/personManage.scss">
-  /* @import "@/assets/css/personManage.scss"; */
+<style lang="scss">
+  @import "@/assets/css/personManage.scss";
 </style>
