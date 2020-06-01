@@ -146,7 +146,6 @@ export default {
       );
     },
     getValues(val) {
-      console.log("val", val);
       let _this = this;
       let arr = [];
       val.forEach(item => {
@@ -159,8 +158,6 @@ export default {
         });
       });
       this.datas = JSON.stringify(arr);
-      console.log("arr", arr);
-      console.log("this.datas", this.datas);
     },
     //关联文书
     saveLinkDoc() {
@@ -187,14 +184,12 @@ export default {
       let _this = this;
       let data = {
         linkTypeId: this.linkTypeId,
-        name: this.searchForm.name,
-        remark: this.remark
+        name: this.searchForm.name
       };
       console.log("canshu", data);
       getDocListByLinkTypeIdApi(data).then(
         res => {
           _this.docData = res.data;
-          console.log("docData", _this.docData);
         },
         error => {
           console.log(error);
@@ -211,7 +206,6 @@ export default {
       getLinkDocListByLinkTypeIdApi(data).then(
         res => {
           _this.linkDocData = res.data;
-          console.log("linkDocData", _this.linkDocData);
         },
         error => {
           console.log(error);

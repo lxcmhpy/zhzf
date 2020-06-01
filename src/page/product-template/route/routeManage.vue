@@ -1,4 +1,5 @@
 <template>
+<div class="route_class">
   <div class="check check_home">
     <div class="home_top shadow">
       <div class="center_content" style="margin-top: 20px;">
@@ -118,6 +119,7 @@
       <addOrUpdateSection ref="addOrUpdateSectionRef"></addOrUpdateSection>
     </div>
   </div>
+</div>
 </template>
 <script>
     import addOrUpdateRoute from "./addOrUpdateRoute";
@@ -316,19 +318,6 @@
         }
     }
 </script>
-<!--<style lang='scss' src="@/assets/css/routeManage.scss" scoped></style>-->
-<style type="text/css">
-  .icon {
-    width: 1em;
-    height: 1em;
-    vertical-align: -0.15em;
-    fill: currentColor;
-    overflow: hidden;
-  }
-  .title {
-    height: 65px;
-    font-size: 18px;
-    font-weight: 600;
-    color: rgba(32, 35, 43, 1);
-  }
+<style lang='scss' src="@/assets/css/routeManage.scss" scoped></style>
+
 </style>

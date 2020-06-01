@@ -122,7 +122,6 @@ export default {
         this.addDocType.remark = data.remark;
         this.addDocType.path = data.path;
         this.addDocType.sort = data.sort;
-        console.log("修改数据", this.addDocType);
       }
     },
     //关闭弹窗的时候清除数据
@@ -142,7 +141,6 @@ export default {
           _this.addOrEdit();
         } else {
           let a = Object.values(noPass)[0];
-          console.log("不通过", a);
           this.$message({
             showClose: true,
             message: a[0].message,

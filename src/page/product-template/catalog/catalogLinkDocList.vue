@@ -215,10 +215,8 @@ export default {
       let _this = this;
       let data = {
         id: this.templateId,
-        name: this.searchForm.name,
-        caseType: this.caseType
+        name: this.searchForm.name
       };
-      console.log("data",data)
       getDocListByTemplateIdApi(data).then(
         res => {
           _this.docData = res.data;

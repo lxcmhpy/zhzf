@@ -93,7 +93,6 @@ export default {
   inject: ["reload"],
   methods: {
     bindDoc(row) {
-      console.log("row", row);
       this.$refs.linkDocListRef.showModal(row);
     },
     //编辑环节
@@ -150,7 +149,6 @@ export default {
       let _this = this;
       this.$store.dispatch("getBannerList", data).then(
         res => {
-          console.log("环节列表", res);
           _this.tableData = res.data.records;
           _this.totalPage = res.data.total;
         },
