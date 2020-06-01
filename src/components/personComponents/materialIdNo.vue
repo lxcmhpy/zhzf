@@ -1,13 +1,24 @@
 <template>
   <div style="width:100%;float:left;margin-bottom:30px;">
     <div class="card-title">
-      <font class="font" style="font-size:25px;"><span class="titleflag"></span>身份证</font>
+      <font class="font" style="font-size:25px;"><span class="titleflag"></span>身份证
+        <el-button
+          style="margin: 0 18px;"
+          size="medium"
+          type="primary"
+          @click="editAble = true">修改</el-button>
+        <el-button
+          v-show="editAble"
+          size="medium"
+          type="success"
+          @click.native="submitUpload">保存</el-button>
+      </font>
     </div>
     <div ref="idNoXX" class="block upload-material">
       <ul v-if="idNoFiles && idNoFiles.length" class="el-upload-list el-upload-list--picture-card">
         <li v-for="(item, $index) in idNoFiles" :key="item.uid" tabindex="0" class="el-upload-list__item is-ready">
           <img :src="item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item.url)">
-          <div class="el-upload-list-action">
+          <div v-if="editAble" class="el-upload-list-action">
             <span class="item-name">{{ item.name }}</span>
             <div class="edit-select-file">
               <el-upload
@@ -17,7 +28,7 @@
                 :auto-upload="false"
                 :show-file-list="false"
                 :on-change="handleEditChange">
-                <span class="item-handle-btn edit-item" @click="editItemImg($index)">修改</span>
+                <span class="item-handle-btn edit-item" @click="editItemImg($index)">替换</span>
               </el-upload>
               <span class="item-handle-btn delete-item" @click="deleteItem(item, $index)">删除</span>
             </div>
@@ -25,7 +36,7 @@
         </li>
       </ul>
       <el-upload
-        v-if="params.type !== 'view'"
+        v-if="params.type !== 'view' && editAble"
         class="upload-person-material"
         action="#"
         list-type="picture-card"
@@ -37,13 +48,7 @@
         :on-exceed="handleExceed"
         :on-change="handleChange"
         :file-list="idNoFiles">
-        <el-button slot="trigger" size="medium">上传照片</el-button>
-        <el-button
-          v-if="showSubmitBtn > -1"
-          style="margin: 20px 18px 0;"
-          size="medium"
-          type="success"
-          @click="submitUpload">上传到服务器</el-button>
+        <el-button slot="trigger" size="medium" :disabled="idNoFiles.length > 2">上传照片</el-button>
       </el-upload>
       <el-dialog title="查看" :visible.sync="dialogVisible">
         <img width="100%" :src="dialogImageUrl" alt="">
@@ -84,7 +89,8 @@ export default {
         personId: this.params.id,
         idcardFront: '',
         idcardBack: ''
-      }
+      },
+      editAble: false
     }
   },
   computed: {
@@ -125,14 +131,16 @@ export default {
     },
     // 上传到服务器
     submitUpload(){
-      if(this.idNoFiles && this.idNoFiles.length){
+      if(this.idNoFiles){
         const formData = new FormData();
+        let imgChange = false;
         this.idNoFiles.forEach(item => {
           if(item.status === 'ready'){
+            imgChange = true;
             formData.append('file', item.raw);
           }
         });
-        this.saveMaterialNo(formData);
+        this.saveMaterialNo(formData, imgChange);
       }
     },
     handleExceed(files, fileList) {
@@ -145,15 +153,21 @@ export default {
     },
     // 删除图片
     deleteItem(row, index){
-      this.idNoFiles.splice(index, 1);
-      if(row.isSave || row.status === 'success'){
-        if(index === 0){
-          this.personImage.idcardFront = '';
-        }else{
-          this.personImage.idcardBack = '';
+      this.$confirm('确认删除吗？','提示',{
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        iconClass: 'el-icon-question',
+        customClass: 'custom-confirm'
+      }).then(() => {
+        this.idNoFiles.splice(index, 1);
+        if(row.isSave || row.status === 'success'){
+          if(index === 0){
+            this.personImage.idcardFront = '';
+          }else{
+            this.personImage.idcardBack = '';
+          }
         }
-        this.deleteImgRefresh();
-      }
+      }).catch(() => {});
     },
     // 修改图片
     editItemImg(index) {
@@ -169,15 +183,10 @@ export default {
       }else{
         fileList.splice(0, fileList.length);
         this.idNoFiles.splice(this.editImgIndex, 1, file);
-        if(currentFile.status === 'success'){
-          const formData = new FormData();
-          formData.append('file', file.raw);
-          this.saveMaterialNo(formData, this.editImgIndex);
-        }
       }
     },
     // 保存图片
-    saveMaterialNo(formData, fileIndex){
+    saveMaterialNo(formData, changed){
       const loading = this.$loading({
         lock: true,
         text: '正在上传',
@@ -185,45 +194,34 @@ export default {
         customClass: 'loading-box',
         background: 'rgba(234,237,244, 0.8)'
       });
-      this.$store.dispatch('uploadMaterial', formData).then(res => {
-        if(res.code === 200){
-          if(fileIndex === undefined){
-            this.personImage.idcardFront = res.data[0].storagePath;
-            this.personImage.idcardBack = res.data[1] ? res.data[1].storagePath : '';
-          }else{
-            if(fileIndex === 0){
-              this.personImage.idcardFront = res.data[0].storagePath
-            }else{
-              this.personImage.idcardBack = res.data[0].storagePath
+      if(changed){
+        this.$store.dispatch('uploadMaterial', formData).then(res => {
+          if(res.code === 200){
+            if(res.data && res.data.length === 2){
+              this.personImage.idcardFront = res.data[0].storagePath;
+              this.personImage.idcardBack = res.data[1].storagePath;
+            }else if(!this.personImage.idcardFront){
+              this.personImage.idcardFront = res.data[0].storagePath;
+            }else if(!this.personImage.idcardBack){
+              this.personImage.idcardBack = res.data[0].storagePath;
             }
+            this.idNoFiles.forEach(item => item.status = 'success');
+            this.saveImageToPerson(loading);
           }
-          this.idNoFiles.forEach(item => item.status = 'success');
-          this.$store.dispatch('personUploadMaterial', this.personImage).then(res => {
-            loading.close();
-            this.$message({ type: 'success', message: '上传成功!' });
-            this.$emit('saveIdImgSuccess', this.personImage);
-          }, err => {
-            loading.close();
-            this.$message({ type: 'error', message: err.msg || '' });
-          })
-        }
-      }), err => {
-        loading.close();
-        this.$message({type: 'error', message: err.msg || ''});
-      };
+        }, err => {
+          loading.close();
+          this.$message({type: 'error', message: err.msg || ''});
+        });
+      }else{
+        this.saveImageToPerson(loading);
+      }
     },
-    // 删除图片后更新人员信息
-    deleteImgRefresh(){
-      const loading = this.$loading({
-        lock: true,
-        text: '正在删除',
-        spinner: 'car-loading',
-        customClass: 'loading-box',
-        background: 'rgba(234,237,244, 0.8)'
-      });
+    // 保存图片
+    saveImageToPerson(loading){
       this.$store.dispatch('personUploadMaterial', this.personImage).then(res => {
         loading.close();
-        this.$message({ type: 'success', message: '删除成功!' });
+        this.editAble = false;
+        this.$message({ type: 'success', message: '保存成功!' });
         this.$emit('saveIdImgSuccess', this.personImage);
       }, err => {
         loading.close();
@@ -233,6 +231,6 @@ export default {
   }
 }
 </script>
-<style lang="scss" src="@/assets/css/personManage.scss" scoped>
-/* @import "@/assets/css/personManage.scss"; */
+<style lang="scss" scoped>
+@import "@/assets/css/personManage.scss";
 </style>

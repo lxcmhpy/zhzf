@@ -63,7 +63,7 @@ export default {
                                     message: "拒绝失败!"
                                 });
                             }
-                            
+                            _this.closeDialog();
                         }, err => {
                             _this.btnDisabled = false;
                             _this.$message({ type: "error", message: err.msg || ''});
@@ -74,7 +74,6 @@ export default {
                     return false;
                 }
             });
-             _this.visible = false;
         },
         showModal(transferId) {
             let _this=this
@@ -91,6 +90,6 @@ export default {
     }
 }
 </script>
-<style lang="scss" src="@/assets/css/personManage.scss" scoped>
-/* @import "@/assets/css/personManage.scss"; */
+<style lang="scss" scoped>
+  @import "@/assets/css/personManage.scss";
 </style>
