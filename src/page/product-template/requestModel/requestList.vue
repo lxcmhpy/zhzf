@@ -59,9 +59,7 @@ export default {
       let _this = this;
       getRequestListByModelIdApi(this.modelId).then(
         res => {
-          console.log('类型',res.data);
           _this.tableData = res.data;
-          console.log('as',_this.tableData);
         },
         error => {
           console.log(error)
@@ -105,7 +103,6 @@ export default {
     //编辑
     editRequest(row){
       let data = row;
-      console.log(data);
       this.$refs.addRequestRef.showModal(2, data);
     },
 
