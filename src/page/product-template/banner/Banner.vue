@@ -31,9 +31,7 @@
     </div>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
-        <el-table-column type="index" width="60" align="center">
-          <template slot="header">序号</template>
-        </el-table-column>
+        <el-table-column type="index" :index="showIndex" label="序号" width="60" align="center"></el-table-column>
         <el-table-column prop="linkName" label="环节名称" align="center"></el-table-column>
         <el-table-column prop="mainLinkName" label="所属大环节" align="center"></el-table-column>
         <el-table-column prop="docTypeName" label="PDF对应文书" align="center"></el-table-column>
@@ -159,7 +157,6 @@ export default {
     },
     //添加环节
     addBanner() {
-      let length = this.tableData.length;
       let sort = this.totalPage;
       this.$refs.addEditBannerRef.showModal(0, sort);
     },
@@ -175,6 +172,9 @@ export default {
           }
         }
       );
+    },
+    showIndex(index){
+      return (this.currentPage-1)*this.pageSize+index+1;
     }
   },
   mounted() {
