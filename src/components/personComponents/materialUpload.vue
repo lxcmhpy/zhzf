@@ -1,13 +1,25 @@
 <template>
   <div style="width:100%;float:left;margin-top:30px;margin-bottom:30px;">
     <div class="card-title">
-      <font class="font" style="font-size:25px;"><span class="titleflag"></span>{{ uploadTitle }}</font>
+      <font class="font" style="font-size:25px;"><span class="titleflag"></span>{{ uploadTitle }}
+        <el-button
+          style="margin: 2px 18px 0;"
+          size="medium"
+          type="primary"
+          @click="editAble = true">修改</el-button>
+        <el-button
+          v-show="editAble"
+          style="margin: 2px 0;"
+          size="medium"
+          type="success"
+          @click="submitUpload">保存</el-button>
+      </font>
     </div>
     <div ref="degreeXX" class="block upload-material">
       <ul v-if="degreeFiles && degreeFiles.length" class="el-upload-list el-upload-list--picture-card">
         <li v-for="(item, $index) in degreeFiles" :key="item.uid" tabindex="0" class="el-upload-list__item is-ready">
           <img :src="item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item.url)" >
-          <div v-if="params.type !== 'view'" class="el-upload-list-action">
+          <div v-if="params.type !== 'view' && editAble" class="el-upload-list-action">
             <span class="item-name">{{ item.name }}</span>
             <div class="edit-select-file">
               <el-upload
@@ -17,7 +29,7 @@
                 :auto-upload="false"
                 :show-file-list="false"
                 :on-change="handleEditChange">
-                <span class="item-handle-btn edit-item" @click="editItemImg($index)">修改</span>
+                <span class="item-handle-btn edit-item" @click="editItemImg($index)">替换</span>
               </el-upload>
               <span class="item-handle-btn delete-item" @click="deleteItem(item, $index)">删除</span>
             </div>
@@ -25,7 +37,7 @@
         </li>
       </ul>
       <el-upload
-        v-if="params.type !== 'view'"
+        v-if="params.type !== 'view' && editAble"
         class="upload-person-material"
         action="#"
         multiple
@@ -36,12 +48,6 @@
         :on-change="handleChange"
         :file-list="degreeFiles">
         <el-button slot="trigger" size="medium">上传照片</el-button>
-        <el-button
-          v-if="showSubmitBtn > -1"
-          style="margin: 20px 18px 0;"
-          size="medium"
-          type="success"
-          @click="submitUpload">上传到服务器</el-button>
       </el-upload>
       <el-dialog title="查看" :visible.sync="dialogVisible">
         <img width="100%" :src="dialogImageUrl" alt="">
@@ -84,7 +90,8 @@ export default {
       dialogVisible: false,
       disabled: false,
       editImgIndex: null,
-      eduPics: []
+      eduPics: [],
+      editAble: false
     }
   },
   computed: {
@@ -117,14 +124,16 @@ export default {
     },
     // 上传到服务器
     submitUpload(){
-      if(this.degreeFiles && this.degreeFiles.length){
+      if(this.degreeFiles){
         const formData = new FormData();
-        this.degreeFiles.forEach(item => {
+        const changeIndex = [];
+        this.degreeFiles.forEach((item, index) => {
           if(item.status === 'ready'){
             formData.append('file', item.raw);
+            changeIndex.push(index);
           }
         });
-        this.saveMaterialNo(formData);
+        this.saveMaterialNo(formData, changeIndex);
       }
     },
     // 点击图片弹出预览
@@ -134,11 +143,17 @@ export default {
     },
     // 删除图片
     deleteItem(row, index){
-      this.degreeFiles.splice(index, 1);
-      if(row.isSave || row.status === 'success'){
-        this.eduPics.splice(index, 1);
-        this.deleteImgRefresh();
-      }
+      this.$confirm('确认删除吗？','提示',{
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        iconClass: 'el-icon-question',
+        customClass: 'custom-confirm'
+      }).then(() => {
+        this.degreeFiles.splice(index, 1);
+        if(row.isSave || row.status === 'success'){
+          this.eduPics.splice(index, 1);
+        }
+      }).catch(() => {});
     },
     // 修改图片
     editItemImg(index) {
@@ -155,15 +170,10 @@ export default {
       }else{
         fileList.splice(0, fileList.length);
         this.degreeFiles.splice(this.editImgIndex, 1, file);
-        if(currentFile.status === 'success'){
-          const formData = new FormData();
-          formData.append('file', file.raw);
-          this.saveMaterialNo(formData, this.editImgIndex);
-        }
       }
     },
     // 保存图片
-    saveMaterialNo(formData, fileIndex){
+    saveMaterialNo(formData, changeIndex){
       const loading = this.$loading({
         lock: true,
         text: '正在上传',
@@ -171,33 +181,43 @@ export default {
         customClass: 'loading-box',
         background: 'rgba(234,237,244, 0.8)'
       });
-      this.$store.dispatch('uploadMaterial', formData).then(res => {
-        if(res.code === 200){
-          if(fileIndex === undefined){
-            res.data.forEach(item => {
-              this.eduPics.push(item.storagePath)
-            })
-            this.degreeFiles.forEach(item => item.status = 'success');
-          }else{
-            this.eduPics.splice(fileIndex, 1, res.data[0].storagePath);
-            this.degreeFiles[fileIndex].status = 'success';
+      if(changeIndex.length){
+        this.$store.dispatch('uploadMaterial', formData).then(res => {
+          if(res.code === 200){
+            if(changeIndex.length === this.degreeFiles.length){
+              res.data.forEach(item => {
+                this.eduPics.push(item.storagePath)
+              })
+              this.degreeFiles.forEach(item => item.status = 'success');
+            }else{
+              changeIndex.forEach((item) => {
+                this.eduPics.splice(item, 1, res.data[0].storagePath);
+                this.degreeFiles[item].status = 'success';
+              })
+            }
+            const saveFile = { personId: this.params.id };
+            saveFile[this.materialType] = this.eduPics.join('###');
+            this.saveImageToPerson(saveFile, loading);
           }
-          const saveFile = { personId: this.params.id };
-          saveFile[this.materialType] = this.eduPics.join('###');
-          this.$store.dispatch('personUploadMaterial', saveFile).then(res => {
-            loading.close();
-            this.$message({ type: 'success', message: '上传成功' });
-            this.$emit('saveMaterialSuccess', { type: this.materialType, data: saveFile[this.materialType] });
-          }, err => {
-            loading.close();
-            this.$message({ type: 'error', message: err.msg || '' });
-          })
-        }
-      }), err => {
-        loading.close();
-        this.$message({type: 'error', message: err.msg || ''});
-      };
+        }, err => {
+          loading.close();
+          this.$message({type: 'error', message: err.msg || ''});
+        });
+      }
     },
+    // 保存图片
+    saveImageToPerson(saveData, loading){
+      this.$store.dispatch('personUploadMaterial', saveData).then(res => {
+        loading.close();
+        this.editAble = false;
+        this.$message({ type: 'success', message: '保存成功' });
+        this.$emit('saveMaterialSuccess', { type: this.materialType, data: saveData[this.materialType] });
+      }, err => {
+        loading.close();
+        this.$message({ type: 'error', message: err.msg || '' });
+      })
+    },
+
     // 删除图片后更新人员信息
     deleteImgRefresh(){
       const loading = this.$loading({
@@ -222,6 +242,6 @@ export default {
   }
 }
 </script>
-<style lang="scss"  src="@/assets/css/personManage.scss" scoped>
-/* @import "@/assets/css/personManage.scss"; */
+<style lang="scss" scoped>
+@import "@/assets/css/personManage.scss";
 </style>

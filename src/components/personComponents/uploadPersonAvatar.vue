@@ -1,7 +1,7 @@
 
 <template>
   <el-dialog
-    title="选择审批人员"
+    title="照片上传"
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
@@ -110,8 +110,8 @@ export default {
   } 
 }
 </script>
-<style lang="scss"  src="@/assets/css/personManage.scss" scoped>
-/* @import "@/assets/css/personManage.scss"; */
+<style lang="scss" scoped>
+@import "@/assets/css/personManage.scss";
 .cropper{
   width: 492px;
   height: 320px;

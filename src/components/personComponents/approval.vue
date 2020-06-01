@@ -105,7 +105,7 @@ export default {
           this.tableData = res.data;
           this.approveId = res.data[0] ? res.data[0].approveId : '';
           // this.oname = res.data[0].oname;
-          this.currentOname = this.tableData.find(item => item.approveStatusName === '资格审批');
+          this.currentOname = this.tableData.find(item => item.approveStatusName === '审批中');
         });
         err => {
           console.log(err);
@@ -119,7 +119,8 @@ export default {
 }
 </script>
 
-<style lang="scss" src="@/assets/css/personManage.scss" scoped>
+<style lang="scss" scoped>
+@import "@/assets/css/personManage.scss";
 >>>.el-button--text{
   color: #7B7B7B;
   font-weight: 500;

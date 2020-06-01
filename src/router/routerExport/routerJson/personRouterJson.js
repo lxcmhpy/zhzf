@@ -172,15 +172,6 @@ export const personRouterJson = [
       oneTab:true,
     },
     component: () => import("@/page/person/person-manage/personDetailPage.vue")
-  },
-  {
-    path: "/viewApplayDetail",
-    name: "viewApplayDetail",
-    meta: {
-      title: "试卷预览",
-      oneTab:true,
-    },
-    component: () => import("@/page/exam/page-manage/maintain-page-menu/viewApplayDetail.vue")
   }
 ]
 

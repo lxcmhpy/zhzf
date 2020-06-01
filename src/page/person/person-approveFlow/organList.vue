@@ -50,6 +50,8 @@
       <el-table
         :data="tableData"
         v-loading="tableLoading"
+        element-loading-spinner="car-loading"
+        element-loading-text="加载中..."
         stripe
         style="width: 100%"
         height="70%"
@@ -292,8 +294,8 @@ export default {
 };
 </script>
 
-<style lang="scss" src="@/assets/css/systemManage.scss">
-  /* @import "@/assets/css/systemManage.scss"; */
+<style lang="scss">
+@import "@/assets/css/systemManage.scss";
 .top-box{
   display: flex;
   justify-content: space-between;

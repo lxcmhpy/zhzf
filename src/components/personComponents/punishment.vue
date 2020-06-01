@@ -108,7 +108,8 @@ export default {
       this.$confirm("确定要删除吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        iconClass: 'el-icon-question',
+        customClass: 'custom-confirm'
       }).then(() => {
         this.$store.dispatch('deleteAwardByIdMoudle', row.awardId).then(res => {
           if(res.code === 200){
@@ -136,8 +137,8 @@ export default {
 }
 </script>
 
-<style lang="scss"  src="@/assets/css/personManage.scss" scoped>
-/* @import "@/assets/css/personManage.scss"; */
+<style lang="scss" scoped>
+@import "@/assets/css/personManage.scss";
 .titleflag {
   width      : 4px;
   height     : 22px;
