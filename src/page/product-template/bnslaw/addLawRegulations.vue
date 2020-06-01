@@ -3,7 +3,7 @@
     <el-dialog
       :title="dialogTitle"
       :visible.sync="visible"
-      @close="visible = false"
+      @close="closeDialog"
       :close-on-click-modal="false"
       width="90%"
       class="mini-content table-wapper-x"
@@ -399,26 +399,32 @@ export default {
       this.getLawPunishmentList();
     },
     bindLaws() {
-      let data ={
-        cognizanceId:this.cognizanceId,
-        punishmentIds:this.punishmentIds,
-      };
-      addLawRegulationsApi(data).then(
-        res => {
-           if (res.code == 200) {
-            this.$message({
-              message: "绑定法条成功！",
-              type: "success"
+      if(this.cognizanceId == "" || this.punishmentIds.length == 0){
+          this.$message({
+              message: "请选择认定依据与处罚依据！",
+              type: "error"
             });
-           }
-        },
-        error => {
-          console.log(error);
-        }
-      );
+      }else{
+        let data ={
+          cognizanceId:this.cognizanceId,
+          punishmentIds:this.punishmentIds,
+        };
+        addLawRegulationsApi(data).then(
+          res => {
+             if (res.code == 200) {
+              this.$message({
+                message: "绑定法条成功！",
+                type: "success"
+              });
+             }
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
     },
     handleLawCognizanceChange(val) {
-      debugger
       if (val.length > 1) {
         this.$refs.cog.clearSelection();
         this.$refs.cog.toggleRowSelection(val.pop());
@@ -433,6 +439,11 @@ export default {
       });
       console.log("punishmentIds",this.punishmentIds);
     },
+    closeDialog(){
+      console.log("2222");
+      this.visible = false;
+      this.$emit("getListEmit");
+    }
   },
   created() {}
 };
