@@ -158,7 +158,6 @@
                 if (type == 0) {
                     debugger
                     _this.dialogTitle = "添加路段信息";
-                    _this.$refs["addOrUpdateSectionForm"].resetFields();
                     _this.addOrUpdateSectionForm.organId = "";
                     _this.addOrUpdateSectionForm.routeName = data.routeName;
                     _this.addOrUpdateSectionForm.routeId = data.id;
@@ -172,6 +171,7 @@
                     _this.addOrUpdateSectionForm.enddingPileM = "";
                     _this.addOrUpdateSectionForm.sectionNote = "";
                     _this.editSectionId = "";
+                    _this.$refs["addOrUpdateSectionForm"].resetFields();
                     this.$nextTick(()=>{
                         this.$refs["addOrUpdateSectionForm"].resetFields();
                         console.log('sadsdsf',this.$refs["addOrUpdateSectionForm"].resetFields())

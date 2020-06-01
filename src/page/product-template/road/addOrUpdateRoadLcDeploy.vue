@@ -158,7 +158,7 @@ export default {
               }
             );
           } else {
-            _this.$store.dispatch("addOrUpdateRoute.vue", _this.addOrUpdateRoadLcDeployForm).then(
+            _this.$store.dispatch("addOrUpdateRoute", _this.addOrUpdateRoadLcDeployForm).then(
               res => {
                 console.log("路产配置", res);
                 _this.$message({
