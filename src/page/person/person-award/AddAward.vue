@@ -102,15 +102,17 @@ export default {
                             _this.$emit("getAllReward");
                                 _this.$message({type: "success", message:  "添加成功!"});
                                 _this.closeDialog();
+                            }, err => {
+                                _this.$message({type: "warning", message:  err.msg || ''});
                             });
-                        err => {console.log(err);};
                     }else if(_this.handelType===2){//修改
                         _this.$store.dispatch("updateAwardMoudle", _this.addAwardForm).then(res => {
                             _this.$emit("getAllReward");
                                 _this.$message({type: "success", message: "修改成功!" });
                                 _this.closeDialog();
+                            }, err => {
+                                _this.$message({type: "warning", message:  err.msg || ''});
                             });
-                        err => {console.log(err);};
                     }
                 } else {
                     return false;

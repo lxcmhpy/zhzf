@@ -44,6 +44,8 @@
             <el-table
                 :data="tableData"
                 v-loading="tableLoading"
+                element-loading-spinner="car-loading"
+                element-loading-text="加载中..."
                 stripe
                 style="width: 100%;height:100%"
                 @selection-change="selectUser"

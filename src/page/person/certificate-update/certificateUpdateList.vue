@@ -13,6 +13,6 @@ export default {
 }
 
 </script>
-<style lang="scss" src="@/assets/css/personManage.scss">
-/*   @import "@/assets/css/personManage.scss"; */
+<style lang="scss">
+  @import "@/assets/css/personManage.scss";
 </style>

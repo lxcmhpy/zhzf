@@ -67,6 +67,8 @@
           resizable
           stripe
           v-loading="tableLoading"
+          element-loading-spinner="car-loading"
+          element-loading-text="加载中..."
           style="width: 100%;height:100%;"
           @selection-change="selectUser"
           @row-click="rowClick"
@@ -199,7 +201,8 @@ export default {
           _this.$confirm('确认申请退休吗？退休后执法证号将被注销！','提示',{
             confirmButtonText: "确定",
             cancelButtonText: "取消",
-            type: "warning"
+            iconClass: 'el-icon-question',
+            customClass: 'custom-confirm'
           }).then(() => {
             _this.$store.dispatch("applyTx", _this.selectUserIdList).then(
               res => {
@@ -232,7 +235,8 @@ export default {
           _this.$confirm('确认申请调离吗？调离后执法证号将被注销！','提示',{
             confirmButtonText: "确定",
             cancelButtonText: "取消",
-            type: "warning"
+            iconClass: 'el-icon-question',
+            customClass: 'custom-confirm'
           }).then(() => {
             _this.$store.dispatch("applyDl", _this.selectUserIdList).then(
             res => {
@@ -277,7 +281,8 @@ export default {
         _this.$confirm('确认申请审批吗？','提示',{
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
+          iconClass: 'el-icon-question',
+          customClass: 'custom-confirm'
         }).then(() => {
           _this.$store.dispatch("applyApprove", _this.selectUserIdList).then(
             res => {
@@ -368,7 +373,8 @@ export default {
         this.$confirm("确定要删除吗?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
+          iconClass: 'el-icon-question',
+          customClass: 'custom-confirm'
         }).then(() => {
           this.$store.dispatch('deletePersonInfoById', this.selectUserIdList[0]).then(res => {
             if(res.code === 200){

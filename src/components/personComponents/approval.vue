@@ -105,7 +105,7 @@ export default {
           this.tableData = res.data;
           this.approveId = res.data[0] ? res.data[0].approveId : '';
           // this.oname = res.data[0].oname;
-          this.currentOname = this.tableData.find(item => item.approveStatusName === '资格审批');
+          this.currentOname = this.tableData.find(item => item.approveStatusName === '审批中');
         });
         err => {
           console.log(err);
