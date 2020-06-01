@@ -156,7 +156,7 @@ export default {
     },
     //添加环节
     addCatalog() {
-      let sort = this.totalPage.sort;
+      let sort = this.totalPage;
       this.$refs.addEditCatalogRef.showModal(0, sort);
     },
     //查询案件类型列表
