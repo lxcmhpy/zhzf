@@ -10,7 +10,7 @@
 
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="300px">
-        <el-table-column prop="name" label="执法门类" align="center"></el-table-column>
+        <el-table-column prop="name" label="行业类别" align="center"></el-table-column>
         <el-table-column prop="sort" label="排序" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">

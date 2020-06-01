@@ -2,7 +2,7 @@
   <div class="searchAndpageBox" id="roleBox">
     <div class="handlePart">
       <div class="search">
-        <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
+        <el-form :inline="true" :model="searchForm">
           <el-form-item label="流程名称">
             <el-input v-model="searchForm.flowName" placeholder="请输入流程名称"></el-input>
           </el-form-item>

@@ -131,7 +131,7 @@ export default [
             name: "lawCategory",
             path: "lawCategory",
             meta: {
-              title: "执法门类管理"
+              title: "业务领域管理"
             },
             component: () => import("@/page/product-template/lawCategory/LawCategory.vue")
           },
