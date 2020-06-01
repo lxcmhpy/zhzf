@@ -63,7 +63,7 @@
           </el-select>
         </el-form-item>
       </div>
-      <div class="item" v-if="isApproval">
+      <div class="item" v-if="addBannerForm.isApproval == '0' ? true : false">
         <el-form-item label="绑定工作流">
           <el-input v-model="addBannerForm.activitiId"></el-input>
         </el-form-item>
@@ -80,7 +80,7 @@
           </el-select>
         </el-form-item>
       </div>
-      <div class="item" v-if="isShow">
+      <div class="item" v-if="addBannerForm.isPdf == '0' ? true : false">
         <el-form-item label="生成文书">
           <el-select v-model="addBannerForm.docTypeId" filterable placeholder="请选择">
             <el-option
@@ -151,8 +151,6 @@ export default {
   data() {
     return {
       visible: false,
-      isShow: false,
-      isApproval: false,
       addBannerForm: {
         linkName: "",
         mainLinkName: "",
@@ -207,8 +205,6 @@ export default {
     showModal(type, data) {
       this.visible = true;
       this.handelType = type;
-      this.isShow = false;
-      this.isApproval = false;
       if (type == 0) {
         this.dialogTitle = "新增环节";
         this.addBannerForm = {
@@ -217,8 +213,6 @@ export default {
       } else if (type == 2) {
         this.dialogTitle = "修改环节";
         this.addBannerForm = data;
-        this.isShow = this.addBannerForm.isApproval == "0" ? true : false;
-        this.isApproval = this.addBannerForm.isPdf == "0" ? true : false;
         this.addBannerForm.createTime = new Date().format("yyyy-MM-dd HH:mm:ss");
         this.editBannerId = data.id;
       }
@@ -229,19 +223,13 @@ export default {
     },
     //是否生成PDF
     selectIsShow(val) {
-      if (val == "0") {
-        this.isShow = true;
-      } else {
-        this.isShow = false;
+      if (val == "1") {
         this.addBannerForm.docTypeId = "";
       }
     },
     //是否有审批流程
     selectIsApproval(val) {
-      if (val == "0") {
-        this.isApproval = true;
-      } else {
-        this.isApproval = false;
+      if (val == "1") {
         this.addBannerForm.activitiId = "";
       }
     },
