@@ -11,7 +11,12 @@
       <div>案件类型列表</div>
       <el-table :data="tableData" stripe ref="caseTypeTable" style="width: 100%" height="500px" @selection-change="selectLink">
         <el-table-column type="selection" align="center"></el-table-column>
-        <el-table-column prop="typeName" label="案件类型名称" align="center"></el-table-column>         
+        <el-table-column prop="typeName" label="案件类型名称" align="center"></el-table-column>
+        <el-table-column prop="typeName" label="程序类型" align="center">
+          <span slot-scope="scope">
+            <span>{{scope.row.programType == 0 ? '一般程序': '简易程序'}}</span>
+          </span>
+        </el-table-column>         
       </el-table>
     </div>
     <span slot="footer" class="dialog-footer">

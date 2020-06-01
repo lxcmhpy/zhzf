@@ -19,7 +19,7 @@
           <template slot="header">序号</template>
         </el-table-column>
         <el-table-column prop="flowName" label="流程名称" align="center"></el-table-column>
-        <el-table-column prop="flowUrl" label="流程URL" align="center"></el-table-column>
+        <el-table-column prop="flowUrl" label="流程类型" align="center"></el-table-column>
         <el-table-column prop="basicInfoPage" label="基本信息页面" align="center"></el-table-column>
         <el-table-column prop="flowStatus" label="流程状态" align="center">
           <span slot-scope="scope">

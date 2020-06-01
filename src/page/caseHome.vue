@@ -245,18 +245,18 @@
             >
               <i v-bind:class="moreBtn?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
             </span>
-            <el-radio-button label="水路运政" style="border-left: 1px solid #DCDFE6;"></el-radio-button>
+            <!-- <el-radio-button label="水路运政" style="border-left: 1px solid #DCDFE6;"></el-radio-button>
             <el-radio-button label="公路路政"></el-radio-button>
-            <el-radio-button label="道路运政"></el-radio-button>
-            <!-- <el-radio-button style='width:40px !important' label="更多" @click="changeMoreBtn"><i :class="moreBtn?'el-icon-arrow-down':'el-icon-arrow-up'"></i></el-radio-button><br /> -->
-            <span v-if="moreBtn">
-              <el-radio-button label="航道行政"></el-radio-button>
+            <el-radio-button label="道路运政"></el-radio-button> -->
+            <el-radio-button v-for="item in lawCateList.slice(0,3)" :key="item.id" :label="item.name"></el-radio-button>
+           <span v-if="moreBtn">
+              <!-- <el-radio-button label="航道行政"></el-radio-button>
               <el-radio-button label="海事行政"></el-radio-button>
               <el-radio-button label="工程质量监督" class="width136px"></el-radio-button>
               <el-radio-button label="港口行政" style="border-left: 1px solid #DCDFE6;"></el-radio-button>
-              <el-radio-button label="其他" class="width136px"></el-radio-button>
+              <el-radio-button label="其他" class="width136px"></el-radio-button> -->
              
-              <!-- <el-radio-button v-for="item in caseList" :key="item.id" :label="item.label"></el-radio-button> -->
+              <el-radio-button v-for="item in lawCateList.slice(3,lawCateList.length-1)" :key="item.id" :label="item.name"></el-radio-button>
             </span>
           </el-radio-group>
           <div class="magin_btm">
@@ -311,7 +311,7 @@ import chooseillegalAct from "./chooseIllegegaDialog.vue";
 import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
 import { mapGetters } from "vuex";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
-import { getLawCategoryListApi } from "@/api/caseDeploy";
+import { getLawCategoryListApi ,getLawCategoryNotPageApi} from "@/api/caseDeploy";
 export default {
   mixins: [mixinGetCaseApiList],
   components: {
@@ -675,17 +675,38 @@ export default {
       );
     },
     //获取业务领域
-    getEnforceLawType() {
+    // getEnforceLawType() {
+    //   let _this = this;
+    //   this.$store.dispatch("getEnforceLawType", "1").then(
+    //     res => {
+    //       _this.lawCateList = res.data;
+    //     },
+    //     err => {
+    //       console.log(err);
+    //     }
+    //   );
+    // },
+    //获取业务领域
+    getLawCategoryList() {
+      let data = {
+        // current: this.currentPage,
+        // size: this.pageSize,
+        // name: this.searchForm.name,
+        pid: "",
+        // organId:iLocalStroage.gets('userInfo').organId,
+      };
       let _this = this;
-      this.$store.dispatch("getEnforceLawType", "1").then(
+      getLawCategoryNotPageApi(data).then(
         res => {
+          console.log("执法门类列表", res);
           _this.lawCateList = res.data;
+          // _this.totalPage = res.data.total;
         },
         err => {
           console.log(err);
         }
       );
-    }
+    },
   },
   mounted() {
     // let data = {};
@@ -720,7 +741,8 @@ export default {
 
     this.changeCommonOptions();
     //获取业务领域
-    this.getEnforceLawType();
+    // this.getEnforceLawType();
+    this.getLawCategoryList();
   }
 };
 </script>
