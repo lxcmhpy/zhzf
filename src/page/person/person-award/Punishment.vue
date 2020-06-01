@@ -112,7 +112,9 @@ export default {
                                     message:  "添加成功!",
                                 });
                                 _this.closeDialog();
-                        }, err => {this.$message.error(err.msg)});
+                        }, err => {
+                            _this.$message({type: "warning", message:  err.msg || ''});
+                        });
                     }else if(_this.handelType===2){
                         _this.$store.dispatch("updateAwardMoudle", _this.addPunishmentForm).then(res => {
                             _this.$emit("getAllPunishment");
@@ -121,7 +123,9 @@ export default {
                                     message:  "修改成功!",
                                 });
                                 _this.closeDialog();
-                        }, err => this.$message.error(err.msg));
+                        }, err => {
+                            _this.$message({type: "warning", message:  err.msg || ''});
+                        });
                     }
                 } else {
                     return false;

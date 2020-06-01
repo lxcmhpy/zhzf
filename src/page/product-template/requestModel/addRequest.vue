@@ -59,7 +59,6 @@ export default {
       this.inVisible = true;
       this.handelType = type;
       if (type == 0) {
-        console.log(data);
         this.dialogTitle = "新增问题";
         this.addRequest = {
           modelId: data.modelId
@@ -70,7 +69,6 @@ export default {
         this.addRequest.id = data.id;
         this.addRequest.modelId = data.modelId;
         this.addRequest.request = data.request;
-        console.log("修改数据", this.addRequest);
       }
     },
     //关闭弹窗的时候清除数据
@@ -85,7 +83,6 @@ export default {
           _this.addOrEdit();
         } else {
           let a = Object.values(noPass)[0];
-          console.log("不通过", a);
           this.$message({
             showClose: true,
             message: a[0].message,

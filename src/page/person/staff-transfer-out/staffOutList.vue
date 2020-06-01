@@ -52,6 +52,8 @@
           :data="tableData"
           stripe
           v-loading="tableLoading"
+          element-loading-spinner="car-loading"
+          element-loading-text="加载中..."
           style="width: 100%;height:100%"
            @selection-change="selectData">
           <el-table-column type="selection" align="center"></el-table-column>

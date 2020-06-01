@@ -78,7 +78,6 @@ export default {
         this.addRequest.createTime = new Date().format('yyyy-MM-dd');
         this.addRequest.modelTypeId = data.modelTypeId;
       }
-      console.log("addRequest",this.addRequest)
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -93,7 +92,6 @@ export default {
             _this.addOrEdit();
         }else {
           let a = Object.values(noPass)[0];
-          console.log('不通过',a);
           this.$message({
             showClose: true,
             message: a[0].message,

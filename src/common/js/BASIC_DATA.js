@@ -60,4 +60,10 @@ export const BASIC_DATA_SYS = {
     finishCaseReport_huanjieAndDocId:'2c9029d2695c03fd01695c278e7a0001',
     //举报记录 docId
     reportRecordDoc_caseDoctypeId:'ee967fd019272b7a06aae11cf5901303',
+    //赔补偿 环节id caseLinktypeId
+    compensationNote_caseDoctypeId:'508555ca2092e1bd252c5f74468adf0a',
+    //收缴赔补偿款 环节id caseLinktypeId
+    takeOverCompensation_caseDoctypeId:'7781e1f951303732c3388a325fb685dd',
+    //赔补偿案件 调查类文书 环节id caseLinktypeId
+    compensationCaseDoc_caseLinktypeId:'1eb723efd23dfc7c28ebba2c6fc755c1'
 }

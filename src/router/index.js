@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
   if (tokenObj) {
     //判断是否登录
     if (to.path === "/login") {
-      next({name: "law_supervise_lawSupervise"});
+      next({name: "case_handle_home_index"});
     } else if (to.path.indexOf('personDetailPage') > -1 && localStorage.getItem('NewRouter') && from.path === '/') {
       // 人员管理--个人详情动态生成路由刷新
       personDetailRouter(localStorage.getItem('NewRouter'), router);
