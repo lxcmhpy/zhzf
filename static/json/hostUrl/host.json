@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
+  "CURRENT": "SGX",
+=======
   "CURRENT": "NW",
+>>>>>>> 9db8854c54bd249b79000b9f212d993cf0fdc745
   "TEST": {
     "HOST": "http://124.192.215.4:9000",
     "CAPTCHA_HOST": "http://124.192.215.4:9000",
@@ -51,7 +55,11 @@
     "HOST": "http://127.0.0.1:9000",
     "CAPTCHA_HOST": "http://127.0.0.1:9000",
     "PDF_HOST": "http://172.16.170.54:9332/",
-    "LAW_SUPERVISE_HOST": "http://172.16.170.96:8090/"
+    "LAW_SUPERVISE_HOST": "http://172.16.170.96:8090/",
+    "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
+    "VIDEO_HOST": "wss://172.16.170.47:10062",
+    "CHECK_API":"http://172.16.170.91:8086/cy",
+    "QZ_API":"http://172.16.170.96:9000/case/sys/file/uploadDocDzqz/"
   },
   "wj": {
     "HOST": "http://172.16.169.44:9000",
