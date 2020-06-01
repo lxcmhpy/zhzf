@@ -23,6 +23,7 @@
               <el-button icon="el-icon-plus" size="medium" @click="addGroup()">添加新字段组</el-button>
             </span>
           </p>
+          <!-- {{formData}} -->
           <div class="collapse-title-foem">
             <el-collapse v-model="activeNames" @change="handleChange" class="clear">
               <div v-for="(item,index) in formData.templateFieldList" :key="index">
@@ -31,11 +32,12 @@
                     <i class="iconfont law-icon_zhankai zhankai"></i>
                     <i class="iconfont law-btn_shousuo shousuo"></i>
                     <el-form-item prop="class" label-width="0" style="width:100%;margin-bottom: 10px;">
-                      <el-select v-model="item.classs" filterable allow-create clearable placeholder="请输入字段组名称，可为空">
-                        <el-option label="当事人信息（姓名、联系方式、证件号码、从业资格证号……）" value="1"></el-option>
+                      <el-select v-model="item.classs" filterable allow-create clearable placeholder="请输入字段组名称，可为空" @change="chengGrop(item)">
+                        <el-option v-for="(commonFiled,index) in commonFiledList" :key="index" :label="commonFiled.classs" :value="commonFiled.classs"></el-option>
+                        <!-- <el-option label="当事人信息（姓名、联系方式、证件号码、从业资格证号……）" value="1"></el-option>
                         <el-option label="企业组织信息（名称、联系人、联系方式、统一信用代码……）" value="2"></el-option>
                         <el-option label="车辆相关信息（车牌颜色、车牌号码、道路运输证号……）" value="3"></el-option>
-                        <el-option label="是否需要转入案件办理（仅记录；记录并转立案）" value="4"></el-option>
+                        <el-option label="是否需要转入案件办理（仅记录；记录并转立案）" value="4"></el-option> -->
                       </el-select>
                     </el-form-item>
                     <i class="el-icon-remove" style="margin-left:18px" @click="delGroup(item)"></i>
@@ -44,7 +46,7 @@
                     <el-row :gutter="20">
                       <el-col :span="2">
                         <el-form-item label-width="0">
-                          <el-checkbox v-model="filed.validate[0].required">必填</el-checkbox>
+                          <el-checkbox v-model="filed.required" true-label="true" false-label="false">必填</el-checkbox>
                         </el-form-item>
                       </el-col>
                       <el-col :span="11">
@@ -55,20 +57,21 @@
                       </el-col>
                       <el-col :span="11">
                         <el-form-item label-width="0" style="width:calc(100% - 34px)">
-                          <el-select v-model="filed.type" placeholder="请选择字段类型" @change="changeFiledType(filed)">
-                            <el-option label="文本" value="input"></el-option>
-                            <el-option label="抽屉表" value="checkbox"></el-option>
-                            <el-option label="单选" value="radio"></el-option>
-                            <el-option label="日期" value="DatePicker"></el-option>
+                          <el-select v-model="filed.type" placeholder="请选择字段类型" @change="changeFiledType(filed)" :disabled="filed.status===0?true:false">
+                            <el-option label="文本型" value="文本型"></el-option>
+                            <el-option label="抽屉型" value="抽屉型"></el-option>
+                            <!-- <el-option label="单选" value="radio"></el-option> -->
+                            <el-option label="时间型" value="时间型"></el-option>
+                            <el-option label="数字型" value="数字型"></el-option>
                           </el-select>
                         </el-form-item>
                         <i class="el-icon-remove-outline" @click="delFiled(filed,item.filedList)" style="margin-left:18px;margin-top:-38px;float:right"></i>
                       </el-col>
                     </el-row>
-                    <el-row class="mimi-content" v-if="filed.type=='radio'||filed.type=='checkbox'">
+                    <el-row class="mimi-content" v-if="filed.type=='抽屉型'||filed.type=='单选'">
                       <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                         <el-form-item label="占位符(字段填报说明)：" label-width="165px">
-                          <el-input size="mini" v-model="filed.placeholder" clearable>
+                          <el-input size="mini" v-model="filed.remark" clearable>
                           </el-input>
                         </el-form-item>
                         <el-form-item v-for="(radio,index) in filed.options" :key="index" label-width="0">
@@ -79,11 +82,11 @@
                         </el-form-item>
                       </el-col>
                     </el-row>
-                    <el-row class="mimi-content" v-if="filed.type=='DatePicker'">
+                    <el-row class="mimi-content" v-if="filed.type=='时间型'">
                       <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                         <el-row>
                           <el-form-item label="占位符(字段填报说明)：" label-width="165px">
-                            <el-input size="mini" v-model="filed.placeholder" clearable>
+                            <el-input size="mini" v-model="filed.remark" clearable>
                             </el-input>
                           </el-form-item>
                           <el-radio-group v-model="filed.dataType" style="width: 100%;">
@@ -108,10 +111,10 @@
                         </el-row>
                       </el-col>
                     </el-row>
-                    <el-row class="mimi-content" v-if="filed.type=='input'">
+                    <el-row class="mimi-content" v-if="filed.type=='文本型'||filed.type=='数字型'">
                       <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                         <el-form-item label="占位符(字段填报说明)：" label-width="165px">
-                          <el-input size="mini" v-model="filed.placeholder" clearable>
+                          <el-input size="mini" v-model="filed.remark" clearable>
                           </el-input>
                         </el-form-item>
                       </el-col>
@@ -136,25 +139,20 @@
               </li>
               <li slot="reference" class="record-icon-box">
                 <div class="record-icon-box-content" style="line-height: 90px;">
-                  <img :src="formData.icon" alt="">
+                  <img :src="'./static/images/img/record/'+formData.icon+'.png'" alt="">
                   <span class="title-text">{{titleText}}</span>
                 </div>
               </li>
             </el-popover>
-
             <!-- <canvas id="myCanvas" width="64" height="64" style="border:1px solid #c3c3c3;">
               您的浏览器不支持 HTML5 canvas 标签。
             </canvas> -->
-
           </el-form-item>
-
-          <!-- <el-button slot="reference">click 激活</el-button> -->
-
-          <el-form-item label="适用范围" prop="resource">
-            <el-radio-group v-model="formData.resource" style="width:100%" class="card-select">
+          <el-form-item label="适用范围" prop="scopeOfUse">
+            <el-radio-group v-model="formData.scopeOfUse" style="width:100%" class="card-select">
               <div class="el-form-item__content">
                 <el-radio label="指定人员使用"></el-radio>
-                <el-form-item v-if="formData.resource=='指定人员使用'" class="lawPersonBox card-user-box">
+                <el-form-item v-if="formData.scopeOfUse=='指定人员使用'" class="lawPersonBox card-user-box">
                   <el-select ref="lawPersonListId" v-model="formData.lawPersonListId" multiple @remove-tag="removeLawPersontag">
                     <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
                   </el-select>
@@ -163,7 +161,7 @@
               </div>
               <div class="el-form-item__content">
                 <el-radio label="机构内使用"></el-radio>
-                <el-form-item v-if="formData.resource=='机构内使用'" class="lawPersonBox card-user-box">
+                <el-form-item v-if="formData.scopeOfUse=='机构内使用'" class="lawPersonBox card-user-box">
                   <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
                     <div class="departOrUserTree" style="width:600px">
                       <div class="treeBox">
@@ -211,7 +209,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
 import preview from "./previewDialog.vue";
 import { mapGetters } from "vuex";
-import { saveOrUpdateRecordModleApi, findCommonFieldApi } from "@/api/Record";
+import { saveOrUpdateRecordModleApi, findCommonFieldApi,findAllCommonFieldApi } from "@/api/Record";
 export default {
   components: {
     chooseLawPerson,
@@ -278,98 +276,34 @@ export default {
         organName: '',//创建人机构名称
         resource: '',//适用范围
         // staff: "",
-        icon: './static/images/img/record/icon_qit.png',
-        domain: '',
+        icon: 'icon_qit',
+        domain: '道路路政',
         title: 'pc测试',
         templateFieldList: [
           {
             value: 1,
-            classs: '自定义分组-测试',
+            classs: '',
             filedList: [
               {
-                classs: '自定义分组-测试',
-                type: 'input',//必要-字段类型，不可改
+                classs: '',
+                type: '文本型',//必要-字段类型，不可改
                 field: 'field101',//必要-字段英文名
                 title: '姓名',//必要-字段中文名
-                col: { span: 16, labelWidth: '50%' },//不必要
-                // className: 'total-gross-wt',//不必要-样式名
                 required: true,
-                props: {      //不必要-配置
-                  type: 'text',
-                  clearable: true, // 是否显示清空按钮
-                  placeholder: '请输入'
-                },
-                validate: [{  //不必要-验证规则
-                  // pattern: /^(0|[1-9]\d*)(\s|$|\.\d{1,3}\b)/, // /^[0-9]+([.]{1}[0-9]{1,3})?$/,
-                  message: '请正确输入',
-                  required: true,
-                  trigger: 'blur'
-                }],
-                value: "iphone 7",
-                class: '',
-                options: [
-                  { "value": "104", "label": "生态蔬菜", "disabled": false },
-                  { "value": "105", "label": "新鲜水果", "disabled": false },
+                remark: '',//占位符
+                options: [//抽屉值
+                  { "value": "", "label": "" },
                 ],
+                status: '',//0是不可修改field，1可修改
               },
-              // {
-              //   field: "姓名",
-              //   type: "input",
-              //   tagIcon: "input",
-              //   placeholder: "请输入单行文本",
-              //   options: [{ value: "" }],
-              //   checkboxList: [],
-
-              //   "clearable": true,
-              //   "prepend": "",
-              //   "append": "",
-              //   "maxlength": null,
-              //   "show-word-limit": false,
-              //   "readonly": false,
-              //   "disabled": false,
-              //   "required": true,
-              //   "regList": [],
-              //   "changeTag": true,
-              //   "document": "https://element.eleme.cn/#/zh-CN/component/input",
-              //   "formId": 101,
-              //   "renderKey": 1590390295948,
-              //   "layout": "colFormItem",
-              //   "vModel": "field101",
-              // },
-              // {
-              //   "label": "电话",
-              //   "type": "input",
-              //   "tagIcon": "input",
-              //   "placeholder": "请输入单行文本",
-              //   dataType: 'el-date-picker,datetime,yyyy-MM-dd HH:mm:ss',
-              //   options: [{ value: "" }],
-              //   "span": 24,
-              //   "style": {
-              //     "width": "100%"
-              //   },
-              //   "clearable": true,
-              //   "prepend": "",
-              //   "append": "",
-              //   "maxlength": null,
-              //   "show-word-limit": false,
-              //   "readonly": false,
-              //   "disabled": false,
-              //   "required": true,
-              //   "regList": [],
-              //   "changeTag": true,
-              //   "document": "https://element.eleme.cn/#/zh-CN/component/input",
-              //   "formId": 102,
-              //   "renderKey": 1590390307059,
-              //   "layout": "colFormItem",
-              //   "vModel": "field102"
-              // }
             ],
 
           }],
       },
+      commonFiledList:[],
       defautfiledList: {
         classs: '自定义分组-测试',
-        type: 'input',//必要-字段类型，不可改
+        type: '文本型',//必要-字段类型，不可改
         field: 'field101',//必要-字段英文名
         title: '',//必要-字段中文名
         // col: { span: 16, labelWidth: '50%' },//不必要
@@ -431,13 +365,10 @@ export default {
     },
     // 获取通用字段
     findCommonField() {
-      let data = {
-        current: 1,
-        size: 100,
-      }
-      findCommonFieldApi(data).then(
+      findAllCommonFieldApi().then(
         res => {
           console.log(res)
+          this.commonFiledList= res.data
         },
         error => {
           // reject(error);
@@ -522,7 +453,7 @@ export default {
                     message: res.msg
                   });
                   this.newModleTable = false;
-                }else{
+                } else {
                   this.$message.error(res.msg);
                 }
               },
@@ -698,8 +629,13 @@ export default {
       //   }
       // }
     },
+    chengGrop(grop){
+      var defaut=this.commonFiledList.find(item => item.classs === grop.classs)
+      console.log(defaut)
+      grop.filedList=defaut.filedList
+    },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      // this.$refs[formName].resetFields();
     }
   },
   mounted() {

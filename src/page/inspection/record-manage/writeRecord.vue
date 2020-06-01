@@ -3,6 +3,7 @@
     <div class="searchAndpageBox">
 
       写记录-标题{{formData.title}}
+      <el-button @click="change()">点击</el-button>
       <div>
         <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit"></form-create>
       </div>
@@ -13,7 +14,7 @@
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
 export default {
-    components: {
+  components: {
     formCreate: formCreate.$form()
   },
   data() {
@@ -39,7 +40,6 @@ export default {
         },]
 
       },
-      rules: {},
       //表单实例对象
       $f: {},
       //表单生成规则
@@ -50,11 +50,11 @@ export default {
         // 文本框
         {
           type: 'input',//必要-字段类型，不可改
-          field: 'goods_name',//必要-字段英文名
+          field: 'field',//必要-字段英文名
           title: '姓名',//必要-字段中文名
           col: { span: 16, labelWidth: '50%' },//不必要
           className: 'total-gross-wt',//不必要-样式名
-          props: {      //不必要-配置
+          required: {      //不必要-配置
             type: 'text',
             clearable: true, // 是否显示清空按钮
             placeholder: '请输入'
@@ -83,12 +83,12 @@ export default {
           type: "checkbox",//必要-字段类型，不可改
           title: "标签",//必要-字段英文名
           field: "label",//必要-字段中文名
-          value: ["1", "2", "3"],//不必要-默认值
+          // value: ["1", "2", "3"],//不必要-默认值
           options: [//必要-选项，至少一个
-            { value: "1", label: "好用", disabled: true },
-            { value: "2", label: "方便", disabled: false },
-            { value: "3", label: "实用", disabled: false },
-            { value: "4", label: "有效", disabled: false },
+            { value: "好用", },
+            { value: "方便", },
+            { value: "实用", },
+            { value: "有效", },
           ]
         },
         // 下拉选择框
@@ -101,7 +101,7 @@ export default {
             { "value": "104", "label": "生态蔬菜", "disabled": false },
             { "value": "105", "label": "新鲜水果", "disabled": false },
           ],
-          props: {
+          required: {
             multiple: true
           },
         },
@@ -111,7 +111,7 @@ export default {
           field: "section_day",//必要-字段英文名
           title: "活动日期",//必要-字段中文名
           value: ['2018-02-20', new Date()],//不必要-默认值
-          props: {
+          required: {
             "type": "date",//必要-配置用，写死，可能的值：year/month/date/dates/ week/datetime/datetimerange/daterange
             "format": "yyyy-MM-dd HH:mm:ss",//必要-配置格式用-写死
             "placeholder": "请选择活动日期",
@@ -123,7 +123,7 @@ export default {
           field: "section_time",
           title: "活动时间",
           value: [],
-          props: {
+          required: {
             isRange: true,//时间范围时必填，其他情况不必填
           },
         },
@@ -135,10 +135,14 @@ export default {
     }
   },
   methods: {
- onSubmit(formData) {
+    onSubmit(formData) {
       //TODO 提交表单
       console.log(formData)
     },
+    change(){
+      // 修改值
+      this.$data.$f.setValue("field",'1212')
+    }
   }
 }
 </script>

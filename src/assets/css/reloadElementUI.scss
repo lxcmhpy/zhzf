@@ -136,8 +136,8 @@ $dialog-default-height: 560px !default;
       height: 100%;
   }
   .el-table__body-wrapper {
-    //height:calc(100% - 31px) !important;
-    //padding-bottom: 15px;
+    height:calc(100% - 31px) !important;
+    padding-bottom: 15px;
     overflow-y:auto;
     min-height:33px;
     }

@@ -17,10 +17,10 @@
                 </ul>
                 <div style="clear:both"></div>
             </div>
-            <div style="width: 300px; height: 300px;position:absolute;top:0px;z-index:1000;">
+            <div style="width: 230px; height: 160px;position:absolute;top:0px;z-index:1000;">
                 <div style="width: 300px; height: 300px;" ref="echartsPie"></div>
             </div>
-             <div style="width: 300px; height: 300px;position:absolute;top:0px;left: 300px;z-index:1000;">
+             <div style="width: 230px; height: 160px;position:absolute;top:0px;left: 300px;z-index:1000;">
                 <div style="width: 300px; height: 300px;" ref="echartsPie1"></div>
             </div>
              <div style="width: 500px; height: 300px;position:absolute;top:0px;top: 300px;z-index:1000;">
@@ -265,12 +265,20 @@ export default {
             if (mychart) {
                 let chart = echarts.init(mychart);
                 let option = {
+                    grid: {
+                        show: true,
+                        backgroundColor:'#000c14',
+                        border: 0,
+                        borderColor: '#000c14'
+                    },
+                    right: 20,
                     title: {
-                        text: '执法持证\n情况',
+                        text: '执 法 持 证\n情 况',
                         textStyle: {
                             color: '#66d7ff',
-                            fontSize: 22,
-                            lineHeight:30
+                            fontSize: 17,
+                            lineHeight:25,
+                            fontWeight: 'normal',
                         },
                         textAlign: 'center',
                         textVerticalAlign: 'middle',
@@ -291,17 +299,19 @@ export default {
                             name: '执法持证情况',
                             type: 'pie',
                             hoverOffset: 0,
-                            selectedOffset: 10,
+                            selectedOffset: 20,
                             selectedMode:'multiple',
                             hoverAnimation:false,
-                            radius: ['50%', '61%'],
+                            radius: ['49%', '61%'],
                             // selectedMode: '海事证',
                             avoidLabelOverlap: false,
                             label: {
                                 show: true,
-                                position: 'outside',
+                                position: 'outer',
                                 lineHeight: 18,
                                 fontSize: 14,
+                                padding: -20,
+                                distanceToLabelLine:0,
                                 // padding: 50,
                                 formatter: function(data) {
                                     // debugger;
@@ -311,6 +321,7 @@ export default {
                             emphasis: {
                                 label: {
                                     show: true,
+                                    right: 10,
                                     // fontSize: '18',
                                     fontWeight: 'bold',
                                 }
@@ -365,7 +376,7 @@ export default {
                     ],
                     animationDelayUpdate: function (idx) {
                         // 越往后的数据延迟越大
-                        return idx * 40;
+                        return idx * 40 + 1000;
                     }
                 };
                 chart.setOption(option);
@@ -375,12 +386,19 @@ export default {
             if (mychart1) {
                 let chart1 = echarts.init(mychart1);
                 let option1 = {
+                    grid: {
+                        show: true,
+                        backgroundColor:'#000c14',
+                        border: 0,
+                        borderColor: '#000c14'
+                    },
                     title: {
-                        text: '执法持证\n情况',
+                        text: '人 员 编 制\n情 况',
                         textStyle: {
                             color: '#66d7ff',
-                            fontSize: 22,
-                            lineHeight:30
+                            fontSize: 17,
+                            lineHeight:25,
+                            fontWeight: 'normal',
                         },
                         textAlign: 'center',
                         textVerticalAlign: 'middle',
@@ -401,17 +419,19 @@ export default {
                             name: '执法持证情况',
                             type: 'pie',
                             hoverOffset: 0,
-                            selectedOffset: 10,
+                            selectedOffset: 20,
                             selectedMode:'multiple',
                             hoverAnimation:false,
-                            radius: ['50%', '61%'],
+                            radius: ['49%', '61%'],
                             // selectedMode: '海事证',
                             avoidLabelOverlap: false,
                             label: {
                                 show: true,
-                                position: 'outside',
+                                position: 'outer',
                                 lineHeight: 18,
                                 fontSize: 14,
+                                padding: -20,
+                                distanceToLabelLine:0,
                                 // padding: 50,
                                 formatter: function(data) {
                                     // debugger;
@@ -473,90 +493,135 @@ export default {
                     ],
                     animationDelayUpdate: function (idx) {
                         // 越往后的数据延迟越大
-                        return idx * 10;
+                        return idx * 40 + 1000;
                     }
                 };
                 chart1.setOption(option1);
             }
 
             let mychart2 = this.$refs.echartsLine;
+            let option2 = {
+                    textStyle: {
+                        color: '#2f718a',
+                        borderColor: '#2f718a'
+                },
+                symbol: 'circle',
+                symbolSize: 10,
+                xAxis: {
+                    type: 'category',
+                    data: ['2013', '14', '15', '16', '17', '18', '19'],
+                    axisLine: {
+                        lineStyle: {
+                            width: 1,
+                            color: '#33728a',
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            width: 0,
+                            color: '#66D7FF',
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            width: 1,
+                            color: '#33728a',
+                            type: 'dashed'
+                        }
+                    }
+                },
+                series: [{
+                    blendMode: 'lighter',
+                    data: [820, 932, 901, 934, 1290, 1330, 1320],
+                    type: 'line',
+                    animationType: 'expansion',
+                    animationEasing: 'bounceInOut',
+                    // animationType: 'scale',
+                    // animationEasing: 'elasticOut',
+                    animationDelay: function (idx) {
+                        return idx * 50 + 1000;
+                    },
+                    lineStyle: {
+                        width: 1,
+                        color: '#f7d02f'
+                    },
+                    itemStyle:{
+                        color: '#f7d02f',
+                        borderWidth:5,
+                    }
+                },{
+                    data: [320, 732, 601, 834, 1090, 1130, 520],
+                    type: 'line',
+                    animationType: 'expansion',
+                    animationEasing: 'backInOut',
+                    animationDelay: function (idx) {
+                        return idx * 50 + 1000;
+                    },
+                    lineStyle: {
+                        width: 1,
+                        color: '#66D7FF',
+                    },
+                    itemStyle:{
+                        color: '#66D7FF',
+                        borderWidth:5,
+                    }
+                }],
+                animationEasing: 'backInOut',
+                animationDelayUpdate: function (idx) {
+                    // 越往后的数据延迟越大
+                    return idx * 100 + 1000;
+                },
+                animationType: 'expansion',
+                animationDelay: function (idx) {
+                    return idx * 100 + 1000;
+                },
+                animation: true
+            };
             if (mychart2) {
                 let chart2 = echarts.init(mychart2);
-                let option2 = {
-                     textStyle: {
-                            color: '#2f718a',
-                            borderColor: '#2f718a'
-                    },
-                    symbol: 'circle',
-                    symbolSize: 10,
-                    xAxis: {
-                        type: 'category',
-                        data: ['2013', '14', '15', '16', '17', '18', '19'],
-                        axisLine: {
-                            lineStyle: {
-                                width: 1,
-                                color: '#33728a',
-                            }
-                        }
-                    },
-                    yAxis: {
-                        type: 'value',
-                        axisLine: {
-                            lineStyle: {
-                                width: 0,
-                                color: '#66D7FF',
-                            }
-                        },
-                        splitLine: {
-                            lineStyle: {
-                                width: 1,
-                                color: '#33728a',
-                                type: 'dashed'
-                            }
-                        }
-                    },
-                    series: [{
-                        data: [820, 932, 901, 934, 1290, 1330, 1320],
-                        type: 'line',
-                        animationType: 'expansion',
-                        animationEasing: 'bounceInOut',
-                        // animationType: 'scale',
-                        // animationEasing: 'elasticOut',
-                        animationDelay: function (idx) {
-                            return idx * 50 + 1000;
-                        },
-                        lineStyle: {
-                            width: 1,
-                            color: '#f7d02f'
-                        },
-                        itemStyle:{
-                            color: '#f7d02f',
-                            borderWidth:5,
-                        }
-                    },{
-                        data: [320, 732, 601, 834, 1090, 1130, 520],
-                        type: 'line',
-                        animationType: 'expansion',
-                        animationEasing: 'backInOut',
-                        animationDelay: function (idx) {
-                            return idx * 50 + 1000;
-                        },
-                        lineStyle: {
-                            width: 1,
-                            color: '#66D7FF',
-                        },
-                        itemStyle:{
-                            color: '#66D7FF',
-                            borderWidth:5,
-                        }
-                    }]
-                };
-                chart2.setOption(option2);
+                chart2.setOption(option2,true);
+            }
+        },
+        updatePie () {
+            let mychart = this.$refs.echartsPie;
+            if (mychart) {
+                let chart = echarts.init(mychart);
+                let option = chart.getOption();
+                chart.clear();
+                chart.setOption(option,true);
+            }
+
+            let mychart1 = this.$refs.echartsPie1;
+            if (mychart1) {
+                let chart1 = echarts.init(mychart1);
+                let option = chart1.getOption();
+                chart1.clear();
+                chart1.setOption(option,true);
+            }
+
+
+            let mychart2 = this.$refs.echartsLine;
+            if(mychart2){
+                let chart2 = echarts.init(mychart2);
+                let option = chart2.getOption();
+                chart2.clear();
+                option.series.forEach((item,j)=>{
+                    item.data.forEach((d,i)=>{
+                        option.series[j].data[i] = Math.random().toFixed(2)*100;
+                    })
+                })
+                chart2.setOption(option,true);
             }
         }
     },
     mounted () {
-
+        let _this = this;
+        setInterval(function(){
+            _this.updatePie();
+        }, 5000)
     }
 }
 </script>
