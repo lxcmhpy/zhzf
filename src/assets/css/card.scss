@@ -245,7 +245,7 @@
     }
 
     .el-radio-group {
-        margin: 16px 0;
+        line-height: 28px;
     }
 
 }
@@ -269,6 +269,7 @@
     background   : #F9F9F9;
     border-top   : 1px solid #D6DBE3;
     text-align   : right;
+    z-index      : 2;
 }
 
 .card-drawer {
@@ -280,5 +281,48 @@
 .card-user-box {
     width        : calc(100% - 150px);
     float        : right;
-    margin-bottom: 0;
+    margin-bottom: 0 !important;
+}
+
+.card-user-box-big {
+    margin-bottom: 0 !important;
+
+    .el-form-item__content {
+        width: 100%;
+    }
+}
+
+.record-icon-box {
+    float     : left;
+    width     : 64px;
+    height    : 64px;
+    border    : 1px solid #c3c3c3;
+    box-sizing: border-box;
+    cursor    : pointer;
+}
+
+.record-icon-box-content {
+    width         : 64px;
+    height        : 64px;
+    text-align    : center;
+    vertical-align: middle;
+    display       : table-cell;
+}
+
+.card-add-btn {
+    float: right;
+
+    .el-button,
+    i {
+        color: #4AAFA7;
+    }
+    .el-button--default{
+        border-color: transparent;
+    }
+
+}
+.min-lable{
+    .el-form-item__label{
+        line-height: 28px;
+    }
 }

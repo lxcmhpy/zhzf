@@ -4,7 +4,10 @@
       <section class="form_contianer" v-show="showLogin">
         <!-- <div class="login_logo"><img src="../../../src/assets/image/main/logo.png" alt=""><span>治超联网监管系统</span></div>-->
         <div class="leftC">
-          <img src="../../../static/images/img/login/pic_denglu.jpg" alt="">
+          <img src="../../../static/images/img/login/zf_bg.png" alt="">
+          <div class="leftC_title">
+              <img src="../../../static/images/img/login/logo1.png" alt=""> {{systemTitle}}
+          </div>
         </div>
         <div class="rightC" v-if="!resetFlag">
           <div class="form_box">
@@ -127,14 +130,19 @@
 <script>
 
 import { mapGetters } from "vuex";
-import Cookies from "@/common/js/cookies";
 import iLocalStroage from "@/common/js/localStroage";
 import { drawCodeImage } from "@/api/login";
 import * as types from "@/store/mutation-types";
 import {menuList} from "@/common/data/menu";
+// 滑动验证
+import VueSimpleVerify from 'vue-simple-verify';
+// Vue.component('vue-simple-verify', VueSimpleVerify)
 import {
   getCurrentUserApi
 } from "@/api/login";
+import {
+  getDictListDetailByNameApi,
+} from "@/api/system";
 export default {
   data() {
     return {
@@ -186,6 +194,7 @@ export default {
       menuList: null
     };
   },
+  computed: {...mapGetters(['systemTitle'])},
   methods: {
 
     //获取验证码
@@ -367,14 +376,26 @@ export default {
         }
       });
     },
-    // test() {
-    //   console.log('12212', this.resetForm)
-    // }
+    
+    //获取系统标题
+    getSystemData() {
+      getDictListDetailByNameApi('系统标题').then(res => {
+        console.log('系统标题', res);
+        this.$store.commit('set_systemTitle',res.data[0].name);
+        window.document.title = res.data[0].name
+      }, err => {
+        console.log(err);
+      })
+    },
   },
   mounted() {
     this.showLogin = true;
     // this.test()
+    this.getSystemData();
   },
+  components: {
+      VueSimpleVerify
+  }
   // created: function () {
   //   this.getCaptcha();
   // }
@@ -382,6 +403,8 @@ export default {
 </script>
 
 <style lang="scss" src="@/assets/css/login.scss">
+</style>
+<style lang="scss" src="@/assets/css/verify.scss">
 </style>
 
 

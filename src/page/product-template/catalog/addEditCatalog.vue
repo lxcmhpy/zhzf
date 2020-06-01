@@ -86,9 +86,6 @@ export default {
       if (type == 0) {
         this.dialogTitle = "新增模板";
         this.addCatalogForm = {
-          name: "",
-          caseType: "",
-          remark: "",
           sort: data+1,
           createTime: new Date().format("yyyy-MM-dd"),
           status: 0
@@ -106,7 +103,6 @@ export default {
     },
     //是否生成PDF
     selectIsShow(val) {
-      console.log(val);
       if (val === 0) {
         this.isShow = true;
       } else {
@@ -123,7 +119,6 @@ export default {
           _this.addCatalogForm.id = _this.editCatalogId;
           _this.$store.dispatch("addOrEditCatalog", _this.addCatalogForm).then(
             res => {
-              console.log("环节", res);
               _this.$message({
                 type: "success",
                 message: "修改成功"
@@ -138,7 +133,6 @@ export default {
         } else {
           _this.$store.dispatch("addOrEditCatalog", _this.addCatalogForm).then(
             res => {
-              console.log("环节", res);
               _this.$message({
                 type: "success",
                 message: "添加成功!"
@@ -166,7 +160,6 @@ export default {
           _this.addCatalogForm.mainLinkName = item.notes;
         }
       });
-      console.log("name", this.addCatalogForm.mainLinkName);
     },
     //获取文书列表
     getDocList() {

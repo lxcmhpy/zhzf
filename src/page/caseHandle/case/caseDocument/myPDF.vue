@@ -15,7 +15,6 @@
 </template>
 <script>
 
-  import pdf from 'vue-pdf'
   import iLocalStroage from "@/common/js/localStroage";
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import casePageFloatBtns from '@/components/casePageFloatBtns/casePageFloatBtns.vue'
@@ -42,7 +41,7 @@
       showApprovePeople,
       approvalDialog,
       casePageFloatBtns,
-      pdf
+    //   pdf
     },
     computed: {...mapGetters(['caseId', 'docId','approvalState'])},
     methods: {
@@ -92,7 +91,7 @@
         );
       },
       isApproval() {
-         
+
         //审批
         console.log('this.approvalState',this.approvalState)
         if(this.approvalState == 'approvaling'){
@@ -103,12 +102,12 @@
           this.formOrDocData.showBtn = [false, false, false, true, false, true, false, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         }else if(this.approvalState == 'approvalBefore'){
           //执法人员提交审批
-          this.formOrDocData.showBtn = [false, false, false, true, false, false, true, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回  
+          this.formOrDocData.showBtn = [false, false, false, true, false, false, true, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         }else if(this.approvalState == 'submitApproval'){
           //执法人员提交审批之后
           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         }
-      
+
         //文书预览只有返回按钮
         if (this.$route.params.hasBack && this.$route.params.status == 2) {
           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
@@ -124,7 +123,7 @@
       approvalOver() {
         this.reload();
       },
-  
+
       //文书提交返回环节
       submitData() {
         if (this.$route.params.caseLinktypeId) {
@@ -137,6 +136,7 @@
             if(this.$route.params.status == 1){
               this.$router.go(-1);
             }else{
+              console.log('退回信息采集')
                this.$router.go(-2);
             }
 
@@ -148,7 +148,7 @@
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.go(-1);
       },
-     
+
       //获取当前是几级审批
       findCurrentApproval(){
         getCurrentApproveApi(this.caseId).then(res=>{

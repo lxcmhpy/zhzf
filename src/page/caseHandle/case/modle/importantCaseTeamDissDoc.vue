@@ -17,20 +17,20 @@
           讨论时间：
           <span>
             <el-form-item prop="discussionStartTime" class="pdf_datapick inputwidth dataTimeReplaceBox" style="width:220px" :rules="fieldRules('discussionStartTime',propertyFeatures['discussionStartTime'])">
-              <el-date-picker v-model="docData.discussionStartTime" type="datetime" 
+              <el-date-picker v-model="docData.discussionStartTime" type="datetime"
                 format="yyyy-MM-dd HH:mm"
                 value-format="yyyy年MM月dd日HH时mm分" :disabled="fieldDisabled(propertyFeatures['discussionStartTime'])">
-              </el-date-picker> 
-              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.discussionStartTime"></el-input> 
+              </el-date-picker>
+              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.discussionStartTime"></el-input>
             </el-form-item>
           </span> 至
           <span>
             <el-form-item prop="discussionEndTime" class="pdf_datapick inputwidth dataTimeReplaceBox" style="width:220px" :rules="fieldRules('discussionEndTime',propertyFeatures['discussionEndTime'])">
               <el-date-picker v-model="docData.discussionEndTime" type="datetime"
-                format="yyyy-MM-dd HH:mm" 
+                format="yyyy-MM-dd HH:mm"
                 value-format="yyyy年MM月dd日HH时mm分" :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])">
               </el-date-picker>
-              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.discussionEndTime"></el-input> 
+              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.discussionEndTime"></el-input>
             </el-form-item>
           </span>
         </p>
@@ -148,8 +148,6 @@ import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-// import signture from "../../../../js/signture";
-import mySignture from "@/common/js/mySignture";
 
 export default {
   components: {
@@ -265,12 +263,7 @@ export default {
 
       this.com_addDocData(handleType, 'docForm');
     },
-    // 盖章
-    makeSeal() {
-      console.log('盖章!');
-      mySignture.openURL('oeder');
-    },
-    // 打印
+     // 打印
     print() {
       console.log('打印!');
     },
@@ -316,7 +309,8 @@ export default {
   }
 }
 </script>
-<style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss">
+<style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
+<style lang="scss">
 /* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 #importantCaseTeamDissDoc-print{
   .dataTimeReplaceBox{

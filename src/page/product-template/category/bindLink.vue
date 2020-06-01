@@ -7,7 +7,7 @@
             <el-input v-model="searchForm.linkName" placeholder="请输入环节名称"></el-input>
           </el-form-item>-->
           <el-form-item> 
-            <!-- <el-button type="primary" size="medium" icon="el-icon-search">查询</el-button> -->
+            <el-button type="primary" size="medium" icon="el-icon-back" @click="goBack">返回</el-button>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="binkLink">新增环节</el-button>
           </el-form-item>
         </el-form>
@@ -68,6 +68,13 @@ export default {
   },
   inject: ["reload"],
   methods: {
+    goBack(){
+      this.$store.dispatch("deleteTabs", "case_handle_flowBindLink");
+      this.$router.push({
+        name: "category",
+        // params: { flowId: data.id }
+      });
+    },
     //查询已绑定环节列表
     getLinkListByFlowId() {
       let data = {

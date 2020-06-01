@@ -38,7 +38,17 @@ export default  [
                 oneTab:true,
                 },
                 component: () => import("@/page/inspection/record-manage/recordList.vue")
-            }
+            },
+            {
+                // 历史检查列表
+                path: "/historyRecord",
+                name: "inspection_historyRecord",
+                meta: {
+                title: "历史检查列表",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/historyRecord.vue")
+            },
         ]
     }, 
 ]

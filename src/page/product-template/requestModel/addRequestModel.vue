@@ -68,9 +68,7 @@ export default {
       if (type == 0) {
         this.dialogTitle = "新增";
         this.addRequest = {
-          id: "",modelName: "",
-          createTime:new Date().format('yyyy-MM-dd'),
-          modelTypeId: ""
+          createTime:new Date().format('yyyy-MM-dd')
         };
       } else if (type == 2) {
         this.dialogTitle = "修改";
@@ -80,7 +78,6 @@ export default {
         this.addRequest.createTime = new Date().format('yyyy-MM-dd');
         this.addRequest.modelTypeId = data.modelTypeId;
       }
-      console.log("addRequest",this.addRequest)
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -95,7 +92,6 @@ export default {
             _this.addOrEdit();
         }else {
           let a = Object.values(noPass)[0];
-          console.log('不通过',a);
           this.$message({
             showClose: true,
             message: a[0].message,

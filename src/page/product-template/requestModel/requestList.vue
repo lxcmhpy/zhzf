@@ -11,11 +11,11 @@
       <el-button type="primary" size="medium" icon="el-icon-plus" @click="addRequest">新增</el-button>
     </div>
     <div class="tablePart">
-      <el-table :data="tableData" highlight-current-row @current-change="chexkCase" style="width: 100%" height="100%">
+      <el-table :data="tableData" stripe style="width: 100%" height="100%">
         <el-table-column type="index" width="60" align="center">
           <template slot="header">序号</template>
         </el-table-column>
-        <el-table-column prop="request" label="名称" align="center"></el-table-column>
+        <el-table-column prop="request" :show-overflow-tooltip="true" label="名称" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="editRequest(scope.row)" >修改</el-button>
@@ -59,9 +59,7 @@ export default {
       let _this = this;
       getRequestListByModelIdApi(this.modelId).then(
         res => {
-          console.log('类型',res.data);
           _this.tableData = res.data;
-          console.log('as',_this.tableData);
         },
         error => {
           console.log(error)
@@ -105,15 +103,11 @@ export default {
     //编辑
     editRequest(row){
       let data = row;
-      console.log(data);
       this.$refs.addRequestRef.showModal(2, data);
     },
 
     closeDialog() {
       this.visible = false;
-    },
-    chexkCase(val){
-
     }
   }
 };

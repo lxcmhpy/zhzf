@@ -221,6 +221,18 @@
 
     }
   }
+  .afddBox{
+    position: relative;
+    overflow: inherit;
+    .showMapBtn{
+      position: absolute;
+      right: -100px;
+      top: 4px;
+    }
+  }
+  .el-input-number--mini .el-input--mini .el-input__inner{
+    height: 28px;
+  }
 
 }
 

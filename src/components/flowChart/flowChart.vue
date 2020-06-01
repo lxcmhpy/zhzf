@@ -29,9 +29,9 @@
   </div>
 </template>
 <script>
-import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
-import echarts from 'echarts'
-import 'echarts/lib/chart/graph'
+import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu';
+import echarts from 'echarts';
+// import 'echarts/lib/chart/graph'
 import _ from 'lodash'
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
@@ -239,7 +239,7 @@ export default {
             //     backgroundColor: 'white',
             //     color: 'white'
             // },
-            data: graphTemp.nodes,
+            data: graphTemp.nodes, 
             links: graphTemp.links,
             draggable: false,   //注意这里设置为false,不然拖拽鼠标和节点有偏移
           }
@@ -604,7 +604,7 @@ export default {
           console.log('获取强制措施时间1', res);
           if (res.data) {
             let formData = JSON.parse(res.data.formData);
-            
+
             let measureStartDate = new Date(formData.measureStartDate);
             let Y = measureStartDate.getFullYear() + '-';
             let M = measureStartDate.getMonth() + 1 < 10 ? '0' + (measureStartDate.getMonth() + 1) + '-' : measureStartDate.getMonth() + 1 + '-';

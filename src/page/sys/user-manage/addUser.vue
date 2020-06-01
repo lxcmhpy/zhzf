@@ -36,8 +36,8 @@
       <div class="part">
         <p class="titleP">基本信息</p>
         <div class="item">
-          <el-form-item label="真实姓名">
-            <el-input v-model="addUserForm.nickName"></el-input>
+          <el-form-item label="真实姓名" prop="nickName">
+            <el-input v-model="addUserForm.nickName" ref="nickName"></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -158,10 +158,13 @@ export default {
         other: ""
       },
       rules: {
-        username: [
+          username: [
           { required: true, message: "请输入登录用户名", trigger: "blur" },
           { min: 6, message: "长度大于6个字符", trigger: "blur" },
           // { validator: validateUsername, trigger: "blur" },
+        ],
+        nickName: [
+            { required: true, message: "请输入真实姓名", trigger: "blur" },
         ],
         mobile: [{ validator: validatePhone, trigger: "blur" }],
         organId: [{ required: true, message: "请选择机构", trigger: "change" }],

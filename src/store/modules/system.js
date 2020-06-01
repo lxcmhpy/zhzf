@@ -10,11 +10,11 @@ import {
     getAllMenuListApi, getTreePermissionApi, addPermissionApi, deletePermissionApi,
     getDictListApi, getDictListDetailApi, getAllDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
-    getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,
+    getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,saveLawOfficelApi,getRouteListApi,addOrUpdateRouteApi,deleteRouteApi,
+    getSectionListApi,addOrUpdateSectionApi,deleteSectionApi,
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";
-import Cookies from "@/common/js/cookies";
 
 const system = {
     state: {
@@ -22,6 +22,7 @@ const system = {
         activeIndexSto: '',
         headActiveNav:'', //当前选中的header
         btnlawId:'', //当前法规id
+        systemTitle:'', //系统标题
     },
     mutations: {
         SET_MENU(state, data) {
@@ -34,6 +35,9 @@ const system = {
         //设置当前法规id
         SET_BTNLAW_ID (state, data) {
             state.btnlawId = data;
+        },
+        set_systemTitle(state, data) {
+            state.systemTitle = data;
         },
 
     },
@@ -556,6 +560,18 @@ const system = {
                     })
             })
         },
+      //转执法人员
+      saveLawOfficel({ commit }, data) {
+            return new Promise((resolve, reject) => {
+              saveLawOfficelApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
 
 
 
@@ -824,6 +840,84 @@ const system = {
                     })
             })
         },
+
+      //获取路产配置列表
+      getRouteList({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          getRouteListApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //添加或修改路线信息
+      addOrUpdateRoute({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          addOrUpdateRouteApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //删除路线
+      deleteRoute({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          deleteRouteApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //获取路段列表
+      getSectionList({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          getSectionListApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //添加或修改路段信息
+      addOrUpdateSection({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          addOrUpdateSectionApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //删除路段
+      deleteSection({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          deleteSectionApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
 
     }
 

@@ -6,7 +6,13 @@
     :close-on-click-modal="false"
     width="35%"
   >
-    <el-form :model="addBannerForm" :rules="rules" ref="addBannerForm" label-width="130px">
+    <el-form
+      :model="addBannerForm"
+      :rules="rules"
+      ref="addBannerForm"
+      class="errorTipForm"
+      label-width="130px"
+    >
       <div class="item">
         <el-form-item label="环节名称" prop="linkName">
           <el-input v-model="addBannerForm.linkName"></el-input>
@@ -30,24 +36,24 @@
         </el-form-item>
       </div>
       <div class="item">
-          <el-form-item label="案件类型" prop="remark">
-            <el-select
-              v-model="addBannerForm.remark"
-              filterable
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="(res) in caseTypeList"
-                :key="res.id"
-                :label="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
-                :value="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </div>
+        <el-form-item label="案件类型" prop="remark">
+          <el-select v-model="addBannerForm.remark" filterable placeholder="请选择">
+            <el-option
+              v-for="(res) in caseTypeList"
+              :key="res.id"
+              :label="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
+              :value="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </div>
       <div class="item">
         <el-form-item label="是否有审批流程">
-          <el-select v-model="addBannerForm.isApproval" placeholder="请选择">
+          <el-select
+            v-model="addBannerForm.isApproval"
+            @change="selectIsApproval"
+            placeholder="请选择"
+          >
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -57,7 +63,7 @@
           </el-select>
         </el-form-item>
       </div>
-      <div class="item">
+      <div class="item" v-if="addBannerForm.isApproval == '0' ? true : false">
         <el-form-item label="绑定工作流">
           <el-input v-model="addBannerForm.activitiId"></el-input>
         </el-form-item>
@@ -74,7 +80,7 @@
           </el-select>
         </el-form-item>
       </div>
-      <div class="item" v-if="isShow">
+      <div class="item" v-if="addBannerForm.isPdf == '0' ? true : false">
         <el-form-item label="生成文书">
           <el-select v-model="addBannerForm.docTypeId" filterable placeholder="请选择">
             <el-option
@@ -112,7 +118,7 @@
       </div>
       <div class="item">
         <el-form-item label="是否生成案件编号">
-          <el-select v-model="addBannerForm.isCaseNumber"  placeholder="请选择">
+          <el-select v-model="addBannerForm.isCaseNumber" placeholder="请选择">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -140,12 +146,11 @@
   </el-dialog>
 </template>
 <script>
-import { getDocListApi} from "@/api/caseHandle";
+import { getDocListApi } from "@/api/caseHandle";
 export default {
   data() {
     return {
       visible: false,
-      isShow: true,
       addBannerForm: {
         linkName: "",
         mainLinkName: "",
@@ -164,11 +169,21 @@ export default {
       },
       mainLinkList: [],
       docTypeList: [],
-      caseTypeList:[],
+      caseTypeList: [],
       rules: {
-         linkName: [{ required: true, message: "环节名称不能为空", trigger: "blur" }],
-         mainLinkName: [{ required: true, message: "所属大环节不能为空", trigger: "blur" }],
-         remark: [{ required: true, message: "所属案件类型名称不能为空", trigger: "blur" }],
+        linkName: [
+          { required: true, message: "环节名称不能为空", trigger: "blur" }
+        ],
+        mainLinkName: [
+          { required: true, message: "所属大环节不能为空", trigger: "blur" }
+        ],
+        remark: [
+          {
+            required: true,
+            message: "所属案件类型名称不能为空",
+            trigger: "blur"
+          }
+        ]
       },
       dialogTitle: "", //弹出框title
       handelType: 0, //添加 0  修改2
@@ -193,41 +208,29 @@ export default {
       if (type == 0) {
         this.dialogTitle = "新增环节";
         this.addBannerForm = {
-          linkName: "",
-          mainLinkName: "",
-          isApproval: "",
-          activitiId: "",
-          isPdf: "",
-          docTypeId: "",
-          docTypeName: "",
-          remark: "",
-          sort: data + 1,
-          isFiling: "",
-          isFile: "",
-          linkUrl: "",
-          mainLinkId: "",
-          isCaseNumber: ""
+          sort: data + 1
         };
       } else if (type == 2) {
         this.dialogTitle = "修改环节";
         this.addBannerForm = data;
-        this.addBannerForm.createTime = "";
+        this.addBannerForm.createTime = new Date().format("yyyy-MM-dd HH:mm:ss");
         this.editBannerId = data.id;
       }
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.$refs["addBannerForm"].resetFields();
     },
     //是否生成PDF
-    selectIsShow(val){
-      console.log(val)
-      if(val === 0){
-        this.isShow = true;
-      }else{
-        this.isShow = false;
-        this.addBannerForm.docTypeId = '';
+    selectIsShow(val) {
+      if (val == "1") {
+        this.addBannerForm.docTypeId = "";
+      }
+    },
+    //是否有审批流程
+    selectIsApproval(val) {
+      if (val == "1") {
+        this.addBannerForm.activitiId = "";
       }
     },
     //新增环节 修改环节
@@ -236,7 +239,6 @@ export default {
       this.$refs[formName].validate(valid => {
         if (_this.handelType) {
           //修改
-          _this.addBannerForm.id = _this.editBannerId;
           _this.$store.dispatch("addOrEditBanner", _this.addBannerForm).then(
             res => {
               console.log("环节", res);
@@ -275,18 +277,18 @@ export default {
     //给主环节ID赋值
     setmainLinkId(notes) {
       let obj = {};
-      let _this=this;
+      let _this = this;
       let mainLinkList = this.mainLinkList;
-      mainLinkList.forEach((item) => {
-        if(item.notes == notes){
+      mainLinkList.forEach(item => {
+        if (item.notes == notes) {
           _this.addBannerForm.mainLinkName = item.notes;
         }
       });
-      console.log("name",this.addBannerForm.mainLinkName)
+      console.log("name", this.addBannerForm.mainLinkName);
     },
     //获取文书列表
     getDocList() {
-      let data = {}
+      let data = {};
       getDocListApi(data).then(
         //查询执法领域
         res => {
@@ -297,7 +299,6 @@ export default {
           }
         }
       );
-      
     },
     //通过数据字典获取大环节下拉
     getMainLink(name, codeName) {
@@ -315,7 +316,7 @@ export default {
       );
     },
     //查询案件类型列表
-    getCaseType(){
+    getCaseType() {
       this.$store.dispatch("getCaseTypeList", 0).then(
         //查询案件类型列表(启用)
         res => {

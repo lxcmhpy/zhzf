@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="visible"
+    :title = "title"
     :close-on-click-modal="false"
     @close="closeDialog"
     width="75%"
@@ -33,7 +34,7 @@
     </div>
     <div>
       <div style="width: 47%; float: left;">
-        <el-table :data="linkDocData" highlight-current-row style="width: 100%" height="480">
+        <el-table :data="linkDocData" stripe style="width: 100%" height="480">
           <el-table-column label="已关联文书列表">
             <el-table-column type="index" width="60" align="center">
               <template slot="header">序号</template>
@@ -61,13 +62,13 @@
       <div style="width: 52%; float: left; border-left:3px solid #e9edf6;">
         <el-table
           :data="docData"
-          highlight-current-row
+          stripe
           @selection-change="getValues"
           style="width: 100%;"
           height="480"
         >
           <el-table-column label="可关联文书列表">
-            <el-table-column type="selection" @selection-change="getValues" width="55"></el-table-column>
+            <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column type="index" width="60" align="center">
               <template slot="header">序号</template>
             </el-table-column>
@@ -94,6 +95,8 @@ export default {
       docData: [],
       linkDocData: [],
       datas: [],
+      title: "",
+      remark: "",
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
@@ -143,7 +146,6 @@ export default {
       );
     },
     getValues(val) {
-      console.log("val", val);
       let _this = this;
       let arr = [];
       val.forEach(item => {
@@ -156,8 +158,6 @@ export default {
         });
       });
       this.datas = JSON.stringify(arr);
-      console.log("arr", arr);
-      console.log("this.datas", this.datas);
     },
     //关联文书
     saveLinkDoc() {
@@ -172,10 +172,11 @@ export default {
         }
       );
     },
-    showModal(linkTypeId) {
+    showModal(data) {
       this.visible = true;
-      this.linkTypeId = linkTypeId;
-      console.log("linkTypeId", this.linkTypeId);
+      this.linkTypeId = data.id;
+      this.title = data.linkName;
+      this.remark = data.remark;
       this.getLinkDocList();
       this.getDocList();
     },
@@ -189,7 +190,6 @@ export default {
       getDocListByLinkTypeIdApi(data).then(
         res => {
           _this.docData = res.data;
-          console.log("docData", _this.docData);
         },
         error => {
           console.log(error);
@@ -206,7 +206,6 @@ export default {
       getLinkDocListByLinkTypeIdApi(data).then(
         res => {
           _this.linkDocData = res.data;
-          console.log("linkDocData", _this.linkDocData);
         },
         error => {
           console.log(error);

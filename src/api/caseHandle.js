@@ -19,7 +19,7 @@ export function getEnforceLawTypeApi(organId) {
 export function getCaseTypeApi(data) {
   let params = {
     programType: data.programType,
-    organId: "1",
+    organId: data.organId,
     cateId: data.cateId
   }
   return request({
@@ -1139,6 +1139,7 @@ export function queryFlowBycaseTypeApi(id) {
   });
 }
 
+
 //通过条件卷宗目录模板
 export function getCatalogListApi(data) {
   return request({
@@ -1219,6 +1220,18 @@ export function deleteCatalogLinkDocByIdApi(id) {
   return request({
     url: "/case/doc/catalogDetails/deleteById/" + id,
     method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//查询公路路产配置
+export function queryRoadLcDeployApi(data) {
+  return request({
+    url: "/case/road/roadLcDeploy/list",
+    method: "get",
+    params:data,
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()

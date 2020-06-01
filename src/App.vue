@@ -13,6 +13,7 @@
 import loading from "@/components/loading";
 import { mapGetters } from "vuex";
 import dialogPhoneVideo from "@/components/phoneVideo/dialogPhoneVideo.vue";
+
 export default {
   name: "App",
   data() {
@@ -24,7 +25,7 @@ export default {
     "v-loading": loading, dialogPhoneVideo
   },
   computed: {
-    ...mapGetters(["loading"])
+    ...mapGetters(["loading",'systemTitle'])
   },
   provide() {
     return {
@@ -39,7 +40,8 @@ export default {
       this.$nextTick(() => {
         _this.isRouterAlive = true;
       });
-    }
+    },
+    
   }
 };
 </script>

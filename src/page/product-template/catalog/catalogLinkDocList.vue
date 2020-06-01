@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="visible"
+    :title= "title"
     :close-on-click-modal="false"
     @close="closeDialog"
     width="75%"
@@ -33,7 +34,7 @@
     </div>
     <div>
       <div style="width: 47%; float: left;">
-        <el-table :data="linkDocData" highlight-current-row style="width: 100%" height="480">
+        <el-table :data="linkDocData" stripe style="width: 100%" height="480">
           <el-table-column label="已关联文书列表">
             <el-table-column type="index" width="60" align="center">
               <template slot="header">序号</template>
@@ -52,14 +53,14 @@
               <template slot-scope="scope">
                 <div>
                   <span
-                    v-show="scope.$index"
-                    @click="goUp(scope.row,scope.$index)"
-                    class="iconfont law-desc blueC"
-                  ></span>
-                  <span
                     v-show="scope.$index != linkDocData.length-1"
                     @click="goDown(scope.row,scope.$index)"
                     class="iconfont law-asc blueC"
+                  ></span>
+                  <span
+                    v-show="scope.$index"
+                    @click="goUp(scope.row,scope.$index)"
+                    class="iconfont law-desc blueC"
                   ></span>
                 </div>
               </template>
@@ -76,13 +77,13 @@
       <div style="width: 52%; float: left; border-left:3px solid #e9edf6;">
         <el-table
           :data="docData"
-          highlight-current-row
+          stripe
           @selection-change="getValues"
           style="width: 100%;"
           height="480"
         >
           <el-table-column label="可关联文书列表">
-            <el-table-column type="selection" @selection-change="getValues" width="55"></el-table-column>
+            <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column type="index" width="60" align="center">
               <template slot="header">序号</template>
             </el-table-column>
@@ -109,6 +110,8 @@ export default {
       docData: [],
       linkDocData: [],
       datas: [],
+      title: "",
+      caseType: "",
       total: 0,
       visible: false,
       templateId: "",
@@ -132,7 +135,7 @@ export default {
             id: item.id,
             templateId: item.templateId,
             docId: item.docId,
-            createTime: new Date().format("yyyy-MM-dd"),
+            createTime: new Date().format("yyyy-MM-dd HH:mm:ss"),
             sort: this.linkDocData[index - 1].sort,
             status: item.status
           });
@@ -160,7 +163,7 @@ export default {
         id: row.id,
         templateId: row.templateId,
         docId: row.docId,
-        createTime: new Date().format("yyyy-MM-dd"),
+        createTime: new Date().format("yyyy-MM-dd HH:mm:ss"),
         sort: row.sort,
         status: status
       };
@@ -181,7 +184,7 @@ export default {
         arr.push({
           templateId: _this.templateId,
           docId: item.id,
-          createTime: new Date().format("yyyy-MM-dd"),
+          createTime: new Date().format("yyyy-MM-dd HH:mm:ss"),
           sort: length++,
           status: 0
         });
@@ -200,9 +203,11 @@ export default {
         }
       );
     },
-    showModal(templateId) {
+    showModal(data) {
       this.visible = true;
-      this.templateId = templateId;
+      this.templateId = data.id;
+      this.title = data.name;
+      this.caseType = data.caseType;
       this.getLinkDocList();
       this.getDocList();
     },
@@ -265,20 +270,16 @@ export default {
     //向上排序
     goDown(row, index) {
       let sort = row.sort;
-      console.log("sort",sort,this.linkDocData[index].sort,this.linkDocData[index + 1].sort)
       this.linkDocData[index].sort = this.linkDocData[index + 1].sort;
       this.linkDocData[index + 1].sort = sort;
-      console.log("sort",sort,this.linkDocData[index].sort,this.linkDocData[index + 1].sort)
       this.datas = JSON.stringify(this.linkDocData);
       this.saveOrUpdataLinkDoc();
     },
     //向下排序
     goUp(row, index) {
       let sort = row.sort;
-      console.log("sort",sort,this.linkDocData[index].sort,this.linkDocData[index - 1].sort)
       this.linkDocData[index].sort = this.linkDocData[index - 1].sort;
       this.linkDocData[index - 1].sort = sort;
-      console.log("sort",sort,this.linkDocData[index].sort,this.linkDocData[index - 1].sort)
       this.datas = JSON.stringify(this.linkDocData);
       this.saveOrUpdataLinkDoc();
     },
@@ -290,6 +291,7 @@ export default {
 </script>
 
 <style lang="scss" src="@/assets/css/systemManage.scss">
+/* @import "@/assets/css/systemManage.scss"; */
 </style>
 <style lang="scss" src="@/assets/css/basicStyles/common.scss">
 </style>

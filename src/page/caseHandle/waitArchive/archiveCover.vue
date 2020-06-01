@@ -574,7 +574,8 @@ export default {
   }
 };
 </script>
-<style lang="scss" src="@/assets/css/documentForm.scss" scoped>
+<style lang="scss" src="@/assets/css/documentForm.scss" scoped></style>
+<style lang="scss"scoped>
 /* @import "@/assets/css/documentForm.scss"; */
 .mulvCon{
   width:400px;margin: 20px auto;

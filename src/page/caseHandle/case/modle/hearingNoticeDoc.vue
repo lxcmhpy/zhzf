@@ -39,7 +39,7 @@
               <el-radio-group v-model="docData.radio">
                   <el-radio  label="1">公开</el-radio>
                   <el-radio  label="2">不公开</el-radio>
-              </el-radio-group>             
+              </el-radio-group>
             </el-form-item>
           </span>）举行听证会议，请准时出席。
         </p>
@@ -137,7 +137,7 @@
         </P>
 
         <div class="pdf_seal">
-          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+          <span >交通运输执法部门(印章)</span><br>
           <el-form-item prop="signatureDate" class="pdf_datapick">
             <el-date-picker v-model="docData.signatureDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
             </el-date-picker>
@@ -193,8 +193,6 @@
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
   import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-  
-  import mySignture from "@/common/js/mySignture";
   import {
     validatePhone,
   } from "@/common/js/validator";
@@ -332,12 +330,7 @@
       addDocData(handleType) {
         // this.com_addDocData(handleType, 'docForm');
       },
-      // 盖章
-      makeSeal() {
-        console.log('盖章!');
-        mySignture.openURL('oeder');
-      },
-      // 打印
+        // 打印
       print() {
         console.log('打印!');
       },

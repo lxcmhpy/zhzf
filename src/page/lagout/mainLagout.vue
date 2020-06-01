@@ -2,7 +2,10 @@
   <div class="fullscreen">
     <el-container id="fullscreenCon">
       <el-header id="mainHeader">
-        <div class="main_logo"><img :src="'./static/images/main/logo.png'" alt=""><span>治超联网监管系统</span></div>
+        <div class="main_logo">
+          <!-- <img :src="'./static/images/main/logo.png'" alt=""> -->
+          <span> {{systemTitle}}</span>
+        </div>
         <div class="headMenu">
           <headMenu @selectHeadMenu="getSelectHeadMenu"></headMenu>
         </div>
@@ -84,12 +87,16 @@
   </div>
 </template>
 <script>
-import Cookies from "@/common/js/cookies";
+// import Cookies from "@/common/js/cookies";
 import iLocalStroage from "@/common/js/localStroage";
 import headMenu from "@/components/headMenu";
 import subLeftMenu from "@/components/subLeftMenu";
 import tabsMenu from "@/components/tabsMenu";
-import mainContent from "@/components/mainContent";
+import mainContent from "@/components/mainContent";  
+import { mapGetters } from "vuex";
+import {
+  getDictListDetailByNameApi,
+} from "@/api/system";
 export default {
   name: "mainLagout",
   data() {
@@ -109,9 +116,7 @@ export default {
     mainContent
   },
   computed: {
-    // curreyRouterName() {
-    //   return this.$route.name;
-    // }
+    ...mapGetters(['systemTitle'])
   },
   inject: ["reload"],
   methods: {
@@ -125,7 +130,7 @@ export default {
     },
     //退出
     loginOut() {
-      Cookies.remove("TokenKey");
+    //   Cookies.remove("TokenKey");
       iLocalStroage.removeAll();
       // this.$store.state.openTab = [];
       this.$store.dispatch('deleteAllTabs');
@@ -133,7 +138,7 @@ export default {
     },
     //个人设置  待完善
     goToUser() {
-      Cookies.set("menu", "personInfor");
+    //   Cookies.set("menu", "personInfor");
       this.reload(); //reload 可以去掉导航菜单选中状态的class
       this.$router.push({ name: "personInfor" });
     },
@@ -145,7 +150,21 @@ export default {
     router (name, route) {
         // debugger;
         // this.$router.push({ name: name,params: route.params});
-    }
+    },
+    //获取系统标题
+    getSystemData() {
+      if(this.systemTitle){
+        window.document.title = this.systemTitle;
+        return;
+      } 
+      getDictListDetailByNameApi('系统标题').then(res => {
+        console.log('系统标题', res);
+        this.$store.commit('set_systemTitle',res.data[0].name);
+        window.document.title = res.data[0].name
+      }, err => {
+        console.log(err);
+      })
+    },
   },
   watch: {
     '$route' (to, from) {
@@ -158,11 +177,15 @@ export default {
   created(){
     //判断有没有menu
     this.$util.initUser(this);
+    this.getSystemData();
+     
   }
 };
 </script>
-<style lang="scss" src="@/assets/css/main.scss">
+<style lang="scss" src="@/assets/css/main.scss"></style>
+<style lang="scss">
 /* @import "@/assets/css/main.scss"; */
+
 .info_top {
   background: url("../../../static/images/img/personInfo/bg.png") no-repeat;
 }
