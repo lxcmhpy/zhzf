@@ -105,7 +105,7 @@
         </el-form-item>
       </div>
       <div class="item">
-        <el-form-item label="是否是归档">
+        <el-form-item label="下一环节是否为归档">
           <el-select v-model="addBannerForm.isFile" placeholder="请选择">
             <el-option
               v-for="item in options"
