@@ -1,8 +1,7 @@
 <template>
-  <!-- LawCognizanceBasis   认定依据 -->
-  <el-dialog title="认定依据" :visible.sync="visible" :close-on-click-modal="false" width="50%">
+  <el-dialog title="预览" :visible.sync="visible" :close-on-click-modal="false" width="50%">
    <div>
-     <preview></preview>
+     <preview :psMsg='psMsg'></preview>
    </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取 消</el-button>
@@ -34,7 +33,8 @@ export default {
         bnslawIdCog: ''
       },
       visible: false,
-      rules: {}
+      rules: {},
+      psMsg:''
     }
   },
   methods: {
@@ -42,9 +42,10 @@ export default {
     submit() {
 
     },
-    showModal(type, row) {
+    showModal(compData) {
       this.visible = true;
-
+      console.log('预览dialog',compData)
+      this.psMsg=compData
     },
 
     //关闭弹窗的时候清除数据

@@ -17,13 +17,11 @@
               </el-input>
             </el-form-item>
           </el-col>
-
           <p class="border-title card-title-margin clear">添加指标
             <span class="card-add-btn">
               <el-button icon="el-icon-plus" size="medium" @click="addGroup()">添加新字段组</el-button>
             </span>
           </p>
-          <!-- {{formData}} -->
           <div class="collapse-title-foem">
             <el-collapse v-model="activeNames" @change="handleChange" class="clear">
               <div v-for="(item,index) in formData.templateFieldList" :key="index">
@@ -32,7 +30,7 @@
                     <i class="iconfont law-icon_zhankai zhankai"></i>
                     <i class="iconfont law-btn_shousuo shousuo"></i>
                     <el-form-item prop="class" label-width="0" style="width:100%;margin-bottom: 10px;">
-                      <el-select v-model="item.classs" filterable allow-create clearable placeholder="请输入字段组名称，可为空" @change="chengGrop(item)">
+                      <el-select v-model="item.classs" filterable allow-create clearable placeholder="请输入字段组名称，可为空" @change="chengeGroup(item)">
                         <el-option v-for="(commonFiled,index) in commonFiledList" :key="index" :label="commonFiled.classs" :value="commonFiled.classs"></el-option>
                         <!-- <el-option label="当事人信息（姓名、联系方式、证件号码、从业资格证号……）" value="1"></el-option>
                         <el-option label="企业组织信息（名称、联系人、联系方式、统一信用代码……）" value="2"></el-option>
@@ -40,7 +38,7 @@
                         <el-option label="是否需要转入案件办理（仅记录；记录并转立案）" value="4"></el-option> -->
                       </el-select>
                     </el-form-item>
-                    <i class="el-icon-remove" style="margin-left:18px" @click="delGroup(item)"></i>
+                    <i class="el-icon-remove" style="margin-left:18px" @click="delFiled(item,formData.templateFieldList)"></i>
                   </template>
                   <div v-for="filed in item.filedList" :key="filed.id">
                     <el-row :gutter="20">
@@ -61,7 +59,7 @@
                             <el-option label="文本型" value="文本型"></el-option>
                             <el-option label="抽屉型" value="抽屉型"></el-option>
                             <!-- <el-option label="单选" value="radio"></el-option> -->
-                            <el-option label="时间型" value="时间型"></el-option>
+                            <el-option label="日期型" value="日期型"></el-option>
                             <el-option label="数字型" value="数字型"></el-option>
                           </el-select>
                         </el-form-item>
@@ -75,14 +73,14 @@
                           </el-input>
                         </el-form-item>
                         <el-form-item v-for="(radio,index) in filed.options" :key="index" label-width="0">
-                          <i class="el-icon-remove-outline" style="margin-right:14px" @click="delRadioList(radio,filed.options)"></i>
-                          <el-input size="mini" v-model="radio.value" placeholder="请输入选项" clearable style="width: calc(100% - 70px)">
+                          <i class="el-icon-remove-outline" style="margin-right:14px" @click="delFiled(radio,filed.options)"></i>
+                          <el-input size="mini" v-model="radio.value" placeholder="请输入选项" clearable style="width: calc(100% - 70px)" :disabled="filed.status===0?true:false">
                           </el-input>
                           <i class="el-icon-circle-plus-outline" style="margin-left:14px" @click="addRadioList(filed.options)"></i>
                         </el-form-item>
                       </el-col>
                     </el-row>
-                    <el-row class="mimi-content" v-if="filed.type=='时间型'">
+                    <el-row class="mimi-content" v-if="filed.type=='日期型'">
                       <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                         <el-row>
                           <el-form-item label="占位符(字段填报说明)：" label-width="165px">
@@ -121,7 +119,7 @@
                     </el-row>
                   </div>
                 </el-collapse-item>
-                <span class="card-add-ziduan" @click="addField(index)">
+                <span class="card-add-ziduan" @click="addField(index,item.classs)">
                   <i class="el-icon-circle-plus-outline"></i>
                   添加字段
                   <i class="el-icon-arrow-right"></i>
@@ -134,29 +132,28 @@
             <el-popover placement="right" ref="popoverRef" title="选择图标" width="200" trigger="click" content="选择图标">
               <li v-for="icon in iconList" :key="icon.icon" class="record-icon-box" @click="changIcon(icon)">
                 <div class="record-icon-box-content">
-                  <img :src="'./static/images/img/record/'+icon.icon+'.png'" alt="">
+                  <img v-if='icon.icon' :src="'./static/images/img/record/'+icon.icon+'.png'" alt="">
+                  <span v-else style="color: #667589;font-size: 36px;">{{formdata.title.charAt(0)}}</span>
                 </div>
               </li>
               <li slot="reference" class="record-icon-box">
                 <div class="record-icon-box-content" style="line-height: 90px;">
                   <img :src="'./static/images/img/record/'+formData.icon+'.png'" alt="">
-                  <span class="title-text">{{titleText}}</span>
+                  <!-- <span v-else style="color: #667589;font-size: 36px;">{{formdata.title.charAt(0)}}</span> -->
                 </div>
               </li>
             </el-popover>
-            <!-- <canvas id="myCanvas" width="64" height="64" style="border:1px solid #c3c3c3;">
-              您的浏览器不支持 HTML5 canvas 标签。
-            </canvas> -->
+
           </el-form-item>
           <el-form-item label="适用范围" prop="scopeOfUse">
             <el-radio-group v-model="formData.scopeOfUse" style="width:100%" class="card-select">
               <div class="el-form-item__content">
                 <el-radio label="指定人员使用"></el-radio>
                 <el-form-item v-if="formData.scopeOfUse=='指定人员使用'" class="lawPersonBox card-user-box">
-                  <el-select ref="lawPersonListId" v-model="formData.lawPersonListId" multiple @remove-tag="removeLawPersontag">
-                    <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
+                  <el-select ref="templateUserIdList" v-model="formData.templateUserIdList" multiple @remove-tag="removeLawPersontag">
+                    <el-option v-for="item in alreadyChooseUserPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
                   </el-select>
-                  <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
+                  <el-button icon="el-icon-plus" @click="addTemplateUser"></el-button>
                 </el-form-item>
               </div>
               <div class="el-form-item__content">
@@ -175,7 +172,7 @@
                         </el-tree>
                       </div>
                     </div>
-                    <el-input slot="reference" v-model="formData.orgData" placeholder="请输入选项" clearable style="width:100%">
+                    <el-input slot="reference" v-model="formData.templateOrgan" placeholder="请输入选项" clearable style="width:100%">
                     </el-input>
                   </el-popover>
 
@@ -185,10 +182,10 @@
           </el-form-item>
           <el-form-item label="模板管理者">
             <el-form-item class="lawPersonBox card-user-box-big" style="width:100%">
-              <el-select ref="lawPersonListId" v-model="formData.lawPersonListId" multiple @remove-tag="removeLawPersontag">
-                <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
+              <el-select ref="templateAdminIdList" v-model="formData.templateAdminIdList" multiple @remove-tag="removeLawPersontag">
+                <el-option v-for="item in alreadyChooseAdminPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
-              <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
+              <el-button icon="el-icon-plus" @click="addtemplateAdminIdList"></el-button>
             </el-form-item>
           </el-form-item>
         </el-form>
@@ -199,20 +196,23 @@
         <!-- <el-button @click="resetForm('elForm')">重置</el-button> -->
       </div>
     </el-drawer>
-    <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
-    <preview ref="previewRef" @userList="getAllUserList"></preview>
+    <chooseLawPerson ref="templateAdminRef" @setLawPer="setAdminPerson" @userList="getAllUserList"></chooseLawPerson>
+    <chooseLawPerson1 ref="templateUserRef" @setLawPer="setUserPerson" @userList="getAllUserList"></chooseLawPerson1>
+    <preview ref="previewRef" @filedList="getAllFiledList"></preview>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
+import chooseLawPerson1 from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
 import preview from "./previewDialog.vue";
 import { mapGetters } from "vuex";
-import { saveOrUpdateRecordModleApi, findCommonFieldApi,findAllCommonFieldApi } from "@/api/Record";
+import { saveOrUpdateRecordModleApi, findCommonFieldApi, findAllCommonFieldApi,findRecordModleByIdApi } from "@/api/Record";
 export default {
   components: {
     chooseLawPerson,
+    chooseLawPerson1,
     preview
   },
   data() {
@@ -221,11 +221,12 @@ export default {
       currentUserLawId: '',
       activeNames: [0],
 
-      alreadyChooseLawPerson: [],//已选择人员列表
+      alreadyChooseAdminPerson: [],//已选择管理人员列表
+      alreadyChooseUserPerson: [],//已选择使用人员列表
       defaultExpandedKeys: [],
       organData: [],//机构列表
       lawCateList: [], //业务领域列表
-      globalCont: 1,
+      globalCont: 1,//key1
       defaultProps: {
         children: "children",
         label: "label"
@@ -268,8 +269,15 @@ export default {
         // id:'',
         // remark: '',
         // size:'',
+        id: '',//修改必传
         templateOrgan: '',
+        templateOrganId: '',
         templateUser: '',
+        templateUserId: '',
+        templateUserIdList: '',
+        templateAdmin: '',
+        templateAdminId: '',
+        templateAdminIdList: '',
         templateType: '记录',//模板类型
         createName: '',//创建人
         organId: '',//创建人机构id
@@ -277,15 +285,16 @@ export default {
         resource: '',//适用范围
         // staff: "",
         icon: 'icon_qit',
-        domain: '道路路政',
+        domain: '公路路政',
         title: 'pc测试',
         templateFieldList: [
           {
-            value: 1,
+            value: 0,
             classs: '',
             filedList: [
               {
-                classs: '',
+                id: '',//字段id
+                // classs: '',
                 type: '文本型',//必要-字段类型，不可改
                 field: 'field101',//必要-字段英文名
                 title: '姓名',//必要-字段中文名
@@ -294,33 +303,43 @@ export default {
                 options: [//抽屉值
                   { "value": "", "label": "" },
                 ],
-                status: '',//0是不可修改field，1可修改
+                status: '1',//0是不可修改field，1可修改
+                // templateId: '',//修改必传=formdata.id
               },
             ],
 
           }],
+        count: 0
       },
-      commonFiledList:[],
+      commonFiledList: [],
       defautfiledList: {
-        classs: '自定义分组-测试',
+        // id: '',//字段id
+        // classs: '',
         type: '文本型',//必要-字段类型，不可改
-        field: 'field101',//必要-字段英文名
+        field: '',//必要-字段英文名
         title: '',//必要-字段中文名
+        remark: '',//占位符
         // col: { span: 16, labelWidth: '50%' },//不必要
         // className: 'total-gross-wt',//不必要-样式名
-        required: true,
-        props: {      //不必要-配置
-          type: 'text',
-          clearable: true, // 是否显示清空按钮
-          placeholder: '请输入'
-        },
-        validate: [{  //不必要-验证规则
-          // pattern: /^(0|[1-9]\d*)(\s|$|\.\d{1,3}\b)/, // /^[0-9]+([.]{1}[0-9]{1,3})?$/,
-          message: '请正确输入',
-          required: true,
-          trigger: 'blur'
-        }]
+        required: false,
+        options: [
+          { "value": "" },
+        ],
+        status: '1',//0是不可修改field，1可修改
+        // templateId: '',//修改必传=formdata.id
+        // props: {      //不必要-配置
+        //   type: 'text',
+        //   clearable: true, // 是否显示清空按钮
+        //   placeholder: '请输入'
+        // },
+        // validate: [{  //不必要-验证规则
+        //   // pattern: /^(0|[1-9]\d*)(\s|$|\.\d{1,3}\b)/, // /^[0-9]+([.]{1}[0-9]{1,3})?$/,
+        //   message: '请正确输入',
+        //   required: true,
+        //   trigger: 'blur'
+        // }]
       },
+      editId:'',
       rules: {
         title: [
           { required: true, message: '请输入模板标题', trigger: 'blur' },
@@ -346,12 +365,19 @@ export default {
         ],
         desc: [
           { required: true, message: '请填写活动形式', trigger: 'blur' }
-        ]
+        ],
+        scopeOfUse: [
+          { required: true, message: '请选择适用范围', trigger: 'blur' }
+        ],
       }
     }
   },
   methods: {
-    showModal() {
+    showModal(editdata) {
+      if (editdata) {
+        this.editId = editdata.id;
+        this.findDataByld()
+      }
       this.findCommonField()
       this.getEnforceLawType();
       this.setLawPersonCurrentP();
@@ -363,12 +389,41 @@ export default {
 
       });
     },
+    // 根据id查找
+    findDataByld() {
+      findRecordModleByIdApi(this.editId).then(
+        res => {
+          this.formData=res.data
+          // this.commonFiledList = res.data
+          // this.commonFiledList.forEach(element => {
+          //   element.filedList.forEach(item => {
+          //     if (item.options) {
+          //       item.options = JSON.parse(item.options)
+          //     }
+          //   });
+          // });
+          // console.log('common', this.commonFiledList)
+
+        },
+        error => {
+          // reject(error);
+        })
+
+    },
     // 获取通用字段
     findCommonField() {
       findAllCommonFieldApi().then(
         res => {
-          console.log(res)
-          this.commonFiledList= res.data
+          this.commonFiledList = res.data
+          this.commonFiledList.forEach(element => {
+            element.filedList.forEach(item => {
+              if (item.options) {
+                item.options = JSON.parse(item.options)
+              }
+            });
+          });
+          console.log('common', this.commonFiledList)
+
         },
         error => {
           // reject(error);
@@ -381,39 +436,28 @@ export default {
       this.globalCont++;
       console.log('formData.templateFieldList', this.formData.templateFieldList)
     },
-    delGroup(item) {
-      console.log(item)
-      var index = this.formData.templateFieldList.indexOf(item)
+
+    addField(index, classs) {
       console.log(index)
-      if (index !== -1) {
-        this.formData.templateFieldList.splice(index, 1)
-      }
-    },
-    addField(index) {
-      console.log(index)
+      console.log('defautfiledList', this.defautfiledList)
+      console.log('classs', classs)
+      let pushDataList = this.defautfiledList;
+      // pushDataList.classs = 'key' + this.globalCont
+      // this.globalCont++
+      console.log('pushDataList', pushDataList)
       this.formData.templateFieldList[index].filedList.push(this.defautfiledList)
     },
     delFiled(filed, filedList) {
       console.log(filed)
-      var index = filedList.indexOf(filed)
-      console.log(index)
-      if (index !== -1) {
-        filedList.splice(index, 1)
-      }
-    },
-    delRadioList(radio, options) {
-      console.log(radio)
-      if (options.length > 1) {
-        var index = options.indexOf(radio)
+      if (filedList.length > 1) {
+        var index = filedList.indexOf(filed)
         console.log(index)
         if (index !== -1) {
-          options.splice(index, 1)
+          filedList.splice(index, 1)
         }
+      } else {
+        this.$message({ message: '不可删除，最少支持一个选项!', type: 'warning' });
       }
-      else {
-        this.$message({ message: '最少支持一个选项!', type: 'warning' });
-      }
-
     },
     addRadioList(options) {
       if (options.length <= 5) {
@@ -423,15 +467,21 @@ export default {
         this.$message({ message: '最多支持六个选项!', type: 'warning' });
       }
     },
-    draw() {
-      var c = document.getElementById("myCanvas");
-      var ctx = c.getContext("2d");
-      ctx.font = "bolder 36px Arial";
-      ctx.textAlign = 'center'
-      ctx.fillStyle = '#6D7B8F'
-      ctx.fillText("好", 32, 42);
-    },
     submitForm(formName) {
+      console.time('global')
+      //设置classs\templetId
+      this.formData.templateFieldList.forEach(element => {
+        console.log(element)
+        element.filedList.forEach(item => {
+          console.log(item.classs)
+          item.classs = element.classs;
+          item.templateId = this.formData.id || '';
+        });
+
+      });
+
+      console.timeEnd('global')
+
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.formData.templateFieldList.length == 0 || (this.formData.templateFieldList.length == 1 && this.formData.templateFieldList[0].filedList.length == 0)) {
@@ -439,11 +489,17 @@ export default {
           }
           else {
             // alert('submit!');
-            console.log("上传字段", this.formData)
-            let data = this.formData
+            console.log("上传字段formdata", this.formData)
+            let data = JSON.parse(JSON.stringify(this.formData))
             data.templateFieldList = JSON.stringify(data.templateFieldList)
-            // data.lawPersonListId = JSON.stringify(data.lawPersonListId)
-            data.lawPersonListId = ''
+            data.templateUserIdList = '';
+            data.templateAdminIdList = '';
+            data.count = this.globalCont
+            console.log("上传字段formdata", this.formData)
+            console.log('提交的字段', data)
+
+            this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
+            console.log('this.formData.templateOrganId', this.formData.templateOrganId)
             saveOrUpdateRecordModleApi(data).then(
               res => {
                 console.log(res)
@@ -452,6 +508,7 @@ export default {
                     type: "success",
                     message: res.msg
                   });
+                  this.$emit("getAddModle", 'sucess');
                   this.newModleTable = false;
                 } else {
                   this.$message.error(res.msg);
@@ -469,37 +526,58 @@ export default {
       });
     },
     // 添加管理者
-    addLawPerson() {
-      this.$refs.chooseLawPersonRef.showModal(this.formData.lawPersonListId, this.alreadyChooseLawPerson);
+    addTemplateUser() {
+      this.$refs.templateUserRef.showModal(this.formData.templateUserIdList, this.alreadyChooseUserPerson);
+    },
+    addtemplateAdminIdList() {
+      this.$refs.templateAdminRef.showModal(this.formData.templateAdminIdList, this.alreadyChooseAdminPerson);
     },
     //查询执法人员
     getAllUserList(list) {
-      console.log("list121212", list);
       this.allUserList = list;
       setTimeout(() => {
       }, 100);
     },
-    //设置执法人员
-    setLawPerson(userlist) {
+    //设置使用人员
+    setUserPerson(userlist) {
       console.log('选择的执法人员', userlist);
-      // this.lawPersonList = userlist;
-      this.alreadyChooseLawPerson = userlist;
-      this.formData.lawPersonListId = [];
+      this.alreadyChooseUserPerson = userlist;
+      this.formData.templateUserIdList = [];
+
       let staffIdArr = [];
       let staffArr = [];
       let certificateIdArr = [];
 
-      this.alreadyChooseLawPerson.forEach(item => {
-        this.formData.lawPersonListId.push(item.id);
+      this.alreadyChooseUserPerson.forEach(item => {
+        this.formData.templateUserIdList.push(item.id);
         //给表单数据赋值
         staffIdArr.push(item.id);
         staffArr.push(item.lawOfficerName);
-        certificateIdArr.push(item.selectLawOfficerCard);
+        certificateIdArr.push(item.userId);
       });
       // this.formData.staffId = staffIdArr.join(',');
-      // this.formData.staff = staffArr.join(',');
-      // this.formData.certificateId = certificateIdArr.join(',');
+      this.formData.templateUser = staffArr.join(',');
+      this.formData.templateUserId = certificateIdArr.join(',');
+    },
+    //设置管理人员
+    setAdminPerson(userlist) {
+      console.log('选择的执法人员', userlist);
+      this.alreadyChooseAdminPerson = userlist;
+      this.formData.templateAdminIdList = [];
+      let staffIdArr = [];
+      let staffArr = [];
+      let certificateIdArr = [];
 
+      this.alreadyChooseAdminPerson.forEach(item => {
+        this.formData.templateAdminIdList.push(item.id);
+        //给表单数据赋值
+        staffIdArr.push(item.id);
+        staffArr.push(item.lawOfficerName);
+        certificateIdArr.push(item.userId);
+      });
+      // this.formData.staffId = staffIdArr.join(',');
+      this.formData.templateAdmin = staffArr.join(',');
+      this.formData.templateAdminId = certificateIdArr.join(',');
     },
     //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
     setLawPersonCurrentP() {
@@ -513,9 +591,10 @@ export default {
             console.log('执法人员列表', res)
             _this.userList = res.data;
             let currentUserData = {};
-            _this.formData.lawPersonListId = [];
-            _this.alreadyChooseLawPerson = [];
-
+            _this.formData.templateUserIdList = [];
+            _this.formData.templateAdminIdList = [];
+            _this.alreadyChooseAdminPerson = [];
+            _this.alreadyChooseUserPerson = [];
             res.data.forEach(item => {
               if (
                 item.userId == iLocalStroage.gets("userInfo").id
@@ -523,11 +602,11 @@ export default {
                 currentUserData.id = item.id;
                 currentUserData.lawOfficerName = item.lawOfficerName;
                 currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
-                _this.alreadyChooseLawPerson.push(currentUserData);
-                _this.formData.lawPersonListId.push(currentUserData.id);
+                _this.alreadyChooseAdminPerson.push(currentUserData);
+                _this.alreadyChooseUserPerson.push(currentUserData);
+                _this.formData.templateAdminIdList.push(currentUserData.id);
+                _this.formData.templateUserIdList.push(currentUserData.id);
                 _this.currentUserLawId = currentUserData.id;
-                _this.formData.templateUser = item.lawOfficerName;
-                // _this.formData.staffId = item.id;
                 // 创建人
                 _this.formData.createName = item.lawOfficerName;
               }
@@ -574,7 +653,8 @@ export default {
       );
     },
     handleNodeClick1(data) {
-      this.formData.orgData = data.label;
+      this.formData.templateOrgan = data.label;
+      this.formData.templateOrganId = data.id;
       this.visiblePopover = false;
     },
     nodeExpand(data, node, jq) {
@@ -615,7 +695,11 @@ export default {
     },
     // 预览
     preview() {
+      this.compData = this.formData
       this.$refs.previewRef.showModal(this.compData);
+    },
+    getAllFiledList(list) {
+      console.log('传递数据-预览', list)
     },
     handleChange(val) {
       console.log(val);
@@ -629,10 +713,19 @@ export default {
       //   }
       // }
     },
-    chengGrop(grop){
-      var defaut=this.commonFiledList.find(item => item.classs === grop.classs)
+    chengeGroup(group) {
+      var defaut = this.commonFiledList.find(item => item.classs === group.classs)
+      console.log('this.defautfiledList', this.defautfiledList)
       console.log(defaut)
-      grop.filedList=defaut.filedList
+      if (defaut) {
+        // 通用字段
+        group.filedList = defaut.filedList
+
+      } else {
+        group.classs = "";
+        group.filedList = [];
+        group.filedList.push(this.defautfiledList)
+      }
     },
     resetForm(formName) {
       // this.$refs[formName].resetFields();
