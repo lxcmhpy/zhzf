@@ -56,3 +56,52 @@
         }
     }
 }
+.w-animal-yellow {
+    outline:7px dashed #f7d02f;
+    animation-delay:10s;
+    animation: fadeInLeft 3s;
+
+	animation-iteration-count: infinite;
+
+    padding-left: 5px;
+}
+.w-animal-blue {
+    outline:7px dashed #66d7ff;
+    animation-delay:10s;
+
+    animation: fadeInLeft1 3s ;
+	animation-iteration-count: infinite;
+}
+@keyframes fadeInLeft
+{
+    from {
+        animation-delay:10s;
+        opacity: 0.7;
+        transform: translate3d(-100%, 0, 0);
+        outline:7px dashed #ffae00;
+      }
+
+      to {
+        animation-delay:2s;
+        opacity: 1;
+        transform: none;
+        outline:7px dashed #bdff3e;
+      }
+}
+@keyframes fadeInLeft1
+{
+    from {
+        animation-delay:10s;
+        opacity: 0.7;
+
+        transform: translate3d(-100%, 0, 0);
+        outline:7px dashed #94fd46;
+      }
+
+      to {
+        animation-delay:2s;
+        opacity: 1;
+        transform: none;
+        outline:7px dashed #ffb43e;
+      }
+}
