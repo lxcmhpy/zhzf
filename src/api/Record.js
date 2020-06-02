@@ -88,6 +88,16 @@ export function findRecordlModleByNameApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//通过模板UUid查询模板字段
+export function findRecordlModleFieldByIdeApi(data) {
+    return request({
+        url: XZJC_HOST + "templateField/findByTemplateUUID/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        cancelToken: setCancelSource()
+    });
+}
 //根据ID查找模板
 export function findRecordModleByIdApi(data) {
     return request({

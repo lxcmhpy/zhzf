@@ -12,7 +12,9 @@
         </div>
       </div>
       <div v-for="(item,index) in modleList" :key="index" class="card-content">
-        <div class="card-title">{{item.domain}}({{item.templateList.length}})</div>
+        <div class="card-title">{{item.domain}}
+          <!-- ({{item.templateList.length}}) -->
+        </div>
         <ul class="card-ul">
           <li v-for="(modle,index) in item.templateList" :key="index" @click="checkModle(modle)">
             <div class="card-img-content-box">
@@ -23,7 +25,7 @@
               </div>
             </div>
             <div class="card-des">{{modle.title}}</div>
-            <span style="color: blue;font-size: 14px;" @click="editModle(modle)">修改</span>
+            <span style="color: blue;font-size: 14px;" @click="editModle(modle)">修改模板</span>
           </li>
         </ul>
       </div>
@@ -44,6 +46,7 @@ export default {
     preview,
     addModle
   },
+
   data() {
     return {
       newModleTable: false,

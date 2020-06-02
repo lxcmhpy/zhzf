@@ -1,13 +1,12 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox">
-      写记录-标题{{formData.title}}
-      <el-button @click="change()">点击</el-button>
-      <div v-for="item in creatFormData" :key="item.id">
-        <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit">
-          
-        </form-create>
+      <div>
+        <!-- {{psMsg.title}} -->
       </div>
+      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit">
+      </form-create>
+      <!-- </div>-->
     </div>
   </div>
 </template>
@@ -21,7 +20,7 @@ export default {
   props: ['psMsg'],
   data() {
     return {
-      creatFormData:[{},{}],
+      creatFormData: [],
       ruleForm: {
         value1: '',
         value2: '',
@@ -47,6 +46,11 @@ export default {
       //表单实例对象
       $f: {},
       rule: [
+        // {
+        //   type: 'template',
+        //   name: 'btn',
+        //   template: '<p class="border-title">正在加载中</p>',
+        // },
         // // 文本框
         // {
         //   type: 'input',//必要-字段类型，不可改
@@ -142,58 +146,110 @@ export default {
     change() {
       // 修改值
       this.$data.$f.setValue("field", '1212')
-    }
+    },
+    dealFormData() {
+      let data = JSON.parse(JSON.stringify(this.psMsg.templateFieldList))
+      console.log('ruleData', data)
+      let ruleData = []
+      data.forEach(element => {
+        console.log(element)
+        this.rule.push({
+          type: 'template',
+          name: 'btn',
+          template: '<p class="border-title">' + element.classs + '</p>',
+        })
+        element.filedList.forEach(item => {
+          console.log(item)
+          if (item.type == '文本型') {
+            item.type = 'input';
+            this.rule.push({
+              type: 'input',//必要-字段类型，不可改
+              field: item.field,//必要-字段英文名
+              title: item.title,//必要-字段中文名
+              props: {      //不必要-配置
+                type: 'text',
+                placeholder: item.remark
+              },
+              validate: [{  //不必要-验证规则
+                // pattern: /^(0|[1-9]\d*)(\s|$|\.\d{1,3}\b)/, // /^[0-9]+([.]{1}[0-9]{1,3})?$/,
+                message: '请正确输入',
+                required: item.required,
+                trigger: 'blur'
+              }
+              ]
+            })
+          } else if (item.type == '抽屉型') {
+            console.log('options', item.options)
+            item.options.forEach(option => {
+              console.log('option', option)
+              option.label = option.value
+              console.log('option2', option)
+            });
+            console.log('options', item.options)
+            this.rule.push({
+              type: "select",
+              field: item.field,//必要-字段英文名
+              title: item.title,//必要-字段中文名
+              options: item.options,
+              // props: {
+              //   multiple: true,//是否对选
+              // },
+            })
+          } else if (item.type == '单选型') {
+            console.log('options', item.options)
+            item.options.forEach(option => {
+              console.log('option', option)
+              option.label = option.value
+              console.log('option2', option)
+            });
+            console.log('options', item.options)
+            this.rule.push({
+              type: "radio",
+              field: item.field,//必要-字段英文名
+              title: item.title,//必要-字段中文名
+              options: item.options,
+              // props: {
+              //   multiple: true,//是否对选
+              // },
+            })
+          } else if (item.type == '复选型') {
+            console.log('options', item.options)
+            item.options.forEach(option => {
+              console.log('option', option)
+              option.label = option.value
+              console.log('option2', option)
+            });
+            console.log('options', item.options)
+            this.rule.push({
+              type: "checkbox",
+              field: item.field,//必要-字段英文名
+              title: item.title,//必要-字段中文名
+              options: item.options,
+            })
+          } else if (item.type == '数字型') {
+            console.log('options', item.options)
+            this.rule.push({
+              type: "InputNumber",
+              field: "price121",//必要-字段英文名
+              title: item.title,//必要-字段中文名
+              value: 1,
+              props: {
+                precision: 2
+              },
+            })
+            // this.rule.push({
+            //   type: "InputNumber",
+            //   field: item.field,//必要-字段英文名
+            //   title: item.title,//必要-字段中文名
+            // })
+          }
+        });
+      });
+    },
   },
   mounted() {
-    console.log('psMsg', this.psMsg)
-    this.rule = this.psMsg.templateFieldList
-    // this.rule.forEach(element => {
-    //   console.log(element)
-    //   // element.filedList.forEach(item => {
-    //   //   console.log(item)
-    //   //   if(item.type=='文本型'){
-    //   //     item.type='input'
-    //   //   }
-    //   // });
-    //   element = {
-    //     type: 'input',//必要-字段类型，不可改
-    //     field: 'field',//必要-字段英文名
-    //     title: '姓名',//必要-字段中文名
-    //     col: { span: 16, labelWidth: '50%' },//不必要
-    //     className: 'total-gross-wt',//不必要-样式名
-    //     required: {      //不必要-配置
-    //       type: 'text',
-    //       clearable: true, // 是否显示清空按钮
-    //       placeholder: '请输入'
-    //     },
-    //     validate: [{  //不必要-验证规则
-    //       // pattern: /^(0|[1-9]\d*)(\s|$|\.\d{1,3}\b)/, // /^[0-9]+([.]{1}[0-9]{1,3})?$/,
-    //       message: '请正确输入',
-    //       required: true,
-    //       trigger: 'blur'
-    //     }]      }
-    // });
-    this.rule = [
-      // 文本框
-      {
-        type: 'input',//必要-字段类型，不可改
-        field: 'field',//必要-字段英文名
-        title: '姓名',//必要-字段中文名
-        col: { span: 16, labelWidth: '50%' },//不必要
-        className: 'total-gross-wt',//不必要-样式名
-        required: {      //不必要-配置
-          type: 'text',
-          clearable: true, // 是否显示清空按钮
-          placeholder: '请输入'
-        },
-        validate: [{  //不必要-验证规则
-          // pattern: /^(0|[1-9]\d*)(\s|$|\.\d{1,3}\b)/, // /^[0-9]+([.]{1}[0-9]{1,3})?$/,
-          message: '请正确输入',
-          required: true,
-          trigger: 'blur'
-        }
-        ]
-      },]
+    this.dealFormData()
   }
 }
 </script>
+<style lang="scss" src="@/assets/css/main.scss">
