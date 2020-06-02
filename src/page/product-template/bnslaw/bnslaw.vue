@@ -196,6 +196,7 @@ export default {
         strNumber: [{ required: true, message: "发布文号必须填写", trigger: "blur" }],
         strOrgan: [{ required: true, message: "发布机关必须填写", trigger: "blur" }],
         drawerName: [{ required: true, message: "法规效力必须填写", trigger: "blur" }],
+        industryType: [{ required: true, message: "行业类型必须填写", trigger: "blur" }],
       }
     };
   },
@@ -320,26 +321,31 @@ export default {
       this.visible = true
     },
     addEditbtnlaw() {
-      this.addBtnlawForm.drawerName =this.selectDrawer(this.addBtnlawForm.drawerId);
-      this.addBtnlawForm.industryType =this.selectIndustry(this.addBtnlawForm.industryTypeId);
-      let data = this.addBtnlawForm;
-      let _this = this;
-      addBnsLawApi(data).then(
-        res => {
-          console.log("添加法规", res);
-          if (res.code == '200') {
-             this.$message({ message: '添加成功',type: 'success'});
-            this.visible = false;
-            this.getBtnlawList();
-          } else {
-            this.$message.error('添加失败');
-            return
-          }
-        },
-        error => {
-          console.log(error)
+      this.$refs["addBtnlawForm"].validate(valid => {
+        if (valid) {
+          this.addBtnlawForm.drawerName =this.selectDrawer(this.addBtnlawForm.drawerId);
+          this.addBtnlawForm.industryType =this.selectIndustry(this.addBtnlawForm.industryTypeId);
+          let data = this.addBtnlawForm;
+          let _this = this;
+          addBnsLawApi(data).then(
+            res => {
+              console.log("添加法规", res);
+              if (res.code == '200') {
+                this.$message({ message: '添加成功',type: 'success'});
+                this.visible = false;
+                this.getBtnlawList();
+              } else {
+                this.$message.error('添加失败');
+                return
+              }
+            },
+            error => {
+              console.log(error)
+            }
+          );
         }
-      );
+      })
+      
     },
     //更改每页显示的条数
     handleSizeChange(val) {
