@@ -12,8 +12,12 @@
         </div>
       </div>
       <div v-for="(item,index) in modleList" :key="index" class="card-content">
-        <div class="card-title">{{item.domain}}
-          <!-- ({{item.templateList.length}}) -->
+        <div class="card-title" v-if="index==0">{{item.domain}}
+          ({{item.templateList.length}})
+          {{typeof(item.templateList.length)}}
+        </div>
+        <div class="card-title" v-if="index!=0">{{item.domain}}
+          ({{item.templateList.length}})
         </div>
         <ul class="card-ul">
           <li v-for="(modle,index) in item.templateList" :key="index" @click="checkModle(modle)">

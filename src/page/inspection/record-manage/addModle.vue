@@ -84,19 +84,19 @@
                             <el-input size="mini" v-model="filed.remark" clearable>
                             </el-input>
                           </el-form-item>
-                          <el-radio-group v-model="filed.dataType" style="width: 100%;">
+                          <el-radio-group v-model="filed.options[0].value" style="width: 100%;">
                             <el-row>
-                              <!-- <el-col :span="12">
-                                <el-radio label="el-date-picker,datetime,yyyy-MM-dd HH:mm:ss">精准时间（2020-03-11 12:12:12）</el-radio>
-                              </el-col> -->
                               <el-col :span="12">
-                                <el-radio label="el-date-picker,datetime,yyyy-MM-dd HH:mm">日期和时间（2020-03-11 12:12）</el-radio>
+                                <el-radio label="yyyy-MM-dd HH:mm:ss">精准时间（2020-03-11 12:12:12）</el-radio>
                               </el-col>
                               <el-col :span="12">
-                                <el-radio label="el-date-picker,date">仅日期（2020-03-11 ）</el-radio>
+                                <el-radio label="yyyy-MM-dd HH:mm">日期和时间（2020-03-11 12:12）</el-radio>
                               </el-col>
                               <el-col :span="12">
-                                <el-radio label="el-time-select">仅时间（09:12）</el-radio>
+                                <el-radio label="yyyy-MM-dd">仅日期（2020-03-11 ）</el-radio>
+                              </el-col>
+                              <el-col :span="12">
+                                <el-radio label="HH:mm">仅时间（09:12）</el-radio>
                               </el-col>
                               <!-- <el-col :span="12">
                                 <el-radio label="el-date-picker,daterange">时间段（2020-03-11 12:12-2020-04-11）</el-radio>
@@ -284,11 +284,11 @@ export default {
         templateFieldList: [
           {
             value: 0,
+            sort: '',//新加-前端定义
             classs: '',
             filedList: [
               {
-                id: '',//字段id
-                // classs: '',
+                id: '',//字段id-修改
                 type: '文本型',//必要-字段类型，不可改
                 field: 'key0',//必要-字段英文名
                 title: '姓名',//必要-字段中文名
@@ -432,13 +432,16 @@ export default {
     submitForm(formName) {
       console.time('global')
       //设置classs\templetId
+      let sort = 1
       this.formData.templateFieldList.forEach(element => {
         console.log(element)
-        element.filedList.forEach(item => {
-          console.log(item.classs)
-          item.classs = element.classs;
-          item.templateId = this.formData.id || '';
-        });
+        element.sort = sort;
+        sort++
+        // element.filedList.forEach(item => {
+        //   console.log(item.classs)
+        //   item.classs = element.classs;
+        //   item.templateId = this.formData.id || '';
+        // });
 
       });
 
@@ -451,16 +454,14 @@ export default {
           }
           else {
             // alert('submit!');
-            console.log("上传字段formdata", this.formData)
             let data = JSON.parse(JSON.stringify(this.formData))
             data.templateFieldList = JSON.stringify(data.templateFieldList)
             data.templateUserIdList = '';
             data.templateAdminIdList = '';
             data.count = this.globalCont
-            console.log("上传字段formdata", this.formData)
+            this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
             console.log('提交的字段', data)
 
-            this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
             console.log('this.formData.templateOrganId', this.formData.templateOrganId)
             saveOrUpdateRecordModleApi(data).then(
               res => {
