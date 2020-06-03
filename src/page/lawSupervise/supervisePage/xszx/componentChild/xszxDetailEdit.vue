@@ -555,7 +555,7 @@
         </el-dialog>
         <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
             <div>
-                <img width="100%" :src="'./static/images/img/lawSupervise/temp/link_02.jpg'">
+                <img width="100%" :src="xjHost+imgIndexUrl">
             </div>
         </el-dialog>
         <el-dialog :visible.sync="dialogIMGVisible1" append-to-body width="90%">
@@ -571,7 +571,7 @@
                     <span class="titleflag">
                     </span>
                     <span class="title">现场照片/视频</span>
-                    <span class="right f12"> {{parseInt(acitveCar)+1}} / 3</span>
+                    <span class="right f12"> {{parseInt(acitveCar)+1}} / 5</span>
                 </div>
                 <ul class="list">
                     <!-- v-for="index in 2" :key="index" -->
@@ -581,20 +581,21 @@
                          <el-carousel direction="vertical" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
                             <el-carousel-item :key="0">
                                 <video width="280px" height="180px" controls>
-                                    <!-- <source :src="'./static/images/img/lawSupervise/temp/link_05.mp4'" type="video/mp4"> -->
+                                    <source :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_V'" type="video/mp4">
                                 </video>
                             </el-carousel-item>
-                            <el-carousel-item :key="1">
-                                <!-- <el-image
-                                :src="'./static/images/img/lawSupervise/temp/link_04.jpg'"
-                                :preview-src-list="['./static/images/img/lawSupervise/temp/link_04.jpg','./static/images/img/lawSupervise/temp/link_01.jpg']"
-                                >
-                                </el-image> -->
-                                <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="'./static/images/img/lawSupervise/temp/link_02.jpg'">
+                            <el-carousel-item  v-for="(item,index) in imgList" :key="(index +1).toString()">
+                                <img width="280px" height="180px" @click="showImg(index)"  :src="xjHost+item">
                             </el-carousel-item>
-                             <el-carousel-item :key="2">
-                                <img width="280px" height="180px" @click="dialogIMGVisible1 = true" :src="'./static/images/img/lawSupervise/temp/link_01.jpg'">
+                             <!-- <el-carousel-item :key="2">
+                                 <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_F'">
                             </el-carousel-item>
+                            <el-carousel-item :key="3">
+                                 <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_L'">
+                            </el-carousel-item>
+                            <el-carousel-item :key="4">
+                                 <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_S'">
+                            </el-carousel-item> -->
                         </el-carousel>
                           <!-- <i class="iconfont law-bofang"></i> -->
                     </li>
@@ -691,11 +692,31 @@ AMap.initAMapApiLoader({
   showLabel: false
 });
 let amapManager = new AMap.AMapManager();
+//   <el-carousel-item :key="1">
+//                                 <img width="280px" height="180px" @click="showImg('PHOTO_D')"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_D'">
+//                             </el-carousel-item>
+//                              <el-carousel-item :key="2">
+//                                  <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_F'">
+//                             </el-carousel-item>
+//                             <el-carousel-item :key="3">
+//                                  <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_L'">
+//                             </el-carousel-item>
+//                             <el-carousel-item :key="4">
+//                                  <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_S'">
+//                             </el-carousel-item>
 export default {
     props: ['obj'],
     data () {
         let self = this;
         return {
+            imgIndexUrl: null,
+            imgList: [
+                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_D',
+                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_F',
+                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_L',
+                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_S'
+                ],
+            xjHost: null,
             dialogIMGVisible: false,
             storageStr: '',
             dialogPDFVisible: false,
@@ -769,6 +790,10 @@ export default {
         }
     },
     methods:{
+        showImg (index) {
+            this.dialogIMGVisible = true;
+            this.imgIndexUrl = this.imgList[index];
+        },
         //关闭弹窗的时候清除数据
         setActiveItem () {
             // this.acitveCar = (parseInt(this.acitveCar) + 1).toString();
@@ -823,6 +848,7 @@ export default {
     },
     mounted () {
         this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
+        this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
     }
 }
 </script>
