@@ -1,8 +1,8 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
-    <div class="searchAndpageBox">
-      <div>
-        <!-- {{psMsg.title}} -->
+    <div class="searchAndpageBox modle-set">
+      <div style="font-size: 16px;font-weight: bold;text-align:center;margin-bottom:18px">
+        {{psMsg.title}}
       </div>
       <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit">
       </form-create>
@@ -18,6 +18,13 @@ export default {
     formCreate: formCreate.$form()
   },
   props: ['psMsg'],
+  watch: {
+    psMsg(val, oldVal) {
+      // this.show = val;
+      console.log('监听', this.psMsg, 'val', val)
+      this.dealFormData()
+    }
+  },
   data() {
     return {
       creatFormData: [],
@@ -148,100 +155,133 @@ export default {
       this.$data.$f.setValue("field", '1212')
     },
     dealFormData() {
+      this.rule = []
       let data = JSON.parse(JSON.stringify(this.psMsg.templateFieldList))
       console.log('ruleData', data)
       let ruleData = []
       data.forEach(element => {
         console.log(element)
-        this.rule.push({
-          type: 'template',
-          name: 'btn',
-          template: '<p class="border-title">' + element.classs + '</p>',
-        })
+        if (element.classs) {
+          this.rule.push({
+            type: 'template',
+            name: 'btn',
+            template: '<p class="border-title">' + element.classs + '</p>',
+          })
+        }
+
         element.filedList.forEach(item => {
           console.log(item)
           if (item.type == '文本型') {
             item.type = 'input';
             this.rule.push({
-              type: 'input',//必要-字段类型，不可改
-              field: item.field,//必要-字段英文名
-              title: item.title,//必要-字段中文名
-              props: {      //不必要-配置
+              type: 'input',
+              field: item.field,
+              title: item.title,
+              props: {
                 type: 'text',
                 placeholder: item.remark
               },
-              validate: [{  //不必要-验证规则
-                // pattern: /^(0|[1-9]\d*)(\s|$|\.\d{1,3}\b)/, // /^[0-9]+([.]{1}[0-9]{1,3})?$/,
-                message: '请正确输入',
+              validate: [{
                 required: item.required,
+                message: '请输入' + item.title,
                 trigger: 'blur'
-              }
-              ]
+              }]
             })
           } else if (item.type == '抽屉型') {
-            console.log('options', item.options)
             item.options.forEach(option => {
-              console.log('option', option)
               option.label = option.value
-              console.log('option2', option)
             });
-            console.log('options', item.options)
             this.rule.push({
               type: "select",
-              field: item.field,//必要-字段英文名
-              title: item.title,//必要-字段中文名
+              field: item.field,
+              title: item.title,
               options: item.options,
-              // props: {
-              //   multiple: true,//是否对选
-              // },
+              validate: [{
+                required: item.required,
+                message: '请输入' + item.title,
+                trigger: 'blur'
+              }]
             })
           } else if (item.type == '单选型') {
-            console.log('options', item.options)
             item.options.forEach(option => {
-              console.log('option', option)
               option.label = option.value
-              console.log('option2', option)
             });
-            console.log('options', item.options)
             this.rule.push({
               type: "radio",
-              field: item.field,//必要-字段英文名
-              title: item.title,//必要-字段中文名
+              field: item.field,
+              title: item.title,
               options: item.options,
-              // props: {
-              //   multiple: true,//是否对选
-              // },
+              validate: [{
+                required: item.required,
+                message: '请输入' + item.title,
+                trigger: 'blur'
+              }]
             })
           } else if (item.type == '复选型') {
-            console.log('options', item.options)
             item.options.forEach(option => {
-              console.log('option', option)
               option.label = option.value
-              console.log('option2', option)
             });
-            console.log('options', item.options)
             this.rule.push({
               type: "checkbox",
-              field: item.field,//必要-字段英文名
-              title: item.title,//必要-字段中文名
+              field: item.field,
+              title: item.title,
               options: item.options,
+              validate: [{
+                required: item.required,
+                message: '请输入' + item.title,
+                trigger: 'blur'
+              }]
             })
+          } else if (item.type == '日期型') {
+            if (item.options[0].value == 'HH:mm') {
+              this.rule.push({
+                type: "TimePicker",
+                field: "section_time",
+                title: item.title,
+                value: [new Date()],
+                props: {
+                  format: item.options[0].value,
+                  placeholder: item.remark
+                },
+                validate: [{
+                  required: item.required,
+                  message: '请输入' + item.title,
+                  trigger: 'blur'
+                }]
+              })
+            } else {
+              this.rule.push({
+                type: "DatePicker",
+                field: "section_day",
+                title: item.title,
+                value: [new Date()],
+                props: {
+                  format: item.options[0].value,
+                  placeholder: item.remark,
+                  type: 'datetime'
+                },
+                validate: [{
+                  required: item.required,
+                  message: '请输入' + item.title,
+                  trigger: 'blur'
+                }]
+              })
+            }
           } else if (item.type == '数字型') {
-            console.log('options', item.options)
             this.rule.push({
               type: "InputNumber",
-              field: "price121",//必要-字段英文名
-              title: item.title,//必要-字段中文名
+              field: "price121",
+              title: item.title,
               value: 1,
               props: {
                 precision: 2
               },
+              validate: [{
+                required: item.required,
+                message: '请输入' + item.title,
+                trigger: 'blur'
+              }]
             })
-            // this.rule.push({
-            //   type: "InputNumber",
-            //   field: item.field,//必要-字段英文名
-            //   title: item.title,//必要-字段中文名
-            // })
           }
         });
       });
@@ -252,4 +292,4 @@ export default {
   }
 }
 </script>
-<style lang="scss" src="@/assets/css/main.scss">
+<style lang="scss" src="@/assets/css/card.scss"></style>

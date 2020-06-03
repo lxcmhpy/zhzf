@@ -45,7 +45,7 @@ export default {
     showModal(compData) {
       this.visible = true;
       console.log('预览dialog',compData)
-      this.psMsg=compData
+      this.psMsg=JSON.parse(JSON.stringify(compData))
     },
 
     //关闭弹窗的时候清除数据

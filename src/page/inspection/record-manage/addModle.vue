@@ -2,7 +2,7 @@
   <div>
     <!-- 创建模板 -->
     <el-drawer title="创建模板" :visible.sync="newModleTable" direction="rtl" size="50%" class="dialo dialog_unlaw max-group-prepend card-drawer">
-      <div style="padding：22px;" class="demo-drawer__content">
+      <div style="padding：22px;" class="demo-drawer__content error-index">
         <el-form :model="formData" :rules="rules" ref="elForm" label-width="100px" class="demo-ruleForm">
           <el-col :span="12">
             <el-form-item label="业务领域" prop="domain">
@@ -31,72 +31,76 @@
                     <i class="iconfont law-btn_shousuo shousuo"></i>
                     <el-form-item prop="class" label-width="0" style="width:100%;margin-bottom: 10px;">
                       <el-select v-model="item.classs" filterable allow-create clearable placeholder="请输入字段组名称，可为空" @change="changeGroup(item)">
-                        <el-option v-for="(commonFiled,index) in commonFiledList" :key="index" :label="commonFiled.classs" :value="commonFiled.classs"></el-option>
+                        <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.classs" :value="commonField.classs"></el-option>
                       </el-select>
                     </el-form-item>
-                    <i class="el-icon-remove" style="margin-left:18px" @click="delFiled(item,formData.templateFieldList)"></i>
+                    <i class="el-icon-remove" style="margin-left:18px" @click="delField(item,formData.templateFieldList)"></i>
                   </template>
-                  <div v-for="filed in item.filedList" :key="filed.id">
+                  <div v-for="field in item.filedList" :key="field.id">
                     <el-row :gutter="20">
                       <el-col :span="2">
                         <el-form-item label-width="0">
-                          <el-checkbox v-model="filed.required" true-label="true" false-label="false">必填</el-checkbox>
+                          <el-checkbox v-model="field.required" true-label="true" false-label="false">必填</el-checkbox>
                         </el-form-item>
                       </el-col>
+                      <!-- {{field}} -->
                       <el-col :span="11">
-                        <el-form-item label-width="0">
-                          <el-input v-model="filed.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
-                          </el-input>
-                        </el-form-item>
+                        <el-form :model="field">
+                          <el-form-item label-width="0" prop="title" :rules="{ required: true, message: '请输入字段名称', trigger: 'blur' }">
+                            <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
+                            </el-input>
+                          </el-form-item>
+                        </el-form>
                       </el-col>
                       <el-col :span="11">
                         <el-form-item label-width="0" style="width:calc(100% - 34px)">
-                          <el-select v-model="filed.type" placeholder="请选择字段类型" @change="changeFiledType(filed)" :disabled="filed.status===0?true:false">
+                          <el-select v-model="field.type" placeholder="请选择字段类型" @change="changeFieldType(field)" :disabled="field.status===0?true:false">
                             <el-option label="文本型" value="文本型"></el-option>
-                            <el-option label="抽屉型" value="抽屉型"></el-option>
+                            <!-- <el-option label="抽屉型" value="抽屉型"></el-option> -->
                             <el-option label="单选型" value="单选型"></el-option>
                             <el-option label="复选型" value="复选型"></el-option>
                             <el-option label="日期型" value="日期型"></el-option>
                             <el-option label="数字型" value="数字型"></el-option>
+                            <el-option label="表达式" value="表达式"></el-option>
                           </el-select>
                         </el-form-item>
-                        <i class="el-icon-remove-outline" @click="delFiled(filed,item.filedList)" style="margin-left:18px;margin-top:-38px;float:right"></i>
+                        <i class="el-icon-remove-outline" @click="delField(field,item.filedList)" style="margin-left:18px;margin-top:-38px;float:right"></i>
                       </el-col>
                     </el-row>
-                    <el-row class="mimi-content" v-if="filed.type=='抽屉型'||filed.type=='单选型'||filed.type=='复选型'">
+                    <el-row class="mimi-content" v-if="field.type=='抽屉型'||field.type=='单选型'||field.type=='复选型'">
                       <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                         <el-form-item label="占位符(字段填报说明)：" label-width="165px">
-                          <el-input size="mini" v-model="filed.remark" clearable>
+                          <el-input size="mini" v-model="field.remark" clearable>
                           </el-input>
                         </el-form-item>
-                        <el-form-item v-for="(radio,index) in filed.options" :key="index" label-width="0">
-                          <i class="el-icon-remove-outline" style="margin-right:14px" @click="delFiled(radio,filed.options)"></i>
-                          <el-input size="mini" v-model="radio.value" placeholder="请输入选项" clearable style="width: calc(100% - 70px)" :disabled="filed.status===0?true:false">
+                        <el-form-item v-for="(radio,index) in field.options" :key="index" label-width="0">
+                          <i class="el-icon-remove-outline" style="margin-right:14px" @click="delField(radio,field.options)"></i>
+                          <el-input size="mini" v-model="radio.value" placeholder="请输入选项" clearable style="width: calc(100% - 70px)" :disabled="field.status===0?true:false">
                           </el-input>
-                          <i class="el-icon-circle-plus-outline" style="margin-left:14px" @click="addRadioList(filed.options)"></i>
+                          <i class="el-icon-circle-plus-outline" style="margin-left:14px" @click="addRadioList(field.options)"></i>
                         </el-form-item>
                       </el-col>
                     </el-row>
-                    <el-row class="mimi-content" v-if="filed.type=='日期型'">
+                    <el-row class="mimi-content" v-if="field.type=='日期型'">
                       <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                         <el-row>
                           <el-form-item label="占位符(字段填报说明)：" label-width="165px">
-                            <el-input size="mini" v-model="filed.remark" clearable>
+                            <el-input size="mini" v-model="field.remark" clearable>
                             </el-input>
                           </el-form-item>
-                          <el-radio-group v-model="filed.dataType" style="width: 100%;">
+                          <el-radio-group v-model="field.options[0].value" style="width: 100%;">
                             <el-row>
-                              <!-- <el-col :span="12">
-                                <el-radio label="el-date-picker,datetime,yyyy-MM-dd HH:mm:ss">精准时间（2020-03-11 12:12:12）</el-radio>
-                              </el-col> -->
                               <el-col :span="12">
-                                <el-radio label="el-date-picker,datetime,yyyy-MM-dd HH:mm">日期和时间（2020-03-11 12:12）</el-radio>
+                                <el-radio label="yyyy-MM-dd HH:mm:ss">精准时间（2020-03-11 12:12:12）</el-radio>
                               </el-col>
                               <el-col :span="12">
-                                <el-radio label="el-date-picker,date">仅日期（2020-03-11 ）</el-radio>
+                                <el-radio label="yyyy-MM-dd HH:mm">日期和时间（2020-03-11 12:12）</el-radio>
                               </el-col>
                               <el-col :span="12">
-                                <el-radio label="el-time-select">仅时间（09:12）</el-radio>
+                                <el-radio label="yyyy-MM-dd">仅日期（2020-03-11 ）</el-radio>
+                              </el-col>
+                              <el-col :span="12">
+                                <el-radio label="HH:mm">仅时间（09:12）</el-radio>
                               </el-col>
                               <!-- <el-col :span="12">
                                 <el-radio label="el-date-picker,daterange">时间段（2020-03-11 12:12-2020-04-11）</el-radio>
@@ -106,10 +110,10 @@
                         </el-row>
                       </el-col>
                     </el-row>
-                    <el-row class="mimi-content" v-if="filed.type=='文本型'||filed.type=='数字型'">
+                    <el-row class="mimi-content" v-if="field.type=='文本型'||field.type=='数字型'||field.type=='表达式'">
                       <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                         <el-form-item label="占位符(字段填报说明)：" label-width="165px">
-                          <el-input size="mini" v-model="filed.remark" clearable>
+                          <el-input size="mini" v-model="field.remark" clearable>
                           </el-input>
                         </el-form-item>
                       </el-col>
@@ -190,12 +194,12 @@
       <div class="demo-drawer__footer footer_fixed">
         <el-button type="primary" @click="submitForm('elForm')">发布</el-button>
         <el-button @click="preview(formData)">预览</el-button>
-        <!-- <el-button @click="resetForm('elForm')">重置</el-button> -->
+        <el-button @click="resetForm('elForm')">重置</el-button>
       </div>
     </el-drawer>
     <chooseLawPerson ref="templateAdminRef" @setLawPer="setAdminPerson" @userList="getAllUserList"></chooseLawPerson>
     <chooseLawPerson1 ref="templateUserRef" @setLawPer="setUserPerson" @userList="getAllUserList"></chooseLawPerson1>
-    <preview ref="previewRef" @filedList="getAllFiledList"></preview>
+    <preview ref="previewRef" @filedList="getAllFieldList"></preview>
   </div>
 </template>
 <script>
@@ -223,6 +227,7 @@ export default {
       organData: [],//机构列表
       lawCateList: [], //业务领域列表
       globalCont: 1,//key1
+      globalContGroup: 1,//key1
       defaultProps: {
         children: "children",
         label: "label"
@@ -259,11 +264,7 @@ export default {
         }
       ],
       formData: {
-        // category:'',
-        // current:'',
         // id:'',
-        // remark: '',
-        // size:'',
         id: '',//修改必传
         templateOrgan: '',
         templateOrganId: '',
@@ -277,18 +278,17 @@ export default {
         createName: '',//创建人
         organId: '',//创建人机构id
         organName: '',//创建人机构名称
-        // staff: "",
         icon: 'icon_qit',
         domain: '公路路政',
         title: 'pc测试',
         templateFieldList: [
           {
-            value: 0,
+            // value: ,
+            sort: 0,//新加-前端定义
             classs: '',
             filedList: [
               {
-                id: '',//字段id
-                // classs: '',
+                id: '',//字段id-修改
                 type: '文本型',//必要-字段类型，不可改
                 field: 'key0',//必要-字段英文名
                 title: '姓名',//必要-字段中文名
@@ -305,7 +305,7 @@ export default {
           }],
         count: 0
       },
-      commonFiledList: [],
+      commonFieldList: [],
       defautfiledList: {
         // id: '',//字段id
         // classs: '',
@@ -346,9 +346,7 @@ export default {
       this.getAllOrgan('root');
       this.newModleTable = true;
       this.$nextTick(() => {
-        // this.draw()
         this.resetForm('elForm')
-
       });
     },
     // 根据id查找
@@ -373,15 +371,15 @@ export default {
     findCommonField() {
       findAllCommonFieldApi().then(
         res => {
-          this.commonFiledList = res.data
-          this.commonFiledList.forEach(element => {
+          this.commonFieldList = res.data
+          this.commonFieldList.forEach(element => {
             element.filedList.forEach(item => {
               if (item.options) {
                 item.options = JSON.parse(item.options)
               }
             });
           });
-          console.log('common', this.commonFiledList)
+          console.log('common', this.commonFieldList)
 
         },
         error => {
@@ -390,8 +388,13 @@ export default {
 
     },
     addGroup() {
-      this.formData.templateFieldList.push({ "value": this.globalCont, filedList: [] })
+      this.formData.templateFieldList.push({ "sort": this.globalContGroup, filedList: [] })
+      let pushDataList = JSON.parse(JSON.stringify(this.defautfiledList));
+      pushDataList.field = 'key' + this.globalContGroup
+      console.log('pushDataList', pushDataList)
+      this.formData.templateFieldList[this.globalContGroup].filedList.push(pushDataList)
       this.activeNames.push(this.globalCont)
+      this.globalContGroup++
       this.globalCont++;
       console.log('formData.templateFieldList', this.formData.templateFieldList)
     },
@@ -400,19 +403,19 @@ export default {
       if (this.activeNames.indexOf(index) == -1) {
         this.activeNames.push(index)
       }
-      console.log(index)
+      // console.log(index)
       console.log('defautfiledList', this.defautfiledList)
-      console.log('classs', classs)
+      // console.log('classs', classs)
       let pushDataList = JSON.parse(JSON.stringify(this.defautfiledList));
       pushDataList.field = 'key' + this.globalCont
       this.globalCont++
       console.log('pushDataList', pushDataList)
       this.formData.templateFieldList[index].filedList.push(pushDataList)
     },
-    delFiled(filed, filedList) {
-      console.log(filed)
+    delField(field, filedList) {
+      console.log(field)
       if (filedList.length > 1) {
-        var index = filedList.indexOf(filed)
+        var index = filedList.indexOf(field)
         console.log(index)
         if (index !== -1) {
           filedList.splice(index, 1)
@@ -432,13 +435,16 @@ export default {
     submitForm(formName) {
       console.time('global')
       //设置classs\templetId
+      let sort = 1
       this.formData.templateFieldList.forEach(element => {
         console.log(element)
-        element.filedList.forEach(item => {
-          console.log(item.classs)
-          item.classs = element.classs;
-          item.templateId = this.formData.id || '';
-        });
+        element.sort = sort;
+        sort++
+        // element.filedList.forEach(item => {
+        //   console.log(item.classs)
+        //   item.classs = element.classs;
+        //   item.templateId = this.formData.id || '';
+        // });
 
       });
 
@@ -451,34 +457,32 @@ export default {
           }
           else {
             // alert('submit!');
-            console.log("上传字段formdata", this.formData)
             let data = JSON.parse(JSON.stringify(this.formData))
             data.templateFieldList = JSON.stringify(data.templateFieldList)
             data.templateUserIdList = '';
             data.templateAdminIdList = '';
             data.count = this.globalCont
-            console.log("上传字段formdata", this.formData)
+            this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
             console.log('提交的字段', data)
 
-            this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
             console.log('this.formData.templateOrganId', this.formData.templateOrganId)
-            saveOrUpdateRecordModleApi(data).then(
-              res => {
-                console.log(res)
-                if (res.code == 200) {
-                  this.$message({
-                    type: "success",
-                    message: res.msg
-                  });
-                  this.$emit("getAddModle", 'sucess');
-                  this.newModleTable = false;
-                } else {
-                  this.$message.error(res.msg);
-                }
-              },
-              error => {
-                // reject(error);
-              })
+            // saveOrUpdateRecordModleApi(data).then(
+            //   res => {
+            //     console.log(res)
+            //     if (res.code == 200) {
+            //       this.$message({
+            //         type: "success",
+            //         message: res.msg
+            //       });
+            //       this.$emit("getAddModle", 'sucess');
+            //       this.newModleTable = false;
+            //     } else {
+            //       this.$message.error(res.msg);
+            //     }
+            //   },
+            //   error => {
+            //     // reject(error);
+            //   })
 
           }
         } else {
@@ -606,14 +610,11 @@ export default {
             });
           }
           _this.organData = res.data;
-          // console.log(_this.defaultExpandedKeys);
-          // console.log(_this.organData);
           if (organId == "root") {
             _this.currentOrganId = res.data[0].id;
           } else {
             _this.currentOrganId = organId;
           }
-          //   _this.getSelectOrgan();
         },
         err => {
           console.log(err);
@@ -666,21 +667,20 @@ export default {
       this.compData = this.formData
       this.$refs.previewRef.showModal(this.compData);
     },
-    getAllFiledList(list) {
+    getAllFieldList(list) {
       console.log('传递数据-预览', list)
     },
     // form类型
-    changeFiledType(filed) {
-      // if (filed.type == 'el-radio-group') {
-      //   // 单选
-      //   if (filed.options.length == 0) {
-      //     this.addRadioList
-      //   }
-      // }
+    changeFieldType(field) {
+      console.log('change', field)
+      if (field.type == '日期型') {
+        //   // 默认日期类型
+        field.options[0].value = 'yyyy-MM-dd HH:mm:ss'
+      }
     },
     changeGroup(group) {
       // console.log(group)
-      var defaut = this.commonFiledList.find(item => item.classs === group.classs)
+      var defaut = this.commonFieldList.find(item => item.classs === group.classs)
       // console.log('this.defautfiledList', this.defautfiledList)
       if (defaut) {
         // 通用字段

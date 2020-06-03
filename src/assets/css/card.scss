@@ -253,7 +253,7 @@
 .card-bg-content {
     background   : #F6F7FB;
     padding      : 1px 20px;
-    margin-top   : -28px;
+    margin-top   : -27px;
     margin-bottom: 14px;
     margin-right : 34px;
 }
@@ -316,13 +316,31 @@
     i {
         color: #4AAFA7;
     }
-    .el-button--default{
+
+    .el-button--default {
         border-color: transparent;
     }
 
 }
-.min-lable{
-    .el-form-item__label{
+
+.min-lable {
+    .el-form-item__label {
         line-height: 28px;
+    }
+}
+
+.error-index {
+    .el-form-item__error {
+        z-index: 2;
+    }
+}
+
+/* 模板配置样式 */
+.modle-set {
+    .el-radio-group {
+        .el-radio:first-child {
+            line-height: 40px;
+        }
+        line-height: 20px;
     }
 }
