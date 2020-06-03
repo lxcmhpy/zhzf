@@ -1,5 +1,5 @@
 {
-  "CURRENT": "NW",
+  "CURRENT": "LOCAL",
   "PS": {
     "CAPTCHA_HOST": "系统管理/案件办理  96：9000",
     "PDF_HOST": "文件服务器地址",
@@ -16,8 +16,8 @@
     "QZ_ACTIVEX_HOST": "http://124.192.215.4:8083/",
     "LAW_SUPERVISE_HOST": "http://124.192.215.4:9000/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
-    "CHECK_API":"http://124.192.215.11:8086/cy",
-    "XJ_IMG_HOST": "http://218.84.108.29:9456"
+    "XJ_IMG_HOST": "http://218.84.108.29:9456",
+    "CHECK_API":"http://124.192.215.11:8086"
   },
   "NW": {
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
@@ -25,9 +25,9 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086/cy",
-    "XZJC_HOST":"http://172.16.168.38:8099/xzjc/",
-    "XJ_IMG_HOST": "http://218.84.108.29:9456"
+    "XJ_IMG_HOST": "http://218.84.108.29:9456",
+    "CHECK_API":"http://172.16.170.91:8086",
+    "XZJC_HOST":"http://172.16.170.44:8099"
   },
   "SGX": {
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
@@ -35,7 +35,7 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086/cy"
+    "CHECK_API":"http://172.16.170.91:8086"
   },
   "LOCAL": {
     "CAPTCHA_HOST": "http://127.0.0.1:9000",
@@ -43,7 +43,7 @@
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:8090/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086/cy"
+    "CHECK_API":"http://172.16.170.91:8086"
   },
   "wj": {
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
@@ -51,6 +51,6 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086/cy"
+    "CHECK_API":"http://172.16.170.91:8086"
   }
 }

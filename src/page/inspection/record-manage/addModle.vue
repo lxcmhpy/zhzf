@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 创建模板 -->
-    <el-drawer title="创建模板" :visible.sync="newModleTable" direction="rtl" size="50%" class="dialo dialog_unlaw max-group-prepend card-drawer">
+    <el-drawer :title="drawerTitle" :visible.sync="newModleTable" direction="rtl" size="50%" class="dialo dialog_unlaw max-group-prepend card-drawer">
       <div style="padding：22px;" class="demo-drawer__content error-index">
         <el-form :model="formData" :rules="rules" ref="elForm" label-width="100px" class="demo-ruleForm">
           <el-col :span="12">
@@ -22,6 +22,7 @@
               <el-button icon="el-icon-plus" size="medium" @click="addGroup()">添加新字段组</el-button>
             </span>
           </p>
+          <!-- {{formData.templateFieldList}} -->
           <div class="collapse-title-foem">
             <el-collapse v-model="activeNames" class="clear">
               <div v-for="(item,index) in formData.templateFieldList" :key="index">
@@ -36,7 +37,7 @@
                     </el-form-item>
                     <i class="el-icon-remove" style="margin-left:18px" @click="delField(item,formData.templateFieldList)"></i>
                   </template>
-                  <div v-for="field in item.filedList" :key="field.id">
+                  <div v-for="field in item.fieldList" :key="field.id">
                     <el-row :gutter="20">
                       <el-col :span="2">
                         <el-form-item label-width="0">
@@ -64,7 +65,7 @@
                             <el-option label="表达式" value="表达式"></el-option>
                           </el-select>
                         </el-form-item>
-                        <i class="el-icon-remove-outline" @click="delField(field,item.filedList)" style="margin-left:18px;margin-top:-38px;float:right"></i>
+                        <i class="el-icon-remove-outline" @click="delField(field,item.fieldList)" style="margin-left:18px;margin-top:-38px;float:right"></i>
                       </el-col>
                     </el-row>
                     <el-row class="mimi-content" v-if="field.type=='抽屉型'||field.type=='单选型'||field.type=='复选型'">
@@ -194,12 +195,12 @@
       <div class="demo-drawer__footer footer_fixed">
         <el-button type="primary" @click="submitForm('elForm')">发布</el-button>
         <el-button @click="preview(formData)">预览</el-button>
-        <el-button @click="resetForm('elForm')">重置</el-button>
+        <!-- <el-button @click="resetForm('elForm')">重置</el-button> -->
       </div>
     </el-drawer>
     <chooseLawPerson ref="templateAdminRef" @setLawPer="setAdminPerson" @userList="getAllUserList"></chooseLawPerson>
     <chooseLawPerson1 ref="templateUserRef" @setLawPer="setUserPerson" @userList="getAllUserList"></chooseLawPerson1>
-    <preview ref="previewRef" @filedList="getAllFieldList"></preview>
+    <preview ref="previewRef" @fieldList="getAllFieldList"></preview>
   </div>
 </template>
 <script>
@@ -218,6 +219,7 @@ export default {
   },
   data() {
     return {
+      drawerTitle:'创建模板',
       newModleTable: false,
       currentUserLawId: '',
       activeNames: [0],
@@ -286,7 +288,7 @@ export default {
             // value: ,
             sort: 0,//新加-前端定义
             classs: '',
-            filedList: [
+            fieldList: [
               {
                 id: '',//字段id-修改
                 type: '文本型',//必要-字段类型，不可改
@@ -306,7 +308,7 @@ export default {
         count: 0
       },
       commonFieldList: [],
-      defautfiledList: {
+      defautfieldList: {
         // id: '',//字段id
         // classs: '',
         type: '文本型',//必要-字段类型，不可改
@@ -339,6 +341,7 @@ export default {
       if (editdata) {
         this.editId = editdata.id;
         this.findDataByld()
+        this.drawerTitle='修改模板'
       }
       this.findCommonField()
       this.getEnforceLawType();
@@ -351,16 +354,29 @@ export default {
     },
     // 根据id查找
     findDataByld() {
-      findRecordModleByIdApi(this.editId).then(
-        res => {
-          this.formData = res.data
-        },
-        error => {
-          reject(error);
-        })
+      let _this = this
       findRecordlModleFieldByIdeApi(this.editId).then(
         res => {
-          this.formData.templateFieldList = res.data
+          let list = res.data
+          let sort = 1
+          list.forEach(element => {
+            element.sort = sort;
+            sort++;
+            element.fieldList.forEach(item => {
+              if (item.options) {
+                item.options = JSON.parse(item.options)
+              }
+            });
+          });
+          findRecordModleByIdApi(this.editId).then(
+            res => {
+              console.log('list',list)
+              _this.formData = res.data
+              _this.formData.templateFieldList = list
+            },
+            error => {
+              reject(error);
+            })
         },
         error => {
           reject(error);
@@ -373,7 +389,7 @@ export default {
         res => {
           this.commonFieldList = res.data
           this.commonFieldList.forEach(element => {
-            element.filedList.forEach(item => {
+            element.fieldList.forEach(item => {
               if (item.options) {
                 item.options = JSON.parse(item.options)
               }
@@ -388,11 +404,11 @@ export default {
 
     },
     addGroup() {
-      this.formData.templateFieldList.push({ "sort": this.globalContGroup, filedList: [] })
-      let pushDataList = JSON.parse(JSON.stringify(this.defautfiledList));
+      this.formData.templateFieldList.push({ "sort": this.globalContGroup, fieldList: [] })
+      let pushDataList = JSON.parse(JSON.stringify(this.defautfieldList));
       pushDataList.field = 'key' + this.globalContGroup
       console.log('pushDataList', pushDataList)
-      this.formData.templateFieldList[this.globalContGroup].filedList.push(pushDataList)
+      this.formData.templateFieldList[this.globalContGroup].fieldList.push(pushDataList)
       this.activeNames.push(this.globalCont)
       this.globalContGroup++
       this.globalCont++;
@@ -404,21 +420,21 @@ export default {
         this.activeNames.push(index)
       }
       // console.log(index)
-      console.log('defautfiledList', this.defautfiledList)
+      console.log('defautfieldList', this.defautfieldList)
       // console.log('classs', classs)
-      let pushDataList = JSON.parse(JSON.stringify(this.defautfiledList));
+      let pushDataList = JSON.parse(JSON.stringify(this.defautfieldList));
       pushDataList.field = 'key' + this.globalCont
       this.globalCont++
       console.log('pushDataList', pushDataList)
-      this.formData.templateFieldList[index].filedList.push(pushDataList)
+      this.formData.templateFieldList[index].fieldList.push(pushDataList)
     },
-    delField(field, filedList) {
+    delField(field, fieldList) {
       console.log(field)
-      if (filedList.length > 1) {
-        var index = filedList.indexOf(field)
+      if (fieldList.length > 1) {
+        var index = fieldList.indexOf(field)
         console.log(index)
         if (index !== -1) {
-          filedList.splice(index, 1)
+          fieldList.splice(index, 1)
         }
       } else {
         this.$message({ message: '不可删除，最少支持一个选项!', type: 'warning' });
@@ -435,24 +451,24 @@ export default {
     submitForm(formName) {
       console.time('global')
       //设置classs\templetId
-      let sort = 1
-      this.formData.templateFieldList.forEach(element => {
-        console.log(element)
-        element.sort = sort;
-        sort++
-        // element.filedList.forEach(item => {
-        //   console.log(item.classs)
-        //   item.classs = element.classs;
-        //   item.templateId = this.formData.id || '';
-        // });
+      // let sort = 1
+      // this.formData.templateFieldList.forEach(element => {
+      //   console.log(element)
+      //   element.sort = sort;
+      //   sort++
+      //   // element.fieldList.forEach(item => {
+      //   //   console.log(item.classs)
+      //   //   item.classs = element.classs;
+      //   //   item.templateId = this.formData.id || '';
+      //   // });
 
-      });
+      // });
 
       console.timeEnd('global')
 
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.formData.templateFieldList.length == 0 || (this.formData.templateFieldList.length == 1 && this.formData.templateFieldList[0].filedList.length == 0)) {
+          if (this.formData.templateFieldList.length == 0 || (this.formData.templateFieldList.length == 1 && this.formData.templateFieldList[0].fieldList.length == 0)) {
             this.$message('该请至少添加一个字段！');
           }
           else {
@@ -466,23 +482,23 @@ export default {
             console.log('提交的字段', data)
 
             console.log('this.formData.templateOrganId', this.formData.templateOrganId)
-            // saveOrUpdateRecordModleApi(data).then(
-            //   res => {
-            //     console.log(res)
-            //     if (res.code == 200) {
-            //       this.$message({
-            //         type: "success",
-            //         message: res.msg
-            //       });
-            //       this.$emit("getAddModle", 'sucess');
-            //       this.newModleTable = false;
-            //     } else {
-            //       this.$message.error(res.msg);
-            //     }
-            //   },
-            //   error => {
-            //     // reject(error);
-            //   })
+            saveOrUpdateRecordModleApi(data).then(
+              res => {
+                console.log(res)
+                if (res.code == 200) {
+                  this.$message({
+                    type: "success",
+                    message: res.msg
+                  });
+                  this.$emit("getAddModle", 'sucess');
+                  this.newModleTable = false;
+                } else {
+                  this.$message.error(res.msg);
+                }
+              },
+              error => {
+                // reject(error);
+              })
 
           }
         } else {
@@ -681,16 +697,16 @@ export default {
     changeGroup(group) {
       // console.log(group)
       var defaut = this.commonFieldList.find(item => item.classs === group.classs)
-      // console.log('this.defautfiledList', this.defautfiledList)
+      // console.log('this.defautfieldList', this.defautfieldList)
       if (defaut) {
         // 通用字段
-        group.filedList = defaut.filedList
-      } else if (!group.filedList || group.filedList.length == 0) {
-        console.log(group.filedList)
-        group.filedList = [];
-        let defautfiledList = JSON.parse(JSON.stringify(this.defautfiledList))
-        defautfiledList.title = '';
-        group.filedList.push(defautfiledList)
+        group.fieldList = defaut.fieldList
+      } else if (!group.fieldList || group.fieldList.length == 0) {
+        console.log(group.fieldList)
+        group.fieldList = [];
+        let defautfieldList = JSON.parse(JSON.stringify(this.defautfieldList))
+        defautfieldList.title = '';
+        group.fieldList.push(defautfieldList)
       }
     },
     resetForm(formName) {
