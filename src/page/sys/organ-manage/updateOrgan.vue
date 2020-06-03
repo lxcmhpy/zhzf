@@ -153,6 +153,23 @@
         </div>
       </div>
     </el-form>
+    <el-form
+      :model="addValueForm"
+      :rules="rules"
+      ref="addValueForm"
+      label-width="100px"
+      class="addOrganClass"
+      v-if="attachedPropertyFlag"
+    >
+      <div class="part" v-if="attachedPropertyFlag">
+        <p class="titleP" v-if="attachedPropertyFlag">附属属性</p>
+        <div v-for="item in attachedPropertyList" :key="item.id">
+          <el-form-item :label="item.propertyName" :prop="item.propertyEnName">
+              <el-input v-model="addValueForm.propertyValue[item.propertyEnName]"></el-input>
+          </el-form-item>
+        </div>
+      </div>
+    </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取 消</el-button>
       <el-button type="primary" @click="addOrgan('addOrganForm')">确 定</el-button>
@@ -160,7 +177,8 @@
   </el-dialog>
 </template>
 <script>
-import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA'
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA';
+import {getAttachedPropertyByConditionApi,getAttachedPropertyAnsValueApi,addAttachedPropertyValueApi} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -179,7 +197,11 @@ export default {
         contactor: "",
         fundingSource: "",
         legalBasis: "",
-        mainPowers: ""
+        mainPowers: "",
+        
+      },
+      addValueForm:{
+        propertyValue:{}
       },
       rules: {
         name: [{ required: true, message: "请输入机构名称", trigger: "blur" }]
@@ -192,7 +214,10 @@ export default {
       isDisabled:false,  //查看详情禁用form
       accessToAuthorityArray: [], // 职权取得方式
       organNatureArray: [], //机构性质
-      organTypeArray: []
+      organTypeArray: [],
+      attachedPropertyList: [],//附属属性列表
+      attachedPropertyFlag: false,
+      attachedPropertyValueList:[]
     };
   },
 
@@ -202,7 +227,7 @@ export default {
       this.handelType = type;
       if (type == 0) {
         this.dialogTitle = "新增机构";
-
+        
         this.parentNode = data;
         this.addOrganForm.pidName = data.parentNodeName;
         this.isDisabled = false;
@@ -217,6 +242,8 @@ export default {
         this.organId = data.id;
         this.parentNode = data.parentNode;
         this.getOrganDetail(data.id);
+        this.getAttchedProperties();
+        this.getAttchedPropertiesAndValue(data.id);
         this.isDisabled = false;
       }
       this.getBasicData()
@@ -225,6 +252,7 @@ export default {
     closeDialog() {
       this.visible = false;
       this.$refs["addOrganForm"].resetFields();
+      this.$refs["addValueForm"].resetFields();
       this.errorOrganName = false;
     },
     //聚焦清除错误信息
@@ -266,10 +294,34 @@ export default {
              _this.$emit("getAllOrgan2",_this.addOrganForm.pid);
              // this.$emit("getSelectOrgan");
               console.log("新增机构", res);
-              _this.$message({
-                type: "success",
-                message: _this.handelType == 0 ? "添加成功!" : "修改成功"
-              });
+              //保存附属属性
+              let valueList = [];
+              this.attachedPropertyValueList.forEach(item => {
+                  let value = {
+                    propertyId: item.propertyId,
+                    propertyValue: _this.addValueForm.propertyValue[item.propertyEnName]
+                  };
+                  valueList.push(value);
+              })
+              console.log("修改属性值",valueList);
+              let data = {
+                dataId:res.data.id,
+                propertyValueList: valueList
+              };
+              console.log("1234",data);
+              addAttachedPropertyValueApi(data).then(  
+                 res => {
+                  console.log("属性值", res);
+                  // _this.addOrganForm = res.data;
+                  _this.$message({
+                    type: "success",
+                    message: _this.handelType == 0 ? "添加成功!" : "修改成功"
+                  });
+                },
+                err => {
+                  console.log(err);
+                }
+              );              
               _this.visible = false;
             },
             err => {
@@ -293,6 +345,43 @@ export default {
           console.log(err);
         }
       );
+    },
+    //查询机构表附属属性
+    getAttchedProperties(){
+      let data = {
+        propertyType: "0",
+      };
+      getAttachedPropertyByConditionApi(data).then(
+          res => {
+            console.log("附属属性列表",res);
+            this.attachedPropertyFlag = true;
+            this.attachedPropertyList = res.data;
+            res.data.forEach(item => {
+              this.$set( this.addValueForm.propertyValue,item.propertyEnName);
+              // this.addValueForm.propertyValue[item.propertyEnName]=item.propertyValue;
+            }) 
+          },
+          err => {
+            console.log(err);
+          }
+        );
+    },
+    //查询机构表附属属性以及值
+    getAttchedPropertiesAndValue(dataId){
+      getAttachedPropertyAnsValueApi(dataId).then(
+          res => {
+            console.log("附属属性值列表",res);
+            this.attachedPropertyFlag = true;
+            this.attachedPropertyValueList = res.data;
+            res.data.forEach(item => {
+              this.$set( this.addValueForm.propertyValue,item.propertyEnName);
+              this.addValueForm.propertyValue[item.propertyEnName]=item.propertyValue;
+            })            
+          },
+          err => {
+            console.log(err);
+          }
+        );
     },
     async getDictListDetailTb (val) {
         let list = await this.$store.dispatch("getDictListDetailTb", val);

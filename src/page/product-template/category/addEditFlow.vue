@@ -20,7 +20,7 @@
         </el-form-item>
       </div>
       <div class="item">
-        <el-form-item label="流程url" prop="flowUrl">
+        <el-form-item label="流程类型" prop="flowUrl">
           <el-input v-model="addFlowForm.flowUrl"></el-input>
         </el-form-item>
       </div>
