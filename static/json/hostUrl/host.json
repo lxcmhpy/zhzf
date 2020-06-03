@@ -6,7 +6,7 @@
     "QZ_ACTIVEX_HOST": "96:8083",
     "LAW_SUPERVISE_HOST": "综合监管/事务中心 96:9000",
     "VIDEO_HOST": "综合监管语音通话",
-    "CHECK_API":"http://172.16.170.91:8086/cy",
+    "CHECK_API":"http://172.16.170.91:8086",
     "XZJC_HOST":"信息检查 91:8086"
   },
   "TEST": {
@@ -15,7 +15,7 @@
     "QZ_ACTIVEX_HOST": "http://124.192.215.4:8083/",
     "LAW_SUPERVISE_HOST": "http://124.192.215.4:9000/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
-    "CHECK_API":"http://124.192.215.11:8086/cy"
+    "CHECK_API":"http://124.192.215.11:8086"
   },
   "NW": {
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
@@ -23,8 +23,8 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086/cy",
-    "XZJC_HOST":"http://172.16.170.44:8099/"
+    "CHECK_API":"http://172.16.170.91:8086",
+    "XZJC_HOST":"http://172.16.170.44:8099"
   },
   "SGX": {
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
@@ -32,7 +32,7 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086/cy"
+    "CHECK_API":"http://172.16.170.91:8086"
   },
   "LOCAL": {
     "CAPTCHA_HOST": "http://127.0.0.1:9000",
@@ -40,7 +40,7 @@
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:8090/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086/cy"
+    "CHECK_API":"http://172.16.170.91:8086"
   },
   "wj": {
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
@@ -48,6 +48,6 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086/cy"
+    "CHECK_API":"http://172.16.170.91:8086"
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 创建模板 -->
-    <el-drawer :title="drawerTitle"" :visible.sync="newModleTable" direction="rtl" size="50%" class="dialo dialog_unlaw max-group-prepend card-drawer">
+    <el-drawer :title="drawerTitle" :visible.sync="newModleTable" direction="rtl" size="50%" class="dialo dialog_unlaw max-group-prepend card-drawer">
       <div style="padding：22px;" class="demo-drawer__content error-index">
         <el-form :model="formData" :rules="rules" ref="elForm" label-width="100px" class="demo-ruleForm">
           <el-col :span="12">
@@ -219,7 +219,7 @@ export default {
   },
   data() {
     return {
-      drawerTitle:'drawerTitle',
+      drawerTitle:'创建模板',
       newModleTable: false,
       currentUserLawId: '',
       activeNames: [0],
