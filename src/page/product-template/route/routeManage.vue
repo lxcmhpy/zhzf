@@ -1,7 +1,6 @@
 <template>
-<div class="route_class">
-  <div class="check check_home">
-    <div class="home_top shadow">
+  <div>
+    <div class="route_top route_shadow">
       <div class="center_content" style="margin-top: 20px;">
         <span class="title">路线管理</span>
       </div>
@@ -59,7 +58,7 @@
       </div>
       <addOrUpdateRoute ref="addOrUpdateRouteRef"></addOrUpdateRoute>
     </div>
-    <div class="home_bottom shadow">
+    <div class="route_bottom route_shadow">
       <div class="center_content" style="margin-top: 20px;">
         <span class="title">路段管理</span>
       </div>
@@ -119,7 +118,6 @@
       <addOrUpdateSection ref="addOrUpdateSectionRef"></addOrUpdateSection>
     </div>
   </div>
-</div>
 </template>
 <script>
     import addOrUpdateRoute from "./addOrUpdateRoute";
@@ -318,6 +316,31 @@
         }
     }
 </script>
-<style lang='scss' src="@/assets/css/routeManage.scss" scoped></style>
-
+<style type="text/css">
+  .icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+  }
+  .title {
+    height: 65px;
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(32, 35, 43, 1);
+  }
+  .route_top {
+    padding: 22px;
+  }
+  .route_bottom {
+    padding: 22px;
+  }
+  .route_shadow {
+    margin-top: 22px;
+    -webkit-box-shadow: 0 6px 4px 0 rgba(94,137,181,.1);
+    background: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
 </style>

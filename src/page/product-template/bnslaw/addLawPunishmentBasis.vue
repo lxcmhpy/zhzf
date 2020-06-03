@@ -8,6 +8,7 @@
           style="width:100%"
           placeholder="请选择法规名称"
           @change="getBnsalwListVo"
+          filterable
         >
           <el-option
             v-for="item in getBnslawList"

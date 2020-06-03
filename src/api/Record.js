@@ -68,3 +68,43 @@ export function findAllCommonFieldApi() {
         cancelToken: setCancelSource()
     });
 }
+//通过业务领域分组所有模板
+export function findAllRecordModleApi() {
+    return request({
+        url: XZJC_HOST + "template/queryByDomain",
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        cancelToken: setCancelSource()
+    });
+}
+//通过模板名称查询模板
+export function findRecordlModleByNameApi(data) {
+    return request({
+        url: XZJC_HOST + "template/findByTemplateName/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        cancelToken: setCancelSource()
+    });
+}
+//通过模板UUid查询模板字段
+export function findRecordlModleFieldByIdeApi(data) {
+    return request({
+        url: XZJC_HOST + "templateField/findByTemplateUUID/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        cancelToken: setCancelSource()
+    });
+}
+//根据ID查找模板
+export function findRecordModleByIdApi(data) {
+    return request({
+        url: XZJC_HOST + "template/getById/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        cancelToken: setCancelSource()
+    });
+}

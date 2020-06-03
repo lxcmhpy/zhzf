@@ -792,7 +792,7 @@
   import {
     getDictListDetailByNameApi, findHistoryBySignApi, findRouteManageByOrganIdApi
   } from "@/api/system";
-
+  import {findJudgFreedomListApi} from "@/api/caseHandle";
 
   export default {
     data() {
@@ -1276,7 +1276,12 @@
       },
       //查询自由裁量标准
       findJudgFreedomList() {
-        this.$store.dispatch("findJudgFreedomList").then(
+        let someCaseInfo = iLocalStroage.gets("someCaseInfo");
+        let data ={
+          causeId:someCaseInfo.illageActId,
+        };
+        console.log("causeId",data);
+        findJudgFreedomListApi(data).then(
           res => {
             console.log(res);
             this.judgFreedomList = res.data;
