@@ -5,13 +5,13 @@
             <el-input v-model="addPageForm.bnslawNameCog"  style = "width:100%" disabled></el-input>
       </el-form-item>
       <el-form-item label="条" prop="itemCog">
-        <el-input v-model="addPageForm.itemCog" placeholder="条"></el-input>
+        <el-input v-model.number="addPageForm.itemCog" placeholder="条"></el-input>
       </el-form-item>
       <el-form-item label="款" prop="clauseCog">
-        <el-input v-model="addPageForm.clauseCog" placeholder="款"></el-input>
+        <el-input v-model.number="addPageForm.clauseCog" placeholder="款"></el-input>
       </el-form-item>
       <el-form-item label="项" prop="iitemCog">
-        <el-input v-model="addPageForm.iitemCog" placeholder="项"></el-input>
+        <el-input v-model.number="addPageForm.iitemCog" placeholder="项"></el-input>
       </el-form-item>
       <el-form-item label="法规原文" prop="bnsLawNoteCog">
         <el-input v-model="addPageForm.bnsLawNoteCog" placeholder="法规原文" type="textarea" :rows="2"></el-input>
@@ -86,12 +86,12 @@ export default {
       addeLawCognizanceApi(this.addPageForm).then(
         res => {
           console.log("添加认定依据", res);
-          if (res.code == '200') {
+          if (res.code == '200' && res.data != false) {
             this.$message({ message: '添加成功', type: 'success' });
             this.visible = false;
             this.$emit("getListEmit");
           } else {
-            this.$message.error('添加失败');
+            this.$message.error('添加失败,已有该认定依据！');
             return
           }
         },

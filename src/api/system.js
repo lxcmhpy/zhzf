@@ -709,7 +709,7 @@ export function deleteCaseNumberApi(id) {
   });
 }
 
-//获取违法行为列表
+//分页获取违法行为列表
 export function getCaseCauseListApi(data) {
   console.log(data);
   return request({
@@ -1137,6 +1137,56 @@ export function deleteSectionApi(id) {
   return request({
     url: "/case/doc/sectionManagement/delete/"+id,
     method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除自由裁量权
+export function deleteDiscretionByIdApi(id) {
+  return request({
+    url: "/bnslaw/sys/bnslawCause/deleteDiscretionById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//分页查找自由裁量权
+export function getDiscretionListApi(data) {
+  console.log("data",data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findDiscretionPageByForm",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加、修改自由裁量权
+export function addDiscretionApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/addOrUpdateDiscretion",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//获取违法行为列表
+export function getCaseCauseListVoApi(data) {
+  console.log(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findCaseCauseByList",
+    method: "get",
+    params: data,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()

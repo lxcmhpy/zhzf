@@ -3,12 +3,15 @@
     <div class="searchAndpageBox" id="dictBox">
       <div class="handlePart">
         <div class="search">
-          <el-form :inline="true" :model="dicSearchForm">
+          <el-form :inline="true" :model="dicSearchForm" ref="dicSearchForm">
             <el-form-item label="名称">
               <el-input v-model="dicSearchForm.name" placeholder="输入名称"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="getDictList">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="resetForm('dicSearchForm')">重置</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addDict">添加</el-button>
@@ -94,7 +97,12 @@ export default {
         }
       );
     },
-
+    //重置
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+      this.currentPage = 1;
+      this.getDictList();
+    },
     //获取字典值
     getDictVal(row) {
       this.$refs.showDictKeyRef.showModal(row);

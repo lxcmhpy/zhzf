@@ -34,9 +34,7 @@
     </div>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
-        <el-table-column type="index" width="60" align="center">
-          <template slot="header">序号</template>
-        </el-table-column>
+        <el-table-column type="index" :index="showIndex" label="序号" width="60" align="center"></el-table-column>
         <el-table-column prop="name" label="名称" align="center"></el-table-column>
         <el-table-column prop="path" label="路径" align="center"></el-table-column>
         <el-table-column prop="linkName" label="环节名称" align="center"></el-table-column>
@@ -136,8 +134,6 @@ export default {
     },
     //添加
     addDocType(){
-      let length = this.tableData.length;
-      let sort = this.tableData[length-1].sort;
       let data={
             leng:this.total
         }
@@ -177,6 +173,9 @@ export default {
           }
         }
       );
+    },
+    showIndex(index){
+      return (this.currentPage-1)*this.pageSize+index+1;
     }
   },
   mounted() {

@@ -31,9 +31,7 @@
     </div>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
-        <el-table-column type="index" width="60" align="center">
-          <template slot="header">序号</template>
-        </el-table-column>
+        <el-table-column type="index" :index="showIndex" label="序号" width="60" align="center"></el-table-column>
         <el-table-column prop="name" label="模板名称" align="center"></el-table-column>
         <el-table-column prop="caseType" label="所属案件类型" align="center"></el-table-column>
         <el-table-column prop="remark" label="描述" align="center"></el-table-column>
@@ -158,8 +156,7 @@ export default {
     },
     //添加环节
     addCatalog() {
-      let length = this.tableData.length;
-      let sort = this.totalPage.sort;
+      let sort = this.totalPage;
       this.$refs.addEditCatalogRef.showModal(0, sort);
     },
     //查询案件类型列表
@@ -174,6 +171,9 @@ export default {
           }
         }
       );
+    },
+    showIndex(index){
+      return (this.currentPage-1)*this.pageSize+index+1;
     }
   },
   mounted() {

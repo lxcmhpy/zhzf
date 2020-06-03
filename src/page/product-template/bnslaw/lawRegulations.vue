@@ -4,9 +4,9 @@
       <div class="handlePart">
         <div class="search">
           <el-form :inline="true" :model="lawRegulationsSearchForm" ref="lawRegulationsSearchForm">
-            <el-form-item label="法规名称" prop='bnslawLawName'>
+            <!-- <el-form-item label="法规名称" prop='bnslawLawName'>
               <el-input v-model="lawRegulationsSearchForm.bnslawLawName" placeholder="输入法规名称"></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="条" prop="itemCog">
               <el-input v-model="lawRegulationsSearchForm.itemCog" placeholder="条"></el-input>
             </el-form-item>
@@ -59,7 +59,7 @@
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
     </div>
-    <addLawRegulations ref="addLawRegulationsRef"></addLawRegulations>
+    <addLawRegulations ref="addLawRegulationsRef" @getListEmit="getLawList()"></addLawRegulations>
   </div>
 </template>
 <script>
@@ -82,7 +82,6 @@ export default {
         iitemCog: '',
         clauseCog: '',
         itemCog: '',
-        bnslawLawName: ''
       },
       info: "",
       addLawRegulationsForm: {
@@ -119,6 +118,9 @@ export default {
           console.log(error)
         }
       );
+    },
+    getLawList(){
+      this.getlawRegulationsListSearch();
     },
     // 查询法条
     getlawRegulationsListSearch() {
