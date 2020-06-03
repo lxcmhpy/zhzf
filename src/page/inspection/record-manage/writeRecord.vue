@@ -1,8 +1,8 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
-    <div class="searchAndpageBox">
-      <div>
-        <!-- {{psMsg.title}} -->
+    <div class="searchAndpageBox modle-set">
+      <div style="font-size: 16px;font-weight: bold;text-align:center;margin-bottom:18px">
+        {{psMsg.title}}
       </div>
       <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit">
       </form-create>
@@ -161,11 +161,14 @@ export default {
       let ruleData = []
       data.forEach(element => {
         console.log(element)
-        this.rule.push({
-          type: 'template',
-          name: 'btn',
-          template: '<p class="border-title">' + element.classs + '</p>',
-        })
+        if (element.classs) {
+          this.rule.push({
+            type: 'template',
+            name: 'btn',
+            template: '<p class="border-title">' + element.classs + '</p>',
+          })
+        }
+
         element.filedList.forEach(item => {
           console.log(item)
           if (item.type == '文本型') {
@@ -235,6 +238,7 @@ export default {
                 type: "TimePicker",
                 field: "section_time",
                 title: item.title,
+                value: [new Date()],
                 props: {
                   format: item.options[0].value,
                   placeholder: item.remark
@@ -288,4 +292,4 @@ export default {
   }
 }
 </script>
-<style lang="scss" src="@/assets/css/main.scss">
+<style lang="scss" src="@/assets/css/card.scss"></style>
