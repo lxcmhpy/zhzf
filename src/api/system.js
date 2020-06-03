@@ -708,7 +708,7 @@ export function deleteCaseNumberApi(id) {
   });
 }
 
-//获取违法行为列表
+//分页获取违法行为列表
 export function getCaseCauseListApi(data) {
   console.log(data);
   return request({
@@ -1173,6 +1173,19 @@ export function addDiscretionApi(data) {
     url: "/bnslaw/sys/bnslawCause/addOrUpdateDiscretion",
     method: "post",
     data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//获取违法行为列表
+export function getCaseCauseListVoApi(data) {
+  console.log(data);
+  return request({
+    url: "/bnslaw/sys/bnslawCause/findCaseCauseByList",
+    method: "get",
+    params: data,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()

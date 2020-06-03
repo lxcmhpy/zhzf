@@ -29,8 +29,9 @@
           <el-table-column prop="causeName" label="违法行为" align="left"></el-table-column>
           <el-table-column prop="drawerName" label="违法程度" align="left"></el-table-column>
           <el-table-column prop="wfqj" label="违法情节" align="center"></el-table-column>
-          <el-table-column prop="upperLimit" label="下限" align="center"></el-table-column>
-          <el-table-column prop="jycf" label="建议处罚" align="center"></el-table-column>
+          <el-table-column prop="upperLimit" label="上限" align="center"></el-table-column>
+          <el-table-column prop="lawerLimit" label="下限" align="center"></el-table-column>
+          <el-table-column prop="jycf" label="处罚标准" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="editDiscretion(scope.row)">编辑</el-button>
@@ -48,14 +49,16 @@
                 :total="totalPage">
           </el-pagination>
       </div>
+      <addDiscretion ref="addDiscretionRef" @uploadaaa="getDiscretionList()"></addDiscretion>
     </div>
   </div>
 </template>
 <script>
 
 import { mapGetters } from "vuex";
+import addDiscretion from "./addDiscretion";
 import {
-  getDiscretionListApi, deleteDiscretionByIdApi
+  getDiscretionListApi, deleteDiscretionByIdApi,getDictListDetailByNameApi
 } from "@/api/system";
 export default {
   data() {
@@ -75,16 +78,31 @@ export default {
     };
   },
   inject: ["reload"],
+  components: {
+    addDiscretion,
+  },
   methods: {
-    //获取法规列表
+    //新增自由裁量权界面
+     addDiscretion(){
+      let data={
+            id:'',
+            leng:this.tableData.length
+      }
+      this.$refs.addDiscretionRef.showModal(0, data);
+    },
+    //编辑自由裁量权
+    editDiscretion(val){
+      let data =JSON.parse(JSON.stringify(val));
+      console.log("自由裁量权",data);
+      this.$refs.addDiscretionRef.showModal(1, data);
+    },
+    //获取自由裁量权列表
     getDiscretionList() {
       let data = {
         current: this.currentPage,
         size: this.pageSize,
-        strName: this.bnslawSearchForm.strName,
-        strNumber: this.bnslawSearchForm.strNumber,
-        startTime: this.bnslawSearchForm.dtmDate? this.bnslawSearchForm.dtmDate[0] : '',
-        endTime: this.bnslawSearchForm.dtmDate? this.bnslawSearchForm.dtmDate[1] : '',
+        causeName: this.discretionSearchForm.causeName,
+        drawerId: this.discretionSearchForm.drawerId,
       };
       let _this = this;
       getDiscretionListApi(data).then(
@@ -99,41 +117,28 @@ export default {
       );
     },
     // 查询
-    getBtnlawListSearch() {
+    getDiscretionListSearch() {
       this.currentPage = 1;
-      this.getBtnlawList()
+      this.getDiscretionList()
     },
-    //重置
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+     // 重置
+    reset() {
+      this.$refs["discretionSearchForm"].resetFields();
       this.currentPage = 1;
-      this.getBtnlawList()
+      this.getDiscretionList()
     },
-    //详情
-    getBtnlawDentails(row) {
-      this.addBtnlawForm = row
-      this.dentailVisible = true
-    },
-    //获取法规值
-    getBtnlawVal(row) {
-      this.$store.commit("SET_BTNLAW_ID", row.id);
-      this.$router.push({
-        name: 'lawRegulations',
-        params: {strName: row.strName}
-      });
-    },
-    //删除法规
-    deleteBtnlaw(id) {
+    //删除自由裁量权
+    deleteDiscretion(id) {
       this.$confirm('确认删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteBnslawApi(id).then(
+        deleteDiscretionByIdApi(id).then(
           res => {
             console.log('类型', res);
             if (res.code == 200) {
-              this.getBtnlawList()
+              this.getDiscretionList();
             } else {
               this.$message({
                 type: 'info',
@@ -153,140 +158,34 @@ export default {
       });
 
     },
-    //编辑法规
-    editBtnlaw(row) {
-      this.visible = true;
-      let data = {
-        id :row.id
-      };
-      this.isAdd=true;
-      getBnsLawByIdApi(data).then(
-        res => {
-          console.log("bnslaw",res);
-          this.addBtnlawForm = res.data;
-        });
-        err => {
-          console.log(err);
-        };
-    },
-   closeTitle(){
-      this.visible = false;
-      this.$refs["addBtnlawForm"].resetFields();
-   },
-   selectDrawer(vId){ 
-        let obj = {};
-        obj = this.lawLimitList.find((item)=>{ 
-            return item.id === vId;
-        });
-        return obj.name;
-     },
-    selectIndustry(vId){ 
-        let obj = {};
-        obj = this.lawCateList.find((item)=>{ 
-            return item.cateId === vId;
-        });
-        return obj.cateName;
-     },
-    //添加法规
-    addBtnlaw() {
-      this.visible = true
-    },
-    addEditbtnlaw() {
-      this.addBtnlawForm.drawerName =this.selectDrawer(this.addBtnlawForm.drawerId);
-      this.addBtnlawForm.industryType =this.selectIndustry(this.addBtnlawForm.industryTypeId);
-      let data = this.addBtnlawForm;
-      let _this = this;
-      addBnsLawApi(data).then(
-        res => {
-          console.log("添加法规", res);
-          if (res.code == '200') {
-             this.$message({ message: '添加成功',type: 'success'});
-            this.visible = false;
-            this.getBtnlawList();
-          } else {
-            this.$message.error('添加失败');
-            return
-          }
-        },
-        error => {
-          console.log(error)
-        }
-      );
-    },
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getBtnlawList();
+      this.getDiscretionList();
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getBtnlawList();
+      this.getDiscretionList();
     },
-    //获取法规值
-    getBtnlawKeyList(data) {
-      // let this = this
-      this.$store.dispatch("getBtnlawListDetail", data).then(
-        res => {
-          console.log("法规值列表", res);
-          if (res.data.length != 0) {
-            this.info = "此数据法规已维护法规值，确认删除吗？";
-          } else {
-            this.info = "确认删除?";
-          }
-          this.$confirm(this.info, "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-            .then(() => {
-              this.$store.dispatch("deleteBtnlaw", data).then(
-                res => {
-                  this.reload();
-                  this.$message({
-                    type: "success",
-                    message: "删除成功!"
-                  });
-                },
-                err => {
-                  console.log(err);
-                }
-              );
-            })
-            .catch(() => { });
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
+    //
+    getWfcdType(){},
     // 抽屉表
-    getlawCateList() {
-      this.$store.dispatch("getEnforceLawType", "1").then(
-        res => {
-        console.log('getEnforceLawType',res)
-          this.lawCateList = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
-       getDictListDetailByNameApi('法规效力').then(res => {
-         console.log('法规效力',res)
-          this.lawLimitList = res.data;
+    getDictType() {
+       getDictListDetailByNameApi('违法程度').then(res => {
+         console.log('违法程度',res)
+          this.drawerList = res.data;
         }, err => {
           console.log(err);
-        })
-    }
+        });
+    },
   },
   created() {
-    this.getBtnlawList();
-    this.getlawCateList();
+    this.getDiscretionList();
+    this.getDictType();
   }
 };
 </script>
 
-<style lang="scss" src="@/assets/css/systemManage.scss">
-/* @import "@/assets/css/systemManage.scss"; */
-</style>
+<style lang="scss" src="@/assets/css/systemManage.scss"></style>

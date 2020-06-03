@@ -104,10 +104,11 @@ export function findLawRegulationsByCauseIdApi(causeId) {
 }
 
 //查询自由裁量标准
-export function findJudgFreedomListApi() {
+export function findJudgFreedomListApi(data) {
   return request({
     url: "/bnslaw/sys/bnslawCause/findDiscretionListByForm",
     method: "get",
+    params: data,
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
