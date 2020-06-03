@@ -14,7 +14,7 @@
       <div v-for="(item,index) in modleList" :key="index" class="card-content">
         <div class="card-title" v-if="index==0">{{item.domain}}
           ({{item.templateList.length}})
-           {{typeof(item.templateList.length)}}
+           <!-- {{typeof(item.templateList.length)}} -->
         </div>
         <div class="card-title" v-if="index!=0">{{item.domain}}
           ({{item.templateList.length}})
@@ -121,7 +121,10 @@ export default {
       findAllRecordModleApi().then(
         res => {
           console.log(res)
+          if(res.data){
           this.modleList = res.data
+
+          }
         },
         error => {
           // reject(error);
