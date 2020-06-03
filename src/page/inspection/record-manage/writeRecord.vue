@@ -32,6 +32,7 @@ export default {
         value1: '',
         value2: '',
       },
+      editData:{key0:'张三'},
       $f: {},
       formData: {
         title: '5月21日检查记录',
@@ -159,6 +160,7 @@ export default {
       let data = JSON.parse(JSON.stringify(this.psMsg.templateFieldList))
       console.log('ruleData', data)
       let ruleData = []
+      let _this=this
       data.forEach(element => {
         console.log(element)
         if (element.classs) {
@@ -173,10 +175,13 @@ export default {
           console.log(item)
           if (item.type == '文本型') {
             item.type = 'input';
+            // let editField=item.filed
+            // console.log('基础数据回显',_this.editData.getAttribute("editField"))
             this.rule.push({
               type: 'input',
               field: item.field,
               title: item.title,
+              // value:this.editData.editField,
               props: {
                 type: 'text',
                 placeholder: item.remark
