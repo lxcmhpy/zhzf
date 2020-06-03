@@ -154,7 +154,7 @@
                             <el-table-column prop="vehicleNumber" label="车货总质量" align="center"  width="120">
                                                 </el-table-column>
                             <el-table-column prop="totalWeight" label="超重" align="center"></el-table-column>
-                            <el-table-column prop="load" label="超限率" align="center"></el-table-column>
+                            <el-table-column prop="overload" label="超限率" align="center"></el-table-column>
                         </el-table>
                     </div>
                 </el-form>
@@ -180,10 +180,10 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="totalWeight" label="车货总质量（kg）" width="140" align="center"></el-table-column>
-                <el-table-column prop="load" label="限重（kg）" align="center"></el-table-column>
+                <el-table-column prop="approvedLoad" label="限重（kg）" align="center"></el-table-column>
                 <el-table-column prop="overweight" label="超重（kg）"  width="120"  align="center"></el-table-column>
                 <el-table-column prop="overload" label="超限率（%）"  width="120"  align="center"></el-table-column>
-                <el-table-column prop="key" label="重点监管" align="center"></el-table-column>
+                <el-table-column prop="isKEY" label="重点监管" align="center"></el-table-column>
             </el-table>
         </div>
         <div class="paginationBox" >
@@ -209,7 +209,7 @@
 <style src="@/assets/css/basicStyles/error.scss" lang="scss"></style>
 <style lang="scss" src="@/assets/css/cluesReview.scss" scoped></style>
 <script>
-import {queryListPage, findAllDrawerById, getCountStatus} from '@/api/lawSupervise.js';
+import {queryListPage, findAllDrawerById, getCountStatus,queryAlarmVehiclePage} from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
 import _ from "lodash";
@@ -343,20 +343,38 @@ export default {
         this.form.status = this.tabActiveValue;
         this.form.current = val;
         let _this = this;
-        debugger;
-        new Promise((resolve, reject) => {
-            queryListPage(_this.form).then(
-                res => {
-                    resolve(res)
-                    _this.tableData = res.data.records;
-                    _this.total = res.data.total;
-                },
-                error => {
-                    //  _this.errorMsg(error.toString(), 'error')
-                        return
-                }
-            )
-        })
+        // debugger;
+        if (this.tabActiveValue === '待审核') {
+            new Promise((resolve, reject) => {
+                queryAlarmVehiclePage(_this.form).then(
+                    res => {
+                        resolve(res)
+                        _this.tableData = res.data.records;
+                        _this.total = res.data.total;
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        } else {
+            new Promise((resolve, reject) => {
+                queryListPage(_this.form).then(
+                    res => {
+                        resolve(res)
+                        _this.tableData = res.data.records;
+                        _this.total = res.data.total;
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+
+        }
+
     },
     findAllDrawerById (data, obj) {
         let _this = this
@@ -426,6 +444,7 @@ export default {
     },
     routerExamineDoingDetail (row,status, tabTitle) {
         // this.$store.commit('setOffSiteManageId', item.id);
+        debugger;
         this.$router.push({
             name: 'law_supervise_examineDoingDetail',
             params: {
@@ -451,8 +470,9 @@ export default {
     },
     handleNodeClick(data) {
     //    if(this.tabActiveValue == )
+    debugger;
         switch (data.status) {
-            case '待审核': this.routerExamineDoingDetail(data, '0', '待审核'); break;
+            case undefined: this.routerExamineDoingDetail(data, '0', '待审核'); break;
             case '无效信息': this.routerInvalidCueDetail(data); break;
             case '审核中': this.routerExamineDoingDetail(data, '1', '审核中'); break;
             case '已转办': this.routerTransferDetail(data); break;
@@ -485,7 +505,7 @@ export default {
     }
   },
   created () {
-    this.search();
+    this.search(1);
     this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
     this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'vehicleColorList');
     this.getCountStatus()

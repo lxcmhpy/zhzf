@@ -32,7 +32,7 @@
 </style>
 <script>
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
-import {getDetailById} from '@/api/lawSupervise.js';
+import {getDetailById, findAlarmVehicleById} from '@/api/lawSupervise.js';
 import { mapGetters } from "vuex";
 import xszxDetailView from './componentChild/xszxDetailView.vue';
 import examineDoingFirstDetail from './componentChild/examineDoingDetail/examineDoingFirstDetail';
@@ -72,8 +72,24 @@ export default {
                 )
             })
         },
+        findAlarmVehicleById (id) {
+            let _this = this;
+            new Promise((resolve, reject) => {
+                findAlarmVehicleById(id).then(
+                    res => {
+                        // resolve(res);
+                        _this.obj = res.data;
+                        // obj.list = res.data
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
         init () {
-            this.getDetailById(this.$route.params.offSiteManageId);
+            this.findAlarmVehicleById(this.$route.params.offSiteManageId);
             this.tabActiveValue = this.$route.params.status;
         }
     },

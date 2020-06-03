@@ -450,7 +450,7 @@
                         <td class="color_ff w-1">ETC识别车牌</td>
                         <td>{{obj.etcVehicleNumber}}</td>
                         <td class="color_ff w-1">最大允许总质量</td>
-                        <td>{{obj.load}}</td>
+                        <td>{{obj.approvedLoad}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">车辆类型</td>
@@ -494,7 +494,7 @@
                     </tr>
                     <tr>
                         <td class="color_ff w-1">限重（KG）</td>
-                        <td>{{obj.load}}</td>
+                        <td>{{obj.approvedLoad}}</td>
                         <td class="color_ff w-1">超重（KG）</td>
                         <td>{{obj.overweight}}</td>
                      </tr>
