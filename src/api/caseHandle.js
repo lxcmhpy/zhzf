@@ -1237,3 +1237,42 @@ export function queryRoadLcDeployApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//通过条件查询附属属性
+export function getAttachedPropertyByConditionApi(data) {
+  console.log("附属属性查询参数",data);
+  return request({
+    url: "/case/caseTemplate/attachedProperty/queryPropertyCondition",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加或修改附属属性的值
+export function addAttachedPropertyValueApi(data) {
+  console.log("data",data);
+  return request({
+    url: "/case/caseTemplate/attachedProperty/saveOrUpdatePropertyValue",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加或修改附属属性的值
+export function getAttachedPropertyAnsValueApi(data) {
+  console.log("1233",data);
+  return request({
+    url: "/case/caseTemplate/attachedProperty/queryPropertyAndValue/"+data,
+    method: "get",
+    // data: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

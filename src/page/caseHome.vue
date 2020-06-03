@@ -248,7 +248,7 @@
             <!-- <el-radio-button label="水路运政" style="border-left: 1px solid #DCDFE6;"></el-radio-button>
             <el-radio-button label="公路路政"></el-radio-button>
             <el-radio-button label="道路运政"></el-radio-button> -->
-            <el-radio-button v-for="item in lawCateList.slice(0,3)" :key="item.id" :label="item.name"></el-radio-button>
+            <el-radio-button v-for="item in lawCateList.slice(0,3)" :key="item.id" :label="item.cateName"></el-radio-button>
            <span v-if="moreBtn">
               <!-- <el-radio-button label="航道行政"></el-radio-button>
               <el-radio-button label="海事行政"></el-radio-button>
@@ -256,7 +256,7 @@
               <el-radio-button label="港口行政" style="border-left: 1px solid #DCDFE6;"></el-radio-button>
               <el-radio-button label="其他" class="width136px"></el-radio-button> -->
              
-              <el-radio-button v-for="item in lawCateList.slice(3,lawCateList.length-1)" :key="item.id" :label="item.name"></el-radio-button>
+              <el-radio-button v-for="item in lawCateList.slice(3,lawCateList.length)" :key="item.id" :label="item.cateName"></el-radio-button>
             </span>
           </el-radio-group>
           <div class="magin_btm">
@@ -311,7 +311,7 @@ import chooseillegalAct from "./chooseIllegegaDialog.vue";
 import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
 import { mapGetters } from "vuex";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
-import { getLawCategoryListApi ,getLawCategoryNotPageApi} from "@/api/caseDeploy";
+import { getLawCategoryListApi ,queryLawCateByOrganIdApi} from "@/api/caseDeploy";
 export default {
   mixins: [mixinGetCaseApiList],
   components: {
@@ -692,11 +692,11 @@ export default {
         // current: this.currentPage,
         // size: this.pageSize,
         // name: this.searchForm.name,
-        pid: "",
-        // organId:iLocalStroage.gets('userInfo').organId,
+        // pid: "",
+        organId:iLocalStroage.gets('userInfo').organId,
       };
       let _this = this;
-      getLawCategoryNotPageApi(data).then(
+      queryLawCateByOrganIdApi(data).then(
         res => {
           console.log("执法门类列表", res);
           _this.lawCateList = res.data;

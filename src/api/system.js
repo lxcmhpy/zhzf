@@ -79,6 +79,7 @@ export  function  getOrganDetailApi(data)  {
 
 //删除机构
 export  function  deleteOrganApi(data)  {
+  console.log("123",data);
   return  request({
     url:  "/system/sys/organ/delete/"  +  data,
     method:  "get",

@@ -21,7 +21,7 @@
       </el-table>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="visible = false">取 消</el-button>
+      <el-button @click="visible = false">确 定</el-button>
     </span>
     <addOrEditHylb ref="addOrEditHylbRef" @getDetail="showModal"></addOrEditHylb>
   </el-dialog>
