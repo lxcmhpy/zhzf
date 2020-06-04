@@ -76,6 +76,7 @@ export function getById(type,id) {
       cancelToken: setCancelSource()
     });
   }
+
   export function getUserById(id) {
       return request({
         url: "/zfjg/user/findByOrganId/" + id,
@@ -161,3 +162,36 @@ export function getById(type,id) {
         cancelToken: setCancelSource()
       })
   }
+
+// 监管-线索管理-保存
+export function saveAndUpdate (data) {
+    return request({
+        url: "/zfjg/superviseVehicle/saveAndUpdate",
+        method: "get",
+        showloading: false,
+        baseUrlType:2,
+        params: data,
+        cancelToken: setCancelSource()
+      })
+}
+// 监管--线索管理--查询--待办
+export function queryAlarmVehiclePage (data) {
+    return request({
+        url: "/zfjg/alarmVehicle/queryAlarmVehiclePage",
+        method: "get",
+        showloading: false,
+        baseUrlType:2,
+        params: data,
+        cancelToken: setCancelSource()
+      })
+}
+export function findAlarmVehicleById (data) {
+    return request({
+        url: "/zfjg/alarmVehicle/findById/" + data,
+        method: "get",
+        showloading: false,
+        baseUrlType:2,
+        // params: data,
+        cancelToken: setCancelSource()
+      })
+}

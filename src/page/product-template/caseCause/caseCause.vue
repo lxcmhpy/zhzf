@@ -4,7 +4,7 @@
     <div class="handlePart">
       <div class="search">
         <el-form :inline="true" :model="caseCauseForm" label-width="130px"  ref="caseCauseForm">
-            <el-form-item label="执法门类" prop="cateId">
+            <el-form-item label="业务领域" prop="cateId">
               <el-select v-model="caseCauseForm.cateId" placeholder="请选择" @change="getEnforceLawType" style="width:260px;" >
                 <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateId"></el-option>
               </el-select>
@@ -25,7 +25,7 @@
     </div>
     <div class="tablePart">
       <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
-        <el-table-column prop="category" label="执法门类" align="center" min-width="12%"></el-table-column>
+        <el-table-column prop="category" label="业务领域" align="center" min-width="12%"></el-table-column>
         <el-table-column prop="strNumber" label="违法行为代码" align="center" min-width="12%"></el-table-column>
         <el-table-column prop="strContent" label="违法行为内容" align="left" min-width="52%"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" min-width="20%">

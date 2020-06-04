@@ -12,7 +12,7 @@
             </el-form-item>
             <el-form-item label="发布时间" prop="dtmDate">
               <!-- <el-input v-model="bnslawSearchForm.dtmDate" placeholder="发布时间"></el-input> -->
-              <el-date-picker v-model="bnslawSearchForm.dtmDate" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker v-model="bnslawSearchForm.dtmDate" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item>
@@ -66,16 +66,22 @@
             <el-input v-model="addBtnlawForm.strOrgan"></el-input>
           </el-form-item>
           <el-form-item label="法规效力" prop="drawerName">
-            <el-select v-model="addBtnlawForm.drawerName" placeholder="请选择">
-              <el-option v-for="item in lawLimitList" :key="item.cateId" :label="item.name" :value="item.name"></el-option>
+            <el-select v-model="addBtnlawForm.drawerId" placeholder="请选择">
+              <el-option v-for="item in lawLimitList" 
+              :key="item.id" 
+              :label="item.name" 
+              :value="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="网站链接" prop="webLink">
             <el-input v-model="addBtnlawForm.webLink"></el-input>
           </el-form-item>
           <el-form-item label="行业类型" prop="industryType">
-            <el-select v-model="addBtnlawForm.industryType" placeholder="请选择">
-              <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateName"></el-option>
+            <el-select v-model="addBtnlawForm.industryTypeId" placeholder="请选择">
+              <el-option v-for="item in lawCateList" 
+              :key="item.cateId" 
+              :label="item.cateName" 
+              :value="item.cateId"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="发布时间" prop="dtmDate">
@@ -179,6 +185,9 @@ export default {
         shiDate: '',
         strNote: '',
         status: 0,
+        drawerId:'',
+        industryTypeId:'',
+
       },
       lawCateList: [], //业务领域列表
       lawLimitList: [], //法规效力
@@ -187,6 +196,7 @@ export default {
         strNumber: [{ required: true, message: "发布文号必须填写", trigger: "blur" }],
         strOrgan: [{ required: true, message: "发布机关必须填写", trigger: "blur" }],
         drawerName: [{ required: true, message: "法规效力必须填写", trigger: "blur" }],
+        industryType: [{ required: true, message: "行业类型必须填写", trigger: "blur" }],
       }
     };
   },
@@ -199,7 +209,8 @@ export default {
         size: this.pageSize,
         strName: this.bnslawSearchForm.strName,
         strNumber: this.bnslawSearchForm.strNumber,
-        // dtmDate: JSON.stringify(this.bnslawSearchForm.dtmDate)
+        startTime: this.bnslawSearchForm.dtmDate? this.bnslawSearchForm.dtmDate[0] : '',
+        endTime: this.bnslawSearchForm.dtmDate? this.bnslawSearchForm.dtmDate[1] : '',
       };
       let _this = this;
 
@@ -291,30 +302,50 @@ export default {
       this.visible = false;
       this.$refs["addBtnlawForm"].resetFields();
    },
+   selectDrawer(vId){ 
+        let obj = {};
+        obj = this.lawLimitList.find((item)=>{ 
+            return item.id === vId;
+        });
+        return obj.name;
+     },
+    selectIndustry(vId){ 
+        let obj = {};
+        obj = this.lawCateList.find((item)=>{ 
+            return item.cateId === vId;
+        });
+        return obj.cateName;
+     },
     //添加法规
     addBtnlaw() {
       this.visible = true
     },
     addEditbtnlaw() {
-      let data = this.addBtnlawForm;
-      let _this = this;
-      console.log(typeof (this.addBtnlawForm.status))
-      addBnsLawApi(data).then(
-        res => {
-          console.log("添加法规", res);
-          if (res.code == '200') {
-             this.$message({ message: '添加成功',type: 'success'});
-            this.visible = false;
-            this.getBtnlawList();
-          } else {
-            this.$message.error('添加失败');
-            return
-          }
-        },
-        error => {
-          console.log(error)
+      this.$refs["addBtnlawForm"].validate(valid => {
+        if (valid) {
+          this.addBtnlawForm.drawerName =this.selectDrawer(this.addBtnlawForm.drawerId);
+          this.addBtnlawForm.industryType =this.selectIndustry(this.addBtnlawForm.industryTypeId);
+          let data = this.addBtnlawForm;
+          let _this = this;
+          addBnsLawApi(data).then(
+            res => {
+              console.log("添加法规", res);
+              if (res.code == '200') {
+                this.$message({ message: '添加成功',type: 'success'});
+                this.visible = false;
+                this.getBtnlawList();
+              } else {
+                this.$message.error('添加失败');
+                return
+              }
+            },
+            error => {
+              console.log(error)
+            }
+          );
         }
-      );
+      })
+      
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -368,6 +399,7 @@ export default {
     getlawCateList() {
       this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
+        console.log('getEnforceLawType',res)
           this.lawCateList = res.data;
         },
         err => {
@@ -375,7 +407,7 @@ export default {
         }
       );
        getDictListDetailByNameApi('法规效力').then(res => {
-          console.log('挂车类型', res);
+         console.log('法规效力',res)
           this.lawLimitList = res.data;
         }, err => {
           console.log(err);

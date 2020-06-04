@@ -5,12 +5,10 @@
     @close="closeDialog"
     :close-on-click-modal="false"
     width="90%"
-    append-to-body
   >
     <el-row :gutter="20">
       <el-col :span="8">
         <div class="graybg">
-          <!-- <div class="search"  style="height:50px;"> -->
           <el-form :inline="true" :model="bnslawSearchForm" ref="bnslawSearchForm">
             <el-form-item label="法规名称" prop="strName">
               <el-input v-model="bnslawSearchForm.strName" placeholder="输入法规名称"></el-input>
@@ -58,15 +56,15 @@
       </el-col>
       <el-col :span="16">
         <div class="graybg">
-          <el-form :inline="true" :model="bnslawSearchForm" ref="bnslawSearchForm">
+          <el-form :inline="true" :model="lawRegulationsSearchForm" ref="lawRegulationsSearchForm">
             <el-form-item label="条" prop="item">
-              <el-input v-model="bnslawSearchForm.item" placeholder="条" style="width:70px;"></el-input>
+              <el-input v-model="lawRegulationsSearchForm.item" placeholder="条" style="width:70px;"></el-input>
             </el-form-item>
             <el-form-item label="款" prop="clause">
-              <el-input v-model="bnslawSearchForm.clause" placeholder="条" style="width:70px;"></el-input>
+              <el-input v-model="lawRegulationsSearchForm.clause" placeholder="条" style="width:70px;"></el-input>
             </el-form-item>
             <el-form-item label="项" prop="iitem">
-              <el-input v-model="bnslawSearchForm.iitem" placeholder="条" style="width:70px;"></el-input>
+              <el-input v-model="lawRegulationsSearchForm.iitem" placeholder="条" style="width:70px;"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button
@@ -74,14 +72,14 @@
                 class="commonBtn searchBtn"
                 title="搜索"
                 icon="iconfont law-sousuo"
-                @click="getlawRegulationsList1"
+                @click="getlawRegulationsSearch"
               ></el-button>
               <el-button
                 size="medium"
                 class="commonBtn searchBtn"
                 title="重置"
                 icon="iconfont law-zhongzhi"
-                @click="resetForm('bnslawSearchForm')"
+                @click="resetFormLaw('lawRegulationsSearchForm')"
               ></el-button>
             </el-form-item>
           </el-form>
@@ -157,12 +155,15 @@ export default {
       // pageSize1: 10, //pagesize
       totalPage1: 0, //总页数
       bnslawSearchForm: {
-        // strName: "",
-        // strNumber: ""
+        strName:"",
+      },
+      lawRegulationsSearchForm:{
+        item: "",
+        clause: "",
+        iitem:"",
       },
       visible: false,
       dialogTitle: "", //弹出框title
-      // errorName: false ,//添加name时的验证
       caseCauseId: "", //违法行为Id
       bnslawIdPun: "", //处罚依据Id
       bnslawIdPunBind: ""
@@ -182,8 +183,9 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.$refs["bnslawSearchForm"].resetFields();
+       this.$refs["lawRegulationsSearchForm"].resetFields();
       this.visible = false;
-    },
+    }, 
     //聚焦清除错误信息
     focusName() {
       this.errorName = false;
@@ -217,6 +219,11 @@ export default {
       this.currentPage = 1;
       this.getBtnlawList();
     },
+    resetFormLaw(formName){
+      this.$refs[formName].resetFields();
+      this.currentPage1 = 1;
+      this.getlawRegulationsList1();
+    },
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
@@ -245,17 +252,19 @@ export default {
       this.bnslawIdPun = row.id;
       this.getlawRegulationsList1();
     },
+     // 查询
+    getlawRegulationsSearch() {
+      this.currentPage1 = 1;
+      this.getlawRegulationsList1();
+    },
     getlawRegulationsList1() {
       let data = {
         current: this.currentPage1,
         size: this.pageSize,
         bnslawIdPun: this.bnslawIdPun,
-        itemCog: this.bnslawSearchForm.item,
-        clauseCog: this.bnslawSearchForm.clause,
-        iitemCog: this.bnslawSearchForm.iitem,
-        // itemPun: this.bnslawSearchForm.item,
-        // clausePun: this.bnslawSearchForm.clause,
-        // iitemPun: this.bnslawSearchForm.iitem
+        itemCog: this.lawRegulationsSearchForm.item,
+        clauseCog: this.lawRegulationsSearchForm.clause,
+        iitemCog: this.lawRegulationsSearchForm.iitem,
       };
       console.log("111", data);
       let _this = this;

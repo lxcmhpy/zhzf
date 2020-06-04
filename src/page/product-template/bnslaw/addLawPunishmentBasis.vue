@@ -8,6 +8,7 @@
           style="width:100%"
           placeholder="请选择法规名称"
           @change="getBnsalwListVo"
+          filterable
         >
           <el-option
             v-for="item in getBnslawList"
@@ -27,22 +28,22 @@
       </el-form-item>
 
       <el-form-item label="条" prop="itemPun">
-        <el-input v-model="addPageForm.itemPun" placeholder="条"></el-input>
+        <el-input v-model.number="addPageForm.itemPun" placeholder="条"></el-input>
       </el-form-item>
       <el-form-item label="款" prop="clausePun">
-        <el-input v-model="addPageForm.clausePun" placeholder="款"></el-input>
+        <el-input v-model.number="addPageForm.clausePun" placeholder="款"></el-input>
       </el-form-item>
       <el-form-item label="项" prop="iitemPun">
-        <el-input v-model="addPageForm.iitemPun" placeholder="项"></el-input>
+        <el-input v-model.number="addPageForm.iitemPun" placeholder="项"></el-input>
       </el-form-item>
       <el-form-item label="罚款下限" prop="lawerLimit">
-        <el-input v-model="addPageForm.lawerLimit" placeholder="项"></el-input>
+        <el-input v-model.number="addPageForm.lawerLimit" placeholder="项" @blur ="changeNumberL"></el-input>
       </el-form-item>
       <el-form-item label="罚款上限" prop="upperLimit">
-        <el-input v-model="addPageForm.upperLimit" placeholder="项"></el-input>
+        <el-input v-model.number="addPageForm.upperLimit" placeholder="项" @blur ="changeNumberU"></el-input>
       </el-form-item>
       <el-form-item label="最高罚款" prop="highLimit">
-        <el-input v-model="addPageForm.highLimit" placeholder="项"></el-input>
+        <el-input v-model.number="addPageForm.highLimit" placeholder="项" @blur ="changeNumberH"></el-input>
       </el-form-item>
       <el-form-item label="处罚标准" prop="cfbz">
         <el-input v-model="addPageForm.cfbz" placeholder="项"></el-input>
@@ -130,6 +131,23 @@ export default {
           console.log(err);
         }
       );
+    },
+    //装换为浮点数
+    changeNumberL(){
+      debugger
+      if(this.addPageForm.lawerLimit != ""){
+        this.addPageForm.lawerLimit = parseFloat(this.addPageForm.lawerLimit).toFixed(2);
+      }  
+    },
+    changeNumberU(){
+      if(this.addPageForm.upperLimit != ""){
+        this.addPageForm.upperLimit = parseFloat(this.addPageForm.upperLimit).toFixed(2);
+      }
+    },
+    changeNumberH(){
+      if(this.addPageForm.highLimit != ""){
+        this.addPageForm.highLimit = parseFloat(this.addPageForm.highLimit).toFixed(2);
+      }
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

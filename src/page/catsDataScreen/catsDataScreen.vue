@@ -17,6 +17,7 @@
                 </ul>
                 <div style="clear:both"></div>
             </div>
+
             <div style="width: 230px; height: 160px;position:absolute;top:0px;z-index:1000;">
                 <div style="width: 300px; height: 300px;" ref="echartsPie"></div>
             </div>
@@ -26,10 +27,16 @@
              <div style="width: 500px; height: 300px;position:absolute;top:0px;top: 300px;z-index:1000;">
                 <div style="width: 500px; height: 300px;" ref="echartsLine"></div>
             </div>
+             <div v-if="animalLine" style="width: 520px;transform: scaleX(0.5); height: 300px;position:absolute;right:200px;top: 20px;z-index:1000;overflow:hidden;">
+                <br><br><div class="w-animal-yellow" style="width: 400px"></div>
+                <br><br><div class="w-animal-blue" style="width: 350px"></div>
+                <br><br><div class="w-animal-blue" style="width: 300px"></div>
+                <br><br><div class="w-animal-blue" style="width: 280px"></div>
+                <br><br><div class="w-animal-blue" style="width: 240px"></div>
+            </div>
             <div style="width: 100%;height: 100%;position:absolute;top:0px;">
                 <el-amap vid="map" mapStyle="amap://styles/darkblue" :plugin="plugin" :events="events" :center="[107.4976,32.1697]" :amap-manager="amapManager" :zoom="4" >
                 </el-amap>
-                <!-- <div id="map"></div> -->
             </div>
         </div>
     </div>
@@ -76,6 +83,7 @@ export default {
         return {
             amapManager,
             plugin: [],
+            animalLine: false,
             events: {
                 init (o) {
                     lazyAMapApiLoaderInstance.load().then(() => {
@@ -584,6 +592,7 @@ export default {
                 let chart2 = echarts.init(mychart2);
                 chart2.setOption(option2,true);
             }
+            this.animalLine = true;
         },
         updatePie () {
             let mychart = this.$refs.echartsPie;
@@ -615,6 +624,7 @@ export default {
                 })
                 chart2.setOption(option,true);
             }
+
         }
     },
     mounted () {

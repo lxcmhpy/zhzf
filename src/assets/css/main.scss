@@ -260,7 +260,7 @@
 
     .com_examin_top {
       .is-disabled {
-        background    : #4573D0;
+        background    : #35bd7d;
         color         : #DFE5EE;
         border-left   : 1px solid #868A94;
         letter-spacing: 1px;
@@ -270,9 +270,12 @@
           border-color: white;
         }
       }
-
-      .is-active~.el-tabs__item {
+      .is-active.el-tabs__item ~ .el-tabs__item {
         background: #989CA7;
+        color     : white;
+      }
+      .is-active.el-tabs__item {
+        background: #4573D0;
         color     : white;
       }
 

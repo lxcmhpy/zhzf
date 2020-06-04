@@ -1,8 +1,9 @@
 <template>
+<div class="com_searchAndpageBoxPadding">
   <div class="searchAndpageBox" id="dictBox">
     <div class="handlePart">
       <div class="search">
-        <el-form :inline="true" :model="searchForm" class="demo-form-inline" size="mini">
+        <el-form :inline="true" :model="searchForm">
           <el-form-item label="业务领域名称">
             <el-input v-model="searchForm.name" placeholder="请输入业务领域名称"></el-input>
           </el-form-item>
@@ -25,7 +26,7 @@
     </div>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
-        <el-table-column prop="name" label="执法门类" align="center"></el-table-column>
+        <el-table-column prop="name" label="业务领域名称" align="center"></el-table-column>
         <el-table-column prop="sort" label="排序" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
@@ -51,6 +52,7 @@
     <addLawCategory ref="addLawCategoryRef"></addLawCategory>
     <hylbDialog ref="hylbDialogRef"></hylbDialog>
   </div>
+</div>
 </template>
 <script>
 import addLawCategory from "./addLawCategory";
