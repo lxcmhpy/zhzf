@@ -659,7 +659,7 @@ export default [
     meta: {
       title: "当场行政处罚决定书"
     },
-    component: () => import("@/page/caseHandle/case/modle/compensationNotice.vue")
+    component: () => import("@/page/caseHandle/case/form/compensationNotice.vue")
   },
   {
     path: "/sceneInquestPicture",

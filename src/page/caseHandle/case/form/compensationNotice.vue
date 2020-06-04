@@ -5,17 +5,17 @@
     id="compensationNotice-print"
     style="width:790px; margin:0 auto;"
   >
-    <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
+    <el-form :rules="rules" ref="compensationNoticeForm" :inline-message="true" :inline="true" :model="formData">
       <div class="print_info">
         <div class="doc_topic">公路赔（补）偿通知书</div>
-        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <p class="p_begin">
           当事人：
           <span>
             <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
               <el-input
                 :disabled="fieldDisabled(propertyFeatures['party'])"
-                v-model="docData.party"
+                v-model="formData.party"
                 :maxLength="maxLength"
               ></el-input>
             </el-form-item>
@@ -28,7 +28,7 @@
             >
               <el-input
                 :disabled="fieldDisabled(propertyFeatures['partyAddress'])"
-                v-model="docData.partyAddress"
+                v-model="formData.partyAddress"
                 :maxLength="maxLength"
               ></el-input>
             </el-form-item>
@@ -44,7 +44,7 @@
                 class="overflow_lins_textarea"
                 style="text-indent:5em"
                 type="textarea"
-                v-model="docData.caseName"
+                v-model="formData.caseName"
                 rows="3"
                 maxlength="90"
                 :disabled="fieldDisabled(propertyFeatures['caseName'])"
@@ -64,7 +64,7 @@
             >
               <el-input
                 :disabled="fieldDisabled(propertyFeatures['organName'])"
-                v-model="docData.organName"
+                v-model="formData.organName"
                 :maxLength="maxLength"
               ></el-input>
             </el-form-item>依法调查核实；
@@ -76,7 +76,7 @@
             <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
               <el-input
                 :disabled="fieldDisabled(propertyFeatures['party'])"
-                v-model="docData.party"
+                v-model="formData.party"
                 :maxLength="maxLength"
               ></el-input>
             </el-form-item>
@@ -88,7 +88,7 @@
               :rules="fieldRules('afsj',propertyFeatures['afsj'])"
             >
               <el-date-picker
-                v-model="docData.afsj"
+                v-model="formData.afsj"
                 type="date"
                 format="yyyy年MM月dd日"
                 placeholder="    年  月  日"
@@ -108,7 +108,7 @@
                 class="overflow_lins_textarea"
                 style="text-indent:5em"
                 type="textarea"
-                v-model="docData.factDescription"
+                v-model="formData.factDescription"
                 rows="3"
                 maxlength="90"
                 :disabled="fieldDisabled(propertyFeatures['factDescription'])"
@@ -131,7 +131,7 @@
                 class="overflow_lins_textarea_two"
                 style="text-indent:5em"
                 type="textarea"
-                v-model="docData.evidenceMaterial"
+                v-model="formData.evidenceMaterial"
                 rows="3"
                 maxlength="90"
                 :disabled="fieldDisabled(propertyFeatures['evidenceMaterial'])"
@@ -151,7 +151,7 @@
                 class="overflow_lins_textarea_three"
                 style="text-indent:5em"
                 type="textarea"
-                v-model="docData.illegalLaw"
+                v-model="formData.illegalLaw"
                 rows="3"
                 maxlength="90"
                 :disabled="fieldDisabled(propertyFeatures['illegalLaw'])"
@@ -175,9 +175,9 @@
             >
               <el-input
                 :disabled="fieldDisabled(propertyFeatures['payTotal'])"
-                v-model="docData.payTotal"
+                v-model="formData.payTotal"
                 type="textarea"
-                v-bind:class="{ over_flow:docData.payTotal.length>14?true:false }"
+                v-bind:class="{ over_flow:formData.payTotal.length>14?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
               ></el-input>
@@ -194,7 +194,7 @@
                 class="overflow_lins_textarea_three"
                 style="text-indent:5em"
                 type="textarea"
-                v-model="docData.bank"
+                v-model="formData.bank"
                 rows="3"
                 maxlength="90"
                 :disabled="fieldDisabled(propertyFeatures['bank'])"
@@ -208,11 +208,11 @@
           </div>
         </div>
         <div class="pdf_seal">
-          <span>{{docData.organName}}</span>
+          <span>{{formData.organName}}</span>
           <br />
           <el-form-item prop="signatureDate" class="pdf_datapick">
             <el-date-picker
-              v-model="docData.signatureDate"
+              v-model="formData.signatureDate"
               type="date"
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
@@ -247,7 +247,7 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   data() {
     return {
-      docData: {
+      formData: {
         caseNumber: "",
         partyAddress: "",
         party: "",
@@ -262,12 +262,12 @@ export default {
       tableData: [],
       needDealData: true,
       handleType: 0, //0  暂存     1 提交
-      caseDocDataForm: {
+      caseLinkDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: "", //案件id--从流程进入删掉，先写死测试用
-        caseDoctypeId: "0c18fe2ebe22e931eec3b0e256362e04",
+        caseBasicinfoId: "", //案件id
+        caseLinktypeId: BASIC_DATA_SYS.compensationNote_caseDoctypeId, //表单类型ID
         //表单数据
-        docData: "",
+        formData: "",
         status: ""
       },
       rules: {
@@ -309,6 +309,7 @@ export default {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: "compensationNotice-print"
       },
+      huanjieAndDocId: this.BASIC_DATA_SYS.compensationNote_caseDoctypeId,
       addVisible: false,
       addLoading: false,
       tableDatas: [],
@@ -319,29 +320,27 @@ export default {
   methods: {
     //对原始数据做一下处理
     getDataAfter() {
-      //this.docData.organName = iLocalStroage.gets("userInfo").organName;
+      //this.formData.organName = iLocalStroage.gets("userInfo").organName;
       let params = { id: iLocalStroage.gets("userInfo").organId };
       let _this = this;
       this.$store.dispatch("getOrganDetail", params).then(
         res => {
           let organData = res.data;
-          _this.docData.organName = organData.name || "";
-          console.log("bank", organData.bank);
-          _this.docData.bank =
+          _this.formData.organName = organData.name || "";
+          _this.formData.bank =
             organData.bank == null ? "测试银行" : organData.bank;
-          console.log("bank", _this.docData.bank);
         },
         err => {
           console.log(err);
         }
       );
-      if (this.docData.payTotal) this.combined(this.docData.payTotal);
+      if (this.formData.payTotal) this.combined(this.formData.payTotal);
     },
     //将金额转换为大写(小写)
     combined(val) {
       let buffer = val;
       if (buffer === 0 || buffer == null) {
-        this.docData.payTotal = "零" + "（" + val + "）";
+        this.formData.payTotal = "零" + "（" + val + "）";
       } else {
         let unit = "仟佰拾亿仟佰拾万仟佰拾圆角分";
         let str = "";
@@ -355,7 +354,7 @@ export default {
           str +=
             "零壹贰叁肆伍陆柒捌玖".charAt(buffer.charAt(i)) + unit.charAt(i);
         }
-        this.docData.payTotal =
+        this.formData.payTotal =
           str
             .replace(/零(仟|佰|拾|角)/g, "零")
             .replace(/(零)+/g, "零")
@@ -367,26 +366,8 @@ export default {
           val +
           "）";
       }
-      console.log("金额", this.docData.payTotal);
     },
 
-    //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
-      let data = {
-        caseId: "408efab9b0975f9815c71947d45e60f0", //流程里的案件id
-        // caseId: '', //先写死
-        docId: "0c18fe2ebe22e931eec3b0e256362e04"
-      };
-      this.com_getDocDataByCaseIdAndDocId(data);
-    },
-    // 多行编辑
-    overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
-    },
-    // 获取多行编辑内容
-    getOverFloeEditInfo(edit) {
-      this.docData.illegalFactsEvidence = edit;
-    },
     //提交
     submitData(handleType) {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
@@ -394,26 +375,34 @@ export default {
         name: this.$route.params.url
       });
     },
-    //保存文书信息
-    saveData(handleType) {
-      this.com_addDocData(handleType, "docForm");
+    setData() {
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.com_getFormDataByCaseIdAndFormId(
+        this.caseLinkDataForm.caseBasicinfoId,
+        this.caseLinkDataForm.caseLinktypeId,
+        false
+      );
+      console.log('获取数据',this.formData)
     },
-    //是否是完成状态
-    isOverStatus() {
-      if (this.$route.params.docStatus == "1") {
-        this.formOrDocData.showBtn = [
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          true
-        ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-      }
+    // 提交表单
+    saveData(handleType) {
+      //参数  提交类型 、formRef
+      this.com_submitCaseForm(handleType, "compensationNoticeForm", true);
+    },
+    // 多行编辑
+    overFlowEdit() {
+      this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
+    },
+    // 获取多行编辑内容
+    getOverFloeEditInfo(edit) {
+      this.formData.illegalFactsEvidence = edit;
+    },
+    //提交
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
     },
 
     handleClose(done) {
@@ -426,8 +415,7 @@ export default {
   },
   mounted() {},
   created() {
-    this.isOverStatus();
-    this.getDocDataByCaseIdAndDocId();
+    this.setData();
   }
 };
 </script>
