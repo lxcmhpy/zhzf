@@ -13,7 +13,7 @@ const service = axios.create({
   // "Content-Type": "multipart/form-data;charset=UTF-8",
   "Content-Type": "application/x-www-form-urlencoded",
   // "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-  // "Content-Type": "multipart/form-data;charset=UTF-8", 
+  // "Content-Type": "multipart/form-data;charset=UTF-8",
   timeout: 15000, // request timeout
 
 });
@@ -55,8 +55,12 @@ service.interceptors.request.use(
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
     } else if (config.baseUrlType == 2) {
       config.baseURL = BASEURL[BASEURL.CURRENT].LAW_SUPERVISE_HOST
+    }else if (config.baseUrlType == 3) {
+      config.baseURL = BASEURL[BASEURL.CURRENT].XZJC_HOST
+    }else if (config.baseUrlType == 4) {
+      config.baseURL = BASEURL[BASEURL.CURRENT].CHECK_API
     } else {
-      config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
+      config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST // 默认的base_url
     }
     if (config.responseType) {
       config["responseType"] = config.responseType
@@ -95,7 +99,7 @@ service.interceptors.request.use(
 
     console.log('config', config)
     //  config.headers = {
-    //   'Content-Type': config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8" //  注意：设置很关键 
+    //   'Content-Type': config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8" //  注意：设置很关键
     // }
 
     return config;

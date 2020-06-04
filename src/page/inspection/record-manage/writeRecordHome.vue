@@ -12,10 +12,10 @@
         </div>
       </div>
       <div v-for="(item,index) in modleList" :key="index" class="card-content">
-        <!-- <div class="card-title" v-if="index==0">{{item.domain}}
+        <div class="card-title" v-if="index==0">{{item.domain}}
           ({{item.templateList.length}})
-          {{typeof(item.templateList.length)}}
-        </div> -->
+          <!-- {{typeof(item.templateList.length)}} -->
+        </div>
         <div class="card-title" v-if="index!=0">{{item.domain}}
           ({{item.templateList.length}})
         </div>
@@ -29,6 +29,7 @@
             </div>
             <div class="card-des">{{modle.title}}</div>
             <span style="color: blue;font-size: 14px;" @click="editModle(modle)">修改模板</span>
+            <span style="color: blue;font-size: 14px;" @click="delModle(modle)">删除模板</span>
           </li>
         </ul>
       </div>
@@ -42,7 +43,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import addModle from "./addModle.vue";
-import { findAllRecordModleApi, findRecordlModleByNameApi, findRecordModleByIdApi } from "@/api/Record";
+import { findAllRecordModleApi, findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi } from "@/api/Record";
 
 export default {
   components: {
@@ -93,7 +94,6 @@ export default {
     //查询
     getPreviewList(list) {
       console.log("getPreviewList", list);
-      this.allUserList = list;
       setTimeout(() => {
       }, 100);
     },
@@ -106,6 +106,33 @@ export default {
     editModle(item) {
       console.log('选中的模板', item)
       this.$refs.addModleRef.showModal(item);
+    },
+    // 删除模板
+    delModle(item) {
+      console.log('选中的模板', item)
+      this.$confirm('确认删除？', "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        console.log('删除', item.id)
+        removeMoleByIdApi(item.id).then(
+          res => {
+            console.log(res)
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: res.msg
+              });
+              this.searchList()
+            }
+          },
+          error => {
+            // reject(error);
+          })
+
+      })
+
     },
     // 预览
     preview() {
@@ -121,7 +148,10 @@ export default {
       findAllRecordModleApi().then(
         res => {
           console.log(res)
-          this.modleList = res.data
+          if (res.data) {
+            this.modleList = res.data
+
+          }
         },
         error => {
           // reject(error);
