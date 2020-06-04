@@ -229,7 +229,7 @@ export const mixinGetCaseApiList = {
           break;
         case this.BASIC_DATA_SYS.compensationNote_caseDoctypeId:
           data.nextLink = "case_handle_compensationNotice";
-          data.docId = this.BASIC_DATA_SYS.compensationNote_caseDoctypeId;
+          data.docId = this.BASIC_DATA_SYS.compensationNote_huanjieAndDocId;
           break;
         case this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId:  //赔补偿当事人权利环节
           data.nextLink = "case_handle_compensationPartyRights";
