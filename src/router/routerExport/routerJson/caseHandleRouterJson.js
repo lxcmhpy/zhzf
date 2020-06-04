@@ -657,7 +657,7 @@ export default [
     path: "/compensationNotice",
     name: "case_handle_compensationNotice",
     meta: {
-      title: "当场行政处罚决定书"
+      title: "公路赔（补）偿通知书"
     },
     component: () => import("@/page/caseHandle/case/form/compensationNotice.vue")
   },
@@ -676,5 +676,13 @@ export default [
       title: "证据粘贴页"
     },
     component: () => import("@/page/caseHandle/case/modle/evidencePastePage.vue")
+  },
+  {
+    path: "/payCompensation",
+    name: "case_handle_payCompensation",
+    meta: {
+      title: "公路赔（补）偿通知书"
+    },
+    component: () => import("@/page/caseHandle/case/form/payCompensation.vue")
   },
 ]

@@ -226,6 +226,9 @@ export const mixinGetCaseApiList = {
         case this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId:
           data.nextLink = "case_handle_caseDoc";
           break;
+        case this.BASIC_DATA_SYS.compensationNote_caseDoctypeId:
+        data.nextLink = "case_handle_compensationNotice";
+        break;
         case this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId:   //行政强制措施
           data.nextLink = "case_handle_adminCoerciveMeasure";
           data.docId = this.BASIC_DATA_SYS.adminCoerciveMeasure_huanjieAndDocId;
