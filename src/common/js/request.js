@@ -61,25 +61,6 @@ service.interceptors.request.use(
     if (config.responseType) {
       config["responseType"] = config.responseType
     }
-    // get方法
-    if(config.method=== 'get'){
-    //   debugger
-    // console.log('get',config)
-    // if(config.params){
-      // config.params=qs.stringify(config.params)
-      // config.params=async qs.stringify(config.params)
-      // config.params=await qs.stringify(config.params)
-    // }
-    }
-    // post方法
-    if (config.method === 'post') {
-      console.log('post', config)
-      console.log('config.data', config.data)
-      console.log('config.data.qs',  qs.stringify({ a: ['b', 'c', 'd'] }))
-
-      // config.data=qs.stringify(config.data)//有些post方法如findByCondition在接口文件中已处理
-      // console.log('postdeal', config)
-    }
     // config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
     config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8"
     // config["Content-Type"] = config.contentType ? config.contentType : "multipart/form-data;charset=UTF-8"
