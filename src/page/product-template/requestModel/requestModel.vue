@@ -7,8 +7,8 @@
           <el-form-item label="问答模板名称" prop="name">
             <el-input v-model="searchForm.name" clearable placeholder="问答模板名称"></el-input>
           </el-form-item>
-          <el-form-item label="执法机构" prop="modelTypeId">
-            <el-select v-model="searchForm.modelTypeId" clearable placeholder="请选择执法机构">
+          <el-form-item label="执法机构" prop="zfjg">
+            <el-select v-model="searchForm.zfjg" clearable placeholder="请选择执法机构">
               <el-option
                 v-for="item in getOrganList"
                 :key="item.id"
@@ -34,6 +34,7 @@
         <el-table-column type="index" :index="showIndex" label="序号" width="60" align="center">
         </el-table-column>
         <el-table-column prop="modelName" label="模板名称" align="center"></el-table-column>
+        <el-table-column prop="zfml" label="执法门类" align="center"></el-table-column>
         <el-table-column prop="createName" label="创建人" align="center"></el-table-column>
         <el-table-column prop="createTime" :formatter="dateFormat" label="创建时间" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
@@ -92,7 +93,7 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
         modelName:this.searchForm.name,
-        modelTypeId:this.searchForm.modelTypeId
+        zfjg:this.searchForm.zfjg
       };
       let _this = this
       //查询所有文书类型

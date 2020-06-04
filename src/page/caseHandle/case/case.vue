@@ -5,6 +5,8 @@
       <ul>
 
         文书：
+        <li @click="goCompensationNotice">公路赔（补）偿通知书</li>
+        <li @click="goPayCompensation">公路赔（补）偿通知书</li>
         <li @click="goPunishDecisionDoc">行政处罚决定书</li>
         <li @click="goInquestNotesDoc">勘验笔录</li>
         <li @click="goSampleEvidenceDoc">抽样取样凭证</li>
@@ -398,6 +400,12 @@ export default {
     //-------------------长软start--------------
     goPunishDecisionDoc2() {
       this.$router.push({ name: 'case_handle_spotAdmPunishDecisionDoc' });
+    },
+    goCompensationNotice() {
+      this.$router.push({ name: 'case_handle_compensationNotice' });
+    },
+    goPayCompensation() {
+      this.$router.push({ name: 'case_handle_payCompensation' });
     },
     // 证据保存清单
     goEvidenceListDoc() {

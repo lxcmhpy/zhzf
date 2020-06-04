@@ -653,4 +653,44 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/reportRecordDoc.vue")
   },
+  {
+    path: "/compensationPartyRights",
+    name: "case_handle_compensationPartyRights",
+    meta: {
+      title: "当事人权利（赔补偿流程）"
+    },
+    component: () => import("@/page/caseHandle/case/form/compensationPartyRights.vue")
+  },
+  {
+    path: "/compensationNotice",
+    name: "case_handle_compensationNotice",
+    meta: {
+      title: "公路赔（补）偿通知书"
+    },
+    component: () => import("@/page/caseHandle/case/form/compensationNotice.vue")
+  },
+  {
+    path: "/sceneInquestPicture",
+    name: "case_handle_sceneInquestPicture",
+    meta: {
+      title: "现场勘验示意图"
+    },
+    component: () => import("@/page/caseHandle/case/modle/sceneInquestPicture.vue")
+  },
+  {
+    path: "/evidencePastePage",
+    name: "case_handle_evidencePastePage",
+    meta: {
+      title: "证据粘贴页"
+    },
+    component: () => import("@/page/caseHandle/case/modle/evidencePastePage.vue")
+  },
+  {
+    path: "/payCompensation",
+    name: "case_handle_payCompensation",
+    meta: {
+      title: "公路赔（补）偿通知书"
+    },
+    component: () => import("@/page/caseHandle/case/form/payCompensation.vue")
+  },
 ]
