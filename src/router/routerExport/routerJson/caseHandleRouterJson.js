@@ -689,7 +689,7 @@ export default [
     path: "/payCompensation",
     name: "case_handle_payCompensation",
     meta: {
-      title: "公路赔（补）偿通知书"
+      title: "收缴赔补偿款"
     },
     component: () => import("@/page/caseHandle/case/form/payCompensation.vue")
   },

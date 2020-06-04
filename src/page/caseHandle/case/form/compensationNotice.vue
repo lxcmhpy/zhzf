@@ -249,6 +249,7 @@ export default {
     return {
       formData: {
         caseNumber: "",
+        caseName: "",
         partyAddress: "",
         party: "",
         evidenceMaterial: "",
