@@ -19,10 +19,22 @@
           </el-form-item>
         </div>
         <div class="item">
-          <el-form-item label="执法机构" prop="modelTypeId">
-            <el-select v-model="addRequest.modelTypeId" clearable placeholder="请选择执法机构">
+          <el-form-item label="执法机构" prop="zfjg">
+            <el-select v-model="addRequest.zfjg" clearable placeholder="请选择执法机构">
               <el-option
                 v-for="item in getOrganList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="执法门类" prop="zfml">
+            <el-select v-model="addRequest.zfml" clearable placeholder="请选择执法机构">
+              <el-option
+                v-for="item in getZfmlList"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
@@ -47,7 +59,7 @@ export default {
         id: "",
         modelName: "",
         createTime:"",
-        modelTypeId: ""
+        zfjg: ""
       },
       rules: {
          modelName: [{ required: true, message: "模板名称不能为空", trigger: "blur" }],
@@ -56,7 +68,8 @@ export default {
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
       handelType: 0, //添加 0  修改2
-      getOrganList: []
+      getOrganList: [],
+      getZfmlList: [],
     };
   },
   inject: ["reload"],
@@ -76,7 +89,7 @@ export default {
         this.addRequest.id = data.id;
         this.addRequest.modelName = data.modelName;
         this.addRequest.createTime = new Date().format('yyyy-MM-dd');
-        this.addRequest.modelTypeId = data.modelTypeId;
+        this.addRequest.zfjg = data.zfjg;
       }
     },
     //关闭弹窗的时候清除数据

@@ -653,4 +653,12 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/reportRecordDoc.vue")
   },
+  {
+    path: "/compensationNotice",
+    name: "case_handle_compensationNotice",
+    meta: {
+      title: "当场行政处罚决定书"
+    },
+    component: () => import("@/page/caseHandle/case/modle/compensationNotice.vue")
+  },
 ]

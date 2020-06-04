@@ -1004,7 +1004,7 @@ export function AddEditTransferCaseApi(modelId) {
 export function findModelListByModelTypeIdApi(modelTypeId) {
   let data = vm.$qs.stringify({modelTypeId: modelTypeId})
   return request({
-    url: "/case/doc/caseRequestModel/findModelListByModelTypeId/" + modelTypeId,
+    url: "/case/doc/caseRequestModel/findRequestListByModelId/" + modelTypeId,
     method: "post",
     data: data,
     showloading: true,
