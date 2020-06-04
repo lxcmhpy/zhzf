@@ -1005,7 +1005,7 @@ export function AddEditTransferCaseApi(modelId) {
 export function findModelListByModelTypeIdApi(modelTypeId) {
   let data = vm.$qs.stringify({modelTypeId: modelTypeId})
   return request({
-    url: "/case/doc/caseRequestModel/findModelListByModelTypeId/" + modelTypeId,
+    url: "/case/doc/caseRequestModel/findRequestListByModelId/" + modelTypeId,
     method: "post",
     data: data,
     showloading: true,
@@ -1133,6 +1133,17 @@ export function getCurrentApproveApi(id) {
 export function queryFlowBycaseTypeApi(id) {
   return request({
     url: "/case/caseTemplate/flow/queryFlowBycaseType/" + id,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据案件id获取案件流程 
+export function queryFlowBycaseIdApi(id) {
+  return request({
+    url: "/case/caseTemplate/flow/queryFlowBycaseId/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
@@ -1272,6 +1283,17 @@ export function getAttachedPropertyAnsValueApi(data) {
     url: "/case/caseTemplate/attachedProperty/queryPropertyAndValue/"+data,
     method: "get",
     // data: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过storageId获取文件base64码
+export function queryImgBase64Api(storageId) {
+  return request({
+    url: "/case/sys/file/getBase64ByStorageId/"+storageId,
+    method: "get",
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()

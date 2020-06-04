@@ -32,7 +32,7 @@ export function loginInApi(params) {
     showloading: true,
     loadingType:'loadFull',
     contentType: false,
-    // baseUrlType:1,
+    // baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -53,7 +53,7 @@ export function resetPasswordApi(params) {
     contentType: 'multipart/form-data',
     data:data,
     showloading: false,
-    baseUrlType:1,
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -64,7 +64,7 @@ export function getCaptchaApi() {
     url: "/common/captcha/getcaptcha",
     method: "get",
     showloading: false,
-    baseUrlType:1,
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -77,7 +77,7 @@ export function getCapImgSrcApi(captchaId) {
     url: "/common/captcha/draw/"+captchaId,
     method: "get",
     showloading: false,
-    baseUrlType:1,
+    baseUrlType:  'CAPTCHA_HOST',
     responseType: 'arraybuffer',
     cancelToken: setCancelSource()
   });
@@ -88,7 +88,7 @@ export function getMenuApi() {
   return request({
     url: "/system/sys/permission/getMenuList",
     method: "get",
-    baseUrlType:1,
+    baseUrlType:  'CAPTCHA_HOST',
     showloading: true,
     loadingType:'loadFull',
     cancelToken: setCancelSource()

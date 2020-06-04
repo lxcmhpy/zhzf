@@ -210,7 +210,7 @@ export function getUserresetApi(params) {
     contentType: 'multipart/form-data',
     data:data,
     showloading: false,
-    baseUrlType:1,
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
