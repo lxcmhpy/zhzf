@@ -296,9 +296,9 @@ export default {
               console.log("新增机构", res);
               //保存附属属性
               let valueList = [];
-              this.attachedPropertyValueList.forEach(item => {
+              this.attachedPropertyList.forEach(item => {
                   let value = {
-                    propertyId: item.propertyId,
+                    propertyId: item.id,
                     propertyValue: _this.addValueForm.propertyValue[item.propertyEnName]
                   };
                   valueList.push(value);
