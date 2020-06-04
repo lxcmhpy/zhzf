@@ -51,17 +51,13 @@ service.interceptors.request.use(
     if (BASEURL) {
       iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
     }
-    if (config.baseUrlType == 1) {
-      config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
-    } else if (config.baseUrlType == 2) {
-      config.baseURL = BASEURL[BASEURL.CURRENT].LAW_SUPERVISE_HOST
-    }else if (config.baseUrlType == 3) {
-      config.baseURL = BASEURL[BASEURL.CURRENT].XZJC_HOST
-    }else if (config.baseUrlType == 4) {
-      config.baseURL = BASEURL[BASEURL.CURRENT].CHECK_API
-    } else {
+    if (config.baseUrlType) {
+        let baseObj = BASEURL[BASEURL.CURRENT];
+        config.baseURL = baseObj[config.baseUrlType];
+    } {
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST // 默认的base_url
     }
+
     if (config.responseType) {
       config["responseType"] = config.responseType
     }

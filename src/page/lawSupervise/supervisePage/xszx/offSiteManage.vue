@@ -414,7 +414,7 @@ export default {
     },
       //更改每页显示的条数
     handleSizeChange(val) {
-        this.form.pageSize = val;
+        this.form.size = val;
         this.search(1);
     },
     //更换页码

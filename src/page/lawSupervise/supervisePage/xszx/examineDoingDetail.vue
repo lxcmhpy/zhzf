@@ -18,7 +18,7 @@
             <component v-if="obj" :obj="obj" v-bind:is="examineDoingDetailChildren[tabActiveValue]" ></component>
         </div>
     </div>
-    <btns v-if="tabActiveValue" :tabActiveValue="tabActiveValue"></btns>
+    <btns v-if="tabActiveValue&&obj" :obj="obj" :tabActiveValue="tabActiveValue"></btns>
 </div>
 </template>
 

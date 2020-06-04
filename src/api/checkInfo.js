@@ -17,7 +17,7 @@ export function yehuCheckApi(data) {
         url: "/cy/yuz/yh?licenseCode=" + data.licenseCode + "&ownerName=" + data.ownerName + "&provinceCode=" + data.provinceCode,
         method: "GET",
         showloading: false,
-        baseUrlType: 4,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -28,7 +28,7 @@ export function crewCheckApiIdcard(data) {
         url: "/cy/ship/shipInfoSrzSfz?idCardNo=" + data.idCardNo,
         method: "GET",
         showloading: false,
-        baseUrlType: 4,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -39,7 +39,7 @@ export function crewCheckApiCertificates(data) {
         url: "/cy/ship/shipInfoZsh?certNo=" + data.certNo,
         method: "GET",
         showloading: false,
-        baseUrlType: 4,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -52,7 +52,7 @@ export function crewCheckApiCbjczl(data) {
         url: "/cy/ship/shipInfo?shipId=" + data.shipId,
         method: "GET",
         showloading: false,
-        baseUrlType: 4,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -63,7 +63,7 @@ export function crewCheckApiGjysjyzgz(data) {
         url: "/cy/ship/gjDjzsbh?zsbh=" + data.zsbh,
         method: "GET",
         showloading: false,
-        baseUrlType: 4,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -75,7 +75,7 @@ export function crewCheckApiKyxlbsp(data) {
         url: "/cy/yuz/lxbsp?plateColorCode=" + data.plateColorCode + "&vehicleNo=" + data.vehicleNo,
         method: "GET",
         showloading: false,
-        baseUrlType: 4,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -87,7 +87,7 @@ export function dlyscyryCheckApi(data) {
         url: "/cy/yuz/cyyy?certificateCode=" + data.certificateCode + "&staffName=" + data.staffName + "&provinceCode=" + data.provinceCode,
         method: "GET",
         showloading: false,
-        baseUrlType: 4,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -99,7 +99,7 @@ export function yyclCheckApi(data) {
         url: "/cy/yuz/car?vehicleNo=" + data.VehicleNo + "&transCertificateCode=" + data.TransCertificateCode + "&vin=" + data.Vin,
         method: "GET",
         showloading: false,
-        baseUrlType: 4,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -111,7 +111,7 @@ export function vehicleCheckApi(data) {
         url: "/cy/yuz/vehicle?json=" + data,
         method: "GET",
         showloading: false,
-        baseUrlType: 4,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
