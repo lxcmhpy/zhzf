@@ -401,7 +401,7 @@
       },
       //查看文书
       viewDoc(row) {
-        this.com_viewDoc(row);
+        this.com_viewDoc1(row,this.caseLinkDataForm.caseLinktypeId);
       },
       //清空文书
       delDocDataByDocId(data) {
@@ -596,8 +596,19 @@
         }
       },
       getDataAfter() {
-        // this.formData.isImportant = ["否"];
-        this.docTableDatas = [];
+        console.log("111",this.caseLinkDataForm);
+        if(this.caseLinkDataForm.status == ''){
+            console.log("初始化");
+            this.docTableDatas = [];
+        }else{
+          console.log("保存或暂存之后");
+          // this.docTableDatas = [];
+          // this.docTableDatasCopy.forEach(item => {
+          //   if(item.status!=''){
+          //     this.docTableDatas.push(item);
+          //   }
+          // });
+        }
       },
       //返回到流程图
       backBtn() {

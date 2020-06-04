@@ -248,6 +248,7 @@ export default {
   data() {
     return {
       formData: {
+        caseName:"",
         caseNumber: "",
         partyAddress: "",
         party: "",
