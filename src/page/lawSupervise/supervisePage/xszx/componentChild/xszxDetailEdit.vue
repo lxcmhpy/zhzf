@@ -640,9 +640,12 @@
                         <el-upload
                              class="avatar-uploader uploadFile"
                              drag
+                             :http-request="saveFile"
                              list-type="picture-card"
+                             :file-list="fileList"
                             action="https://jsonplaceholder.typicode.com/posts/"
                             :limit="1"
+                            multiple
                         >
                             <i class="el-icon-picture">
                                 <span style="color: gray;font-size:12px;"><br>上传证据</span>
@@ -709,6 +712,7 @@ export default {
     data () {
         let self = this;
         return {
+            fileList: [],
             imgIndexUrl: null,
             imgList: [
                 '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_D',
@@ -786,13 +790,20 @@ export default {
             }
             ],
             acitveCar: 0,
-            dialogIMGVisible1: false
+            dialogIMGVisible1: false,
+            formUpload: {
+                caseId: null,
+                category: '执法监管'
+            }
         }
     },
     methods:{
         showImg (index) {
             this.dialogIMGVisible = true;
             this.imgIndexUrl = this.imgList[index];
+        },
+        saveFile (params) {
+            this.formUpload.file = param.file
         },
         //关闭弹窗的时候清除数据
         setActiveItem () {

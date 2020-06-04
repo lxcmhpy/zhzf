@@ -74,7 +74,8 @@ export default {
     },
     mounted () {
         this.cxVisible = true;
-        this.findWeighingRecord('新J35718');
+        // '新J35718'
+        this.findWeighingRecord();
     }
 
 }

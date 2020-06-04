@@ -27,6 +27,7 @@
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 import { mapGetters } from "vuex";
 import xszxDetailEdit from '../xszxDetailEdit.vue';
+import {upload} from '@/api/upload.js';
 
 export default {
     props: ['obj'],

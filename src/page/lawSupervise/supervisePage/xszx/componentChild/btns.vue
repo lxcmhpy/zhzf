@@ -135,10 +135,10 @@
 <script>
 import {mapGetters} from "vuex";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
-import {findAllDrawerById} from '@/api/lawSupervise.js';
+import {findAllDrawerById, saveAndUpdate} from '@/api/lawSupervise.js';
 export default {
   //tabActiveValue: 1检测数据核对,2违法超限复合,3生成证据包
-  props: ['tabActiveValue'],
+  props: ['tabActiveValue', 'obj'],
   data() {
     return {
         statusObj: {
@@ -248,6 +248,24 @@ export default {
       // });
     },
     nextRouter() {
+        if (this.$route.params.status == '0') {
+            let _this = this
+            new Promise((resolve, reject) => {
+                saveAndUpdate(_this.obj).then(
+                    res => {
+                        // resolve(res)
+                        // _this[obj] = res.data
+                        debugger;
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+return
+        }
+
       let nextStatus=parseInt(this.$route.params.status)+1
       this.$router.push({
         name: 'law_supervise_examineDoingDetail',
