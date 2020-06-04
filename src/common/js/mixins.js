@@ -229,6 +229,7 @@ export const mixinGetCaseApiList = {
           break;
         case this.BASIC_DATA_SYS.compensationNote_caseDoctypeId:
           data.nextLink = "case_handle_compensationNotice";
+          data.docId = this.BASIC_DATA_SYS.compensationNote_caseDoctypeId;
           break;
         case this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId:  //赔补偿当事人权利环节
           data.nextLink = "case_handle_compensationPartyRights";
@@ -277,6 +278,9 @@ export const mixinGetCaseApiList = {
           break;
         case "2c9029ee6cac9281016cacab478e0007":   //归档
           data.nextLink = "";
+          break;
+        case this.BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId:   //收缴赔补偿款 环节id 
+          data.nextLink = "case_handle_payCompensation";
           break;
       }
       return data;
