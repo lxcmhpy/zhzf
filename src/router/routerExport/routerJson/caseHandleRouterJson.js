@@ -654,6 +654,14 @@ export default [
     component: () => import("@/page/caseHandle/case/modle/reportRecordDoc.vue")
   },
   {
+    path: "/compensationPartyRights",
+    name: "case_handle_compensationPartyRights",
+    meta: {
+      title: "当事人权利（赔补偿流程）"
+    },
+    component: () => import("@/page/caseHandle/case/form/compensationPartyRights.vue")
+  },
+  {
     path: "/compensationNotice",
     name: "case_handle_compensationNotice",
     meta: {
