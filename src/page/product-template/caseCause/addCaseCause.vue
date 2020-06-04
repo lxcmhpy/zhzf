@@ -15,11 +15,11 @@
       prop="addCaseCauseForm"
     >
       <div class="item">
-        <el-form-item label="执 法 门 类" prop="categoryId" v-if="isAdd" class="is-required">
+        <el-form-item label="业 务 领 域" prop="categoryId" v-if="isAdd" class="is-required">
           <el-select
             v-model="addCaseCauseForm.categoryId"
             style="width:100%"
-            placeholder="请选择执法门类"
+            placeholder="请选择业务领域"
             @change="getHylbByLaw"
           >
             <el-option
@@ -30,7 +30,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="执法门类" v-else>
+        <el-form-item label="业务领域" v-else>
           <el-input
             v-model="addCaseCauseForm.category"
             style="width:100%"
@@ -153,7 +153,7 @@ export default {
         console.log(err);
       };
     },
-    //获取执法门类
+    //获取业务领域
     getEnforceLawType() {
       let _this = this;
       this.$store.dispatch("getEnforceLawType", "1").then(
@@ -178,7 +178,7 @@ export default {
     addOrEditCaseCauseSure() {
         debugger
         this.addCaseCauseForm.category = this.selectGet(this.addCaseCauseForm.categoryId);
-        if(this.addCaseCauseForm.hyTypeId != ""){
+        if(this.addCaseCauseForm.hyTypeId != "" && this.addCaseCauseForm.hyTypeId != null){
             this.addCaseCauseForm.hyTypeCode = this.addCaseCauseForm.hyTypeId;
             this.addCaseCauseForm.hyType = this.selectGetHyType(this.addCaseCauseForm.hyTypeId);
         }

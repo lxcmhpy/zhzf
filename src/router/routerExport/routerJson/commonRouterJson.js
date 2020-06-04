@@ -131,7 +131,7 @@ export default [
             name: "lawCategory",
             path: "lawCategory",
             meta: {
-              title: "执法门类管理"
+              title: "业务领域管理"
             },
             component: () => import("@/page/product-template/lawCategory/LawCategory.vue")
           },
@@ -390,7 +390,15 @@ export default [
           title: "电子案卷"
         },
         component: () => import("@/page/caseHandle/electronicCaseFile/electronicCaseFileList.vue")
-      }
+      },
+      {
+        name: "自由裁量权管理",
+        path: "discretion",
+        meta: {
+          title: "自由裁量权管理"
+        },
+        component: () => import("@/page/product-template/discretion/discretion.vue")
+      },
     ]
   }
 ]

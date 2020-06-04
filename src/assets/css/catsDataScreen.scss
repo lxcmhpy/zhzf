@@ -59,7 +59,7 @@
 .w-animal-yellow {
     outline:7px dashed #f7d02f;
     animation-delay:10s;
-    animation: fadeInLeft 3s;
+    animation: fadeInLeft 4s;
 
 	animation-iteration-count: infinite;
 
@@ -69,13 +69,13 @@
     outline:7px dashed #66d7ff;
     animation-delay:10s;
 
-    animation: fadeInLeft1 3s ;
+    animation: fadeInLeft1 4s ;
 	animation-iteration-count: infinite;
 }
 @keyframes fadeInLeft
 {
     from {
-        animation-delay:10s;
+        animation-delay:2s;
         opacity: 0.7;
         transform: translate3d(-100%, 0, 0);
         outline:7px dashed #ffae00;
@@ -85,13 +85,13 @@
         animation-delay:2s;
         opacity: 1;
         transform: none;
-        outline:7px dashed #bdff3e;
+        outline:7px dashed #f7d02f;
       }
 }
 @keyframes fadeInLeft1
 {
     from {
-        animation-delay:10s;
+        animation-delay:2s;
         opacity: 0.7;
 
         transform: translate3d(-100%, 0, 0);
@@ -102,6 +102,6 @@
         animation-delay:2s;
         opacity: 1;
         transform: none;
-        outline:7px dashed #ffb43e;
+        outline:7px dashed #66d7ff;
       }
 }

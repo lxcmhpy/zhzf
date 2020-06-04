@@ -661,4 +661,20 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/compensationNotice.vue")
   },
+  {
+    path: "/sceneInquestPicture",
+    name: "case_handle_sceneInquestPicture",
+    meta: {
+      title: "现场勘验示意图"
+    },
+    component: () => import("@/page/caseHandle/case/modle/sceneInquestPicture.vue")
+  },
+  {
+    path: "/evidencePastePage",
+    name: "case_handle_evidencePastePage",
+    meta: {
+      title: "证据粘贴页"
+    },
+    component: () => import("@/page/caseHandle/case/modle/evidencePastePage.vue")
+  },
 ]

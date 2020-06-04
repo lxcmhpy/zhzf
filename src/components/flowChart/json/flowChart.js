@@ -217,22 +217,26 @@ const mainLinkData = [{
         fontSize: 16,
     }
 }]
-
+const graphData={
+  compensationGraphData:{},
+  commonGraphData:{}
+}
 
 // 初始化节点位置
-// const graphData = {
-//   nodes:[
-//     {id:"1",source: '1',target:"2",linkID: BASIC_DATA_SYS.establish_caseLinktypeId,name:"立案登记",position:{x: 1, y: 1}, itemStyleColor: "", attributes:{modularity_class:'lct_01'}},
-//     {id:"2",source: "2",target:"3",linkID: BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,name:"调查类\n文书",position:{x: 1, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
-//     {id:"3",source: "3",target:"4",linkID: BASIC_DATA_SYS.compensationNote_caseDoctypeId,name:"赔补偿\n通知",position:{x: 1, y: 3},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
-//     {id:"4",source: '4',target:"5",linkID: BASIC_DATA_SYS.partyRights_caseLinktypeId,name:"当事人\n权利",position:{x: 1, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_10'}},
-//     {id:"5",source: '5',target:"6",linkID: BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId,name:"收缴赔\n补偿款",position:{x: 1, y: 5},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
-//     {id:"6",source: "6",target:"6",linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,name:"结案登记",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_14'}}
-//   ],
-//   links:[]
-// }
+graphData.compensationGraphData = {
+  nodes:[
+    {id:"1",source: '1',target:"2",linkID: BASIC_DATA_SYS.establish_caseLinktypeId,name:"立案登记",position:{x: 1, y: 1}, itemStyleColor: "", attributes:{modularity_class:'lct_01'}},
+    {id:"2",source: "2",target:"3",linkID: BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,name:"调查类\n文书",position:{x: 1, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
+    {id:"3",source: "3",target:"4",linkID: BASIC_DATA_SYS.compensationNote_caseDoctypeId,name:"赔补偿\n通知",position:{x: 1, y: 3},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
+    {id:"4",source: '4',target:"5",linkID: BASIC_DATA_SYS.partyRights_caseLinktypeId,name:"当事人\n权利",position:{x: 1, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_10'}},
+    {id:"5",source: '5',target:"6",linkID: BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId,name:"收缴赔\n补偿款",position:{x: 1, y: 5},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
+    {id:"6",source: "6",target:"6",linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,name:"结案登记",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_14'}}
+  ],
+  links:[]
+}
 
-const graphData = {
+// 初始化节点位置
+graphData.commonGraphData = {
   nodes:[
     {id:"1",source: '1',target:"2_1",linkID: BASIC_DATA_SYS.establish_caseLinktypeId,name:"立案登记",position:{x: 1, y: 1}, itemStyleColor: "", attributes:{modularity_class:'lct_01'}},
     {id:"temp1_1",source: '1',target:"temp1_1",linkID: 'temp1_1',name:"",position:{x: 1, y: 1.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
@@ -263,6 +267,7 @@ const graphData = {
   ],
   links:[]
 }
+
 const linePosition = [
     {
         id: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,
