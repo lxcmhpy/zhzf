@@ -248,7 +248,9 @@ export default {
   data() {
     return {
       formData: {
+        caseName:"",
         caseNumber: "",
+        caseName: "",
         partyAddress: "",
         party: "",
         evidenceMaterial: "",
@@ -309,7 +311,7 @@ export default {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: "compensationNotice-print"
       },
-      huanjieAndDocId: this.BASIC_DATA_SYS.compensationNote_caseDoctypeId,
+      huanjieAndDocId: this.BASIC_DATA_SYS.compensationNote_huanjieAndDocId,
       addVisible: false,
       addLoading: false,
       tableDatas: [],

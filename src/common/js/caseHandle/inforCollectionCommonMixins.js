@@ -107,13 +107,14 @@ export const inforCollectionCommonMixins = {
         weightLimit: '',
         overWeight: '',
         routeId: '',
-
         direction: '',
-
         location: '',
-
-        kilometre: '',
-        metre: '',
+        // kilometre: '',
+        // metre: '',
+        pileNumber:0,
+        pileNumber2:0,
+        distance:0,
+        distance2:0,
         latitudeAndLongitude:'', //案发坐标
       },
       routeList: [],
@@ -165,6 +166,21 @@ export const inforCollectionCommonMixins = {
         ],
         partyUnitTel: [
           {validator: validatePhone, trigger: "blur"}
+        ],
+        routeId: [
+          {required: true, message: "请选择路线", trigger: "change"}
+        ],
+        direction: [
+          {required: true, message: "请选择方向", trigger: "change"}
+        ],
+        location: [
+          {required: true, message: "请选择位置", trigger: "change"}
+        ],
+        pileNumber: [
+          {required: true, message: "请输入公里数", trigger: "blur"}
+        ],
+        distance: [
+          {required: true, message: "请输入米数", trigger: "blur"}
         ],
       },
       //案件类型
@@ -469,10 +485,16 @@ export const inforCollectionCommonMixins = {
       this.showTrailer = true;
     },
     //点击处罚依据显示弹窗
-    showPunishDiag() {
+    showPunishDiag(titleType='') {
+      if(titleType =='compensation'){
+        titleType = '选择认定条款及赔（补）偿依据'
+      }else{
+        titleType = '选择违法条款及处罚依据'
+      }
       let data = {
         caseCauseId: this.inforForm.caseCauseId,
-        caseCauseName: this.inforForm.caseCauseName
+        caseCauseName: this.inforForm.caseCauseName,
+        titleType:titleType
       };
       this.$refs.punishDiagRef.showModal(data);
     },
@@ -535,6 +557,14 @@ export const inforCollectionCommonMixins = {
       // this.searchLawPerson();
       // console.log('searchLawPerson', this.allUserList)
       // console.log("lawPersonList", this.lawPersonList)
+      if(!this.inforForm.latitudeAndLongitude){
+        this.$message('请获取坐标！');
+        return;
+      }
+      if(!this.payTotal){
+        this.$message('请添加路损清单！');
+        return;
+      }
       console.log("表单数据", this.inforForm)
       let _this = this
       //        this.$refs["inforForm"].validate(valid => {
@@ -542,22 +572,22 @@ export const inforCollectionCommonMixins = {
       for (var field in _this.rules) {
         let obj = this.$refs['inforForm']
         let _this = this
-        obj.validateField(field, (validMessage) => {
-          if (validMessage !== '' && result === true) {
-            result = false
-            let fields = _this.$refs[field].elForm.fields
-            for (let i in fields) {
-              if (fields[i].labelFor === field) {
-                if (fields[i].label) {
-                  console.log(_this.$refs[field].$el.offsetTop);
-                  document.getElementById('inforCollectionBox').scrollTop = _this.$refs[field].$el.offsetTop
-                  //                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
-                }
-              }
-            }
-            return result
-          }
-        })
+        // obj.validateField(field, (validMessage) => {
+        //   if (validMessage !== '' && result === true) {
+        //     result = false
+        //     let fields = _this.$refs[field].elForm.fields
+        //     for (let i in fields) {
+        //       if (fields[i].labelFor === field) {
+        //         if (fields[i].label) {
+        //           console.log(_this.$refs[field].$el.offsetTop);
+        //           document.getElementById('inforCollectionBox').scrollTop = _this.$refs[field].$el.offsetTop
+                
+        //         }
+        //       }
+        //     }
+        //     return result
+        //   }
+        // })
       }
       if (result) {
         _this.inforForm.agentPartyEcertId = JSON.stringify(

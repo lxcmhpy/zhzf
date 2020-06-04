@@ -341,7 +341,7 @@
       },
       //查看文书
       viewDoc(row) {
-        this.com_viewDoc(row);
+        this.com_viewDoc1(row);
       },
       //清空文书
       delDocDataByDocId(data) {

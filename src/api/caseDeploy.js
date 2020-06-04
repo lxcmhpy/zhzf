@@ -224,7 +224,6 @@ export function queryLawCateByOrganIdApi(data) {
   return request({
     url: "/case/caseTemplate/LawCateConfiguration/findLawCateByOrganId/"+data.organId,
     method: "get",
-    params: data,
     showloading: false,
     cancelToken: setCancelSource()
   });

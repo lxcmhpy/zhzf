@@ -86,6 +86,7 @@ export const mixinGetCaseApiList = {
             this.com_getCaseBasicInfo(caseId, caseLinktypeId);
           } else {
             console.log(res.data);
+            this.caseLinkDataForm.status = res.data.status;
             console.log('this.propertyFeatures', this.propertyFeatures);
             if (this.propertyFeatures != undefined) {
               let data = {
@@ -227,8 +228,12 @@ export const mixinGetCaseApiList = {
           data.nextLink = "case_handle_caseDoc";
           break;
         case this.BASIC_DATA_SYS.compensationNote_caseDoctypeId:
-        data.nextLink = "case_handle_compensationNotice";
-        break;
+          data.nextLink = "case_handle_compensationNotice";
+          data.docId = this.BASIC_DATA_SYS.compensationNote_huanjieAndDocId;
+          break;
+        case this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId:  //赔补偿当事人权利环节
+          data.nextLink = "case_handle_compensationPartyRights";
+          break;
         case this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId:   //行政强制措施
           data.nextLink = "case_handle_adminCoerciveMeasure";
           data.docId = this.BASIC_DATA_SYS.adminCoerciveMeasure_huanjieAndDocId;
@@ -273,6 +278,9 @@ export const mixinGetCaseApiList = {
           break;
         case "2c9029ee6cac9281016cacab478e0007":   //归档
           data.nextLink = "";
+          break;
+        case this.BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId:   //收缴赔补偿款 环节id 
+          data.nextLink = "case_handle_payCompensation";
           break;
       }
       return data;
@@ -398,7 +406,7 @@ export const mixinGetCaseApiList = {
     },
     //查看或新增环节下的文书
     com_viewDoc(row, addMoreData = {}) {
-      console.log(row);
+      console.log("新增文书",row);
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
         console.log('row:', row)
@@ -417,6 +425,27 @@ export const mixinGetCaseApiList = {
       }
     },
 
+    //查看或新增环节下的文书
+    com_viewDoc1(row,caseLinkTypeId, addMoreData = {}) {
+      console.log("新增文书",row);
+      if (this.isSaveLink) {
+        this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+        console.log('row:', row)
+        this.$router.push({
+          name: row.path,
+          params: {
+            id: row.id,
+            docId: row.docId,
+            url: this.$route.name,
+            linkTypeId: caseLinkTypeId,
+            addMoreData: JSON.stringify(addMoreData),
+            docDataId: row.docDataId
+          }
+        });
+      } else {
+        this.$message('请先保存该环节表单');
+      }
+    },
     //立案登记表提交之后调用  更新案由等信息到案件基本信息中
     com_updatePartCaseBasicInfo(formData) {
       let data = {
@@ -553,7 +582,7 @@ export const mixinGetCaseApiList = {
 
       //只是环节
       let isHuanjieDoc = false;
-      if (data.linkID == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.partyRights_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.noPenalty_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId) {
+      if (data.linkID == this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.partyRights_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.noPenalty_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId) {
         isHuanjieDoc = true;
       }
       this.$store.dispatch('deleteTabs', 'case_handle_flowChart');

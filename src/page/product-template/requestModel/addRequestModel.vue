@@ -19,25 +19,38 @@
           </el-form-item>
         </div>
         <div class="item">
-          <el-form-item label="执法机构" prop="zfjg">
-            <el-select v-model="addRequest.zfjg" clearable placeholder="请选择执法机构">
-              <el-option
-                v-for="item in getOrganList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
+          <el-form-item label="模板类型" prop="modelTypeId">
+            <el-select
+              v-model="addRequest.modelTypeId"
+              placeholder="请选择模板类型"
+            >
+              <el-option label="标准模板" value="11"></el-option>
+              <el-option label="通用模板" value="22"></el-option>
+              <el-option label="自定义模板" value="33"></el-option>
             </el-select>
           </el-form-item>
         </div>
         <div class="item">
-          <el-form-item label="执法门类" prop="zfml">
-            <el-select v-model="addRequest.zfml" clearable placeholder="请选择执法机构">
+          <el-form-item label="执法机构" prop="zfjg">
+            <elSelectTree
+              v-if="showSelectTree"
+              ref="elSelectTreeObj"
+              :options="getOrganList"
+              :accordion="true"
+              :props="props"
+              @getValue="handleChanged">
+            </elSelectTree>
+            <el-input style="display:none" v-model="addRequest.zfjg"></el-input>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="业务领域" prop="zfml">
+            <el-select v-model="addRequest.zfml" clearable placeholder="请选择业务领域">
               <el-option
-                v-for="item in getZfmlList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
+                v-for="item in zfmlList"
+                :key="item.cateName"
+                :label="item.cateName"
+                :value="item.cateName"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -51,6 +64,9 @@
 </template>
 <script>
 import { saveOrUpdateRequestModelApi } from "@/api/caseHandle";
+import { queryLawCateByOrganIdApi} from "@/api/caseDeploy";
+import iLocalStroage from "@/common/js/localStroage";
+import elSelectTree from '@/components/elSelectTree/elSelectTree';
 export default {
   data() {
     return {
@@ -59,7 +75,13 @@ export default {
         id: "",
         modelName: "",
         createTime:"",
-        zfjg: ""
+        modelTypeId: "",
+        zfjg:"",
+        zfml:""
+      },
+      props: {
+          label: "label",
+          value: "id"
       },
       rules: {
          modelName: [{ required: true, message: "模板名称不能为空", trigger: "blur" }],
@@ -69,8 +91,13 @@ export default {
       errorName: false, //添加name时的验证
       handelType: 0, //添加 0  修改2
       getOrganList: [],
-      getZfmlList: [],
+      zfmlList:[],
+      organId:iLocalStroage.gets('userInfo').organId,
+      showSelectTree: true,
     };
+  },
+  components: {
+      elSelectTree
   },
   inject: ["reload"],
   methods: {
@@ -78,6 +105,17 @@ export default {
       this.visible = true;
       this.handelType = type;
       this.getOrganList = orgList;
+      let data1={
+          organId:this.organId
+      };
+      queryLawCateByOrganIdApi(data1).then(
+          res => {
+              this.zfmlList = res.data;
+          },
+          err => {
+              console.log(err);
+          }
+      );
       if (type == 0) {
         this.dialogTitle = "新增";
         this.addRequest = {
@@ -89,7 +127,7 @@ export default {
         this.addRequest.id = data.id;
         this.addRequest.modelName = data.modelName;
         this.addRequest.createTime = new Date().format('yyyy-MM-dd');
-        this.addRequest.zfjg = data.zfjg;
+        this.addRequest.modelTypeId = data.modelTypeId;
       }
     },
     //关闭弹窗的时候清除数据
@@ -162,7 +200,11 @@ export default {
         );
       }
 
-    }
+    },
+      handleChanged(val){
+          this.$refs.elSelectTreeObj.$children[0].handleClose();
+          this.addRequest.zfjg = val
+      },
   }
 };
 </script>

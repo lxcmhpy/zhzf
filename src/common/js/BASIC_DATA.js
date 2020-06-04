@@ -62,6 +62,8 @@ export const BASIC_DATA_SYS = {
     reportRecordDoc_caseDoctypeId:'ee967fd019272b7a06aae11cf5901303',
     //赔补偿 环节id caseLinktypeId
     compensationNote_caseDoctypeId:'508555ca2092e1bd252c5f74468adf0a',
+    //赔补偿 环节文书id caseLinktypeId
+    compensationNote_huanjieAndDocId:'0c18fe2ebe22e931eec3b0e256362e04',
     //收缴赔补偿款 环节id caseLinktypeId
     takeOverCompensation_caseDoctypeId:'7781e1f951303732c3388a325fb685dd',
     //赔补偿案件 调查类文书 环节id caseLinktypeId

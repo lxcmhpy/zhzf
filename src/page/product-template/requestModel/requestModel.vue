@@ -7,15 +7,16 @@
           <el-form-item label="问答模板名称" prop="name">
             <el-input v-model="searchForm.name" clearable placeholder="问答模板名称"></el-input>
           </el-form-item>
-          <el-form-item label="执法机构" prop="zfjg">
-            <el-select v-model="searchForm.zfjg" clearable placeholder="请选择执法机构">
-              <el-option
-                v-for="item in getOrganList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
-            </el-select>
+          <el-form-item label="执法机构" prop="modelTypeId">
+            <elSelectTree
+              v-if="showSelectTree"
+              ref="elSelectTreeObj"
+              :options="getOrganList"
+              :accordion="true"
+              :props="props"
+              @getValue="handleChanged">
+            </elSelectTree>
+            <el-input style="display:none" v-model="searchForm.zfjg"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-search" @click="getRequestModelListSearch">查询</el-button>
@@ -34,9 +35,15 @@
         <el-table-column type="index" :index="showIndex" label="序号" width="60" align="center">
         </el-table-column>
         <el-table-column prop="modelName" label="模板名称" align="center"></el-table-column>
-        <el-table-column prop="zfml" label="执法门类" align="center"></el-table-column>
-        <el-table-column prop="createName" label="创建人" align="center"></el-table-column>
-        <el-table-column prop="createTime" :formatter="dateFormat" label="创建时间" align="center"></el-table-column>
+        <el-table-column prop="modelTypeId" label="模板类型" align="center">
+           <template slot-scope="scope">
+             <span v-if="scope.row.modelTypeId==='11'">标准模板</span>
+             <span v-if="scope.row.modelTypeId==='22'">通用模板</span>
+             <span v-if="scope.row.modelTypeId==='33'">自定义模板</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="organName" label="执法机构" align="center"></el-table-column>
+        <el-table-column prop="zfml" label="业务领域" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="queryRequestList(scope.row.id)" >详情</el-button>
@@ -67,6 +74,7 @@ import addRequestModel from "./addRequestModel";
 import requestList from "./requestList";
 import iLocalStroage from "@/common/js/localStroage";
 import { getRequestModelListApi,deleteRequestModelApi} from "@/api/caseHandle";
+import elSelectTree from '@/components/elSelectTree/elSelectTree';
 export default {
   data() {
     return {
@@ -78,13 +86,21 @@ export default {
       searchName:'', //查询名称
       searchForm:{
         name:'',
-        modelTypeId:''
-      }
+        modelTypeId:'',
+        zfjg:'',
+        zfml:''
+      },
+      showSelectTree: true,
+      props: {
+          label: "label",
+          value: "id"
+      },
     };
   },
   components: {
     addRequestModel,
-    requestList
+    requestList,
+    elSelectTree
   },
   inject:['reload'],
   methods: {
@@ -93,7 +109,9 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
         modelName:this.searchForm.name,
-        zfjg:this.searchForm.zfjg
+        modelTypeId:this.searchForm.modelTypeId,
+        zfjg:this.searchForm.zfjg,
+        zfml:this.searchForm.zfml
       };
       let _this = this
       //查询所有文书类型
@@ -177,9 +195,8 @@ export default {
     },
     //获取当前机构及其子机构
     getCurrentOrganAndChild() {
-      let organId =  iLocalStroage.gets("userInfo").organId;
       let _this = this
-      this.$store.dispatch("getCurrentAndNextOrgan",organId).then(
+      this.$store.dispatch("getAllOrgan").then(
         res => {
           _this.getOrganList = res.data;
         },
@@ -190,7 +207,11 @@ export default {
     },
     showIndex(index){
       return (this.currentPage-1)*this.pageSize+index+1;
-    }
+    },
+    handleChanged(val){
+        this.$refs.elSelectTreeObj.$children[0].handleClose();
+        this.searchForm.zfjg = val
+    },
   },
   created() {
     this.getRequestModelList();

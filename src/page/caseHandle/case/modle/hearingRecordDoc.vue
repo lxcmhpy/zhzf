@@ -356,7 +356,7 @@
           //表单数据
           docData: "",
           status: "",
-          linkTypeId: this.BASIC_DATA_SYS.partyRights_caseLinktypeId
+          linkTypeId: this.$route.params.caseLinkTypeId
         },
         rules: {
           caseNumber: [

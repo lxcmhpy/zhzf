@@ -93,15 +93,15 @@
         </div>
         <div class="afddBox">
           <label class="el-form-item__label" style="width: 100px;">案发地点</label>
-          <div class="itemFive">
-            <el-form-item label-width="0">
-              <el-select v-model="inforForm.routeId" placeholder="本机构路线编号" filterable allow-create>
+          <div class="itemFive2">
+            <el-form-item label-width="0" prop="routeId">
+              <el-select v-model="inforForm.routeId"  placeholder="本机构路线编号">
                 <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
           </div>
-          <div class="itemFive">
-            <el-form-item label-width="20px">
+          <div class="itemFive2">
+            <el-form-item label-width="20px" prop="direction">
               <el-select v-model="inforForm.direction" placeholder="方向">
                 <el-option
                   v-for="item in locationList"
@@ -112,8 +112,8 @@
               </el-select>
             </el-form-item>
           </div>
-          <div class="itemFive">
-            <el-form-item label-width="20px">
+          <div class="itemFive2">
+            <el-form-item label-width="20px" prop="location">
               <el-select v-model="inforForm.location" placeholder="位置">
                 <el-option
                   v-for="item in directionList"
@@ -124,19 +124,38 @@
               </el-select>
             </el-form-item>
           </div>
+              
+          <div class="showMapBtn"><el-button type="primary" icon="iconfont law-weizhi" size="mini" @click="showMap" v-if="!hasLatitudeAndLongitude">请获取坐标</el-button><el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button></div>
+        </div>
+        <div>
+          <div class="gongLiBox1">K</div>
+          <div class="itemFive">
+            <el-form-item  prop="pileNumber" label-width="0px">
+              <el-input v-model="inforForm.pileNumber" placeholder="公里数"></el-input>
+            </el-form-item>
+          </div>
+          <div class="gongLiBox2">+</div>
+          <div class="itemFive">
+            <el-form-item label-width="0px" prop="distance">
+              <el-input v-model="inforForm.distance" placeholder="米数" style="vertical-align: middle;">
+                <template slot="append">m</template>
+              </el-input>
+            </el-form-item>
+          </div> 
+          <div class="gongLiBox3">至</div>
           <div class="itemFive">
             <el-form-item label="K">
-              <el-input v-model="inforForm.kilometre" placeholder="公里数"></el-input>
+              <el-input v-model="inforForm.pileNumber2" placeholder="公里数"></el-input>
             </el-form-item>
           </div>
           <div class="itemFive">
             <el-form-item label="+" label-width="30px">
-              <el-input v-model="inforForm.metre" placeholder="米数" style="vertical-align: middle;">
+              <el-input v-model="inforForm.distance2" placeholder="米数" style="vertical-align: middle;">
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
-          </div>     
-          <div class="showMapBtn"><el-button type="primary" icon="iconfont law-weizhi" size="mini" @click="showMap" v-if="!hasLatitudeAndLongitude">请获取坐标</el-button><el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button></div>
+          </div> 
+         
         </div>
         <div>
           <div class="itemOne">
@@ -258,7 +277,7 @@
             </el-form-item>
           </div>
           <div class="itemSmall">
-            <el-form-item label="职位">
+            <el-form-item label="职务">
               <el-input v-model="inforForm.occupation"></el-input>
             </el-form-item>
           </div>
@@ -632,6 +651,7 @@
         </div>
 
         <div>
+          <!-- {{pathLossList}} -->
           <el-table :data="pathLossList">
             <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
             <el-table-column label="路产名称" prop="roadLcName" align="center"></el-table-column>
@@ -674,18 +694,18 @@
         </div>
         <div>
           <div class="itemOne">
-            <el-form-item label="违法条款" prop="illegalLaw">
+            <el-form-item label="认定条款" prop="illegalLaw">
               <el-input ref="illegalLaw" v-model="inforForm.illegalLaw" :disabled="true">
-                <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
+                <el-button slot="append" icon="el-icon-search" @click="showPunishDiag('compensation')"></el-button>
               </el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="itemOne">
-            <el-form-item label="处罚依据" prop="punishLaw">
+            <el-form-item label="赔补偿依据" prop="punishLaw">
               <el-input ref="punishLaw" v-model="inforForm.punishLaw" :disabled="true">
-                <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
+                <el-button slot="append" icon="el-icon-search" @click="showPunishDiag('compensation')"></el-button>
               </el-input>
             </el-form-item>
           </div>
@@ -884,6 +904,7 @@ export default {
     //新增属性
     this.$set(this.inforForm, "payTotal",);
     this.$set(this.inforForm, "roadDamageList");
+    console.log('pathLossList',this.pathLossList);
     // this.findReportRecordDocPdf()
   },
   mounted(){
