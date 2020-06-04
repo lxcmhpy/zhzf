@@ -36,9 +36,11 @@
         </el-table-column>
         <el-table-column prop="modelName" label="模板名称" align="center"></el-table-column>
         <el-table-column prop="modelTypeId" label="模板类型" align="center">
-           <span slot-scope="scope">
-            <span>{{scope.row.modelTypeId == 11 ? '标准模板': '通用模板'}}</span>
-          </span>
+           <template slot-scope="scope">
+             <span v-if="scope.row.modelTypeId==='11'">标准模板</span>
+             <span v-if="scope.row.modelTypeId==='22'">通用模板</span>
+             <span v-if="scope.row.modelTypeId==='33'">自定义模板</span>
+          </template>
         </el-table-column>
         <el-table-column prop="organName" label="执法机构" align="center"></el-table-column>
         <el-table-column prop="zfml" label="业务领域" align="center"></el-table-column>
