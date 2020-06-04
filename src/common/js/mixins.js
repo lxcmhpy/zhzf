@@ -1,7 +1,7 @@
 import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi,
+  updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi,queryFlowBycaseIdApi,
 } from "@/api/caseHandle";
 import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 
@@ -11,6 +11,7 @@ export const mixinGetCaseApiList = {
       isSaveLink: false, //是否点击了环节保存，未保存不可以操作文书
       canGoNextLink: false,
       submitApproval: false,
+      caseFlowData:'', //案件流程数据（哪个信息采集页、哪个流程图）
     }
   },
   computed: {
@@ -221,7 +222,8 @@ export const mixinGetCaseApiList = {
           data.nextLink = "case_handle_establish";
           data.docId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
           break;
-        case this.BASIC_DATA_SYS.caseDoc_caseLinktypeId:   //调查类文书
+        case this.BASIC_DATA_SYS.caseDoc_caseLinktypeId: //调查类文书
+        case this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId:
           data.nextLink = "case_handle_caseDoc";
           break;
         case this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId:   //行政强制措施
@@ -716,6 +718,18 @@ export const mixinGetCaseApiList = {
         console.log(err);
       })
 
+    },
+    //获取案件流程类型
+    async queryFlowBycaseId(){
+      await queryFlowBycaseIdApi(this.caseId)
+        .then(res => {
+          console.log("res", res);
+          this.caseFlowData = res.data;
+          // callBack();
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
 
 
