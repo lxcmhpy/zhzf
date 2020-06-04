@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="选择违法条款及处罚依据" :visible.sync="visible" @close="closeDialog" :close-on-click-modal="false" width="40%" append-to-body>
+  <el-dialog :title="punishTitle" :visible.sync="visible" @close="closeDialog" :close-on-click-modal="false" width="40%" append-to-body>
     <div>
       <p>违法行为:<span>{{caseCauseName}}</span></p>
       <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" class="table_style" @selection-change="handleSelectionChange">
@@ -38,6 +38,7 @@ export default {
       caseCauseId: "",
       caseCauseName: "",
       selectData: [],
+      punishTitle:'',
     };
   },
   inject: ["reload"],
@@ -46,6 +47,7 @@ export default {
       this.visible = true;
       this.caseCauseId = data.caseCauseId;
       this.caseCauseName = data.caseCauseName;
+      this.punishTitle = data.titleType;
       this.findLawRegulationsByCauseId();
     },
     //关闭弹窗的时候清除数据

@@ -78,12 +78,12 @@
       @saveData="saveData"
       @backHuanjie="submitData"
     ></casePageFloatBtns>
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+   
     <chooseOrUploadEvidence ref="chooseOrUploadEvidenceRef" @choosePic="showChoosePic"></chooseOrUploadEvidence>
   </div>
 </template>
 <script>
-import overflowInput from "./overflowInput";
+
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
@@ -94,7 +94,6 @@ import {
 } from "@/api/caseHandle";
 export default {
   components: {
-    overflowInput,
     casePageFloatBtns,
     chooseOrUploadEvidence,
   },
@@ -104,6 +103,7 @@ export default {
     return {
       docData: {
         picImgEvPath:'',
+        // picBase64:'',
         picList: "",
         sh: "",
         note: ""
@@ -152,14 +152,6 @@ export default {
 
     //   this.com_addDocData(handleType, "docForm");
     // },
-    // 多行编辑
-    overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
-    },
-    // 获取多行编辑内容
-    getOverFloeEditInfo(edit) {
-      this.docData.hearingRecord = edit;
-    },
     //提交
     submitData(handleType) {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
@@ -169,7 +161,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      if(!this.imgBase64){
+      if(!this.imgBase64 && handleType==1 ){
         this.$message('请选择照片');
         return;
       }
@@ -180,9 +172,10 @@ export default {
       let imgDataArr = [];
       imgDataArr.push(imgData)
       this.docData.picList = JSON.stringify(imgDataArr);
-      this.docData.picImgEvPath = this.picData.evPath;
+      // this.docData.picImgEvPath = this.picData.evPath;
       console.log(this.docData.picList);
-      console.log('this.docData',  this.docData)
+      console.log('this.docData',  this.docData);
+      console.log('保存')
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
@@ -203,27 +196,41 @@ export default {
       }
     },
     chooseImg(){
-        this.$refs.chooseOrUploadEvidenceRef.showModal(this.picData);
+      let data ={
+            pageType:'sceneInquestPicture',
+            picSrc:this.docData.picImgEvPath,
+            selectAllPicPath:[]
+      }
+        this.$refs.chooseOrUploadEvidenceRef.showModal(data);
     },
     deleteImg(){
         this.chooseImgSrc = '';
         this.imgBase64 = '';
+        this.docData.picImgEvPath = '';
+        this.docData.sh = '';
     },
     showChoosePic(selpicData){
         console.log('selpicData',selpicData);
-        this.picData = selpicData;
-        this.getBase64(selpicData.evPath);
+        // this.picData = selpicData;
+        this.getBase64(selpicData);
    },
-    getBase64(storageId){
+    getBase64(selpicData){
+        let storageId = selpicData.picData.evPath;
+       this.docData.picImgEvPath =  storageId;
       queryImgBase64Api(storageId).then(res=>{
         console.log('获取base64',res);
         this.imgBase64 = res.data;
         this.chooseImgSrc = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
+        this.docData.sh = selpicData.picData.note;
       }).catch(err=>{console.log(err)})
     },
     getDataAfter(){
-      this.chooseImgSrc = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + this.docData.picImgEvPath;
-      this.getBase64(this.docData.picImgEvPath);
+      if( this.docData.picImgEvPath){
+        queryImgBase64Api(this.docData.picImgEvPath).then(res=>{
+            this.imgBase64 = res.data;
+           this.chooseImgSrc = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + this.docData.picImgEvPath;
+        })
+      }   
     }
   },
   mounted() {
@@ -238,7 +245,7 @@ export default {
 <style lang="scss">
 #sceneInquestPictureBox{
     .imgBox{
-        height: 200px;
+        height: 400px;
         border:1px solid #cccccc;
         text-align: center;
         img{
