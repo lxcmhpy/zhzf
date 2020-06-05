@@ -89,7 +89,7 @@
                             <el-input size="mini" v-model="field.remark" clearable>
                             </el-input>
                           </el-form-item>
-                          <el-radio-group v-model="field.options[0].value" style="width: 100%;">
+                          <el-radio-group v-model="field.options[0].value" style="width: 100%;" :disabled="field.status===0?true:false">
                             <el-row>
                               <el-col :span="12">
                                 <el-radio label="yyyy-MM-dd HH:mm:ss">精准时间（2020-03-11 12:12:12）</el-radio>
@@ -152,10 +152,10 @@
               <div class="el-form-item__content">
                 <el-radio label="指定人员使用"></el-radio>
                 <el-form-item v-if="formData.scopeOfUse=='指定人员使用'" class="lawPersonBox card-user-box">
-                  <el-select ref="templateUserIdList" v-model="formData.templateUserIdList" multiple @remove-tag="removeUsertag">
-                    <el-option v-for="item in alreadyChooseUserPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
+                  <el-select ref="templateUserIdList" value-key="id" v-model="formData.templateUserIdList" multiple filterable @remove-tag="removeUsertag" @change="changeUser">
+                    <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
+                    <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
                   </el-select>
-                  <el-button icon="el-icon-plus" @click="addTemplateUser"></el-button>
                 </el-form-item>
               </div>
               <div class="el-form-item__content">
@@ -184,10 +184,10 @@
           </el-form-item>
           <el-form-item label="模板管理者">
             <el-form-item class="lawPersonBox card-user-box-big" style="width:100%">
-              <el-select ref="templateAdminIdList" v-model="formData.templateAdminIdList" multiple @remove-tag="removeAdmintag">
-                <el-option v-for="item in alreadyChooseAdminPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
+              <el-select ref="templateAdminIdList" value-key="id" v-model="formData.templateAdminIdList" multiple filterable @remove-tag="removeAdmintag">
+                <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
+                <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
-              <el-button icon="el-icon-plus" @click="addtemplateAdminIdList"></el-button>
             </el-form-item>
           </el-form-item>
         </el-form>
@@ -198,31 +198,27 @@
         <!-- <el-button @click="resetForm('elForm')">重置</el-button> -->
       </div>
     </el-drawer>
-    <chooseLawPerson ref="templateAdminRef" @setLawPer="setAdminPerson" @userList="getAllUserList"></chooseLawPerson>
-    <chooseLawPerson1 ref="templateUserRef" @setLawPer="setUserPerson" @userList="getAllUserList"></chooseLawPerson1>
     <preview ref="previewRef" @fieldList="getAllFieldList"></preview>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
-import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
-import chooseLawPerson1 from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
 import preview from "./previewDialog.vue";
 import { mapGetters } from "vuex";
 import { saveOrUpdateRecordModleApi, findCommonFieldApi, findAllCommonFieldApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi } from "@/api/Record";
+import { findLawOfficerListApi } from "@/api/caseHandle";
 export default {
   components: {
-    chooseLawPerson,
-    chooseLawPerson1,
     preview
   },
   data() {
     return {
-      drawerTitle:'创建模板',
+      drawerTitle: '创建模板',
       newModleTable: false,
       currentUserLawId: '',
       activeNames: [0],
+      LawOfficerList: [],//执法人员列表
       alreadyChooseAdminPerson: [],//已选择管理人员列表
       alreadyChooseUserPerson: [],//已选择使用人员列表
       defaultExpandedKeys: [],
@@ -272,10 +268,10 @@ export default {
         templateOrganId: '',
         templateUser: '',
         templateUserId: '',
-        templateUserIdList: '',
+        templateUserIdList: [],
         templateAdmin: '',
         templateAdminId: '',
-        templateAdminIdList: '',
+        templateAdminIdList: [],
         templateType: '记录',//模板类型
         createName: '',//创建人
         organId: '',//创建人机构id
@@ -288,6 +284,7 @@ export default {
             // value: ,
             sort: 0,//新加-前端定义
             classs: '',
+            classsId:'',
             fieldList: [
               {
                 id: '',//字段id-修改
@@ -341,12 +338,14 @@ export default {
       if (editdata) {
         this.editId = editdata.id;
         this.findDataByld()
-        this.drawerTitle='修改模板'
+        this.drawerTitle = '修改模板'
+        this.globalCont = editdata.count + 1;
       }
       this.findCommonField()
       this.getEnforceLawType();
       this.setLawPersonCurrentP();
       this.getAllOrgan('root');
+      this.getPerson()
       this.newModleTable = true;
       this.$nextTick(() => {
         this.resetForm('elForm')
@@ -370,16 +369,19 @@ export default {
           });
           findRecordModleByIdApi(this.editId).then(
             res => {
-              console.log('list',list)
-              _this.formData = res.data
-              _this.formData.templateFieldList = list
+              if (res.code == 200) {
+                _this.formData = res.data
+                _this.formData.templateFieldList = list
+                // _this.formData.templateAdminIdList = _this.formData.templateAdminId.split(",")
+
+              }
             },
             error => {
-              reject(error);
+
             })
         },
         error => {
-          reject(error);
+
         })
 
     },
@@ -399,15 +401,27 @@ export default {
 
         },
         error => {
-          // reject(error);
+
         })
 
     },
+    // 获取机构下的人员
+    getPerson() {
+      findLawOfficerListApi(iLocalStroage.gets("userInfo").organId).then(
+        res => {
+          this.LawOfficerList = res.data
+        },
+        error => {
+
+        })
+    },
     addGroup() {
-      this.formData.templateFieldList.push({ "sort": this.globalContGroup, fieldList: [] })
+      this.formData.templateFieldList.push({ sort: this.globalContGroup, classs:'',fieldList: [] })
+      debugger
       let pushDataList = JSON.parse(JSON.stringify(this.defautfieldList));
       pushDataList.field = 'key' + this.globalContGroup
       console.log('pushDataList', pushDataList)
+      // 有问题，globalCount
       this.formData.templateFieldList[this.globalContGroup].fieldList.push(pushDataList)
       this.activeNames.push(this.globalCont)
       this.globalContGroup++
@@ -419,12 +433,9 @@ export default {
       if (this.activeNames.indexOf(index) == -1) {
         this.activeNames.push(index)
       }
-      // console.log(index)
       console.log('defautfieldList', this.defautfieldList)
-      // console.log('classs', classs)
       let pushDataList = JSON.parse(JSON.stringify(this.defautfieldList));
-      pushDataList.field = 'key' + this.globalCont
-      this.globalCont++
+      pushDataList.field = 'key' + this.globalCont;
       console.log('pushDataList', pushDataList)
       this.formData.templateFieldList[index].fieldList.push(pushDataList)
     },
@@ -449,39 +460,49 @@ export default {
       }
     },
     submitForm(formName) {
-      console.time('global')
-      //设置classs\templetId
-      // let sort = 1
-      // this.formData.templateFieldList.forEach(element => {
-      //   console.log(element)
-      //   element.sort = sort;
-      //   sort++
-      //   // element.fieldList.forEach(item => {
-      //   //   console.log(item.classs)
-      //   //   item.classs = element.classs;
-      //   //   item.templateId = this.formData.id || '';
-      //   // });
-
-      // });
-
-      console.timeEnd('global')
-
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.formData.templateFieldList.length == 0 || (this.formData.templateFieldList.length == 1 && this.formData.templateFieldList[0].fieldList.length == 0)) {
             this.$message('该请至少添加一个字段！');
           }
           else {
-            // alert('submit!');
             let data = JSON.parse(JSON.stringify(this.formData))
-            data.templateFieldList = JSON.stringify(data.templateFieldList)
+
+            data.templateAdminId = '';
+            data.templateUserId = ''
+            let sort = this.globalCont
+            console.log('复制的', data.templateFieldList)
+            data.templateFieldList.forEach(element => {
+              element.fieldList.forEach(item => {
+                item.sort = sort;
+                sort++
+              });
+            });
+            data.count = sort;
+            // data.templateAdminIdList.forEach(element => {
+            //   if (data.templateAdmin == '') {
+            //     data.templateAdminId += element.id
+            //     data.templateAdmin += element.lawOfficerName
+            //   } else {
+            //     data.templateAdminId = data.templateAdminId + ',' + element.id
+            //     data.templateAdmin = data.templateAdmin + ',' + element.lawOfficerName
+            //   }
+            // });
+            // data.templateUserIdList.forEach(element => {
+            //   if (data.templateUser == '') {
+            //     data.templateUser += element.lawOfficerName
+            //     data.templateUserId += element.id
+            //   } else {
+            //     data.templateUser = data.templateUser + ',' + element.lawOfficerName
+            //     data.templateUserId = data.templateUserId + ',' + element.id
+            //   }
+            // });
             data.templateUserIdList = '';
             data.templateAdminIdList = '';
-            data.count = this.globalCont
-            this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
+            // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
+            data.templateFieldList = JSON.stringify(data.templateFieldList)
             console.log('提交的字段', data)
-
-            console.log('this.formData.templateOrganId', this.formData.templateOrganId)
+            debugger
             saveOrUpdateRecordModleApi(data).then(
               res => {
                 console.log(res)
@@ -497,7 +518,7 @@ export default {
                 }
               },
               error => {
-                // reject(error);
+
               })
 
           }
@@ -506,60 +527,6 @@ export default {
           return false;
         }
       });
-    },
-    // 添加管理者
-    addTemplateUser() {
-      this.$refs.templateUserRef.showModal(this.formData.templateUserIdList, this.alreadyChooseUserPerson);
-    },
-    addtemplateAdminIdList() {
-      this.$refs.templateAdminRef.showModal(this.formData.templateAdminIdList, this.alreadyChooseAdminPerson);
-    },
-    //查询执法人员
-    getAllUserList(list) {
-      this.allUserList = list;
-      setTimeout(() => {
-      }, 100);
-    },
-    //设置使用人员
-    setUserPerson(userlist) {
-      console.log('选择的执法人员', userlist);
-      this.alreadyChooseUserPerson = userlist;
-      this.formData.templateUserIdList = [];
-
-      let staffIdArr = [];
-      let staffArr = [];
-      let certificateIdArr = [];
-
-      this.alreadyChooseUserPerson.forEach(item => {
-        this.formData.templateUserIdList.push(item.id);
-        //给表单数据赋值
-        staffIdArr.push(item.id);
-        staffArr.push(item.lawOfficerName);
-        certificateIdArr.push(item.userId);
-      });
-      // this.formData.staffId = staffIdArr.join(',');
-      this.formData.templateUser = staffArr.join(',');
-      this.formData.templateUserId = certificateIdArr.join(',');
-    },
-    //设置管理人员
-    setAdminPerson(userlist) {
-      console.log('选择的执法人员', userlist);
-      this.alreadyChooseAdminPerson = userlist;
-      this.formData.templateAdminIdList = [];
-      let staffIdArr = [];
-      let staffArr = [];
-      let certificateIdArr = [];
-
-      this.alreadyChooseAdminPerson.forEach(item => {
-        this.formData.templateAdminIdList.push(item.id);
-        //给表单数据赋值
-        staffIdArr.push(item.id);
-        staffArr.push(item.lawOfficerName);
-        certificateIdArr.push(item.userId);
-      });
-      // this.formData.staffId = staffIdArr.join(',');
-      this.formData.templateAdmin = staffArr.join(',');
-      this.formData.templateAdminId = certificateIdArr.join(',');
     },
     //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
     setLawPersonCurrentP() {
@@ -575,20 +542,15 @@ export default {
             let currentUserData = {};
             _this.formData.templateUserIdList = [];
             _this.formData.templateAdminIdList = [];
-            _this.alreadyChooseAdminPerson = [];
-            _this.alreadyChooseUserPerson = [];
             res.data.forEach(item => {
               if (
                 item.userId == iLocalStroage.gets("userInfo").id
               ) {
-                currentUserData.id = item.id;
-                currentUserData.lawOfficerName = item.lawOfficerName;
-                currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
-                _this.alreadyChooseAdminPerson.push(currentUserData);
-                _this.alreadyChooseUserPerson.push(currentUserData);
-                _this.formData.templateAdminIdList.push(currentUserData.id);
-                _this.formData.templateUserIdList.push(currentUserData.id);
-                _this.currentUserLawId = currentUserData.id;
+
+
+                _this.formData.templateAdminIdList.push(item);
+                _this.formData.templateUserIdList.push(item);
+                _this.currentUserLawId = item.id;
                 // 创建人
                 _this.formData.createName = item.lawOfficerName;
               }
@@ -600,13 +562,13 @@ export default {
         );
     },
     removeUsertag(val) {
-      if (this.currentUserLawId == val) {
+      if (this.currentUserLawId == val.id) {
         this.formData.templateUserIdList.push(val);
         this.$message('该执法人员不能删除！');
       }
     },
     removeAdmintag(val) {
-      if (this.currentUserLawId == val) {
+      if (this.currentUserLawId == val.id) {
         this.formData.templateAdminIdList.push(val);
         this.$message('该执法人员不能删除！');
       }
@@ -695,9 +657,7 @@ export default {
       }
     },
     changeGroup(group) {
-      // console.log(group)
       var defaut = this.commonFieldList.find(item => item.classs === group.classs)
-      // console.log('this.defautfieldList', this.defautfieldList)
       if (defaut) {
         // 通用字段
         group.fieldList = defaut.fieldList
@@ -711,6 +671,9 @@ export default {
     },
     resetForm(formName) {
       // this.$refs[formName].resetFields();
+    },
+    changeUser(val) {
+      console.log(val)
     }
   },
   mounted() {
@@ -719,3 +682,4 @@ export default {
 }
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
+<style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>
