@@ -69,12 +69,17 @@ export default {
               init(o) {
                   // o 是高德地图定位插件实例
                 o.getCurrentPosition((status, result) => {
+                  console.log(status,result);
                   if (result && result.position) {
                     self.lng = result.position.lng;
                     self.lat = result.position.lat;
                     self.center = [self.lng, self.lat];
                     self.loaded = true;
                     self.componentMarker.position=[self.lng, self.lat]
+                    self.$nextTick();
+                  }else{
+                    alert('定位失败！');
+                    self.loaded = true;
                     self.$nextTick();
                   }
                 });

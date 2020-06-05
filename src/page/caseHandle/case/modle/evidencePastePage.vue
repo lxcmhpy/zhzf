@@ -12,8 +12,8 @@
         </el-row>
         <el-row :gutter="20" class="nianBox">
             <el-col :span="18">
-                <div class="imgBox">
-                    <img :src="item.pic1" alt="">
+                <div class="imgBox" ref="imgBoxRef2">
+                    <img :src="item.pic1" alt="" :width="imgWidthArr[index][0]" :height="imgHeightArr[index][0]">
                     <div class="imgBoxBtn"><el-button size="mini" @click="chooseImg(index,1,item.picSrc1)">选择照片</el-button><el-button size="mini" @click="deleteImg(index,1)" >删除</el-button></div>
                 </div>
                 
@@ -33,7 +33,7 @@
         <el-row :gutter="20" class="nianBox">
             <el-col :span="18">
                 <div class="imgBox">
-                    <img :src="item.pic2" alt="">
+                    <img :src="item.pic2" alt="" :width="imgWidthArr[index][1]" :height="imgHeightArr[index][1]">
                     <div class="imgBoxBtn"><el-button size="mini" @click="chooseImg(index,2,item.picSrc2)">选择照片</el-button><el-button size="mini" @click="deleteImg(index,2)">删除</el-button></div>
                 </div>
                 
@@ -116,7 +116,9 @@ export default {
     chooseOrUploadEvidence,
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(["caseId"]) },
+  computed: { 
+    ...mapGetters(["caseId"]) 
+  },
   data() {
     return {
       docData: {
@@ -156,6 +158,10 @@ export default {
       imgBase64:'',
       needDealData:true,
       staffList:[],
+      imgWidthArr:[['','']],
+      imgHeightArr:[['','']],
+      // scaling:1,
+      scalingArr:[[1,1]],
     };
   },
   methods: {
@@ -270,8 +276,11 @@ export default {
         let  picBase64Key = 'picBase64_'+selpicData.picIndex;
         this.docData.evidenceData[selpicData.pastePage][picBase64Key] = res.data;
         //图片地址赋值
-         let picKey = 'pic'+selpicData.picIndex;
-        this.docData.evidenceData[selpicData.pastePage][picKey] = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
+        //  let picKey = 'pic'+selpicData.picIndex;
+        // this.docData.evidenceData[selpicData.pastePage][picKey] = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
+        
+        this.changeImgWidHei(storageId,selpicData.pastePage,selpicData.picIndex)
+        
         //图片evPath赋值 为了在证据弹窗中设置选中或禁止选择
         let picSrcKey = 'picSrc'+ selpicData.picIndex;
         this.docData.evidenceData[selpicData.pastePage][picSrcKey] = storageId;
@@ -284,11 +293,17 @@ export default {
    
     //添加一页
     addPage(){
-        let data = { pic1:'', pic2:'', picSrc1:'', picSrc2:'',picBase64_1:'',picBase64_2:'', pTime:this.docData.evidenceData[0].pTime , pPla:this.docData.evidenceData[0].pPla, pPeo:this.docData.evidenceData[0].pPeo,note1:'', note2:'',picList}
+        let data = { pic1:'', pic2:'', picSrc1:'', picSrc2:'',picBase64_1:'',picBase64_2:'', pTime:this.docData.evidenceData[0].pTime , pPla:this.docData.evidenceData[0].pPla, pPeo:this.docData.evidenceData[0].pPeo,note1:'', note2:'',picList:''}
         this.docData.evidenceData.push(data);
+        this.imgWidthArr.push(['','']);
+        this.imgHeightArr.push(['','']);
+        this.scalingArr.push([1,1]);
     },
     deletePage(index){
         this.docData.evidenceData.splice(index,1);
+        this.imgWidthArr.splice(index,1);
+        this.imgHeightArr.splice(index,1);
+        this.scalingArr.splice(index,1);
     },
     //获取执法人员
     getLawOfficer(){
@@ -305,10 +320,55 @@ export default {
         })
     },
     getDataAfter(){
-        this.docData.evidenceData.forEach(item=>{     
-           item.pic1 = item.picSrc1 ? iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + item.picSrc1 : '';
-           item.pic2 = item.picSrc2 ? iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + item.picSrc2 : '';
+        this.docData.evidenceData.forEach((item,index)=>{     
+          //  item.pic1 = item.picSrc1 ? iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + item.picSrc1 : '';
+          //  item.pic2 = item.picSrc2 ? iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + item.picSrc2 : '';
+          if(index>0){
+            this.imgWidthArr.push(['','']);
+            this.imgHeightArr.push(['','']);
+            this.scalingArr.push([1,1]);
+          }
+          
+          this.changeImgWidHei(item.picSrc1,index,1);
+          this.changeImgWidHei(item.picSrc2,index,2);
         })
+        this.imgWidthArr[1][1] = 400;
+    },
+    //对图片进行处理
+    changeImgWidHei(storageId,pastePage,picIndex){
+       //设置临时图片
+        let temImg = new Image();
+        temImg.src =  iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
+        let _this = this;
+        temImg.onload = function(e) {
+          //赋值给图片地址
+          _this.getScaling(temImg.width,temImg.height,pastePage,picIndex);
+         
+      console.log(' temImg.width', temImg.width);
+     
+          _this.$set(_this.imgWidthArr[pastePage], picIndex-1, (temImg.width / _this.scalingArr[pastePage][picIndex-1]).toFixed(1))
+          _this.$set(_this.imgHeightArr[pastePage], picIndex-1, (temImg.height / _this.scalingArr[pastePage][picIndex-1]).toFixed(1))
+          
+          console.log(pastePage,picIndex-1);
+          console.log(' _this.imgWidthArr', _this.imgWidthArr)
+          let picKey = 'pic'+ picIndex;
+          _this.docData.evidenceData[pastePage][picKey] = temImg.src;
+        };
+    },
+    //计算图像缩放比
+    getScaling(imgWidth, imgHeight,pastePage,picIndex) {
+     let maxWidth = this.$refs.imgBoxRef2[0].offsetWidth - 2 ;
+     let maxHeight = this.$refs.imgBoxRef2[0].offsetHeight - 2;
+      //宽高比
+      let rate = (imgWidth / imgHeight).toFixed(2);
+      if (rate >= 1) {
+        // this.scaling = (imgWidth / maxWidth).toFixed(1);
+        this.scalingArr[pastePage][picIndex-1] = (imgWidth / maxWidth).toFixed(1);
+      } else {
+        // this.scaling = (imgHeight / maxHeight).toFixed(1);
+        this.scalingArr[pastePage][picIndex-1] = (imgHeight / maxHeight).toFixed(1);
+      }
+      console.log('getScaling',this.scalingArr[pastePage][picIndex-1])
     },
    
   },
@@ -343,9 +403,6 @@ export default {
         border:1px solid #cccccc;
         text-align: center;
         overflow-y: auto;
-        img{
-            width: 100%;
-        }
         position: relative;
         .imgBoxBtn{
             position: absolute;
