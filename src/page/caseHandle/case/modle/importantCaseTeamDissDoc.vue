@@ -198,7 +198,7 @@ export default {
         //表单数据
         docData: "",
         status: "",
-        linkTypeId:'2c90293b6c178b55016c17c93326000f' //所属环节的id
+        linkTypeId:this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
         caseName: [

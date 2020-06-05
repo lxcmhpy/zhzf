@@ -16,7 +16,7 @@ export function saveOrUpdateRecordModleApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:3,
+        baseUrlType:  'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -29,7 +29,7 @@ export function findMoleByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:3,
+        baseUrlType:  'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -40,7 +40,7 @@ export function removeMoleByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:3,
+        baseUrlType:  'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -53,7 +53,7 @@ export function findCommonFieldApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:3,
+        baseUrlType:  'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -65,7 +65,7 @@ export function findAllCommonFieldApi() {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:3,
+        baseUrlType:  'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -76,7 +76,7 @@ export function findAllRecordModleApi() {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:3,
+        baseUrlType:  'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -87,7 +87,7 @@ export function findRecordlModleByNameApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:3,
+        baseUrlType:  'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -98,7 +98,7 @@ export function findRecordlModleFieldByIdeApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:3,
+        baseUrlType:  'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -109,7 +109,7 @@ export function findRecordModleByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:3,
+        baseUrlType:  'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }

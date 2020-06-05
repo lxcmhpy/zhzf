@@ -43,7 +43,7 @@ AMap.initAMapApiLoader({
     "AMap.Scale",
     "AMap.OverView",
     "AMap.ToolBar",
-    "Geolocation",
+    "AMap.Geolocation"
   ],
   v: "1.4.4",
   uiVersion: "1.0.11",
@@ -85,6 +85,7 @@ export default {
         init(map) {
         },
         click: e => {
+          console.log('e',e)
           self.lng = e.lnglat.lng;
           self.lat = e.lnglat.lat;
           self.componentMarker.position=[e.lnglat.lng, e.lnglat.lat]

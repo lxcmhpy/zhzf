@@ -14,5 +14,19 @@ export default [
           title: "评议考核-考核"
         },
         component: () => import("@/page/catsAppraisalExamination/catsAppraisalExam.vue")
+    }, {
+        path: "/catsAppraisalSet",
+        name: "catsAppraisalSet",
+        meta: {
+          title: "考核参数设置"
+        },
+        component: () => import("@/page/catsAppraisalExamination/catsAppraisalSet.vue")
+    }, {
+        path: "/catsAppraisalStartUp",
+        name: "catsAppraisalStartUp",
+        meta: {
+          title: "评议考核发起"
+        },
+        component: () => import("@/page/catsAppraisalExamination/catsAppraisalStartUp.vue")
     }
 ]

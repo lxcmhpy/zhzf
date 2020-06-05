@@ -36,6 +36,19 @@
       width: calc(20% - 20px);
       float: left;
     }
+    .itemFive2 {
+      width: calc(30% - 20px);
+      float: left;
+    }
+    .gongLiBox1{
+      margin-top: 12px;text-align: center;float:left;margin-left:100px;color:#606266
+    }
+    .gongLiBox2{
+      margin-top: 12px;text-align: center;float:left;margin-left: 10px;margin-right: 10px;color:#606266
+    }
+    .gongLiBox3{
+      margin-top: 12px;text-align: center;float: left;margin-left: 70px;
+    }
 
     .itemThird:nth-child(2) {
       margin: 0 2%;
@@ -196,10 +209,16 @@
         float       : left;
         margin-right: 10px;
       }
+      &>div:nth-child(1) {
+        min-width: 80px;
+      }
 
       &>div:nth-child(2) {
         min-width  : 400px;
         margin-left: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       span.selectIcon {

@@ -3,7 +3,7 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="docForm" :rules="rules" :model="formData" label-width="120px">
+    <el-form ref="docForm" :rules="rules" :model="formData" label-width="150px">
 
       <!-- <div class="header-case">
         <div class="header_left">
@@ -47,7 +47,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="illegalLaw" label="违法条款" :rules="fieldRules('illegalLaw',propertyFeatures['illegalLaw'])">
+                <el-form-item prop="illegalLaw" label="认定条款" :rules="fieldRules('illegalLaw',propertyFeatures['illegalLaw'])">
                   <el-input ref="illegalLaw" clearable class="w-120" v-model="formData.illegalLaw" size="small"
                             placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['illegalLaw'])"></el-input>
                 </el-form-item>
@@ -55,7 +55,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="punishLaw" label="处罚条款" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])">
+                <el-form-item prop="punishLaw" label="赔（补）偿依据" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])">
                   <el-input ref="punishLaw" clearable class="w-120" v-model="formData.punishLaw" size="small"
                             placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['punishLaw'])"></el-input>
                 </el-form-item>
@@ -63,7 +63,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="tempPunishAmount" label="拟处罚决定" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
+                <el-form-item prop="tempPunishAmount" label="赔（补）偿总金额" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
                   <el-input ref="tempPunishAmount" :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])" clearable class="w-120"
                             v-model="formData.tempPunishAmount" size="small"></el-input>
                 </el-form-item>
@@ -73,24 +73,76 @@
           <div class="border_blue"></div>
           <div class="content_form bottom_form">
             <div class="row">
-              <div class="col">
-                <el-form-item label="是否重大案件">
-                  <el-row>
-                    <el-col :span="4">
-                      <el-checkbox label="是否重大案件" v-model="formData.isImportant"
-                                   @change="changeImportant"></el-checkbox>
+              <div class="col"> 
+                  <el-row>                 
+                    <el-col :span="12">
+                        <el-form-item label="是否重大案件">                  
+                            <el-checkbox-group v-model="formData.isImportant"  @change="changeImportant" :max="1">
+                                <el-checkbox label="是"></el-checkbox>
+                                <el-checkbox label="否"></el-checkbox>
+                            </el-checkbox-group>                    
+                        </el-form-item>
+                    </el-col>                                    
+                    <el-col :span="12">
+                        <el-form-item label="是否听证">                  
+                            <el-checkbox-group v-model="formData.isHearing" @change="changeHearing" :max="1">
+                                <el-checkbox label="是"></el-checkbox>
+                                <el-checkbox label="否"></el-checkbox>
+                            </el-checkbox-group>                   
+                        </el-form-item>
                     </el-col>
-                  </el-row>
+                  </el-row>                                   
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <el-row>
+                    <el-col :span="12">
+                    <el-form-item label="是否减免金额">                 
+                      <el-checkbox-group v-model="formData.isCuting" @change="changeCuting" :max="1">
+                                <el-checkbox label="是"></el-checkbox>
+                                <el-checkbox label="否"></el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item prop="cutingCount" label="减免后金额">
+                        <el-input ref="cutingCount" clearable class="w-120" v-model="formData.cutingCount"
+                                    size="small" :disabled="this.formData.isCuting[0]==['是'] ?  false: true"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>                
+              </div>
+            </div>
+            <div class="row">
+              <div class="col"> 
+                  <el-row>                 
+                    <el-col :span="12">
+                        <el-form-item label="是否要求复核">                  
+                            <el-checkbox-group v-model="formData.isCheck" @change="changeCuting" :max="1">
+                                <el-checkbox label="是"></el-checkbox>
+                                <el-checkbox label="否"></el-checkbox>
+                            </el-checkbox-group>                    
+                        </el-form-item>
+                    </el-col>                                    
+                    <el-col :span="12">
+                        <el-form-item label="是否提起诉讼">                  
+                            <el-checkbox-group v-model="formData.isLawsuit" @change="changeCuting" :max="1">
+                                <el-checkbox label="是"></el-checkbox>
+                                <el-checkbox label="否"></el-checkbox>
+                            </el-checkbox-group>                   
+                        </el-form-item>
+                    </el-col>
+                  </el-row>                                   
+              </div>
+            </div>
+            <div class="row" v-if="cutReasonFlag">
+              <div class="col">
+                <el-form-item prop="reason" label="减免赔偿原因、申请复核或诉讼内容：" label-width="250px;">
+                  <el-input type='textarea' ref="reason" clearable class="w-120" v-model="formData.reason"
+                            size="small"></el-input>
                 </el-form-item>
               </div>
-              <!-- <div class="col">
-                <el-col :span="20">
-                  <div align="right">
-                    <el-button type="primary" size="small">上传记录</el-button>
-                    <el-button type="success" size="small">线上记录</el-button>
-                  </div>
-                </el-col>
-              </div> -->
             </div>
           </div>
         </div>
@@ -259,19 +311,26 @@
           punishLaw: "",
           tempPunishAmount: "",
           checkList: "",
-          isImportant: true
+          isImportant: ["否"],
+          isHearing: ["否"],
+          isCuting: ["否"],
+          cutingCount: "",
+          isCheck: ["否"],
+          isLawsuit: ["否"],
+          reason: ""
         },
         //提交方式
         handleType: 0, //0  暂存     1 提交
         caseLinkDataForm: {
           id: "", //修改的时候用
           caseBasicinfoId: '', //案件id
-          caseLinktypeId: this.BASIC_DATA_SYS.partyRights_caseLinktypeId, //表单类型IDer
+          caseLinktypeId: this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId, //表单类型IDer
           //表单数据
           formData: "",
           status: ""
         },
         docTableDatas: [],
+        docSelectTableDatas: [],
         docTableDatasCopy: [], //最初的文书列表
         evidenceTableDatas: [],
         currentPage: 1, //当前页
@@ -299,7 +358,8 @@
           tempPunishAmount: [
             { required: true, message: "拟处罚决定不能为空", trigger: "blur" }
           ],
-        }
+        },
+        cutReasonFlag:false,
       }
     },
     mixins: [mixinGetCaseApiList],
@@ -341,7 +401,7 @@
       },
       //查看文书
       viewDoc(row) {
-        this.com_viewDoc1(row);
+        this.com_viewDoc1(row,this.caseLinkDataForm.caseLinktypeId);
       },
       //清空文书
       delDocDataByDocId(data) {
@@ -364,7 +424,7 @@
       //通过案件id和表单类型Id查询已绑定文书
       getDocListByCaseIdAndFormId() {
         let data = {
-          linkTypeId: this.BASIC_DATA_SYS.partyRights_caseLinktypeId
+          linkTypeId: this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId
         }
         this.com_getDocListByCaseIdAndFormId(data)
       },
@@ -384,12 +444,12 @@
       },
       //上传证据弹窗
       showUploadEvi() {
-        this.$refs.partyRightsEvidenceRef.showModal(this.BASIC_DATA_SYS.partyRights_caseLinktypeId);
+        this.$refs.partyRightsEvidenceRef.showModal(this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId);
       },
       //查询证据材料列表
       findEvidence() {
         let data = {
-          docId: this.BASIC_DATA_SYS.partyRights_caseLinktypeId,
+          docId: this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId,
           caseId: this.caseId,
         };
         let _this = this
@@ -429,35 +489,126 @@
       },
       //更改 是否是重大案件
       changeImportant(val) {
-//      console.log(val);
-        let docId = '2c9029ca5b716296015b716568050001';
-        if (!val) {  //非重大案件
-          this.docTableDatas = this.docTableDatasCopy.filter(item => item.docId !== docId);
+          debugger 
+        console.log("是否重大案件",val);
+        let docIds = ['2c9029ca5b716296015b716568050001'];
+        //是重大笔录时
+        if(val[0]=="是"){
+          let importdoc = [];
+          this.docTableDatasCopy.forEach(item => {
+            docIds.forEach(item1 => {
+                  if (item.docId === item1) {
+                    importdoc.push(item);
+                    console.log("importdoc",importdoc);
+                  }
+              }) 
+          });
+          importdoc.forEach(item => {
+            this.docTableDatas.push(item);
+          });
+          // this.docSelectTableDatas = this.docTableDatas;
+        }else{
+          console.log("docTableDatas",this.docTableDatas);
+          this.docTableDatas.forEach(item => {
+            docIds.forEach(item1 => {
+                if (item.docId === item1){
+                  this.docTableDatas.splice(this.docTableDatas.indexOf(item),1);
+                }
+              })
+          })
+          // this.docTableDatas = this.docTableDatas.filter(item => {
+          //   docIds.forEach(item1 => {
+          //       item.docId !== item1
+          //     }) 
+          // });
           let docDataId = '';
           this.docTableDatasCopy.forEach(item => {
-            if (item.docId === docId)
-              docDataId = item.docDataId;
-          })
-          if (docDataId) {   //重大案件文书状态为已完成时
-            deleteDocByIdApi(docDataId).then(res => {
-//            console.log('删除文书',res);
-            }, error => {
-              console.log(error);
-            })
-          }
-
-        } else {
-          let importdoc = '';
+              docIds.forEach(item1 => {
+                if (item.docId === item1)
+                docDataId = item.docDataId;
+                if (docDataId) {   //文书状态为已完成时
+                  deleteDocByIdApi(docDataId).then(res => {
+                  }, error => {
+                    console.log(error);
+                  })
+                }
+              })            
+          }) 
+          // console.log("docTableDatas",this.docTableDatas);
+        }
+      },
+      //更改 是否听证
+      changeHearing(val) {
+        debugger
+        console.log("是否听证",val);
+        let docIds = ['2c9029ca5b71686d015b718068cf0015','2c9029ca5b71686d015b71836d570019'];
+        //是听证时
+        if(val[0]=="是"){
+          let haerDoc = [];
           this.docTableDatasCopy.forEach(item => {
-            if (item.docId === docId) {
-              importdoc = item;
-            }
+              docIds.forEach(item1 => {
+                  if (item.docId === item1) {
+                    haerDoc.push(item);
+                    console.log("haerDoc",haerDoc);
+                  }
+              })            
           })
-          this.docTableDatas.push(importdoc);
+          haerDoc.forEach(item => {
+            this.docTableDatas.push(item);
+          });
+          // this.docSelectTableDatas = this.docTableDatas;          
+        }else{
+          console.log("docTableDatas",this.docTableDatas);
+          docIds.forEach(item => {
+            this.docTableDatas.forEach(item1 => {
+                if (item1.docId === item){
+                  this.docTableDatas.splice(this.docTableDatas.indexOf(item1),1);
+                }
+              })
+          })
+          // this.docTableDatas = this.docTableDatas.filter(item => {
+          //   docIds.forEach(item1 => {
+          //       item.docId !== item1
+          //     }) 
+          // });
+          let docDataId = '';
+          this.docTableDatasCopy.forEach(item => {
+              docIds.forEach(item1 => {
+                if (item.docId === item1)
+                docDataId = item.docDataId;
+                if (docDataId) {   //文书状态为已完成时
+                  deleteDocByIdApi(docDataId).then(res => {
+                  }, error => {
+                    console.log(error);
+                  })
+                }
+              })            
+          }) 
+          console.log("docTableDatas",this.docTableDatas);
+        }
+      },
+      changeCuting(){
+        console.log("response",this.formData.isCuting);
+        if(this.formData.isCuting[0] == ["是"] || this.formData.isCheck[0] == ["是"] || this.formData.isLawsuit[0] == ["是"]){
+          this.cutReasonFlag = true;
+        }else{
+          this.cutReasonFlag = false;
         }
       },
       getDataAfter() {
-        this.formData.isImportant = true;
+        console.log("111",this.caseLinkDataForm);
+        if(this.caseLinkDataForm.status == ''){
+            console.log("初始化");
+            this.docTableDatas = [];
+        }else{
+          console.log("保存或暂存之后");
+          // this.docTableDatas = [];
+          // this.docTableDatasCopy.forEach(item => {
+          //   if(item.status!=''){
+          //     this.docTableDatas.push(item);
+          //   }
+          // });
+        }
       },
       //返回到流程图
       backBtn() {
