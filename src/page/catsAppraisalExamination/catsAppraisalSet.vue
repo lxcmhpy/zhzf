@@ -16,7 +16,7 @@
                     <el-table-column prop="caseNum" label="案件基数" align="center"></el-table-column>
                     <el-table-column type="expand" >
                         <template  >
-                            ddd
+                            {{zbList}}
                             <!-- -->
                             <el-form label-position="left"  inline class="demo-table-expand">
                                 查看指标项
@@ -211,7 +211,8 @@ import iLocalStroage from '@/common/js/localStroage';
     //     }
     //   },
     load (row, expand){
-        debugger;
+        expand.splice(0,expand.length);
+        this.findPykhMetricsByPage(row);
     },
     findPykhMetricsByPage(item) {
         let _this = this;
