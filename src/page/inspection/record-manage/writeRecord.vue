@@ -171,11 +171,11 @@ export default {
           })
         }
 
-        element.filedList.forEach(item => {
+        element.fieldList.forEach(item => {
           console.log(item)
           if (item.type == '文本型') {
             item.type = 'input';
-            // let editField=item.filed
+            // let editField=item.field
             // console.log('基础数据回显',_this.editData.getAttribute("editField"))
             this.rule.push({
               type: 'input',

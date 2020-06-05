@@ -20,8 +20,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="totalWeight" width="160px" label="最大允许总质量" align="center"></el-table-column>
-                <el-table-column prop="load"  label="车货总质量" align="center"></el-table-column>
-                <el-table-column prop="overweight" width="55px" label="超限" align="center"></el-table-column>
+                <el-table-column prop="totalWeight"  label="车货总质量" align="center"></el-table-column>
+                <el-table-column prop="overload" width="55px" label="超限" align="center"></el-table-column>
                 <el-table-column prop="status" label="处理状态" align="center"></el-table-column>
             </el-table>
             </div>
@@ -55,11 +55,12 @@ export default {
         }
     },
     methods: {
-        findWeighingRecord (name) {
+        findWeighingRecord (vehicleNumber) {
             let _this = this;
             new Promise((resolve, reject) => {
-                findWeighingRecord(name).then(
+                findWeighingRecord(vehicleNumber).then(
                     res => {
+                        debugger;
                         // resolve(res);
                         _this.tableData = res.data;
                         // obj.list = res.data
@@ -75,7 +76,8 @@ export default {
     mounted () {
         this.cxVisible = true;
         // '新J35718'
-        this.findWeighingRecord();
+        let aa = this.obj;
+        this.findWeighingRecord(this.obj.vehicleNumber);
     }
 
 }

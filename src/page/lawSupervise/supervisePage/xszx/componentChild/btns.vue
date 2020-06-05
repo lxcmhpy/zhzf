@@ -167,8 +167,25 @@ export default {
   },
   methods: {
     showZbDialog () {
-        this.getAllOrgan('root');
-        this.zbVisible = true;
+        // this.getAllOrgan('root');
+        // this.zbVisible = true;
+         let _this = this;
+        new Promise((resolve, reject) => {
+            saveAndUpdate(_this.obj).then(
+                res => {
+                    debugger;
+                },
+                error => {
+                        return
+                }
+            )
+        })
+        this.$store.commit('setCaseId','f205736182a36d9fd0574fa75eb30a30');
+        this.$store.commit('setCaseApproval',false);
+        this.$store.commit('setCaseNumber','吐临〔2020〕第00320号');
+        this.$router.push({
+            name: 'case_handle_establish'
+        });
     },
     handleNodeClick1(data) {
       this.checkSearchForm.number = data.label;
@@ -249,21 +266,18 @@ export default {
     },
     nextRouter() {
         if (this.$route.params.status == '0') {
-            let _this = this
+            let _this = this;
             new Promise((resolve, reject) => {
                 saveAndUpdate(_this.obj).then(
                     res => {
-                        // resolve(res)
-                        // _this[obj] = res.data
                         debugger;
                     },
                     error => {
-                        //  _this.errorMsg(error.toString(), 'error')
                             return
                     }
                 )
             })
-return
+            // return
         }
 
       let nextStatus=parseInt(this.$route.params.status)+1
@@ -271,7 +285,8 @@ return
         name: 'law_supervise_examineDoingDetail',
         params: {
           status: nextStatus.toString(),
-          tabTitle: '【监管】'+this.statusObj[nextStatus.toString()]
+          tabTitle: '【监管】'+this.statusObj[nextStatus.toString()],
+          offSiteManageId: this.$route.params.offSiteManageId
         }
       });
     },
