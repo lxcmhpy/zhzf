@@ -2,17 +2,20 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox modle-set">
       <div style="font-size: 16px;font-weight: bold;text-align:center;margin-bottom:18px">
-        {{psMsg.title}}
+
+        <!-- {{psMsg.title}} -->
       </div>
       <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit">
       </form-create>
       <!-- </div>-->
+      <el-button @click="submitRecord()">提交</el-button>
     </div>
   </div>
 </template>
 <script>
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
+import { saveOrUpdateRecordModleApi, findCommonFieldApi, findAllCommonFieldApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi } from "@/api/Record";
 export default {
   components: {
     formCreate: formCreate.$form()
@@ -22,35 +25,23 @@ export default {
     psMsg(val, oldVal) {
       // this.show = val;
       console.log('监听', this.psMsg, 'val', val)
-      this.dealFormData()
+      if (this.psMsg) {
+        this.dealFormData()
+
+      }
     }
   },
   data() {
     return {
+      modleId: '',
       creatFormData: [],
       ruleForm: {
         value1: '',
         value2: '',
       },
-      editData:{key0:'张三'},
+      editData: { key0: '张三' },
       $f: {},
-      formData: {
-        title: '5月21日检查记录',
-        formList: [{
-          formTitle: '',
-          type: 'input',
-          label: '姓名',
-          prop: 'name',
-          value: '1'
-        }, {
-          formTitle: '',
-          type: 'input',
-          label: '电话',
-          prop: 'name',
-          value: '2'
-        },]
-
-      },
+      formData: {},
       //表单实例对象
       $f: {},
       rule: [
@@ -147,9 +138,53 @@ export default {
     }
   },
   methods: {
+    submitRecord() {
+
+    },
+    findDataByld() {
+      let _this = this
+      findRecordlModleFieldByIdeApi(this.modleId).then(
+        res => {
+          let list = res.data
+          let sort = 0
+          list.forEach(element => {
+            element.sort = sort;
+            sort++;
+            element.fieldList.forEach(item => {
+              if (item.options) {
+                item.options = JSON.parse(item.options)
+              }
+            });
+          });
+          findRecordModleByIdApi(this.modleId).then(
+            res => {
+              if (res.code == 200) {
+                _this.formData = res.data
+                _this.$set(_this.formData, 'templateFieldList', list);
+                _this.psMsg = _this.formData
+              }
+            },
+            error => {
+
+            })
+        },
+        error => {
+
+        })
+
+    },
     onSubmit(formData) {
       //TODO 提交表单
-      console.log(formData)
+      console.log("formData", formData)
+      console.log('rule', this.rule)
+      let submitData = JSON.parse(JSON.stringify(this.rule))
+      let formDataList=formData.split(",")
+      console.log(formDataList)
+      let submitList = []
+      submitData.forEach(element => {
+        console.log(element)
+
+      });
     },
     change() {
       // 修改值
@@ -160,15 +195,25 @@ export default {
       let data = JSON.parse(JSON.stringify(this.psMsg.templateFieldList))
       console.log('ruleData', data)
       let ruleData = []
-      let _this=this
+      let _this = this
       data.forEach(element => {
         console.log(element)
         if (element.classs) {
-          this.rule.push({
-            type: 'template',
-            name: 'btn',
-            template: '<p class="border-title">' + element.classs + '</p>',
-          })
+          this.rule.push(
+            {
+              type: 'p',
+              name: 'btn',
+              field: element.classId,
+              props: {
+                type: 'primary',
+                field: 'btn',
+                loading: true
+              },
+              className: 'border-title',
+              children: [element.classs],
+
+            }
+          )
         }
 
         element.fieldList.forEach(item => {
@@ -186,8 +231,9 @@ export default {
                 type: 'text',
                 placeholder: item.remark
               },
+              value:item.text,
               validate: [{
-                required: item.required,
+                required: item.required=='true'?true:false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]
@@ -202,7 +248,7 @@ export default {
               title: item.title,
               options: item.options,
               validate: [{
-                required: item.required,
+                required: item.required=='true'?true:false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]
@@ -217,7 +263,7 @@ export default {
               title: item.title,
               options: item.options,
               validate: [{
-                required: item.required,
+                required: item.required=='true'?true:false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]
@@ -232,7 +278,7 @@ export default {
               title: item.title,
               options: item.options,
               validate: [{
-                required: item.required,
+                required: item.required=='true'?true:false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]
@@ -249,7 +295,7 @@ export default {
                   placeholder: item.remark
                 },
                 validate: [{
-                  required: item.required,
+                  required: item.required=='true'?true:false,
                   message: '请输入' + item.title,
                   trigger: 'blur'
                 }]
@@ -266,7 +312,7 @@ export default {
                   type: 'datetime'
                 },
                 validate: [{
-                  required: item.required,
+                  required: item.required=='true'?true:false,
                   message: '请输入' + item.title,
                   trigger: 'blur'
                 }]
@@ -282,7 +328,7 @@ export default {
                 precision: 2
               },
               validate: [{
-                required: item.required,
+                required: item.required=='true'?true:false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]
@@ -293,7 +339,17 @@ export default {
     },
   },
   mounted() {
-    this.dealFormData()
+    if (this.$route.params) {
+      console.log('this.$route.params', this.$route.params)
+      this.modleId = this.$route.params.id
+      this.findDataByld()
+    }
+    if (this.psMsg) {
+      this.dealFormData()
+      // let a = [{ name: "key1", value: 1 }, { name: "key2", value: 2 }]
+      // let b = [{ key1: 1212 }, { key2: 2334 }]
+    }
+    // this.dealFormData()
   }
 }
 </script>

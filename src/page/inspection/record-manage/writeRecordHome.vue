@@ -20,7 +20,7 @@
           <!-- ({{item.templateList.length}}) -->
         </div>
         <ul class="card-ul">
-          <li v-for="(modle,index) in item.templateList" :key="index" @click="checkModle(modle)">
+          <li v-for="(modle,index) in item.templateList" :key="index" @click="writeRecord(modle)">
             <div class="card-img-content-box">
               <div class="card-img-content">
                 <img v-if='modle.icon' :src="'./static/images/img/record/'+modle.icon+'.png'" alt="">
@@ -98,9 +98,13 @@ export default {
       }, 100);
     },
     // 选择模板
-    checkModle(item) {
+    writeRecord(item) {
       console.log('选中的模板', item)
-
+      // 写记录
+      this.$router.push({
+        name: 'inspection_writeRecordInfo',
+        params: item
+      });
     },
     // 修改模板
     editModle(item) {
