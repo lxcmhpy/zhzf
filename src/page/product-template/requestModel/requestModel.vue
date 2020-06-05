@@ -22,7 +22,7 @@
             <el-button type="primary" size="medium" icon="el-icon-search" @click="getRequestModelListSearch">查询</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-close" @click="reset">重置</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset">重置</el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addRequestModel">新增模板</el-button>
@@ -177,6 +177,7 @@ export default {
     reset(){
       this.searchForm={};
       this.$refs.elSelectTreeObj.valueTitle = '';
+      this.getRequestModelList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -200,6 +201,7 @@ export default {
       this.$store.dispatch("getAllOrgan").then(
         res => {
           _this.getOrganList = res.data;
+          console.log("列表",_this.getOrganList)
         },
         err => {
           console.log(err);
