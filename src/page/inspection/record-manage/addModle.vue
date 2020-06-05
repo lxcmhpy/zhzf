@@ -479,47 +479,47 @@ export default {
               });
             });
             data.count = sort;
-            // data.templateAdminIdList.forEach(element => {
-            //   if (data.templateAdmin == '') {
-            //     data.templateAdminId += element.id
-            //     data.templateAdmin += element.lawOfficerName
-            //   } else {
-            //     data.templateAdminId = data.templateAdminId + ',' + element.id
-            //     data.templateAdmin = data.templateAdmin + ',' + element.lawOfficerName
-            //   }
-            // });
-            // data.templateUserIdList.forEach(element => {
-            //   if (data.templateUser == '') {
-            //     data.templateUser += element.lawOfficerName
-            //     data.templateUserId += element.id
-            //   } else {
-            //     data.templateUser = data.templateUser + ',' + element.lawOfficerName
-            //     data.templateUserId = data.templateUserId + ',' + element.id
-            //   }
-            // });
+            data.templateAdminIdList.forEach(element => {
+              if (data.templateAdmin == '') {
+                data.templateAdminId += element.id
+                data.templateAdmin += element.lawOfficerName
+              } else {
+                data.templateAdminId = data.templateAdminId + ',' + element.id
+                data.templateAdmin = data.templateAdmin + ',' + element.lawOfficerName
+              }
+            });
+            data.templateUserIdList.forEach(element => {
+              if (data.templateUser == '') {
+                data.templateUser += element.lawOfficerName
+                data.templateUserId += element.id
+              } else {
+                data.templateUser = data.templateUser + ',' + element.lawOfficerName
+                data.templateUserId = data.templateUserId + ',' + element.id
+              }
+            });
             data.templateUserIdList = '';
             data.templateAdminIdList = '';
             // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
             data.templateFieldList = JSON.stringify(data.templateFieldList)
             console.log('提交的字段', data)
             debugger
-            saveOrUpdateRecordModleApi(data).then(
-              res => {
-                console.log(res)
-                if (res.code == 200) {
-                  this.$message({
-                    type: "success",
-                    message: res.msg
-                  });
-                  this.$emit("getAddModle", 'sucess');
-                  this.newModleTable = false;
-                } else {
-                  this.$message.error(res.msg);
-                }
-              },
-              error => {
+            // saveOrUpdateRecordModleApi(data).then(
+            //   res => {
+            //     console.log(res)
+            //     if (res.code == 200) {
+            //       this.$message({
+            //         type: "success",
+            //         message: res.msg
+            //       });
+            //       this.$emit("getAddModle", 'sucess');
+            //       this.newModleTable = false;
+            //     } else {
+            //       this.$message.error(res.msg);
+            //     }
+            //   },
+            //   error => {
 
-              })
+            //   })
 
           }
         } else {
