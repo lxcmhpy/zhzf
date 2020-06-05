@@ -164,6 +164,7 @@ export default {
     //重置
     resetSearch(){
       this.searchForm={};
+      this.getBanner();
     },
     //查询案件类型列表
     getCaseType() {

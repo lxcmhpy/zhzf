@@ -177,6 +177,7 @@ export default {
     reset(){
       this.searchForm={};
       this.$refs.elSelectTreeObj.valueTitle = '';
+      this.getRequestModelList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -200,6 +201,7 @@ export default {
       this.$store.dispatch("getAllOrgan").then(
         res => {
           _this.getOrganList = res.data;
+          console.log("列表",_this.getOrganList)
         },
         err => {
           console.log(err);

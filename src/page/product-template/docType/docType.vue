@@ -151,6 +151,7 @@ export default {
     //重置
     resetSearch(){
       this.searchForm={};
+      this.getDocTypeList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
