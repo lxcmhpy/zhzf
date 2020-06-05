@@ -416,7 +416,12 @@ export default {
       if (this.formData.stepPay == true) {
         this.docTableDatas.push(this.docTableDatasSave[0]);
       }
-    }
+    },
+    //返回到流程图
+    backBtn() {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.go(-1);
+    },
   },
 
   mounted() {},

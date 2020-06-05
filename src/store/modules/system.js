@@ -11,7 +11,7 @@ import {
     getDictListApi, getDictListDetailApi, getAllDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
     getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,saveLawOfficelApi,getRouteListApi,addOrUpdateRouteApi,deleteRouteApi,
-    getSectionListApi,addOrUpdateSectionApi,deleteSectionApi,
+    getSectionListApi,addOrUpdateSectionApi,deleteSectionApi,deleteRoadLcDeployApi,
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";
@@ -910,6 +910,19 @@ const system = {
       deleteSection({ commit }, data) {
         return new Promise((resolve, reject) => {
           deleteSectionApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //删除路产配置
+      deleteRoadLcDeploy({ commit }, data) {
+        return new Promise((resolve, reject) => {
+          deleteRoadLcDeployApi(data).then(
             res => {
               resolve(res);
             },

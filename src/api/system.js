@@ -1192,3 +1192,16 @@ export function getCaseCauseListVoApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+
+//删除路产配置
+export function deleteRoadLcDeployApi(id) {
+  debugger
+  return request({
+    url: "/case/road/roadLcDeploy/delete/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
