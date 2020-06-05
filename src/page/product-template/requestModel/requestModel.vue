@@ -175,7 +175,8 @@ export default {
       return date;
     },
     reset(){
-      this.$refs.searchForm.resetFields();
+      this.searchForm={};
+      this.$refs.elSelectTreeObj.valueTitle = '';
     },
     //更改每页显示的条数
     handleSizeChange(val) {
