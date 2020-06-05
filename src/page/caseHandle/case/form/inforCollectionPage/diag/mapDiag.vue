@@ -66,10 +66,12 @@ export default {
           {
           pName: 'Geolocation',
           events: {
-              init(o) {
+              init(o) {                
+                
                   // o 是高德地图定位插件实例
                 o.getCurrentPosition((status, result) => {
                   if (result && result.position) {
+                    console.log("result",result);
                     self.lng = result.position.lng;
                     self.lat = result.position.lat;
                     self.center = [self.lng, self.lat];
