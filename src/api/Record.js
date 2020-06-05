@@ -113,3 +113,15 @@ export function findRecordModleByIdApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//根据条件分页查询
+export function findRecordListApi(data) {
+    return request({
+        url: "/xzjc/templateOrder/queryTemplateOrderPage",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
