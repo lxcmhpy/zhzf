@@ -84,7 +84,6 @@ export default {
       alreadySelect:'',
       pageType:'',
       currentPicData:'', //页面显示的图片的相关信息
-    //   getData:false,
 
     };
   },
@@ -103,12 +102,7 @@ export default {
       console.log('show');
       this.currentPicData = currentPicData;
       this.visible = true;
-      // this.pageType = type;
-    //   console.log(this.visible);
-       this.getEviList(currentPicData);
-
-    //   if(!this.getData)  this.getEviList();
-
+      this.getEviList();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -116,7 +110,6 @@ export default {
     },
     //查询证据列表
     getEviList() {
-      this.getData = true;
         let data = {
             caseId:this.caseId,
             // evName:this.evidenceForm.evName,
@@ -221,12 +214,12 @@ export default {
     //确认
     chooseSure(){
       let data = '';
-      if( this.currentPicData.pageType == 'evidencePastePage' ){ //粘贴照片页
-        this.currentPicData.picData = this.multipleSelection[0];
-      }else{
-        data = this.multipleSelection[0];
-      }
-       
+      // if( this.currentPicData.pageType == 'evidencePastePage' ){ //粘贴照片页
+      //   this.currentPicData.picData = this.multipleSelection[0];
+      // }else{
+      //   data = this.multipleSelection[0];
+      // }
+       this.currentPicData.picData = this.multipleSelection[0];
         this.$emit('choosePic',this.currentPicData);
         this.visible = false;
     }

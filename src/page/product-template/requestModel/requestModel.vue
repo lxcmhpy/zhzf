@@ -22,7 +22,7 @@
             <el-button type="primary" size="medium" icon="el-icon-search" @click="getRequestModelListSearch">查询</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-close" @click="reset">重置</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset">重置</el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addRequestModel">新增模板</el-button>
@@ -36,9 +36,11 @@
         </el-table-column>
         <el-table-column prop="modelName" label="模板名称" align="center"></el-table-column>
         <el-table-column prop="modelTypeId" label="模板类型" align="center">
-           <span slot-scope="scope">
-            <span>{{scope.row.modelTypeId == 11 ? '标准模板': '通用模板'}}</span>
-          </span>
+           <template slot-scope="scope">
+             <span v-if="scope.row.modelTypeId==='11'">标准模板</span>
+             <span v-if="scope.row.modelTypeId==='22'">通用模板</span>
+             <span v-if="scope.row.modelTypeId==='33'">自定义模板</span>
+          </template>
         </el-table-column>
         <el-table-column prop="organName" label="执法机构" align="center"></el-table-column>
         <el-table-column prop="zfml" label="业务领域" align="center"></el-table-column>
@@ -173,7 +175,9 @@ export default {
       return date;
     },
     reset(){
-      this.$refs.searchForm.resetFields();
+      this.searchForm={};
+      this.$refs.elSelectTreeObj.valueTitle = '';
+      this.getRequestModelList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -197,6 +201,7 @@ export default {
       this.$store.dispatch("getAllOrgan").then(
         res => {
           _this.getOrganList = res.data;
+          console.log("列表",_this.getOrganList)
         },
         err => {
           console.log(err);

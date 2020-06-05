@@ -1254,13 +1254,19 @@
         this.showTrailer = true;
       },
       //点击处罚依据显示弹窗
-      showPunishDiag() {
-        let data = {
-          caseCauseId: this.inforForm.caseCauseId,
-          caseCauseName: this.inforForm.caseCauseName
-        };
-        this.$refs.punishDiagRef.showModal(data);
-      },
+    showPunishDiag(titleType='') {
+      if(titleType =='compensation'){
+        titleType = '选择认定条款及赔（补）偿依据'
+      }else{
+        titleType = '选择违法条款及处罚依据'
+      }
+      let data = {
+        caseCauseId: this.inforForm.caseCauseId,
+        caseCauseName: this.inforForm.caseCauseName,
+        titleType:titleType
+      };
+      this.$refs.punishDiagRef.showModal(data);
+    },
       //设置违法条款和处罚条款
       setIllegalLawAndPunishLaw(data) {
         console.log(data);

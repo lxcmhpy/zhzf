@@ -43,7 +43,7 @@ AMap.initAMapApiLoader({
     "AMap.Scale",
     "AMap.OverView",
     "AMap.ToolBar",
-    "Geolocation",
+    "AMap.Geolocation"
   ],
   v: "1.4.4",
   uiVersion: "1.0.11",
@@ -70,6 +70,7 @@ export default {
                 
                   // o 是高德地图定位插件实例
                 o.getCurrentPosition((status, result) => {
+                  console.log(status,result);
                   if (result && result.position) {
                     console.log("result",result);
                     self.lng = result.position.lng;
@@ -77,6 +78,10 @@ export default {
                     self.center = [self.lng, self.lat];
                     self.loaded = true;
                     self.componentMarker.position=[self.lng, self.lat]
+                    self.$nextTick();
+                  }else{
+                    alert('定位失败！');
+                    self.loaded = true;
                     self.$nextTick();
                   }
                 });
@@ -87,6 +92,7 @@ export default {
         init(map) {
         },
         click: e => {
+          console.log('e',e)
           self.lng = e.lnglat.lng;
           self.lat = e.lnglat.lat;
           self.componentMarker.position=[e.lnglat.lng, e.lnglat.lat]

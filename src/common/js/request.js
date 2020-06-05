@@ -54,7 +54,8 @@ service.interceptors.request.use(
     if (config.baseUrlType) {
         let baseObj = BASEURL[BASEURL.CURRENT];
         config.baseURL = baseObj[config.baseUrlType];
-    } {
+        
+    } else{
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST // 默认的base_url
     }
 
