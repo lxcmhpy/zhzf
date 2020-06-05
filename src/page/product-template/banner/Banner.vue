@@ -24,7 +24,7 @@
               icon="el-icon-search"
               @click="getBannerSearch"
             >查询</el-button>
-             <el-button type="primary" size="medium" icon="el-icon-plus" @click="resetSearch">重置</el-button>
+             <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addBanner">新增</el-button>
           </el-form-item>
         </el-form>

@@ -27,7 +27,7 @@
             <el-button type="primary" size="medium" icon="el-icon-search" @click="getDocTypeListSearch">查询</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-plus" @click="resetSearch">重置</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addDocType">新增</el-button>

@@ -22,7 +22,7 @@
             <el-button type="primary" size="medium" icon="el-icon-search" @click="getRequestModelListSearch">查询</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-close" @click="reset">重置</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset">重置</el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addRequestModel">新增模板</el-button>
