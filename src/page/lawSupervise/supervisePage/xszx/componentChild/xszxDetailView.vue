@@ -243,7 +243,7 @@
                     </span>
                     <span class="title">驾驶员/车主信息</span>
                 </div>
-                <div >
+                <!-- <div > -->
                     <el-form :model="userObj" ref="userObj" class="userObj" label-width="75px">
                         <div class="item">
                             <el-form-item label="姓名">
@@ -261,7 +261,7 @@
                         </el-form-item>
                         </div>
                     </el-form>
-                </div>
+                <!-- </div> -->
                    <!-- <table v-if="obj">
                     <tr>
                         <td class="color_ff w-1">姓名</td>

@@ -21,7 +21,7 @@
 
     <div v-else>
       <el-button v-if="tabActiveValue ==='2' && $route.name!='law_supervise_invalidCueDetail'" type="button" class="submitBtn blueBtn" @click="showZbDialog">
-        <div>完成</div>
+        <div>转立案</div>
       </el-button>
     </div>
     <span :class="$route.name" v-if="statusObj[$route.params.status] === '待审核'" style="right: 370px;">

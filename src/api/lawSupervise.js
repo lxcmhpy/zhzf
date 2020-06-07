@@ -135,7 +135,8 @@ export function getById(type,id) {
   // 监管获取机构
   export function getOrganTree (data) {
     return request({
-        url: "/zfjg/queryLike",
+        // url: "/zfjg/queryLike",
+        url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
         method: "get",
         params: data,
         showloading: false,

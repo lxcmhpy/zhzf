@@ -1,6 +1,6 @@
 <template>
 <!-- 已转办页面 -->
-<div class="main_box">
+<div class="main_box" v-if="obj">
     <div class="main_content" style="margin-top: 24px">
         <div class="shadow">
             <div class="box w-2">
@@ -11,7 +11,7 @@
                     <el-button type="button" class="submitBtn blueBtn"  style="position:absolute;right:-100px;top: 130px;" @click="visible=true">
                         <div>查 看</div>
                     </el-button>
-                      <el-dialog class='mini-dialog-title' :title="title" :visible.sync="visible" :show-close='false' :close-on-click-modal="false" width="420px">
+                      <el-dialog class='mini-dialog-title' :visible.sync="visible" :show-close='false' :close-on-click-modal="false" width="420px">
                         <div class="error-message">
                         <div class="">
                             <img :src="'./static/images/img/cluesReview/icon_wuxiao.png'" alt="">
@@ -24,7 +24,7 @@
                         </span>
                     </el-dialog>
                 </div>
-                <table class="table_style" v-if="obj">
+                <table class="table_style" >
                     <tr>
                         <td class="color_ff w-1">车牌号</td>
                         <td>{{obj.vehicleNumber}}</td>
@@ -32,23 +32,25 @@
                         <td>{{obj.vehicleColor}}</td>
                     </tr>
                     <tr>
-                        <td class="color_ff w-1">转办时间</td>
+                        <td class="color_ff w-1">受案时间</td>
                         <td>{{obj.checkTime}}</td>
-                        <td class="color_ff w-1">转办说明</td>
-                        <td>{{obj.key}}</td>
+                        <!-- <td class="color_ff w-1">转办说明</td>
+                        <td>{{obj.key}}</td> -->
+                        <td class="color_ff w-1">立案机构</td>
+                        <td>{{obj.organName}}</td>
                     </tr>
                     <tr>
-                        <td class="color_ff w-1">处置机构</td>
-                        <td>{{obj.organName}}</td>
                         <td class="color_ff w-1">状态</td>
                         <td>{{obj.status}}</td>
+                        <td class="color_ff w-1"></td>
+                        <td></td>
                     </tr>
                 </table>
 
             </div>
         </div>
-        <!-- <xszxDetailView v-if="obj" :obj="obj"></xszxDetailView> -->
-        <template>
+        <examineDoingZbDetail v-if="obj" :obj="obj"></examineDoingZbDetail>
+        <!-- <template>
             <div>
                 <div class="shadow">
                     <div class="box w-2">
@@ -263,8 +265,8 @@
                 </el-dialog>
             </div>
 
-        </template>
-        <div class="shadow">
+        </template> -->
+        <!-- <div class="shadow">
             <div class="box w-2">
                 <div class="box_title">
                     <span class="titleflag">
@@ -280,7 +282,7 @@
                     </el-input>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <span class="transferDetail">已转办</span>
 
@@ -300,20 +302,16 @@ import iLocalStroage from '@/common/js/localStroage';
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 import {getDetailById} from '@/api/lawSupervise.js';
 import { mapGetters } from "vuex";
-import xszxDetailView from './componentChild/xszxDetailView.vue';
+import examineDoingZbDetail from './componentChild/examineDoingDetail/examineDoingZbDetail.vue';
 
 export default {
+    // prop: ['obj'],
     data () {
         return {
             obj: null,
             visible: false,
             xjHost: null,
-            imgList: [
-                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_D',
-                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_F',
-                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_L',
-                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_S'
-                ],
+            imgList: null,
             acitveCar: 0,
             // xjHost: null,
             dialogPDFVisible: false,
@@ -333,8 +331,17 @@ export default {
                 getDetailById(id).then(
                     res => {
                         // resolve(res);
+                        debugger;
                         _this.obj = res.data;
                         // obj.list = res.data
+                        if (_this.obj.workNo) {
+                         _this.imgList =  [
+                            '/api/ecds/GetCarPicture?work_no='+_this.obj.workNo+'&photo=PHOTO_D',
+                            '/api/ecds/GetCarPicture?work_no='+_this.obj.workNo+'&photo=PHOTO_F',
+                            '/api/ecds/GetCarPicture?work_no='+_this.obj.workNo+'&photo=PHOTO_L',
+                            '/api/ecds/GetCarPicture?work_no='+_this.obj.workNo+'&photo=PHOTO_S'
+                            ];
+                        }
                     },
                     error => {
                         //  _this.errorMsg(error.toString(), 'error')
@@ -361,7 +368,7 @@ export default {
         // ...mapGetters(["offSiteManageId"])
     },
     components: {
-        btns, xszxDetailView
+        btns, examineDoingZbDetail
     }
 }
 </script>

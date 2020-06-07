@@ -77,6 +77,7 @@ export default {
         this.cxVisible = true;
         // '新J35718'
         let aa = this.obj;
+        debugger;
         this.findWeighingRecord(this.obj.vehicleNumber);
     }
 

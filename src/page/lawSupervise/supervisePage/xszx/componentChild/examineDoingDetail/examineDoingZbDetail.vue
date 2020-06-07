@@ -31,17 +31,17 @@
                     <el-form :model="userObj" ref="userObj" class="userObj" label-width="75px">
                         <div class="item">
                             <el-form-item label="姓名">
-                                {{obj.personName}}
+                                 <el-input width="300px" readonly="readonly" v-model="obj.personName" placeholder="请输入"></el-input>
                             </el-form-item>
                         </div>
                         <div class="item">
                             <el-form-item label="联系方式">
-                                {{obj.personPhone}}
+                                <el-input width="300px" readonly="readonly" v-model="obj.personPhone" placeholder="请输入"></el-input>
                             </el-form-item>
                         </div>
                         <div class="item">
                         <el-form-item label="备注">
-                            {{obj.personRemarks}}
+                            <el-input v-model="obj.personRemarks" readonly="readonly" type="textarea" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
                         </el-form-item>
                         </div>
                     </el-form>
@@ -95,7 +95,14 @@
                 <span class="title">相关说明</span>
             </div>
             <div>
-                {{obj.remarks?obj.remarks:'无'}}
+                 <el-input
+                 readonly="readonly"
+                    style="width: 280px !important;"
+                        type="textarea"
+                        :rows="4"
+                        placeholder="请输入内容"
+                        v-model="obj.remarks">
+                </el-input>
             </div>
         </div>
     </div>
