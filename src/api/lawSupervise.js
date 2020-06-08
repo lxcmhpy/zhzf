@@ -1,4 +1,7 @@
 
+import Vue from "vue";
+let vm = new Vue();
+
 import request from "@/common/js/request";
 import { setCancelSource } from "@/common/js/cancelToken";
 
@@ -132,7 +135,8 @@ export function getById(type,id) {
   // 监管获取机构
   export function getOrganTree (data) {
     return request({
-        url: "/zfjg/queryLike",
+        // url: "/zfjg/queryLike",
+        url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
         method: "get",
         params: data,
         showloading: false,
@@ -170,7 +174,7 @@ export function saveAndUpdate (data) {
         method: "post",
         showloading: false,
         baseUrlType:  'LAW_SUPERVISE_HOST',
-        data: data,
+        data:  vm.$qs.stringify(data),
         cancelToken: setCancelSource()
       })
 }
