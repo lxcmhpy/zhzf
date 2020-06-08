@@ -26,7 +26,6 @@ export default {
       console.log('监听', this.psMsg, 'val', val)
       if (this.psMsg) {
         this.dealFormData()
-
       }
     }
   },

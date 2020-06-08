@@ -65,7 +65,7 @@
           <el-form-item label="发布机关" prop="strOrgan">
             <el-input v-model="addBtnlawForm.strOrgan"></el-input>
           </el-form-item>
-          <el-form-item label="法规效力" prop="drawerName">
+          <el-form-item label="法规效力" prop="drawerId">
             <el-select v-model="addBtnlawForm.drawerId" placeholder="请选择">
               <el-option v-for="item in lawLimitList" 
               :key="item.id" 
@@ -76,7 +76,7 @@
           <el-form-item label="网站链接" prop="webLink">
             <el-input v-model="addBtnlawForm.webLink"></el-input>
           </el-form-item>
-          <el-form-item label="行业类型" prop="industryType">
+          <el-form-item label="行业类型" prop="industryTypeId">
             <el-select v-model="addBtnlawForm.industryTypeId" placeholder="请选择">
               <el-option v-for="item in lawCateList" 
               :key="item.cateId" 
@@ -195,8 +195,8 @@ export default {
         strName: [{ required: true, message: "法规标题必须填写", trigger: "blur" }],
         strNumber: [{ required: true, message: "发布文号必须填写", trigger: "blur" }],
         strOrgan: [{ required: true, message: "发布机关必须填写", trigger: "blur" }],
-        drawerName: [{ required: true, message: "法规效力必须填写", trigger: "blur" }],
-        industryType: [{ required: true, message: "行业类型必须填写", trigger: "blur" }],
+        drawerId: [{ required: true, message: "法规效力必须填写", trigger: "blur" }],
+        industryTypeId: [{ required: true, message: "行业类型必须填写", trigger: "blur" }],
       }
     };
   },
