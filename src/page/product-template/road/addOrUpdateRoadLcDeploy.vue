@@ -85,17 +85,15 @@ export default {
     initRoadLcType2(type){
       let _this = this;
       let bzId = null;
-      if(this.addOrUpdateRoadLcDeployForm.roadLcBz == '0'){
+      if(this.addOrUpdateRoadLcDeployForm.roadLcBz == '高等级公路标准'){
         bzId = '9fba0079cdcf93994a9dc317f3c8ee0d';
       }else{
         bzId = '0c340250837a8cb58e7ce330266ab5c6';
       }
       getDictListDetailApi(bzId).then(res=>{
         console.log(res)
-        if(type == 0){
-          _this.addOrUpdateRoadLcDeployForm.roadLcType = "";
-        }
-         _this.typeList = res.data;
+        _this.addOrUpdateRoadLcDeployForm.roadLcType = "";
+        _this.typeList = res.data;
       })
     },
     showModal(type, data) {
@@ -115,12 +113,23 @@ export default {
         this.dialogTitle = "修改路产配置信息";
         this.addOrUpdateRoadLcDeployForm.roadLcName = data.roadLcName;
         this.addOrUpdateRoadLcDeployForm.roadLcBz = data.roadLcBz;
-        _this.initRoadLcType2();
         this.addOrUpdateRoadLcDeployForm.roadLcType = data.roadLcType;
         this.addOrUpdateRoadLcDeployForm.roadLcPrice = data.roadLcPrice;
         this.addOrUpdateRoadLcDeployForm.roadLcUnit = data.roadLcUnit;
         this.addOrUpdateRoadLcDeployForm.roadLcNote = data.roadLcNote;
         this.editRoadLcDeployeId = data.id;
+        let _this = this;
+        let bzId = null;
+        if(this.addOrUpdateRoadLcDeployForm.roadLcBz == '高等级公路标准'){
+           bzId = '9fba0079cdcf93994a9dc317f3c8ee0d';
+        }else{
+           bzId = '0c340250837a8cb58e7ce330266ab5c6';
+        }
+        getDictListDetailApi(bzId).then(res=>{
+            console.log(res)
+            _this.addOrUpdateRoadLcDeployForm.roadLcType = data.roadLcType;
+            _this.typeList = res.data;
+        })
 
       }
     },

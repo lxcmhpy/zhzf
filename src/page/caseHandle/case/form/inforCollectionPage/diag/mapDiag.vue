@@ -96,7 +96,14 @@ export default {
           self.lng = e.lnglat.lng;
           self.lat = e.lnglat.lat;
           self.componentMarker.position=[e.lnglat.lng, e.lnglat.lat]
-
+        },
+        dragend:e=>{
+          console.log('dragstart e',e.target);
+          console.log('amapManager',amapManager);
+          let a = amapManager._map.getCenter();
+          // let a = e.getCenter();
+          console.log('a',a)
+          // self.componentMarker.position=[a.lng, a.lat]
         }
       },
     //mark 位置

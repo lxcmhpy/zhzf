@@ -32,15 +32,16 @@
         </div>
         <div class="item">
           <el-form-item label="执法机构" prop="zfjg">
+            <!-- <el-input v-if="showSelectTree" @focus="showTree" v-model="addRequest.organName"></el-input> -->
             <elSelectTree
               v-if="showSelectTree"
-              ref="elSelectTreeObj"
+              :value="addRequest.zfjg"
+              ref="elSelectTreeObjTwo"
               :options="getOrganList"
               :accordion="true"
               :props="props"
               @getValue="handleChanged">
             </elSelectTree>
-            <el-input style="display:none" v-model="addRequest.zfjg"></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -74,6 +75,7 @@ export default {
       addRequest: {
         id: "",
         modelName: "",
+        organName: "",
         createTime:"",
         modelTypeId: "",
         zfjg:"",
@@ -85,7 +87,9 @@ export default {
       },
       rules: {
          modelName: [{ required: true, message: "模板名称不能为空", trigger: "blur" }],
-         modelTypeId: [{ required: true, message: "执法机构不能为空", trigger: "blur" }]
+         modelTypeId: [{ required: true, message: "模板类型不能为空", trigger: "blur" }],
+         zfjg: [{ required: true, message: "执法机构不能为空", trigger: "blur" }],
+         zfml: [{ required: true, message: "执法门类不能为空", trigger: "blur" }]
       },
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
@@ -104,7 +108,6 @@ export default {
     showModal(type, data ,orgList) {
       this.visible = true;
       this.handelType = type;
-      this.getOrganList = orgList;
       let data1={
           organId:this.organId
       };
@@ -119,21 +122,22 @@ export default {
       if (type == 0) {
         this.dialogTitle = "新增";
         this.addRequest = {
-          createTime:new Date().format('yyyy-MM-dd')
+          createTime:new Date().format('yyyy-MM-dd HH:mm:ss')
         };
       } else if (type == 2) {
         this.dialogTitle = "修改";
         this.handelType = type;
         this.addRequest.id = data.id;
+        this.addRequest.zfjg = data.zfjg;
+        this.addRequest.zfml = data.zfml;
         this.addRequest.modelName = data.modelName;
-        this.addRequest.createTime = new Date().format('yyyy-MM-dd');
         this.addRequest.modelTypeId = data.modelTypeId;
       }
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.$refs.addRequest.resetFields();
+      this.addRequest={};
     },
     //新增验证
     addRequestModel(formName) {
@@ -201,10 +205,30 @@ export default {
       }
 
     },
-      handleChanged(val){
-          this.$refs.elSelectTreeObj.$children[0].handleClose();
-          this.addRequest.zfjg = val
-      },
+    handleChanged(val){
+        console.log("elSelectTreeObjTwo",this.$refs.elSelectTreeObjTwo.valueId)
+        this.$refs.elSelectTreeObjTwo.$children[0].handleClose();
+        this.addRequest.zfjg = val
+    },
+    showTree(){
+      console.log("aaaa")
+      this.showSelectTree = false;
+    },
+    //获取当前机构及其子机构
+    getCurrentOrganAndChild() {
+      let _this = this
+      this.$store.dispatch("getAllOrgan").then(
+        res => {
+          _this.getOrganList = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+  },
+  mounted(){
+    this.getCurrentOrganAndChild();
   }
 };
 </script>

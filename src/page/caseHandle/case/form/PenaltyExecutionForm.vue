@@ -483,7 +483,7 @@ export default {
         this.$refs.addDialogRef.showModal(row, this.isSaveLink);
       }
       else {
-        this.com_viewDoc(row);
+        this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
       }
 
     },

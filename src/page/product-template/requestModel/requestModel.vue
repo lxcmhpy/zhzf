@@ -44,6 +44,7 @@
         </el-table-column>
         <el-table-column prop="organName" label="执法机构" align="center"></el-table-column>
         <el-table-column prop="zfml" label="业务领域" align="center"></el-table-column>
+        <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="queryRequestList(scope.row.id)" >详情</el-button>
@@ -201,7 +202,6 @@ export default {
       this.$store.dispatch("getAllOrgan").then(
         res => {
           _this.getOrganList = res.data;
-          console.log("列表",_this.getOrganList)
         },
         err => {
           console.log(err);
