@@ -437,7 +437,7 @@
            </el-popover>
         </div>
         <!-- updateDrawer -->
-        <div class="drawerBtn" @click="openDrawer">
+        <div class="drawerBtn" v-show="category == 4" @click="openDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
         <!-- v-if="category != 4"  -->
@@ -446,7 +446,8 @@
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
-          <div class="amap-main-content" style="padding:0px 17px" v-show="category != 4">
+          <!-- category != 4 -->
+          <div class="amap-main-content" style="padding:0px 17px" v-show="false">
 
               <div class="echarts-box">
                 <div class="title" @click="status1 = !status1">
@@ -494,8 +495,8 @@
               </div>
 
           </div>
-
-          <div class="amap-main-content" style="padding:0px" v-show="category == 4">
+<!-- v-show="category == 4" -->
+          <div class="amap-main-content" style="padding:0px" >
 
                     <div class="echarts-box" >
                         <div class="title" @click="status4 = !status4">
@@ -1435,7 +1436,7 @@ export default {
         radioVal: '全选',
         defaultProps: {
           children: 'children',
-          label: 'name'
+          label: 'label'
         },
         data: null,
         //  [{
@@ -1713,7 +1714,7 @@ export default {
         //     return false;
         // } else {
         //     }
-            return data.name.indexOf(value) > -1;
+            return data.label.indexOf(value) > -1;
     },
     callName(code) {
         this.doing = '2';
@@ -1837,6 +1838,7 @@ export default {
                 type: '-1',
                 other: node
             })
+            debugger;
             // this.curWindow = resultList[0];
             this.onSearchResult(resultList, 1,0);
             // this.getOrganDetail(node.id).then(
@@ -2380,22 +2382,28 @@ export default {
             organId: BASIC_DATA_SYS.lawSupervise,
             type: 0
         }
+        debugger;
        new Promise((resolve, reject) => {
         getOrganTree(params).then(
           res => {
             let dataArray = res.data;
-            dataArray.icon = 'icon_jc1';
-            // dataArray.children.forEach((item,i)=>{
-            //     addChildren(item);
-            // })
-            addChildren(dataArray);
+            // dataArray.position = dataArray.propertyValue;
+            dataArray.forEach((item,i)=>{
+                item.icon = 'icon_jc1';
+                item.position = item.propertyValue;
+                addChildren(item);
+            })
+            // addChildren(dataArray);
             function addChildren(item) {
-
-                item.icon = item.icon?item.icon:'icon_jc1';
+                item.position = item.propertyValue;
+                // item.name = item.label;
+                // item.position=item.propertyValue;
+                // item.icon = item.icon?item.icon:'icon_jc1';
+                // item.pid = item.id;
                 if (['执法人员','执法车辆', '执法船舶'].indexOf(item.name) == -1 ) {
                     if (item.users) {
                         item.users.forEach((user,i)=>{
-                            user.name = user.nickName;
+                            user.label = user.nickName;
                             user.icon = 'icon_jc11';
                         })
                     }
@@ -2403,18 +2411,18 @@ export default {
                     item.children.splice(0,0,{
                         id: item.id,
                         pid:item.pid,
-                        name: '执法人员',
+                        label: '执法人员',
                         icon: 'icon_jc11',
                         children: item.users
                     },{
                         id: item.id,
                         pid:item.pid,
-                        name: '执法车辆',
+                        label: '执法车辆',
                         icon: 'icon_cl11'
                     },{
                         id: item.id,
                         pid:item.pid,
-                        name: '执法船舶',
+                        label: '执法船舶',
                         icon: 'icon_cb11'
                     });
                     let len = item.children.length -3;
@@ -2448,8 +2456,8 @@ export default {
                 }
                 // return item
             }
-            _this.data = [dataArray];
-            // debugger;
+            _this.data = dataArray;
+            debugger;
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')

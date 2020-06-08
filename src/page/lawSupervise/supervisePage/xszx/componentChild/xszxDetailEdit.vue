@@ -620,7 +620,7 @@
                     </span>
                     <span class="title">补充证据材料</span>
                 </div>
-                <ul class="list">
+                <ul class="list" style="width: 278px;height:175px;margin-left: 0px">
                     <!-- <li>
                         <div class="demo-image__preview">
                             <el-image
@@ -665,6 +665,7 @@
             </div>
             <div>
                 <el-input
+                style="width: 280px !important;height:100px"
                         type="textarea"
                         :rows="4"
                         placeholder="请输入内容"
@@ -803,16 +804,12 @@ export default {
             this.imgIndexUrl = this.imgList[index];
         },
         saveFile (params) {
-            this.formUpload.file = param.file
+            this.formUpload.file = params.file
         },
         //关闭弹窗的时候清除数据
         setActiveItem () {
-            // this.acitveCar = (parseInt(this.acitveCar) + 1).toString();
-            // if (this.acitveCar == '3') {
-            //     this.acitveCar = '0';
-            // }
              this.acitveCar++;
-            if (this.acitveCar == 3) {
+            if (this.acitveCar == 5) {
                 this.acitveCar = 0;
             }
         },
@@ -863,7 +860,6 @@ export default {
     }
 }
 </script>
-<style lang='scss'>
-</style>
+
 <style lang="scss" src="@/assets/css/cluesReview.scss"></style>
 

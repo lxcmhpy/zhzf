@@ -24,6 +24,9 @@
            <el-form-item>
              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addOrUpdateRoadLcDeploy">添加</el-button>
            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-plus" @click="resetForm('dicSearchForm')">重置</el-button>
+            </el-form-item>
           </el-form>
         </div>
       </div>
@@ -123,6 +126,11 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getRoadLcDeploy();
+    },
+    resetForm(formName) {
+        this.dicSearchForm = {};
+        this.currentPage = 1;
+        this.getRoadLcDeploy();
     },
 
     isChoseBz(){

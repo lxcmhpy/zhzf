@@ -4,8 +4,8 @@
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">现场勘验示意图</div>
         <div class="doc_number"></div>
-        <div class="imgBox">
-            <img :src="chooseImgSrc" alt="">
+        <div class="imgBox" ref="imgBoxRef">
+            <img :src="chooseImgSrc" alt="" :width="imgWidth" :height="imgHeight">
         </div>
         <div class="imgBoxBtn"><el-button size="mini" @click="chooseImg">选择照片</el-button><el-button size="mini" @click="deleteImg">删除</el-button></div>
         <!-- 多行样式 -->
@@ -134,6 +134,9 @@ export default {
       picData:'',
       imgBase64:'',
       needDealData:true,
+      scaling:1, //图像缩放比
+      imgWidth:0,
+      imgHeight:0
     };
   },
   methods: {
@@ -220,18 +223,44 @@ export default {
       queryImgBase64Api(storageId).then(res=>{
         console.log('获取base64',res);
         this.imgBase64 = res.data;
-        this.chooseImgSrc = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
         this.docData.sh = selpicData.picData.note;
+        this.changeImgWidHei(storageId);
       }).catch(err=>{console.log(err)})
     },
+    //对图片进行处理
+    changeImgWidHei(storageId){
+       //设置临时图片
+        let temImg = new Image();
+        temImg.src =  iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
+        let _this = this;
+        temImg.onload = function(e) {
+          //赋值给图片地址
+          _this.getScaling(temImg.width,temImg.height);
+          _this.imgWidth = temImg.width / _this.scaling;
+          _this.imgHeight = temImg.height / _this.scaling;
+          _this.chooseImgSrc = temImg.src;
+        };
+    },
     getDataAfter(){
-      if( this.docData.picImgEvPath){
+      if(this.docData.picImgEvPath){
         queryImgBase64Api(this.docData.picImgEvPath).then(res=>{
             this.imgBase64 = res.data;
-           this.chooseImgSrc = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + this.docData.picImgEvPath;
+            this.changeImgWidHei(this.docData.picImgEvPath);
         })
       }   
-    }
+    },
+    //计算图像缩放比
+    getScaling(imgWidth, imgHeight) {
+     let maxWidth = this.$refs.imgBoxRef.offsetWidth - 2;
+     let maxHeight = this.$refs.imgBoxRef.offsetHeight - 2;
+      //宽高比
+      let rate = (imgWidth / imgHeight).toFixed(2);
+      if (rate >= 1) {
+        this.scaling = (imgWidth / maxWidth).toFixed(1);
+      } else {
+        this.scaling = (imgHeight / maxHeight).toFixed(1);
+      }
+    },
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();

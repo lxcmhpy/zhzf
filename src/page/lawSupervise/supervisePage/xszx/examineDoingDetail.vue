@@ -38,12 +38,14 @@ import xszxDetailView from './componentChild/xszxDetailView.vue';
 import examineDoingFirstDetail from './componentChild/examineDoingDetail/examineDoingFirstDetail';
 import examineDoingSecondDetail from './componentChild/examineDoingDetail/examineDoingSecondDetail';
 import examineDoingThirdDetail from './componentChild/examineDoingDetail/examineDoingThirdDetail';
+import examineDoingZbDetail from './componentChild/examineDoingDetail/examineDoingZbDetail';
+
 
 
 export default {
     data () {
         return {
-            examineDoingDetailChildren: ['examineDoingFirstDetail','examineDoingSecondDetail','examineDoingThirdDetail','examineDoingThirdDetail'],
+            examineDoingDetailChildren: ['examineDoingFirstDetail','examineDoingSecondDetail','examineDoingThirdDetail','examineDoingZbDetail'],
             obj: null,
             processStatus: [{
                 value: '检测数据核对'
@@ -77,6 +79,7 @@ export default {
             new Promise((resolve, reject) => {
                 findAlarmVehicleById(id).then(
                     res => {
+                        debugger;
                         // resolve(res);
                         _this.obj = res.data;
                         // obj.list = res.data
@@ -89,8 +92,12 @@ export default {
             })
         },
         init () {
-            this.findAlarmVehicleById(this.$route.params.offSiteManageId);
             this.tabActiveValue = this.$route.params.status;
+            if (this.tabActiveValue == '0') {
+                this.findAlarmVehicleById(this.$route.params.offSiteManageId);
+            } else {
+                this.getDetailById(this.$route.params.offSiteManageId);
+            }
         }
     },
     mounted () {
@@ -105,7 +112,7 @@ export default {
         }
     },
     components: {
-        btns,examineDoingFirstDetail,examineDoingSecondDetail,examineDoingThirdDetail
+        btns,examineDoingFirstDetail,examineDoingSecondDetail,examineDoingThirdDetail,examineDoingZbDetail
     }
 }
 </script>

@@ -26,7 +26,7 @@
           <div class="collapse-title-foem">
             <el-collapse v-model="activeNames" class="clear">
               <div v-for="(item,index) in formData.templateFieldList" :key="index">
-                <el-collapse-item :name="index" style="margin-top:12px">
+                <el-collapse-item :name="item.sort" style="margin-top:12px">
                   <template slot="title">
                     <i class="iconfont law-icon_zhankai zhankai"></i>
                     <i class="iconfont law-btn_shousuo shousuo"></i>
@@ -37,6 +37,7 @@
                     </el-form-item>
                     <i class="el-icon-remove" style="margin-left:18px" @click="delField(item,formData.templateFieldList)"></i>
                   </template>
+                  <!-- {{item.fieldList}} -->
                   <div v-for="field in item.fieldList" :key="field.id">
                     <el-row :gutter="20">
                       <el-col :span="2">
@@ -57,7 +58,6 @@
                         <el-form-item label-width="0" style="width:calc(100% - 34px)">
                           <el-select v-model="field.type" placeholder="请选择字段类型" @change="changeFieldType(field)" :disabled="field.status===0?true:false">
                             <el-option label="文本型" value="文本型"></el-option>
-                            <!-- <el-option label="抽屉型" value="抽屉型"></el-option> -->
                             <el-option label="单选型" value="单选型"></el-option>
                             <el-option label="复选型" value="复选型"></el-option>
                             <el-option label="日期型" value="日期型"></el-option>
@@ -121,7 +121,7 @@
                     </el-row>
                   </div>
                 </el-collapse-item>
-                <span class="card-add-ziduan" @click="addField(index,item.classs)">
+                <span class="card-add-ziduan" @click="addField(item,index)">
                   <i class="el-icon-circle-plus-outline"></i>
                   添加字段
                   <i class="el-icon-arrow-right"></i>
@@ -284,7 +284,7 @@ export default {
             // value: ,
             sort: 0,//新加-前端定义
             classs: '',
-            classsId:'',
+            classsId: '',
             fieldList: [
               {
                 id: '',//字段id-修改
@@ -340,6 +340,7 @@ export default {
         this.findDataByld()
         this.drawerTitle = '修改模板'
         this.globalCont = editdata.count + 1;
+
       }
       this.findCommonField()
       this.getEnforceLawType();
@@ -357,7 +358,7 @@ export default {
       findRecordlModleFieldByIdeApi(this.editId).then(
         res => {
           let list = res.data
-          let sort = 1
+          let sort = 0
           list.forEach(element => {
             element.sort = sort;
             sort++;
@@ -370,9 +371,29 @@ export default {
           findRecordModleByIdApi(this.editId).then(
             res => {
               if (res.code == 200) {
+              // _this.formData ={..._this.formData, ...res.data}
                 _this.formData = res.data
-                _this.formData.templateFieldList = list
+                _this.$set(_this.formData,'templateFieldList',list);
+                // _this.formData.templateFieldList = list
+                this.globalContGroup = _this.formData.templateFieldList.length;
                 // _this.formData.templateAdminIdList = _this.formData.templateAdminId.split(",")
+                _this.formData.templateUserIdList = [];
+                _this.formData.templateAdminIdList = [];
+                let user = _this.formData.templateUser.split(",")
+                let userId = _this.formData.templateUserId.split(",")
+                let admin = _this.formData.templateAdmin.split(",")
+                let adminId = _this.formData.templateAdminId.split(",")
+                user.forEach((element, index) => {
+                  console.log('index', index)
+                  _this.formData.templateUserIdList.push({ id: userId[index], lawOfficerName: element })
+                });
+
+                admin.forEach((element, index) => {
+                  _this.formData.templateAdminIdList.push({ id: adminId[index], lawOfficerName: element })
+                });
+
+                console.log('_this.formData.templateUserIdList', _this.formData.templateUserIdList)
+                console.log('_this.formData.templateAdminIdList', _this.formData.templateAdminIdList)
 
               }
             },
@@ -416,28 +437,41 @@ export default {
         })
     },
     addGroup() {
-      this.formData.templateFieldList.push({ sort: this.globalContGroup, classs:'',fieldList: [] })
-      debugger
+      let indexSort = this.formData.templateFieldList.length
+      this.formData.templateFieldList.push({ sort: this.globalContGroup, classs: '', fieldList: [] })
+      // debugger
       let pushDataList = JSON.parse(JSON.stringify(this.defautfieldList));
       pushDataList.field = 'key' + this.globalContGroup
-      console.log('pushDataList', pushDataList)
-      // 有问题，globalCount
-      this.formData.templateFieldList[this.globalContGroup].fieldList.push(pushDataList)
-      this.activeNames.push(this.globalCont)
+
+      this.formData.templateFieldList[indexSort].fieldList.push(pushDataList)
+      this.activeNames.push(this.globalContGroup)
+      console.log('activetiname', this.activeNames)
       this.globalContGroup++
       this.globalCont++;
-      console.log('formData.templateFieldList', this.formData.templateFieldList)
     },
 
-    addField(index, classs) {
-      if (this.activeNames.indexOf(index) == -1) {
-        this.activeNames.push(index)
+    addField(item,index) {
+      console.log('item', item)
+      console.log('push前', item.fieldList)
+
+      console.log('field index', item)
+      if (this.activeNames.indexOf(item.sort) == -1) {
+        this.activeNames.push(item.sort)
       }
-      console.log('defautfieldList', this.defautfieldList)
+
       let pushDataList = JSON.parse(JSON.stringify(this.defautfieldList));
       pushDataList.field = 'key' + this.globalCont;
+      this.globalCont++
       console.log('pushDataList', pushDataList)
-      this.formData.templateFieldList[index].fieldList.push(pushDataList)
+      // let length = item.fieldList.length
+      item.fieldList.push(pushDataList);
+
+      this.formData.templateFieldList[index].fieldList.sort()
+      // let a = [...item.fieldList,pushDataList];
+      // this.formData.templateFieldList[index].fieldList =a;
+      // item.fieldList.length++
+      // this.$set('item.fieldList', length, pushDataList)
+      console.log('push后', item.fieldList)
     },
     delField(field, fieldList) {
       console.log(field)
@@ -480,46 +514,49 @@ export default {
             });
             data.count = sort;
             data.templateAdminIdList.forEach(element => {
-              if (data.templateAdmin == '') {
-                data.templateAdminId += element.id
-                data.templateAdmin += element.lawOfficerName
-              } else {
-                data.templateAdminId = data.templateAdminId + ',' + element.id
-                data.templateAdmin = data.templateAdmin + ',' + element.lawOfficerName
-              }
+              data.templateAdminId = data.templateAdminId + ',' + element.id
+              data.templateAdmin = data.templateAdmin + ',' + element.lawOfficerName
             });
             data.templateUserIdList.forEach(element => {
-              if (data.templateUser == '') {
-                data.templateUser += element.lawOfficerName
-                data.templateUserId += element.id
-              } else {
-                data.templateUser = data.templateUser + ',' + element.lawOfficerName
-                data.templateUserId = data.templateUserId + ',' + element.id
-              }
+              data.templateUser = data.templateUser + ',' + element.lawOfficerName
+              data.templateUserId = data.templateUserId + ',' + element.id
             });
+            // 未做ie浏览器兼容处理
+            if (data.templateAdminId.substr(0, 1) == ',') {
+              data.templateAdminId = data.templateAdminId.substr(1)
+            }
+            if (data.templateAdmin.substr(0, 1) == ',') {
+              data.templateAdmin = data.templateAdmin.substr(1)
+            }
+            if (data.templateUserId.substr(0, 1) == ',') {
+              data.templateUserId = data.templateUserId.substr(1)
+            }
+            if (data.templateUser.substr(0, 1) == ',') {
+              data.templateUser = data.templateUser.substr(1)
+            }
             data.templateUserIdList = '';
             data.templateAdminIdList = '';
             // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
             data.templateFieldList = JSON.stringify(data.templateFieldList)
             console.log('提交的字段', data)
             debugger
-            // saveOrUpdateRecordModleApi(data).then(
-            //   res => {
-            //     console.log(res)
-            //     if (res.code == 200) {
-            //       this.$message({
-            //         type: "success",
-            //         message: res.msg
-            //       });
-            //       this.$emit("getAddModle", 'sucess');
-            //       this.newModleTable = false;
-            //     } else {
-            //       this.$message.error(res.msg);
-            //     }
-            //   },
-            //   error => {
+            saveOrUpdateRecordModleApi(data).then(
+              res => {
+                console.log(res)
+                if (res.code == 200) {
+                  this.$message({
+                    type: "success",
+                    message: res.msg
+                  });
+                  this.$emit("getAddModle", 'sucess');
+                  this.newModleTable = false;
+                } else {
+                  this.$message.error(res.msg);
+                }
+              },
+              error => {
 
-            //   })
+              })
 
           }
         } else {
@@ -546,8 +583,6 @@ export default {
               if (
                 item.userId == iLocalStroage.gets("userInfo").id
               ) {
-
-
                 _this.formData.templateAdminIdList.push(item);
                 _this.formData.templateUserIdList.push(item);
                 _this.currentUserLawId = item.id;
