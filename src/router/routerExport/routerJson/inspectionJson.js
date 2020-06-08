@@ -41,13 +41,13 @@ export default  [
             },
             {
                 // 历史检查列表
-                path: "/historyRecord",
-                name: "inspection_historyRecord",
+                path: "/viewRecord",
+                name: "inspection_viewRecord",
                 meta: {
                 title: "历史检查列表",
                 oneTab:true,
                 },
-                component: () => import("@/page/inspection/record-manage/historyRecord.vue")
+                component: () => import("@/page/inspection/record-manage/viewRecord.vue")
             },
         ]
     }, 
