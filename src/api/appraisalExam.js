@@ -50,11 +50,22 @@ export function findPykhMetricsByPage (data) {
         cancelToken: setCancelSource()
       })
 }
+// 查询考核细则
+export function findPykhZpByPage (data) {
+    return request({
+        url: "/pykh/pykhToConfigure/findPykhZpByPage",
+        method: "get",
+        showloading: false,
+        params: data,
+        baseUrlType:'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+      })
+}
 // 添加修改考核指标
 export function addOrUpdatePykhMetrics (data) {
     return request({
         url: "/pykh/pykhToConfigure/addOrUpdatePykhMetrics",
-        method: "get",
+        method: "post",
         showloading: false,
         data: vm.$qs.stringify(data),
         baseUrlType:'CAPTCHA_HOST',

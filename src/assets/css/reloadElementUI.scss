@@ -102,6 +102,10 @@ $dialog-default-height: 560px !default;
     background: #E9EDF6;
   }
 
+  .el-table.tableChild th{
+    background: #f2f3f6;
+    }
+
   /* 弹窗 */
   .el-dialog__header {
     background: #E9EDF6;
@@ -149,6 +153,10 @@ $dialog-default-height: 560px !default;
     }
 }
 // 新增-by:jingli
+.el-table__expanded-cell {
+    border: 1px solid #f2f2f2 !important;
+    border-top: 0px !important;
+}
 .paginationBox {
     position  : relative;
     text-align: center;
@@ -336,4 +344,7 @@ $dialog-default-height: 560px !default;
       }
     }
   }
+}
+.zIndexHidden {
+    z-index: -1;
 }
