@@ -555,7 +555,7 @@ export default {
       //   this.com_viewDoc(row);
       // }
       console.log("查看");
-      this.com_viewDoc(row);
+      this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
     addMoreDoc(row) {
       console.log("添加",row);

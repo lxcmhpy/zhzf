@@ -343,7 +343,7 @@ export default {
         //文书数据
         docData: "",
         status: "", //提交状态
-        linkTypeId:this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //所属环节的id
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
         party: [

@@ -405,28 +405,7 @@ export const mixinGetCaseApiList = {
       );
     },
     //查看或新增环节下的文书
-    com_viewDoc(row, addMoreData = {}) {
-      console.log("新增文书",row);
-      if (this.isSaveLink) {
-        this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-        console.log('row:', row)
-        this.$router.push({
-          name: row.path,
-          params: {
-            id: row.id,
-            docId: row.docId,
-            url: this.$route.name,
-            addMoreData: JSON.stringify(addMoreData),
-            docDataId: row.docDataId
-          }
-        });
-      } else {
-        this.$message('请先保存该环节表单');
-      }
-    },
-
-    //查看或新增环节下的文书
-    com_viewDoc1(row,caseLinkTypeId, addMoreData = {}) {
+    com_viewDoc(row,caseLinkTypeId, addMoreData = {}) {
       console.log("新增文书",row);
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签

@@ -116,7 +116,8 @@ export default {
         caseDoctypeId: "2c902934699a6ef801699a7426750001", //表单类型IDer
         //表单数据
         docData: "",
-        status: ""
+        status: "",
+        linkTypeId: this.$route.params.caseLinkTypeId
       },
       rules: {
         party: [

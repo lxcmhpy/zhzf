@@ -402,7 +402,7 @@ export default {
     //查看文书
     viewDoc(row) {
       if(this.isSaveLink){
-        this.com_viewDoc(row)
+        this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId)
       }else{
         this.$refs.saveFormDiaRef.showModal(this.saveOrSub);
       }

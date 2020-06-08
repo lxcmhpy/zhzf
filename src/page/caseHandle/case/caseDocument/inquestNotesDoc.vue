@@ -267,7 +267,7 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
-        linkTypeId: this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //所属环节的id
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       handleType: "",  // 0 暂存  1  提交
       dictId: "2dc1e0a3a8ce225c292259da39294847",
