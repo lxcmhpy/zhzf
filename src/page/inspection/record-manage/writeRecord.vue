@@ -94,7 +94,7 @@ export default {
         res => {
           _this.baseData = JSON.parse(res.data.layout)
           let list = JSON.parse(res.data.layout)
-          console.log('res', res.data)
+          // console.log('res', res.data)
           let sort = 0
           list.forEach(element => {
             element.sort = sort;
@@ -143,7 +143,7 @@ export default {
       console.log('formdata', this.formData)
       saveOrUpdateRecordApi(this.formData).then(
         res => {
-          console.log(res)
+          // console.log(res)
           if (res.code == 200) {
             this.$message({
               type: "success",
@@ -163,11 +163,11 @@ export default {
     dealFormData() {
       this.rule = []
       let data = JSON.parse(JSON.stringify(this.psMsg.templateFieldList))
-      console.log('ruleData', data)
+      // console.log('ruleData', data)
       let ruleData = []
       let _this = this
       data.forEach(element => {
-        console.log(element)
+        // console.log(element)
         if (element.classs) {
           this.rule.push(
             {
@@ -187,7 +187,7 @@ export default {
         }
 
         element.fieldList.forEach(item => {
-          console.log(item)
+          // console.log(item)
           if (item.type == '文本型') {
             item.type = 'input';
             this.rule.push({

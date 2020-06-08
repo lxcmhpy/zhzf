@@ -113,6 +113,17 @@ export function findRecordModleByIdApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//根据模板UUID查找模板修改时间
+export function findRecordModleTimeByIdApi(data) {
+    return request({
+        url: "/xzjc/template/getTemplateUpdateTime/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 //通过模板名称查询模板
 export function findRecordModleByNameIdApi(data) {
     return request({

@@ -50,14 +50,14 @@
   </div>
 </template>
 <script>
-import { findRecordListApi, removeRecordByIdApi,findRecordModleByIdApi } from "@/api/Record";
+import { findRecordListApi, removeRecordByIdApi, findRecordModleByIdApi, findRecordModleTimeByIdApi } from "@/api/Record";
 export default {
   data() {
     return {
       tableData: [], //表格数据
       searchForm: {
         domain: "",
-        name:''
+        name: ''
       },
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -69,7 +69,7 @@ export default {
   methods: {
     getTableData() {
       let data = {
-        domain:this.searchForm.domain,
+        domain: this.searchForm.domain,
         current: this.currentPage,
         size: this.pageSize,
         // name: this.dicSearchForm.name
@@ -111,29 +111,30 @@ export default {
     // 修改
     editRecord(row) {
       let _this = this
-      let list=[]
+      let list = []
       console.log('编辑', row)
-      findRecordModleByIdApi(row.templateId).then(
-            res => {
-              if (res.code == 200) {
+      findRecordModleTimeByIdApi(row.templateId).then(
+        res => {
+          if (res.code == 200) {
+            console.log('row.createTime <= res.data',row.createTime , res.data)
+            if (row.createTime >= res.data) {
+              // 写记录
+              row.addOrEiditFlag = 'edit'
+              this.$router.push({
+                name: 'inspection_writeRecordInfo',
+                params: row
+              });
+            } else {
+              this.$message.error('当前模板已修改，该记录不可修改');
+            }
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
 
-                _this.formData = res.data;
-                // _this.psMsg = JSON.parse(JSON.stringify(res.data))
-                // _this.$set(_this.psMsg, 'templateFieldList', list);
+        })
 
-                // _this.formData.id = '';
-                // this.setLawPersonCurrentP()
-              }
-            },
-            error => {
-
-            })
-      // 写记录
-      row.addOrEiditFlag = 'edit'
-      this.$router.push({
-        name: 'inspection_writeRecordInfo',
-        params: row
-      });
     },
     // 删除
     deleteRecord(id) {
