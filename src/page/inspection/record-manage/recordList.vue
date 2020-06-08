@@ -40,7 +40,7 @@
   </div>
 </template>
 <script>
-import { findRecordListApi } from "@/api/Record";
+import { findRecordListApi ,removeRecordByIdApi} from "@/api/Record";
 export default {
   data() {
     return {

@@ -15,7 +15,8 @@
 <script>
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
-import { saveOrUpdateRecordModleApi, findCommonFieldApi, findAllCommonFieldApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi } from "@/api/Record";
+import { saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi } from "@/api/Record";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: {
     formCreate: formCreate.$form()
@@ -34,6 +35,7 @@ export default {
   data() {
     return {
       modleId: '',
+      baseData: [],
       creatFormData: [],
       ruleForm: {
         value1: '',
@@ -145,7 +147,8 @@ export default {
       let _this = this
       findRecordlModleFieldByIdeApi(this.modleId).then(
         res => {
-          let list = res.data
+
+          let list = JSON.parse(JSON.stringify(res.data))
           let sort = 0
           list.forEach(element => {
             element.sort = sort;
@@ -156,12 +159,18 @@ export default {
               }
             });
           });
+          _this.baseData = list
           findRecordModleByIdApi(this.modleId).then(
             res => {
               if (res.code == 200) {
-                _this.formData = res.data
-                _this.$set(_this.formData, 'templateFieldList', list);
-                _this.psMsg = _this.formData
+
+                _this.formData = res.data;
+                _this.psMsg = JSON.parse(JSON.stringify(res.data))
+                _this.$set(_this.psMsg, 'templateFieldList', list);
+                _this.formData.createTime ='';
+                _this.formData.updateTime ='';
+
+                this.setLawPersonCurrentP()
               }
             },
             error => {
@@ -173,18 +182,48 @@ export default {
         })
 
     },
+     //用户的id去拿他名字
+    setLawPersonCurrentP() {
+      this.formData.createUser = iLocalStroage.gets("userInfo").username;
+
+    },
     onSubmit(formData) {
       //TODO 提交表单
-      console.log("formData", formData)
-      console.log('rule', this.rule)
-      let submitData = JSON.parse(JSON.stringify(this.rule))
-      let formDataList=formData.split(",")
-      console.log(formDataList)
+      console.log("baseData", this.baseData)
+      let submitData = JSON.parse(JSON.stringify(this.baseData))
       let submitList = []
       submitData.forEach(element => {
         console.log(element)
+        element.fieldList.forEach(item => {
+          let textName = item.field
+          console.log('变量', formData['' + textName + ''])
+          item.text = formData['' + textName + '']
+        });
 
       });
+      console.log('submitData', submitData)
+      submitData = JSON.stringify(submitData)
+      console.log(submitData)
+      this.formData.layout = submitData
+      this.formData.templateFieldList = ''
+      this.formData.id = '';
+      console.log('formdata', this.formData)
+      saveOrUpdateRecordApi(this.formData).then(
+        res => {
+          console.log(res)
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: res.msg
+            });
+
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
     },
     change() {
       // 修改值
@@ -231,9 +270,9 @@ export default {
                 type: 'text',
                 placeholder: item.remark
               },
-              value:item.text,
+              value: item.text,
               validate: [{
-                required: item.required=='true'?true:false,
+                required: item.required == 'true' ? true : false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]
@@ -248,7 +287,7 @@ export default {
               title: item.title,
               options: item.options,
               validate: [{
-                required: item.required=='true'?true:false,
+                required: item.required == 'true' ? true : false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]
@@ -263,7 +302,7 @@ export default {
               title: item.title,
               options: item.options,
               validate: [{
-                required: item.required=='true'?true:false,
+                required: item.required == 'true' ? true : false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]
@@ -278,7 +317,7 @@ export default {
               title: item.title,
               options: item.options,
               validate: [{
-                required: item.required=='true'?true:false,
+                required: item.required == 'true' ? true : false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]
@@ -295,7 +334,7 @@ export default {
                   placeholder: item.remark
                 },
                 validate: [{
-                  required: item.required=='true'?true:false,
+                  required: item.required == 'true' ? true : false,
                   message: '请输入' + item.title,
                   trigger: 'blur'
                 }]
@@ -312,7 +351,7 @@ export default {
                   type: 'datetime'
                 },
                 validate: [{
-                  required: item.required=='true'?true:false,
+                  required: item.required == 'true' ? true : false,
                   message: '请输入' + item.title,
                   trigger: 'blur'
                 }]
@@ -328,7 +367,7 @@ export default {
                 precision: 2
               },
               validate: [{
-                required: item.required=='true'?true:false,
+                required: item.required == 'true' ? true : false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]

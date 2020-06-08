@@ -125,3 +125,28 @@ export function findRecordListApi(data) {
         cancelToken: setCancelSource()
     });
 }
+
+//添加或修改记录
+export function saveOrUpdateRecordApi(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url:"/xzjc/templateOrder/mySaveOrUpdate",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据UUID删除记录
+export function removeRecordByIdApi(data) {
+    return request({
+        url: "/xzjc/templateOrder/removeById/" + data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}

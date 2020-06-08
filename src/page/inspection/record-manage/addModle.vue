@@ -583,8 +583,6 @@ export default {
               if (
                 item.userId == iLocalStroage.gets("userInfo").id
               ) {
-
-
                 _this.formData.templateAdminIdList.push(item);
                 _this.formData.templateUserIdList.push(item);
                 _this.currentUserLawId = item.id;
