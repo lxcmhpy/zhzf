@@ -307,6 +307,7 @@ export const mixinGetCaseApiList = {
             } else {
               console.log(res.data[0]);
               this.caseDocDataForm.id = res.data[0].id;
+              this.caseDocDataForm.status = res.data[0].status;
               this.docData = JSON.parse(res.data[0].docData);
               //设置禁用
               if (this.needSetDisabled) {
@@ -334,26 +335,26 @@ export const mixinGetCaseApiList = {
         this.$refs[docForm].validate((valid, noPass) => {
           if (valid) {
             console.log('通过')
-            this.$store.dispatch("addDocData", this.caseDocDataForm).then(
-              res => {
-                console.log("保存文书", res);
-                this.$message({
-                  type: "success",
-                  message: "提交成功"
-                });
-                //为多份文书赋值id，提交多份文书的pdf时需要用到
-                if (this.caseDocDataForm.docDataId != undefined) {
-                  this.caseDocDataForm.docDataId = res.data.id;
-                }
-                console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
-                this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-                //提交成功后提交pdf到服务器，后打开pdf
-                this.printContent(res.data.id);
-              },
-              err => {
-                console.log(err);
-              }
-            );
+            // this.$store.dispatch("addDocData", this.caseDocDataForm).then(
+            //   res => {
+            //     console.log("保存文书", res);
+            //     this.$message({
+            //       type: "success",
+            //       message: "提交成功"
+            //     });
+            //     //为多份文书赋值id，提交多份文书的pdf时需要用到
+            //     if (this.caseDocDataForm.docDataId != undefined) {
+            //       this.caseDocDataForm.docDataId = res.data.id;
+            //     }
+            //     console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
+            //     this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+            //     //提交成功后提交pdf到服务器，后打开pdf
+            //     this.printContent(res.data.id);
+            //   },
+            //   err => {
+            //     console.log(err);
+            //   }
+            // );
           } else {
             let a = Object.values(noPass)[0];
             this.$message({
@@ -709,6 +710,7 @@ export const mixinGetCaseApiList = {
         console.log(data);
         this.propertyFeatures = data;
         console.log('savedData', savedData);
+        debugger;
         if (this.formData) {
           if (savedData) {
             this.caseLinkDataForm.id = savedData.id;
@@ -731,6 +733,7 @@ export const mixinGetCaseApiList = {
         } else {
           if (savedData) {
             this.caseDocDataForm.id = savedData.id;
+            this.caseDocDataForm.status = savedData.status;
             this.docData = JSON.parse(savedData.docData);
           } else {
             for (var key in data) {

@@ -19,7 +19,7 @@
                 
             </el-col>
             <el-col :span="6" class="noteBox">
-                <el-form-item :prop="item.note1" :rules="[{ required: true, message: '请输入文字说明', trigger: 'blur' }]">
+                <el-form-item  :prop="'evidenceData.' + index + '.note1'" :rules="[{ required: true, message: '请输入文字说明', trigger: 'blur' }]">
                     <el-input
                         type="textarea"
                         :rows="14"
@@ -52,25 +52,24 @@
         <p class="p_begin">
             拍摄时间：
           <span>
-            <el-form-item prop="pTime" :rules="fieldRules('pTime',propertyFeatures['pTime'])">
+            <el-form-item>
               <el-date-picker v-model="item.pTime" style="width:200px" type="datetime"  value-format="yyyy-MM-dd HH"
-                              placeholder="   年  月  日  时 分 秒" :disabled="fieldDisabled(propertyFeatures['pTime'])">
+                              placeholder="   年  月  日  时 分 秒">
               </el-date-picker>
             </el-form-item>
           </span>
           拍摄地点
           <span>
-            <el-form-item prop="pPla" :rules="fieldRules('pPla',propertyFeatures['pPla'])">
-              <el-input type='textarea' v-model="item.pPla" :autosize="{ minRows: 1, maxRows: 3}" maxLength="50" :disabled="fieldDisabled(propertyFeatures['pPla'])"></el-input>
+            <el-form-item :prop="'evidenceData.' + index + '.pPla'" >
+              <el-input type='textarea' v-model="item.pPla" :autosize="{ minRows: 1, maxRows: 3}" maxLength="50"></el-input>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
             拍摄人：
           <span>
-            <el-form-item prop="pPeo" :rules="fieldRules('pPeo',propertyFeatures['pPeo'])">
-              <!-- <el-input v-model="item.pPeo"  :disabled="fieldDisabled(propertyFeatures['pPeo'])"></el-input> -->
-                <el-select v-model="item.pPeo"  :disabled="fieldDisabled(propertyFeatures['pPeo'])">
+            <el-form-item>
+                <el-select v-model="item.pPeo">
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option>
                   </el-select>
             </el-form-item>
@@ -126,7 +125,7 @@ export default {
         // pTime: "",
         pPla: "",
         // pPeo: "",
-        // note1:"",
+        note1:"",
         // note2:"",
         evidenceData:[{ pic1:'', pic2:'', picSrc1:'', picSrc2:'',picBase64_1:'',picBase64_2:'', pTime:'',pPla:'', pPeo:'',note1:'', note2:'',picList:''}],
         // picList:[],
@@ -144,9 +143,9 @@ export default {
         sh: [
           { required: true, message: "请输入示意图简述", trigger: "blur" }
         ],
-        note: [
+        note1: [
           { required: true, message: "请输入备注", trigger: "blur" }
-        ]
+        ] 
       },
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
@@ -162,6 +161,7 @@ export default {
       imgHeightArr:[['','']],
       // scaling:1,
       scalingArr:[[1,1]],
+      pPlaFromInfor:'', //绑定的执法地点（拍摄地点）
     };
   },
   methods: {
@@ -185,40 +185,24 @@ export default {
     //保存文书信息
     saveData(handleType) {
         let picTuresIndex = 0;
-       
         let canSubmit = true;
         if(handleType == 1){
             this.docData.evidenceData.forEach((item,index)=>{
                 if(!item.picBase64_1){
-                    this.$message('每页的第一张图片必须选择！')
+                    // this.$message('每页的第一张图片必须选择！')
                     canSubmit = false;
+                    return;
                 }
             })
         }
-        
         this.docData.evidenceData.forEach((item,index)=>{
             let picListArr = [{'pictures-1':item.picBase64_1},{'pictures-2':item.picBase64_2}];
             item.picList = JSON.stringify(picListArr);
-
-           
-        //    picTuresIndex++;
-        //     let key1 = 'pictures-'+picTuresIndex;
-        //     let keyValue1 = {};
-        //     keyValue1[key1] = item.picBase64_1;
-        //     picListArr.push(keyValue1);
-        //     picTuresIndex++;
-        //     let key2 = 'pictures-'+picTuresIndex;
-        //     let keyValue2 = {};
-        //     keyValue2[key2] = item.picBase64_2;
-        //     picListArr.push(keyValue2);
         })
-        // console.log('picListArr',picListArr);
-        // this.docData.picList = JSON.stringify(picListArr);
-        console.log('this.docData',this.docData);
-        console.log('this.docData.evidenceData.picList',this.docData.evidenceData.picList);
-
         if(canSubmit){
             this.com_addDocData(handleType, "docForm");
+        }else{
+           this.$message('每页的第一张图片必须选择！')
         }
 
     },
@@ -275,10 +259,6 @@ export default {
         console.log('获取base64',res);
         let  picBase64Key = 'picBase64_'+selpicData.picIndex;
         this.docData.evidenceData[selpicData.pastePage][picBase64Key] = res.data;
-        //图片地址赋值
-        //  let picKey = 'pic'+selpicData.picIndex;
-        // this.docData.evidenceData[selpicData.pastePage][picKey] = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
-        
         this.changeImgWidHei(storageId,selpicData.pastePage,selpicData.picIndex)
         
         //图片evPath赋值 为了在证据弹窗中设置选中或禁止选择
@@ -315,24 +295,27 @@ export default {
           console.log(res);
           let data2 = JSON.parse(res.data.propertyData);
           this.staffList = data2.staff.split(',');
+          this.pPlaFromInfor = data2.pPla;
         },err=>{
-          console.length(err);
+          console.log(err);
         })
     },
     getDataAfter(){
+      //处理图片
         this.docData.evidenceData.forEach((item,index)=>{     
-          //  item.pic1 = item.picSrc1 ? iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + item.picSrc1 : '';
-          //  item.pic2 = item.picSrc2 ? iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + item.picSrc2 : '';
           if(index>0){
             this.imgWidthArr.push(['','']);
             this.imgHeightArr.push(['','']);
             this.scalingArr.push([1,1]);
           }
-          
           this.changeImgWidHei(item.picSrc1,index,1);
           this.changeImgWidHei(item.picSrc2,index,2);
         })
-        this.imgWidthArr[1][1] = 400;
+        //带入拍摄地点 (暂存后不自动带入了)
+        if(this.caseDocDataForm.status == ''){
+           this.docData.evidenceData[0].pPla = this.pPlaFromInfor
+        }
+       
     },
     //对图片进行处理
     changeImgWidHei(storageId,pastePage,picIndex){
@@ -362,10 +345,8 @@ export default {
       //宽高比
       let rate = (imgWidth / imgHeight).toFixed(2);
       if (rate >= 1) {
-        // this.scaling = (imgWidth / maxWidth).toFixed(1);
         this.scalingArr[pastePage][picIndex-1] = (imgWidth / maxWidth).toFixed(1);
       } else {
-        // this.scaling = (imgHeight / maxHeight).toFixed(1);
         this.scalingArr[pastePage][picIndex-1] = (imgHeight / maxHeight).toFixed(1);
       }
       console.log('getScaling',this.scalingArr[pastePage][picIndex-1])
