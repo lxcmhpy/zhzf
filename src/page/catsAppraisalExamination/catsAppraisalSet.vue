@@ -2,13 +2,14 @@
     <div class="com_searchAndpageBoxPadding">
         <div class="searchAndpageBox toggleBox">
             <div class="handlePart" style="margin-left: 0px;">
-                <el-button type="primary" size="medium" @click="drawer = true">
+                <el-button type="primary" size="medium" @click="addPykh">
                     <i class="iconfont law-submit-o f12"></i> 添加
                 </el-button>
             </div>
             <div class="tablePart">
                  <!-- @row-click="handleNodeClick" -->
-                <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @expand-change="load">
+                <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @expand-change="load"
+                row-key="id" :expand-row-keys="expandList">
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
                     <el-table-column prop="pykhConfigName" label="考核要求名称" align="center"></el-table-column>
                     <el-table-column prop="startTime" label="立案开始时间" align="center"></el-table-column>
@@ -16,7 +17,7 @@
                     <el-table-column prop="caseNum" label="案件基数" align="center"></el-table-column>
                     <el-table-column type="expand" >
                         <template  >
-                            ddd
+                            {{zbList}}ddd
                             <!-- -->
                             <el-form label-position="left"  inline class="demo-table-expand">
                                 查看指标项
@@ -110,7 +111,7 @@
             <br>
              <div class="demo-drawer__footer" style="text-align:center">
                 <el-button type="primary" @click="addPykhConfig" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
-                <el-button @click="draw = false">取 消</el-button>
+                <el-button @click="closeDraw">取 消</el-button>
             </div>
         </el-drawer>
         <!-- <el-table
@@ -158,6 +159,7 @@ import iLocalStroage from '@/common/js/localStroage';
     data() {
         let _this = this;
       return {
+        expandList:null,
         timeList: ['', ''],
         rules: {
             pykhConfigName: [{ required: true, message: '请输入考核要求名称', trigger: 'blur' }]
@@ -210,7 +212,32 @@ import iLocalStroage from '@/common/js/localStroage';
     //       }
     //     }
     //   },
+    closeDraw () {
+        this.drawer = false;
+           this.$set(this, 'pykhObj', {
+                    id: "",
+                    note: "",
+                    createId: "",
+                    createName: "",
+                    createTime: "",
+                    modifyId: "",
+                    modifyTime: "",
+                    startTime: "",
+                    endTime: "",
+                    pykhConfigName: "",
+                    organName: "",
+                    organId: "",
+                    caseNum: ""
+                });
+    },
+    rowKey() {
+        return this.expandList.length>0?this.expandList[0].id: '';
+    },
     load (row, expand){
+        // this.rowKey = row.id;
+        // this.expandList.splice(0,this.expandList.length);
+        this.findPykhMetricsByPage(row);
+        this.expandList= [row.id];
         debugger;
     },
     findPykhMetricsByPage(item) {
@@ -218,6 +245,7 @@ import iLocalStroage from '@/common/js/localStroage';
         new Promise((resolve, reject) => {
             findPykhMetricsByPage(item.id).then(
                 res => {
+                    debugger;
                     _this.zbList = res.data
                 },
                 error => {
@@ -262,8 +290,28 @@ import iLocalStroage from '@/common/js/localStroage';
 
         },
         addPykh () {
-            this.drawer = true;
+            // this.pykhObj.startTime = "";
+            // this.pykhObj.endTime = "";
+            // this.pykhObj.caseNum = "";
+            // this.pykhObj.startTime = "";
+            this.$set(this, 'pykhObj', {
+                    id: "",
+                    note: "",
+                    createId: "",
+                    createName: "",
+                    createTime: "",
+                    modifyId: "",
+                    modifyTime: "",
+                    startTime: "",
+                    endTime: "",
+                    pykhConfigName: "",
+                    organName: "",
+                    organId: "",
+                    caseNum: ""
+                });
+
             this.updateIndex = null;
+            this.drawer = true;
 
         },
         reset (formName) {
@@ -294,7 +342,7 @@ import iLocalStroage from '@/common/js/localStroage';
                                     _this.drawer = false;
                                     _this.$set(_this.tableData,_this.updateIndex, _this.pykhObj);
                                 }
-                                 this.$set(this, 'pykhObj', {
+                                 _this.$set(_this, 'pykhObj', {
                                             id: "",
                                             note: "",
                                             createId: "",
