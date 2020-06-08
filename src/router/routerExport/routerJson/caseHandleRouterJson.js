@@ -693,4 +693,12 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/payCompensation.vue")
   },
+  {
+    path: "/assistInvestgation",
+    name: "case_handle_assistInvestgation",
+    meta: {
+      title: "协助调查函"
+    },
+    component: () => import("@/page/caseHandle/case/modle/assistInvestigation.vue")
+  },
 ]

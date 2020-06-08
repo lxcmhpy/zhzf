@@ -115,7 +115,8 @@ export default {
         caseDoctypeId: this.$route.params.docId, //文书类型ID
         //表单数据
         docData: "",
-        status: ""
+        status: "",
+        linkTypeId: this.$route.params.caseLinkTypeId
       },
       rules: {
         sh: [
