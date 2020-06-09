@@ -26,7 +26,7 @@
           举报类别:
           <span>
             <el-form-item
-              style="width:250px"
+              style="width:240px"
                prop="reportType"
               :rules="fieldRules('reportType',propertyFeatures['reportType'])"
             >
@@ -69,7 +69,7 @@
           <span>
             <el-form-item
               prop="reportPeopleAge"
-              style="width:157px"
+              style="width:146px"
               :rules="fieldRules('reportPeopleAge',propertyFeatures['reportPeopleAge'])"
             >
               <el-input
@@ -85,7 +85,7 @@
           <span>
             <el-form-item
               prop="reportPeopleAdress"
-              style="width:492px"
+              style="width:490px"
               :rules="fieldRules('reportPeopleAdress',propertyFeatures['reportPeopleAdress'])"
             >
               <el-input
@@ -101,7 +101,7 @@
           <span>
             <el-form-item
               prop="reportPeopleTel"
-              style="width:540px"
+              style="width:538px"
               :rules="fieldRules('reportPeopleTel',propertyFeatures['reportPeopleTel'],validatePhone)"
             >
               <el-input
@@ -117,7 +117,7 @@
           <!-- <span> -->
           <el-form-item
             prop="reportPeopleIDNuber"
-            style="width:540px"
+            style="width:538px"
             :rules="fieldRules('reportPeopleIDNuber',propertyFeatures['reportPeopleIDNuber'],validateIDNumber)"
           >
             <el-input

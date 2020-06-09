@@ -91,19 +91,21 @@ export default {
       events: {
         init(map) {
         },
-        click: e => {
-          console.log('e',e)
-          self.lng = e.lnglat.lng;
-          self.lat = e.lnglat.lat;
-          self.componentMarker.position=[e.lnglat.lng, e.lnglat.lat]
-        },
-        dragend:e=>{
+        // click: e => {
+        //   console.log('e',e)
+        //   self.lng = e.lnglat.lng;
+        //   self.lat = e.lnglat.lat;
+        //   self.componentMarker.position=[e.lnglat.lng, e.lnglat.lat]
+        // },
+        dragging:e=>{
+          //拖动地图，点标记固定在可视区域中心
           console.log('dragstart e',e.target);
           console.log('amapManager',amapManager);
-          let a = amapManager._map.getCenter();
-          // let a = e.getCenter();
-          console.log('a',a)
-          // self.componentMarker.position=[a.lng, a.lat]
+          let newCenter = amapManager._map.getCenter();
+          console.log('newCenter',newCenter)
+          self.lng = newCenter.lng;
+          self.lat = newCenter.lat;
+          self.componentMarker.position=[newCenter.lng, newCenter.lat]
         }
       },
     //mark 位置
