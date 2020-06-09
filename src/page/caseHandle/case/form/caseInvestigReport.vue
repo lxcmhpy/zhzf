@@ -254,10 +254,10 @@
   </div>
 </template>
 <script>
-import showApprovePeople from "../components/showApprovePeople";
-import approvalDialog from "../components/approvalDialog";
-import showLawOfficerOpion from "../components/showLawOfficerOpion";
-import investigRpEvidence from "../components/investigRpEvidence";
+import showApprovePeople from "@/page/caseHandle/components/showApprovePeople";
+import approvalDialog from "@/page/caseHandle/components/approvalDialog";
+import showLawOfficerOpion from "@/page/caseHandle/components/showLawOfficerOpion";
+import investigRpEvidence from "@/page/caseHandle/components/investigRpEvidence";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mixinGetCaseApiList } from "@/common/js/mixins";

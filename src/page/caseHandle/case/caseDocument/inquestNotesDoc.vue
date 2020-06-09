@@ -151,11 +151,11 @@
       </el-form>
     </div>
     <casePageFloatBtns :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
   </div>
 </template>
 <script>
-import overflowInput from "../pdf/overflowInput";
+// import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
@@ -291,7 +291,7 @@ export default {
   },
   inject: ["reload"],
   components: {
-    overflowInput,
+    // overflowInput,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
@@ -322,7 +322,7 @@ export default {
 
     // 多行编辑
     overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
+      // this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {

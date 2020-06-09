@@ -38,12 +38,11 @@
                 :disabled="fieldDisabled(propertyFeatures['investQuestion'])"
               ></el-input>
               <!-- <span class="overflow_describe">违法事实及依据：</span>-->
-              <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span> 
+              <span class="span_bg span_bg_top">&nbsp;</span> 
               <span
                 v-for="item in overFlowEditList"
                 :key="item.id"
                 class="span_bg"
-                @click="overFlowEdit"
               >&nbsp;</span>
             </el-form-item>
             （请贵单位将调查结果及相关证据材料加盖单位公章后及时函告我单位）
@@ -100,18 +99,18 @@
     <!-- 悬浮按钮 -->
     <casePageFloatBtns :pageDomId="'assistInvestigation_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
   </div>
 </template>
 <script>
-import overflowInput from "./overflowInput";
+// import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
 export default {
   components: {
-    overflowInput,
+    // overflowInput,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
@@ -178,7 +177,7 @@ export default {
     },
     // 多行编辑
     overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
+      // this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {

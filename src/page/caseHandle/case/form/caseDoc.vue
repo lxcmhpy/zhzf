@@ -347,7 +347,7 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import checkDocFinish from "../components/checkDocFinish";
+import checkDocFinish from "@/page/caseHandle/components/checkDocFinish.vue";
 import chooseAskPeopleDia from "@/page/caseHandle/components/chooseAskPeopleDia";
 import resetDocDia from '@/page/caseHandle/components/resetDocDia'
 import iLocalStroage from "@/common/js/localStroage";

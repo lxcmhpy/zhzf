@@ -50,7 +50,7 @@
       <ul>
         文书：
         <li @click="goAssistInvestgation">协助调查函</li>
-        <li class="text-red">听证通知书</li>
+        <li class="text-red" @click="goInspectionRecord">检查记录</li>
         <li class="text-red">听证笔录</li>
         <li class="text-red">当场行政处罚决定书</li>
 
@@ -334,6 +334,9 @@ export default {
     goAssistInvestgation() {
       this.$router.push({ name: 'case_handle_assistInvestgation' });
 
+    },
+    goInspectionRecord(){
+      this.$router.push({ name: 'case_handle_inspectionRecord' });
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {
