@@ -709,20 +709,4 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/audioEvidenceRecord.vue")
   },
-  {
-    path: "/assistInvestgation",
-    name: "case_handle_assistInvestgation",
-    meta: {
-      title: "协助调查函"
-    },
-    component: () => import("@/page/caseHandle/case/jiangxi/doc/assistInvestigation.vue")
-  },
-  {
-    path: "/inspectionRecord",
-    name: "case_handle_inspectionRecord",
-    meta: {
-      title: "检查记录"
-    },
-    component: () => import("@/page/caseHandle/case/jiangxi/doc/inspectionRecord.vue")
-  },
 ]

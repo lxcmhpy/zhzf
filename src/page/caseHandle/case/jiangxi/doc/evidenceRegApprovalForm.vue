@@ -7,7 +7,6 @@
         <div class="doc_cause">案由：{{formData.caseName}}</div>
         <table
           class="print_table"
-          style="table-layout: fixed;"
           border="1"
           bordercolor="black"
           width="540"
@@ -56,7 +55,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyAddress"
-                  v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyAddress.length>7?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
@@ -267,7 +266,6 @@
       @showApprovePeopleList="showApprovePeopleList"
       @showApproval="showApproval"
     ></casePageFloatBtns>
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
     <!-- 提交审批 -->
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <!-- 审批 -->
@@ -275,16 +273,14 @@
   </div>
 </template>
 <script>
-import showApprovePeople from "../../components/showApprovePeople";
-import approvalDialog from "../../components/approvalDialog";
-import overflowInput from "../modle/overflowInput";
+import showApprovePeople from "@/page/caseHandle/components/showApprovePeople";
+import approvalDialog from "@/page/caseHandle/components/approvalDialog";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    overflowInput,
     showApprovePeople,
     approvalDialog,
     casePageFloatBtns

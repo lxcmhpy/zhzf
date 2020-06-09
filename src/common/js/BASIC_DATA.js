@@ -71,7 +71,7 @@ export const BASIC_DATA_SYS = {
     //赔补偿案件 当事人权利 环节id caseLinktypeId
     compensationPartyRights_caseLinktypeId:'2128e21c31b9debba6890bf66635e3f5',
      //协助调查函  docId
-     assistInvestigation_caseDocTypeId: '2f20ebfa109dbae1eb8eee3146f11d61',
+    assistInvestigation_caseDocTypeId: '2f20ebfa109dbae1eb8eee3146f11d61',
 
 }
 // 评议考核基础数据
