@@ -313,7 +313,7 @@ export default {
         //文书数据
         docData: "",
         status: "" ,//提交状态
-        linkTypeId:this.BASIC_DATA_SYS.forceExecute_caseLinktypeId
+        linkTypeId:this.$route.params.caseLinkTypeId
       },
       name: '',
       inputInfo: '',

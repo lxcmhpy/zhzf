@@ -1,12 +1,12 @@
 {
-  "CURRENT": "LOCAL",
+  "CURRENT": "NW",
   "PS": {
     "CAPTCHA_HOST": "系统管理/案件办理  96：9000",
     "PDF_HOST": "文件服务器地址",
     "QZ_ACTIVEX_HOST": "96:8083",
     "LAW_SUPERVISE_HOST": "综合监管/事务中心 96:9000",
     "VIDEO_HOST": "综合监管语音通话",
-    "CHECK_API":"信息检查 91:8086",
+    "CHECK_API":"信息检查 91:8081",
     "XZJC_HOST":"行政检查 168.38:8099",
     "XJ_IMG_HOST": "新疆图片视频地址"
   },
@@ -17,7 +17,7 @@
     "LAW_SUPERVISE_HOST": "http://124.192.215.4:9000/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
-    "CHECK_API":"http://124.192.215.11:8086"
+    "CHECK_API":"http://124.192.215.11:8081"
   },
   "NW": {
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
@@ -26,8 +26,8 @@
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
-    "CHECK_API":"http://172.16.170.91:8086",
-    "XZJC_HOST":"http://172.16.169.37:8099"
+    "CHECK_API":"http://172.16.170.91:8081",
+    "XZJC_HOST":"http://172.16.170.44:8099"
   },
   "SGX": {
     "CAPTCHA_HOST": "http://172.16.164.94:9000",
@@ -35,7 +35,7 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.164.96:9000",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086"
+    "CHECK_API":"http://172.16.170.91:8081"
   },
   "LOCAL": {
     "CAPTCHA_HOST": "http://127.0.0.1:9000",
@@ -43,7 +43,7 @@
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:8090/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086"
+    "CHECK_API":"http://172.16.170.91:8081"
   },
   "wj": {
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
@@ -51,6 +51,6 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8086"
+    "CHECK_API":"http://172.16.170.91:8081"
   }
 }

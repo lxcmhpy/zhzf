@@ -197,7 +197,7 @@ export default {
         //表单数据
         docData: "",
         status: "",
-        linkTypeId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId //环节ID
+        linkTypeId: this.$route.params.caseLinkTypeId //环节ID
       },
       name: '',
       inputInfo: '',

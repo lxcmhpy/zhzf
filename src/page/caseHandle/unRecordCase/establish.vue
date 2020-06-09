@@ -322,7 +322,7 @@ export default {
         caseLinktypeId: BASIC_DATA_SYS.establish_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
-        status: ""
+        status: "",      
       },
       rules: {
         checkBox: [

@@ -17,7 +17,7 @@ export const BASIC_DATA_SYS = {
     invalidCode:'a0a2d83376fe7695f76fbba69545c056',
     // 监管机构根节点id
     lawSupervise: '7D4006C3-3589-4E50-873E-C3778A4D73F7',
-    
+
     //立案登记 环节id caseLinktypeId
     establish_caseLinktypeId:'2c90293b6c178b55016c17c255a4000d',
     //立案登记 文书id
@@ -70,4 +70,11 @@ export const BASIC_DATA_SYS = {
     compensationCaseDoc_caseLinktypeId:'1eb723efd23dfc7c28ebba2c6fc755c1',
     //赔补偿案件 当事人权利 环节id caseLinktypeId
     compensationPartyRights_caseLinktypeId:'2128e21c31b9debba6890bf66635e3f5',
+     //协助调查函  docId
+     assistInvestigation_caseDocTypeId: '2f20ebfa109dbae1eb8eee3146f11d61',
+
+}
+// 评议考核基础数据
+export let PYKH_DATA = {
+    khlb: "410996033c9c0ae9dbe7e683bcaf2f50" // 考核类别
 }

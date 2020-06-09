@@ -51,8 +51,8 @@
 
       <ul>
         文书：
-        <li @click="goInquestNotes">勘验笔录</li>
-        <li class="text-red">听证通知书</li>
+        <li @click="goAssistInvestgation">协助调查函</li>
+        <li class="text-red" @click="goInspectionRecord">检查记录</li>
         <li class="text-red">听证笔录</li>
         <li class="text-red">当场行政处罚决定书</li>
 
@@ -333,9 +333,12 @@ export default {
 
     },
     //勘验笔录
-    goInquestNotes() {
-      this.$router.push({ name: 'case_handle_inquestNotes' });
+    goAssistInvestgation() {
+      this.$router.push({ name: 'case_handle_assistInvestgation' });
 
+    },
+    goInspectionRecord(){
+      this.$router.push({ name: 'case_handle_inspectionRecord' });
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {

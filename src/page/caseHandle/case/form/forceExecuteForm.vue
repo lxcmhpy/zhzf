@@ -478,7 +478,7 @@
 
       //查看文书
       viewDoc(row) {
-          this.com_viewDoc(row);
+          this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
       },
       addMoreDoc(row) {
        console.log("添加",row);

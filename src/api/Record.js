@@ -113,6 +113,28 @@ export function findRecordModleByIdApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//根据模板UUID查找模板修改时间
+export function findRecordModleTimeByIdApi(data) {
+    return request({
+        url: "/xzjc/template/getTemplateUpdateTime/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//通过模板名称查询模板
+export function findRecordModleByNameIdApi(data) {
+    return request({
+        url: "/xzjc/template/findByTemplateName/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 //根据条件分页查询
 export function findRecordListApi(data) {
     return request({
@@ -143,6 +165,17 @@ export function saveOrUpdateRecordApi(data) {
 export function removeRecordByIdApi(data) {
     return request({
         url: "/xzjc/templateOrder/removeById/" + data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据UUID查找订单记录
+export function findRecordByIdApi(data) {
+    return request({
+        url: "/xzjc/templateOrder/getById/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',

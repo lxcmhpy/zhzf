@@ -310,7 +310,7 @@ export default {
         //表单数据
         docData: "",
         status: "",
-        linkTypeId:this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //所属环节的id
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
         party: [

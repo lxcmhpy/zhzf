@@ -195,7 +195,8 @@ export default {
         caseDoctypeId: "2c902908697f546701698001e0b8000b", //表单类型IDer
         //表单数据
         docData: "",
-        status: ""
+        status: "",
+        linkTypeId: this.$route.params.caseLinkTypeId
       },
       returnItemOptions: [
         {

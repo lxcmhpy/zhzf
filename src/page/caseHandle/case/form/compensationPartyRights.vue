@@ -401,7 +401,7 @@
       },
       //查看文书
       viewDoc(row) {
-        this.com_viewDoc1(row,this.caseLinkDataForm.caseLinktypeId);
+        this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
       },
       //清空文书
       delDocDataByDocId(data) {
