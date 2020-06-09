@@ -50,8 +50,8 @@
       <ul>
         文书：
         <li @click="goAssistInvestgation">协助调查函</li>
-        <li class="text-red" @click="goInspectionRecord">检查记录</li>
-        <li class="text-red">听证笔录</li>
+        <li  @click="goInspectionRecord">检查记录</li>
+        <li @click="goEstablish_JX">立案登记表——江西</li>
         <li class="text-red">当场行政处罚决定书</li>
 
         <br><br>
@@ -337,6 +337,9 @@ export default {
     },
     goInspectionRecord(){
       this.$router.push({ name: 'case_handle_inspectionRecord' });
+    },
+    goEstablish_JX(){
+      this.$router.push({ name: 'case_handle_establish_JX' });
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {

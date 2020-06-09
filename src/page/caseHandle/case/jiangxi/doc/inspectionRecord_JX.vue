@@ -1,4 +1,4 @@
-<!-------长软------->
+
 <template>
   <div class="print_box">
     <div class="print_info" id="hearingRecordDoc_print">
@@ -365,7 +365,7 @@ export default {
       caseDocDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
-        caseDoctypeId: this.$route.params.docId, //文书类型ID
+        // caseDoctypeId: this.$route.params.docId, //文书类型ID
         //表单数据
         docData: "",
         status: "",
