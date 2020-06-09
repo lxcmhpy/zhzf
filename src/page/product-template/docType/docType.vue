@@ -7,21 +7,8 @@
           <el-form-item label="名称">
             <el-input v-model="searchForm.name" clearable placeholder="请输入"></el-input>
           </el-form-item>
-          <el-form-item label="案件类型">
-            <el-select
-              v-model="searchForm.remark"
-              clearable
-              filterable
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="(res) in caseTypeList"
-                :key="res.id"
-                :label="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
-                :value="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
-              ></el-option>
-            </el-select>
-            <!-- <el-input v-model="searchForm.remark" clearable placeholder="请输入"></el-input> -->
+          <el-form-item label="文书说明">
+            <el-input v-model="searchForm.remark" clearable placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-search" @click="getDocTypeListSearch">查询</el-button>
@@ -41,6 +28,7 @@
         <el-table-column prop="name" label="名称" align="center"></el-table-column>
         <el-table-column prop="path" label="路径" align="center"></el-table-column>
         <el-table-column prop="linkName" label="环节名称" align="center"></el-table-column>
+        <el-table-column prop="templateName" label="模板名称" align="center"></el-table-column>
         <el-table-column prop="remark" label="案件类型" align="center"></el-table-column>
         <el-table-column prop="sort" label="排序" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">

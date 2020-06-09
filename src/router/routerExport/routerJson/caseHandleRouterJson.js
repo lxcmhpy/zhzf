@@ -699,7 +699,7 @@ export default [
     meta: {
       title: "证据登记保存审批表"
     },
-    component: () => import("@/page/caseHandle/case/form/evidenceRegApprovalForm.vue")
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/evidenceRegApprovalForm.vue")
   },
   {
     path: "/audioEvidenceRecord",
@@ -707,7 +707,7 @@ export default [
     meta: {
       title: "视听资料（电子数据）证据记录单"
     },
-    component: () => import("@/page/caseHandle/case/form/audioEvidenceRecord.vue")
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/audioEvidenceRecord.vue")
   },
   {
     path: "/assistInvestgation",
