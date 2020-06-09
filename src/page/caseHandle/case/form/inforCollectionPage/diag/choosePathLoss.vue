@@ -23,7 +23,7 @@
           </div>
           <div class="item">
             <el-form-item label="类型">
-              <el-select v-model="pathLossSearchForm.roadLcType" placeholder="请选择">
+              <el-select v-model="pathLossSearchForm.roadLcType" placeholder="请选择" :disabled="pathLossSearchForm.roadLcBz == ''">
                 <el-option
                   v-for="item in allRoadType"
                   :key="item.id"
@@ -34,17 +34,17 @@
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="路产名称">
+            <el-form-item label="路产名称" label-width="90px">
               <el-input v-model="pathLossSearchForm.roadLcName" placeholder="请输入路产名称"></el-input>
             </el-form-item>
           </div>
           <div class="item">
-            <el-button type="primary" @click="searchPathLoss">搜索</el-button>
+            <el-button type="primary" @click="searchPathLoss" size="small">搜索</el-button>
           </div>
         </div>
       </el-form>
       <div>
-        <el-table :data="tableData" stripe border @selection-change="handleSelectionChange">
+        <el-table :data="tableData" ref="tableDataRef" stripe border @selection-change="handleSelectionChange" height="300">
           <el-table-column type="selection" width="55" :selectable="canSelectable"></el-table-column>
           <el-table-column type="index" width="50" label="序号"></el-table-column>
           <el-table-column label="路产名称" prop="roadLcName"></el-table-column>
@@ -93,6 +93,7 @@ export default {
         roadLcName: ""
       },
       currentPage: 1,
+      pageSize:10,
       tableData: [],
       totalPage: 0,
       allRoadLcBz: ["高等级公路标准", "普通公路标准"],
@@ -118,6 +119,7 @@ export default {
       this.pathLossSearchForm.roadLcBz = "";
       this.pathLossSearchForm.roadLcType = "";
       this.pathLossSearchForm.roadLcName = "";
+      this.allRoadType = [];
       this.alreadyAddData = alreadyAddData;
       this.searchPathLoss();
     },
@@ -126,12 +128,19 @@ export default {
     },
     searchPathLoss() {
       this.tableData = [];
-      queryRoadLcDeployApi(this.pathLossSearchForm)
+      let data = this.pathLossSearchForm;
+      data.current = this.currentPage;
+      data.size = this.pageSize;
+      queryRoadLcDeployApi(data)
         .then(res => {
           console.log(res);
           this.totalPage = res.data.total;
           this.tableData = res.data.records;
-          this.canSelectable();
+          //默认选中
+          // this.selectAlreadyData();
+          //设置禁止选择
+          // this.canSelectable();
+          
         })
         .catch(err => {
           console.log(err);
@@ -140,6 +149,8 @@ export default {
     //更改每页显示的条数
     handleSizeChange(val) {
       //   _this.pageSize = val;
+      this.pageSize = val;
+      this.currentPage = 1;
       this.searchPathLoss();
     },
     //更换页码
@@ -168,10 +179,36 @@ export default {
           console.log('row',row);
         if (this.alreadyAddData[index2].id == row.id) {
           canSelectableFlag = false;
+          // this.$nextTick(function(){
+          //   this.$refs.tableDataRef.toggleRowSelection(row,true);
+          // })
           break;
         }
       }
       return canSelectableFlag;
+      // this.eviList.forEach(item=>{
+      //             if(this.currentPicData.picSrc==item.evPath){
+      //               console.log('选中');
+      //               this.$nextTick(function(){
+      //                 this.$refs.myTable.toggleRowSelection(item,true);
+      //               })
+      //             }
+      //           })
+    },
+    //设置默认选中
+    selectAlreadyData(){
+      console.log('sadsjds')
+      this.tableData.forEach(item=>{
+        this.alreadyAddData.forEach(item2=>{
+          if(item2.id == item.id){
+            console.log('选中')
+            this.$nextTick(function(){
+              this.$refs.tableDataRef.toggleRowSelection(item2,true); 
+            })
+            return;
+          }
+        })
+      })
     }
   },
   mounted() {}
@@ -181,10 +218,12 @@ export default {
 .pathLossSearchFormClass > div {
   display: flex;
   .item {
-    width: 25%;
+    width: 30%;
   }
   .item:last-child {
+    width: 10%;
     text-align: center;
+    padding-top: 4px;
   }
 }
 </style>
