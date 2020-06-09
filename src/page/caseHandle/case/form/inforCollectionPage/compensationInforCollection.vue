@@ -37,16 +37,17 @@
               </el-select>
             </el-form-item>
           </div>
-         
-          <div class="item hasMargintop">
+          <div class="item hasMargintop"  v-if="showJBRecord">
+             <el-button type="primary" size="small" @click="findReportRecordDocPdf">举报记录</el-button>
+          </div>
+          <div class="item" v-show="caseSourceTextDisable">
             <el-form-item prop="caseSourceText">
               <el-input
                 ref="caseSourceText"
                 v-model="inforForm.caseSourceText"
-                v-show="caseSourceTextDisable"
                 :placeholder="caseSourceTextPla"
               ></el-input>
-                <el-button type="primary" size="small" v-if="showJBRecord" @click="findReportRecordDocPdf">举报记录</el-button>
+               
             </el-form-item>
           </div>
         </div>
@@ -651,7 +652,6 @@
         </div>
 
         <div>
-          <!-- {{pathLossList}} -->
           <el-table :data="pathLossList">
             <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
             <el-table-column label="路产名称" prop="roadLcName" align="center"></el-table-column>
@@ -703,45 +703,14 @@
         </div>
         <div>
           <div class="itemOne">
-            <el-form-item label="赔补偿依据" prop="punishLaw">
+            <el-form-item label="赔（补）偿依据" prop="punishLaw">
               <el-input ref="punishLaw" v-model="inforForm.punishLaw" :disabled="true">
                 <el-button slot="append" icon="el-icon-search" @click="showPunishDiag('compensation')"></el-button>
               </el-input>
             </el-form-item>
           </div>
         </div>
-        <div>
-          <div class="itemOne" id="judgeFreedomBox">
-            <!-- <el-form-item label="自由裁量标准">
-              <el-input v-model="inforForm.discretionId"></el-input>
-            </el-form-item>-->
-            <p>自由裁量标准(违法程度/违法情节/建议处罚)</p>
-            <ul>
-              <li
-                v-for="(item,index) in judgFreedomList"
-                :key="index"
-                :class="{activeJudgli : activeJudgli==item.id}"
-                @click="selectJudgFreedom(item)"
-              >
-                <div>{{item.drawerName}}</div>
-                <div>{{item.wfqj}}</div>
-                <div>{{item.lawerLimit}}</div>
-                <span class="selectIcon">
-                  <i class="el-icon-success"></i>
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div>
-          <div class="itemOne">
-            <el-form-item label="拟处罚金额">
-              <el-input v-model="inforForm.tempPunishAmount">
-                <span slot="append">元</span>
-              </el-input>
-            </el-form-item>
-          </div>
-        </div>
+        
         <el-button
           class="caseSubmitBtn"
           icon="el-icon-plus"

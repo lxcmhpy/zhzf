@@ -4,7 +4,7 @@
     :visible.sync="visible"
     :close-on-click-modal="false"
     @close="closeDialog"
-    width="35%"
+    width="40%"
   >
     <el-form
       :model="addDocType"
@@ -36,20 +36,18 @@
         </el-form-item>
       </div>
       <div class="item">
+        <el-form-item label="模板名称" prop="templateName">
+          <el-input ref="name" v-model="addDocType.templateName"></el-input>
+        </el-form-item>
+      </div>
+      <div class="item">
         <el-form-item label="文书地址" prop="path">
           <el-input v-model="addDocType.path"></el-input>
         </el-form-item>
       </div>
       <div class="item">
-        <el-form-item label="案件类型" prop="remark">
-          <el-select v-model="addDocType.remark" filterable placeholder="请选择">
-            <el-option
-              v-for="(res) in caseTypeList"
-              :key="res.id"
-              :label="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
-              :value="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
-            ></el-option>
-          </el-select>
+        <el-form-item label="文书说明" prop="remark">
+          <el-input v-model="addDocType.remark" clearable placeholder="请输入"></el-input>
         </el-form-item>
       </div>
       <div class="item">
@@ -74,6 +72,7 @@ export default {
         id: "",
         name: "",
         linkName: "",
+        templateName: "",
         remark: "",
         path: "",
         sort: 0
@@ -88,10 +87,13 @@ export default {
         linkName: [
           { required: true, message: "所属环节不能为空", trigger: "blur" }
         ],
+        templateName: [
+          { required: true, message: "模板名称不能为空", trigger: "blur" }
+        ],
         remark: [
           {
             required: true,
-            message: "所属案件类型名称不能为空",
+            message: "文书说明不能为空",
             trigger: "blur"
           }
         ]
@@ -119,6 +121,7 @@ export default {
         this.addDocType.id = data.id;
         this.addDocType.name = data.name;
         this.addDocType.linkName = data.linkName;
+        this.addDocType.templateName = data.templateName;
         this.addDocType.remark = data.remark;
         this.addDocType.path = data.path;
         this.addDocType.sort = data.sort;
