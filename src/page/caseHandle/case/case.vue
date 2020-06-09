@@ -54,12 +54,12 @@
         <li @click="goAssistInvestgation">协助调查函</li>
         <li  @click="goInspectionRecord">检查记录</li>
         <li @click="goEstablish_JX">立案登记表——江西</li>
-        <li class="text-red">当场行政处罚决定书</li>
+        <li  @click="goSceneNotesDoc_JX">现场笔录-江西</li>
 
         <br><br>
 
         表单：
-        <li @click="goFilingApprovalForm">立案审批表</li>
+        <li @click="goAdminCoerciveMeasureNote_JX">行政强制措施现场笔录</li>
         <li @click="goRemoveOrPrelong">解除（延长）强制行政措施</li>
         <li @click="goIllegalAction">违法行为通知书</li>
         <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
@@ -342,6 +342,12 @@ export default {
     },
     goEstablish_JX(){
       this.$router.push({ name: 'case_handle_establish_JX' });
+    },
+    goSceneNotesDoc_JX(){
+      this.$router.push({ name: 'case_handle_sceneNotesDoc_JX' });
+    },
+    goAdminCoerciveMeasureNote_JX(){
+      this.$router.push({ name: 'case_handle_adminCoerciveMeasureNote_JX' });
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {

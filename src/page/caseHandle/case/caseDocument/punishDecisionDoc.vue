@@ -276,14 +276,6 @@
           如果不服本处罚决定，可以在六十日内依法向
           <span>
             <el-form-item prop="reconsiderationOrgan" :rules="fieldRules('reconsiderationOrgan',propertyFeatures['reconsiderationOrgan'])">
-              <!-- <el-input
-                type="textarea"
-                v-model="formData.reconsiderationOrgan"
-                v-bind:class="{ over_flow:formData.reconsiderationOrgan && formData.reconsiderationOrgan.length>12?true:false }"
-                :autosize="{ minRows: 1, maxRows: 3}"
-                :maxLength="maxLength"
-                placeholder="\"
-              ></el-input> -->
               <el-select v-model="formData.reconsiderationOrgan" :disabled="fieldDisabled(propertyFeatures['reconsiderationOrgan'])">
                 <el-option v-for="(item,index) in reconsiderationOrganList" :key="index" :value="item" :label="item"></el-option>
               </el-select>
