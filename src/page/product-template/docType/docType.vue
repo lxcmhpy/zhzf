@@ -29,7 +29,7 @@
         <el-table-column prop="path" label="路径" align="center"></el-table-column>
         <el-table-column prop="linkName" label="环节名称" align="center"></el-table-column>
         <el-table-column prop="templateName" label="模板名称" align="center"></el-table-column>
-        <el-table-column prop="remark" label="案件类型" align="center"></el-table-column>
+        <el-table-column prop="remark" label="文书说明" align="center"></el-table-column>
         <el-table-column prop="sort" label="排序" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">

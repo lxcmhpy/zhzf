@@ -4,14 +4,14 @@
     :visible.sync="visible"
     :close-on-click-modal="false"
     @close="closeDialog"
-    width="40%"
+    width="35%"
   >
     <el-form
       :model="addDocType"
       :rules="rules"
       ref="addDocType"
       class="errorTipForm"
-      label-width="100px"
+      label-width="120px"
     >
       <div class="item">
         <el-form-item label="文书名称" prop="name">
@@ -37,7 +37,18 @@
       </div>
       <div class="item">
         <el-form-item label="模板名称" prop="templateName">
-          <el-input ref="name" v-model="addDocType.templateName"></el-input>
+          <el-select
+            v-model="addDocType.templateName"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="(item) in templateList"
+              :key="item.id" 
+              :label="item.name" 
+              :value="item.name"
+            ></el-option>
+          </el-select>
         </el-form-item>
       </div>
       <div class="item">
@@ -99,7 +110,7 @@ export default {
         ]
       },
       mainLinkList: [],
-      caseTypeList: [],
+      templateList: [],
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
       handelType: 0 //添加 0  修改2
@@ -213,22 +224,21 @@ export default {
         }
       );
     },
-    //查询案件类型列表
-    getCaseType() {
-      this.$store.dispatch("getCaseTypeList", 0).then(
-        //查询案件类型列表(启用)
+    //查询模板列表
+    getTemplateList() {
+      this.$store.dispatch("getDictListDetail", '59acab18af3a5f11da79eedb3111da0f').then(
         res => {
-          if (res.code === 200) {
-            this.caseTypeList = res.data;
-          } else {
-            console.info("没有查询到数据");
-          }
+          console.log("字典值列表", res);
+          this.templateList = res.data;
+        },
+        err => {
+          console.log(err);
         }
       );
     }
   },
   mounted() {
-    this.getCaseType();
+    this.getTemplateList();
   }
 };
 </script>
