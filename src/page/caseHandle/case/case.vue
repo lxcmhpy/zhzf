@@ -6,7 +6,9 @@
 
         文书：
         <li @click="goCompensationNotice">公路赔（补）偿通知书</li>
-        <li @click="goPayCompensation">公路赔（补）偿通知书</li>
+        <li @click="goPayCompensation">收缴赔补偿款</li>
+        <li @click="goAudioEvidenceRecord">视听资料（电子数据）证据记录单</li>
+        <li @click="goEvidenceRegApprovalForm">证据登记保存审批表</li>
         <li @click="goPunishDecisionDoc">行政处罚决定书</li>
         <li @click="goInquestNotesDoc">勘验笔录</li>
         <li @click="goSampleEvidenceDoc">抽样取样凭证</li>
@@ -479,6 +481,14 @@ export default {
     // 送达回证
     goDeliverReceiptForm() {
       this.$router.push({ name: 'case_handle_deliverReceiptForm' });
+    },
+    // 视听资料（电子数据）证据记录单
+    goAudioEvidenceRecord() {
+      this.$router.push({ name: 'case_handle_audioEvidenceRecord' });
+    },
+    // 证据登记保存审批表
+    goEvidenceRegApprovalForm() {
+      this.$router.push({ name: 'case_handle_evidenceRegApprovalForm' });
     },
     //--------------长软end-------------------
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {
