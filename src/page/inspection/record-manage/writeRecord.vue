@@ -479,6 +479,22 @@ export default {
         });
       });
     },
+    viewRecord(){
+      this.options= {
+        // submitBtn: false,
+        onSubmit: (formData) => {
+          alert(JSON.stringify(formData));
+        },
+        global: {
+          '*': {
+            props: {
+              disabled: true,
+            },
+          },
+        }
+      }
+      this.findRecordDataByld()
+    }
   },
   mounted() {
 
@@ -491,6 +507,9 @@ export default {
         if (this.$route.params.addOrEiditFlag == 'edit') {
           this.recordId = this.$route.params.id;
           this.findRecordDataByld()
+        } else if (this.$route.params.addOrEiditFlag == 'view') {
+          this.recordId = this.$route.params.id;
+          this.viewRecord()
         }
 
     }
