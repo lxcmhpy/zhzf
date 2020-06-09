@@ -292,20 +292,29 @@
                     &nbsp;&nbsp;根据《中华人民共和国行政强制法》第十八条第（六）项的规定，你（单<br>
                     位）如对该行政强制措施有异议，可提出陈述申辩，我们将依法予以核实。<br>你是否需要陈述申辩：
                 </p>
-                <p>
+                <div>
                    <el-form-item prop="defendState" :rules="fieldRules('defendState',propertyFeatures['defendState'])">
                     <el-checkbox-group v-model="docData.defendState" :max="1" :disabled="fieldDisabled(propertyFeatures['defendState'])">
                         <p><el-checkbox label="0">不需要</el-checkbox></p>
-                        <p><el-checkbox label="1">需要
+                        <p><el-checkbox label="1">
                             <el-form-item prop="defendReason" :rules="fieldRules('defendReason',propertyFeatures['defendReason'])">
-                                <el-input type='textarea' v-model="docData.defendReason"
-                                        :autosize="{ minRows: 1, maxRows: 3}" :maxLength='50'
-                                        :disabled="fieldDisabled(propertyFeatures['defendReason'])"></el-input>
+                               <el-input
+                                    class="text_indent11 overflow_lins_textarea"
+                                    type="textarea"
+                                    v-model="docData.defendReason"
+                                    rows="4"
+                                    maxlength="400"
+                                    placeholder="\"
+                                    :disabled="fieldDisabled(propertyFeatures['defendReason'])"
+                                ></el-input>
+                                <span class="overflow_describe_JX" style="padding-bottom:-6px;">需要</span>
+                                <span class="span_bg span_bg_top">&nbsp;</span>
+                                <p class="span_bg">&nbsp;</p>
                             </el-form-item>
                         </el-checkbox></p>
                     </el-checkbox-group>
                    </el-form-item> 
-                </p>
+                </div>
                 <p>
                     <el-form-item prop="readState" :rules="fieldRules('readState',propertyFeatures['readState'])">
                     <el-checkbox-group v-model="docData.readState" :max="1" :disabled="fieldDisabled(propertyFeatures['readState'])">
@@ -837,11 +846,16 @@ export default {
                 ];
                 // _this.formData.reconsiderationOrgan = 'reconsiderationOrgan1';
                 // _this.formData.lawsuitOrgan = 'enforcementOrgan1';
-                _this.formData.reconsiderationOrgan = '复议机构1';
-                _this.formData.lawsuitOrgan = '诉讼机构1';
+                _this.docData.reconsiderationOrgan = '复议机构1';
+                _this.docData.lawsuitOrgan = '诉讼机构1';
               });
           });
 
+      },
+      startTime() {
+        if (this.docData.measureStartDate) {
+          this.$set(this.docData, 'measureEndDate', new Date(new Date(this.docData.measureStartDate).getTime() + 30 * 24 * 3600 * 1000).format("yyyy-MM-dd"));
+        }
       },
     },
     mounted() {
