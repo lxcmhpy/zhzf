@@ -80,6 +80,9 @@
     <div>
       <p>zmh(17、18、19、20、21、22、23、24文书表单及pdf打印版)</p>
       <ul>
+        <a href="alert:E:/zhangminhui/zhzf/static/HlVoIPSDKSetup20200605/demo.htm">点击打开维新</a>
+        
+        <a href="alert:E:/HlVoIPSDKSetup/demo2.htm">点击打开维新</a>
         <br><br>
         <li @click="goNumberCorrectDialog">号牌更正弹窗</li>
         <li @click="goInvalidInfoDialog">无效信息弹窗</li>

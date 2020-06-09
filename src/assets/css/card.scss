@@ -366,8 +366,21 @@
 }
 
 .border-title{
+    margin-top: 20px;
+    padding-left: 7px;
     .el-form-item__content{
         height: 24px;
         line-height: 24px;
     }
+    p{
+        color: #20232B;
+        font-size: 18px;
+        font-weight:500;
+    }
+}
+
+.change_title_icon{
+    color: #7B7B7B;
+    cursor: pointer;
+    margin-left: 20px;
 }
