@@ -879,6 +879,19 @@
 
     }
 
+    .overflow_describe_JX {
+        position   : absolute;
+        top        : -5px;
+        display    : inline-block;
+        text-indent: 2em;
+        line-height: 24px;
+        background : #ffffff;
+        font-family: 'SimSun';
+        font-size  : 16px;
+        color      : #000000;
+        line-height: 32px;
+    }
+
     .overflow_lins {
         width : 100%;
         height: 100%;
@@ -1043,16 +1056,33 @@
     }
 }
 
+.text_indent8 {
+    .el-textarea__inner {
+        text-indent: 8em;
+    }
+}
+
 .text_indent11 {
     .el-textarea__inner {
         text-indent: 12em;
   
     }
 }
-
+.text_indent14 {
+    .el-textarea__inner {
+        text-indent: 14em;
+  
+    }
+}
 .text_indent2 {
     .el-textarea__inner {
         text-indent: 2em;
+  
+    }
+}
+.text_indent20 {
+    .el-textarea__inner {
+        text-indent: 50em;
   
     }
 }

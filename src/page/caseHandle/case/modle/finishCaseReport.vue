@@ -257,9 +257,6 @@
               <p>意见</p>
             </td>
             <td colspan="6" class="color_DBE4EF">
-              <!-- <el-form-item prop="approvalOpinion">
-                <el-input type='textarea' v-model="formData.approvalOpinion"  :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder=""></el-input>
-              </el-form-item>-->
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>

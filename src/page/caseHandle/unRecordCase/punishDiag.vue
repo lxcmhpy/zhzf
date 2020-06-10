@@ -5,7 +5,7 @@
       <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" class="table_style" @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="drawerName" label="类型"></el-table-column>
-        <el-table-column prop="illageClause" label="违法条款">
+        <el-table-column prop="illageClause" :label="illageClauseLabel">
           <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="top-start">
                 <div slot="content" style="max-width:200px">{{scope.row.bnsLawNoteCog}}</div>
@@ -13,7 +13,7 @@
               </el-tooltip>
             </template>
         </el-table-column>
-        <el-table-column prop="punishClause" label="处罚依据">
+        <el-table-column prop="punishClause" :label="punishClauseLabel">
           <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="top-start">
                 <div slot="content" style="max-width:200px">{{scope.row.bnsLawNotePun}}</div>
@@ -39,6 +39,8 @@ export default {
       caseCauseName: "",
       selectData: [],
       punishTitle:'',
+      illageClauseLabel:'违法条款',
+      punishClauseLabel:'处罚依据'
     };
   },
   inject: ["reload"],
@@ -47,7 +49,9 @@ export default {
       this.visible = true;
       this.caseCauseId = data.caseCauseId;
       this.caseCauseName = data.caseCauseName;
-      this.punishTitle = data.titleType;
+      this.illageClauseLabel = data.illageClauseLabel;
+      this.punishClauseLabel = data.punishClauseLabel;
+
       this.findLawRegulationsByCauseId();
     },
     //关闭弹窗的时候清除数据

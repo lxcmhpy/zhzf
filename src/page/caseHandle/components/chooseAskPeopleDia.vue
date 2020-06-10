@@ -52,6 +52,7 @@ export default {
     return {
       visible: false,
       docData:"",
+      caseLinktypeId:"",
       formData:{
         peopleType:'',
         otherPeopleRelation:"",
@@ -83,11 +84,12 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   methods: {
-    showModal(data,isSaveLink,handleType) {
+    showModal(data,caseLinktypeId,isSaveLink,handleType) {
       this.visible = true;
       this.isSaveLink = isSaveLink;
       this.docData = data;
-      this.handleType = handleType
+      this.handleType = handleType;
+      this.caseLinktypeId = caseLinktypeId;
       this.findPersonAndRelationByCaseId();
     },
     //关闭弹窗的时候清除数据
@@ -111,7 +113,7 @@ export default {
             addMoreData.askData.otherPeopleRelation=this.formData.peopleType
           }
           console.log('addMoreData',addMoreData);
-          this.com_viewDoc(this.docData,addMoreData);
+          this.com_viewDoc(this.docData,this.caseLinktypeId,addMoreData);
         }
       })
       

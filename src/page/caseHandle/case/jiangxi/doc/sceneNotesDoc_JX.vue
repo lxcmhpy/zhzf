@@ -10,7 +10,7 @@
           :model="docData"
         >
           <div class="doc_topic">现场笔录</div>
-          <div class="doc_number">案号：{{docData.caseNumber}}</div>
+          <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交现录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
           <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
@@ -103,7 +103,7 @@
               </td>
             </tr>
             <tr>
-              <td rowspan="5">
+              <td rowspan="4">
                 <p>现场</p>
                 <p>人员</p>
                 <p>基本</p>
@@ -145,7 +145,7 @@
               </td>
             </tr>
             <tr>
-              <td>单位及职务</td>
+              <td>单位职务</td>
               <td colspan="3" class="color_DBE4EF">
                 <el-form-item prop="scenePeopeUnitPosition" :rules="fieldRules('scenePeopeUnitPosition',propertyFeatures['scenePeopeUnitPosition'])">
                   <el-input
@@ -187,7 +187,7 @@
                 </el-form-item>
               </td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td>车(船)号</td>
               <td colspan="3" class="color_DBE4EF">
                 <el-form-item prop="vehicleShipId" :rules="fieldRules('vehicleShipId',propertyFeatures['vehicleShipId'])">
@@ -202,18 +202,16 @@
                   </el-select>
                 </el-form-item>
               </td>
-            </tr>
+            </tr> -->
             <tr>
               <td rowspan="11">主要内容</td>
               <td colspan="7" class="illegalFactsTip">
-               <span> 现场情况：（如实施行政强制措施的，包括当场告知当事人采取行政强制措施
-               <br>的理由、依据以及当事人依法享有的权利、救济途径，听取当事人陈述、申
-               <br>辩情况。）</span>
+               <!-- <span> 现场情况：</span> -->
                 <div class="overflow_lins_style" id="noteDesCon">
                   <div class="overflow_lins">
                     <el-form-item prop="illegalFacts" :rules="fieldRules('illegalFacts',propertyFeatures['illegalFacts'])">
                       <el-input
-                        class="text_indent10 overflow_lins_textarea espacle"
+                        class="text_indent8 overflow_lins_textarea"
                         type="textarea"
                         v-model="docData.illegalFacts"
                         rows="4"
@@ -221,7 +219,8 @@
                         placeholder="\"
                         :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
                       ></el-input>
-                      <p class="span_bg">&nbsp;</p>
+                      <span class="overflow_describe_JX" style="padding-bottom:-6px;">现场情况：</span>
+                      <span class="span_bg span_bg_top">&nbsp;</span>
                       <p class="span_bg">&nbsp;</p>
                       <p class="span_bg">&nbsp;</p>
                       <p class="span_bg">&nbsp;</p>

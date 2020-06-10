@@ -6,7 +6,9 @@
 
         文书：
         <li @click="goCompensationNotice">公路赔（补）偿通知书</li>
-        <li @click="goPayCompensation">公路赔（补）偿通知书</li>
+        <li @click="goPayCompensation">收缴赔补偿款</li>
+        <li @click="goAudioEvidenceRecord">视听资料（电子数据）证据记录单</li>
+        <li @click="goEvidenceRegApprovalForm">证据登记保存审批表</li>
         <li @click="goPunishDecisionDoc">行政处罚决定书</li>
         <li @click="goInquestNotesDoc">勘验笔录</li>
         <li @click="goSampleEvidenceDoc">抽样取样凭证</li>
@@ -50,14 +52,14 @@
       <ul>
         文书：
         <li @click="goAssistInvestgation">协助调查函</li>
-        <li class="text-red">听证通知书</li>
-        <li class="text-red">听证笔录</li>
-        <li class="text-red">当场行政处罚决定书</li>
+        <li  @click="goInspectionRecord">检查记录</li>
+        <li @click="goEstablish_JX">立案登记表——江西</li>
+        <li  @click="goSceneNotesDoc_JX">现场笔录-江西</li>
 
         <br><br>
 
         表单：
-        <li @click="goFilingApprovalForm">立案审批表</li>
+        <li @click="goAdminCoerciveMeasureNote_JX">行政强制措施现场笔录</li>
         <li @click="goRemoveOrPrelong">解除（延长）强制行政措施</li>
         <li @click="goIllegalAction">违法行为通知书</li>
         <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
@@ -335,6 +337,18 @@ export default {
       this.$router.push({ name: 'case_handle_assistInvestgation' });
 
     },
+    goInspectionRecord(){
+      this.$router.push({ name: 'case_handle_inspectionRecord' });
+    },
+    goEstablish_JX(){
+      this.$router.push({ name: 'case_handle_establish_JX' });
+    },
+    goSceneNotesDoc_JX(){
+      this.$router.push({ name: 'case_handle_sceneNotesDoc_JX' });
+    },
+    goAdminCoerciveMeasureNote_JX(){
+      this.$router.push({ name: 'case_handle_adminCoerciveMeasureNote_JX' });
+    },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {
       this.$router.push({ name: 'case_handle_order' });
@@ -479,6 +493,14 @@ export default {
     // 送达回证
     goDeliverReceiptForm() {
       this.$router.push({ name: 'case_handle_deliverReceiptForm' });
+    },
+    // 视听资料（电子数据）证据记录单
+    goAudioEvidenceRecord() {
+      this.$router.push({ name: 'case_handle_audioEvidenceRecord' });
+    },
+    // 证据登记保存审批表
+    goEvidenceRegApprovalForm() {
+      this.$router.push({ name: 'case_handle_evidenceRegApprovalForm' });
     },
     //--------------长软end-------------------
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {

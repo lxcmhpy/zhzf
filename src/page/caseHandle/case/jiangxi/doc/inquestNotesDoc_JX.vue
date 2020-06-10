@@ -3,7 +3,7 @@
     <div class="print_info indent_style" id="inquestNote_print">
       <el-form ref="docForm" :inline-message="true" :inline="true" :model="docData" :rules="rules">
         <div class="doc_topic">勘验笔录</div>
-        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交勘录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
         <p>案由：
           <el-form-item v-if="!lineStyleFlag" prop="caseName" style="width:570px" :rules="fieldRules('caseName',propertyFeatures['caseName'])">

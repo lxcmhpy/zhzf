@@ -1254,16 +1254,25 @@
         this.showTrailer = true;
       },
       //点击处罚依据显示弹窗
+    //点击处罚依据显示弹窗
     showPunishDiag(titleType='') {
+      let illageClauseLabel = '';
+      let punishClauseLabel = '';
       if(titleType =='compensation'){
-        titleType = '选择认定条款及赔（补）偿依据'
+        titleType = '选择认定条款及赔（补）偿依据',
+        illageClauseLabel = '认定条款';
+        punishClauseLabel = '赔（补）偿依据';
       }else{
-        titleType = '选择违法条款及处罚依据'
+        titleType = '选择违法条款及处罚依据';
+        illageClauseLabel = '违法条款';
+        punishClauseLabel = '处罚依据';
       }
       let data = {
         caseCauseId: this.inforForm.caseCauseId,
         caseCauseName: this.inforForm.caseCauseName,
-        titleType:titleType
+        titleType:titleType,
+        illageClauseLabel,
+        punishClauseLabel
       };
       this.$refs.punishDiagRef.showModal(data);
     },
