@@ -94,7 +94,7 @@
                 placeholder="    年  月  日"
                 value-format="yyyy-MM-dd"
                 :disabled="fieldDisabled(propertyFeatures['afsj'])"
-              ></el-date-picker>
+              ></el-date-picker>，
             </el-form-item>
           </span>
         </p>
@@ -219,6 +219,9 @@
               value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
+        </div>
+        <div class="notice clear">
+          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
         </div>
       </div>
     </el-form>
