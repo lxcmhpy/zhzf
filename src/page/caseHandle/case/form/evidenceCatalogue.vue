@@ -113,6 +113,7 @@ export default {
         this.$store.dispatch("getEvidence", data).then(res => {
             _this.eviList = res.data.records;
             console.log("111",_this.eviList);
+            this.$emit("getEvidenceEmit");
         });
 
     },
@@ -122,7 +123,7 @@ export default {
         this.$refs.evidenceDetailRef.showModal(data); 
     },
     saveFile(param) {
-      console.log(param);
+      console.log("333",param);
       (this.form.file = param.file),
       (this.form.caseId = this.caseId),
       (this.form.docId = "000"),
@@ -130,7 +131,8 @@ export default {
       (this.form.userId = iLocalStroage.gets("userInfo").id),
       (this.form.evName = param.file.name);
       (this.form.evType = param.file.type);
-      this.insertEvi();      
+      this.insertEvi(); 
+      console.log("333",param);     
     },
     //插入证据
     insertEvi(id){

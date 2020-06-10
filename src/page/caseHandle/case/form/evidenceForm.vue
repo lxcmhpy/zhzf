@@ -240,7 +240,7 @@
       </div>
     </el-dialog>
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'evidenceForm'" @showEvidenceCatalogue="showEvidenceCatalogue"></caseSlideMenu>
+    <caseSlideMenu :activeIndex="'evidenceForm'" @showEvidenceCatalogue="showEvidenceCatalogue" @getEvidenceEmit="getEviList"></caseSlideMenu>
 
     <!-- 证据目录 -->
     <!-- <evidenceCatalogue ref="evidenceCatalogueRef"></evidenceCatalogue> -->

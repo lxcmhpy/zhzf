@@ -94,6 +94,8 @@
             </el-date-picker>
           </el-form-item>
         </div>
+        <br><br><br>
+        <p>（本文书一式两份：一份存根，一份交协助调查单位或个人。）</p>
       </el-form>
     </div>
     <!-- 悬浮按钮 -->
