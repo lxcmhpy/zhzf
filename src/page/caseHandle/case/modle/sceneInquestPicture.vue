@@ -38,7 +38,7 @@
             <span class="write_line" style="width:100px"></span>
           </el-col>
           <el-col :span="12">
-            勘验（检查人）签名：
+            勘验（检查）人签名：
             <span class="write_line" style="width:100px"></span>
           </el-col>
         </el-row>

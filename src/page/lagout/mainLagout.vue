@@ -132,6 +132,7 @@ export default {
     loginOut() {
     //   Cookies.remove("TokenKey");
       iLocalStroage.removeAll();
+      window.sessionStorage.clear();
       // this.$store.state.openTab = [];
       this.$store.dispatch('deleteAllTabs');
       this.$router.push("/");
