@@ -4,7 +4,7 @@
     <div class="print_info" id="assistInvestigation_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">协助调查函</div>
-        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交协调〔{{docData.caseNumber.substring(8,13)}}〕号</div>
         <p class="side_right_indent">
           <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])" style="width: 250px;">
             <el-input

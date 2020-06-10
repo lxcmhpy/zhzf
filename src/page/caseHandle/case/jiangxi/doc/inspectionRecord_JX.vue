@@ -4,7 +4,7 @@
     <div class="print_info" id="hearingRecordDoc_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">检查记录</div>
-        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交检录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
         <p class="p_begin">
           检查时间：
           <span class="listen_data">
@@ -296,7 +296,7 @@
           </div>
         </div>
         <p v-if="lineStyleFlag">
-          听证记录：
+          检查情况及结果（发现的问题及处理情况）：
           <u>{{docData.inspectRecord}}</u>
         </p>
 

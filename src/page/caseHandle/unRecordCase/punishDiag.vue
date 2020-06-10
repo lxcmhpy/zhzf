@@ -49,6 +49,7 @@ export default {
       this.visible = true;
       this.caseCauseId = data.caseCauseId;
       this.caseCauseName = data.caseCauseName;
+      this.punishTitle = data.titleType;
       this.illageClauseLabel = data.illageClauseLabel;
       this.punishClauseLabel = data.punishClauseLabel;
 

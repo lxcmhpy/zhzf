@@ -58,4 +58,20 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/adminCoerciveMeasureApproval.vue")
   },
+  {
+    path: "/sceneNotesDoc_JX",
+    name: "case_handle_sceneNotesDoc_JX",
+    meta: {
+      title: "立案登记表——江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/sceneNotesDoc_JX.vue")
+  },
+  {
+    path: "/adminCoerciveMeasureNote_JX",
+    name: "case_handle_adminCoerciveMeasureNote_JX",
+    meta: {
+      title: "行政强制措施现场笔录"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/adminCoerciveMeasureNote_JX.vue")
+  },
 ]

@@ -106,9 +106,9 @@ export const inforCollectionCommonMixins = {
         },
         weightLimit: '',
         overWeight: '',
-        routeId: '',
+        highwayRoute: '',
         direction: '',
-        location: '',
+        position: '',
         // kilometre: '',
         // metre: '',
         pileNumber:0,
@@ -147,10 +147,10 @@ export const inforCollectionCommonMixins = {
           {required: true, message: "请选择案件关系", trigger: "change"}
         ],
         illegalLaw: [
-          {required: true, message: "请选择违法条款", trigger: "change"}
+          {required: true, message: "请选择条款", trigger: "change"}
         ],
         punishLaw: [
-          {required: true, message: "请选择处罚依据", trigger: "change"}
+          {required: true, message: "请选择依据", trigger: "change"}
         ],
         partyAge: [
           {validator: validateAge, trigger: "blur"}
@@ -167,13 +167,13 @@ export const inforCollectionCommonMixins = {
         partyUnitTel: [
           {validator: validatePhone, trigger: "blur"}
         ],
-        routeId: [
+        highwayRoute: [
           {required: true, message: "请选择路线", trigger: "change"}
         ],
         direction: [
           {required: true, message: "请选择方向", trigger: "change"}
         ],
-        location: [
+        position: [
           {required: true, message: "请选择位置", trigger: "change"}
         ],
         pileNumber: [

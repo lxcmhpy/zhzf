@@ -3,7 +3,7 @@
     <div class="print_info indent_style" id="inquestNote_print">
       <el-form ref="docForm" :inline-message="true" :inline="true" :model="docData" :rules="rules">
         <div class="doc_topic">勘验笔录</div>
-        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交勘录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
         <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
         <p>案由：
           <el-form-item v-if="!lineStyleFlag" prop="caseName" style="width:570px" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
@@ -87,7 +87,7 @@
           身份证号：<el-form-item prop="partyPeopleIdNo" style="width:180px" :rules="fieldRules('partyPeopleIdNo',propertyFeatures['partyPeopleIdNo'],validateIDNumber)">
             <el-input v-model="docData.partyPeopleIdNo" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['partyPeopleIdNo'])"></el-input>
           </el-form-item>
-          单位及职务：<el-form-item prop="partyPeopleUnitAndPosition" style="width:180px" :rules="fieldRules('partyPeopleUnitAndPosition',propertyFeatures['partyPeopleUnitAndPosition'])">
+          单位及职务：<el-form-item prop="partyPeopleUnitAndPosition" style="width180" :rules="fieldRules('partyPeopleUnitAndPosition',propertyFeatures['partyPeopleUnitAndPosition'])">
             <el-input type='textarea' v-model="docData.partyPeopleUnitAndPosition" v-bind:class="{ over_flow:docData.partyPeopleUnitAndPosition && docData.partyPeopleUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="fieldDisabled(propertyFeatures['partyPeopleUnitAndPosition'])"></el-input>
           </el-form-item>
         </p>
@@ -111,7 +111,7 @@
           记录人：<el-form-item prop="recorder" :rules="fieldRules('recorder',propertyFeatures['recorder'])">
             <el-autocomplete class="inline-input" v-model="docData.recorder" :fetch-suggestions="querySearch" placeholder="\" :disabled="fieldDisabled(propertyFeatures['recorder'])"></el-autocomplete>
           </el-form-item>
-          单位及职务：<el-form-item prop="recorderUnitAndPosition" style="width:180px" :rules="fieldRules('recorderUnitAndPosition',propertyFeatures['recorderUnitAndPosition'])">
+          单位及职务：<el-form-item prop="recorderUnitAndPosition" :rules="fieldRules('recorderUnitAndPosition',propertyFeatures['recorderUnitAndPosition'])">
             <el-input type="textarea" v-model="docData.recorderUnitAndPosition" v-bind:class="{ over_flow:docData.recorderUnitAndPosition && docData.recorderUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="fieldDisabled(propertyFeatures['recorderUnitAndPosition'])"></el-input>
           </el-form-item>
         </p>

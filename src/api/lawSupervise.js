@@ -145,6 +145,19 @@ export function getById(type,id) {
         cancelToken: setCancelSource()
     });
   }
+  // 获取机构树
+  export function getOrganList(){
+    return request({
+        // url: "/zfjg/queryLike",
+        url: "/system/sys/organ/organTreeByCurrUser",
+        // url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
+        method: "get",
+        // params: data,
+        showloading: false,
+        baseUrlType:  'LAW_SUPERVISE_HOST',
+        cancelToken: setCancelSource()
+    });
+  }
   // 获取监管机构详情
   export function getOrganDetail (id) {
       return request({
