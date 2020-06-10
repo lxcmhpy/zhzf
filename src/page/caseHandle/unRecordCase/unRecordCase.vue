@@ -158,7 +158,7 @@ export default {
       this.getUnRecordCase({});
     },
     //跳转立案登记
-    handleCase(row) {
+    async handleCase(row) {
       console.log(row);
       let setCaseNumber = row.caseNumber!='' ? row.caseNumber : row.tempNo;
       this.$store.commit("setCaseNumber", setCaseNumber);
@@ -166,16 +166,21 @@ export default {
       if(row.state == 0){
         this.$store.commit("setCaseId", row.id);
         iLocalStroage.set("stageCaseId",row.id);
-        queryFlowBycaseIdApi(row.id).then(res=>{
-          console.log('res111222',res);
-          this.infoPage = res.data.basicInfoPage;
-          console.log('this.infoPage', this.infoPage);
-          this.$router.replace({
-          // name: "case_handle_inforCollect"
-          name: this.infoPage,
+        await this.queryFlowBycaseId();
+        this.$router.replace({
+          name: this.caseFlowData.basicInfoPage,
         });
         return;
-      }).catch(err=>{console.log(err)})
+           
+      //   queryFlowBycaseIdApi(row.id).then(res=>{
+      //     console.log('res111222',res);
+      //     this.infoPage = res.data.basicInfoPage;
+      //     console.log('this.infoPage', this.infoPage);
+      //     this.$router.replace({
+      //       name: this.infoPage,
+      //     });
+      //   return;
+      // }).catch(err=>{console.log(err)})
         
       }
      

@@ -95,8 +95,8 @@
         <div class="afddBox">
           <label class="el-form-item__label" style="width: 100px;">案发地点</label>
           <div class="itemFive2">
-            <el-form-item label-width="0" prop="routeId">
-              <el-select v-model="inforForm.routeId"  placeholder="本机构路线编号">
+            <el-form-item label-width="0" prop="highwayRoute">
+              <el-select v-model="inforForm.highwayRoute"  placeholder="本机构路线编号">
                 <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
@@ -114,8 +114,8 @@
             </el-form-item>
           </div>
           <div class="itemFive2">
-            <el-form-item label-width="20px" prop="location">
-              <el-select v-model="inforForm.location" placeholder="位置">
+            <el-form-item label-width="20px" prop="position">
+              <el-select v-model="inforForm.position" placeholder="位置">
                 <el-option
                   v-for="item in directionList"
                   :key="item.name"
@@ -126,7 +126,7 @@
             </el-form-item>
           </div>
               
-          <div class="showMapBtn"><el-button type="primary" icon="iconfont law-weizhi" size="mini" @click="showMap" v-if="!hasLatitudeAndLongitude">请获取坐标</el-button><el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button></div>
+          <div class="showMapBtn"><label class="mustTip">*</label><el-button type="primary" icon="iconfont law-weizhi" size="mini" @click="showMap" v-if="!hasLatitudeAndLongitude">请获取坐标</el-button><el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button></div>
         </div>
         <div>
           <div class="gongLiBox1">K</div>
@@ -641,7 +641,7 @@
       <div class="caseFormBac" id="link_4" ref="link_4" @mousewheel="scrool4">
         <p>路损清单</p>
         <div>
-          <div class="item">
+          <div class="item" id="payTotalBox">
             <el-form-item label="赔偿总金额">
               <el-input v-model="payTotal" disabled></el-input>
             </el-form-item>
@@ -652,7 +652,7 @@
         </div>
 
         <div>
-          <el-table :data="pathLossList">
+          <el-table :data="pathLossList" id="pathLossListTable">
             <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
             <el-table-column label="路产名称" prop="roadLcName" align="center"></el-table-column>
             <el-table-column label="单位" prop="roadLcUnit" align="center"></el-table-column>
@@ -687,14 +687,14 @@
         <p>违法事实</p>
         <div>
           <div class="itemOne">
-            <el-form-item label="违法行为">
-              <el-input v-model="inforForm.caseCauseNameCopy" :disabled="true"></el-input>
+            <el-form-item label="违法行为" label-width="122px">
+              <el-input v-model="inforForm.caseCauseNameCopy" :disabled="true" ></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="itemOne">
-            <el-form-item label="认定条款" prop="illegalLaw">
+            <el-form-item label="认定条款" prop="illegalLaw" label-width="122px">
               <el-input ref="illegalLaw" v-model="inforForm.illegalLaw" :disabled="true">
                 <el-button slot="append" icon="el-icon-search" @click="showPunishDiag('compensation')"></el-button>
               </el-input>
@@ -703,7 +703,7 @@
         </div>
         <div>
           <div class="itemOne">
-            <el-form-item label="赔（补）偿依据" prop="punishLaw">
+            <el-form-item label="赔（补）偿依据" prop="punishLaw" label-width="122px">
               <el-input ref="punishLaw" v-model="inforForm.punishLaw" :disabled="true">
                 <el-button slot="append" icon="el-icon-search" @click="showPunishDiag('compensation')"></el-button>
               </el-input>
