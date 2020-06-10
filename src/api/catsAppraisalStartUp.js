@@ -40,7 +40,14 @@ export function addOrUpdatePykhBatch (data) {
     data: vm.$qs.stringify(data),
     cancelToken: setCancelSource()
   })
-
-
-
+}
+export function deletePykhBatchById (data) {
+  return request({
+    url: "/pykh/pykhBatch/deletePykhBatchById/"+data,
+    method: "get",
+    showloading: false,
+    baseUrlType: 'CAPTCHA_HOST',
+    params: null,
+    cancelToken: setCancelSource()
+  })
 }

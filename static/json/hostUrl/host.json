@@ -1,5 +1,5 @@
 {
-  "CURRENT": "NW",
+  "CURRENT": "SGX",
   "PS": {
     "CAPTCHA_HOST": "系统管理/案件办理  96：9000",
     "PDF_HOST": "文件服务器地址",
@@ -30,10 +30,10 @@
     "XZJC_HOST":"http://172.16.170.44:8099"
   },
   "SGX": {
-    "CAPTCHA_HOST": "http://172.16.169.49:9000",
+    "CAPTCHA_HOST": "http://172.16.164.94:9000",
     "PDF_HOST": "http://172.16.170.54:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
-    "LAW_SUPERVISE_HOST": "http://172.16.169.49:9000",
+    "LAW_SUPERVISE_HOST": "http://172.16.164.94:9000",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "CHECK_API":"http://172.16.170.91:8081"
   },

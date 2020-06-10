@@ -27,12 +27,12 @@
           <el-table-column prop="batchYear" label="批次所属年份"  align="center"></el-table-column>
           <el-table-column prop="khjs" label="案件考核基数" align="center"></el-table-column>
           <el-table-column prop="personNum" label="人员基数" align="center"></el-table-column>
-<!--          <el-table-column label="操作" align="center" width="120">-->
-<!--            <template  slot-scope="scope">-->
-<!--              <el-button type="text" @click.stop @click="updatePykhConfig(scope.$index, scope.row)">修改</el-button>-->
-<!--              <el-button type="text" @click.stop @click="deletePykhConfigById(scope.row)">删除</el-button>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
+          <el-table-column label="操作" align="center" width="120">
+            <template  slot-scope="scope">
+              <el-button type="text" @click.stop @click="update_openDialog(scope.row)">修改</el-button>
+              <el-button type="text" @click.stop @click="deletePykhBatchById(scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
       <div class="paginationBox" >
@@ -73,8 +73,16 @@
           <el-form-item label="人员基数" prop="operator" >
             <el-input placeholder="请输入人员基数" v-model.trim="form.personNum" ></el-input>
           </el-form-item>
-          <el-form-item label="考核配置" prop="operator" >
-            <el-input placeholder="请选择" v-model.trim="form.pykhConfigId" ></el-input>
+<!--          <el-form-item label="考核配置" prop="operator" >-->
+<!--            <el-input placeholder="请选择" v-model.trim="form.pykhConfigId" ></el-input>-->
+<!--          </el-form-item>-->
+
+          <el-form-item label="考核配置" prop="region">
+            <el-select v-model="form.pykhConfigId" placeholder="请选择">
+              <option v-for="config in listVoByConfig" :value="config.id" >
+                {{config.organName}}
+              </option>
+            </el-select>
           </el-form-item>
 
           <el-form-item label="发布日期" prop="operator" >
@@ -92,7 +100,7 @@
 </template>
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhBatchByPage,addOrUpdatePykhBatch,findListVoByConfig} from "@/api/catsAppraisalStartUp.js";
+  import {findPykhBatchByPage,addOrUpdatePykhBatch,findListVoByConfig,deletePykhBatchById} from "@/api/catsAppraisalStartUp.js";
   import iLocalStroage from '@/common/js/localStroage';
   export default {
     mixins: [mixinsCommon],
@@ -112,6 +120,7 @@
           pykhConfigId:'',
           showBatchDate:''
         },
+        listVoByConfig:[],
         dataList:[],
         visible:false
       };
@@ -149,9 +158,38 @@
       },
       add_openDialog(){
         this.visible=true;
+        this.form={
+          batchName:'',
+            batchYear:'',
+            khjgs:'',
+            khjs:'',
+            organId:'',
+            personNum:'',
+            pykhConfigId:'',
+            showBatchDate:''
+        },
+        findListVoByConfig().then(res=>{
+          console.info("参数配置：",res)
+          this.listVoByConfig=res.data
+        });
+      },
+      update_openDialog(data){
+        this.form=data;
+        this.visible=true;
         findListVoByConfig().then(res=>{
           console.info("参数配置：",res)
         });
+      },
+      deletePykhBatchById(data){
+        deletePykhBatchById(data.id).then(res=>{
+          if(res.code==200){
+            this.visible=false;
+            let data={}
+            data.current=this.current;
+            data.size=5;
+            this.fetchData(data);
+          }
+        })
       },
 
       resetSearch(){
