@@ -42,10 +42,17 @@
             <span class="write_line" style="width:100px"></span>
           </el-col>
         </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            被邀请人签名：
+            <span class="write_line" style="width:140px"></span>
+          </el-col>
+           <el-col :span="12"><span class="write_line" style="width:100px"></span></el-col>
+        </el-row>
          <el-row :gutter="20">
             <el-col :span="12">
-                被邀请人签名：
-                 <span class="write_line" style="width:140px"></span>
+                <!-- 被邀请人签名：
+                 <span class="write_line" style="width:140px"></span> -->
             </el-col>
             <el-col :span="12">
                  记录人签名：
