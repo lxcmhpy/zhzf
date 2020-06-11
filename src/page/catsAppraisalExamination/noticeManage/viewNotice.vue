@@ -27,7 +27,7 @@
   methods: {
       showModal(content) {
         this.visible11 = true;
-        this.content = `${content}`;
+        this.content = content;
       },
       closeDialog() {
         this.visible11 = false;

@@ -32,7 +32,7 @@
 
     li:hover {
         .box-card-img-content {
-            display   : block;
+            display: block;
 
         }
     }
@@ -360,27 +360,35 @@
     height       : 20px;
     display      : none;
     text-align   : center;
-    background: #ebebeb;
-    
+    background   : #ebebeb;
+
 
 }
 
-.border-title{
-    margin-top: 20px;
+.border-title {
+    margin-top  : 20px;
     padding-left: 7px;
-    .el-form-item__content{
-        height: 24px;
+
+    .el-form-item__content {
+        height     : 24px;
         line-height: 24px;
     }
-    p{
-        color: #20232B;
-        font-size: 18px;
-        font-weight:500;
+
+    p {
+        color      : #20232B;
+        font-size  : 18px;
+        font-weight: 500;
     }
 }
 
-.change_title_icon{
-    color: #7B7B7B;
-    cursor: pointer;
+.change_title_icon {
+    color      : #7B7B7B;
+    cursor     : pointer;
     margin-left: 20px;
+}
+
+.searchAndpageBox {
+    .el-date-editor {
+        width: 360px;
+    }
 }
