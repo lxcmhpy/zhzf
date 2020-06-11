@@ -30,3 +30,15 @@ export  function  importPerson(data)  {
     cancelToken:  setCancelSource(),
   });
 }
+
+
+export function addOrUpdatePykhStaff (data) {
+  return request({
+    url: "/pykh/staff/addOrUpdatePykhStaff",
+    method: "get",
+    showloading: false,
+    baseUrlType:'CAPTCHA_HOST',
+    data: data,
+    cancelToken: setCancelSource()
+  })
+}

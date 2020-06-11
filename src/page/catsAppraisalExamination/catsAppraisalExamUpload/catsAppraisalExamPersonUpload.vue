@@ -5,16 +5,10 @@
         <div class="search">
           <el-form :inline="true" >
             <el-form-item label="姓名">
-              <el-input v-model="search.batchNo" clearable placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="身份证号">
-              <el-input v-model="search.batchNo" clearable placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="执法证号">
-              <el-input v-model="search.batchNo" clearable placeholder="请输入"></el-input>
+              <el-input v-model="search.staffName" clearable placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="所属机构">
-              <el-input v-model="search.batchNo" clearable placeholder="请选择"></el-input>
+              <el-input v-model="search.OId" clearable placeholder="请选择"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
@@ -78,9 +72,9 @@
 
         <el-dialog :visible.sync="visible" title="人员报送" width="480px" >
           <el-form :label-position="labelPosition" :model="form" ref="form" label-width="160px">
-            <el-form-item label="选择批次" prop="operator" >
-              <el-input placeholder="批次ID" v-model.trim="form.batchId" ></el-input>
-            </el-form-item>
+<!--            <el-form-item label="选择批次" prop="operator" >-->
+<!--              <el-input placeholder="批次ID" v-model.trim="form.batchId" ></el-input>-->
+<!--            </el-form-item>-->
             <el-form-item label="姓名" prop="operator" >
               <el-input placeholder="请输入姓名" v-model.trim="form.staffName" ></el-input>
             </el-form-item>
@@ -116,7 +110,7 @@
 
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhStaffByPage,importPerson} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {findPykhStaffByPage,importPerson,addOrUpdatePykhStaff} from "@/api/catsAppraisalExamPersonUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
 
   export default {
@@ -126,7 +120,10 @@
         current:1,
         size:2,
         total:0,
-        search:{},
+        search:{
+          staffName:"",
+          OId:""
+        },
         organId:'',
         dataList:[],
         visible:false,
@@ -171,10 +168,16 @@
         this.fetchData({});
       },
       resetSearch(){
-        this.search={};
+        this.search={
+          staffName:"",
+            OId:""
+        }
       },
       searchData(){
-
+        let data={};
+        data.staffName=this.search.staffName;
+        data.OId=this.search.OId;
+        this.fetchData(data);
       },
       uploadPerson(param) {
         console.log(param);
@@ -201,8 +204,18 @@
           staffName: ''
         }
       },
+      update_openDialog(data){
+        this.form=data;
+        this.visible=true;
+      },
       addOrUpdatePykhStaff(){
-
+        addOrUpdatePykhStaff(this.form).then(res=>{
+          console.info("保存报送人员结果：",res)
+          if(res.code==200){
+            this.visible=false;
+            this.fetchData({});
+          }
+        })
       },
     },
     mounted () {
