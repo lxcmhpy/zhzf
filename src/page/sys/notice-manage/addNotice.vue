@@ -1,0 +1,266 @@
+<template>
+  <el-dialog
+    :title="dialogTitle"
+    :visible.sync="visible"
+    @close="closeDialog"
+    :close-on-click-modal="false"
+    width="80%"
+  >
+    <el-form :model="addNoticeForm" ref="addNoticeForm" label-width="80px">
+      <input hidden v-model="addNoticeForm.id" />
+      <input hidden v-model="addNoticeForm.storageId" />
+      <div class="item">
+        <el-form-item label="公告名称" prop="title">
+          <el-input v-model="addNoticeForm.title"></el-input>
+        </el-form-item>
+      </div>
+      <div class="item">
+        <el-form-item label="公告类型" prop="noticeType">
+          <el-select v-model="addNoticeForm.noticeType" >
+            <el-option value="附件" label="附件"></el-option>
+            <el-option value="普通" label="普通"></el-option>
+          </el-select>
+        </el-form-item>
+      </div>
+      <div class="item" :hidden="!this.showUpload">
+        <el-form-item label="公告内容" prop="content">
+          <quill-editor v-model="addNoticeForm.content" ref="myQuillEditor" :options="editorOption" @blur="onEditorBlur($event)"
+        @focus="onEditorFocus($event)" @change="onEditorChange($event)"></quill-editor>
+        </el-form-item>
+      </div>
+      <div class="item" :hidden="this.showUpload">
+        <el-form-item label="公告内容" prop="content">
+          <quill-editor v-model="addNoticeForm.content" ref="myQuillEditor" :options="editorOption" @blur="onEditorBlur($event)"
+        @focus="onEditorFocus($event)" @change="onEditorChange($event)"></quill-editor>
+        </el-form-item>
+      </div>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="visible = false">取 消</el-button>
+      <el-button type="primary" @click="addOrEditNotice('addNoticeForm')">确 定</el-button>
+    </span>
+  </el-dialog>
+</template>
+<script>
+  import {
+    quillEditor
+  } from "vue-quill-editor"; //调用编辑器
+  import 'quill/dist/quill.core.css';
+  import 'quill/dist/quill.snow.css';
+  import 'quill/dist/quill.bubble.css';
+  export default {
+    components: {
+      quillEditor
+    },
+    data() {
+      return {
+        showUpload:false,
+        addNoticeForm: {
+          title: "",
+          noticeType:"",
+          content: `<h2><strong class="ql-size-large">资源篇（资源篇所有资源均来自于本人或者其他网友制作而成，除制作者要求收费之外，资源仅供Anki使用者学习交流之用，严禁他人借此牟利！）</strong></h2><p><a href="https://zhuanlan.zhihu.com/p/21463246" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——钉宫理惠教你五十音</a></p><p><a href="https://zhuanlan.zhihu.com/p/21475754?refer=-anki" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——American Accent Course 第一课第一部分</a></p><p><a href="https://zhuanlan.zhihu.com/p/21550428" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——2005-2014考研真题阅读词汇</a>&nbsp;作者：慕云浮</p><p><a href="https://zhuanlan.zhihu.com/p/21644255" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——史纲+毛中特の人物+著作+观点V1</a></p><p><br></p><p><a href="https://zhuanlan.zhihu.com/p/21872977?refer=-anki" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——怪奇物语（stranger things）S1E1</a></p><p><span style="color: inherit;">﻿</span></p>`,
+          id:""
+        },
+        dialogTitle: "公告",
+        visible: false,
+        handelType: 0, //添加 0  修改2
+        editorOption: {
+          placeholder: "请输入...",
+          modules: {
+            toolbar: [
+              ['bold', 'italic', 'underline', 'strike'], //加粗，斜体，下划线，删除线
+              ['blockquote', 'code-block'], //引用，代码块
+
+              [{
+                'header': 1
+              }, {
+                'header': 2
+              }], // 标题，键值对的形式；1、2表示字体大小
+              [{
+                'list': 'ordered'
+              }, {
+                'list': 'bullet'
+              }], //列表
+              [{
+                'script': 'sub'
+              }, {
+                'script': 'super'
+              }], // 上下标
+              [{
+                'indent': '-1'
+              }, {
+                'indent': '+1'
+              }], // 缩进
+              [{
+                'direction': 'rtl'
+              }], // 文本方向
+
+              [{
+                'size': ['small', false, 'large', 'huge']
+              }], // 字体大小
+              [{
+                'header': [1, 2, 3, 4, 5, 6, false]
+              }], //几级标题
+
+              [{
+                'color': []
+              }, {
+                'background': []
+              }], // 字体颜色，字体背景颜色
+              [{
+                'font': []
+              }], //字体
+              [{
+                'align': []
+              }], //对齐方式
+
+              ['clean'], //清除字体样式
+              ['image', 'video'] //上传图片、上传视频
+
+            ]
+          },
+          theme: 'snow'
+        }
+    }
+  },
+  inject: ["reload"],
+  methods: {
+      onEditorReady(editor) { // 准备编辑器
+      },
+      onEditorBlur() {}, // 失去焦点事件
+      onEditorFocus() {}, // 获得焦点事件
+      onEditorChange() {}, // 内容改变事件
+      showModal(type, data) {
+        this.visible = true;
+        this.handelType = type;
+        if (type == 0) {
+          this.dialogTitle = "新增公告";
+          this.$nextTick(()=>{
+            this.$refs["addNoticeForm"].resetFields();
+          })
+        } else if (type == 2) {
+          this.dialogTitle = "修改公告";
+          this.addNoticeForm.title=data.title,
+          this.addNoticeForm.noticeType=data.noticeType;
+          this.addNoticeForm.content=data.content;
+          this.addNoticeForm.id=data.id;
+          this.addNoticeForm.storageId=data.storageId;
+        }
+      },
+      submit() {
+        console.log(this.$refs.myQuillEditor.value)
+      },
+      //新增公告 修改公告
+      addOrEditNotice(formName) {
+        let _this = this
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            _this.$store.dispatch("addOrUpdateNotice", _this.addNoticeForm).then(
+                res => {
+                  _this.$message({
+                    type: "success",
+                    message:"保存成功!"
+                  });
+                  _this.visible = false;
+                  _this.reload();
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+          }
+        });
+      },
+      closeDialog() {
+        this.visible = false;
+      },
+    },
+    computed: {
+      editor() {
+        return this.$refs.myQuillEditor.quill;
+      },
+    }
+  }
+
+</script>
+<style>
+  p {
+    margin: 10px;
+  }
+
+  .edit_container,
+  .quill-editor {
+    height: 300px;
+  }
+
+  .ql-snow .ql-picker.ql-size .ql-picker-label::before,
+  .ql-snow .ql-picker.ql-size .ql-picker-item::before {
+    content: "14px";
+  }
+
+  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="small"]::before,
+  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="small"]::before {
+    content: "10px";
+  }
+
+  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="large"]::before,
+  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="large"]::before {
+    content: "18px";
+  }
+
+  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before,
+  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="huge"]::before {
+    content: "32px";
+  }
+
+  .ql-snow .ql-picker.ql-header .ql-picker-label::before,
+  .ql-snow .ql-picker.ql-header .ql-picker-item::before {
+    content: "文本";
+  }
+
+  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
+  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+    content: "标题1";
+  }
+
+  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
+  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+    content: "标题2";
+  }
+
+  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+    content: "标题3";
+  }
+
+  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
+  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
+    content: "标题4";
+  }
+
+  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="5"]::before,
+  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
+    content: "标题5";
+  }
+
+  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="6"]::before,
+  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
+    content: "标题6";
+  }
+
+  .ql-snow .ql-picker.ql-font .ql-picker-label::before,
+  .ql-snow .ql-picker.ql-font .ql-picker-item::before {
+    content: "标准字体";
+  }
+
+  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="serif"]::before,
+  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]::before {
+    content: "衬线字体";
+  }
+
+  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,
+  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
+    content: "等宽字体";
+  }
+
+</style>

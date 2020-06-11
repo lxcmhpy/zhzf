@@ -201,7 +201,7 @@
         </el-drawer>
         <el-drawer title="考核细则" modal-append-to-body direction="rtl" size="500px" customClass="amap-drawer" :modal="false" :visible.sync="drawer2">
             <div style="padding:0px 35px 35px 35px;min-width:620px;">
-                  <el-form :model="xzObj" ref="xzObj" :rules="rules2" class="checkSearchForm" label-width="140px">
+                  <el-form :model="xzObj" ref="xzObj" :rules="rules2" class="checkSearchForm" label-width="160px">
                 <div v-if="xzObj" style="width:400px">
                     <div class="item">
                         <el-form-item label="评查类别" prop="metricsName">
@@ -236,46 +236,6 @@
             </el-form>
                 </div>
         </el-drawer>
-
-        <!-- <el-table-column prop="reviewType" label="评查类别" align="center" ></el-table-column>
-                                                    <el-table-column prop="nrxm" label="评查内容/评查项目" align="center" ></el-table-column>
-                                                    <el-table-column prop="sore" label="分值" align="center" ></el-table-column>
-                                                    <el-table-column prop="xsyq" label="评查形式/评查内容和要求" align="center" ></el-table-column>
-                                                    <el-table-column prop="xdxz" label="评查要点/评分细则" align="center" ></el-table-column> -->
-        <!-- <el-table
-      :data="tableData"
-      :span-method="objectSpanMethod"
-      border
-      style="width: 100%; margin-top: 20px">
-      <el-table-column
-        prop="name"
-        label="姓名">
-      </el-table-column>
-      <el-table-column
-        prop="id"
-        label="ID"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="amount1"
-        label="数值 1（元）">
-      </el-table-column>
-      <el-table-column
-        prop="amount2"
-        label="数值 2（元）">
-      </el-table-column>
-      <el-table-column
-        prop="amount3"
-        label="数值 3（元）">
-      </el-table-column>
-        <el-table-column
-        label="操作">
-        <template>
-            <el-button>添加</el-button>
-            <el-button>修改</el-button>
-        </template>
-      </el-table-column>
-    </el-table> -->
     </div>
 </template>
 <script>
@@ -369,7 +329,8 @@ import _ from "lodash";
             nrxm:'',
             sore: '',
             xsyq: '',
-            xdxz:''
+            xdxz:'',
+            metricsId: ''
         },
         updateIndex: null,
         updateIndex1: null,
@@ -614,7 +575,7 @@ import _ from "lodash";
 
             // this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
             // // this.assessTypeObj = this.khlbList.data?this.khlbList.data[0]: [];
-            this.$set(this, 'zbObj', {
+            this.$set(this, 'xzObj', {
                                 reviewType: '',
                                 nrxm:'',
                                 sore: '',
@@ -653,21 +614,14 @@ import _ from "lodash";
         // },
         // 保存考核具体指标
         addOrUpdatePykhMetrics () {
-            debugger;
             let _this = this;
             new Promise((resolve, reject) => {
                 addOrUpdatePykhMetrics(_this.zbObj).then(
                     res => {
-                        // resolve(res);
-                        // _this.tableData.splice(0, _this.tableData.length);
-                        // _this.zbObj = res.data.records;
-                        debugger;
                         _this.errorMsg('保存成功', 'success');
 
                             if (_this.updateIndex1 === null) {
                                     //添加
-                                    // _this.reset('pykhObj');
-                                    //  _this.search(1);
                                     _this.findPykhMetricsByPage(_this.updateIndex1,1);
                                 } else {
                                     // 更新
@@ -708,7 +662,7 @@ import _ from "lodash";
 
                             if (_this.updateIndex2 === null) {
                                     //添加
-                                    _this.addorUpdateDetailZp(_this.updateIndex2,1);
+                                    _this.findPykhZpByPage(_this.xzObj.metricsId,1);
                                 } else {
                                     // 更新
                                     _this.drawer1 = false;

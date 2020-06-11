@@ -4,40 +4,39 @@
         <div >
             欢迎进入考试系统
         </div>
-         <div class="text">
-        <span>{{year}}</span>年
-        <span>{{month}}</span>月
-        <span>{{day}}</span>日
-        <span>{{hours}}</span>:
-        <span>{{minutes}}</span>:
-        <span>{{seconds}}</span>
+        <div class="text">
+        <span>1</span>年
+        <span>1</span>月
+        <span>2</span>日
+        <span>3</span>:
+        <span>4</span>:
+        <span>5</span>
         <p class="text1">*考生可提前30分钟进入相应考试，等待考试开启</p>
     </div>
     </div>
-   
-     <div class="first">
-     <div>请输入监考信息</div>
-        <el-form :inline="true" ref="userForm" label-width="95px">
+  
+    <div class="first">
+    <div>请输入监考信息</div>
+        <el-form :inline="true" ref="userForm" label-width="95px" rules="userFormRef">
           <el-row>
-            <el-form-item label="单位:" prop="personName"  >
-              <input class="input" placeholder="请输入单位">
+            <el-form-item label="单位:" prop="company"  >
+              <input class="input" v-model="userForm.company" placeholder="请输入单位">
             </el-form-item><br>
-            <el-form-item label="姓名:" prop="personName" >
-              <input class="input" placeholder="请输入姓名">
+            <el-form-item label="姓名:" prop="userName" >
+              <input class="input" v-model="userForm.userName" placeholder="请输入姓名">
             </el-form-item><br>
-            <el-form-item label="身份证号:" prop="personName" >
-              <input  class="input" placeholder="请输入身份证号">
+            <el-form-item label="身份证号:" prop="idCode" >
+              <input  class="input" v-model="userForm.idCode" placeholder="请输入身份证号">
             </el-form-item><br>
-            <el-form-item label="联系方式:" prop="personName" >
-              <input class="input" placeholder="请输入联系方式">  
+            <el-form-item label="联系方式:" prop="telephone" >
+              <input class="input" v-model="userForm.telephone" placeholder="请输入联系方式">  
             </el-form-item><br>
             <el-form-item label=" " label-width="13px" style="">
-                <el-button type="primary" icon="el-icon-time" size="medium">提交</el-button>
+                <el-button type="primary" icon="el-icon-time" size="medium" @click="submitInvigilatorInfo">提交</el-button>
               </el-form-item>
           </el-row>
         </el-form>
     </div>
-    
   </div>
 </template>
 <script>
@@ -45,35 +44,50 @@ export default {
   name: "pageApplay",
   data() {
     return {
-        //date:new Date(),
-            year:'',
-            month:'',
-            day:'',
-            hours: '',
-            minutes: '',
-            seconds: '',
-            tableDate:[{name:"交通运输职业资格考试1",startTime:"2020.3.4",endTime:"2020.3.4",status:"0"},{name:"交通运输职业资格考试2",startTime:"2020.3.4",endTime:"2020.3.4",status:"1"},{name:"交通运输职业资格考试3",startTime:"2020.3.4",endTime:"2020.3.4",status:"2"}],
-    };
+        userForm:{
+          company:"",
+          userName:"",
+          idCode:"",
+          telephone:"",
+        }
+    }
+  },
+  methods:{
+    //提交监考老师信息 
+    submitInvigilatorInfo(){
+      this.$store.dispatch("getAddInvigilator",this.userForm).then(
+        res=>{
+          if(res.code===200){
+            //跳转到监考老师详情页面
+
+          }else{
+            console.info("监考老师详情添加失败");
+          }
+        });
+    },
+    //加载考试信息
+    getExamInfoByInvigilator(){
+      let data={
+        //loginName、password的值从登录页面传回来
+        loginName:'',
+        password:'',
+      }
+      this.$store.dispatch("getExamInfoByInvigilatorInfo",data).then(
+        res=>{
+          if(res.code===200){
+            
+
+          }else{
+            console.info("该考试信息以及考场信息查询失败");
+          }
+        });
+    }
   },
   created() {
-            let target = new Date("2019-6-6").getTime(); //获取目标时间戳
-            setInterval(() => {
-                let date = new Date();
-                let year = date.getFullYear();
-                let month = (date.getMonth()+1);
-                let day = date.getDate();
-                 let hours = date.getHours();
-                let minutes = date.getMinutes();
-                let seconds = date.getSeconds();
-                this.year = year;
-                this.month = month;
-                this.day = day;
-                this.hours = hours;
-                this.minutes = minutes;
-                this.seconds = seconds;
-            }, 1000)
-        }
-};
+    //登录成功后跳转到该页面，同时加载该监考老师考场以及考试信息
+    this.getExamInfoByInvigilator();
+  }
+}
 </script>
 <style  lang="scss" scoped>
 .msgStyle {
