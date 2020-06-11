@@ -693,20 +693,5 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/payCompensation.vue")
   },
-  {
-    path: "/evidenceRegApprovalForm",
-    name: "case_handle_evidenceRegApprovalForm",
-    meta: {
-      title: "证据登记保存审批表"
-    },
-    component: () => import("@/page/caseHandle/case/jiangxi/doc/evidenceRegApprovalForm.vue")
-  },
-  {
-    path: "/audioEvidenceRecord",
-    name: "case_handle_audioEvidenceRecord",
-    meta: {
-      title: "视听资料（电子数据）证据记录单"
-    },
-    component: () => import("@/page/caseHandle/case/jiangxi/doc/audioEvidenceRecord.vue")
-  },
+
 ]

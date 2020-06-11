@@ -671,9 +671,8 @@ export default {
     },
 }
 </script>
-<style lang="scss" src="@/assets/css/personManage.scss"></style>
 <style lang="scss">
-  /* @import "@/assets/css/personManage.scss"; */
+@import "@/assets/css/personManage.scss";
 
 .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;

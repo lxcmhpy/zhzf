@@ -9,7 +9,7 @@ import {validateIDNumber, validateAge, validateZIP, validatePhone} from '@/commo
 import {
   getDictListDetailByNameApi, findHistoryBySignApi, findRouteManageByOrganIdApi
 } from "@/api/system";
-
+import {findLawOfficerListApi} from "@/api/caseHandle";
 
 export const inforCollectionCommonMixins = {
   data() {
@@ -622,7 +622,18 @@ export const inforCollectionCommonMixins = {
             //设置
             _this.$store.commit("setCaseNumber", res.data.tempNo);
             iLocalStroage.removeItem("stageCaseId");
-            this.autoSava = false;
+            this.autoSava = false; 
+
+            let replaceIndex = 0;
+            for(let i=0;i < this.openTab.length;i++){
+              if(this.openTab[i].route == '/compensationInforCollect'){
+                replaceIndex = i;
+                break;
+              }
+            }
+            this.openTab[replaceIndex].menuUrl = 'case_handle_establish';
+            this.openTab[replaceIndex].name = 'case_handle_establish' + '-and-' + this.caseHandle.caseNumber;
+            this.openTab[replaceIndex].route = '/establish';
             _this.$router.replace({
               name: "case_handle_establish"
             });
@@ -741,12 +752,7 @@ export const inforCollectionCommonMixins = {
       if (data.discretionId != "") {
         this.activeJudgli = data.discretionId;
       }
-      //当前用户不是创建案件者，输入框设置为只读
-      // currentUserId = iLocalStroage.gets("userInfo").id;
-      // if(currentUserId!=data.createId){
-      //    let allInput = document.querySelectorAll('.el-input');
-
-      // };
+     
       //设置执法人员
       this.alreadyChooseLawPerson = [];
       let staffNameList = data.staff.split(',');
@@ -761,6 +767,17 @@ export const inforCollectionCommonMixins = {
         }
         this.alreadyChooseLawPerson.push(newlaw);
       });
+      //设置当前执法人员不可以删除
+      findLawOfficerListApi(iLocalStroage.gets("userInfo").organId).then(res=>{
+        console.log('res',res);
+        for(let i=0;i< res.data.length;i++){
+          if (res.data[i].userId == iLocalStroage.gets("userInfo").id){
+            this.currentUserLawId = res.data[i].id;
+            break;
+          }
+        }
+      }).catch(err=>{console.log(err)})
+
       //案发坐标
       this.hasLatitudeAndLongitude  = data.latitudeAndLongitude !=='';
       //路损清单

@@ -972,3 +972,64 @@ export function getAllOrigin(){
     cancelToken:  setCancelSource(),
   });
 }
+
+//查询考试配置
+export function getScheduleJobPageApi(data){
+  return  request({
+    url:  "/exam/scheduleJob/getScheduleJobPage",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+//新增考试配置
+export function addScheduleJobApi(data){
+  return  request({
+    url:  "/exam/scheduleJob/addScheduleJob",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+//修改考试配置
+export function updateScheduleJobApi(data){
+  return  request({
+    url:  "/exam/scheduleJob/updateScheduleJob",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+//删除考试配置
+export function deleteScheduleJobApi(data){
+  return  request({
+    url:  "/exam/scheduleJob/deleteScheduleJobInfo",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+//手动配置
+export function cacheQuestionRedisApi(data){
+  return  request({
+    url:  "/exam/cacheQuestionRedis/getCacheQuestionToRedis",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+//启用停用
+export function resumeScheduleJobInfoApi(data){
+  return  request({
+    url:  "/exam/className/resumeScheduleJobInfo",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}

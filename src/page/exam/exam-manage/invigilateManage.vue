@@ -1,121 +1,200 @@
 <template>
 <div>
-    <div>
+  <div>
     <el-dialog
-        :title="dialogtitle"
-        :visible.sync="visible"
-        @close="closeDialog"
-        :close-on-click-modal="false">
-        <el-form :model="invigilateForm" ref="invigilateFormRef" label-position="right" label-width="100px;" :inline="true">
-            <div>
-                <el-row>
-                    <el-form-item label="姓名" prop="userName" class-form="form-class">
-                        <el-input v-model="invigilateForm.userName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="身份证号" prop="idCode" class-form="form-class">
-                        <el-input v-model="invigilateForm.idCode"></el-input>
-                    </el-form-item>
-                    <el-form-item label="所属机构" prop="onacompanyme" class-form="form-class">
-                        <el-input v-model="invigilateForm.company"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button title="搜素" class="commonBtn searchBtn" size="medium" icon="iconfont law-sousuo"   @click="getInvigilateAllInfo"></el-button>
-                        <el-button title="重置" class="commonBtn searchBtn" size="medium" icon="iconfont law-zhongzhi" @click="resetLog"></el-button>
-                    </el-form-item>
-                </el-row>
-                <el-row>
-                    <el-form-item>
-                        <el-button type="primary"  icon="el-icon-plus" size="medium" @click="exportInfo('','1')">导出</el-button>
-                    </el-form-item>
-                </el-row>
-            </div>
-            <div>
-                <el-table :data="tableDate" resizable stripe style="width:98%">
-                    <el-table-column prop="roomId" label="考场" align="center"></el-table-column>
-                    <el-table-column prop="loginName" label="监考账号" align="center"></el-table-column>
-                    <el-table-column prop="password" label="监考密码" align="center"></el-table-column>
-                    <el-table-column prop="userName" label="姓名" align="center"></el-table-column>
-                    <el-table-column prop="idCode" label="身份证号" align="center"></el-table-column>
-                    <el-table-column prop="company" label="所属单位" align="center"></el-table-column>
-                    <el-table-column prop="telephone" label="联系方式" align="center"></el-table-column>
-                </el-table>
-            </div>
-        </el-form>
+      class="exam-page-dialog"
+      width="61%"
+      :title="dialogtitle"
+      :visible.sync="visible"
+      @close="closeDialog"
+      :close-on-click-modal="false">
+      <el-form
+        class="search-form"
+        :model="invigilateForm"
+        ref="invigilateFormRef"
+        label-position="right"
+        label-width="80px"
+        :inline="true">
+        <div>
+          <el-row>
+            <el-form-item label="姓名" prop="userName" class-form="form-class">
+              <el-input v-model="invigilateForm.userName" placeholder="请输入姓名"></el-input>
+            </el-form-item>
+            <el-form-item label="身份证号" prop="idCode" class-form="form-class">
+              <el-input v-model="invigilateForm.idCode" placeholder="请输入身份证号"></el-input>
+            </el-form-item>
+            <el-form-item label="所属机构" prop="company" class-form="form-class">
+              <el-input v-model="invigilateForm.company" placeholder="请输入所属机构"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button title="搜素" class="commonBtn searchBtn" size="medium" icon="iconfont law-sousuo"   @click="getInvigilateAllInfo"></el-button>
+              <el-button title="重置" class="commonBtn searchBtn" size="medium" icon="iconfont law-zhongzhi" @click="resetLog"></el-button>
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-form-item>
+              <el-button type="primary"  icon="el-icon-plus" size="medium" @click="exportInfo()">导出</el-button>
+            </el-form-item>
+          </el-row>
+        </div>
+      </el-form>
+      <div>
+        <el-table
+          :data="tableData"
+          resizable
+          stripe
+          style="width:98%"
+          v-loading="tableLoading"
+          element-loading-spinner="car-loading"
+          element-loading-text="加载中..."
+          :max-height="320"
+          >
+          <el-table-column prop="roomName" label="考场" align="left" width="100px"></el-table-column>
+          <el-table-column prop="loginName" label="监考账号" min-width="120px" align="center"></el-table-column>
+          <el-table-column prop="password" label="监考密码" width="100px" align="center"></el-table-column>
+          <el-table-column prop="userName" label="姓名" width="120px" align="center"></el-table-column>
+          <el-table-column prop="idCode" label="身份证号" min-width="170px" align="center"></el-table-column>
+          <el-table-column prop="company" label="所属单位" align="center"></el-table-column>
+          <el-table-column prop="telephone" label="联系方式" width="120px" align="center"></el-table-column>
+        </el-table>
+      </div>
+      <div class="paginationBox">
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            background
+            :page-sizes="[10, 20, 30, 40, 50]"
+            layout="prev, pager, next,sizes,jumper"
+            :total="totalPage"
+        ></el-pagination>
+      </div>
     </el-dialog>
-    </div>
-    <div>
-        <addExamPerson ref="addExamPersonCompRef" @getExamPersonInfo="getInvigilateAllInfo"></addExamPerson>
-    </div>
+  </div>
+  <div>
+    <addExamPerson ref="addExamPersonCompRef" @getExamPersonInfo="getInvigilateAllInfo"></addExamPerson>
+  </div>
 </div>
 </template>
 <script>
 import {mixinPerson} from "@/common/js/personComm";
 import addExamPerson from './addExamPerson';
-export default {
-    mixins:[mixinPerson],
-    data(){
-        return {
-            invigilateForm:{
-                loginName:"",
-                idCode:"",
-                company:"",
-                userName:'',
-                oid:"",
-            },
-            visible:false,
-            dialogtitle:"",
-            errorName:"",
-            tableDate:[{
-                roomId:'交通部',
-                loginName:'857857',
-                password:'12345',
-                userName:'张三',
-                idCode:'62022222222909898',
-                company:'交通部',
-                telephone:'岗位名称',
-                certNo:'执法证号',
-                area:'11111111111111',
-            }]
-        }
-    },
-    components:{
-        addExamPerson
-    },
-    methods:{
-        showModal(type,row){
-            let _this = this 
-            _this.visible=true;
-            _this.dialogtitle="监考管理";
-            this.getInvigilateAllInfo();
-        },
-        exportInfo(){//移除人员
+import {exportInvigilatorApi} from '@/api/exam'
 
-        },
-        getInvigilateAllInfo(){//查询监考列表
-            let _this = this
-            let data = {
-                userName:_this.invigilateForm.userName,
-                company:_this.invigilateForm.company,
-                idCode:_this.invigilateForm.idCode,
-                current: _this.currentPage,
-                size: _this.pageSize
-            };
-            _this.getPageList("getInvigilatorPageList",data);
-        },
-        resetLog(){
-            let _this = this 
-            _this.$$refs['invigilateFormRef'].resetFields();
-        },
-        closeDialog(){
-            let _this = this 
-            _this.visible=false;
-            _this.$refs['invigilateFormRef'].resetFields();
-            _this.errorName=false;
-        }
+export default {
+  mixins:[mixinPerson],
+  data(){
+    return {
+      invigilateForm:{
+        examId:"",
+        loginName:"",
+        idCode:"",
+        company:"",
+        userName:'',
+        oid:""
+      },
+      visible:false,
+      dialogtitle:"",
+      errorName:"",
+      tableData:[],
+      currentPage: 1, //当前页
+      pageSize: 10, //pagesize
+      totalPage: 0, //总数
+    }
+  },
+  components:{ addExamPerson },
+  methods:{
+    showModal(row,type){
+      let _this = this 
+      _this.visible=true;
+      _this.dialogtitle="监考管理";
+      _this.invigilateForm.examId=row.examId;
+      this.getInvigilateAllInfo();
     },
+    // 导出人员 
+    exportInfo(){ 
+      let _this = this;
+      let data = {
+        examId:_this.invigilateForm.examId
+      };
+       // _this.getPageList("exportInvigilatorInfo",data);
+        _this.$store.dispatch("exportInvigilatorInfo",data).then(res => {
+            console.info(JSON.stringify(res))
+            let url = window.URL.createObjectURL(res.data); //表示一个指定的file对象或Blob对象
+            console.log(url,"看一下这是啥")
+            let a = document.createElement("a"); 
+            document.body.appendChild(a);
+            a.href = url;
+            a.target = '_blank';
+            a.download = res.fileName; //命名下载名称
+            a.click(); //点击触发下载  
+            window.URL.revokeObjectURL(url);  //下载完成进行释放
+        },
+        err => {
+          _this.$message({ type: "error", message: err.msg || "" });
+        }
+      );
+    },
+    getInvigilateAllInfo(){//查询监考列表
+      let _this = this
+      let data = {
+        examId:_this.invigilateForm.examId,
+        userName:_this.invigilateForm.userName,
+        company:_this.invigilateForm.company,
+        idCode:_this.invigilateForm.idCode,
+        current: _this.currentPage,
+        size: _this.pageSize
+      };
+      _this.getPageList("getInvigilatorPageList",data);
+    },
+    //更改每页显示的条数
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getInvigilateAllInfo();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getInvigilateAllInfo();
+    },
+    resetLog(){
+      let _this = this 
+      _this.$refs['invigilateFormRef'].resetFields();
+    },
+    closeDialog(){
+      let _this = this 
+      _this.visible=false;
+      _this.$refs['invigilateFormRef'].resetFields();
+      _this.errorName=false;
+    }
+  }
    
 }
 </script>
 <style lang="scss" scoped>
-
+.exam-page-dialog{
+  >>>.el-dialog{
+    min-width: 976px;
+    max-width: 1064px;
+  }
+  >>>.el-dialog__body{
+    padding-bottom: 20px;
+  }
+  .paginationBox{
+    margin-top: 10px;
+    text-align: center;
+    >>>.el-input__inner{
+      height: 28px;
+      line-height: 28px;
+    }
+  }
+}
+.search-form{
+  >>>.el-form-item{
+    margin-bottom: 10px;
+  }
+  >>>.el-input__inner{
+    width: 176px;
+  }
+}
 </style>

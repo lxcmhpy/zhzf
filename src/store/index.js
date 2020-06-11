@@ -19,6 +19,8 @@ import checkInfo from './modules/checkInfo';
 // 监管
 import supervise from './modules/supervise';
 import phoneVideo from './modules/phoneVideo';
+// 考试管理
+import exam from './modules/exam';
 
 Vue.use(Vuex);
 
@@ -65,7 +67,8 @@ const store = new Vuex.Store({
         person,
         checkInfo,
         supervise,
-        phoneVideo
+        phoneVideo,
+        exam
     },
     plugins: [createPersistedState({
         storage: window.sessionStorage,

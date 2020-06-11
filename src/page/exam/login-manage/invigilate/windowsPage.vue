@@ -16,19 +16,8 @@
       <div v-if="forced">
         <el-row style="height:60px;">
           <el-form-item label="强制原因:" prop="forcedReason">
-            <el-select
-              v-model="forcedReason"
-              placeholder
-              remote
-              @focus="getYear('年份','getYearList')"
-              style="width:300px"
-            >
-              <el-option
-                v-for="value in getYearList"
-                :key="value.id"
-                :label="value.name"
-                :value="value.id"
-              ></el-option>
+            <el-select v-model="forcedReason"  placeholder  remote @focus="getYear('年份','getYearList')"   style="width:300px">
+              <el-option v-for="value in getYearList" :key="value.id" :label="value.name" :value="value.id"></el-option>
             </el-select>
           </el-form-item>
         </el-row>
@@ -42,13 +31,7 @@
       <div v-if="delay">
         <el-row style="height:60px;">
           <el-form-item label="延迟时间:" prop="delayTime">
-            <el-select
-              v-model="delayTime"
-              placeholder
-              remote
-              @focus="getYear('年份','getYearList')"
-              style="width:300px"
-            >
+            <el-select v-model="delayTime" placeholder remote @focus="getYear('年份','getYearList')" style="width:300px">
               <el-option
                 v-for="value in getYearList"
                 :key="value.id"

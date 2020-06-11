@@ -11,7 +11,7 @@ import {
     getDictListApi, getDictListDetailApi, getAllDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
     getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,saveLawOfficelApi,getRouteListApi,addOrUpdateRouteApi,deleteRouteApi,
-    getSectionListApi,addOrUpdateSectionApi,deleteSectionApi,deleteRoadLcDeployApi,
+    getSectionListApi,addOrUpdateSectionApi,deleteSectionApi,deleteRoadLcDeployApi,getNoticeListApi,addOrUpdateNoticeApi,deleteNoticeApi,getContentApi
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";
@@ -923,6 +923,58 @@ const system = {
       deleteRoadLcDeploy({ commit }, data) {
         return new Promise((resolve, reject) => {
           deleteRoadLcDeployApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //获取公告列表
+      getNoticeList({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            getNoticeListApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //添加或修改公告信息
+      addOrUpdateNotice({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            addOrUpdateNoticeApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //删除公告
+      deleteNotice({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            deleteNoticeApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //获取公告内容
+      getContent({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            getContentApi(data).then(
             res => {
               resolve(res);
             },
