@@ -613,6 +613,9 @@ export default {
     uploadDisabled:function() {
       let _this=this;
       return _this.photoList.length > 0
+    },
+    baseUrl(){
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
   },
   watch:{
@@ -660,7 +663,7 @@ export default {
       }
       this.personInfoDetailForm['sexName'] = info.sex === '0' ? '男' : '女';
       if(info.photoUrl){
-        this.personImg = info.photoUrl;
+        this.personImg = info.photoUrl.indexOf(this.baseUrl) > -1 ? info.photoUrl : this.baseUrl + info.photoUrl;
       }
     },
     handleChanged(val) {
@@ -757,11 +760,15 @@ export default {
     },
     // 判断人员相关信息是否修改
     checkChangeVal() {
-      // 姓名personName  身份证号idNo 部级执法证号ministerialNo
-      const change = this.personClone.personName !== this.personInfoDetailForm.personName ||
-                     this.personClone.idNo !== this.personInfoDetailForm.idNo ||
-                     this.personClone.ministerialNo !== this.personInfoDetailForm.ministerialNo
-      return change
+      if(this.personInfoDetailForm.certStatusName !== '未申请'){
+        // 姓名personName  身份证号idNo 部级执法证号ministerialNo
+        const change = this.personClone.personName !== this.personInfoDetailForm.personName ||
+                      this.personClone.idNo !== this.personInfoDetailForm.idNo ||
+                      this.personClone.ministerialNo !== this.personInfoDetailForm.ministerialNo
+        return change
+      }else{
+        return false;
+      }
     },
 
     // 保存人员信息
@@ -796,7 +803,7 @@ export default {
           if(res.code === 200){
             const saveFile = {
               personId: personData.personId,
-              photoUrl: res.data[0].storagePath
+              photoUrl: res.data[0].storageId
             }
             this.$store.dispatch('savePersonPhoto', saveFile).then(res => {
               saveLoad.close();
