@@ -1,8 +1,8 @@
 <template>
   <div class="print_box">
-    <div class="print_info" id="evidenceRegApprovalForm_print">
+    <div class="print_info" id="removeEvidenceRegApprovalForm_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
-        <div class="doc_topic">证据登记保存审批表</div>
+        <div class="doc_topic">解除证据登记保存审批表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -190,7 +190,12 @@
               <p>实施证据登记保存理由</p>
             </td>
             <td rowspan="2" colspan="6" class="color_DBE4EF">
-              
+                <p>&nbsp;&nbsp;本机关依法于
+                  <span v-if="formData.threeApproveTime">{{formData.threeApproveTime}}</span>
+                  <span v-else>&nbsp;年&nbsp;月&nbsp;日</span>
+                  对你（单位）采取了证据登记保存，
+                  《证据登记保存清单》编号为：{{formData.approveTime}}。
+                </p>
             </td>
           </tr>
           <tr></tr>
@@ -199,50 +204,14 @@
               <p>承办人意见</p>
             </td>
             <td rowspan="2" colspan="6" class="color_DBE4EF">
-              <p> &nbsp;&nbsp;根据《中华人民共和国行政处罚法》第三十七条第二款的规定，拟对下列物品
-                <el-input style="width:70%;font-weight:400;" type="textarea" v-model="formData.approvePeo"></el-input>
-                予以先行登记保存
-                <el-input style="width:10%" type="number" v-model="formData.days"></el-input>
-                日（自<el-date-picker
-                        v-model="formData.appTime"
-                        type="daterange"
-                        style="font-family:SimSun;font-size:16px"
-                        align="right"
-                        unlink-panels
-                        range-separator="至"
-                        start-placeholder="  年  月  日"
-                        end-placeholder="  年  月  日"
-                        :picker-options="pickerOptions">
-                      </el-date-picker>）。
-              </p> 
-              <!-- <el-form-item
-                prop="approvePeo"
-                :rules="fieldRules('approvePeo',propertyFeatures['approvePeo'])"
-              >
-                <span>&nbsp;&nbsp;根据《中华人民共和国行政处罚法》第三十七条第二款的规定，拟对下列物品</span>
-                <el-input
-                  v-model="formData.approvePeo"
-                  type="textarea"
-                  style="width:"
-                  v-bind:class="{ over_flow:formData.approvePeo.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
-                  :maxLength="50"
-                  :disabled="fieldDisabled(propertyFeatures['approvePeo'])"
-                ></el-input>
-                <span>予以先行登记保存</span>
-                <el-input
-                  v-model="formData.days"
-                  style="width:30px"
-                  disabled
-                  placeholder="\"
-                ></el-input>
-                日（自&nbsp;&nbsp;年&nbsp;月&nbsp;日至&nbsp;&nbsp;年&nbsp;月&nbsp;日）。
-              </el-form-item> -->
+              <p>
+                &nbsp;&nbsp;根据《中华人民共和国行政处罚法》第三十七条第二款的规定，拟解除该证据登记保存。
+              </p>
               <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
                 <p>
                   <span v-if="formData.approveTime">{{formData.approveTime}}</span>
-                  <span v-else>年 月 日</span>
+                  <span v-else>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;月&nbsp;日</span>
                 </p>
               </div>
             </td>
@@ -258,7 +227,7 @@
                 <p>签名：{{formData.secondApprovePeo}}</p>
                 <p>
                   <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
-                  <span v-else>年 月 日</span>
+                  <span v-else>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;月&nbsp;日</span>
                 </p>
               </div>
             </td>
@@ -274,7 +243,7 @@
                 <p>签名：{{formData.threeApprovePeo}}</p>
                 <p>
                   <span v-if="formData.threeApproveTime">{{formData.threeApproveTime}}</span>
-                  <span v-else>年 月 日</span>
+                  <span v-else>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;月&nbsp;日</span>
                 </p>
               </div>
             </td>
@@ -284,7 +253,7 @@
       </el-form>
     </div>
     <casePageFloatBtns
-      :pageDomId="'evidenceRegApprovalForm_print'"
+      :pageDomId="'removeEvidenceRegApprovalForm_print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
       @showApprovePeopleList="showApprovePeopleList"
@@ -440,7 +409,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "evidenceRegApprovalForm_print"
+        pageDomId: "removeEvidenceRegApprovalForm_print"
       },
       huanjieAndDocId: this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId, //结案报告的文书id
       approvalOver: false, //审核完成
@@ -451,9 +420,9 @@ export default {
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId("","",
-        //this.caseLinkDataForm.caseBasicinfoId,
-        //this.caseLinkDataForm.caseLinktypeId,
+      this.com_getFormDataByCaseIdAndFormId(
+        this.caseLinkDataForm.caseBasicinfoId,
+        this.caseLinkDataForm.caseLinktypeId,
         false
       );
     },
@@ -542,10 +511,10 @@ export default {
 .textindent0 {
   text-indent: 0 !important;
 }
-.print_box #evidenceRegApprovalForm_print .doc_cause .caseNameBox span.el-textarea {
+.print_box #removeEvidenceRegApprovalForm_print .doc_cause .caseNameBox span.el-textarea {
   top: -12px;
 }
-.print_box #evidenceRegApprovalForm_print .doc_cause .caseNameBox span.over_flow {
+.print_box #removeEvidenceRegApprovalForm_print .doc_cause .caseNameBox span.over_flow {
   top: -8px;
   text-overflow: initial;
   font-size: 12px;
@@ -564,13 +533,5 @@ export default {
   white-space: normal;
   word-wrap: break-word;
   word-break: break-all;
-}
-.el-date-editor .el-range-input, .el-date-editor .el-range-separator {
-    height: 100%;
-    margin: 0;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    font-family: SimSun;
 }
 </style>

@@ -376,6 +376,14 @@
     }
   }
 
+  .noticeDialog {
+    min-width: 800px;
+    height    : calc(100% - 60px);
+    .el-dialog__body {
+      overflow-y: auto;
+    }
+  }
+
   .caseBox {
     position: absolute;
     width   : 100%;

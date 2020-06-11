@@ -4,35 +4,51 @@
       <div class="handlePart">
         <div class="search">
           <el-form :inline="true" :model="searchForm" class>
+            <el-form-item label="记录时间">
+              <el-date-picker v-model="timeList" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              </el-date-picker>
+            </el-form-item>
             <el-form-item label="业务领域">
               <el-input v-model="searchForm.domain" placeholder="输入业务领域"></el-input>
             </el-form-item>
             <el-form-item label="检查类型">
               <el-input v-model="searchForm.name"></el-input>
             </el-form-item>
-            <el-form-item label="处置情况">
-              <el-input v-model="searchForm.name"></el-input>
+            <el-form-item label="状态">
+              <el-select v-model="searchForm.status" placeholder="请选择">
+                <el-option label="全部" value="全部"></el-option>
+                <el-option label="暂存" value="暂存"></el-option>
+                <el-option label="完成" value="完成"></el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item label="发起时间">
-              <el-input v-model="searchForm.name"></el-input>
-            </el-form-item>
-            <el-form-item label="关键字词">
-              <el-input v-model="searchForm.name"></el-input>
+            <el-form-item label="记录人">
+              <el-input v-model="searchForm.createUser"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button>
             </el-form-item>
             <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">生成日志</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-radio v-model="searchForm.name" label="1">只显示我的</el-radio>
             </el-form-item>
           </el-form>
         </div>
       </div>
       <div class="tablePart">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%">
-          <el-table-column prop="title" label="标题" align="center"></el-table-column>
-          <el-table-column prop="createUser" label="创建人" align="center"></el-table-column>
+        <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55">
+          </el-table-column>
+          <el-table-column prop="createTime" label="记录时间" align="center"></el-table-column>
           <el-table-column prop="domain" label="业务领域" align="center"></el-table-column>
-          <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+          <el-table-column prop="title" label="记录类型" align="center"></el-table-column><!-- 显示模板标题 -->
+          <!-- <el-table-column prop="" label="执法机构" align="center"></el-table-column> -->
+          <!-- <el-table-column prop="" label="执法人员" align="center"></el-table-column> -->
+          <el-table-column prop="createUser" label="记录人" align="center"></el-table-column>
+          <!-- <el-table-column prop="" label="交接班" align="center"></el-table-column> -->
+          <el-table-column prop="status" label="状态" align="center"></el-table-column>
+          <!-- <el-table-column prop="title" label="标题" align="center"></el-table-column> -->
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
               <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
@@ -55,6 +71,8 @@ export default {
   data() {
     return {
       tableData: [], //表格数据
+      timeList: [],
+      multipleSelection: [],
       searchForm: {
         domain: "",
         name: ''
@@ -104,7 +122,7 @@ export default {
     // 查看
     viewRecord(row) {
       this.$router.push({
-        name: 'inspection_viewRecord',
+        name: 'inspection_writeRecordInfo',
         params: row
       });
     },
@@ -116,7 +134,7 @@ export default {
       findRecordModleTimeByIdApi(row.templateId).then(
         res => {
           if (res.code == 200) {
-            console.log('row.createTime <= res.data',row.createTime , res.data)
+            console.log('row.createTime <= res.data', row.createTime, res.data)
             if (row.createTime >= res.data) {
               // 写记录
               row.addOrEiditFlag = 'edit'
@@ -162,6 +180,11 @@ export default {
 
       })
     },
+    // 选择数据
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+      console.log('multipleSelection', this.multipleSelection)
+    }
   },
   mounted() {
     this.getTableData()
