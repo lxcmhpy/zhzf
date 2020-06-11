@@ -3,9 +3,10 @@
 
         <el-table
         :data="tableData"
-        :span-method="objectSpanMethod"
         border
+        :span-method="objectSpanMethod"
         style="width: 100%;">
+        <!--  -->
             <el-table-column
                 prop="name"
                 label="姓名">
@@ -22,6 +23,9 @@
             <el-table-column
                 prop="amount2"
                 label="数值 2（元）">
+                <template slot-scope="scope">
+                    <el-input v-model="scope.row.amount2" placeholder="请输入数值"></el-input>
+                </template>
             </el-table-column>
             <el-table-column
                 prop="amount3"
@@ -35,6 +39,7 @@
                 </template>
             </el-table-column>
         </el-table>
+        <!-- {{JSON.stringfy(tableData)}} -->
     </div>
 </template>
 <script>

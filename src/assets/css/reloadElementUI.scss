@@ -145,9 +145,9 @@ $dialog-default-height: 560px !default;
     overflow-y:auto;
     min-height:33px;
     }
-    .el-table--border, .el-table--group,.el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed {
-        border: 0px solid black;
-    }
+    // .el-table--border, .el-table--group,.el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed {
+    //     border: 0px solid black;
+    // }
     .el-table--border::after, .el-table--group::after {
         width: 0px;
     }
