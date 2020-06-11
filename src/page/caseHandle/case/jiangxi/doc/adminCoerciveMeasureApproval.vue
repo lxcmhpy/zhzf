@@ -1,8 +1,8 @@
 <template>
   <div class="print_box">
-    <div class="print_info" id="evidenceRegApprovalForm_print">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
-        <div class="doc_topic">证据登记保存审批表</div>
+    <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
+      <div class="print_info" id="adminCoerciveMeasureApproval_print">
+        <div class="doc_topic">行政强制措施审批表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -187,57 +187,80 @@
           <tr></tr>
           <tr>
             <td rowspan="2">
-              <p>实施证据登记保存理由</p>
-            </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
-              
-            </td>
-          </tr>
-          <tr></tr>
-          <tr>
-            <td rowspan="2">
               <p>承办人意见</p>
             </td>
             <td rowspan="2" colspan="6" class="color_DBE4EF">
-              <p> &nbsp;&nbsp;根据《中华人民共和国行政处罚法》第三十七条第二款的规定，拟对下列物品
-                <el-input style="width:70%;font-weight:400;" type="textarea" v-model="formData.approvePeo"></el-input>
-                予以先行登记保存
-                <el-input style="width:10%" type="number" v-model="formData.days"></el-input>
-                日（自<el-date-picker
-                        v-model="formData.appTime"
-                        type="daterange"
-                        style="font-family:SimSun;font-size:16px"
-                        align="right"
-                        unlink-panels
-                        range-separator="至"
-                        start-placeholder="  年  月  日"
-                        end-placeholder="  年  月  日"
-                        :picker-options="pickerOptions">
-                      </el-date-picker>）。
-              </p> 
-              <!-- <el-form-item
-                prop="approvePeo"
-                :rules="fieldRules('approvePeo',propertyFeatures['approvePeo'])"
-              >
-                <span>&nbsp;&nbsp;根据《中华人民共和国行政处罚法》第三十七条第二款的规定，拟对下列物品</span>
-                <el-input
-                  v-model="formData.approvePeo"
-                  type="textarea"
-                  style="width:"
-                  v-bind:class="{ over_flow:formData.approvePeo.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
-                  :maxLength="50"
-                  :disabled="fieldDisabled(propertyFeatures['approvePeo'])"
-                ></el-input>
-                <span>予以先行登记保存</span>
-                <el-input
-                  v-model="formData.days"
-                  style="width:30px"
-                  disabled
-                  placeholder="\"
-                ></el-input>
-                日（自&nbsp;&nbsp;年&nbsp;月&nbsp;日至&nbsp;&nbsp;年&nbsp;月&nbsp;日）。
-              </el-form-item> -->
+              <p>
+                &nbsp;&nbsp;根据
+                <span>
+                  <el-form-item
+                    prop="punishLaw"
+                    :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])"
+                    style="width: 70%;"
+                  >
+                    <el-select
+                      v-model="formData.punishLaw"
+                      :maxLength="maxLength"
+                      :disabled="fieldDisabled(propertyFeatures['punishLaw'])"
+                    >
+                      <el-option
+                        v-for="item in laWOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.label"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </span>规定，拟采取以下强制措施：
+              </p>
+              <p>
+                &nbsp;&nbsp;<el-checkbox>扣押财物</el-checkbox>
+                <br />
+                &nbsp;&nbsp;<el-checkbox>查封场所、设施或者财物</el-checkbox>
+                <br />
+                &nbsp;&nbsp;<el-checkbox>其他行政强制措施：</el-checkbox>
+              </p>
+              <p>
+                自
+                <span>
+                  <el-form-item
+                    prop="measureStartDate"
+                    :rules="fieldRules('measureStartDate',propertyFeatures['measureStartDate'])"
+                    style="width: 150px"
+                    class="pdf_datapick"
+                  >
+                    <el-date-picker
+                      v-model="formData.measureStartDate"
+                      @change="startTime"
+                      type="date"
+                      format="yyyy年MM月dd日"
+                      value-format="yyyy-MM-dd"
+                      placeholder="  年  月  日"
+                      :disabled="fieldDisabled(propertyFeatures['measureStartDate'])"
+                    ></el-date-picker>
+                  </el-form-item>
+                </span>
+                <span>至</span>
+                <span>
+                  <el-form-item
+                    prop="measureEndDate"
+                    :rules="fieldRules('measureEndDate',propertyFeatures['measureEndDate'])"
+                    style="width: 150px"
+                    class="pdf_datapick"
+                  >
+                    <el-date-picker
+                      v-model="formData.measureEndDate"
+                      type="date"
+                      format="yyyy年MM月dd日"
+                      value-format="yyyy-MM-dd"
+                      placeholder="  年  月  日"
+                      :disabled="fieldDisabled(propertyFeatures['measureEndDate'])"
+                    ></el-date-picker>
+                  </el-form-item>
+                </span>
+                共
+                <el-input style="width:10%" type="number" v-model="formData.days"></el-input>日
+              </p>
               <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
                 <p>
@@ -266,6 +289,22 @@
           <tr></tr>
           <tr>
             <td rowspan="2">
+              <p>法制审核机构意见</p>
+            </td>
+            <td rowspan="2" colspan="6" class="color_DBE4EF">
+              {{formData.threeApproveOpinions}}
+              <div class="pdf_seal">
+                <p>签名：{{formData.threeApprovePeo}}</p>
+                <p>
+                  <span v-if="formData.threeApproveTime">{{formData.threeApproveTime}}</span>
+                  <span v-else>年 月 日</span>
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr></tr>
+          <tr>
+            <td rowspan="2">
               <p>行政机关负责人意见</p>
             </td>
             <td rowspan="2" colspan="6" class="color_DBE4EF">
@@ -280,11 +319,21 @@
             </td>
           </tr>
           <tr></tr>
+          <tr>
+            <td>
+              <p>备注</p>
+            </td>
+            <td colspan="6" class="color_DBE4EF">
+              <p>
+                <el-input type="textarea" v-model="formData.notes"></el-input>
+              </p>
+            </td>
+          </tr>
         </table>
-      </el-form>
-    </div>
+      </div>
+    </el-form>
     <casePageFloatBtns
-      :pageDomId="'evidenceRegApprovalForm_print'"
+      :pageDomId="'adminCoerciveMeasureApproval_print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
       @showApprovePeopleList="showApprovePeopleList"
@@ -357,7 +406,7 @@ export default {
         secondApproveTime: "",
         threeApproveOpinions: "",
         threeApprovePeo: "",
-        threeApproveTime: "",
+        threeApproveTime: ""
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交
@@ -369,9 +418,13 @@ export default {
         formData: "",
         status: ""
       },
-      name: "",
       illegalFactsEvidence: "",
-      value1: "",
+      laWOptions: [
+        {
+          value: "1",
+          label: "《中华人民共和国强制法》第二十四条"
+        }
+      ],
       rules: {
         party: [
           { required: true, message: "当事人姓名不能为空", trigger: "blur" }
@@ -440,7 +493,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "evidenceRegApprovalForm_print"
+        pageDomId: "adminCoerciveMeasureApproval_print"
       },
       huanjieAndDocId: this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId, //结案报告的文书id
       approvalOver: false, //审核完成
@@ -451,7 +504,9 @@ export default {
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId("","",
+      this.com_getFormDataByCaseIdAndFormId(
+        "",
+        "",
         //this.caseLinkDataForm.caseBasicinfoId,
         //this.caseLinkDataForm.caseLinktypeId,
         false
@@ -542,10 +597,18 @@ export default {
 .textindent0 {
   text-indent: 0 !important;
 }
-.print_box #evidenceRegApprovalForm_print .doc_cause .caseNameBox span.el-textarea {
+.print_box
+  #adminCoerciveMeasureApproval_print
+  .doc_cause
+  .caseNameBox
+  span.el-textarea {
   top: -12px;
 }
-.print_box #evidenceRegApprovalForm_print .doc_cause .caseNameBox span.over_flow {
+.print_box
+  #adminCoerciveMeasureApproval_print
+  .doc_cause
+  .caseNameBox
+  span.over_flow {
   top: -8px;
   text-overflow: initial;
   font-size: 12px;
@@ -564,13 +627,5 @@ export default {
   white-space: normal;
   word-wrap: break-word;
   word-break: break-all;
-}
-.el-date-editor .el-range-input, .el-date-editor .el-range-separator {
-    height: 100%;
-    margin: 0;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    font-family: SimSun;
 }
 </style>

@@ -5,7 +5,13 @@
     id="compensationNotice-print"
     style="width:790px; margin:0 auto;"
   >
-    <el-form :rules="rules" ref="compensationNoticeForm" :inline-message="true" :inline="true" :model="formData">
+    <el-form
+      :rules="rules"
+      ref="compensationNoticeForm"
+      :inline-message="true"
+      :inline="true"
+      :model="formData"
+    >
       <div class="print_info">
         <div class="doc_topic">公路赔（补）偿通知书</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
@@ -94,7 +100,7 @@
                 placeholder="    年  月  日"
                 value-format="yyyy-MM-dd"
                 :disabled="fieldDisabled(propertyFeatures['afsj'])"
-              ></el-date-picker>
+              ></el-date-picker>，
             </el-form-item>
           </span>
         </p>
@@ -175,6 +181,7 @@
             >
               <el-input
                 :disabled="fieldDisabled(propertyFeatures['payTotal'])"
+                @change="combined"
                 v-model="formData.payTotal"
                 type="textarea"
                 v-bind:class="{ over_flow:formData.payTotal.length>14?true:false }"
@@ -186,10 +193,7 @@
         </p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item
-              prop="bank"
-              :rules="fieldRules('bank',propertyFeatures['bank'])"
-            >
+            <el-form-item prop="bank" :rules="fieldRules('bank',propertyFeatures['bank'])">
               <el-input
                 class="overflow_lins_textarea_three"
                 style="text-indent:5em"
@@ -220,6 +224,9 @@
             ></el-date-picker>
           </el-form-item>
         </div>
+        <div class="notice clear">
+          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
+        </div>
       </div>
     </el-form>
 
@@ -248,7 +255,7 @@ export default {
   data() {
     return {
       formData: {
-        caseName:"",
+        caseName: "",
         caseNumber: "",
         caseName: "",
         partyAddress: "",
@@ -336,7 +343,22 @@ export default {
           console.log(err);
         }
       );
-      if (this.formData.payTotal) this.combined(this.formData.payTotal);
+      this.chin("200")
+      if (this.formData.payTotal && this.caseLinkDataForm.status == "")
+        this.combined(this.formData.payTotal);
+    },
+    chin(str){
+        let cnChar  = "零壹贰叁肆伍陆柒捌玖",
+            partInt = '元拾佰仟万拾佰仟亿拾佰仟',
+            len = str.length-1,
+            arr = new Array((len+1)),
+            i=0;
+        str.replace(/\d/g,function(n){
+            var b = partInt.charAt(len-i);
+            arr[i] = cnChar.charAt(n) + (n==='0'&&'元万亿'.indexOf(b)<0?'':b);
+            i++;
+        });
+        alert(arr.join('').replace(/(零)\1+/g,'零').replace('/(零)(?=元|万|亿)/g',''));
     },
     //将金额转换为大写(小写)
     combined(val) {
@@ -361,7 +383,7 @@ export default {
             .replace(/零(仟|佰|拾|角)/g, "零")
             .replace(/(零)+/g, "零")
             .replace(/零(万|亿|圆)/g, "$1")
-            .replace(/(亿)万|壹(拾)/g, "$1$2")
+            .replace(/(亿)万|壹(壹拾)/g, "$1$2")
             .replace(/^圆零?|零分/g, "")
             .replace(/圆$/g, "圆") +
           "（" +
@@ -384,7 +406,7 @@ export default {
         this.caseLinkDataForm.caseLinktypeId,
         false
       );
-      console.log('获取数据',this.formData)
+      console.log("获取数据", this.formData);
     },
     // 提交表单
     saveData(handleType) {
