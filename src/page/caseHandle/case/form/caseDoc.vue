@@ -347,7 +347,7 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import checkDocFinish from "../components/checkDocFinish";
+import checkDocFinish from "@/page/caseHandle/components/checkDocFinish.vue";
 import chooseAskPeopleDia from "@/page/caseHandle/components/chooseAskPeopleDia";
 import resetDocDia from '@/page/caseHandle/components/resetDocDia'
 import iLocalStroage from "@/common/js/localStroage";
@@ -560,7 +560,7 @@ export default {
     addMoreDoc(row) {
       console.log("添加",row);
       iLocalStroage.removeItem("currentDocDataId");
-      this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
+      this.$refs.chooseAskPeopleDiaRef.showModal(row,this.caseLinkDataForm.caseLinktypeId, this.isSaveLink);
     },
     //清空文书
     delDocDataByDocId(data){

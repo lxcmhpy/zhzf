@@ -792,7 +792,7 @@
   import {
     getDictListDetailByNameApi, findHistoryBySignApi, findRouteManageByOrganIdApi
   } from "@/api/system";
-  import {findJudgFreedomListApi} from "@/api/caseHandle";
+  import {findJudgFreedomListApi,findLawOfficerListApi} from "@/api/caseHandle";
 
   export default {
     data() {
@@ -1071,7 +1071,7 @@
       caseSlideMenu
     },
     mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId'])},
+    computed: {...mapGetters(['caseId','openTab','caseHandle'])},
     methods: {
       //更改案件来源
       changeCaseSource(item) {
@@ -1254,16 +1254,25 @@
         this.showTrailer = true;
       },
       //点击处罚依据显示弹窗
+    //点击处罚依据显示弹窗
     showPunishDiag(titleType='') {
+      let illageClauseLabel = '';
+      let punishClauseLabel = '';
       if(titleType =='compensation'){
-        titleType = '选择认定条款及赔（补）偿依据'
+        titleType = '选择认定条款及赔（补）偿依据',
+        illageClauseLabel = '认定条款';
+        punishClauseLabel = '赔（补）偿依据';
       }else{
-        titleType = '选择违法条款及处罚依据'
+        titleType = '选择违法条款及处罚依据';
+        illageClauseLabel = '违法条款';
+        punishClauseLabel = '处罚依据';
       }
       let data = {
         caseCauseId: this.inforForm.caseCauseId,
         caseCauseName: this.inforForm.caseCauseName,
-        titleType:titleType
+        titleType:titleType,
+        illageClauseLabel,
+        punishClauseLabel
       };
       this.$refs.punishDiagRef.showModal(data);
     },
@@ -1380,7 +1389,19 @@
               _this.$store.commit("setCaseNumber", res.data.tempNo);
               iLocalStroage.removeItem("stageCaseId");
               this.autoSava = false;
-              _this.$router.replace({
+              
+              let replaceIndex = 0;
+              for(let i=0;i < this.openTab.length;i++){
+                if(this.openTab[i].route == '/inforCollect'){
+                  replaceIndex = i;
+                  break;
+                }
+              }
+              this.openTab[replaceIndex].menuUrl = 'case_handle_establish';
+              this.openTab[replaceIndex].name = 'case_handle_establish' + '-and-' + this.caseHandle.caseNumber;
+              this.openTab[replaceIndex].route = '/establish';
+
+              _this.$router.push({
                 name: "case_handle_establish"
               });
             },
@@ -1390,83 +1411,7 @@
             }
           );
         }
-        //          if (valid) {
-        // let submitData = {
-        //   caseSource: this.inforForm.caseSource,
-        //   inforForm: this.inforForm.inforForm,
-        //   afsj: this.inforForm.afsj,
-        //   acceptTime: this.inforForm.acceptTime,
-        //   caseCauseId: this.inforForm.caseCauseId,
-        //   caseCauseName: this.inforForm.caseCauseName,
-        //   programType: this.inforForm.programType,
-        //   caseType: this.inforForm.caseType,
-        //   lawPersonList: this.inforForm.lawPersonList,
-        //   partyType: this.inforForm.partyType,
-        //   party: this.inforForm.party,
-        //   partyIdType: this.inforForm.partyIdType,
-        //   partyIdNo: this.inforForm.partyIdNo,
-        //   partySex: this.inforForm.partySex,
-        //   partyAge: this.inforForm.partyAge,
-        //   partyTel: this.inforForm.partyTel,
-        //   partyAddress: this.inforForm.partyAddress,
-        //   partyZipCode: this.inforForm.partyZipCode,
-        //   partyUnitPosition: this.inforForm.partyUnitPosition,
-        //   occupation: this.inforForm.occupation,
-        //   partyEcertId: this.inforForm.partyEcertId,
-        //   partyName: this.inforForm.partyName,
-        //   partyUnitTel: this.inforForm.partyUnitTel,
-        //   socialCreditCode: this.inforForm.socialCreditCode,
-        //   roadTransportLicense: this.inforForm.roadTransportLicense,
-        //   partyManager: this.inforForm.partyManager,
-        //   partyManagerPositions: this.inforForm.partyManagerPositions,
-        //   partyUnitAddress: this.inforForm.partyUnitAddress,
-        //   vehicleShipId: this.inforForm.vehicleShipId,
-        //   vehicleIdColor: this.inforForm.vehicleIdColor,
-        //   vehicleShipType: this.inforForm.vehicleShipType,
-        //   brand: this.inforForm.brand,
-        //   ccertId: this.inforForm.ccertId,
-        //   trailerIdNo: this.inforForm.trailerIdNo,
-        //   trailerColor: this.inforForm.trailerColor,
-        //   trailerType: this.inforForm.trailerType,
-        //   trailerBrand: this.inforForm.trailerBrand,
-        //   trailerCcertId: this.inforForm.trailerCcertId,
-        //   caseCauseNameCopy: this.inforForm.caseCauseNameCopy,
-        //   illegalLaw: this.inforForm.illegalLaw,
-        //   punishLaw: this.inforForm.punishLaw,
-        //   agentPartyEcertId:JSON.stringify(this.driverOrAgentInfoList),
-        //   discretionId:this.inforForm.discretionId
-        // };
-        //          _this.inforForm.agentPartyEcertId = JSON.stringify(
-        //            _this.driverOrAgentInfoList
-        //          );
-        //          // 超限
-        //          _this.inforForm.otherInfo = JSON.stringify(
-        //            _this.inforForm.otherInfo
-        //          );
-        //          _this.inforForm.state = state;
-        //          _this.inforForm.caseStatus = '未立案';
-        //          _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
-        //            res => {
-        //              console.log(res);
-        //              _this.$message({
-        //                type: "success",
-        //                message: "提交成功!"
-        //              });
-        //              _this.$store.dispatch("deleteTabs", _this.$route.name);
-        //              _this.$store.commit("setCaseId", res.data.id);
-        //              iLocalStroage.removeItem("stageCaseId");
-        //              this.autoSava = false;
-        //              _this.$router.replace({
-        //                name: "case_handle_establish"
-        //              });
-        //            },
-        //            err => {
-        //
-        //              console.log(err);
-        //            }
-        //          );
-        //          }
-        //        });
+        
       },
       //查询执法人员
       getAllUserList(list) {
@@ -1565,12 +1510,7 @@
         if (data.discretionId != "") {
           this.activeJudgli = data.discretionId;
         }
-        //当前用户不是创建案件者，输入框设置为只读
-        // currentUserId = iLocalStroage.gets("userInfo").id;
-        // if(currentUserId!=data.createId){
-        //    let allInput = document.querySelectorAll('.el-input');
-
-        // };
+        
         //设置执法人员
         this.alreadyChooseLawPerson = [];
         let staffNameList = data.staff.split(',');
@@ -1585,6 +1525,16 @@
           }
           this.alreadyChooseLawPerson.push(newlaw);
         });
+        //设置当前执法人员不可以删除
+        findLawOfficerListApi(iLocalStroage.gets("userInfo").organId).then(res=>{
+          console.log('res',res);
+          for(let i=0;i< res.data.length;i++){
+            if (res.data[i].userId == iLocalStroage.gets("userInfo").id){
+              this.currentUserLawId = res.data[i].id;
+              break;
+            }
+          }
+        }).catch(err=>{console.log(err)})
 
       },
       //案件来源后的输入框是否显示

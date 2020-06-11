@@ -9,8 +9,8 @@
           :inline="true"
           :model="docData"
         >
-          <div class="doc_topic">现场笔录</div>
-          <div class="doc_number">案号：{{docData.caseNumber}}</div>
+          <div class="doc_topic">行政强制措施现场笔录</div>
+          <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交强现录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
           <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
@@ -206,14 +206,11 @@
             <tr>
               <td rowspan="11">主要内容</td>
               <td colspan="7" class="illegalFactsTip">
-               <span> 现场情况：（如实施行政强制措施的，包括当场告知当事人采取行政强制措施
-               <br>的理由、依据以及当事人依法享有的权利、救济途径，听取当事人陈述、申
-               <br>辩情况。）</span>
-                <div class="overflow_lins_style" id="noteDesCon">
+               <div class="overflow_lins_style" id="noteDesCon">
                   <div class="overflow_lins">
                     <el-form-item prop="illegalFacts" :rules="fieldRules('illegalFacts',propertyFeatures['illegalFacts'])">
                       <el-input
-                        class="text_indent10 overflow_lins_textarea espacle"
+                        class="text_indent11 overflow_lins_textarea"
                         type="textarea"
                         v-model="docData.illegalFacts"
                         rows="4"
@@ -221,39 +218,119 @@
                         placeholder="\"
                         :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
                       ></el-input>
+                      <span class="overflow_describe_JX" style="padding-bottom:-6px;">现场情况：因你单位</span>
+                      <span class="span_bg span_bg_top">&nbsp;</span>
                       <p class="span_bg">&nbsp;</p>
-                      <p class="span_bg">&nbsp;</p>
-                      <p class="span_bg">&nbsp;</p>
-                      <p class="span_bg">&nbsp;</p>
-                      <p class="span_bg">&nbsp;</p>
-                      <p class="span_bg">&nbsp;</p>
-                      <p class="span_bg">&nbsp;</p>
-                      <p class="span_bg">&nbsp;</p>
-                      <p class="span_bg">&nbsp;</p>
-                      <p class="span_bg">&nbsp;</p>
-                      <p class="span_bg">&nbsp;</p>
-                      <p class="span_bg">&nbsp;</p>
-
                     </el-form-item>
                   </div>
                 </div>
-              </td>
-            </tr>
-
-            <tr>
-              <td colspan="7">
-                <el-form-item prop="readState" :rules="fieldRules('readState',propertyFeatures['readState'])">
-                  <el-checkbox-group v-model="docData.readState" :max="1" :disabled="fieldDisabled(propertyFeatures['readState'])">
-                    <el-checkbox label="0">上述笔录我已看过</el-checkbox>
-                    <el-checkbox label="1">或已向我宣读过，情况属实无误。</el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
-                <el-row justify="end">
-                  <el-col :span="12" :offset="12">现场人员签名：<span class="write_line width150"></span></el-col>
-                </el-row>
-                <el-row justify="end">
-                  <el-col :span="12" :offset="12">时间：<span class="write_line width150"></span></el-col>
-                </el-row>
+                <p >
+                &nbsp;&nbsp;依据
+                <span>
+                    <el-form-item prop="punishLaw" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])" style="width: 320px">
+                    <el-select v-model="docData.punishLaw" :maxLength='maxLength' style="width: 320px" :disabled="fieldDisabled(propertyFeatures['punishLaw'])">
+                      <el-option v-for="item in laWOptions" :key="item.value" :label="item.label" :value="item.label">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </span>的规定，本机关决
+                <br>定对你（单位）的
+                <span contenteditable="true">
+                    <el-form-item prop="detainGoods" :rules="fieldRules('detainGoods',propertyFeatures['detainGoods'])" style="width: 330px">
+                    <el-input type='textarea' v-model="docData.detainGoods"
+                              :autosize="{ minRows: 1, maxRows: 3}" :maxLength='50'
+                              :disabled="fieldDisabled(propertyFeatures['detainGoods'])"></el-input>
+                  </el-form-item>
+                </span>（财物<br>
+                、设施或场所的名称及数量）实施
+                <span>
+                    <el-form-item prop="enforceMeasure" :rules="fieldRules('enforceMeasure',propertyFeatures['enforceMeasure'])" style="width: 280px">
+                    <el-select v-model="docData.enforceMeasure" style="width: 280px" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['enforceMeasure'])">
+                      <el-option v-for="item in measurOptions" :key="item.value" :label="item.label"
+                                 :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </span>
+                <br>的强制措施，期限为
+                 <span>
+                  <el-form-item prop="measureStartDate" :rules="fieldRules('measureStartDate',propertyFeatures['measureStartDate'])" style="width: 150px" class="pdf_datapick">
+                    <el-date-picker v-model="docData.measureStartDate" style="width: 220px" @change="startTime"
+                                    type="date" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" placeholder="  年  月  日" :disabled="fieldDisabled(propertyFeatures['measureStartDate'])">
+                    </el-date-picker>
+                  </el-form-item>
+                </span>至
+                <span>
+                  <el-form-item prop="measureEndDate" :rules="fieldRules('measureEndDate',propertyFeatures['measureEndDate'])" style="width: 150px" class="pdf_datapick">
+                    <el-date-picker v-model="docData.measureEndDate" type="date" format="yyyy年MM月dd日"
+                                    value-format="yyyy-MM-dd" placeholder="  年  月  日" :disabled="fieldDisabled(propertyFeatures['measureEndDate'])">
+                    </el-date-picker>
+                  </el-form-item>
+                </span>。如果
+                <br>不服本决定，你可以依法在六十日内向
+                <span>
+                  <el-form-item prop="reconsiderationOrgan" :rules="fieldRules('reconsiderationOrgan',propertyFeatures['reconsiderationOrgan'])" style="width: 230px">
+                    <el-select v-model="docData.reconsiderationOrgan" style="width: 230px" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['reconsiderationOrgan'])">
+                      <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label"
+                                 :value="item.label">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </span>申请
+                <br>行政复议，或者在六个月内依法向
+                <span>
+                  <el-form-item prop="lawsuitOrgan" :rules="fieldRules('lawsuitOrgan',propertyFeatures['lawsuitOrgan'])" style="width: 230px">
+                    <el-select v-model="docData.lawsuitOrgan" style="width: 230px" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['lawsuitOrgan'])">
+                      <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label"
+                                 :value="item.label">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </span>人民法<br>院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。
+                </p>
+                <p>
+                    &nbsp;&nbsp;根据《中华人民共和国行政强制法》第十八条第（六）项的规定，你（单<br>
+                    位）如对该行政强制措施有异议，可提出陈述申辩，我们将依法予以核实。<br>你是否需要陈述申辩：
+                </p>
+                <div>
+                   <el-form-item prop="defendState" :rules="fieldRules('defendState',propertyFeatures['defendState'])">
+                    <el-checkbox-group v-model="docData.defendState" :max="1" :disabled="fieldDisabled(propertyFeatures['defendState'])">
+                        <p><el-checkbox label="0">不需要</el-checkbox></p>
+                        <p><el-checkbox label="1">
+                            <el-form-item prop="defendReason" :rules="fieldRules('defendReason',propertyFeatures['defendReason'])">
+                               <el-input
+                                    class="text_indent11 overflow_lins_textarea"
+                                    type="textarea"
+                                    v-model="docData.defendReason"
+                                    rows="4"
+                                    maxlength="400"
+                                    placeholder="\"
+                                    :disabled="fieldDisabled(propertyFeatures['defendReason'])"
+                                ></el-input>
+                                <span class="overflow_describe_JX" style="padding-bottom:-6px;">需要</span>
+                                <span class="span_bg span_bg_top">&nbsp;</span>
+                                <p class="span_bg">&nbsp;</p>
+                            </el-form-item>
+                        </el-checkbox></p>
+                    </el-checkbox-group>
+                   </el-form-item> 
+                </div>
+                <p>
+                    <el-form-item prop="readState" :rules="fieldRules('readState',propertyFeatures['readState'])">
+                    <el-checkbox-group v-model="docData.readState" :max="1" :disabled="fieldDisabled(propertyFeatures['readState'])">
+                        <el-checkbox label="0">上述笔录我已看过</el-checkbox>
+                        <el-checkbox label="1">或已向我宣读过，情况属实无误。</el-checkbox>
+                    </el-checkbox-group>
+                    </el-form-item>
+                    <el-row>
+                    <el-col :span="12">见证人签名：<span class="write_line width150"></span></el-col>
+                    <el-col :span="12">当事人签名：<span class="write_line width150"></span></el-col>
+                    </el-row>
+                    <el-row>
+                    <el-col :span="12">时间：<span class="write_line width150"></span></el-col>
+                    <el-col :span="12">时间：<span class="write_line width150"></span></el-col>
+                    </el-row>
+                </p>
               </td>
             </tr>
             <tr>
@@ -386,6 +463,15 @@ export default {
         certificateId1: "",
         certificateId2: "",
         readState:[],
+        punishLaw: '',
+        detainGoods: '',
+        enforceMeasure: '',
+        measureStartDate: '',
+        measureEndDate: '',
+        reconsiderationOrgan: '',
+        lawsuitOrgan: '',
+        defendState:'',
+        defendReason:''
       },
       rules: {
         afdd: [{ required: true, message: '执法地点不能为空', trigger: "blur" }],
@@ -514,10 +600,27 @@ export default {
           // return (time.getTime() + 24 * 3600 * 1000) >= Date.now()
         }
       },
+      measurOptions: [
+        {
+        value: '查封',
+        label: '查封'
+        },
+        {
+        value: '扣押',
+        label: '扣押'
+        }
+      ],
+      reconsiderationOptions: [],
+      enforcementOptions: [],
       needDealData: true,
       propertyFeatures: '', //字段属性配置
-      
-    }
+      laWOptions: [
+          {
+            value: '1',
+            label: '《中华人民共和国强制法》第二十四条'
+          }
+        ],
+        }
     },
     computed: {
       ...mapGetters(["caseId"]),
@@ -703,12 +806,63 @@ export default {
         }, err => {
           console.length(err);
         })
-      }
+      },
+      //根据用户的组织机构ID获取复议机构和诉讼机构
+      getOrganDetailOptions() {
+        let orgId = JSON.parse(window.localStorage.userInfo).id;
+        console.log('orgId=' + orgId);
+        let data = {
+          id: orgId
+        };
+        let _this = this
+        getOrganIdApi(data).then(
+          res => {
+            let orgData = {
+              id: res.data.organId
+            };
+
+            getOrganDetailApi(orgData).then(
+              orgRes => {
+                _this.reconsiderationOptions = [
+                  {
+                    value: 'reconsiderationOrgan1',
+                    label: orgRes.data.reconsiderationOrgan1
+                  },
+                  {
+                    value: 'reconsiderationOrgan2',
+                    label: orgRes.data.reconsiderationOrgan2
+                  }
+                ]
+                select : 'reconsiderationOrgan1';
+                _this.enforcementOptions = [
+                  {
+                    value: 'enforcementOrgan1',
+                    label: orgRes.data.enforcementOrgan1
+                  },
+                  {
+                    value: 'enforcementOrgan2',
+                    label: orgRes.data.enforcementOrgan2
+                  }
+                ];
+                // _this.formData.reconsiderationOrgan = 'reconsiderationOrgan1';
+                // _this.formData.lawsuitOrgan = 'enforcementOrgan1';
+                _this.docData.reconsiderationOrgan = '复议机构1';
+                _this.docData.lawsuitOrgan = '诉讼机构1';
+              });
+          });
+
+      },
+      startTime() {
+        if (this.docData.measureStartDate) {
+          this.$set(this.docData, 'measureEndDate', new Date(new Date(this.docData.measureStartDate).getTime() + 30 * 24 * 3600 * 1000).format("yyyy-MM-dd"));
+        }
+      },
     },
     mounted() {
       this.getDocDataByCaseIdAndDocId();
       this.isOverStatus();
       this.getLawOfficer();
+      this.getOrganDetailOptions();
     }
   };
 </script>

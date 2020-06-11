@@ -572,7 +572,7 @@ export function getDictListDetailByNameApi(name) {
     url: "/system/sys/drawer/findAllDrawerByName/" + name,
     method: "get",
     showloading: true,
-    loadingType:'loadPart',
+    loadingType: name =='系统标题' ? 'loadFull' : 'loadPart',
     cancelToken: setCancelSource()
   });
 }

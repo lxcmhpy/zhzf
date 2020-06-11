@@ -136,9 +136,23 @@ export function getById(type,id) {
   export function getOrganTree (data) {
     return request({
         // url: "/zfjg/queryLike",
-        url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
+        url: "/system/sys/organ/queryLike",
+        // url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
         method: "get",
         params: data,
+        showloading: false,
+        baseUrlType:  'LAW_SUPERVISE_HOST',
+        cancelToken: setCancelSource()
+    });
+  }
+  // 获取机构树
+  export function getOrganList(){
+    return request({
+        // url: "/zfjg/queryLike",
+        url: "/system/sys/organ/organTreeByCurrUser",
+        // url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
+        method: "get",
+        // params: data,
         showloading: false,
         baseUrlType:  'LAW_SUPERVISE_HOST',
         cancelToken: setCancelSource()

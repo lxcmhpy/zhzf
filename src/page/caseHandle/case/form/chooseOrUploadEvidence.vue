@@ -200,7 +200,6 @@ export default {
         if (val.length > 1) {
             this.$refs.myTable.clearSelection()
             this.$refs.myTable.toggleRowSelection(val.pop());
-
         }else{
           this.multipleSelection = val;
         }

@@ -1195,12 +1195,13 @@
 </template>
 <script>
 import Vue from "vue";
+import iLocalStroage from '@/common/js/localStroage';
 import { mapGetters } from "vuex";
 // require("@/common/js/call.js");
 import echarts from "echarts";
 // import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById } from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,getOrganList} from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 import lunarDate from '@/common/js/lunarDate.js';
@@ -1691,6 +1692,7 @@ export default {
       gjObj: null,
       fxcObj: null,
       expandTree:false,
+      userInfo: null
     };
   },
   methods: {
@@ -2375,17 +2377,26 @@ export default {
         );
       });
     },
-    getOrganTree () {
+    getOrganTree (organId) {
         let _this = this;
         let params = {
             name: '',
-            organId: BASIC_DATA_SYS.lawSupervise,
+            organId: organId,
             type: 0
         }
         debugger;
+
+          new Promise((resolve, reject) => {
+            getOrganList().then(
+                res => {
+                    debugger;
+                }
+            )
+          })
        new Promise((resolve, reject) => {
         getOrganTree(params).then(
           res => {
+              debugger;
             let dataArray = res.data;
             // dataArray.position = dataArray.propertyValue;
             dataArray.forEach((item,i)=>{
@@ -2468,6 +2479,8 @@ export default {
     }
   },
   mounted() {
+      this.userInfo = iLocalStroage.gets("userInfo");
+
      this.$nextTick(() => {
         //  debugger;
          window.PhoneCallModule.initialize();
@@ -2476,7 +2489,7 @@ export default {
         }
      })
     this.lunarDate = lunarDate();
-    this.getOrganTree();
+    this.getOrganTree(this.userInfo.organId);
     // this.updateDrawer();
   },
   created () {

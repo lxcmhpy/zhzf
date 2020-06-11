@@ -156,18 +156,19 @@
             </div>
             <div class="row">
               <div class="col">
+                
                 <el-form-item prop="payEvidence" label="缴纳凭证">
+                  <ul>
+                    <li v-for="item in alreadyLoadPayEvidence" :key="item.id">{{item.fileName}}</li>
+                  </ul>
                   <el-upload
                     class="upload-demo"
                     action="https://jsonplaceholder.typicode.com/posts/"
-                    :http-request="uploadPaymentVoucher"
+                    :http-request="saveFile"
                     :before-upload="uploadFileValidat"
                     :show-file-list="false"
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
-                    <ul>
-                      <li v-for="item in alreadyLoadPayEvidence" :key="item.id">{{item.fileName}}</li>
-                    </ul>
                   </el-upload>
                 </el-form-item>
               </div>
@@ -231,7 +232,8 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import { uploadEvApi, findFileByIdApi } from "@/api/upload";
+import { uploadEvdence, findFileByIdApi } from "@/api/upload";
+import iLocalStroage from "@/common/js/localStroage.js";
 export default {
   data() {
     var validatePaid = (rule, value, callback) => {
@@ -258,6 +260,19 @@ export default {
         civilAction: false,
         note: "",
         payEvidence: "" //缴费凭证id
+      },
+      form: {
+        id: "",
+        caseId: "",
+        evName: "",
+        evType: "照片",
+        status: 0,//默认为有效证据
+        fileId: "",
+        remark: "",
+        file: null,
+        docId: "",
+        category: "",
+        userId: ""
       },
       alreadyLoadPayEvidence: [], //已上传的缴费凭证
       //提交方式
@@ -359,21 +374,40 @@ export default {
       return true;
     },
     //上传缴费凭证
-    uploadPaymentVoucher(param) {
+    saveFile(param) {
       console.log(param);
+      (this.form.file = param.file),
+      (this.form.caseId = this.caseId),
+      (this.form.docId = "000"),
+      (this.form.category = "证据"),
+      (this.form.userId = iLocalStroage.gets("userInfo").id),
+      (this.form.evName = param.file.name);
+      (this.form.evType = param.file.type);
+      this.insertEvi();      
+    },
+    //插入到证据目录
+    insertEvi(id){
       var fd = new FormData();
-      fd.append("file", param.file);
-      fd.append("caseId", this.caseId);
-      fd.append("docId", this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId);
-      uploadEvApi(fd).then(
-        res => {
-          console.log(res);
-          this.findPaymentVoucher(res.data, true);
-        },
-        error => {
-          console.log(error);
+      fd.append("file", this.form.file);
+      fd.append("caseId", this.form.caseId);
+      fd.append("docId", this.form.docId);
+      fd.append("category", this.form.category);
+      fd.append("userId", this.form.userId);
+      fd.append("evName", this.form.evName);
+      fd.append("evType", this.form.evType);
+      fd.append("status", this.form.status);
+      fd.append("remark", this.form.remark);
+      fd.append("fileId", this.form.fileId);
+      // fd.append("id", this.form.id);
+      let _this = this
+      uploadEvdence(fd).then(res => {
+        console.log("1111111",res);
+        if (res.code == 200){
+          this.findPaymentVoucher(res.data.id,true);
+        }else{
+          _this.$message.error('出现异常，添加失败！');
         }
-      );
+      });
     },
     //通过缴费凭证id 查询缴费凭证file
     findPaymentVoucher(id, isAdd) {

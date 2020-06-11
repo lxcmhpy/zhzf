@@ -1,51 +1,112 @@
-<template>
+ <template>
     <div class="com_searchAndpageBoxPadding">
         <div class="searchAndpageBox toggleBox">
             <div class="handlePart" style="margin-left: 0px;">
                 <el-button type="primary" size="medium" @click="addPykh">
-                    <i class="iconfont law-submit-o f12"></i> 添加
+                    <i class="iconfont law-submit-o f12"></i> 添加考核要求
                 </el-button>
             </div>
             <div class="tablePart">
                  <!-- @row-click="handleNodeClick" -->
                 <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @expand-change="load"
-                row-key="id" :expand-row-keys="expandList">
+                row-key="id" :expand-row-keys="expandList" current-row-key="id">
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
+                    <el-table-column type="expand" width="100">
+                        <template slot="header" >
+                            考核指标
+                            <!-- <el-link type="primary" v-on:click="fold" style="float:right;"> 查看 </el-link> -->
+                        </template>
+                        <template slot-scope="scope">
+                        <div style="padding:0px 35px 35px 35px;min-width:620px;">
+                            <div class="handlePart" style="margin: 8px 0px 8px 0px;">
+                                <el-button type="primary" size="medium" @click="addZbConfig(scope.row)">
+                                    <i class="iconfont law-submit-o f12"></i> 添加考核指标
+                                </el-button>
+                            </div>
+                            <div style="border: 1px solid #f4f4f4;" v-if="zbList.length>0">
+                                <el-table class="xzList" :data="zbList" stripe resizable border style="height:100%;"
+                                 @expand-change="loadXzList" row-key="id" :expand-row-keys="expandXzList" current-row-key="id">
+                                     <el-table-column type="expand" width="100">
+                                        <template slot="header" >
+                                            考试细则
+                                            <!-- <el-link type="primary" v-on:click="fold" style="float:right;"> 查看 </el-link> -->
+                                        </template>
+                                        <template slot-scope="scope1">
+                                        <div style="padding:0px 35px 35px 35px;min-width:620px;">
+                                            <div class="handlePart" style="margin: 8px 0px 8px 0px;">
+                                                <el-button type="primary" size="medium" @click="addXzConfig(scope1.row)">
+                                                    <i class="iconfont law-submit-o f12"></i> 添加考试细则
+                                                </el-button>
+                                            </div>
+                                            <div style="border: 1px solid #f4f4f4;" v-if="zbList.length>0">
+                                                <el-table class="xzList" :data="xzList" stripe resizable border style="height:100%;" >
+                                                    <el-table-column prop="reviewType" label="评查类别" align="center" ></el-table-column>
+                                                    <el-table-column prop="nrxm" label="评查内容/评查项目" align="center" ></el-table-column>
+                                                    <el-table-column prop="sore" label="分值" align="center" ></el-table-column>
+                                                    <el-table-column prop="xsyq" label="评查形式/评查内容和要求" align="center" ></el-table-column>
+                                                    <el-table-column prop="xdxz" label="评查要点/评分细则" align="center" ></el-table-column>
+                                                    <el-table-column label="操作" align="center" width="250">
+                                                        <template  slot-scope="scope2">
+                                                            <el-button type="text" @click.stop @click="updateXzConfig(scope2.$index, scope2.row)">修改</el-button>
+                                                            <el-button type="text" @click.stop @click="deletePykhMetricsById(scope2.$index,scope2.row)">删除</el-button>
+                                                            <!-- <el-button type="text" @click.stop @click="addXzDialog(scope1.row)">配置考试细则</el-button> -->
+                                                        </template>
+                                                    </el-table-column>
+                                                </el-table>
+                                                 <div class="paginationBox" >
+                                                    <div v-if="total2/xzForm.size > 1">
+                                                        <el-pagination
+                                                            @size-change="(size)=>handleXzSizeChange(scope1.row.id,size)"
+                                                            @current-change="(current)=>handleXzCurrentChange(scope1.row.id,current)"
+                                                            :current-page="xzForm.current"
+                                                            background
+                                                            :page-sizes="[5, 10, 20, 30, 40]"
+                                                            :page-size="xzForm.size"
+                                                            layout="prev, pager, next,sizes,jumper"
+                                                            :total="total2"
+                                                        ></el-pagination>
+                                                    </div>
+                                                    <div class="noMore" v-else>没有更多了</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column prop="metricsName" label="考核指标名称" align="center" ></el-table-column>
+                                    <el-table-column prop="assessType" label="考核类别" align="center" width="100"></el-table-column>
+                                    <el-table-column label="操作" align="center" width="250">
+                                        <template  slot-scope="scope1">
+                                            <el-button type="text" @click.stop @click="updateZbConfig(scope1.$index, scope1.row)">修改</el-button>
+                                            <el-button type="text" @click.stop @click="deletePykhMetricsById(scope.row,scope1.row)">删除</el-button>
+                                            <!-- <el-button type="text" @click.stop @click="searchXzDialog(scope1.row)">配置考试细则</el-button> -->
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                                <div class="paginationBox" >
+                                    <div v-if="total1/zbForm.size > 1">
+                                        <el-pagination
+                                            @size-change="(size)=>handleZbSizeChange(scope.row.id,size)"
+                                            @current-change="(current)=>handleZbCurrentChange(scope.row.id,current)"
+                                            :current-page="zbForm.current"
+                                            background
+                                            :page-sizes="[5, 10, 20, 30, 40]"
+                                            :page-size="zbForm.size"
+                                            layout="prev, pager, next,sizes,jumper"
+                                            :total="total1"
+                                        ></el-pagination>
+                                    </div>
+                                    <div class="noMore" v-else>没有更多了</div>
+                                </div>
+                            </div>
+                        </div>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="pykhConfigName" label="考核要求名称" align="center"></el-table-column>
                     <el-table-column prop="startTime" label="立案开始时间" align="center"></el-table-column>
                     <el-table-column prop="endTime" label="立案截止时间"  align="center"></el-table-column>
                     <el-table-column prop="caseNum" label="案件基数" align="center"></el-table-column>
-                    <el-table-column type="expand" >
-                        <template  >
-                            {{zbList}}ddd
-                            <!-- -->
-                            <el-form label-position="left"  inline class="demo-table-expand">
-                                查看指标项
-                            <!-- <el-form-item label="商品名称">
-                                <span>{{ props.row.name }}</span>
-                            </el-form-item>
-                            <el-form-item label="所属店铺">
-                                <span>{{ props.row.shop }}</span>
-                            </el-form-item>
-                            <el-form-item label="商品 ID">
-                                <span>{{ props.row.id }}</span>
-                            </el-form-item>
-                            <el-form-item label="店铺 ID">
-                                <span>{{ props.row.shopId }}</span>
-                            </el-form-item>
-                            <el-form-item label="商品分类">
-                                <span>{{ props.row.category }}</span>
-                            </el-form-item>
-                            <el-form-item label="店铺地址">
-                                <span>{{ props.row.address }}</span>
-                            </el-form-item>
-                            <el-form-item label="商品描述">
-                                <span>{{ props.row.desc }}</span>
-                            </el-form-item>-->
-                            </el-form>
-                        </template>
-                    </el-table-column>
                     <el-table-column label="操作" align="center" width="120">
+
                         <template  slot-scope="scope">
                             <el-button type="text" @click.stop @click="updatePykhConfig(scope.$index, scope.row)">修改</el-button>
                             <el-button type="text" @click.stop @click="deletePykhConfigById(scope.row)">删除</el-button>
@@ -60,7 +121,7 @@
                         @current-change="handleCurrentChange"
                         :current-page="form.current"
                         background
-                        :page-sizes="[10, 20, 30, 40]"
+                        :page-sizes="[5, 10, 20, 30, 40]"
                         :page-size="form.size"
                         layout="prev, pager, next,sizes,jumper"
                         :total="total"
@@ -69,7 +130,7 @@
                 <div class="noMore" v-else>没有更多了</div>
             </div>
         </div>
-        <el-drawer modal-append-to-body direction="rtl" size="450px" customClass="amap-drawer" :modal="false" :visible.sync="drawer">
+        <el-drawer title="考核要求" modal-append-to-body direction="rtl" size="450px" customClass="amap-drawer" :modal="false" :visible.sync="drawer">
             <el-form :model="pykhObj" ref="pykhObj" :rules="rules" class="checkSearchForm" label-width="120px">
                 <div style="width:400px">
                     <div class="item">
@@ -114,6 +175,73 @@
                 <el-button @click="closeDraw">取 消</el-button>
             </div>
         </el-drawer>
+        <el-drawer title="考核指标" modal-append-to-body direction="rtl" size="450px" customClass="amap-drawer" :modal="false" :visible.sync="drawer1">
+            <el-form :model="zbObj" ref="zbObj" :rules="rules1" class="checkSearchForm" label-width="120px">
+                <div v-if="zbObj" style="width:400px">
+                    <div class="item">
+                        <el-form-item label="考核指标名称" prop="metricsName">
+                            <el-input v-model="zbObj.metricsName" placeholder="请输入考核指标名称"></el-input>
+                        </el-form-item>
+                    </div>
+                    <div class="item">
+                        <el-form-item label="考核指标类别" >
+                            <el-select v-model="zbObj.assessTypeId" class="w-220"  @change="changeType(zbObj.assessTypeId)">
+                                <el-option  v-for="(item,index) in khlbList.data" :key="index" :value="item.id" :label="item.name" >
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </div>
+                </div>
+            </el-form>
+            <br>
+             <div class="demo-drawer__footer" style="text-align:center">
+                <el-button type="primary" @click="addOrUpdatePykhMetrics" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
+                <el-button @click="closeDraw1">取 消</el-button>
+            </div>
+        </el-drawer>
+        <el-drawer title="考核细则" modal-append-to-body direction="rtl" size="500px" customClass="amap-drawer" :modal="false" :visible.sync="drawer2">
+            <div style="padding:0px 35px 35px 35px;min-width:620px;">
+                  <el-form :model="xzObj" ref="xzObj" :rules="rules2" class="checkSearchForm" label-width="140px">
+                <div v-if="xzObj" style="width:400px">
+                    <div class="item">
+                        <el-form-item label="评查类别" prop="metricsName">
+                            <el-input v-model="xzObj.reviewType" placeholder="请输入评查类别"></el-input>
+                        </el-form-item>
+                    </div>
+                    <div class="item">
+                        <el-form-item label="评查内容/评查项目" >
+                           <el-input v-model="xzObj.nrxm" placeholder="请输入评查内容/评查项目"></el-input>
+                        </el-form-item>
+                    </div>
+                        <div class="item">
+                        <el-form-item label="分值" >
+                            <el-input v-model="xzObj.sore" placeholder="请输入评查内容/评查项目"></el-input>
+                        </el-form-item>
+                    </div>
+                        <div class="item">
+                        <el-form-item label="评查形式/评查内容和要求" >
+                            <el-input v-model="xzObj.xsyq" placeholder="请输入评查内容/评查项目"></el-input>
+                        </el-form-item>
+                    </div>
+                        <div class="item">
+                        <el-form-item label="评查要点/评分细则" >
+                          <el-input v-model="xzObj.xdxz" placeholder="请输入评查内容/评查项目"></el-input>
+                        </el-form-item>
+                    </div>
+                </div>
+                 <div class="demo-drawer__footer" style="text-align:center">
+                <el-button type="primary" @click="addorUpdateDetailZp" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
+                <el-button @click="closeDraw1">取 消</el-button>
+            </div>
+            </el-form>
+                </div>
+        </el-drawer>
+
+        <!-- <el-table-column prop="reviewType" label="评查类别" align="center" ></el-table-column>
+                                                    <el-table-column prop="nrxm" label="评查内容/评查项目" align="center" ></el-table-column>
+                                                    <el-table-column prop="sore" label="分值" align="center" ></el-table-column>
+                                                    <el-table-column prop="xsyq" label="评查形式/评查内容和要求" align="center" ></el-table-column>
+                                                    <el-table-column prop="xdxz" label="评查要点/评分细则" align="center" ></el-table-column> -->
         <!-- <el-table
       :data="tableData"
       :span-method="objectSpanMethod"
@@ -152,17 +280,29 @@
 </template>
 <script>
 import { mixinsCommon } from "@/common/js/mixinsCommon";
-import {findPykhConfigByPage,addOrUpdatePykhConfig,deletePykhConfigById,findPykhMetricsByPage,addOrUpdatePykhMetrics,deletePykhMetricsById} from "@/api/appraisalExam.js";
+import {findPykhConfigByPage,addOrUpdatePykhConfig,deletePykhConfigById,findPykhMetricsByPage,addOrUpdatePykhMetrics,deletePykhMetricsById,findPykhZpByPage,
+addorUpdateDetailZp,deleteDetailZpById,findListVoByPykhZp} from "@/api/appraisalExam.js";
 import iLocalStroage from '@/common/js/localStroage';
+import {PYKH_DATA} from "@/common/js/BASIC_DATA.js";
+import _ from "lodash";
   export default {
     mixins: [mixinsCommon],
     data() {
         let _this = this;
       return {
+        xzList: [],
+        expandXzList:[],
         expandList:null,
         timeList: ['', ''],
         rules: {
             pykhConfigName: [{ required: true, message: '请输入考核要求名称', trigger: 'blur' }]
+        },
+        rules1: {
+            metricsName: [{ required: true, message: '请输入考核指标名称', trigger: 'blur' }],
+            assessTypeId: [{ required: true, message: '请输入考核指标类别', trigger: 'change' }]
+        },
+        rules2: {
+
         },
         pickerOptions:  {
             onPick:  ({  maxDate,  minDate  })  =>  {
@@ -182,8 +322,18 @@ import iLocalStroage from '@/common/js/localStroage';
             current: 1, //当前页
             size: 5, //每页显示条数
         },
+        zbForm: {
+            current: 1, //当前页
+            size: 5, //每页显示条数
+            pykhConfigId: ''
+        },
+        xzForm: {
+            current: 1, //当前页
+            size: 5, //每页显示条数
+            metricsId: ''
+        },
         total: 0,
-        tableData: null,
+        tableData: [],
         pykhObj: {
             id: "",
             note: "",
@@ -199,7 +349,39 @@ import iLocalStroage from '@/common/js/localStroage';
             organId: "",
             caseNum: ""
         },
-        zbList: null
+        zbList: [],
+        zbObj: {
+            "id": "",
+			"note": "",
+			"createId": "",
+			"createName": "",
+			"createTime": "",
+			"modifyId": "",
+			"modifyTime": "",
+			"metricsName": "",
+			"assessType": "",
+			"assessTypeId": "",
+			"assessTypeName": "",
+			"pykhConfigId": ""
+        },
+        xzObj: {
+            reviewType: '',
+            nrxm:'',
+            sore: '',
+            xsyq: '',
+            xdxz:''
+        },
+        updateIndex: null,
+        updateIndex1: null,
+        drawer1: false,
+        khlbList: [],
+        assessTypeObj: {
+            name: '',
+            id: ''
+        },
+        drawer2: false,
+        total1: 0,
+        total2: 0
       };
     },
     methods: {
@@ -212,6 +394,17 @@ import iLocalStroage from '@/common/js/localStroage';
     //       }
     //     }
     //   },
+    changeType (id) {
+       let index =  _.findIndex(this.khlbList.data,(chr)=>{
+            return id === chr.id;
+        })
+        if (index > -1) {
+            // debugger;
+            this.zbObj.assessType = this.khlbList.data[index].name;
+            // this.zbObj.assessTypeId = this.khlbList.data[index].id;
+            this.zbObj.assessTypeName = this.khlbList.data[index].name;
+        }
+    },
     closeDraw () {
         this.drawer = false;
            this.$set(this, 'pykhObj', {
@@ -230,23 +423,105 @@ import iLocalStroage from '@/common/js/localStroage';
                     caseNum: ""
                 });
     },
+    closeDraw1 () {
+        this.drawer1 = false;
+           this.$set(this, 'zbObj', {
+            "id": "",
+			"note": "",
+			"createId": "",
+			"createName": "",
+			"createTime": "",
+			"modifyId": "",
+			"modifyTime": "",
+			"metricsName": "",
+			"assessType": "",
+			"assessTypeId": "",
+			"assessTypeName": "",
+			"pykhConfigId": ""
+        });
+    },
     rowKey() {
         return this.expandList.length>0?this.expandList[0].id: '';
     },
     load (row, expand){
-        // this.rowKey = row.id;
-        // this.expandList.splice(0,this.expandList.length);
-        this.findPykhMetricsByPage(row);
-        this.expandList= [row.id];
-        debugger;
+        if(expand.length === 1) {
+            this.findPykhMetricsByPage(row.id,1);
+        } else if(expand.length === 1) {
+            this.zbList = [];
+             this.expandList.splice(0,1);
+             this.findPykhMetricsByPage(row.id,1);
+        } else {
+             this.zbList = [];
+             this.expandList= [];
+        }
     },
-    findPykhMetricsByPage(item) {
+    loadXzList (row,expand) {
+        if(expand.length === 1) {
+            this.findPykhZpByPage(row.id,1);
+        } else if(expand.length === 1) {
+            this.xzList = [];
+             this.expandXzList.splice(0,1);
+             this.findPykhZpByPage(row.id,1);
+        } else {
+             this.xzList = [];
+             this.expandXzList= [];
+        }
+    },
+    findPykhMetricsByPage(parentId,currentPage) {
+        // let f = {pykhConfigId:item.id,current:1,size:5};
+        this.zbForm.pykhConfigId = parentId;
+        this.zbForm.current = currentPage;
         let _this = this;
         new Promise((resolve, reject) => {
-            findPykhMetricsByPage(item.id).then(
+            findPykhMetricsByPage(_this.zbForm).then(
                 res => {
-                    debugger;
-                    _this.zbList = res.data
+                    _this.zbList.splice(0,_this.zbList.length);
+                    _this.zbList = res.data.records;
+                    _this.total1 = res.data.total;
+                    // _this.expandList= [item.id];
+                },
+                error => {
+                     _this.errorMsg(error.toString(), 'error')
+                        return
+                }
+            )
+        })
+    },
+    searchXzDialog (row) {
+        this.findPykhZpByPage(row);
+    },
+    addXzDialog(row) {
+         this.$set(this, 'pykhObj', {
+                    id: "",
+                    note: "",
+                    createId: "",
+                    createName: "",
+                    createTime: "",
+                    modifyId: "",
+                    modifyTime: "",
+                    startTime: "",
+                    endTime: "",
+                    pykhConfigName: "",
+                    organName: "",
+                    organId: "",
+                    caseNum: ""
+                });
+
+            this.updateIndex = null;
+            this.drawer = true;
+    },
+    // 查询考核细则
+    findPykhZpByPage (parentId, current) {
+        this.xzForm.metricsId = parentId;
+        this.xzForm.current = current;
+        let _this = this;
+        new Promise((resolve, reject) => {
+            findPykhZpByPage(_this.xzForm).then(
+                res => {
+                    _this.xzList.splice(0,_this.xzList.length);
+                    _this.xzList = res.data.records;
+                    _this.total2 = res.data.total;
+                    // _this.expandList= [item.id];
                 },
                 error => {
                      _this.errorMsg(error.toString(), 'error')
@@ -272,6 +547,7 @@ import iLocalStroage from '@/common/js/localStroage';
     },
     //查询列表
         search (val) {
+            this.form.current = val;
             let _this = this;
             new Promise((resolve, reject) => {
                 findPykhConfigByPage(_this.form).then(
@@ -314,6 +590,208 @@ import iLocalStroage from '@/common/js/localStroage';
             this.drawer = true;
 
         },
+        async addZbConfig (row) {
+            this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
+            // this.assessTypeObj = this.khlbList.data?this.khlbList.data[0]: [];
+            this.$set(this, 'zbObj', {
+                "id": "",
+                "note": "",
+                "createId": "",
+                "createName": "",
+                "createTime": "",
+                "modifyId": "",
+                "modifyTime": "",
+                "metricsName": "",
+                "assessType": "",
+                "assessTypeId": "",
+                "assessTypeName": "",
+                "pykhConfigId": row.id
+            });
+            this.drawer1 = true;
+            this.updateIndex1 = null;
+        },
+        async addXzConfig (row) {
+
+            // this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
+            // // this.assessTypeObj = this.khlbList.data?this.khlbList.data[0]: [];
+            this.$set(this, 'zbObj', {
+                                reviewType: '',
+                                nrxm:'',
+                                sore: '',
+                                xsyq: '',
+                                xdxz:'',
+                                metricsId: row.id
+                            });
+            // this.drawer1 = true;
+            this.drawer2 = true;
+            this.updateIndex2 = null;
+        },
+        // async updateZbConfig () {
+        //     this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
+        //     // this.$set(this, 'zbObj', {
+
+        //     //     });
+        //     this.drawer1 = true;
+        //     this.updateIndex1 = null;
+        // },
+        // searchKhlbList () {
+        //     let _this = this;
+        //     new Promise((resolve, reject) => {
+        //         addOrUpdatePykhMetrics(PYKH_DATA.khlb).then(
+        //             res => {
+        //                 resolve(res);
+        //                 // _this.tableData.splice(0, _this.tableData.length);
+        //                 _this.tableData1 = res.data.records;
+        //                 _this.total = res.data.total;
+        //             },
+        //             error => {
+        //                 //  _this.errorMsg(error.toString(), 'error')
+        //                     return
+        //             }
+        //         )
+        //     })
+        // },
+        // 保存考核具体指标
+        addOrUpdatePykhMetrics () {
+            debugger;
+            let _this = this;
+            new Promise((resolve, reject) => {
+                addOrUpdatePykhMetrics(_this.zbObj).then(
+                    res => {
+                        // resolve(res);
+                        // _this.tableData.splice(0, _this.tableData.length);
+                        // _this.zbObj = res.data.records;
+                        debugger;
+                        _this.errorMsg('保存成功', 'success');
+
+                            if (_this.updateIndex1 === null) {
+                                    //添加
+                                    // _this.reset('pykhObj');
+                                    //  _this.search(1);
+                                    _this.findPykhMetricsByPage(_this.updateIndex1,1);
+                                } else {
+                                    // 更新
+                                    _this.drawer1 = false;
+                                    _this.$set(_this.zbList,_this.updateIndex1, _this.zbObj);
+                                }
+                                 _this.$set(_this, 'zbObj', {
+                                        "id": "",
+                                        "note": "",
+                                        "createId": "",
+                                        "createName": "",
+                                        "createTime": "",
+                                        "modifyId": "",
+                                        "modifyTime": "",
+                                        "metricsName": "",
+                                        "assessType": "",
+                                        "assessTypeId": "",
+                                        "assessTypeName": "",
+                                        "pykhConfigId": ""
+                                    });
+                                _this.closeLoading();
+                                 _this.errorMsg('保存成功', 'success')
+
+                    },
+                    error => {
+                         _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
+        addorUpdateDetailZp () {
+            let _this = this;
+            new Promise((resolve, reject) => {
+                addorUpdateDetailZp(_this.xzObj).then(
+                    res => {
+                        _this.errorMsg('保存成功', 'success');
+
+                            if (_this.updateIndex2 === null) {
+                                    //添加
+                                    _this.addorUpdateDetailZp(_this.updateIndex2,1);
+                                } else {
+                                    // 更新
+                                    _this.drawer1 = false;
+                                    _this.$set(_this.xzList,_this.updateIndex2, _this.xzObj);
+                                }
+                                 _this.$set(_this, 'xzObj', {
+                                                        reviewType: '',
+                                                        nrxm:'',
+                                                        sore: '',
+                                                        xsyq: '',
+                                                        xdxz:'',
+                                                        metricsId: ''
+                                                    });
+                                _this.closeLoading();
+                                 _this.errorMsg('保存成功', 'success')
+
+                    },
+                    error => {
+                         _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
+        // 删除考核具体指标
+        deletePykhMetricsById (row,item) {
+            let _this = this;
+            new Promise((resolve, reject) => {
+                deletePykhMetricsById(item.id).then(
+                    res => {
+                        _this.errorMsg('删除成功', 'success');
+                        _this.findPykhMetricsByPage(row.id, 1);
+                    },
+                    error => {
+                        _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
+        deleteDetailZpById (row,item) {
+            let _this = this;
+            new Promise((resolve, reject) => {
+                deleteDetailZpById(item.id).then(
+                    res => {
+                        _this.errorMsg('删除成功', 'success');
+                        _this.addorUpdateDetailZp(row.id, 1);
+                    },
+                    error => {
+                        _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
+        findListVoByPykhZp () {
+            new Promise((resolve, reject) => {
+                findListVoByPykhZp(item.id).then(
+                    res => {
+
+                    },
+                    error => {
+                        _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
+        deleteXzById(row,item) {
+            let _this = this;
+            new Promise((resolve, reject) => {
+                deletePykhMetricsById(item.id).then(
+                    res => {
+                        _this.errorMsg('删除成功', 'success');
+                        _this.findPykhMetricsByPage(row);
+                    },
+                    error => {
+                        _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
         reset (formName) {
             this.$refs[formName].resetFields();
         },
@@ -321,6 +799,20 @@ import iLocalStroage from '@/common/js/localStroage';
             this.pykhObj = row;
             this.drawer = true;
             this.updateIndex = index;
+        },
+        async updateZbConfig (index, row) {
+            // this.zbObj = row;
+            this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
+             this.$set(this, 'zbObj', row);
+            this.drawer1 = true;
+            this.updateIndex1 = index;
+        },
+        async updateXzConfig (index, row) {
+            // this.zbObj = row;
+            this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
+             this.$set(this, 'zbObj', row);
+            this.drawer2 = true;
+            this.updateIndex2 = index;
         },
         addPykhConfig () {
             if (this.loading) {
@@ -388,39 +880,29 @@ import iLocalStroage from '@/common/js/localStroage';
             // clearTimeout(this.timer);
         },
         handleCurrentChange(val) {
+            debugger;
             this.search(val);
         },
         handleSizeChange(val) {
             this.form.size = val;
             this.search(1);
         },
-        handleEdit (row) {
-
+        handleZbCurrentChange(parentId, val) {
+            debugger;
+            this.findPykhMetricsByPage(parentId, val);
         },
-        handleDelete(row) {
-        let _this = this
-            this.$confirm("确认删除该用户?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-            })
-            .then(() => {
-                _this.$store.dispatch("getUserdelete", row.id).then(
-                res => {
-                    _this.getAllOrgan(_this.$refs.addUserRef.id);
-                    _this.$message({
-                    type: "success",
-                    message: "删除成功!"
-                    });
-                },
-                err => {
-                    console.log(err);
-                }
-                );
-            })
-            .catch(() => {
-            });
-      },
+        handleZbSizeChange(parentId,val) {
+            this.zbForm.size = val;
+            this.findPykhMetricsByPage(parentId,1);
+        },
+          handleXzCurrentChange(parentId, val) {
+            debugger;
+            this.findPykhZpByPage(parentId, val);
+        },
+        handleXzSizeChange(parentId,val) {
+            this.xzForm.size = val;
+            this.findPykhZpByPage(parentId,1);
+        },
       objectSpanMethod({ row, column, rowIndex, columnIndex }) {
         if (columnIndex === 0) {
           if (rowIndex % 5 === 0) {
@@ -450,11 +932,14 @@ import iLocalStroage from '@/common/js/localStroage';
         }
       }
     },
-    mounted () {
+    created () {
         this.search(1);
         let userInfo = iLocalStroage.gets("userInfo");
         this.pykhObj.organId = userInfo.organId;
         this.pykhObj.organName = userInfo.organName;
+    },
+    mounted () {
+
     }
   };
 </script>

@@ -11,7 +11,7 @@
       :rules="rules"
       ref="addDocType"
       class="errorTipForm"
-      label-width="100px"
+      label-width="120px"
     >
       <div class="item">
         <el-form-item label="文书名称" prop="name">
@@ -36,20 +36,29 @@
         </el-form-item>
       </div>
       <div class="item">
+        <el-form-item label="模板名称" prop="templateName">
+          <el-select
+            v-model="addDocType.templateName"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="(item) in templateList"
+              :key="item.id" 
+              :label="item.name" 
+              :value="item.name"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </div>
+      <div class="item">
         <el-form-item label="文书地址" prop="path">
           <el-input v-model="addDocType.path"></el-input>
         </el-form-item>
       </div>
       <div class="item">
-        <el-form-item label="案件类型" prop="remark">
-          <el-select v-model="addDocType.remark" filterable placeholder="请选择">
-            <el-option
-              v-for="(res) in caseTypeList"
-              :key="res.id"
-              :label="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
-              :value="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
-            ></el-option>
-          </el-select>
+        <el-form-item label="文书说明" prop="remark">
+          <el-input v-model="addDocType.remark" clearable placeholder="请输入"></el-input>
         </el-form-item>
       </div>
       <div class="item">
@@ -74,6 +83,7 @@ export default {
         id: "",
         name: "",
         linkName: "",
+        templateName: "",
         remark: "",
         path: "",
         sort: 0
@@ -88,16 +98,19 @@ export default {
         linkName: [
           { required: true, message: "所属环节不能为空", trigger: "blur" }
         ],
+        templateName: [
+          { required: true, message: "模板名称不能为空", trigger: "blur" }
+        ],
         remark: [
           {
             required: true,
-            message: "所属案件类型名称不能为空",
+            message: "文书说明不能为空",
             trigger: "blur"
           }
         ]
       },
       mainLinkList: [],
-      caseTypeList: [],
+      templateList: [],
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
       handelType: 0 //添加 0  修改2
@@ -119,6 +132,7 @@ export default {
         this.addDocType.id = data.id;
         this.addDocType.name = data.name;
         this.addDocType.linkName = data.linkName;
+        this.addDocType.templateName = data.templateName;
         this.addDocType.remark = data.remark;
         this.addDocType.path = data.path;
         this.addDocType.sort = data.sort;
@@ -210,22 +224,21 @@ export default {
         }
       );
     },
-    //查询案件类型列表
-    getCaseType() {
-      this.$store.dispatch("getCaseTypeList", 0).then(
-        //查询案件类型列表(启用)
+    //查询模板列表
+    getTemplateList() {
+      this.$store.dispatch("getDictListDetail", '59acab18af3a5f11da79eedb3111da0f').then(
         res => {
-          if (res.code === 200) {
-            this.caseTypeList = res.data;
-          } else {
-            console.info("没有查询到数据");
-          }
+          console.log("字典值列表", res);
+          this.templateList = res.data;
+        },
+        err => {
+          console.log(err);
         }
       );
     }
   },
   mounted() {
-    this.getCaseType();
+    this.getTemplateList();
   }
 };
 </script>

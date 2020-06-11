@@ -123,6 +123,26 @@
   .el-select {
     width: 100%;
   }
+  #payTotalBox{
+    label:before{
+      content: '*';
+      color: #F56C6C;
+      margin-right: 4px;
+    }
+  }
+  #pathLossListTable{
+    th:nth-child(2),th:nth-child(3),th:nth-child(4),th:nth-child(5),th:nth-child(6){
+        .cell:before{
+          content: '*';
+          color: #F56C6C;
+          margin-right: 4px;
+        }
+    }
+  }
+  .mustTip{
+    color: #F56C6C;
+    margin-right: 4px;
+  }
 
 }
 

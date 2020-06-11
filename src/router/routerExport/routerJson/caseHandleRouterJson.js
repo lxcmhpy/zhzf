@@ -50,7 +50,7 @@ export default [
       title: "案件调查报告",
       oneTab: true,
     },
-    component: () => import("@/page/caseHandle/case/caseInvestigReport.vue")
+    component: () => import("@/page/caseHandle/case/form/caseInvestigReport.vue")
   },
   {
     path: "/caseDoc",
@@ -59,7 +59,7 @@ export default [
       title: "调查类文书",
       oneTab: true,
     },
-    component: () => import("@/page/caseHandle/case/caseDoc.vue")
+    component: () => import("@/page/caseHandle/case/form/caseDoc.vue")
   },
   {
     path: "/obtaineEvidenceForm",
@@ -460,7 +460,7 @@ export default [
     meta: {
       title: "解除（延长）行政强制措施决定"
     },
-    component: () => import("@/page/caseHandle/case/coerciveMeasureDoc.vue")
+    component: () => import("@/page/caseHandle/case/form/coerciveMeasureDoc.vue")
   },
   {
     path: "/importantCaseTeamDissDoc",
@@ -693,12 +693,5 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/payCompensation.vue")
   },
-  {
-    path: "/assistInvestgation",
-    name: "case_handle_assistInvestgation",
-    meta: {
-      title: "协助调查函"
-    },
-    component: () => import("@/page/caseHandle/case/modle/assistInvestigation.vue")
-  },
+
 ]

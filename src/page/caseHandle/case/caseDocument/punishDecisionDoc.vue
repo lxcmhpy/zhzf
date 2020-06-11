@@ -276,14 +276,6 @@
           如果不服本处罚决定，可以在六十日内依法向
           <span>
             <el-form-item prop="reconsiderationOrgan" :rules="fieldRules('reconsiderationOrgan',propertyFeatures['reconsiderationOrgan'])">
-              <!-- <el-input
-                type="textarea"
-                v-model="formData.reconsiderationOrgan"
-                v-bind:class="{ over_flow:formData.reconsiderationOrgan && formData.reconsiderationOrgan.length>12?true:false }"
-                :autosize="{ minRows: 1, maxRows: 3}"
-                :maxLength="maxLength"
-                placeholder="\"
-              ></el-input> -->
               <el-select v-model="formData.reconsiderationOrgan" :disabled="fieldDisabled(propertyFeatures['reconsiderationOrgan'])">
                 <el-option v-for="(item,index) in reconsiderationOrganList" :key="index" :value="item" :label="item"></el-option>
               </el-select>
@@ -335,7 +327,7 @@
       @saveData="saveData"
     ></casePageFloatBtns>
 
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
   </div>
 </template>
 <script>
@@ -343,7 +335,7 @@
 // import { mixinGetCaseApiList } from "@/common/js/mixins";
 // import { mapGetters } from "vuex";
 // import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-import overflowInput from "../pdf/overflowInput";
+// import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
@@ -352,7 +344,7 @@ import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   components: {
-    overflowInput,
+    // overflowInput,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
@@ -496,7 +488,7 @@ export default {
     },
     // 多行编辑
     overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
+      // this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
