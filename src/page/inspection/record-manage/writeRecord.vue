@@ -497,7 +497,6 @@ export default {
     }
   },
   mounted() {
-
     if (this.$route.params) {
       console.log('this.$route.params', this.$route.params)
       if (this.$route.params.addOrEiditFlag == 'add') {
