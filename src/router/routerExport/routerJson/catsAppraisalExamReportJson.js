@@ -28,5 +28,12 @@ export default [
           title: "评议考核发起"
         },
         component: () => import("@/page/catsAppraisalExamination/catsAppraisalStartUp.vue")
-    }
+    }, {
+      path: "/noticeManager",
+      name: "noticeManager",
+      meta: {
+        title: "公告信息"
+      },
+      component: () => import("@/page/catsAppraisalExamination/noticeManage/noticeManage.vue")
+  }
 ]

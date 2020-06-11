@@ -236,6 +236,46 @@
             </el-form>
                 </div>
         </el-drawer>
+
+        <!-- <el-table-column prop="reviewType" label="评查类别" align="center" ></el-table-column>
+                                                    <el-table-column prop="nrxm" label="评查内容/评查项目" align="center" ></el-table-column>
+                                                    <el-table-column prop="sore" label="分值" align="center" ></el-table-column>
+                                                    <el-table-column prop="xsyq" label="评查形式/评查内容和要求" align="center" ></el-table-column>
+                                                    <el-table-column prop="xdxz" label="评查要点/评分细则" align="center" ></el-table-column> -->
+        <!-- <el-table
+      :data="tableData"
+      :span-method="objectSpanMethod"
+      border
+      style="width: 100%; margin-top: 20px">
+      <el-table-column
+        prop="name"
+        label="姓名">
+      </el-table-column>
+      <el-table-column
+        prop="id"
+        label="ID"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="amount1"
+        label="数值 1（元）">
+      </el-table-column>
+      <el-table-column
+        prop="amount2"
+        label="数值 2（元）">
+      </el-table-column>
+      <el-table-column
+        prop="amount3"
+        label="数值 3（元）">
+      </el-table-column>
+        <el-table-column
+        label="操作">
+        <template>
+            <el-button>添加</el-button>
+            <el-button>修改</el-button>
+        </template>
+      </el-table-column>
+    </el-table> -->
     </div>
 </template>
 <script>

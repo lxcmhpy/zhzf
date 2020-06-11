@@ -7,7 +7,7 @@
     :close-on-click-modal="false"
     width="100%"
   >
-    <el-row>
+    <el-row type="flex">
       <el-col :span="7">
         <div class="room-wrap">
           <div class="room-wrap-title">
