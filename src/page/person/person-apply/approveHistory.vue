@@ -13,7 +13,7 @@
                 <el-table-column prop="approveStatusName" label="审批状态" align="center"></el-table-column>
                 <el-table-column prop="userName" label="审批人" align="center"></el-table-column>
                 <el-table-column prop="approveInfo" label="审批信息" align="center"></el-table-column>
-                <el-table-column prop="applicationDate" label="审批时间" align="center"></el-table-column>
+                <el-table-column prop="operationDate" label="审批时间" align="center"></el-table-column>
             </el-table>
         </div>
     </el-dialog>

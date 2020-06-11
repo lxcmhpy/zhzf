@@ -498,6 +498,7 @@ import {validateLawCertNo,validateIDNumber} from "@/common/js/validator";
 import {mixinPerson} from '@/common/js/personComm';
 import elSelectTree from '@/components/elSelectTree/elSelectTree';
 import UploadPersonAvatar from '@/components/personComponents/uploadPersonAvatar';
+import iLocalStroage from "@/common/js/localStroage.js";
 export default {
   name: "personDetailInfo",//人员基本信息组件
   mixins:[mixinPerson],
