@@ -10,7 +10,6 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="getNotices">查询</el-button>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="viewNotice('')">阅览</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addNotice">添加公告</el-button>
@@ -51,6 +50,7 @@
 <script>
 import addNotice from "./addNotice";
 import viewNotice from "./viewNotice";
+import {getContentApi,deleteNoticeApi,getNoticeListApi} from "@/api/appraisalExam.js";
 export default {
   data() {
     return {
@@ -71,29 +71,28 @@ export default {
   methods: {
     //查看公告信息
     viewNotice(row) {
-        this.$refs.viewNoticeRef.showModal(`<h2><strong class="ql-size-large">资源篇（资源篇所有资源均来自于本人或者其他网友制作而成，除制作者要求收费之外，资源仅供Anki使用者学习交流之用，严禁他人借此牟利！）</strong></h2><p><a href="https://zhuanlan.zhihu.com/p/21463246" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——钉宫理惠教你五十音</a></p><p><a href="https://zhuanlan.zhihu.com/p/21475754?refer=-anki" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——American Accent Course 第一课第一部分</a></p><p><a href="https://zhuanlan.zhihu.com/p/21550428" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——2005-2014考研真题阅读词汇</a>&nbsp;作者：慕云浮</p><p><a href="https://zhuanlan.zhihu.com/p/21644255" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——史纲+毛中特の人物+著作+观点V1</a></p><p><br></p><p><a href="https://zhuanlan.zhihu.com/p/21872977?refer=-anki" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——怪奇物语（stranger things）S1E1</a></p><p><span style="color: inherit;">﻿</span></p>`);
-    //   if(row.noticeType==="附件"){
-    //     let routerData = {
-    //       storageId: "10,3921f68bd2"
-    //     };
-    //     this.$router.push({ name: "case_handle_viewPDF", params: routerData });
-    //   }else{
-    //     let _that = this
-    //     this.$store.dispatch("getContent", row.id).then(
-    //       res => {
-    //         console.log(res.data);
-    //         _that.$refs.viewNoticeRef.showModal(res.data)
-    //       },
-    //       err => {
-    //         console.log(err);
-    //       })
-    //   }
+      if(row.noticeType==="附件"){
+        let routerData = {
+          storageId: row.storageId
+        };
+        this.$router.push({ name: "case_handle_viewPDF", params: routerData });
+      }else{
+        let _that = this
+        getContentApi(row.id).then(
+          res => {
+            console.log(res.data);
+            _that.$refs.viewNoticeRef.showModal(res.data);
+          },
+          err => {
+            console.log(err);
+          })
+      }
     },
     //编辑公告信息
     editNotice(row) {
       if(row.noticeType==="普通"){
         let _that = this
-        this.$store.dispatch("getContent", row.id).then(
+        getContentApi(row.id).then(
           res => {
             console.log(res.data);
             row.content = res.data;
@@ -114,7 +113,7 @@ export default {
             cancelButtonText: "取消",
             type: "warning"
           }).then(() => {
-              this.$store.dispatch("deleteNotice", id).then(
+              deleteNoticeApi(id).then(
                 res => {
                   if(res.data===true){
                     this.$message({
@@ -155,7 +154,7 @@ export default {
         title: this.dicSearchForm.title
       };
       let _this = this;
-      this.$store.dispatch("getNoticeList", data).then(
+      getNoticeListApi(data).then(
         res => {
           console.log("公告信息列表", res);
           _this.tableData = res.data.records;

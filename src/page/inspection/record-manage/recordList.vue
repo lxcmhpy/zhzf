@@ -30,7 +30,7 @@
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">生成日志</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="createLog">生成日志</el-button>
             </el-form-item>
             <el-form-item prop="name" style="float:right;display:inline-block" @click="viewMine()">
               <el-radio v-model="searchForm.name" label="1" @change='changeName()'>只显示我的</el-radio>
@@ -55,7 +55,7 @@
             <template slot-scope="scope">
               <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
               <el-button @click="editRecord(scope.row)" type="text">查看</el-button>
-              <el-button type="text" @click="deleteRecord(scope.row.id)">删除</el-button>
+              <el-button type="text" @click="deleteRecord(scope.row.id)" v-if="scope.row.createUser==createUserName">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -84,12 +84,12 @@ export default {
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       lawCateList: [], //业务领域列表
-
+      createUserName: ''
     }
   },
   methods: {
     getTableData() {
-      console.log('time,creatUser', this.timeList,this.searchForm.createUser)
+      console.log('time,creatUser', this.timeList, this.searchForm.createUser)
       let data = {
         startTime: this.timeList[0],
         endTime: this.timeList[1],
@@ -119,8 +119,8 @@ export default {
     },
     // 查询我的
     viewMine() {
-      console.log( ":", this.searchForm.name)
-      if(this.searchForm.name==1){
+      console.log(":", this.searchForm.name)
+      if (this.searchForm.name == 1) {
         // this.searchForm.name=''
       }
       // this.searchForm.name=true
@@ -130,7 +130,10 @@ export default {
       // this.searchTableData()
     },
     changeName() {
-      console.log( ":", this.searchForm.name)
+      console.log(":", this.searchForm.name)
+      this.searchForm.createUser = iLocalStroage.gets("userInfo").username;
+      this.searchTableData()
+
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -221,11 +224,26 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log('multipleSelection', this.multipleSelection)
+    },
+    // 选择数据
+    createLog() {
+      console.log('multipleSelection', this.multipleSelection)
+
+      if (this.multipleSelection.length == 0) {
+        this.$message({ message: '请至少选择一条记录!', type: 'warning' });
+      } else {
+        this.$message({
+          type: "success",
+          message: '成功选中，暂未开发'
+        });
+      }
     }
   },
   mounted() {
+    this.createUserName = iLocalStroage.gets("userInfo").username
     this.getTableData();
     this.getEnforceLawType();
   }
 }
 </script>
+<style lang="scss" src="@/assets/css/card.scss"></style>

@@ -20,11 +20,9 @@
       </div>
       <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options">
       </form-create>
-      <div style="text-align:center">
-        <!-- <el-button type="primary" @click="onSubmit">提交</el-button> -->
-        <!-- <el-button aligen="center" @click="reset">重置</el-button> -->
 
-      </div>
+      <p class="border-title">图片</p>
+      <p class="border-title">附件</p>
       <!-- 悬浮按钮 -->
       <div class="float-btns btn-height63">
         <el-button type="primary" @click="save()">
