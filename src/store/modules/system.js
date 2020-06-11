@@ -11,7 +11,7 @@ import {
     getDictListApi, getDictListDetailApi, getAllDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
     getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,saveLawOfficelApi,getRouteListApi,addOrUpdateRouteApi,deleteRouteApi,
-    getSectionListApi,addOrUpdateSectionApi,deleteSectionApi,deleteRoadLcDeployApi,getNoticeListApi,addOrUpdateNoticeApi,deleteNoticeApi
+    getSectionListApi,addOrUpdateSectionApi,deleteSectionApi,deleteRoadLcDeployApi,getNoticeListApi,addOrUpdateNoticeApi,deleteNoticeApi,getContentApi
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";
@@ -962,6 +962,19 @@ const system = {
       deleteNotice({ commit }, data) {
         return new Promise((resolve, reject) => {
             deleteNoticeApi(data).then(
+            res => {
+              resolve(res);
+            },
+            error => {
+              reject(error);
+            })
+        })
+      },
+
+      //获取公告内容
+      getContent({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            getContentApi(data).then(
             res => {
               resolve(res);
             },

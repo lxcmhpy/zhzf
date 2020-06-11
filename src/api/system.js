@@ -1242,3 +1242,15 @@ export function deleteNoticeApi(id) {
     cancelToken: setCancelSource()
   });
 }
+
+//获取公告内容
+export function getContentApi(id) {
+  debugger
+  return request({
+    url: "/pykh/notice/getContent/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

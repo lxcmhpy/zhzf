@@ -42,11 +42,13 @@
         ></el-pagination>
       </div>
       <addNotice ref="addNoticeRef"></addNotice>
+      <viewNotice ref="viewNoticeRef"></viewNotice>
     </div>
   </div>
 </template>
 <script>
 import addNotice from "./addNotice";
+import viewNotice from "./viewNotice";
 export default {
   data() {
     return {
@@ -60,25 +62,47 @@ export default {
     };
   },
   components: {
-    addNotice
+    addNotice,
+    viewNotice
   },
   inject: ["reload"],
   methods: {
     //查看公告信息
     viewNotice(row) {
-      let routerData = {
-        hasApprovalBtn: false,
-        docId: "2c9029ae654210eb0165421564970001",
-        approvalOver: false,
-        hasBack: true,
-        docDataId:"442acb8e82dbcb70223165dedb175b03"
-      };
-      this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: "case_handle_myPDF", params: routerData });
+      if(row.noticeType==="附件"){
+        let routerData = {
+          storageId: "10,3921f68bd2"
+        };
+        this.$router.push({ name: "case_handle_viewPDF", params: routerData });
+      }else{
+        let _that = this
+        this.$store.dispatch("getContent", row.id).then(
+          res => {
+            console.log(res.data);
+            _that.$refs.viewNoticeRef.showModal(res.data)
+          },
+          err => {
+            console.log(err);
+          })
+      }
     },
     //编辑公告信息
     editNotice(row) {
-      this.$refs.addNoticeRef.showModal(2, row);
+      if(row.noticeType==="普通"){
+        let _that = this
+        this.$store.dispatch("getContent", row.id).then(
+          res => {
+            console.log(res.data);
+            row.content = res.data;
+            _that.$refs.addNoticeRef.showModal(2, row);
+          },
+          err => {
+            console.log(err);
+          }
+        );
+      }else{
+        this.$refs.addNoticeRef.showModal(2, row);
+      }
     },
     //删除公告信息
     deleteNotice(id) {
@@ -89,11 +113,18 @@ export default {
           }).then(() => {
               this.$store.dispatch("deleteNotice", id).then(
                 res => {
-                  this.$message({
-                    type: "success",
-                    message: "删除成功!"
-                  });
-                  this.reload();
+                  if(res.data===true){
+                    this.$message({
+                      type: "success",
+                      message: "删除成功!"
+                    });
+                    this.reload();
+                  }else{
+                    this.$message({
+                      type: "warning",
+                      message: "删除失败!"
+                    });
+                  }
                 },
                 err => {
                   console.log(err);
