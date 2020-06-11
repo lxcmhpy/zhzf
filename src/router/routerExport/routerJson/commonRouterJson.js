@@ -76,14 +76,6 @@ export default [
               title: "表单及文书配置"
             },
             component: () => import("@/page/sys/pdf-manage/pdfManage.vue")
-          },
-          {
-            name: "notice-manage",
-            path: "/notice-manage",
-            meta: {
-              title: "公告信息"
-            },
-            component: () => import("@/page/sys/notice-manage/noticeManage.vue")
           }
         ]
       },
