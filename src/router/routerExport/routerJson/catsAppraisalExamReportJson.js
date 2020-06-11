@@ -29,8 +29,8 @@ export default [
         },
         component: () => import("@/page/catsAppraisalExamination/catsAppraisalStartUp.vue")
     }, {
-      path: "/noticeManager",
-      name: "noticeManager",
+      path: "/noticeManage",
+      name: "noticeManage",
       meta: {
         title: "公告信息"
       },
