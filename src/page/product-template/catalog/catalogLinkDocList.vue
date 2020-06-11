@@ -88,7 +88,7 @@
               <template slot="header">序号</template>
             </el-table-column>
             <el-table-column prop="name" label="名称" align="center"></el-table-column>
-            <el-table-column prop="remark" label="案件类型" align="center"></el-table-column>
+            <el-table-column prop="remark" label="文书说明" align="center"></el-table-column>
             <el-table-column prop="sort" width="60" label="顺序" align="center"></el-table-column>
           </el-table-column>
         </el-table>
