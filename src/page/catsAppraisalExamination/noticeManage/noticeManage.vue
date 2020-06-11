@@ -78,7 +78,7 @@ export default {
         this.$router.push({ name: "case_handle_viewPDF", params: routerData });
       }else{
         let _that = this
-        this.$store.dispatch("getContent", row.id).then(
+        getContentApi(row.id).then(
           res => {
             console.log(res.data);
             _that.$refs.viewNoticeRef.showModal(res.data);
