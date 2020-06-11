@@ -2,7 +2,7 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox" style="overflow: hidden;">
       <div style="margin-bottom:24px">
-        <el-button icon="el-icon-plus" type="primary" size="medium" @click="addNewModle">新增模板</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="medium" @click="addNewModle" v-if="isHome">新增模板</el-button>
         <div class="search-input-right-box">
           模板名称
           <span class="search-input-right">
@@ -58,6 +58,7 @@ export default {
 
   data() {
     return {
+      isHome:true,
       searchModleName: '',
       compData: [],
       modleList: [{

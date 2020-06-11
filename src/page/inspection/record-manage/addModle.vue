@@ -111,7 +111,7 @@
                         </el-row>
                       </el-col>
                     </el-row>
-                    <el-row class="mimi-content" v-if="field.type=='文本型'||field.type=='数字型'||field.type=='表达式'">
+                    <el-row class="mimi-content" v-if="field.type=='文本型'||field.type=='数字型'||field.type=='表达式'||field.type=='地址型'||field.type=='引用型'">
                       <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                         <el-form-item label="占位符(字段填报说明)：" label-width="165px">
                           <el-input size="mini" v-model="field.remark" clearable>
@@ -279,6 +279,7 @@ export default {
         icon: 'icon_qit',
         domain: '公路路政',
         title: 'pc测试',
+        scopeOfUse: '指定人员使用',
         templateFieldList: [
           {
             // value: ,

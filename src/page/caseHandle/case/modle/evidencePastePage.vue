@@ -53,14 +53,14 @@
             拍摄时间：
           <span>
             <el-form-item>
-              <el-date-picker v-model="item.pTime" style="width:200px" type="datetime"  value-format="yyyy-MM-dd HH"
+              <el-date-picker v-model="item.pTime" style="width:200px" type="datetime"  value-format="yyyy-MM-dd HH:mm:ss"
                               placeholder="   年  月  日  时 分 秒">
               </el-date-picker>
             </el-form-item>
           </span>
           拍摄地点
           <span>
-            <el-form-item :prop="'evidenceData.' + index + '.pPla'" >
+            <el-form-item :prop="'evidenceData.' + index + '.pPla'" style="width:200px">
               <el-input type='textarea' v-model="item.pPla" :autosize="{ minRows: 1, maxRows: 3}" maxLength="50"></el-input>
             </el-form-item>
           </span>
@@ -68,19 +68,19 @@
         <p class="p_begin">
             拍摄人：
           <span>
-            <el-form-item>
+            <el-form-item style="width:215px">
                 <el-select v-model="item.pPeo">
                     <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item"></el-option>
                   </el-select>
             </el-form-item>
           </span>
           执法人员签名：
-          <span class="write_line" style="width:100px"></span>
+          <span class="write_line" style="width:150px"></span>
         </p>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             当事人或代理人签名：
-            <span class="write_line" style="width:200px"></span>
+            <span class="write_line" style="width:300px"></span>
           </el-col>
         </el-row>   
     </div>    
@@ -274,7 +274,8 @@ export default {
    
     //添加一页
     addPage(){
-        let data = { pic1:'', pic2:'', picSrc1:'', picSrc2:'',picBase64_1:'',picBase64_2:'', pTime:this.docData.evidenceData[0].pTime , pPla:this.docData.evidenceData[0].pPla, pPeo:this.docData.evidenceData[0].pPeo,note1:'', note2:'',picList:''}
+        let data = { pic1:'', pic2:'', picSrc1:'', picSrc2:'',picBase64_1:'',picBase64_2:'', 
+        pTime:'' , pPla:this.docData.evidenceData[0].pPla, pPeo:this.docData.evidenceData[0].pPeo,note1:'', note2:'',picList:''}
         this.docData.evidenceData.push(data);
         this.imgWidthArr.push(['','']);
         this.imgHeightArr.push(['','']);

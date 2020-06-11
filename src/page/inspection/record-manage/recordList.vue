@@ -23,16 +23,26 @@
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button>
             </el-form-item>
             <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">生成日志</el-button>
+            </el-form-item>
+            <el-form-item>
             </el-form-item>
           </el-form>
         </div>
       </div>
       <div class="tablePart">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%">
-          <el-table-column prop="title" label="标题" align="center"></el-table-column>
-          <el-table-column prop="createUser" label="创建人" align="center"></el-table-column>
+        <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55">
+          </el-table-column>
+          <el-table-column prop="createTime" label="填报时间  " align="center"></el-table-column>
           <el-table-column prop="domain" label="业务领域" align="center"></el-table-column>
-          <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+          <el-table-column prop="" label="日志类型" align="center"></el-table-column>
+          <el-table-column prop="" label="执法机构" align="center"></el-table-column>
+          <el-table-column prop="" label="执法人员" align="center"></el-table-column>
+          <!-- <el-table-column prop="" label="创建人" align="center"></el-table-column> -->
+          <el-table-column prop="" label="交接班" align="center"></el-table-column>
+          <el-table-column prop="status" label="状态" align="center"></el-table-column>
+          <el-table-column prop="title" label="标题" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
               <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
@@ -55,6 +65,7 @@ export default {
   data() {
     return {
       tableData: [], //表格数据
+      multipleSelection: [],
       searchForm: {
         domain: "",
         name: ''
@@ -104,7 +115,7 @@ export default {
     // 查看
     viewRecord(row) {
       this.$router.push({
-        name: 'inspection_viewRecord',
+        name: 'inspection_writeRecordInfo',
         params: row
       });
     },
@@ -116,7 +127,7 @@ export default {
       findRecordModleTimeByIdApi(row.templateId).then(
         res => {
           if (res.code == 200) {
-            console.log('row.createTime <= res.data',row.createTime , res.data)
+            console.log('row.createTime <= res.data', row.createTime, res.data)
             if (row.createTime >= res.data) {
               // 写记录
               row.addOrEiditFlag = 'edit'
@@ -162,6 +173,11 @@ export default {
 
       })
     },
+    // 选择数据
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+      console.log('multipleSelection', this.multipleSelection)
+    }
   },
   mounted() {
     this.getTableData()
