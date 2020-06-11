@@ -51,7 +51,7 @@
         <div class="noMore" v-else>没有更多了</div>
       </div>
 
-      <el-dialog :visible.sync="visible" title="考核发起配置" width="480px" >
+      <el-dialog :visible.sync="visible" title="考核发起配置" width="100%" >
         <el-form :label-position="labelPosition" :model="form" ref="form" label-width="160px">
           <el-form-item label="批次名称" prop="operator" >
             <el-input placeholder="请输入批次名称" v-model.trim="form.batchName" ></el-input>

@@ -5,6 +5,6 @@ export default [
     meta: {
       title: "评议考核-人员报送"
     },
-    component: () => import("@/page/catsAppraisalExamUpload/catsAppraisalExamPersonUpload.vue")
+    component: () => import("@/page/catsAppraisalExamination/catsAppraisalExamUpload/catsAppraisalExamPersonUpload.vue")
   }
-  ]
+]
