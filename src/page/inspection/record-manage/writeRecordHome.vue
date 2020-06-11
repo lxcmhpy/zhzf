@@ -2,7 +2,7 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox" style="overflow: hidden;">
       <div style="margin-bottom:24px">
-        <el-button icon="el-icon-plus" type="primary" size="medium" @click="addNewModle">新增模板</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="medium" @click="addNewModle" v-if="isHome">新增模板</el-button>
         <div class="search-input-right-box">
           模板名称
           <span class="search-input-right">
@@ -58,6 +58,7 @@ export default {
 
   data() {
     return {
+      isHome:true,
       searchModleName: '',
       compData: [],
       modleList: [{
@@ -108,6 +109,7 @@ export default {
       console.log('选中的模板', item)
       item.addOrEiditFlag = 'add'
       // 写记录
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
         name: 'inspection_writeRecordInfo',
         params: item

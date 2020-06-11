@@ -61,6 +61,38 @@ export function findPykhZpByPage (data) {
         cancelToken: setCancelSource()
       })
 }
+// 保存考核细则
+export function addorUpdateDetailZp(data) {
+    return request({
+        url: "/pykh/pykhToConfigure/addorUpdateDetailZp",
+        method: "post",
+        showloading: false,
+        data: vm.$qs.stringify(data),
+        baseUrlType:'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+      })
+}
+//删除考核细则
+export function deleteDetailZpById(data) {
+    return request({
+        url: "/pykh/pykhToConfigure/deleteDetailZpById",
+        method: "get",
+        showloading: false,
+        params: data,
+        baseUrlType:'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+      })
+}
+export function findListVoByPykhZp(data) {
+    return request({
+        url: "/pykh/pykhToConfigure/findListVoByPykhZp",
+        method: "get",
+        showloading: false,
+        params: data,
+        baseUrlType:'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+      })
+}
 // 添加修改考核指标
 export function addOrUpdatePykhMetrics (data) {
     return request({

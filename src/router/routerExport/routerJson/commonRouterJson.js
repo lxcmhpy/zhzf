@@ -77,6 +77,14 @@ export default [
             },
             component: () => import("@/page/sys/pdf-manage/pdfManage.vue")
           },
+          {
+            name: "notice-manage",
+            path: "/notice-manage",
+            meta: {
+              title: "公告信息"
+            },
+            component: () => import("@/page/sys/notice-manage/noticeManage.vue")
+          }
         ]
       },
       {

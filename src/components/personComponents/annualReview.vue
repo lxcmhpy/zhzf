@@ -14,7 +14,7 @@
         <el-table-column prop="reviewScoreName" label="年审成绩" align="center"></el-table-column>
         <el-table-column prop="note" label="备注" align="center"></el-table-column>
       </el-table>
-      <div class="paginationBox" style="margin-top:-25px;margin-bottom:10px;margin-left:40%;">
+      <div class="paginationBox" style="margin-top:-25px;margin-bottom:10px;text-align:center;">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
