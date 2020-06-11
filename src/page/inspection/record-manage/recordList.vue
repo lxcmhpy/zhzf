@@ -5,20 +5,22 @@
         <div class="search">
           <el-form :inline="true" :model="searchForm" class>
             <el-form-item label="记录时间">
-              <el-date-picker v-model="timeList" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker v-model="timeList" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="业务领域">
-              <el-input v-model="searchForm.domain" placeholder="输入业务领域"></el-input>
+              <el-select v-model="searchForm.domain" placeholder="请选择">
+                <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateName"></el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item label="检查类型">
-              <el-input v-model="searchForm.name"></el-input>
+            <el-form-item label="记录类型">
+              <el-input v-model="searchForm.title"></el-input>
             </el-form-item>
             <el-form-item label="状态">
               <el-select v-model="searchForm.status" placeholder="请选择">
-                <el-option label="全部" value="全部"></el-option>
+                <el-option label="全部" value=""></el-option>
                 <el-option label="暂存" value="暂存"></el-option>
-                <el-option label="完成" value="完成"></el-option>
+                <el-option label="保存" value="保存"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="记录人">
@@ -30,8 +32,8 @@
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">生成日志</el-button>
             </el-form-item>
-            <el-form-item>
-              <el-radio v-model="searchForm.name" label="1">只显示我的</el-radio>
+            <el-form-item prop="name" style="float:right;display:inline-block" @click="viewMine()">
+              <el-radio v-model="searchForm.name" label="1" @change='changeName()'>只显示我的</el-radio>
             </el-form-item>
           </el-form>
         </div>
@@ -51,8 +53,8 @@
           <!-- <el-table-column prop="title" label="标题" align="center"></el-table-column> -->
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
-              <el-button @click="editRecord(scope.row)" type="text">编辑</el-button>
+              <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
+              <el-button @click="editRecord(scope.row)" type="text">查看</el-button>
               <el-button type="text" @click="deleteRecord(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -67,6 +69,7 @@
 </template>
 <script>
 import { findRecordListApi, removeRecordByIdApi, findRecordModleByIdApi, findRecordModleTimeByIdApi } from "@/api/Record";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
@@ -80,13 +83,19 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
-
+      lawCateList: [], //业务领域列表
 
     }
   },
   methods: {
     getTableData() {
+      console.log('time,creatUser', this.timeList,this.searchForm.createUser)
       let data = {
+        startTime: this.timeList[0],
+        endTime: this.timeList[1],
+        title: this.searchForm.title,
+        status: this.searchForm.status,
+        createUser: this.searchForm.createUser,
         domain: this.searchForm.domain,
         current: this.currentPage,
         size: this.pageSize,
@@ -108,6 +117,21 @@ export default {
       this.currentPage = 1;
       this.getTableData()
     },
+    // 查询我的
+    viewMine() {
+      console.log( ":", this.searchForm.name)
+      if(this.searchForm.name==1){
+        // this.searchForm.name=''
+      }
+      // this.searchForm.name=true
+      // if (this.searchForm.name == '') {
+      //   this.searchForm.createUser = iLocalStroage.gets("userInfo").username;
+      // }
+      // this.searchTableData()
+    },
+    changeName() {
+      console.log( ":", this.searchForm.name)
+    },
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
@@ -118,6 +142,19 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getTableData();
+    },
+    //获取业务领域
+    getEnforceLawType() {
+      let _this = this
+      this.$store.dispatch("getEnforceLawType", "1").then(
+        res => {
+          _this.lawCateList = res.data;
+          // console.log('列表121', _this.lawCateList)
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     // 查看
     viewRecord(row) {
@@ -187,7 +224,8 @@ export default {
     }
   },
   mounted() {
-    this.getTableData()
+    this.getTableData();
+    this.getEnforceLawType();
   }
 }
 </script>

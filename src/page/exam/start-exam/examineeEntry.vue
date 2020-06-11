@@ -8,7 +8,7 @@
               <div class="examinee-photo">
                 <img
 			            v-if="examineeData.personInfo"
-                  :src="examineeData.personInfo.photoUrl || personImg"
+                  :src="(baseUrl + examineeData.personInfo.photoUrl) || personImg"
                   width="214px"
                   height="298px"
                 />
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import iLocalStroage from "@/common/js/localStroage.js";
 
 export default {
   data() {
@@ -88,6 +89,9 @@ export default {
   computed: {
     examineeName(){
       return this.$route.query.name
+    },
+    baseUrl(){
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
   },
   created(){
@@ -135,7 +139,6 @@ export default {
     },
     // 进入考试
     entryExam(exam){
-      this.startCount = true;
       this.selectedExam = exam;
       clearInterval(this.intervalTime);
       // 获取当前时间，考试结束时间
@@ -150,14 +153,15 @@ export default {
           this.$message({type: 'warning', message: '只能提前30分钟进入考试'});
           return false;
         }else{
+          this.startCountDown = true;
           if(timeDiff < 1){
             this.startCount = false;
           }else{
+            this.startCount = true;
             sessionStorage.setItem('StartCount', 'true');
             let time = (startTime - newTime) / 1000;
             this.setCountDownTime(time);
             this.countDownFun(exam);
-            this.startCountDown = true;
           }
         }
       }else{
