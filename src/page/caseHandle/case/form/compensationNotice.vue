@@ -358,7 +358,7 @@ export default {
             arr[i] = cnChar.charAt(n) + (n==='0'&&'元万亿'.indexOf(b)<0?'':b);
             i++;
         });
-        alert(arr.join('').replace(/(零)\1+/g,'零').replace('/(零)(?=元|万|亿)/g',''));
+        // alert(arr.join('').replace(/(零)\1+/g,'零').replace('/(零)(?=元|万|亿)/g',''));
     },
     //将金额转换为大写(小写)
     combined(val) {
