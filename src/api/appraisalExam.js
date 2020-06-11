@@ -9,7 +9,7 @@ import { setCancelSource } from "@/common/js/cancelToken";
  // 加载评议考核配置列表
  export function findPykhConfigByPage (data) {
     return request({
-        url: "/pykh/pykhToConfigure/findPykhConfigByPage",
+        url: "/pykh/pykhToConfigure/findPykhConfigureByPage",
         method: "get",
         showloading: false,
         baseUrlType:'CAPTCHA_HOST',
@@ -21,7 +21,7 @@ import { setCancelSource } from "@/common/js/cancelToken";
 // 添加考核配置
   export function addOrUpdatePykhConfig (data) {
     return request({
-        url: "/pykh/pykhToConfigure/addOrUpdatePykhConfig",
+        url: "/pykh/pykhToConfigure/addOrUpdatePykhConfigure",
         method: "post",
         showloading: false,
         baseUrlType:'CAPTCHA_HOST',
@@ -32,7 +32,7 @@ import { setCancelSource } from "@/common/js/cancelToken";
 // 删除考核配置
 export function deletePykhConfigById (data) {
     return request({
-        url: "/pykh/pykhToConfigure/deletePykhConfigById/" +data,
+        url: "/pykh/pykhToConfigure/deletePykhConfigureById/" +data,
         method: "get",
         showloading: false,
         baseUrlType:'CAPTCHA_HOST',
