@@ -48,7 +48,7 @@
             </div>
             <div v-if="examPerInfo.personInfo" class="time-info pserson-info">
               <div class="examinee-photo">
-                <img :src="examPerInfo.personInfo.photoUrl || personImg" width="80px" height="112px" />
+                <img :src="(baseUrl + examPerInfo.personInfo.photoUrl) || personImg" width="80px" height="112px" />
               </div>
               <div class="exam-person">
                 <p class="name">{{ examPerInfo.personInfo.personName }}</p>
@@ -132,6 +132,9 @@ export default {
         item => item.resultId === this.questionData.firstQuestion.resultId
       );
       return this.questionNumList[graphIndex];
+    },
+    baseUrl(){
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
   },
   created() {
