@@ -4,16 +4,16 @@
     <el-drawer :title="drawerTitle" :visible.sync="newModleTable" direction="rtl" size="50%" class="dialo dialog_unlaw max-group-prepend card-drawer">
       <div style="padding：22px;" class="demo-drawer__content error-index">
         <el-form :model="formData" :rules="rules" ref="elForm" label-width="100px" class="demo-ruleForm">
-          <el-col :span="12">
+          <el-col :span="7">
             <el-form-item label="业务领域" prop="domain">
               <el-select v-model="formData.domain" placeholder="请选择">
                 <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateName"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="17">
             <el-form-item label="模板标题" prop="title">
-              <el-input v-model="formData.title" placeholder="请输入模板标题" clearable>
+              <el-input v-model="formData.title" placeholder="请输入模板标题" clearable @input="changeTitle">
               </el-input>
             </el-form-item>
           </el-col>
@@ -41,21 +41,21 @@
                   <div v-for="field in item.fieldList" :key="field.id">
                     <el-row :gutter="20">
                       <el-col :span="2">
-                        <el-form-item label-width="0">
+                        <el-form-item label-width="0" prop="required">
                           <el-checkbox v-model="field.required" true-label="true" false-label="false">必填</el-checkbox>
                         </el-form-item>
                       </el-col>
                       <!-- {{field}} -->
-                      <el-col :span="11">
-                        <el-form :model="field">
+                      <el-col :span="16">
+                        <el-form :model="field" ref="filedForm">
                           <el-form-item label-width="0" prop="title" :rules="{ required: true, message: '请输入字段名称', trigger: 'blur' }">
                             <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
                             </el-input>
                           </el-form-item>
                         </el-form>
                       </el-col>
-                      <el-col :span="11">
-                        <el-form-item label-width="0" style="width:calc(100% - 34px)">
+                      <el-col :span="6">
+                        <el-form-item label-width="0" style="width:calc(100% - 34px)" prop="type">
                           <el-select v-model="field.type" placeholder="请选择字段类型" @change="changeFieldType(field)" :disabled="field.status===0?true:false">
                             <el-option label="文本型" value="文本型"></el-option>
                             <el-option label="单选型" value="单选型"></el-option>
@@ -70,11 +70,11 @@
                     </el-row>
                     <el-row class="mimi-content" v-if="field.type=='抽屉型'||field.type=='单选型'||field.type=='复选型'">
                       <el-col :span="22" :offset="2" class="card-bg-content min-lable">
-                        <el-form-item label="占位符(字段填报说明)：" label-width="165px">
+                        <el-form-item label="占位符(字段填报说明)：" label-width="165px" prop="remark">
                           <el-input size="mini" v-model="field.remark" clearable>
                           </el-input>
                         </el-form-item>
-                        <el-form-item v-for="(radio,index) in field.options" :key="index" label-width="0">
+                        <el-form-item v-for="(radio,index) in field.options" :key="index" label-width="0" prop="value">
                           <i class="el-icon-remove-outline" style="margin-right:14px" @click="delField(radio,field.options)"></i>
                           <el-input size="mini" v-model="radio.value" placeholder="请输入选项" clearable style="width: calc(100% - 70px)" :disabled="field.status===0?true:false">
                           </el-input>
@@ -134,14 +134,13 @@
             <el-popover placement="right" ref="popoverRef" title="选择图标" width="200" trigger="click" content="选择图标">
               <li v-for="icon in iconList" :key="icon.icon" class="record-icon-box" @click="changIcon(icon)">
                 <div class="record-icon-box-content">
-                  <img v-if='icon.icon' :src="'./static/images/img/record/'+icon.icon+'.png'" alt="">
-                  <span v-else style="color: #667589;font-size: 36px;">{{formdata.title.charAt(0)}}</span>
+                  <img :src="'./static/images/img/record/'+icon.icon+'.png'" alt="">
                 </div>
               </li>
               <li slot="reference" class="record-icon-box">
                 <div class="record-icon-box-content" style="line-height: 90px;">
-                  <img :src="'./static/images/img/record/'+formData.icon+'.png'" alt="">
-                  <!-- <span v-else style="color: #667589;font-size: 36px;">{{formdata.title.charAt(0)}}</span> -->
+                  <img v-if='formData.icon!=""&&formData.icon' :src="'./static/images/img/record/'+formData.icon+'.png'" alt="">
+                  <span v-else style="margin-top:-17px;color:#667589;font-size:36px;display:block;">{{titileText}}</span>
                 </div>
               </li>
             </el-popover>
@@ -195,7 +194,7 @@
       <div class="demo-drawer__footer footer_fixed">
         <el-button type="primary" @click="submitForm('elForm')">发布</el-button>
         <el-button @click="preview(formData)">预览</el-button>
-        <!-- <el-button @click="resetForm('elForm')">重置</el-button> -->
+        <!-- <el-button @click="resetForm('elForm')">重置</el-button>< -->
       </div>
     </el-drawer>
     <preview ref="previewRef" @fieldList="getAllFieldList"></preview>
@@ -215,6 +214,7 @@ export default {
   data() {
     return {
       drawerTitle: '创建模板',
+      titileText: '',
       newModleTable: false,
       currentUserLawId: '',
       activeNames: [0],
@@ -276,9 +276,9 @@ export default {
         createName: '',//创建人
         organId: '',//创建人机构id
         organName: '',//创建人机构名称
-        icon: 'icon_qit',
+        icon: '',
         domain: '公路路政',
-        title: 'pc测试',
+        title: '',
         scopeOfUse: '指定人员使用',
         templateFieldList: [
           {
@@ -291,7 +291,7 @@ export default {
                 id: '',//字段id-修改
                 type: '文本型',//必要-字段类型，不可改
                 field: 'key0',//必要-字段英文名
-                title: '姓名',//必要-字段中文名
+                title: '',//必要-字段中文名
                 required: true,
                 remark: '',//占位符
                 options: [//抽屉值
@@ -372,9 +372,9 @@ export default {
           findRecordModleByIdApi(this.editId).then(
             res => {
               if (res.code == 200) {
-              // _this.formData ={..._this.formData, ...res.data}
+                // _this.formData ={..._this.formData, ...res.data}
                 _this.formData = res.data
-                _this.$set(_this.formData,'templateFieldList',list);
+                _this.$set(_this.formData, 'templateFieldList', list);
                 // _this.formData.templateFieldList = list
                 this.globalContGroup = _this.formData.templateFieldList.length;
                 // _this.formData.templateAdminIdList = _this.formData.templateAdminId.split(",")
@@ -451,7 +451,7 @@ export default {
       this.globalCont++;
     },
 
-    addField(item,index) {
+    addField(item, index) {
       console.log('item', item)
       console.log('push前', item.fieldList)
 
@@ -501,6 +501,7 @@ export default {
             this.$message('该请至少添加一个字段！');
           }
           else {
+            console.log('submit')
             let data = JSON.parse(JSON.stringify(this.formData))
 
             data.templateAdminId = '';
@@ -540,24 +541,24 @@ export default {
             // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
             data.templateFieldList = JSON.stringify(data.templateFieldList)
             console.log('提交的字段', data)
-            debugger
-            saveOrUpdateRecordModleApi(data).then(
-              res => {
-                console.log(res)
-                if (res.code == 200) {
-                  this.$message({
-                    type: "success",
-                    message: res.msg
-                  });
-                  this.$emit("getAddModle", 'sucess');
-                  this.newModleTable = false;
-                } else {
-                  this.$message.error(res.msg);
-                }
-              },
-              error => {
+            // debugger
+            // saveOrUpdateRecordModleApi(data).then(
+            //   res => {
+            //     console.log(res)
+            //     if (res.code == 200) {
+            //       this.$message({
+            //         type: "success",
+            //         message: res.msg
+            //       });
+            //       this.$emit("getAddModle", 'sucess');
+            //       this.newModleTable = false;
+            //     } else {
+            //       this.$message.error(res.msg);
+            //     }
+            //   },
+            //   error => {
 
-              })
+            //   })
 
           }
         } else {
@@ -676,6 +677,9 @@ export default {
       this.formData.icon = icon.icon;
       this.$refs[`popoverRef`].doClose();
     },
+    changeTitle() {
+      this.titileText = this.formData.title.charAt(0)
+    },
     // 预览
     preview() {
       this.compData = this.formData
@@ -706,7 +710,31 @@ export default {
       }
     },
     resetForm(formName) {
-      // this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields();
+      this.titileText = '';
+      this.formData.templateFieldList = [
+        {
+          // value: ,
+          sort: 0,//新加-前端定义
+          classs: '',
+          classsId: '',
+          fieldList: [
+            {
+              id: '',//字段id-修改
+              type: '文本型',//必要-字段类型，不可改
+              field: 'key0',//必要-字段英文名
+              title: '',//必要-字段中文名
+              required: true,
+              remark: '',//占位符
+              options: [//抽屉值
+                { "value": "", "label": "" },
+              ],
+              status: '1',//0是不可修改field，1可修改
+              // templateId: '',//修改必传=formdata.id
+            },
+          ],
+
+        }];
     },
     changeUser(val) {
       console.log(val)
