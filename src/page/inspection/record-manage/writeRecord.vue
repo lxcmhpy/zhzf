@@ -5,7 +5,7 @@
         <span style="font-size:18px;font-weight: bold;">
           {{formData.title}}
         </span>
-        <span>
+        <span v-if="isWrite">
           <el-popover placement="bottom" width="700" trigger="click">
             <writeRecord ref="writeRecordRef" style="width:710px;height:400px;overflow:auto"></writeRecord>
             <span slot="reference" @click="upAndDown=!upAndDown">
@@ -40,17 +40,13 @@
   </div>
 </template>
 <script>
+import writeRecord from "./writeRecordHome";
+
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
 import { saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi, findRecordByIdApi } from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
-import writeRecord from "./writeRecordHome";
 export default {
-  components: {
-    writeRecord: writeRecord,
-    formCreate: formCreate.$form(),
-
-  },
   props: ['psMsg'],
   watch: {
     psMsg(val, oldVal) {
@@ -68,6 +64,7 @@ export default {
       defaultRuleData: [],
       visiblePopover: false,
       upAndDown: false,
+      isWrite: true,
       modleId: '',
       recordId: '',
       baseData: [],
@@ -81,7 +78,7 @@ export default {
       $f: {},
       rule: [],
       options: {
-        // submitBtn: false,
+        submitBtn: false,
         onSubmit: (formData) => {
           alert(JSON.stringify(formData));
         },
@@ -94,6 +91,11 @@ export default {
         }
       },
     }
+  },
+  components: {
+    writeRecord,
+    formCreate: formCreate.$form(),
+
   },
   methods: {
     // 查找模板
@@ -169,7 +171,7 @@ export default {
 
     },
     save() {
-      this.formData.status = '完成';
+      this.formData.status = '保存';
       // this.onSubmit()
       this.$data.$f.submit((formData, $f) => {
         // alert(JSON.stringify(formData));
@@ -181,7 +183,8 @@ export default {
             let textName = item.field
             // console.log('变量', item.field, ':', formData['' + textName + ''])
             item.text = formData['' + textName + '']
-            if (item.text && typeof (item.text) != 'string') {
+            // console.log('tyupe',typeof (item.text))
+            if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
               item.text = item.text.join(',')
             }
           });
@@ -234,7 +237,8 @@ export default {
             let textName = item.field
             // console.log('变量', item.field, ':', formData['' + textName + ''])
             item.text = formData['' + textName + '']
-            if (item.text && typeof (item.text) != 'string') {
+            // console.log('tyupe',typeof (item.text))
+            if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
               item.text = item.text.join(',')
             }
           });
@@ -283,7 +287,8 @@ export default {
             let textName = item.field
             // console.log('变量', item.field, ':', formData['' + textName + ''])
             item.text = formData['' + textName + '']
-            if (item.text && typeof (item.text) != 'string') {
+            // console.log('tyupe',typeof (item.text))
+            if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
               item.text = item.text.join(',')
             }
           });
@@ -326,6 +331,11 @@ export default {
     // 修改模板
     changeModle() {
       // this.visiblePopover = true
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: 'inspection_writeRecord',
+        // params: item
+      });
     },
     dealFormData() {
       this.rule = []
@@ -354,7 +364,7 @@ export default {
 
         element.fieldList.forEach(item => {
           // console.log(item)
-          if (item.type == '文本型') {
+          if (item.type == '文本型' || item.type == '地址型' || item.type == '引用型') {
             item.type = 'input';
             this.rule.push({
               type: 'input',
@@ -479,8 +489,8 @@ export default {
         });
       });
     },
-    viewRecord(){
-      this.options= {
+    viewRecord() {
+      this.options = {
         // submitBtn: false,
         onSubmit: (formData) => {
           alert(JSON.stringify(formData));

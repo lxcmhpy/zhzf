@@ -395,6 +395,9 @@ export default {
 
                 console.log('_this.formData.templateUserIdList', _this.formData.templateUserIdList)
                 console.log('_this.formData.templateAdminIdList', _this.formData.templateAdminIdList)
+                if(_this.formData.icon==''){
+                  _this.changeTitle()
+                }
 
               }
             },
@@ -542,23 +545,23 @@ export default {
             data.templateFieldList = JSON.stringify(data.templateFieldList)
             console.log('提交的字段', data)
             // debugger
-            // saveOrUpdateRecordModleApi(data).then(
-            //   res => {
-            //     console.log(res)
-            //     if (res.code == 200) {
-            //       this.$message({
-            //         type: "success",
-            //         message: res.msg
-            //       });
-            //       this.$emit("getAddModle", 'sucess');
-            //       this.newModleTable = false;
-            //     } else {
-            //       this.$message.error(res.msg);
-            //     }
-            //   },
-            //   error => {
+            saveOrUpdateRecordModleApi(data).then(
+              res => {
+                console.log(res)
+                if (res.code == 200) {
+                  this.$message({
+                    type: "success",
+                    message: res.msg
+                  });
+                  this.$emit("getAddModle", 'sucess');
+                  this.newModleTable = false;
+                } else {
+                  this.$message.error(res.msg);
+                }
+              },
+              error => {
 
-            //   })
+              })
 
           }
         } else {
