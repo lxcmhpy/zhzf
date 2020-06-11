@@ -59,6 +59,14 @@ export default [
     component: () => import("@/page/caseHandle/case/jiangxi/doc/adminCoerciveMeasureApproval.vue")
   },
   {
+    path: "/prolongAdminCoerciveMeasureApproval",
+    name: "case_handle_prolongAdminCoerciveMeasureApproval",
+    meta: {
+      title: "延长行政强制措施审批表"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/stageDelayApprovalForm.vue")
+  },
+  {
     path: "/sceneNotesDoc_JX",
     name: "case_handle_sceneNotesDoc_JX",
     meta: {

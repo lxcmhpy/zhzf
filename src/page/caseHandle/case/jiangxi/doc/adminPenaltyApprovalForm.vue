@@ -2,7 +2,7 @@
   <div class="print_box">
     <div class="print_info" id="removeAdminCoerciveMeasureApproval_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
-        <div class="doc_topic">行政强制措施解除审批表</div>
+        <div class="doc_topic">行政处罚审批表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -163,9 +163,7 @@
           </tr>
           <tr>
             <td rowspan="2">
-              <p>案件</p>
-              <p>基本</p>
-              <p>情况</p>
+              <p>案件基本情况</p>
             </td>
             <td rowspan="2" colspan="6" class="color_DBE4EF">
               <el-form-item
@@ -190,20 +188,20 @@
               <p>承办人意见</p>
             </td>
             <td rowspan="2" colspan="6" class="color_DBE4EF">
-              <p>
-                &nbsp;&nbsp;根据《中华人民共和国行政强制法》第二十八条第一款第三项规定，拟解除以下强制措施，并退还财物：
-              </p>
-              <p>
-                &nbsp;&nbsp;<el-checkbox >扣押财物</el-checkbox><br/>
-                &nbsp;&nbsp;<el-checkbox >查封场所、设施或者财物</el-checkbox>
-              </p>
-              <div class="pdf_seal">
-                <p>签名：{{formData.approvePeo}}</p>
-                <p>
-                  <span v-if="formData.approveTime">{{formData.approveTime}}</span>
-                  <span v-else>年 月 日</span>
-                </p>
-              </div>
+              <el-form-item
+                prop="closeResult"
+                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="formData.closeResult"
+                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 5}"
+                  maxlength="200"
+                  placeholder="\"
+                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                ></el-input>
+              </el-form-item>
             </td>
           </tr>
           <tr></tr>
@@ -255,16 +253,6 @@
             </td>
           </tr>
           <tr></tr>
-          <tr>
-            <td>
-              <p>备注</p>
-            </td>
-            <td colspan="6" class="color_DBE4EF">
-              <p>
-                <el-input type="textarea" v-model="formData.notes"></el-input>
-              </p>
-            </td>
-          </tr>
         </table>
       </el-form>
     </div>
