@@ -1391,19 +1391,20 @@
               this.autoSava = false;
               
               let replaceIndex = 0;
-              for(let i=0;i < this.openTab.length;i++){
-                if(this.openTab[i].route == '/inforCollect'){
-                  replaceIndex = i;
-                  break;
-                }
-              }
-              this.openTab[replaceIndex].menuUrl = 'case_handle_establish';
-              this.openTab[replaceIndex].name = 'case_handle_establish' + '-and-' + this.caseHandle.caseNumber;
-              this.openTab[replaceIndex].route = '/establish';
+              // for(let i=0;i < this.openTab.length;i++){
+              //   if(this.openTab[i].route == '/inforCollect'){
+              //     replaceIndex = i;
+              //     break;
+              //   }
+              // }
+              // this.openTab[replaceIndex].menuUrl = 'case_handle_establish';
+              // this.openTab[replaceIndex].name = 'case_handle_establish' + '-and-' + this.caseHandle.caseNumber;
+              // this.openTab[replaceIndex].route = '/establish';
 
               _this.$router.push({
                 name: "case_handle_establish"
               });
+              
             },
             err => {
 
