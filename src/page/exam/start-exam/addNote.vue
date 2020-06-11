@@ -1,0 +1,218 @@
+<template>
+  <el-dialog
+    :title="dialogTitle"
+    :visible.sync="visible"
+    @close="closeDialog"
+    :close-on-click-modal="false"
+    width="25%"
+    append-to-body
+    class="fullscreen"
+  >
+    <el-form
+      :inline="true"
+      :model="examNode"
+      label-position="right"
+      label-width="100px"
+      ref="examNodeRef"
+      :rules="rules"
+    >
+      <div class="departTable">
+        <el-row>
+             <el-form-item label="记录类型:" prop="rollingType">
+                <el-select
+              v-model="examNode.rollingType"
+              placeholder="记录类型"
+              remote
+              @focus="getDictInfo('考试-记录类型','noteTypeList')"
+              @change="changeType($event)"
+            >
+              <el-option
+                v-for="value in noteTypeList"
+                :key="value.id"
+                :label="value.name"
+                :value="value.id"
+              ></el-option>
+            </el-select>
+             </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="发生时间:" prop="happenTime">
+            <el-date-picker
+              v-model="examNode.happenTime"
+              format="yyyy-MM-dd hh:mm:ss"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              type="datetime"
+              placeholder="请选择培训开始时间"
+              clearable
+            ></el-date-picker>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="记录内容" prop="forceReason" placeholder>
+            <el-input  v-model="examNode.forceReason"></el-input>
+          </el-form-item>
+        </el-row>
+        <el-row>
+        </el-row>
+      </div>
+      <div class="item" style="text-align:right">
+        <span slot="footer" class="dialog-footer">
+          <div>
+            <el-button type="primary" @click="submit">确 定</el-button>
+            <el-button @click="visible = false">取 消</el-button>
+          </div>
+        </span>
+      </div>
+    </el-form>
+  </el-dialog>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      filterText: "",
+      isDisabled: true,
+      visible: false,
+      selectCurrentTreeName: "",
+      noteTypeList:[],
+      examNode: {
+        rollingId:"",
+        examId: "", //考试编号
+        invigilatorId: "", //监考id
+        examperId: "",//考生Id
+        rollingType:"1",//记录类型
+        forceReason:"",//原因
+        type:"1", //标识是记录类型0：还是交卷类型：1
+        happenTime: "" //发生时间
+      },
+      rules: {
+        rollingType: [
+          { required: true, message: "记录类型不能为空", trigger: "blur" }
+        ],
+        happenTime: [
+          { required: true, message: "发生时间不能为空", trigger: "blur" }
+        ],
+        forceReason: [
+          { required: true, message: "记录内容不能为空", trigger: "blur" }
+        ]
+      },
+      tableData: [], //表格数据
+      departLevel: 0, //级别
+      defaultExpandedKeys: [], //默认展开的key
+      currentPage: 1, //当前页
+      pageSize: 10, //pagesize
+      totalPage: 0, //总页数
+      currentOutlineId: "", //当前organ的id
+      dialogTitle: "", //弹出框title
+      errorName: false, //添加name时的验证
+      handelType: 0 //添加 0  修改2  查看3
+    };
+  },
+  methods: {
+        getDictInfo(name, codeName) {
+      this.$store.dispatch("drawInfo", name).then(res => {
+        if (res.code === 200) {
+          if (codeName === "noteTypeList") {
+            this.noteTypeList = res.data;
+          }
+        } else {
+          console.info("没有查询到数据");
+        }
+      });
+    },
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+
+    //更改每页显示的条数
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.currentPage = 1;
+      this.getSelectOutline();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getSelectOutline();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getSelectOutline();
+    },
+    //提交
+    submit() {
+      let _this = this;
+      if (_this.handelType == 1) {
+        _this.$store
+          .dispatch("addExamRecordInfo", _this.examNode)
+          .then(res => {
+           // _this.$emit("getTempleteComp");
+            _this.$message({
+              type: "success",
+              message: "添加成功!"
+            });
+            _this.visible = false;
+          });
+        err => {
+          console.log(err);
+        };
+      } else if (_this.handelType == 2) {
+        _this.$store
+          .dispatch("updateExamRecordInfo", _this.examNode)
+          .then(res => {
+            if(res.code === '200'){
+               _this.$message({
+                  type: "success",
+                  message: "修改成功!"
+                });
+            }
+            _this.visible = false;
+          });
+        err => {
+          console.log(err);
+        };
+      }
+    },
+    showModal(row,date,type){
+      let _this = this;
+      _this.visible = true;
+      _this.handelType = type;
+      _this.examNode.examperId = row.examperId;
+      _this.examNode.invigilatorId = row.invigilatorId;
+      _this.examNode.examId = row.examId;
+      if (type == 1) {
+        //新增
+        _this.dialogTitle = "模板选择";
+        _this.isDisabled = false;
+      } else if (type == 2) {
+        //修改,查看
+        _this.examNode.rollingType = date.rollingType;
+        _this.examNode.happenTime = date.happenTime;
+        _this.examNode.forceReason = date.forceReason;
+        _this.examNode.rollingId = date.rollingId;
+        _this.dialogTitle = "修改";
+        _this.isDisabled = false;
+      }
+    },
+    //聚焦清除错误信息
+    focusName() {
+      this.errorName = false;
+    },
+    //关闭弹窗的时候清除数据
+    closeDialog() {
+      this.visible = false;
+      this.$refs["examNodeRef"].resetFields();
+      this.errorName = false;
+    }
+  },
+  created() {
+  }
+};
+</script>
+<style lang="scss" scoped>
+>>>.el-date-editor.el-input, >>>.el-select{
+    width: 100%;
+}
+</style>

@@ -27,7 +27,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="paginationBox" style="margin-top:-25px;margin-bottom:10px;margin-left:40%;">
+      <div class="paginationBox" style="margin-top:-25px;margin-bottom:10px;text-align:center;">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -131,9 +131,8 @@ export default {
 }
 </script>
 
-<style lang="scss" src="@/assets/css/personManage.scss"></style>
 <style lang="scss">
- /*  @import "@/assets/css/personManage.scss"; */
+  @import "@/assets/css/personManage.scss";
   .titleflag {
     width      : 4px;
     height     : 22px;

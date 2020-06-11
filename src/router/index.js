@@ -10,7 +10,7 @@ Vue.use(VueRouter);
 
 // 路由拦截
 // 需要鉴权
-const whiteList = ["/login", "/register", "/service", "/user", '/flowChart', '/case_handle_modle', '/case_handle_othermodle',]; //免登录白名单
+const whiteList = ["/login", "/register", "/service", "/user", '/flowChart', '/case_handle_modle', '/case_handle_othermodle', "/examLogin", "/entrySystem"]; //免登录白名单
 const regularList = {
     loginByToken: /\/loginByToken\/[a-zA-Z0-9\_\-\.]+\/\d{13}$/g
 }
@@ -44,7 +44,13 @@ router.beforeEach((to, from, next) => {
         if(arrayPath.length > 1 && regularList[arrayPath[1]]&&regularList[arrayPath[1]].test(to.path)) {
            next();
         } else {
-           next({name: "login"});
+          // 考试人员子系统
+          if(sessionStorage.getItem('LoginSystem')){
+            sessionStorage.clear();
+            next({name: 'examLogin'});
+          }else{
+            next({name: "login"});
+          }
         }
     }
   }

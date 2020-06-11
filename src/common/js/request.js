@@ -109,8 +109,14 @@ service.interceptors.response.use(
         return Promise.reject(response.data);
       } else {
         // httpErrorStr(response.data.code);
-        tryHideFullScreenLoading();
-        return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善
+        // 下载后台返回文件流
+        if(response.config.responseType === "blob"){
+          const fileName = response.headers["content-disposition"].split(";")[1].split("=")[1];
+          return Promise.resolve({ data: response.data, fileName: fileName });
+        }else{
+          tryHideFullScreenLoading();
+          return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善
+        }
       }
     } else {
 

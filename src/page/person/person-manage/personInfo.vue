@@ -66,6 +66,7 @@
           :data="tableData"
           resizable
           stripe
+          class="person-table"
           v-loading="tableLoading"
           element-loading-spinner="car-loading"
           element-loading-text="加载中..."
@@ -383,7 +384,9 @@ export default {
             }else{
               this.$alert(res.message, '提示', { confirmButtonText: '确定'});
             }
-          }, err => {console.log(err);});
+          }, err => {
+            this.$message({ type: 'warning', message: err.msg || '' });
+          });
         }).catch(() => {});
       }
     },
@@ -431,11 +434,9 @@ export default {
 }
 </script>
 
-<style  lang="scss" src="@/assets/css/searchPage.scss" scoped>
-</style>
-<style lang="scss" src="@/assets/css/personManage.scss"  scoped></style>
-<style lang="scss" scoped>
-  /* @import "@/assets/css/personManage.scss"; */
+<style  lang="scss" scoped>
+@import "@/assets/css/searchPage.scss";
+@import "@/assets/css/personManage.scss";
 .search-form{
   >>>.el-input, >>>.el-select{
     width: 180px;
@@ -444,6 +445,11 @@ export default {
 }
 >>>.el-select{
   margin-right: 0;
+}
+.person-table{
+  >>>.el-table__body-wrapper{
+    padding-bottom: 0;
+  }
 }
 .tableHandle{
   margin-bottom: 10px;
