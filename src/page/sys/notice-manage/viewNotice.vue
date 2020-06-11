@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :visible.sync="visible"
+    :visible.sync="visible11"
     @close="closeDialog"
     :close-on-click-modal="false"
     width="80%"
@@ -8,7 +8,7 @@
   <el-row>
     <el-col :span="24">
       <el-card :body-style="{ padding: '0px' }">
-        <p :v-html="content" />
+        <p v-html="content" />
     </el-card>
       </el-col>
 </el-row>
@@ -20,17 +20,17 @@
     },
     data() {
       return {
-        content : "",
-        visible : false
+        content : ``,
+        visible11 : false
     }
   },
   methods: {
       showModal(content) {
-        this.visible = true;
+        this.visible11 = true;
         this.content = content;
       },
       closeDialog() {
-        this.visible = false;
+        this.visible11 = false;
       },
     },
     computed: {
