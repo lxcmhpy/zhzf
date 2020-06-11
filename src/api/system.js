@@ -1205,3 +1205,40 @@ export function deleteRoadLcDeployApi(id) {
     cancelToken: setCancelSource()
   });
 }
+
+//分页查找公告信息
+export function getNoticeListApi(data) {
+  return request({
+    url: "/pykh/notice/findNoticeByPage",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加、修改公告信息
+export function addOrUpdateNoticeApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/pykh/notice/addOrUpdateNotice",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除公告信息
+export function deleteNoticeApi(id) {
+  debugger
+  return request({
+    url: "/pykh/notice/deleteNotice/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
