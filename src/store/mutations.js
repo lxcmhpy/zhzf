@@ -10,8 +10,12 @@ const mutations = {
     [types.CLEAR_ALL_CACHE] (state) {
         window.sessionStorage.clear();
         window.localStorage.clear();
+        debugger;
         for (let i in state) {
             if (typeof state[i] === 'object') {
+                if (state[i] instanceof Array) {
+                    state[i]= []
+                }
                 let jStateObj = state[i]
                 for (let j in jStateObj) {
                     if (typeof jStateObj[j] === 'string') {

@@ -35,5 +35,12 @@ export default [
         title: "公告信息"
       },
       component: () => import("@/page/catsAppraisalExamination/noticeManage/noticeManage.vue")
-  }
+  }, {
+    path: "/catsAppraisalExamination",
+    name: "catsAppraisalExamination",
+    meta: {
+      title: "评议考核首页面"
+    },
+    component: () => import("@/page/catsAppraisalExamination/home.vue")
+}
 ]
