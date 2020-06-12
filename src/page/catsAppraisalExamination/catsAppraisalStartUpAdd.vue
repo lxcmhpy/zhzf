@@ -5,31 +5,40 @@
         <div class="search">
           <el-form :inline="true" :model="batchForm" :rules="rules" ref="batchForm">
             <el-form-item label="批次名称" prop="batchName">
-              <el-input placeholder="请输入批次名称" v-model="batchForm.batchName"></el-input>
+              <el-input placeholder="请输入批次名称" v-model="batchForm.batchName" :readonly="isView"></el-input>
             </el-form-item>
             <el-form-item label="批次所属年份" prop="batchYear">
               <el-input placeholder="请输入批次所属年份" v-model="batchForm.batchYear" :readonly="true"></el-input>
             </el-form-item>
             <el-form-item label="案件基数" prop="khjs">
-              <el-input-number placeholder="请输入案件基数" v-model="batchForm.khjs"></el-input-number>
+              <el-input placeholder="请输入案件基数" v-model="batchForm.khjs" :readonly="isView"></el-input>
             </el-form-item>
             <el-form-item label="抽取基数" prop="cqjs">
-              <el-input-number placeholder="请输入抽取基数" v-model="batchForm.cqjs"></el-input-number>
+              <el-input placeholder="请输入抽取基数" v-model="batchForm.cqjs" :readonly="isView"></el-input>
             </el-form-item>
             <el-form-item label="人员基数" prop="personNum">
-              <el-input-number placeholder="请输入人员基数" v-model="batchForm.personNum"></el-input-number>
+              <el-input placeholder="请输入人员基数" v-model="batchForm.personNum" :readonly="isView"></el-input>
             </el-form-item>
             <el-form-item label="人员抽取数" prop="personCq">
-              <el-input-number placeholder="请输入人员抽取数" v-model="batchForm.personCq"></el-input-number>
+              <el-input placeholder="请输入人员抽取数" v-model="batchForm.personCq" :readonly="isView"></el-input>
             </el-form-item>
             <el-form-item label="人员考试数" prop="personKs">
-              <el-input-number placeholder="请输入人员考试数" v-model="batchForm.personKs"></el-input-number>
+              <el-input placeholder="请输入人员考试数" v-model="batchForm.personKs" :readonly="isView"></el-input>
             </el-form-item>
             <el-form-item label="发布日期" prop="showBatchDate">
-              <el-date-picker type="date" placeholder="选择日期" v-model="batchForm.showBatchDate"></el-date-picker>
+              <el-date-picker
+                type="date"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                v-model="batchForm.showBatchDate"
+                :readonly="isView"
+              ></el-date-picker>
             </el-form-item>
           </el-form>
-          <el-button type="primary" size="medium" icon="el-icon-plus" @click="addItem">新增指标</el-button>
+          <div :hidden="isView">
+            <el-button type="primary" icon="el-icon-plus" @click="addItem">新增指标</el-button>
+            <el-button type="primary" @click="saveOrUpdate('batchForm')">保存</el-button>
+          </div>
         </div>
       </div>
       <div class="tablePart">
@@ -48,10 +57,10 @@
               <el-table-column prop="nrxm" label="三级指标" align="center"></el-table-column>
               <el-table-column prop="score" label="分数" align="center">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.score" placeholder="请输入数值"></el-input-number>
+                  <el-input v-model="scope.row.score" placeholder="请输入数值" :readonly="isView"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" align="center" width="120">
+              <el-table-column label="操作" align="center" width="120" v-if="!isView">
                 <template slot-scope="scope">
                   <el-button type="text" @click="deletePykhBatchById(scope.row)">删除</el-button>
                 </template>
@@ -72,10 +81,10 @@
               <el-table-column prop="nrxm" label="三级指标" align="center"></el-table-column>
               <el-table-column prop="score" label="分数" align="center">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.score" placeholder="请输入数值"></el-input-number>
+                  <el-input v-model="scope.row.score" placeholder="请输入数值" :readonly="isView"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" align="center" width="120">
+              <el-table-column label="操作" align="center" width="120" v-if="!isView">
                 <template slot-scope="scope">
                   <el-button type="text" @click="deletePykhBatchById(scope.row)">删除</el-button>
                 </template>
@@ -96,10 +105,10 @@
               <el-table-column prop="nrxm" label="三级指标" align="center"></el-table-column>
               <el-table-column prop="score" label="分数" align="center">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.score" placeholder="请输入数值"></el-input-number>
+                  <el-input v-model="scope.row.score" placeholder="请输入数值" :readonly="isView"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" align="center" width="120">
+              <el-table-column label="操作" align="center" width="120" v-if="!isView">
                 <template slot-scope="scope">
                   <el-button type="text" @click="deletePykhBatchById(scope.row)">删除</el-button>
                 </template>
@@ -120,10 +129,10 @@
               <el-table-column prop="nrxm" label="三级指标" align="center"></el-table-column>
               <el-table-column prop="score" label="分数" align="center">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.score" placeholder="请输入数值"></el-input-number>
+                  <el-input v-model="scope.row.score" placeholder="请输入数值" :readonly="isView"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" align="center" width="120">
+              <el-table-column label="操作" align="center" width="120" v-if="!isView">
                 <template slot-scope="scope">
                   <el-button type="text" @click="deletePykhBatchById(scope.row)">删除</el-button>
                 </template>
@@ -132,7 +141,6 @@
           </el-tab-pane>
         </el-tabs>
       </div>
-      <el-button type="primary" @click="saveOrUpdate('batchForm')">保存</el-button>
       <el-dialog
         title="指标树"
         :visible.sync="visible"
@@ -160,14 +168,17 @@
 import { mixinsCommon } from "@/common/js/mixinsCommon";
 import {
   addOrUpdatePykhBatch,
-  findListVoByConfig
+  getMetricsTreeData,
+  findListVoByDetails
 } from "@/api/catsAppraisalStartUp.js";
 import iLocalStroage from "@/common/js/localStroage";
+import { numType } from "@/common/js/validator";
 export default {
   mixins: [mixinsCommon],
   data() {
     return {
       activeName: "case",
+      isView: false,
       batchForm: {
         batchName: "",
         batchYear: "",
@@ -180,25 +191,30 @@ export default {
       },
       rules: {
         batchName: [
-          { required: true, message: '请输入批次名称', trigger: 'blur' }
+          { required: true, message: "请输入批次名称", trigger: "blur" }
         ],
         khjs: [
-          { required: true, message: '请输入案件基数', trigger: 'blur' }
+          { required: true, message: "请输入案件基数", trigger: "blur" },
+          { validator:numType , trigger: "blur"}
         ],
         cqjs: [
-          { required: true, message: '请输入案件/抽取基数', trigger: 'blur' }
+          { required: true, message: "请输入案件/抽取基数", trigger: "blur" },
+          { validator:numType , trigger: "blur"}
         ],
         personNum: [
-          { required: true, message: '请输入人员基数', trigger: 'blur' }
+          { required: true, message: "请输入人员基数", trigger: "blur" },
+          { validator:numType , trigger: "blur"}
         ],
         personCq: [
-          { required: true, message: '请输入人员抽取数', trigger: 'blur' }
+          { required: true, message: "请输入人员抽取数", trigger: "blur" },
+          { validator:numType , trigger: "blur"}
         ],
         personKs: [
-          { required: true, message: '请输入人员考试数', trigger: 'blur' }
+          { required: true, message: "请输入人员考试数", trigger: "blur" },
+          { validator:numType , trigger: "blur"}
         ],
         showBatchDate: [
-          { type: 'date', required: true, message: '请选择发布', trigger: 'change' }
+          { required: true, message: "请输入发布时间", trigger: "blur" }
         ]
       },
       dataList1: [],
@@ -206,68 +222,7 @@ export default {
       dataList3: [],
       dataList4: [],
       visible: false,
-      data2: [
-        {
-          id: 1,
-          lev: 1,
-          label: "一级 1",
-          children: [
-            {
-              id: 4,
-              lev: 2,
-              label: "二级 1-1",
-              children: [
-                {
-                  id: 9,
-                  lev: 3,
-                  name1:"一级 1",
-                  id1:1,
-                  name2:"二级 1-1",
-                  id2:4,
-                  label: "三级 1-1-1"
-                },
-                {
-                  id: 10,
-                  lev: 3,
-                  name1:"一级 1",
-                  id1:1,
-                  name2:"二级 1-1",
-                  id2:4,
-                  label: "三级 1-1-2"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: "一级 2",
-          children: [
-            {
-              id: 5,
-              label: "二级 2-1"
-            },
-            {
-              id: 6,
-              label: "二级 2-2"
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: "一级 3",
-          children: [
-            {
-              id: 7,
-              label: "二级 3-1"
-            },
-            {
-              id: 8,
-              label: "二级 3-2"
-            }
-          ]
-        }
-      ],
+      data2: [],
       defaultProps: {
         children: "children",
         label: "label"
@@ -277,6 +232,15 @@ export default {
   methods: {
     addItem() {
       this.visible = true;
+      this.data2 = []
+      getMetricsTreeData(this.activeName).then(
+        res => {
+          this.data2 = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     handleClick(tab, event) {
       console.log(tab, event);
@@ -286,81 +250,132 @@ export default {
     },
     selectItems() {
       let datas = this.$refs.tree.getCheckedNodes();
-      if(this.activeName === "case"){
-        this.addItems(datas,this.dataList1)
-      }else if(this.activeName === "self"){
-        this.addItems(datas,this.dataList2)
-      }else if(this.activeName === "onLine"){
-        this.addItems(datas,this.dataList3)
-      }else{
-        this.addItems(datas,this.dataList4)
+      if (this.activeName === "case") {
+        this.addItems(datas, this.dataList1);
+      } else if (this.activeName === "self") {
+        this.addItems(datas, this.dataList2);
+      } else if (this.activeName === "onLine") {
+        this.addItems(datas, this.dataList3);
+      } else {
+        this.addItems(datas, this.dataList4);
       }
-      this.visible = false
+      this.visible = false;
     },
-    addItems(datas,dataList){
+    addItems(datas, dataList) {
       datas.forEach(item => {
-        if(item.lev===3){
+        if (item.lev === 3) {
           let existsData = dataList.find(data => {
-            if(data.threeId === item.id){
-              return data
+            if (data.indexThreeId === item.id) {
+              return data;
             }
-          })
-          if(!existsData){
+          });
+          if (!existsData) {
             let selectData = {};
-            selectData.indexOne = item.name1
-            selectData.indexOneId = item.id1
-            selectData.indexTwo = item.name2
-            selectData.indexTwoId = item.id2
-            selectData.nrxm = item.label
-            selectData.indexThreeId = item.id
-            selectData.assessType = this.activeName
-            dataList.push(selectData)
+            selectData.indexOne = item.name1;
+            selectData.indexOneId = item.id1;
+            selectData.indexTwo = item.name2;
+            selectData.indexTwoId = item.id2;
+            selectData.nrxm = item.label;
+            selectData.indexThreeId = item.id;
+            selectData.assessType = this.activeName;
+            dataList.push(selectData);
           }
         }
       });
     },
-    saveOrUpdate(formName){
-      let _this = this
+    saveOrUpdate(formName) {
+      let _this = this;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          let tableData = []
-          tableData = _this.dataList1.concat(_this.dataList2).concat(_this.dataList3).concat(_this.dataList4)
-          _this.batchForm.listDetailsForm = tableData     
-          addOrUpdatePykhBatch(_this.batchForm).then(
-              res => {
-                _this.$message({
-                  type: "success",
-                  message:"添加成功!"
-                });
-              },
-              err => {
-                console.log(err);
-              }
-            );
+          let tableData = [];
+          tableData = _this.dataList1
+            .concat(_this.dataList2)
+            .concat(_this.dataList3)
+            .concat(_this.dataList4);
+          if(tableData.length===0){
+            _this.$message({
+              type: "warning",
+              message: "请输入配置页签"
+            });
+            return;
+          }  
+          let errorData =  tableData.filter(item=>{if(item.score==="" || item.score=== undefined){return item}});
+          if(errorData.length > 0){
+            _this.$message({
+              type: "warning",
+              message: "请输入子页签分数"
+            });
+            return;
           }
+          _this.batchForm.listDetailsForm = tableData;
+          _this.batchForm.showBatchDate = this.batchForm.showBatchDate;
+          addOrUpdatePykhBatch(_this.batchForm).then(
+            res => {
+              _this.$message({
+                type: "success",
+                message: "添加成功!"
+              });
+              _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        }
       });
     },
-    deletePykhBatchById(row){
-      if(row.dataType === "case"){
-         this.dataList1 = this.dataList1.filter(item => item.threeId!==row.threeId)
-      }else if(row.dataType === "self"){
-          this.dataList2 = this.dataList2.filter(item => item.threeId!==row.threeId)
-      }else if(row.dataType === "onLine"){
-          this.dataList3 = this.dataList3.filter(item => item.threeId!==row.threeId)
-      }else{
-          this.dataList4 = this.dataList4.filter(item => item.threeId!==row.threeId)
+    deletePykhBatchById(row) {
+      if (row.assessType === "case") {
+        this.dataList1 = this.dataList1.filter(
+          item => item.indexThreeId !== row.indexThreeId
+        );
+      } else if (row.assessType === "self") {
+        this.dataList2 = this.dataList2.filter(
+          item => item.indexThreeId !== row.indexThreeId
+        );
+      } else if (row.assessType === "onLine") {
+        this.dataList3 = this.dataList3.filter(
+          item => item.indexThreeId !== row.indexThreeId
+        );
+      } else {
+        this.dataList4 = this.dataList4.filter(
+          item => item.indexThreeId !== row.indexThreeId
+        );
       }
     },
-    init(){
-      console.log('this.$route.params',this.$route.params)
-      if(this.$route.params.type==="0"){
-        let year = new Date().getFullYear()
-        this.batchForm.batchYear=year
+    init() {
+      console.log("this.$route.params", this.$route.params);
+      if (this.$route.params.type === "0") {
+        this.isView = false;
+        let year = new Date().getFullYear();
+        this.batchForm.batchYear = year;
+      } else {
+        this.isView = true;
+        this.batchForm = this.$route.params;
+        let _that = this;
+        findListVoByDetails({ batchId: this.$route.params.id }).then(
+          res => {
+            res.data.forEach(item => {
+              if (item.assessType === "case") {
+                _that.dataList1.push(item);
+              } else if (item.assessType === "self") {
+                _that.dataList2.push(item);
+              } else if (item.assessType === "onLine") {
+                _that.dataList3.push(item);
+              } else {
+                _that.dataList4.push(item);
+              }
+            });
+          },
+          err => {
+            console.log(err);
+          }
+        );
       }
     }
   },
-  mounted () {
-    this.init()
-  },
+  mounted() {
+    this.init();
+  }
 };
 </script>

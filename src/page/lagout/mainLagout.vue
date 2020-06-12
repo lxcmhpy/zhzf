@@ -26,7 +26,7 @@
               <div class="info_top">
                 <li><img src="../../../static/images/img/personInfo/head.svg" alt=""></li>
                 <li>
-                  <p class="name">{{userInfo.username}}</p>
+                  <p class="name">{{userInfo.nickName}}</p>
                   <p class="number">{{userInfo.username}}</p>
                 </li>
 
@@ -56,7 +56,7 @@
               </div>
               <span slot="reference">
                 <img src="../../../static/images/img/personInfo/head.svg" alt="">
-                {{userInfo.username}}
+                {{userInfo.nickName}}
                 <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
               </span>
 

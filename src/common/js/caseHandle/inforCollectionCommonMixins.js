@@ -304,7 +304,7 @@ export const inforCollectionCommonMixins = {
     punishDiag,
     caseSlideMenu
   },
-  computed: {...mapGetters(['caseId'])},
+  computed: {...mapGetters(['caseId','openTab','caseHandle'])},
   methods: {
     //更改案件来源
     changeCaseSource(item) {
@@ -624,16 +624,21 @@ export const inforCollectionCommonMixins = {
             iLocalStroage.removeItem("stageCaseId");
             this.autoSava = false; 
 
-            // let replaceIndex = 0;
-            // for(let i=0;i < this.openTab.length;i++){
-            //   if(this.openTab[i].route == '/compensationInforCollect'){
-            //     replaceIndex = i;
-            //     break;
-            //   }
-            // }
-            // this.openTab[replaceIndex].menuUrl = 'case_handle_establish';
-            // this.openTab[replaceIndex].name = 'case_handle_establish' + '-and-' + this.caseHandle.caseNumber;
-            // this.openTab[replaceIndex].route = '/establish';
+            console.log('this.openTab',this.openTab);
+            if(this.openTab){
+              let replaceIndex = 0;
+              for(let i=0;i < this.openTab.length;i++){
+                if(this.openTab[i].route == '/compensationInforCollect'){
+                  replaceIndex = i;
+                  break;
+                }
+              }
+              this.openTab[replaceIndex].menuUrl = 'case_handle_establish';
+              this.openTab[replaceIndex].name = 'case_handle_establish' + '-and-' + this.caseHandle.caseNumber;
+              this.openTab[replaceIndex].route = '/establish';
+            }
+            
+
             _this.$router.replace({
               name: "case_handle_establish"
             });

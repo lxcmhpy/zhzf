@@ -692,7 +692,7 @@ export default [
     component: () => import("@/page/caseHandle/case/form/payCompensation.vue")
   },
   {
-    path: "/payCompensation",
+    path: "/test_doc",
     name: "test_doc",
     meta: {
       title: "测试文书"

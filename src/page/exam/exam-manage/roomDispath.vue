@@ -63,7 +63,7 @@
                   class="commonBtn searchBtn"
                   size="medium"
                   icon="iconfont law-sousuo"
-                  @click="getNowRoomPerson"
+                  @click="currentPage = 1;getNowRoomPerson();"
                 ></el-button>
                 <el-button
                   title="重置"
@@ -93,7 +93,7 @@
               v-loading="tableLoading"
               element-loading-spinner="car-loading"
               element-loading-text="加载中..."
-              :max-height="200"
+              :max-height="320"
             >
               <el-table-column type="selection" align="center" width="40px"></el-table-column>
               <el-table-column prop="personName" label="姓名" min-width="100px" align="left"></el-table-column>
@@ -111,10 +111,13 @@
             </el-table>
             <div class="dialog-pagination">
               <el-pagination
-                background
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
                 :current-page="currentPage"
-                :page-sizes="[10, 20, 30, 40]"
+                background
+                :page-sizes="[10, 20, 30, 40, 50]"
                 layout="prev, pager, next,sizes,jumper"
+                :total="totalPage"
               ></el-pagination>
             </div>
           </div>
@@ -155,7 +158,8 @@ export default {
       isDisabled: true,
       visible: false,
       tableLoading: false,
-      currentPage: 1
+      currentPage: 1,
+      pageSize: 10
     };
   },
   components: {
@@ -247,6 +251,16 @@ export default {
       _this.getRoomList();
       _this.getunDispachNum();
     },
+    //更改每页显示的条数
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getNowRoomPerson();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getNowRoomPerson();
+    },
     //查询未分配总人数
     getunDispachNum() {
       let _this = this;
@@ -328,8 +342,16 @@ export default {
           customClass: "custom-confirm"
         })
         .then(() => {
+          const loading = _this.$loading({
+            lock: true,
+            text: "正在分配",
+            spinner: "car-loading",
+            customClass: "loading-box",
+            background: "rgba(234,237,244, 0.8)"
+          });
           _this.$store.dispatch("autoDispatch", data).then(
             res => {
+              loading.close();
               if (res.code === 200) {
                 _this.$message({
                   type: "success",
@@ -340,6 +362,7 @@ export default {
               }
             },
             err => {
+              loading.close();
               _this.$message({ type: "error", message: err.msg || "" });
             }
           );
