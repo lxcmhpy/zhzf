@@ -551,6 +551,7 @@ export function addPageTempleteApi (data){
         method: "post",
         data: vm.$qs.stringify(data),
         showloading: false,
+        timeout: 30000,
         cancelToken: setCancelSource()
     })
 }

@@ -55,7 +55,7 @@
     "CHECK_API":"http://172.16.170.91:8081"
   },
   "wj": {
-    "CAPTCHA_HOST": "http://172.16.170.96:9000",
+    "CAPTCHA_HOST": "http://172.16.169.44:9000",
     "PDF_HOST": "http://172.16.170.54:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",

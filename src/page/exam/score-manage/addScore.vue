@@ -13,7 +13,7 @@
       </el-row>
       <el-row>
         <el-form-item label="身份证号：" prop="scorerIdno">
-          <el-input v-model="scoreManageForm.scorerIdno" placeholder="请输入身份证号码"></el-input>
+          <el-input v-model="scoreManageForm.scorerIdno" placeholder="请输入身份证号码" maxlength="18"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -28,7 +28,7 @@
       </el-row>
       <el-row>
         <el-form-item label="联系方式：" prop="scorerPhone" class="form-class">
-          <el-input v-model="scoreManageForm.scorerPhone" placeholder="请输入联系方式"></el-input>
+          <el-input v-model="scoreManageForm.scorerPhone" placeholder="请输入联系方式" maxlength="11"></el-input>
         </el-form-item>
       </el-row>
     </el-form>

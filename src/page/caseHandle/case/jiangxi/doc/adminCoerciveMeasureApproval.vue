@@ -214,11 +214,12 @@
                 </span>规定，拟采取以下强制措施：
               </p>
               <p>
-                &nbsp;&nbsp;<el-checkbox>扣押财物</el-checkbox>
-                <br />
-                &nbsp;&nbsp;<el-checkbox>查封场所、设施或者财物</el-checkbox>
-                <br />
-                &nbsp;&nbsp;<el-checkbox>其他行政强制措施：</el-checkbox>
+                &nbsp;&nbsp;
+                <el-checkbox>扣押财物</el-checkbox>
+                <br />&nbsp;&nbsp;
+                <el-checkbox>查封场所、设施或者财物</el-checkbox>
+                <br />&nbsp;&nbsp;
+                <el-checkbox>其他行政强制措施：</el-checkbox>
               </p>
               <p>
                 自

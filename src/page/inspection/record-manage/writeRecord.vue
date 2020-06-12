@@ -7,7 +7,7 @@
         </span>
         <span v-if="isWrite">
           <el-popover placement="bottom" width="700" trigger="click">
-            <writeRecord ref="writeRecordRef" style="width:710px;height:400px;overflow:auto"></writeRecord>
+            <!-- <writeRecordHome name="" ref="writeRecordRef" style="width:710px;height:400px;overflow:auto"></writeRecordHome> -->
             <span slot="reference" @click="upAndDown=!upAndDown">
               <span class="change_title_icon" @click="changeModle">切换模板
                 <i class="el-icon-arrow-down" v-if="!upAndDown"></i>
@@ -15,6 +15,7 @@
               </span>
             </span>
           </el-popover>
+           <writeRecordHome name="" ref="writeRecordRef" style="width:710px;height:400px;overflow:auto"></writeRecordHome>
           <span class="change_title_icon">二维码<i class="iconfont law-erweima" style="font-size:14px;margin-left:4px"></i></span>
         </span>
       </div>
@@ -38,7 +39,7 @@
   </div>
 </template>
 <script>
-import writeRecord from "./writeRecordHome";
+import writeRecordHome from "./writeRecordHome";
 
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
@@ -91,7 +92,7 @@ export default {
     }
   },
   components: {
-    writeRecord,
+    writeRecordHome,
     formCreate: formCreate.$form(),
 
   },
@@ -328,12 +329,12 @@ export default {
     },
     // 修改模板
     changeModle() {
-      // this.visiblePopover = true
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: 'inspection_writeRecord',
-        // params: item
-      });
+      this.visiblePopover = true
+      // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      // this.$router.push({
+      //   name: 'inspection_writeRecord',
+      //   // params: item
+      // });
     },
     dealFormData() {
       this.rule = []

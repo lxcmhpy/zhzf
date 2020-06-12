@@ -35,7 +35,7 @@
                     class="commonBtn searchBtn"
                     size="medium"
                     icon="iconfont law-sousuo"
-                    @click="getPageInfoList"
+                    @click="currentPage = 1 ;getPageInfoList();"
                   ></el-button>
                   <el-button
                     title="重置"
@@ -139,8 +139,8 @@ export default {
         params: {
           pageId: row.pageId,
           name: row.pageName,
-          verifyId:row.verifyId,
-          type: 'apply'
+          verifyId: row.verifyId,
+          type: "apply"
         }
       });
     },
@@ -162,12 +162,12 @@ export default {
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getPageList();
+      this.getPageInfoList();
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getPageList();
+      this.getPageInfoList();
     },
     //获取选中的user
     selectUser(val) {
@@ -189,11 +189,11 @@ export default {
 <style  lang="scss" scoped>
 @import "@/assets/css/searchPage.scss";
 @import "@/assets/css/personManage.scss";
-.page-apply{
-  .tablePart{
+.page-apply {
+  .tablePart {
     height: calc(100% - 110px) !important;
   }
-  .pagination-box{
+  .pagination-box {
     height: 40px;
     text-align: center;
     margin: 15px;

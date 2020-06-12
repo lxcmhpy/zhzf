@@ -14,7 +14,9 @@
           <div class="el-upload__tip" slot="tip" style="text-align: center">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload> -->
         <el-form ref="form" :model="form">
-          <img :src="host+form.evPath" width="430px" height="400" align="center"/>
+          <!-- <img :src="host+form.evPath" width="430px" height="400" align="center"/> -->
+          <img v-if="form.evType =='照片'" :src="host+form.evPath"  width="430px" height="400" align="center"/>
+          <video v-if="form.evType =='音视频'" :src="host+form.evPath" controls="controls" width="400px" height="380">your browser does not support the video tag</video>
         </el-form>
         </div>
         <!-- <div style="float: right;width: 55%">
