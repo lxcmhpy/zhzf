@@ -103,13 +103,13 @@
             </el-select>
           </el-form-item>
           <el-form-item label="名称" prop="bindId" v-if="setForm.resourceType=='2'">
-            <el-select v-model="setForm.bindId" style='width:240px' @change="changeResourceName">
+            <el-select v-model="setForm.typeId" style='width:240px' @change="changeResourceName">
               <el-option v-for="item in bindList" :key="item.id" :label="item.linkName" :value="item.id" :disabled="item.name==pdfForm.bindName"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="名称" prop="bindId" v-if="setForm.resourceType=='3'">
-            <el-select v-model="setForm.bindId" style='width:240px' @change="changeResourceName">
+            <el-select v-model="setForm.typeId" style='width:240px' @change="changeResourceName">
               <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id" :disabled="item.name==pdfForm.bindName"></el-option>
             </el-select>
           </el-form-item>
@@ -287,15 +287,17 @@ export default {
     changeBindType() {
       this.pdfForm.typeId = '';
     },
-    changeResourceType() {
+    changeResourceType(val) {
       this.setForm.resourceName = '';
-      this.setForm.bindId=''
+      this.setForm.typeId='';
+      this.getPdfAndFormSetList('setFormRef');
     },
     changeResourceName() {
       this.$alert('改变绑定的文书或者表单，原有对应关系将清空', '提示', {
         confirmButtonText: '确定',
         callback: action => {
           this.setForm.resourceProperty = '';
+          this.getPdfAndFormSetList('setFormRef');
         }
       });
 
@@ -348,15 +350,14 @@ export default {
     getPdfAndFormSetList(formName) {
       console.log('search',this.setForm)
       if(this.setForm.resourceType=='1'){
-        this.setForm.bindId='basic36b59bd27ff4b6fe96e1b06390d'
+        this.setForm.typeId='basic36b59bd27ff4b6fe96e1b06390d'
       }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let data={}
 
             data = {
-              bindId: this.setForm.bindId,
-              bindType:'4'
+              typeId: this.setForm.typeId
             }
 
           findAllSetListApi(data).then(
