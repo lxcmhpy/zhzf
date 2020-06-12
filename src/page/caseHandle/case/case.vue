@@ -66,8 +66,8 @@
         <li @click="goremindLetterDoc_JX">催告书-江西</li>
         <li @click="goImportantCaseDissForm_JX">重大案件集体讨论-江西</li>
         <li @click="goIllegalActionForm_JX">违法行为通知书-江西</li>
-        <li @click="goHearingNotice_JZ">听证通知书-江西</li>
-        <li @click="goPartyRights">当事人权利</li>
+        <li @click="goHearingNotice_JX">听证通知书-江西</li>
+        <li @click="goEnforceApplication">强制执行申请书-江西</li>
         <br><br>
         PDF打印：
         <li @click="goInquestNotesPdf">勘验笔录PDF</li>
@@ -373,8 +373,11 @@ export default {
     goIllegalActionForm_JX(){
       this.$router.push({ name: 'case_handle_illegalActionForm_JX' });
     },
-    goHearingNotice_JZ(){
+    goHearingNotice_JX(){
       this.$router.push({ name: 'case_handle_hearingNotice_JX' });
+    },
+    goEnforceApplication(){
+      this.$router.push({ name: 'case_handle_enforceApplicationDoc' });
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {

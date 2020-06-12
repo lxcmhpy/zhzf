@@ -146,4 +146,12 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/hearingNoticeDoc_JX.vue")
   },
+  {
+    path: "/enforceApplicationDoc",
+    name: "case_handle_enforceApplicationDoc",
+    meta: {
+      title: "强制执行申请书——江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/enforceApplicationDoc.vue")
+  },
 ]
