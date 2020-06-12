@@ -7,8 +7,14 @@
             <div class="examinee-info">
               <div class="examinee-photo">
                 <img
-			            v-if="examineeData.personInfo"
-                  :src="(baseUrl + examineeData.personInfo.photoUrl) || personImg"
+			            v-if="examineeData.personInfo && examineeData.personInfo.photoUrl"
+                  :src="baseUrl + examineeData.personInfo.photoUrl || personImg"
+                  width="214px"
+                  height="298px"
+                />
+                <img
+			            v-else
+                  :src="personImg"
                   width="214px"
                   height="298px"
                 />
@@ -234,7 +240,7 @@ export default {
       this.$router.push({
         path: '/startAnswer',
         query: {
-          pId: this.examineeData.personInfo.examPerId,
+          pId: this.selectedExam.examperId,
           eId: this.selectedExam.examId
         }
       });

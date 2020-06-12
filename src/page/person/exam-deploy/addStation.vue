@@ -81,8 +81,11 @@ export default {
       handelType: 0 //添加 0  修改1 
     }
   },
+  created(){
+    this.getDictInfo();
+  },
   methods:{
-     getDictInfo(name, codeName) {
+     getDictInfo() {
       this.$store.dispatch("getExamManageSchedule").then(res => {
         if (res.code === 200) {
           this.examList = res.data;
