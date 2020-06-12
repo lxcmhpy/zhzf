@@ -190,35 +190,69 @@
               <p>承办人意见</p>
             </td>
             <td rowspan="2" colspan="6" class="color_DBE4EF">
+              <p>&nbsp;&nbsp;根据 《中华人民共和国行政强制法》第二十五条的规定，拟延长以下强制措施期限：</p>
               <p>
-                &nbsp;&nbsp;根据 《中华人民共和国行政强制法》第二十五条的规定，拟延长以下强制措施期限：
+                &nbsp;&nbsp;<el-checkbox>扣押财物</el-checkbox>
+                <br />
+                &nbsp;&nbsp;<el-checkbox>查封场所、设施或者财物</el-checkbox>
+                <br />
+                &nbsp;&nbsp;<el-checkbox>其他行政强制措施：</el-checkbox>
               </p>
               <p>
-                <el-checkbox >扣押财物</el-checkbox><br/>
-                <el-checkbox >查封场所、设施或者财物</el-checkbox><br/>
-                <el-checkbox >其他行政强制措施：</el-checkbox>
+                自
+                <span>
+                  <el-form-item
+                    prop="measureStartDate"
+                    :rules="fieldRules('measureStartDate',propertyFeatures['measureStartDate'])"
+                    style="width: 150px"
+                    class="pdf_datapick"
+                  >
+                    <el-date-picker
+                      v-model="formData.measureStartDate"
+                      @change="startTime"
+                      type="date"
+                      format="yyyy年MM月dd日"
+                      value-format="yyyy-MM-dd"
+                      placeholder="  年  月  日"
+                      :disabled="fieldDisabled(propertyFeatures['measureStartDate'])"
+                    ></el-date-picker>
+                  </el-form-item>
+                </span>
+                <span>至</span>
+                <span>
+                  <el-form-item
+                    prop="measureEndDate"
+                    :rules="fieldRules('measureEndDate',propertyFeatures['measureEndDate'])"
+                    style="width: 150px"
+                    class="pdf_datapick"
+                  >
+                    <el-date-picker
+                      v-model="formData.measureEndDate"
+                      type="date"
+                      format="yyyy年MM月dd日"
+                      value-format="yyyy-MM-dd"
+                      placeholder="  年  月  日"
+                      :disabled="fieldDisabled(propertyFeatures['measureEndDate'])"
+                    ></el-date-picker>
+                  </el-form-item>
+                </span>
+                共
+                <el-input style="width:10%" type="number" v-model="formData.days"></el-input>日
               </p>
               <p>
-                自<el-date-picker
-                    v-model="formData.appTime"
-                    type="daterange"
-                    style="font-family:SimSun;font-size:16px"
-                    align="right"
-                    unlink-panels
-                    range-separator="至"
-                    start-placeholder="  年  月  日"
-                    end-placeholder="  年  月  日"
-                    :picker-options="pickerOptions">
-                  </el-date-picker>
-                共<el-input style="width:10%" type="number" v-model="formData.days"></el-input>日
+                <el-row>
+                  <el-col :span="8">&nbsp;</el-col>
+                  <el-col :span="8">签名：</el-col>
+                  <el-col :span="8">日期：</el-col>
+                </el-row>
               </p>
-              <div class="pdf_seal">
+              <!-- <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
                 <p>
                   <span v-if="formData.approveTime">{{formData.approveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
-              </div>
+              </div>-->
             </td>
           </tr>
           <tr></tr>
@@ -539,49 +573,4 @@ export default {
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
-<style lang="scss">
-/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-.textindent0 {
-  text-indent: 0 !important;
-}
-.print_box
-  #prolongAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.el-textarea {
-  top: -12px;
-}
-.print_box
-  #prolongAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.over_flow {
-  top: -8px;
-  text-overflow: initial;
-  font-size: 12px;
-  line-height: 14px;
-}
-.print_box .print_info tr td {
-  border: 1px solid #000000;
-  height: 16px;
-  font-size: 16px;
-  line-height: 18px;
-  display: table-cell;
-  vertical-align: middle;
-  padding: 0 8px;
-  text-align: justify;
-  text-align-last: justify;
-  white-space: normal;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-.el-date-editor .el-range-input,
-.el-date-editor .el-range-separator {
-  height: 100%;
-  margin: 0;
-  text-align: center;
-  display: inline-block;
-  font-size: 16px;
-  font-family: SimSun;
-}
-</style>
+

@@ -537,40 +537,4 @@ export default {
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
-<style lang="scss">
-/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-.textindent0 {
-  text-indent: 0 !important;
-}
-.print_box #evidenceRegApprovalForm_print .doc_cause .caseNameBox span.el-textarea {
-  top: -12px;
-}
-.print_box #evidenceRegApprovalForm_print .doc_cause .caseNameBox span.over_flow {
-  top: -8px;
-  text-overflow: initial;
-  font-size: 12px;
-  line-height: 14px;
-}
-.print_box .print_info tr td {
-  border: 1px solid #000000;
-  height: 16px;
-  font-size: 16px;
-  line-height: 18px;
-  display: table-cell;
-  vertical-align: middle;
-  padding: 0 8px;
-  text-align: justify;
-  text-align-last: justify;
-  white-space: normal;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-.el-date-editor .el-range-input, .el-date-editor .el-range-separator {
-    height: 100%;
-    margin: 0;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    font-family: SimSun;
-}
-</style>
+

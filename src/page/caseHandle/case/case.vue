@@ -11,6 +11,7 @@
         <li @click="goEvidenceRegApprovalForm">证据登记保存审批表</li>
         <li @click="goRemoveEvidenceRegApprovalForm">解除证据登记保存审批表</li>
         <li @click="goAdminCoerciveMeasureApproval">行政强制措施审批表</li>
+        <li @click="goProLongAdminCoerciveMeasureApproval">延长行政强制措施审批表</li>
         <li @click="goPunishDecisionDoc">行政处罚决定书</li>
         <li @click="goInquestNotesDoc">勘验笔录</li>
         <li @click="goSampleEvidenceDoc">抽样取样凭证</li>
@@ -84,6 +85,9 @@
     <div>
       <p>zmh(17、18、19、20、21、22、23、24文书表单及pdf打印版)</p>
       <ul>
+        <a href="alert:E:/zhangminhui/zhzf/static/HlVoIPSDKSetup20200605/demo.htm">点击打开维新</a>
+        
+        <a href="alert:E:/HlVoIPSDKSetup/demo2.htm">点击打开维新</a>
         <br><br>
         <li @click="goNumberCorrectDialog">号牌更正弹窗</li>
         <li @click="goInvalidInfoDialog">无效信息弹窗</li>
@@ -511,6 +515,10 @@ export default {
     // 行政强制措施审批表
     goAdminCoerciveMeasureApproval() {
       this.$router.push({ name: 'case_handle_adminCoerciveMeasureApproval' });
+    },
+    // 行政强制措施审批表
+    goProLongAdminCoerciveMeasureApproval() {
+      this.$router.push({ name: 'case_handle_prolongAdminCoerciveMeasureApproval' });
     },
     //--------------长软end-------------------
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {

@@ -76,5 +76,7 @@ export const BASIC_DATA_SYS = {
 }
 // 评议考核基础数据
 export let PYKH_DATA = {
-    khlb: "410996033c9c0ae9dbe7e683bcaf2f50" // 考核类别
+    khlb: "410996033c9c0ae9dbe7e683bcaf2f50", // 考核类别
+    // 指标类型配置
+    one_zblx: "40cf34b97c7e677db0b171668dd29983"
 }

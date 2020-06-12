@@ -104,7 +104,7 @@
             drag
             :http-request="saveFile"
             :file-list="fileList"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="https://jsonplaceholder.typicode.cmo/posts/"
             multiple
             style="position: absolute;left: 0; top: 0;z-index:2"
           >

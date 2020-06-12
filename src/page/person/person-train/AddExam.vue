@@ -53,7 +53,10 @@
       </el-row>
       <el-row>
         <el-form-item label="考试成绩:" prop="examScore">
-          <el-input v-model="addExamForm.examScore" placeholder="请输入考试成绩" onkeyup="value=value.replace(/[^\d]/g,'')"></el-input>
+          <el-input
+            v-model="addExamForm.examScore"
+            placeholder="请输入考试成绩"
+            @input="setInputVal"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -111,10 +114,10 @@ export default {
           { required: true, message: "考试名称必须填写", trigger: "blur" }
         ],
         examScore: [
-          { required: true, message: "考试结果必须填写", trigger: "blur" }
+          { required: true, message: "考试成绩必须填写", trigger: "blur" }
         ],
         passStatus: [
-          { required: true, message: "通过状态必须填写", trigger: "blur" }
+          { required: true, message: "通过状态必须填写", trigger: "change" }
         ]
       },
       dialogTitle: "", //弹出框title
@@ -125,6 +128,12 @@ export default {
   methods: {
     selectVal(event) {
       this.addExamForm.examType = event;
+    },
+    // 成绩输入框绑定值
+    setInputVal(){
+      if(this.addExamForm.examScore !== undefined && this.addExamForm.examScore.length){
+        this.addExamForm.examScore = this.addExamForm.examScore.replace(/[^\d]/g,'');
+      }
     },
     getDictInfo(name) {
       //根据数据字典查询
@@ -217,11 +226,6 @@ export default {
         }
         _this.addExamForm.note = row.note;
       }
-    },
-    //聚焦清除错误信息
-    focusName() {
-      let _this = this;
-      _this.errorName = false;
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

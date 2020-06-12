@@ -16,6 +16,12 @@ export const examRouterJson = [
         path: "/exam-manage",
         meta: { title: "批次管理" },
         component: () => import("@/page/exam/exam-manage/batchManage.vue")
+      },
+      {
+        name: "scoreManage",
+        path: "/score-manage",
+        meta: { title: "评分管理" },
+        component: () => import("@/page/exam/score-manage/scoreManage.vue")
       }
     ]
   },
@@ -57,6 +63,15 @@ export const examRouterJson = [
         path: "/maintain-templete",
         meta: { title: "维护模板" },
         component: () => import("@/page/exam/page-manage/maintain-templete/maintainTemp.vue")
+      },
+      {
+        path: "/viewApplayDetail/:pageId/:name/:type",
+        name: "viewApplayDetail",
+        meta: {
+          title: "试卷预览",
+          oneTab:true,
+        },
+        component: () => import("@/page/exam/page-manage/maintain-page-menu/viewApplayDetail.vue")
       }
     ]
   },

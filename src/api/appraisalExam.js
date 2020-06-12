@@ -9,7 +9,7 @@ import { setCancelSource } from "@/common/js/cancelToken";
  // 加载评议考核配置列表
  export function findPykhConfigByPage (data) {
     return request({
-        url: "/pykh/pykhToConfigure/findPykhConfigByPage",
+        url: "/pykh/pykhToConfigure/findPykhConfigureByPage",
         method: "get",
         showloading: false,
         baseUrlType:'CAPTCHA_HOST',
@@ -21,7 +21,7 @@ import { setCancelSource } from "@/common/js/cancelToken";
 // 添加考核配置
   export function addOrUpdatePykhConfig (data) {
     return request({
-        url: "/pykh/pykhToConfigure/addOrUpdatePykhConfig",
+        url: "/pykh/pykhToConfigure/addOrUpdatePykhConfigure",
         method: "post",
         showloading: false,
         baseUrlType:'CAPTCHA_HOST',
@@ -32,7 +32,7 @@ import { setCancelSource } from "@/common/js/cancelToken";
 // 删除考核配置
 export function deletePykhConfigById (data) {
     return request({
-        url: "/pykh/pykhToConfigure/deletePykhConfigById/" +data,
+        url: "/pykh/pykhToConfigure/deletePykhConfigureById/" +data,
         method: "get",
         showloading: false,
         baseUrlType:'CAPTCHA_HOST',
@@ -115,3 +115,64 @@ export function deletePykhMetricsById (data) {
       })
   }
 
+export  function  uploadNoticeFile(data)  {
+  console.log('文件上传api',data);
+  return  request({
+    url:  "/pykh/file/upload",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+  });
+}
+
+//分页查找公告信息
+export function getNoticeListApi(data) {
+  return request({
+    url: "/pykh/notice/findNoticeByPage",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加、修改公告信息
+export function addOrUpdateNoticeApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/pykh/notice/addOrUpdateNotice",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除公告信息
+export function deleteNoticeApi(id) {
+  debugger
+  return request({
+    url: "/pykh/notice/deleteNotice/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//获取公告内容
+export function getContentApi(id) {
+  debugger
+  return request({
+    url: "/pykh/notice/getContent/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

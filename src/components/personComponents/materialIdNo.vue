@@ -3,6 +3,7 @@
     <div class="card-title">
       <font class="font" style="font-size:25px;"><span class="titleflag"></span>身份证
         <el-button
+          v-if="params.type !== 'view'"
           style="margin: 0 18px;"
           size="medium"
           type="primary"
@@ -17,7 +18,8 @@
     <div ref="idNoXX" class="block upload-material">
       <ul v-if="idNoFiles && idNoFiles.length" class="el-upload-list el-upload-list--picture-card">
         <li v-for="(item, $index) in idNoFiles" :key="item.uid" tabindex="0" class="el-upload-list__item is-ready">
-          <img :src="item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item.url)">
+          <img v-if="item.status === 'ready'" :src="item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item)">
+          <img v-if="item.isSave || item.status === 'success'" :src="baseUrl + item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item)">
           <div v-if="editAble" class="el-upload-list-action">
             <span class="item-name">{{ item.name }}</span>
             <div class="edit-select-file">
@@ -72,6 +74,11 @@ export default {
       default: () => {
         return {idcardFront: '' , idcardBack: ''}
       },
+      required: true
+    },
+    baseUrl: {
+      type: String,
+      default: '',
       required: true
     }
   },
@@ -147,8 +154,12 @@ export default {
       this.$message.error(`当前限制选择 ${this.idNoLimit} 个文件，本次选择了 ${fileList.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
     // 点击图片弹出预览
-    previewImg(url) {
-      this.dialogImageUrl = url;
+    previewImg(item) {
+      if(item.isSave || item.status === 'success'){
+        this.dialogImageUrl = this.baseUrl + item.url;
+      }else{
+        this.dialogImageUrl = item.url;
+      }
       this.dialogVisible = true;
     },
     // 删除图片
@@ -198,12 +209,12 @@ export default {
         this.$store.dispatch('uploadMaterial', formData).then(res => {
           if(res.code === 200){
             if(res.data && res.data.length === 2){
-              this.personImage.idcardFront = res.data[0].storagePath;
-              this.personImage.idcardBack = res.data[1].storagePath;
+              this.personImage.idcardFront = res.data[0].storageId;
+              this.personImage.idcardBack = res.data[1].storageId;
             }else if(!this.personImage.idcardFront){
-              this.personImage.idcardFront = res.data[0].storagePath;
+              this.personImage.idcardFront = res.data[0].storageId;
             }else if(!this.personImage.idcardBack){
-              this.personImage.idcardBack = res.data[0].storagePath;
+              this.personImage.idcardBack = res.data[0].storageId;
             }
             this.idNoFiles.forEach(item => item.status = 'success');
             this.saveImageToPerson(loading);

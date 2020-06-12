@@ -96,14 +96,14 @@
           <label class="el-form-item__label" style="width: 100px;">案发地点</label>
           <div class="itemFive2">
             <el-form-item label-width="0" prop="highwayRoute">
-              <el-select v-model="inforForm.highwayRoute"  placeholder="本机构路线编号">
+              <el-select ref="highwayRoute" v-model="inforForm.highwayRoute"  placeholder="本机构路线编号">
                 <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
           </div>
           <div class="itemFive2">
             <el-form-item label-width="20px" prop="direction">
-              <el-select v-model="inforForm.direction" placeholder="方向">
+              <el-select ref="direction" v-model="inforForm.direction" placeholder="方向">
                 <el-option
                   v-for="item in locationList"
                   :key="item.name"
@@ -115,7 +115,7 @@
           </div>
           <div class="itemFive2">
             <el-form-item label-width="20px" prop="position">
-              <el-select v-model="inforForm.position" placeholder="位置">
+              <el-select ref="position" v-model="inforForm.position" placeholder="位置">
                 <el-option
                   v-for="item in directionList"
                   :key="item.name"
@@ -779,7 +779,7 @@ export default {
       showJBRecord:false,
     };
   },
-  computed: {...mapGetters(['caseId'])},
+  // computed: {...mapGetters(['caseId','openTab','caseHandle'])},
   components: {
     choosePathLoss,
     mapDiag
