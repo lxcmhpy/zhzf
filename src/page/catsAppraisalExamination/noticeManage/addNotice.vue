@@ -249,7 +249,7 @@
 </script>
 <style>
   p {
-    margin: 10px;
+    /* margin: 10px; */
   }
 
   .edit_container,

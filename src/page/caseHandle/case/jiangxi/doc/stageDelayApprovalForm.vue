@@ -209,7 +209,12 @@
             <td rowspan="2">
               <p>承办人意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td
+              rowspan="2"
+              colspan="6"
+              class="color_DBE4EF"
+              style="white-space: normal;word-wrap: break-word;word-break: break-all;"
+            >
               <p>&nbsp;&nbsp;根据《中华人民共和国行政处罚法》第五十二条的规定，拟提出以下处理意见：</p>
               <div>
                 <el-form-item
