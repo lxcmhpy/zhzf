@@ -80,4 +80,21 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/adminCoerciveMeasureNote_JX.vue")
   },
+  {
+    path: "/adminPenaltyApprovalForm",
+    name: "case_handle_adminPenaltyApprovalForm",
+    meta: {
+      title: "行政处罚审批表"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/adminPenaltyApprovalForm.vue")
+  },
+  {
+    path: "/stageDelayApprovalForm",
+    name: "case_handle_stageDelayApprovalForm",
+    meta: {
+      title: "分期（延期）缴纳罚款审批表"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/stageDelayApprovalForm.vue")
+  },
 ]
+

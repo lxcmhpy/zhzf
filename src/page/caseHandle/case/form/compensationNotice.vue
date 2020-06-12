@@ -186,7 +186,7 @@
                 type="textarea"
                 v-bind:class="{ over_flow:formData.payTotal.length>14?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
-                :maxLength="maxLength"
+                :maxLength="50"
               ></el-input>
             </el-form-item>
           </span>。
@@ -266,7 +266,8 @@ export default {
         factDescription: "",
         afsj: "",
         payTotal: "",
-        bank: ""
+        totalAmount: "",
+        bank: "",
       },
       tableData: [],
       needDealData: true,
@@ -337,36 +338,27 @@ export default {
           let organData = res.data;
           _this.formData.organName = organData.name || "";
           _this.formData.bank =
-            organData.bank == null ? "测试银行" : organData.bank;
+            _this.formData.bank ? _this.formData.bank : organData.bank;
         },
         err => {
           console.log(err);
         }
       );
-      this.chin("200")
       if (this.formData.payTotal && this.caseLinkDataForm.status == "")
         this.combined(this.formData.payTotal);
     },
-    chin(str){
-        let cnChar  = "零壹贰叁肆伍陆柒捌玖",
-            partInt = '元拾佰仟万拾佰仟亿拾佰仟',
-            len = str.length-1,
-            arr = new Array((len+1)),
-            i=0;
-        str.replace(/\d/g,function(n){
-            var b = partInt.charAt(len-i);
-            arr[i] = cnChar.charAt(n) + (n==='0'&&'元万亿'.indexOf(b)<0?'':b);
-            i++;
-        });
-        // alert(arr.join('').replace(/(零)\1+/g,'零').replace('/(零)(?=元|万|亿)/g',''));
-    },
     //将金额转换为大写(小写)
     combined(val) {
+      this.formData.totalAmount = Number(val).toFixed(2);
+      if(this.formData.totalAmount == "NaN"){
+        this.$message.warning("请输入正确数字");
+        return;
+      }
       let buffer = val;
-      if (buffer === 0 || buffer == null) {
-        this.formData.payTotal = "零" + "（" + val + "）";
+      if (buffer == "0" || buffer == "" || buffer == null) {
+        this.formData.payTotal = "零(0.00)";
       } else {
-        let unit = "仟佰拾亿仟佰拾万仟佰拾圆角分";
+        let unit = "仟佰拾亿仟佰拾万仟佰拾元角分";
         let str = "";
         buffer += "00";
         const p = buffer.indexOf(".");
@@ -382,12 +374,11 @@ export default {
           str
             .replace(/零(仟|佰|拾|角)/g, "零")
             .replace(/(零)+/g, "零")
-            .replace(/零(万|亿|圆)/g, "$1")
+            .replace(/零(万|亿|元)/g, "$1")
             .replace(/(亿)万|壹(壹拾)/g, "$1$2")
-            .replace(/^圆零?|零分/g, "")
-            .replace(/圆$/g, "圆") +
-          "（" +
-          val +
+            .replace(/^元零?|零分/g, "")
+            .replace(/元$/g, "元"+ "整") +
+          "（" +"￥:"+this.formData.totalAmount+
           "）";
       }
     },
@@ -406,7 +397,6 @@ export default {
         this.caseLinkDataForm.caseLinktypeId,
         false
       );
-      console.log("获取数据", this.formData);
     },
     // 提交表单
     saveData(handleType) {

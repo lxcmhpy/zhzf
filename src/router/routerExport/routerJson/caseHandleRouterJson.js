@@ -691,5 +691,13 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/form/payCompensation.vue")
   },
+  {
+    path: "/payCompensation",
+    name: "test_doc",
+    meta: {
+      title: "测试文书"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/majorAdminLawEnforceAudit.vue")
+  },
 
 ]
