@@ -55,9 +55,9 @@ const store = new Vuex.Store({
                 }
             }
         },
-        LOGOUT (state) {
-            window.sessionStorage.clear();
-        }
+        // LOGOUT (state) {
+        //     window.sessionStorage.clear();
+        // }
     },
     modules: {
         system,
@@ -81,7 +81,7 @@ const store = new Vuex.Store({
                 system: val.system,
             }
         }
-    })],
+    })]
 });
 
 export default store;

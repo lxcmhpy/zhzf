@@ -14,7 +14,7 @@
       <el-container class="exam-container">
         <router-view></router-view>
       </el-container>
-      
+
     </el-container>
 
   </div>
@@ -42,13 +42,8 @@ export default {
     //退出
     loginOut() {
       this.$store.dispatch('signOutSystem', this.examinneName).then(res => {
-        sessionStorage.clear();
-        iLocalStroage.removeAll();
         this.$router.push("/examLogin");
       }, err => {
-        console.log(err);
-        sessionStorage.clear();
-        iLocalStroage.removeAll();
         this.$router.push("/examLogin");
       })
     }

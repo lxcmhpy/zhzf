@@ -92,7 +92,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import headMenu from "@/components/headMenu";
 import subLeftMenu from "@/components/subLeftMenu";
 import tabsMenu from "@/components/tabsMenu";
-import mainContent from "@/components/mainContent";  
+import mainContent from "@/components/mainContent";
 import { mapGetters } from "vuex";
 import {
   getDictListDetailByNameApi,
@@ -131,8 +131,6 @@ export default {
     //退出
     loginOut() {
     //   Cookies.remove("TokenKey");
-      iLocalStroage.removeAll();
-      window.sessionStorage.clear();
       // this.$store.state.openTab = [];
       this.$store.dispatch('deleteAllTabs');
       this.$router.push("/");
@@ -157,7 +155,7 @@ export default {
       if(this.systemTitle){
         window.document.title = this.systemTitle;
         return;
-      } 
+      }
       getDictListDetailByNameApi('系统标题').then(res => {
         console.log('系统标题', res);
         this.$store.commit('set_systemTitle',res.data[0].name);
@@ -179,7 +177,7 @@ export default {
     //判断有没有menu
     this.$util.initUser(this);
     this.getSystemData();
-     
+
   }
 };
 </script>
