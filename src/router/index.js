@@ -36,7 +36,7 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     //未登录  进入登录页面
-    debugger;
+    // debugger;
     if (whiteList.indexOf(to.path) !== -1) {
         store.commit('CLEAR_ALL_CACHE');
         next();
