@@ -31,6 +31,16 @@ export default  [
                 component: () => import("@/page/inspection/record-manage/writeRecord.vue")
             },
             {
+                // 写记录
+                path: "/writeRecordInfos",
+                name: "inspection_writeRecordInfos",
+                meta: {
+                title: "写记录",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/writeRecord.vue")
+            },
+            {
                 path: "/recordList",
                 name: "inspection_recordList",
                 meta: {
