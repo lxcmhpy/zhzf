@@ -103,7 +103,7 @@
             drag
             :http-request="saveFile"
             :file-list="fileList"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="https://jsonplaceholder.typicode.cmo/posts/"
             multiple
           >
             <i class="el-icon-upload"></i>

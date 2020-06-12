@@ -9,6 +9,7 @@
     <el-form :model="addNoticeForm" ref="addNoticeForm" label-width="80px">
       <input hidden v-model="addNoticeForm.id" />
       <input hidden v-model="addNoticeForm.storageId" />
+      <input hidden v-model="addNoticeForm.fileName" />
       <div class="item">
         <el-form-item label="公告名称" prop="title">
           <el-input v-model="addNoticeForm.title"></el-input>
@@ -16,24 +17,31 @@
       </div>
       <div class="item">
         <el-form-item label="公告类型" prop="noticeType">
-          <el-select v-model="addNoticeForm.noticeType" >
+          <el-select v-model="addNoticeForm.noticeType"  @change="changehyType" >
             <el-option value="附件" label="附件"></el-option>
             <el-option value="普通" label="普通"></el-option>
           </el-select>
         </el-form-item>
       </div>
-      <div class="item" :hidden="!this.showUpload">
+      <div class="item" :hidden="showUpload" >
         <el-form-item label="公告内容" prop="content">
           <quill-editor v-model="addNoticeForm.content" ref="myQuillEditor" :options="editorOption" @blur="onEditorBlur($event)"
         @focus="onEditorFocus($event)" @change="onEditorChange($event)"></quill-editor>
         </el-form-item>
       </div>
-      <div class="item" :hidden="this.showUpload">
-        <el-form-item label="公告内容" prop="content">
-          <quill-editor v-model="addNoticeForm.content" ref="myQuillEditor" :options="editorOption" @blur="onEditorBlur($event)"
-        @focus="onEditorFocus($event)" @change="onEditorChange($event)"></quill-editor>
-        </el-form-item>
-      </div>
+      <div class="item" :hidden="!showUpload">
+      <el-upload
+        class="upload-demo"
+        :http-request="saveFile"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        multiple
+        :on-exceed="handleExceed"
+        :file-list="fileList"
+        :limit="1"
+        :before-upload="beforeAvatarUpload">
+        <el-button size="small" type="primary"  v-show="true">上传</el-button>
+    </el-upload>
+    </div>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取 消</el-button>
@@ -48,6 +56,8 @@
   import 'quill/dist/quill.core.css';
   import 'quill/dist/quill.snow.css';
   import 'quill/dist/quill.bubble.css';
+  import iLocalStroage from "@/common/js/localStroage.js";
+  import {addOrUpdateNoticeApi,uploadNoticeFile} from "@/api/appraisalExam.js";
   export default {
     components: {
       quillEditor
@@ -55,11 +65,13 @@
     data() {
       return {
         showUpload:false,
+        fileList:[],
         addNoticeForm: {
           title: "",
           noticeType:"",
-          content: `<h2><strong class="ql-size-large">资源篇（资源篇所有资源均来自于本人或者其他网友制作而成，除制作者要求收费之外，资源仅供Anki使用者学习交流之用，严禁他人借此牟利！）</strong></h2><p><a href="https://zhuanlan.zhihu.com/p/21463246" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——钉宫理惠教你五十音</a></p><p><a href="https://zhuanlan.zhihu.com/p/21475754?refer=-anki" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——American Accent Course 第一课第一部分</a></p><p><a href="https://zhuanlan.zhihu.com/p/21550428" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——2005-2014考研真题阅读词汇</a>&nbsp;作者：慕云浮</p><p><a href="https://zhuanlan.zhihu.com/p/21644255" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——史纲+毛中特の人物+著作+观点V1</a></p><p><br></p><p><a href="https://zhuanlan.zhihu.com/p/21872977?refer=-anki" rel="noopener noreferrer" target="_blank" style="color: inherit;">资源篇——怪奇物语（stranger things）S1E1</a></p><p><span style="color: inherit;">﻿</span></p>`,
-          id:""
+          content: "",
+          id:"",
+          fileName:""
         },
         dialogTitle: "公告",
         visible: false,
@@ -125,19 +137,65 @@
   },
   inject: ["reload"],
   methods: {
+      changehyType(val) {
+        if(val==="普通"){
+          this.showUpload = false
+          this.addNoticeForm.storageId = ""
+          this.fileList=[]
+        }else{
+          this.showUpload = true
+          this.addNoticeForm.content = ""
+        }
+      },
+      handleExceed(files, fileList){
+        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeAvatarUpload(file) {
+        const isPDF = file.type === "application/pdf";
+        if (!isPDF) {
+          this.$message.error('上传附件只能是PDF格式!');
+        }
+        return isPDF ;
+      },
+      saveFile(param) {
+        console.log(param);
+        var fd = new FormData();
+        fd.append("file", param.file);
+        fd.append("userId", iLocalStroage.gets("userInfo").id);
+        fd.append("category", "公告");
+        let _this = this
+        uploadNoticeFile(fd).then(res => {
+          console.log("1111111",res);
+          if (res.code == 200){
+            _this.addNoticeForm.storageId = res.data
+            _this.addNoticeForm.fileName =param.file.name
+          }else{
+            _this.$message.error('出现异常，添加失败！');
+          }
+        });   
+      },
       onEditorReady(editor) { // 准备编辑器
       },
       onEditorBlur() {}, // 失去焦点事件
       onEditorFocus() {}, // 获得焦点事件
       onEditorChange() {}, // 内容改变事件
       showModal(type, data) {
+        if(data.noticeType==="普通"){
+          this.showUpload = false
+        }else{
+          this.showUpload = true
+        }
         this.visible = true;
         this.handelType = type;
+        this.fileList=[]
         if (type == 0) {
           this.dialogTitle = "新增公告";
-          this.$nextTick(()=>{
-            this.$refs["addNoticeForm"].resetFields();
-          })
+          this.addNoticeForm.title=""
+          this.addNoticeForm.noticeType="普通"
+          this.addNoticeForm.content=""
+          this.addNoticeForm.id=""
+          this.addNoticeForm.storageId=""
+          this.showUpload = false
         } else if (type == 2) {
           this.dialogTitle = "修改公告";
           this.addNoticeForm.title=data.title,
@@ -145,6 +203,12 @@
           this.addNoticeForm.content=data.content;
           this.addNoticeForm.id=data.id;
           this.addNoticeForm.storageId=data.storageId;
+          if(data.storageId !== ""){
+            let fileData = {}
+            fileData.name = data.fileName
+            fileData.url = data.storageId
+            this.fileList.push(fileData)
+          }
         }
       },
       submit() {
@@ -155,7 +219,7 @@
         let _this = this
         this.$refs[formName].validate(valid => {
           if (valid) {
-            _this.$store.dispatch("addOrUpdateNotice", _this.addNoticeForm).then(
+            addOrUpdateNoticeApi(_this.addNoticeForm).then(
                 res => {
                   _this.$message({
                     type: "success",

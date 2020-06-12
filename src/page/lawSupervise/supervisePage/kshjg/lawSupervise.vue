@@ -1734,6 +1734,20 @@ export default {
             this.showTree = true
             this.getOrganTree(this.userInfo.organId);
         } else {
+            let params = {
+                name: this.filterText,
+                    organId: this.userInfo.organId,
+                    type: this.isCheck ? 0: 1
+                }
+            let _this = this;
+            new Promise((resolve, reject) => {
+                getOrganTree(params).then(
+                    res => {
+                        _this.showTree = false;
+                        _this.ryList = res.data;
+                })
+            })
+
             // if (this.isCheck) {
 
 
@@ -1804,38 +1818,53 @@ export default {
         })
         this.allSearchList.splice(0, this.allSearchList.length);
         // this.radioVal = '全选';
-            debugger;
-            if (node.icon === 'icon_jc11' && node.name !== '执法人员') {
-
+        if (node.icon === 'icon_jc11' && node.label === '执法人员') {
+            let params = {
+                name: '',
+                organId: node.id,
+                type: 0
+            }
             let _this = this;
-             let resultList = [];
-            let position = node.propertyValue ? node.propertyValue.split(','):['',''];
-            let lng = parseFloat(position[0]);
-            let lat = parseFloat(position[1]);
-            resultList.push({
-                address: node.address,
-                distance: null,
-                id: node.id,
-                lat: lat,
-                lng: lng,
-                icon: 'icon_jc11',
-                // icons: 'ry',
-                pid: node.organId,
-                location: {
-                    O: lng,
-                    P: lat,
-                    lat: lat,
-                    lng: lng
-                },
-                name: node.name,
-                label: node.nickName,
-                position: node.propertyValue,
-                shopinfo: '',
-                tel: '',
-                type: '0',
-                other: node
+            debugger;
+            new Promise((resolve, reject) => {
+                getOrganTree(params).then(
+                    res => {
+                        // _this.showTree = false;
+                        let resultList = [];
+                        res.data.forEach((v,i)=>{
+
+                            let position = v.propertyValue ? v.propertyValue.split(','):['',''];
+                            let lng = parseFloat(position[0]);
+                            let lat = parseFloat(position[1]);
+                            resultList.push({
+                                address: v.address,
+                                distance: null,
+                                id: v.id,
+                                lat: lat,
+                                lng: lng,
+                                icon: 'icon_jc11',
+                                // icons: 'ry',
+                                pid: v.organId,
+                                location: {
+                                    O: lng,
+                                    P: lat,
+                                    lat: lat,
+                                    lng: lng
+                                },
+                                name: v.name,
+                                label: v.nickName,
+                                position: v.propertyValue,
+                                shopinfo: '',
+                                tel: '',
+                                type: '0',
+                                other: v
+                            })
+                        })
+                        _this.onSearchResult(resultList, 0,0);
+                })
             })
-            this.onSearchResult(resultList, 0,0);
+
+
          } else if (node.propertyValue){
 
             let resultList = [];
@@ -2478,12 +2507,10 @@ export default {
             organId: organId,
             type: 0
         }
-        debugger;
-
-          new Promise((resolve, reject) => {
+        new Promise((resolve, reject) => {
             getOrganList().then(
                 res => {
-                     let dataArray = res.data;
+                    let dataArray = res.data;
                     dataArray.forEach((item,i)=>{
                         item.icon = 'icon_jc1';
                         item.position = item.propertyValue;
@@ -2533,7 +2560,7 @@ export default {
                     _this.data = dataArray;
                 }
             )
-          })
+        })
 
     //    new Promise((resolve, reject) => {
     //     getOrganTree(params).then(

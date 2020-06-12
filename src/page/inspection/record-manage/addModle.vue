@@ -380,14 +380,17 @@ export default {
                 // _this.formData.templateAdminIdList = _this.formData.templateAdminId.split(",")
                 _this.formData.templateUserIdList = [];
                 _this.formData.templateAdminIdList = [];
-                let user = _this.formData.templateUser.split(",")
-                let userId = _this.formData.templateUserId.split(",")
+                if (_this.formData.templateUser) {
+                  let user = _this.formData.templateUser.split(",")
+                  let userId = _this.formData.templateUserId.split(",")
+                  user.forEach((element, index) => {
+                    console.log('index', index)
+                    _this.formData.templateUserIdList.push({ id: userId[index], lawOfficerName: element })
+                  });
+                }
                 let admin = _this.formData.templateAdmin.split(",")
                 let adminId = _this.formData.templateAdminId.split(",")
-                user.forEach((element, index) => {
-                  console.log('index', index)
-                  _this.formData.templateUserIdList.push({ id: userId[index], lawOfficerName: element })
-                });
+
 
                 admin.forEach((element, index) => {
                   _this.formData.templateAdminIdList.push({ id: adminId[index], lawOfficerName: element })
@@ -395,9 +398,10 @@ export default {
 
                 console.log('_this.formData.templateUserIdList', _this.formData.templateUserIdList)
                 console.log('_this.formData.templateAdminIdList', _this.formData.templateAdminIdList)
-                if(_this.formData.icon==''){
-                  _this.changeTitle()
-                }
+                // 修改-无图标时
+                  if (_this.formData.icon == ''||_this.formData.icon==null) {
+                    _this.titileText = _this.formData.title.charAt(0)
+                  }
 
               }
             },

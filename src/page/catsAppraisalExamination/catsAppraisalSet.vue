@@ -3,7 +3,7 @@
         <div class="searchAndpageBox toggleBox">
             <div class="handlePart" style="margin-left: 0px;">
                 <el-button type="primary" size="medium" @click="addPykh">
-                    <i class="iconfont law-submit-o f12"></i> 添加考核要求
+                    <i class="iconfont law-submit-o f12"></i> 添加一级考核指标
                 </el-button>
             </div>
             <div class="tablePart">
@@ -11,45 +11,47 @@
                 <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @expand-change="load"
                 row-key="id" :expand-row-keys="expandList" current-row-key="id">
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-                    <el-table-column type="expand" width="100">
+                    <el-table-column prop="indexOne" label="一级考核指标" align="center" width="150"></el-table-column>
+                    <el-table-column type="expand" width="150">
                         <template slot="header" >
-                            考核指标
+                            二级考核指标
                             <!-- <el-link type="primary" v-on:click="fold" style="float:right;"> 查看 </el-link> -->
                         </template>
                         <template slot-scope="scope">
                         <div style="padding:0px 35px 35px 35px;min-width:620px;">
                             <div class="handlePart" style="margin: 8px 0px 8px 0px;">
                                 <el-button type="primary" size="medium" @click="addZbConfig(scope.row)">
-                                    <i class="iconfont law-submit-o f12"></i> 添加考核指标
+                                    <i class="iconfont law-submit-o f12"></i> 添加二级考核指标
                                 </el-button>
                             </div>
                             <div style="border: 1px solid #f4f4f4;" v-if="zbList.length>0">
                                 <el-table class="xzList" :data="zbList" stripe resizable border style="height:100%;"
                                  @expand-change="loadXzList" row-key="id" :expand-row-keys="expandXzList" current-row-key="id">
-                                     <el-table-column type="expand" width="100">
+                                    <el-table-column prop="indexTwo" label="二级考核指标" align="center" ></el-table-column>
+                                     <el-table-column type="expand" width="150">
                                         <template slot="header" >
-                                            考试细则
+                                            考评细则
                                             <!-- <el-link type="primary" v-on:click="fold" style="float:right;"> 查看 </el-link> -->
                                         </template>
                                         <template slot-scope="scope1">
                                         <div style="padding:0px 35px 35px 35px;min-width:620px;">
                                             <div class="handlePart" style="margin: 8px 0px 8px 0px;">
                                                 <el-button type="primary" size="medium" @click="addXzConfig(scope1.row)">
-                                                    <i class="iconfont law-submit-o f12"></i> 添加考试细则
+                                                    <i class="iconfont law-submit-o f12"></i> 添加考评细则
                                                 </el-button>
                                             </div>
                                             <div style="border: 1px solid #f4f4f4;" v-if="zbList.length>0">
                                                 <el-table class="xzList" :data="xzList" stripe resizable border style="height:100%;" >
-                                                    <el-table-column prop="reviewType" label="评查类别" align="center" ></el-table-column>
-                                                    <el-table-column prop="nrxm" label="评查内容/评查项目" align="center" ></el-table-column>
-                                                    <el-table-column prop="sore" label="分值" align="center" ></el-table-column>
-                                                    <el-table-column prop="xsyq" label="评查形式/评查内容和要求" align="center" ></el-table-column>
-                                                    <el-table-column prop="xdxz" label="评查要点/评分细则" align="center" ></el-table-column>
+                                                    <!-- <el-table-column prop="reviewType" label="评查类别" align="center" ></el-table-column> -->
+                                                    <el-table-column prop="nrxm" label="考评内容及评分标准" align="center" ></el-table-column>
+                                                    <!-- <el-table-column prop="sore" label="分值" align="center" ></el-table-column> -->
+                                                    <!-- <el-table-column prop="xsyq" label="评查形式/评查内容和要求" align="center" ></el-table-column> -->
+                                                    <!-- <el-table-column prop="xdxz" label="评查要点/评分细则" align="center" ></el-table-column> -->
                                                     <el-table-column label="操作" align="center" width="250">
                                                         <template  slot-scope="scope2">
                                                             <el-button type="text" @click.stop @click="updateXzConfig(scope2.$index, scope2.row)">修改</el-button>
                                                             <el-button type="text" @click.stop @click="deletePykhMetricsById(scope2.$index,scope2.row)">删除</el-button>
-                                                            <!-- <el-button type="text" @click.stop @click="addXzDialog(scope1.row)">配置考试细则</el-button> -->
+                                                            <!-- <el-button type="text" @click.stop @click="addXzDialog(scope1.row)">配置考评细则</el-button> -->
                                                         </template>
                                                     </el-table-column>
                                                 </el-table>
@@ -72,13 +74,12 @@
                                         </div>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column prop="metricsName" label="考核指标名称" align="center" ></el-table-column>
-                                    <el-table-column prop="assessType" label="考核类别" align="center" width="100"></el-table-column>
+                                    <!-- <el-table-column prop="assessType" label="考核类别" align="center" width="100"></el-table-column> -->
                                     <el-table-column label="操作" align="center" width="250">
                                         <template  slot-scope="scope1">
                                             <el-button type="text" @click.stop @click="updateZbConfig(scope1.$index, scope1.row)">修改</el-button>
                                             <el-button type="text" @click.stop @click="deletePykhMetricsById(scope.row,scope1.row)">删除</el-button>
-                                            <!-- <el-button type="text" @click.stop @click="searchXzDialog(scope1.row)">配置考试细则</el-button> -->
+                                            <!-- <el-button type="text" @click.stop @click="searchXzDialog(scope1.row)">配置考评细则</el-button> -->
                                         </template>
                                     </el-table-column>
                                 </el-table>
@@ -101,10 +102,9 @@
                         </div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="pykhConfigName" label="考核要求名称" align="center"></el-table-column>
-                    <el-table-column prop="startTime" label="立案开始时间" align="center"></el-table-column>
-                    <el-table-column prop="endTime" label="立案截止时间"  align="center"></el-table-column>
-                    <el-table-column prop="caseNum" label="案件基数" align="center"></el-table-column>
+                    <!-- <el-table-column prop="startTime" label="立案开始时间" align="center"></el-table-column> -->
+                    <!-- <el-table-column prop="endTime" label="立案截止时间"  align="center"></el-table-column> -->
+                    <el-table-column prop="oneType" label="指标类型配置" align="center"></el-table-column>
                     <el-table-column label="操作" align="center" width="120">
 
                         <template  slot-scope="scope">
@@ -134,11 +134,12 @@
             <el-form :model="pykhObj" ref="pykhObj" :rules="rules" class="checkSearchForm" label-width="120px">
                 <div style="width:400px">
                     <div class="item">
-                        <el-form-item label="考核要求名称" prop="pykhConfigName">
-                            <el-input v-model="pykhObj.pykhConfigName" class="w-120" placeholder="请输入考核要求名称"></el-input>
+                        <el-form-item label="一级考核指标" prop="indexOne">
+                            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 10}"  v-model="pykhObj.indexOne" class="w-120" placeholder="请输入一级考核指标"></el-input>
+
                         </el-form-item>
                     </div>
-                    <div class="item">
+                    <!-- <div class="item">
                         <el-form-item label="立案开始时间" prop="startTime">
                               <el-date-picker
                               style='width:282px'
@@ -149,8 +150,8 @@
                                 >
                             </el-date-picker>
                         </el-form-item>
-                    </div>
-                    <div class="item">
+                    </div> -->
+                    <!-- <div class="item">
                         <el-form-item label="立案截止时间" prop="endTime">
                             <el-date-picker
                               style='width:282px'
@@ -161,10 +162,14 @@
                                 >
                             </el-date-picker>
                         </el-form-item>
-                    </div>
+                    </div> -->
                     <div class="item">
-                        <el-form-item label="案件基数" prop="caseNum">
-                            <el-input v-model="pykhObj.caseNum" placeholder="请输入案件基数"></el-input>
+                        <el-form-item label="指标类型配置" prop="oneType">
+                            <!-- <el-input v-model="pykhObj.oneType" placeholder="请输入指标类型配置"></el-input> -->
+                            <el-select v-model="pykhObj.oneTypeId" class="w-220"  @change="changeOneType(pykhObj.oneTypeId)">
+                                <el-option  v-for="(item,index) in oneZblxList.data" :key="index" :value="item.id" :label="item.name" >
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </div>
                 </div>
@@ -179,18 +184,18 @@
             <el-form :model="zbObj" ref="zbObj" :rules="rules1" class="checkSearchForm" label-width="120px">
                 <div v-if="zbObj" style="width:400px">
                     <div class="item">
-                        <el-form-item label="考核指标名称" prop="metricsName">
-                            <el-input v-model="zbObj.metricsName" placeholder="请输入考核指标名称"></el-input>
+                        <el-form-item label="二级考核指标" prop="indexTwo">
+                            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 10}" v-model="zbObj.indexTwo" placeholder="请输入二级考核指标"></el-input>
                         </el-form-item>
                     </div>
-                    <div class="item">
+                    <!-- <div class="item">
                         <el-form-item label="考核指标类别" >
                             <el-select v-model="zbObj.assessTypeId" class="w-220"  @change="changeType(zbObj.assessTypeId)">
                                 <el-option  v-for="(item,index) in khlbList.data" :key="index" :value="item.id" :label="item.name" >
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                    </div>
+                    </div> -->
                 </div>
             </el-form>
             <br>
@@ -201,19 +206,19 @@
         </el-drawer>
         <el-drawer title="考核细则" modal-append-to-body direction="rtl" size="500px" customClass="amap-drawer" :modal="false" :visible.sync="drawer2">
             <div style="padding:0px 35px 35px 35px;min-width:620px;">
-                  <el-form :model="xzObj" ref="xzObj" :rules="rules2" class="checkSearchForm" label-width="160px">
+                  <el-form :model="xzObj" ref="xzObj" :rules="rules2" class="checkSearchForm" label-width="135px">
                 <div v-if="xzObj" style="width:400px">
-                    <div class="item">
-                        <el-form-item label="评查类别" prop="metricsName">
+                    <!-- <div class="item">
+                        <el-form-item label="评查类别" prop="indexTwo">
                             <el-input v-model="xzObj.reviewType" placeholder="请输入评查类别"></el-input>
                         </el-form-item>
-                    </div>
+                    </div> -->
                     <div class="item">
-                        <el-form-item label="评查内容/评查项目" >
-                           <el-input v-model="xzObj.nrxm" placeholder="请输入评查内容/评查项目"></el-input>
+                        <el-form-item label="考评内容及评分标准" prop="nrxm">
+                           <el-input :autosize="{ minRows: 5, maxRows: 10}"  type="textarea" v-model="xzObj.nrxm" placeholder="请输入考评内容及评分标准"></el-input>
                         </el-form-item>
                     </div>
-                        <div class="item">
+                        <!-- <div class="item">
                         <el-form-item label="分值" >
                             <el-input v-model="xzObj.sore" placeholder="请输入评查内容/评查项目"></el-input>
                         </el-form-item>
@@ -227,7 +232,7 @@
                         <el-form-item label="评查要点/评分细则" >
                           <el-input v-model="xzObj.xdxz" placeholder="请输入评查内容/评查项目"></el-input>
                         </el-form-item>
-                    </div>
+                    </div> -->
                 </div>
                  <div class="demo-drawer__footer" style="text-align:center">
                 <el-button type="primary" @click="addorUpdateDetailZp" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
@@ -236,6 +241,46 @@
             </el-form>
                 </div>
         </el-drawer>
+
+        <!-- <el-table-column prop="reviewType" label="评查类别" align="center" ></el-table-column>
+                                                    <el-table-column prop="nrxm" label="评查内容/评查项目" align="center" ></el-table-column>
+                                                    <el-table-column prop="sore" label="分值" align="center" ></el-table-column>
+                                                    <el-table-column prop="xsyq" label="评查形式/评查内容和要求" align="center" ></el-table-column>
+                                                    <el-table-column prop="xdxz" label="评查要点/评分细则" align="center" ></el-table-column> -->
+        <!-- <el-table
+      :data="tableData"
+      :span-method="objectSpanMethod"
+      border
+      style="width: 100%; margin-top: 20px">
+      <el-table-column
+        prop="name"
+        label="姓名">
+      </el-table-column>
+      <el-table-column
+        prop="id"
+        label="ID"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="amount1"
+        label="数值 1（元）">
+      </el-table-column>
+      <el-table-column
+        prop="amount2"
+        label="数值 2（元）">
+      </el-table-column>
+      <el-table-column
+        prop="amount3"
+        label="数值 3（元）">
+      </el-table-column>
+        <el-table-column
+        label="操作">
+        <template>
+            <el-button>添加</el-button>
+            <el-button>修改</el-button>
+        </template>
+      </el-table-column>
+    </el-table> -->
     </div>
 </template>
 <script>
@@ -255,14 +300,15 @@ import _ from "lodash";
         expandList:null,
         timeList: ['', ''],
         rules: {
-            pykhConfigName: [{ required: true, message: '请输入考核要求名称', trigger: 'blur' }]
+            indexOne: [{ required: true, message: '请输入一级考核指标', trigger: 'blur' }],
+            oneType: [{ required: true, message: '请输入指标类型配置', trigger: 'change' }],
         },
         rules1: {
-            metricsName: [{ required: true, message: '请输入考核指标名称', trigger: 'blur' }],
-            assessTypeId: [{ required: true, message: '请输入考核指标类别', trigger: 'change' }]
+            indexTwo: [{ required: true, message: '请输入二级考核指标', trigger: 'blur' }],
+            // assessTypeId: [{ required: true, message: '请输入考核指标类别', trigger: 'change' }]
         },
         rules2: {
-
+            nrxm: [{ required: true, message: '请输入考评内容及评分标准', trigger: 'blur' }],
         },
         pickerOptions:  {
             onPick:  ({  maxDate,  minDate  })  =>  {
@@ -302,12 +348,13 @@ import _ from "lodash";
             createTime: "",
             modifyId: "",
             modifyTime: "",
-            startTime: "",
-            endTime: "",
-            pykhConfigName: "",
+            // startTime: "",
+            // endTime: "",
+            indexOne: "",
             organName: "",
             organId: "",
-            caseNum: ""
+            oneType: "",
+            oneTypeId: ""
         },
         zbList: [],
         zbObj: {
@@ -318,11 +365,12 @@ import _ from "lodash";
 			"createTime": "",
 			"modifyId": "",
 			"modifyTime": "",
-			"metricsName": "",
+			"indexTwo": "",
 			"assessType": "",
 			"assessTypeId": "",
 			"assessTypeName": "",
-			"pykhConfigId": ""
+            "pykhConfigId": "",
+
         },
         xzObj: {
             reviewType: '',
@@ -336,6 +384,7 @@ import _ from "lodash";
         updateIndex1: null,
         drawer1: false,
         khlbList: [],
+        oneZblxList: [],
         assessTypeObj: {
             name: '',
             id: ''
@@ -366,6 +415,17 @@ import _ from "lodash";
             this.zbObj.assessTypeName = this.khlbList.data[index].name;
         }
     },
+    changeOneType (id) {
+       let index =  _.findIndex(this.oneZblxList.data,(chr)=>{
+            return id === chr.id;
+        })
+        if (index > -1) {
+            // debugger;
+            this.pykhObj.oneType = this.oneZblxList.data[index].name;
+            // this.zbObj.assessTypeId = this.khlbList.data[index].id;
+            this.pykhObj.oneTypeId = this.oneZblxList.data[index].id;
+        }
+    },
     closeDraw () {
         this.drawer = false;
            this.$set(this, 'pykhObj', {
@@ -376,12 +436,13 @@ import _ from "lodash";
                     createTime: "",
                     modifyId: "",
                     modifyTime: "",
-                    startTime: "",
-                    endTime: "",
-                    pykhConfigName: "",
+                    // startTime: "",
+                    // endTime: "",
+                    indexOne: "",
                     organName: "",
                     organId: "",
-                    caseNum: ""
+                    oneType: "",
+                    oneTypeId: ""
                 });
     },
     closeDraw1 () {
@@ -394,7 +455,7 @@ import _ from "lodash";
 			"createTime": "",
 			"modifyId": "",
 			"modifyTime": "",
-			"metricsName": "",
+			"indexTwo": "",
 			"assessType": "",
 			"assessTypeId": "",
 			"assessTypeName": "",
@@ -460,12 +521,13 @@ import _ from "lodash";
                     createTime: "",
                     modifyId: "",
                     modifyTime: "",
-                    startTime: "",
-                    endTime: "",
-                    pykhConfigName: "",
+                    // startTime: "",
+                    // endTime: "",
+                    indexOne: "",
                     organName: "",
                     organId: "",
-                    caseNum: ""
+                    oneType: "",
+                    oneTypeId: ""
                 });
 
             this.updateIndex = null;
@@ -526,11 +588,12 @@ import _ from "lodash";
             })
 
         },
-        addPykh () {
+        async addPykh () {
             // this.pykhObj.startTime = "";
             // this.pykhObj.endTime = "";
-            // this.pykhObj.caseNum = "";
+            // this.pykhObj.oneType = "";
             // this.pykhObj.startTime = "";
+            this.oneZblxList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.one_zblx);
             this.$set(this, 'pykhObj', {
                     id: "",
                     note: "",
@@ -539,12 +602,13 @@ import _ from "lodash";
                     createTime: "",
                     modifyId: "",
                     modifyTime: "",
-                    startTime: "",
-                    endTime: "",
-                    pykhConfigName: "",
+                    // startTime: "",
+                    // endTime: "",
+                    indexOne: "",
                     organName: "",
                     organId: "",
-                    caseNum: ""
+                    oneType: "",
+                    oneTypeId: ""
                 });
 
             this.updateIndex = null;
@@ -562,7 +626,7 @@ import _ from "lodash";
                 "createTime": "",
                 "modifyId": "",
                 "modifyTime": "",
-                "metricsName": "",
+                "indexTwo": "",
                 "assessType": "",
                 "assessTypeId": "",
                 "assessTypeName": "",
@@ -636,7 +700,7 @@ import _ from "lodash";
                                         "createTime": "",
                                         "modifyId": "",
                                         "modifyTime": "",
-                                        "metricsName": "",
+                                        "indexTwo": "",
                                         "assessType": "",
                                         "assessTypeId": "",
                                         "assessTypeName": "",
@@ -749,7 +813,8 @@ import _ from "lodash";
         reset (formName) {
             this.$refs[formName].resetFields();
         },
-        updatePykhConfig (index, row) {
+        async updatePykhConfig (index, row) {
+            this.oneZblxList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.one_zblx);
             this.pykhObj = row;
             this.drawer = true;
             this.updateIndex = index;
@@ -796,12 +861,13 @@ import _ from "lodash";
                                             createTime: "",
                                             modifyId: "",
                                             modifyTime: "",
-                                            startTime: "",
-                                            endTime: "",
-                                            pykhConfigName: "",
+                                            // startTime: "",
+                                            // endTime: "",
+                                            indexOne: "",
                                             organName: "",
                                             organId: "",
-                                            caseNum: ""
+                                            oneType: "",
+                                            oneTypeId: ""
                                         });
                                 _this.closeLoading();
                                  _this.errorMsg('保存成功', 'success')
@@ -889,8 +955,8 @@ import _ from "lodash";
     created () {
         this.search(1);
         let userInfo = iLocalStroage.gets("userInfo");
-        this.pykhObj.organId = userInfo.organId;
-        this.pykhObj.organName = userInfo.organName;
+        // this.pykhObj.organId = userInfo.organId;
+        // this.pykhObj.organName = userInfo.organName;
     },
     mounted () {
 

@@ -1,19 +1,19 @@
 <template>
   <div class="print_box">
-    <div class="print_info" id="removeAdminCoerciveMeasureApproval_print">
+    <div class="print_info" id="prolongAdminCoerciveMeasureApproval_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
-        <div class="doc_topic">行政强制措施解除审批表</div>
+        <div class="doc_topic">中止（终结、恢复）行政强制执行审批表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td rowspan="6">
-              当
-              <br />事
-              <br />人
+              <p>当</p>
+              <p>事</p>
+              <p>人</p>
             </td>
             <td rowspan="2">个人</td>
-            <td>姓名</td>
+            <td colspan="2">姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="party"
@@ -31,7 +31,7 @@
                 <!-- <el-input v-model="formData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
-            <td>身份证件号</td>
+            <td colspan="2">身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyIdNo"
@@ -49,7 +49,7 @@
             </td>
           </tr>
           <tr>
-            <td>住址</td>
+            <td colspan="2">住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyAddress"
@@ -66,7 +66,7 @@
                 ></el-input>
               </el-form-item>
             </td>
-            <td>联系电话</td>
+            <td colspan="2">联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyTel"
@@ -83,8 +83,8 @@
           </tr>
           <tr>
             <td rowspan="4">单位</td>
-            <td>名称</td>
-            <td colspan="5" class="color_DBE4EF">
+            <td colspan="2">名称</td>
+            <td colspan="6" class="color_DBE4EF">
               <el-form-item
                 prop="partyName"
                 :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)"
@@ -99,8 +99,8 @@
             </td>
           </tr>
           <tr>
-            <td>地址</td>
-            <td colspan="4" class="color_DBE4EF">
+            <td colspan="2">地址</td>
+            <td colspan="6" class="color_DBE4EF">
               <el-form-item
                 prop="partyUnitAddress"
                 :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)"
@@ -115,7 +115,7 @@
             </td>
           </tr>
           <tr>
-            <td>联系电话</td>
+            <td colspan="2">联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyUnitTel"
@@ -130,8 +130,8 @@
                 ></el-input>
               </el-form-item>
             </td>
-            <td>法定代表人</td>
-            <td class="color_DBE4EF">
+            <td colspan="2">法定代表人</td>
+            <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyManager"
                 :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)"
@@ -146,8 +146,8 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2">统一社会信用代码</td>
-            <td colspan="3" class="color_DBE4EF">
+            <td colspan="3">统一社会信用代码</td>
+            <td colspan="5" class="color_DBE4EF">
               <el-form-item
                 prop="socialCreditCode"
                 :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)"
@@ -162,12 +162,10 @@
             </td>
           </tr>
           <tr>
-            <td rowspan="2">
-              <p>案件</p>
-              <p>基本</p>
-              <p>情况</p>
+            <td colspan="2" rowspan="2">
+              <p>案件基本情况</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="7" class="color_DBE4EF">
               <el-form-item
                 prop="closeResult"
                 :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
@@ -186,17 +184,65 @@
           </tr>
           <tr></tr>
           <tr>
-            <td rowspan="2">
+            <td colspan="2" rowspan="2">
               <p>承办人意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="7" class="color_DBE4EF">
               <p>
-                &nbsp;&nbsp;根据《中华人民共和国行政强制法》第二十八条第一款第三项规定，拟解除以下强制措施，并退还财物：
+                &nbsp;&nbsp;因
+                <span>
+                  <el-form-item
+                    prop="punishLaw"
+                    :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])"
+                    style="width: 70%;"
+                  >
+                    <el-select
+                      v-model="formData.punishLaw"
+                      :maxLength="maxLength"
+                      :disabled="fieldDisabled(propertyFeatures['punishLaw'])"
+                    >
+                      <el-option
+                        v-for="item in laWOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.label"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </span>，拟作出如下处理决定：
               </p>
-              <p>
-                &nbsp;&nbsp;<el-checkbox >扣押财物</el-checkbox><br/>
-                &nbsp;&nbsp;<el-checkbox >查封场所、设施或者财物</el-checkbox>
-              </p>
+              <div class="text-left">
+                <el-form-item
+                  prop="checkBox"
+                  :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
+                >
+                  <el-checkbox-group
+                    v-model="formData.checkBox"
+                    :disabled="fieldDisabled(propertyFeatures['checkBox'])"
+                  >
+                    <p>
+                      <el-checkbox label="1">
+                        根据《中华人民共和国行政强制法》第三十九条，中止执行
+                      </el-checkbox>
+                    </p>
+                    <p>
+                      <el-checkbox label="2">
+                        根据《中华人民共和国行政强制法》第四十条，终结执行
+                      </el-checkbox>
+                    </p>
+                    <p>
+                      <el-checkbox label="3">
+                        根据《中华人民共和国行政强制法》第三十九条第二款，恢复执行
+                      </el-checkbox>
+                    </p>
+                    <p>
+                      <el-checkbox label="4">
+                        根据《中华人民共和国行政强制法》第四十二条条第二款，恢复执行
+                      </el-checkbox>
+                    </p>
+                  </el-checkbox-group>
+                </el-form-item>
+              </div>
               <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
                 <p>
@@ -208,10 +254,10 @@
           </tr>
           <tr></tr>
           <tr>
-            <td rowspan="2">
+            <td colspan="2" rowspan="2">
               <p>承办机构意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="7" class="color_DBE4EF">
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
@@ -224,26 +270,10 @@
           </tr>
           <tr></tr>
           <tr>
-            <td rowspan="2">
-              <p>法制审核机构意见</p>
-            </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
-              {{formData.threeApproveOpinions}}
-              <div class="pdf_seal">
-                <p>签名：{{formData.threeApprovePeo}}</p>
-                <p>
-                  <span v-if="formData.threeApproveTime">{{formData.threeApproveTime}}</span>
-                  <span v-else>年 月 日</span>
-                </p>
-              </div>
-            </td>
-          </tr>
-          <tr></tr>
-          <tr>
-            <td rowspan="2">
+            <td colspan="2" rowspan="2">
               <p>行政机关负责人意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="7" class="color_DBE4EF">
               {{formData.threeApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.threeApprovePeo}}</p>
@@ -256,10 +286,10 @@
           </tr>
           <tr></tr>
           <tr>
-            <td>
+            <td colspan="2">
               <p>备注</p>
             </td>
-            <td colspan="6" class="color_DBE4EF">
+            <td colspan="7" class="color_DBE4EF">
               <p>
                 <el-input type="textarea" v-model="formData.notes"></el-input>
               </p>
@@ -269,7 +299,7 @@
       </el-form>
     </div>
     <casePageFloatBtns
-      :pageDomId="'removeAdminCoerciveMeasureApproval_print'"
+      :pageDomId="'prolongAdminCoerciveMeasureApproval_print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
       @showApprovePeopleList="showApprovePeopleList"
@@ -307,19 +337,21 @@ export default {
         party: "",
         partyIdNo: "",
         partyAddress: "",
+        defendState: "",
         partyTel: "",
         partyName: "",
         partyUnitAddress: "",
         partyUnitTel: "",
         partyManager: "",
         punishLaw: "",
+        checkBox: [],
         illegalLaw: "",
         tempPunishAmount: "",
         socialCreditCode: "",
         illegalFactsEvidence: "",
         reconsiderationOrgan: "",
         partyUnitPosition: "",
-        test: "",
+        defendReason: "",
         note: "",
         party: "",
         partySex: "",
@@ -425,7 +457,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "removeAdminCoerciveMeasureApproval_print"
+        pageDomId: "prolongAdminCoerciveMeasureApproval_print"
       },
       huanjieAndDocId: this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId, //结案报告的文书id
       approvalOver: false, //审核完成
@@ -530,14 +562,14 @@ export default {
   text-indent: 0 !important;
 }
 .print_box
-  #removeAdminCoerciveMeasureApproval_print
+  #prolongAdminCoerciveMeasureApproval_print
   .doc_cause
   .caseNameBox
   span.el-textarea {
   top: -12px;
 }
 .print_box
-  #removeAdminCoerciveMeasureApproval_print
+  #prolongAdminCoerciveMeasureApproval_print
   .doc_cause
   .caseNameBox
   span.over_flow {

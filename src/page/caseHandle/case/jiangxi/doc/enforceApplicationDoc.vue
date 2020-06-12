@@ -32,8 +32,8 @@
         <p class="p_begin">
           联系电话：
           <span>
-            <el-form-item prop="discussionPlace" style="width:538px" :rules="fieldRules('discussionPlace',propertyFeatures['discussionPlace'])">
-              <el-input v-model="docData.discussionPlace" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['discussionPlace'])"></el-input>
+            <el-form-item prop="applicantTel" style="width:538px" :rules="fieldRules('applicantTel',propertyFeatures['applicantTel'])">
+              <el-input v-model="docData.applicantTel" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['applicantTel'])"></el-input>
             </el-form-item>
           </span>
         </p> 
@@ -41,32 +41,32 @@
         <p class="p_begin">
           被申请人：
           <span>
-            <el-form-item prop="caseName" style="width: 538px;" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input v-model="docData.caseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
+            <el-form-item prop="respondent" style="width: 538px;" :rules="fieldRules('respondent',propertyFeatures['respondent'])">
+              <el-input v-model="docData.respondent" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['respondent'])"></el-input>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
           法定代表人：
           <span>
-            <el-form-item prop="caseName" style="width: 522px;" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input v-model="docData.caseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
+            <el-form-item prop="respondentManager" style="width: 522px;" :rules="fieldRules('respondentManager',propertyFeatures['respondentManager'])">
+              <el-input v-model="docData.respondentManager" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['respondentManager'])"></el-input>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
           联系地址：
           <span>
-            <el-form-item prop="caseName" style="width: 538px;" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input v-model="docData.caseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
+            <el-form-item prop="respondentAddess" style="width: 538px;" :rules="fieldRules('respondentAddess',propertyFeatures['respondentAddess'])">
+              <el-input v-model="docData.respondentAddess" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['respondentAddess'])"></el-input>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
           联系电话：
           <span>
-            <el-form-item prop="discussionPlace" style="width:538px" :rules="fieldRules('discussionPlace',propertyFeatures['discussionPlace'])">
-              <el-input v-model="docData.discussionPlace" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['discussionPlace'])"></el-input>
+            <el-form-item prop="respondentTel" style="width:538px" :rules="fieldRules('respondentTel',propertyFeatures['respondentTel'])">
+              <el-input v-model="docData.respondentTel" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['respondentTel'])"></el-input>
             </el-form-item>
           </span>
         </p> 
@@ -77,8 +77,8 @@
         <p>
           1、强制执行
           <span>
-            <el-form-item prop="caseUnderTakePeople" style="width: 360px;" :rules="fieldRules('caseUnderTakePeople',propertyFeatures['caseUnderTakePeople'])">
-              <el-input v-model="docData.caseUnderTakePeople" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseUnderTakePeople'])"></el-input>
+            <el-form-item prop="executeMatter" style="width: 360px;" :rules="fieldRules('executeMatter',propertyFeatures['executeMatter'])">
+              <el-input v-model="docData.executeMatter" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['executeMatter'])"></el-input>
             </el-form-item>
           </span>事项。
         </p>
@@ -220,6 +220,11 @@ export default {
         applicant:'',
         applicantManager:'',
         applicantAddress:'',
+        applicantTel:'',
+        respondent:'',
+        respondentManager:'',
+        respondentAddress:'',
+        respondentTel:'',
         checkLaw1:'',
         checkLaw2:'',
         serviceTime:'',
