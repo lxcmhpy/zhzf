@@ -196,7 +196,7 @@
             </el-form-item>
           </div>
           <div class="itemSmall">
-            <el-form-item label="职位">
+            <el-form-item label="职务">
               <el-input v-model="inforForm.occupation"></el-input>
             </el-form-item>
           </div>
@@ -362,7 +362,7 @@
               </el-form-item>
             </div>
             <div class="itemSmall">
-              <el-form-item label="职位">
+              <el-form-item label="职务">
                 <el-input v-model="driverOrAgentInfo.position"
                           :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
@@ -1390,16 +1390,18 @@
               iLocalStroage.removeItem("stageCaseId");
               this.autoSava = false;
               
+             if(this.openTab){
               let replaceIndex = 0;
-              // for(let i=0;i < this.openTab.length;i++){
-              //   if(this.openTab[i].route == '/inforCollect'){
-              //     replaceIndex = i;
-              //     break;
-              //   }
-              // }
-              // this.openTab[replaceIndex].menuUrl = 'case_handle_establish';
-              // this.openTab[replaceIndex].name = 'case_handle_establish' + '-and-' + this.caseHandle.caseNumber;
-              // this.openTab[replaceIndex].route = '/establish';
+              for(let i=0;i < this.openTab.length;i++){
+                if(this.openTab[i].route == '/compensationInforCollect'){
+                  replaceIndex = i;
+                  break;
+                }
+              }
+              this.openTab[replaceIndex].menuUrl = 'case_handle_establish';
+              this.openTab[replaceIndex].name = 'case_handle_establish' + '-and-' + this.caseHandle.caseNumber;
+              this.openTab[replaceIndex].route = '/establish';
+            }
 
               _this.$router.push({
                 name: "case_handle_establish"

@@ -45,7 +45,7 @@
                   class="commonBtn searchBtn"
                   size="medium"
                   icon="iconfont law-sousuo"
-                  @click="getPageAllInfo"
+                  @click="currentPage = 1;getPageAllInfo();"
                 ></el-button>
                 <el-button
                   title="重置"
@@ -84,7 +84,7 @@
             v-loading="tableLoading"
             element-loading-spinner="car-loading"
             element-loading-text="加载中..."
-            :max-height="280"
+            max-height="320px"
             >
             <el-table-column type="selection" label align="center" width="40px"></el-table-column>
             <el-table-column prop="personName" label="姓名" align="left" min-width="100px"></el-table-column>

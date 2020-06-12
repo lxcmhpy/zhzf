@@ -7,6 +7,31 @@ import { getToken, setToken } from "@/common/js/auth";
  * @type {{}}
  */
 const mutations = {
+    [types.CLEAR_ALL_CACHE] (state) {
+        window.sessionStorage.clear();
+        window.localStorage.clear();
+        debugger;
+        for (let i in state) {
+            if (typeof state[i] === 'object') {
+                if (state[i] instanceof Array) {
+                    state[i]= []
+                }
+                let jStateObj = state[i]
+                for (let j in jStateObj) {
+                    if (typeof jStateObj[j] === 'string') {
+                        jStateObj[j] = ''
+                    } else {
+                        jStateObj[j] = null
+                    }
+                }
+            } else if (typeof state[i] === 'string') {
+                state[i] = ''
+            } else {
+                state[i] = null
+            }
+        }
+        console.log(state)
+    },
   // common
   [types.COM_LOADING_STATUS](state, status) {
     state.loading = status;

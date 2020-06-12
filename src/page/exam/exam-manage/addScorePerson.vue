@@ -29,7 +29,7 @@
               class="commonBtn searchBtn"
               size="medium"
               icon="iconfont law-sousuo"
-              @click="selectPersonList"
+              @click="currentPage = 1;selectPersonList();"
             ></el-button>
             <el-button
               title="重置"

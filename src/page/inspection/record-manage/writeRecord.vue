@@ -15,6 +15,7 @@
               </span>
             </span>
           </el-popover>
+           <writeRecordHome name="" ref="writeRecordRef" style="width:710px;height:400px;overflow:auto"></writeRecordHome>
           <span class="change_title_icon">二维码<i class="iconfont law-erweima" style="font-size:14px;margin-left:4px"></i></span>
         </span>
       </div>
@@ -90,7 +91,7 @@ export default {
     }
   },
   components: {
-    writeRecord,
+    writeRecordHome,
     formCreate: formCreate.$form(),
 
   },

@@ -5,9 +5,15 @@
         <div class="doc_topic">分期（延期）缴纳罚款审批表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+        <table
+          class="print_table prolong_table"
+          border="1"
+          bordercolor="black"
+          width="100%"
+          cellspacing="0"
+        >
           <tr>
-            <td rowspan="6">
+            <td rowspan="6" width="63px">
               当
               <br />事
               <br />人
@@ -100,7 +106,7 @@
           </tr>
           <tr>
             <td>地址</td>
-            <td colspan="4" class="color_DBE4EF">
+            <td colspan="5" class="color_DBE4EF">
               <el-form-item
                 prop="partyUnitAddress"
                 :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)"
@@ -131,7 +137,7 @@
               </el-form-item>
             </td>
             <td>法定代表人</td>
-            <td class="color_DBE4EF">
+            <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyManager"
                 :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)"
@@ -147,7 +153,7 @@
           </tr>
           <tr>
             <td colspan="2">统一社会信用代码</td>
-            <td colspan="3" class="color_DBE4EF">
+            <td colspan="4" class="color_DBE4EF">
               <el-form-item
                 prop="socialCreditCode"
                 :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)"
@@ -165,7 +171,7 @@
             <td rowspan="2">
               <p>案件基本情况</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="7" class="color_DBE4EF">
               <el-form-item
                 prop="closeResult"
                 :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
@@ -187,7 +193,7 @@
             <td rowspan="2">
               <p>分期（延期）缴纳罚款理由</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="7" class="color_DBE4EF">
               <el-form-item
                 prop="closeResult"
                 :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
@@ -209,7 +215,12 @@
             <td rowspan="2">
               <p>承办人意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td
+              rowspan="2"
+              colspan="7"
+              class="color_DBE4EF"
+              style="white-space: normal;word-wrap: break-word;word-break: break-all;"
+            >
               <p>&nbsp;&nbsp;根据《中华人民共和国行政处罚法》第五十二条的规定，拟提出以下处理意见：</p>
               <div>
                 <el-form-item
@@ -217,7 +228,8 @@
                   :rules="fieldRules('defendState',propertyFeatures['defendState'])"
                 >
                   <p>
-                    &nbsp;&nbsp;<el-checkbox label="0">同意延期缴纳罚款。</el-checkbox>
+                    &nbsp;&nbsp;
+                    <el-checkbox label="0">同意延期缴纳罚款。</el-checkbox>
                     <span>
                       延长至
                       <el-date-picker
@@ -231,11 +243,11 @@
                     </span>
                   </p>
                   <p>
-                    &nbsp;&nbsp;<el-checkbox label="1">同意分期缴纳罚款。</el-checkbox>第
+                    &nbsp;&nbsp;
+                    <el-checkbox label="1">同意分期缴纳罚款。</el-checkbox>第
                     <el-input
                       v-model="formData.defendReason"
                       type="textarea"
-                      rows="1"
                       :autosize="true"
                       v-bind:class="{ over_flow:formData.defendReason.length>2?true:false }"
                       style="width: 45px"
@@ -253,7 +265,6 @@
                     <el-input
                       v-model="formData.defendReason"
                       type="textarea"
-                      rows="1"
                       :autosize="true"
                       v-bind:class="{ over_flow:formData.defendReason.length>6?true:false }"
                       style="width: 135px"
@@ -272,17 +283,17 @@
                     ></el-input>元（大写）。
                   </p>
                   <p>
-                    &nbsp;&nbsp;<el-checkbox> </el-checkbox>
-                    <span>
-                      由于
-                      <el-input
-                        v-model="formData.defendReason"
-                        type="textarea"
-                        style="width: 80%"
-                        placeholder="\"
-                        :disabled="fieldDisabled(propertyFeatures['defendReason'])"
-                      ></el-input>，当事人的申请不符合《中华人民共和国行政处罚法》第五十二条的规定，不同意分期（延期）缴纳罚款。
-                    </span>
+                    &nbsp;&nbsp;
+                    <el-checkbox>&nbsp;</el-checkbox>由于
+                    <el-input
+                      v-model="formData.defendReason"
+                      type="textarea"
+                      :autosize="true"
+                      v-bind:class="{ over_flow:formData.defendReason.length>14?true:false }"
+                      style="width: 75%"
+                      placeholder="\"
+                      :disabled="fieldDisabled(propertyFeatures['defendReason'])"
+                    ></el-input>，当事人的申请不符合《中华人民共和国行政处罚法》第五十二条的规定，不同意分期（延期）缴纳罚款。
                   </p>
                 </el-form-item>
               </div>
@@ -300,7 +311,7 @@
             <td rowspan="2">
               <p>承办机构意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="7" class="color_DBE4EF">
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
@@ -316,7 +327,7 @@
             <td rowspan="2">
               <p>行政机关负责人意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="7" class="color_DBE4EF">
               {{formData.threeApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.threeApprovePeo}}</p>
@@ -332,7 +343,7 @@
             <td>
               <p>备注</p>
             </td>
-            <td colspan="6" class="color_DBE4EF">
+            <td colspan="7" class="color_DBE4EF">
               <p>
                 <el-input type="textarea" v-model="formData.notes"></el-input>
               </p>
@@ -599,39 +610,12 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-.textindent0 {
-  text-indent: 0 !important;
-}
-.print_box
-  #prolongAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.el-textarea {
-  top: -12px;
-}
-.print_box
-  #prolongAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.over_flow {
-  top: -8px;
-  text-overflow: initial;
-  font-size: 12px;
-  line-height: 14px;
-}
-.print_box .print_info tr td {
-  border: 1px solid #000000;
-  height: 16px;
-  font-size: 16px;
-  line-height: 18px;
-  display: table-cell;
-  vertical-align: middle;
-  padding: 0 8px;
-  text-align: justify;
-  text-align-last: justify;
-  white-space: normal;
-  word-wrap: break-word;
-  word-break: break-all;
+.prolong_table {
+  table-layout: fixed;
+  td {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
 }
 </style>

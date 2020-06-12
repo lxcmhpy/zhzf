@@ -53,7 +53,7 @@
                     class="commonBtn searchBtn"
                     size="medium"
                     icon="iconfont law-sousuo"
-                    @click="getExamBatchList"
+                    @click="currentPage = 1; getExamBatchList();"
                   ></el-button>
                   <el-button
                     title="重置"
@@ -273,8 +273,16 @@ export default {
           customClass: "custom-confirm"
         })
         .then(() => {
+          const loading = _this.$loading({
+            lock: true,
+            text: "正在配置",
+            spinner: "car-loading",
+            customClass: "loading-box",
+            background: "rgba(234,237,244, 0.8)"
+          });
           _this.$store.dispatch("disposeInfo", data).then(
             res => {
+              loading.close();
               if (res.code === 200) {
                 _this.$message({ type: "success", message: "配置已完成!" });
                 //重新加载页面数据
@@ -282,6 +290,7 @@ export default {
               }
             },
             err => {
+              loading.close();
               _this.$message({ type: "error", message: err.msg || "" });
             }
           );
