@@ -32,7 +32,7 @@
         <p class="p_begin">
           联系电话：
           <span>
-            <el-form-item prop="applicantTel" style="width:538px" :rules="fieldRules('applicantTel',propertyFeatures['applicantTel'])">
+            <el-form-item prop="applicantTel" style="width:538px" :rules="fieldRules('applicantTel',propertyFeatures['applicantTel'],validatePhone)">
               <el-input v-model="docData.applicantTel" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['applicantTel'])"></el-input>
             </el-form-item>
           </span>
@@ -65,7 +65,7 @@
         <p class="p_begin">
           联系电话：
           <span>
-            <el-form-item prop="respondentTel" style="width:538px" :rules="fieldRules('respondentTel',propertyFeatures['respondentTel'])">
+            <el-form-item prop="respondentTel" style="width:538px" :rules="fieldRules('respondentTel',propertyFeatures['respondentTel'],validatePhone)">
               <el-input v-model="docData.respondentTel" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['respondentTel'])"></el-input>
             </el-form-item>
           </span>
@@ -85,8 +85,8 @@
         <p>
           2、其他事项：
           <span>
-            <el-form-item prop="caseUnderTakePeople" style="width: 360px;" :rules="fieldRules('caseUnderTakePeople',propertyFeatures['caseUnderTakePeople'])">
-              <el-input v-model="docData.caseUnderTakePeople" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseUnderTakePeople'])"></el-input>
+            <el-form-item prop="otherMatter" style="width: 360px;" :rules="fieldRules('otherMatter',propertyFeatures['otherMatter'])">
+              <el-input v-model="docData.otherMatter" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['otherMatter'])"></el-input>
             </el-form-item>
           </span>
         </p>
@@ -96,8 +96,8 @@
         <p>
           因被申请人
           <span>
-            <el-form-item prop="caseUnderTakePeople" style="width: 200px;" :rules="fieldRules('caseUnderTakePeople',propertyFeatures['caseUnderTakePeople'])">
-              <el-input v-model="docData.caseUnderTakePeople" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseUnderTakePeople'])"></el-input>
+            <el-form-item prop="caseName" style="width: 200px;" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+              <el-input v-model="docData.caseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
             </el-form-item>
           </span>一案，申请人于
           <span>
@@ -107,23 +107,23 @@
             </el-form-item>
           </span>向被申请人送达了
             <span>
-            <el-form-item prop="caseUnderTakePeople" style="width: 200px;" :rules="fieldRules('caseUnderTakePeople',propertyFeatures['caseUnderTakePeople'])">
-              <el-input v-model="docData.caseUnderTakePeople" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseUnderTakePeople'])"></el-input>
+            <el-form-item prop="caseNumber1" style="width: 200px;" :rules="fieldRules('caseNumber1',propertyFeatures['caseNumber1'])">
+              <el-input v-model="docData.caseNumber1" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNumber1'])"></el-input>
             </el-form-item>
           </span>（编号）行政处罚决定书，被申请人未在法定的期限内申请行政复议或提起行政诉讼，又不履行该行政处罚决定书规定的义务。申请人于
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick" :rules="fieldRules('serviceTime',propertyFeatures['serviceTime'])">
-              <el-date-picker v-model="docData.serviceTime" :disabled="fieldDisabled(propertyFeatures['serviceTime'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-form-item prop="serviceTime1" class="pdf_datapick" :rules="fieldRules('serviceTime1',propertyFeatures['serviceTime1'])">
+              <el-date-picker v-model="docData.serviceTime1" :disabled="fieldDisabled(propertyFeatures['serviceTime1'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>向被申请人送达<span>
-            <el-form-item prop="caseUnderTakePeople" style="width: 200px;" :rules="fieldRules('caseUnderTakePeople',propertyFeatures['caseUnderTakePeople'])">
-              <el-input v-model="docData.caseUnderTakePeople" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseUnderTakePeople'])"></el-input>
+            <el-form-item prop="caseNumber2" style="width: 200px;" :rules="fieldRules('caseNumber2',propertyFeatures['caseNumber2'])">
+              <el-input v-model="docData.caseNumber2" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNumber2'])"></el-input>
             </el-form-item>
           </span>（编号）催告书，责令其在
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick" :rules="fieldRules('serviceTime',propertyFeatures['serviceTime'])">
-              <el-date-picker v-model="docData.serviceTime" :disabled="fieldDisabled(propertyFeatures['serviceTime'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-form-item prop="reformTime" class="pdf_datapick" :rules="fieldRules('reformTime',propertyFeatures['reformTime'])">
+              <el-date-picker v-model="docData.reformTime" :disabled="fieldDisabled(propertyFeatures['reformTime'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>前主动履行规定义务，被申请人逾期仍未履行。          
@@ -140,8 +140,8 @@
         </p> 
         <p>
           <span>
-            <el-form-item prop="caseUnderTakePeople" style="width: 200px;" :rules="fieldRules('caseUnderTakePeople',propertyFeatures['caseUnderTakePeople'])">
-              <el-input v-model="docData.caseUnderTakePeople" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseUnderTakePeople'])"></el-input>
+            <el-form-item prop="courtName" style="width: 200px;" :rules="fieldRules('courtName',propertyFeatures['courtName'])">
+              <el-input v-model="docData.courtName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['courtName'])"></el-input>
             </el-form-item>
           </span>人民法院
         </p> 
@@ -189,7 +189,8 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-
+// 验证规则
+  import {validatePhone, validateIDNumber} from "@/common/js/validator";
 export default {
   components: {
     casePageFloatBtns
@@ -197,25 +198,9 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId']) },
   data() {
-    //验证开始时间
-    var validateStartTime = (rule, value, callback) => {
-      console.log(Date.parse(this.docData.discussionStartTime))
-      console.log(Date.parse(this.docData.discussionEndTime))
-      let parseStartTime = this.docData.discussionStartTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
-      let parseEndTime = this.docData.discussionEndTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
-      if(Date.parse(parseStartTime)>Date.parse(parseEndTime)){
-        this.$message({
-              showClose: true,
-              message: '开始时间不得大于结束时间',
-              type: 'error',
-              offset: 100,
-              customClass: 'validateErrorTip'
-        });
-        return callback(new Error("开始时间不得大于结束时间"));
-      }
-      callback();
-    };
     return {
+      validatePhone:validatePhone,
+      validateIDNumber:validateIDNumber,
       docData: {
         applicant:'',
         applicantManager:'',
@@ -225,27 +210,18 @@ export default {
         respondentManager:'',
         respondentAddress:'',
         respondentTel:'',
+        executeMatter:'',
+        otherMatter:'',
+        caseName:'',
+        caseNumber1:'',
+        caseNumber2:'',
+        serviceTime:'',
+        serviceTime1:'',
+        reformTime:'',
         checkLaw1:'',
         checkLaw2:'',
-        serviceTime:'',
-        caseNumber: '',
-        caseName: '',
-        discussionStartTime: '',
-        discussionEndTime: '',
-        discussionPlace: '',
-        discussionReason:'',
-        presidingHearer: '',
-        presidingHearerPos: '',
-        recorder: '',
-        discussionPeople:'',
-        attendPeople:'',
-        caseUnderTakePeople:'',
-        caseInformation:'',
-        discussionOpinionAndReason:'',
-        // presentMembersName: '',
-        overWidthFlag: false,
-        // discussionRecord: '',//多行编辑内容
-        conclussionOpinion: '',//多行编辑内容
+        courtName:'',
+        
         makeDate:''
       },
       handleType: 0, //0  暂存     1 提交
@@ -259,49 +235,53 @@ export default {
         linkTypeId:this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
+        applicant: [
+          { required: true, message: '申请人必须填写', trigger: 'blur' },
+        ],
+        applicantManager: [
+          { required: true, message: '申请人法定代表人必须填写', trigger: 'blur' },
+        ],
+        applicantAddress: [
+          { required: true, message: '申请人联系地址必须填写', trigger: 'blur' },
+        ],
+        applicantTel: [
+          { required: true, message: '申请人联系电话必须填写', trigger: 'blur' },
+        ],
+        respondent: [
+          { required: true, message: '被申请人必须填写', trigger: 'blur' },
+        ],
+        respondentManager: [
+          { required: true, message: '被申请人法定代表人必须填写', trigger: 'blur' },
+        ],
+        respondentAddress: [
+          { required: true, message: '被申请人地址必须填写', trigger: 'blur' },
+        ],
+        respondentTel: [
+          { required: true, message: '被申请人联系电话必须填写', trigger: 'blur' },
+        ],
+        executeMatter: [
+          { required: true, message: '执行事项必须填写', trigger: 'blur' },
+        ],
+        otherMatter: [
+          { required: true, message: '其他事项必须填写', trigger: 'blur' },
+        ],
         caseName: [
-          { required: true, message: '请输入案件名称', trigger: 'blur' },
+          { required: true, message: '案由必须填写 ', trigger: 'blur' },
         ],
-        discussionStartTime: [
-          { required: true, message: '请输入开始讨论时间', trigger: 'blur' },
-          { validator: validateStartTime, trigger: "blur" }
+        caseNumber1: [
+          { required: true, message: '行政处罚决定书编号必须填写', trigger: 'blur' },
         ],
-        discussionEndTime: [
-          { required: true, message: '请输入结束讨论时间', trigger: 'blur' },
-          { validator: validateStartTime, trigger: "blur" }
+        caseNumber2: [
+          { required: true, message: '催告书编号必须填写', trigger: 'blur' },
         ],
-        discussionPlace: [
-          { required: true, message: '请输入地点', trigger: 'blur' },
+        serviceTime: [
+          { required: true, message: '行政处罚决定书送达时间必须填写', trigger: 'blur' },
         ],
-        presidingHearer: [
-          { required: true, message: '请输入主持人', trigger: 'blur' },
+        serviceTime1: [
+          { required: true, message: '催告书送达时间必须填写', trigger: 'blur' },
         ],
-        presidingHearerPos: [
-          { required: true, message: '请输入职务', trigger: 'blur' },
-        ],
-        recorder: [
-          { required: true, message: '请输入记录人', trigger: 'blur' },
-        ],
-        discussionReason: [
-          { required: true, message: '请输入集体讨论原因', trigger: 'blur' },
-        ],
-        discussionPeople: [
-          { required: true, message: '请输入参加人员', trigger: 'blur' },
-        ],
-        attendPeople: [
-          { required: true, message: '请输入列席人员', trigger: 'blur' },
-        ],
-        caseUnderTakePeople: [
-          { required: true, message: '请输入案件承办人员', trigger: 'blur' },
-        ],
-        caseInformation: [
-          { required: true, message: '请输入案件汇报案件情况', trigger: 'blur' },
-        ],
-        conclussionOpinion: [
-          { required: true, message: '请输入结论性意见', trigger: 'blur' },
-        ],
-        discussionOpinionAndReason: [
-          { required: true, message: '请输入参与讨论人员意见和理由', trigger: 'blur' },
+        reformTime: [
+          { required: true, message: '责令整改时间必须填写', trigger: 'blur' },
         ],
       },
       nameLength: 23,
