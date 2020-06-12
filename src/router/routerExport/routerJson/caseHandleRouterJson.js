@@ -1,5 +1,3 @@
-import store from '@/store/index.js';
-
 export default [
   {
     path: "/deleteEvidence",
@@ -692,6 +690,14 @@ export default [
       title: "收缴赔补偿款"
     },
     component: () => import("@/page/caseHandle/case/form/payCompensation.vue")
+  },
+  {
+    path: "/payCompensation",
+    name: "test_doc",
+    meta: {
+      title: "测试文书"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/stageDelayApprovalForm.vue")
   },
 
 ]

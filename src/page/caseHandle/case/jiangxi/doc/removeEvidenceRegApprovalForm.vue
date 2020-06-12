@@ -506,4 +506,18 @@ export default {
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
-
+<style lang="scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
+.textindent0 {
+  text-indent: 0 !important;
+}
+.print_box #removeEvidenceRegApprovalForm_print .doc_cause .caseNameBox span.el-textarea {
+  top: -12px;
+}
+.print_box #removeEvidenceRegApprovalForm_print .doc_cause .caseNameBox span.over_flow {
+  top: -8px;
+  text-overflow: initial;
+  font-size: 12px;
+  line-height: 14px;
+}
+</style>

@@ -384,16 +384,10 @@ export default {
         .dispatch("signOutSystem", sessionStorage.getItem("ExamName"))
         .then(
           res => {
-            console.log("logout1");
-            sessionStorage.clear();
-            iLocalStroage.removeAll();
             this.$router.push("/examLogin");
           },
           err => {
             this.$message({ type: "error", message: err.msg || "" });
-            console.log("logout");
-            sessionStorage.clear();
-            iLocalStroage.removeAll();
             this.$router.push("/examLogin");
           }
         );

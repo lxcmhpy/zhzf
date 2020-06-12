@@ -209,7 +209,12 @@
             <td rowspan="2">
               <p>承办人意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td
+              rowspan="2"
+              colspan="6"
+              class="color_DBE4EF"
+              style="white-space: normal;word-wrap: break-word;word-break: break-all;"
+            >
               <p>&nbsp;&nbsp;根据《中华人民共和国行政处罚法》第五十二条的规定，拟提出以下处理意见：</p>
               <div>
                 <el-form-item
@@ -217,7 +222,8 @@
                   :rules="fieldRules('defendState',propertyFeatures['defendState'])"
                 >
                   <p>
-                    &nbsp;&nbsp;<el-checkbox label="0">同意延期缴纳罚款。</el-checkbox>
+                    &nbsp;&nbsp;
+                    <el-checkbox label="0">同意延期缴纳罚款。</el-checkbox>
                     <span>
                       延长至
                       <el-date-picker
@@ -231,11 +237,11 @@
                     </span>
                   </p>
                   <p>
-                    &nbsp;&nbsp;<el-checkbox label="1">同意分期缴纳罚款。</el-checkbox>第
+                    &nbsp;&nbsp;
+                    <el-checkbox label="1">同意分期缴纳罚款。</el-checkbox>第
                     <el-input
                       v-model="formData.defendReason"
                       type="textarea"
-                      rows="1"
                       :autosize="true"
                       v-bind:class="{ over_flow:formData.defendReason.length>2?true:false }"
                       style="width: 45px"
@@ -253,7 +259,6 @@
                     <el-input
                       v-model="formData.defendReason"
                       type="textarea"
-                      rows="1"
                       :autosize="true"
                       v-bind:class="{ over_flow:formData.defendReason.length>6?true:false }"
                       style="width: 135px"
@@ -272,17 +277,17 @@
                     ></el-input>元（大写）。
                   </p>
                   <p>
-                    &nbsp;&nbsp;<el-checkbox> </el-checkbox>
-                    <span>
-                      由于
-                      <el-input
-                        v-model="formData.defendReason"
-                        type="textarea"
-                        style="width: 80%"
-                        placeholder="\"
-                        :disabled="fieldDisabled(propertyFeatures['defendReason'])"
-                      ></el-input>，当事人的申请不符合《中华人民共和国行政处罚法》第五十二条的规定，不同意分期（延期）缴纳罚款。
-                    </span>
+                    &nbsp;&nbsp;
+                    <el-checkbox>&nbsp;</el-checkbox>由于
+                    <el-input
+                      v-model="formData.defendReason"
+                      type="textarea"
+                      :autosize="true"
+                      v-bind:class="{ over_flow:formData.defendReason.length>14?true:false }"
+                      style="width: 75%"
+                      placeholder="\"
+                      :disabled="fieldDisabled(propertyFeatures['defendReason'])"
+                    ></el-input>，当事人的申请不符合《中华人民共和国行政处罚法》第五十二条的规定，不同意分期（延期）缴纳罚款。
                   </p>
                 </el-form-item>
               </div>
@@ -598,4 +603,26 @@ export default {
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
-
+<style lang="scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
+.textindent0 {
+  text-indent: 0 !important;
+}
+.print_box
+  #prolongAdminCoerciveMeasureApproval_print
+  .doc_cause
+  .caseNameBox
+  span.el-textarea {
+  top: -12px;
+}
+.print_box
+  #prolongAdminCoerciveMeasureApproval_print
+  .doc_cause
+  .caseNameBox
+  span.over_flow {
+  top: -8px;
+  text-overflow: initial;
+  font-size: 12px;
+  line-height: 14px;
+}
+</style>

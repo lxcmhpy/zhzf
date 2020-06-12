@@ -7,6 +7,16 @@
         <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
+            <td>
+              <p>案由</p>
+            </td>
+            <td colspan="6" class="color_DBE4EF">
+              <p>
+                <el-input type="textarea" v-model="formData.notes"></el-input>
+              </p>
+            </td>
+          </tr>
+          <tr>
             <td rowspan="6">
               当
               <br />事
@@ -512,3 +522,26 @@ export default {
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
+<style lang="scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
+.textindent0 {
+  text-indent: 0 !important;
+}
+.print_box
+  #removeAdminCoerciveMeasureApproval_print
+  .doc_cause
+  .caseNameBox
+  span.el-textarea {
+  top: -12px;
+}
+.print_box
+  #removeAdminCoerciveMeasureApproval_print
+  .doc_cause
+  .caseNameBox
+  span.over_flow {
+  top: -8px;
+  text-overflow: initial;
+  font-size: 12px;
+  line-height: 14px;
+}
+</style>

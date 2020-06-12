@@ -29,11 +29,25 @@ export default [
         },
         component: () => import("@/page/catsAppraisalExamination/catsAppraisalStartUp.vue")
     }, {
+      path: "/catsAppraisalStartUpAdd",
+      name: "catsAppraisalStartUpAdd",
+      meta: {
+        title: "评议考核发起新增"
+      },
+      component: () => import("@/page/catsAppraisalExamination/catsAppraisalStartUpAdd.vue")
+  }, {
       path: "/noticeManage",
       name: "noticeManage",
       meta: {
         title: "公告信息"
       },
       component: () => import("@/page/catsAppraisalExamination/noticeManage/noticeManage.vue")
-  }
+  }, {
+    path: "/catsAppraisalExamination",
+    name: "catsAppraisalExamination",
+    meta: {
+      title: "评议考核首页面"
+    },
+    component: () => import("@/page/catsAppraisalExamination/home.vue")
+}
 ]
