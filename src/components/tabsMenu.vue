@@ -110,6 +110,7 @@ export default {
   },
   watch: {
     $route(to, from) {
+        debugger;
         // debugger;
       //判断路由是否已经打开
       //已经打开的 ，将其置为active
