@@ -35,9 +35,11 @@ export function addOrUpdatePykhBatch (data) {
   return request({
     url: "/pykh/pykhBatch/addOrUpdatePykhBatch",
     method: "post",
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType: 'CAPTCHA_HOST',
-    data: vm.$qs.stringify(data),
+    data: data,
+    contentType: 'application/json',
     cancelToken: setCancelSource()
   })
 }
@@ -48,6 +50,27 @@ export function deletePykhBatchById (data) {
     showloading: false,
     baseUrlType: 'CAPTCHA_HOST',
     params: null,
+    cancelToken: setCancelSource()
+  })
+}
+export function getMetricsTreeData (data) {
+  return request({
+    url: "/pykh/pykhToConfigure/getMetricsTreeData/"+data,
+    method: "get",
+    showloading: true,
+    baseUrlType: 'CAPTCHA_HOST',
+    params: null,
+    cancelToken: setCancelSource()
+  })
+}
+//根据条件查询考核发起信息的考核细则
+export function findListVoByDetails (data) {
+  return request({
+    url: "/pykh/pykhBatch/findListVoByDetails",
+    method: "get",
+    showloading: false,
+    baseUrlType:'CAPTCHA_HOST',
+    params: data,
     cancelToken: setCancelSource()
   })
 }

@@ -32,7 +32,7 @@ export default [
       path: "/catsAppraisalStartUpAdd",
       name: "catsAppraisalStartUpAdd",
       meta: {
-        title: "评议考核发起新增"
+        title: "评议考核发起"
       },
       component: () => import("@/page/catsAppraisalExamination/catsAppraisalStartUpAdd.vue")
   }, {
