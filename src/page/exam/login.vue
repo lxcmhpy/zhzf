@@ -192,7 +192,12 @@ export default {
       }, 30000);
     }
   },
+  created () {
+      debugger;
+    window.sessionStorage.clear();
+  },
   mounted() {
+      debugger;
     this.showLogin = true;
     sessionStorage.setItem('LoginSystem', 'examLogin');
   }

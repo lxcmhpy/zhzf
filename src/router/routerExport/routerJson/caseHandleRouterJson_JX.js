@@ -1,5 +1,3 @@
-import store from '@/store/index.js';
-
 export default [
 
 {
@@ -171,3 +169,4 @@ export default [
     component: () => import("@/page/caseHandle/case/jiangxi/doc/stageDelayApprovalForm.vue")
   },
 ]
+
