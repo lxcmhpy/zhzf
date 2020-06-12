@@ -12,7 +12,7 @@
               <el-input v-model="evidenceForm.evName"></el-input>
             </el-form-item>
             <el-form-item label="证据类型" prop="evType">
-              <el-select v-model="evidenceForm.evType" clearable>
+              <el-select v-model="evidenceForm.evType"  clearable>
                 <el-option
                   v-for="item in evTypeOptions"
                   :key="item.value"
@@ -60,7 +60,8 @@
           </el-table-column>
           <el-table-column prop="evPath" label="附件" align="center">
             <template slot-scope="scope">
-              <img :src="host+scope.row.evPath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
+              <img v-if="scope.row.evType =='照片'" :src="host+scope.row.evPath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
+              <img v-if="scope.row.evType =='音视频'" :src="host+scope.row.thumbnailsStoragePath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" fixed="right">
@@ -97,7 +98,7 @@
       :before-close="handleClose"
     >
       <div>
-        <div style="float: left;width: 45%">
+        <div style="float: left;width: 45%;position:relative">
           <el-upload
             class="upload-demo"
             drag
@@ -105,6 +106,7 @@
             :file-list="fileList"
             action="https://jsonplaceholder.typicode.com/posts/"
             multiple
+            style="position: absolute;left: 0; top: 0;z-index:2"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -117,11 +119,15 @@
             >只能上传jpg/png文件，且不超过500kb
             </div>
           </el-upload>
+          
+           <!-- <video src="../../../../../static/images/压压.mp4" id="myVideo" style="position: absolute;left: 0; top: 0;" controls="controls" width="350px" height="330">your browser does not support the video tag</video> -->
+           <video :src="myVideoSrc" id="myVideo" style="position: absolute;left: 0; top: 0;" controls="controls" width="350px" height="330">your browser does not support the video tag</video>
+        
         </div>
         <div style="float: right;width: 55%">
           <el-form ref="form" :model="form" :rules="addrules">
-            <el-form-item label="证据类型" prop="evType" label-width="113px">
-              <el-select v-model="form.evType" style="width: 100%">
+            <el-form-item label="证据类型" prop="evType"  label-width="113px">
+              <el-select v-model="form.evType" style="width: 100%" :disabled="true">
                 <el-option
                   v-for="item in evTypeOptions"
                   :key="item.value"
@@ -313,30 +319,20 @@
             {
               required: true,
               message: "证据类型不能为空",
-              trigger: "blur",
-              validator: isSelect
-            },
-            {
-              required: true,
-              message: "证据类型不能为空",
               trigger: "change",
-              validator: isSelect
-            }
+              // validator: isSelect
+            },
+            // {
+            //   required: true,
+            //   message: "证据类型不能为空",
+            //   trigger: "change",
+            //   validator: isSelect
+            // }
           ],
-          // evName: [
-          //   { required: true, message: "证据名称不能为空", trigger: "blur" }
-          // ],
-          // userName: [
-          //   { required: true, message: "记录人不能为空", trigger: "blur" }
-          // ],
-          // recordTime: [
-          //   { required: true, message: "记录时间不能为空", trigger: "blur" }
-          // ],
-          // recordPlace: [
-          //   { required: true, message: "取证地点不能为空", trigger: "blur" }
-          // ],
           status: [{required: true, message: "状态不能为空", trigger: "blur"}]
-        }
+        },
+        videoImgSrc:'',
+        myVideoSrc:'',
       };
     },
     computed: {...mapGetters(["caseId",'caseApproval'])},
@@ -409,6 +405,7 @@
         console.log("证据目录参数", data);
         let _this = this;
         this.$store.dispatch("getEvidence", data).then(res => {
+          console.log('res',res)
           _this.tableData = res.data.records;
         });
       },
@@ -422,6 +419,30 @@
           (this.form.userId = iLocalStroage.gets("userInfo").id),
           (this.form.evName = param.file.name);
         // }
+
+        //给证据类型赋值
+        let fileType= this.$util.getFileType(param.file.name);
+        console.log('给证据类型赋值',fileType);
+        this.$set(this.form,'evType')
+        if(fileType == 'image'){ //图片
+          console.log('是图片呀')
+          this.form.evType = '照片'
+        }else if(fileType == 'video' || fileType == 'radio'){
+          this.form.evType = '音视频'
+        }else{
+          this.form.evType = '其他附件'
+        }
+        //生成缩略图
+       let  videoURL = null;
+       let windowURL = window.URL || window.webkitURL;
+       if (param.file && fileType == 'video') {
+         videoURL = windowURL.createObjectURL(param.file);
+         this.myVideoSrc = videoURL;
+         let _this = this;
+         setTimeout(function() {
+          _this.makeVideoImg();
+          }, 500);
+       }
       },
       //插入证据表
       insertEvi() {
@@ -435,6 +456,8 @@
         fd.append("evType", this.form.evType);
         fd.append("status", this.form.status);
         fd.append("note", this.form.note);
+        fd.append("thumbnail", this.form.thumbnail);
+        console.log('fd.get',fd.get('thumbnail'))
         if (!this.form.fileId) {
           this.form.fileId = ''
         }
@@ -443,6 +466,7 @@
         fd.append("recordPlace", this.form.recordPlace);
         fd.append("recordTime", this.form.recordTime ? this.form.recordTime : '');
         // fd.append("id", this.form.id);
+
         let _this = this;
         // this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
         uploadEvdence(fd).then(res => {
@@ -598,8 +622,30 @@
             console.log("fail");
           }
         });
+      },
+      //生成视频缩略图
+      makeVideoImg(){
+        const video = document.getElementById('myVideo');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const imgHeight = video.videoHeight;
+        const imgWidth = video.videoWidth;
+        ctx.drawImage(video, 0, 0, imgWidth*0.2, imgHeight*0.2);
+        let imgSrc = canvas.toDataURL('image/png');
+        console.log('缩略图',imgSrc);
+        let blob = this.dataURLtoBlob(imgSrc, "image/png");
+        let file = new File([blob], "video_image.png", { type: "image/png", lastModified: Date.now() })//blob转file
+        this.videoImgSrc = imgSrc;
+        this.form.thumbnail = file;
+      },
+      dataURLtoBlob(dataURI,type) {
+        var binary = atob(dataURI.split(',')[1]);
+        var array = [];
+        for(var i = 0; i < binary.length; i++) {
+            array.push(binary.charCodeAt(i));
+        }
+        return new Blob([new Uint8Array(array)], {type:type});
       }
-
     },
     mounted() {
       this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
@@ -615,6 +661,7 @@
           for (let item of res.data) {
             _this.evTypeOptions.push({value: item.name, label: item.notes});
           }
+          console.log(' _this.evTypeOptions', _this.evTypeOptions)
         });
       this.$store
         .dispatch("getDictionary", "02204fe639c86edbae51e3dfccad36d9")

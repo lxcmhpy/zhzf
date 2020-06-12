@@ -196,7 +196,7 @@
             </el-form-item>
           </div>
           <div class="itemSmall">
-            <el-form-item label="职位">
+            <el-form-item label="职务">
               <el-input v-model="inforForm.occupation"></el-input>
             </el-form-item>
           </div>
@@ -362,7 +362,7 @@
               </el-form-item>
             </div>
             <div class="itemSmall">
-              <el-form-item label="职位">
+              <el-form-item label="职务">
                 <el-input v-model="driverOrAgentInfo.position"
                           :disabled="index==0&&relationWithPartyIsOne[index]"></el-input>
               </el-form-item>
