@@ -29,6 +29,13 @@ export default [
         },
         component: () => import("@/page/catsAppraisalExamination/catsAppraisalStartUp.vue")
     }, {
+      path: "/catsAppraisalStartUpAdd",
+      name: "catsAppraisalStartUpAdd",
+      meta: {
+        title: "评议考核发起新增"
+      },
+      component: () => import("@/page/catsAppraisalExamination/catsAppraisalStartUpAdd.vue")
+  }, {
       path: "/noticeManage",
       name: "noticeManage",
       meta: {

@@ -6,7 +6,7 @@
     :close-on-click-modal="false"
     width="80%"
   >
-    <el-form :model="addNoticeForm" ref="addNoticeForm" label-width="80px">
+    <el-form :model="addNoticeForm" :rules="rules" ref="addNoticeForm" label-width="80px">
       <input hidden v-model="addNoticeForm.id" />
       <input hidden v-model="addNoticeForm.storageId" />
       <input hidden v-model="addNoticeForm.fileName" />
@@ -72,6 +72,14 @@
           content: "",
           id:"",
           fileName:""
+        },
+        rules: {
+          title: [
+            { required: true, message: '请输入标题', trigger: 'blur' }
+          ],
+          noticeType: [
+            { required: true, message: '请选择公告类型', trigger: 'change' }
+          ]
         },
         dialogTitle: "公告",
         visible: false,
@@ -248,10 +256,6 @@
 
 </script>
 <style>
-  p {
-    /* margin: 10px; */
-  }
-
   .edit_container,
   .quill-editor {
     height: 300px;
