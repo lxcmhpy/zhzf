@@ -67,6 +67,7 @@
                 &.line50 {
                     .tz {
                         line-height: 46px;
+                        height: 46px;
                     }
                 }
                 div.c{
@@ -77,7 +78,7 @@
                         flex:1;
                         flex-shrink: 0;
                         overflow: hidden;
-                        // height: 40px;
+                        height: 40px;
                     }
                     .date {
                         flex-shrink: 0;
