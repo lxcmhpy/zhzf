@@ -697,7 +697,7 @@ export default [
     meta: {
       title: "测试文书"
     },
-    component: () => import("@/page/caseHandle/case/jiangxi/doc/majorAdminLawEnforceAudit.vue")
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/stageDelayApprovalForm.vue")
   },
 
 ]
