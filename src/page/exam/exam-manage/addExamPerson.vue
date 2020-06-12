@@ -44,7 +44,7 @@
               class="commonBtn searchBtn"
               size="medium"
               icon="iconfont law-sousuo"
-              @click="selectPersonList"
+              @click="currentPage = 1;selectPersonList();"
             ></el-button>
             <el-button
               title="重置"
@@ -134,6 +134,13 @@ export default {
   methods: {
     submit() {
       let _this = this;
+      const loading = this.$loading({
+        lock: true,
+        text: "正在保存",
+        spinner: "car-loading",
+        customClass: "loading-box",
+        background: "rgba(234,237,244, 0.8)"
+      });
       if (_this.handleType == "3") {
         //分配考场
         let data = {
@@ -145,13 +152,14 @@ export default {
           params: JSON.stringify(data)
         };
         _this.$store.dispatch("addExamDispatch", data1).then(res => {
+          loading.close();
           if (res.code == "200") {
             this.$emit("getExamPersonInfo");
             _this.closeDialog();
           }
-          err => {
-            console.log(err);
-          };
+        }, err => {
+          loading.close();
+          this.$message({ type: 'error', message: err.msg || '' });
         });
       } else {
         //添加参考人员
@@ -163,13 +171,14 @@ export default {
           examPerson: JSON.stringify(data)
         };
         _this.$store.dispatch("addExamPerson", data1).then(res => {
+          loading.close();
           if (res.code == "200") {
             this.$emit("getExamPersonInfo");
             _this.closeDialog();
           }
-          err => {
-            console.log(err);
-          };
+        }, err => {
+          loading.close();
+          this.$message({ type: 'error', message: err.msg || '' });
         });
       }
     },
@@ -193,6 +202,7 @@ export default {
       _this.handleType = type;
       _this.addExamPersonForm.examId = data.examId;
       _this.addExamPersonForm.roomId = data.roomId;
+      _this.currentPage = 1;
       if (_this.handleType == "3") {
         _this.dialogtitle = "新增考场人员";
         _this.getPersonNoRooom();
@@ -205,7 +215,6 @@ export default {
     },
     //搜索
     selectPersonList() {
-      console.log(this.handleType);
       if (this.handleType == "3") {
         this.getPersonNoRooom();
       } else {
@@ -226,7 +235,6 @@ export default {
         current: this.currentPage,
         size: this.pageSize
       };
-      console.log(JSON.stringify(this.addExamPersonForm));
       this.getPageList("getUnSelectedPerson", data);
     },
     //查询未分配考场的考生
@@ -242,12 +250,12 @@ export default {
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getPersonAllInfo();
+      this.selectPersonList();
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getPersonAllInfo();
+      this.selectPersonList();
     },
     resetLog() {
       this.$refs["addExamPersonFormRef"].resetFields();

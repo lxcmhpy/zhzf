@@ -31,26 +31,23 @@
           <el-table-column prop="personKs" label="人员考试数" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="120">
             <template  slot-scope="scope">
-              <el-button type="text" @click.stop @click="update_openDialog(scope.row)">修改</el-button>
-              <el-button type="text" @click.stop @click="deletePykhBatchById(scope.row)">删除</el-button>
+              <el-button type="text" @click="update_openDialog(scope.row)">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
-      <div class="paginationBox" >
-        <div v-if="total/dataList.size > 1">
+      <div class="paginationBox">
+        <div v-if="totalPage/dataList.length > 1">
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="current"
+            :current-page="currentPage"
             background
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="dataList.size"
             layout="prev, pager, next,sizes,jumper"
-            :total="total"
+            :total="totalPage"
           ></el-pagination>
         </div>
-        <div class="noMore" v-else>没有更多了</div>
       </div>
     </div>
   </div>
@@ -63,30 +60,41 @@
     mixins: [mixinsCommon],
     data() {
       return {
-        total:0,
-        current:1,
+        currentPage: 1, //当前页
+        pageSize: 10, //pagesize
+        totalPage: 0, //总页数
         search:{},
         dataList:[]
       };
     },
     methods: {
-      fetchData(data){
+      //更改每页显示的条数
+      handleSizeChange(val) {
+        this.pageSize = val;
+        this.currentPage = 1;
+        this.fetchData();
+      },
+      //更换页码
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.fetchData();
+      },
+      fetchData(){
+        let data = {
+          current: this.currentPage,
+          size: this.pageSize,
+          batchName: this.search.batchName
+        };
+        let _this = this
         findPykhBatchByPage(data).then(res=>{
-          console.log("res:",res)
           if(res.code==200){
-            console.info("records:",res.data.records);
-            this.dataList=res.data.records;
-            this.total=res.data.total;
-            this.current=res.data.current;
+            _this.dataList = res.data.records;
+            _this.totalPage = res.data.total;
           }
         });
       },
       searchData(){
-        let data={}
-        data.current=this.current;
-        data.size=5;
-        data.batchName=this.search.batchName;
-        this.fetchData(data);
+        this.fetchData();
       },
       add_openDialog(){
         let routerData = {
@@ -101,10 +109,7 @@
       deletePykhBatchById(data){
         deletePykhBatchById(data.id).then(res=>{
           if(res.code==200){
-            let data={}
-            data.current=this.current;
-            data.size=5;
-            this.fetchData(data);
+            this.fetchData();
           }
         })
       },
@@ -113,10 +118,7 @@
       }
     },
     mounted () {
-      let data={}
-      data.current=this.current;
-      data.size=5;
-      this.fetchData(data);
+      this.fetchData();
     }
   };
 </script>
