@@ -1,36 +1,68 @@
 <template>
   <el-dialog
-    :title="dialogTitle"
+    class="invigilate-card"
+    title="准考证"
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
-    width="38%"
+    width="600px"
   >
-    <div>
-      <div class="header">
-        <div class="handlePart">
-          <div class="title">
-            <p>道路运输驾驶员</p>
-            <p>准考证</p>
-          </div>
-          <div class="top">
-           <p><span>姓名：张三</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span >性别：男</span></p>
-            <p>工作单位：北京交通运输管理局</p>
-             <p>身份证号码：182738783784738473</p>
-             <p>考试地点：北京交通运输管理局</p>
-             <p>考&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;场：测试101</p>
-             <p>考试时间：2020年4月30日</p>
-          </div>
-          <div class="top1">
-            <img
-              src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=845265002,1740826154&fm=26&gp=0.jpg"
-              width="200"
-              height="250"
-            />
-          </div>
-        </div>
+    <div class="print-card">
+      <el-button type="text">打印本页</el-button>
+    </div>
+    <div class="card-cnt">
+      <div class="card-text">
+        <table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
+          <tbody>
+            <tr style="vertical-align: inherit;">
+              <td
+                colspan="6"
+                style="font-size:24px;height:34px;text-align: center; line-height:34px;font-weight:900;color:#000;"
+                >道路运输驾驶员从业资格应用能力考核</td>
+            </tr>
+            <tr style="vertical-align: inherit;">
+              <td
+                colspan="6"
+                style="font-size:24px;height:40px;text-align:center; line-height:40px;font-weight:600;color:#E84241;"
+                >准考证</td>
+            </tr>
+            <tr style="vertical-align: inherit; font-size:18px;color: #000;">
+              <td style="width: 90px; padding: 14px 0;">考生姓名：</td>
+              <td style="width: 120px; padding: 14px 0;">{{addExamBatchForm.personName}}</td>
+              <td style="width: 60px; padding: 14px 0;">性别：</td>
+              <td>{{addExamBatchForm.sex==0?'男':'女'}}</td>
+              <td rowspan="5" style="width: 60px;"></td>
+              <td rowspan="5" style="width: 160px;vertical-align: top;">
+                <img
+                  src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=845265002,1740826154&fm=26&gp=0.jpg"
+                  width="100%"
+                  height="224px"
+                />
+              </td>
+            </tr>
+            <tr style="vertical-align: inherit; font-size:18px;color: #000;">
+              <td style="width: 90px; padding: 14px 0;">工作单位：</td>
+              <td colspan="3">{{addExamBatchForm.oname}}</td>
+            </tr>
+            <tr style="vertical-align: inherit; font-size:18px;color: #000;">
+              <td style="width: 90px; padding: 14px 0;">身份证号：</td>
+              <td colspan="3">{{addExamBatchForm.idNo}}</td>
+            </tr>
+            <tr style="vertical-align: inherit; font-size:18px;color: #000;">
+              <td style="width: 90px; padding: 14px 0;">考试地点：</td>
+              <td colspan="3">{{addExamBatchForm.roomName}}</td>
+            </tr>
+            <tr style="vertical-align: inherit; font-size:18px;color: #000;">
+              <td style="width: 90px; padding: 14px 0;">考&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;场：</td>
+              <td colspan="3">{{addExamBatchForm.roomName}}</td>
+            </tr>
+            <tr style="vertical-align: inherit; font-size:18px;color: #000;">
+              <td style="width: 90px; padding: 14px 0;">考试时间：</td>
+              <td colspan="3">2020年4月12日  14:00 - 16:00</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-
     </div>
   </el-dialog>
 </template>
@@ -43,165 +75,41 @@ export default {
       isDisabled: true,
       visible: false,
       addExamBatchForm: {
-        examBatchName: "",
-        examBatchType: "",
-        examBatchTypeName: "",
-        examBatchSort: "",
-        examBatchCount: "",
+        personName: "",
+        sex: "",
+        idNo: "",
+        oname: "",
+        roomName: "",
         examBatchReadyStartTime: "",
         examBatchReadyEndTime: "",
         remark: ""
-      },
-      rules: {
-        examBatchName: [
-          { required: true, message: "考试名称不能为空", trigger: "blur" }
-        ],
-        examBatchCount: [
-          { required: true, message: "考试人数不能为空", trigger: "blur" }
-        ],
-        examBatchReadyStartTime: [
-          { required: true, message: "考试开始时间不能为空", trigger: "blur" }
-        ],
-        examBatchReadyEndTime: [
-          { required: true, message: "考试结束时间不能为空", trigger: "blur" }
-        ]
-      },
-      tableDate: [{ name: "test" }],
-      dialogTitle: "", //弹出框title
-      errorName: false, //添加name时的验证
-      handelType: 0 //添加 0  修改2  查看3
+      }
     };
   },
   methods: {
-      //新增记录
-      addRecord(){
-          alert("aa");
-          this.closeDialog();
-         this.$emit("getPageComp",'add');
-      },
-    //提交
-    submit() {
-      let _this = this;
-      if (_this.addExamBatchForm.examBatchName === "") {
-        _this.$message({
-          type: "warning",
-          message: "考试名称不能为空"
-        });
-        return;
-      }
-      if (_this.addExamBatchForm.examBatchCount === "") {
-        _this.$message({
-          type: "warning",
-          message: "考试人数不能为空"
-        });
-        return;
-      }
-      if (_this.addExamBatchForm.examBatchReadyStartTime === "") {
-        _this.$message({
-          type: "warning",
-          message: "考试开始时间不能为空"
-        });
-        return;
-      }
-      if (_this.addExamBatchForm.examBatchReadyEndTime === "") {
-        _this.$message({
-          type: "warning",
-          message: "考试结束时间不能为空"
-        });
-        return;
-      }
-      if (_this.handelType == 1) {
-        _this.$store
-          .dispatch("addExamOutlineInfo", _this.addExamBatchForm)
-          .then(res => {
-            _this.$emit("getExamBatchListComp");
-            _this.$message({
-              type: "success",
-              message: "添加成功!"
-            });
-            _this.visible = false;
-          });
-        err => {
-          console.log(err);
-        };
-      } else if (_this.handelType == 2) {
-        _this.$store
-          .dispatch("updateExamOutlineInfo", _this.addExamBatchForm)
-          .then(res => {
-            _this.$emit("getExamBatchListComp");
-            _this.$message({
-              type: "success",
-              message: "修改成功!"
-            });
-            _this.visible = false;
-          });
-        err => {
-          console.log(err);
-        };
-      }
-    },
     showModal(type, row) {
       let _this = this;
       _this.visible = true;
-      _this.handelType = type;
-      if (type == 1) {
-        //新增
-        _this.dialogTitle = "考场记录";
-        _this.isDisabled = false;
-      } else if (type == 2) {
-        //修改,查看
-        if (type == 2) {
-          _this.dialogTitle = "修改考试";
-          _this.isDisabled = false;
-        } else if (type == 3) {
-          _this.dialogTitle = "考试详情";
-          _this.isDisabled = true;
-        }
-      }
-    },
-    //聚焦清除错误信息
-    focusName() {
-      this.errorName = false;
+      _this.addExamBatchForm.personName = row.personName;
+      _this.addExamBatchForm.sex = row.sex;
+      _this.addExamBatchForm.idNo = row.idNo;
+      _this.addExamBatchForm.oname = row.oname;
+      _this.addExamBatchForm.roomName = row.roomName;
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      //this.$refs["addExamBatchFormRef"].resetFields();
-      this.errorName = false;
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.title {
-   margin: 0% auto auto auto;
-   text-align: center;
-  font-size: 23px;
-  font-weight: 800;
-  
-}
-.top {
-  margin: 4% auto auto 2%;
-  width: 45%;
-  height: 100%;
-  font-size: 18px;
-  font-weight: 900;
-  line-height: 200%;
-  float: left;
-}
-.top1 {
-  margin: 2% auto auto 0%;
-  width: 42%;
-  line-height: 180%;
-  height: 100%;
-  float: right;
-  text-align: left;
-  font-size: 23px;
-  font-weight: 800;
-}
-.header {
-  //  width: 100%;
-  height: 350px;
-  //  background-color:;
+.invigilate-card{
+  >>>.el-dialog__body{
+    padding-top: 0;
+  }
+  .print-card{
+    text-align: right;
+  }
 }
 </style>

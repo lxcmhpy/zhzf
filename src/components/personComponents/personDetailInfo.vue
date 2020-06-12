@@ -19,7 +19,7 @@
             <div class="center_content">
               <span class="titleflag">
               </span>
-              <span class="title">基本信息</span>
+              <span class="title-left">基本信息</span>
             </div>
             <div class="info_body">
               <el-row>
@@ -100,7 +100,7 @@
             <div class="center_content">
               <span class="titleflag">
               </span>
-              <span class="title">学历信息</span>
+              <span class="title-left">学历信息</span>
             </div>
             <div class="info_body">
               <el-row>
@@ -175,7 +175,7 @@
             <div class="center_content">
               <span class="titleflag">
               </span>
-              <span class="title">工作信息</span>
+              <span class="title-left">工作信息</span>
             </div>
             <div class="info_body">
               <el-row v-if="isShowAddPerson">
@@ -346,7 +346,7 @@
           <div class="info_content float" style="float:left">
             <div class="center_content">
               <span class="titleflag"></span>
-              <span class="title">基本信息</span>
+              <span class="title-left">基本信息</span>
             </div>
             <div class="info_body">
               <el-row>
@@ -385,7 +385,8 @@
           </div>
           <!-- 照片 -->
           <div class="img_box float">
-            <img :src="personInfoDetailForm.photoUrl || personImg" alt="">
+            <img v-if="personInfoDetailForm.photoUrl" :src="baseUrl + personInfoDetailForm.photoUrl" alt="">
+            <img v-else :src="personImg" alt="">
           </div>
         </div>
         </el-row>
@@ -396,7 +397,7 @@
             <div class="info_content">
               <div class="center_content">
                 <span class="titleflag"></span>
-                <span class="title">学历信息</span>
+                <span class="title-left">学历信息</span>
               </div>
               <div class="info_body">
                 <el-row>
@@ -430,7 +431,7 @@
           <div class="info_content">
             <div class="center_content">
               <span class="titleflag"></span>
-              <span class="title">工作信息</span>
+              <span class="title-left">工作信息</span>
             </div>
             <div class="info_body">
               <el-row>
@@ -498,6 +499,7 @@ import {validateLawCertNo,validateIDNumber} from "@/common/js/validator";
 import {mixinPerson} from '@/common/js/personComm';
 import elSelectTree from '@/components/elSelectTree/elSelectTree';
 import UploadPersonAvatar from '@/components/personComponents/uploadPersonAvatar';
+import iLocalStroage from "@/common/js/localStroage.js";
 export default {
   name: "personDetailInfo",//人员基本信息组件
   mixins:[mixinPerson],
@@ -613,6 +615,9 @@ export default {
     uploadDisabled:function() {
       let _this=this;
       return _this.photoList.length > 0
+    },
+    baseUrl(){
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
   },
   watch:{
@@ -660,7 +665,7 @@ export default {
       }
       this.personInfoDetailForm['sexName'] = info.sex === '0' ? '男' : '女';
       if(info.photoUrl){
-        this.personImg = info.photoUrl;
+        this.personImg = info.photoUrl.indexOf(this.baseUrl) > -1 ? info.photoUrl : this.baseUrl + info.photoUrl;
       }
     },
     handleChanged(val) {
@@ -757,11 +762,15 @@ export default {
     },
     // 判断人员相关信息是否修改
     checkChangeVal() {
-      // 姓名personName  身份证号idNo 部级执法证号ministerialNo
-      const change = this.personClone.personName !== this.personInfoDetailForm.personName ||
-                     this.personClone.idNo !== this.personInfoDetailForm.idNo ||
-                     this.personClone.ministerialNo !== this.personInfoDetailForm.ministerialNo
-      return change
+      if(this.personInfoDetailForm.certStatusName !== '未申请'){
+        // 姓名personName  身份证号idNo 部级执法证号ministerialNo
+        const change = this.personClone.personName !== this.personInfoDetailForm.personName ||
+                      this.personClone.idNo !== this.personInfoDetailForm.idNo ||
+                      this.personClone.ministerialNo !== this.personInfoDetailForm.ministerialNo
+        return change
+      }else{
+        return false;
+      }
     },
 
     // 保存人员信息
@@ -796,7 +805,7 @@ export default {
           if(res.code === 200){
             const saveFile = {
               personId: personData.personId,
-              photoUrl: res.data[0].storagePath
+              photoUrl: res.data[0].storageId
             }
             this.$store.dispatch('savePersonPhoto', saveFile).then(res => {
               saveLoad.close();

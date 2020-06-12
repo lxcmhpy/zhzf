@@ -33,8 +33,8 @@
           <el-table-column prop="name" label="记录内容" align="center"></el-table-column>
           <el-table-column prop="status" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text">修改</el-button>
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="updateInfo(1,scope.row)">修改</el-button>
+              <el-button type="text" @click="deleteInfo(2,scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
