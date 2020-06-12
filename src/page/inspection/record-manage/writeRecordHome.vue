@@ -51,10 +51,10 @@ import {  findAllRecordModleApi, findRecordlModleByNameApi, findRecordModleByIdA
   findRecordModleByNameIdApi} from "@/api/Record";
 
 export default {
-  // components: {
-  //   preview,
-  //   addModle
-  // },
+  components: {
+    preview,
+    addModle
+  },
 
   data() {
     return {

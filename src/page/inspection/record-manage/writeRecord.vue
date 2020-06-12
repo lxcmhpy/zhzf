@@ -5,19 +5,17 @@
         <span style="font-size:18px;font-weight: bold;">
           {{formData.title}}
         </span>
-        <span v-if="isWrite">
-          <el-popover placement="bottom" width="700" trigger="click" v-model='isChangeModle' :show='clickPover' v-if="addOrEiditFlag=='add'">
-            <write-record v-if="isChangeModle" ref="writeRecordRef" @changeModleId="updateMole" style="width:710px;height:400px;overflow:auto"></write-record>
-            <span slot="reference" @click="upAndDown=!upAndDown">
-              <span class="change_title_icon" @click="changeModle">切换模板
-                <i class="el-icon-arrow-down" v-if="!upAndDown"></i>
-                <i class="el-icon-arrow-up" v-if="upAndDown"></i>
-              </span>
+        <el-popover placement="bottom" width="700" trigger="click" v-model='isChangeModle' :show='clickPover' v-if="addOrEiditFlag=='add'">
+          <writeRecordHome ref="writeRecordRef" @changeModleId="updateMole" style="width:710px;height:400px;overflow:auto"></writeRecordHome>
+          <span slot="reference" @click="upAndDown=!upAndDown">
+            <span class="change_title_icon" @click="changeModle">切换模板
+              <i class="el-icon-arrow-down" v-if="!upAndDown"></i>
+              <i class="el-icon-arrow-up" v-if="upAndDown"></i>
             </span>
-          </el-popover>
-           <writeRecordHome name="" ref="writeRecordRef" style="width:710px;height:400px;overflow:auto"></writeRecordHome>
-          <span class="change_title_icon">二维码<i class="iconfont law-erweima" style="font-size:14px;margin-left:4px"></i></span>
-        </span>
+          </span>
+        </el-popover>
+        <span class="change_title_icon">二维码<i class="iconfont law-erweima" style="font-size:14px;margin-left:4px"></i></span>
+
       </div>
       <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options">
       </form-create>
@@ -47,7 +45,7 @@
   </div>
 </template>
 <script>
-import writeRecord from "./modleList.vue";
+import writeRecordHome from "./modleList.vue";
 
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
@@ -91,7 +89,7 @@ export default {
     }
   },
   components: {
-    writeRecordHome,
+    writeRecordHome:writeRecordHome,
     formCreate: formCreate.$form(),
 
   },
@@ -170,7 +168,7 @@ export default {
     },
     // 修改
     edit() {
-      console.log('rule', this.rule)
+      // console.log('rule', this.rule)
       this.$data.$f.resetFields()
       this.rule.forEach(element => {
         console.log(element)
@@ -232,7 +230,7 @@ export default {
 
     },
     onSave() {
-      console.log('rule', this.rule)
+      // console.log('rule', this.rule)
       this.rule.forEach(element => {
         if (element.validate[0]) {
           element.validate[0].required = false
@@ -519,14 +517,14 @@ export default {
       if (this.$route.query.id) {
         if (this.$route.query.addOrEiditFlag == 'edit') {
           this.rule.forEach(element => {
-            console.log(element)
+            // console.log(element)
             this.$data.$f.updateRule(element.field, {
               props: { disabled: true }
             }, true);
           });
         } else if (this.$route.query.addOrEiditFlag == 'view') {
           this.rule.forEach(element => {
-            console.log(element)
+            // console.log(element)
             this.$data.$f.updateRule(element.field, {
               props: { disabled: true }
             }, true);
