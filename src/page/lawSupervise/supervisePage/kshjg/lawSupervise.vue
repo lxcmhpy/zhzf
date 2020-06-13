@@ -1208,7 +1208,7 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 // import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,getOrganList} from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage} from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 import lunarDate from '@/common/js/lunarDate.js';
@@ -1732,7 +1732,7 @@ export default {
     searchAllByBtn () {
         if (this.filterText === "") {
             this.showTree = true
-            this.getOrganTree(this.userInfo.organId);
+            this.organTreeByCurrUser(this.userInfo.organId);
         } else {
             let params = {
                 name: this.filterText,
@@ -1765,7 +1765,12 @@ export default {
         this.doing = '2';
 
         if (!window.PhoneCallModule.getRegistered()) {
-            window.PhoneCallModule.sipRegister();
+            // window.PhoneCallModule.sipRegister();
+            let displayName = 'ecds05';
+            let privateIdentity ='100007';
+            let password = '1234';
+            window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
+
         }
         // debugger;
         if (code == '李玉明') {
@@ -1825,7 +1830,7 @@ export default {
                 type: 0
             }
             let _this = this;
-            debugger;
+            // debugger;
             new Promise((resolve, reject) => {
                 getOrganTree(params).then(
                     res => {
@@ -1836,6 +1841,8 @@ export default {
                             let position = v.propertyValue ? v.propertyValue.split(','):['',''];
                             let lng = parseFloat(position[0]);
                             let lat = parseFloat(position[1]);
+                            // let lng = v.longitude?v.longitude: '';
+                            // let lat = v.latitude?v.latitude: '';
                             resultList.push({
                                 address: v.address,
                                 distance: null,
@@ -1853,7 +1860,8 @@ export default {
                                 },
                                 name: v.name,
                                 label: v.nickName,
-                                position: v.propertyValue,
+                                // position: v.propertyValue,
+                                position: [lng, lat],
                                 shopinfo: '',
                                 tel: '',
                                 type: '0',
@@ -1861,6 +1869,7 @@ export default {
                             })
                         })
                         _this.onSearchResult(resultList, 0,0);
+                        _this.errorMsg(`总计${res.data.length}条数据`, 'success');
                 })
             })
 
@@ -2147,16 +2156,16 @@ export default {
         // if (this.category != 4) {
             // this.drawer = true;
             // if (this.drawer) {
-              let _this = this;
-              this.$nextTick(() => {
-                var flowChart = echarts.init(document.getElementById("echartsBox1"));
-                flowChart.setOption(_this.lawSuperviseObj.option);
-                var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
-                flowChart1.setOption(_this.yjObj);
-              //   _this.getRealTimeDataByLawSupervise();
-              });
-            // }
+                // }
         // }
+            //   let _this = this;
+            //   this.$nextTick(() => {
+            //     var flowChart = echarts.init(document.getElementById("echartsBox1"));
+            //     flowChart.setOption(_this.lawSuperviseObj.option);
+            //     var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
+            //     flowChart1.setOption(_this.yjObj);
+                // this.getRealTimeDataByLawSupervise();
+            //   });
     },
     openDrawer () {
         this.drawer = true;
@@ -2173,7 +2182,7 @@ export default {
          this.drawer = true;
         // this.getRealTimeDataByLawSupervise();
         this.searchPageAll(4, 'zfdList');
-        this.searchPageAll(6, 'gjclList');
+        this.searchPageAllGJ(6, 'gjclList');
         this.category = 4;
         // this.searchByTab(this.tabList[1].children[0]);
 
@@ -2187,7 +2196,7 @@ export default {
         let data = {
                 // area: this.currentAddressObj.province + this.currentAddressObj.district,
                 // area: '',
-                current: 1,
+                // current: 1,
                 key: '',
                 size: 20,
                 type: code
@@ -2206,10 +2215,31 @@ export default {
                     })
             })
     },
+    searchPageAllGJ (code, obj) {
+        // 告警车辆
+        if (this.curWindow) {
+            this.curWindow.visible = false;
+        }
+        // 进入页面加载查询所有初始数据
+        let _this = this;
+        new Promise((resolve, reject) => {
+                queryAlarmVehiclePage({current:1}).then(
+                    res => {
+                        let resultList = [];
+                        that[obj] = res.data.records.splice(0,5);
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+    },
     onSearchResult(pois, category, length) {
       if (length == 0) {
         this.windows.splice(0,this.windows.length);
       }
+      debugger;
       let latSum = 0;
       let lngSum = 0;
       let numG = 100;
@@ -2218,8 +2248,8 @@ export default {
         // let windows = []
         pois.forEach((poi, i) => {
           let { lng, lat } = poi;
-          lngSum += lng;
-          latSum += lat;
+          lngSum += parseFloat(lng);
+          latSum += parseFloat(lat);
           let that = _this;
           if (category == -1) {
                 _this.markers.push({
@@ -2317,6 +2347,7 @@ export default {
           };
           _this.windows.push(aaa);
         });
+        debugger;
         let center = {
           lng: lngSum / pois.length,
           lat: latSum / pois.length
@@ -2352,7 +2383,7 @@ export default {
             let data = {
             // area: this.currentAddressObj.province + this.currentAddressObj.district,
             // area: "东城区",
-            current: 1,
+            // current: 1,
             key: "",
             //   size: 20,
             type: item.code
@@ -2375,8 +2406,6 @@ export default {
         }
     },
     searchByTab(item) {
-        // if (item.select)
-// debugger;
         if (this.allSearchList.length == 0) {
         this.markers.splice(0, this.markers.length);
         }
@@ -2397,7 +2426,7 @@ export default {
         let data = {
           // area: this.currentAddressObj.province + this.currentAddressObj.district,
         //   area: "东城区",
-          current: 1,
+        //   current: 1,
           key: "",
         //   size: 20,
           type: item.code
@@ -2443,7 +2472,7 @@ export default {
         // this.currentAddressObj.province + this.currentAddressObj.district
         let data = {
         //   area: "",
-          current: 1,
+        //   current: 1,
           key: this.$refs.searchAmapBox.keyword,
           size: 20,
           type: this.category
@@ -2452,23 +2481,27 @@ export default {
       }
     },
     getZfjgLawSupervise(data, category) {
+      data.organId = this.userInfo.organId;
       let _this = this;
       new Promise((resolve, reject) => {
         getZfjgLawSupervise(data).then(
           res => {
             // resolve(res);
             let resultList = [];
-            if (res.data && res.data.records.length == 0) {
+            if (res.data && res.data.length == 0) {
               _this.errorMsg("暂无数据", "error");
               // return
             } else {
               _this.errorMsg(
-                `查询到${res.data.records.length}条数据`,
+                `查询到${res.data.length?res.data.length:0}条数据`,
                 "success"
               );
             }
-            res.data.records.forEach((item, i) => {
-              let position = item.position.split(",");
+            res.data.forEach((item, i) => {
+            //   let position = item.position.split(",");
+            //   let lng = parseFloat(position[0]);
+            //   let lat = parseFloat(position[1]);
+            let position = item.propertyValue.split(",");
               let lng = parseFloat(position[0]);
               let lat = parseFloat(position[1]);
               resultList.push({
@@ -2500,7 +2533,7 @@ export default {
         );
       });
     },
-    getOrganTree (organId) {
+    organTreeByCurrUser (organId) {
         let _this = this;
         let params = {
             name: '',
@@ -2508,7 +2541,7 @@ export default {
             type: 0
         }
         new Promise((resolve, reject) => {
-            getOrganList().then(
+            organTreeByCurrUser().then(
                 res => {
                     let dataArray = res.data;
                     dataArray.forEach((item,i)=>{
@@ -2654,11 +2687,15 @@ export default {
         //  debugger;
          window.PhoneCallModule.initialize();
         if (!window.PhoneCallModule.getRegistered()) {
-            window.PhoneCallModule.sipRegister();
+            // window.PhoneCallModule.sipRegister();
+            let displayName = 'ecds05';
+            let privateIdentity ='100007';
+            let password = '1234';
+            window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
         }
      })
     this.lunarDate = lunarDate();
-    this.getOrganTree(this.userInfo.organId);
+    this.organTreeByCurrUser(this.userInfo.organId);
     // this.updateDrawer();
   },
   created () {
