@@ -4,35 +4,26 @@
       <div class="handlePart" style="margin-left: 0px;">
         <div class="search">
           <el-form :inline="true" :model="batchForm" :rules="rules" ref="batchForm">
-            <el-form-item label="批次名称" prop="batchName">
-              <el-input placeholder="请输入批次名称" v-model="batchForm.batchName" :readonly="isView"></el-input>
+            <el-form-item label="检查名称" prop="batchName">
+              <el-input placeholder="请输入检查名称" v-model="batchForm.batchName" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="批次所属年份" prop="batchYear">
-              <el-input placeholder="请输入批次所属年份" v-model="batchForm.batchYear" :readonly="true"></el-input>
+            <el-form-item label="所属年份" prop="batchYear">
+              <el-input placeholder="请输入所属年份" v-model="batchForm.batchYear" :readonly="true"></el-input>
             </el-form-item>
-            <el-form-item label="案件基数" prop="khjs">
+            <el-form-item label="案件基数(省)" prop="khjs">
               <el-input placeholder="请输入案件基数" v-model="batchForm.khjs" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="抽取基数" prop="cqjs">
+            <el-form-item label="抽取基数(省)" prop="cqjs">
               <el-input placeholder="请输入抽取基数" v-model="batchForm.cqjs" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="人员基数" prop="personNum">
+            <el-form-item label="人员基数(省)" prop="personNum">
               <el-input placeholder="请输入人员基数" v-model="batchForm.personNum" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="人员抽取数" prop="personCq">
+            <el-form-item label="人员抽取数(省)" prop="personCq">
               <el-input placeholder="请输入人员抽取数" v-model="batchForm.personCq" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="人员考试数" prop="personKs">
+            <el-form-item label="人员考试数(省)" prop="personKs">
               <el-input placeholder="请输入人员考试数" v-model="batchForm.personKs" :readonly="isView"></el-input>
-            </el-form-item>
-            <el-form-item label="发布日期" prop="showBatchDate">
-              <el-date-picker
-                type="date"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-                v-model="batchForm.showBatchDate"
-                :readonly="isView"
-              ></el-date-picker>
             </el-form-item>
           </el-form>
           <div :hidden="isView">
@@ -186,12 +177,11 @@ export default {
         cqjs: "",
         personNum: "",
         personCq: "",
-        personKs: "",
-        showBatchDate: ""
+        personKs: ""
       },
       rules: {
         batchName: [
-          { required: true, message: "请输入批次名称", trigger: "blur" }
+          { required: true, message: "请输入检查名称", trigger: "blur" }
         ],
         khjs: [
           { required: true, message: "请输入案件基数", trigger: "blur" },
@@ -212,9 +202,6 @@ export default {
         personKs: [
           { required: true, message: "请输入人员考试数", trigger: "blur" },
           { validator:numType , trigger: "blur"}
-        ],
-        showBatchDate: [
-          { required: true, message: "请输入发布时间", trigger: "blur" }
         ]
       },
       dataList1: [],
@@ -308,7 +295,6 @@ export default {
             return;
           }
           _this.batchForm.listDetailsForm = tableData;
-          _this.batchForm.showBatchDate = this.batchForm.showBatchDate;
           addOrUpdatePykhBatch(_this.batchForm).then(
             res => {
               _this.$message({
