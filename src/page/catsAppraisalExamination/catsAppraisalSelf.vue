@@ -1,82 +1,81 @@
 <template>
     <div class="com_searchAndpageBoxPadding">
-
+        <div class="searchAndpageBox toggleBox">
+        <div class="handlePart" style="margin-left: 0px;">
+        <div class="search">
+          <el-form :inline="true" :model="form" ref="form">
+            <el-form-item label="检查名称">
+              <el-input v-model="form.batchName" :readonly="true"></el-input>
+            </el-form-item>
+            <el-form-item label="总分">
+              <el-input v-model="form.twosore" :readonly="true"></el-input>
+            </el-form-item>
+            <div v-if="form.pfStatus==='0'">
+                <el-form-item>
+                <el-button type="primary" size="medium" icon="el-icon-search" @click="commitData">提交</el-button>
+                </el-form-item>
+            </div>
+          </el-form>
+        </div>
+      </div>
+      <div class="tablePart">
         <el-table
-        :data="tableData"
+        :data="form.pykhScoreDetailsVos"
         border
         :span-method="objectSpanMethod"
         style="width: 100%;">
         <!--  -->
             <el-table-column
-                prop="name"
-                label="姓名">
+                prop="indexOne"
+                label="一级指标">
             </el-table-column>
             <el-table-column
-                prop="id"
-                label="ID"
-                width="180">
+                prop="indexTwo"
+                label="二级指标">
             </el-table-column>
             <el-table-column
-                prop="amount1"
-                label="数值 1（元）">
+                prop="nrxm"
+                label="评查内容">
             </el-table-column>
             <el-table-column
-                prop="amount2"
-                label="数值 2（元）">
+                v-if="form.pfStatus==='0'"
+                prop="twoSore"
+                label="得分">
+                <template slot-scope="scope" >
+                    <el-input v-model="scope.row.twoSore" @blur="saveRecord(scope.row)" ></el-input>
+                </template>
+            </el-table-column>
+            <el-table-column
+                v-else
+                prop="twoSore"
+                label="得分">
+            </el-table-column>
+            <el-table-column
+                v-if="form.pfStatus==='0'"
+                prop="season"
+                label="扣分原因">
                 <template slot-scope="scope">
-                    <el-input v-model="scope.row.amount2" placeholder="请输入数值"></el-input>
+                    <el-input v-model="scope.row.season" @blur="saveRecord(scope.row)"></el-input>
                 </template>
             </el-table-column>
             <el-table-column
-                prop="amount3"
-                label="数值 3（元）">
-            </el-table-column>
-                <el-table-column
-                label="操作">
-                <template>
-                    <el-button>添加</el-button>
-                    <el-button>修改</el-button>
-                </template>
+                v-else
+                prop="season"
+                label="扣分原因">
             </el-table-column>
         </el-table>
-        <!-- {{JSON.stringfy(tableData)}} -->
+      </div>
+    </div>
     </div>
 </template>
 <script>
+  import {getPykhOrgInfo,updateScore,updateScoreState} from "@/api/appraisalExam.js";
+  import { mixinsCommon } from "@/common/js/mixinsCommon";
 export default {
+    mixins: [mixinsCommon],
     data () {
         return {
-            tableData: [{
-                id: '12987122',
-                    name: '王小虎',
-                    amount1: '234',
-                    amount2: '3.2',
-                    amount3: 10
-                }, {
-                id: '12987122',
-                    name: '王小虎',
-                    amount1: '165',
-                    amount2: '4.43',
-                    amount3: 12
-                }, {
-                    id: '12987124',
-                    name: '王小虎',
-                    amount1: '324',
-                    amount2: '1.9',
-                    amount3: 9
-                }, {
-                    id: '12987125',
-                    name: '王小虎',
-                    amount1: '621',
-                    amount2: '2.2',
-                    amount3: 17
-                }, {
-                    id: '12987126',
-                    name: '王小虎',
-                    amount1: '539',
-                    amount2: '4.1',
-                    amount3: 15
-                }]
+            form:{}
         }
     },
     methods: {
@@ -85,32 +84,72 @@ export default {
            // 第一列合并规则
             if (columnIndex === 0) {
                 // 当前行数 % 需要合并的行数
-                if (rowIndex % 5 === 0) {
-                    return {
-                        rowspan: 5,
-                        colspan: 1
-                    };
-                } else {
+                if (row.rowspan === 0) {
                     return {
                         rowspan: 0,
                         colspan: 0
+                    };
+                } else {
+                    return {
+                        rowspan: row.rowspan,
+                        colspan: 1
                     };
                 }
             }
             if (columnIndex === 1) {
-                if (rowIndex % 2 === 0) {
-                    return {
-                        rowspan: 2,
-                        colspan: 1
-                    };
-                } else {
+                if (row.rowspan1 === 0) {
                     return {
                         rowspan: 0,
                         colspan: 0
                     };
+                } else {
+                    return {
+                        rowspan: row.rowspan,
+                        colspan: 1
+                    };
                 }
             }
+      },
+      commitData(){
+        const data = {
+            id:this.form.id,
+            assessType:"自查自评",
+            pfstatus:this.form.pfStatus
+        }
+        let _this = this
+        updateScoreState(data).then(
+            res => {
+                _this.$message({type: "success",message: "提交成功!"});
+                _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+            },
+            err => {
+                console.log(err);
+            }
+        );
+      },
+      saveRecord(row){
+        updateScore(row).then(
+            res => {
+                
+            },
+            err => {
+                console.log(err);
+            }
+        );
+      },
+      fetchData(){
+        getPykhOrgInfo({assessType:"自查自评"}).then(
+            res => {
+                this.form = res.data
+            },
+            err => {
+                console.log(err);
+            }
+        );
       }
+    },
+    mounted () {
+      this.fetchData();
     }
 }
 </script>

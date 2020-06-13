@@ -34,7 +34,7 @@
       </div>
       <div class="tablePart">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="案卷评查配置" name="case">
+          <el-tab-pane label="案卷评查配置" name="案卷评查">
             <el-table
               :data="dataList1"
               stripe
@@ -58,7 +58,7 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="自查自评配置" name="self">
+          <el-tab-pane label="自查自评配置" name="自查自评">
             <el-table
               :data="dataList2"
               stripe
@@ -82,7 +82,7 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="网上评查配置" name="onLine">
+          <el-tab-pane label="网上评查配置" name="网上评查">
             <el-table
               :data="dataList3"
               stripe
@@ -106,7 +106,7 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="现场检查配置" name="offLine">
+          <el-tab-pane label="现场检查配置" name="执法考试">
             <el-table
               :data="dataList4"
               stripe
@@ -168,7 +168,7 @@ export default {
   mixins: [mixinsCommon],
   data() {
     return {
-      activeName: "case",
+      activeName: "案卷评查",
       isView: false,
       batchForm: {
         batchName: "",
@@ -237,11 +237,11 @@ export default {
     },
     selectItems() {
       let datas = this.$refs.tree.getCheckedNodes();
-      if (this.activeName === "case") {
+      if (this.activeName === "案卷评查") {
         this.addItems(datas, this.dataList1);
-      } else if (this.activeName === "self") {
+      } else if (this.activeName === "自查自评") {
         this.addItems(datas, this.dataList2);
-      } else if (this.activeName === "onLine") {
+      } else if (this.activeName === "网上评查") {
         this.addItems(datas, this.dataList3);
       } else {
         this.addItems(datas, this.dataList4);
@@ -302,6 +302,7 @@ export default {
                 message: "添加成功!"
               });
               _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+              _this.$router.push({ name: "catsAppraisalStartUp", params: {} });
             },
             err => {
               console.log(err);
@@ -311,15 +312,15 @@ export default {
       });
     },
     deletePykhBatchById(row) {
-      if (row.assessType === "case") {
+      if (row.assessType === "案卷评查") {
         this.dataList1 = this.dataList1.filter(
           item => item.indexThreeId !== row.indexThreeId
         );
-      } else if (row.assessType === "self") {
+      } else if (row.assessType === "自查自评") {
         this.dataList2 = this.dataList2.filter(
           item => item.indexThreeId !== row.indexThreeId
         );
-      } else if (row.assessType === "onLine") {
+      } else if (row.assessType === "网上评查") {
         this.dataList3 = this.dataList3.filter(
           item => item.indexThreeId !== row.indexThreeId
         );
@@ -342,11 +343,11 @@ export default {
         findListVoByDetails({ batchId: this.$route.params.id }).then(
           res => {
             res.data.forEach(item => {
-              if (item.assessType === "case") {
+              if (item.assessType === "案卷评查") {
                 _that.dataList1.push(item);
-              } else if (item.assessType === "self") {
+              } else if (item.assessType === "自查自评") {
                 _that.dataList2.push(item);
-              } else if (item.assessType === "onLine") {
+              } else if (item.assessType === "网上评查") {
                 _that.dataList3.push(item);
               } else {
                 _that.dataList4.push(item);
