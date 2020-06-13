@@ -1208,7 +1208,7 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 // import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,getOrganList} from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage} from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 import lunarDate from '@/common/js/lunarDate.js';
@@ -1732,7 +1732,7 @@ export default {
     searchAllByBtn () {
         if (this.filterText === "") {
             this.showTree = true
-            this.getOrganTree(this.userInfo.organId);
+            this.organTreeByCurrUser(this.userInfo.organId);
         } else {
             let params = {
                 name: this.filterText,
@@ -1765,7 +1765,12 @@ export default {
         this.doing = '2';
 
         if (!window.PhoneCallModule.getRegistered()) {
-            window.PhoneCallModule.sipRegister();
+            // window.PhoneCallModule.sipRegister();
+            let displayName = 'ecds05';
+            let privateIdentity ='100007';
+            let password = '1234';
+            window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
+
         }
         // debugger;
         if (code == '李玉明') {
@@ -1825,7 +1830,7 @@ export default {
                 type: 0
             }
             let _this = this;
-            debugger;
+            // debugger;
             new Promise((resolve, reject) => {
                 getOrganTree(params).then(
                     res => {
@@ -1833,11 +1838,11 @@ export default {
                         let resultList = [];
                         res.data.forEach((v,i)=>{
 
-                            // let position = v.propertyValue ? v.propertyValue.split(','):['',''];
-                            // let lng = parseFloat(position[0]);
-                            // let lat = parseFloat(position[1]);
-                            let lng = v.longitude?v.longitude: '';
-                            let lat = v.latitude?v.latitude: '';
+                            let position = v.propertyValue ? v.propertyValue.split(','):['',''];
+                            let lng = parseFloat(position[0]);
+                            let lat = parseFloat(position[1]);
+                            // let lng = v.longitude?v.longitude: '';
+                            // let lat = v.latitude?v.latitude: '';
                             resultList.push({
                                 address: v.address,
                                 distance: null,
@@ -1864,6 +1869,7 @@ export default {
                             })
                         })
                         _this.onSearchResult(resultList, 0,0);
+                        _this.errorMsg(`总计${res.data.length}条数据`, 'success');
                 })
             })
 
@@ -2150,16 +2156,16 @@ export default {
         // if (this.category != 4) {
             // this.drawer = true;
             // if (this.drawer) {
-              let _this = this;
-              this.$nextTick(() => {
-                var flowChart = echarts.init(document.getElementById("echartsBox1"));
-                flowChart.setOption(_this.lawSuperviseObj.option);
-                var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
-                flowChart1.setOption(_this.yjObj);
-              //   _this.getRealTimeDataByLawSupervise();
-              });
-            // }
+                // }
         // }
+            //   let _this = this;
+            //   this.$nextTick(() => {
+            //     var flowChart = echarts.init(document.getElementById("echartsBox1"));
+            //     flowChart.setOption(_this.lawSuperviseObj.option);
+            //     var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
+            //     flowChart1.setOption(_this.yjObj);
+                // this.getRealTimeDataByLawSupervise();
+            //   });
     },
     openDrawer () {
         this.drawer = true;
@@ -2400,8 +2406,6 @@ export default {
         }
     },
     searchByTab(item) {
-        // if (item.select)
-// debugger;
         if (this.allSearchList.length == 0) {
         this.markers.splice(0, this.markers.length);
         }
@@ -2422,7 +2426,7 @@ export default {
         let data = {
           // area: this.currentAddressObj.province + this.currentAddressObj.district,
         //   area: "东城区",
-          current: 1,
+        //   current: 1,
           key: "",
         //   size: 20,
           type: item.code
@@ -2484,17 +2488,20 @@ export default {
           res => {
             // resolve(res);
             let resultList = [];
-            if (res.data && res.data.records.length == 0) {
+            if (res.data && res.data.length == 0) {
               _this.errorMsg("暂无数据", "error");
               // return
             } else {
               _this.errorMsg(
-                `查询到${res.data.records.length}条数据`,
+                `查询到${res.data.length?res.data.length:0}条数据`,
                 "success"
               );
             }
-            res.data.records.forEach((item, i) => {
-              let position = item.position.split(",");
+            res.data.forEach((item, i) => {
+            //   let position = item.position.split(",");
+            //   let lng = parseFloat(position[0]);
+            //   let lat = parseFloat(position[1]);
+            let position = item.propertyValue.split(",");
               let lng = parseFloat(position[0]);
               let lat = parseFloat(position[1]);
               resultList.push({
@@ -2526,7 +2533,7 @@ export default {
         );
       });
     },
-    getOrganTree (organId) {
+    organTreeByCurrUser (organId) {
         let _this = this;
         let params = {
             name: '',
@@ -2534,7 +2541,7 @@ export default {
             type: 0
         }
         new Promise((resolve, reject) => {
-            getOrganList().then(
+            organTreeByCurrUser().then(
                 res => {
                     let dataArray = res.data;
                     dataArray.forEach((item,i)=>{
@@ -2680,11 +2687,15 @@ export default {
         //  debugger;
          window.PhoneCallModule.initialize();
         if (!window.PhoneCallModule.getRegistered()) {
-            window.PhoneCallModule.sipRegister();
+            // window.PhoneCallModule.sipRegister();
+            let displayName = 'ecds05';
+            let privateIdentity ='100007';
+            let password = '1234';
+            window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
         }
      })
     this.lunarDate = lunarDate();
-    this.getOrganTree(this.userInfo.organId);
+    this.organTreeByCurrUser(this.userInfo.organId);
     // this.updateDrawer();
   },
   created () {
