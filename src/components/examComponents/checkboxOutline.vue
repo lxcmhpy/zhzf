@@ -121,8 +121,10 @@ export default {
     },
     // 全选
     handleCheckAllChange(event, node, index){
+      this.checkedNode[node.parentId] = '';
       if(event){
         this.$refs.outlineTree[index].setCheckedKeys(this.topLevelOutline[node.parentId])
+        this.checkedNode[node.parentId] = this.topLevelOutline[node.parentId].join(',');
       }else{
         this.$refs.outlineTree[index].setCheckedKeys([])
       }
