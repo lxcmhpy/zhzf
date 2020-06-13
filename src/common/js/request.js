@@ -14,7 +14,7 @@ const service = axios.create({
   "Content-Type": "application/x-www-form-urlencoded",
   // "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
   // "Content-Type": "multipart/form-data;charset=UTF-8",
-  timeout: 15000, // request timeout
+//   timeout: 15000, // request timeout
 
 });
 
@@ -54,7 +54,7 @@ service.interceptors.request.use(
     if (config.baseUrlType) {
         let baseObj = BASEURL[BASEURL.CURRENT];
         config.baseURL = baseObj[config.baseUrlType];
-        
+
     } else{
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST // 默认的base_url
     }
