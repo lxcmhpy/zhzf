@@ -49,5 +49,12 @@ export default [
       title: "评议考核首页面"
     },
     component: () => import("@/page/catsAppraisalExamination/home.vue")
+}, {
+    path: "/assessExtract",
+    name: "assessExtract",
+    meta: {
+      title: "抽取"
+    },
+    component: () => import("@/page/catsAppraisalExamination/assessExtract/assessExtract.vue")
 }
 ]
