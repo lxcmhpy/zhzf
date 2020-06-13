@@ -10,7 +10,6 @@
         >
           <div>
             <div class="item">
-              <el-row>
                 <el-form-item label="姓名" prop="scorerName">
                   <el-input v-model="scoreManageForm.scorerName" placeholder="评分人姓名"></el-input>
                 </el-form-item>
@@ -20,13 +19,7 @@
                 <el-form-item label="所属单位" prop="scorerOrg">
                   <el-input v-model="scoreManageForm.scorerOrg" placeholder="所属单位"></el-input>
                 </el-form-item>
-                <el-form-item label="省份" prop="scorerPro">
-                  <el-input v-model="scoreManageForm.scorerPro" placeholder="省份"></el-input>
-                </el-form-item>
-                <el-form-item label="联系方式" prop="scorerPhone">
-                  <el-input v-model="scoreManageForm.scorerPhone" placeholder="省份"></el-input>
-                </el-form-item>
-                <el-form-item style="margin-left:20px;">
+                 <el-form-item style="margin-left:20px;">
                   <el-button
                     title="搜索"
                     class="commonBtn searchBtn"
@@ -41,9 +34,23 @@
                     icon="iconfont law-zhongzhi"
                     @click="resetLog"
                   ></el-button>
+                  <el-button
+                  size="medium"
+                  class="commonBtn toogleBtn"
+                  :title="isShow? '点击收缩':'点击展开'"
+                  :icon="isShow? 'iconfont law-top': 'iconfont law-down'"
+                  @click="isShow = !isShow"
+                ></el-button>
                 </el-form-item>
-              </el-row>
-              <el-row>
+             </div>    
+             <div class="item" v-show="isShow">
+                <el-form-item label="省份" prop="scorerPro">
+                  <el-input v-model="scoreManageForm.scorerPro" placeholder="省份"></el-input>
+                </el-form-item>
+                <el-form-item label="联系方式" prop="scorerPhone">
+                  <el-input v-model="scoreManageForm.scorerPhone" placeholder="联系方式"></el-input>
+                </el-form-item>
+              </div> 
                 <el-form-item>
                   <el-button
                     type="primary"
@@ -58,8 +65,6 @@
                     @click="deleteExamBatchInfo"
                   >删除评分人</el-button>-->
                 </el-form-item>
-              </el-row>
-            </div>
           </div>
         </el-form>
       </div>
@@ -90,17 +95,17 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="paginationBox">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            background
-            :page-sizes="[10, 20, 30, 40, 50]"
-            layout="prev, pager, next,sizes,jumper"
-            :total="totalPage"
-          ></el-pagination>
-        </div>
+        <div class="pagination-box">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          background
+          :page-sizes="[10, 20, 30, 40, 50]"
+          layout="prev, pager, next,sizes,jumper"
+          :total="totalPage"
+        ></el-pagination>
+      </div>
       </div>
     </div>
     <!-- 新增考试 -->
@@ -124,15 +129,16 @@ export default {
         scorerPro: "", //
         scorerPhone: ""
       },
+      isShow: false,
       selectUserIdList: [], //选中考试id
       selectList: [], //选中考试信息
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总数
-      props: {
-        label: "label",
-        value: "id"
-      },
+      // props: {
+      //   label: "label",
+      //   value: "id"
+      // },
       tableLoading: false
     };
   },
@@ -184,19 +190,7 @@ export default {
         current: _this.currentPage,
         size: _this.pageSize
       };
-      _this.$store.dispatch("getExamScorerList", data).then(
-        res => {
-          if (res.code == "200") {
-            _this.tableData = res.data.records;
-            _this.totalPage = res.data.total;
-            _this.tableLoading = false;
-          }
-        },
-        err => {
-          _this.tableLoading = false;
-          _this.$message({ type: "error", message: err.msg || "" });
-        }
-      );
+       _this.getPageList("getExamScorerList", data);
     },
     //删除考试
     deleteExamBatchInfo() {
@@ -311,5 +305,8 @@ export default {
   .m-r-30 {
     margin-right: 30px;
   }
-}
+} .pagination-box{
+    margin-top: 20px;
+    text-align: center;
+  }
 </style>

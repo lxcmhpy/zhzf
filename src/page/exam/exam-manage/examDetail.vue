@@ -17,25 +17,17 @@
           label-width="80px"
           :inline="true"
         >
-          <el-row>
+           <div class="item">
             <el-form-item label="姓名" prop="personName" class-form="form-class">
-              <el-input v-model="examPersonForm.personName"></el-input>
+              <el-input v-model="examPersonForm.personName" placeholder="考生姓名"></el-input>
             </el-form-item>
             <el-form-item label="身份证号" prop="idNo" class-form="form-class">
-              <el-input v-model="examPersonForm.idNo"></el-input>
+              <el-input v-model="examPersonForm.idNo" placeholder="身份证号码"></el-input>
             </el-form-item>
             <el-form-item label="所属机构" prop="oname" class-form="form-class">
-              <el-input v-model="examPersonForm.oname"></el-input>
+              <el-input v-model="examPersonForm.oname" placeholder="所属机构"></el-input>
             </el-form-item>
-          </el-row>
-          <el-row>
-            <el-form-item label="考场" prop="roomId" class-form="form-class">
-              <el-input v-model="examPersonForm.roomId"></el-input>
-            </el-form-item>
-            <el-form-item label="执法领域" prop="ministerialNo" class-form="form-class">
-              <el-input v-model="examPersonForm.ministerialNo"></el-input>
-            </el-form-item>
-            <el-form-item>
+             <el-form-item>
               <el-button
                 title="搜素"
                 class="commonBtn searchBtn"
@@ -50,8 +42,23 @@
                 icon="iconfont law-zhongzhi"
                 @click="resetLog"
               ></el-button>
+              <el-button
+                  size="medium"
+                  class="commonBtn toogleBtn"
+                  :title="isShow? '点击收缩':'点击展开'"
+                  :icon="isShow? 'iconfont law-top': 'iconfont law-down'"
+                  @click="isShow = !isShow"
+                ></el-button>
             </el-form-item>
-          </el-row>
+           </div>
+          <div class="item" v-show="isShow">
+            <el-form-item label="考场" prop="roomId" class-form="form-class">
+              <el-input v-model="examPersonForm.roomId" placeholder="考场"></el-input>
+            </el-form-item>
+            <el-form-item label="执法领域" prop="ministerialNo" class-form="form-class">
+              <el-input v-model="examPersonForm.ministerialNo" placeholder="执法领域"></el-input>
+            </el-form-item>
+          </div>
           <el-row>
             <el-form-item>
               <el-button type="primary" size="medium" @click="batchExportPrint()">批量打印准考证</el-button>
@@ -139,6 +146,7 @@ export default {
         ministerialNo: "",
         batchId: ""
       },
+       isShow: false,
       visible: false,
       dialogtitle: "",
       errorName: "",
@@ -163,9 +171,9 @@ export default {
       //准考证
       this.$refs.invigilateCardCompRef.showModal("1",row);
     },
-    roomNotes() {
+    roomNotes(row) {
       //考场记录
-      this.$refs.roomNotesCompRef.showModal("1", "");
+      this.$refs.roomNotesCompRef.showModal("1",row);
     },
     // 批量打印准考证
     batchExportPrint() {
@@ -204,7 +212,7 @@ export default {
         // batchId:_this.examPersonForm.batchId,
         personName: _this.examPersonForm.personName,
         idNo: _this.examPersonForm.idNo,
-        oName: _this.examPersonForm.oname,
+        oname: _this.examPersonForm.oname,
         current: _this.currentPage,
         size: _this.pageSize
       };

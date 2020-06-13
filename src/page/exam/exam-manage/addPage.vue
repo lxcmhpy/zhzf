@@ -66,17 +66,17 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="paginationBox">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          background
-          :page-sizes="[10, 20, 30, 40, 50]"
-          layout="prev, pager, next,sizes,jumper"
-          :total="totalPage"
-        ></el-pagination>
-      </div>
+      <div class="pagination-box">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            background
+            :page-sizes="[10, 20, 30, 40, 50]"
+            layout="prev, pager, next,sizes,jumper"
+            :total="totalPage"
+          ></el-pagination>
+        </div>
     </div>
   </el-dialog>
 </template>
@@ -146,6 +146,7 @@ export default {
       let data = {
         pageName: _this.addPageForm.pageName,
         examId: _this.addPageForm.examId,
+        verifyStatus:"1",
         current: _this.currentPage,
         size: _this.pageSize
       };
@@ -190,6 +191,10 @@ export default {
       height: 28px;
       line-height: 28px;
     }
+  }
+   .pagination-box{
+    margin-top: 20px;
+    text-align: center;
   }
 }
 </style>

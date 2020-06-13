@@ -49,6 +49,7 @@ export default [
       title: "评议考核首页面"
     },
     component: () => import("@/page/catsAppraisalExamination/home.vue")
+
 }, {
     path: "/assessExtract",
     name: "assessExtract",
@@ -56,5 +57,12 @@ export default [
       title: "抽取"
     },
     component: () => import("@/page/catsAppraisalExamination/assessExtract/assessExtract.vue")
-}
+  }, {
+    path: "/catsAppraisalSelf",
+    name: "catsAppraisalSelf",
+    meta: {
+      title: "自查自评"
+    },
+    component: () => import("@/page/catsAppraisalExamination/catsAppraisalSelf.vue")
+  }
 ]
