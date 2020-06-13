@@ -49,13 +49,13 @@
               label-width="68px"
             >
               <el-form-item prop="personName" label="姓名">
-                <el-input v-model="roomDispathForm.personName"></el-input>
+                <el-input v-model="roomDispathForm.personName" placeholder="请输入姓名"></el-input>
               </el-form-item>
               <el-form-item prop="idNo" label="身份证号">
-                <el-input v-model="roomDispathForm.idNo"></el-input>
+                <el-input v-model="roomDispathForm.idNo" placeholder="请输入身份证号码"></el-input>
               </el-form-item>
               <el-form-item prop="oname" label="所属机构">
-                <el-input v-model="roomDispathForm.oname"></el-input>
+                <el-input v-model="roomDispathForm.oname" placeholder="请输入所属机构"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button
@@ -178,6 +178,9 @@ export default {
       let data = {
         examId: _this.middleDate.examId,
         roomId: _this.nowRoom,
+        personName:_this.roomDispathForm.personName,
+        idNo:_this.roomDispathForm.idNo,
+        oname:_this.roomDispathForm.oname,
         current: _this.currentPage,
         size: _this.pageSize
       };
@@ -223,6 +226,7 @@ export default {
                 type: "success",
                 message: "移除成功！"
               });
+              _this.getRoomList();
               _this.getNowRoomPerson();
               _this.getunDispachNum();
             } else {
@@ -240,6 +244,7 @@ export default {
     },
     getPageAllInfo() {
       let _this = this;
+      _this.getRoomList();
       _this.getNowRoomPerson();
       _this.getunDispachNum();
     },
