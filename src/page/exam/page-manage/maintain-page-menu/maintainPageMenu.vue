@@ -35,7 +35,7 @@
                     class="commonBtn searchBtn"
                     size="medium"
                     icon="iconfont law-sousuo"
-                    @click="getPageInfoList"
+                    @click="currentPage = 1 ;getPageInfoList();"
                   ></el-button>
                   <el-button
                     title="重置"

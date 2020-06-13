@@ -4,6 +4,7 @@
     @close="closeDialog"
     :close-on-click-modal="false"
     width="80%"
+    append-to-body
   >
   <el-row>
     <el-col :span="24">

@@ -261,6 +261,8 @@ export default {
       let _this = this;
       _this.visible = true;
       _this.handelType = type;
+      _this.addTempleteForm.templeteName = '';
+      _this.addTempleteForm.templeteId = '';
       if (type == 1) {
         //新增
         _this.dialogTitle = "新增模板";

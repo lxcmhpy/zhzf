@@ -9,6 +9,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+/*---------添加以下2句，引入https和fs---------*/
+const https = require('https')
+const fs = require('fs')
+/*---------添加以上2句，引入https和fs---------*/
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -32,6 +36,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
     host: HOST || config.dev.host,
+    // host: "127.0.0.1",
+    // port: "8075",
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
     overlay: config.dev.errorOverlay
@@ -42,7 +48,16 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
-    }  
+    },
+    /*---------添加https配置---------*/
+    // https: true
+    // {
+    //     cert: fs.readFileSync(path.resolve(__dirname, './cert/ceshiclient.p12')),
+    //     key: '123456'
+    // },
+    // key: '123456'
+    // cert: ffs.readFileSync(require('./cert/ceshiclient.p12')),
+    // ca: fs.readFileSync(require('./cert/ceshiclient.p12'))
   },
   plugins: [
     new webpack.DefinePlugin({

@@ -13,7 +13,7 @@
       </el-row>
       <el-row>
         <el-form-item label="身份证号：" prop="scorerIdno">
-          <el-input v-model="scoreManageForm.scorerIdno" placeholder="请输入身份证号码"></el-input>
+          <el-input v-model="scoreManageForm.scorerIdno" placeholder="请输入身份证号码" maxlength="18"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -28,7 +28,7 @@
       </el-row>
       <el-row>
         <el-form-item label="联系方式：" prop="scorerPhone" class="form-class">
-          <el-input v-model="scoreManageForm.scorerPhone" placeholder="请输入联系方式"></el-input>
+          <el-input v-model="scoreManageForm.scorerPhone" placeholder="请输入联系方式" maxlength="11"></el-input>
         </el-form-item>
       </el-row>
     </el-form>
@@ -41,6 +41,7 @@
   </el-dialog>
 </template>
 <script>
+import { validatePhone } from "@/common/js/validator";
 export default {
   data(){
     return{
@@ -57,12 +58,12 @@ export default {
        scorerPhone:"",
       },
       rules: {
-        scorerName: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
-        scorerIdno: [{ required: true, message: "身份证号不能为空", trigger: "change" }],
+        scorerName: [{ required: true, message: "评分人姓名不能为空", trigger: "blur" }],
+        scorerIdno: [{ required: true, message: "身份证号不能为空", trigger: "blur" }],
         scorerOrg: [{ required: true, message: "所属单位不能为空", trigger: "blur" }],
         scorerPro: [{ required: true, message: "所在省份不能为空", trigger: "blur" }],
-        scorerPhone: [{ required: true, message: "联系方式不能为空", trigger: "blur" }],
-       
+        //scorerPhone: [{ required: true, message: "联系方式不能为空", trigger: "blur" }],
+        scorerPhone: [{ required: true,validator: validatePhone, trigger: "blur"}]
       },
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
@@ -70,11 +71,12 @@ export default {
     }
   },
   methods:{
-   
     //提交
     submit() {
       let _this = this;
-          if(_this.handelType==0){
+      this.$refs.addExamBatchFormRef.validate((valid) => {
+        if (valid) {
+                if(_this.handelType==0){
             _this.$store.dispatch("addExamScorer", _this.scoreManageForm).then(res => {
               _this.$emit("getExamBatchListComp");
               _this.$message({ type: "success", message:  "添加成功!" });
@@ -91,6 +93,12 @@ export default {
               _this.$message({ type: 'error', message: err.msg || '' });
             });
           }
+        } else {
+          this.btnDisabled = false;
+          return false;
+        }
+      });
+    
     },
     //点击下拉框的时查询试卷类型
     getDictInfo(name,codeName){
@@ -110,6 +118,12 @@ export default {
       let _this=this
       _this.visible = true;
       _this.handelType = type;
+       _this.scoreManageForm.scorerId = '';
+        _this.scoreManageForm.scorerName = '';
+        _this.scoreManageForm.scorerIdno='';
+        _this.scoreManageForm.scorerOrg='';
+        _this.scoreManageForm.scorerPro='';
+        _this.scoreManageForm.scorerPhone='';
       if(type==0){//新增
         _this.dialogTitle = "新增评分人";
         _this.isDisabled=false;

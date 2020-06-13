@@ -29,11 +29,40 @@ export default [
         },
         component: () => import("@/page/catsAppraisalExamination/catsAppraisalStartUp.vue")
     }, {
+      path: "/catsAppraisalStartUpAdd",
+      name: "catsAppraisalStartUpAdd",
+      meta: {
+        title: "评议考核发起"
+      },
+      component: () => import("@/page/catsAppraisalExamination/catsAppraisalStartUpAdd.vue")
+  }, {
       path: "/noticeManage",
       name: "noticeManage",
       meta: {
         title: "公告信息"
       },
       component: () => import("@/page/catsAppraisalExamination/noticeManage/noticeManage.vue")
+  }, {
+    path: "/catsAppraisalExamination",
+    name: "catsAppraisalExamination",
+    meta: {
+      title: "评议考核首页面"
+    },
+    component: () => import("@/page/catsAppraisalExamination/home.vue")
+
+}, {
+    path: "/assessExtract",
+    name: "assessExtract",
+    meta: {
+      title: "抽取"
+    },
+    component: () => import("@/page/catsAppraisalExamination/assessExtract/assessExtract.vue")
+  }, {
+    path: "/catsAppraisalSelf",
+    name: "catsAppraisalSelf",
+    meta: {
+      title: "自查自评"
+    },
+    component: () => import("@/page/catsAppraisalExamination/catsAppraisalSelf.vue")
   }
 ]

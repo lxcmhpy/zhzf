@@ -12,6 +12,7 @@
         <li @click="goRemoveEvidenceRegApprovalForm">解除证据登记保存审批表</li>
         <li @click="goAdminCoerciveMeasureApproval">行政强制措施审批表</li>
         <li @click="goProLongAdminCoerciveMeasureApproval">延长行政强制措施审批表</li>
+        <li @click="goTest">测试文书</li>
         <li @click="goPunishDecisionDoc">行政处罚决定书</li>
         <li @click="goInquestNotesDoc">勘验笔录</li>
         <li @click="goSampleEvidenceDoc">抽样取样凭证</li>
@@ -519,6 +520,10 @@ export default {
     // 行政强制措施审批表
     goProLongAdminCoerciveMeasureApproval() {
       this.$router.push({ name: 'case_handle_prolongAdminCoerciveMeasureApproval' });
+    },
+    // 行政强制措施审批表
+    goTest() {
+      this.$router.push({ name: 'test_doc' });
     },
     //--------------长软end-------------------
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {

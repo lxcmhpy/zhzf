@@ -10,6 +10,7 @@ import catsDataScreenJson from './routerJson/catsDataScreenJson'
 import inspectionJson from './routerJson/inspectionJson'
 import catsAppraisalExamReportJson from './routerJson/catsAppraisalExamReportJson'
 import catsAppraisalExamUploadJson from './routerJson/catsAppraisalExamUploadJson'
+import {StartRouter} from './routerJson/startExamRouterJson'
 // 不作为Main组件的子页面展示的页面单独写，如下
 const route = [
   // 登录
@@ -82,7 +83,9 @@ const route = [
         oneTab:false
     },
     component: () => import("@/router/reload.vue")
-}
+  },
+  // 人员考试子系统路由
+  ...StartRouter
   //主页的路由
   // {
   //   path: '/main',

@@ -19,7 +19,7 @@
             <div class="center_content">
               <span class="titleflag">
               </span>
-              <span class="title">基本信息</span>
+              <span class="title-left">基本信息</span>
             </div>
             <div class="info_body">
               <el-row>
@@ -100,7 +100,7 @@
             <div class="center_content">
               <span class="titleflag">
               </span>
-              <span class="title">学历信息</span>
+              <span class="title-left">学历信息</span>
             </div>
             <div class="info_body">
               <el-row>
@@ -175,7 +175,7 @@
             <div class="center_content">
               <span class="titleflag">
               </span>
-              <span class="title">工作信息</span>
+              <span class="title-left">工作信息</span>
             </div>
             <div class="info_body">
               <el-row v-if="isShowAddPerson">
@@ -346,7 +346,7 @@
           <div class="info_content float" style="float:left">
             <div class="center_content">
               <span class="titleflag"></span>
-              <span class="title">基本信息</span>
+              <span class="title-left">基本信息</span>
             </div>
             <div class="info_body">
               <el-row>
@@ -385,7 +385,8 @@
           </div>
           <!-- 照片 -->
           <div class="img_box float">
-            <img :src="personInfoDetailForm.photoUrl || personImg" alt="">
+            <img v-if="personInfoDetailForm.photoUrl" :src="baseUrl + personInfoDetailForm.photoUrl" alt="">
+            <img v-else :src="personImg" alt="">
           </div>
         </div>
         </el-row>
@@ -396,7 +397,7 @@
             <div class="info_content">
               <div class="center_content">
                 <span class="titleflag"></span>
-                <span class="title">学历信息</span>
+                <span class="title-left">学历信息</span>
               </div>
               <div class="info_body">
                 <el-row>
@@ -430,7 +431,7 @@
           <div class="info_content">
             <div class="center_content">
               <span class="titleflag"></span>
-              <span class="title">工作信息</span>
+              <span class="title-left">工作信息</span>
             </div>
             <div class="info_body">
               <el-row>

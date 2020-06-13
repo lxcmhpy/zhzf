@@ -214,11 +214,12 @@
                 </span>规定，拟采取以下强制措施：
               </p>
               <p>
-                &nbsp;&nbsp;<el-checkbox>扣押财物</el-checkbox>
-                <br />
-                &nbsp;&nbsp;<el-checkbox>查封场所、设施或者财物</el-checkbox>
-                <br />
-                &nbsp;&nbsp;<el-checkbox>其他行政强制措施：</el-checkbox>
+                &nbsp;&nbsp;
+                <el-checkbox>扣押财物</el-checkbox>
+                <br />&nbsp;&nbsp;
+                <el-checkbox>查封场所、设施或者财物</el-checkbox>
+                <br />&nbsp;&nbsp;
+                <el-checkbox>其他行政强制措施：</el-checkbox>
               </p>
               <p>
                 自
@@ -613,19 +614,5 @@ export default {
   text-overflow: initial;
   font-size: 12px;
   line-height: 14px;
-}
-.print_box .print_info tr td {
-  border: 1px solid #000000;
-  height: 16px;
-  font-size: 16px;
-  line-height: 18px;
-  display: table-cell;
-  vertical-align: middle;
-  padding: 0 8px;
-  text-align: justify;
-  text-align-last: justify;
-  white-space: normal;
-  word-wrap: break-word;
-  word-break: break-all;
 }
 </style>

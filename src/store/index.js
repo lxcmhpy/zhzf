@@ -81,7 +81,7 @@ const store = new Vuex.Store({
                 system: val.system,
             }
         }
-    })],
+    })]
 });
 
 export default store;

@@ -9,7 +9,7 @@ import { setCancelSource } from "@/common/js/cancelToken";
  // 加载评议考核配置列表
  export function findPykhConfigByPage (data) {
     return request({
-        url: "/pykh/pykhToConfigure/findPykhConfigByPage",
+        url: "/pykh/pykhToConfigure/findPykhConfigureByPage",
         method: "get",
         showloading: false,
         baseUrlType:'CAPTCHA_HOST',
@@ -21,7 +21,7 @@ import { setCancelSource } from "@/common/js/cancelToken";
 // 添加考核配置
   export function addOrUpdatePykhConfig (data) {
     return request({
-        url: "/pykh/pykhToConfigure/addOrUpdatePykhConfig",
+        url: "/pykh/pykhToConfigure/addOrUpdatePykhConfigure",
         method: "post",
         showloading: false,
         baseUrlType:'CAPTCHA_HOST',
@@ -32,7 +32,7 @@ import { setCancelSource } from "@/common/js/cancelToken";
 // 删除考核配置
 export function deletePykhConfigById (data) {
     return request({
-        url: "/pykh/pykhToConfigure/deletePykhConfigById/" +data,
+        url: "/pykh/pykhToConfigure/deletePykhConfigureById/" +data,
         method: "get",
         showloading: false,
         baseUrlType:'CAPTCHA_HOST',
@@ -170,6 +170,27 @@ export function getContentApi(id) {
   debugger
   return request({
     url: "/pykh/notice/getContent/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+export function getNoticeByPageAndUserId(data){
+  return request({
+    url: "/pykh/notice/findNoticeByPageAndUserId",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+export function getAppraisalMenuList(){
+  return request({
+    url: "/pykh/home/getMenuList",
     method: "get",
     showloading: true,
     loadingType:'loadPart',
