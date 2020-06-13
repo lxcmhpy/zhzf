@@ -69,11 +69,11 @@
               <el-button type="info" icon="el-icon-edit-outline" size="medium">修改信息</el-button>
             </div>
             <div class="exam-status">
-              <el-radio-group v-model="searchForm.status">
-                <el-radio :label="0">全部</el-radio>
-                <el-radio :label="1">未答题</el-radio>
-                <el-radio :label="2">答题中</el-radio>
-                <el-radio :label="3">已交卷</el-radio>
+              <el-radio-group v-model="searchForm.status" @change="searchByStatus">
+                <el-radio :label="''">全部</el-radio>
+                <el-radio :label="'0'">未答题</el-radio>
+                <el-radio :label="'1'">答题中</el-radio>
+                <el-radio :label="'2'">已交卷</el-radio>
               </el-radio-group>
             </div>
           </div>
@@ -93,13 +93,19 @@
                 <el-table-column type="selection" align="center"></el-table-column>
                 <el-table-column prop="personName" label="姓名" align="left" min-width="100px"></el-table-column>
                 <el-table-column prop="idNo" label="身份证号" align="center" width="174px"></el-table-column>
-                <el-table-column prop="branchName" label="学生状态" min-width="120px" align="center"></el-table-column>
+                <el-table-column prop="examStatue" label="考生状态" min-width="120px" align="center">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.examStatue === '0'" style="color: #20232B;">未答题</span>
+                    <span v-if="scope.row.examStatue === '1'" style="color: #F19004;">答题中</span>
+                    <span v-if="scope.row.examStatue === '2'" style="color: #18C061;">已交卷</span>
+                  </template>
+                </el-table-column>
                 <el-table-column prop="time" label="答题时间" min-width="100px" align="center"></el-table-column>
                 <el-table-column label="操作" min-width="320px" align="center">
                   <template slot-scope="scope">
                     <el-button type="text" @click="viewRecord(scope.row,1)">考场记录</el-button>
-                    <el-button type="text" @click="viewRecord(scope.row,2)">强制收卷</el-button>
-                    <el-button type="text" @click="viewRecord(scope.row,3)">延迟收卷</el-button>
+                    <el-button v-if="scope.row.examStatue === '1'" type="text" @click="viewRecord(scope.row,2)">强制收卷</el-button>
+                    <el-button v-if="scope.row.examStatue === '1'" type="text" @click="viewRecord(scope.row,3)">延迟收卷</el-button>
                     <el-button type="text" @click="viewRecord(scope.row,4)">登录重置</el-button>
                   </template>
                 </el-table-column>
@@ -172,9 +178,6 @@ export default {
     invigilatorInfo() {
       return JSON.parse(sessionStorage.getItem("ExamUserInfo"));
     }
-  },
-  created(){
-    console.log(this.invigilatorInfo);
   },
   methods: {
     // 开始倒计时
@@ -277,6 +280,11 @@ export default {
     resetSearchForm() {
       this.$refs["searchForm"].resetFields();
     },
+    // 根据考生状态查询
+    searchByStatus(val){
+      this.currentPage = 1;
+      this.getExamPerson();
+    },
     //考生信息
     getExamPerson() {
       let data = {
@@ -284,6 +292,7 @@ export default {
         examId: this.invigilatorInfo.examManageInfo.examId,
         roomId: this.invigilatorInfo.invigilatorInfo.roomId,
         personName: this.searchForm.personName,
+        examStatue: this.searchForm.status,
         current: this.currentPage,
         size: this.pageSize
       };
@@ -436,7 +445,8 @@ export default {
     .tablePart {
       position: relative;
       margin-top: 20px;
-      min-height: 450px;
+      // min-height: 450px;
+      height: calc(100% - 100px) !important;
       .table-wrap {
         position: absolute;
         top: 0;
