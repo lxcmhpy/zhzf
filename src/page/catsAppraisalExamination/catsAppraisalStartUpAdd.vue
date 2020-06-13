@@ -4,35 +4,26 @@
       <div class="handlePart" style="margin-left: 0px;">
         <div class="search">
           <el-form :inline="true" :model="batchForm" :rules="rules" ref="batchForm">
-            <el-form-item label="批次名称" prop="batchName">
-              <el-input placeholder="请输入批次名称" v-model="batchForm.batchName" :readonly="isView"></el-input>
+            <el-form-item label="检查名称" prop="batchName">
+              <el-input placeholder="请输入检查名称" v-model="batchForm.batchName" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="批次所属年份" prop="batchYear">
-              <el-input placeholder="请输入批次所属年份" v-model="batchForm.batchYear" :readonly="true"></el-input>
+            <el-form-item label="所属年份" prop="batchYear">
+              <el-input placeholder="请输入所属年份" v-model="batchForm.batchYear" :readonly="true"></el-input>
             </el-form-item>
-            <el-form-item label="案件基数" prop="khjs">
+            <el-form-item label="案件基数(省)" prop="khjs">
               <el-input placeholder="请输入案件基数" v-model="batchForm.khjs" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="抽取基数" prop="cqjs">
+            <el-form-item label="抽取基数(省)" prop="cqjs">
               <el-input placeholder="请输入抽取基数" v-model="batchForm.cqjs" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="人员基数" prop="personNum">
+            <el-form-item label="人员基数(省)" prop="personNum">
               <el-input placeholder="请输入人员基数" v-model="batchForm.personNum" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="人员抽取数" prop="personCq">
+            <el-form-item label="人员抽取数(省)" prop="personCq">
               <el-input placeholder="请输入人员抽取数" v-model="batchForm.personCq" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="人员考试数" prop="personKs">
+            <el-form-item label="人员考试数(省)" prop="personKs">
               <el-input placeholder="请输入人员考试数" v-model="batchForm.personKs" :readonly="isView"></el-input>
-            </el-form-item>
-            <el-form-item label="发布日期" prop="showBatchDate">
-              <el-date-picker
-                type="date"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-                v-model="batchForm.showBatchDate"
-                :readonly="isView"
-              ></el-date-picker>
             </el-form-item>
           </el-form>
           <div :hidden="isView">
@@ -43,7 +34,7 @@
       </div>
       <div class="tablePart">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="案卷评查配置" name="case">
+          <el-tab-pane label="案卷评查配置" name="案卷评查">
             <el-table
               :data="dataList1"
               stripe
@@ -67,7 +58,7 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="自查自评配置" name="self">
+          <el-tab-pane label="自查自评配置" name="自查自评">
             <el-table
               :data="dataList2"
               stripe
@@ -91,7 +82,7 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="网上评查配置" name="onLine">
+          <el-tab-pane label="网上评查配置" name="网上评查">
             <el-table
               :data="dataList3"
               stripe
@@ -115,7 +106,7 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="现场检查配置" name="offLine">
+          <el-tab-pane label="现场检查配置" name="执法考试">
             <el-table
               :data="dataList4"
               stripe
@@ -177,7 +168,7 @@ export default {
   mixins: [mixinsCommon],
   data() {
     return {
-      activeName: "case",
+      activeName: "案卷评查",
       isView: false,
       batchForm: {
         batchName: "",
@@ -186,12 +177,11 @@ export default {
         cqjs: "",
         personNum: "",
         personCq: "",
-        personKs: "",
-        showBatchDate: ""
+        personKs: ""
       },
       rules: {
         batchName: [
-          { required: true, message: "请输入批次名称", trigger: "blur" }
+          { required: true, message: "请输入检查名称", trigger: "blur" }
         ],
         khjs: [
           { required: true, message: "请输入案件基数", trigger: "blur" },
@@ -212,9 +202,6 @@ export default {
         personKs: [
           { required: true, message: "请输入人员考试数", trigger: "blur" },
           { validator:numType , trigger: "blur"}
-        ],
-        showBatchDate: [
-          { required: true, message: "请输入发布时间", trigger: "blur" }
         ]
       },
       dataList1: [],
@@ -250,11 +237,11 @@ export default {
     },
     selectItems() {
       let datas = this.$refs.tree.getCheckedNodes();
-      if (this.activeName === "case") {
+      if (this.activeName === "案卷评查") {
         this.addItems(datas, this.dataList1);
-      } else if (this.activeName === "self") {
+      } else if (this.activeName === "自查自评") {
         this.addItems(datas, this.dataList2);
-      } else if (this.activeName === "onLine") {
+      } else if (this.activeName === "网上评查") {
         this.addItems(datas, this.dataList3);
       } else {
         this.addItems(datas, this.dataList4);
@@ -308,7 +295,6 @@ export default {
             return;
           }
           _this.batchForm.listDetailsForm = tableData;
-          _this.batchForm.showBatchDate = this.batchForm.showBatchDate;
           addOrUpdatePykhBatch(_this.batchForm).then(
             res => {
               _this.$message({
@@ -316,6 +302,7 @@ export default {
                 message: "添加成功!"
               });
               _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+              _this.$router.push({ name: "catsAppraisalStartUp", params: {} });
             },
             err => {
               console.log(err);
@@ -325,15 +312,15 @@ export default {
       });
     },
     deletePykhBatchById(row) {
-      if (row.assessType === "case") {
+      if (row.assessType === "案卷评查") {
         this.dataList1 = this.dataList1.filter(
           item => item.indexThreeId !== row.indexThreeId
         );
-      } else if (row.assessType === "self") {
+      } else if (row.assessType === "自查自评") {
         this.dataList2 = this.dataList2.filter(
           item => item.indexThreeId !== row.indexThreeId
         );
-      } else if (row.assessType === "onLine") {
+      } else if (row.assessType === "网上评查") {
         this.dataList3 = this.dataList3.filter(
           item => item.indexThreeId !== row.indexThreeId
         );
@@ -356,11 +343,11 @@ export default {
         findListVoByDetails({ batchId: this.$route.params.id }).then(
           res => {
             res.data.forEach(item => {
-              if (item.assessType === "case") {
+              if (item.assessType === "案卷评查") {
                 _that.dataList1.push(item);
-              } else if (item.assessType === "self") {
+              } else if (item.assessType === "自查自评") {
                 _that.dataList2.push(item);
-              } else if (item.assessType === "onLine") {
+              } else if (item.assessType === "网上评查") {
                 _that.dataList3.push(item);
               } else {
                 _that.dataList4.push(item);

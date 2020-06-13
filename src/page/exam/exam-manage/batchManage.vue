@@ -117,13 +117,14 @@
                 </p>
                 <p>
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text"  @click="addExamBatchInfo(scope.row,'2')">修改</el-button>
-                  <el-button type="text" @click="getViewPagelInfo(scope.row,'0')">查看试卷</el-button>
+                  <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="getViewPagelInfo(scope.row,'0')">选择试卷</el-button>
+                  <el-button v-if="scope.row.isConfigOver === '1'" type="text" @click="getViewPagelInfo1(scope.row,'0')">查看试卷</el-button>
                   <el-button v-if="scope.row.isConfigOver === '1'" type="text" @click="getInvigilateInfo(scope.row,'0')">监考管理</el-button>
                   <el-button v-if="scope.row.isConfigOver === '1'" type="text" @click="getExamDetailInfo(scope.row,'0')">考试详情</el-button>
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="getExamPersonInfo(scope.row,'0')">参考人员</el-button>
                   <el-button v-if="scope.row.isConfigOver === '1'" type="text" @click="getSendResultlInfo(scope.row,'0')">报送成绩</el-button>
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="roomDispathInfo(scope.row,'0')">考场分配</el-button>
-                  <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="scoreManageInfo(scope.row,'0')">评分人员</el-button>
+                  <el-button type="text" @click="scoreManageInfo(scope.row,'0')">评分人员</el-button>
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="disposeInfo(scope.row,'0')">配置完成</el-button>
                 </p>
               </template>
@@ -244,10 +245,24 @@ export default {
         this.$refs.addExamBatchCompRef.showModal(row, type);
       },
       
-    //考试详情
+    //选择试卷
     getViewPagelInfo(row, param) {
       let _this = this;
       _this.$refs.addPageCompRef.showModal(2, row);
+    }, 
+    //试卷查看
+    getViewPagelInfo1(row) {
+      //预览
+      let _this = this;
+      _this.$store.commit("setPersonInfo", "", "");
+      _this.$router.replace({
+        name: "viewApplayDetail",
+        params: {
+          pageId: row.examNum,
+          name: row.pageName,
+          type: "view"
+        }
+      });
     },
     getInvigilateInfo(row, param) {
       //监考管理

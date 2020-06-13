@@ -59,6 +59,7 @@ export default {
       background: #eaedf4;
     }
     .el-tabs__active-bar {
+      box-sizing: content-box;
       top: 0;
       padding: 0 20px;
       left: -20px;

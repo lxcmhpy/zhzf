@@ -1,25 +1,40 @@
 <template>
-<div class="com_searchAndpageBoxPadding">
-<!-- 考核抽取 by:jingli  -->
-  <el-tabs v-model="activeName" @tab-click="handleClick">
-    <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
-    <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-    <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-    <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
-  </el-tabs>
-</div>
+    <div >
+    <!-- 案件抽取 -->
+        <div >
+            <el-transfer width="100%" :titles="['案件列表', '已抽取案件']" v-model="value" :data="data">
+                <span slot-scope="{ option }" >
+                    <ul class="transfer-list" >
+                        <li><span>案件编号{{ option.key }} - {{ option.label }}</span></li>
+                        <li><span>案件类型{{ option.key }} - {{ option.label }}</span></li>
+                        <li><span>业务领域{{ option.key }} - {{ option.label }}</span></li>
+                    </ul>
+                </span>
+                <el-button class="transfer-footer" slot="left-header" size="small">操作</el-button>
+                <el-button class="transfer-footer" slot="right-header" size="small">操作</el-button>
+
+            </el-transfer>
+        </div>
+    </div>
 </template>
 <script>
-export default {
-    data () {
-        return {
-            activeName: ''
+  export default {
+    data() {
+      const generateData = _ => {
+        const data = [];
+        for (let i = 1; i <= 15; i++) {
+          data.push({
+            key: i,
+            label: `备选项 ${ i }`,
+            disabled: i % 4 === 0
+          });
         }
-    },
-    methods: {
-        handleClick () {
-
-        }
+        return data;
+      };
+      return {
+        data: generateData(),
+        value: [1, 4]
+      };
     }
-}
+  };
 </script>

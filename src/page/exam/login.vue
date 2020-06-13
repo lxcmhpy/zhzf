@@ -3,7 +3,10 @@
     <transition name="form-fade" mode="in-out">
       <section class="form_contianer" v-show="showLogin">
         <div class="leftC">
-          <img src="../../../static/images/img/login/pic_denglu.jpg" alt="">
+          <img src="../../../static/images/img/login/zf_bg.png" alt="">
+          <div class="leftC_title">
+              <img src="../../../static/images/img/login/logo1.png" alt=""> {{systemTitle}}
+          </div>
         </div>
         <div class="rightC" v-if="!resetFlag">
           <div class="form_box">
@@ -74,6 +77,7 @@ import VueSimpleVerify from 'vue-simple-verify';
 import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
 import * as types from "@/store/mutation-types";
+import { getDictListDetailByNameApi } from "@/api/system";
 
 export default {
   components: { VueSimpleVerify },
@@ -103,6 +107,7 @@ export default {
       timeOutFlag: ""
     };
   },
+  computed: {...mapGetters(['systemTitle'])},
   methods: {
     // 切换登录方式
     changeType(type) {
@@ -190,14 +195,22 @@ export default {
         _this.$refs.verify.reset();
         _this.errorMessage = '验证失效,请重新验证'
       }, 30000);
+    },
+    //获取系统标题
+    getSystemData() {
+      getDictListDetailByNameApi('系统标题').then(res => {
+        this.$store.commit('set_systemTitle',res.data[0].name);
+        window.document.title = res.data[0].name
+      }, err => {
+        console.log(err);
+      })
     }
   },
   created () {
-      debugger;
     window.sessionStorage.clear();
+    this.getSystemData();
   },
   mounted() {
-      debugger;
     this.showLogin = true;
     sessionStorage.setItem('LoginSystem', 'examLogin');
   }

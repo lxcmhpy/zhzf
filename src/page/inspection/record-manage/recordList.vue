@@ -14,7 +14,10 @@
               </el-select>
             </el-form-item>
             <el-form-item label="记录类型">
-              <el-input v-model="searchForm.title"></el-input>
+              <!-- <el-input v-model="searchForm.title"></el-input> -->
+              <el-select v-model="searchForm.title" placeholder="请选择">
+                <el-option v-for="(item,index) in recordTitleList" :key="index" :label="item" :value="item"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="状态">
               <el-select v-model="searchForm.status" placeholder="请选择">
@@ -45,12 +48,8 @@
           <el-table-column prop="createTime" label="记录时间" align="center"></el-table-column>
           <el-table-column prop="domain" label="业务领域" align="center"></el-table-column>
           <el-table-column prop="title" label="记录类型" align="center"></el-table-column><!-- 显示模板标题 -->
-          <!-- <el-table-column prop="" label="执法机构" align="center"></el-table-column> -->
-          <!-- <el-table-column prop="" label="执法人员" align="center"></el-table-column> -->
           <el-table-column prop="createUser" label="记录人" align="center"></el-table-column>
-          <!-- <el-table-column prop="" label="交接班" align="center"></el-table-column> -->
           <el-table-column prop="status" label="状态" align="center"></el-table-column>
-          <!-- <el-table-column prop="title" label="标题" align="center"></el-table-column> -->
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
               <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
@@ -68,16 +67,18 @@
   </div>
 </template>
 <script>
-import { findRecordListApi, removeRecordByIdApi, findRecordModleByIdApi, findRecordModleTimeByIdApi } from "@/api/Record";
+import { findRecordListApi, removeRecordByIdApi, findRecordModleByIdApi, findRecordModleTimeByIdApi, findAllModleNameApi } from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
       tableData: [], //表格数据
       timeList: [],
+      recordTitleList: [],
       multipleSelection: [],
       searchForm: {
         domain: "",
+        status: '',
         name: ''
       },
       currentPage: 1, //当前页
@@ -94,7 +95,7 @@ export default {
         startTime: this.timeList[0],
         endTime: this.timeList[1],
         title: this.searchForm.title,
-        status: this.searchForm.status,
+        status: this.searchForm.status == '全部' ? '' : this.searchForm.status,
         createUser: this.searchForm.createUser,
         domain: this.searchForm.domain,
         current: this.currentPage,
@@ -168,6 +169,15 @@ export default {
     },
     // 修改
     editRecord(row) {
+      console.log(row)
+      let addOrEiditFlag
+      if (row.status == '暂存') {
+        addOrEiditFlag = 'temporary'
+      }
+      if (row.status == '保存') {
+        addOrEiditFlag = 'view'
+      }
+      debugger
       let _this = this
       let list = []
       console.log('编辑', row)
@@ -177,10 +187,11 @@ export default {
             console.log('row.createTime <= res.data', row.createTime, res.data)
             if (row.createTime >= res.data) {
               // 写记录
-              row.addOrEiditFlag = 'edit'
+              // row.addOrEiditFlag = 'edit'
               this.$router.push({
                 name: 'inspection_writeRecordInfo',
-                params: row
+                // params: row
+                query: { id: row.id, addOrEiditFlag: addOrEiditFlag }
               });
             } else {
               this.$message.error('当前模板已修改，该记录不可修改');
@@ -220,6 +231,17 @@ export default {
 
       })
     },
+    getRecordTitleList() {
+      findAllModleNameApi().then(
+        res => {
+          console.log(res)
+          this.recordTitleList = res.data
+        },
+        error => {
+          // reject(error);
+        })
+
+    },
     // 选择数据
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -243,6 +265,7 @@ export default {
     this.createUserName = iLocalStroage.gets("userInfo").username
     this.getTableData();
     this.getEnforceLawType();
+    this.getRecordTitleList();
   }
 }
 </script>

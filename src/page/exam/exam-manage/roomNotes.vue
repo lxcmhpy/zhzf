@@ -48,20 +48,15 @@ export default {
         oid:"",
         branchName:"",
         stationName:"",
-        ministerialNo:""
+        ministerialNo:"",
+        invigilatorId:'',
+        examId:"",
+        examperId:"",
       },
       visible:false,
       dialogtitle:"",
       errorName:"",
-      tableDate:[{
-        personName:'张三',
-        sexName:'男',
-        idNo:'62022222222909898',
-        oname:'交通部',
-        stationName:'岗位名称',
-        ministerialNo:'执法证号',
-        area:'11111111111111'
-      }],
+      tableDate:[],
       tableLoading: false
     }
   },
@@ -69,14 +64,24 @@ export default {
     submit(){  
     },
     showModal(type,data){
+      
       let _this = this 
       _this.visible=true;
       _this.dialogtitle="考场记录";
+      console.info("aaaaaa"+JSON.stringify(data))
+      _this.addExamPersonForm.invigilatorId=data.invigilatorId,
+      _this.addExamPersonForm.examId=data.examId,
+      _this.addExamPersonForm.examperId=data.examperId,
       this.getPersonAllInfo();
     },
     getPersonAllInfo(){//查询试卷列表
-      let data={}
-      // this.getPageList("",data);
+        let data = {
+          invigilatorId:this.addExamPersonForm.invigilatorId,
+          examId: this.addExamPersonForm.examId,
+          examperId:this.addExamPersonForm.examperId
+      }
+      console.info(JSON.stringify(data))
+      this.getPageList("examRecordQueryInfo",data);
     },
     //更改每页显示的条数
     handleSizeChange(val) {

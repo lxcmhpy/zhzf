@@ -55,7 +55,7 @@
         <div class="subject-title" >
           <h2>{{item.name}}</h2><span>（共 {{item.count}} 题，合计 {{item.totalScore}} 分）</span>
         </div>
-        <el-card class="box-card" v-for="(sub,index) in item.childs" :id="item.code+(index+1)" v-bind:key="item.id">
+        <el-card class="box-card" v-for="(sub,index) in item.childs" :id="item.code+(index+1)" :key="index">
           <div slot="header" class="clearfix">
             <el-tag effect="dark"> {{sub.no}} </el-tag>
             <span>{{sub.subject}}</span>
@@ -76,11 +76,11 @@
           </div>
           <!-- 单选 -->
           <el-radio-group v-if="sub.type===1" v-model="sub.examineAnswer">
-            <el-radio :disabled="disabledAnswer" v-for="o in sub.answers"  :label="o.no" class="answer-radio" v-bind:key="item.id" @change="answerButtionCheck($event,item,sub)">{{o.no}}.{{o.answer}}</el-radio>
+            <el-radio :disabled="disabledAnswer" v-for="o in sub.answers"  :label="o.no" class="answer-radio" :key="o.id" @change="answerButtionCheck($event,item,sub)">{{o.no}}.{{o.answer}}</el-radio>
           </el-radio-group>
           <!-- 多选 -->
           <el-checkbox-group v-if="sub.type===2" v-model="sub.examineAnswer">
-            <el-checkbox :disabled="disabledAnswer" v-for="o in sub.answers" :label="o.no" v-bind:key="item.id" class="answer-checkbox" @change="answerButtionCheck($event,item,sub)">{{o.no}}.{{o.answer}}</el-checkbox>
+            <el-checkbox :disabled="disabledAnswer" v-for="o in sub.answers" :label="o.no" :key="o.id" class="answer-checkbox" @change="answerButtionCheck($event,item,sub)">{{o.no}}.{{o.answer}}</el-checkbox>
           </el-checkbox-group>
           <!-- 判断 -->
           <el-radio-group v-if="sub.type===3" v-model="sub.examineAnswer">

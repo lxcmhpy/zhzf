@@ -176,3 +176,58 @@ export function getContentApi(id) {
     cancelToken: setCancelSource()
   });
 }
+
+export function getNoticeByPageAndUserId(data){
+  return request({
+    url: "/pykh/notice/findNoticeByPageAndUserId",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+export function getAppraisalMenuList(){
+  return request({
+    url: "/pykh/home/getMenuList",
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+export function getPykhOrgInfo(data){
+  return request({
+    url: "/pykh/pykhOrgInfo/getPykhOrgInfo",
+    method: "get",
+    showloading: true,
+    params:data,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+export function updateScore(data) {
+  return request({
+    url: "/pykh/pykhScore/updateScore",
+    method: "post",
+    data: data,
+    showloading: false,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+export function updateScoreState(data) {
+  return request({
+    url: "/pykh/pykhScore/updateScoreState",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+

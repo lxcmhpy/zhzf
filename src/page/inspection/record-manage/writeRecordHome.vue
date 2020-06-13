@@ -51,10 +51,10 @@ import {  findAllRecordModleApi, findRecordlModleByNameApi, findRecordModleByIdA
   findRecordModleByNameIdApi} from "@/api/Record";
 
 export default {
-  // components: {
-  //   preview,
-  //   addModle
-  // },
+  components: {
+    preview,
+    addModle
+  },
 
   data() {
     return {
@@ -106,13 +106,12 @@ export default {
     },
     // 选择模板
     writeRecord(item) {
-      console.log('选中的模板', item)
-      item.addOrEiditFlag = 'add'
       // 写记录
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
         name: 'inspection_writeRecordInfo',
-        params: item
+        // params: item
+        query:{id:item.id,addOrEiditFlag:'add'}
       });
     },
     // 修改模板
