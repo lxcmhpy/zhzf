@@ -264,7 +264,10 @@ export default {
 
                   // _this.getCurrentUser();
                   _this.$util.initUser(_this);
-                  _this.success = false
+                  _this.success = false;
+                  
+                  //设置默认openTab
+                  this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
               },
               // error => {
               //   console.log('error',error);

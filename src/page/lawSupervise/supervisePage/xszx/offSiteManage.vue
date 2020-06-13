@@ -338,6 +338,7 @@ export default {
       return data.label.indexOf(value) !== -1;
     },
     search (val) {
+
         this.form.checkStartTime = typeof this.timeList[0] == 'object' ? this.timeList[0].format('yyyy-MM-dd HH:mm:ss'): this.timeList[0];
         this.form.checkEndTime = typeof this.timeList[1] == 'object' ?this.timeList[1].format('yyyy-MM-dd HH:mm:ss'): this.timeList[1];
         this.form.status = this.tabActiveValue;
@@ -374,7 +375,7 @@ export default {
             })
 
         }
-
+this.$store.dispatch("deleteTabs", this.$route.name);
     },
     findAllDrawerById (data, obj) {
         let _this = this
