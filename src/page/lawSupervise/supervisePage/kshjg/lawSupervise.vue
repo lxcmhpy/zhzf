@@ -1833,9 +1833,11 @@ export default {
                         let resultList = [];
                         res.data.forEach((v,i)=>{
 
-                            let position = v.propertyValue ? v.propertyValue.split(','):['',''];
-                            let lng = parseFloat(position[0]);
-                            let lat = parseFloat(position[1]);
+                            // let position = v.propertyValue ? v.propertyValue.split(','):['',''];
+                            // let lng = parseFloat(position[0]);
+                            // let lat = parseFloat(position[1]);
+                            let lng = v.longitude?v.longitude: '';
+                            let lat = v.latitude?v.latitude: '';
                             resultList.push({
                                 address: v.address,
                                 distance: null,
@@ -1853,7 +1855,8 @@ export default {
                                 },
                                 name: v.name,
                                 label: v.nickName,
-                                position: v.propertyValue,
+                                // position: v.propertyValue,
+                                position: [lng, lat],
                                 shopinfo: '',
                                 tel: '',
                                 type: '0',
@@ -2173,7 +2176,7 @@ export default {
          this.drawer = true;
         // this.getRealTimeDataByLawSupervise();
         this.searchPageAll(4, 'zfdList');
-        this.searchPageAll(6, 'gjclList');
+        this.searchPageAllGJ(6, 'gjclList');
         this.category = 4;
         // this.searchByTab(this.tabList[1].children[0]);
 
@@ -2187,7 +2190,7 @@ export default {
         let data = {
                 // area: this.currentAddressObj.province + this.currentAddressObj.district,
                 // area: '',
-                current: 1,
+                // current: 1,
                 key: '',
                 size: 20,
                 type: code
@@ -2206,10 +2209,31 @@ export default {
                     })
             })
     },
+    searchPageAllGJ (code, obj) {
+        // 告警车辆
+        if (this.curWindow) {
+            this.curWindow.visible = false;
+        }
+        // 进入页面加载查询所有初始数据
+        let _this = this;
+        new Promise((resolve, reject) => {
+                queryAlarmVehiclePage({current:1}).then(
+                    res => {
+                        let resultList = [];
+                        that[obj] = res.data.records.splice(0,5);
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+    },
     onSearchResult(pois, category, length) {
       if (length == 0) {
         this.windows.splice(0,this.windows.length);
       }
+      debugger;
       let latSum = 0;
       let lngSum = 0;
       let numG = 100;
@@ -2218,8 +2242,8 @@ export default {
         // let windows = []
         pois.forEach((poi, i) => {
           let { lng, lat } = poi;
-          lngSum += lng;
-          latSum += lat;
+          lngSum += parseFloat(lng);
+          latSum += parseFloat(lat);
           let that = _this;
           if (category == -1) {
                 _this.markers.push({
@@ -2317,6 +2341,7 @@ export default {
           };
           _this.windows.push(aaa);
         });
+        debugger;
         let center = {
           lng: lngSum / pois.length,
           lat: latSum / pois.length
@@ -2352,7 +2377,7 @@ export default {
             let data = {
             // area: this.currentAddressObj.province + this.currentAddressObj.district,
             // area: "东城区",
-            current: 1,
+            // current: 1,
             key: "",
             //   size: 20,
             type: item.code
@@ -2443,7 +2468,7 @@ export default {
         // this.currentAddressObj.province + this.currentAddressObj.district
         let data = {
         //   area: "",
-          current: 1,
+        //   current: 1,
           key: this.$refs.searchAmapBox.keyword,
           size: 20,
           type: this.category
@@ -2452,6 +2477,7 @@ export default {
       }
     },
     getZfjgLawSupervise(data, category) {
+      data.organId = this.userInfo.organId;
       let _this = this;
       new Promise((resolve, reject) => {
         getZfjgLawSupervise(data).then(

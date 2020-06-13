@@ -176,3 +176,24 @@ export function getContentApi(id) {
     cancelToken: setCancelSource()
   });
 }
+
+export function getNoticeByPageAndUserId(data){
+  return request({
+    url: "/pykh/notice/findNoticeByPageAndUserId",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+export function getAppraisalMenuList(){
+  return request({
+    url: "/pykh/home/getMenuList",
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

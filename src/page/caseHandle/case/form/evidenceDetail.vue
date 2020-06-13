@@ -4,17 +4,10 @@
     :show-close="false" width="60%" class= "detailDialog" :append-to-body="true">
       <div>
         <div style="float: left;width: 45%">
-          <!-- <el-upload
-          class="upload-demo"
-          drag
-          action="https://jsonplaceholder.typicode.com/posts/"
-          multiple>
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text"><em>点击上传附件</em></div>
-          <div class="el-upload__tip" slot="tip" style="text-align: center">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload> -->
+         
         <el-form ref="form" :model="form">
-          <img :src="host+form.evPath" width="350px" height="400" align="center"/>
+          <img v-if="form.evType =='照片'" :src="host+form.evPath"  width="350px" height="400" align="center"/>
+          <video v-if="form.evType =='音视频'" :src="host+form.evPath" controls="controls" width="350px" height="400">your browser does not support the video tag</video>
         </el-form>
         </div>
         <div style="float: right;width: 55%">
@@ -73,7 +66,16 @@ export default {
     data(){        
         return{
             visible: false,
-            form:{},
+            form:{
+              evName:'',
+              evPath:'',
+              evType:'',
+              userName:'',
+              createTime:'',
+              recordPlace:'',
+              note:'',
+              status:''
+            },
             host:""
         }
     },

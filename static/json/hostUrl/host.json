@@ -1,5 +1,5 @@
 {
-  "CURRENT": "TEST",
+  "CURRENT": "NW",
   "PS": {
     "CAPTCHA_HOST": "系统管理/案件办理  96：9000",
     "PDF_HOST": "文件服务器地址",
@@ -28,7 +28,23 @@
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
     "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://172.16.170.44:8098/"
+    "XZJC_HOST":"http://172.16.170.96:9000/"
+  },
+  "XBW":{
+    "CAPTCHA_HOST": "https://172.16.164.53:8443",
+    "PDF_HOST": "http://172.16.170.54:9332/",
+    "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
+    "LAW_SUPERVISE_HOST": "https://172.16.164.53:8443",
+    "VIDEO_HOST": "wss://172.16.170.47:10062",
+    "CHECK_API":"http://172.16.170.91:8081"
+  },
+  "ZHW": {
+    "CAPTCHA_HOST": "http://172.16.164.105:9000",
+    "PDF_HOST": "http://172.16.170.54:9332/",
+    "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
+    "LAW_SUPERVISE_HOST": "http://172.16.164.105:9000",
+    "VIDEO_HOST": "wss://172.16.170.47:10062",
+    "CHECK_API":"http://172.16.170.91:8081"
   },
   "SGX": {
     "CAPTCHA_HOST": "http://172.16.164.94:9000",
@@ -47,7 +63,7 @@
     "CHECK_API":"http://172.16.170.91:8081"
   },
   "wj": {
-    "CAPTCHA_HOST": "http://172.16.170.96:9000",
+    "CAPTCHA_HOST": "http://172.16.169.44:9000",
     "PDF_HOST": "http://172.16.170.54:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
