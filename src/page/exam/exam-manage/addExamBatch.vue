@@ -250,6 +250,7 @@ export default {
       let _this = this;
       _this.visible = true;
       _this.handelType = type;
+      console.info(JSON.stringify(row))
       if (type == 1) {
         //新增
         _this.dialogTitle = "新增考试";

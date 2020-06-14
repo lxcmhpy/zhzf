@@ -7,7 +7,7 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     getDispatchPersonByRoomIdApi,removeDispatchApi,autoDispatchApi,getPageListApi,disPapersApi,examDetialApi,previewPageApi,exportInvigilatorApi,exportExamPersonApi,exporExamtDetailApi
     ,getExamAnswerReport,changeQuestionIsUse,applyPageVerifyApi,pageVerifyListByPageIdApi,verifyApi,awaitPageVerifyListApi,getExamManageScheduleApi,addExamScorerApi,getExamScorerListApi,
     changeQuestionLock,randomQuestion,randomParagraphQuestion
-    ,saveReplaceQuestion,getSystemParams,updateExamScorerApi,deleteExamScorerByIdApi,getDisScorerListApi,getUnDisScorerListApi,addExamDisScorerApi,deleteExamDisScorerByIdsApi} from "@/api/exam";
+    ,saveReplaceQuestion,getSystemParams,updateExamScorerApi,deleteExamScorerByIdApi,getDisScorerListApi,getUnDisScorerListApi,addExamDisScorerApi,deleteExamDisScorerByIdsApi,questionDistributionApi} from "@/api/exam";
     
     import { loginExam, invigilatorSubmitInfo, getJoinExamPerson, signOutSystem, startQuestion, getpersonExamQuestionNextApi, getexamResultSubmitApi,examPersonsByInvigilatorIdApi,getExamInfoByInvigilatorInfoApi,
     addExamRollingApi,examRecordQueryApi,addExamRecordApi,deleteExamRecordApi,updateExamRecordApi,drawInfoApi,setBatchExamDelayedApi,getPersonExamStatus,getWaitScoringExam,getPersonScoreList,
@@ -363,6 +363,15 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
                         error => { reject(error); })
                 })
         },
+            //题目分布
+            questionDistribution({commit},data){
+                return new Promise((resolve, reject) => {
+                    questionDistributionApi(data).then(
+                        res => {  resolve(res);   },
+                        error => { reject(error); })
+                })
+        },
+        
         //审核列表
         awaitPageVerifyList({commit},data){
             return new Promise((resolve, reject) => {
