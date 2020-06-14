@@ -4,24 +4,24 @@
       <el-card class="box-card outer-card">
         <el-row>
           <el-col :span="8">
-            <div class="examinee-info">
+            <div v-if="JSON.stringify(examineePersonInfo) !== '{}'" class="examinee-info">
               <div class="examinee-photo">
                 <img
-                  v-if="examineeData.personInfo && examineeData.personInfo.photoUrl"
-                  :src="baseUrl + examineeData.personInfo.photoUrl || personImg"
+                  v-if="examineePersonInfo.photoUrl"
+                  :src="baseUrl + examineePersonInfo.photoUrl || personImg"
                   width="214px"
                   height="298px"
                 />
                 <img v-else :src="personImg" width="214px" height="298px" />
               </div>
               <p
-                v-if="examineeData.personInfo && examineeData.personInfo.personName"
+                v-if="examineePersonInfo.personName"
                 class="name"
-              >{{ examineeData.personInfo.personName }}</p>
+              >{{ examineePersonInfo.personName }}</p>
               <p
-                v-if="examineeData.personInfo && examineeData.personInfo.oname"
+                v-if="examineePersonInfo.oname"
                 class="componey"
-              >{{ examineeData.personInfo.oname }}</p>
+              >{{ examineePersonInfo.oname }}</p>
             </div>
           </el-col>
           <el-col :span="16">
@@ -39,12 +39,12 @@
                 <!-- 考试列表 -->
                 <div
                   class="exam-item"
-                  v-for="exam in examineeData.personExamInfo"
+                  v-for="exam in examineeData"
                   :key="exam.examId"
                 >
                   <div class="exam-desc">
                     <p class="name">{{ exam.examName }}</p>
-                    <p class="time">考试时间：{{ exam.examBegin }} 至 {{ exam.examEnd }}</p>
+                    <p class="time">开始时间：{{ exam.examBegin }}  至  {{ exam.examEnd }}</p>
                   </div>
                   <div class="exam-status">
                     <el-button
@@ -55,6 +55,7 @@
                     >进入</el-button>
                     <p v-if="exam.examStatus == '2'" class="status-box finish">已交卷</p>
                     <p v-if="exam.examStatus == '0'" class="status-box wait">未开始</p>
+                    <p v-if="exam.examStatus == '3'" class="status-box wait">已结束</p>
                   </div>
                 </div>
               </div>
@@ -66,7 +67,7 @@
     <!-- 开始倒计时 -->
     <div v-if="startCountDown" class="count-contain">
       <el-card class="box-card count-card">
-        <p class="name">交通运输工程监理工程师执业资格</p>
+        <p class="name">{{ selectedExam.examName }}</p>
         <div v-if="startCount" class="time">
           <span>{{ countDownList }}后可进入</span>
         </div>
@@ -84,7 +85,8 @@ import iLocalStroage from "@/common/js/localStroage.js";
 export default {
   data() {
     return {
-      examineeData: {},
+      examineeData: [],
+      examineePersonInfo: {},
       startCountDown: false,
       timeInfo: {
         year: "",
@@ -98,7 +100,8 @@ export default {
       selectedExam: null,
       startCount: true,
       personImg: "@/../static/images/img/personInfo/upload_bg.png",
-      currentSysTime: new Date().getTime()
+      currentSysTime: new Date().getTime(),
+      differenceTime: 0
     };
   },
   computed: {
@@ -120,10 +123,9 @@ export default {
         res => {
           if (res) {
             this.currentSysTime = res;
+            this.differenceTime = res - new Date().getTime();
+            console.log(this.differenceTime);
             this.currentTimeCount(res);
-            console.log(res);
-            console.log(new Date().getTime());
-            console.log(res - new Date().getTime());
           }
         },
         err => {
@@ -133,20 +135,28 @@ export default {
     },
     // 获取考生信息
     getExamineeInfo() {
+      const loading = this.$loading({
+        lock: true,
+        text: "正在获取考生考试信息",
+        spinner: "car-loading",
+        customClass: "loading-box",
+        background: "rgba(234,237,244, 0.8)"
+      });
       this.$store.dispatch("getJoinExamPerson", this.examineeName).then(
         res => {
           if (res.code === 200) {
-            this.setExamStatus(res.data.personExamInfo);
-            this.examineeData = res.data;
+            this.examineePersonInfo = res.data.personInfo;
+            this.setExamStatus(res.data.personExamInfo, loading);
           }
         },
         err => {
-          console.log(err);
+          loading.close();
+          this.$message({ type: 'error', message: err.msg || '' });
         }
       );
     },
     // 获取考试对应考试状态
-    setExamStatus(examList) {
+    setExamStatus(examList, loading) {
       if (examList && examList.length) {
         const promiseAll = [];
         examList.forEach(item => {
@@ -172,13 +182,33 @@ export default {
           promiseAll.push(status);
         });
         Promise.all(promiseAll).then(values => {
+          loading.close();
           if (values && values.length) {
             examList.forEach((item, index) => {
-              item.examStatus = values[index] ? values[index] : "0";
+              if(values[index] === '0' || values[index] === '1'){
+                item.examStatus =  this.setExamStatusByTime(item);
+              }else{
+                item.examStatus = values[index] ? values[index] : "0";
+              }
             });
           }
+          this.examineeData = examList;
         });
       }
+    },
+    // 根据当前时间设置考试状态
+    setExamStatusByTime(exam){
+      let status = '0';
+      const current = new Date().getTime() + this.differenceTime;
+      const diffTime = (new Date(exam.examBegin).getTime() + 1800000) - current;
+      const endDiff = new Date(exam.examEnd).getTime() - current;
+      if(diffTime < 0 || endDiff > 0){
+        status = '1';
+      }
+      if(endDiff < 0){
+        status = '3';
+      }
+      return status;
     },
     // 进入考试
     entryExam(exam) {
@@ -252,9 +282,14 @@ export default {
         } else {
           let time = diffTime / 1000;
           this.setCountDownTime(time);
+          this.examineeData.forEach((item, index) => {
+            if(item.examStatus === '1'){
+              item.examStatus =  this.setExamStatusByTime(item);
+            }
+          });
         }
-        this.currentSysTime = this.currentSysTime + 1000;
-      }, 1000);
+        this.currentSysTime = this.currentSysTime + 10000;
+      }, 10000);
     },
     // 设置倒计时显示值
     setCountDownTime(time) {
@@ -305,7 +340,7 @@ export default {
               sessionStorage.setItem(
                 "ExamUserInfo",
                 JSON.stringify({
-                  personInfo: this.examineeData.personInfo,
+                  personInfo: this.examineePersonInfo,
                   examInfo: this.selectedExam
                 })
               );
@@ -378,6 +413,8 @@ export default {
     }
     .exam-list {
       padding: 30px;
+      height: 480px;
+      overflow-y: scroll;
       .exam-item {
         display: flex;
         justify-content: space-between;

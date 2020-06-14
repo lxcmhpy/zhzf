@@ -63,11 +63,11 @@
       </p>
       <p>试题解析：{{question.questionAnalysis}}</p>
       <div v-if="editable" class="edit-question">
-        <div class="edit-btn">
+        <div v-show="question.isLock === '0'" class="edit-btn">
           <span class="btn" @click="randomReplace">随机替换</span>
           <i class="split"></i>
         </div>
-        <div class="edit-btn">
+        <div v-show="question.isLock === '0'" class="edit-btn">
           <span class="btn" @click="selectReplace">选择替换</span>
           <i class="split"></i>
         </div>
@@ -263,6 +263,9 @@ export default {
   position: relative;
   border: 1px solid #e5e5e5;
   margin-bottom: 20px;
+  &.locked{
+    border: 1px solid red;
+  }
   &.noBorder {
     border: none;
     margin-bottom: 0;

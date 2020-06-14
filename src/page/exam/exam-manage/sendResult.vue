@@ -1,6 +1,6 @@
 <template>
     <div>
-        send result 
+        <!-- send result  -->
     </div>
 </template>
 <script>

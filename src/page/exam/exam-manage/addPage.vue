@@ -96,13 +96,15 @@ export default {
       tableDate: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
-      totalPage: 0 //总数
+      totalPage: 0, //总数
+      reloadParent: false
     };
   },
   methods: {
     getExamBatchList() {},
     showModal(type, row) {
       let _this = this;
+      _this.reloadParent = false;
       _this.visible = true;
       _this.dialogtitle = "试卷选择";
       _this.addPageForm.examId = row.examId;
@@ -132,12 +134,12 @@ export default {
         if (res.code == "200") {
           this.$message({ type: "success", message: "选择成功！" });
           this.getPageAllInfo();
+          this.reloadParent = true;
         } else {
           this.$message({ type: "error", message: "选择失败！" });
         }
-        err => {
-          console.log(err);
-        };
+      }, err => {
+        this.$message({ type: 'warning', message: err.msg || '' });
       });
     },
     getPageAllInfo() {
@@ -169,6 +171,7 @@ export default {
     closeDialog() {
       let _this = this;
       _this.visible = false;
+      _this.reloadParent && _this.$emit('getbatchManageComp');
       _this.$refs["addPageFormRef"].resetFields();
       _this.errorName = false;
     }

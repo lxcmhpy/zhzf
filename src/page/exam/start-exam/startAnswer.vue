@@ -33,7 +33,7 @@
               :disabled="currentGraph.orderNo === 1"
               @click="nextQuestion('prev')"
             >上一题</el-button>
-            <el-button class="question-btn" @click="nextQuestion" :disabled="nextDisabled">下一题</el-button>
+            <el-button class="question-btn" @click="nextQuestion('')" :disabled="nextDisabled">下一题</el-button>
           </div>
         </div>
       </el-col>
@@ -44,14 +44,16 @@
               <img src="../../../../static/images/img/exam/clocks.png" alt />
               <span class="time-prompt">距离考试结束</span>
               <span class="count-down">{{ countTime.minutes }}</span>
+              <span class="count-unit" style="margin-right:8px;">分</span>
               <span class="count-down">{{ countTime.second }}</span>
+              <span class="count-unit">秒</span>
             </div>
             <div v-if="examPerInfo.personInfo" class="time-info pserson-info">
               <div class="examinee-photo">
                 <img
                   :src="(baseUrl + examPerInfo.personInfo.photoUrl) || personImg"
-                  width="80px"
-                  height="112px"
+                  width="100px"
+                  height="140px"
                 />
               </div>
               <div class="exam-person">
@@ -89,6 +91,7 @@
                     :class="{'sign': num.labelStatue === '1',
                       'finish': num.questionStatue === '1' || num.answer,
                       'current': num.resultId == questionData.firstQuestion.resultId}"
+                    @click="nextQuestion('', num.orderNo)"
                   >{{ num.orderNum }}</a>
                 </div>
               </div>
@@ -276,11 +279,14 @@ export default {
       this.currentGraph.labelStatue = mark ? "1" : "0";
     },
     // 下一题
-    nextQuestion(dir) {
+    nextQuestion(dir, orderNo) {
       this.nextDisabled = false;
       const answer = this.handleSubmitData();
       if (dir === "prev") {
         answer.preOrNext = "-1";
+      }
+      if(orderNo !== undefined){
+        answer.orderNo = orderNo;
       }
       const loading = this.$loading({
         lock: true,
@@ -579,7 +585,7 @@ export default {
         .question-total {
           position: absolute;
           overflow-y: scroll;
-          top: 364px;
+          top: 400px;
           bottom: 68px;
           left: 20px;
           right: 0;
@@ -593,6 +599,7 @@ export default {
             .question-wrap {
               display: flex;
               flex-wrap: wrap;
+              // justify-content: space-around;
               > .item {
                 display: inline-block;
                 width: 34px;
@@ -602,7 +609,7 @@ export default {
                 background: rgba(255, 255, 255, 1);
                 border-radius: 2px;
                 border: 1px solid rgba(217, 217, 217, 1);
-                margin: 0 10px 10px 0;
+                margin: 0 12px 10px 0;
                 // cursor: pointer;
                 &:hover {
                   background: #ebebeb;

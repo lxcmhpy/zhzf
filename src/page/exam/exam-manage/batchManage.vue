@@ -124,7 +124,7 @@
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="getExamPersonInfo(scope.row,'0')">参考人员</el-button>
                   <el-button v-if="scope.row.isConfigOver === '1'" type="text" @click="getSendResultlInfo(scope.row,'0')">报送成绩</el-button>
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="roomDispathInfo(scope.row,'0')">考场分配</el-button>
-                  <el-button type="text" @click="scoreManageInfo(scope.row,'0')">评分人员</el-button>
+                  <el-button v-if="scope.row.isScoring === '0'" type="text" @click="scoreManageInfo(scope.row,'0')">评分人员</el-button>
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="disposeInfo(scope.row,'0')">配置完成</el-button>
                 </p>
               </template>
@@ -242,8 +242,8 @@ export default {
     },
     //新增人员信息
     addExamBatchInfo(row,type) {
-        this.$refs.addExamBatchCompRef.showModal(row, type);
-      },
+      this.$refs.addExamBatchCompRef.showModal(row, type);
+    },
       
     //选择试卷
     getViewPagelInfo(row, param) {
