@@ -6,12 +6,12 @@
             :data="tableData"
             resizable
             stripe>
-            <el-table-column type="index" label="序号"></el-table-column>
-            <el-table-column prop="outlineTypeName" label="大纲类型"></el-table-column>
+            <el-table-column type="index" width="100PX" label="序号"></el-table-column>
+            <el-table-column prop="topLevel" label="大纲类型"></el-table-column>
             <el-table-column prop="outlineName" label="大纲名称"></el-table-column>
-            <el-table-column prop="simple" label="简单"></el-table-column>
-            <el-table-column prop="custom" label="一般"></el-table-column>
-            <el-table-column prop="diffi" label="困难"></el-table-column>
+            <el-table-column prop="easilyCount" label="简单"></el-table-column>
+            <el-table-column prop="commonCount" label="一般"></el-table-column>
+            <el-table-column prop="difficultCount" label="困难"></el-table-column>
         </el-table>
     </div>
 </div>
@@ -26,11 +26,29 @@ export default {
             tableData:[],
         }
     },
+    computed: {
+        pageId() {
+        return this.$route.params.pageId;
+        }
+  },
     methods:{
         getPageDetailInfo(){
-            let _this = this;
-           // _this.getPageList("vv",this.tableData);
-        }
+                    let _this = this;
+            let data = {
+                pageId: this.pageId
+            };
+            _this.$store.dispatch("pageVerifyListByPageId", data).then(
+                res => {
+                if (res.code === 200) {
+                    _this.tableData = res.data;
+                }
+                },
+                err => {
+                loading.close();
+                _this.$message({ type: "error", message: err.msg || "" });
+                }
+            );
+            }
     },
     created(){
         let _this = this 
