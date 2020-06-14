@@ -125,7 +125,8 @@ export default {
       questionNumList: [],
       intervalTime: null,
       nextDisabled: false,
-      personImg: "@/../static/images/img/personInfo/upload_bg.png"
+      personImg: "@/../static/images/img/personInfo/upload_bg.png",
+      currentSysTime: new Date().getTime()
     };
   },
   computed: {
@@ -143,10 +144,24 @@ export default {
     }
   },
   created() {
+    this.getSystemTime();
     this.getQuestionInfo();
-    this.startCountDown();
   },
   methods: {
+    // 获取系统当前时间
+    getSystemTime() {
+      this.$store.dispatch("getSystemDate").then(
+        res => {
+          if (res) {
+            this.currentSysTime = res;
+            this.startCountDown(res);
+          }
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
     // 获取考试内容
     getQuestionInfo() {
       const examInfo = {
@@ -197,9 +212,9 @@ export default {
       }
     },
     // 开始倒计时
-    startCountDown() {
+    startCountDown(sysTime) {
       // 获取当前时间，考试结束时间
-      let newTime = new Date().getTime();
+      let newTime = sysTime;
       // 对结束时间进行处理渲染到页面
       let endTime = new Date(this.examPerInfo.examInfo.examEnd).getTime();
       let diffTime = endTime - newTime;
@@ -213,7 +228,7 @@ export default {
     countDownFun(examEnd) {
       this.intervalTime = setInterval(() => {
         // 获取当前时间，考试结束时间
-        let newTime = new Date().getTime();
+        let newTime = this.currentSysTime;
         // 对结束时间进行处理渲染到页面
         let endTime = new Date(examEnd).getTime();
         let diffTime = endTime - newTime;
@@ -236,6 +251,7 @@ export default {
           let time = diffTime / 1000;
           this.setCountDownTime(time);
         }
+        this.currentSysTime = this.currentSysTime + 1000;
       }, 1000);
     },
     // 设置倒计时显示值

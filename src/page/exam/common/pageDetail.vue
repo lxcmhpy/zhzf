@@ -363,6 +363,7 @@ export default {
   bottom: 150px;
   .float-btns{
     bottom: 220px;
+    right: 50px;
   }
   .edit_btn {
     display: block;

@@ -96,9 +96,18 @@ export default {
     }
   },
   created() {
+    this.getSystemTime();
     this.startCountDown();
   },
   methods: {
+    // 获取系统当前时间
+    getSystemTime(){
+      this.$store.dispatch('getSystemDate').then(res => {
+        console.log(res);
+      }, err => {
+        console.log(err);
+      });
+    },
     // 开始倒计时
     startCountDown() {
       // 获取当前时间，考试结束时间

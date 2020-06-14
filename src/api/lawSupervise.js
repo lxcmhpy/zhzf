@@ -146,7 +146,7 @@ export function getById(type,id) {
     });
   }
   // 获取机构树
-  export function getOrganList(){
+  export function organTreeByCurrUser(){
     return request({
         // url: "/zfjg/queryLike",
         url: "/system/sys/organ/organTreeByCurrUser",
