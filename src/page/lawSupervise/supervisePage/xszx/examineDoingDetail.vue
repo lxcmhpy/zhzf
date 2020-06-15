@@ -18,7 +18,7 @@
             <component v-if="obj" :obj="obj" v-bind:is="examineDoingDetailChildren[tabActiveValue]" ></component>
         </div>
     </div>
-    <btns v-if="tabActiveValue" :tabActiveValue="tabActiveValue"></btns>
+    <btns v-if="tabActiveValue&&obj" :obj="obj" :tabActiveValue="tabActiveValue"></btns>
 </div>
 </template>
 
@@ -32,18 +32,20 @@
 </style>
 <script>
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
-import {getDetailById} from '@/api/lawSupervise.js';
+import {getDetailById, findAlarmVehicleById} from '@/api/lawSupervise.js';
 import { mapGetters } from "vuex";
 import xszxDetailView from './componentChild/xszxDetailView.vue';
 import examineDoingFirstDetail from './componentChild/examineDoingDetail/examineDoingFirstDetail';
 import examineDoingSecondDetail from './componentChild/examineDoingDetail/examineDoingSecondDetail';
 import examineDoingThirdDetail from './componentChild/examineDoingDetail/examineDoingThirdDetail';
+import examineDoingZbDetail from './componentChild/examineDoingDetail/examineDoingZbDetail';
+
 
 
 export default {
     data () {
         return {
-            examineDoingDetailChildren: ['examineDoingFirstDetail','examineDoingSecondDetail','examineDoingThirdDetail','examineDoingThirdDetail'],
+            examineDoingDetailChildren: ['examineDoingFirstDetail','examineDoingSecondDetail','examineDoingThirdDetail','examineDoingZbDetail'],
             obj: null,
             processStatus: [{
                 value: '检测数据核对'
@@ -72,9 +74,30 @@ export default {
                 )
             })
         },
+        findAlarmVehicleById (id) {
+            let _this = this;
+            new Promise((resolve, reject) => {
+                findAlarmVehicleById(id).then(
+                    res => {
+                        debugger;
+                        // resolve(res);
+                        _this.obj = res.data;
+                        // obj.list = res.data
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+        },
         init () {
-            this.getDetailById(this.$route.params.offSiteManageId);
             this.tabActiveValue = this.$route.params.status;
+            if (this.tabActiveValue == '0') {
+                this.findAlarmVehicleById(this.$route.params.offSiteManageId);
+            } else {
+                this.getDetailById(this.$route.params.offSiteManageId);
+            }
         }
     },
     mounted () {
@@ -89,7 +112,7 @@ export default {
         }
     },
     components: {
-        btns,examineDoingFirstDetail,examineDoingSecondDetail,examineDoingThirdDetail
+        btns,examineDoingFirstDetail,examineDoingSecondDetail,examineDoingThirdDetail,examineDoingZbDetail
     }
 }
 </script>

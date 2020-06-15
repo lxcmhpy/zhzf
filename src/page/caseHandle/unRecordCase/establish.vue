@@ -322,7 +322,7 @@ export default {
         caseLinktypeId: BASIC_DATA_SYS.establish_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
-        status: ""
+        status: "",      
       },
       rules: {
         checkBox: [
@@ -376,11 +376,6 @@ export default {
         illegalLaw: [
           { required: true, message: "立案依据不能为空", trigger: "blur" }
         ],
-        
-
-
-
-
       },
       nameLength: 23,
       adressLength: 23,

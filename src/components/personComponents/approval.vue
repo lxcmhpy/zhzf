@@ -41,7 +41,7 @@
         <el-table-column prop="approveInfo" label="审批信息" align="center"></el-table-column>
         <el-table-column prop="operationDate" label="操作审批时间" align="center"></el-table-column>
       </el-table>
-      <div class="paginationBox" style="margin-top:-25px;margin-bottom:10px;margin-left:40%;">
+      <div class="paginationBox" style="margin-top:-25px;margin-bottom:10px;text-align:center;">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -119,8 +119,8 @@ export default {
 }
 </script>
 
-<style lang="scss" src="@/assets/css/personManage.scss" scoped></style>
 <style lang="scss" scoped>
+@import "@/assets/css/personManage.scss";
 >>>.el-button--text{
   color: #7B7B7B;
   font-weight: 500;

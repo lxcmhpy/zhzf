@@ -14,9 +14,10 @@ let CHECK_API = iLocalStroage.gets('CURRENT_BASE_URL').CHECK_API
 export function yehuCheckApi(data) {
     console.log(data);
     return request({
-        url: CHECK_API + "/yuz/yh?licenseCode=" + data.licenseCode + "&ownerName=" + data.ownerName + "&provinceCode=" + data.provinceCode,
+        url: "/cy/yuz/yh?licenseCode=" + data.licenseCode + "&ownerName=" + data.ownerName + "&provinceCode=" + data.provinceCode,
         method: "GET",
         showloading: false,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -24,9 +25,10 @@ export function yehuCheckApi(data) {
 export function crewCheckApiIdcard(data) {
     console.log(data);
     return request({
-        url: CHECK_API +"/ship/shipInfoSrzSfz?idCardNo=" + data.idCardNo ,
+        url: "/cy/ship/shipInfoSrzSfz?idCardNo=" + data.idCardNo,
         method: "GET",
         showloading: false,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -34,9 +36,10 @@ export function crewCheckApiIdcard(data) {
 export function crewCheckApiCertificates(data) {
     console.log(data);
     return request({
-        url: CHECK_API +"/ship/shipInfoZsh?certNo=" + data.certNo ,
+        url: "/cy/ship/shipInfoZsh?certNo=" + data.certNo,
         method: "GET",
         showloading: false,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -46,9 +49,10 @@ export function crewCheckApiCertificates(data) {
 export function crewCheckApiCbjczl(data) {
     console.log(data);
     return request({
-        url: CHECK_API +"/ship/shipInfo?shipId=" + data.shipId,
+        url: "/cy/ship/shipInfo?shipId=" + data.shipId,
         method: "GET",
         showloading: false,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -56,9 +60,10 @@ export function crewCheckApiCbjczl(data) {
 export function crewCheckApiGjysjyzgz(data) {
     console.log(data);
     return request({
-        url: CHECK_API +"/ship/gjDjzsbh?zsbh=" + data.zsbh ,
+        url: "/cy/ship/gjDjzsbh?zsbh=" + data.zsbh,
         method: "GET",
         showloading: false,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -67,9 +72,10 @@ export function crewCheckApiGjysjyzgz(data) {
 export function crewCheckApiKyxlbsp(data) {
     console.log(data);
     return request({
-        url: CHECK_API +"/yuz/lxbsp?plateColorCode=" + data.plateColorCode + "&vehicleNo=" + data.vehicleNo  ,
+        url: "/cy/yuz/lxbsp?plateColorCode=" + data.plateColorCode + "&vehicleNo=" + data.vehicleNo,
         method: "GET",
         showloading: false,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -78,9 +84,10 @@ export function crewCheckApiKyxlbsp(data) {
 export function dlyscyryCheckApi(data) {
     console.log(data);
     return request({
-        url: CHECK_API + "/yuz/cyyy?certificateCode=" + data.certificateCode + "&staffName=" + data.staffName + "&provinceCode=" + data.provinceCode,
+        url: "/cy/yuz/cyyy?certificateCode=" + data.certificateCode + "&staffName=" + data.staffName + "&provinceCode=" + data.provinceCode,
         method: "GET",
         showloading: false,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
@@ -89,20 +96,22 @@ export function dlyscyryCheckApi(data) {
 export function yyclCheckApi(data) {
     console.log(data);
     return request({
-        url: CHECK_API + "/yuz/car?vehicleNo=" + data.VehicleNo + "&transCertificateCode=" + data.TransCertificateCode + "&vin=" + data.Vin,
+        url: "/cy/yuz/car?vehicleNo=" + data.VehicleNo + "&transCertificateCode=" + data.TransCertificateCode + "&vin=" + data.Vin,
         method: "GET",
         showloading: false,
+        baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
 }
 
 //营运车辆查验（通过车牌号码和车牌颜色查验，可批量）
 export function vehicleCheckApi(data) {
-  console.log(data);
-  return request({
-    url: CHECK_API + "/yuz/vehicle?json=" + data,
-    method: "GET",
-    showloading: false,
-    cancelToken: setCancelSource()
-  });
+    console.log(data);
+    return request({
+        url: "/cy/yuz/vehicle?json=" + data,
+        method: "GET",
+        showloading: false,
+        baseUrlType:  'CHECK_API',
+        cancelToken: setCancelSource()
+    });
 }

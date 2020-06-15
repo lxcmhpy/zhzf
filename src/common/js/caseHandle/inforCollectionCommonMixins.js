@@ -9,7 +9,7 @@ import {validateIDNumber, validateAge, validateZIP, validatePhone} from '@/commo
 import {
   getDictListDetailByNameApi, findHistoryBySignApi, findRouteManageByOrganIdApi
 } from "@/api/system";
-
+import {findLawOfficerListApi} from "@/api/caseHandle";
 
 export const inforCollectionCommonMixins = {
   data() {
@@ -106,14 +106,15 @@ export const inforCollectionCommonMixins = {
         },
         weightLimit: '',
         overWeight: '',
-        routeId: '',
-
+        highwayRoute: '',
         direction: '',
-
-        location: '',
-
-        kilometre: '',
-        metre: '',
+        position: '',
+        // kilometre: '',
+        // metre: '',
+        pileNumber:0,
+        pileNumber2:0,
+        distance:0,
+        distance2:0,
         latitudeAndLongitude:'', //案发坐标
       },
       routeList: [],
@@ -146,10 +147,10 @@ export const inforCollectionCommonMixins = {
           {required: true, message: "请选择案件关系", trigger: "change"}
         ],
         illegalLaw: [
-          {required: true, message: "请选择违法条款", trigger: "change"}
+          {required: true, message: "请选择条款", trigger: "change"}
         ],
         punishLaw: [
-          {required: true, message: "请选择处罚依据", trigger: "change"}
+          {required: true, message: "请选择依据", trigger: "change"}
         ],
         partyAge: [
           {validator: validateAge, trigger: "blur"}
@@ -165,6 +166,21 @@ export const inforCollectionCommonMixins = {
         ],
         partyUnitTel: [
           {validator: validatePhone, trigger: "blur"}
+        ],
+        highwayRoute: [
+          {required: true, message: "请选择路线", trigger: "change"}
+        ],
+        direction: [
+          {required: true, message: "请选择方向", trigger: "change"}
+        ],
+        position: [
+          {required: true, message: "请选择位置", trigger: "change"}
+        ],
+        pileNumber: [
+          {required: true, message: "请输入公里数", trigger: "blur"}
+        ],
+        distance: [
+          {required: true, message: "请输入米数", trigger: "blur"}
         ],
       },
       //案件类型
@@ -288,7 +304,7 @@ export const inforCollectionCommonMixins = {
     punishDiag,
     caseSlideMenu
   },
-  computed: {...mapGetters(['caseId'])},
+  computed: {...mapGetters(['caseId','openTab','caseHandle'])},
   methods: {
     //更改案件来源
     changeCaseSource(item) {
@@ -469,10 +485,24 @@ export const inforCollectionCommonMixins = {
       this.showTrailer = true;
     },
     //点击处罚依据显示弹窗
-    showPunishDiag() {
+    showPunishDiag(titleType='') {
+      let illageClauseLabel = '';
+      let punishClauseLabel = '';
+      if(titleType =='compensation'){
+        titleType = '选择认定条款及赔（补）偿依据',
+        illageClauseLabel = '认定条款';
+        punishClauseLabel = '赔（补）偿依据';
+      }else{
+        titleType = '选择违法条款及处罚依据';
+        illageClauseLabel = '违法条款';
+        punishClauseLabel = '处罚依据';
+      }
       let data = {
         caseCauseId: this.inforForm.caseCauseId,
-        caseCauseName: this.inforForm.caseCauseName
+        caseCauseName: this.inforForm.caseCauseName,
+        titleType:titleType,
+        illageClauseLabel,
+        punishClauseLabel
       };
       this.$refs.punishDiagRef.showModal(data);
     },
@@ -535,6 +565,14 @@ export const inforCollectionCommonMixins = {
       // this.searchLawPerson();
       // console.log('searchLawPerson', this.allUserList)
       // console.log("lawPersonList", this.lawPersonList)
+      if(!this.inforForm.latitudeAndLongitude){
+        this.$message('请获取坐标！');
+        return;
+      }
+      if(!this.payTotal){
+        this.$message('请添加路损清单！');
+        return;
+      }
       console.log("表单数据", this.inforForm)
       let _this = this
       //        this.$refs["inforForm"].validate(valid => {
@@ -551,7 +589,7 @@ export const inforCollectionCommonMixins = {
                 if (fields[i].label) {
                   console.log(_this.$refs[field].$el.offsetTop);
                   document.getElementById('inforCollectionBox').scrollTop = _this.$refs[field].$el.offsetTop
-                  //                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
+                
                 }
               }
             }
@@ -584,7 +622,23 @@ export const inforCollectionCommonMixins = {
             //设置
             _this.$store.commit("setCaseNumber", res.data.tempNo);
             iLocalStroage.removeItem("stageCaseId");
-            this.autoSava = false;
+            this.autoSava = false; 
+
+            console.log('this.openTab',this.openTab);
+            if(this.openTab){
+              let replaceIndex = 0;
+              for(let i=0;i < this.openTab.length;i++){
+                if(this.openTab[i].route == '/compensationInforCollect'){
+                  replaceIndex = i;
+                  break;
+                }
+              }
+              this.openTab[replaceIndex].menuUrl = 'case_handle_establish';
+              this.openTab[replaceIndex].name = 'case_handle_establish' + '-and-' + this.caseHandle.caseNumber;
+              this.openTab[replaceIndex].route = '/establish';
+            }
+            
+
             _this.$router.replace({
               name: "case_handle_establish"
             });
@@ -703,12 +757,7 @@ export const inforCollectionCommonMixins = {
       if (data.discretionId != "") {
         this.activeJudgli = data.discretionId;
       }
-      //当前用户不是创建案件者，输入框设置为只读
-      // currentUserId = iLocalStroage.gets("userInfo").id;
-      // if(currentUserId!=data.createId){
-      //    let allInput = document.querySelectorAll('.el-input');
-
-      // };
+     
       //设置执法人员
       this.alreadyChooseLawPerson = [];
       let staffNameList = data.staff.split(',');
@@ -723,10 +772,21 @@ export const inforCollectionCommonMixins = {
         }
         this.alreadyChooseLawPerson.push(newlaw);
       });
+      //设置当前执法人员不可以删除
+      findLawOfficerListApi(iLocalStroage.gets("userInfo").organId).then(res=>{
+        console.log('res',res);
+        for(let i=0;i< res.data.length;i++){
+          if (res.data[i].userId == iLocalStroage.gets("userInfo").id){
+            this.currentUserLawId = res.data[i].id;
+            break;
+          }
+        }
+      }).catch(err=>{console.log(err)})
+
       //案发坐标
       this.hasLatitudeAndLongitude  = data.latitudeAndLongitude !=='';
       //路损清单
-      this.pathLossList = JSON.parse(data.roadDamageList);
+      this.pathLossList =  data.roadDamageList ? JSON.parse(data.roadDamageList) : [];
       this.payTotal = data.payTotal;
     },
     //案件来源后的输入框是否显示

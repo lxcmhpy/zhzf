@@ -1,784 +1,404 @@
 <template>
   <div class="paper-main">
-    <!-- <div class="paper-header">
-      <el-form label-position="top" label-width="100px" :model="tempDataSource" style="padding-top:0px; ">
-        <el-row>
-          <el-col :span="4" :offset="1">
-            <el-form-item label="试卷">
-              {{dataSource.paperName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="考生">
-              {{dataSource.examineName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="分数" v-if="this.type===2 || this.type===3">
-              {{dataSource.score}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="考试时长">
-              {{dataSource.examDuration}}分
-            </el-form-item>
-          </el-col>
-          <el-col :span="4" v-if="this.type===1">
-            <el-form-item label="倒计时间">
-              <span class="downTime">{{hour? hourString+':'+minuteString+':'+secondString : minuteString+':'+secondString}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="交卷时间" v-if="this.type===2 || this.type===3">
-              {{dataSource.submissionTime}}
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </div> -->
-    <!-- <div ref="paperLeft" class="paper-left">
-      <div class="paper-title">
-        <h1><i class="el-icon-s-grid"></i>答题卡</h1>
-      </div>
-      <el-collapse v-model="answerCardActiveName">
-        <el-collapse-item v-for="item in convertDatas"   :name="item.code" v-bind:key="item">
-          <template slot="title">
-            <h2>{{item.name}}</h2><spn>共{{item.count}}题</spn>
-          </template>
-          <el-button  class="answer-button" circle size="small" v-for="index of item.count" :id="'answer'+item.code+index" v-bind:key="item"  @click.native="jump(item.code+index)">{{index}}</el-button>
-        </el-collapse-item>
-      </el-collapse>
-    </div> -->
-    <!-- <div class="myTitle"> {{dataSource.paperName}}</div> -->
-    <div ref="paperContent" class="paper-content">
-      <div class="subject" v-for="item in convertDatas" v-bind:key="item.id">
-        <div class="subject-title" >
-          <h2>{{item.name}}</h2><span>（共 {{item.count}} 题，合计 {{item.totalScore}} 分）</span>
+    <div v-if="errMsg" class="no-data-tip">暂无数据</div>
+    <div v-if="!errMsg && this.$route.params.name" class="paper-name">{{ this.$route.params.name }}</div>
+    <div v-if="!errMsg" class="paper-content">
+      <div
+        class="paper-question"
+        v-for="(paragrap, pIndex) in pageData.paragraphList"
+        :key="paragrap.paragraphId"
+        :class="{'borderBottom': paragrap.questionList.length}"
+      >
+        <div>
+          <div class="question-type">
+            <span>{{ paragrapIndex[pIndex] }}、{{ paragrap.paragraphTypeName }}（每题{{ paragrap.paragraphTypQuestionScore }}分，共{{ paragrap.paragraphSum }}分）</span>
+            <div v-if="editQuestion" class="random-btn">
+              <el-button type="primary" icon="icon-random" @click="randomSegment(paragrap)">随机节段</el-button>
+            </div>
+          </div>
+          <div v-if="paragrap.questionList.length">
+            <div v-for="(item, index) in paragrap.questionList" :key="item.pqId">
+              <questionView
+                v-if="refreshQuestion"
+                :key="item.questionId"
+                :question="item"
+                :questionIndex="index + 1"
+                :editable="editQuestion"
+                :questionType="paragrap.paragraphTypeName"
+                :questionLevel="questionLevelList[item.questionLevel]"
+                @randomQuestion="selectRandomQuestion($event, paragrap, pIndex)"
+                @randomSuccess="randomOneQuestion($event, paragrap)"
+              />
+            </div>
+          </div>
         </div>
-        <el-card class="box-card" v-for="(sub,index) in item.childs" :id="item.code+(index+1)" v-bind:key="item.id">
-          <div slot="header" class="clearfix">
-            <el-tag effect="dark"> {{sub.no}} </el-tag>
-            <span>{{sub.subject}}</span>
-            <span>({{sub.totalScore}}分)</span>
-            <div v-if="type===2 || type===3" style="float: right; padding: 3px 0">
-              <el-radio-group v-model="sub.isHook">
-                <el-radio-button :disabled="disabledRead" :label="1"  @change.native="isHookButtionCheck(sub)"><i class="el-icon-check"/></el-radio-button>
-                <el-radio-button :disabled="disabledRead" :label="2"  @change.native="isHookButtionCheck(sub)"><i class="el-icon-close"/></el-radio-button>
-              </el-radio-group>
-              <div v-if="sub.type===1 ||sub.type===2||sub.type===3" style="display: inline;">
-                <el-input :disabled="true" v-model="sub.score" style="width:50px" ></el-input><span>分</span>
-              </div>
-              <div v-else style="display: inline;">
-                <el-input :disabled="disabledRead" v-model="sub.score" style="width:50px" ></el-input><span>分</span>
-              </div>
-
-            </div>
-          </div>
-          <!-- 单选 -->
-          <el-radio-group v-if="sub.type===1" v-model="sub.examineAnswer">
-            <el-radio :disabled="disabledAnswer" v-for="o in sub.answers"  :label="o.no" class="answer-radio" v-bind:key="item.id" @change="answerButtionCheck($event,item,sub)">{{o.no}}.{{o.answer}}</el-radio>
-          </el-radio-group>
-          <!-- 多选 -->
-          <el-checkbox-group v-if="sub.type===2" v-model="sub.examineAnswer">
-            <el-checkbox :disabled="disabledAnswer" v-for="o in sub.answers" :label="o.no" v-bind:key="item.id" class="answer-checkbox" @change="answerButtionCheck($event,item,sub)">{{o.no}}.{{o.answer}}</el-checkbox>
-          </el-checkbox-group>
-          <!-- 判断 -->
-          <el-radio-group v-if="sub.type===3" v-model="sub.examineAnswer">
-            <el-radio :disabled="disabledAnswer" label="对" class="answer-radio" @change="answerButtionCheck($event,item,sub)">对</el-radio>
-            <el-radio :disabled="disabledAnswer" label="错" class="answer-radio" @change="answerButtionCheck($event,item,sub)">错</el-radio>
-          </el-radio-group>
-          <el-input :disabled="disabledAnswer"  v-if="sub.type===4" type="textarea" :rows="2"  v-model="sub.examineAnswer" resize="none" maxlength="150" @blur="answerButtionCheck($event,item,sub)"> </el-input>
-          <el-input :disabled="disabledAnswer"  v-if="sub.type===5" type="textarea" :rows="10"  v-model="sub.examineAnswer" resize="none" maxlength="2000" @blur="answerButtionCheck($event,item,sub)"> </el-input>
-          <div v-if="type!==1" class="subject-remark">
-            <div class="item">
-              <span class="title">考生答案：</span>
-              <span>{{converAnswerStr(sub.examineAnswer)}}</span>
-            </div>
-            <div class="item">
-              <span class="title">正确答案：</span>
-              <span>{{converAnswerStr(sub.correctAnswer)}}</span>
-            </div>
-            <div class="item">
-              <span class="title">考生答案：</span>
-              <span>{{sub.answerAnalysis}}</span>
-            </div>
-          </div>
-        </el-card>
       </div>
     </div>
-
-    <div class="paper-footer">
-      <el-button v-if="type===1" type="success" @click.native="btnClick('handPaper')">交卷</el-button>
-      <el-button v-if="type===2" type="success" @click.native="btnClick('readPaper')">阅卷</el-button>
-      <el-button v-if="type===2" type="success" @click.native="btnClick('readPaperUpper')">上一个</el-button>
-      <el-button v-if="type===2" type="success" @click.native="btnClick('readPaperNext')">下一个</el-button>
+    <div v-if="JSON.stringify(pageData) !== '{}'" class="paper-handle">
+      <!-- 审核操作按钮 -->
+      <div v-if="viewType === 'apply'" class="float-btns">
+        <el-button class="edit_btn" type="primary" @click="applyPaper('0')">
+          <i class="edit_icon el-icon-circle-check"></i>
+          <br />通过
+        </el-button>
+        <el-button class="edit_btn" type="info" @click="applyPaper('1')">
+          <i class="edit_icon el-icon-circle-close"></i>
+          <br />不通过
+        </el-button>
+      </div>
+      <!-- 修改操作按钮 -->
+      <div v-if="viewType === 'edit'" class="float-btns">
+        <el-button v-if="!editQuestion" class="edit_btn" type="primary" @click="editPaper">
+          <i class="edit_icon el-icon-edit"></i>
+          <br />修改
+        </el-button>
+        <el-button v-if="editQuestion" class="edit_btn" type="primary" @click="saveEditQuestion">
+          <i class="iconfont law-save"></i>
+          <br />保存
+        </el-button>
+        <el-button v-if="editQuestion" class="edit_btn" type="primary" @click="cancelEdit">
+          <i class="edit_icon el-icon-circle-close"></i>
+          <br />取消
+        </el-button>
+      </div>
+      <el-backtop class="page-backtop" target=".el-main" :right="50">
+        <el-button class="edit_btn" type="primary">
+          <i class="edit_icon el-icon-top"></i>
+          <br />置顶
+        </el-button>
+      </el-backtop>
     </div>
+    <selectQuestion ref="selectQuestion" @selectReplace="selectReplace" />
   </div>
 </template>
 <script>
-import {mixinPerson} from '@/common/js/personComm';
+import questionView from "@/page/exam/common/questionView";
+import selectQuestion from "@/page/exam/common/selectQuestion";
+
 export default {
-    name: "addplayDetail",//审核详情
-    mixins:[mixinPerson],
-    
-   
-    name: 'examinationPaper',
-    props: {
-      //试卷类型 1 考试 2 阅卷 3 查看
-      type: {
-        type: Number,
-        default:3
+  name: "pageDetail",
+  props: {},
+  components: { questionView, selectQuestion },
+  data() {
+    return {
+      num: 1,
+      answer: "1",
+      dialogImageUrl: "",
+      dialogVisible: false,
+      pageName: "",
+      pageData: {},
+      pageDataClone: {}, // 克隆一份pageData，取消修改使用
+      errMsg: false,
+      paragrapIndex: ["一", "二", "三", "四", "五", "六", "七", "八", "九"],
+      editQuestion: false,
+      replaceData: {
+        questionIds: [],
+        pqId: []
       },
-      //数据源
-      dataSource: {
-        type: Object,
-        default: () => {
-          return {
-          //试卷ID
-          paperId:'1',
-          //试卷名称
-          paperName: '测试试卷',
-          //考生ID
-          examineId:'1000',
-          //考生名称
-          examineName: '张三',
-          //分数
-          score: 80,
-          //考试时长
-          examDuration: 90,
-          //交卷时间
-          submissionTime: '2019-11-25 16:30:26',
-          //题目集合
-          list:[
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:2, no:1, subject:'以下属于南方电网员工职业操守中明文规定的有()',totalScore:6,
-              answers:[
-                {no:'A',answer:'热爱祖国、热爱南网、热爱岗位'},
-                {no:'B',answer:'遵纪守法、忠于职守、令行禁止'},
-                {no:'C',answer:'客户至上、诚实守信、优质服务'}
-              ],examineAnswer:['A','B'],correctAnswer:['A','B','C'],
-              answerAnalysis:'答案解析.......',isHook:2,score:0,
-            },
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:1, no:1, subject:'在生产管理信息系统中，下列操作步骤能正确将工单推进流程的是（ ）',totalScore:1,
-              answers:[
-                {no:'A',answer:'在工具栏中点击“workflow”标签'},
-                {no:'B',answer:'在缺陷单界面中点击“推进流程”按钮'},
-                {no:'C',answer:'在缺陷单界面中点击“提交”按钮'}
-              ],examineAnswer:'A',correctAnswer:'B',
-              answerAnalysis:'答案解析.......',isHook:2,score:0,
-            },
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:1, no:2, subject:'在营销系统中查询客户有无欠费、余额及抄表数据接待客户时应做到哪些最基本的礼仪？',totalScore:5,
-              answers:[
-                {no:'A',answer:'起身、微笑、示坐、问候客户'},
-                {no:'B',answer:'坐着，问候客户'},
-                {no:'C',answer:'请问需要办理什么业务'}
-              ],examineAnswer:'A',correctAnswer:'A',
-              answerAnalysis:'答案解析.......',isHook:1,score:5,
-            },
-
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:3, no:1, subject:'记录一次与人有效沟通的案例',totalScore:10,
-              answers:[],examineAnswer:'对',correctAnswer:'对',
-              answerAnalysis:'答案解析.......',isHook:1,score:10,
-            },
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:4, no:1, subject:'打招呼的方式一般有（)',totalScore:10,
-              answers:[],examineAnswer:'寒暄式',correctAnswer:['寒暄式','问候式','致意式','致礼式'],
-              answerAnalysis:'答案解析.......',isHook:1,score:10,
-            },
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:5, no:1, subject:'请简单说一下你对礼仪的认识与理解',totalScore:10,
-              answers:[],examineAnswer:'寒暄式',correctAnswer:'',
-              answerAnalysis:'答案解析.......',isHook:1,score:10,
-            }
-          ]
-        }
-        }
-      }
+      refreshQuestion: true,
+      edtiQuestion: {},
+      editParagrap: {},
+      questionLevelList: {},
+      editParagrapIndex: null
+    };
+  },
+  computed: {
+    pageId() {
+      return this.$route.params.pageId;
     },
-    data() {
-      return {
-        index:"3",
-        //倒计小时
-        hour: '',
-        //倒计分钟
-        minute: '',
-        //倒计秒
-        second: '',
-        //计时器
-        promiseTimer: '',
-        //数据源
-       // tempDataSource: {},
-         tempDataSource:{
-          //试卷ID
-          paperId:'1',
-          //试卷名称
-          paperName: '测试试卷',
-          //考生ID
-          examineId:'1000',
-          //考生名称
-          examineName: '张三',
-          //分数
-          score: 80,
-          //考试时长
-          examDuration: 90,
-          //交卷时间
-          submissionTime: '2019-11-25 16:30:26',
-          //题目集合
-          list:[
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:2, no:1, subject:'以下属于南方电网员工职业操守中明文规定的有()',totalScore:6,
-              answers:[
-                {no:'A',answer:'热爱祖国、热爱南网、热爱岗位'},
-                {no:'B',answer:'遵纪守法、忠于职守、令行禁止'},
-                {no:'C',answer:'客户至上、诚实守信、优质服务'}
-              ],examineAnswer:['A','B'],correctAnswer:['A','B','C'],
-              answerAnalysis:'答案解析.......',isHook:2,score:0,
-            },
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:1, no:1, subject:'在生产管理信息系统中，下列操作步骤能正确将工单推进流程的是（ ）',totalScore:1,
-              answers:[
-                {no:'A',answer:'在工具栏中点击“workflow”标签'},
-                {no:'B',answer:'在缺陷单界面中点击“推进流程”按钮'},
-                {no:'C',answer:'在缺陷单界面中点击“提交”按钮'}
-              ],examineAnswer:'A',correctAnswer:'B',
-              answerAnalysis:'答案解析.......',isHook:2,score:0,
-            },
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:1, no:2, subject:'在营销系统中查询客户有无欠费、余额及抄表数据接待客户时应做到哪些最基本的礼仪？',totalScore:5,
-              answers:[
-                {no:'A',answer:'起身、微笑、示坐、问候客户'},
-                {no:'B',answer:'坐着，问候客户'},
-                {no:'C',answer:'请问需要办理什么业务'}
-              ],examineAnswer:'A',correctAnswer:'A',
-              answerAnalysis:'答案解析.......',isHook:1,score:5,
-            },
-
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:3, no:1, subject:'记录一次与人有效沟通的案例',totalScore:10,
-              answers:[],examineAnswer:'对',correctAnswer:'对',
-              answerAnalysis:'答案解析.......',isHook:1,score:10,
-            },
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:4, no:1, subject:'打招呼的方式一般有（)',totalScore:10,
-              answers:[],examineAnswer:'寒暄式',correctAnswer:['寒暄式','问候式','致意式','致礼式'],
-              answerAnalysis:'答案解析.......',isHook:1,score:10,
-            },
-            {
-              //题目类型 1.单选题 2.多选题 3.判断题 4.填空题 5.简答题
-              type:5, no:1, subject:'请简单说一下你对礼仪的认识与理解',totalScore:10,
-              answers:[],examineAnswer:'寒暄式',correctAnswer:'',
-              answerAnalysis:'答案解析.......',isHook:1,score:10,
+    viewType() {
+      return this.$route.params.type;
+    },
+    verifyId(){
+      return this.$route.params.verifyId;
+    }
+  },
+  mounted() {},
+  created() {
+    this.getPageMessageDetail();
+    this.getLevelList();
+  },
+  methods: {
+    // 获取试题列表
+    getPageMessageDetail() {
+      let data = { pageId: this.pageId };
+      this.errMsg = false;
+      const loading = this.$loading({
+        lock: true,
+        text: "正在获取试卷信息",
+        spinner: "car-loading",
+        customClass: "loading-box",
+        background: "rgba(234,237,244, 0.8)"
+      });
+      this.$store.dispatch("previewPage", data).then(
+        res => {
+          loading.close();
+          if (res.code == "200") {
+            this.pageData = res.data;
+            this.pageDataClone = JSON.parse(JSON.stringify(res.data));
+            if (this.pageData && this.pageData.paragraphList.length) {
+              // 动态添加题目序号
+              this.pageData.paragraphList.forEach((item, index) => {
+                if (index === 0) {
+                  item["startIndex"] = 0;
+                } else {
+                  const preNum = this.pageData.paragraphList[index - 1];
+                  item["startIndex"] =
+                    preNum.startIndex + preNum.questionList.length;
+                }
+              });
             }
-          ]
+          }
         },
-        //答题卡激活项
-        answerCardActiveName: [],
-        //组装后数据集
-        convertDatas: [],
-        //禁止答题
-        disabledAnswer:false,
-        //禁止阅卷
-        disabledRead:false,
-
-      }
-    },
-    watch: {
-      dataSource(newValue, oldValue) {
-        Object.assign(this.tempDataSource, newValue)
-        this.convertData()
-      }
-    },
-    created() {
-      //Object.assign(this.tempDataSource, this.dataSource)
-      console.info("AAA"+JSON.stringify(this.tempDataSource))
-      this.convertData()
-      if(this.type===2)
-      {
-        this.disabledAnswer=true
-      }
-      if(this.type===3)
-      {
-        this.disabledAnswer=true
-        this.disabledRead=true
-      }
-    },
-    computed: {
-      hourString () {
-        return this.hour < 10 ? '0' + this.hour : '' + this.hour
-      },
-      minuteString () {
-        return this.minute < 10 ? '0' + this.minute : '' + this.minute
-      },
-      secondString () {
-        return this.second < 10 ? '0' + this.second : '' + this.second
-      }
-    },
-    mounted () {
-      if(this.type===1)
-      {
-        let remainTime=this.dataSource.examDuration*60;
-        if (remainTime> 0) {
-          this.hour = Math.floor((remainTime / 3600) % 24)
-          this.minute = Math.floor((remainTime / 60) % 60)
-          this.second = Math.floor(remainTime % 60)
-          this.countDowm()
+        err => {
+          loading.close();
+          this.errMsg = true;
+          this.$message({ type: "error", message: err.msg || "" });
         }
-      }
-
-      if(this.type===2 || this.type===3)
-      {
-        this.convertDatas.forEach(t=>{
-          t.childs.forEach(c=>{
-            this.answerButtionCheck(c.examineAnswer,t,c);
-          });
-        });
-      }
-
+      );
     },
-    methods: {
-      /**
-       * 按钮点击事件
-       */
-      btnClick(type){
-        console.log(this.tempDataSource);
-        switch (type) {
-          //交卷
-          case 'handPaper':
-            this.$emit('PaperHand',this.tempDataSource)
-            break
-          //阅卷
-          case 'readPaper':
-            this.$emit('paperRead',this.tempDataSource)
-            break
-          //阅卷 上一个
-          case 'readPaperUpper':
-            this.$emit('paperReadUpper')
-            break
-          //阅卷 下一个
-          case 'readPaperNext':
-            this.$emit('paperReadNext')
-            break
-        }
-      },
-      /**
-       * 锚点定位
-       */
-      jump(postion) {
-        let jump = this.$refs.paperContent.querySelectorAll("#"+postion);
-        // 获取需要滚动的距离
-        let total = jump[0].offsetTop;
-        //实现form锚点定位
-        this.$refs.paperContent.scrollTop = jump[0].offsetTop;
-      },
-      /**
-       *对错选择
-       */
-      isHookButtionCheck(val) {
-        if(val.type===1 || val.type===2 || val.type===3)
-        {
-          if(val.isHook===1)
-          {
-            val.score=val.totalScore;
-          }
-          if(val.isHook===2)
-          {
-            val.score=0;
-          }
-        }
-      },
-      /**
-       *答题卡选中
-       */
-      answerButtionCheck(value,parent,child){
-        // console.log(value,parent,child)
-        // let answerId='answer'+parent.code+child.no
-        // let but = this.$refs.paperLeft.querySelectorAll("#"+answerId);
-        // if(but.length>0)
-        // {
-        //    if(but[0].className.indexOf('answer-button-check')>-1)
-        //    {
-        //       if(child.examineAnswer && child.examineAnswer.length==0){
-        //         but[0].classList.remove("answer-button-check");
-        //       }
-        //    }
-        //    else{
-        //      if (child.examineAnswer && child.examineAnswer.length > 0) {
-        //        but[0].classList.add("answer-button-check");
-        //      }
-
-        //    }
-
-        // }
-      },
-      /**
-       * 转换答案
-       */
-      converAnswerStr(answer){
-        if(answer instanceof Array)
-        {
-          return answer.join('  ')
-        }
-        return  answer
-      },
-      /**
-       * 转换数据
-       */
-      convertData() {
-        let sorted = this.groupBy(this.tempDataSource.list, function(item) {
-          return [item.type]
-        })
-        this.convertDatas = []
-        this.answerCardActiveName=[]
-        this.orderBy(sorted, 'key', 'asc')
-        sorted.forEach(item => {
-          let totalScore = 0
-          item.value.forEach(t => {
-            totalScore += t.totalScore
-          })
-          switch (item.key) {
-            case "[1]":
-              this.convertDatas.push({
-                name: '单选题',
-                code: 'Single',
-                count: item.value.length,
-                totalScore: totalScore,
-                childs:item.value
+    // 获取试题难度
+    getLevelList() {
+      this.$store.dispatch("findAllDrawerByName", '考试-试题难度').then(
+        res => {
+          if (res.code === 200) {
+            if(res.data && res.data.length){
+              res.data.forEach(item => {
+                this.questionLevelList[item.id] = item.name;
               })
-              this.answerCardActiveName.push('Single')
-              break
-            case "[2]":
-              this.convertDatas.push({
-                name: '多选题',
-                code: 'Multiple',
-                count: item.value.length,
-                totalScore: totalScore,
-                childs:item.value
-              })
-              this.answerCardActiveName.push('Multiple')
-              break
-            case "[3]":
-              this.convertDatas.push({
-                name: '判断题',
-                code: 'Judgment',
-                count: item.value.length,
-                totalScore: totalScore,
-                childs:item.value
-              })
-              this.answerCardActiveName.push('Judgment')
-              break
-            case "[4]":
-              this.convertDatas.push({
-                name: '填空题',
-                code: 'Blank',
-                count: item.value.length,
-                totalScore: totalScore,
-                childs:item.value
-              })
-              this.answerCardActiveName.push('Blank')
-              break
-            case "[5]":
-              this.convertDatas.push({
-                name: '简答题',
-                code: 'Answer',
-                count: item.value.length,
-                totalScore: totalScore,
-                childs:item.value
-              })
-              this.answerCardActiveName.push('Answer')
-              break
-          }
-
-        })
-        console.log("aaaaa"+this.convertDatas)
-      },
-      /**
-       * 排序
-       * @param {} datas 数组
-       * @param {} col 列
-       * @param {} type 类型 desc,asc
-       * @returns {}
-       */
-      orderBy(datas, col, type) {
-        let m
-        for (let i = 0; i < datas.length; i++) {
-          for (let k = 0; k < datas.length; k++) {
-            if (type === 'asc') {
-              if (datas[i][col] < datas[k][col]) {
-                m = datas[k]
-                datas[k] = datas[i]
-                datas[i] = m
-              }
-            } else if (type === 'desc') {
-              if (datas[i][col] > datas[k][col]) {
-                m = datas[k]
-                datas[k] = datas[i]
-                datas[i] = m
-              }
-            }
-          }
-        }
-        return datas
-      },
-      /**
-       * 分组
-       * @param array 数据集
-       * @param f 函数
-       * let sorted = groupBy(list, function(item){ return [item.name];});
-       */
-      groupBy(array, f) {
-        const groups = {}
-        const keyValues = []
-        array.forEach(function(o) {
-          const group = JSON.stringify(f(o))
-          groups[group] = groups[group] || []
-          groups[group].push(o)
-        })
-        Object.keys(groups).map(function(group) {
-          return keyValues.push({ key: group, value: groups[group] })
-        })
-        return keyValues
-      },
-      /**
-       * 倒计时
-       */
-      countDowm () {
-        let self = this
-        clearInterval(this.promiseTimer)
-        this.promiseTimer = setInterval(function () {
-          if(self.hour===0 && self.minute===0 && self.second===0)
-          {
-            self.disabledAnswer=true;
-          }
-          if (self.hour === 0) {
-            if (self.minute !== 0 && self.second === 0) {
-              self.second = 59
-              self.minute -= 1
-            } else if (self.minute === 0 && self.second === 0) {
-              self.second = 0
-              self.$emit('countDowmEnd', true)
-              clearInterval(self.promiseTimer)
-            } else {
-              self.second -= 1
             }
           } else {
-            if (self.minute !== 0 && self.second === 0) {
-              self.second = 59
-              self.minute -= 1
-            } else if (self.minute === 0 && self.second === 0) {
-              self.hour -= 1
-              self.minute = 59
-              self.second = 59
-            } else {
-              self.second -= 1
-            }
+            console.info("没有查询到数据");
           }
-        }, 1000)
-      },
+        }
+      );
     },
- 
-}
+    // 审核试卷
+    applyPaper(type) {
+      let status = type == '0' ? '确定审核通过吗' : '确定审核不通过吗？'
+      let data = {
+        verifyId:this.verifyId,
+        verifyResult:type
+      }
+      console.info("aaaaa"+JSON.stringify(data))
+      this.$confirm(status, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        iconClass: 'custom-question',
+        customClass: 'custom-confirm'
+      }).then(() => {
+        this.$store.dispatch('verifyInfo', data).then(res => {
+          if(res.code === 200){
+            this.$message({ type: "success", message: "操作成功!"});
+          }
+        },
+          err => {console.log(err);}
+        );
+      }).catch(() => {});
+     
+    },
+    // 修改试卷题目
+    editPaper() {
+      this.editQuestion = true;
+    },
+    // 取消修改
+    cancelEdit() {
+      this.pageData = this.pageDataClone;
+      this.replaceData = {};
+      this.editQuestion = false;
+    },
+    // 随机节段
+    randomSegment(paragrap){
+      this.$confirm(`确认随机替换该节段试题吗?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        iconClass: "custom-question",
+        customClass: "custom-confirm"
+      })
+        .then(() => {
+          const loading = this.$loading({
+            lock: true,
+            text: `正在随机抽取节段试题`,
+            spinner: 'car-loading',
+            customClass: 'loading-box',
+            background: 'rgba(234,237,244, 0.8)'
+          });
+          let queryData = {
+            paragraphId: paragrap.paragraphId,
+            pageId: this.pageId
+          };
+          this.$store.dispatch('randomParagraphQuestion', queryData).then(res => {
+            loading.close();
+            if(res.code === 200){
+              let i = 0;
+              if(res.data && res.data.length){
+                paragrap.questionList.forEach((question, index) => {
+                  if(question.isLock === '0'){
+                    const replaceQuestion = res.data[i];
+                    this.setChangeData(question.pqId, replaceQuestion.questionId);
+                    replaceQuestion.pqId = question.pqId;
+                    replaceQuestion.isLock = '0';
+                    replaceQuestion['optionList'] = replaceQuestion.optionVoList;
+                    delete replaceQuestion.optionVoList;
+                    paragrap.questionList.splice(index, 1, replaceQuestion);
+                    i++;
+                  }
+                })
+              }
+            }
+          }, err => {
+            loading.close();
+            this.$message({ type: 'error', message: err.msg || '' });
+          })
+        })
+        .catch(() => {});
+    },
+    // 随机替换一道题
+    randomOneQuestion(e, paragrap){
+      this.refreshQuestion = false;
+      const editIndex = paragrap.questionList.findIndex(item => item.pqId === e.pqId);
+      const item = e.data;
+      item['optionList'] = e.data.optionVoList;
+      delete item.optionVoList;
+      item.pqId = e.pqId;
+      paragrap.questionList[editIndex] = item;
+      this.refreshQuestion = true;
+      this.setChangeData(e.pqId, e.data.questionId);
+    },
+    // 记录修改的数据
+    setChangeData(pqId, questionId){
+      const index = this.replaceData.pqId.indexOf(pqId);
+      if(index > -1){
+        this.replaceData.questionIds.splice(index, 1, questionId);
+      }else{
+        this.replaceData.pqId.push(pqId);
+        this.replaceData.questionIds.push(questionId);
+      }
+    },
+    // 选择随机替换
+    selectRandomQuestion(question, paragrap, paragrapIndex){
+      this.edtiQuestion = question;
+      this.editParagrap = paragrap;
+      this.editParagrapIndex = paragrapIndex;
+      this.$refs.selectQuestion.showModal(question.questionType);
+    },
+    // 选中题目替换
+    selectReplace(question){
+      this.refreshQuestion = false;
+      const editIndex = this.editParagrap.questionList.findIndex(item => item.pqId === this.edtiQuestion.pqId);
+      question.pqId = this.edtiQuestion.pqId;
+      this.pageData.paragraphList[this.editParagrapIndex].questionList[editIndex] = question;
+      this.refreshQuestion = true;
+      this.setChangeData(question.pqId, question.questionId);
+    },
+    // 保存修改后题目
+    saveEditQuestion(){
+      const loading = this.$loading({
+        lock: true,
+        text: `正在保存`,
+        spinner: 'car-loading',
+        customClass: 'loading-box',
+        background: 'rgba(234,237,244, 0.8)'
+      });
+      const saveData = {
+        questionIds: this.replaceData.questionIds.join(','),
+        pqIds: this.replaceData.pqId.join(',')
+      }
+      this.$store.dispatch("saveReplaceQuestion",saveData).then(
+        res => {
+          loading.close();
+          if (res.code === 200) {
+            this.replaceData = {};
+            this.$message({ type: "success", message: `保存成功!` });
+          }
+        },
+        err => {
+          loading.close();
+          this.$message({ type: "error", message: err.msg || "" });
+        }
+      );
+    }
+  }
+};
 </script>
 
-<style lang="scss" src="@/assets/css/personManage.scss" scoped>
-  /* @import "@/assets/css/personManage.scss"; */
-</style>
-<style scoped>
-  .paper-main {
-    margin: 10px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    /* overflow: hidden */
-  }
-
-  .paper-header {
-    width: 68%;
-    height: 80px;
-    background-color: #f7f7f7;
-    position: absolute;
-    left: 305px;
-    top: 0px;
-    right: 305px;
-    bottom: 45px;
-    z-index: 1000;
-    text-align: center;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .1);
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .1);
-  }
-
-  .paper-left {
-    position: absolute;
-    padding: 10px;
-    left: 0;
-    top: 60px;
-    bottom: 0;
-    width: 300px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    border: 1px solid #e4e4e4;
-    border-top: none;
-  }
-
-  .paper-content {
-    position: absolute;
-    left: 305px;
-    top: 100px;
-    right: 305px;
-    bottom: 45px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    box-sizing: border-box;
-    padding: 10px;
-    border: 1px solid #e4e4e4;
-    border-top: none;
-  }
-
-  .paper-footer {
-    position: absolute;
-    padding: 5px 10px;
-     left: 305px;
-    right: 305px;
-    bottom: 0px;
-    height: 45px;
-    overflow: hidden;
-    box-sizing: border-box;
-    background-color: #f7f7f7;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
-    text-align: center;
-  }
-
-  .paper-title {
-    padding-left: 10px;
-    width: 100%;
-    height: 45px;
-    line-height: 45px;
-    background: #f7f7f7;
-  }
-
-  .paper-title h1 {
-    font-size: 1.2em;
-    margin: 0;
-  }
-
-  .downTime{
-    color: rgb(230, 93, 110);
-    font-size: 16px;
-    font-weight: bold;
-  }
-  .answer-button{
-    padding: 0px;
-    color: #0a0a0a;
-    background-color: #ffffff;
-    border-color: #e4e4e4;
-    margin-left: 10px;
-    width: 30px;
-    height: 30px;
-  }
- .answer-button:hover{
-    background: #ecf1ef;
-    border-color: #e4e4e4;
-    color: #0a0a0a;
-  }
-  .answer-button-check{
-     background: #13ce66;
-     border-color: #30B08F;
-   }
-
-  .answer-radio{
-    display: list-item;
-    margin: 5px 0px;
-  }
-
-  .answer-checkbox{
-    display: list-item;
-    margin: 5px 0px;
-  }
-
-  .subject-title{
-    padding-left: 10px;
-    width: 100%;
-    height: 45px;
-    line-height: 45px;
-    background: #f7f7f7;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
-  }
-  .subject-title h2{
-    font-size: 18px;
-    font-weight: 600;
-    display: inline-block;
-  }
-  .subject-title span {
-     font-size: 16px;
-     display: inline-block;
-   }
-
-  .subject-remark{
-    background: #f7f7f7;
-  }
-  .subject-remark .item{
-    display: block;
-    padding: 5px;
-  }
-  .subject-remark .title{
-    font-weight: bold;
-  }
-  .el-radio>>>.el-radio__input.is-checked .el-radio__inner {
-    background-color: #13ce66;
-    border-color: #13ce66;
-  }
-
-  .el-radio-button>>>.el-radio-button__inner {
-    padding: 10px;
-  }
-
-  .el-collapse-item h2 {
-    width: 150px;
-    font-size: 14px;
-    display: inline-block;
-  }
-  .el-form--label-top >>> .el-form-item__label {
-    float: none;
-    display: inline-block;
-    text-align: left;
-    padding: 0px;
-  }
-
-  .el-card{
-    margin: 10px;
-  }
-
-  .el-card >>>.el-card__header {
-    background-color: #ffffff;
-    padding: 0px 10px;
-    line-height: 35px;
-    font-size: 16px;
-  }
-  .el-card >>>.el-card__body {
-    padding: 5px 20px;
-  }
-  .myTitle {
-  margin: 80px auto auto auto;
-  width: 30%;
+<style lang="scss" scoped>
+.no-data-tip {
+  height: 200px;
   text-align: center;
-  font-size: 30px;
-  font-weight: 600;
+  line-height: 200px;
+  font-size: 18px;
+}
+.paper-name {
+  font-size: 24px;
+  font-weight: 500;
+  color: rgba(32, 35, 43, 1);
+  line-height: 34px;
+  margin: 30px 0;
+  text-align: center;
+}
+.paper-content {
+  margin: 0 10%;
+  .paper-question {
+    padding: 0 2% 40px;
+    margin-bottom: 40px;
+    .question-type {
+      height: 48px;
+      line-height: 48px;
+      font-size: 18px;
+      color: rgba(32, 35, 43, 1);
+      margin-bottom: 20px;
+      .random-btn{
+        float: right;
+      }
+    }
+    &.borderBottom{
+      border-bottom: 1px dashed #5e89b5;
+    }
+  }
+}
+.paper-handle {
+  position: fixed;
+  right: 50px;
+  bottom: 150px;
+  .float-btns{
+    bottom: 220px;
+    right: 50px;
+  }
+  .edit_btn {
+    display: block;
+    margin-left: 0;
+    margin-top: 12px;
+    width: 48px;
+    height: 48px;
+    padding: 12px 0;
+    text-align: center;
+    .edit_icon {
+      margin-bottom: 4px;
+      margin-right: 0;
+      font-size: 14px;
+    }
+    .law-save{
+      font-size: 14px;
+    }
+  }
+}
+.page-backtop{
+  width: 48px;
+  height: 48px;
+  .edit_btn {
+    display: block;
+    margin-left: 0;
+    margin-top: 12px;
+    width: 48px;
+    height: 48px;
+    padding: 12px 0;
+    text-align: center;
+    .edit_icon {
+      margin-bottom: 4px;
+      margin-right: 0;
+      font-size: 14px;
+    }
+  }
 }
 </style>

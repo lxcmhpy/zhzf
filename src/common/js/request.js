@@ -13,8 +13,8 @@ const service = axios.create({
   // "Content-Type": "multipart/form-data;charset=UTF-8",
   "Content-Type": "application/x-www-form-urlencoded",
   // "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-  // "Content-Type": "multipart/form-data;charset=UTF-8", 
-  timeout: 15000, // request timeout
+  // "Content-Type": "multipart/form-data;charset=UTF-8",
+//   timeout: 15000, // request timeout
 
 });
 
@@ -51,34 +51,16 @@ service.interceptors.request.use(
     if (BASEURL) {
       iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
     }
-    if (config.baseUrlType == 1) {
-      config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST
-    } else if (config.baseUrlType == 2) {
-      config.baseURL = BASEURL[BASEURL.CURRENT].LAW_SUPERVISE_HOST
-    } else {
-      config.baseURL = BASEURL[BASEURL.CURRENT].HOST // api的base_url
+    if (config.baseUrlType) {
+        let baseObj = BASEURL[BASEURL.CURRENT];
+        config.baseURL = baseObj[config.baseUrlType];
+
+    } else{
+      config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST // 默认的base_url
     }
+
     if (config.responseType) {
       config["responseType"] = config.responseType
-    }
-    // get方法
-    if(config.method=== 'get'){
-    //   debugger
-    // console.log('get',config)
-    // if(config.params){
-      // config.params=qs.stringify(config.params)
-      // config.params=async qs.stringify(config.params)
-      // config.params=await qs.stringify(config.params)
-    // }
-    }
-    // post方法
-    if (config.method === 'post') {
-      console.log('post', config)
-      console.log('config.data', config.data)
-      console.log('config.data.qs',  qs.stringify({ a: ['b', 'c', 'd'] }))
-
-      // config.data=qs.stringify(config.data)//有些post方法如findByCondition在接口文件中已处理
-      // console.log('postdeal', config)
     }
     // config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
     config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8"
@@ -95,7 +77,7 @@ service.interceptors.request.use(
 
     console.log('config', config)
     //  config.headers = {
-    //   'Content-Type': config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8" //  注意：设置很关键 
+    //   'Content-Type': config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8" //  注意：设置很关键
     // }
 
     return config;
@@ -127,8 +109,14 @@ service.interceptors.response.use(
         return Promise.reject(response.data);
       } else {
         // httpErrorStr(response.data.code);
-        tryHideFullScreenLoading();
-        return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善
+        // 下载后台返回文件流
+        if(response.config.responseType === "blob"){
+          const fileName = response.headers["content-disposition"].split(";")[1].split("=")[1];
+          return Promise.resolve({ data: response.data, fileName: fileName });
+        }else{
+          tryHideFullScreenLoading();
+          return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善
+        }
       }
     } else {
 

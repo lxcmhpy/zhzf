@@ -186,7 +186,7 @@
           docData: "",
           status: "",   //提交状态
           docDataId: "", //多份文书的id
-          linkTypeId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId //环节ID
+          linkTypeId: this.$route.params.caseLinkTypeId //环节ID
         },
         name: '',
         inputInfo: '',

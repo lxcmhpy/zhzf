@@ -49,7 +49,8 @@ export const mixinPerson={
       this.$confirm("确定要删除吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        iconClass: 'el-icon-question',
+        customClass: 'custom-confirm'
       }).then(() => {
         this.$store.dispatch(methodName, ids).then(res => {
           this.$message({ type: "success", message: "删除成功!"});
@@ -64,7 +65,8 @@ export const mixinPerson={
       this.$confirm("确定要删除吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        iconClass: 'el-icon-question',
+        customClass: 'custom-confirm'
       }).then(() => {
         this.$store.dispatch(methodName, id).then(res => {
           if(res.code === 200){
@@ -79,8 +81,10 @@ export const mixinPerson={
     getPageList(methodName,data){
       this.tableLoading = true
       this.$store.dispatch(methodName, data).then(res => {
-        this.tableData = res.data.records;
-        this.totalPage = res.data.total;
+        if(res.code === 200){
+          this.tableData = res.data.records;
+          this.totalPage = res.data.total;
+        }
         this.tableLoading = false;
       }, err => {
         this.$message({ type: "error", message: err.msg || '' });
@@ -117,6 +121,7 @@ export const mixinPerson={
      *  */
     openPersonDetail(row, type) {
       const addRoutes = PersonRouter[0].children[0].children;
+      addRoutes.splice(0, addRoutes.length);
       const currentRoute = addRoutes.findIndex(item => item.path === `/personDetailPage/${type}/${row.personId}`);
       if (currentRoute > -1) {
         this.$router.push({

@@ -79,6 +79,7 @@ export  function  getOrganDetailApi(data)  {
 
 //删除机构
 export  function  deleteOrganApi(data)  {
+  console.log("123",data);
   return  request({
     url:  "/system/sys/organ/delete/"  +  data,
     method:  "get",
@@ -209,7 +210,7 @@ export function getUserresetApi(params) {
     contentType: 'multipart/form-data',
     data:data,
     showloading: false,
-    baseUrlType:1,
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -571,7 +572,7 @@ export function getDictListDetailByNameApi(name) {
     url: "/system/sys/drawer/findAllDrawerByName/" + name,
     method: "get",
     showloading: true,
-    loadingType:'loadPart',
+    loadingType: name =='系统标题' ? 'loadFull' : 'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -1186,6 +1187,19 @@ export function getCaseCauseListVoApi(data) {
     url: "/bnslaw/sys/bnslawCause/findCaseCauseByList",
     method: "get",
     params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+
+//删除路产配置
+export function deleteRoadLcDeployApi(id) {
+  debugger
+  return request({
+    url: "/case/road/roadLcDeploy/delete/"+id,
+    method: "get",
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()

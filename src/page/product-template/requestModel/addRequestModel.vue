@@ -19,13 +19,39 @@
           </el-form-item>
         </div>
         <div class="item">
-          <el-form-item label="执法机构" prop="modelTypeId">
-            <el-select v-model="addRequest.modelTypeId" clearable placeholder="请选择执法机构">
+          <el-form-item label="模板类型" prop="modelTypeId">
+            <el-select
+              v-model="addRequest.modelTypeId"
+              placeholder="请选择模板类型"
+            >
+              <el-option label="标准模板" value="11"></el-option>
+              <el-option label="通用模板" value="22"></el-option>
+              <el-option label="自定义模板" value="33"></el-option>
+            </el-select>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="执法机构" prop="zfjg">
+            <!-- <el-input v-if="showSelectTree" @focus="showTree" v-model="addRequest.organName"></el-input> -->
+            <elSelectTree
+              v-if="showSelectTree"
+              :value="addRequest.zfjg"
+              ref="elSelectTreeObjTwo"
+              :options="getOrganList"
+              :accordion="true"
+              :props="props"
+              @getValue="handleChanged">
+            </elSelectTree>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="业务领域" prop="zfml">
+            <el-select v-model="addRequest.zfml" clearable placeholder="请选择业务领域">
               <el-option
-                v-for="item in getOrganList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
+                v-for="item in zfmlList"
+                :key="item.cateName"
+                :label="item.cateName"
+                :value="item.cateName"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -39,6 +65,9 @@
 </template>
 <script>
 import { saveOrUpdateRequestModelApi } from "@/api/caseHandle";
+import { queryLawCateByOrganIdApi} from "@/api/caseDeploy";
+import iLocalStroage from "@/common/js/localStroage";
+import elSelectTree from '@/components/elSelectTree/elSelectTree';
 export default {
   data() {
     return {
@@ -46,43 +75,69 @@ export default {
       addRequest: {
         id: "",
         modelName: "",
+        organName: "",
         createTime:"",
-        modelTypeId: ""
+        modelTypeId: "",
+        zfjg:"",
+        zfml:""
+      },
+      props: {
+          label: "label",
+          value: "id"
       },
       rules: {
          modelName: [{ required: true, message: "模板名称不能为空", trigger: "blur" }],
-         modelTypeId: [{ required: true, message: "执法机构不能为空", trigger: "blur" }]
+         modelTypeId: [{ required: true, message: "模板类型不能为空", trigger: "blur" }],
+         zfjg: [{ required: true, message: "执法机构不能为空", trigger: "blur" }],
+         zfml: [{ required: true, message: "执法门类不能为空", trigger: "blur" }]
       },
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
       handelType: 0, //添加 0  修改2
-      getOrganList: []
+      getOrganList: [],
+      zfmlList:[],
+      organId:iLocalStroage.gets('userInfo').organId,
+      showSelectTree: true,
     };
+  },
+  components: {
+      elSelectTree
   },
   inject: ["reload"],
   methods: {
     showModal(type, data ,orgList) {
       this.visible = true;
       this.handelType = type;
-      this.getOrganList = orgList;
+      let data1={
+          organId:this.organId
+      };
+      queryLawCateByOrganIdApi(data1).then(
+          res => {
+              this.zfmlList = res.data;
+          },
+          err => {
+              console.log(err);
+          }
+      );
       if (type == 0) {
         this.dialogTitle = "新增";
         this.addRequest = {
-          createTime:new Date().format('yyyy-MM-dd')
+          createTime:new Date().format('yyyy-MM-dd HH:mm:ss')
         };
       } else if (type == 2) {
         this.dialogTitle = "修改";
         this.handelType = type;
         this.addRequest.id = data.id;
+        this.addRequest.zfjg = data.zfjg;
+        this.addRequest.zfml = data.zfml;
         this.addRequest.modelName = data.modelName;
-        this.addRequest.createTime = new Date().format('yyyy-MM-dd');
         this.addRequest.modelTypeId = data.modelTypeId;
       }
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.$refs.addRequest.resetFields();
+      this.addRequest={};
     },
     //新增验证
     addRequestModel(formName) {
@@ -149,7 +204,31 @@ export default {
         );
       }
 
-    }
+    },
+    handleChanged(val){
+        console.log("elSelectTreeObjTwo",this.$refs.elSelectTreeObjTwo.valueId)
+        this.$refs.elSelectTreeObjTwo.$children[0].handleClose();
+        this.addRequest.zfjg = val
+    },
+    showTree(){
+      console.log("aaaa")
+      this.showSelectTree = false;
+    },
+    //获取当前机构及其子机构
+    getCurrentOrganAndChild() {
+      let _this = this
+      this.$store.dispatch("getAllOrgan").then(
+        res => {
+          _this.getOrganList = res.data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+  },
+  mounted(){
+    this.getCurrentOrganAndChild();
   }
 };
 </script>

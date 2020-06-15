@@ -14,6 +14,16 @@ export  function  getLawCategoryPageApi(data)  {
       cancelToken:  setCancelSource()
     });
 }
+//查询所有业务领域、不分页
+export  function  getLawCategoryNotPageApi(data)  {
+  return  request({
+    url:  "/case/caseTemplate/lawCategory/getLawCategoryListVo",
+    method:  "get",
+    params: data,
+    showloading:  false,
+    cancelToken:  setCancelSource()
+  });
+}
 //查询行业类别、不分页
 export  function  getLawCategoryListApi(data)  {
   return  request({
@@ -214,7 +224,6 @@ export function queryLawCateByOrganIdApi(data) {
   return request({
     url: "/case/caseTemplate/LawCateConfiguration/findLawCateByOrganId/"+data.organId,
     method: "get",
-    params: data,
     showloading: false,
     cancelToken: setCancelSource()
   });

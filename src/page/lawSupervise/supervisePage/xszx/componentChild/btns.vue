@@ -21,7 +21,7 @@
 
     <div v-else>
       <el-button v-if="tabActiveValue ==='2' && $route.name!='law_supervise_invalidCueDetail'" type="button" class="submitBtn blueBtn" @click="showZbDialog">
-        <div>完成</div>
+        <div>转立案</div>
       </el-button>
     </div>
     <span :class="$route.name" v-if="statusObj[$route.params.status] === '待审核'" style="right: 370px;">
@@ -121,6 +121,20 @@
                 <el-button @click="zbVisible = false">取消</el-button>
             </span>
         </el-dialog>
+
+        <el-dialog class="mini-dialog-title" title="转立案" :visible.sync="zlaVisible" :show-close="false"
+            :close-on-click-modal="false" width="420px"  append-to-body>
+            <div class="error-message">
+            <div class="">
+                <!-- <img src="@/../static/images/img/cluesReview/icon_wuxiao.png"  alt="" /> -->
+            </div>
+            <p>保存成功，点击 “确认” 页面将跳转到 “立案” 页面！</p>
+            </div>
+            <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="goZLA">确认</el-button>
+            <el-button @click="zlaVisible = false">取消</el-button>
+            </span>
+        </el-dialog>
     </div>
 
 
@@ -135,10 +149,10 @@
 <script>
 import {mapGetters} from "vuex";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
-import {findAllDrawerById} from '@/api/lawSupervise.js';
+import {findAllDrawerById, saveAndUpdate} from '@/api/lawSupervise.js';
 export default {
   //tabActiveValue: 1检测数据核对,2违法超限复合,3生成证据包
-  props: ['tabActiveValue'],
+  props: ['tabActiveValue', 'obj'],
   data() {
     return {
         statusObj: {
@@ -147,6 +161,7 @@ export default {
             '2': '审核中',
             '3': '已审核'
         },
+        zlaVisible:false,
         selectCurrentTreeName: "",
         defaultExpandedKeys: [],
         organData: [],
@@ -167,8 +182,29 @@ export default {
   },
   methods: {
     showZbDialog () {
-        this.getAllOrgan('root');
-        this.zbVisible = true;
+        // this.getAllOrgan('root');
+        // this.zbVisible = true;
+         let _this = this;
+        new Promise((resolve, reject) => {
+            saveAndUpdate(_this.obj).then(
+                res => {
+                    // debugger;
+                    _this.zlaVisible = true;
+                },
+                error => {
+                    return
+                }
+            )
+        })
+
+    },
+    goZLA () {
+        this.$store.commit('setCaseId','f205736182a36d9fd0574fa75eb30a30');
+        this.$store.commit('setCaseApproval',false);
+        this.$store.commit('setCaseNumber','吐临〔2020〕第00320号');
+        this.$router.push({
+            name: 'case_handle_establish'
+        });
     },
     handleNodeClick1(data) {
       this.checkSearchForm.number = data.label;
@@ -248,12 +284,28 @@ export default {
       // });
     },
     nextRouter() {
+        if (this.$route.params.status == '0') {
+            let _this = this;
+            new Promise((resolve, reject) => {
+                saveAndUpdate(_this.obj).then(
+                    res => {
+                        debugger;
+                    },
+                    error => {
+                            return
+                    }
+                )
+            })
+            // return
+        }
+
       let nextStatus=parseInt(this.$route.params.status)+1
       this.$router.push({
         name: 'law_supervise_examineDoingDetail',
         params: {
           status: nextStatus.toString(),
-          tabTitle: '【监管】'+this.statusObj[nextStatus.toString()]
+          tabTitle: '【监管】'+this.statusObj[nextStatus.toString()],
+          offSiteManageId: this.$route.params.offSiteManageId
         }
       });
     },

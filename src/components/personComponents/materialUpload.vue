@@ -3,6 +3,7 @@
     <div class="card-title">
       <font class="font" style="font-size:25px;"><span class="titleflag"></span>{{ uploadTitle }}
         <el-button
+          v-if="params.type !== 'view'"
           style="margin: 2px 18px 0;"
           size="medium"
           type="primary"
@@ -18,7 +19,8 @@
     <div ref="degreeXX" class="block upload-material">
       <ul v-if="degreeFiles && degreeFiles.length" class="el-upload-list el-upload-list--picture-card">
         <li v-for="(item, $index) in degreeFiles" :key="item.uid" tabindex="0" class="el-upload-list__item is-ready">
-          <img :src="item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item.url)" >
+          <img v-if="item.status === 'ready'" :src="item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item)">
+          <img v-if="item.isSave || item.status === 'success'" :src="baseUrl + item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item)">
           <div v-if="params.type !== 'view' && editAble" class="el-upload-list-action">
             <span class="item-name">{{ item.name }}</span>
             <div class="edit-select-file">
@@ -80,6 +82,11 @@ export default {
       type: String,
       default: '',
       required: true
+    },
+    baseUrl: {
+      type: String,
+      default: '',
+      required: true
     }
   },
   data(){
@@ -137,8 +144,12 @@ export default {
       }
     },
     // 点击图片弹出预览
-    previewImg(url) {
-      this.dialogImageUrl = url;
+    previewImg(item) {
+      if(item.isSave || item.status === 'success'){
+        this.dialogImageUrl = this.baseUrl + item.url;
+      }else{
+        this.dialogImageUrl = item.url;
+      }
       this.dialogVisible = true;
     },
     // 删除图片
@@ -186,13 +197,17 @@ export default {
           if(res.code === 200){
             if(changeIndex.length === this.degreeFiles.length){
               res.data.forEach(item => {
-                this.eduPics.push(item.storagePath)
+                this.eduPics.push(item.storageId)
               })
-              this.degreeFiles.forEach(item => item.status = 'success');
+              this.degreeFiles.forEach((item, index) => {
+                item.status = 'success';
+                item.url = this.eduPics[index];
+              });
             }else{
               changeIndex.forEach((item) => {
-                this.eduPics.splice(item, 1, res.data[0].storagePath);
+                this.eduPics.splice(item, 1, res.data[0].storageId);
                 this.degreeFiles[item].status = 'success';
+                this.degreeFiles[item].url = res.data[0].storageId;
               })
             }
             const saveFile = { personId: this.params.id };
@@ -203,6 +218,8 @@ export default {
           loading.close();
           this.$message({type: 'error', message: err.msg || ''});
         });
+      }else{
+        this.deleteImgRefresh(loading);
       }
     },
     // 保存图片
@@ -219,19 +236,13 @@ export default {
     },
 
     // 删除图片后更新人员信息
-    deleteImgRefresh(){
-      const loading = this.$loading({
-        lock: true,
-        text: '正在删除',
-        spinner: 'car-loading',
-        customClass: 'loading-box',
-        background: 'rgba(234,237,244, 0.8)'
-      });
+    deleteImgRefresh(loading){
       const saveFile = { personId: this.params.id };
       saveFile[this.materialType] = this.eduPics.join('###');
       this.$store.dispatch('personUploadMaterial', saveFile).then(res => {
         loading.close();
-        this.$message({ type: 'success', message: '删除成功' });
+        this.editAble = false;
+        this.$message({ type: 'success', message: '保存成功' });
         this.$emit('saveMaterialSuccess', { type: this.materialType, data: saveFile[this.materialType] });
       }, err => {
         loading.close();

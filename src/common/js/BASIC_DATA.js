@@ -17,7 +17,7 @@ export const BASIC_DATA_SYS = {
     invalidCode:'a0a2d83376fe7695f76fbba69545c056',
     // 监管机构根节点id
     lawSupervise: '7D4006C3-3589-4E50-873E-C3778A4D73F7',
-    
+
     //立案登记 环节id caseLinktypeId
     establish_caseLinktypeId:'2c90293b6c178b55016c17c255a4000d',
     //立案登记 文书id
@@ -62,8 +62,21 @@ export const BASIC_DATA_SYS = {
     reportRecordDoc_caseDoctypeId:'ee967fd019272b7a06aae11cf5901303',
     //赔补偿 环节id caseLinktypeId
     compensationNote_caseDoctypeId:'508555ca2092e1bd252c5f74468adf0a',
+    //赔补偿 环节文书id caseLinktypeId
+    compensationNote_huanjieAndDocId:'0c18fe2ebe22e931eec3b0e256362e04',
     //收缴赔补偿款 环节id caseLinktypeId
     takeOverCompensation_caseDoctypeId:'7781e1f951303732c3388a325fb685dd',
     //赔补偿案件 调查类文书 环节id caseLinktypeId
-    compensationCaseDoc_caseLinktypeId:'1eb723efd23dfc7c28ebba2c6fc755c1'
+    compensationCaseDoc_caseLinktypeId:'1eb723efd23dfc7c28ebba2c6fc755c1',
+    //赔补偿案件 当事人权利 环节id caseLinktypeId
+    compensationPartyRights_caseLinktypeId:'2128e21c31b9debba6890bf66635e3f5',
+     //协助调查函  docId
+    assistInvestigation_caseDocTypeId: '2f20ebfa109dbae1eb8eee3146f11d61',
+
+}
+// 评议考核基础数据
+export let PYKH_DATA = {
+    khlb: "410996033c9c0ae9dbe7e683bcaf2f50", // 考核类别
+    // 指标类型配置
+    one_zblx: "40cf34b97c7e677db0b171668dd29983"
 }

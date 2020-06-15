@@ -347,7 +347,7 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import checkDocFinish from "../components/checkDocFinish";
+import checkDocFinish from "@/page/caseHandle/components/checkDocFinish.vue";
 import chooseAskPeopleDia from "@/page/caseHandle/components/chooseAskPeopleDia";
 import resetDocDia from '@/page/caseHandle/components/resetDocDia'
 import iLocalStroage from "@/common/js/localStroage";
@@ -392,7 +392,8 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
-        caseLinktypeId: this.BASIC_DATA_SYS.caseDoc_caseLinktypeId, //表单类型ID
+        // caseLinktypeId: this.BASIC_DATA_SYS.caseDoc_caseLinktypeId, //表单类型ID
+        caseLinktypeId:'', ////表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -554,12 +555,12 @@ export default {
       //   this.com_viewDoc(row);
       // }
       console.log("查看");
-      this.com_viewDoc(row);
+      this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
     addMoreDoc(row) {
       console.log("添加",row);
       iLocalStroage.removeItem("currentDocDataId");
-      this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
+      this.$refs.chooseAskPeopleDiaRef.showModal(row,this.caseLinkDataForm.caseLinktypeId, this.isSaveLink);
     },
     //清空文书
     delDocDataByDocId(data){
@@ -583,7 +584,8 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        linkTypeId: this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
+        // linkTypeId: this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
+        linkTypeId: this.caseLinkDataForm.caseLinktypeId
       };
       this.com_getDocListByCaseIdAndFormId(data);
     },
@@ -639,12 +641,18 @@ export default {
       }else{
           this.formData.partyUnitPositionAndCom = `${this.formData.partyUnitPosition} ${this.formData.occupation}`;
       }
+    },
+    async initData(){
+      await this.queryFlowBycaseId();
+      //动态环节id
+      this.caseLinkDataForm.caseLinktypeId = this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
+      this.setFormData();
+      //通过案件id和表单类型Id查询已绑定文书
+      this.getDocListByCaseIdAndFormId();
     }
   },
   created() {
-    this.setFormData();
-    //通过案件id和表单类型Id查询已绑定文书
-    this.getDocListByCaseIdAndFormId();
+    this.initData() 
   }
 };
 </script>

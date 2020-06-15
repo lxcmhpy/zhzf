@@ -76,7 +76,7 @@ export default [
               title: "表单及文书配置"
             },
             component: () => import("@/page/sys/pdf-manage/pdfManage.vue")
-          },
+          }
         ]
       },
       {
@@ -131,7 +131,7 @@ export default [
             name: "lawCategory",
             path: "lawCategory",
             meta: {
-              title: "执法门类管理"
+              title: "业务领域管理"
             },
             component: () => import("@/page/product-template/lawCategory/LawCategory.vue")
           },
@@ -271,6 +271,14 @@ export default [
               title: "审批流程"
             },
             component: () => import("@/page/person/person-approveFlow/organList.vue")
+          },
+          {
+            name: "examDeploy",
+            path: "/exam-deploy",
+            meta: {
+              title: "考试配置"
+            },
+            component: () => import("@/page/person/exam-deploy/examDeploy.vue")
           }
         ]
       }

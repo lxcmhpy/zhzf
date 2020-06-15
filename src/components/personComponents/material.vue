@@ -11,34 +11,35 @@
           <materialIdNo
             :params="params"
             :idPic="materialInfo.idPic"
+            :baseUrl="baseUrl"
             @saveIdImgSuccess="idImgSucess"></materialIdNo>
         </template>
         <template>
           <!-- 学历证明材料 -->
-          <!-- <materialDegree :params="params" :savePic="materialInfo.eduPic"></materialDegree> -->
           <materialUpload
             :params="params"
             :savePic="materialInfo.eduPic"
+            :baseUrl="baseUrl"
             materialType="eduPic"
             uploadTitle="学历证明"
             @saveMaterialSuccess="cacheImage"></materialUpload>
         </template>
         <template>
           <!-- 编制证明材料 -->
-          <!-- <materialStaff :params="params" :savePic="materialInfo.organPic"></materialStaff> -->
           <materialUpload
             :params="params"
             :savePic="materialInfo.organPic"
+            :baseUrl="baseUrl"
             materialType="organPic"
             uploadTitle="编制证明"
             @saveMaterialSuccess="cacheImage"></materialUpload>
         </template>
         <template>
           <!-- 其他证明材料 -->
-          <!-- <materialOther :params="params" :savePic="materialInfo.otherPic"></materialOther> -->
           <materialUpload
             :params="params"
             :savePic="materialInfo.otherPic"
+            :baseUrl="baseUrl"
             materialType="otherPic"
             uploadTitle="其他证明"
             @saveMaterialSuccess="cacheImage"></materialUpload>
@@ -57,11 +58,9 @@
   </div>
 </template>
 <script>
-import materialDegree from './materialDegree';
 import materialIdNo from './materialIdNo';
-import materialOther from './materialOther';
-import materialStaff from './materialStaff';
 import materialUpload from './materialUpload';
+import iLocalStroage from "@/common/js/localStroage.js";
 export default {
   name:'material',//证明材料
   props: {
@@ -88,11 +87,13 @@ export default {
   data(){
     return {}
   },
+  computed:{
+    baseUrl(){
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+    }
+  },
   components:{
-    materialDegree,
     materialIdNo,
-    materialOther,
-    materialStaff,
     materialUpload
   },
   methods:{

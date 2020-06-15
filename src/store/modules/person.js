@@ -7,7 +7,7 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
     lossDocApi,withholdApi,unWithholdApi,logoffApi,revokeApi,getYearApi,approveArApi,reApproveArApi,queryRArDataApi,paramListApi,paramUpdateApi,getStaffOutListApi,getLastApproveRecordApi,getCertHistoryPageListApi,
     queryPersonCertApi,getApproveApi,getQueryArDataByPersonIdApi,unLossDocApi,queryByOidApi,queryApproveProcessPageApi,updateApApi,getCertNoApi,changeCertByEndDateApi,examInfoPageListApi,addExamInfoApi
     ,getProvinceCode,deleteExamInfoByIdApi,updateExamInfoApi,deleteTrainInfoByIdApi,updateTrainInfoApi,addTrainInfoApi,trainInfoPageListApi, initAllApprove, personEdabled,uploadMaterial,
-    savePersonMaterial, getAllOrigin, savePersonPhoto
+    savePersonMaterial, getAllOrigin, savePersonPhoto,getScheduleJobPageApi,addScheduleJobApi,updateScheduleJobApi,cacheQuestionRedisApi,resumeScheduleJobInfoApi,deleteScheduleJobApi
   } from "@/api/person";
   
   const person = {
@@ -1066,13 +1066,96 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
     })
   },
   // 获取所有机构无权限限制
-  getOriginNoLimit({commit}){
+  getOriginNoLimit({commit}, all){
     return new Promise((resolve, reject) => {
       getAllOrigin().then(res => {
+        if(!all){
+          res.data.forEach((item, index) => {
+            if(item.pid === '0'){
+              res.data.splice(index, 1);
+              if(item.children && item.children.length){
+                res.data = res.data.concat(item.children);
+              }
+            }
+          })
+        }
         resolve(res);
       }, error => {reject(error)})
     })
-  }
+  },
+    //考配置查询
+    getScheduleJobPageModul({commit},data){
+        return new Promise((resolve, reject) => {
+            getScheduleJobPageApi(data).then(
+            res => {
+                resolve(res);
+            },
+            error => {
+                reject(error);
+            })
+        })
+        },
+         //考配置新增
+         addScheduleJobModul({commit},data){
+        return new Promise((resolve, reject) => {
+            addScheduleJobApi(data).then(
+            res => {
+                resolve(res);
+            },
+            error => {
+                reject(error);
+            })
+        })
+        },
+         //考配置修改
+         updateScheduleJobModul({commit},data){
+        return new Promise((resolve, reject) => {
+            updateScheduleJobApi(data).then(
+            res => {
+                resolve(res);
+            },
+            error => {
+                reject(error);
+            })
+        })
+        },
+        
+               //考配置修改
+               deleteScheduleJobModul({commit},data){
+                return new Promise((resolve, reject) => {
+                    deleteScheduleJobApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+                })
+                },
+        //手动配置
+        cacheQuestionRedis({commit},data){
+            return new Promise((resolve, reject) => {
+                cacheQuestionRedisApi(data).then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            },
+             //启用停用
+             resumeScheduleJobInfo({commit},data){
+            return new Promise((resolve, reject) => {
+                resumeScheduleJobInfoApi(data).then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            },
 
   }
   }

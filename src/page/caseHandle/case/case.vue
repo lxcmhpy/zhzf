@@ -5,6 +5,14 @@
       <ul>
 
         文书：
+        <li @click="goCompensationNotice">公路赔（补）偿通知书</li>
+        <li @click="goPayCompensation">收缴赔补偿款</li>
+        <li @click="goAudioEvidenceRecord">视听资料（电子数据）证据记录单</li>
+        <li @click="goEvidenceRegApprovalForm">证据登记保存审批表</li>
+        <li @click="goRemoveEvidenceRegApprovalForm">解除证据登记保存审批表</li>
+        <li @click="goAdminCoerciveMeasureApproval">行政强制措施审批表</li>
+        <li @click="goProLongAdminCoerciveMeasureApproval">延长行政强制措施审批表</li>
+        <li @click="goTest">测试文书</li>
         <li @click="goPunishDecisionDoc">行政处罚决定书</li>
         <li @click="goInquestNotesDoc">勘验笔录</li>
         <li @click="goSampleEvidenceDoc">抽样取样凭证</li>
@@ -47,15 +55,15 @@
 
       <ul>
         文书：
-        <li @click="goInquestNotes">勘验笔录</li>
-        <li class="text-red">听证通知书</li>
-        <li class="text-red">听证笔录</li>
-        <li class="text-red">当场行政处罚决定书</li>
+        <li @click="goAssistInvestgation">协助调查函</li>
+        <li  @click="goInspectionRecord">检查记录</li>
+        <li @click="goEstablish_JX">立案登记表——江西</li>
+        <li  @click="goSceneNotesDoc_JX">现场笔录-江西</li>
 
         <br><br>
 
         表单：
-        <li @click="goFilingApprovalForm">立案审批表</li>
+        <li @click="goAdminCoerciveMeasureNote_JX">行政强制措施现场笔录</li>
         <li @click="goRemoveOrPrelong">解除（延长）强制行政措施</li>
         <li @click="goIllegalAction">违法行为通知书</li>
         <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
@@ -78,6 +86,9 @@
     <div>
       <p>zmh(17、18、19、20、21、22、23、24文书表单及pdf打印版)</p>
       <ul>
+        <a href="alert:E:/zhangminhui/zhzf/static/HlVoIPSDKSetup20200605/demo.htm">点击打开维新</a>
+        
+        <a href="alert:E:/HlVoIPSDKSetup/demo2.htm">点击打开维新</a>
         <br><br>
         <li @click="goNumberCorrectDialog">号牌更正弹窗</li>
         <li @click="goInvalidInfoDialog">无效信息弹窗</li>
@@ -329,9 +340,21 @@ export default {
 
     },
     //勘验笔录
-    goInquestNotes() {
-      this.$router.push({ name: 'case_handle_inquestNotes' });
+    goAssistInvestgation() {
+      this.$router.push({ name: 'case_handle_assistInvestgation' });
 
+    },
+    goInspectionRecord(){
+      this.$router.push({ name: 'case_handle_inspectionRecord' });
+    },
+    goEstablish_JX(){
+      this.$router.push({ name: 'case_handle_establish_JX' });
+    },
+    goSceneNotesDoc_JX(){
+      this.$router.push({ name: 'case_handle_sceneNotesDoc_JX' });
+    },
+    goAdminCoerciveMeasureNote_JX(){
+      this.$router.push({ name: 'case_handle_adminCoerciveMeasureNote_JX' });
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {
@@ -398,6 +421,12 @@ export default {
     //-------------------长软start--------------
     goPunishDecisionDoc2() {
       this.$router.push({ name: 'case_handle_spotAdmPunishDecisionDoc' });
+    },
+    goCompensationNotice() {
+      this.$router.push({ name: 'case_handle_compensationNotice' });
+    },
+    goPayCompensation() {
+      this.$router.push({ name: 'case_handle_payCompensation' });
     },
     // 证据保存清单
     goEvidenceListDoc() {
@@ -471,6 +500,30 @@ export default {
     // 送达回证
     goDeliverReceiptForm() {
       this.$router.push({ name: 'case_handle_deliverReceiptForm' });
+    },
+    // 视听资料（电子数据）证据记录单
+    goAudioEvidenceRecord() {
+      this.$router.push({ name: 'case_handle_audioEvidenceRecord' });
+    },
+    // 证据登记保存审批表
+    goEvidenceRegApprovalForm() {
+      this.$router.push({ name: 'case_handle_evidenceRegApprovalForm' });
+    },
+    // 解除证据登记保存审批表
+    goRemoveEvidenceRegApprovalForm() {
+      this.$router.push({ name: 'case_handle_removeEvidenceRegApprovalForm' });
+    },
+    // 行政强制措施审批表
+    goAdminCoerciveMeasureApproval() {
+      this.$router.push({ name: 'case_handle_adminCoerciveMeasureApproval' });
+    },
+    // 行政强制措施审批表
+    goProLongAdminCoerciveMeasureApproval() {
+      this.$router.push({ name: 'case_handle_prolongAdminCoerciveMeasureApproval' });
+    },
+    // 行政强制措施审批表
+    goTest() {
+      this.$router.push({ name: 'test_doc' });
     },
     //--------------长软end-------------------
     makeRoute(path1, path2, path3, name1, name2, name3, title, componentName) {

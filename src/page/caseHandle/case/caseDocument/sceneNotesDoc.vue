@@ -290,12 +290,12 @@
         @saveData="saveData"
         @backHuanjie="submitData"
       ></casePageFloatBtns>
-      <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+      <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
     </div>
   </div>
 </template>
 <script>
-  import overflowInput from "../pdf/overflowInput";
+  // import overflowInput from "../pdf/overflowInput";
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
   import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
@@ -309,7 +309,7 @@
 
 export default {
   components: {
-    overflowInput
+    // overflowInput
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId"]) },
@@ -457,7 +457,7 @@ export default {
           //文书数据
           docData: "",
           status: "", //提交状态
-          linkTypeId: this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //所属环节的id
+          linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
         },
         handleType: "", // 0 暂存  1  提交
         dictId: "2dc1e0a3a8ce225c292259da39294847",
@@ -540,7 +540,7 @@ export default {
     mixins: [mixinGetCaseApiList],
     inject: ["reload"],
     components: {
-      overflowInput,
+      // overflowInput,
       casePageFloatBtns
     },
     methods: {
@@ -584,7 +584,7 @@ export default {
       },
       // 多行编辑
       overFlowEdit() {
-        this.$refs.overflowInputRef.showModal(0, "");
+        // this.$refs.overflowInputRef.showModal(0, "");
       },
       // 获取多行编辑内容
       getOverFloeEditInfo(edit) {

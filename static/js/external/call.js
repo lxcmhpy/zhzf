@@ -158,20 +158,31 @@ var PhoneCallModule =(function () {
 		PhoneCall.sipUnRegister();
 	};
 
-	var sipRegister = function(){
+	var sipRegister = function(displayName,privateIdentity,password){
         // debugger;
         var urlObj = JSON.parse(localStorage.getItem('CURRENT_BASE_URL'));
+        // var callCredential = {
+        //                 displayName: 'ecds05',
+        //                 privateIdentity: '100007',
+        //                 webSocketServerUrl: urlObj.VIDEO_HOST,
+        //                 // webSocketServerUrl: 'wss://172.16.170.47:10062',
+        //     			// webSocketServerUrl: 'wss://124.192.215.9:10062',
+        //     			sipOutboundProxyUrl: 'udp://172.16.170.47:7766',
+        //     			iceServers:'[]',
+        //     			password: '1234',
+        //     			authToken:result
+        //             };
         var callCredential = {
-                        displayName: 'ecds05',
-                        privateIdentity: '100007',
-                        webSocketServerUrl: urlObj.VIDEO_HOST,
-                        // webSocketServerUrl: 'wss://172.16.170.47:10062',
-            			// webSocketServerUrl: 'wss://124.192.215.9:10062',
-            			sipOutboundProxyUrl: 'udp://172.16.170.47:7766',
-            			iceServers:'[]',
-            			password: '1234',
-            			authToken:result
-                    };
+            displayName: displayName,
+            privateIdentity: privateIdentity,
+            webSocketServerUrl: urlObj.VIDEO_HOST,
+            // webSocketServerUrl: 'wss://172.16.170.47:10062',
+            // webSocketServerUrl: 'wss://124.192.215.9:10062',
+            sipOutboundProxyUrl: 'udp://172.16.170.47:7766',
+            iceServers:'[]',
+            password: password,
+            authToken:result
+        };
 
 		PhoneCall.sipRegister(callCredential);
 

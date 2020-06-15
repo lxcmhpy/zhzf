@@ -1,5 +1,3 @@
-import store from '@/store/index.js';
-
 export default [
   {
     path: "/deleteEvidence",
@@ -50,7 +48,7 @@ export default [
       title: "案件调查报告",
       oneTab: true,
     },
-    component: () => import("@/page/caseHandle/case/caseInvestigReport.vue")
+    component: () => import("@/page/caseHandle/case/form/caseInvestigReport.vue")
   },
   {
     path: "/caseDoc",
@@ -59,7 +57,7 @@ export default [
       title: "调查类文书",
       oneTab: true,
     },
-    component: () => import("@/page/caseHandle/case/caseDoc.vue")
+    component: () => import("@/page/caseHandle/case/form/caseDoc.vue")
   },
   {
     path: "/obtaineEvidenceForm",
@@ -460,7 +458,7 @@ export default [
     meta: {
       title: "解除（延长）行政强制措施决定"
     },
-    component: () => import("@/page/caseHandle/case/coerciveMeasureDoc.vue")
+    component: () => import("@/page/caseHandle/case/form/coerciveMeasureDoc.vue")
   },
   {
     path: "/importantCaseTeamDissDoc",
@@ -653,4 +651,53 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/modle/reportRecordDoc.vue")
   },
+  {
+    path: "/compensationPartyRights",
+    name: "case_handle_compensationPartyRights",
+    meta: {
+      title: "当事人权利（赔补偿流程）"
+    },
+    component: () => import("@/page/caseHandle/case/form/compensationPartyRights.vue")
+  },
+  {
+    path: "/compensationNotice",
+    name: "case_handle_compensationNotice",
+    meta: {
+      title: "公路赔（补）偿通知书"
+    },
+    component: () => import("@/page/caseHandle/case/form/compensationNotice.vue")
+  },
+  {
+    path: "/sceneInquestPicture",
+    name: "case_handle_sceneInquestPicture",
+    meta: {
+      title: "现场勘验示意图"
+    },
+    component: () => import("@/page/caseHandle/case/modle/sceneInquestPicture.vue")
+  },
+  {
+    path: "/evidencePastePage",
+    name: "case_handle_evidencePastePage",
+    meta: {
+      title: "证据粘贴页"
+    },
+    component: () => import("@/page/caseHandle/case/modle/evidencePastePage.vue")
+  },
+  {
+    path: "/payCompensation",
+    name: "case_handle_payCompensation",
+    meta: {
+      title: "收缴赔补偿款"
+    },
+    component: () => import("@/page/caseHandle/case/form/payCompensation.vue")
+  },
+  {
+    path: "/test_doc",
+    name: "test_doc",
+    meta: {
+      title: "测试文书"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/stageDelayApprovalForm.vue")
+  },
+
 ]

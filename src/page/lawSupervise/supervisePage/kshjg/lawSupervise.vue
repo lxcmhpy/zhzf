@@ -437,7 +437,7 @@
            </el-popover>
         </div>
         <!-- updateDrawer -->
-        <div class="drawerBtn" @click="openDrawer">
+        <div class="drawerBtn" v-show="category == 4" @click="openDrawer">
           <i class="el-icon-arrow-right"></i>
         </div>
         <!-- v-if="category != 4"  -->
@@ -446,7 +446,8 @@
           <div class="drawerBtn" @click="drawer=false">
             <i class="el-icon-arrow-right"></i>
           </div>
-          <div class="amap-main-content" style="padding:0px 17px" v-show="category != 4">
+          <!-- category != 4 -->
+          <div class="amap-main-content" style="padding:0px 17px" v-show="false">
 
               <div class="echarts-box">
                 <div class="title" @click="status1 = !status1">
@@ -494,8 +495,8 @@
               </div>
 
           </div>
-
-          <div class="amap-main-content" style="padding:0px" v-show="category == 4">
+<!-- v-show="category == 4" -->
+          <div class="amap-main-content" style="padding:0px" >
 
                     <div class="echarts-box" >
                         <div class="title" @click="status4 = !status4">
@@ -992,7 +993,7 @@
                 placeholder="输入关键字进行过滤"
                 v-model="filterText">
             </el-input>
-            <el-button  icon="el-icon-search"></el-button>
+            <el-button  icon="el-icon-search" @click="searchAllByBtn"></el-button>
         </div>
         <div class="amap-tool-search" v-show="toolShow" >
             <el-button size="medium" class="tabBtn" :class="{'isCheck': isCheck}" @click="isCheck = true">
@@ -1007,6 +1008,7 @@
                     <!--  -->
                     <!-- expand-on-click-node -->
                 <el-tree
+                    v-if="showTree"
                     :data="data"
                     :props="defaultProps"
                     accordion
@@ -1015,12 +1017,18 @@
                     :filter-node-method="filterNode"
                     @node-click="handleNodeClick">
                      <span class="custom-tree-node" slot-scope="{ node, data }">
-                        <span><img class="tree-node-icon" :src="'./static/images/img/lawSupervise/'+data.icon+'.png'">{{node.label}}</span>
+                        <span><img class="tree-node-icon" :src="'./static/images/img/lawSupervise/'+data.icon+'.png'">{{data.label}}</span>
                     </span>
                         <!-- <span class="custom-tree-node">
                             <span><img class="tree-node-icon" :src="'./static/images/img/lawSupervise/icon_jc1.png'">dd</span>
                         </span> -->
                 </el-tree>
+                <ul v-if="!showTree">
+                    <li v-for="(item,index) in ryList" :key="index" style="display:flex;justify-content:space-between;" @click="handleNodeClick(item)">
+                        <span>{{item.nickName}} </span>
+                        <span> {{item.organName}}</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -1194,12 +1202,13 @@
 </template>
 <script>
 import Vue from "vue";
+import iLocalStroage from '@/common/js/localStroage';
 import { mapGetters } from "vuex";
 // require("@/common/js/call.js");
 import echarts from "echarts";
 // import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById } from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage} from "@/api/lawSupervise.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 import lunarDate from '@/common/js/lunarDate.js';
@@ -1425,6 +1434,7 @@ export default {
   data() {
     let self = this;
     return {
+        showTree: true,
         filterText: '',
         lunarDate: '',
         status5:true,
@@ -1435,7 +1445,7 @@ export default {
         radioVal: '全选',
         defaultProps: {
           children: 'children',
-          label: 'name'
+          label: 'label'
         },
         data: null,
         //  [{
@@ -1690,10 +1700,14 @@ export default {
       gjObj: null,
       fxcObj: null,
       expandTree:false,
+      userInfo: null,
+      ryList: []
     };
   },
   methods: {
     filterNode (value, data, node) {
+        let _this =this;
+
         if (value === "") {
             this.expandTree = false;
             return data;
@@ -1713,13 +1727,50 @@ export default {
         //     return false;
         // } else {
         //     }
-            return data.name.indexOf(value) > -1;
+            return data.label.indexOf(value) > -1;
+    },
+    searchAllByBtn () {
+        if (this.filterText === "") {
+            this.showTree = true
+            this.organTreeByCurrUser(this.userInfo.organId);
+        } else {
+            let params = {
+                name: this.filterText,
+                    organId: this.userInfo.organId,
+                    type: this.isCheck ? 0: 1
+                }
+            let _this = this;
+            new Promise((resolve, reject) => {
+                getOrganTree(params).then(
+                    res => {
+                        _this.showTree = false;
+                        _this.ryList = res.data;
+                })
+            })
+
+            // if (this.isCheck) {
+
+
+            //     // 人员
+            // } else {
+            //     this.showTree = true
+            //     // 机构
+            //     this.$refs.treeFilter.filter(this.filterText);
+            // }
+        }
+
+
     },
     callName(code) {
         this.doing = '2';
 
         if (!window.PhoneCallModule.getRegistered()) {
-            window.PhoneCallModule.sipRegister();
+            // window.PhoneCallModule.sipRegister();
+            let displayName = 'ecds05';
+            let privateIdentity ='100007';
+            let password = '1234';
+            window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
+
         }
         // debugger;
         if (code == '李玉明') {
@@ -1772,51 +1823,61 @@ export default {
         })
         this.allSearchList.splice(0, this.allSearchList.length);
         // this.radioVal = '全选';
-            debugger;
-        if (node.icon === 'icon_jc11' && node.name !== '执法人员') {
-
+        if (node.icon === 'icon_jc11' && node.label === '执法人员') {
+            let params = {
+                name: '',
+                organId: node.id,
+                type: 0
+            }
             let _this = this;
-             let resultList = [];
-            let position = node.position ? node.position.split(','):['',''];
-            let lng = parseFloat(position[0]);
-            let lat = parseFloat(position[1]);
-            resultList.push({
-                address: node.address,
-                distance: null,
-                id: node.id,
-                lat: lat,
-                lng: lng,
-                icon: 'icon_jc11',
-                // icons: 'ry',
-                pid: node.organId,
-                location: {
-                    O: lng,
-                    P: lat,
-                    lat: lat,
-                    lng: lng
-                },
-                name: node.name,
-                label: node.nickName,
-                position: node.position,
-                shopinfo: '',
-                tel: '',
-                type: '0',
-                other: node
-            })
-            // this.curWindow = resultList[0];
-            this.onSearchResult(resultList, 0,0);
-            // new Promise((resolve, reject) => {
-            //     getUserById(node.id).then(
-            //         res => {
-            //             debugger;
+            // debugger;
+            new Promise((resolve, reject) => {
+                getOrganTree(params).then(
+                    res => {
+                        // _this.showTree = false;
+                        let resultList = [];
+                        res.data.forEach((v,i)=>{
 
-            //         }
-            //     )
-            // })
-        } else if (node.position){
+                            let position = v.propertyValue ? v.propertyValue.split(','):['',''];
+                            let lng = parseFloat(position[0]);
+                            let lat = parseFloat(position[1]);
+                            // let lng = v.longitude?v.longitude: '';
+                            // let lat = v.latitude?v.latitude: '';
+                            resultList.push({
+                                address: v.address,
+                                distance: null,
+                                id: v.id,
+                                lat: lat,
+                                lng: lng,
+                                icon: 'icon_jc11',
+                                // icons: 'ry',
+                                pid: v.organId,
+                                location: {
+                                    O: lng,
+                                    P: lat,
+                                    lat: lat,
+                                    lng: lng
+                                },
+                                name: v.name,
+                                label: v.nickName,
+                                // position: v.propertyValue,
+                                position: [lng, lat],
+                                shopinfo: '',
+                                tel: '',
+                                type: '0',
+                                other: v
+                            })
+                        })
+                        _this.onSearchResult(resultList, 0,0);
+                        _this.errorMsg(`总计${res.data.length}条数据`, 'success');
+                })
+            })
+
+
+         } else if (node.propertyValue){
 
             let resultList = [];
-            let position = node.position ? node.position.split(','):['',''];
+            let position = node.propertyValue ? node.propertyValue.split(','):['',''];
             let lng = parseFloat(position[0]);
             let lat = parseFloat(position[1]);
             resultList.push({
@@ -1837,6 +1898,7 @@ export default {
                 type: '-1',
                 other: node
             })
+            debugger;
             // this.curWindow = resultList[0];
             this.onSearchResult(resultList, 1,0);
             // this.getOrganDetail(node.id).then(
@@ -1846,6 +1908,80 @@ export default {
             //     }
             // )
         }
+        // if (node.icon === 'icon_jc11' && node.name !== '执法人员') {
+
+        //     let _this = this;
+        //      let resultList = [];
+        //     let position = node.position ? node.position.split(','):['',''];
+        //     let lng = parseFloat(position[0]);
+        //     let lat = parseFloat(position[1]);
+        //     resultList.push({
+        //         address: node.address,
+        //         distance: null,
+        //         id: node.id,
+        //         lat: lat,
+        //         lng: lng,
+        //         icon: 'icon_jc11',
+        //         // icons: 'ry',
+        //         pid: node.organId,
+        //         location: {
+        //             O: lng,
+        //             P: lat,
+        //             lat: lat,
+        //             lng: lng
+        //         },
+        //         name: node.name,
+        //         label: node.nickName,
+        //         position: node.position,
+        //         shopinfo: '',
+        //         tel: '',
+        //         type: '0',
+        //         other: node
+        //     })
+        //     // this.curWindow = resultList[0];
+        //     this.onSearchResult(resultList, 0,0);
+        //     // new Promise((resolve, reject) => {
+        //     //     getUserById(node.id).then(
+        //     //         res => {
+        //     //             debugger;
+
+        //     //         }
+        //     //     )
+        //     // })
+        // } else if (node.position){
+
+        //     let resultList = [];
+        //     let position = node.position ? node.position.split(','):['',''];
+        //     let lng = parseFloat(position[0]);
+        //     let lat = parseFloat(position[1]);
+        //     resultList.push({
+        //         address: node.address,
+        //         distance: null,
+        //         id: node.id,
+        //         lat: lat,
+        //         lng: lng,
+        //         location: {
+        //             O: lng,
+        //             P: lat,
+        //             lat: lat,
+        //             lng: lng
+        //         },
+        //         name: node.name,
+        //         shopinfo: '',
+        //         tel: '',
+        //         type: '-1',
+        //         other: node
+        //     })
+        //     debugger;
+        //     // this.curWindow = resultList[0];
+        //     this.onSearchResult(resultList, 1,0);
+        //     // this.getOrganDetail(node.id).then(
+        //     //     res => {
+        //     //         // debugger;
+
+        //     //     }
+        //     // )
+        // }
     },
     getOrganDetail (id) {
         return new Promise((resolve, reject) => {
@@ -2020,16 +2156,16 @@ export default {
         // if (this.category != 4) {
             // this.drawer = true;
             // if (this.drawer) {
-              let _this = this;
-              this.$nextTick(() => {
-                var flowChart = echarts.init(document.getElementById("echartsBox1"));
-                flowChart.setOption(_this.lawSuperviseObj.option);
-                var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
-                flowChart1.setOption(_this.yjObj);
-              //   _this.getRealTimeDataByLawSupervise();
-              });
-            // }
+                // }
         // }
+            //   let _this = this;
+            //   this.$nextTick(() => {
+            //     var flowChart = echarts.init(document.getElementById("echartsBox1"));
+            //     flowChart.setOption(_this.lawSuperviseObj.option);
+            //     var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
+            //     flowChart1.setOption(_this.yjObj);
+                // this.getRealTimeDataByLawSupervise();
+            //   });
     },
     openDrawer () {
         this.drawer = true;
@@ -2046,7 +2182,7 @@ export default {
          this.drawer = true;
         // this.getRealTimeDataByLawSupervise();
         this.searchPageAll(4, 'zfdList');
-        this.searchPageAll(6, 'gjclList');
+        this.searchPageAllGJ(6, 'gjclList');
         this.category = 4;
         // this.searchByTab(this.tabList[1].children[0]);
 
@@ -2060,7 +2196,7 @@ export default {
         let data = {
                 // area: this.currentAddressObj.province + this.currentAddressObj.district,
                 // area: '',
-                current: 1,
+                // current: 1,
                 key: '',
                 size: 20,
                 type: code
@@ -2079,10 +2215,31 @@ export default {
                     })
             })
     },
+    searchPageAllGJ (code, obj) {
+        // 告警车辆
+        if (this.curWindow) {
+            this.curWindow.visible = false;
+        }
+        // 进入页面加载查询所有初始数据
+        let _this = this;
+        new Promise((resolve, reject) => {
+                queryAlarmVehiclePage({current:1}).then(
+                    res => {
+                        let resultList = [];
+                        that[obj] = res.data.records.splice(0,5);
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+    },
     onSearchResult(pois, category, length) {
       if (length == 0) {
         this.windows.splice(0,this.windows.length);
       }
+      debugger;
       let latSum = 0;
       let lngSum = 0;
       let numG = 100;
@@ -2091,8 +2248,8 @@ export default {
         // let windows = []
         pois.forEach((poi, i) => {
           let { lng, lat } = poi;
-          lngSum += lng;
-          latSum += lat;
+          lngSum += parseFloat(lng);
+          latSum += parseFloat(lat);
           let that = _this;
           if (category == -1) {
                 _this.markers.push({
@@ -2190,6 +2347,7 @@ export default {
           };
           _this.windows.push(aaa);
         });
+        debugger;
         let center = {
           lng: lngSum / pois.length,
           lat: latSum / pois.length
@@ -2225,7 +2383,7 @@ export default {
             let data = {
             // area: this.currentAddressObj.province + this.currentAddressObj.district,
             // area: "东城区",
-            current: 1,
+            // current: 1,
             key: "",
             //   size: 20,
             type: item.code
@@ -2248,8 +2406,6 @@ export default {
         }
     },
     searchByTab(item) {
-        // if (item.select)
-// debugger;
         if (this.allSearchList.length == 0) {
         this.markers.splice(0, this.markers.length);
         }
@@ -2270,7 +2426,7 @@ export default {
         let data = {
           // area: this.currentAddressObj.province + this.currentAddressObj.district,
         //   area: "东城区",
-          current: 1,
+        //   current: 1,
           key: "",
         //   size: 20,
           type: item.code
@@ -2316,7 +2472,7 @@ export default {
         // this.currentAddressObj.province + this.currentAddressObj.district
         let data = {
         //   area: "",
-          current: 1,
+        //   current: 1,
           key: this.$refs.searchAmapBox.keyword,
           size: 20,
           type: this.category
@@ -2325,23 +2481,27 @@ export default {
       }
     },
     getZfjgLawSupervise(data, category) {
+      data.organId = this.userInfo.organId;
       let _this = this;
       new Promise((resolve, reject) => {
         getZfjgLawSupervise(data).then(
           res => {
             // resolve(res);
             let resultList = [];
-            if (res.data && res.data.records.length == 0) {
+            if (res.data && res.data.length == 0) {
               _this.errorMsg("暂无数据", "error");
               // return
             } else {
               _this.errorMsg(
-                `查询到${res.data.records.length}条数据`,
+                `查询到${res.data.length?res.data.length:0}条数据`,
                 "success"
               );
             }
-            res.data.records.forEach((item, i) => {
-              let position = item.position.split(",");
+            res.data.forEach((item, i) => {
+            //   let position = item.position.split(",");
+            //   let lng = parseFloat(position[0]);
+            //   let lat = parseFloat(position[1]);
+            let position = item.propertyValue.split(",");
               let lng = parseFloat(position[0]);
               let lat = parseFloat(position[1]);
               resultList.push({
@@ -2373,102 +2533,169 @@ export default {
         );
       });
     },
-    getOrganTree () {
+    organTreeByCurrUser (organId) {
         let _this = this;
         let params = {
             name: '',
-            organId: BASIC_DATA_SYS.lawSupervise,
+            organId: organId,
             type: 0
         }
-       new Promise((resolve, reject) => {
-        getOrganTree(params).then(
-          res => {
-            let dataArray = res.data;
-            dataArray.icon = 'icon_jc1';
-            // dataArray.children.forEach((item,i)=>{
-            //     addChildren(item);
-            // })
-            addChildren(dataArray);
-            function addChildren(item) {
+        new Promise((resolve, reject) => {
+            organTreeByCurrUser().then(
+                res => {
+                    let dataArray = res.data;
+                    dataArray.forEach((item,i)=>{
+                        item.icon = 'icon_jc1';
+                        item.position = item.propertyValue;
+                        addChildren(item);
+                    })
 
-                item.icon = item.icon?item.icon:'icon_jc1';
-                if (['执法人员','执法车辆', '执法船舶'].indexOf(item.name) == -1 ) {
-                    if (item.users) {
-                        item.users.forEach((user,i)=>{
-                            user.name = user.nickName;
-                            user.icon = 'icon_jc11';
-                        })
-                    }
-                    item.children = item.children ? item.children : [];
-                    item.children.splice(0,0,{
-                        id: item.id,
-                        pid:item.pid,
-                        name: '执法人员',
-                        icon: 'icon_jc11',
-                        children: item.users
-                    },{
-                        id: item.id,
-                        pid:item.pid,
-                        name: '执法车辆',
-                        icon: 'icon_cl11'
-                    },{
-                        id: item.id,
-                        pid:item.pid,
-                        name: '执法船舶',
-                        icon: 'icon_cb11'
-                    });
-                    let len = item.children.length -3;
-                    while (len > 0) {
-                        item.children.forEach((obj,i)=> {
-                            if (i > 2) {
-                                addChildren(obj);
-                                len--;
+                    function addChildren(item) {
+                        item.icon = 'icon_jc1';
+                        item.position = item.propertyValue;
+                        if (['执法人员','执法车辆', '执法船舶'].indexOf(item.name) == -1 ) {
+                            if (item.users) {
+                                item.users.forEach((user,i)=>{
+                                    user.label = user.nickName;
+                                    user.icon = 'icon_jc11';
+                                })
                             }
-                        })
+                            item.children = item.children ? item.children : [];
+                            item.children.splice(0,0,{
+                                id: item.id,
+                                pid:item.pid,
+                                label: '执法人员',
+                                icon: 'icon_jc11',
+                                children: item.users
+                            },{
+                                id: item.id,
+                                pid:item.pid,
+                                label: '执法车辆',
+                                icon: 'icon_cl11'
+                            },{
+                                id: item.id,
+                                pid:item.pid,
+                                label: '执法船舶',
+                                icon: 'icon_cb11'
+                            });
+                            let len = item.children.length -3;
+                            while (len > 0) {
+                                item.children.forEach((obj,i)=> {
+                                    if (i > 2) {
+                                        addChildren(obj);
+                                        len--;
+                                    }
+                                })
+                            }
+                        } else if (['执法人员','执法车辆', '执法船舶'].indexOf(item.label) == -1){
+                        }
                     }
-                } else if (['执法人员','执法车辆', '执法船舶'].indexOf(item.label) == -1){
-                //     // debugger;
-                //    item.children = [{
-                //          id: item.id,
-                //         pid:item.pid,
-                //         name: '执法人员',
-                //         icon: 'icon_jc11',
-                //         children: item.users
-                //     },{
-                //         id: item.id,
-                //         pid:item.pid,
-                //         name: '执法车辆',
-                //         icon: 'icon_cl11'
-                //     },{
-                //         id: item.id,
-                //         pid:item.pid,
-                //         name: '执法船舶',
-                //         icon: 'icon_cb11'
-                //     }];
+                    _this.data = dataArray;
                 }
-                // return item
-            }
-            _this.data = [dataArray];
-            // debugger;
-          },
-          error => {
-            //  _this.errorMsg(error.toString(), 'error')
-            return;
-          }
-        );
-      });
+            )
+        })
+
+    //    new Promise((resolve, reject) => {
+    //     getOrganTree(params).then(
+    //       res => {
+    //           debugger;
+    //         let dataArray = res.data;
+    //         // dataArray.position = dataArray.propertyValue;
+    //         dataArray.forEach((item,i)=>{
+    //             item.icon = 'icon_jc1';
+    //             item.position = item.propertyValue;
+    //             addChildren(item);
+    //         })
+    //         // addChildren(dataArray);
+    //         function addChildren(item) {
+    //             item.position = item.propertyValue;
+    //             // item.name = item.label;
+    //             // item.position=item.propertyValue;
+    //             // item.icon = item.icon?item.icon:'icon_jc1';
+    //             // item.pid = item.id;
+    //             if (['执法人员','执法车辆', '执法船舶'].indexOf(item.name) == -1 ) {
+    //                 if (item.users) {
+    //                     item.users.forEach((user,i)=>{
+    //                         user.label = user.nickName;
+    //                         user.icon = 'icon_jc11';
+    //                     })
+    //                 }
+    //                 item.children = item.children ? item.children : [];
+    //                 item.children.splice(0,0,{
+    //                     id: item.id,
+    //                     pid:item.pid,
+    //                     label: '执法人员',
+    //                     icon: 'icon_jc11',
+    //                     children: item.users
+    //                 },{
+    //                     id: item.id,
+    //                     pid:item.pid,
+    //                     label: '执法车辆',
+    //                     icon: 'icon_cl11'
+    //                 },{
+    //                     id: item.id,
+    //                     pid:item.pid,
+    //                     label: '执法船舶',
+    //                     icon: 'icon_cb11'
+    //                 });
+    //                 let len = item.children.length -3;
+    //                 while (len > 0) {
+    //                     item.children.forEach((obj,i)=> {
+    //                         if (i > 2) {
+    //                             addChildren(obj);
+    //                             len--;
+    //                         }
+    //                     })
+    //                 }
+    //             } else if (['执法人员','执法车辆', '执法船舶'].indexOf(item.label) == -1){
+    //             //     // debugger;
+    //             //    item.children = [{
+    //             //          id: item.id,
+    //             //         pid:item.pid,
+    //             //         name: '执法人员',
+    //             //         icon: 'icon_jc11',
+    //             //         children: item.users
+    //             //     },{
+    //             //         id: item.id,
+    //             //         pid:item.pid,
+    //             //         name: '执法车辆',
+    //             //         icon: 'icon_cl11'
+    //             //     },{
+    //             //         id: item.id,
+    //             //         pid:item.pid,
+    //             //         name: '执法船舶',
+    //             //         icon: 'icon_cb11'
+    //             //     }];
+    //             }
+    //             // return item
+    //         }
+    //         _this.data = dataArray;
+    //         debugger;
+    //       },
+    //       error => {
+    //         //  _this.errorMsg(error.toString(), 'error')
+    //         return;
+    //       }
+    //     );
+    //   });
     }
   },
   mounted() {
+      this.userInfo = iLocalStroage.gets("userInfo");
+
      this.$nextTick(() => {
         //  debugger;
          window.PhoneCallModule.initialize();
         if (!window.PhoneCallModule.getRegistered()) {
-            window.PhoneCallModule.sipRegister();
+            // window.PhoneCallModule.sipRegister();
+            let displayName = 'ecds05';
+            let privateIdentity ='100007';
+            let password = '1234';
+            window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
         }
      })
     this.lunarDate = lunarDate();
-    this.getOrganTree();
+    this.organTreeByCurrUser(this.userInfo.organId);
     // this.updateDrawer();
   },
   created () {
@@ -2483,69 +2710,69 @@ export default {
         makePhoneStatus (val, oldVal) {
             this.videoDoing = null;
         },
-        isCheck (val) {
-            this.toolShow = true;
-            let _that = this;
-            _that.$refs.treeFilter.filter(_that.filterText);
-            // if (val) {
-            //     // 人员
-            //     let data = {
-            //         key: this.filterText,
-            //         type: 0
-            //     }
-            //     new Promise((resolve, reject) => {
-            //         getZfjgLawSupervise(data).then(
-            //             res => {
-            //                 if(res.data.records && res.data.records.length > 0) {
-            //                     console.log(111111);
-            //                     res.data.records.forEach((item,i)=>{
-            //                         _that.$refs.treeFilter.filter(item);
-            //                     })
-            //                     _that.$refs.treeFilter.filter(_this.filterText);
-            //                 }
-            //             }
-            //         )
-            //     })
-            // } else {
-            //     // 机构
-            //     _that.$refs.treeFilter.filter(_that.filterText);
-            // }
-        },
-        filterText(val) {
-            // debugger;
-            if (val == '') {
-                return this.$refs.treeFilter.filter("");
-            }
-            this.toolShow = true;
-            let _that = this;
-            if (this.isCheck) {
-                // _that.$refs.treeFilter.filter(_that.filterText);
-                // 人员
-                // let data = {
-                //     key: val,
-                //     type: 0
-                // }
-                // new Promise((resolve, reject) => {
-                //     getZfjgLawSupervise(data).then(
-                //         res => {
-                //             if(res.data.records && res.data.records.length > 0) {
-                //                 console.log(111111);
-                //                 _that.$nextTick(()=>{
-                //                     res.data.records.forEach((item,i)=>{
-                //                         _that.$refs.treeFilter.filter(item);
-                //                     })
-                //                     _that.$refs.treeFilter.filter(_that.filterText);
-                //                 })
-                //             }
-                //         }
-                //     )
-                // })
-            } else {
-                // 机构
-            }
-            _that.$refs.treeFilter.filter(val);
+        // isCheck (val) {
+        //     this.toolShow = true;
+        //     let _that = this;
+        //     _that.$refs.treeFilter.filter(_that.filterText);
+        //     // if (val) {
+        //     //     // 人员
+        //     //     let data = {
+        //     //         key: this.filterText,
+        //     //         type: 0
+        //     //     }
+        //     //     new Promise((resolve, reject) => {
+        //     //         getZfjgLawSupervise(data).then(
+        //     //             res => {
+        //     //                 if(res.data.records && res.data.records.length > 0) {
+        //     //                     console.log(111111);
+        //     //                     res.data.records.forEach((item,i)=>{
+        //     //                         _that.$refs.treeFilter.filter(item);
+        //     //                     })
+        //     //                     _that.$refs.treeFilter.filter(_this.filterText);
+        //     //                 }
+        //     //             }
+        //     //         )
+        //     //     })
+        //     // } else {
+        //     //     // 机构
+        //     //     _that.$refs.treeFilter.filter(_that.filterText);
+        //     // }
+        // },
+        // filterText(val) {
+        //     // debugger;
+        //     if (val == '') {
+        //         return this.$refs.treeFilter.filter("");
+        //     }
+        //     this.toolShow = true;
+        //     let _that = this;
+        //     if (this.isCheck) {
+        //         // _that.$refs.treeFilter.filter(_that.filterText);
+        //         // 人员
+        //         // let data = {
+        //         //     key: val,
+        //         //     type: 0
+        //         // }
+        //         // new Promise((resolve, reject) => {
+        //         //     getZfjgLawSupervise(data).then(
+        //         //         res => {
+        //         //             if(res.data.records && res.data.records.length > 0) {
+        //         //                 console.log(111111);
+        //         //                 _that.$nextTick(()=>{
+        //         //                     res.data.records.forEach((item,i)=>{
+        //         //                         _that.$refs.treeFilter.filter(item);
+        //         //                     })
+        //         //                     _that.$refs.treeFilter.filter(_that.filterText);
+        //         //                 })
+        //         //             }
+        //         //         }
+        //         //     )
+        //         // })
+        //     } else {
+        //         // 机构
+        //     }
+        //     _that.$refs.treeFilter.filter(val);
 
-        }
+        // }
     },
     computed: {
         ...mapGetters(["makePhoneStatus", "doing"])

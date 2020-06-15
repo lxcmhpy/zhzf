@@ -287,15 +287,17 @@ export default {
     changeBindType() {
       this.pdfForm.typeId = '';
     },
-    changeResourceType() {
+    changeResourceType(val) {
       this.setForm.resourceName = '';
-      this.setForm.bindId=''
+      this.setForm.bindId='';
+      this.getPdfAndFormSetList('setFormRef');
     },
     changeResourceName() {
       this.$alert('改变绑定的文书或者表单，原有对应关系将清空', '提示', {
         confirmButtonText: '确定',
         callback: action => {
           this.setForm.resourceProperty = '';
+          this.getPdfAndFormSetList('setFormRef');
         }
       });
 
@@ -352,11 +354,8 @@ export default {
       }
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let data={}
-
-            data = {
-              bindId: this.setForm.bindId,
-              bindType:'4'
+          let data = {
+              typeId: this.setForm.bindId
             }
 
           findAllSetListApi(data).then(

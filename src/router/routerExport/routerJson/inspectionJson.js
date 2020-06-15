@@ -31,6 +31,16 @@ export default  [
                 component: () => import("@/page/inspection/record-manage/writeRecord.vue")
             },
             {
+                // 写记录
+                path: "/writeRecordInfos",
+                name: "inspection_writeRecordInfos",
+                meta: {
+                title: "写记录",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/writeRecord.vue")
+            },
+            {
                 path: "/recordList",
                 name: "inspection_recordList",
                 meta: {
@@ -41,13 +51,13 @@ export default  [
             },
             {
                 // 历史检查列表
-                path: "/historyRecord",
-                name: "inspection_historyRecord",
+                path: "/viewRecord",
+                name: "inspection_viewRecord",
                 meta: {
                 title: "历史检查列表",
                 oneTab:true,
                 },
-                component: () => import("@/page/inspection/record-manage/historyRecord.vue")
+                component: () => import("@/page/inspection/record-manage/viewRecord.vue")
             },
         ]
     }, 

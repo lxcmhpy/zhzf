@@ -1,177 +1,388 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox modle-set">
-      <div style="font-size: 16px;font-weight: bold;text-align:center;margin-bottom:18px">
-        {{psMsg.title}}
+      <div style="text-align:center;margin-bottom:18px">
+        <span style="font-size:18px;font-weight: bold;">
+          {{formData.title}}
+        </span>
+        <el-popover placement="bottom" width="700" trigger="click" v-model='isChangeModle' :show='clickPover' v-if="addOrEiditFlag=='add'">
+          <writeRecordHome ref="writeRecordRef" @changeModleId="updateMole" style="width:710px;height:400px;overflow:auto"></writeRecordHome>
+          <span slot="reference" @click="upAndDown=!upAndDown">
+            <span class="change_title_icon" @click="changeModle">切换模板
+              <i class="el-icon-arrow-down" v-if="!upAndDown"></i>
+              <i class="el-icon-arrow-up" v-if="upAndDown"></i>
+            </span>
+          </span>
+        </el-popover>
+        <span class="change_title_icon">二维码<i class="iconfont law-erweima" style="font-size:14px;margin-left:4px"></i></span>
+
       </div>
-      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit">
+      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options">
       </form-create>
-      <!-- </div>-->
+
+      <p class="border-title">图片</p>
+      <p class="border-title">附件</p>
+      <!-- 悬浮按钮 -->
+      <div class="float-btns btn-height63">
+        <el-button type="success" @click="edit()" v-if="addOrEiditFlag=='view'">
+          <i class="iconfont law-icon_zancun1"></i>
+          <br />修改
+        </el-button>
+        <el-button type="success" @click="onSave()" v-if="addOrEiditFlag=='add'||addOrEiditFlag=='temporary'">
+          <i class="iconfont law-icon_zancun1"></i>
+          <br />暂存
+        </el-button>
+        <el-button type="primary" @click="save()" v-if="addOrEiditFlag=='add'||addOrEiditFlag=='temporary'">
+          <i class="iconfont law-icon_baocun1"></i>
+          <br />保存
+        </el-button>
+        <el-button type="primary" @click="copySave()" v-if="addOrEiditFlag=='view'">
+          <i class="iconfont law-icon_zancun1"></i>
+          <br />复制<br />添加
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import writeRecordHome from "./modleList.vue";
+
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
+import { saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi, findRecordByIdApi } from "@/api/Record";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
-  components: {
-    formCreate: formCreate.$form()
-  },
   props: ['psMsg'],
   watch: {
     psMsg(val, oldVal) {
-      // this.show = val;
       console.log('监听', this.psMsg, 'val', val)
-      this.dealFormData()
-    }
+      if (this.psMsg) {
+        this.defaultRuleData = this.psMsg
+        this.formData.title = this.psMsg.title
+        this.dealFormData()
+      }
+    },
   },
   data() {
     return {
+      defaultRuleData: [],
+      addOrEiditFlag: '',
+      visiblePopover: false,
+      upAndDown: false,
+      isWrite: true,
+      modleId: '',
+      recordId: '',
+      baseData: [],
       creatFormData: [],
       ruleForm: {
         value1: '',
         value2: '',
       },
-      $f: {},
-      formData: {
-        title: '5月21日检查记录',
-        formList: [{
-          formTitle: '',
-          type: 'input',
-          label: '姓名',
-          prop: 'name',
-          value: '1'
-        }, {
-          formTitle: '',
-          type: 'input',
-          label: '电话',
-          prop: 'name',
-          value: '2'
-        },]
-
-      },
+      formData: {},
       //表单实例对象
       $f: {},
-      rule: [
-        // {
-        //   type: 'template',
-        //   name: 'btn',
-        //   template: '<p class="border-title">正在加载中</p>',
-        // },
-        // // 文本框
-        // {
-        //   type: 'input',//必要-字段类型，不可改
-        //   field: 'field',//必要-字段英文名
-        //   title: '姓名',//必要-字段中文名
-        //   col: { span: 16, labelWidth: '50%' },//不必要
-        //   className: 'total-gross-wt',//不必要-样式名
-        //   required: {      //不必要-配置
-        //     type: 'text',
-        //     clearable: true, // 是否显示清空按钮
-        //     placeholder: '请输入'
-        //   },
-        //   validate: [{  //不必要-验证规则
-        //     // pattern: /^(0|[1-9]\d*)(\s|$|\.\d{1,3}\b)/, // /^[0-9]+([.]{1}[0-9]{1,3})?$/,
-        //     message: '请正确输入',
-        //     required: true,
-        //     trigger: 'blur'
-        //   }
-        //   ]
-        // },
-        // // 单选框
-        // {
-        //   type: "radio",//必要-字段类型，不可改
-        //   title: "是否包邮",//必要-字段中文名
-        //   field: "is_postage",//必要-字段英文名
-        //   value: "0",//不必要-默认值
-        //   options: [//必要-选项，至少一个
-        //     { value: "0", label: "不包邮", disabled: false },
-        //     { value: "1", label: "包邮", disabled: true },
-        //   ],
-        // },
-        // // 多选框
-        // {
-        //   type: "checkbox",//必要-字段类型，不可改
-        //   title: "标签",//必要-字段英文名
-        //   field: "label",//必要-字段中文名
-        //   // value: ["1", "2", "3"],//不必要-默认值
-        //   options: [//必要-选项，至少一个
-        //     { value: "好用", },
-        //     { value: "方便", },
-        //     { value: "实用", },
-        //     { value: "有效", },
-        //   ]
-        // },
-        // // 下拉选择框
-        // {
-        //   type: "select",//必要-字段类型，不可改
-        //   field: "cate_select",//必要-字段英文名
-        //   title: "产品分类",//必要-字段中文名
-        //   value: ["104"],//不必要-默认值
-        //   options: [//必要-选项，至少一个
-        //     { "value": "104", "label": "生态蔬菜", "disabled": false },
-        //     { "value": "105", "label": "新鲜水果", "disabled": false },
-        //   ],
-        //   required: {
-        //     multiple: true
-        //   },
-        // },
-        // // 日期选择器
-        // {
-        //   type: "DatePicker",//必要-字段类型，不可改
-        //   field: "section_day",//必要-字段英文名
-        //   title: "活动日期",//必要-字段中文名
-        //   value: ['2018-02-20', new Date()],//不必要-默认值
-        //   required: {
-        //     "type": "date",//必要-配置用，写死，可能的值：year/month/date/dates/ week/datetime/datetimerange/daterange
-        //     "format": "yyyy-MM-dd HH:mm:ss",//必要-配置格式用-写死
-        //     "placeholder": "请选择活动日期",
-        //   }
-        // },
-        // // 时间选择器
-        // {
-        //   type: "TimePicker",
-        //   field: "section_time",
-        //   title: "活动时间",
-        //   value: [],
-        //   required: {
-        //     isRange: true,//时间范围时必填，其他情况不必填
-        //   },
-        // },
-
-
-      ]
-
-
+      rule: [],
+      isChangeModle: false,
+      options: {
+        submitBtn: false,
+      },
     }
   },
+  components: {
+    writeRecordHome:writeRecordHome,
+    formCreate: formCreate.$form(),
+
+  },
   methods: {
+    // 查找模板
+    findDataByld() {
+      let _this = this
+      findRecordlModleFieldByIdeApi(this.modleId).then(
+        res => {
+          let list = JSON.parse(JSON.stringify(res.data))
+
+          _this.baseData = JSON.parse(JSON.stringify(res.data))
+          let sort = 0
+          list.forEach(element => {
+            element.sort = sort;
+            sort++;
+            element.fieldList.forEach(item => {
+              if (item.options) {
+                item.options = JSON.parse(item.options)
+              }
+            });
+          });
+
+          findRecordModleByIdApi(this.modleId).then(
+            res => {
+              if (res.code == 200) {
+
+                _this.formData = JSON.parse(JSON.stringify(res.data));
+                _this.defaultRuleData = JSON.parse(JSON.stringify(res.data))
+                _this.$set(_this.defaultRuleData, 'templateFieldList', list);
+                _this.formData.templateId = _this.formData.id
+                _this.formData.id = '';
+                this.setLawPersonCurrentP()
+                _this.dealFormData()
+              }
+            },
+            error => {
+
+            })
+        },
+        error => {
+
+        })
+
+    },
+    // 查找已有记录
+    findRecordDataByld() {
+      let _this = this
+      findRecordByIdApi(this.recordId).then(
+        res => {
+          _this.baseData = JSON.parse(res.data.layout)
+          let list = JSON.parse(res.data.layout)
+          // console.log('res', res.data)
+          let sort = 0
+          list.forEach(element => {
+            element.sort = sort;
+            sort++;
+            element.fieldList.forEach(item => {
+              if (item.options) {
+                item.options = JSON.parse(item.options)
+              }
+            });
+          });
+          _this.formData = res.data;
+          _this.defaultRuleData = JSON.parse(JSON.stringify(res.data))
+          _this.$set(_this.defaultRuleData, 'templateFieldList', list);
+          _this.dealFormData()
+        },
+        error => {
+        })
+    },
+    //用户的id去拿他名字
+    setLawPersonCurrentP() {
+      this.formData.createUser = iLocalStroage.gets("userInfo").username;
+
+    },
+    // 修改
+    edit() {
+      // console.log('rule', this.rule)
+      this.$data.$f.resetFields()
+      this.rule.forEach(element => {
+        console.log(element)
+        this.$data.$f.updateRule(element.field, {
+          props: { disabled: false }
+        }, true);
+      });
+      this.addOrEiditFlag = 'add'
+    },
+    save() {
+      this.formData.status = '保存';
+      // this.onSubmit()
+      this.$data.$f.submit((formData, $f) => {
+        // alert(JSON.stringify(formData));
+        console.log("formData", formData)
+        let submitData = JSON.parse(JSON.stringify(this.baseData))
+        let submitList = []
+        submitData.forEach(element => {
+          element.fieldList.forEach(item => {
+            let textName = item.field
+            item.text = formData['' + textName + '']
+            // console.log('tyupe',typeof (item.text))
+            if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
+              item.text = item.text.join(',')
+            }
+          });
+
+        });
+        submitData = JSON.stringify(submitData)
+
+        this.formData.layout = submitData
+        this.formData.templateFieldList = '';
+        this.formData.createTime = '';
+        this.formData.updateTime = '';
+        this.formData.type = '记录';
+        console.log('formdata', this.formData)
+        saveOrUpdateRecordApi(this.formData).then(
+          res => {
+            // console.log(res)
+            if (res.code == 200) {
+              this.addOrEiditFlag = 'view'
+              this.$message({
+                type: "success",
+                message: res.msg
+              });
+              this.rule.forEach(element => {
+                console.log(element)
+                this.$data.$f.updateRule(element.field, {
+                  props: { disabled: true }
+                }, true);
+              });
+            } else {
+              this.$message.error(res.msg);
+            }
+          },
+          error => {
+          })
+      })
+
+    },
+    onSave() {
+      // console.log('rule', this.rule)
+      this.rule.forEach(element => {
+        if (element.validate[0]) {
+          element.validate[0].required = false
+        }
+      });
+      this.formData.status = '暂存';
+      // this.onSubmit()
+      this.$data.$f.submit((formData) => {
+        console.log("formData", formData)
+        let submitData = JSON.parse(JSON.stringify(this.baseData))
+        let submitList = []
+        submitData.forEach(element => {
+          element.fieldList.forEach(item => {
+            let textName = item.field
+            // console.log('变量', item.field, ':', formData['' + textName + ''])
+            item.text = formData['' + textName + '']
+            // console.log('tyupe',typeof (item.text))
+            if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
+              item.text = item.text.join(',')
+            }
+          });
+
+        });
+        submitData = JSON.stringify(submitData)
+
+        this.formData.layout = submitData
+        this.formData.templateFieldList = '';
+        this.formData.createTime = '';
+        this.formData.updateTime = '';
+        this.formData.type = '记录';
+        console.log('formdata', this.formData)
+        saveOrUpdateRecordApi(this.formData).then(
+          res => {
+            // console.log(res)
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: res.msg
+              });
+              this.$router.push({
+                name: 'inspection_recordList',
+                // params: item
+              });
+            } else {
+              this.$message.error(res.msg);
+            }
+          },
+          error => {
+          })
+      })
+
+    },
+    // 复制添加
+    copySave() {
+      this.addOrEiditFlag = 'add'
+    },
     onSubmit(formData) {
+
+      console.log("formData", formData)
+
       //TODO 提交表单
-      console.log(formData)
+      this.$data.$f.submit((formData, $f) => {
+        // alert(JSON.stringify(formData));
+        let submitData = JSON.parse(JSON.stringify(this.baseData))
+        let submitList = []
+        submitData.forEach(element => {
+          element.fieldList.forEach(item => {
+            let textName = item.field
+            // console.log('变量', item.field, ':', formData['' + textName + ''])
+            item.text = formData['' + textName + '']
+            // console.log('tyupe',typeof (item.text))
+            if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
+              item.text = item.text.join(',')
+            }
+          });
+
+        });
+        submitData = JSON.stringify(submitData)
+
+        this.formData.layout = submitData
+        this.formData.templateFieldList = '';
+        this.formData.createTime = '';
+        this.formData.updateTime = '';
+        this.formData.type = '记录';
+        console.log('formdata', this.formData)
+        saveOrUpdateRecordApi(this.formData).then(
+          res => {
+            // console.log(res)
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: res.msg
+              });
+              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+              this.$router.push({
+                name: 'inspection_writeRecord',
+                // params: item
+              });
+            } else {
+              this.$message.error(res.msg);
+            }
+          },
+          error => {
+          })
+      })
+
+    },
+    clickPover() {
+      this.isChangeModle = true
     },
     change() {
       // 修改值
       this.$data.$f.setValue("field", '1212')
     },
+    // 修改模板
+    changeModle() {
+      this.visiblePopover = true
+    },
+    updateMole(data) {
+      console.log(data)
+      this.modleId = data.id
+      this.findDataByld()
+      this.isChangeModle = false
+    },
     dealFormData() {
       this.rule = []
-      let data = JSON.parse(JSON.stringify(this.psMsg.templateFieldList))
-      console.log('ruleData', data)
+      let data = JSON.parse(JSON.stringify(this.defaultRuleData.templateFieldList))
+      // console.log('ruleData', data)
       let ruleData = []
+      let _this = this
       data.forEach(element => {
-        console.log(element)
+        // console.log(element)
         if (element.classs) {
-          this.rule.push({
-            type: 'template',
-            name: 'btn',
-            template: '<p class="border-title">' + element.classs + '</p>',
-          })
+          this.rule.push(
+            {
+              type: 'p',
+              name: 'btn',
+              field: element.classId,
+              props: {
+                type: 'primary',
+                field: 'btn',
+                loading: true
+              },
+              className: 'border-title',
+              children: [element.classs],
+            }
+          )
         }
 
-        element.filedList.forEach(item => {
-          console.log(item)
-          if (item.type == '文本型') {
+        element.fieldList.forEach(item => {
+          // console.log(item)
+          if (item.type == '文本型' || item.type == '地址型' || item.type == '引用型') {
             item.type = 'input';
             this.rule.push({
               type: 'input',
@@ -179,10 +390,12 @@ export default {
               title: item.title,
               props: {
                 type: 'text',
-                placeholder: item.remark
+                placeholder: item.remark,
+                disable: true
               },
+              value: item.text,
               validate: [{
-                required: item.required,
+                required: item.required == 'true' ? true : false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]
@@ -197,10 +410,13 @@ export default {
               title: item.title,
               options: item.options,
               validate: [{
-                required: item.required,
+                required: item.required == 'true' ? true : false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
-              }]
+              }],
+              props: {
+                disable: true
+              },
             })
           } else if (item.type == '单选型') {
             item.options.forEach(option => {
@@ -211,11 +427,15 @@ export default {
               field: item.field,
               title: item.title,
               options: item.options,
+              value: item.text,
               validate: [{
-                required: item.required,
-                message: '请输入' + item.title,
+                required: item.required == 'true' ? true : false,
+                message: '请选择' + (item.title || ''),
                 trigger: 'blur'
-              }]
+              }],
+              props: {
+                disable: true
+              },
             })
           } else if (item.type == '复选型') {
             item.options.forEach(option => {
@@ -226,9 +446,10 @@ export default {
               field: item.field,
               title: item.title,
               options: item.options,
+              value: item.text ? item.text.split(',') : [],
               validate: [{
-                required: item.required,
-                message: '请输入' + item.title,
+                required: item.required == 'true' ? true : false,
+                message: '请选择' + item.title,
                 trigger: 'blur'
               }]
             })
@@ -236,15 +457,15 @@ export default {
             if (item.options[0].value == 'HH:mm') {
               this.rule.push({
                 type: "TimePicker",
-                field: "section_time",
+                field: item.field,
                 title: item.title,
-                value: [new Date()],
+                value: item.text || [new Date()],
                 props: {
                   format: item.options[0].value,
                   placeholder: item.remark
                 },
                 validate: [{
-                  required: item.required,
+                  required: item.required == 'true' ? true : false,
                   message: '请输入' + item.title,
                   trigger: 'blur'
                 }]
@@ -252,16 +473,16 @@ export default {
             } else {
               this.rule.push({
                 type: "DatePicker",
-                field: "section_day",
+                field: item.field,
                 title: item.title,
-                value: [new Date()],
+                value: item.text || [new Date()],
                 props: {
                   format: item.options[0].value,
                   placeholder: item.remark,
                   type: 'datetime'
                 },
                 validate: [{
-                  required: item.required,
+                  required: item.required == 'true' ? true : false,
                   message: '请输入' + item.title,
                   trigger: 'blur'
                 }]
@@ -270,26 +491,94 @@ export default {
           } else if (item.type == '数字型') {
             this.rule.push({
               type: "InputNumber",
-              field: "price121",
+              field: item.field,
               title: item.title,
-              value: 1,
+              value: item.text || 1,
               props: {
                 precision: 2
               },
               validate: [{
-                required: item.required,
+                required: item.required == 'true' ? true : false,
                 message: '请输入' + item.title,
                 trigger: 'blur'
               }]
             })
           }
         });
+        this.$nextTick(() => {
+          this.isEdit()
+        });
+
       });
     },
+    isEdit() {
+      console.log('rule', this.rule)
+      this.$data.$f.resetFields()
+      if (this.$route.query.id) {
+        if (this.$route.query.addOrEiditFlag == 'edit') {
+          this.rule.forEach(element => {
+            // console.log(element)
+            this.$data.$f.updateRule(element.field, {
+              props: { disabled: true }
+            }, true);
+          });
+        } else if (this.$route.query.addOrEiditFlag == 'view') {
+          this.rule.forEach(element => {
+            // console.log(element)
+            this.$data.$f.updateRule(element.field, {
+              props: { disabled: true }
+            }, true);
+          });
+        }
+      }
+      console.log(this.rule)
+    },
+    viewRecord() {
+      this.options = {
+        // submitBtn: false,
+        onSubmit: (formData) => {
+          alert(JSON.stringify(formData));
+        },
+        global: {
+          '*': {
+            props: {
+              disabled: true,
+            },
+          },
+        }
+      }
+      this.findRecordDataByld()
+    }
   },
   mounted() {
-    this.dealFormData()
+    console.log('id', this.$route.query.id)
+    this.addOrEiditFlag = this.$route.query.addOrEiditFlag
+    if (this.$route.query.id) {
+      if (this.$route.query.addOrEiditFlag == 'add') {
+        this.modleId = this.$route.query.id
+        this.findDataByld()
+
+      } else
+        if (this.$route.query.addOrEiditFlag == 'edit') {
+          this.recordId = this.$route.query.id;
+          this.findRecordDataByld()
+        } else if (this.$route.query.addOrEiditFlag == 'view') {
+          this.recordId = this.$route.query.id;
+          this.viewRecord()
+        } else if (this.$route.query.addOrEiditFlag == 'temporary') {
+          this.recordId = this.$route.query.id;
+          this.findRecordDataByld()
+        }
+
+    }
+    if (this.psMsg) {
+      this.defaultRuleData = this.psMsg
+      this.formData.title = this.psMsg.title
+      this.dealFormData()
+    }
+
   }
 }
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
+<style lang="scss" src="@/assets/css/documentForm.scss"></style>

@@ -87,7 +87,7 @@
           身份证号：<el-form-item prop="partyPeopleIdNo" style="width:180px" :rules="fieldRules('partyPeopleIdNo',propertyFeatures['partyPeopleIdNo'],validateIDNumber)">
             <el-input v-model="docData.partyPeopleIdNo" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['partyPeopleIdNo'])"></el-input>
           </el-form-item>
-          单位及职务：<el-form-item prop="partyPeopleUnitAndPosition" style="width180" :rules="fieldRules('partyPeopleUnitAndPosition',propertyFeatures['partyPeopleUnitAndPosition'])">
+          单位及职务：<el-form-item prop="partyPeopleUnitAndPosition" style="width:180px" :rules="fieldRules('partyPeopleUnitAndPosition',propertyFeatures['partyPeopleUnitAndPosition'])">
             <el-input type='textarea' v-model="docData.partyPeopleUnitAndPosition" v-bind:class="{ over_flow:docData.partyPeopleUnitAndPosition && docData.partyPeopleUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="fieldDisabled(propertyFeatures['partyPeopleUnitAndPosition'])"></el-input>
           </el-form-item>
         </p>
@@ -111,7 +111,7 @@
           记录人：<el-form-item prop="recorder" :rules="fieldRules('recorder',propertyFeatures['recorder'])">
             <el-autocomplete class="inline-input" v-model="docData.recorder" :fetch-suggestions="querySearch" placeholder="\" :disabled="fieldDisabled(propertyFeatures['recorder'])"></el-autocomplete>
           </el-form-item>
-          单位及职务：<el-form-item prop="recorderUnitAndPosition" :rules="fieldRules('recorderUnitAndPosition',propertyFeatures['recorderUnitAndPosition'])">
+          单位及职务：<el-form-item prop="recorderUnitAndPosition" style="width:180px" :rules="fieldRules('recorderUnitAndPosition',propertyFeatures['recorderUnitAndPosition'])">
             <el-input type="textarea" v-model="docData.recorderUnitAndPosition" v-bind:class="{ over_flow:docData.recorderUnitAndPosition && docData.recorderUnitAndPosition.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" placeholder="\" maxLength="35" :disabled="fieldDisabled(propertyFeatures['recorderUnitAndPosition'])"></el-input>
           </el-form-item>
         </p>
@@ -151,11 +151,11 @@
       </el-form>
     </div>
     <casePageFloatBtns :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
   </div>
 </template>
 <script>
-import overflowInput from "../pdf/overflowInput";
+// import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
@@ -267,7 +267,7 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
-        linkTypeId: this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //所属环节的id
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       handleType: "",  // 0 暂存  1  提交
       dictId: "2dc1e0a3a8ce225c292259da39294847",
@@ -291,7 +291,7 @@ export default {
   },
   inject: ["reload"],
   components: {
-    overflowInput,
+    // overflowInput,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
@@ -322,7 +322,7 @@ export default {
 
     // 多行编辑
     overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
+      // this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {

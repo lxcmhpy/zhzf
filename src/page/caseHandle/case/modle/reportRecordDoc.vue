@@ -26,7 +26,7 @@
           举报类别:
           <span>
             <el-form-item
-              style="width:250px"
+              style="width:240px"
                prop="reportType"
               :rules="fieldRules('reportType',propertyFeatures['reportType'])"
             >
@@ -69,7 +69,7 @@
           <span>
             <el-form-item
               prop="reportPeopleAge"
-              style="width:157px"
+              style="width:146px"
               :rules="fieldRules('reportPeopleAge',propertyFeatures['reportPeopleAge'])"
             >
               <el-input
@@ -84,14 +84,14 @@
           住所或工作单位：
           <span>
             <el-form-item
-              prop="reportPeopleAdress"
-              style="width:492px"
-              :rules="fieldRules('reportPeopleAdress',propertyFeatures['reportPeopleAdress'])"
+              prop="reportPeopleAddress"
+              style="width:490px"
+              :rules="fieldRules('reportPeopleAddress',propertyFeatures['reportPeopleAddress'])"
             >
               <el-input
-                v-model="docData.reportPeopleAdress"
+                v-model="docData.reportPeopleAddress"
                 :maxLength="maxLength"
-                :disabled="fieldDisabled(propertyFeatures['reportPeopleAdress'])"
+                :disabled="fieldDisabled(propertyFeatures['reportPeopleAddress'])"
               ></el-input>
             </el-form-item>
           </span>
@@ -101,7 +101,7 @@
           <span>
             <el-form-item
               prop="reportPeopleTel"
-              style="width:540px"
+              style="width:538px"
               :rules="fieldRules('reportPeopleTel',propertyFeatures['reportPeopleTel'],validatePhone)"
             >
               <el-input
@@ -116,14 +116,15 @@
           身份证号：
           <!-- <span> -->
           <el-form-item
-            prop="reportPeopleIDNuber"
-            style="width:540px"
-            :rules="fieldRules('reportPeopleIDNuber',propertyFeatures['reportPeopleIDNuber'],validateIDNumber)"
+            prop="reportPeopleIDNumber"
+            style="width:538px"
+            :rules="fieldRules('reportPeopleIDNumber',propertyFeatures['reportPeopleIDNumber'],validateIDNumber)"
           >
             <el-input
-              v-model="docData.reportPeopleIDNuber"
+              v-model="docData.reportPeopleIDNumber"
               :maxLength="maxLength"
-              :disabled="fieldDisabled(propertyFeatures['reportPeopleIDNuber'])"
+              @change="changePartyIdType(docData.reportPeopleIDNumber)"
+              :disabled="fieldDisabled(propertyFeatures['reportPeopleIDNumber'])"
             ></el-input>
           </el-form-item>
           <!-- </span> -->
@@ -229,11 +230,11 @@ export default {
         reportPeople: "",
         reportPeopleSex: "",
         reportPeopleAge: "",
-        reportPeopleAdress: "",
+        reportPeopleAddress: "",
         reportContent: "",
         reportNote: "",
         reportPeopleTel:"", 
-        reportPeopleIDNuber:"",
+        reportPeopleIDNumber:"",
         reporterSign: "",
         reporterSignTime: "",
         recorderSign: "",
@@ -260,7 +261,7 @@ export default {
           { required: true, message: "请输入联系电话", trigger: "blur" },
           { validator: validatePhone, trigger: "blur" }
         ],
-        reportPeopleIDNuber: [
+        reportPeopleIDNumber: [
           { required: true, message: "请输入身份证号码", trigger: "blur" },
           { validator: validateIDNumber, trigger: "blur" }
         ],
@@ -344,7 +345,37 @@ export default {
           true
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
-    }
+    },
+    //自动计算年龄
+    changePartyIdType(idCard) {
+      let iden = idCard;
+      let val = idCard.length;
+      let sex = null;
+      let myDate = new Date();
+      let month = myDate.getMonth() + 1;
+      let day = myDate.getDate();
+      let age = 0;
+      if (val === 18) {
+        age = myDate.getFullYear() - iden.substring(6, 10) - 1;
+        sex = iden.substring(16, 17);
+        if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
+
+      }
+      if (val === 15) {
+        age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
+        sex = iden.substring(13, 14);
+        if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
+      }
+
+      if (sex % 2 === 0) {
+        sex = 1;
+      } else {
+        sex = 0;
+      }
+      ;
+      this.docData.reportPeopleAge = age;
+      this.docData.reportPeopleSex = sex;
+    },
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();

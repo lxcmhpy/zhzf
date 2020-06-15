@@ -43,7 +43,7 @@ AMap.initAMapApiLoader({
     "AMap.Scale",
     "AMap.OverView",
     "AMap.ToolBar",
-    "Geolocation",
+    "AMap.Geolocation"
   ],
   v: "1.4.4",
   uiVersion: "1.0.11",
@@ -66,15 +66,22 @@ export default {
           {
           pName: 'Geolocation',
           events: {
-              init(o) {
+              init(o) {                
+                
                   // o 是高德地图定位插件实例
                 o.getCurrentPosition((status, result) => {
+                  console.log(status,result);
                   if (result && result.position) {
+                    console.log("result",result);
                     self.lng = result.position.lng;
                     self.lat = result.position.lat;
                     self.center = [self.lng, self.lat];
                     self.loaded = true;
                     self.componentMarker.position=[self.lng, self.lat]
+                    self.$nextTick();
+                  }else{
+                    alert('定位失败！');
+                    self.loaded = true;
                     self.$nextTick();
                   }
                 });
@@ -84,11 +91,21 @@ export default {
       events: {
         init(map) {
         },
-        click: e => {
-          self.lng = e.lnglat.lng;
-          self.lat = e.lnglat.lat;
-          self.componentMarker.position=[e.lnglat.lng, e.lnglat.lat]
-
+        // click: e => {
+        //   console.log('e',e)
+        //   self.lng = e.lnglat.lng;
+        //   self.lat = e.lnglat.lat;
+        //   self.componentMarker.position=[e.lnglat.lng, e.lnglat.lat]
+        // },
+        dragging:e=>{
+          //拖动地图，点标记固定在可视区域中心
+          console.log('dragstart e',e.target);
+          console.log('amapManager',amapManager);
+          let newCenter = amapManager._map.getCenter();
+          console.log('newCenter',newCenter)
+          self.lng = newCenter.lng;
+          self.lat = newCenter.lat;
+          self.componentMarker.position=[newCenter.lng, newCenter.lat]
         }
       },
     //mark 位置

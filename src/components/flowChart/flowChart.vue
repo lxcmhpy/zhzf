@@ -37,7 +37,9 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { svgData, imgList, linePosition, stateColor, lineStyle, graphData, mainLinkData, layoutCharts, legend } from './json/flowChart'
 import pleaseRemoveMDia from '@/page/caseHandle/components/pleaseRemoveMDia'
-
+import {
+  queryFlowBycaseIdApi,
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -45,7 +47,7 @@ export default {
       lineStyle: lineStyle,
       legend: legend,
       layoutCharts: layoutCharts,
-      graphData: graphData,
+      graphData: '',
       svgData: svgData,
       imgList: imgList,
       // 立案 0 调查 1 决定 2 执行 3 结案
@@ -63,10 +65,16 @@ export default {
   methods: {
     async getFlowStatusByCaseId(id) {
       //   console.log(id)
-      let _this = this
+      let _this = this;
+      if(_this.caseFlowData.flowName == "赔补偿流程"){
+        _this.graphData = graphData.compensationGraphData;
+      }else{
+        _this.graphData = graphData.commonGraphData;
+      }
       this.$store.dispatch("getFlowStatusByCaseId", id).then(
         res => {
           console.log('流程图', res)
+         
           _this.data = res.data;
           _this.updateLinkData()
           _this.updateGraphData()
@@ -567,11 +575,24 @@ export default {
         this.updateNextLinkByNotTempArray(graphDataTemp, firstNodes[0], curNode)
       }
     },
+    queryFlowBycaseId(){
+      queryFlowBycaseIdApi(this.caseId)
+        .then(res => {
+          console.log("res", res);
+          this.caseFlowData = res.data;
+          this.getFlowStatusByCaseId(this.caseId);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     async mountedInit() {
-      this.getFlowStatusByCaseId(this.caseId);
-      this.updateLinkData()
-      this.updateGraphData()
-      this.drawFlowChart()
+      this.queryFlowBycaseId();
+      // this.queryFlowBycaseId(this.getFlowStatusByCaseId(this.caseId));
+      // this.getFlowStatusByCaseId(this.caseId);
+      // this.updateLinkData()
+      // this.updateGraphData()
+      // this.drawFlowChart()
     },
     //解除或延长强制措施跳转
     showRemoveOrExtend() {

@@ -7,7 +7,7 @@
       <el-menu-item index="caseInfo" :disabled = "disabledCaseInfo" @click="goTo('case_handle_caseInfo')">
         案件<br>总览
       </el-menu-item>
-      <el-menu-item index="inforCollect" @click="goTo('case_handle_inforCollect')">
+      <el-menu-item index="inforCollect" @click="goToInfoPage">
         基本<br>信息
       </el-menu-item>
       <el-menu-item index="flowChart" :disabled = "disabledFlow" @click="goTo('case_handle_flowChart')">
@@ -61,7 +61,9 @@ import archiveCatalogue from "@/page/caseHandle/waitArchive/archiveCatalogue";
 import evidenceCatalogue from "@/page/caseHandle/case/form/evidenceCatalogue";
 import documentFormRef from "@/page/caseHandle/case/form/documentFormRef";
 import deliverReceiptFormRef from "@/page/caseHandle/case/form/deliverReceiptFormRef";
-
+import {
+  queryFlowBycaseIdApi,
+} from "@/api/caseHandle";
 export default {
   data(){
     return{
@@ -69,6 +71,7 @@ export default {
       disabledCaseInfo:true,
       disabledBeforeEstablish:true,
       disabledFlow:true,
+      infoPage: "",
     }
   },
   props:['activeIndex'],
@@ -80,6 +83,9 @@ export default {
     deliverReceiptFormRef
   },
   methods: {
+    goToInfoPage(){
+      this.goTo(this.infoPage);
+    },
     goTo(name){
       console.log('name',name)
       // if(this.caseApproval ) { 
@@ -174,11 +180,21 @@ export default {
       //控制案件流程 （信息采集保存后可用 方法：状态是不是1
       this.disabledFlow = !data.state
       console.log('控制案件总览', this.disabledCaseInfo)
-    }
+    },
+    //根据案件类型判断进入哪个信息采集页
+    findInforCollectPageName(){
+      queryFlowBycaseIdApi(this.caseId).then(res=>{
+          console.log('res111222',res);
+          this.infoPage = res.data.basicInfoPage;
+          console.log('this.infoPage', this.infoPage);
+      }).catch(err=>{console.log(err)})
+    },
+
   },
   mounted(){
     //判断快捷菜单是否可用
     this.getCaseData();
+    this.findInforCollectPageName();
   }
 }
 </script>

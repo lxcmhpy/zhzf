@@ -102,7 +102,9 @@ import caseRegisterDiag from "./caseRegisterDiag";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
-
+import {
+  queryFlowBycaseIdApi,
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -118,7 +120,8 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       total: 0, //总页数
-      hideSomeSearch: true
+      hideSomeSearch: true,
+      infoPage: "" //信息采集页路由
     };
   },
   mixins: [mixinGetCaseApiList],
@@ -155,7 +158,7 @@ export default {
       this.getUnRecordCase({});
     },
     //跳转立案登记
-    handleCase(row) {
+    async handleCase(row) {
       console.log(row);
       let setCaseNumber = row.caseNumber!='' ? row.caseNumber : row.tempNo;
       this.$store.commit("setCaseNumber", setCaseNumber);
@@ -163,10 +166,22 @@ export default {
       if(row.state == 0){
         this.$store.commit("setCaseId", row.id);
         iLocalStroage.set("stageCaseId",row.id);
+        await this.queryFlowBycaseId();
         this.$router.replace({
-          name: "case_handle_inforCollect"
+          name: this.caseFlowData.basicInfoPage,
         });
         return;
+           
+      //   queryFlowBycaseIdApi(row.id).then(res=>{
+      //     console.log('res111222',res);
+      //     this.infoPage = res.data.basicInfoPage;
+      //     console.log('this.infoPage', this.infoPage);
+      //     this.$router.replace({
+      //       name: this.infoPage,
+      //     });
+      //   return;
+      // }).catch(err=>{console.log(err)})
+        
       }
      
 
@@ -206,10 +221,19 @@ export default {
     //展开
     showSomeSearch() {
       this.hideSomeSearch = !this.hideSomeSearch;
-    }
+    },
+    //根据案件类型判断进入哪个信息采集页
+    findInforCollectPageName(){
+      queryFlowBycaseIdApi(this.caseId).then(res=>{
+          console.log('res111222',res);
+          this.infoPage = res.data.basicInfoPage;
+          console.log('this.infoPage', this.infoPage);
+      }).catch(err=>{console.log(err)})
+    },
   },
   created() {
     this.getUnRecordCase({});
+    // this.findInforCollectPageName();
   }
 };
 </script>
