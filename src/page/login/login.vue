@@ -45,9 +45,7 @@
                   <vue-simple-verify ref="verify" :width='420' tips='向右滑动完成验证' @success="pass()" />
                 </el-form-item>
                 <div class="forgetPass">
-                  <el-collapse-transition>
                     <div v-show="errorMessage" class="error">{{errorMessage}}</div>
-                  </el-collapse-transition>
                 </div>
 
                 <div>
