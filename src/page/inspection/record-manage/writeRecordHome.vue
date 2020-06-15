@@ -16,7 +16,7 @@
          ({{item.templateList.length}}) -->
         <!-- {{typeof(item.templateList.length)}} 
         </div>-->
-        <div class="card-title">{{item.domain}}
+        <div class="card-title" style="justify-content: flex-start;">{{item.domain}}
           <span v-if="item.templateList">({{item.templateList.length}})</span>
         </div>
         <ul class="card-ul">

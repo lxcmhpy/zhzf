@@ -577,7 +577,7 @@ export default {
       }
     },
     addRadioList(options) {
-      if (options.length <= 5) {
+      if (options.length <= 9) {
         options.push({ value: '' })
       }
       else {
