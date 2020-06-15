@@ -81,6 +81,78 @@ export default [
     component: () => import("@/page/caseHandle/case/jiangxi/doc/adminCoerciveMeasureNote_JX.vue")
   },
   {
+    path: "/caseTransNoticeDoc",
+    name: "case_handle_caseTransNoticeDoc",
+    meta: {
+      title: "案件移送告知书"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/caseTransNoticeDoc_JX.vue")
+  },
+  {
+    path: "/caseTransLetter",
+    name: "case_handle_caseTransLetter",
+    meta: {
+      title: "案件移送函"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/caseTransLetter_JX.vue")
+  },
+  {
+    path: "/adminEnforceAgreeDoc",
+    name: "case_handle_adminEnforceAgreeDoc",
+    meta: {
+      title: "行政强制执行协议书"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/adminEnforceAgreeDoc_JX.vue")
+  },
+  {
+    path: "/executAnnounceDoc_JX",
+    name: "case_handle_executAnnounceDoc_JX",
+    meta: {
+      title: "执行公告——江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/executAnnounceDoc_JX.vue")
+  },
+  {
+    path: "/remindLetterDoc_JX",
+    name: "case_handle_remindLetterDoc_JX",
+    meta: {
+      title: "催告书——江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/remindLetterDoc_JX.vue")
+  },
+  {
+    path: "/importantCaseTeamDissDoc_JX",
+    name: "case_handle_importantCaseTeamDissDoc_JX",
+    meta: {
+      title: "重大案件集体讨论记录——江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/importantCaseTeamDissDoc_JX.vue")
+  },
+  {
+    path: "/illegalActionForm_JX",
+    name: "case_handle_illegalActionForm_JX",
+    meta: {
+      title: "违法行为通知书——江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/illegalActionForm_JX.vue")
+  },
+  {
+    path: "/hearingNotice_JX",
+    name: "case_handle_hearingNotice_JX",
+    meta: {
+      title: "听证通知书——江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/hearingNoticeDoc_JX.vue")
+  },
+  {
+    path: "/enforceApplicationDoc",
+    name: "case_handle_enforceApplicationDoc",
+    meta: {
+      title: "强制执行申请书——江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/enforceApplicationDoc.vue")
+  },
+  {
     path: "/adminPenaltyApprovalForm",
     name: "case_handle_adminPenaltyApprovalForm",
     meta: {
@@ -95,6 +167,22 @@ export default [
       title: "分期（延期）缴纳罚款审批表"
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/stageDelayApprovalForm.vue")
+  },
+  {
+    path: "/hearingReportDoc",
+    name: "case_handle_hearingReportDoc",
+    meta: {
+      title: "听证报告书"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/hearingReportDoc.vue")
+  },
+  {
+    path: "/forceCorrect_JX",
+    name: "case_handle_forceCorrect_JX",
+    meta: {
+      title: "责令改正违法行为通知书-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/forceCorrect_JX.vue")
   },
 ]
 

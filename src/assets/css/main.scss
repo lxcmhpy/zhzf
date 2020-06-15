@@ -69,6 +69,7 @@
       float   : right;
       overflow: hidden;
       color   : #909298;
+      cursor: pointer;
 
       div {
         float      : left;
@@ -509,6 +510,8 @@
   padding   : 22px 19px;
   height    : 62px;
   box-sizing: border-box;
+  white-space: nowrap;/* 解决服务器上溢出问题 */
+  overflow: hidden;
 
   li {
     width       : 82px;

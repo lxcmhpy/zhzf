@@ -94,6 +94,10 @@
             </el-date-picker>
           </el-form-item>
         </div>
+        <br><br><br>
+        <div class="notice clear">
+          <span>(本文书一式两份：一份存根，一份交协助调查单位或个人。)</span>
+        </div>
       </el-form>
     </div>
     <!-- 悬浮按钮 -->

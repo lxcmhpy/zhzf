@@ -9,7 +9,7 @@
           :inline="true"
           :model="docData"
         >
-          <div class="doc_topic">行政强制措施现场笔录</div>
+          <div class="doc_topic height76">行政强制措施现场笔录</div>
           <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交强现录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
           <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -295,23 +295,14 @@
                 <div>
                    <el-form-item prop="defendState" :rules="fieldRules('defendState',propertyFeatures['defendState'])">
                     <el-checkbox-group v-model="docData.defendState" :max="1" :disabled="fieldDisabled(propertyFeatures['defendState'])">
-                        <p><el-checkbox label="0">不需要</el-checkbox></p>
-                        <p><el-checkbox label="1">
+                        <el-checkbox label="0">不需要</el-checkbox>
+                        <el-checkbox label="1">需要
                             <el-form-item prop="defendReason" :rules="fieldRules('defendReason',propertyFeatures['defendReason'])">
-                               <el-input
-                                    class="text_indent11 overflow_lins_textarea"
-                                    type="textarea"
-                                    v-model="docData.defendReason"
-                                    rows="4"
-                                    maxlength="400"
-                                    placeholder="\"
-                                    :disabled="fieldDisabled(propertyFeatures['defendReason'])"
-                                ></el-input>
-                                <span class="overflow_describe_JX" style="padding-bottom:-6px;">需要</span>
-                                <span class="span_bg span_bg_top">&nbsp;</span>
-                                <p class="span_bg">&nbsp;</p>
+                                <el-input type='textarea' v-model="docData.defendReason"
+                                        :autosize="{ minRows: 1, maxRows: 3}" :maxLength='50'
+                                        :disabled="fieldDisabled(propertyFeatures['defendReason'])"></el-input>
                             </el-form-item>
-                        </el-checkbox></p>
+                        </el-checkbox>
                     </el-checkbox-group>
                    </el-form-item> 
                 </div>
@@ -344,7 +335,7 @@
                 </el-form-item>
               </td>
             </tr>
-            <tr>
+            <tr style="height:42px;">
               <td colspan="7">
                 <el-row :gutter="20">
                   <el-col :span="12">
@@ -878,10 +869,6 @@ export default {
       text-indent: 0px !important;
     }
   }
-
-  // #subOutputRank-print .el-date-editor--datetime{
-  //   width: 200px;
-  // }
   #subOutputRank-print {
     .overflow_lins_style .span_bg {
       display: block;
@@ -930,8 +917,10 @@ export default {
         margin: 4px 0;
         height: 20px;
       }
-
+      .height76{
+        height:76px;
+      }
     }
-
+    
   }
 </style>
