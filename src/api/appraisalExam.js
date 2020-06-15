@@ -183,7 +183,7 @@ export function getNoticeByPageAndUserId(data){
     method: "get",
     params: data,
     showloading: true,
-    loadingType:'loadPart',
+    loadingType:'loadFull',
     cancelToken: setCancelSource()
   });
 }

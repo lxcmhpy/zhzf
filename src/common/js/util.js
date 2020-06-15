@@ -342,14 +342,15 @@ util.initMenu = function(vm){
     getMenuApi().then(
         res => {
             // ,
-          let menuListNew = [...res.data, ...menuList];
-          _this.$store.commit("SET_MENU", menuListNew);
+            let menuListNew = [...res.data, ...menuList];
+            _this.$store.commit("SET_MENU", menuListNew);
         //   _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
         //   _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
-          _this.$store.commit("SET_ACTIVE_INDEX_STO", "case_handle_home_index");
-          _this.$store.commit('set_Head_Active_Nav',"caseHandle-menu-case_handle_home_index");
+            let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');
+            _this.$store.commit("SET_ACTIVE_INDEX_STO", routerName);
+            _this.$store.commit('set_Head_Active_Nav',routerName);
         //   _this.$router.push({ name: "law_supervise_lawSupervise" });
-        _this.$router.push({ name: "case_handle_home_index" });
+            _this.$router.push({ name: routerName});
           // callback();
         },
         err => {
