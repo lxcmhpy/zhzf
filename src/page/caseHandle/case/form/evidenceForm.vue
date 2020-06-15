@@ -60,8 +60,8 @@
           </el-table-column>
           <el-table-column prop="evPath" label="附件" align="center">
             <template slot-scope="scope">
-              <img v-if="scope.row.evType =='照片'" :src="host+scope.row.evPath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
-              <img v-if="scope.row.evType =='音视频'" :src="host+scope.row.thumbnailsStoragePath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
+                <img v-if="scope.row.evType =='照片'" :src="host+scope.row.evPath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
+                <img v-if="scope.row.evType =='音视频'" :src="host+scope.row.thumbnailsStoragePath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>  
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" fixed="right">

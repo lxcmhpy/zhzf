@@ -141,11 +141,24 @@ export default {
       fd.append("category", this.form.category);
       fd.append("userId", this.form.userId);
       fd.append("evName", this.form.evName);
-      fd.append("evType", this.form.evType);
+      // fd.append("evType", this.form.evType); 
       fd.append("status", this.form.status);
       fd.append("remark", this.form.remark);
       fd.append("fileId", this.form.fileId);
       // fd.append("id", this.form.id);
+      
+      //给证据类型赋值
+      let fileType= this.$util.getFileType(this.form.file.name);
+      console.log('给证据类型赋值',fileType);
+      this.$set(this.form,'evType')
+      if(fileType == 'image'){ //图片
+        this.form.evType = '照片'
+      }else if(fileType == 'video' || fileType == 'radio'){
+        this.form.evType = '音视频'
+      }else{
+        this.form.evType = '其他附件'
+      }
+
       let _this = this
       uploadEvdence(fd).then(res => {
         console.log("1111111",res);
