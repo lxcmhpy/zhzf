@@ -73,7 +73,7 @@
     </div>
 </template>
 <script>
-  import {getPykhOrgInfo,updateScore,updateScoreState} from "@/api/appraisalExam.js";
+  import {getOrgInfoById,updateScore,updateScoreState} from "@/api/appraisalExam.js";
   import { mixinsCommon } from "@/common/js/mixinsCommon";
 export default {
     mixins: [mixinsCommon],
@@ -118,7 +118,7 @@ export default {
       commitData(){
         const data = {
             id:this.form.id,
-            assessType:"自查自评",
+            assessType:"网上评查",
             pfstatus:this.form.pfStatus
         }
         let _this = this
@@ -148,7 +148,7 @@ export default {
           this.oldValue=val
       },
       fetchData(){
-        getPykhOrgInfo({assessType:"自查自评"}).then(
+        getOrgInfoById(this.$route.params.id).then(
             res => {
                 this.form = res.data
             },
