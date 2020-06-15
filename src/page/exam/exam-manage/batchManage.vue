@@ -104,7 +104,13 @@
               </template>
               <template slot-scope="scope">
                 <p>
-                  <span class="exam-name">{{scope.row.examName}}</span>
+                  <span>
+                    <span v-if="scope.row.examStatus === '0'" class="exam-status" style="background: #E4E7ED">未开始</span> 
+                    <span v-if="scope.row.examStatus === '1'" class="exam-status" style="background:rgba(222,251,214,1);">考试中</span> 
+                    <span v-if="scope.row.examStatus === '2'" class="exam-status" style="background:rgba(255,245,203,1);">已结束</span> 
+                    <span v-if="scope.row.examStatus === '3'" class="exam-status" style="background:rgba(255,245,203,1);">评分结束</span> 
+                    <span class="exam-name">{{scope.row.examName}}</span>
+                  </span>
                 </p>
                 <p class="exam-info">
                   <span class="m-r-30">考试类型：{{scope.row.examTypeName}}</span>
@@ -453,6 +459,12 @@ export default {
         padding: 15px 0;
         &.vertical-top{
           vertical-align: top;
+        }
+        .exam-status{
+          display: inline-block;
+          font-size: 15px;
+          padding: 0px 6px;
+          color: #000;
         }
         .exam-name{
           font-size:18px;

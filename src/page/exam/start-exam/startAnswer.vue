@@ -51,7 +51,14 @@
             <div v-if="examPerInfo.personInfo" class="time-info pserson-info">
               <div class="examinee-photo">
                 <img
-                  :src="(baseUrl + examPerInfo.personInfo.photoUrl) || personImg"
+                  v-if="examPerInfo.personInfo.photoUrl"
+                  :src="baseUrl + examPerInfo.personInfo.photoUrl"
+                  width="100px"
+                  height="140px"
+                />
+                <img
+                  v-else
+                  :src="personImg"
                   width="100px"
                   height="140px"
                 />
@@ -88,8 +95,9 @@
                     v-for="num in graph.examResultList"
                     class="item"
                     :key="num.resultId"
-                    :class="{'sign': num.labelStatue === '1',
-                      'finish': num.questionStatue === '1' || num.answer,
+                    :class="{
+                      'sign': num.labelStatue === '1',
+                      'finish': num.answer && num.labelStatue !== '1',
                       'current': num.resultId == questionData.firstQuestion.resultId}"
                     @click="nextQuestion('', num.orderNo)"
                   >{{ num.orderNum }}</a>
@@ -281,12 +289,13 @@ export default {
     // 下一题
     nextQuestion(dir, orderNo) {
       this.nextDisabled = false;
+      this.marked = false;
       const answer = this.handleSubmitData();
       if (dir === "prev") {
         answer.preOrNext = "-1";
       }
       if(orderNo !== undefined){
-        answer.orderNo = orderNo;
+        answer.orderNo = orderNo - 1;
       }
       const loading = this.$loading({
         lock: true,
@@ -350,11 +359,10 @@ export default {
       delete answer.listPo;
       return answer;
     },
-    submitLastQuestion() {},
     // 我要交卷
     handPaper() {
       const answered = this.questionNumList.filter(
-        item => item.questionStatue === "1" || item.answer === "-"
+        item => item.answer !== undefined && item.answer !== null && item.answer !== ''
       );
       this.$confirm(
         `已答${answered.length}道题，还有${this.questionNumList.length -
@@ -437,9 +445,9 @@ export default {
     },
     // 左侧题目状态和右侧答题卡联动
     setQuestionStatus(checked) {
-      this.currentGraph.questionStatue = "0";
-      if (!this.marked && checked) {
-        this.currentGraph.questionStatue = "1";
+      this.currentGraph.answer = "";
+      if (!this.marked) {
+        this.currentGraph.answer = checked;
       }
     },
     // 退出考试系统
@@ -610,7 +618,7 @@ export default {
                 border-radius: 2px;
                 border: 1px solid rgba(217, 217, 217, 1);
                 margin: 0 12px 10px 0;
-                // cursor: pointer;
+                cursor: pointer;
                 &:hover {
                   background: #ebebeb;
                 }

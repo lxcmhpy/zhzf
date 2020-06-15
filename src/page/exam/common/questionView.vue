@@ -62,7 +62,7 @@
         <span>{{ getoptionKey(question) }}</span>
       </p>
       <p>试题解析：{{question.questionAnalysis}}</p>
-      <div v-if="editable" class="edit-question">
+      <div v-if="editable" class="edit-question" :class="{'isLocked': question.isLock !== '0'}">
         <div v-show="question.isLock === '0'" class="edit-btn">
           <span class="btn" @click="randomReplace">随机替换</span>
           <i class="split"></i>
@@ -346,6 +346,10 @@ export default {
       bottom: 0;
       width: 100%;
       background: rgba(74, 175, 167, 0.85);
+      &.isLocked{
+        background: rgba(224, 32, 32, 0.85);
+        text-align: center;
+      }
       .edit-btn {
         display: inline-block;
         width: 33%;
