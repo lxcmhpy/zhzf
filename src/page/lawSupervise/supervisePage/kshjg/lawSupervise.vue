@@ -1835,7 +1835,7 @@ export default {
             // debugger;
             new Promise((resolve, reject) => {
                 // getOrganTree(params).then(
-                getOrganIdApi(params).then(
+                getOrganIdApi({id: node.id}).then(
                     res => {
                         // _this.showTree = false;
                         let resultList = [];
@@ -1882,7 +1882,7 @@ export default {
             let _this = this;
             // debugger;
             new Promise((resolve, reject) => {
-                getOrganDetailApi(node.id).then(
+                getOrganDetailApi({id:node.id}).then(
                     res => {
                         // _this.showTree = false;
                             let resultList = [];
