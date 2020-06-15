@@ -689,7 +689,6 @@ export const mixinGetCaseApiList = {
         console.log(data);
         this.propertyFeatures = data;
         console.log('savedData', savedData);
-        debugger;
         if (this.formData) {
           if (savedData) {
             this.caseLinkDataForm.id = savedData.id;
@@ -756,7 +755,6 @@ export const mixinGetCaseApiList = {
   },
   watch: {
     '$route'(to, from) {
-      debugger;
       this.init()
     }
   }

@@ -27,7 +27,7 @@
 </template>
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {getAppraisalResult} from "@/api/appraisalExam.js";
+  import {getAppraisalResult,publicResult} from "@/api/appraisalExam.js";
   import iLocalStroage from '@/common/js/localStroage';
   export default {
     mixins: [mixinsCommon],
@@ -46,6 +46,12 @@
         });
       },
       onPublic(){
+        publicResult().then(res=>{
+          if(res.code==200){
+            this.$message({type: "success",message: "发布成功!"});
+            this.fetchData()
+          }
+        });
       }
     },
     mounted () {

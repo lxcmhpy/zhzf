@@ -6,9 +6,9 @@
         <div class="doc_topic">重大案件集体讨论记录</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <p class="p_begin">
-          案件名称：
+          案由：
           <span>
-            <el-form-item prop="caseName" style="width: 535px;" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+            <el-form-item prop="caseName" style="width: 566px;" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
               <el-input v-model="docData.caseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
             </el-form-item>
           </span>
@@ -41,7 +41,18 @@
               <el-input v-model="docData.discussionPlace" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['discussionPlace'])"></el-input>
             </el-form-item>
           </span>
-        </p>
+        </p> 
+        <div class="overflow_lins_style">
+          <div class="overflow_lins">
+            <el-form-item prop="discussionReason" :rules="fieldRules('discussionReason',propertyFeatures['discussionReason'])">
+              <el-input class='text_indent8 overflow_lins_textarea' type='textarea' v-model="docData.discussionReason" rows="3" maxLength='90'
+              :disabled="fieldDisabled(propertyFeatures['discussionReason'])"></el-input>
+              <span class="overflow_describe" style="text-indent:0em;">集体讨论原因：</span>
+              <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
+              <span class="span_bg" >&nbsp;</span>
+            </el-form-item>
+          </div>
+        </div>
         <p class="p_begin">
           主持人：
           <span>
@@ -49,10 +60,10 @@
               <el-input v-model="docData.presidingHearer" maxLength='7' :disabled="fieldDisabled(propertyFeatures['presidingHearer'])"></el-input>
             </el-form-item>
           </span>
-          汇报人：
+          职务：
           <span>
-            <el-form-item prop="reporter" class='width130' :rules="fieldRules('reporter',propertyFeatures['reporter'])">
-              <el-input v-model="docData.reporter" maxLength='7' :disabled="fieldDisabled(propertyFeatures['reporter'])"></el-input>
+            <el-form-item prop="presidingHearerPos" class='width130' :rules="fieldRules('presidingHearerPos',propertyFeatures['presidingHearerPos'])">
+              <el-input v-model="docData.presidingHearerPos" maxLength='7' :disabled="fieldDisabled(propertyFeatures['presidingHearerPos'])"></el-input>
             </el-form-item>
           </span>
           记录人：
@@ -62,75 +73,77 @@
             </el-form-item>
           </span>
         </p>
+        <div class="overflow_lins_style">
+          <div class="overflow_lins">
+            <el-form-item prop="discussionPeople" :rules="fieldRules('discussionPeople',propertyFeatures['discussionPeople'])">
+              <el-input class='text_indent6 overflow_lins_textarea' type='textarea' v-model="docData.discussionPeople" rows="3" maxLength='90'
+              :disabled="fieldDisabled(propertyFeatures['discussionPeople'])"></el-input>
+              <span class="overflow_describe" style="text-indent:0em;">参加人员：</span>
+              <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
+              <span class="span_bg" >&nbsp;</span>
+            </el-form-item>
+          </div>
+        </div>
+        <div class="overflow_lins_style">
+          <div class="overflow_lins">
+            <el-form-item prop="attendPeople" :rules="fieldRules('attendPeople',propertyFeatures['attendPeople'])">
+              <el-input class='text_indent6 overflow_lins_textarea' type='textarea' v-model="docData.attendPeople" rows="3" maxLength='90'
+              :disabled="fieldDisabled(propertyFeatures['attendPeople'])"></el-input>
+              <span class="overflow_describe" style="text-indent:0em;">列席人员：</span>
+              <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
+              <span class="span_bg" >&nbsp;</span>
+            </el-form-item>
+          </div>
+        </div>
         <p class="p_begin">
-          出席人员姓名：
+          案件承办人员：
           <span>
-            <el-form-item prop="presentMembersName" style="width: 503px;" :rules="fieldRules('presentMembersName',propertyFeatures['presentMembersName'])">
-              <el-input v-model="docData.presentMembersName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['presentMembersName'])"></el-input>
+            <el-form-item prop="caseUnderTakePeople" style="width: 503px;" :rules="fieldRules('caseUnderTakePeople',propertyFeatures['caseUnderTakePeople'])">
+              <el-input v-model="docData.caseUnderTakePeople" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseUnderTakePeople'])"></el-input>
             </el-form-item>
           </span>
         </p>
-        <!-- <p class="side_right_indent">
-          <span class="side_right" @click="overFlowEdit">
-            <el-form-item prop="illegalFactsEvidence">
-              <span class="over_topic">讨论记录：</span>
-              {{docData.illegalFactsEvidence}}
-            </el-form-item>
-          </span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-        </p> -->
         <!-- 多行样式 -->
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="discussionRecord" :rules="fieldRules('discussionRecord',propertyFeatures['discussionRecord'])">
-              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90'
-              :disabled="fieldDisabled(propertyFeatures['discussionRecord'])"></el-input>
-              <span class="overflow_describe">讨论记录：</span>
+            <el-form-item prop="caseInformation" :rules="fieldRules('caseInformation',propertyFeatures['caseInformation'])">
+              <el-input class='text_indent11 overflow_lins_textarea' type='textarea' v-model="docData.caseInformation" rows="3" maxLength='90'
+              :disabled="fieldDisabled(propertyFeatures['caseInformation'])"></el-input>
+              <span class="overflow_describe" style="text-indent:0em;">案件承办人汇报案件情况：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
               <span class="span_bg" >&nbsp;</span>
               <span class="span_bg" >&nbsp;</span>
             </el-form-item>
           </div>
         </div>
-        <!-- <div class="overflow_lins_style">
-          <div class="overflow_lins_textarea">
-            <el-form-item prop="discussionRecord">
-              <el-input class='text_indent10' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90' placeholder="\"></el-input>
-            </el-form-item>
-          </div>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-        </div> -->
-        <!-- <p class="side_right_indent">
-          <span class="side_right" @click="overFlowEdit2">
-            <el-form-item prop="illegalFactsEvidence2">
-              <span class="over_topic">结论性意见：</span>
-              {{docData.illegalFactsEvidence2}}
-            </el-form-item>
-          </span>
-          <span class="span_bg" @click="overFlowEdit2">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit2">&nbsp;</span>
-          <span class="span_bg" @click="overFlowEdit2">&nbsp;</span>
-        </p> -->
-        <!-- 多行样式 -->
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="conclussionOpinion" :rules="fieldRules('conclussionOpinion',propertyFeatures['conclussionOpinion'])">
-              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.conclussionOpinion" rows="3" maxLength='90'
-              :disabled="fieldDisabled(propertyFeatures['conclussionOpinion'])"></el-input>
-              <span class="overflow_describe">结论性意见：</span>
-              <span class="span_bg"  style="margin-top: 8px;">&nbsp;</span>
+            <el-form-item prop="discussionOpinionAndReason" :rules="fieldRules('discussionOpinionAndReason',propertyFeatures['discussionOpinionAndReason'])">
+              <el-input class='text_indent11 overflow_lins_textarea' type='textarea' v-model="docData.discussionOpinionAndReason" rows="3" maxLength='90'
+              :disabled="fieldDisabled(propertyFeatures['discussionOpinionAndReason'])"></el-input>
+              <span class="overflow_describe" style="text-indent:0em;">参见讨论人员意见和理由：</span>
+              <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
               <span class="span_bg" >&nbsp;</span>
               <span class="span_bg" >&nbsp;</span>
             </el-form-item>
           </div>
         </div>
+        <!-- 多行样式 -->
+        <div class="overflow_lins_style">
+          <div class="overflow_lins">
+            <el-form-item prop="conclussionOpinion" :rules="fieldRules('conclussionOpinion',propertyFeatures['conclussionOpinion'])">
+              <el-input class='text_indent6 overflow_lins_textarea' type='textarea' v-model="docData.conclussionOpinion" rows="3" maxLength='90'
+              :disabled="fieldDisabled(propertyFeatures['conclussionOpinion'])"></el-input>
+              <span class="overflow_describe" style="text-indent:0em;">结论性意见：</span>
+              <span class="span_bg"  style="margin-top: 8px;">&nbsp;</span>
+              <span class="span_bg" >&nbsp;</span>
+              <span class="span_bg">&nbsp;</span>
+            </el-form-item>
+          </div>
+        </div>
 
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="20">
             出席人员签名：
             <span class="write_line width250"></span>
           </el-col>
@@ -139,19 +152,15 @@
     </div>
     <casePageFloatBtns :pageDomId="'importantCaseTeamDissDoc-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
-    <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
-    <overflowInput ref="overflowInputRef2" @overFloeEditInfo="getOverFloeEditInfo2"></overflowInput> -->
   </div>
 </template>
 <script>
-// import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
 export default {
   components: {
-    // overflowInput,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
@@ -182,12 +191,18 @@ export default {
         discussionStartTime: '',
         discussionEndTime: '',
         discussionPlace: '',
+        discussionReason:'',
         presidingHearer: '',
-        reporter: '',
+        presidingHearerPos: '',
         recorder: '',
-        presentMembersName: '',
+        discussionPeople:'',
+        attendPeople:'',
+        caseUnderTakePeople:'',
+        caseInformation:'',
+        discussionOpinionAndReason:'',
+        // presentMembersName: '',
         overWidthFlag: false,
-        discussionRecord: '',//多行编辑内容
+        // discussionRecord: '',//多行编辑内容
         conclussionOpinion: '',//多行编辑内容
       },
       handleType: 0, //0  暂存     1 提交
@@ -218,20 +233,32 @@ export default {
         presidingHearer: [
           { required: true, message: '请输入主持人', trigger: 'blur' },
         ],
-        reporter: [
-          { required: true, message: '请输入汇报人', trigger: 'blur' },
+        presidingHearerPos: [
+          { required: true, message: '请输入职务', trigger: 'blur' },
         ],
         recorder: [
           { required: true, message: '请输入记录人', trigger: 'blur' },
         ],
-        presentMembersName: [
-          { required: true, message: '请输入出席人员姓名', trigger: 'blur' },
+        discussionReason: [
+          { required: true, message: '请输入集体讨论原因', trigger: 'blur' },
         ],
-        discussionRecord: [
-          { required: true, message: '请输入讨论记录', trigger: 'blur' },
+        discussionPeople: [
+          { required: true, message: '请输入参加人员', trigger: 'blur' },
+        ],
+        attendPeople: [
+          { required: true, message: '请输入列席人员', trigger: 'blur' },
+        ],
+        caseUnderTakePeople: [
+          { required: true, message: '请输入案件承办人员', trigger: 'blur' },
+        ],
+        caseInformation: [
+          { required: true, message: '请输入案件汇报案件情况', trigger: 'blur' },
         ],
         conclussionOpinion: [
           { required: true, message: '请输入结论性意见', trigger: 'blur' },
+        ],
+        discussionOpinionAndReason: [
+          { required: true, message: '请输入参与讨论人员意见和理由', trigger: 'blur' },
         ],
       },
       nameLength: 23,
@@ -266,22 +293,6 @@ export default {
      // 打印
     print() {
       console.log('打印!');
-    },
-    // 多行编辑
-    overFlowEdit() {
-      // this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
-    },
-    // 多行编辑
-    overFlowEdit2() {
-      // this.$refs.overflowInputRef2.showModal(0, '', this.maxLengthOverLine);
-    },
-    // 获取多行编辑内容
-    getOverFloeEditInfo(edit) {
-      this.docData.discussionRecord = edit;
-    },
-    // 获取多行编辑内容
-    getOverFloeEditInfo2(edit) {
-      this.docData.conclussionOpinion = edit;
     },
     //提交
     submitData(handleType) {

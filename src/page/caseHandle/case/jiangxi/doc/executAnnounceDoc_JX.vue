@@ -4,7 +4,7 @@
     <div class="print_info" id="executAnnounceDoc_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">执行公告</div>
-        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交公告〔{{docData.caseNumber.substring(8,13)}}〕号</div>
         <p>
           <span>
             <el-form-item prop="caseName">
@@ -41,7 +41,10 @@
               <el-date-picker v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
-          </span>前自行拆除违法的建筑物、构筑物、设施等。当事人在法定期限内不申请行政复议或者提起行政诉讼，又不拆除的，本机关将依法强制拆除。
+          </span>前自行拆除违法的建筑物、构筑物、设施等。
+        </p>
+        <p>
+          当事人在法定期限内不申请行政复议或者提起行政诉讼，又不拆除的，本机关将依法强制拆除。
         </p>
         <p>
           特此公告。

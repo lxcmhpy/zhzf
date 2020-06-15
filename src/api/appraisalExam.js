@@ -261,3 +261,21 @@ export function getAppraisalResult(){
     cancelToken: setCancelSource()
   });
 }
+export function publicResult(){
+  return request({
+    url: "/pykh/appraisalResult/publicResult",
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+export function clickNotice(id){
+  return request({
+    url: "/pykh/notice/clickNotice/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

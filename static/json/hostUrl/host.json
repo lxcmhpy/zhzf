@@ -1,6 +1,9 @@
 {
   "CURRENT": "NW",
+<<<<<<< HEAD
   "HOME_PAGE_ROUTER_NAME": "catsAppraisalExamination",
+=======
+>>>>>>> 0d8c8f65dc7310fa8a4cb037c736c046c09698af
   "PS": {
     "CAPTCHA_HOST": "系统管理/案件办理  96：9000",
     "PDF_HOST": "文件服务器地址",

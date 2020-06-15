@@ -20,9 +20,9 @@
                     <span class="right">更多内容 ></span>
                 </div>
                 <ul class="list">
-                    <li :class="{'fontGray':item.isRead ='N'}" v-for="(item,index) in noticeList" :key="index" @click="viewNotice(item)">
+                    <li :class="{'fontGray':item.isRead =='N'}" v-for="(item,index) in noticeList" :key="index" @click="viewNotice(item)">
                         <div class="c">
-                            <em class="circle" v-show="item.isRead==='N'"></em>
+                            <em class="circle" v-show="item.isRead=='N'"></em>
                             <span class="tz">{{item.title}}</span>
                            <em class="date">{{item.createDate}}</em>
                         </div>
@@ -96,7 +96,7 @@
 <style lang="scss" src="@/assets/css/catsAppraisalExamination.scss"></style>
 <style lang='scss' src="@/assets/css/checkInfo.scss" ></style>
 <script>
-import {getContentApi,getNoticeByPageAndUserId,getAppraisalMenuList} from "@/api/appraisalExam.js";
+import {getContentApi,getNoticeByPageAndUserId,getAppraisalMenuList,clickNotice} from "@/api/appraisalExam.js";
 import viewNotice from "./noticeManage/viewNotice";
 export default {
     data () {
@@ -169,6 +169,7 @@ export default {
             let _this = this;
             getNoticeByPageAndUserId(data).then(
                 res => {
+                    console.log(res.data.records)
                     _this.noticeList = res.data.records;
                 },
                 err => {
@@ -194,16 +195,34 @@ export default {
                     storageId: row.storageId
                 };
                 this.$router.push({ name: "case_handle_viewPDF", params: routerData });
+                if(row.isRead==='N'){
+                    clickNotice(row.id).then(
+                        res => {
+                        },
+                        err => {
+                            console.log(err);
+                        }
+                    )
+                }
             }else{
                 let _that = this
                 getContentApi(row.id).then(
-                res => {
-                    console.log(res.data);
-                    _that.$refs.viewNoticeRef.showModal(res.data);
-                },
-                err => {
-                    console.log(err);
-                })
+                    res => {
+                        if(row.isRead==='N'){
+                            clickNotice(row.id).then(
+                                res => {
+                                },
+                                err => {
+                                    console.log(err);
+                                }
+                            )
+                        }
+                        _that.$refs.viewNoticeRef.showModal(res.data);
+                    },
+                    err => {
+                        console.log(err);
+                    }
+                )
             }
         },
         clickMenu(row){
