@@ -165,15 +165,16 @@ export default {
     addPageInfo() {
       this.$refs.addPageMenuCompRef.showModal(1, "");
     },
-    // 试卷预览(可修改)
+    // 试卷预览(可修改)审核通过试卷不能修改
     viewPageInfo(row) {
+      let viewType = row.verifyStatusName === '审核通过' ? 'view' : 'edit';
       this.$store.commit("setExamInfo", "");
       this.$router.replace({
         name: "viewApplayDetail",
         params: {
           pageId: row.pageId,
           name: row.pageName,
-          type: 'edit'
+          type: viewType
         }
       });
       //this.$refs.addPageMenuCompRef.showModal(2, row);

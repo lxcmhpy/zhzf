@@ -113,6 +113,7 @@ export default {
     changeType(type) {
       this.check = type;
       this.loginForm.loginName = '';
+      this.loginForm.password = '';
     },
 
     //登录
@@ -161,10 +162,9 @@ export default {
                 _this.success = false
               },
               error => {
-                console.log('error',error);
                  this.$message({
                   type: "error",
-                  message: error.message
+                  message: error.msg || ''
                 });
               }
             );

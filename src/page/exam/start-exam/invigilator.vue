@@ -168,7 +168,8 @@ export default {
       tableData: [], //列表数据
       tableLoading: false, // 列表数据加载
       intervalTime: null,
-      countText: '' // 倒计时显示文字
+      countText: '', // 倒计时显示文字
+      differenceTime: 0
     };
   },
   computed: {
@@ -179,11 +180,24 @@ export default {
       return JSON.parse(sessionStorage.getItem("ExamUserInfo"));
     }
   },
+  created() {
+    this.getExamPerson();
+    this.getExamMsg();
+  },
   methods: {
+    // 获取系统当前时间
+    getSystemTime(){
+      this.$store.dispatch('getSystemDate').then(res => {
+        this.differenceTime = res - new Date().getTime();
+        this.startCountDown();
+      }, err => {
+        console.log(err);
+      });
+    },
     // 开始倒计时
     startCountDown() {
       // 获取当前时间，考试结束时间
-      let newTime = new Date().getTime();
+      let newTime = new Date().getTime() + this.differenceTime;
       // 对比考试开始时间和结束时间
       let examBegin = new Date(this.examInfo.examBegin).getTime();
       let examEnd = new Date(this.examInfo.examEnd).getTime();
@@ -213,7 +227,7 @@ export default {
     countDownFun(examEnd) {
       this.intervalTime = setInterval(() => {
         // 获取当前时间，考试结束时间
-        let newTime = new Date().getTime();
+        let newTime = new Date().getTime() + this.differenceTime;
         // 对结束时间进行处理渲染到页面
         let endTime = new Date(examEnd).getTime();
         let diffTime = endTime - newTime;
@@ -321,7 +335,7 @@ export default {
           if (res.code == "200") {
             this.roomInfo = res.data.roomInfo;
             this.examInfo = res.data.examInfo;
-            this.startCountDown();
+            this.getSystemTime();
           }
           this.visible = false;
         },
@@ -356,10 +370,6 @@ export default {
     }
   },
   mounted() {},
-  created() {
-    this.getExamPerson();
-    this.getExamMsg();
-  },
   destroyed(){
     clearInterval(this.intervalTime);
   }
