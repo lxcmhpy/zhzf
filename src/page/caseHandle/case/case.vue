@@ -47,11 +47,10 @@
     </div>
     <div>
       <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
-      <br><br>
+      <br>
       <InvalidInfoDialog ref="InvalidInfoDialog"></InvalidInfoDialog>
       <vehicleCheckDialog ref="vehicleCheckDialogRef"></vehicleCheckDialog>
       <numberCorrectDialog ref="numberCorrectDialog"></numberCorrectDialog>
-      <li @click="goOverWeightCase">超限案件列表</li>
 
       <ul>
         文书：
@@ -69,9 +68,10 @@
         <li @click="goIllegalActionForm_JX">违法行为通知书-江西</li>
         <li @click="goHearingNotice_JX">听证通知书-江西</li>
         <li @click="goEnforceApplication">强制执行申请书-江西</li>
-        <br><br>
-        PDF打印：
-        <li @click="goInquestNotesPdf">勘验笔录PDF</li>
+        <li @click="goHearingReportDoc">听证报告书</li>
+        
+        <br>
+        <li @click="goForceCorrect_JX">责令改正违法行为通知书-江西</li>
         <li @click="goIllegalActionPdf">违法行为通知书PDF</li>
         <li @click="goHearingNoticePdf">听证通知书pdf</li>
         <li @click="goHearingRecordPdf">听证笔录PDF</li>
@@ -377,8 +377,14 @@ export default {
     goHearingNotice_JX(){
       this.$router.push({ name: 'case_handle_hearingNotice_JX' });
     },
+    goForceCorrect_JX(){
+      this.$router.push({ name: 'case_handle_forceCorrect_JX' });
+    },
     goEnforceApplication(){
       this.$router.push({ name: 'case_handle_enforceApplicationDoc' });
+    },
+    goHearingReportDoc(){
+      this.$router.push({ name: 'case_handle_hearingReportDoc' });
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {

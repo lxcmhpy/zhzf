@@ -168,5 +168,21 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/stageDelayApprovalForm.vue")
   },
+  {
+    path: "/hearingReportDoc",
+    name: "case_handle_hearingReportDoc",
+    meta: {
+      title: "听证报告书"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/hearingReportDoc.vue")
+  },
+  {
+    path: "/forceCorrect_JX",
+    name: "case_handle_forceCorrect_JX",
+    meta: {
+      title: "责令改正违法行为通知书-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/forceCorrect_JX.vue")
+  },
 ]
 
