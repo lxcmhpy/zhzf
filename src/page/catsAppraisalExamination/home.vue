@@ -1,5 +1,15 @@
 <template>
 <div class="contentCreenHome">
+    <header class="el-header" id="mainHeader" style="height: 60px;">
+        <div class="main_logo">
+            <span> 全国交通运输运输行政执法综合管理信息系统（二期）</span>
+        </div>
+        <div class="headerRight">
+            <li @click="handleCommand()" >
+                <img style="width: 18px;height: 20px;" :src="'./static/images/img/catsAppraisalExamination/btn_back.png'" alt="">
+            </li>
+        </div>
+    </header>
     <div class="top"></div>
     <div class="container check">
         <div class="leftBox shadow">
@@ -146,6 +156,10 @@ export default {
         viewNotice
     },
     methods: {
+        handleCommand () {
+            this.$store.dispatch('deleteAllTabs');
+            this.$router.push("/");
+        },
         //获取公告信息
         getNotices() {
             let data = {

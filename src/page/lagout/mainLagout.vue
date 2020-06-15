@@ -106,7 +106,7 @@ export default {
       // collapsed: false,
       // avatar: Cookies.get("avatar")
       userInfo: iLocalStroage.gets('userInfo'),
-      selectedHeadMenu: 'lawSupervise-menu-law_supervise_lawSupervise'   //接收headMenu传来的选中的一级菜单
+      selectedHeadMenu: null   //接收headMenu传来的选中的一级菜单
     };
   },
   components: {
@@ -143,7 +143,7 @@ export default {
     },
 
     getSelectHeadMenu(name) {
-        // debugger;
+        debugger;
       this.selectedHeadMenu = name;
     },
     router (name, route) {

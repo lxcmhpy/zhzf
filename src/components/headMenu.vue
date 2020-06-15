@@ -52,7 +52,9 @@ import { mapGetters } from "vuex";
         this.headMenuList = this.menu;
         // debugger;
         this.$store.commit("set_Head_Active_Nav", this.headActiveNav);
+         this.$store.commit("SET_ACTIVE_INDEX_STO", this.headActiveNav);
         // this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexSto);
+        this.$emit("selectHeadMenu",  this.headActiveNav);
     },
     watch:{
       //监听menu

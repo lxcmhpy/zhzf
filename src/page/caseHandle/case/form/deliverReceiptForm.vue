@@ -242,16 +242,18 @@ export default {
       this.$router.push({name:'case_handle_deliveryCertificate'});
     },
     handleEdit(index, row) {
+      console.log("111",row);
         let data = {
             caseId:row.caseId,
-            // docId: row.caseSerProofId,
-            docId:row.id
+            docId: row.caseSerProofId,
+            // docId:row.id
         };
+        console.log("123",data);
         let _that = this
  
         findByCaseIdAndDocIdSongdaApi(data).then(res=>{
-
-            _that.mlList = _that.host + res.data[0].storageId;
+            console.log("1111",res.data);
+            _that.mlList = _that.host + res.data.storageId;
 
         },err=>{
             console.log(err);

@@ -86,6 +86,7 @@ import { mapGetters } from "vuex";
     },
     watch: {
       selectedHeadMenu: function (val, oldVal) {
+          debugger;
         this.getSlideMenu(val);
       },
       //监听menu
