@@ -250,6 +250,7 @@ export default {
       let _this = this;
       _this.visible = true;
       _this.handelType = type;
+      console.info(JSON.stringify(row))
       if (type == 1) {
         //新增
         _this.dialogTitle = "新增考试";
@@ -268,7 +269,7 @@ export default {
         _this.addExamBatchForm.examEnd = row.examEnd;
         _this.addExamBatchForm.examSum = row.examSum;
         _this.addExamBatchForm.remark = row.remark;
-        _this.addExamBatchForm.examSort = row.examSort;
+        _this.addExamBatchForm.examSort = row.examSort.trim();
         _this.addExamBatchForm.examVenues = row.examVenues;
         _this.addExamBatchForm.oid = row.oid;
       }

@@ -63,7 +63,7 @@ export default {
   watch: {},
   mounted() {},
   created(){
-    // this.getSystemData();
+    this.getSystemData();
   }
 };
 </script>
