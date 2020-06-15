@@ -95,8 +95,8 @@ export default {
     getTableData() {
       console.log('time,creatUser', this.timeList, this.searchForm.createUser)
       let data = {
-        startTime: this.timeList[0],
-        endTime: this.timeList[1],
+        startTime: this.timeList[0]||'',
+        endTime: this.timeList[1]||'',
         title: this.searchForm.title,
         status: this.searchForm.status == '全部' ? '' : this.searchForm.status,
         createUser: this.searchForm.createUser,
@@ -266,6 +266,8 @@ export default {
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.timeList = []
+      // debugger
+      this.getTableData()
     }
   },
   mounted() {

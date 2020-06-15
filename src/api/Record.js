@@ -81,16 +81,16 @@ export function findAllCommonGroupFieldApi() {
     });
 }
 //通过业务领域分组所有模板
-export function findAllRecordModleApi() {
-    return request({
-        url: "/xzjc/template/queryByDomain",
-        method: "get",
-        showloading: true,
-        loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
-        cancelToken: setCancelSource()
-    });
-}
+// export function findAllRecordModleApi() {
+//     return request({
+//         url: "/xzjc/template/queryByDomain",
+//         method: "get",
+//         showloading: true,
+//         loadingType: 'loadPart',
+//         baseUrlType:  'XZJC_HOST',
+//         cancelToken: setCancelSource()
+//     });
+// }
 //通过机构ID(必填),人员ID(选填),业务领域(选填)查询模板
 export function findRecordModleByPersonApi(data) {
     return request({

@@ -47,7 +47,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import addModle from "./addModle.vue";
-import {  findAllRecordModleApi, findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
+import {  findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
   findRecordModleByNameIdApi, findRecordModleByPersonApi} from "@/api/Record";
 
 export default {
