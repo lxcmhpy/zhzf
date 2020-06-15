@@ -393,7 +393,7 @@ export function addPageManageApi(data){
         params: data,
         showloading: false,
         cancelToken: setCancelSource(),
-        timeout: 60000
+        timeout: 180000
     })
 }
 

@@ -42,6 +42,7 @@ import { mapGetters } from "vuex";
     methods: {
       //切换菜单
       changeMenu(key, keyPath) {
+          debugger;
         //   debugger;
         this.$store.commit('SET_ACTIVE_INDEX_STO', key);
         this.$router.push({name: key});
@@ -91,6 +92,7 @@ import { mapGetters } from "vuex";
       },
       //监听menu
       menu(val){
+          debugger;
         console.log('menu',val)
         this.allMenuList=this.menu;
         this.getSlideMenu(this.headActiveNav); //默认加载案件办理的二级菜单

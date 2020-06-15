@@ -2,8 +2,8 @@ import MainContent from '@/components/mainContent'//Layout 是架构组件，不
 export default  [
     {
         //可视化监管
-        path: '/lawSupervise1',
-        name: 'law_supervise_lawSupervise1',
+        path: '/lawSupervise',
+        name: 'law_supervise_lawSupervise',
         meta: {
             title: "执法监管",
             oneTab:true,
