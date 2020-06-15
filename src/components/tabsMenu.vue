@@ -21,7 +21,7 @@ export default {
   name: "",
   data() {
     return {
-        activeIndexStr: 'law_supervise_lawSupervise',
+        activeIndexStr: '',
         openTabList: [],
         tabsNameList: {
             law_supervise_: '',

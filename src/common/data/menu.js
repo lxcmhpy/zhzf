@@ -64,7 +64,7 @@ export const menuList = [{
             showAlways: true,
             type: 0,
             title: "非现场治超列表",
-            path: "law_supervise_analysis",
+            path: "law_supervise_offSiteManage",
             component: "clueManage/offSiteManage",
             icon: "md-home1",
             buttonType: "",

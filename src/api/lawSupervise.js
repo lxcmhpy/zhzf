@@ -11,7 +11,7 @@ export function getZfjgLawSupervise(data) {
     method: "get",
     params:data,
     showloading: true,
-    loadingType:'loadPart',
+    loadingType:'loadFull',
     baseUrlType:  'LAW_SUPERVISE_HOST',
     cancelToken: setCancelSource()
   });
