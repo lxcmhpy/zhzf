@@ -7,11 +7,11 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     getDispatchPersonByRoomIdApi,removeDispatchApi,autoDispatchApi,getPageListApi,disPapersApi,examDetialApi,previewPageApi,exportInvigilatorApi,exportExamPersonApi,exporExamtDetailApi
     ,getExamAnswerReport,changeQuestionIsUse,applyPageVerifyApi,pageVerifyListByPageIdApi,verifyApi,awaitPageVerifyListApi,getExamManageScheduleApi,addExamScorerApi,getExamScorerListApi,
     changeQuestionLock,randomQuestion,randomParagraphQuestion
-    ,saveReplaceQuestion,getSystemParams,updateExamScorerApi,deleteExamScorerByIdApi,getDisScorerListApi,getUnDisScorerListApi,addExamDisScorerApi,deleteExamDisScorerByIdsApi} from "@/api/exam";
+    ,saveReplaceQuestion,getSystemParams,updateExamScorerApi,deleteExamScorerByIdApi,getDisScorerListApi,getUnDisScorerListApi,addExamDisScorerApi,deleteExamDisScorerByIdsApi,questionDistributionApi} from "@/api/exam";
     
     import { loginExam, invigilatorSubmitInfo, getJoinExamPerson, signOutSystem, startQuestion, getpersonExamQuestionNextApi, getexamResultSubmitApi,examPersonsByInvigilatorIdApi,getExamInfoByInvigilatorInfoApi,
     addExamRollingApi,examRecordQueryApi,addExamRecordApi,deleteExamRecordApi,updateExamRecordApi,drawInfoApi,setBatchExamDelayedApi,getPersonExamStatus,getWaitScoringExam,getPersonScoreList,
-    getWaitScoreQuestion,saveScoreResult} from '@/api/joinExam';
+    getWaitScoreQuestion,saveScoreResult, getSystemDate, checkEntryExam} from '@/api/joinExam';
     import * as types from "../mutation-types";
     
     const exam = {
@@ -363,6 +363,15 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
                         error => { reject(error); })
                 })
         },
+            //题目分布
+            questionDistribution({commit},data){
+                return new Promise((resolve, reject) => {
+                    questionDistributionApi(data).then(
+                        res => {  resolve(res);   },
+                        error => { reject(error); })
+                })
+        },
+        
         //审核列表
         awaitPageVerifyList({commit},data){
             return new Promise((resolve, reject) => {
@@ -673,6 +682,22 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
                     error => { reject(error); })
             })
         },
+        // 获取系统时间发
+        getSystemDate({commit}){
+            return new Promise((resolve, reject) => {
+                getSystemDate().then(
+                    res => {  resolve(res);   },
+                    error => { reject(error); })
+            })
+        },
+        // 考生点击开始答题修改考生装填
+        checkEntryExam({commit}, data){
+            return new Promise((resolve, reject) => {
+                checkEntryExam(data).then(
+                    res => {  resolve(res);   },
+                    error => { reject(error); })
+            })
+        },
         
         // ————————————————————————————————————————————————————————————参考人员END————————————————————————————————————————————————————————————————  
         
@@ -693,9 +718,7 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
                             }
                         }else{
                             // 监考老师已提交个人信息
-                            if(res.data.invigilatorInfo.token){
-                                commit(types.SET_AUTHTOKEN, res.data.invigilatorInfo.token);
-                            }
+                            commit(types.SET_AUTHTOKEN, res.data.invigilatorInfo.token || 'invigilator');
                         }
                         resolve(res);
                     },

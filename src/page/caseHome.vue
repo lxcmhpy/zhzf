@@ -113,11 +113,16 @@
           highlight-current-row
           @current-change="clickCase"
         >
-          <el-table-column
+          <!-- <el-table-column
             :prop="moreFlag != 'unRecordCase'&&moreFlag !='approveIng' ? 'caseNumber'  :'tempNo' "
             label="案号"
             align="center"
-          ></el-table-column>
+          ></el-table-column> -->
+          <el-table-column label="案号" align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.caseNumber || scope.row.tempNo}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="name" label="当事人" align="center"></el-table-column>
           <!-- <el-table-column prop="vehicleShipId" label="车/船号" align="center"></el-table-column> -->
           <el-table-column prop="caseCauseName" label="违法行为" align="center"></el-table-column>
@@ -844,13 +849,6 @@ export default {
   color: #495164;
 }
 
-.case_discribe {
-  font-size: 16px;
-  height: 16px;
-  line-height: 16px;
-  padding: 17px 20px 15px 20px;
-  text-align: center;
-}
 
 .bull {
   margin: 0 5px;

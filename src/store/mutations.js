@@ -1,5 +1,5 @@
 import * as types from "./mutation-types";
-import Vue from "vue";
+import vm from "vue";
 import { getToken, setToken } from "@/common/js/auth";
 /**
  * mutation是一个对象，封装多个mutation操作
@@ -10,7 +10,6 @@ const mutations = {
     [types.CLEAR_ALL_CACHE] (state) {
         window.sessionStorage.clear();
         window.localStorage.clear();
-        debugger;
         for (let i in state) {
             if (typeof state[i] === 'object') {
                 if (state[i] instanceof Array) {
@@ -67,6 +66,9 @@ const mutations = {
       index++;
     }
     state.openTab.splice(index, 1);
+    debugger;
+    // state.activeIndexSto = state.openTab[state.openTab.length - 1].name;
+
   },
   // 替换tab
   [types.REPLACE_TABS](state, data) {

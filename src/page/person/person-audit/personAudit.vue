@@ -20,7 +20,7 @@
                   class="commonBtn searchBtn"
                   size="medium"
                   icon="iconfont law-sousuo"
-                  @click="getApproveList"
+                  @click="currentPage= 1; getApproveList()"
                 ></el-button>
                 <el-button
                   title="重置"
@@ -108,18 +108,16 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="paginationBox" v-show="true">
-          <div class="paginationBox">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage"
-              background
-              :page-sizes="[10, 20, 30, 40]"
-              layout="prev, pager, next,sizes,jumper"
-              :total="totalPage"
-            ></el-pagination>
-          </div>
+        <div class="paginationBox">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            background
+            :page-sizes="[10, 20, 30, 40]"
+            layout="prev, pager, next,sizes,jumper"
+            :total="totalPage"
+          ></el-pagination>
         </div>
       </div>
       <!-- 二次确认弹窗 -->
@@ -203,15 +201,13 @@ export default {
     },
     //更改每页显示的条数
     handleSizeChange(val) {
-      console.log("每页显示的条数", val);
       this.pageSize = val;
-      //this.getOrgList(1);
+      this.getOrgList();
     },
     //更换页码
     handleCurrentChange(val) {
-      console.log("当前页", val);
-     // this.currentPage = val;
-      //this.getOrgList(val);
+     this.currentPage = val;
+      this.getOrgList();
     },
     //点击下拉框的时候后头获取下拉框数据
     getDepatements(name,codeName){
@@ -277,6 +273,11 @@ export default {
 .search-form{
   >>>.el-input, >>>.el-select{
     width: 180px;
+    margin-right: 0;
+  }
+}
+.paginationBox{
+  >>>.el-select{
     margin-right: 0;
   }
 }

@@ -46,7 +46,7 @@ export default {
         this.activeIndexStr = route.name;
         //cxx 点击系统管理菜单后再回到案件tab，需设置一下caseNumber
         if(!this.caseHandle.caseNumber){
-          this.$store.commit("setCaseNumber",route.params.tabTitle || route.title);
+          this.$store.commit("setCaseNumber",route.params && route.params.tabTitle || route.title);
         }
 
         console.log('this.activeIndexStr',this.activeIndexStr);
@@ -110,6 +110,7 @@ export default {
   },
   watch: {
     $route(to, from) {
+        // debugger;
         // debugger;
       //判断路由是否已经打开
       //已经打开的 ，将其置为active

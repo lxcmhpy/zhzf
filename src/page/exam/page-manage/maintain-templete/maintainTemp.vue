@@ -15,7 +15,7 @@
                     class="commonBtn searchBtn"
                     size="medium"
                     icon="iconfont law-sousuo"
-                    @click="getTempleteList"
+                    @click="currentPage = 1;getTempleteList();"
                   ></el-button>
                   <el-button
                     title="重置"

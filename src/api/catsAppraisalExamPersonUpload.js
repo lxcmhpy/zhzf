@@ -18,8 +18,29 @@ export function findPykhStaffByPage (data) {
   })
 }
 
+export function findListVoByBatch (data) {
+  return request({
+    url: "/pykh/pykhBatch/findListVoByBatch",
+    method: "get",
+    showloading: false,
+    baseUrlType:'CAPTCHA_HOST',
+    params: data,
+    cancelToken: setCancelSource()
+  })
+}
+
+export function findAllDepartment (data) {
+  return request({
+    url: "system/sys/organ/findAllDepartment/"+data,
+    method: "get",
+    showloading: false,
+    baseUrlType:'CAPTCHA_HOST',
+    params: null,
+    cancelToken: setCancelSource()
+  })
+}
+
 export  function  importPerson(data)  {
-  console.log("789",data);
   return  request({
     url:  "/pykh/excel/importPerson",
     method:  "POST",
@@ -35,10 +56,22 @@ export  function  importPerson(data)  {
 export function addOrUpdatePykhStaff (data) {
   return request({
     url: "/pykh/staff/addOrUpdatePykhStaff",
-    method: "get",
+    method: "POST",
     showloading: false,
     baseUrlType:'CAPTCHA_HOST',
-    data: data,
+    data: vm.$qs.stringify(data),
     cancelToken: setCancelSource()
   })
 }
+
+export function deletePykhStaff (data) {
+  return request({
+    url: "/pykh/staff/deletePykhStaff/"+data,
+    method: "get",
+    showloading: false,
+    baseUrlType:'CAPTCHA_HOST',
+    params: null,
+    cancelToken: setCancelSource()
+  })
+}
+

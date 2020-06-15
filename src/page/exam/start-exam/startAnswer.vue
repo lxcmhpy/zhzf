@@ -33,7 +33,7 @@
               :disabled="currentGraph.orderNo === 1"
               @click="nextQuestion('prev')"
             >上一题</el-button>
-            <el-button class="question-btn" @click="nextQuestion" :disabled="nextDisabled">下一题</el-button>
+            <el-button class="question-btn" @click="nextQuestion('')" :disabled="nextDisabled">下一题</el-button>
           </div>
         </div>
       </el-col>
@@ -44,11 +44,24 @@
               <img src="../../../../static/images/img/exam/clocks.png" alt />
               <span class="time-prompt">距离考试结束</span>
               <span class="count-down">{{ countTime.minutes }}</span>
+              <span class="count-unit" style="margin-right:8px;">分</span>
               <span class="count-down">{{ countTime.second }}</span>
+              <span class="count-unit">秒</span>
             </div>
             <div v-if="examPerInfo.personInfo" class="time-info pserson-info">
               <div class="examinee-photo">
-                <img :src="(baseUrl + examPerInfo.personInfo.photoUrl) || personImg" width="80px" height="112px" />
+                <img
+                  v-if="examPerInfo.personInfo.photoUrl"
+                  :src="baseUrl + examPerInfo.personInfo.photoUrl"
+                  width="100px"
+                  height="140px"
+                />
+                <img
+                  v-else
+                  :src="personImg"
+                  width="100px"
+                  height="140px"
+                />
               </div>
               <div class="exam-person">
                 <p class="name">{{ examPerInfo.personInfo.personName }}</p>
@@ -74,16 +87,19 @@
               <div
                 v-for="graph in questionData.graphInfo"
                 :key="graph.paragraphId"
-                class="question-class">
+                class="question-class"
+              >
                 <div class="title">{{ graph.paragraphTypeName }}</div>
                 <div class="question-wrap">
                   <a
                     v-for="num in graph.examResultList"
                     class="item"
                     :key="num.resultId"
-                    :class="{'sign': num.labelStatue === '1',
-                      'finish': num.questionStatue === '1' || num.answer,
+                    :class="{
+                      'sign': num.labelStatue === '1',
+                      'finish': num.answer && num.labelStatue !== '1',
                       'current': num.resultId == questionData.firstQuestion.resultId}"
+                    @click="nextQuestion('', num.orderNo)"
                   >{{ num.orderNum }}</a>
                 </div>
               </div>
@@ -120,7 +136,8 @@ export default {
       questionNumList: [],
       intervalTime: null,
       nextDisabled: false,
-      personImg: '@/../static/images/img/personInfo/upload_bg.png'
+      personImg: "@/../static/images/img/personInfo/upload_bg.png",
+      currentSysTime: new Date().getTime()
     };
   },
   computed: {
@@ -133,15 +150,29 @@ export default {
       );
       return this.questionNumList[graphIndex];
     },
-    baseUrl(){
+    baseUrl() {
       return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
   },
   created() {
+    this.getSystemTime();
     this.getQuestionInfo();
-    this.startCountDown();
   },
   methods: {
+    // 获取系统当前时间
+    getSystemTime() {
+      this.$store.dispatch("getSystemDate").then(
+        res => {
+          if (res) {
+            this.currentSysTime = res;
+            this.startCountDown(res);
+          }
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
     // 获取考试内容
     getQuestionInfo() {
       const examInfo = {
@@ -180,19 +211,21 @@ export default {
       );
     },
     // 右侧试题分类统计
-    setAllQuestionNum(graph){
-      if(graph && graph.length){
+    setAllQuestionNum(graph) {
+      if (graph && graph.length) {
         graph.forEach(item => {
-          if(item.examResultList && item.examResultList.length){
-            this.questionNumList = this.questionNumList.concat(item.examResultList);
+          if (item.examResultList && item.examResultList.length) {
+            this.questionNumList = this.questionNumList.concat(
+              item.examResultList
+            );
           }
         });
       }
     },
     // 开始倒计时
-    startCountDown() {
+    startCountDown(sysTime) {
       // 获取当前时间，考试结束时间
-      let newTime = new Date().getTime();
+      let newTime = sysTime;
       // 对结束时间进行处理渲染到页面
       let endTime = new Date(this.examPerInfo.examInfo.examEnd).getTime();
       let diffTime = endTime - newTime;
@@ -206,7 +239,7 @@ export default {
     countDownFun(examEnd) {
       this.intervalTime = setInterval(() => {
         // 获取当前时间，考试结束时间
-        let newTime = new Date().getTime();
+        let newTime = this.currentSysTime;
         // 对结束时间进行处理渲染到页面
         let endTime = new Date(examEnd).getTime();
         let diffTime = endTime - newTime;
@@ -229,6 +262,7 @@ export default {
           let time = diffTime / 1000;
           this.setCountDownTime(time);
         }
+        this.currentSysTime = this.currentSysTime + 1000;
       }, 1000);
     },
     // 设置倒计时显示值
@@ -253,30 +287,15 @@ export default {
       this.currentGraph.labelStatue = mark ? "1" : "0";
     },
     // 下一题
-    nextQuestion(dir) {
+    nextQuestion(dir, orderNo) {
       this.nextDisabled = false;
-      const answer = JSON.parse(
-        JSON.stringify(this.$refs.questionItem.question)
-      );
-      answer["examperId"] = this.$route.query.pId;
-      answer["examId"] = this.$route.query.eId;
-      answer["pqoList"] = JSON.stringify(answer.listPo);
-      answer['orderNo'] = this.currentGraph.orderNo;
-      const personAnswer = [];
-      const optionId = [];
-      if(answer.listPo && answer.listPo.length){
-        answer.listPo.forEach(item => {
-          if(item.optionKey === '1'){
-            personAnswer.push(item.optionNum);
-            optionId.push(item.pqOptionId);
-          }
-        });
-        answer["answer"] = personAnswer.join(',');
-        answer["optionId"] = optionId.join(',');
-      }
-      delete answer.listPo;
+      this.marked = false;
+      const answer = this.handleSubmitData();
       if (dir === "prev") {
         answer.preOrNext = "-1";
+      }
+      if(orderNo !== undefined){
+        answer.orderNo = orderNo - 1;
       }
       const loading = this.$loading({
         lock: true,
@@ -300,9 +319,11 @@ export default {
               this.questionData.firstQuestion = res.data.data;
               this.questionData.firstQuestion.orderNo = this.currentGraph.orderNum;
               let answer = res.data.data.answer;
-              if(res.data.data.listPo.length){
-                const optionKey = res.data.data.listPo.filter(item => item.optionKey === '1');
-                answer = optionKey.length
+              if (res.data.data.listPo.length) {
+                const optionKey = res.data.data.listPo.filter(
+                  item => item.optionKey === "1"
+                );
+                answer = optionKey.length;
               }
               this.setQuestionStatus(answer);
             }
@@ -314,15 +335,46 @@ export default {
         }
       );
     },
+    // 处理当前答题数据
+    handleSubmitData() {
+      const answer = JSON.parse(
+        JSON.stringify(this.$refs.questionItem.question)
+      );
+      answer["examperId"] = this.$route.query.pId;
+      answer["examId"] = this.$route.query.eId;
+      answer["pqoList"] = JSON.stringify(answer.listPo);
+      answer["orderNo"] = this.currentGraph.orderNo;
+      const personAnswer = [];
+      const optionId = [];
+      if (answer.listPo && answer.listPo.length) {
+        answer.listPo.forEach(item => {
+          if (item.optionKey === "1") {
+            personAnswer.push(item.optionNum);
+            optionId.push(item.pqOptionId);
+          }
+        });
+        answer["answer"] = personAnswer.join(",");
+        answer["optionId"] = optionId.join(",");
+      }
+      delete answer.listPo;
+      return answer;
+    },
     // 我要交卷
     handPaper() {
-      const answered = this.questionNumList.filter(item => item.questionStatue === '1' && item.answer === '-');
-      this.$confirm(`已答${answered.length}道题，还有${this.questionNumList.length - answered.length}道未答，您确认交卷吗？`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        iconClass: "custom-question",
-        customClass: "custom-confirm"
-      })
+      const answered = this.questionNumList.filter(
+        item => item.answer !== undefined && item.answer !== null && item.answer !== ''
+      );
+      this.$confirm(
+        `已答${answered.length}道题，还有${this.questionNumList.length -
+          answered.length}道未答，您确认交卷吗？`,
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          iconClass: "custom-question",
+          customClass: "custom-confirm"
+        }
+      )
         .then(() => {
           const loading = this.$loading({
             lock: true,
@@ -331,51 +383,71 @@ export default {
             customClass: "loading-box",
             background: "rgba(234,237,244, 0.8)"
           });
-          const submitData = {
-            examperId: this.$route.query.pId,
-            examId: this.$route.query.eId
-          };
-          this.$store.dispatch("getexamResultSubmit", submitData).then(
+          const answer = this.handleSubmitData();
+          this.$store.dispatch("getpersonExamQuestionNext", answer).then(
             res => {
-              loading.close();
               if (res.code === 200) {
-                this.$confirm("提交成功，预祝您考试顺利！", "提示", {
-                  confirmButtonText: "确定",
-                  iconClass: "iconfont law-success",
-                  customClass: "custom-confirm",
-                  showCancelButton: false
-                })
-                  .then(() => {
-                    sessionStorage.removeItem("ExamUserInfo");
-                    sessionStorage.removeItem("StartCount");
-                    this.$router.push({
-                      path: "/examineeEntry",
-                      query: {
-                        name: sessionStorage.getItem("ExamName")
-                      }
-                    });
-                  })
-                  .catch(() => {});
+                if (res.data.code === 500) {
+                  this.nextDisabled = true;
+                }
+                this.savePaper(loading);
+              }else{
+                loading.close();
               }
             },
             err => {
               loading.close();
-              this.$confirm("提交失败，请稍后再试！", "提示", {
-                confirmButtonText: "确定",
-                iconClass: "custom-remind",
-                customClass: "custom-confirm",
-                showCancelButton: false
-              }).catch(() => {});
+              this.$message({ type: "error", message: err.msg || "" });
             }
           );
         })
         .catch(() => {});
     },
+    // 交卷
+    savePaper(loading) {
+      const submitData = {
+        examperId: this.$route.query.pId,
+        examId: this.$route.query.eId
+      };
+      this.$store.dispatch("getexamResultSubmit", submitData).then(
+        res => {
+          loading.close();
+          if (res.code === 200) {
+            this.$confirm("提交成功，预祝您考试顺利！", "提示", {
+              confirmButtonText: "确定",
+              iconClass: "iconfont law-success",
+              customClass: "custom-confirm",
+              showCancelButton: false
+            })
+              .then(() => {
+                sessionStorage.removeItem("ExamUserInfo");
+                sessionStorage.removeItem("StartCount");
+                this.$router.push({
+                  path: "/examineeEntry",
+                  query: {
+                    name: sessionStorage.getItem("ExamName")
+                  }
+                });
+              })
+              .catch(() => {});
+          }
+        },
+        err => {
+          loading.close();
+          this.$confirm("提交失败，请稍后再试！", "提示", {
+            confirmButtonText: "确定",
+            iconClass: "custom-remind",
+            customClass: "custom-confirm",
+            showCancelButton: false
+          }).catch(() => {});
+        }
+      );
+    },
     // 左侧题目状态和右侧答题卡联动
     setQuestionStatus(checked) {
-      this.currentGraph.questionStatue = "0";
-      if (!this.marked && checked) {
-        this.currentGraph.questionStatue = "1";
+      this.currentGraph.answer = "";
+      if (!this.marked) {
+        this.currentGraph.answer = checked;
       }
     },
     // 退出考试系统
@@ -521,7 +593,7 @@ export default {
         .question-total {
           position: absolute;
           overflow-y: scroll;
-          top: 364px;
+          top: 400px;
           bottom: 68px;
           left: 20px;
           right: 0;
@@ -535,6 +607,7 @@ export default {
             .question-wrap {
               display: flex;
               flex-wrap: wrap;
+              // justify-content: space-around;
               > .item {
                 display: inline-block;
                 width: 34px;
@@ -544,8 +617,8 @@ export default {
                 background: rgba(255, 255, 255, 1);
                 border-radius: 2px;
                 border: 1px solid rgba(217, 217, 217, 1);
-                margin: 0 10px 10px 0;
-                // cursor: pointer;
+                margin: 0 12px 10px 0;
+                cursor: pointer;
                 &:hover {
                   background: #ebebeb;
                 }

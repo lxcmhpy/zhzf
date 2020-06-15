@@ -15,7 +15,7 @@
           <span class="title">查验条件</span>
         </div>
         <el-form-item label="从业资格证号">
-      <el-input v-model="checkData.certificateCode" placeholder="请输入从业资格证号(身份证号)"></el-input>
+      <el-input v-model="checkData.certificateCode" placeholder="请输入从业资格证号(身份证号)" @change="changeCertificateCode(checkData.certificateCode)"></el-input>
     </el-form-item>
     <el-form-item label="姓名">
       <el-input v-model="checkData.staffName" placeholder="请输入姓名"></el-input>
@@ -242,7 +242,12 @@ export default {
           value: '澳门特别行政区',
           label: '730000'
         }
-      ]
+      ],
+      area: {11:"110000",12:"120000",13:"130000",14:"140000",15:"150000",21:"210000",22:"220000",23:"230000",
+          31:"310000",32:"320000",33:"330000",34:"340000",35:"350000",36:"360000",37:"370000",41:"410000",42:"420000",
+          43:"430000",44:"440000",45:"450000",46:"460000",50:"500000",51:"510000",52:"520000",53:"530000",54:"540000",
+          61:"610000",62:"620000",63:"630000",64:"640000",65:"650000",71:"710000",81:"720000",82:"730000",91:"国外"
+      }
     }
   },
   methods: {
@@ -306,6 +311,11 @@ export default {
       row.staffSex = staffSex;
       row.staffBirth = staffBirth;
       this.$refs.transportWorkerSeeRef.transportWorkerSee(row);
+    },
+    //自动计算省份
+    changeCertificateCode(certificateCode) {
+        let iden = certificateCode;
+        this.checkData.provinceCode = this.area[iden.substring(0,2)];
     }
   }
 }

@@ -131,7 +131,7 @@ export default {
           item.optionKey = index === this.answer ? '1' : '0';
           item.checked = index === this.answer;
         });
-        this.$emit('setQuestionStatus', true);
+        this.$emit('setQuestionStatus', this.answer);
       }else if(type === '2'){
         this.question.listPo.forEach(item =>{
           if(item.optionNum == row.optionNum){
@@ -148,7 +148,7 @@ export default {
         this.$emit('setQuestionStatus', checkedOption);
       }else if(type === '3'){
         if(this.question.answer && this.question.answer.length){
-          this.$emit('setQuestionStatus', true);
+          this.$emit('setQuestionStatus', this.question.answer);
         }
       }
     },

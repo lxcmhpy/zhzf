@@ -31,7 +31,7 @@
                   class="commonBtn searchBtn"
                   size="medium"
                   icon="iconfont law-sousuo"
-                  @click="getPageAllInfo"
+                  @click="currentPage = 1;getPageAllInfo();"
                 ></el-button>
                 <el-button
                   title="重置"
@@ -181,6 +181,8 @@ export default {
       let _this = this;
       let data = {
         examId: _this.examPersonForm.examId,
+        scorerName: _this.examPersonForm.scorerName,
+        scorerIdno: _this.examPersonForm.scorescorerIdnorName,
         current: _this.currentPage,
         size: _this.pageSize
       };

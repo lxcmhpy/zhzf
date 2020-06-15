@@ -10,29 +10,22 @@
         >
           <div>
             <div class="item">
-              <el-row>
                 <el-form-item label="姓名" prop="scorerName">
-                  <el-input v-model="scoreManageForm.scorerName"  placeholder="评分人姓名"></el-input>
+                  <el-input v-model="scoreManageForm.scorerName" placeholder="评分人姓名"></el-input>
                 </el-form-item>
                 <el-form-item label="身份证号" prop="scorerIdno">
-                  <el-input v-model="scoreManageForm.scorerIdno"  placeholder="身份证号"></el-input>
+                  <el-input v-model="scoreManageForm.scorerIdno" placeholder="身份证号"></el-input>
                 </el-form-item>
                 <el-form-item label="所属单位" prop="scorerOrg">
-                  <el-input v-model="scoreManageForm.scorerOrg"  placeholder="所属单位"></el-input>
+                  <el-input v-model="scoreManageForm.scorerOrg" placeholder="所属单位"></el-input>
                 </el-form-item>
-                <el-form-item label="省份" prop="scorerPro">
-                  <el-input v-model="scoreManageForm.scorerPro"  placeholder="省份"></el-input>
-                </el-form-item>
-                   <el-form-item label="联系方式" prop="scorerPhone">
-                  <el-input v-model="scoreManageForm.scorerPhone"  placeholder="省份"></el-input>
-                </el-form-item>
-                <el-form-item style="margin-left:20px;">
+                 <el-form-item style="margin-left:20px;">
                   <el-button
                     title="搜索"
                     class="commonBtn searchBtn"
                     size="medium"
                     icon="iconfont law-sousuo"
-                    @click="getExamBatchList"
+                    @click="currentPage = 1;getExamBatchList();"
                   ></el-button>
                   <el-button
                     title="重置"
@@ -41,9 +34,23 @@
                     icon="iconfont law-zhongzhi"
                     @click="resetLog"
                   ></el-button>
+                  <el-button
+                  size="medium"
+                  class="commonBtn toogleBtn"
+                  :title="isShow? '点击收缩':'点击展开'"
+                  :icon="isShow? 'iconfont law-top': 'iconfont law-down'"
+                  @click="isShow = !isShow"
+                ></el-button>
                 </el-form-item>
-              </el-row>
-              <el-row>
+             </div>    
+             <div class="item" v-show="isShow">
+                <el-form-item label="省份" prop="scorerPro">
+                  <el-input v-model="scoreManageForm.scorerPro" placeholder="省份"></el-input>
+                </el-form-item>
+                <el-form-item label="联系方式" prop="scorerPhone">
+                  <el-input v-model="scoreManageForm.scorerPhone" placeholder="联系方式"></el-input>
+                </el-form-item>
+              </div> 
                 <el-form-item>
                   <el-button
                     type="primary"
@@ -56,10 +63,8 @@
                     icon="el-icon-delete-solid"
                     size="medium"
                     @click="deleteExamBatchInfo"
-                  >删除评分人</el-button> -->
+                  >删除评分人</el-button>-->
                 </el-form-item>
-              </el-row>
-            </div>
           </div>
         </el-form>
       </div>
@@ -77,12 +82,12 @@
             element-loading-text="加载中..."
           >
             <!-- <el-table-column type="selection" align="center"></el-table-column> -->
-            <el-table-column prop="scorerName" label="姓名"  align="center"></el-table-column>
-            <el-table-column prop="scorerIdno" label="身份证号"  align="center"></el-table-column>
-            <el-table-column prop="scorerOrg" label="所属单位"  align="center"></el-table-column>
-            <el-table-column prop="scorerPro" label="省份"  align="center"></el-table-column>
-            <el-table-column prop="scorerPhone" label="联系电话"  align="center"></el-table-column>
-            <el-table-column label="操作" align="center"  fixed="right">
+            <el-table-column prop="scorerName" label="姓名" align="center"></el-table-column>
+            <el-table-column prop="scorerIdno" label="身份证号" align="center"></el-table-column>
+            <el-table-column prop="scorerOrg" label="所属单位" align="center"></el-table-column>
+            <el-table-column prop="scorerPro" label="省份" align="center"></el-table-column>
+            <el-table-column prop="scorerPhone" label="联系电话" align="center"></el-table-column>
+            <el-table-column label="操作" align="center" fixed="right">
               <template slot-scope="scope">
                 <el-button type="text" @click="deleteScore(scope.row)">删除</el-button>
                 <el-button type="text" @click="addExamBatchInfo(scope.row,'1')">修改</el-button>
@@ -90,22 +95,21 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="paginationBox">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            background
-            :page-sizes="[10, 20, 30, 40, 50]"
-            layout="prev, pager, next,sizes,jumper"
-            :total="totalPage"
-          ></el-pagination>
-        </div>
+        <div class="pagination-box">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          background
+          :page-sizes="[10, 20, 30, 40, 50]"
+          layout="prev, pager, next,sizes,jumper"
+          :total="totalPage"
+        ></el-pagination>
+      </div>
       </div>
     </div>
     <!-- 新增考试 -->
     <addScoreComp ref="addScoreCompRef" @getExamBatchListComp="getExamBatchList"></addScoreComp>
- 
   </div>
 </template>
 <script>
@@ -123,61 +127,60 @@ export default {
         scorerIdNo: "", //
         scorerOrg: "", //
         scorerPro: "", //
-        scorerPhone:'',
+        scorerPhone: ""
       },
+      isShow: false,
       selectUserIdList: [], //选中考试id
       selectList: [], //选中考试信息
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总数
-      props: {
-        label: "label",
-        value: "id"
-      },
+      // props: {
+      //   label: "label",
+      //   value: "id"
+      // },
       tableLoading: false
     };
   },
   components: {
-    addScoreComp,
-
+    addScoreComp
   },
   methods: {
-    deleteScore(row){
+    deleteScore(row) {
       let _this = this;
-        _this.$confirm("确认删除吗？", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            iconClass: "el-icon-question",
-            customClass: "custom-confirm"
-          })
-          .then(() => {
-            _this.$store.dispatch("deleteExamScorerById", row.scorerId).then(
-              res => {
-                if (res.code === 200) {
-                  _this.$message({ type: "success", message: "删除成功!" });
-                  //重新加载页面数据
-                  _this.getExamBatchList();
-                }
-              },
-              err => {
-                _this.$message({ type: "error", message: err.msg || "" });
+      _this
+        .$confirm("确认删除吗？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          iconClass: "el-icon-question",
+          customClass: "custom-confirm"
+        })
+        .then(() => {
+          _this.$store.dispatch("deleteExamScorerById", row.scorerId).then(
+            res => {
+              if (res.code === 200) {
+                _this.$message({ type: "success", message: "删除成功!" });
+                //重新加载页面数据
+                _this.getExamBatchList();
               }
-            );
-          })
-          .catch(() => {});
+            },
+            err => {
+              _this.$message({ type: "error", message: err.msg || "" });
+            }
+          );
+        })
+        .catch(() => {});
     },
-    updateScore(){
-
-    },
+    updateScore() {},
     //新增评分人
-    addExamBatchInfo(row,type) {
-        this.$refs.addScoreCompRef.showModal(row, type);
-      },
-  
+    addExamBatchInfo(row, type) {
+      this.$refs.addScoreCompRef.showModal(row, type);
+    },
+
     //根据查询条件查询人员基本信息
     getExamBatchList() {
       let _this = this;
-     //_this.tableLoading = true;
+      //_this.tableLoading = true;
       let data = {
         scorerName: _this.scoreManageForm.scorerName,
         scorerIdno: _this.scoreManageForm.scorerIdno,
@@ -187,16 +190,7 @@ export default {
         current: _this.currentPage,
         size: _this.pageSize
       };
-      _this.$store.dispatch("getExamScorerList", data).then(res => {
-        if (res.code == "200") {
-          _this.tableData = res.data.records;
-          _this.totalPage = res.data.total;
-          _this.tableLoading = false;
-        }
-      }, err => {
-        _this.tableLoading = false;
-        _this.$message({ type: 'error', message: err.msg || '' });
-      });
+       _this.getPageList("getExamScorerList", data);
     },
     //删除考试
     deleteExamBatchInfo() {
@@ -219,7 +213,8 @@ export default {
         let data = {
           examId: examId
         };
-        _this.$confirm("确认删除吗？", "提示", {
+        _this
+          .$confirm("确认删除吗？", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             iconClass: "el-icon-question",
@@ -275,40 +270,43 @@ export default {
 <style  lang="scss" scoped>
 @import "@/assets/css/searchPage.scss";
 @import "@/assets/css/personManage.scss";
-.batch-manage{
-  .tablePart{
+.batch-manage {
+  .tablePart {
     height: calc(100% - 120px) !important;
-    .table-wrap{
+    .table-wrap {
       height: 82%;
     }
   }
-  >>>.el-icon-date{
+  >>> .el-icon-date {
     line-height: 32px;
   }
-  .batch-table{
-    >>>.el-table__row{
-      .el-table-column--selection{
+  .batch-table {
+    >>> .el-table__row {
+      .el-table-column--selection {
         vertical-align: top;
       }
-      td{
+      td {
         padding: 15px 0;
-        &.vertical-top{
+        &.vertical-top {
           vertical-align: top;
         }
-        .exam-name{
-          font-size:18px;
+        .exam-name {
+          font-size: 18px;
           font-weight: 600;
-          color:rgba(32,35,43,1);
+          color: rgba(32, 35, 43, 1);
         }
-        .exam-info{
+        .exam-info {
           margin: 14px 0;
-          color: #7B7B7B;
+          color: #7b7b7b;
         }
       }
     }
   }
-  .m-r-30{
+  .m-r-30 {
     margin-right: 30px;
   }
-}
+} .pagination-box{
+    margin-top: 20px;
+    text-align: center;
+  }
 </style>

@@ -135,6 +135,17 @@ export function findRecordModleByNameIdApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//查询所有模板名称
+export function findAllModleNameApi(data) {
+    return request({
+        url: "/xzjc/template/queryAlltemplateName",
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 //根据条件分页查询
 export function findRecordListApi(data) {
     return request({

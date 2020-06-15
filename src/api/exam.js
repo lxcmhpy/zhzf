@@ -437,6 +437,17 @@ export function pageVerifyListByPageIdApi(data){
         cancelToken: setCancelSource()
     })
 }
+//题目分布
+export function questionDistributionApi(data){
+    return request({
+        url: "/exam/pageManage/questionDistribution",
+        method: "get",
+        params: data,
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
+}
+
 //审核试卷
 export function verifyApi(data){
     return request({
@@ -551,6 +562,7 @@ export function addPageTempleteApi (data){
         method: "post",
         data: vm.$qs.stringify(data),
         showloading: false,
+        timeout: 30000,
         cancelToken: setCancelSource()
     })
 }
