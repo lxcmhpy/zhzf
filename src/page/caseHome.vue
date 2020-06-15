@@ -849,13 +849,6 @@ export default {
   color: #495164;
 }
 
-.case_discribe {
-  font-size: 16px;
-  height: 16px;
-  line-height: 16px;
-  padding: 17px 20px 15px 20px;
-  text-align: center;
-}
 
 .bull {
   margin: 0 5px;
