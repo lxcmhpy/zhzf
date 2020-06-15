@@ -1824,6 +1824,7 @@ export default {
             item.select = false;
         })
         this.allSearchList.splice(0, this.allSearchList.length);
+        let _this = this;
         // this.radioVal = '全选';
         if (node.icon === 'icon_jc11' && node.label === '执法人员') {
             let params = {
@@ -1831,12 +1832,12 @@ export default {
                 organId: node.id,
                 type: 0
             }
-            let _this = this;
-            // debugger;
+            debugger;
             new Promise((resolve, reject) => {
-                // getOrganTree(params).then(
                 getOrganIdApi({id: node.id}).then(
+                    // getOrganTree(params).then(
                     res => {
+                        debugger;
                         // _this.showTree = false;
                         let resultList = [];
                         res.data.forEach((v,i)=>{
@@ -1871,19 +1872,20 @@ export default {
                                 other: v
                             })
                         })
+                         this.category = 0;
                         _this.onSearchResult(resultList, 0,0);
                         _this.errorMsg(`总计${res.data.length}条数据`, 'success');
                 })
             })
 
 
-         } else if (node.icon === 'icon_jc1') {
+        } else if (node.icon === 'icon_jc1') {
              this.category = 1;
-            let _this = this;
-            // debugger;
+            debugger;
             new Promise((resolve, reject) => {
                 getOrganDetailApi({id:node.id}).then(
                     res => {
+                        debugger;
                         // _this.showTree = false;
                             let resultList = [];
                             let v = res.data;
@@ -1913,10 +1915,10 @@ export default {
                                 position: [lng, lat],
                                 shopinfo: '',
                                 tel: '',
-                                type: '0',
+                                type: '1',
                                 other: v
                             })
-                        _this.onSearchResult(resultList, 0,0);
+                        _this.onSearchResult(resultList, 1,0);
                         _this.errorMsg(`总计${res.data.length}条数据`, 'success');
                     })
                 })
@@ -1954,6 +1956,18 @@ export default {
 
             //     }
             // )
+        } else if (node.label === '执法车辆') {
+            this.getZfjgLawSupervise({
+                key: '',
+                size: 20,
+                type: 2
+            }, 2);
+        } else if (node.label === '执法船舶') {
+            this.getZfjgLawSupervise({
+                key: '',
+                size: 20,
+                type: 3
+            }, 3);
         }
         // if (node.icon === 'icon_jc11' && node.name !== '执法人员') {
 
@@ -2490,6 +2504,7 @@ export default {
         } else {
             this.getZfjgLawSupervise(data, this.category);
         }
+
       } else {
         let _this = this;
         let _index = _.findIndex(this.allSearchList, function (chr) {
@@ -2554,6 +2569,7 @@ export default {
                 "success"
               );
             }
+            debugger;
             res.data.forEach((item, i) => {
             //   let position = item.position.split(",");
             //   let lng = parseFloat(position[0]);
