@@ -261,3 +261,13 @@ export function getAppraisalResult(){
     cancelToken: setCancelSource()
   });
 }
+
+export function clickNotice(id){
+  return request({
+    url: "/pykh/notice/clickNotice/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
