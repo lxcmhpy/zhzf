@@ -39,13 +39,13 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
-import {  findAllRecordModleApi, findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
+import {  findRecordModleByPersonApi, findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
   findRecordModleByNameIdApi} from "@/api/Record";
 
 export default {
   data() {
     return {
-      isHome:true,
+      isHome: true,
       searchModleName: '',
       compData: [],
       modleList: [{
@@ -63,18 +63,22 @@ export default {
         }],
       },
       ],
-
+      currentUserLawId: ''
     }
   },
   methods: {
     // 选择模板
     writeRecord(item) {
       // 写记录
-    this.$emit('changeModleId',item);
+      this.$emit('changeModleId', item);
     },
 
     searchList() {
-      findAllRecordModleApi().then(
+      let data = {
+        organId: iLocalStroage.gets("userInfo").organId,
+        templateUserId: this.currentUserLawId
+      }
+      findRecordModleByPersonApi(data).then(
         res => {
           console.log(res)
           if (res.data) {
@@ -93,8 +97,8 @@ export default {
           res => {
             console.log(res)
             if (res.data) {
-              this.modleList=[{templateList:[]}];
-              this.modleList[0].templateList= res.data
+              this.modleList = [{ templateList: [] }];
+              this.modleList[0].templateList = res.data
             }
           },
           error => {
@@ -102,10 +106,34 @@ export default {
           })
       }
 
-    }
+    },
+    //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
+    setLawPersonCurrentP() {
+      let _this = this
+      this.$store
+        .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
+        .then(
+          res => {
+            console.log('执法人员列表', res)
+            let currentUserData = {};
+            res.data.forEach(item => {
+              if (
+                item.userId == iLocalStroage.gets("userInfo").id
+              ) {
+                _this.currentUserLawId = item.id;
+                _this.searchList()
+              }
+            });
+          },
+          err => {
+            console.log(err);
+          }
+        );
+    },
   },
   mounted() {
     this.searchList()
+    this.setLawPersonCurrentP()
   }
 }
 </script>
