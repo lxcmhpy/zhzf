@@ -160,6 +160,7 @@
       fetchData(data){
         data.current=this.current;
         data.size=this.size;
+        data.OId=this.organId;
         findPykhStaffByPage(data).then(res=>{
           console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
@@ -202,6 +203,7 @@
         }
         fd.append("file", param.file);
         fd.append("batchId",batchId)
+        fd.append("OId",this.organId)
         importPerson(fd).then(
           res => {
             console.log(res);

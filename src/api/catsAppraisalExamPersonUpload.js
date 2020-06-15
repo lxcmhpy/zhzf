@@ -39,6 +39,19 @@ export function findAllDepartment (data) {
     cancelToken: setCancelSource()
   })
 }
+export function randomSamplingStaffByPage (oId,batchId) {
+  return request({
+    url: "/pykh/randomSampling/randomSamplingStaffByPage/"+oId+"/"+batchId,
+    method: "get",
+    showloading: false,
+    baseUrlType:'CAPTCHA_HOST',
+    params: null,
+    cancelToken: setCancelSource()
+  })
+}
+
+
+
 
 export  function  importPerson(data)  {
   return  request({
