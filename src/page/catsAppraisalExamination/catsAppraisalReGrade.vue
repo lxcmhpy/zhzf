@@ -65,6 +65,7 @@
         this.fetchData();
       },
       openDialog(row){
+        row.url = this.$route.name
         this.$router.push({ name: "catsAppraisalReGradeAdd", params: row });
       },
       format(row, column) {
