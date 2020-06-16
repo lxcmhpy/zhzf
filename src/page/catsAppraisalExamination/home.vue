@@ -99,6 +99,7 @@
 <style lang='scss' src="@/assets/css/checkInfo.scss" ></style>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
+import { mapGetters } from "vuex";
 import { mixinsCommon } from "@/common/js/mixinsCommon";
 import {getContentApi,getNoticeByPageAndUserId,getAppraisalMenuList,clickNotice} from "@/api/appraisalExam.js";
 import viewNotice from "./noticeManage/viewNotice";
