@@ -13,10 +13,13 @@
             <el-form-item label="立案机构">
               <el-input v-model="form.orgName" :readonly="true"></el-input>
             </el-form-item>
-            <el-form-item label="总分">
+            <el-form-item label="初评总分">
               <el-input v-model="form.oneScoreSum" :readonly="true"></el-input>
             </el-form-item>
-            <div v-if="form.pfStatus==='0'">
+            <el-form-item label="复评总分">
+              <el-input v-model="form.twoScoreSum" :readonly="true"></el-input>
+            </el-form-item>
+            <div v-if="form.pfStatus==='1'">
                 <el-form-item>
                 <el-button type="primary" size="medium" icon="el-icon-search" @click="commitData">提交</el-button>
                 </el-form-item>
@@ -48,20 +51,24 @@
                 label="单项分值">
             </el-table-column>
             <el-table-column
-                v-if="form.pfStatus==='0'"
                 prop="oneSore"
+                label="初评得分">
+            </el-table-column>
+            <el-table-column
+                v-if="form.pfStatus==='1'"
+                prop="twoSore"
                 label="得分">
                 <template slot-scope="scope" >
-                    <el-input v-model="scope.row.oneSore" @blur="saveRecord(scope.row,'oneSore')" @focus="getOldValue(scope.row.oneSore)" ></el-input>
+                    <el-input v-model="scope.row.twoSore" @blur="saveRecord(scope.row,'twoSore')" @focus="getOldValue(scope.row.twoSore)" ></el-input>
                 </template>
             </el-table-column>
             <el-table-column
                 v-else
-                prop="oneSore"
+                prop="twoSore"
                 label="得分">
             </el-table-column>
             <el-table-column
-                v-if="form.pfStatus==='0'"
+                v-if="form.pfStatus==='1'"
                 prop="season"
                 label="扣分原因">
                 <template slot-scope="scope">
