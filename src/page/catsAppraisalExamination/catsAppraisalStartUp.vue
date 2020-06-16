@@ -103,7 +103,8 @@
           if(res.code==200){
             if(res.data===null){
               let routerData = {
-                type: "0"
+                type: "0",
+                url: this.$route.name
               };
               _this.$router.push({ name: "catsAppraisalStartUpAdd", params: routerData });
             }else{

@@ -235,7 +235,8 @@ export default {
       })
     },
     getRecordTitleList() {
-      findAllModleNameApi().then(
+      let data=iLocalStroage.gets("userInfo").organId
+      findAllModleNameApi(data).then(
         res => {
           console.log(res)
           this.recordTitleList = res.data
