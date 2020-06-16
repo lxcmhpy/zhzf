@@ -34,13 +34,13 @@
               <div class="info_center">
                 <el-form ref="form" label-width="72px">
                   <el-form-item label="手机号码：">
-                    18300000000
+                    {{userInfo.mobile}}
                   </el-form-item>
                   <el-form-item label="执法机构：">
-                    北京市交通执法总队 · 第一大队
+                    {{userInfo.organName}}
                   </el-form-item>
                   <el-form-item label="所属部门：">
-                    北京市交通运输局
+                    空
                   </el-form-item>
                   <el-form-item label="上次登录：">
                     2019.04.17 07:06:45

@@ -113,7 +113,7 @@
                       :rules="fieldRules('hearingSummary',propertyFeatures['hearingSummary'])"
                     >
                       <el-input
-                        class="text_indent50 overflow_lins_textarea"
+                        class="text_indent25 overflow_lins_textarea"
                         type="textarea"
                         v-model="docData.hearingSummary"
                         rows="4"
