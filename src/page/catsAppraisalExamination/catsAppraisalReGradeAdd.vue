@@ -8,7 +8,7 @@
               <el-input v-model="form.caseNo" :readonly="true"></el-input>
             </el-form-item>
             <el-form-item label="执法类型">
-              <el-input v-model="form.handleType" :readonly="true"></el-input>
+              <el-input v-model="form.caseType" :readonly="true"></el-input>
             </el-form-item>
             <el-form-item label="立案机构">
               <el-input v-model="form.orgName" :readonly="true"></el-input>
@@ -140,6 +140,9 @@ export default {
             res => {
                 _this.$message({type: "success",message: "提交成功!"});
                 _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+                _this.$router.push({
+                    name: this.$route.params.url
+                });
             },
             err => {
                 console.log(err);
