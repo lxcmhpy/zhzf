@@ -19,9 +19,7 @@
       </div>
       <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options">
       </form-create>
-
-      <p class="border-title">图片</p>
-      <p class="border-title">附件</p>
+      <uploadTmp></uploadTmp>
       <!-- 悬浮按钮 -->
       <div class="float-btns btn-height63">
         <el-button type="success" @click="edit()" v-if="addOrEiditFlag=='view'">
@@ -46,7 +44,7 @@
 </template>
 <script>
 import writeRecordHome from "./modleList.vue";
-
+import uploadTmp from './upload/uploadModleFile.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
 import { saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi, findRecordByIdApi } from "@/api/Record";
@@ -89,9 +87,9 @@ export default {
     }
   },
   components: {
-    writeRecordHome:writeRecordHome,
+    writeRecordHome: writeRecordHome,
     formCreate: formCreate.$form(),
-
+    uploadTmp,
   },
   methods: {
     // 查找模板
@@ -188,7 +186,7 @@ export default {
         let submitList = []
         submitData.forEach(element => {
           element.fieldList.forEach(item => {
-            let textName = item.field
+            let textName = item.id
             item.text = formData['' + textName + '']
             // console.log('tyupe',typeof (item.text))
             if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
@@ -244,7 +242,7 @@ export default {
         let submitList = []
         submitData.forEach(element => {
           element.fieldList.forEach(item => {
-            let textName = item.field
+            let textName = item.id
             // console.log('变量', item.field, ':', formData['' + textName + ''])
             item.text = formData['' + textName + '']
             // console.log('tyupe',typeof (item.text))
@@ -298,7 +296,7 @@ export default {
         let submitList = []
         submitData.forEach(element => {
           element.fieldList.forEach(item => {
-            let textName = item.field
+            let textName = item.id
             // console.log('变量', item.field, ':', formData['' + textName + ''])
             item.text = formData['' + textName + '']
             // console.log('tyupe',typeof (item.text))
@@ -386,7 +384,7 @@ export default {
             item.type = 'input';
             this.rule.push({
               type: 'input',
-              field: item.field,
+              field: item.id,
               title: item.title,
               props: {
                 type: 'text',
@@ -406,7 +404,7 @@ export default {
             });
             this.rule.push({
               type: "select",
-              field: item.field,
+              field: item.id,
               title: item.title,
               options: item.options,
               validate: [{
@@ -424,7 +422,7 @@ export default {
             });
             this.rule.push({
               type: "radio",
-              field: item.field,
+              field: item.id,
               title: item.title,
               options: item.options,
               value: item.text,
@@ -443,7 +441,7 @@ export default {
             });
             this.rule.push({
               type: "checkbox",
-              field: item.field,
+              field: item.id,
               title: item.title,
               options: item.options,
               value: item.text ? item.text.split(',') : [],
@@ -457,7 +455,7 @@ export default {
             if (item.options[0].value == 'HH:mm') {
               this.rule.push({
                 type: "TimePicker",
-                field: item.field,
+                field: item.id,
                 title: item.title,
                 value: item.text || [new Date()],
                 props: {
@@ -473,7 +471,7 @@ export default {
             } else {
               this.rule.push({
                 type: "DatePicker",
-                field: item.field,
+                field: item.id,
                 title: item.title,
                 value: item.text || [new Date()],
                 props: {
@@ -491,7 +489,7 @@ export default {
           } else if (item.type == '数字型') {
             this.rule.push({
               type: "InputNumber",
-              field: item.field,
+              field: item.id,
               title: item.title,
               value: item.text || 1,
               props: {

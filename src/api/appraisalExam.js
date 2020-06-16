@@ -183,7 +183,7 @@ export function getNoticeByPageAndUserId(data){
     method: "get",
     params: data,
     showloading: true,
-    loadingType:'loadPart',
+    loadingType:'loadFull',
     cancelToken: setCancelSource()
   });
 }
@@ -255,6 +255,24 @@ export function getOrgInfoByOrgId(data){
 export function getAppraisalResult(){
   return request({
     url: "/pykh/appraisalResult/getResult",
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+export function publicResult(){
+  return request({
+    url: "/pykh/appraisalResult/publicResult",
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+export function clickNotice(id){
+  return request({
+    url: "/pykh/notice/clickNotice/"+id,
     method: "get",
     showloading: true,
     loadingType:'loadPart',

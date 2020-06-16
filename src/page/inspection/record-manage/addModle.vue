@@ -32,7 +32,7 @@
                     <i class="iconfont law-btn_shousuo shousuo"></i>
                     <el-form-item prop="class" label-width="0" style="width:100%;margin-bottom: 10px;">
                       <el-select v-model="item.classs" filterable allow-create clearable placeholder="请输入字段组名称，可为空" @change="changeGroup(item)">
-                        <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.classs" :value="commonField.classs"></el-option>
+                        <el-option v-for="(commonField,index) in commonGroupFieldList" :key="index" :label="commonField.classs" :value="commonField.classs"></el-option>
                       </el-select>
                     </el-form-item>
                     <i class="el-icon-remove" style="margin-left:18px" @click="delField(item,formData.templateFieldList)"></i>
@@ -84,10 +84,15 @@
                       <!-- {{field}} -->
                       <el-col :span="16">
                         <!-- <el-form :model="field" ref="filedForm"> -->
-                          <el-form-item label-width="0" prop="title" :rules="{ required: true, message: '请输入字段名称', trigger: 'blur' }">
-                            <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
-                            </el-input>
-                          </el-form-item>
+                        <el-form-item label-width="0" prop="title" :rules="{ required: true, message: '请输入字段名称', trigger: 'blur' }">
+                          <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
+                          </el-input>
+                          <!-- 
+                          <el-select v-model="item.classs" filterable allow-create clearable placeholder="请填写字段名称" @change="changeGroup(item)" >
+                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.classs" :value="commonField.classs"></el-option>
+                          </el-select> -->
+
+                        </el-form-item>
                         <!-- </el-form> -->
                       </el-col>
                       <el-col :span="6">
@@ -241,7 +246,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import { mapGetters } from "vuex";
-import { saveOrUpdateRecordModleApi, findCommonFieldApi, findAllCommonFieldApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi } from "@/api/Record";
+import { saveOrUpdateRecordModleApi, findCommonGroupFieldApi, findAllCommonGroupFieldApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi, findAllCommonFieldApi } from "@/api/Record";
 import { findLawOfficerListApi } from "@/api/caseHandle";
 export default {
   components: {
@@ -341,6 +346,7 @@ export default {
           }],
         count: 0
       },
+      commonGroupFieldList: [],
       commonFieldList: [],
       defautfieldList: {
         // id: '',//字段id
@@ -357,28 +363,28 @@ export default {
         // templateId: '',//修改必传=formdata.id
       },
       defaultTemplateFieldList: [
-          {
-            // value: ,
-            sort: 0,//新加-前端定义
-            classs: '',
-            classsId: '',
-            fieldList: [
-              {
-                id: '',//字段id-修改
-                type: '文本型',//必要-字段类型，不可改
-                field: 'key0',//必要-字段英文名
-                title: '',//必要-字段中文名
-                required: true,
-                remark: '',//占位符
-                options: [//抽屉值
-                  { "value": "", "label": "" },
-                ],
-                status: '1',//0是不可修改field，1可修改
-                // templateId: '',//修改必传=formdata.id
-              },
-            ],
+        {
+          // value: ,
+          sort: 0,//新加-前端定义
+          classs: '',
+          classsId: '',
+          fieldList: [
+            {
+              id: '',//字段id-修改
+              type: '文本型',//必要-字段类型，不可改
+              field: 'key0',//必要-字段英文名
+              title: '',//必要-字段中文名
+              required: true,
+              remark: '',//占位符
+              options: [//抽屉值
+                { "value": "", "label": "" },
+              ],
+              status: '1',//0是不可修改field，1可修改
+              // templateId: '',//修改必传=formdata.id
+            },
+          ],
 
-          }],
+        }],
       editId: '',
       rules: {
         title: [
@@ -402,7 +408,7 @@ export default {
         this.globalCont = editdata.count + 1;
 
       }
-      this.findCommonField()
+      this.findCommonGroupField()
       this.getEnforceLawType();
       this.setLawPersonCurrentP();
       this.getAllOrgan('root');
@@ -473,6 +479,25 @@ export default {
         })
 
     },
+    // 获取通用字段组
+    findCommonGroupField() {
+      findAllCommonGroupFieldApi().then(
+        res => {
+          this.commonGroupFieldList = res.data
+          this.commonGroupFieldList.forEach(element => {
+            element.fieldList.forEach(item => {
+              if (item.options) {
+                item.options = JSON.parse(item.options)
+              }
+            });
+          });
+          console.log('common', this.commonGroupFieldList)
+
+        },
+        error => {
+
+        })
+    },
     // 获取通用字段
     findCommonField() {
       findAllCommonFieldApi().then(
@@ -491,7 +516,6 @@ export default {
         error => {
 
         })
-
     },
     // 获取机构下的人员
     getPerson() {
@@ -553,7 +577,7 @@ export default {
       }
     },
     addRadioList(options) {
-      if (options.length <= 5) {
+      if (options.length <= 9) {
         options.push({ value: '' })
       }
       else {
@@ -590,6 +614,8 @@ export default {
                 });
               });
               data.count = sort;
+              console.log('templateAdminId', data.templateAdminIdList)
+              console.log('templateUserIdList', data.templateUserIdList)
               data.templateAdminIdList.forEach(element => {
                 data.templateAdminId = data.templateAdminId + ',' + element.id
                 data.templateAdmin = data.templateAdmin + ',' + element.lawOfficerName
@@ -616,7 +642,7 @@ export default {
               // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
               data.templateFieldList = JSON.stringify(data.templateFieldList)
               console.log('提交的字段', data)
-              // debugger
+              debugger
               saveOrUpdateRecordModleApi(data).then(
                 res => {
                   console.log(res)
@@ -773,7 +799,7 @@ export default {
       }
     },
     changeGroup(group) {
-      var defaut = this.commonFieldList.find(item => item.classs === group.classs)
+      var defaut = this.commonGroupFieldList.find(item => item.classs === group.classs)
       if (defaut) {
         // 通用字段
         group.fieldList = defaut.fieldList

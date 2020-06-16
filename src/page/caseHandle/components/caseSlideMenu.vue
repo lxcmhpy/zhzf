@@ -45,7 +45,7 @@
       <!-- 卷宗目录 -->
     <archiveCatalogue ref="archiveCatalogueRef"></archiveCatalogue>
     <!-- 证据目录 -->
-    <evidenceCatalogue ref="evidenceCatalogueRef"></evidenceCatalogue>
+    <evidenceCatalogue ref="evidenceCatalogueRef" @getEvidenceEmit="getEvidence"></evidenceCatalogue>
     <!-- 文书列表 -->
     <documentFormRef ref="documentFormRef"></documentFormRef>
      <!-- 送达回证列表 -->
@@ -137,6 +137,9 @@ export default {
         this.$refs.evidenceCatalogueRef.closeDialog();
         this.$refs.documentFormRef.closeDialog();
         this.$refs.deliverReceiptFormRef.closeDialog();
+    },
+    getEvidence(){
+      this.$emit("getEvidenceEmit");
     },
     //判断快捷菜单是否可用
     getCaseData(){

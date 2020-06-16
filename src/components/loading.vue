@@ -6,25 +6,25 @@
 <template>
     <div>
       <!-- <div class="loading" v-show="loadingType != 'loadMain'">
-        <div class="mask"></div> 
+        <div class="mask"></div>
 			  <div class="load"></div>
       </div> -->
       <div class="loading" v-show="loadingType == 'loadFull'">
-        <div class="mask"></div> 
+        <div class="mask"></div>
         <div class="load"></div>
       </div>
       <div class="loadingMain" v-show="loadingType == 'loadMain'">
         <div class="load"></div>
       </div>
       <div class="loadingPart" v-show="loadingType == 'loadPart'">
-        <div class="mask"></div> 
+        <div class="mask"></div>
         <div class="load">
           <img src="../../static/images/img/car.svg"/>
 				  <p>加载中...</p>
         </div>
       </div>
     </div>
-    
+
 </template>
 <script>
 
@@ -32,7 +32,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-     
+
     };
   },
   computed: {
@@ -145,9 +145,9 @@ export default {
       // animation: spin1 1s linear infinite ;
       // transform-origin: center;
     }
-    
-    
-    
+
+
+
   }
 }
 
@@ -195,7 +195,7 @@ export default {
       left: 0;
       right: 0;
     }
-    
+
   }
   @keyframes changeCar{
       0% {width: 0px;height: 0px;opacity: 0;}
