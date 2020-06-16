@@ -41,8 +41,8 @@
     "CHECK_API":"http://172.16.170.91:8081"
   },
   "ZHW": {
-    "CAPTCHA_HOST": "http://172.16.164.105:9000",
-    "PDF_HOST": "http://172.16.170.54:9332/",
+    "CAPTCHA_HOST": "http://59.110.216.138:9000",
+    "PDF_HOST": "http://39.105.229.204:9333/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.164.105:9000",
     "VIDEO_HOST": "wss://172.16.170.47:10062",

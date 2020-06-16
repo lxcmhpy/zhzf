@@ -279,3 +279,24 @@ export function clickNotice(id){
     cancelToken: setCancelSource()
   });
 }
+
+export function getCaseInfoByOrgId(data){
+  return request({
+    url: "/pykh/case/getCaseInfoByOrgId",
+    method: "get",
+    showloading: true,
+    params: data,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+export function getCaseInfoDetailByPid(id){
+  return request({
+    url: "/pykh/case/getCaseInfoDetailByPid/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

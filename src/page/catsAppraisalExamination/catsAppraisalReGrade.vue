@@ -19,7 +19,8 @@
           <el-table-column prop="caseNo" label="案卷编号" align="center"></el-table-column>
           <el-table-column prop="businessArea" label="业务领域" align="center"></el-table-column>
           <el-table-column prop="caseType" label="案卷类型" align="center"></el-table-column>
-          <el-table-column prop="oneScoreSum" label="分数" align="center"></el-table-column>
+          <el-table-column prop="oneScoreSum" label="初评分数" align="center"></el-table-column>
+          <el-table-column prop="twoScoreSum" label="复评分数" align="center"></el-table-column>
           <el-table-column prop="pfStatus" label="状态" :formatter="format"  align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="120">
             <template  slot-scope="scope">
@@ -49,7 +50,8 @@
       fetchData(){
         let data = {
           orgId: this.search.orgId,
-          assessType:"案卷评查"
+          assessType:"案卷评查",
+          pfStatus:"1"
         };
         let _this = this
         getCaseInfoByOrgId(data).then(res=>{
@@ -63,7 +65,7 @@
         this.fetchData();
       },
       openDialog(row){
-        this.$router.push({ name: "catsAppraisalGradeAdd", params: row });
+        this.$router.push({ name: "catsAppraisalReGradeAdd", params: row });
       },
       format(row, column) {
         if (row.pfStatus === '0') {
