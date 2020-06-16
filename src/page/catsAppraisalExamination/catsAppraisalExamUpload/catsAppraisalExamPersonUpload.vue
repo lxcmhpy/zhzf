@@ -7,9 +7,9 @@
             <el-form-item label="姓名">
               <el-input v-model="search.staffName" clearable placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="所属机构">
-              <el-input v-model="search.OId" clearable placeholder="请选择"></el-input>
-            </el-form-item>
+<!--            <el-form-item label="所属机构">-->
+<!--              <el-input v-model="search.OId" clearable placeholder="请选择"></el-input>-->
+<!--            </el-form-item>-->
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
             </el-form-item>
@@ -45,7 +45,7 @@
           <el-table :data="dataList" stripe resizable border style="width: 100%;height:100%;" row-key="id" >
             <el-table-column prop="staffName" label="姓名" align="center"></el-table-column>
             <el-table-column prop="idCard" label="身份证号" align="center"></el-table-column>
-            <el-table-column prop="enforcementCertificate" label="执法证号" align="center"></el-table-column>
+<!--            <el-table-column prop="enforcementCertificate" label="执法证号" align="center"></el-table-column>-->
             <el-table-column prop="maritimeNo" label="现持海事执法证号" align="center"></el-table-column>
             <el-table-column prop="ministerialNo" label="现持部级执法证号" align="center"></el-table-column>
             <el-table-column prop="provinceNo" label="现持省内执法证号" align="center"></el-table-column>
@@ -89,9 +89,9 @@
             <el-form-item label="姓名" prop="operator" >
               <el-input placeholder="请输入姓名" v-model.trim="form.staffName" ></el-input>
             </el-form-item>
-            <el-form-item label="执法证号" prop="operator" >
-              <el-input placeholder="请输入执法证号" v-model.trim="form.enforcementCertificate" ></el-input>
-            </el-form-item>
+<!--            <el-form-item label="执法证号" prop="operator" >-->
+<!--              <el-input placeholder="请输入执法证号" v-model.trim="form.enforcementCertificate" ></el-input>-->
+<!--            </el-form-item>-->
             <el-form-item label="身份证号" prop="operator" >
               <el-input placeholder="请输入身份证号" v-model.trim="form.idCard" ></el-input>
             </el-form-item>
@@ -160,6 +160,7 @@
       fetchData(data){
         data.current=this.current;
         data.size=this.size;
+        data.OId=this.organId;
         findPykhStaffByPage(data).then(res=>{
           console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
@@ -202,6 +203,7 @@
         }
         fd.append("file", param.file);
         fd.append("batchId",batchId)
+        fd.append("OId",this.organId)
         importPerson(fd).then(
           res => {
             console.log(res);

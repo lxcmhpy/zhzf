@@ -47,34 +47,31 @@
     </div>
     <div>
       <p>hwj(3、11、12、13、14、15、16文书表单及pdf打印版)</p>
-      <br><br>
+      <br>
       <InvalidInfoDialog ref="InvalidInfoDialog"></InvalidInfoDialog>
       <vehicleCheckDialog ref="vehicleCheckDialogRef"></vehicleCheckDialog>
       <numberCorrectDialog ref="numberCorrectDialog"></numberCorrectDialog>
-      <li @click="goOverWeightCase">超限案件列表</li>
 
       <ul>
         文书：
         <li @click="goAssistInvestgation">协助调查函</li>
-        <li  @click="goInspectionRecord">检查记录</li>
+        <li @click="goInspectionRecord">检查记录</li>
         <li @click="goEstablish_JX">立案登记表——江西</li>
-        <li  @click="goSceneNotesDoc_JX">现场笔录-江西</li>
-
-        <br><br>
-
-        表单：
+        <li @click="goSceneNotesDoc_JX">现场笔录-江西</li>
         <li @click="goAdminCoerciveMeasureNote_JX">行政强制措施现场笔录</li>
-        <li @click="goRemoveOrPrelong">解除（延长）强制行政措施</li>
-        <li @click="goIllegalAction">违法行为通知书</li>
-        <li @click="goOrderCorrectIllegalAct">责令改正违法行为通知书</li>
-        <li @click="goAdminPunisheDecision">行政处罚决定书</li>
-        <li @click="goImportantCaseDissForm">重大案件集体讨论</li>
-        <li @click="goArchivesForm">归档</li>
-        <li @click="goPenaltyExecution">决定执行</li>
-        <li @click="goPartyRights">当事人权利</li>
-        <br><br>
-        PDF打印：
-        <li @click="goInquestNotesPdf">勘验笔录PDF</li>
+        <li @click="goCaseTransNoticeDoc">案件移送告知书</li>
+        <li @click="goCaseTransLetter">案件移送函</li>
+        <li @click="goAdminEnforceAgreeDoc">行政强制执行协议书</li>
+        <li @click="goExecutAnnounceDoc_JX">执行公告-江西</li>
+        <li @click="goremindLetterDoc_JX">催告书-江西</li>
+        <li @click="goImportantCaseDissForm_JX">重大案件集体讨论-江西</li>
+        <li @click="goIllegalActionForm_JX">违法行为通知书-江西</li>
+        <li @click="goHearingNotice_JX">听证通知书-江西</li>
+        <li @click="goEnforceApplication">强制执行申请书-江西</li>
+        <li @click="goHearingReportDoc">听证报告书</li>
+        
+        <br>
+        <li @click="goForceCorrect_JX">责令改正违法行为通知书-江西</li>
         <li @click="goIllegalActionPdf">违法行为通知书PDF</li>
         <li @click="goHearingNoticePdf">听证通知书pdf</li>
         <li @click="goHearingRecordPdf">听证笔录PDF</li>
@@ -355,6 +352,39 @@ export default {
     },
     goAdminCoerciveMeasureNote_JX(){
       this.$router.push({ name: 'case_handle_adminCoerciveMeasureNote_JX' });
+    },
+    goCaseTransNoticeDoc(){
+      this.$router.push({ name: 'case_handle_caseTransNoticeDoc' });
+    },
+    goCaseTransLetter(){
+      this.$router.push({ name: 'case_handle_caseTransLetter' });
+    },
+    goAdminEnforceAgreeDoc(){
+      this.$router.push({ name: 'case_handle_adminEnforceAgreeDoc' });
+    },
+    goExecutAnnounceDoc_JX(){
+      this.$router.push({ name: 'case_handle_executAnnounceDoc_JX' });
+    },
+    goremindLetterDoc_JX(){
+      this.$router.push({ name: 'case_handle_remindLetterDoc_JX' });
+    },
+    goImportantCaseDissForm_JX(){
+      this.$router.push({ name: 'case_handle_importantCaseTeamDissDoc_JX' });
+    },
+    goIllegalActionForm_JX(){
+      this.$router.push({ name: 'case_handle_illegalActionForm_JX' });
+    },
+    goHearingNotice_JX(){
+      this.$router.push({ name: 'case_handle_hearingNotice_JX' });
+    },
+    goForceCorrect_JX(){
+      this.$router.push({ name: 'case_handle_forceCorrect_JX' });
+    },
+    goEnforceApplication(){
+      this.$router.push({ name: 'case_handle_enforceApplicationDoc' });
+    },
+    goHearingReportDoc(){
+      this.$router.push({ name: 'case_handle_hearingReportDoc' });
     },
     //责令改正违法行为通知书
     goOrderCorrectIllegalAct() {

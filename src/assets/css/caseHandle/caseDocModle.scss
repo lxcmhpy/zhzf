@@ -1065,6 +1065,11 @@
     }
 }
 
+.text_indent6 {
+    .el-textarea__inner {
+        text-indent: 6em;
+    }
+}
 .text_indent11 {
     .el-textarea__inner {
         text-indent: 12em;

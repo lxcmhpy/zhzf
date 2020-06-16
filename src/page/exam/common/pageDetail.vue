@@ -180,7 +180,6 @@ export default {
         verifyId:this.verifyId,
         verifyResult:type
       }
-      console.info("aaaaa"+JSON.stringify(data))
       this.$confirm(status, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -261,6 +260,7 @@ export default {
       item['optionList'] = e.data.optionVoList;
       delete item.optionVoList;
       item.pqId = e.pqId;
+      item.isLock = '0';
       paragrap.questionList[editIndex] = item;
       this.refreshQuestion = true;
       this.setChangeData(e.pqId, e.data.questionId);
@@ -287,6 +287,7 @@ export default {
       this.refreshQuestion = false;
       const editIndex = this.editParagrap.questionList.findIndex(item => item.pqId === this.edtiQuestion.pqId);
       question.pqId = this.edtiQuestion.pqId;
+      question.isLock = '0';
       this.pageData.paragraphList[this.editParagrapIndex].questionList[editIndex] = question;
       this.refreshQuestion = true;
       this.setChangeData(question.pqId, question.questionId);

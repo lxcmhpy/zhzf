@@ -375,7 +375,6 @@ export default {
             })
 
         }
-this.$store.dispatch("deleteTabs", this.$route.name);
     },
     findAllDrawerById (data, obj) {
         let _this = this

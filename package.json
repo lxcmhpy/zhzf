@@ -22,7 +22,6 @@
     "cross-env": "^7.0.2",
     "echarts": "^4.8.0",
     "element-ui": "^2.13.0",
-    "https": "^1.0.0",
     "increase-memory-limit": "^1.0.7",
     "js-base64": "^2.5.1",
     "lodash": "^4.17.15",
@@ -37,6 +36,7 @@
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
     "vue-simple-verify": "^1.0.8",
+    "vuedraggable": "^2.23.2",
     "vuex": "3.0.1",
     "vuex-persistedstate": "^3.0.1"
   },

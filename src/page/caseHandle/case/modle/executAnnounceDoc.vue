@@ -89,18 +89,18 @@
     <!-- 悬浮按钮 -->
     <casePageFloatBtns :pageDomId="'executAnnounceDoc_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
   </div>
 </template>
 <script>
-import overflowInput from "./overflowInput";
+// import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
 export default {
   components: {
-    overflowInput,
+    // overflowInput,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
@@ -170,7 +170,7 @@ export default {
     },
     // 多行编辑
     overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
+      // this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {

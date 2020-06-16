@@ -61,7 +61,8 @@
       },
       openDialog(row){
         let routerData = {
-          id: row.id
+          id: row.id,
+          url:this.$route.name
         };
         this.$router.push({ name: "catsAppraisalOnLineAdd", params: routerData });
       },

@@ -74,3 +74,12 @@ export function findListVoByDetails (data) {
     cancelToken: setCancelSource()
   })
 }
+export function getCurrentBatchId(){
+  return request({
+    url: "/pykh/pykhBatch/getCurrentBatchId",
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

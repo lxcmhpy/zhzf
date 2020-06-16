@@ -60,8 +60,8 @@
           </el-table-column>
           <el-table-column prop="evPath" label="附件" align="center">
             <template slot-scope="scope">
-              <img v-if="scope.row.evType =='照片'" :src="host+scope.row.evPath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
-              <img v-if="scope.row.evType =='音视频'" :src="host+scope.row.thumbnailsStoragePath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
+                <img v-if="scope.row.evType =='照片'" :src="host+scope.row.evPath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
+                <img v-if="scope.row.evType =='音视频'" :src="host+scope.row.thumbnailsStoragePath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>  
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" fixed="right">
@@ -246,7 +246,7 @@
       </div>
     </el-dialog>
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'evidenceForm'" @showEvidenceCatalogue="showEvidenceCatalogue"></caseSlideMenu>
+    <caseSlideMenu :activeIndex="'evidenceForm'" @showEvidenceCatalogue="showEvidenceCatalogue" @getEvidenceEmit="getEviList"></caseSlideMenu>
 
     <!-- 证据目录 -->
     <!-- <evidenceCatalogue ref="evidenceCatalogueRef"></evidenceCatalogue> -->
@@ -449,7 +449,7 @@
         var fd = new FormData();
         fd.append("file", this.form.file);
         fd.append("caseId", this.form.caseId);
-        fd.append("docId", this.form.docId);
+        fd.append("objectId", this.form.docId);
         fd.append("category", this.form.category);
         fd.append("userId", this.form.userId);
         fd.append("evName", this.form.evName);
