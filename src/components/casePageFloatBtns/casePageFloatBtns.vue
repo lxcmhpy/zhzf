@@ -50,12 +50,12 @@
       return {
         // docId
         makeSealStr: '',
-        showQZBtn:false,  //是否显示签章按钮
+        // showQZBtn:false,  //是否显示签章按钮
       }
     },
     props: ['formOrDocData', 'storagePath'],
     mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId', 'docId'])},
+    computed: {...mapGetters(['caseId', 'docId','showQZBtn'])},
     methods: {
       //   打印方法
       async printContent() {

@@ -4,7 +4,7 @@
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
-    width="50%"
+    width="75%"
   >
     <div>
       <div class="header">

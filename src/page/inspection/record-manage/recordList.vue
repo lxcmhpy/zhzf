@@ -3,34 +3,37 @@
     <div class="searchAndpageBox" id="roleBox">
       <div class="handlePart">
         <div class="search">
-          <el-form :inline="true" :model="searchForm" class>
-            <el-form-item label="记录时间">
+          <el-form :inline="true" :model="searchForm" class ref="searchForm">
+            <el-form-item label="记录时间" prop='timeList'>
               <el-date-picker v-model="timeList" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="业务领域">
+            <el-form-item label="业务领域" prop='domain'>
               <el-select v-model="searchForm.domain" placeholder="请选择">
                 <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateName"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="记录类型">
+            <el-form-item label="记录类型" prop='title'>
               <!-- <el-input v-model="searchForm.title"></el-input> -->
               <el-select v-model="searchForm.title" placeholder="请选择">
                 <el-option v-for="(item,index) in recordTitleList" :key="index" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="状态">
+            <el-form-item label="状态" prop='status'>
               <el-select v-model="searchForm.status" placeholder="请选择">
-                <el-option label="全部" value=""></el-option>
+                <el-option label="全部" value="全部"></el-option>
                 <el-option label="暂存" value="暂存"></el-option>
                 <el-option label="保存" value="保存"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="记录人">
+            <el-form-item label="记录人" prop='createUser'>
               <el-input v-model="searchForm.createUser"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="resetSearchData('searchForm')">重置</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="createLog">生成日志</el-button>
@@ -92,8 +95,8 @@ export default {
     getTableData() {
       console.log('time,creatUser', this.timeList, this.searchForm.createUser)
       let data = {
-        startTime: this.timeList[0],
-        endTime: this.timeList[1],
+        startTime: this.timeList[0]||'',
+        endTime: this.timeList[1]||'',
         title: this.searchForm.title,
         status: this.searchForm.status == '全部' ? '' : this.searchForm.status,
         createUser: this.searchForm.createUser,
@@ -232,7 +235,8 @@ export default {
       })
     },
     getRecordTitleList() {
-      findAllModleNameApi().then(
+      let data=iLocalStroage.gets("userInfo").organId
+      findAllModleNameApi(data).then(
         res => {
           console.log(res)
           this.recordTitleList = res.data
@@ -259,6 +263,12 @@ export default {
           message: '成功选中，暂未开发'
         });
       }
+    },
+    resetSearchData(formName) {
+      this.$refs[formName].resetFields();
+      this.timeList = []
+      // debugger
+      this.getTableData()
     }
   },
   mounted() {

@@ -1,0 +1,180 @@
+<template>
+    <div class="com_searchAndpageBoxPadding">
+        <div class="searchAndpageBox toggleBox">
+        <div class="handlePart" style="margin-left: 0px;">
+        <div class="search">
+          <el-form :inline="true" :model="form" ref="form">
+            <el-form-item label="案卷编号">
+              <el-input v-model="form.caseNo" :readonly="true"></el-input>
+            </el-form-item>
+            <el-form-item label="执法类型">
+              <el-input v-model="form.handleType" :readonly="true"></el-input>
+            </el-form-item>
+            <el-form-item label="立案机构">
+              <el-input v-model="form.orgName" :readonly="true"></el-input>
+            </el-form-item>
+            <el-form-item label="初评总分">
+              <el-input v-model="form.oneScoreSum" :readonly="true"></el-input>
+            </el-form-item>
+            <el-form-item label="复评总分">
+              <el-input v-model="form.twoScoreSum" :readonly="true"></el-input>
+            </el-form-item>
+            <div v-if="form.pfStatus==='1'">
+                <el-form-item>
+                <el-button type="primary" size="medium" icon="el-icon-search" @click="commitData">提交</el-button>
+                </el-form-item>
+            </div>
+          </el-form>
+        </div>
+      </div>
+      <div class="tablePart">
+        <el-table
+        :data="pykhScoreDetailsVos"
+        border
+        :span-method="objectSpanMethod"
+        style="width: 100%;">
+        <!--  -->
+            <el-table-column
+                prop="indexOne"
+                label="一级指标">
+            </el-table-column>
+            <el-table-column
+                prop="indexTwo"
+                label="二级指标">
+            </el-table-column>
+            <el-table-column
+                prop="nrxm"
+                label="评查内容">
+            </el-table-column>
+            <el-table-column
+                prop="score"
+                label="单项分值">
+            </el-table-column>
+            <el-table-column
+                prop="oneSore"
+                label="初评得分">
+            </el-table-column>
+            <el-table-column
+                v-if="form.pfStatus==='1'"
+                prop="twoSore"
+                label="得分">
+                <template slot-scope="scope" >
+                    <el-input v-model="scope.row.twoSore" @blur="saveRecord(scope.row,'twoSore')" @focus="getOldValue(scope.row.twoSore)" ></el-input>
+                </template>
+            </el-table-column>
+            <el-table-column
+                v-else
+                prop="twoSore"
+                label="得分">
+            </el-table-column>
+            <el-table-column
+                v-if="form.pfStatus==='1'"
+                prop="season"
+                label="扣分原因">
+                <template slot-scope="scope">
+                    <el-input v-model="scope.row.season" @blur="saveRecord(scope.row,'season')"  @focus="getOldValue(scope.row.season)"></el-input>
+                </template>
+            </el-table-column>
+            <el-table-column
+                v-else
+                prop="season"
+                label="扣分原因">
+            </el-table-column>
+        </el-table>
+      </div>
+    </div>
+    </div>
+</template>
+<script>
+  import {getCaseInfoDetailByPid,updateScore,updateScoreState} from "@/api/appraisalExam.js";
+  import { mixinsCommon } from "@/common/js/mixinsCommon";
+export default {
+    mixins: [mixinsCommon],
+    data () {
+        return {
+            form:{},
+            pykhScoreDetailsVos:[],
+            oldValue:""
+        }
+    },
+    methods: {
+        // (row，column,第行数，第列数)
+       objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+           // 第一列合并规则
+            if (columnIndex === 0) {
+                // 当前行数 % 需要合并的行数
+                if (row.rowspan === 0) {
+                    return {
+                        rowspan: 0,
+                        colspan: 0
+                    };
+                } else {
+                    return {
+                        rowspan: row.rowspan,
+                        colspan: 1
+                    };
+                }
+            }
+            if (columnIndex === 1) {
+                if (row.rowspan1 === 0) {
+                    return {
+                        rowspan: 0,
+                        colspan: 0
+                    };
+                } else {
+                    return {
+                        rowspan: row.rowspan,
+                        colspan: 1
+                    };
+                }
+            }
+      },
+      commitData(){
+        const data = {
+            id:this.form.id,
+            assessType:"案卷评查",
+            pfstatus:this.form.pfStatus
+        }
+        let _this = this
+        updateScoreState(data).then(
+            res => {
+                _this.$message({type: "success",message: "提交成功!"});
+                _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+            },
+            err => {
+                console.log(err);
+            }
+        );
+      },
+      saveRecord(row,key){
+          if(this.oldValue !== row[key]){
+            updateScore(row).then(
+                res => {
+                    
+                },
+                err => {
+                    console.log(err);
+                }
+            );
+          }
+      },
+      getOldValue(val){
+          this.oldValue=val
+      },
+      fetchData(){
+        this.form = this.$route.params
+        getCaseInfoDetailByPid(this.$route.params.id).then(
+            res => {
+                this.pykhScoreDetailsVos = res.data
+            },
+            err => {
+                console.log(err);
+            }
+        );
+      }
+    },
+    mounted () {
+      this.fetchData();
+    }
+}
+</script>

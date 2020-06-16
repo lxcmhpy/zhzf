@@ -10,7 +10,7 @@ Vue.use(VueRouter);
 
 // 路由拦截
 // 需要鉴权
-const whiteList = ["/login", "/register", "/service", "/user", '/flowChart', '/case_handle_modle', '/case_handle_othermodle', "/examLogin", "/entrySystem"]; //免登录白名单
+const whiteList = ["/login", "/register", "/service", "/user", '/flowChart', '/case_handle_modle', '/case_handle_othermodle', "/examLogin"]; //免登录白名单
 const regularList = {
     loginByToken: /\/loginByToken\/[a-zA-Z0-9\_\-\.]+\/\d{13}$/g
 }
@@ -45,17 +45,16 @@ router.beforeEach((to, from, next) => {
         let arrayPath = to.path.split('/');
         if(arrayPath.length > 1 && regularList[arrayPath[1]]&&regularList[arrayPath[1]].test(to.path)) {
             store.commit('CLEAR_ALL_CACHE');
-           next();
+            next();
         } else {
-          // 考试人员子系统
-          if(sessionStorage.getItem('LoginSystem')){
-            store.commit('CLEAR_ALL_CACHE');
-
-            next({name: 'examLogin'});
-          }else{
-            store.commit('CLEAR_ALL_CACHE');
-            next({name: "login"});
-          }
+            if(sessionStorage.getItem('LoginSystem')){
+                    // 考试人员子系统
+                store.commit('CLEAR_ALL_CACHE');
+                next({name: 'examLogin'});
+            }else{
+                store.commit('CLEAR_ALL_CACHE');
+                next({name: "login"});
+            }
         }
     }
   }
@@ -64,10 +63,3 @@ router.afterEach(to => {
   window.scrollTo(0, 0);
 });
 
-function aFter(){
-  if (to.path === "/login") {
-    next({name: "law_supervise_lawSupervise"});
-  } else {
-    next();
-  }
-}

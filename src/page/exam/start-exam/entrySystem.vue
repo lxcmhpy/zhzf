@@ -8,14 +8,16 @@
             <div class="exam-info">
               <div class="time-info">
                 <img src="../../../../static/images/img/exam/clocks.png" alt />
-                <span class="time-prompt">距离考试开始</span>
-                <span class="count-down">15</span>
-                <span class="count-down">34</span>
+                <span class="time-prompt">{{ countText }}</span>
+                <span v-if="intervalTime" class="count-down">{{ countTime.minutes }}</span>
+                <span v-if="intervalTime" class="count-down">{{ countTime.second }}</span>
               </div>
-              <div class="exam-name">考试名称：公路交通运输技能考试部职业资格考试</div>
+              <div class="exam-name">考试名称：{{ invigilatorInfo.examManageInfo.examName }}</div>
               <div class="exam-prompt">
                 <p>考场：考场1</p>
-                <p style="margin: 20px 0;">考试时间：2018年12月12日 15:00 至 2018年12月12日 17:00</p>
+                <p
+                  style="margin: 20px 0;"
+                >考试时间：{{ invigilatorInfo.examManageInfo.examBegin }} 至 {{ invigilatorInfo.examManageInfo.examEnd }}</p>
                 <p>备注：</p>
                 <p class="f-s-12">1.考生应自觉服从监考员等考试工作人员管理,不准以任何理由妨碍监考员等考试工作人员履行职责...</p>
                 <p class="f-s-12">2.考生凭准考证、有效居民身份证按规定时间参加考试。</p>
@@ -83,15 +85,96 @@ export default {
         telephone: [
           { required: true, message: "请输入联系方式", trigger: "blur" }
         ]
+      },
+      intervalTime: null,
+      countText: "", // 倒计时显示文字
+      differenceTime: 0,
+      countTime: {
+        minutes: '',
+        second: ''
       }
     };
   },
   computed: {
     invigilatorInfo() {
-      return JSON.parse(sessionStorage.setItem("ExamUserInfo"));
+      return JSON.parse(sessionStorage.getItem("ExamUserInfo"));
     }
   },
+  created() {
+    this.getSystemTime();
+  },
   methods: {
+    // 获取系统当前时间
+    getSystemTime(){
+      this.$store.dispatch('getSystemDate').then(res => {
+        this.differenceTime = res - new Date().getTime();
+        this.startCountDown();
+      }, err => {
+        console.log(err);
+      });
+    },
+    // 开始倒计时
+    startCountDown() {
+      // 获取当前时间，考试结束时间
+      let newTime = new Date().getTime() + this.differenceTime;
+      // 对比考试开始时间和结束时间
+      let examBegin = new Date(this.invigilatorInfo.examManageInfo.examBegin).getTime();
+      let examEnd = new Date(this.invigilatorInfo.examManageInfo.examEnd).getTime();
+      let diffTime = 0;
+      let endTime = 0;
+      if (examEnd - newTime < 0) {
+        this.countText = "考试已结束";
+        clearInterval(this.intervalTime);
+        return false;
+      }
+      if (newTime - examBegin < 0) {
+        this.countText = "距离考试开始";
+        diffTime = examBegin - newTime;
+        endTime = examBegin;
+      } else {
+        this.countText = "距离考试结束";
+        diffTime = examEnd - newTime;
+        endTime = examEnd;
+      }
+      if (diffTime > 0) {
+        let time = diffTime / 1000;
+        this.setCountDownTime(time);
+        this.countDownFun(endTime);
+      }
+    },
+    // 倒计时方法
+    countDownFun(examEnd) {
+      this.intervalTime = setInterval(() => {
+        // 获取当前时间，考试结束时间
+        let newTime = new Date().getTime() + this.differenceTime;
+        // 对结束时间进行处理渲染到页面
+        let endTime = new Date(examEnd).getTime();
+        let diffTime = endTime - newTime;
+        this.countDownList = "";
+        if (diffTime < 0 || diffTime === 0) {
+          this.countText = "考试已结束";
+          clearInterval(this.intervalTime);
+        } else {
+          let time = diffTime / 1000;
+          this.setCountDownTime(time);
+        }
+      }, 1000);
+    },
+    // 设置倒计时显示值
+    setCountDownTime(time) {
+      // 获取分、秒
+      let hou = parseInt((time % (60 * 60 * 24)) / 3600);
+      let min = parseInt(((time % (60 * 60 * 24)) % 3600) / 60);
+      let sec = parseInt(((time % (60 * 60 * 24)) % 3600) % 60);
+      if (hou > 0) {
+        min = hou * 60 + min;
+      }
+      this.countTime.minutes = this.timeFormat(min);
+      this.countTime.second = this.timeFormat(sec);
+    },
+    timeFormat(param) {
+      return param < 10 ? "0" + param : param;
+    },
     // 提交
     submitEntry() {
       this.$refs.entryForm.validate(valid => {

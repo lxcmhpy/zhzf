@@ -104,7 +104,13 @@
               </template>
               <template slot-scope="scope">
                 <p>
-                  <span class="exam-name">{{scope.row.examName}}</span>
+                  <span>
+                    <span v-if="scope.row.examStatus === '0'" class="exam-status" style="background: #E4E7ED">未开始</span> 
+                    <span v-if="scope.row.examStatus === '1'" class="exam-status" style="background:rgba(222,251,214,1);">考试中</span> 
+                    <span v-if="scope.row.examStatus === '2'" class="exam-status" style="background:rgba(255,245,203,1);">已结束</span> 
+                    <span v-if="scope.row.examStatus === '3'" class="exam-status" style="background:rgba(255,245,203,1);">评分结束</span> 
+                    <span class="exam-name">{{scope.row.examName}}</span>
+                  </span>
                 </p>
                 <p class="exam-info">
                   <span class="m-r-30">考试类型：{{scope.row.examTypeName}}</span>
@@ -124,7 +130,7 @@
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="getExamPersonInfo(scope.row,'0')">参考人员</el-button>
                   <el-button v-if="scope.row.isConfigOver === '1'" type="text" @click="getSendResultlInfo(scope.row,'0')">报送成绩</el-button>
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="roomDispathInfo(scope.row,'0')">考场分配</el-button>
-                  <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="scoreManageInfo(scope.row,'0')">评分人员</el-button>
+                  <el-button v-if="scope.row.isScoring === '0'" type="text" @click="scoreManageInfo(scope.row,'0')">评分人员</el-button>
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="disposeInfo(scope.row,'0')">配置完成</el-button>
                 </p>
               </template>
@@ -242,8 +248,8 @@ export default {
     },
     //新增人员信息
     addExamBatchInfo(row,type) {
-        this.$refs.addExamBatchCompRef.showModal(row, type);
-      },
+      this.$refs.addExamBatchCompRef.showModal(row, type);
+    },
       
     //选择试卷
     getViewPagelInfo(row, param) {
@@ -453,6 +459,12 @@ export default {
         padding: 15px 0;
         &.vertical-top{
           vertical-align: top;
+        }
+        .exam-status{
+          display: inline-block;
+          font-size: 15px;
+          padding: 0px 6px;
+          color: #000;
         }
         .exam-name{
           font-size:18px;

@@ -45,9 +45,7 @@
                   <vue-simple-verify ref="verify" :width='420' tips='向右滑动完成验证' @success="pass()" />
                 </el-form-item>
                 <div class="forgetPass">
-                  <el-collapse-transition>
                     <div v-show="errorMessage" class="error">{{errorMessage}}</div>
-                  </el-collapse-transition>
                 </div>
 
                 <div>
@@ -265,9 +263,11 @@ export default {
                   // _this.getCurrentUser();
                   _this.$util.initUser(_this);
                   _this.success = false;
-                  
+
                   //设置默认openTab
-                  this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
+                //   this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
+                  //设置是否签章
+                  this.$store.commit('setShowQZBtn', false)
               },
               // error => {
               //   console.log('error',error);
@@ -379,7 +379,7 @@ export default {
         }
       });
     },
-    
+
     //获取系统标题
     getSystemData() {
       getDictListDetailByNameApi('系统标题').then(res => {

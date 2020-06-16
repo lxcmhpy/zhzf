@@ -7,7 +7,7 @@
         :visible.sync="visible"
         @close="closeDialog"
         :close-on-click-modal="false"
-        width="61%"
+        width="68%"
       >
         <el-form
           class="search-form"
@@ -249,13 +249,18 @@ export default {
 .exam-page-dialog {
   >>> .el-dialog {
     min-width: 976px;
-    max-width: 1064px;
+    // max-width: 1064px;
   }
   >>> .el-dialog__body {
     padding-bottom: 20px;
   }
   >>>.el-table__body-wrapper{
     padding-bottom: 0;
+  }
+  >>>.el-table--scrollable-x .el-table__body-wrapper{
+    &::-webkit-scrollbar{
+      height: 12px;
+    }
   }
   .paginationBox {
     margin-top: 10px;

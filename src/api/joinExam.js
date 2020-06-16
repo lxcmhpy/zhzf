@@ -212,6 +212,29 @@ export function getPersonExamStatus(data){
   })
 }
 
+// 获取服务器时间
+export function getSystemDate(){
+  return request({
+    url: 'examLogin/getSystemDate',
+    method: "get",
+    baseUrlType: 'EXAM',
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 考生开始答题修改考生状态
+export function checkEntryExam(data){
+  return request({
+    url: 'personExamInfo/beginExamInfo',
+    method: "get",
+    baseUrlType: 'EXAM',
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
 /*************************** 阅卷Start ***************************/
 // 获取评分考试
 export function getWaitScoringExam(scorerId){

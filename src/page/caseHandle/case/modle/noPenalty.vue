@@ -102,6 +102,7 @@ import {
   findFileByIdApi,
   getFile,
   deleteFileByIdApi,
+  uploadEvdence
 } from "@/api/upload";
 export default {
   data() {
@@ -210,8 +211,11 @@ export default {
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append('caseId', this.caseId)
-      fd.append('docId', this.BASIC_DATA_SYS.noPenalty_caseLinktypeId);
-      uploadEvApi(fd).then(
+      fd.append('objectId', this.BASIC_DATA_SYS.noPenalty_caseLinktypeId);
+      fd.append("evName", param.file.name);
+      fd.append("evType", param.file.type);
+      console.log("111",this.BASIC_DATA_SYS.noPenalty_caseLinktypeId)
+      uploadEvdence(fd).then(
         res => {
           console.log(res);
           this.findFileList();
@@ -317,7 +321,8 @@ export default {
     this.findFileList();
   },
   beforeRouteLeave(to, from, next) {
-    if(!this.isSave){
+    // if(!this.isSave){
+    if(this.caseLinkDataForm.status == ''){
       this.deleteAllFile();
     }
     next(vm => {

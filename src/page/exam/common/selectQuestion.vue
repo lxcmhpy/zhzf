@@ -305,6 +305,7 @@ export default {
       this.pageSize = 10;
       this.totalPage = 0;
       this.tableData.splice(0, this.tableData.length);
+      this.$refs.outlineList.selectId = '';
       this.$refs["searchFormRef"].resetFields();
     }
   }
@@ -316,7 +317,7 @@ export default {
     padding: 0 20px;
   }
   .left-panel{
-    max-height: 520px;
+    max-height: 560px;
     padding: 20px;
     overflow-y: scroll;
     .departOrUserTree {

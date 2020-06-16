@@ -376,11 +376,6 @@ export default {
         illegalLaw: [
           { required: true, message: "立案依据不能为空", trigger: "blur" }
         ],
-        
-
-
-
-
       },
       nameLength: 23,
       adressLength: 23,
