@@ -16,7 +16,11 @@
         <!-- @row-click="handleNodeClick" -->
         <el-table :data="dataList" stripe resizable border style="width: 100%;height:100%;" row-key="id" >
           <el-table-column prop="orgName" label="机构名称" align="center"></el-table-column>
-          <el-table-column prop="twosore" label="分数" align="center"></el-table-column>
+          <el-table-column prop="caseNo" label="案卷编号" align="center"></el-table-column>
+          <el-table-column prop="businessArea" label="业务领域" align="center"></el-table-column>
+          <el-table-column prop="caseType" label="案卷类型" align="center"></el-table-column>
+          <el-table-column prop="oneScoreSum" label="初评分数" align="center"></el-table-column>
+          <el-table-column prop="twoScoreSum" label="复评分数" align="center"></el-table-column>
           <el-table-column prop="pfStatus" label="状态" :formatter="format"  align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="120">
             <template  slot-scope="scope">
@@ -30,7 +34,7 @@
 </template>
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {getOrgInfoByOrgId} from "@/api/appraisalExam.js";
+  import {getCaseInfoByOrgId} from "@/api/appraisalExam.js";
   import {findAllDepartment} from "@/api/catsAppraisalExamPersonUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
   export default {
@@ -46,10 +50,11 @@
       fetchData(){
         let data = {
           orgId: this.search.orgId,
-          assessType:"执法考试"
+          assessType:"案卷评查",
+          pfStatus:"1"
         };
         let _this = this
-        getOrgInfoByOrgId(data).then(res=>{
+        getCaseInfoByOrgId(data).then(res=>{
           if(res.code==200){
             _this.dataList = res.data;
           }
@@ -60,11 +65,8 @@
         this.fetchData();
       },
       openDialog(row){
-        let routerData = {
-          id: row.id,
-          url: this.$route.name
-        };
-        this.$router.push({ name: "catsAppraisalOnLineAdd", params: routerData });
+        row.url = this.$route.name
+        this.$router.push({ name: "catsAppraisalReGradeAdd", params: row });
       },
       format(row, column) {
         if (row.pfStatus === '0') {

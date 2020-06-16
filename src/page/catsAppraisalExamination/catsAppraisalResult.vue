@@ -46,6 +46,13 @@
         });
       },
       onPublic(){
+        const data =  this.dataList.find(item=>
+          (item.caseSore === null || item.selfSore === null || item.onLineSore === null
+          || item.offLineSore === null || item.psnSore === null))
+        if(data){
+          this.$message({type: "warning",message: "全部完成评分后才能发布"});
+          return
+        }
         publicResult().then(res=>{
           if(res.code==200){
             this.$message({type: "success",message: "发布成功!"});

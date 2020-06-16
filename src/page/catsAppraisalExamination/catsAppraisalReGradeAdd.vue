@@ -4,13 +4,22 @@
         <div class="handlePart" style="margin-left: 0px;">
         <div class="search">
           <el-form :inline="true" :model="form" ref="form">
-            <el-form-item label="检查名称">
-              <el-input v-model="form.batchName" :readonly="true"></el-input>
+            <el-form-item label="案卷编号">
+              <el-input v-model="form.caseNo" :readonly="true"></el-input>
             </el-form-item>
-            <el-form-item label="总分">
-              <el-input v-model="form.twosore" :readonly="true"></el-input>
+            <el-form-item label="执法类型">
+              <el-input v-model="form.caseType" :readonly="true"></el-input>
             </el-form-item>
-            <div v-if="form.pfStatus==='0'">
+            <el-form-item label="立案机构">
+              <el-input v-model="form.orgName" :readonly="true"></el-input>
+            </el-form-item>
+            <el-form-item label="初评总分">
+              <el-input v-model="form.oneScoreSum" :readonly="true"></el-input>
+            </el-form-item>
+            <el-form-item label="复评总分">
+              <el-input v-model="form.twoScoreSum" :readonly="true"></el-input>
+            </el-form-item>
+            <div v-if="form.pfStatus==='1'">
                 <el-form-item>
                 <el-button type="primary" size="medium" icon="el-icon-search" @click="commitData">提交</el-button>
                 </el-form-item>
@@ -20,7 +29,7 @@
       </div>
       <div class="tablePart">
         <el-table
-        :data="form.pykhScoreDetailsVos"
+        :data="pykhScoreDetailsVos"
         border
         :span-method="objectSpanMethod"
         style="width: 100%;">
@@ -42,7 +51,11 @@
                 label="单项分值">
             </el-table-column>
             <el-table-column
-                v-if="form.pfStatus==='0'"
+                prop="oneSore"
+                label="初评得分">
+            </el-table-column>
+            <el-table-column
+                v-if="form.pfStatus==='1'"
                 prop="twoSore"
                 label="得分">
                 <template slot-scope="scope" >
@@ -55,7 +68,7 @@
                 label="得分">
             </el-table-column>
             <el-table-column
-                v-if="form.pfStatus==='0'"
+                v-if="form.pfStatus==='1'"
                 prop="season"
                 label="扣分原因">
                 <template slot-scope="scope">
@@ -73,13 +86,14 @@
     </div>
 </template>
 <script>
-  import {getOrgInfoById,updateScore,updateScoreState} from "@/api/appraisalExam.js";
+  import {getCaseInfoDetailByPid,updateScore,updateScoreState} from "@/api/appraisalExam.js";
   import { mixinsCommon } from "@/common/js/mixinsCommon";
 export default {
     mixins: [mixinsCommon],
     data () {
         return {
             form:{},
+            pykhScoreDetailsVos:[],
             oldValue:""
         }
     },
@@ -118,7 +132,7 @@ export default {
       commitData(){
         const data = {
             id:this.form.id,
-            assessType:"执法考试",
+            assessType:"案卷评查",
             pfstatus:this.form.pfStatus
         }
         let _this = this
@@ -151,9 +165,10 @@ export default {
           this.oldValue=val
       },
       fetchData(){
-        getOrgInfoById(this.$route.params.id).then(
+        this.form = this.$route.params
+        getCaseInfoDetailByPid(this.$route.params.id).then(
             res => {
-                this.form = res.data
+                this.pykhScoreDetailsVos = res.data
             },
             err => {
                 console.log(err);

@@ -42,22 +42,34 @@ export default [
         title: "公告信息"
       },
       component: () => import("@/page/catsAppraisalExamination/noticeManage/noticeManage.vue")
-  }, {
+  },
+  {
     path: "/catsAppraisalExamination",
     name: "catsAppraisalExamination",
     meta: {
       title: "评议考核首页面"
     },
+    // component: () => import("@/page/catsAppraisalExamination/assessExtract/assessExtract.vue")
     component: () => import("@/page/catsAppraisalExamination/home.vue")
 
-}, {
-    path: "/assessExtract",
-    name: "assessExtract",
+}
+, {
+    path: "/personExtract",
+    name: "personExtract",
     meta: {
-      title: "抽取"
+      title: "人员抽取"
     },
-    component: () => import("@/page/catsAppraisalExamination/assessExtract/assessExtract.vue")
-  }, {
+    component: () => import("@/page/catsAppraisalExamination/assessExtract/personExtract.vue")
+  },{
+    path: "/caseExtract",
+    name: "caseExtract",
+    meta: {
+      title: "案件抽取"
+    },
+    component: () => import("@/page/catsAppraisalExamination/assessExtract/caseExtract.vue")
+  }
+
+  , {
     path: "/catsAppraisalSelf",
     name: "catsAppraisalSelf",
     meta: {
@@ -112,14 +124,14 @@ export default [
     meta: {
       title: "案卷复评"
     },
-    component: () => import("@/page/catsAppraisalExamination/catsAppraisalGrade.vue")
+    component: () => import("@/page/catsAppraisalExamination/catsAppraisalReGrade.vue")
   }, {
     path: "/catsAppraisalReGradeAdd",
     name: "catsAppraisalReGradeAdd",
     meta: {
       title: "案卷复评评分"
     },
-    component: () => import("@/page/catsAppraisalExamination/catsAppraisalGradeAdd.vue")
+    component: () => import("@/page/catsAppraisalExamination/catsAppraisalReGradeAdd.vue")
   }, {
     path: "/catsAppraisalResult",
     name: "catsAppraisalResult",

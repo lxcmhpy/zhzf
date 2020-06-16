@@ -51,7 +51,7 @@
               </div>
               <div class="flexBox">
                 <div class="con">
-                  <p>地址：{{curWindow.other.address}}</p>
+                  <p>机构名称：{{curWindow.other.organName}}</p>
                   <p>联系方式：{{curWindow.other.mobile}}</p>
                 </div>
                 <!-- <div class="status greenC2">
@@ -1824,6 +1824,7 @@ export default {
             item.select = false;
         })
         this.allSearchList.splice(0, this.allSearchList.length);
+        let _this = this;
         // this.radioVal = '全选';
         if (node.icon === 'icon_jc11' && node.label === '执法人员') {
             let params = {
@@ -1831,12 +1832,12 @@ export default {
                 organId: node.id,
                 type: 0
             }
-            let _this = this;
-            // debugger;
+            debugger;
             new Promise((resolve, reject) => {
-                // getOrganTree(params).then(
-                getOrganIdApi(params).then(
+                // getOrganIdApi({id: node.id}).then(
+                getOrganTree(params).then(
                     res => {
+                        debugger;
                         // _this.showTree = false;
                         let resultList = [];
                         res.data.forEach((v,i)=>{
@@ -1871,19 +1872,20 @@ export default {
                                 other: v
                             })
                         })
+                         this.category = 0;
                         _this.onSearchResult(resultList, 0,0);
                         _this.errorMsg(`总计${res.data.length}条数据`, 'success');
                 })
             })
 
 
-         } else if (node.icon === 'icon_jc1') {
+        } else if (node.icon === 'icon_jc1') {
              this.category = 1;
-            let _this = this;
-            // debugger;
+            debugger;
             new Promise((resolve, reject) => {
-                getOrganDetailApi(node.id).then(
+                getOrganDetailApi({id:node.id}).then(
                     res => {
+                        debugger;
                         // _this.showTree = false;
                             let resultList = [];
                             let v = res.data;
@@ -1913,11 +1915,11 @@ export default {
                                 position: [lng, lat],
                                 shopinfo: '',
                                 tel: '',
-                                type: '0',
+                                type: '1',
                                 other: v
                             })
-                        _this.onSearchResult(resultList, 0,0);
-                        _this.errorMsg(`总计${res.data.length}条数据`, 'success');
+                        _this.onSearchResult(resultList, 1,0);
+                        _this.errorMsg(`总计1条数据`, 'success');
                     })
                 })
 
@@ -1954,6 +1956,18 @@ export default {
 
             //     }
             // )
+        } else if (node.label === '执法车辆') {
+            this.getZfjgLawSupervise({
+                key: '',
+                size: 20,
+                type: 2
+            }, 2);
+        } else if (node.label === '执法船舶') {
+            this.getZfjgLawSupervise({
+                key: '',
+                size: 20,
+                type: 3
+            }, 3);
         }
         // if (node.icon === 'icon_jc11' && node.name !== '执法人员') {
 
@@ -2048,11 +2062,8 @@ export default {
         })
     },
     routerXsDetail (row) {
-        debugger;
-        let status = '0';
-          switch (row.status) {
-            case '待审核':
-                this.$router.push({
+        // debugger;
+         this.$router.push({
                     name: 'law_supervise_examineDoingDetail',
                     params: {
                         status: '0',
@@ -2060,44 +2071,55 @@ export default {
                         offSiteManageId: row.id
                     }
                 });
-                break;
-            case '无效信息':
-                this.$router.push({
-                    name: 'law_supervise_invalidCueDetail',
-                    params: {
-                        offSiteManageId: row.id
-                    }
-                });
-                break;
-            case '审核中':
-                this.$router.push({
-                    name: 'law_supervise_examineDoingDetail',
-                    params: {
-                        status: '1',
-                        tabTitle: '审核中',
-                        offSiteManageId: row.id
-                    }
-                });
-                break;
-            case '已转办':
-                this.$router.push({
-                    name: 'law_supervise_transferDetail',
-                    params: {
-                        offSiteManageId: row.id
-                    }
-                });
-                break;
-            case '已审核':
-                this.$router.push({
-                    name: 'law_supervise_examineDoingDetail',
-                    params: {
-                        status: '3',
-                        tabTitle: '已审核',
-                        offSiteManageId: row.id
-                    }
-                });
-                break;
-        }
+        // let status = '0';
+        //   switch (row.status) {
+        //     case '待审核':
+        //         this.$router.push({
+        //             name: 'law_supervise_examineDoingDetail',
+        //             params: {
+        //                 status: '0',
+        //                 tabTitle: '待审核',
+        //                 offSiteManageId: row.id
+        //             }
+        //         });
+        //         break;
+        //     case '无效信息':
+        //         this.$router.push({
+        //             name: 'law_supervise_invalidCueDetail',
+        //             params: {
+        //                 offSiteManageId: row.id
+        //             }
+        //         });
+        //         break;
+        //     case '审核中':
+        //         this.$router.push({
+        //             name: 'law_supervise_examineDoingDetail',
+        //             params: {
+        //                 status: '1',
+        //                 tabTitle: '审核中',
+        //                 offSiteManageId: row.id
+        //             }
+        //         });
+        //         break;
+        //     case '已转办':
+        //         this.$router.push({
+        //             name: 'law_supervise_transferDetail',
+        //             params: {
+        //                 offSiteManageId: row.id
+        //             }
+        //         });
+        //         break;
+        //     case '已审核':
+        //         this.$router.push({
+        //             name: 'law_supervise_examineDoingDetail',
+        //             params: {
+        //                 status: '3',
+        //                 tabTitle: '已审核',
+        //                 offSiteManageId: row.id
+        //             }
+        //         });
+        //         break;
+        // }
 
     },
     positionEvent (row, category) {
@@ -2126,12 +2148,12 @@ export default {
                     let resultList = []
                     if (res.data) {
                         _this.errorMsg(`总计1条数据`, 'success');
-                        let position = res.data.position ? res.data.position.split(','):['',''];
+                        let position = res.data.propertyValue ? res.data.propertyValue.split(','):['',''];
                         let lng = parseFloat(position[0]);
                         let lat = parseFloat(position[1]);
                         // _this.category = type;
                         resultList.push({
-                            address: res.data.area,
+                            address: res.data.address,
                             distance: null,
                             id: res.data.id,
                             lat: lat,
@@ -2142,7 +2164,7 @@ export default {
                                 lat: lat,
                                 lng: lng
                             },
-                            name: res.data.vehicleNumber,
+                            name: res.data.name,
                             shopinfo: '',
                             tel: '',
                             type: type,
@@ -2154,7 +2176,7 @@ export default {
 
                     // _this.allSearchList.push(data);
                     // _this.getZfjgLawSupervise(data, this.category);
-                    _this.onSearchResult(resultList, 4,  _this.windows.length)
+                    _this.onSearchResult(resultList, 4,  0)
                 },
                 error => {
                     //  _this.errorMsg(error.toString(), 'error')
@@ -2380,6 +2402,14 @@ export default {
                             that.curWindow.other.id,
                             that.curWindow.other
                             );
+                        } else if(category == 0) {
+                              new Promise((resolve, reject) => {
+                                  getOrganIdApi({id: that.curWindow.other.id}).then(
+                                      res => {
+                                        _this.$set(_this.curWindow.other, 'address', res.data.address);
+                                    });
+
+                              })
                         }
                         that.curWindow.visible = true;
                       });
@@ -2490,6 +2520,7 @@ export default {
         } else {
             this.getZfjgLawSupervise(data, this.category);
         }
+
       } else {
         let _this = this;
         let _index = _.findIndex(this.allSearchList, function (chr) {
@@ -2544,16 +2575,18 @@ export default {
         getZfjgLawSupervise(data).then(
           res => {
             // resolve(res);
+            debugger;
             let resultList = [];
             if (res.data && res.data.length == 0) {
               _this.errorMsg("暂无数据", "error");
               // return
             } else {
               _this.errorMsg(
-                `查询到${res.data.length?res.data.length:0}条数据`,
+                `查询到${res.data?res.data.length:0}条数据`,
                 "success"
               );
             }
+            debugger;
             res.data.forEach((item, i) => {
             //   let position = item.position.split(",");
             //   let lng = parseFloat(position[0]);

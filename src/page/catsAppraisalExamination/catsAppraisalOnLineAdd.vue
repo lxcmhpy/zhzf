@@ -126,6 +126,9 @@ export default {
             res => {
                 _this.$message({type: "success",message: "提交成功!"});
                 _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+                _this.$router.push({
+                    name: this.$route.params.url
+                });
             },
             err => {
                 console.log(err);

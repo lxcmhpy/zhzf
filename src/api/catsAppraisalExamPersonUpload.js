@@ -75,3 +75,26 @@ export function deletePykhStaff (data) {
   })
 }
 
+// 随机抽取
+export function randomSamplingStaffByPage (oId,batchId) {
+  return request({
+    url: "/pykh/randomSampling/randomSamplingStaffByPage/"+oId+"/"+batchId,
+    method: "get",
+    showloading: false,
+    baseUrlType:'CAPTCHA_HOST',
+    params: null,
+    cancelToken: setCancelSource()
+  })
+}
+
+//省级提交最终人员(剩下未抽取到的人员id)
+export function submitProStaff (data,oId) {
+  return request({
+    url: "/pykh/randomSampling/submitProStaff/"+oId,
+    method: "get",
+    showloading: false,
+    baseUrlType:'CAPTCHA_HOST',
+    params: data,
+    cancelToken: setCancelSource()
+  })
+}
