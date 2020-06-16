@@ -1834,8 +1834,8 @@ export default {
             }
             debugger;
             new Promise((resolve, reject) => {
-                getOrganIdApi({id: node.id}).then(
-                    // getOrganTree(params).then(
+                // getOrganIdApi({id: node.id}).then(
+                getOrganTree(params).then(
                     res => {
                         debugger;
                         // _this.showTree = false;
@@ -2394,6 +2394,14 @@ export default {
                             that.curWindow.other.id,
                             that.curWindow.other
                             );
+                        } else if(category == 0) {
+                              new Promise((resolve, reject) => {
+                                  getOrganIdApi({id: that.curWindow.other.id}).then(
+                                      res => {
+                                        _this.$set(_this.curWindow.other, 'address', res.data.address);
+                                    });
+
+                              })
                         }
                         that.curWindow.visible = true;
                       });
