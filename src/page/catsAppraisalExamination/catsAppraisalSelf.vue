@@ -19,12 +19,68 @@
         </div>
       </div>
       <div class="tablePart">
-        <el-table
+                  <el-table
         :data="form.pykhScoreDetailsVos"
         border
         :span-method="objectSpanMethod"
         style="width: 100%;">
-        <!--  -->
+            <el-table-column
+            width="100px"
+                prop="indexOne"
+                label="一级指标">
+            </el-table-column>
+             <el-table-column type="expand" >
+                  <template slot-scope="scope1">
+                      <div>
+                        {{scope1.row.indexTwo}}
+
+                    </div>
+                  </template>
+             </el-table-column>
+            <!-- <el-table-column
+                prop="indexTwo"
+                label="二级指标">
+            </el-table-column>
+            <el-table-column
+                prop="nrxm"
+                label="评查内容">
+            </el-table-column>
+            <el-table-column
+                prop="score"
+                label="单项分值">
+            </el-table-column>
+            <el-table-column
+                v-if="form.pfStatus==='0'"
+                prop="twoSore"
+                label="得分">
+                <template slot-scope="scope" >
+                    <el-input v-model="scope.row.twoSore" @blur="saveRecord(scope.row,'twoSore')" @focus="getOldValue(scope.row.twoSore)" ></el-input>
+                </template>
+            </el-table-column>
+            <el-table-column
+                v-else
+                prop="twoSore"
+                label="得分">
+            </el-table-column>
+            <el-table-column
+                v-if="form.pfStatus==='0'"
+                prop="season"
+                label="扣分原因">
+                <template slot-scope="scope">
+                    <el-input v-model="scope.row.season" @blur="saveRecord(scope.row,'season')"  @focus="getOldValue(scope.row.season)"></el-input>
+                </template>
+            </el-table-column>
+            <el-table-column
+                v-else
+                prop="season"
+                label="扣分原因">
+            </el-table-column> -->
+        </el-table>
+        <!-- <el-table
+        :data="form.pykhScoreDetailsVos"
+        border
+        :span-method="objectSpanMethod"
+        style="width: 100%;">
             <el-table-column
                 prop="indexOne"
                 label="一级指标">
@@ -67,7 +123,7 @@
                 prop="season"
                 label="扣分原因">
             </el-table-column>
-        </el-table>
+        </el-table> -->
       </div>
     </div>
     </div>
@@ -136,7 +192,7 @@ export default {
           if(this.oldValue !== row[key]){
             updateScore(row).then(
                 res => {
-                    
+
                 },
                 err => {
                     console.log(err);
