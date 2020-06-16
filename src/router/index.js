@@ -49,7 +49,7 @@ router.beforeEach((to, from, next) => {
         } else {
             if(sessionStorage.getItem('LoginSystem')){
                     // 考试人员子系统
-                store.commit('CLEAR_ALL_CACHE');
+                // store.commit('CLEAR_ALL_CACHE');
                 next({name: 'examLogin'});
             }else{
                 store.commit('CLEAR_ALL_CACHE');

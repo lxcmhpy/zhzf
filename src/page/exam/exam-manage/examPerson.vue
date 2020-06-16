@@ -84,7 +84,7 @@
             v-loading="tableLoading"
             element-loading-spinner="car-loading"
             element-loading-text="加载中..."
-            max-height="300px"
+            max-height="320px"
             >
             <el-table-column type="selection" label align="center" width="40px"></el-table-column>
             <el-table-column prop="personName" label="姓名" align="left" min-width="100px"></el-table-column>
@@ -268,8 +268,11 @@ export default {
     margin-top: 10px;
     text-align: center;
     >>>.el-input__inner{
-      height: 28px;
-      line-height: 28px;
+      height: 32px;
+      line-height: 32px;
+    }
+    >>>.el-select{
+      margin-right: 0;;
     }
   }
   .person-table{
