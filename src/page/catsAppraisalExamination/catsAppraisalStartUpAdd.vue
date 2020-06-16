@@ -275,17 +275,38 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let tableData = [];
+          if(_this.dataList1.length===0){
+            _this.$message({
+              type: "warning",
+              message: "请填写案卷评查配置"
+            });
+            return;
+          } 
+          if(_this.dataList2.length===0){
+            _this.$message({
+              type: "warning",
+              message: "请填写自查自评配置"
+            });
+            return;
+          }
+          if(_this.dataList3.length===0){
+            _this.$message({
+              type: "warning",
+              message: "请填写网上评查配置"
+            });
+            return;
+          }
+          if(_this.dataList4.length===0){
+            _this.$message({
+              type: "warning",
+              message: "请填写现场检查配置"
+            });
+            return;
+          } 
           tableData = _this.dataList1
             .concat(_this.dataList2)
             .concat(_this.dataList3)
             .concat(_this.dataList4);
-          if(tableData.length===0){
-            _this.$message({
-              type: "warning",
-              message: "请输入配置页签"
-            });
-            return;
-          }  
           let errorData =  tableData.filter(item=>{if(item.score==="" || item.score=== undefined){return item}});
           if(errorData.length > 0){
             _this.$message({

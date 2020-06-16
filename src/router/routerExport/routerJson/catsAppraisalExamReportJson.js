@@ -112,14 +112,14 @@ export default [
     meta: {
       title: "案卷复评"
     },
-    component: () => import("@/page/catsAppraisalExamination/catsAppraisalGrade.vue")
+    component: () => import("@/page/catsAppraisalExamination/catsAppraisalReGrade.vue")
   }, {
     path: "/catsAppraisalReGradeAdd",
     name: "catsAppraisalReGradeAdd",
     meta: {
       title: "案卷复评评分"
     },
-    component: () => import("@/page/catsAppraisalExamination/catsAppraisalGradeAdd.vue")
+    component: () => import("@/page/catsAppraisalExamination/catsAppraisalReGradeAdd.vue")
   }, {
     path: "/catsAppraisalResult",
     name: "catsAppraisalResult",

@@ -61,6 +61,7 @@ import { mapGetters } from "vuex";
       menu(val){
         this.headMenuList = this.menu;
         this.$store.commit("set_Head_Active_Nav", this.headActiveNav);
+        this.$emit("selectHeadMenu",  this.headActiveNav);
       }
     }
   };
