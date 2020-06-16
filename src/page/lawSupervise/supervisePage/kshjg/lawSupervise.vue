@@ -79,9 +79,9 @@
               <div class="flexBox">
                 <div class="con">
                   <p>地址：{{curWindow.other.address}}</p>
-                  <p>联系人：{{curWindow.other.contact}}</p>
+                  <p>联系人：{{curWindow.other.contactor}}</p>
                   <!-- <p>{{JSON.stringify(curWindow)}}</p> -->
-                  <p>联系方式：{{curWindow.other.phone}}</p>
+                  <p>联系方式：{{curWindow.other.telephone}}</p>
                 </div>
                 <div class="status">
                   <!-- <i class="iconfont law-mobile-phone"></i>
@@ -1209,6 +1209,7 @@ import echarts from "echarts";
 // import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
 import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage} from "@/api/lawSupervise.js";
+import {getOrganDetailApi,getOrganIdApi}  from "@/api/system.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 import lunarDate from '@/common/js/lunarDate.js';
@@ -1558,7 +1559,7 @@ export default {
               ]
           }
       ],
-      lawScreenFull: false,
+      lawScreenFull: true,
       videoDoing: null,
       showVideo: false,
       show: true,
@@ -1735,7 +1736,7 @@ export default {
             this.organTreeByCurrUser(this.userInfo.organId);
         } else {
             let params = {
-                name: this.filterText,
+                key: this.filterText,
                     organId: this.userInfo.organId,
                     type: this.isCheck ? 0: 1
                 }
@@ -1817,11 +1818,13 @@ export default {
         this.areaObj = key;
     },
     handleNodeClick (node) {
+        debugger;
         this.markers.splice(0, this.markers.length);
         this.tabList[0].children.forEach((item)=>{
             item.select = false;
         })
         this.allSearchList.splice(0, this.allSearchList.length);
+        let _this = this;
         // this.radioVal = '全选';
         if (node.icon === 'icon_jc11' && node.label === '执法人员') {
             let params = {
@@ -1829,11 +1832,12 @@ export default {
                 organId: node.id,
                 type: 0
             }
-            let _this = this;
-            // debugger;
+            debugger;
             new Promise((resolve, reject) => {
-                getOrganTree(params).then(
+                getOrganIdApi({id: node.id}).then(
+                    // getOrganTree(params).then(
                     res => {
+                        debugger;
                         // _this.showTree = false;
                         let resultList = [];
                         res.data.forEach((v,i)=>{
@@ -1868,13 +1872,58 @@ export default {
                                 other: v
                             })
                         })
+                         this.category = 0;
                         _this.onSearchResult(resultList, 0,0);
                         _this.errorMsg(`总计${res.data.length}条数据`, 'success');
                 })
             })
 
 
-         } else if (node.propertyValue){
+        } else if (node.icon === 'icon_jc1') {
+             this.category = 1;
+            debugger;
+            new Promise((resolve, reject) => {
+                getOrganDetailApi({id:node.id}).then(
+                    res => {
+                        debugger;
+                        // _this.showTree = false;
+                            let resultList = [];
+                            let v = res.data;
+                            let position = node.propertyValue ? node.propertyValue.split(','):['',''];
+                            let lng = parseFloat(position[0]);
+                            let lat = parseFloat(position[1]);
+                            // let lng = v.longitude?v.longitude: '';
+                            // let lat = v.latitude?v.latitude: '';
+                            resultList.push({
+                                address: v.address,
+                                distance: null,
+                                id: v.id,
+                                lat: lat,
+                                lng: lng,
+                                icon: 'icon_jc11',
+                                // icons: 'ry',
+                                pid: v.organId,
+                                location: {
+                                    O: lng,
+                                    P: lat,
+                                    lat: lat,
+                                    lng: lng
+                                },
+                                name: v.name,
+                                label: v.nickName,
+                                // position: v.propertyValue,
+                                position: [lng, lat],
+                                shopinfo: '',
+                                tel: '',
+                                type: '1',
+                                other: v
+                            })
+                        _this.onSearchResult(resultList, 1,0);
+                        _this.errorMsg(`总计${res.data.length}条数据`, 'success');
+                    })
+                })
+
+          } else if (node.propertyValue){
 
             let resultList = [];
             let position = node.propertyValue ? node.propertyValue.split(','):['',''];
@@ -1907,6 +1956,18 @@ export default {
 
             //     }
             // )
+        } else if (node.label === '执法车辆') {
+            this.getZfjgLawSupervise({
+                key: '',
+                size: 20,
+                type: 2
+            }, 2);
+        } else if (node.label === '执法船舶') {
+            this.getZfjgLawSupervise({
+                key: '',
+                size: 20,
+                type: 3
+            }, 3);
         }
         // if (node.icon === 'icon_jc11' && node.name !== '执法人员') {
 
@@ -2207,7 +2268,8 @@ export default {
                     res => {
                         // resolve(res);
                         let resultList = [];
-                        that[obj] = res.data.records.splice(0,5);
+                        // that[obj] = res.data.records.splice(0,5);
+                        that[obj] = res.data.splice(0,5);
                     },
                     error => {
                         //  _this.errorMsg(error.toString(), 'error')
@@ -2221,7 +2283,7 @@ export default {
             this.curWindow.visible = false;
         }
         // 进入页面加载查询所有初始数据
-        let _this = this;
+        let that = this;
         new Promise((resolve, reject) => {
                 queryAlarmVehiclePage({current:1}).then(
                     res => {
@@ -2389,7 +2451,11 @@ export default {
             type: item.code
             };
             this.allSearchList.push(data);
-            this.getZfjgLawSupervise(data, this.category);
+            if (this.category == 4) {
+                this.searchPageAllGJ(data, this.category);
+            } else {
+                this.getZfjgLawSupervise(data, this.category);
+            }
         } else {
             let _this = this;
             let _index = _.findIndex(this.allSearchList, function (chr) {
@@ -2406,6 +2472,7 @@ export default {
         }
     },
     searchByTab(item) {
+        debugger;
         if (this.allSearchList.length == 0) {
         this.markers.splice(0, this.markers.length);
         }
@@ -2432,7 +2499,12 @@ export default {
           type: item.code
         };
         this.allSearchList.push(data);
-        this.getZfjgLawSupervise(data, this.category);
+         if (this.category == 4) {
+                this.searchPageAllGJ(data, this.category);
+        } else {
+            this.getZfjgLawSupervise(data, this.category);
+        }
+
       } else {
         let _this = this;
         let _index = _.findIndex(this.allSearchList, function (chr) {
@@ -2497,6 +2569,7 @@ export default {
                 "success"
               );
             }
+            debugger;
             res.data.forEach((item, i) => {
             //   let position = item.position.split(",");
             //   let lng = parseFloat(position[0]);

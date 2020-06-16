@@ -105,8 +105,8 @@ export default {
       // openKeys: ["sub1"],
       // collapsed: false,
       // avatar: Cookies.get("avatar")
-      userInfo: iLocalStroage.gets('userInfo'),
-      selectedHeadMenu: 'lawSupervise-menu-law_supervise_lawSupervise'   //接收headMenu传来的选中的一级菜单
+      userInfo: null,
+      selectedHeadMenu: null   //接收headMenu传来的选中的一级菜单
     };
   },
   components: {
@@ -116,7 +116,7 @@ export default {
     mainContent
   },
   computed: {
-    ...mapGetters(['systemTitle'])
+    ...mapGetters(['systemTitle','headActiveNav'])
   },
   inject: ["reload"],
   methods: {
@@ -172,6 +172,8 @@ export default {
   },
   mounted() {
     console.log(this.userInfo)
+    this.selectedHeadMenu = this.headActiveNav;
+    this.userInfo = iLocalStroage.gets('userInfo');
   },
   created(){
     //判断有没有menu

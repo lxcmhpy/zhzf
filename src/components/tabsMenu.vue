@@ -21,7 +21,7 @@ export default {
   name: "",
   data() {
     return {
-        activeIndexStr: 'law_supervise_lawSupervise',
+        activeIndexStr: '',
         openTabList: [],
         tabsNameList: {
             law_supervise_: '',
@@ -59,9 +59,10 @@ export default {
     //移除tab标签
     tabRemove(targetName) {
       //首页不删
-    //   if (targetName == "case_handle_home_index") {
-    //     return;
-    //   }
+      let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');
+      if (targetName == routerName) {
+        return;
+      }
       this.$store.dispatch("deleteTabs", targetName);
       if (this.activeIndexSto === targetName) {
         // 设置当前激活的路由
@@ -76,7 +77,8 @@ export default {
             this.$router.push(({ name: 'reloadPage',params: route}));
         } else {
         //   this.$router.push({ name: "case_handle_home_index" });
-             this.$router.push({ name: "law_supervise_lawSupervise" });
+
+            this.$router.push({ name: routerName });
         }
       }
     },
@@ -93,11 +95,12 @@ export default {
         return tabsCode;
     },
     init () {
-        if (this.$route.path !== "/" && this.$route.name !== "law_supervise_lawSupervise") {
+        let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');
+        if (this.$route.path !== "/" && this.$route.name !== routerName) {
             this.activeIndexStr = this.activeIndexSto;
         } else {
-            this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
-            this.$store.commit("set_Head_Active_Nav", "lawSupervise-menu-law_supervise_lawSupervise");
+            this.$store.commit("SET_ACTIVE_INDEX_STO", routerName);
+            this.$store.commit("set_Head_Active_Nav", routerName);
         }
     }
   },
