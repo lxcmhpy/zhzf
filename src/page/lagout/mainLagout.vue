@@ -31,7 +31,7 @@
                 </li>
 
               </div>
-              <div class="info_center">
+              <div class="info_center" v-if="userInfo">
                 <el-form ref="form" label-width="72px">
                   <el-form-item label="手机号码：">
                     {{userInfo.mobile}}
