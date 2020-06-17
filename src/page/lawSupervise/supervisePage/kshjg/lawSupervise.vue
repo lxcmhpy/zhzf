@@ -1702,7 +1702,7 @@ export default {
       fxcObj: null,
       expandTree:false,
       userInfo: null,
-      ryList: []
+      ryList: null
     };
   },
   methods: {
@@ -2789,7 +2789,8 @@ export default {
     // this.updateDrawer();
   },
   created () {
-    this.searchPageAll(6, 'gjclList');
+    // this.searchPageAll(6, 'gjclList');
+    this.searchPageAllGJ(6, 'gjclList');
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {

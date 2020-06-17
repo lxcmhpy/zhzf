@@ -35,8 +35,11 @@
                     <span class="title fontGray">应用平台</span>
                 </div>
                 <ul class="menuList">
-                    <li :class="item.icon" v-for="(item, index) in menuList" :key="index"  @click="clickMenu(item)">
-                        <div class="menuBox"></div>
+                    <li v-for="(item, index) in menuList" :key="index"  @click="clickMenu(item)">
+                        <!-- <div class="menuBox"></div> -->
+                        <img width="66px" height="66px" onerror="this.src='./static/images/img/catsAppraisalExamination/icon_bscl-style.png'"
+                                    :src="'./static/images/img/catsAppraisalExamination/icon_'+item.icon+'_on.png'">
+                                    <!--  -->
                         <div class="text">{{item.title}}</div>
                     </li>
                 </ul>

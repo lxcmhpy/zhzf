@@ -5,6 +5,7 @@ let vm = new Vue();
 
 import request from "@/common/js/request";
 import { setCancelSource } from "@/common/js/cancelToken";
+import da from "element-ui/src/locale/lang/da";
 
 // 根据条件分页查询人员列表
 export function findPykhStaffByPage (data) {
@@ -91,7 +92,7 @@ export function randomSamplingStaffByPage (oId,batchId) {
 export function submitProStaff (data) {
   return request({
     url: "/pykh/randomSampling/submitProStaff",
-    method: "get",
+    method: "post",
     showloading: false,
     baseUrlType:'CAPTCHA_HOST',
     params: data,
