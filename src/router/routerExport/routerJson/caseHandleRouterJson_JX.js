@@ -184,5 +184,53 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/forceCorrect_JX.vue")
   },
+  {
+    path: "/deliveryConfirmDoc",
+    name: "case_handle_deliveryConfirmDoc",
+    meta: {
+      title: "执法文书送达地址确认书"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/deliveryConfirmDoc.vue")
+  },
+  {
+    path: "/enforceDecideDoc_JX",
+    name: "case_handle_enforceDecideDoc_JX",
+    meta: {
+      title: "行政强制执行决定书-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/enforceDecideDoc_JX.vue")
+  },
+  {
+    path: "/finishCaseReport_JX",
+    name: "case_handle_finishCaseReport_JX",
+    meta: {
+      title: "结案报告-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/finishCaseReport_JX.vue")
+  },
+  {
+    path: "/spotAdmPunishDecisionDoc_JX",
+    name: "case_handle_spotAdmPunishDecisionDoc_JX",
+    meta: {
+      title: "当场行政处罚决定书-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/spotAdmPunishDecisionDoc_JX.vue")
+  },
+  {
+    path: "/punishDecisionDoc_JX",
+    name: "case_handle_punishDecisionDoc_JX",
+    meta: {
+      title: "行政处罚决定书-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/punishDecisionDoc_JX.vue")
+  },
+  {
+    path: "/caseInvestigReport_JX",
+    name: "case_handle_caseInvestigReport_JX",
+    meta: {
+      title: "案件调查报告-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/caseInvestigReport_JX.vue")
+  },
 ]
 

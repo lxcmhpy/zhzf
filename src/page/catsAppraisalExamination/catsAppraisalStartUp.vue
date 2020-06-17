@@ -55,7 +55,7 @@
 </template>
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhBatchByPage,deletePykhBatchById} from "@/api/catsAppraisalStartUp.js";
+  import {findPykhBatchByPage,deletePykhBatchById,getCurrentBatchId} from "@/api/catsAppraisalStartUp.js";
   import iLocalStroage from '@/common/js/localStroage';
   export default {
     mixins: [mixinsCommon],
@@ -98,10 +98,24 @@
         this.fetchData();
       },
       add_openDialog(){
-        let routerData = {
-          type: "0"
-        };
-        this.$router.push({ name: "catsAppraisalStartUpAdd", params: routerData });
+        let _this = this
+        getCurrentBatchId().then(res=>{
+          if(res.code==200){
+            if(res.data===null){
+              let routerData = {
+                type: "0",
+                url: this.$route.name
+              };
+              _this.$router.push({ name: "catsAppraisalStartUpAdd", params: routerData });
+            }else{
+               _this.$message({
+                type: "warning",
+                message: "本年已发起考核,不能重复发起"
+              });
+              return
+            }
+          }
+        })
       },
       update_openDialog(data){
         data.type = "1"

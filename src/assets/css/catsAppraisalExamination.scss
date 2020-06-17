@@ -35,6 +35,9 @@
                     line-height:30px
                }
            }
+           .list {
+               height: 440px;
+           }
        }
        .leftBox {
            flex: 1;
@@ -51,6 +54,7 @@
             font-size: 16px;
             margin-left: 20px;
             margin-bottom: 20px;
+            height: 210px;
             li {
                 display: block;
                 line-height: 40px;
@@ -255,7 +259,7 @@
     margin: 28px;
     .com_searchPage_top.com_extract_top {
         background: none;
-        top: 118px;
+        top: 200px;
         width: calc(100%-28px);
         .extractOrgan {
             padding: 22px;
@@ -305,7 +309,7 @@
             flex:1;
             .transfer-list {
                 li {
-                    width: 100px;
+                    width: 200px;
                     overflow:hidden;
                     float:left;
                     margin:0 20px;

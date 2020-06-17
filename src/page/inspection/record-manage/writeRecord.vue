@@ -17,9 +17,10 @@
         <span class="change_title_icon">二维码<i class="iconfont law-erweima" style="font-size:14px;margin-left:4px"></i></span>
 
       </div>
-      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options">
+      <!-- {{rule}} -->
+      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty">
       </form-create>
-      <uploadTmp></uploadTmp>
+      <uploadTmp :recordMsg='recordMsg'></uploadTmp>
       <!-- 悬浮按钮 -->
       <div class="float-btns btn-height63">
         <el-button type="success" @click="edit()" v-if="addOrEiditFlag=='view'">
@@ -83,7 +84,12 @@ export default {
       isChangeModle: false,
       options: {
         submitBtn: false,
+        form: {
+          labelWidth: '240px',
+          disabled: false,
+        }
       },
+      recordMsg:''
     }
   },
   components: {
@@ -208,6 +214,7 @@ export default {
             // console.log(res)
             if (res.code == 200) {
               this.addOrEiditFlag = 'view'
+              this.recordMsg=res.data;//根据返回id上传文件
               this.$message({
                 type: "success",
                 message: res.msg
@@ -384,7 +391,7 @@ export default {
             item.type = 'input';
             this.rule.push({
               type: 'input',
-              field: item.id,
+              field: item.id||item.field,//id用于传值，field用于预览
               title: item.title,
               props: {
                 type: 'text',
@@ -404,7 +411,7 @@ export default {
             });
             this.rule.push({
               type: "select",
-              field: item.id,
+              field: item.id||item.field,
               title: item.title,
               options: item.options,
               validate: [{
@@ -422,7 +429,7 @@ export default {
             });
             this.rule.push({
               type: "radio",
-              field: item.id,
+              field: item.id||item.field,
               title: item.title,
               options: item.options,
               value: item.text,
@@ -439,9 +446,10 @@ export default {
             item.options.forEach(option => {
               option.label = option.value
             });
+            debugger
             this.rule.push({
               type: "checkbox",
-              field: item.id,
+              field: item.id||item.field,
               title: item.title,
               options: item.options,
               value: item.text ? item.text.split(',') : [],
@@ -455,7 +463,7 @@ export default {
             if (item.options[0].value == 'HH:mm') {
               this.rule.push({
                 type: "TimePicker",
-                field: item.id,
+                field: item.id||item.field,
                 title: item.title,
                 value: item.text || [new Date()],
                 props: {
@@ -471,7 +479,7 @@ export default {
             } else {
               this.rule.push({
                 type: "DatePicker",
-                field: item.id,
+                field: item.id||item.field,
                 title: item.title,
                 value: item.text || [new Date()],
                 props: {
@@ -489,7 +497,7 @@ export default {
           } else if (item.type == '数字型') {
             this.rule.push({
               type: "InputNumber",
-              field: item.id,
+              field: item.id||item.field,
               title: item.title,
               value: item.text || 1,
               props: {

@@ -161,7 +161,7 @@ export function findRecordModleByNameIdApi(data) {
 //查询所有模板名称
 export function findAllModleNameApi(data) {
     return request({
-        url: "/xzjc/template/queryAlltemplateName",
+        url: "/xzjc/template/queryAlltemplateName/"+data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',

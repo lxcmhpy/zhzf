@@ -11,14 +11,12 @@
                 <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @expand-change="load"
                 row-key="id" :expand-row-keys="expandList" current-row-key="id">
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-                    <el-table-column prop="indexOne" label="一级考核指标" align="center" width="150"></el-table-column>
-                    <el-table-column type="expand" width="150">
-                        <template slot="header" >
-                            二级考核指标
-                            <!-- <el-link type="primary" v-on:click="fold" style="float:right;"> 查看 </el-link> -->
-                        </template>
+                    <el-table-column type="expand" width="45">
+                        <!-- <template slot="header" >
+                            二级
+                        </template> -->
                         <template slot-scope="scope">
-                        <div style="padding:0px 35px 35px 35px;min-width:620px;">
+                        <div style="padding:0px 35px 35px 45px;min-width:620px;">
                             <div class="handlePart" style="margin: 8px 0px 8px 0px;">
                                 <el-button type="primary" size="medium" @click="addZbConfig(scope.row)">
                                     <i class="iconfont law-submit-o f12"></i> 添加二级考核指标
@@ -27,14 +25,12 @@
                             <div style="border: 1px solid #f4f4f4;" v-if="zbList.length>0">
                                 <el-table class="xzList" :data="zbList" stripe resizable border style="height:100%;"
                                  @expand-change="loadXzList" row-key="id" :expand-row-keys="expandXzList" current-row-key="id">
-                                    <el-table-column prop="indexTwo" label="二级考核指标" align="center" ></el-table-column>
-                                     <el-table-column type="expand" width="150">
-                                        <template slot="header" >
+                                     <el-table-column type="expand" width="45">
+                                        <!-- <template slot="header" >
                                             考评细则
-                                            <!-- <el-link type="primary" v-on:click="fold" style="float:right;"> 查看 </el-link> -->
-                                        </template>
+                                        </template> -->
                                         <template slot-scope="scope1">
-                                        <div style="padding:0px 35px 35px 35px;min-width:620px;">
+                                        <div style="padding:0px 35px 35px 45px;min-width:620px;">
                                             <div class="handlePart" style="margin: 8px 0px 8px 0px;">
                                                 <el-button type="primary" size="medium" @click="addXzConfig(scope1.row)">
                                                     <i class="iconfont law-submit-o f12"></i> 添加考评细则
@@ -74,6 +70,7 @@
                                         </div>
                                         </template>
                                     </el-table-column>
+                                    <el-table-column prop="indexTwo" label="二级考核指标" align="center" ></el-table-column>
                                     <!-- <el-table-column prop="assessType" label="考核类别" align="center" width="100"></el-table-column> -->
                                     <el-table-column label="操作" align="center" width="250">
                                         <template  slot-scope="scope1">
@@ -102,9 +99,10 @@
                         </div>
                         </template>
                     </el-table-column>
+                    <el-table-column prop="indexOne" label="一级考核指标" align="center" ></el-table-column>
                     <!-- <el-table-column prop="startTime" label="立案开始时间" align="center"></el-table-column> -->
                     <!-- <el-table-column prop="endTime" label="立案截止时间"  align="center"></el-table-column> -->
-                    <el-table-column prop="oneType" label="指标类型配置" align="center"></el-table-column>
+                    <el-table-column prop="oneType" label="指标类型配置" align="center" width="150"></el-table-column>
                     <el-table-column label="操作" align="center" width="120">
 
                         <template  slot-scope="scope">
@@ -205,7 +203,7 @@
             </div>
         </el-drawer>
         <el-drawer title="考核细则" modal-append-to-body direction="rtl" size="500px" customClass="amap-drawer" :modal="false" :visible.sync="drawer2">
-            <div style="padding:0px 35px 35px 35px;min-width:620px;">
+            <div style="padding:0px 35px 35px 45px;min-width:620px;">
                   <el-form :model="xzObj" ref="xzObj" :rules="rules2" class="checkSearchForm" label-width="135px">
                 <div v-if="xzObj" style="width:400px">
                     <!-- <div class="item">

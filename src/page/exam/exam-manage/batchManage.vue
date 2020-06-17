@@ -105,10 +105,10 @@
               <template slot-scope="scope">
                 <p>
                   <span>
-                    <span v-if="scope.row.examStatus === '0'" class="exam-status" style="background: #E4E7ED">未开始</span> 
-                    <span v-if="scope.row.examStatus === '1'" class="exam-status" style="background:rgba(222,251,214,1);">考试中</span> 
-                    <span v-if="scope.row.examStatus === '2'" class="exam-status" style="background:rgba(255,245,203,1);">已结束</span> 
-                    <span v-if="scope.row.examStatus === '3'" class="exam-status" style="background:rgba(255,245,203,1);">评分结束</span> 
+                    <span v-if="scope.row.examStatus === '0'" class="exam-status" style="background:rgba(201,201,201, 0.25);color: #7B7B7B;">未开始</span> 
+                    <span v-if="scope.row.examStatus === '1'" class="exam-status" style="background:rgba(9,109,217, 0.25);color: #096DD9;">考试中</span> 
+                    <span v-if="scope.row.examStatus === '2'" class="exam-status" style="background:rgba(224,110,50, 0.25);color: #E06E32;">已结束</span> 
+                    <span v-if="scope.row.examStatus === '3'" class="exam-status" style="background:rgba(24,192,97, 0.25);color: #18c061;">评分结束</span> 
                     <span class="exam-name">{{scope.row.examName}}</span>
                   </span>
                 </p>

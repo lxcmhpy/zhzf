@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 创建模板 -->
-    <el-drawer :title="drawerTitle" :visible.sync="newModleTable" direction="rtl" size="50%" class="dialo dialog_unlaw max-group-prepend card-drawer">
+    <el-drawer :title="drawerTitle" :visible.sync="newModleTable" direction="rtl" :wrapperClosable='false' size="50%" :before-close="handleClose" class="dialo dialog_unlaw max-group-prepend card-drawer">
       <div style="padding：22px;" class="demo-drawer__content error-index">
-        <el-form :model="formData" :rules="rules" ref="elForm" label-width="100px" class="demo-ruleForm">
+        <el-form :model="formData" :rules="rules" ref="formData" label-width="100px" class="demo-ruleForm">
           <el-col :span="7">
             <el-form-item label="业务领域" prop="domain">
               <el-select v-model="formData.domain" placeholder="选择所属业务领域">
@@ -57,16 +57,16 @@
                               <el-option label="表达式" value="表达式"></el-option>
                             </el-select>
                           </el-form-item>
-                          <i class="el-icon-remove-outline" @click="delField(field,item.fieldList)" style="margin-left:18px;margin-top:-38px;float:right"></i>
+                          <!-- <i class="el-icon-remove-outline" @click="delField(field,item.fieldList)" style="margin-left:18px;margin-top:-38px;float:right"></i> -->
                         </el-col>
                       </el-row>
                       <el-row class="mimi-content">
                         <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                           <el-form-item v-for="(radio,index) in field.options" :key="index" label-width="0" prop="value">
-                            <i class="el-icon-remove-outline" style="margin-right:14px" @click="delField(radio,field.options)"></i>
+                            <!-- <i class="el-icon-remove-outline" style="margin-right:14px" @click="delField(radio,field.options)"></i> -->
                             <el-input size="mini" v-model="radio.value" placeholder="请输入选项" clearable style="width: calc(100% - 70px)" :disabled="field.status===0?true:false">
                             </el-input>
-                            <i class="el-icon-circle-plus-outline" style="margin-left:14px" @click="addRadioList(field.options)"></i>
+                            <!-- <i class="el-icon-circle-plus-outline" style="margin-left:14px" @click="addRadioList(field.options)"></i> -->
                           </el-form-item>
                         </el-col>
                       </el-row>
@@ -111,10 +111,10 @@
                     </el-row>
                     <el-row class="mimi-content" v-if="field.type=='抽屉型'||field.type=='单选型'||field.type=='复选型'">
                       <el-col :span="22" :offset="2" class="card-bg-content min-lable">
-                        <el-form-item label="占位符(字段填报说明)：" label-width="165px" prop="remark">
+                        <!-- <el-form-item label="占位符(字段填报说明)：" label-width="165px" prop="remark">
                           <el-input size="mini" v-model="field.remark" clearable>
                           </el-input>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item v-for="(radio,index) in field.options" :key="index" label-width="0" prop="value">
                           <i class="el-icon-remove-outline" style="margin-right:14px" @click="delField(radio,field.options)"></i>
                           <el-input size="mini" v-model="radio.value" placeholder="请输入选项" clearable style="width: calc(100% - 70px)" :disabled="field.status===0?true:false">
@@ -126,11 +126,11 @@
                     <el-row class="mimi-content" v-if="field.type=='日期型'">
                       <el-col :span="22" :offset="2" class="card-bg-content min-lable">
                         <el-row>
-                          <el-form-item label="占位符(字段填报说明)：" label-width="165px">
+                          <!-- <el-form-item label="占位符(字段填报说明)：" label-width="165px">
                             <el-input size="mini" v-model="field.remark" clearable>
                             </el-input>
-                          </el-form-item>
-                          <el-radio-group v-model="field.options[0].value" style="width: 100%;" :disabled="field.status===0?true:false">
+                          </el-form-item> -->
+                          <el-radio-group v-model="field.options[0].value" style="width: 100%;margin-top:15px" :disabled="field.status===0?true:false">
                             <el-row>
                               <el-col :span="12">
                                 <el-radio label="yyyy-MM-dd HH:mm:ss">精准时间（2020-03-11 12:12:12）</el-radio>
@@ -162,7 +162,7 @@
                     </el-row>
                   </div>
                 </el-collapse-item>
-                <span class="card-add-ziduan" @click="addField(item,index)">
+                <span class="card-add-ziduan" @click="addField(item,index)" v-if="item.classs!='是否转立案'">
                   <i class="el-icon-circle-plus-outline"></i>
                   添加字段
                   <i class="el-icon-arrow-right"></i>
@@ -233,9 +233,9 @@
         </el-form>
       </div>
       <div class="demo-drawer__footer footer_fixed">
-        <el-button type="primary" @click="submitForm('elForm')">发布</el-button>
+        <el-button type="primary" @click="submitForm('formData')">发布</el-button>
         <el-button @click="preview(formData)">预览</el-button>
-        <!-- <el-button @click="resetForm('elForm')">重置</el-button>< -->
+        <!-- <el-button @click="resetForm('formData')">重置</el-button>< -->
       </div>
     </el-drawer>
     <preview ref="previewRef" @fieldList="getAllFieldList"></preview>
@@ -414,9 +414,6 @@ export default {
       this.getAllOrgan('root');
       this.getPerson()
       this.newModleTable = true;
-      this.$nextTick(() => {
-        this.resetForm('elForm')
-      });
     },
     // 根据id查找
     findDataByld() {
@@ -602,7 +599,6 @@ export default {
             }).then(() => {
               console.log('submit')
               let data = JSON.parse(JSON.stringify(this.formData))
-
               data.templateAdminId = '';
               data.templateUserId = ''
               let sort = this.globalCont
@@ -652,6 +648,7 @@ export default {
                       message: res.msg
                     });
                     this.$emit("getAddModle", 'sucess');
+                    this.resetForm('formData')
                     this.newModleTable = false;
                   } else {
                     this.$message.error(res.msg);
@@ -811,8 +808,14 @@ export default {
         group.fieldList.push(defautfieldList)
       }
     },
+    handleClose() {
+      debugger
+      this.resetForm('formData')
+      this.newModleTable = false;
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.formData.title=''
       this.titileText = '';
       this.formData.templateFieldList = [
         {

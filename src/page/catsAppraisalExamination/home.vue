@@ -2,7 +2,7 @@
 <div class="contentCreenHome">
     <header class="el-header" id="mainHeader" style="height: 60px;">
         <div class="main_logo">
-            <span> 全国交通运输运输行政执法综合管理信息系统（二期）</span>
+            <span>{{systemTitle}}</span>
         </div>
         <div class="headerRight">
             <li @click="handleCommand()" >
@@ -63,9 +63,9 @@
                 <img width="62px" height="62px" class="right"
                     onerror="this.src='./static/images/img/catsAppraisalExamination/icon_head.png'"
                     :src="'./static/images/img/catsAppraisalExamination/icon_head.png'">
-                <div class="peopleMessage">
-                    <span>王东城</span><br>
-                    <span>北京交通执法总队</span>
+                <div class="peopleMessage" v-if="userInfo">
+                    <span>{{userInfo.nickName}}</span><br>
+                    <span>{{userInfo.organName}}</span>
                 </div>
             </div>
              <div class="noticeBox">
@@ -98,6 +98,8 @@
 <style lang="scss" src="@/assets/css/catsAppraisalExamination.scss"></style>
 <style lang='scss' src="@/assets/css/checkInfo.scss" ></style>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
+import { mapGetters } from "vuex";
 import { mixinsCommon } from "@/common/js/mixinsCommon";
 import {getContentApi,getNoticeByPageAndUserId,getAppraisalMenuList,clickNotice} from "@/api/appraisalExam.js";
 import viewNotice from "./noticeManage/viewNotice";
@@ -138,7 +140,8 @@ export default {
             //     name: '分析研判系统',
             //     icon: 'pic_fenxiyanpan'
             // }
-            ]
+            ],
+            userInfo: null
         }
     },
     components: {
@@ -230,9 +233,14 @@ export default {
         }
     },
     mounted () {
-        this.$store.dispatch("deleteTabs", this.$route.name);
+        debugger;
+        this.userInfo = iLocalStroage.gets('userInfo');
+        // this.$store.dispatch("deleteTabs", this.$route.name);
         this.getNotices()
         this.getAppraisalMenuList()
+    },
+    computed: {
+        ...mapGetters(["systemTitle"])
     }
 }
 </script>
