@@ -44,7 +44,7 @@
       </el-row>
       <el-row>
         <el-form-item label="考试人数" prop="examSum" class="form-class">
-          <el-input v-model="addExamBatchForm.examSum"></el-input>
+          <el-input v-model="addExamBatchForm.examSum" @input="trim()"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -184,6 +184,9 @@ export default {
   methods: {
     changeType(event) {
       this.addExamBatchForm.examType = event;
+    },
+     trim(){
+        this.addExamBatchForm.examSum=this.addExamBatchForm.examSum.replace(/[^\d]/g,'');
     },
     //提交
     submit() {

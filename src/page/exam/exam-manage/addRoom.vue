@@ -15,7 +15,7 @@
       </el-row>
       <el-row>
         <el-form-item label="容纳人数" prop="roomSum" class="form-class">
-          <el-input v-model="addRoomForm.roomSum"></el-input>
+          <el-input v-model="addRoomForm.roomSum"  @input="trim()"></el-input>
         </el-form-item>
       </el-row>
     </el-form>
@@ -44,6 +44,10 @@ export default {
     }
   },
   methods:{
+    //
+    trim(){
+        this.addRoomForm.roomSum=this.addRoomForm.roomSum.replace(/[^\d]/g,'');
+    },
     //提交
     submit() {
       let _this = this
