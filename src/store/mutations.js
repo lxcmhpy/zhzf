@@ -80,6 +80,7 @@ const mutations = {
   [types.DELETE_ALLTABS](state) {
     // state.openTab = [{route: "/index",name: "law_supervise_lawSupervise",title: "可视化监管",headActiveNav:"lawSupervise-menu-law_supervise_lawSupervise"}];
     // routerName
+    debugger;
     state.openTab.splice(0,state.openTab.length);
   },
   // 设置当前激活的tab

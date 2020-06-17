@@ -58,18 +58,20 @@ import { mapGetters } from "vuex";
       },
       //获取侧边栏菜单
       getSlideMenu(val) {
+          debugger;
      console.log('aksdsjkds',val);
 // debugger;
         this.currentSlideMenu = [];
         let _this = this
         for(let i =0;i<this.allMenuList.length;i++) {
             let item = this.allMenuList[i];
-            let key = val.split(/(-menu-)/gi);
-            if (item.name == key[0]) {
+            // let key = val.split(/(-menu-)/gi);
+            // if (item.name == key[0]) {
+            if (item.name == val||(item.path == val)) {
                 if (item.children && item.children.length) {
                     item.children.forEach(item2 => {
-                    _this.currentSlideMenu.push(item2);
-                })
+                        _this.currentSlideMenu.push(item2);
+                    })
                 }
             }
         }
@@ -77,6 +79,7 @@ import { mapGetters } from "vuex";
       }
     },
     mounted() {
+        debugger;
         this.allMenuList=this.menu;
         this.getSlideMenu(this.headActiveNav); //默认加载案件办理的二级菜单
     },

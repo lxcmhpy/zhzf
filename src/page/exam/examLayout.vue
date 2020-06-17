@@ -24,7 +24,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
 import { getDictListDetailByNameApi } from "@/api/system";
 export default {
-  name: "mainLagout",
+//   name: "mainLagout",
   data() {
     return {
 
@@ -69,6 +69,9 @@ export default {
   watch: {},
   mounted() {},
   created(){
+    this.$util.initUser(_this);
+    // this.success = false;
+    this.$store.commit('setShowQZBtn', true)
     this.getSystemData();
   }
 };

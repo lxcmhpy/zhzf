@@ -84,14 +84,14 @@ export default {
     },
     getTabName (code) {
       console.log('activeIndexStr',this.activeIndexStr)
-        let tabsCode = '';
-        if (code.indexOf('case_handle_') > -1) {
-            tabsCode = this.tabsNameList['case_handle_'];
-        } else if (code.indexOf('law_supervise_') > -1) {
-            tabsCode = this.tabsNameList['law_supervise_'];
-        } else if (code.indexOf('law_center_') > -1) {
-            tabsCode = this.tabsNameList['law_center_'];
-        }
+        let tabsCode = this.activeIndexStr;
+        // if (code.indexOf('case_handle_') > -1) {
+        //     tabsCode = this.tabsNameList['case_handle_'];
+        // } else if (code.indexOf('law_supervise_') > -1) {
+        //     tabsCode = this.tabsNameList['law_supervise_'];
+        // } else if (code.indexOf('law_center_') > -1) {
+        //     tabsCode = this.tabsNameList['law_center_'];
+        // }
         return tabsCode;
     },
     init () {
@@ -113,7 +113,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-        // debugger;
+        debugger;
         // debugger;
       //判断路由是否已经打开
       //已经打开的 ，将其置为active
@@ -177,7 +177,7 @@ export default {
                 }else{
                   tabTitle = this.caseHandle.caseNumber;
                   isCase = true;
-                  name = to.name + '-and-' + this.caseHandle.caseNumber;
+                //   name = to.name + '-and-' + this.caseHandle.caseNumber;
                 }
 
             } else {
@@ -192,7 +192,8 @@ export default {
             this.$store.dispatch("addTabs", {
                 route: to.path,
                 name: name,
-                title: tabsCode+tabTitle,
+                // title: tabsCode+tabTitle,
+                title: tabTitle,
                 isCase: isCase,
                 params: to.params,
                 headActiveNav: this.headActiveNav
