@@ -72,8 +72,10 @@
       format(row, column) {
         if (row.pfStatus === '0') {
           return '未评分'
+        }else if (row.pfStatus === '1') {
+          return '已初评'
         } else {
-          return '已评分'
+          return '已复评'
         } 
       },
       findAllOrg(){

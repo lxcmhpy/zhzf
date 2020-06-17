@@ -10,8 +10,8 @@ export function findPykhCaseByPage (data) {
   return request({
     url: "/pykh/case/findPykhCaseByPage",
     method: "get",
-    showloading: false,
-    baseUrlType:'CAPTCHA_HOST',
+    showloading: true,
+    loadingType:'loadPart',
     params: data,
     cancelToken: setCancelSource()
   })
@@ -41,3 +41,24 @@ export function saveOrUpdateCaseInfo (data) {
   })
 }
 
+export function submitCase (data) {
+  return request({
+    url: "/pykh/randomSampling/submitCase",
+    method: "post",
+    showloading: true,
+    loadingType:'loadPart',
+    data: data,
+    cancelToken: setCancelSource()
+  })
+}
+
+
+export function randomSamplingCaseByPage (oId,batchId) {
+  return request({
+    url: "/pykh/randomSampling/randomSamplingCaseByPage/"+oId+"/"+batchId,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  })
+}
