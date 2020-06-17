@@ -160,7 +160,7 @@
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
   import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo } from "@/api/catsAppraisalExamCaseUpload.js";
-  import {findListVoByBatch} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {findListVoByBatch,findAllDepartment} from "@/api/catsAppraisalExamPersonUpload.js";
 
   import iLocalStroage from '@/common/js/localStroage';
 
@@ -174,6 +174,7 @@
         dataList:[],
         visible:false,
         labelPosition: 'right',
+        organId:'',
         form:{
           caseNo:'',
           caseCause:'',
@@ -251,6 +252,7 @@
         }
         fd.append("file", param.file);
         fd.append("batchId",batchId)
+        fd.append("oId",this.organId)
         importCase(fd).then(
           res => {
             console.log(res);
@@ -265,6 +267,8 @@
       }
     },
     mounted() {
+      let userInfo = iLocalStroage.gets("userInfo");
+      this.organId = userInfo.organId;
       let initdata={}
       this.fetchData(initdata);
       let batchData={}
