@@ -1,16 +1,22 @@
 <template>
   <div class="print_box">
-    <div class="print_info" id="prolongAdminCoerciveMeasureApproval_print">
+    <div class="print_info" id="abortEndRecoverApprovalForm_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">中止（终结、恢复）行政强制执行审批表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+        <table
+          class="print_table prolong_table"
+          border="1"
+          bordercolor="black"
+          width="100%"
+          cellspacing="0"
+        >
           <tr>
             <td rowspan="6">
-              <p>当</p>
-              <p>事</p>
-              <p>人</p>
+              当
+              <br />事
+              <br />人
             </td>
             <td rowspan="2">个人</td>
             <td colspan="2">姓名</td>
@@ -131,7 +137,7 @@
               </el-form-item>
             </td>
             <td colspan="2">法定代表人</td>
-            <td colspan="2" class="color_DBE4EF">
+            <td class="color_DBE4EF" colspan="2">
               <el-form-item
                 prop="partyManager"
                 :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)"
@@ -165,7 +171,7 @@
             <td colspan="2" rowspan="2">
               <p>案件基本情况</p>
             </td>
-            <td rowspan="2" colspan="7" class="color_DBE4EF">
+            <td rowspan="2" colspan="8" class="color_DBE4EF">
               <el-form-item
                 prop="closeResult"
                 :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
@@ -187,27 +193,21 @@
             <td colspan="2" rowspan="2">
               <p>承办人意见</p>
             </td>
-            <td rowspan="2" colspan="7" class="color_DBE4EF">
+            <td rowspan="2" colspan="8" class="color_DBE4EF">
               <p>
                 &nbsp;&nbsp;因
                 <span>
                   <el-form-item
-                    prop="punishLaw"
-                    :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])"
+                    prop="reason"
+                    :rules="fieldRules('reason',propertyFeatures['reason'])"
                     style="width: 70%;"
                   >
-                    <el-select
-                      v-model="formData.punishLaw"
+                    <el-input
+                      v-model="formData.reason"
                       :maxLength="maxLength"
-                      :disabled="fieldDisabled(propertyFeatures['punishLaw'])"
-                    >
-                      <el-option
-                        v-for="item in laWOptions"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.label"
-                      ></el-option>
-                    </el-select>
+                      :disabled="fieldDisabled(propertyFeatures['reason'])"
+                      placeholder="\"
+                    ></el-input>
                   </el-form-item>
                 </span>，拟作出如下处理决定：
               </p>
@@ -220,26 +220,10 @@
                     v-model="formData.checkBox"
                     :disabled="fieldDisabled(propertyFeatures['checkBox'])"
                   >
-                    <p>
-                      <el-checkbox label="1">
-                        根据《中华人民共和国行政强制法》第三十九条，中止执行
-                      </el-checkbox>
-                    </p>
-                    <p>
-                      <el-checkbox label="2">
-                        根据《中华人民共和国行政强制法》第四十条，终结执行
-                      </el-checkbox>
-                    </p>
-                    <p>
-                      <el-checkbox label="3">
-                        根据《中华人民共和国行政强制法》第三十九条第二款，恢复执行
-                      </el-checkbox>
-                    </p>
-                    <p>
-                      <el-checkbox label="4">
-                        根据《中华人民共和国行政强制法》第四十二条条第二款，恢复执行
-                      </el-checkbox>
-                    </p>
+                    <el-checkbox label="1">根据《中华人民共和国行政强制法》第三十九条，中止执行</el-checkbox>
+                    <el-checkbox label="2">根据《中华人民共和国行政强制法》第四十条，终结执行</el-checkbox>
+                    <el-checkbox label="3">根据《中华人民共和国行政强制法》第三十九条第二款，恢复执行</el-checkbox>
+                    <el-checkbox label="4">根据《中华人民共和国行政强制法》第四十二条条第二款，恢复执行</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
               </div>
@@ -257,7 +241,7 @@
             <td colspan="2" rowspan="2">
               <p>承办机构意见</p>
             </td>
-            <td rowspan="2" colspan="7" class="color_DBE4EF">
+            <td rowspan="2" colspan="8" class="color_DBE4EF">
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
@@ -273,7 +257,7 @@
             <td colspan="2" rowspan="2">
               <p>行政机关负责人意见</p>
             </td>
-            <td rowspan="2" colspan="7" class="color_DBE4EF">
+            <td rowspan="2" colspan="8" class="color_DBE4EF">
               {{formData.threeApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.threeApprovePeo}}</p>
@@ -289,39 +273,38 @@
             <td colspan="2">
               <p>备注</p>
             </td>
-            <td colspan="7" class="color_DBE4EF">
-              <p>
-                <el-input type="textarea" v-model="formData.notes"></el-input>
-              </p>
+            <td colspan="8" class="color_DBE4EF">
+              <span>
+                <el-form-item prop="notes">
+                  <el-input
+                    type="textarea"
+                    v-model="formData.notes"
+                    v-bind:class="{ over_flow:formData.notes.length>14?true:false }"
+                    :autosize="{ minRows: 1, maxRows: 3}"
+                    :maxlength="200"
+                    placeholder="\"
+                  ></el-input>
+                </el-form-item>
+              </span>
             </td>
           </tr>
         </table>
       </el-form>
     </div>
     <casePageFloatBtns
-      :pageDomId="'prolongAdminCoerciveMeasureApproval_print'"
+      :pageDomId="'abortEndRecoverApprovalForm_print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
-      @showApprovePeopleList="showApprovePeopleList"
-      @showApproval="showApproval"
     ></casePageFloatBtns>
-    <!-- 提交审批 -->
-    <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
-    <!-- 审批 -->
-    <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
   </div>
 </template>
 <script>
-import showApprovePeople from "@/page/caseHandle/components/showApprovePeople";
-import approvalDialog from "@/page/caseHandle/components/approvalDialog";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    showApprovePeople,
-    approvalDialog,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
@@ -333,39 +316,21 @@ export default {
       isOverflow: false,
       // isOverLine: false,
       formData: {
+        caseNumber: "",
         caseName: "",
+        decisionNumber: "",
         party: "",
         partyIdNo: "",
         partyAddress: "",
-        defendState: "",
         partyTel: "",
         partyName: "",
         partyUnitAddress: "",
         partyUnitTel: "",
         partyManager: "",
-        punishLaw: "",
+        socialCreditCode: "",
+        basicSituation: "",
+        reason: "",
         checkBox: [],
-        illegalLaw: "",
-        tempPunishAmount: "",
-        socialCreditCode: "",
-        illegalFactsEvidence: "",
-        reconsiderationOrgan: "",
-        partyUnitPosition: "",
-        defendReason: "",
-        note: "",
-        party: "",
-        partySex: "",
-        partyAge: "",
-        partyManager: "",
-        socialCreditCode: "",
-        caseBasicInfo: "",
-        caseReplay: "",
-        // partyUnitPosition: "",
-        partyZipCode: "",
-        partyManagerPositions: "",
-        closeResult: "",
-        leadOpinion: "",
-        closeSituation: "",
         approveOpinions: "",
         approvePeo: "",
         approveTime: "",
@@ -374,14 +339,15 @@ export default {
         secondApproveTime: "",
         threeApproveOpinions: "",
         threeApprovePeo: "",
-        threeApproveTime: ""
+        threeApproveTime: "",
+        notes: ""
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId, //表单类型IDer
+        caseLinktypeId: "", //表单类型IDer
         //表单数据
         formData: "",
         status: ""
@@ -393,14 +359,12 @@ export default {
         party: [
           { required: true, message: "当事人姓名不能为空", trigger: "blur" }
         ],
-        partyAge: [
-          { required: true, message: "当事人年龄不能为空", trigger: "blur" }
-        ],
-        partySex: [
-          { required: true, message: "当时人性别不能为空", trigger: "blur" }
-        ],
-        partyUnitPosition: [
-          { required: true, message: "当事人所在单位不能为空", trigger: "blur" }
+        partyIdNo: [
+          {
+            required: true,
+            message: "当事人身份证件号不能为空",
+            trigger: "blur"
+          }
         ],
         partyAddress: [
           { required: true, message: "当事人联系地址不能为空", trigger: "blur" }
@@ -412,9 +376,6 @@ export default {
             trigger: "blur"
           },
           { validator: validatePhone, trigger: "blur" }
-        ],
-        partyZipCode: [
-          { required: true, message: "邮政编码不能为空", trigger: "blur" }
         ],
         partyName: [
           { required: true, message: "单位名称不能为空", trigger: "blur" }
@@ -429,14 +390,22 @@ export default {
         partyManager: [
           { required: true, message: "法人不能为空", trigger: "blur" }
         ],
-        partyManagerPositions: [
-          { required: true, message: "职务不能为空", trigger: "blur" }
+        socialCreditCode: [
+          {
+            required: true,
+            message: "单位统一社会信用代码不能为空",
+            trigger: "blur"
+          }
         ],
-        closeResult: [
-          { required: true, message: "处理结果不能为空", trigger: "blur" }
+        basicSituation: [
+          { required: true, message: "基本情况不能为空", trigger: "blur" }
         ],
-        closeSituation: [
-          { required: true, message: "执行情况不能为空", trigger: "blur" }
+        reason: [
+          {
+            required: true,
+            message: "中止/终结/恢复原因不能为空",
+            trigger: "blur"
+          }
         ]
       },
       nameLength: 23,
@@ -457,7 +426,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "prolongAdminCoerciveMeasureApproval_print"
+        pageDomId: "abortEndRecoverApprovalForm_print"
       },
       huanjieAndDocId: this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId, //结案报告的文书id
       approvalOver: false, //审核完成
@@ -479,26 +448,6 @@ export default {
     saveData(handleType) {
       //参数  提交类型 、formRef
       this.com_submitCaseForm(handleType, "docForm", true);
-    },
-    showApprovePeopleList() {
-      let data = {
-        caseId: this.caseId,
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId
-      };
-      this.$refs.showApprovePeopleRef.showModal(data);
-    },
-    //审批弹窗
-    showApproval() {
-      //二级审批(经办机构负责人审批、部门负责人审批)
-      console.log(this.formData);
-      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : "";
-      let caseData = {
-        caseId: this.caseId,
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,
-        firstApproval: approvePeo,
-        approvalNumber: 2 //2次审批
-      };
-      this.$refs.approvalDialogRef.showModal(caseData);
     },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
@@ -557,25 +506,15 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-.textindent0 {
-  text-indent: 0 !important;
-}
-.print_box
-  #prolongAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.el-textarea {
-  top: -12px;
-}
-.print_box
-  #prolongAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.over_flow {
-  top: -8px;
-  text-overflow: initial;
-  font-size: 12px;
-  line-height: 14px;
+.prolong_table {
+  table-layout: fixed;
+  td,
+  p,
+  span,
+  .el-checkbox {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
 }
 </style>
