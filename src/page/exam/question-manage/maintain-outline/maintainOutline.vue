@@ -116,11 +116,9 @@ export default {
     getAllOutline(outlineId) {
       let _this = this;
       _this.treeLoading = true;
-      _this.tableLoading = true;
       this.$store.dispatch("examOutlineTreeAllInfo").then(
         res => {
           _this.treeLoading = false;
-          _this.tableLoading = false;
           if (res.code === 200 && res.data && res.data.length) {
             if (outlineId == "" || outlineId == undefined) {
               _this.defaultExpandedKeys.push(res.data[0].outlineId);
@@ -144,7 +142,6 @@ export default {
         },
         err => {
           _this.treeLoading = false;
-          _this.tableLoading = false;
           console.log(err);
         }
       );
