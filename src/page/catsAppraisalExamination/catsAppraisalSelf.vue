@@ -240,6 +240,12 @@ export default {
             }
       },
       commitData(){
+          var re = /^[1-9]([0-9])*$/;
+        let validata = this.pykhScoreDetailsVos.find(value=>value.twoSore===null || !re.test(value.twoSore))
+        if(validata){
+            this.$message({type: "warning",message: "全部评分之后才能提交"});
+            return
+        }
         const data = {
             id:this.form.id,
             assessType:"自查自评",
@@ -258,6 +264,14 @@ export default {
       },
       saveRecord(row,key){
           if(this.oldValue !== row[key]){
+              if(key === "twoSore" || key === "oneSore"){
+                var re = /^[1-9]([0-9])*$/;
+                if (!re.test(row[key])) {
+                    row[key]=''
+                    this.$message({type: "error",message: "请输入整数"});
+                    return
+                }
+              }
             updateScore(row).then(
                 res => {
 
@@ -276,7 +290,6 @@ export default {
       },
       fetchData(){
           let _this = this;
-          debugger;
         getPykhOrgInfo({assessType:"自查自评"}).then(
             res => {
                 _this.form = res.data;
