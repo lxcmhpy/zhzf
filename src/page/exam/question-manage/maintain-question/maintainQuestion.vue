@@ -448,7 +448,6 @@ export default {
   created() {
     this.getSystemParams();
     this.getAllOutline();
-    // this.getSystemType();
   }
 };
 </script>
