@@ -82,7 +82,7 @@
                             </el-table-column>
                             <el-table-column
                                 prop="indexTwo"
-                                label="二级指标">
+                                >
                             </el-table-column>
                         </el-table>
                      </div>
@@ -90,7 +90,7 @@
             </el-table-column>
             <el-table-column
                 prop="indexOne"
-                label="一级指标">
+                >
             </el-table-column>
              <!-- <el-table-column lable="二级1">
                   <template slot-scope="scope1">
