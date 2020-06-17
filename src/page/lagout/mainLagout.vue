@@ -144,7 +144,6 @@ export default {
     },
 
     getSelectHeadMenu(name) {
-        debugger;
       this.selectedHeadMenu = name;
     },
     router (name, route) {
