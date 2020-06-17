@@ -40,8 +40,8 @@
         </el-form-item>
       </div>
       <div class="item">
-        <el-form-item label="行 业 类 别" prop="hyTypeId" v-if="isAdd">
-          <el-select v-model="addCaseCauseForm.hyTypeId" style="width:100%" placeholder="请选择行业类别">
+        <el-form-item label="行 业 类 别" prop="hyType" >
+          <el-select v-model="addCaseCauseForm.hyType" style="width:100%" placeholder="请选择行业类别">
             <el-option
               v-for="item in hyTypeList"
               :key="item.id"
@@ -50,14 +50,14 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="行业类别" v-else>
+        <!-- <el-form-item label="行业类别" v-else>
           <el-input
             v-model="addCaseCauseForm.hyType"
             style="width:100%"
             placeholder="请选择行业类别"
-            disabled
+            
           ></el-input>
-        </el-form-item>
+        </el-form-item> -->
       </div>
       <div class="item">
         <el-form-item label="违法行为编码" prop="strNumber" class="is-required">
@@ -122,11 +122,13 @@ export default {
         console.log(data);
         this.isAdd = true;
         this.dialogTitle = "新增";
+        // this.addCaseCauseForm = {};
       } else if (type == 2) {
         console.log("111",data);
         this.isAdd = false;
         this.dialogTitle = "修改";
         this.addCaseCauseForm = data;
+        this.getHylbByLaw(data.categoryId);
       }
     },
     //关闭弹窗的时候清除数据
@@ -144,7 +146,7 @@ export default {
         pid: val
       };
       let _this = this;
-      _this.addCaseCauseForm.hyTypeId = "";
+      _this.addCaseCauseForm.hyType = "";
       getLawCategoryApi(data).then(res => {
         console.log("res", res);
         _this.hyTypeList = res.data;

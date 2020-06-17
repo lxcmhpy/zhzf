@@ -267,7 +267,7 @@ export default {
                   //设置默认openTab
                 //   this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
                   //设置是否签章
-                  this.$store.commit('setShowQZBtn', false)
+                  this.$store.commit('setShowQZBtn', true)
               },
               // error => {
               //   console.log('error',error);

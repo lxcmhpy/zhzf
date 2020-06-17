@@ -85,14 +85,14 @@
                 </span>
                 <span>前
                   <span contenteditable="true">
-                    <el-form-item prop="correctMeasure" style="width:300px" :rules="fieldRules('correctMeasure',propertyFeatures['correctMeasure'])">
+                    <el-form-item prop="correctMeasure" style="width:300px;margin-top:-8px;" :rules="fieldRules('correctMeasure',propertyFeatures['correctMeasure'])">
                       <el-input
                         type="textarea"
                         v-model="formData.correctMeasure"
+                        :disabled=" formData.correctWay == 1 ?true : false"
                         v-bind:class="{ over_flow:formData.correctMeasure.length>12?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxLength="maxLength"
-                        :disabled="fieldDisabled(propertyFeatures['correctMeasure'])"
                       ></el-input>
                     </el-form-item>
                   </span>
@@ -100,8 +100,8 @@
               </el-checkbox>
             </p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;
-              <el-checkbox label="3"></el-checkbox>其他：<span contenteditable="true">
-                    <el-form-item prop="otherMeasure" style="width:300px" :rules="fieldRules('otherMeasure',propertyFeatures['otherMeasure'])">
+              <el-checkbox label="3">其他：<span contenteditable="true">
+                    <el-form-item prop="otherMeasure" style="width:300px;margin-top:-8px;" :rules="fieldRules('otherMeasure',propertyFeatures['otherMeasure'])">
                       <el-input
                         type="textarea"
                         v-model="formData.otherMeasure"
@@ -112,6 +112,7 @@
                       ></el-input>
                     </el-form-item>
                   </span>
+                </el-checkbox>
             </p>
           </el-checkbox-group>
         </el-form-item>

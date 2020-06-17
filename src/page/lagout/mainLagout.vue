@@ -40,7 +40,7 @@
                     {{userInfo.organName}}
                   </el-form-item>
                   <el-form-item label="所属部门：">
-                    北京市交通运输局
+                    空
                   </el-form-item>
                   <el-form-item label="上次登录：">
                     2019.04.17 07:06:45
