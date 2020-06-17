@@ -48,7 +48,7 @@
           :max-height="380"
         >
           <el-table-column prop="pageName" label="试卷名称" min-width="180px" align="left"></el-table-column>
-          <el-table-column prop="pageTypeName" label="试卷类型" width="120px" align="center"></el-table-column>
+          <el-table-column prop="pageTypeNameTwo" label="试卷类型" width="120px" align="center"></el-table-column>
           <el-table-column prop="score" label="试卷总分" width="100px" align="center"></el-table-column>
           <el-table-column prop="createName" label="出题人" width="150px" align="center"></el-table-column>
           <el-table-column prop="oname" label="出题机构" width="150px" align="center"></el-table-column>
