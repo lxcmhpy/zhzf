@@ -20,6 +20,8 @@ const caseHandle = {
         approvalState:'', //审批状态（审批中approvaling 审批完成approvalOver ）
         inforCollectionType:'',
         showQZBtn:'',  //是否显示签章按钮
+        province:'', //当前系统部署在哪个省
+
     },
     mutations:{
         //设置caseId
@@ -47,6 +49,10 @@ const caseHandle = {
         },
         setShowQZBtn(state,data) {
             state.showQZBtn = data
+        },
+        //设置部署省份
+        setProvince(state,data){
+            state.province = data;
         },
     },
     actions:{

@@ -40,7 +40,6 @@ const store = new Vuex.Store({
                 commit(types.COM_LOADING_TYPE, status.type);
                 clearTimeout(clearTime);
             } else {
-                debugger;
                 var b = time - state.loadingTime;
                 if (b < 1000) {
                     clearTime = setInterval(function () {

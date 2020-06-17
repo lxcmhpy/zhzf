@@ -75,6 +75,8 @@ export default {
       }else if(this.province == 'JX'){  //江西
           _this.graphData = graphData.commonGraphData_JX;
       }
+      console.log('_this.province',_this.province);
+      console.log('_this.graphData',_this.graphData);
       
       this.$store.dispatch("getFlowStatusByCaseId", id).then(
         res => {
@@ -693,6 +695,7 @@ export default {
   created() {
   },
   mounted() {
+    console.log('this.province',this.province);
     this.mountedInit()
   },
   components: {

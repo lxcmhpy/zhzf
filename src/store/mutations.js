@@ -106,10 +106,6 @@ const mutations = {
   changeOneTabName(state,data){
     state.openTab[data.tabIndex].title = data.title;
   },
-  //设置部署省份
-  setProvince(state,data){
-    state.province = data;
-  },
   // 按titile删除
   [types.DELETE_TABS_BY_TITLE](state, title) {
     console.log('title',title)
