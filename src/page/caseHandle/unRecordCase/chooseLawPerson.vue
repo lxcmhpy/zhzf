@@ -157,18 +157,16 @@ export default {
       this.checkedUser = [];
 
       let _this = this
-      if (val) {
-        val.forEach(item => {
-          _this.allUserList.forEach(item2 => {
-            if (item == item2.id) {
-              //更新tag
-              _this.checkedUser.push(item2);
+      val.forEach(item => {
+        _this.allUserList.forEach(item2 => {
+          if (item == item2.id) {
+            //更新tag
+            _this.checkedUser.push(item2);
 
-              return;
-            }
-          });
+            return;
+          }
         });
-      }
+      });
     },
     //删掉已选中的人员
     deleteUser(tag) {

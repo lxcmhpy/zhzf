@@ -48,8 +48,8 @@
 <script>
 import writeRecordHome from "./modleList.vue";
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag.vue";
-import chooseLawPerson from "./chooseModlePerson.vue";
-// import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
+// import chooseLawPerson from "./chooseModlePerson.vue";
+import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
 
 import uploadTmp from './upload/uploadModleFile.vue'
 import formCreate, { maker } from '@form-create/element-ui'
