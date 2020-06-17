@@ -25,7 +25,7 @@ export const BASIC_DATA_JX = {
     //不予处罚 环节id caseLinktypeId
     noPenalty_JX_caseLinktypeId:'d17c1a83a26a76ec7fe64a0c2415b5a5',
     //当事人权利 环节id caseLinktypeId
-    partyRights_caseLinktypeId:'f1a074e649cff0387b59d9d76448d551',
+    partyRights_JX_caseLinktypeId:'f1a074e649cff0387b59d9d76448d551',
     //重大案件讨论 环节id
     importCaseDiss_JX_caseLinktypeId:'1a05eb5d2202f8a69039c35569a7e9a7',
     //重大案件讨论 文书id
@@ -34,10 +34,12 @@ export const BASIC_DATA_JX = {
     punishDecisionDoc_JX_caseLinktypeId:'ab7312400b99fc39d681d1c8af78ff12',
     //强制执行 环节id
     forceExecute_JX_caseLinktypeId:'50db0706e4a5389ab0a32583d279335a',
-    //强制执行 环节id
+    //处罚执行 环节id
     punishExecute_JX_caseLinktypeId:'b64b697a79aa90d5f9b9d84d3aaea48e',
     //申请法院强制执行 环节id
     courtPunishExecute_JX_caseLinktypeId:'1edc383bb4d438262ab2f687c4d15dfb',
+    //申请法院强制执行 文书id
+    courtPunishExecute_JX_huanjieAndDocId:'b3085802e1391ceb4629f20412261691',
     //结案报告 环节id caseLinktypeId
     finishCaseReport_JX_caseLinktypeId:'40cc145c41b6392db1080ce4fe2db1dd',
     //结案报告 docId
