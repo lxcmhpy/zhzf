@@ -28,19 +28,19 @@
         style="width: 100%;">
             <el-table-column type="expand">
                 <template slot-scope="scope1">
-                    <div style="margin-left: 30px">
+                    <div style="margin-left: 47px">
                         <!-- {{scope1.children}} -->
                         <el-table
                             :data="scope1.row.children"
                             border
-                            style="width: 100%;margin-left: 30px">
+                            style="width: 100%;">
                              <el-table-column type="expand">
                                 <template slot-scope="scope">
-                                    <div style="margin-left: 30px">
+                                    <div style="margin-left: 47px">
                                         <el-table
                                             :data="scope.row.children"
                                             border
-                                            style="width: 100%;margin-left: 30px">
+                                            style="width: 100%;">
                                             <el-table-column
                                                 prop="nrxm"
                                                 label="评查内容">

@@ -78,7 +78,7 @@ import { mapGetters } from "vuex";
     },
     mounted() {
         this.allMenuList=this.menu;
-        this.getSlideMenu(this.c); //默认加载案件办理的二级菜单
+        this.getSlideMenu(this.headActiveNav); //默认加载案件办理的二级菜单
     },
     created() {
     },
