@@ -11,6 +11,7 @@ export function getZfjgLawSupervise(data) {
     method: "get",
     params:data,
     showloading: true,
+    // loadingType:'loadFull',
     loadingType:'loadPart',
     baseUrlType:  'LAW_SUPERVISE_HOST',
     cancelToken: setCancelSource()
@@ -146,10 +147,10 @@ export function getById(type,id) {
     });
   }
   // 获取机构树
-  export function getOrganList(){
+  export function organTreeByCurrUser(){
     return request({
         // url: "/zfjg/queryLike",
-        url: "/system/sys/organ/organTreeByCurrUser",
+        url: "/system/sys/organ/findOrganPositionTreeByCurrUser",
         // url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
         method: "get",
         // params: data,
@@ -206,6 +207,17 @@ export function queryAlarmVehiclePage (data) {
 export function findAlarmVehicleById (data) {
     return request({
         url: "/zfjg/alarmVehicle/findById/" + data,
+        method: "get",
+        showloading: false,
+        baseUrlType:  'LAW_SUPERVISE_HOST',
+        // params: data,
+        cancelToken: setCancelSource()
+      })
+}
+// 转立案
+export function transerCase (id) {
+    return request({
+        url: "/zfjg/superviseVehicle/transferCase/" + id,
         method: "get",
         showloading: false,
         baseUrlType:  'LAW_SUPERVISE_HOST',

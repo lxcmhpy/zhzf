@@ -88,9 +88,9 @@
               <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90'
               :disabled="fieldDisabled(propertyFeatures['discussionRecord'])"></el-input>
               <span class="overflow_describe">讨论记录：</span>
-              <span class="span_bg" @click="overFlowEdit" style="margin-top: 8px;">&nbsp;</span>
-              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
+              <span class="span_bg" >&nbsp;</span>
+              <span class="span_bg" >&nbsp;</span>
             </el-form-item>
           </div>
         </div>
@@ -122,9 +122,9 @@
               <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.conclussionOpinion" rows="3" maxLength='90'
               :disabled="fieldDisabled(propertyFeatures['conclussionOpinion'])"></el-input>
               <span class="overflow_describe">结论性意见：</span>
-              <span class="span_bg" @click="overFlowEdit" style="margin-top: 8px;">&nbsp;</span>
-              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span class="span_bg"  style="margin-top: 8px;">&nbsp;</span>
+              <span class="span_bg" >&nbsp;</span>
+              <span class="span_bg" >&nbsp;</span>
             </el-form-item>
           </div>
         </div>
@@ -139,19 +139,19 @@
     </div>
     <casePageFloatBtns :pageDomId="'importantCaseTeamDissDoc-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
-    <overflowInput ref="overflowInputRef2" @overFloeEditInfo="getOverFloeEditInfo2"></overflowInput>
+    <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <overflowInput ref="overflowInputRef2" @overFloeEditInfo="getOverFloeEditInfo2"></overflowInput> -->
   </div>
 </template>
 <script>
-import overflowInput from "./overflowInput";
+// import overflowInput from "./overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 
 export default {
   components: {
-    overflowInput,
+    // overflowInput,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
@@ -269,11 +269,11 @@ export default {
     },
     // 多行编辑
     overFlowEdit() {
-      this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
+      // this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
     },
     // 多行编辑
     overFlowEdit2() {
-      this.$refs.overflowInputRef2.showModal(0, '', this.maxLengthOverLine);
+      // this.$refs.overflowInputRef2.showModal(0, '', this.maxLengthOverLine);
     },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {

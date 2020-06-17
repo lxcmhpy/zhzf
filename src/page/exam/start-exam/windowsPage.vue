@@ -6,7 +6,7 @@
     :close-on-click-modal="false"
     width="25%"
   >
-    <el-form :inline="true" label-position="right" label-width="100px" ref="addPersonForm">
+    <el-form :inline="true" :model="submitMsg" :rules="rules" label-position="right" label-width="100px" ref="editExamineeForm">
       <!-- 强制收卷 -->
       <div v-if="forced">
         <el-row style="height:60px;">
@@ -37,7 +37,7 @@
       <div v-if="delay">
         <el-row style="height:60px;">
           <el-form-item label="延迟时间:" prop="delayedTime">
-            <el-input v-model="submitMsg.delayedTime" rows style="width:300px"></el-input>
+            <el-input v-model="submitMsg.delayedTime" rows style="width:300px" @input="setInputVal"></el-input>
           </el-form-item>
         </el-row>
         <el-row style="height:60px;">
@@ -77,13 +77,11 @@
           </el-form-item>
         </el-row>
       </div>
-      <div class="item" style="text-align:center;margin-top:10px;">
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="handleYear()" icon="el-icon-check">提 交</el-button>
-          <el-button @click="visible = false" icon="el-icon-close">取 消</el-button>
-        </span>
-      </div>
     </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="closeDialog">取 消</el-button>
+      <el-button type="primary" @click="validerForm">确 认</el-button>
+    </div>
   </el-dialog>
 </template>
 <script>
@@ -105,20 +103,47 @@ export default {
         examId: "", //考试id
         preDelayedTime: "", //延迟前时间
         examperIds: "",
-        delayedDescription: "" //延迟原因
+        delayedDescription: "", //延迟原因
+        roomId: ''
       },
       noteTypeList: [],
       note: "", //备注
       dialogTitle: "", //弹出框title
-      handelType: 0 //添加 0  修改2
+      handelType: 0, //添加 0  修改2
+      rules: {
+        rollingType: [{ required: true, message: '请选择强制原因', trigger: 'change' }],
+        delayedTime: [{ required: true, message: '请填写延迟时间', trigger: 'change' }]
+      }
     };
   },
   methods: {
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
-    //确认年审
-    handleYear(row) {
+    // 延迟时间只能输入正整数
+    // 成绩输入框绑定值
+    setInputVal(){
+      if(this.submitMsg.delayedTime !== undefined && this.submitMsg.delayedTime.length){
+        if(this.submitMsg.delayedTime.length == 1) {
+          this.submitMsg.delayedTime = this.submitMsg.delayedTime.replace(/[^\d]/g, '')
+          this.submitMsg.delayedTime = this.submitMsg.delayedTime.replace(/0/g, '')
+        } else {
+          this.submitMsg.delayedTime = this.submitMsg.delayedTime.replace(/[^\d]/g, '')
+        }
+      }
+    },
+    // 校验必填项
+    validerForm(){
+      this.$refs.editExamineeForm.validate((valid) => {
+        if (valid) {
+          this.submitForm();
+        } else {
+          return false;
+        }
+      });
+    },
+    // 确认操作
+    submitForm() {
       let _this = this;
       if (this.handelType == "3") {
         let data = {
@@ -127,7 +152,8 @@ export default {
           preDelayedTime: this.submitMsg.preDelayedTime,
           delayedDescription: this.submitMsg.delayedDescription,
           delayedTime: this.submitMsg.delayedTime,
-          examperIds: this.submitMsg.examperIds
+          examperIds: this.submitMsg.examperIds,
+          roomId: this.submitMsg.roomId
         };
         this.$store.dispatch("setBatchExamDelayed", data).then(
           res => {
@@ -146,11 +172,14 @@ export default {
             examId: this.submitMsg.examId,
             delayedDescription: this.submitMsg.delayedDescription,
             examperId: this.submitMsg.examperIds,
-            rollingType:this.submitMsg.rollingType
+            rollingType: this.submitMsg.rollingType,
+            forceReason: this.note,
+            roomId: this.submitMsg.roomId
           }
           this.$store.dispatch("addExamRollingInfo", data).then(
           res => {
             if (res.code == "200") {
+              this.$emit('reloadTable');
               this.$message({ type: "success", message: "强制收卷成功" });
             }
             this.visible = false;
@@ -166,7 +195,7 @@ export default {
       this.$store.dispatch("drawInfo", name).then(res => {
         if (res.code === 200) {
           if (codeName === "noteTypeList") {
-            this.noteTypeList = res.data;
+            this.noteTypeList = res.data.filter(item => item.name !== '延迟');
           }
         } else {
           console.info("没有查询到数据");
@@ -184,6 +213,7 @@ export default {
       this.submitMsg.examId = data.examId;
       this.submitMsg.preDelayedTime = data.preDelayedTime;
       this.submitMsg.examperIds = data.examperIds;
+      this.submitMsg.roomId = data.roomId;
       if (type == "2") {
         this.dialogTitle = "强制收卷";
         this.forced = true;
@@ -198,15 +228,11 @@ export default {
         this.addNotes = true;
       }
     },
-    //聚焦清除错误信息
-    focusName() {
-      this.errorName = false;
-    },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      // this.$refs["addPersonForm"].resetFields();
-      this.errorName = false;
+      this.note = '';
+      this.$refs["editExamineeForm"].resetFields();
     }
   }
 };

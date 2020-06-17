@@ -19,6 +19,8 @@ const getters = {
   archiveCatalogueList:state => state.caseHandle.archiveCatalogueList,
   openTab: state => state.openTab,
   approvalState:state => state.caseHandle.approvalState,
+  showQZBtn:state => state.caseHandle.showQZBtn,
+  province: state => state.province,
 
   //监管
   offSiteManageId: state => state.supervise.offSiteManageId,

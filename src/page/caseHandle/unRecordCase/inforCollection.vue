@@ -1351,16 +1351,16 @@
           obj.validateField(field, (validMessage) => {
             if (validMessage !== '' && result === true) {
               result = false
-              let fields = _this.$refs[field].elForm.fields
-              for (let i in fields) {
-                if (fields[i].labelFor === field) {
-                  if (fields[i].label) {
-                    console.log(_this.$refs[field].$el.offsetTop);
-                    // document.getElementById('inforCollectionBox').scrollTop = _this.$refs[field].$el.offsetTop
-                    //                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
-                  }
-                }
-              }
+              // let fields = _this.$refs[field].elForm.fields
+              // for (let i in fields) {
+              //   if (fields[i].labelFor === field) {
+              //     if (fields[i].label) {
+              //       console.log(_this.$refs[field].$el.offsetTop);
+              //       // document.getElementById('inforCollectionBox').scrollTop = _this.$refs[field].$el.offsetTop
+              //       //                    this.$message({message: (fields[i].label) + '填写错误', type: 'warning'});
+              //     }
+              //   }
+              // }
               return result
             }
           })

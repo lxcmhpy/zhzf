@@ -45,9 +45,7 @@
                   <vue-simple-verify ref="verify" :width='420' tips='向右滑动完成验证' @success="pass()" />
                 </el-form-item>
                 <div class="forgetPass">
-                  <el-collapse-transition>
                     <div v-show="errorMessage" class="error">{{errorMessage}}</div>
-                  </el-collapse-transition>
                 </div>
 
                 <div>
@@ -265,9 +263,9 @@ export default {
                   // _this.getCurrentUser();
                   _this.$util.initUser(_this);
                   _this.success = false;
-                  
+
                   //设置默认openTab
-                  this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
+                  // this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
               },
               // error => {
               //   console.log('error',error);
@@ -379,13 +377,20 @@ export default {
         }
       });
     },
-    
+
     //获取系统标题
     getSystemData() {
       getDictListDetailByNameApi('系统标题').then(res => {
         console.log('系统标题', res);
+        //系统标题
         this.$store.commit('set_systemTitle',res.data[0].name);
-        window.document.title = res.data[0].name
+        window.document.title = res.data[0].name;
+        //设置省份
+        this.$store.commit('setProvince',res.data[2].name);
+        //是否需要签章
+        this.$store.commit('setShowQZBtn', res.data[1].name == '是'? true : false)
+        //设置系统首页
+        // this.$store.commit('setHomePage', res.data[3].name)
       }, err => {
         console.log(err);
       })

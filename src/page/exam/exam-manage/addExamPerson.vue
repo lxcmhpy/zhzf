@@ -4,7 +4,7 @@
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
-    width="61%"
+    width="60%"
     class="exam-person-dialog fullscreen"
     append-to-body
   >
@@ -17,27 +17,14 @@
       :inline="true"
     >
       <div>
-        <el-row>
+        <div class="item">
           <el-form-item label="姓名" prop="personName" class-form="form-class">
-            <el-input v-model="addExamPersonForm.personName"></el-input>
+            <el-input v-model="addExamPersonForm.personName" placeholder="姓名"></el-input>
           </el-form-item>
           <el-form-item label="身份证号" prop="idNo" class-form="form-class">
-            <el-input v-model="addExamPersonForm.idNo"></el-input>
+            <el-input v-model="addExamPersonForm.idNo" placeholder="身份证号"></el-input>
           </el-form-item>
-          <el-form-item label="所属机构" prop="oname" class-form="form-class">
-            <el-input v-model="addExamPersonForm.oname"></el-input>
-          </el-form-item>
-        </el-row>
-        <el-row>
-          <el-form-item label="执法领域" prop="branchName" class-form="form-class">
-            <el-input v-model="addExamPersonForm.branchName"></el-input>
-          </el-form-item>
-          <el-form-item label="岗位" prop="stationName" class-form="form-class">
-            <el-input v-model="addExamPersonForm.stationName"></el-input>
-          </el-form-item>
-          <el-form-item label="执法证号" prop="ministerialNo" class-form="form-class">
-            <el-input v-model="addExamPersonForm.ministerialNo"></el-input>
-          </el-form-item>
+          
           <el-form-item>
             <el-button
               title="搜素"
@@ -53,8 +40,29 @@
               icon="iconfont law-zhongzhi"
               @click="resetLog"
             ></el-button>
+            <el-button
+                  size="medium"
+                  class="commonBtn toogleBtn"
+                  :title="isShow? '点击收缩':'点击展开'"
+                  :icon="isShow? 'iconfont law-top': 'iconfont law-down'"
+                  @click="isShow = !isShow"
+                ></el-button>
           </el-form-item>
-        </el-row>
+        </div>
+         <div class="item" v-show="isShow">
+           <el-form-item label="所属机构" prop="oname" class-form="form-class">
+            <el-input v-model="addExamPersonForm.oname" placeholder="所属机构"></el-input>
+          </el-form-item>
+          <el-form-item label="执法领域" prop="branchName" class-form="form-class">
+            <el-input v-model="addExamPersonForm.branchName" placeholder="执法领域"></el-input>
+          </el-form-item>
+          <el-form-item label="岗位" prop="stationName" class-form="form-class">
+            <el-input v-model="addExamPersonForm.stationName" placeholder="岗位"></el-input>
+          </el-form-item>
+          <el-form-item label="执法证号" prop="ministerialNo" class-form="form-class">
+            <el-input v-model="addExamPersonForm.ministerialNo" placeholder="执法证号"></el-input>
+          </el-form-item>
+        </div>  
       </div>
     </el-form>
     <div class="person-table">
@@ -120,6 +128,7 @@ export default {
         stationName: "",
         ministerialNo: ""
       },
+      isShow: false,
       handleType: "",
       visible: false,
       dialogtitle: "",
@@ -241,9 +250,16 @@ export default {
     getPersonNoRooom() {
       let _this = this;
       let data = {
-        examId: _this.addExamPersonForm.examId,
-        current: _this.currentPage,
-        size: _this.pageSize
+        examId: this.addExamPersonForm.examId,
+        personName: this.addExamPersonForm.personName,
+        idNo: this.addExamPersonForm.idNo,
+        oname: this.addExamPersonForm.oname,
+        branchName: this.addExamPersonForm.branchName,
+        oid: this.addExamPersonForm.oid,
+        stationName: this.addExamPersonForm.stationName,
+        ministerialNo: this.addExamPersonForm.ministerialNo,
+        current: this.currentPage,
+        size: this.pageSize
       };
       _this.getPageList("getUnDispatchPersonByRoomId", data);
     },

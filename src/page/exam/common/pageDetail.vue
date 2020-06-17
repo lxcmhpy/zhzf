@@ -22,7 +22,7 @@
                 v-if="refreshQuestion"
                 :key="item.questionId"
                 :question="item"
-                :questionIndex="paragrap.startIndex + index + 1"
+                :questionIndex="index + 1"
                 :editable="editQuestion"
                 :questionType="paragrap.paragraphTypeName"
                 :questionLevel="questionLevelList[item.questionLevel]"
@@ -167,7 +167,6 @@ export default {
                 this.questionLevelList[item.id] = item.name;
               })
             }
-            console.log(JSON.stringify(this.questionLevelList));
           } else {
             console.info("没有查询到数据");
           }
@@ -181,7 +180,6 @@ export default {
         verifyId:this.verifyId,
         verifyResult:type
       }
-      console.info("aaaaa"+JSON.stringify(data))
       this.$confirm(status, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -232,18 +230,20 @@ export default {
             loading.close();
             if(res.code === 200){
               let i = 0;
-              paragrap.questionList.forEach((question, index) => {
-                if(question.isLock === '0'){
-                  const replaceQuestion = res.data[i];
-                  this.setChangeData(question.pqId, replaceQuestion.questionId);
-                  replaceQuestion.pqId = question.pqId;
-                  replaceQuestion.isLock = '0';
-                  replaceQuestion['optionList'] = replaceQuestion.optionVoList;
-                  delete replaceQuestion.optionVoList;
-                  paragrap.questionList.splice(index, 1, replaceQuestion);
-                  i++;
-                }
-              })
+              if(res.data && res.data.length){
+                paragrap.questionList.forEach((question, index) => {
+                  if(question.isLock === '0'){
+                    const replaceQuestion = res.data[i];
+                    this.setChangeData(question.pqId, replaceQuestion.questionId);
+                    replaceQuestion.pqId = question.pqId;
+                    replaceQuestion.isLock = '0';
+                    replaceQuestion['optionList'] = replaceQuestion.optionVoList;
+                    delete replaceQuestion.optionVoList;
+                    paragrap.questionList.splice(index, 1, replaceQuestion);
+                    i++;
+                  }
+                })
+              }
             }
           }, err => {
             loading.close();
@@ -260,6 +260,7 @@ export default {
       item['optionList'] = e.data.optionVoList;
       delete item.optionVoList;
       item.pqId = e.pqId;
+      item.isLock = '0';
       paragrap.questionList[editIndex] = item;
       this.refreshQuestion = true;
       this.setChangeData(e.pqId, e.data.questionId);
@@ -267,8 +268,8 @@ export default {
     // 记录修改的数据
     setChangeData(pqId, questionId){
       const index = this.replaceData.pqId.indexOf(pqId);
-      if(index && index > -1){
-        this.replaceData.questionIds.replace(index, 1, questionId);
+      if(index > -1){
+        this.replaceData.questionIds.splice(index, 1, questionId);
       }else{
         this.replaceData.pqId.push(pqId);
         this.replaceData.questionIds.push(questionId);
@@ -286,6 +287,7 @@ export default {
       this.refreshQuestion = false;
       const editIndex = this.editParagrap.questionList.findIndex(item => item.pqId === this.edtiQuestion.pqId);
       question.pqId = this.edtiQuestion.pqId;
+      question.isLock = '0';
       this.pageData.paragraphList[this.editParagrapIndex].questionList[editIndex] = question;
       this.refreshQuestion = true;
       this.setChangeData(question.pqId, question.questionId);
@@ -362,6 +364,7 @@ export default {
   bottom: 150px;
   .float-btns{
     bottom: 220px;
+    right: 50px;
   }
   .edit_btn {
     display: block;

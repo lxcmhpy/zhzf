@@ -13,8 +13,7 @@ const service = axios.create({
   // "Content-Type": "multipart/form-data;charset=UTF-8",
   "Content-Type": "application/x-www-form-urlencoded",
   // "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-  // "Content-Type": "multipart/form-data;charset=UTF-8",
-  timeout: 15000, // request timeout
+//   timeout: 15000, // request timeout
 
 });
 
@@ -26,17 +25,10 @@ service({
 }).then(
   res => {
     BASEURL = res.data;
-    // console.log('location.host',location.host);
-    // var Ip=returnCitySN['cip'];
-    // console.log('ip',Ip);
-    // if(Ip == '61.148.243.205'){
-    //   BASEURL.CURRENT = 'TEST'
-    // }else{
-    //   BASEURL.CURRENT = 'NW'
-    // }
     console.log('BASEURL.CURRENT',BASEURL.CURRENT);
-    sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]))
-    iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT])
+    sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]));
+    sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL['HOME_PAGE_ROUTER_NAME']);
+    iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
   },
   error => {
     console.log(error)
@@ -54,7 +46,7 @@ service.interceptors.request.use(
     if (config.baseUrlType) {
         let baseObj = BASEURL[BASEURL.CURRENT];
         config.baseURL = baseObj[config.baseUrlType];
-        
+
     } else{
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST // 默认的base_url
     }

@@ -59,7 +59,7 @@
         </el-form-item>
       </el-row>
       <div class="problem-title">
-        <div class="title w-60" :class="{'discuss': questionTypeName === '简答题' || questionTypeName === '论述题'}">
+        <div class="title-cnt w-60" :class="{'discuss': questionTypeName === '简答题' || questionTypeName === '论述题'}">
           <el-form-item prop="questionName">
             <el-input
               type="textarea"
@@ -72,7 +72,7 @@
         </div>
         <div
           v-if="questionTypeName !== '简答题' && questionTypeName !== '论述题'"
-          class="title"
+          class="title-cnt"
           :class="{'w-40': questionTypeName !== '简答题' && questionTypeName !== '论述题'}">
           <el-form-item>
             <el-upload
@@ -355,6 +355,7 @@ export default {
           );
           this.addMaintainQuestionForm.pqoList.push({
             optionNum: name,
+            questionId: this.addMaintainQuestionForm.questionId,
             checked: false
           });
         }
@@ -367,6 +368,7 @@ export default {
           );
           this.addMaintainQuestionForm.pqoList.push({
             optionNum: name,
+            questionId: this.addMaintainQuestionForm.questionId,
             checked: false
           });
         }
@@ -514,7 +516,9 @@ export default {
                 res.data.pqoList.forEach((item, index) => {
                   item.checked = item.optionKey === "1";
                   if(res.data.questionTypeName === '单选题' || res.data.questionTypeName === '判断题'){
-                    this.radioChecked = index;
+                    if(item.optionKey === "1"){
+                      this.radioChecked = index;
+                    }
                   }
                 });
               }
@@ -553,7 +557,7 @@ export default {
 <style lang="scss" scoped>
 .add-question-dialog{
   .problem-title{
-    .title{
+    .title-cnt{
       display: inline-block;
       &.w-60{
         padding-right: 14px;

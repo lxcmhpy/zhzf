@@ -277,7 +277,7 @@
               :rules="fieldRules('inspectRecord',propertyFeatures['inspectRecord'])"
             >
               <el-input
-                class="text_indent20 overflow_lins_textarea"
+                class="text_indent50 overflow_lins_textarea"
                 type="textarea"
                 v-model="docData.inspectRecord"
                 rows="3"

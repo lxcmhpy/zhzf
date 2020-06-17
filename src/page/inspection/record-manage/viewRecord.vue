@@ -58,7 +58,6 @@
           <div class="border_blue"></div>
           <div class="content_form">
             <!-- 罚款类型案件 -->
-           
               <div class="row">
                 <div class="col">
                   <el-form-item label="执法人员">{{formData.staff}}</el-form-item>

@@ -393,7 +393,7 @@ export function addPageManageApi(data){
         params: data,
         showloading: false,
         cancelToken: setCancelSource(),
-        timeout: 60000
+        timeout: 180000
     })
 }
 
@@ -437,6 +437,17 @@ export function pageVerifyListByPageIdApi(data){
         cancelToken: setCancelSource()
     })
 }
+//题目分布
+export function questionDistributionApi(data){
+    return request({
+        url: "/exam/pageManage/questionDistribution",
+        method: "get",
+        params: data,
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
+}
+
 //审核试卷
 export function verifyApi(data){
     return request({

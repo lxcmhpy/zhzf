@@ -2,6 +2,7 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="bottom:250px">
+
     <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
       <i class="iconfont law-approval"></i>
       <br/>签章
@@ -50,12 +51,12 @@
       return {
         // docId
         makeSealStr: '',
-        showQZBtn:false,  //是否显示签章按钮
+        // showQZBtn:false,  //是否显示签章按钮
       }
     },
     props: ['formOrDocData', 'storagePath'],
     mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId', 'docId'])},
+    computed: {...mapGetters(['caseId', 'docId','showQZBtn'])},
     methods: {
       //   打印方法
       async printContent() {
@@ -236,7 +237,7 @@
         this.$router.push({name: "case_handle_viewPDF"})
       },
       showApprovePeopleListBtn() {
-        this.$emit('showApprovePeopleList');
+        this.$emit('showApprovePeopleList'); 
       },
       approvalBtn() {
         this.$emit('showApproval');

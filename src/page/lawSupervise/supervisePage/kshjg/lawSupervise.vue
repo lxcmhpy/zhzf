@@ -51,7 +51,7 @@
               </div>
               <div class="flexBox">
                 <div class="con">
-                  <p>地址：{{curWindow.other.address}}</p>
+                  <p>机构名称：{{curWindow.other.organName}}</p>
                   <p>联系方式：{{curWindow.other.mobile}}</p>
                 </div>
                 <!-- <div class="status greenC2">
@@ -79,9 +79,9 @@
               <div class="flexBox">
                 <div class="con">
                   <p>地址：{{curWindow.other.address}}</p>
-                  <p>联系人：{{curWindow.other.contact}}</p>
+                  <p>联系人：{{curWindow.other.contactor}}</p>
                   <!-- <p>{{JSON.stringify(curWindow)}}</p> -->
-                  <p>联系方式：{{curWindow.other.phone}}</p>
+                  <p>联系方式：{{curWindow.other.telephone}}</p>
                 </div>
                 <div class="status">
                   <!-- <i class="iconfont law-mobile-phone"></i>
@@ -1208,7 +1208,8 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 // import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,getOrganList} from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage} from "@/api/lawSupervise.js";
+import {getOrganDetailApi,getOrganIdApi}  from "@/api/system.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 import lunarDate from '@/common/js/lunarDate.js';
@@ -1558,7 +1559,7 @@ export default {
               ]
           }
       ],
-      lawScreenFull: false,
+      lawScreenFull: true,
       videoDoing: null,
       showVideo: false,
       show: true,
@@ -1732,10 +1733,10 @@ export default {
     searchAllByBtn () {
         if (this.filterText === "") {
             this.showTree = true
-            this.getOrganTree(this.userInfo.organId);
+            this.organTreeByCurrUser(this.userInfo.organId);
         } else {
             let params = {
-                name: this.filterText,
+                key: this.filterText,
                     organId: this.userInfo.organId,
                     type: this.isCheck ? 0: 1
                 }
@@ -1765,7 +1766,12 @@ export default {
         this.doing = '2';
 
         if (!window.PhoneCallModule.getRegistered()) {
-            window.PhoneCallModule.sipRegister();
+            // window.PhoneCallModule.sipRegister();
+            let displayName = 'ecds05';
+            let privateIdentity ='100007';
+            let password = '1234';
+            window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
+
         }
         // debugger;
         if (code == '李玉明') {
@@ -1812,11 +1818,13 @@ export default {
         this.areaObj = key;
     },
     handleNodeClick (node) {
+        debugger;
         this.markers.splice(0, this.markers.length);
         this.tabList[0].children.forEach((item)=>{
             item.select = false;
         })
         this.allSearchList.splice(0, this.allSearchList.length);
+        let _this = this;
         // this.radioVal = '全选';
         if (node.icon === 'icon_jc11' && node.label === '执法人员') {
             let params = {
@@ -1824,11 +1832,12 @@ export default {
                 organId: node.id,
                 type: 0
             }
-            let _this = this;
             debugger;
             new Promise((resolve, reject) => {
+                // getOrganIdApi({id: node.id}).then(
                 getOrganTree(params).then(
                     res => {
+                        debugger;
                         // _this.showTree = false;
                         let resultList = [];
                         res.data.forEach((v,i)=>{
@@ -1836,6 +1845,8 @@ export default {
                             let position = v.propertyValue ? v.propertyValue.split(','):['',''];
                             let lng = parseFloat(position[0]);
                             let lat = parseFloat(position[1]);
+                            // let lng = v.longitude?v.longitude: '';
+                            // let lat = v.latitude?v.latitude: '';
                             resultList.push({
                                 address: v.address,
                                 distance: null,
@@ -1853,19 +1864,66 @@ export default {
                                 },
                                 name: v.name,
                                 label: v.nickName,
-                                position: v.propertyValue,
+                                // position: v.propertyValue,
+                                position: [lng, lat],
                                 shopinfo: '',
                                 tel: '',
                                 type: '0',
                                 other: v
                             })
                         })
+                         this.category = 0;
                         _this.onSearchResult(resultList, 0,0);
+                        _this.errorMsg(`总计${res.data.length}条数据`, 'success');
                 })
             })
 
 
-         } else if (node.propertyValue){
+        } else if (node.icon === 'icon_jc1') {
+             this.category = 1;
+            debugger;
+            new Promise((resolve, reject) => {
+                getOrganDetailApi({id:node.id}).then(
+                    res => {
+                        debugger;
+                        // _this.showTree = false;
+                            let resultList = [];
+                            let v = res.data;
+                            let position = node.propertyValue ? node.propertyValue.split(','):['',''];
+                            let lng = parseFloat(position[0]);
+                            let lat = parseFloat(position[1]);
+                            // let lng = v.longitude?v.longitude: '';
+                            // let lat = v.latitude?v.latitude: '';
+                            resultList.push({
+                                address: v.address,
+                                distance: null,
+                                id: v.id,
+                                lat: lat,
+                                lng: lng,
+                                icon: 'icon_jc11',
+                                // icons: 'ry',
+                                pid: v.organId,
+                                location: {
+                                    O: lng,
+                                    P: lat,
+                                    lat: lat,
+                                    lng: lng
+                                },
+                                name: v.name,
+                                label: v.nickName,
+                                // position: v.propertyValue,
+                                position: [lng, lat],
+                                shopinfo: '',
+                                tel: '',
+                                type: '1',
+                                other: v
+                            })
+                        _this.onSearchResult(resultList, 1,0);
+                        _this.errorMsg(`总计1条数据`, 'success');
+                    })
+                })
+
+          } else if (node.propertyValue){
 
             let resultList = [];
             let position = node.propertyValue ? node.propertyValue.split(','):['',''];
@@ -1898,6 +1956,18 @@ export default {
 
             //     }
             // )
+        } else if (node.label === '执法车辆') {
+            this.getZfjgLawSupervise({
+                key: '',
+                size: 20,
+                type: 2
+            }, 2);
+        } else if (node.label === '执法船舶') {
+            this.getZfjgLawSupervise({
+                key: '',
+                size: 20,
+                type: 3
+            }, 3);
         }
         // if (node.icon === 'icon_jc11' && node.name !== '执法人员') {
 
@@ -1992,11 +2062,8 @@ export default {
         })
     },
     routerXsDetail (row) {
-        debugger;
-        let status = '0';
-          switch (row.status) {
-            case '待审核':
-                this.$router.push({
+        // debugger;
+         this.$router.push({
                     name: 'law_supervise_examineDoingDetail',
                     params: {
                         status: '0',
@@ -2004,44 +2071,55 @@ export default {
                         offSiteManageId: row.id
                     }
                 });
-                break;
-            case '无效信息':
-                this.$router.push({
-                    name: 'law_supervise_invalidCueDetail',
-                    params: {
-                        offSiteManageId: row.id
-                    }
-                });
-                break;
-            case '审核中':
-                this.$router.push({
-                    name: 'law_supervise_examineDoingDetail',
-                    params: {
-                        status: '1',
-                        tabTitle: '审核中',
-                        offSiteManageId: row.id
-                    }
-                });
-                break;
-            case '已转办':
-                this.$router.push({
-                    name: 'law_supervise_transferDetail',
-                    params: {
-                        offSiteManageId: row.id
-                    }
-                });
-                break;
-            case '已审核':
-                this.$router.push({
-                    name: 'law_supervise_examineDoingDetail',
-                    params: {
-                        status: '3',
-                        tabTitle: '已审核',
-                        offSiteManageId: row.id
-                    }
-                });
-                break;
-        }
+        // let status = '0';
+        //   switch (row.status) {
+        //     case '待审核':
+        //         this.$router.push({
+        //             name: 'law_supervise_examineDoingDetail',
+        //             params: {
+        //                 status: '0',
+        //                 tabTitle: '待审核',
+        //                 offSiteManageId: row.id
+        //             }
+        //         });
+        //         break;
+        //     case '无效信息':
+        //         this.$router.push({
+        //             name: 'law_supervise_invalidCueDetail',
+        //             params: {
+        //                 offSiteManageId: row.id
+        //             }
+        //         });
+        //         break;
+        //     case '审核中':
+        //         this.$router.push({
+        //             name: 'law_supervise_examineDoingDetail',
+        //             params: {
+        //                 status: '1',
+        //                 tabTitle: '审核中',
+        //                 offSiteManageId: row.id
+        //             }
+        //         });
+        //         break;
+        //     case '已转办':
+        //         this.$router.push({
+        //             name: 'law_supervise_transferDetail',
+        //             params: {
+        //                 offSiteManageId: row.id
+        //             }
+        //         });
+        //         break;
+        //     case '已审核':
+        //         this.$router.push({
+        //             name: 'law_supervise_examineDoingDetail',
+        //             params: {
+        //                 status: '3',
+        //                 tabTitle: '已审核',
+        //                 offSiteManageId: row.id
+        //             }
+        //         });
+        //         break;
+        // }
 
     },
     positionEvent (row, category) {
@@ -2070,12 +2148,12 @@ export default {
                     let resultList = []
                     if (res.data) {
                         _this.errorMsg(`总计1条数据`, 'success');
-                        let position = res.data.position ? res.data.position.split(','):['',''];
+                        let position = res.data.propertyValue ? res.data.propertyValue.split(','):['',''];
                         let lng = parseFloat(position[0]);
                         let lat = parseFloat(position[1]);
                         // _this.category = type;
                         resultList.push({
-                            address: res.data.area,
+                            address: res.data.address,
                             distance: null,
                             id: res.data.id,
                             lat: lat,
@@ -2086,7 +2164,7 @@ export default {
                                 lat: lat,
                                 lng: lng
                             },
-                            name: res.data.vehicleNumber,
+                            name: res.data.name,
                             shopinfo: '',
                             tel: '',
                             type: type,
@@ -2098,7 +2176,7 @@ export default {
 
                     // _this.allSearchList.push(data);
                     // _this.getZfjgLawSupervise(data, this.category);
-                    _this.onSearchResult(resultList, 4,  _this.windows.length)
+                    _this.onSearchResult(resultList, 4,  0)
                 },
                 error => {
                     //  _this.errorMsg(error.toString(), 'error')
@@ -2147,16 +2225,16 @@ export default {
         // if (this.category != 4) {
             // this.drawer = true;
             // if (this.drawer) {
-              let _this = this;
-              this.$nextTick(() => {
-                var flowChart = echarts.init(document.getElementById("echartsBox1"));
-                flowChart.setOption(_this.lawSuperviseObj.option);
-                var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
-                flowChart1.setOption(_this.yjObj);
-              //   _this.getRealTimeDataByLawSupervise();
-              });
-            // }
+                // }
         // }
+            //   let _this = this;
+            //   this.$nextTick(() => {
+            //     var flowChart = echarts.init(document.getElementById("echartsBox1"));
+            //     flowChart.setOption(_this.lawSuperviseObj.option);
+            //     var flowChart1 = echarts.init(document.getElementById("echartsBox2"));
+            //     flowChart1.setOption(_this.yjObj);
+                // this.getRealTimeDataByLawSupervise();
+            //   });
     },
     openDrawer () {
         this.drawer = true;
@@ -2173,7 +2251,7 @@ export default {
          this.drawer = true;
         // this.getRealTimeDataByLawSupervise();
         this.searchPageAll(4, 'zfdList');
-        this.searchPageAll(6, 'gjclList');
+        this.searchPageAllGJ(6, 'gjclList');
         this.category = 4;
         // this.searchByTab(this.tabList[1].children[0]);
 
@@ -2187,7 +2265,7 @@ export default {
         let data = {
                 // area: this.currentAddressObj.province + this.currentAddressObj.district,
                 // area: '',
-                current: 1,
+                // current: 1,
                 key: '',
                 size: 20,
                 type: code
@@ -2198,7 +2276,8 @@ export default {
                     res => {
                         // resolve(res);
                         let resultList = [];
-                        that[obj] = res.data.records.splice(0,5);
+                        // that[obj] = res.data.records.splice(0,5);
+                        that[obj] = res.data.splice(0,5);
                     },
                     error => {
                         //  _this.errorMsg(error.toString(), 'error')
@@ -2206,10 +2285,31 @@ export default {
                     })
             })
     },
+    searchPageAllGJ (code, obj) {
+        // 告警车辆
+        if (this.curWindow) {
+            this.curWindow.visible = false;
+        }
+        // 进入页面加载查询所有初始数据
+        let that = this;
+        new Promise((resolve, reject) => {
+                queryAlarmVehiclePage({current:1}).then(
+                    res => {
+                        let resultList = [];
+                        that[obj] = res.data.records.splice(0,5);
+                    },
+                    error => {
+                        //  _this.errorMsg(error.toString(), 'error')
+                            return
+                    }
+                )
+            })
+    },
     onSearchResult(pois, category, length) {
       if (length == 0) {
         this.windows.splice(0,this.windows.length);
       }
+      debugger;
       let latSum = 0;
       let lngSum = 0;
       let numG = 100;
@@ -2218,8 +2318,8 @@ export default {
         // let windows = []
         pois.forEach((poi, i) => {
           let { lng, lat } = poi;
-          lngSum += lng;
-          latSum += lat;
+          lngSum += parseFloat(lng);
+          latSum += parseFloat(lat);
           let that = _this;
           if (category == -1) {
                 _this.markers.push({
@@ -2302,6 +2402,14 @@ export default {
                             that.curWindow.other.id,
                             that.curWindow.other
                             );
+                        } else if(category == 0) {
+                              new Promise((resolve, reject) => {
+                                  getOrganIdApi({id: that.curWindow.other.id}).then(
+                                      res => {
+                                        _this.$set(_this.curWindow.other, 'address', res.data.address);
+                                    });
+
+                              })
                         }
                         that.curWindow.visible = true;
                       });
@@ -2317,6 +2425,7 @@ export default {
           };
           _this.windows.push(aaa);
         });
+        debugger;
         let center = {
           lng: lngSum / pois.length,
           lat: latSum / pois.length
@@ -2352,13 +2461,17 @@ export default {
             let data = {
             // area: this.currentAddressObj.province + this.currentAddressObj.district,
             // area: "东城区",
-            current: 1,
+            // current: 1,
             key: "",
             //   size: 20,
             type: item.code
             };
             this.allSearchList.push(data);
-            this.getZfjgLawSupervise(data, this.category);
+            if (this.category == 4) {
+                this.searchPageAllGJ(data, this.category);
+            } else {
+                this.getZfjgLawSupervise(data, this.category);
+            }
         } else {
             let _this = this;
             let _index = _.findIndex(this.allSearchList, function (chr) {
@@ -2375,8 +2488,7 @@ export default {
         }
     },
     searchByTab(item) {
-        // if (item.select)
-// debugger;
+        debugger;
         if (this.allSearchList.length == 0) {
         this.markers.splice(0, this.markers.length);
         }
@@ -2397,13 +2509,18 @@ export default {
         let data = {
           // area: this.currentAddressObj.province + this.currentAddressObj.district,
         //   area: "东城区",
-          current: 1,
+        //   current: 1,
           key: "",
         //   size: 20,
           type: item.code
         };
         this.allSearchList.push(data);
-        this.getZfjgLawSupervise(data, this.category);
+         if (this.category == 4) {
+                this.searchPageAllGJ(data, this.category);
+        } else {
+            this.getZfjgLawSupervise(data, this.category);
+        }
+
       } else {
         let _this = this;
         let _index = _.findIndex(this.allSearchList, function (chr) {
@@ -2443,7 +2560,7 @@ export default {
         // this.currentAddressObj.province + this.currentAddressObj.district
         let data = {
         //   area: "",
-          current: 1,
+        //   current: 1,
           key: this.$refs.searchAmapBox.keyword,
           size: 20,
           type: this.category
@@ -2452,23 +2569,29 @@ export default {
       }
     },
     getZfjgLawSupervise(data, category) {
+      data.organId = this.userInfo.organId;
       let _this = this;
       new Promise((resolve, reject) => {
         getZfjgLawSupervise(data).then(
           res => {
             // resolve(res);
+            debugger;
             let resultList = [];
-            if (res.data && res.data.records.length == 0) {
+            if (res.data && res.data.length == 0) {
               _this.errorMsg("暂无数据", "error");
               // return
             } else {
               _this.errorMsg(
-                `查询到${res.data.records.length}条数据`,
+                `查询到${res.data?res.data.length:0}条数据`,
                 "success"
               );
             }
-            res.data.records.forEach((item, i) => {
-              let position = item.position.split(",");
+            debugger;
+            res.data.forEach((item, i) => {
+            //   let position = item.position.split(",");
+            //   let lng = parseFloat(position[0]);
+            //   let lat = parseFloat(position[1]);
+            let position = item.propertyValue.split(",");
               let lng = parseFloat(position[0]);
               let lat = parseFloat(position[1]);
               resultList.push({
@@ -2500,7 +2623,7 @@ export default {
         );
       });
     },
-    getOrganTree (organId) {
+    organTreeByCurrUser (organId) {
         let _this = this;
         let params = {
             name: '',
@@ -2508,7 +2631,7 @@ export default {
             type: 0
         }
         new Promise((resolve, reject) => {
-            getOrganList().then(
+            organTreeByCurrUser().then(
                 res => {
                     let dataArray = res.data;
                     dataArray.forEach((item,i)=>{
@@ -2654,11 +2777,15 @@ export default {
         //  debugger;
          window.PhoneCallModule.initialize();
         if (!window.PhoneCallModule.getRegistered()) {
-            window.PhoneCallModule.sipRegister();
+            // window.PhoneCallModule.sipRegister();
+            let displayName = 'ecds05';
+            let privateIdentity ='100007';
+            let password = '1234';
+            window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
         }
      })
     this.lunarDate = lunarDate();
-    this.getOrganTree(this.userInfo.organId);
+    this.organTreeByCurrUser(this.userInfo.organId);
     // this.updateDrawer();
   },
   created () {

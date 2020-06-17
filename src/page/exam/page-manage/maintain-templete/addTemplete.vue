@@ -47,10 +47,7 @@
                 prop="paragraphSum"
                 :rules="{ required: true, message: '节段总分不能为空', trigger: 'blur' }"
               >
-                <el-input
-                  v-model="item.paragraphSum"
-                  @input="setNumVal(item, 'paragraphSum')"
-                ></el-input>
+                <el-input v-model="item.paragraphSum" @input="setNumVal(item, 'paragraphSum')"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6" class="segment-item">
@@ -59,10 +56,7 @@
                 prop="paragraphNum"
                 :rules="{ required: true, message: '试题数量不能为空', trigger: 'blur' }"
               >
-                <el-input
-                  v-model="item.paragraphNum"
-                  @input="setNumVal(item, 'paragraphNum')"
-                ></el-input>
+                <el-input v-model="item.paragraphNum" @input="setNumVal(item, 'paragraphNum')"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="2" class="segment-item" style="text-align: center;">
@@ -105,7 +99,15 @@ export default {
         ]
       },
       dialogTitle: "", //弹出框title
-      handelType: 0 //添加 1  修改2  查看3
+      handelType: 0, //添加 1  修改2  查看3
+      validateParagraphType: (rule, value, callback) => {
+        if (value === "") {
+          callback(new Error("节段题型不能为空"));
+        } else {
+          callback();
+        }
+      },
+      selectParagraphType: []
     };
   },
   created() {
@@ -124,14 +126,23 @@ export default {
         }
       });
     },
+    // 选择节段题型
+    typeChange(val, item){
+      const typeIndex = this.selectParagraphType.indexOf(val);
+      if(typeIndex === -1){
+        this.selectParagraphType.push(val);
+      }else{
+        this.$message({ type: 'warning', message: '节段题型不能重复' });
+      }
+    },
     // 添加节段
     add() {
       this.tableData.push({ code: this.tableData.length + 1, paragraphId: "" });
     },
     // 添加节段设置数字类型值
-    setNumVal(item, attr){
-      if(item[attr] !== undefined && item[attr].length){
-        item[attr] = item[attr].replace(/[^\d]/g,'');
+    setNumVal(item, attr) {
+      if (item[attr] !== undefined && item[attr].length) {
+        item[attr] = item[attr].replace(/[^\d]/g, "");
       }
     },
     // 删除节段
@@ -166,7 +177,17 @@ export default {
       }
       Promise.all(validatePromise).then(values => {
         if (values.indexOf(false) < 0) {
-          this.submit();
+          const types = [];
+          this.tableData.map(item => {
+            if(types.indexOf(item.paragraphType) === -1){
+              types.push(item.paragraphType);
+            }
+          });
+          if(types.length < this.tableData.length){
+            this.$message({ type: 'warning', message: '节段题型不能重复' });
+          }else{
+            this.submit();
+          }
         }
       });
     },
@@ -261,8 +282,8 @@ export default {
       let _this = this;
       _this.visible = true;
       _this.handelType = type;
-      _this.addTempleteForm.templeteName = '';
-      _this.addTempleteForm.templeteId = '';
+      _this.addTempleteForm.templeteName = "";
+      _this.addTempleteForm.templeteId = "";
       if (type == 1) {
         //新增
         _this.dialogTitle = "新增模板";
@@ -289,6 +310,7 @@ export default {
             );
             _this.tableData.forEach((item, index) => {
               item.code = index + 1;
+              _this.selectParagraphType.push(item.paragraphType);
             });
           } else {
             _this.$message({

@@ -21,12 +21,12 @@
                 </el-dropdown-menu>
               </el-dropdown>
           </div> -->
-          <div>
+          <div v-if="userInfo">
             <el-popover placement="top-start" width="335" trigger="hover" style="padding:0" popper-class='padding0'>
-              <div class="info_top">
+              <div class="info_top" >
                 <li><img src="../../../static/images/img/personInfo/head.svg" alt=""></li>
                 <li>
-                  <p class="name">{{userInfo.username}}</p>
+                  <p class="name">{{userInfo.nickName}}</p>
                   <p class="number">{{userInfo.username}}</p>
                 </li>
 
@@ -34,13 +34,13 @@
               <div class="info_center">
                 <el-form ref="form" label-width="72px">
                   <el-form-item label="手机号码：">
-                    18300000000
+                    {{userInfo.mobile}}
                   </el-form-item>
                   <el-form-item label="执法机构：">
-                    北京市交通执法总队 · 第一大队
+                    {{userInfo.organName}}
                   </el-form-item>
                   <el-form-item label="所属部门：">
-                    北京市交通运输局
+                    空
                   </el-form-item>
                   <el-form-item label="上次登录：">
                     2019.04.17 07:06:45
@@ -56,7 +56,7 @@
               </div>
               <span slot="reference">
                 <img src="../../../static/images/img/personInfo/head.svg" alt="">
-                {{userInfo.username}}
+                {{userInfo.nickName}}
                 <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
               </span>
 
@@ -105,8 +105,8 @@ export default {
       // openKeys: ["sub1"],
       // collapsed: false,
       // avatar: Cookies.get("avatar")
-      userInfo: iLocalStroage.gets('userInfo'),
-      selectedHeadMenu: 'lawSupervise-menu-law_supervise_lawSupervise'   //接收headMenu传来的选中的一级菜单
+      userInfo: null,
+      selectedHeadMenu: null   //接收headMenu传来的选中的一级菜单
     };
   },
   components: {
@@ -116,7 +116,7 @@ export default {
     mainContent
   },
   computed: {
-    ...mapGetters(['systemTitle'])
+    ...mapGetters(['systemTitle','headActiveNav'])
   },
   inject: ["reload"],
   methods: {
@@ -172,6 +172,8 @@ export default {
   },
   mounted() {
     console.log(this.userInfo)
+    this.selectedHeadMenu = this.headActiveNav;
+    this.userInfo = iLocalStroage.gets('userInfo');
   },
   created(){
     //判断有没有menu

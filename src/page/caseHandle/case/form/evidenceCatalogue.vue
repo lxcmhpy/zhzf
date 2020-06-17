@@ -113,6 +113,7 @@ export default {
         this.$store.dispatch("getEvidence", data).then(res => {
             _this.eviList = res.data.records;
             console.log("111",_this.eviList);
+            this.$emit("getEvidenceEmit");
         });
 
     },
@@ -122,7 +123,7 @@ export default {
         this.$refs.evidenceDetailRef.showModal(data); 
     },
     saveFile(param) {
-      console.log(param);
+      console.log("333",param);
       (this.form.file = param.file),
       (this.form.caseId = this.caseId),
       (this.form.docId = "000"),
@@ -130,25 +131,42 @@ export default {
       (this.form.userId = iLocalStroage.gets("userInfo").id),
       (this.form.evName = param.file.name);
       (this.form.evType = param.file.type);
-      this.insertEvi();      
+      this.insertEvi(); 
+      console.log("333",param);     
     },
     //插入证据
     insertEvi(id){
       var fd = new FormData();
       fd.append("file", this.form.file);
       fd.append("caseId", this.form.caseId);
-      fd.append("docId", this.form.docId);
+      fd.append("objectId", this.form.docId);
       fd.append("category", this.form.category);
       fd.append("userId", this.form.userId);
       fd.append("evName", this.form.evName);
-      fd.append("evType", this.form.evType);
+      // fd.append("evType", this.form.evType); 
       fd.append("status", this.form.status);
       fd.append("remark", this.form.remark);
       fd.append("fileId", this.form.fileId);
       // fd.append("id", this.form.id);
+      
+      //给证据类型赋值
+      let fileType= this.$util.getFileType(this.form.file.name);
+      console.log('给证据类型赋值',fileType);
+      this.$set(this.form,'evType')
+      if(fileType == 'image'){ //图片
+        this.form.evType = '照片'
+      }else if(fileType == 'video' || fileType == 'radio'){
+        this.form.evType = '音视频'
+      }else{
+        this.form.evType = '其他附件'
+      }
+      fd.append("evType", this.form.evType); 
+      
+
       let _this = this
       uploadEvdence(fd).then(res => {
         console.log("1111111",res);
+        
         if (res.code == 200){
           this.$refs.evidenceUploadSuccessRef.showModal();
           _this.addVisible = false;

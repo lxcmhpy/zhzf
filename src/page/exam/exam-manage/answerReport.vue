@@ -161,6 +161,18 @@ export default {
       let $table = this.$refs.questionTable;
       row.optionList = row.pageOptionList;
       this.reportData.resultInfo.map(item => {
+        if(item.personAnswer){
+          const selfAnswer = item.personAnswer.split(',');
+          if(selfAnswer && selfAnswer.length){
+            item.pageOptionList.forEach(option => {
+              if(selfAnswer.indexOf(option.optionNum) > -1){
+                option.optionKey = '1';
+              }else{
+                option.optionKey = '';
+              }
+            });
+          }
+        }
         if (item.pqId !== row.pqId) {
           item.expend = false;
           $table.toggleRowExpansion(item, false);

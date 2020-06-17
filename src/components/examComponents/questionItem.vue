@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="question.questionPicture ? 16 : 24">
           <div class="stem-info">
-            <p class="question-num">{{ question.orderNo }}</p>
+            <p class="question-num">{{ question.orderNum }}</p>
             <div class="question-cnt">
               <div class="question-desc">
                 {{ question.questionName }}
@@ -104,11 +104,16 @@ export default {
     // 选中项回显
     shwoDefaultVal(){
       this.answer = null;
+      let answer = null;
+      if(this.questionTypeName !== '简答题' && this.questionTypeName !== '论述题'){
+        answer = this.question.answer.split(',');
+      }
       this.defaultChecked.splice(0, this.defaultChecked.length);
       if(this.question.listPo && this.question.listPo.length){
         this.question.listPo.forEach((item, index) => {
-          if(item.optionKey === '1'){
+          if(answer.indexOf(item.optionNum) > -1){
             item.checked = true;
+            item.optionKey = '1';
             if(this.question.questionTypeName === '单选题' || this.question.questionTypeName === '判断题'){
               this.answer = index;
             }
@@ -126,31 +131,37 @@ export default {
     },
     // 选择答案
     changeSelect(row,type){
+      let answer = '';
       if(type == '1'){
         this.question.listPo.forEach((item, index) =>{
           item.optionKey = index === this.answer ? '1' : '0';
           item.checked = index === this.answer;
+          if(index === this.answer){
+            answer = item.optionNum;
+          }
         });
-        this.$emit('setQuestionStatus', true);
       }else if(type === '2'){
         this.question.listPo.forEach(item =>{
           if(item.optionNum == row.optionNum){
-            if(item.optionKey == undefined || item.optionKey == '0'){
-              item.optionKey = '1';
-              item.checked = true;
-            }else{
+            if(item.optionKey == undefined || item.optionKey == '1'){
               item.optionKey = '0';
               item.checked = false;
+            }else{
+              item.optionKey = '1';
+              item.checked = true;
             }
           }
         });
-        const checkedOption = this.question.listPo.find(item => item.checked);
-        this.$emit('setQuestionStatus', checkedOption);
+        const checkedOption = this.question.listPo.filter(item => item.checked);
+        answer = checkedOption.map(item => item.optionNum).join(',');
       }else if(type === '3'){
+        this.question.answer = this.question.answer.trim();
         if(this.question.answer && this.question.answer.length){
-          this.$emit('setQuestionStatus', true);
+          this.$emit('setQuestionStatus', this.question.answer);
+          return
         }
       }
+      this.$emit('setQuestionStatus', answer);
     },
     clearAnswer(){
       this.answer = '';

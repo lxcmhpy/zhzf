@@ -149,7 +149,7 @@
 <script>
 import {mapGetters} from "vuex";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
-import {findAllDrawerById, saveAndUpdate} from '@/api/lawSupervise.js';
+import {findAllDrawerById, saveAndUpdate,transerCase} from '@/api/lawSupervise.js';
 export default {
   //tabActiveValue: 1检测数据核对,2违法超限复合,3生成证据包
   props: ['tabActiveValue', 'obj'],
@@ -188,7 +188,6 @@ export default {
         new Promise((resolve, reject) => {
             saveAndUpdate(_this.obj).then(
                 res => {
-                    // debugger;
                     _this.zlaVisible = true;
                 },
                 error => {
@@ -199,12 +198,26 @@ export default {
 
     },
     goZLA () {
-        this.$store.commit('setCaseId','f205736182a36d9fd0574fa75eb30a30');
-        this.$store.commit('setCaseApproval',false);
-        this.$store.commit('setCaseNumber','吐临〔2020〕第00320号');
-        this.$router.push({
-            name: 'case_handle_establish'
-        });
+        let _this = this;
+        new Promise((resolve, reject) => {
+            transerCase(_this.obj.id).then(
+                res => {
+                    debugger;
+                    _this.zlaVisible = true;
+                    // _this.$store.commit('setCaseId','f205736182a36d9fd0574fa75eb30a30');
+                    _this.$store.commit('setCaseId',res.data.id);
+                    _this.$store.commit('setCaseApproval',false);
+                    // _this.$store.commit('setCaseNumber','吐临〔2020〕第00320号');;
+                     _this.$store.commit('setCaseNumber',res.data.caseNumber);
+                    _this.$router.push({
+                        name: 'case_handle_establish'
+                    });
+                },
+                error => {
+                    return
+                }
+            )
+        })
     },
     handleNodeClick1(data) {
       this.checkSearchForm.number = data.label;

@@ -3,7 +3,10 @@
     <transition name="form-fade" mode="in-out">
       <section class="form_contianer" v-show="showLogin">
         <div class="leftC">
-          <img src="../../../static/images/img/login/pic_denglu.jpg" alt="">
+          <img src="../../../static/images/img/login/zf_bg.png" alt="">
+          <div class="leftC_title">
+              <img src="../../../static/images/img/login/logo1.png" alt=""> {{systemTitle}}
+          </div>
         </div>
         <div class="rightC" v-if="!resetFlag">
           <div class="form_box">
@@ -71,9 +74,8 @@
 <script>
 // 滑动验证
 import VueSimpleVerify from 'vue-simple-verify';
-import { mapGetters } from "vuex";
-import iLocalStroage from "@/common/js/localStroage";
 import * as types from "@/store/mutation-types";
+import { getDictListDetailByNameApi } from "@/api/system";
 
 export default {
   components: { VueSimpleVerify },
@@ -100,7 +102,8 @@ export default {
       success: false,
       weChatFlag: false,
       resetFlag: false,
-      timeOutFlag: ""
+      timeOutFlag: "",
+      systemTitle: sessionStorage.getItem('DocumentTitle')
     };
   },
   methods: {
@@ -108,6 +111,7 @@ export default {
     changeType(type) {
       this.check = type;
       this.loginForm.loginName = '';
+      this.loginForm.password = '';
     },
 
     //登录
@@ -156,10 +160,9 @@ export default {
                 _this.success = false
               },
               error => {
-                console.log('error',error);
                  this.$message({
                   type: "error",
-                  message: error.message
+                  message: error.msg || ''
                 });
               }
             );
@@ -190,16 +193,29 @@ export default {
         _this.$refs.verify.reset();
         _this.errorMessage = '验证失效,请重新验证'
       }, 30000);
+    },
+    //获取系统标题
+    getSystemData() {
+      if(this.systemTitle){
+        window.document.title = this.systemTitle;
+        return false;
+      }
+      getDictListDetailByNameApi('系统标题').then(res => {
+        sessionStorage.setItem('DocumentTitle', res.data[0].name);
+        window.document.title = res.data[0].name;
+        this.systemTitle = res.data[0].name;
+      }, err => {
+        console.log(err);
+      })
     }
   },
   created () {
-      debugger;
     window.sessionStorage.clear();
   },
   mounted() {
-      debugger;
     this.showLogin = true;
     sessionStorage.setItem('LoginSystem', 'examLogin');
+    this.getSystemData();
   }
 };
 </script>

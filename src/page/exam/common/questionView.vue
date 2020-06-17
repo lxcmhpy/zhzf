@@ -38,6 +38,15 @@
               </div>
               <div v-if="questionTypeTxt === 'essays'" style="width: 100%;">
                 <el-input
+                  v-if="question.personAnswer"
+                  type="textarea"
+                  :rows="8"
+                  cols="100%"
+                  v-model="question.personAnswer"
+                  disabled
+                ></el-input>
+                <el-input
+                  v-else
                   type="textarea"
                   :rows="8"
                   cols="100%"
@@ -62,12 +71,12 @@
         <span>{{ getoptionKey(question) }}</span>
       </p>
       <p>试题解析：{{question.questionAnalysis}}</p>
-      <div v-if="editable" class="edit-question">
-        <div class="edit-btn">
+      <div v-if="editable" class="edit-question" :class="{'isLocked': question.isLock !== '0'}">
+        <div v-show="question.isLock === '0'" class="edit-btn">
           <span class="btn" @click="randomReplace">随机替换</span>
           <i class="split"></i>
         </div>
-        <div class="edit-btn">
+        <div v-show="question.isLock === '0'" class="edit-btn">
           <span class="btn" @click="selectReplace">选择替换</span>
           <i class="split"></i>
         </div>
@@ -159,7 +168,11 @@ export default {
             }
           });
         }
-        return answer.join(", ");
+        if(item.answer){
+          return item.answer
+        }else{
+          return answer.join(", ");
+        }
       } else {
         return item.answer;
       }
@@ -263,6 +276,9 @@ export default {
   position: relative;
   border: 1px solid #e5e5e5;
   margin-bottom: 20px;
+  &.locked{
+    border: 1px solid red;
+  }
   &.noBorder {
     border: none;
     margin-bottom: 0;
@@ -343,6 +359,10 @@ export default {
       bottom: 0;
       width: 100%;
       background: rgba(74, 175, 167, 0.85);
+      &.isLocked{
+        background: rgba(224, 32, 32, 0.85);
+        text-align: center;
+      }
       .edit-btn {
         display: inline-block;
         width: 33%;

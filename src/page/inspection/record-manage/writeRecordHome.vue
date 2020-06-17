@@ -12,12 +12,12 @@
         </div>
       </div>
       <div v-for="(item,index) in modleList" :key="index" class="card-content">
-        <div class="card-title" v-if="index==0">{{item.domain}}
-          <!-- ({{item.templateList.length}}) -->
-          <!-- {{typeof(item.templateList.length)}} -->
-        </div>
-        <div class="card-title" v-if="index!=0">{{item.domain}}
-          <!-- ({{item.templateList.length}}) -->
+        <!-- <div class="card-title" v-if="index==0">{{item.domain}}
+         ({{item.templateList.length}}) -->
+        <!-- {{typeof(item.templateList.length)}} 
+        </div>-->
+        <div class="card-title" style="justify-content: flex-start;">{{item.domain}}
+          <span v-if="item.templateList">({{item.templateList.length}})</span>
         </div>
         <ul class="card-ul">
           <li v-for="(modle,index) in item.templateList" :key="index">
@@ -47,18 +47,18 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import addModle from "./addModle.vue";
-import {  findAllRecordModleApi, findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
-  findRecordModleByNameIdApi} from "@/api/Record";
+import {  findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
+  findRecordModleByNameIdApi, findRecordModleByPersonApi} from "@/api/Record";
 
 export default {
-  // components: {
-  //   preview,
-  //   addModle
-  // },
+  components: {
+    preview,
+    addModle
+  },
 
   data() {
     return {
-      isHome:true,
+      isHome: true,
       searchModleName: '',
       compData: [],
       modleList: [{
@@ -76,6 +76,7 @@ export default {
         }],
       },
       ],
+      currentUserLawId: ''
 
     }
   },
@@ -106,13 +107,12 @@ export default {
     },
     // 选择模板
     writeRecord(item) {
-      console.log('选中的模板', item)
-      item.addOrEiditFlag = 'add'
       // 写记录
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
         name: 'inspection_writeRecordInfo',
-        params: item
+        // params: item
+        query: { id: item.id, addOrEiditFlag: 'add' }
       });
     },
     // 修改模板
@@ -158,7 +158,11 @@ export default {
       this.$refs[formName].resetFields();
     },
     searchList() {
-      findAllRecordModleApi().then(
+      let data = {
+        organId: iLocalStroage.gets("userInfo").organId,
+        templateUserId: this.currentUserLawId
+      }
+      findRecordModleByPersonApi(data).then(
         res => {
           console.log(res)
           if (res.data) {
@@ -177,8 +181,8 @@ export default {
           res => {
             console.log(res)
             if (res.data) {
-              this.modleList=[{templateList:[]}];
-              this.modleList[0].templateList= res.data
+              this.modleList = [{ templateList: [] }];
+              this.modleList[0].templateList = res.data
             }
           },
           error => {
@@ -186,10 +190,33 @@ export default {
           })
       }
 
-    }
+    },
+    //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
+    setLawPersonCurrentP() {
+      let _this = this
+      this.$store
+        .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
+        .then(
+          res => {
+            console.log('执法人员列表', res)
+            let currentUserData = {};
+            res.data.forEach(item => {
+              if (
+                item.userId == iLocalStroage.gets("userInfo").id
+              ) {
+                _this.currentUserLawId = item.id;
+                _this.searchList()
+              }
+            });
+          },
+          err => {
+            console.log(err);
+          }
+        );
+    },
   },
   mounted() {
-    this.searchList()
+    this.setLawPersonCurrentP()
   }
 }
 </script>

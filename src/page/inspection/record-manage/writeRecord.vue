@@ -5,42 +5,47 @@
         <span style="font-size:18px;font-weight: bold;">
           {{formData.title}}
         </span>
-        <span v-if="isWrite">
-          <el-popover placement="bottom" width="700" trigger="click">
-            <!-- <writeRecordHome name="" ref="writeRecordRef" style="width:710px;height:400px;overflow:auto"></writeRecordHome> -->
-            <span slot="reference" @click="upAndDown=!upAndDown">
-              <span class="change_title_icon" @click="changeModle">切换模板
-                <i class="el-icon-arrow-down" v-if="!upAndDown"></i>
-                <i class="el-icon-arrow-up" v-if="upAndDown"></i>
-              </span>
+        <el-popover placement="bottom" width="700" trigger="click" v-model='isChangeModle' :show='clickPover' v-if="addOrEiditFlag=='add'">
+          <writeRecordHome ref="writeRecordRef" @changeModleId="updateMole" style="width:710px;height:400px;overflow:auto"></writeRecordHome>
+          <span slot="reference" @click="upAndDown=!upAndDown">
+            <span class="change_title_icon" @click="changeModle">切换模板
+              <i class="el-icon-arrow-down" v-if="!upAndDown"></i>
+              <i class="el-icon-arrow-up" v-if="upAndDown"></i>
             </span>
-          </el-popover>
-           <writeRecordHome name="" ref="writeRecordRef" style="width:710px;height:400px;overflow:auto"></writeRecordHome>
-          <span class="change_title_icon">二维码<i class="iconfont law-erweima" style="font-size:14px;margin-left:4px"></i></span>
-        </span>
-      </div>
-      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options">
-      </form-create>
+          </span>
+        </el-popover>
+        <span class="change_title_icon">二维码<i class="iconfont law-erweima" style="font-size:14px;margin-left:4px"></i></span>
 
-      <p class="border-title">图片</p>
-      <p class="border-title">附件</p>
+      </div>
+      <!-- {{rule}} -->
+      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty">
+      </form-create>
+      <uploadTmp :recordMsg='recordMsg'></uploadTmp>
       <!-- 悬浮按钮 -->
       <div class="float-btns btn-height63">
-        <el-button type="primary" @click="save()">
+        <el-button type="success" @click="edit()" v-if="addOrEiditFlag=='view'">
+          <i class="iconfont law-icon_zancun1"></i>
+          <br />修改
+        </el-button>
+        <el-button type="success" @click="onSave()" v-if="addOrEiditFlag=='add'||addOrEiditFlag=='temporary'">
+          <i class="iconfont law-icon_zancun1"></i>
+          <br />暂存
+        </el-button>
+        <el-button type="primary" @click="save()" v-if="addOrEiditFlag=='add'||addOrEiditFlag=='temporary'">
           <i class="iconfont law-icon_baocun1"></i>
           <br />保存
         </el-button>
-        <el-button type="success" @click="onSave()">
+        <el-button type="primary" @click="copySave()" v-if="addOrEiditFlag=='view'">
           <i class="iconfont law-icon_zancun1"></i>
-          <br />暂存
+          <br />复制<br />添加
         </el-button>
       </div>
     </div>
   </div>
 </template>
 <script>
-import writeRecordHome from "./writeRecordHome";
-
+import writeRecordHome from "./modleList.vue";
+import uploadTmp from './upload/uploadModleFile.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
 import { saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi, findRecordByIdApi } from "@/api/Record";
@@ -49,18 +54,18 @@ export default {
   props: ['psMsg'],
   watch: {
     psMsg(val, oldVal) {
-      // this.show = val;
       console.log('监听', this.psMsg, 'val', val)
       if (this.psMsg) {
         this.defaultRuleData = this.psMsg
         this.formData.title = this.psMsg.title
         this.dealFormData()
       }
-    }
+    },
   },
   data() {
     return {
       defaultRuleData: [],
+      addOrEiditFlag: '',
       visiblePopover: false,
       upAndDown: false,
       isWrite: true,
@@ -76,25 +81,21 @@ export default {
       //表单实例对象
       $f: {},
       rule: [],
+      isChangeModle: false,
       options: {
         submitBtn: false,
-        onSubmit: (formData) => {
-          alert(JSON.stringify(formData));
-        },
-        global: {
-          '*': {
-            props: {
-              disabled: false,
-            },
-          },
+        form: {
+          labelWidth: '240px',
+          disabled: false,
         }
       },
+      recordMsg:''
     }
   },
   components: {
-    writeRecordHome,
+    writeRecordHome: writeRecordHome,
     formCreate: formCreate.$form(),
-
+    uploadTmp,
   },
   methods: {
     // 查找模板
@@ -169,6 +170,18 @@ export default {
       this.formData.createUser = iLocalStroage.gets("userInfo").username;
 
     },
+    // 修改
+    edit() {
+      // console.log('rule', this.rule)
+      this.$data.$f.resetFields()
+      this.rule.forEach(element => {
+        console.log(element)
+        this.$data.$f.updateRule(element.field, {
+          props: { disabled: false }
+        }, true);
+      });
+      this.addOrEiditFlag = 'add'
+    },
     save() {
       this.formData.status = '保存';
       // this.onSubmit()
@@ -179,8 +192,7 @@ export default {
         let submitList = []
         submitData.forEach(element => {
           element.fieldList.forEach(item => {
-            let textName = item.field
-            // console.log('变量', item.field, ':', formData['' + textName + ''])
+            let textName = item.id
             item.text = formData['' + textName + '']
             // console.log('tyupe',typeof (item.text))
             if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
@@ -201,13 +213,17 @@ export default {
           res => {
             // console.log(res)
             if (res.code == 200) {
+              this.addOrEiditFlag = 'view'
+              this.recordMsg=res.data;//根据返回id上传文件
               this.$message({
                 type: "success",
                 message: res.msg
               });
-              this.$router.push({
-                name: 'inspection_writeRecord',
-                // params: item
+              this.rule.forEach(element => {
+                console.log(element)
+                this.$data.$f.updateRule(element.field, {
+                  props: { disabled: true }
+                }, true);
               });
             } else {
               this.$message.error(res.msg);
@@ -219,7 +235,7 @@ export default {
 
     },
     onSave() {
-      console.log('rule', this.rule)
+      // console.log('rule', this.rule)
       this.rule.forEach(element => {
         if (element.validate[0]) {
           element.validate[0].required = false
@@ -233,7 +249,7 @@ export default {
         let submitList = []
         submitData.forEach(element => {
           element.fieldList.forEach(item => {
-            let textName = item.field
+            let textName = item.id
             // console.log('变量', item.field, ':', formData['' + textName + ''])
             item.text = formData['' + textName + '']
             // console.log('tyupe',typeof (item.text))
@@ -260,7 +276,7 @@ export default {
                 message: res.msg
               });
               this.$router.push({
-                name: 'inspection_writeRecord',
+                name: 'inspection_recordList',
                 // params: item
               });
             } else {
@@ -271,6 +287,10 @@ export default {
           })
       })
 
+    },
+    // 复制添加
+    copySave() {
+      this.addOrEiditFlag = 'add'
     },
     onSubmit(formData) {
 
@@ -283,7 +303,7 @@ export default {
         let submitList = []
         submitData.forEach(element => {
           element.fieldList.forEach(item => {
-            let textName = item.field
+            let textName = item.id
             // console.log('变量', item.field, ':', formData['' + textName + ''])
             item.text = formData['' + textName + '']
             // console.log('tyupe',typeof (item.text))
@@ -323,6 +343,9 @@ export default {
       })
 
     },
+    clickPover() {
+      this.isChangeModle = true
+    },
     change() {
       // 修改值
       this.$data.$f.setValue("field", '1212')
@@ -330,11 +353,12 @@ export default {
     // 修改模板
     changeModle() {
       this.visiblePopover = true
-      // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      // this.$router.push({
-      //   name: 'inspection_writeRecord',
-      //   // params: item
-      // });
+    },
+    updateMole(data) {
+      console.log(data)
+      this.modleId = data.id
+      this.findDataByld()
+      this.isChangeModle = false
     },
     dealFormData() {
       this.rule = []
@@ -367,7 +391,7 @@ export default {
             item.type = 'input';
             this.rule.push({
               type: 'input',
-              field: item.field,
+              field: item.id||item.field,//id用于传值，field用于预览
               title: item.title,
               props: {
                 type: 'text',
@@ -387,7 +411,7 @@ export default {
             });
             this.rule.push({
               type: "select",
-              field: item.field,
+              field: item.id||item.field,
               title: item.title,
               options: item.options,
               validate: [{
@@ -405,13 +429,13 @@ export default {
             });
             this.rule.push({
               type: "radio",
-              field: item.field,
+              field: item.id||item.field,
               title: item.title,
               options: item.options,
               value: item.text,
               validate: [{
                 required: item.required == 'true' ? true : false,
-                message: '请输入' + item.title,
+                message: '请选择' + (item.title || ''),
                 trigger: 'blur'
               }],
               props: {
@@ -422,15 +446,16 @@ export default {
             item.options.forEach(option => {
               option.label = option.value
             });
+            debugger
             this.rule.push({
               type: "checkbox",
-              field: item.field,
+              field: item.id||item.field,
               title: item.title,
               options: item.options,
               value: item.text ? item.text.split(',') : [],
               validate: [{
                 required: item.required == 'true' ? true : false,
-                message: '请输入' + item.title,
+                message: '请选择' + item.title,
                 trigger: 'blur'
               }]
             })
@@ -438,7 +463,7 @@ export default {
             if (item.options[0].value == 'HH:mm') {
               this.rule.push({
                 type: "TimePicker",
-                field: item.field,
+                field: item.id||item.field,
                 title: item.title,
                 value: item.text || [new Date()],
                 props: {
@@ -454,7 +479,7 @@ export default {
             } else {
               this.rule.push({
                 type: "DatePicker",
-                field: item.field,
+                field: item.id||item.field,
                 title: item.title,
                 value: item.text || [new Date()],
                 props: {
@@ -472,7 +497,7 @@ export default {
           } else if (item.type == '数字型') {
             this.rule.push({
               type: "InputNumber",
-              field: item.field,
+              field: item.id||item.field,
               title: item.title,
               value: item.text || 1,
               props: {
@@ -486,7 +511,33 @@ export default {
             })
           }
         });
+        this.$nextTick(() => {
+          this.isEdit()
+        });
+
       });
+    },
+    isEdit() {
+      console.log('rule', this.rule)
+      this.$data.$f.resetFields()
+      if (this.$route.query.id) {
+        if (this.$route.query.addOrEiditFlag == 'edit') {
+          this.rule.forEach(element => {
+            // console.log(element)
+            this.$data.$f.updateRule(element.field, {
+              props: { disabled: true }
+            }, true);
+          });
+        } else if (this.$route.query.addOrEiditFlag == 'view') {
+          this.rule.forEach(element => {
+            // console.log(element)
+            this.$data.$f.updateRule(element.field, {
+              props: { disabled: true }
+            }, true);
+          });
+        }
+      }
+      console.log(this.rule)
     },
     viewRecord() {
       this.options = {
@@ -506,18 +557,23 @@ export default {
     }
   },
   mounted() {
-    if (this.$route.params) {
-      console.log('this.$route.params', this.$route.params)
-      if (this.$route.params.addOrEiditFlag == 'add') {
-        this.modleId = this.$route.params.id
+    console.log('id', this.$route.query.id)
+    this.addOrEiditFlag = this.$route.query.addOrEiditFlag
+    if (this.$route.query.id) {
+      if (this.$route.query.addOrEiditFlag == 'add') {
+        this.modleId = this.$route.query.id
         this.findDataByld()
+
       } else
-        if (this.$route.params.addOrEiditFlag == 'edit') {
-          this.recordId = this.$route.params.id;
+        if (this.$route.query.addOrEiditFlag == 'edit') {
+          this.recordId = this.$route.query.id;
           this.findRecordDataByld()
-        } else if (this.$route.params.addOrEiditFlag == 'view') {
-          this.recordId = this.$route.params.id;
+        } else if (this.$route.query.addOrEiditFlag == 'view') {
+          this.recordId = this.$route.query.id;
           this.viewRecord()
+        } else if (this.$route.query.addOrEiditFlag == 'temporary') {
+          this.recordId = this.$route.query.id;
+          this.findRecordDataByld()
         }
 
     }

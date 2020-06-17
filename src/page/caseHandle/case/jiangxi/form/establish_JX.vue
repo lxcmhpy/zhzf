@@ -204,7 +204,7 @@
               </el-form-item>
             </td>
             <td>
-              <p>经办机构</p>
+              <p>承办机构</p>
               <p>负责人</p>
               <p>意见</p>
             </td>
@@ -222,10 +222,10 @@
           </tr>
           <tr>
             <td>
-              <p>负责</p>
-              <p>人审</p>
-              <p>批意</p>
-              <p>见</p>
+              <p>行政机</p>
+              <p>关负责</p>
+              <p>人审批</p>
+              <p>意见</p>
              
             </td>
             <td colspan="8" class="color_DBE4EF table_seal"  style="white-space: pre-wrap;word-break:break-all">

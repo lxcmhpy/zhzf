@@ -1,4 +1,6 @@
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
+import {flowGraphData} from './flowChartData.js';
+
 
 // svg矢量图形path
 const svgData = {
@@ -217,56 +219,56 @@ const mainLinkData = [{
         fontSize: 16,
     }
 }]
-const graphData={
-  compensationGraphData:{},
-  commonGraphData:{}
-}
+// const graphData={
+//   compensationGraphData:{},
+//   commonGraphData:{}
+// }
+const graphData = flowGraphData;
+// 初始化节点位置
+// graphData.compensationGraphData = {
+//   nodes:[
+//     {id:"1",source: '1',target:"2",linkID: BASIC_DATA_SYS.establish_caseLinktypeId,name:"立案登记",position:{x: 1, y: 1}, itemStyleColor: "", attributes:{modularity_class:'lct_01'}},
+//     {id:"2",source: "2",target:"3",linkID: BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,name:"调查类\n文书",position:{x: 1, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
+//     {id:"3",source: "3",target:"4",linkID: BASIC_DATA_SYS.compensationNote_caseDoctypeId,name:"赔补偿\n通知",position:{x: 1, y: 3},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
+//     {id:"4",source: '4',target:"5",linkID: BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId,name:"当事人\n权利",position:{x: 1, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_10'}},
+//     {id:"5",source: '5',target:"6",linkID: BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId,name:"收缴赔\n补偿款",position:{x: 1, y: 5},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
+//     {id:"6",source: "6",target:"6",linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,name:"结案登记",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_14'}}
+//   ],
+//   links:[]
+// }
 
 // 初始化节点位置
-graphData.compensationGraphData = {
-  nodes:[
-    {id:"1",source: '1',target:"2",linkID: BASIC_DATA_SYS.establish_caseLinktypeId,name:"立案登记",position:{x: 1, y: 1}, itemStyleColor: "", attributes:{modularity_class:'lct_01'}},
-    {id:"2",source: "2",target:"3",linkID: BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,name:"调查类\n文书",position:{x: 1, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
-    {id:"3",source: "3",target:"4",linkID: BASIC_DATA_SYS.compensationNote_caseDoctypeId,name:"赔补偿\n通知",position:{x: 1, y: 3},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
-    {id:"4",source: '4',target:"5",linkID: BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId,name:"当事人\n权利",position:{x: 1, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_10'}},
-    {id:"5",source: '5',target:"6",linkID: BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId,name:"收缴赔\n补偿款",position:{x: 1, y: 5},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
-    {id:"6",source: "6",target:"6",linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,name:"结案登记",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_14'}}
-  ],
-  links:[]
-}
-
-// 初始化节点位置
-graphData.commonGraphData = {
-  nodes:[
-    {id:"1",source: '1',target:"2_1",linkID: BASIC_DATA_SYS.establish_caseLinktypeId,name:"立案登记",position:{x: 1, y: 1}, itemStyleColor: "", attributes:{modularity_class:'lct_01'}},
-    {id:"temp1_1",source: '1',target:"temp1_1",linkID: 'temp1_1',name:"",position:{x: 1, y: 1.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp1_2",source: 'temp1_1',target:"temp1_2",linkID: 'temp1_2',name:"",position:{x: 2, y: 1.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp1_2_1",source: 'temp1_2',target:"2_2",linkID: 'temp1_2_1',name:"",position:{x: 1, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"2_1",source: "2_1",target:"3",linkID: BASIC_DATA_SYS.caseDoc_caseLinktypeId,name:"调查类\n文书",position:{x: 1, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
-    {id:"2_2",source: "2_2",target:"2_1",linkID: BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId,name:"行政强制\n措施",position:{x: 2, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_02'}},
-    {id:"3",source: "3",target:"4_1",linkID: BASIC_DATA_SYS.caseInvestig_caseLinktypeId,name:"调查报告",position:{x: 1, y: 3},itemStyleColor: "",attributes:{modularity_class:'lct_04'}},
-    {id:"temp3_1",source: '3',target:"temp3_1",linkID: 'temp3_1',name:"",position:{x: 1, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp3_2",source: 'temp3_1',target:"temp3_2",linkID: 'temp3_2',name:"",position:{x: 2, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp3_2_1",source: 'temp3_2',target:"4_2",linkID: 'temp3_2_1',name:"",position:{x: 2, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp3_3",source: 'temp3_2',target:"temp3_3",linkID: 'temp3_3',name:"",position:{x: 3, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp3_3_1",source: 'temp3_3',target:"4_3",linkID: 'temp3_3_1',name:"",position:{x: 1, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"4_1",source: "4_1",target:"5",linkID: BASIC_DATA_SYS.illegalActionForm_caseLinktypeId,name:"违法行为\n通知",position:{x: 1, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_06'}},
-    {id:"4_2",source: "4_2",target:"temp4_2_1",linkID: BASIC_DATA_SYS.forceCorrect_caseLinktypeId,name:"责令改正",position:{x: 2, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_07'}},
-    {id:"temp4_2_1",source: 'temp4_2_1',target:"temp4_2_2",linkID: 'temp4_2_1',name:"",position:{x: 2, y: 6.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp4_2_2",source: 'temp4_2_2',target:"7_1",linkID: 'temp4_2_2',name:"",position:{x: 1, y: 6.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"4_3",source: "4_3",target:"temp4_3_1",linkID: BASIC_DATA_SYS.noPenalty_caseLinktypeId,name:"不予处罚",position:{x: 3, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_09'}},
-    {id:"temp4_3_1",source: 'temp4_3_1',target:"temp7_2_1",linkID: 'temp4_3_1',name:"",position:{x: 3, y: 7},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"5",source: '5',target:"6",linkID: BASIC_DATA_SYS.partyRights_caseLinktypeId,name:"当事人\n权利",position:{x: 1, y: 5},itemStyleColor: "",attributes:{modularity_class:'lct_10'}},
-    {id:"6",source: '6',target:"7_1",linkID: BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId,name:"处罚决定",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
-    {id:"7_1",source: '7_1',target:"7_2",linkID: BASIC_DATA_SYS.penaltyExecution_caseLinktypeId,name:"决定执行",position:{x: 1, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_12'}},
-    {id:"temp7_1_1",source: '7_1',target:"temp7_1_1",linkID: 'temp7_1_1',name:"",position:{x: 1, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"temp7_1_2",source: 'temp7_1_1',target:"temp7_1_2",linkID: 'temp7_1_2',name:"",position:{x: 2, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"7_2",source: '7_2',target:"temp7_1_2",linkID: BASIC_DATA_SYS.forceExecute_caseLinktypeId,name:"强制执行",position:{x: 2, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_13'}},
-    {id:"temp7_2_1",source: 'temp7_1_2',target:"temp7_2_1",linkID: 'temp7_2_1',name:"",position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-    {id:"8",source: "temp7_2_1",target:"8",linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,name:"结案登记",position:{x: 4, y: 8},itemStyleColor: "",attributes:{modularity_class:'lct_14'}}
-  ],
-  links:[]
-}
+// graphData.commonGraphData = {
+//   nodes:[
+//     {id:"1",source: '1',target:"2_1",linkID: BASIC_DATA_SYS.establish_caseLinktypeId,name:"立案登记",position:{x: 1, y: 1}, itemStyleColor: "", attributes:{modularity_class:'lct_01'}},
+//     {id:"temp1_1",source: '1',target:"temp1_1",linkID: 'temp1_1',name:"",position:{x: 1, y: 1.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"temp1_2",source: 'temp1_1',target:"temp1_2",linkID: 'temp1_2',name:"",position:{x: 2, y: 1.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"temp1_2_1",source: 'temp1_2',target:"2_2",linkID: 'temp1_2_1',name:"",position:{x: 1, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"2_1",source: "2_1",target:"3",linkID: BASIC_DATA_SYS.caseDoc_caseLinktypeId,name:"调查类\n文书",position:{x: 1, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
+//     {id:"2_2",source: "2_2",target:"2_1",linkID: BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId,name:"行政强制\n措施",position:{x: 2, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_02'}},
+//     {id:"3",source: "3",target:"4_1",linkID: BASIC_DATA_SYS.caseInvestig_caseLinktypeId,name:"调查报告",position:{x: 1, y: 3},itemStyleColor: "",attributes:{modularity_class:'lct_04'}},
+//     {id:"temp3_1",source: '3',target:"temp3_1",linkID: 'temp3_1',name:"",position:{x: 1, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"temp3_2",source: 'temp3_1',target:"temp3_2",linkID: 'temp3_2',name:"",position:{x: 2, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"temp3_2_1",source: 'temp3_2',target:"4_2",linkID: 'temp3_2_1',name:"",position:{x: 2, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"temp3_3",source: 'temp3_2',target:"temp3_3",linkID: 'temp3_3',name:"",position:{x: 3, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"temp3_3_1",source: 'temp3_3',target:"4_3",linkID: 'temp3_3_1',name:"",position:{x: 1, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"4_1",source: "4_1",target:"5",linkID: BASIC_DATA_SYS.illegalActionForm_caseLinktypeId,name:"违法行为\n通知",position:{x: 1, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_06'}},
+//     {id:"4_2",source: "4_2",target:"temp4_2_1",linkID: BASIC_DATA_SYS.forceCorrect_caseLinktypeId,name:"责令改正",position:{x: 2, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_07'}},
+//     {id:"temp4_2_1",source: 'temp4_2_1',target:"temp4_2_2",linkID: 'temp4_2_1',name:"",position:{x: 2, y: 6.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"temp4_2_2",source: 'temp4_2_2',target:"7_1",linkID: 'temp4_2_2',name:"",position:{x: 1, y: 6.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"4_3",source: "4_3",target:"temp4_3_1",linkID: BASIC_DATA_SYS.noPenalty_caseLinktypeId,name:"不予处罚",position:{x: 3, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_09'}},
+//     {id:"temp4_3_1",source: 'temp4_3_1',target:"temp7_2_1",linkID: 'temp4_3_1',name:"",position:{x: 3, y: 7},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"5",source: '5',target:"6",linkID: BASIC_DATA_SYS.partyRights_caseLinktypeId,name:"当事人\n权利",position:{x: 1, y: 5},itemStyleColor: "",attributes:{modularity_class:'lct_10'}},
+//     {id:"6",source: '6',target:"7_1",linkID: BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId,name:"处罚决定",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
+//     {id:"7_1",source: '7_1',target:"7_2",linkID: BASIC_DATA_SYS.penaltyExecution_caseLinktypeId,name:"决定执行",position:{x: 1, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_12'}},
+//     {id:"temp7_1_1",source: '7_1',target:"temp7_1_1",linkID: 'temp7_1_1',name:"",position:{x: 1, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"temp7_1_2",source: 'temp7_1_1',target:"temp7_1_2",linkID: 'temp7_1_2',name:"",position:{x: 2, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"7_2",source: '7_2',target:"temp7_1_2",linkID: BASIC_DATA_SYS.forceExecute_caseLinktypeId,name:"强制执行",position:{x: 2, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_13'}},
+//     {id:"temp7_2_1",source: 'temp7_1_2',target:"temp7_2_1",linkID: 'temp7_2_1',name:"",position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+//     {id:"8",source: "temp7_2_1",target:"8",linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,name:"结案登记",position:{x: 4, y: 8},itemStyleColor: "",attributes:{modularity_class:'lct_14'}}
+//   ],
+//   links:[]
+// }
 
 const linePosition = [
     {

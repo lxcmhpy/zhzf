@@ -66,17 +66,17 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="paginationBox">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          background
-          :page-sizes="[10, 20, 30, 40, 50]"
-          layout="prev, pager, next,sizes,jumper"
-          :total="totalPage"
-        ></el-pagination>
-      </div>
+      <div class="pagination-box">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            background
+            :page-sizes="[10, 20, 30, 40, 50]"
+            layout="prev, pager, next,sizes,jumper"
+            :total="totalPage"
+          ></el-pagination>
+        </div>
     </div>
   </el-dialog>
 </template>
@@ -96,13 +96,15 @@ export default {
       tableDate: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
-      totalPage: 0 //总数
+      totalPage: 0, //总数
+      reloadParent: false
     };
   },
   methods: {
     getExamBatchList() {},
     showModal(type, row) {
       let _this = this;
+      _this.reloadParent = false;
       _this.visible = true;
       _this.dialogtitle = "试卷选择";
       _this.addPageForm.examId = row.examId;
@@ -132,12 +134,12 @@ export default {
         if (res.code == "200") {
           this.$message({ type: "success", message: "选择成功！" });
           this.getPageAllInfo();
+          this.reloadParent = true;
         } else {
           this.$message({ type: "error", message: "选择失败！" });
         }
-        err => {
-          console.log(err);
-        };
+      }, err => {
+        this.$message({ type: 'warning', message: err.msg || '' });
       });
     },
     getPageAllInfo() {
@@ -146,6 +148,7 @@ export default {
       let data = {
         pageName: _this.addPageForm.pageName,
         examId: _this.addPageForm.examId,
+        verifyStatus:"1",
         current: _this.currentPage,
         size: _this.pageSize
       };
@@ -168,6 +171,7 @@ export default {
     closeDialog() {
       let _this = this;
       _this.visible = false;
+      _this.reloadParent && _this.$emit('getbatchManageComp');
       _this.$refs["addPageFormRef"].resetFields();
       _this.errorName = false;
     }
@@ -187,9 +191,13 @@ export default {
     margin-top: 10px;
     text-align: center;
     >>> .el-input__inner {
-      height: 28px;
-      line-height: 28px;
+      height: 32px;
+      line-height: 32px;
     }
+  }
+   .pagination-box{
+    margin-top: 20px;
+    text-align: center;
   }
 }
 </style>

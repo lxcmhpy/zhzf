@@ -1,0 +1,320 @@
+.contentCreenHome {
+   width: 100%;
+   top: 0px;
+   left:0px;
+   height: 100%;
+   overflow-y: auto;
+   z-index: 10;
+   position: fixed;
+   background-color:#ebedf4;
+   letter-spacing: 1px;
+   .top {
+       background: url(../../../static/images/img/catsAppraisalExamination/banner.png);
+       height: 166px;
+       background-size: 100% 100%;
+   }
+   .container {
+       display: flex;
+       height:auto;
+       position: relative;
+       .rightBox {
+           width: 385px;
+           flex-shrink: 0;
+           position: relative;
+           .people {
+               position: absolute;
+               top: -160px;
+               width: 100%;
+               height: 60px;
+               color:white;
+               img{
+                   margin-left:20px;
+               }
+               .peopleMessage{
+                    text-align:right;
+                    line-height:30px
+               }
+           }
+           .list {
+               height: 440px;
+           }
+       }
+       .leftBox {
+           flex: 1;
+        //    height: 820px;
+           background-color: white;
+           margin: -105px 28px 50px 28px;
+           padding: 30px 50px 30px 30px;
+           vertical-align: middle;
+           box-sizing: border-box;
+       }
+       .list {
+            overflow: hidden;
+            color: #838D97;
+            font-size: 16px;
+            margin-left: 20px;
+            margin-bottom: 20px;
+            height: 210px;
+            li {
+                display: block;
+                line-height: 40px;
+                margin-left: 23px;
+                &.fontGray {
+                    color: #333;
+                    .tz {
+                        font-weight: bolder;
+                    }
+                }
+                &.fontNormal {
+                    color: #383838;
+                }
+                &.line50 {
+                    .tz {
+                        line-height: 46px;
+                        height: 46px;
+                    }
+                }
+                div.c{
+
+                    display: flex;
+                    justify-content: space-between;
+                    .tz {
+                        flex:1;
+                        flex-shrink: 0;
+                        overflow: hidden;
+                        height: 40px;
+                    }
+                    .date {
+                        flex-shrink: 0;
+                        margin-right: 80px;
+                        margin-left: 50px;
+                    }
+                    .circle {
+                        margin-left: -14px;
+                        margin-right: 9px;
+                        display: inline-block;
+                        width: 6px;
+                        height: 6px;
+                        border-radius: 50%;
+                        background-color: #f44336;
+                        margin-top: 18px;
+                    }
+                    .numIcon {
+                        margin-left: -14px;
+                        margin-right: 22px;
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        line-height: 20px;
+                        // border-radius: 50%;
+                        background-color: #2691f2;
+                        margin-top: 12px;
+                        color: white;
+                        text-align: center;
+                    }
+                    .numRed {
+                        margin-left: -18px;
+                        margin-right: 24px;
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        line-height: 20px;
+                        font-size: 28px;
+                        font-weight: bolder;
+                        font-style: oblique;
+                        margin-top: 12px;
+                        color: #e94440;
+                        text-align: center;
+                    }
+                }
+                em {
+                    font-style: normal;
+                    color: #838D97;
+                }
+
+            }
+        }
+        .menuList {
+             color:#838D97;
+             display: flex;
+             flex-wrap: wrap;
+             margin-left: 40px;
+             li {
+                width: 70px;
+                text-align: center;
+                margin-right: 80px;
+                .menuBox {
+                    padding:0px 2px;
+                    width: 66px;
+                    height: 66px;
+                    background-color: #2691f2;
+                    border-radius: 10px;
+                    text-align: center;
+                }
+                .text {
+                    margin-top: 20px;
+                    color:#838D97;
+                    margin-bottom: 30px;
+                    line-height: 22px;
+                    letter-spacing: 1px;
+                }
+            }
+        }
+        .xtList {
+            display: flex;
+            flex-wrap: wrap;
+            li{
+                margin: 10px 0px 30px 50px;
+                color:white;
+                font-size: 18px;
+                position: relative;
+                cursor: pointer;
+                .name {
+                    top: 30px;
+                    position: absolute;
+                    width: 220px;
+                    left: 50%;
+                    margin-left: -110px;
+                    text-align: center;
+                    font-style: normal;
+                    letter-spacing: 2px;
+                }
+            }
+        }
+        .jcpf-style {
+            // background-color: #2691f2;
+            .menuBox{
+                background-color: #2691f2;
+                background-image: url(../../../static/images/img/catsAppraisalExamination/icon_pingfen.png);
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+
+        }
+        .bscl-style {
+            .menuBox{
+                background-color: #35d7e0;
+                background-image: url(../../../static/images/img/catsAppraisalExamination/icon_baosong.png);
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+        }
+        .jcpz-style {
+            .menuBox{
+                background-color: #2691f2;
+                background-image: url(../../../static/images/img/catsAppraisalExamination/icon_jiancha.png);
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+        }
+        .noticeIcon {
+            background: url(../../../static/images/img/catsAppraisalExamination/icon_news.png) center center no-repeat;
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            margin-right: 13px;
+            background-position: 0px center;
+            height: 40px;
+            vertical-align: -12px;
+        }
+        .applicationIcon {
+            background: url(../../../static/images/img/catsAppraisalExamination/icon_yingyong.png) center center no-repeat;
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            margin-right: 13px;
+            background-position: 0px center;
+            height: 40px;
+            vertical-align: -14px;
+        }
+        .sysIcon {
+            background: url(../../../static/images/img/catsAppraisalExamination/icon_xiangguan.png) center center no-repeat;
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            margin-right: 13px;
+            background-position: 0px center;
+            height: 40px;
+            vertical-align: -14px;
+        }
+        .downLoadIcon {
+            background: url(../../../static/images/img/catsAppraisalExamination/icon_xiazai.png) center center no-repeat;
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            margin-right: 13px;
+            background-position: 0px center;
+            height: 40px;
+            vertical-align: -14px;
+        }
+   }
+   .right {
+       float:right;
+       color:#838D97;
+   }
+}
+
+// 抽取
+.extractPage {
+    margin: 28px;
+    .com_searchPage_top.com_extract_top {
+        background: none;
+        top: 200px;
+        width: calc(100%-28px);
+        .extractOrgan {
+            padding: 22px;
+            margin-right: 22px;
+            box-sizing: border-box;
+            font-size: 14px;
+            color: #808080;
+        }
+    }
+    .el-tabs__header {
+        margin:0px;
+        .el-tabs__active-bar {
+            background: #4A76D1;
+            top:3px;
+            // width:160px;
+            // margin-left: -20px;
+        }
+        .el-tabs__item {
+            text-align: center;
+            // width: 140px;
+            padding-left: 0px;
+            padding-right: 0px;
+            top:3px;
+            &.is-active{
+                background:white;
+                box-shadow:  0px 6px 4px 0px rgba(94,137,181,0.1);
+            }
+        }
+        .el-tabs__nav-wrap::after {
+            height: 0px;
+        }
+    }
+    .shadow {
+        box-shadow:  0px 6px 4px 0px rgba(94,137,181,0.1);
+        padding: 22px;
+        background:white;
+        margin-bottom: 22px;
+    }
+    .el-transfer {
+        display: flex;
+        margin-right: 50px;
+        .el-transfer__buttons {
+            width: 130px;
+            flex-shrink: 0;
+        }
+        .el-transfer-panel {
+            flex:1;
+            .transfer-list {
+                li {
+                    width: 200px;
+                    overflow:hidden;
+                    float:left;
+                    margin:0 20px;
+                }
+            }
+        }
+    }
+}
