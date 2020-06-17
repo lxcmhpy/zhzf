@@ -201,11 +201,10 @@ export default {
               this.$store.commit('setApprovalState', 'approvalBefore')
               this.$router.push({ name: 'case_handle_myPDF', params: { docId: this.BASIC_DATA_SYS.establish_huanjieAndDocId } })
             }else{
-              
                 //设置案件状态不为审批中
                 this.$store.commit("setCaseApproval", false);
                 this.$router.replace({
-                  name: "case_handle_establish"
+                  name: this.getCaseNextRoute('立案登记')
                 });
                 // let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
                 // this.$store.commit("setCaseNumber", setCaseNumber);

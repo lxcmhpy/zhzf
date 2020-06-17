@@ -32,11 +32,9 @@ const store = new Vuex.Store({
     actions:{
         //默认加载最短时间1秒
         setLoadingState({ commit, state }, status) {
-            debugger;
             let clearTime;
             let time = new Date().getTime();
             if (status.flag) {
-                debugger;
                 commit(types.COM_LOADINGTIME, time);
                 commit(types.COM_LOADING_STATUS, status.flag);
                 commit(types.COM_LOADING_TYPE, status.type);
@@ -45,7 +43,6 @@ const store = new Vuex.Store({
                 debugger;
                 var b = time - state.loadingTime;
                 if (b < 1000) {
-                    debugger;
                     clearTime = setInterval(function () {
                         commit(types.COM_LOADING_STATUS, status.flag);
                         commit(types.COM_LOADINGTIME, 0);

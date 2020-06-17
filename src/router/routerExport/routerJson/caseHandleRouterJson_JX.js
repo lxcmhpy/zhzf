@@ -18,7 +18,7 @@ export default [
   },
   {
     path: "/establish_JX",
-    name: "case_handle_establish_JX",
+    name: "case_handle_establish_JX", 
     meta: {
       title: "立案登记表——江西"
     },
