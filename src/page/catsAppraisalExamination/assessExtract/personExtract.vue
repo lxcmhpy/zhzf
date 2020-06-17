@@ -39,8 +39,6 @@
                         <li><span>证件号:{{ option.maritimeNo }} </span></li>
                     </ul>
                 </span>
-<!--              <el-button class="transfer-footer" slot="left-header" size="small" @click="leftClick">操作</el-button>-->
-<!--              <el-button class="transfer-footer" slot="right-header" size="small" @click="rightClick">操作</el-button>-->
 
             </el-transfer>
           </div>
@@ -75,9 +73,8 @@
       fetchData(data){
         data.size=1000;
         data.current=1;
-        console.info("查询参数：",data)
         findPykhStaffByPage(data).then(res=>{
-          console.info("根据条件分页查询人员列表:",res);
+          // console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
             var personlist=[];
             for(var i=0;i<res.data.records.length;i++){
@@ -112,10 +109,10 @@
         }
         // console.info("ids:",qs.stringify(ids, { arrayFormat: 'brackets' }))
         var submitProStaffData={};
-        submitProStaffData.idList= ids ;
+        var param=qs.stringify(ids, { arrayFormat: 'repeat' });
+        submitProStaffData.idList= param ;
         submitProStaffData.batchId=this.search.batchId;
-        var param=qs.stringify(submitProStaffData, { indices: false });
-        submitProStaff(param).then(res=>{
+        submitProStaff(submitProStaffData).then(res=>{
           console.info("抽取结果",res);
         });
       },
@@ -127,7 +124,7 @@
         let data={};
         data.OId=this.search.OId;
         data.batchId=this.search.batchId;
-        console.info("this.search:",data)
+        // console.info("this.search:",data)
         this.fetchData(data);
       },
       randomSamplingStaff(){
