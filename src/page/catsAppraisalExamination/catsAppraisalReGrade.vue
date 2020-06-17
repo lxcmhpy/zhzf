@@ -1,7 +1,7 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox toggleBox">
-      <div class="handlePart" style="margin-left: 0px;">
+      <div class="handlePart" style="margin-left: 0px;" v-if="organId==='1'">
         <div class="search">
           <el-form :inline="true" >
             <el-form-item label="机构名称">
@@ -43,7 +43,8 @@
       return {
         search:{},
         dataList:[],
-        orgList:[]
+        orgList:[],
+        organId:""
       };
     },
     methods: {
@@ -77,7 +78,7 @@
       },
       findAllOrg(){
         let _this = this
-        findAllDepartment("1").then(res=>{
+        findAllDepartment(this.organId).then(res=>{
           if(res.code==200){
             _this.orgList = res.data;
           }
@@ -85,8 +86,12 @@
       }
     },
     mounted () {
+      let userInfo = iLocalStroage.gets("userInfo");
+      this.organId = userInfo.organId;
       this.fetchData()
-      this.findAllOrg()
+      if(this.organId === '1'){
+        this.findAllOrg()
+      }
     }
   };
 </script>
