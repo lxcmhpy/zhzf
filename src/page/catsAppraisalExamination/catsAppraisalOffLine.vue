@@ -64,7 +64,7 @@
           id: row.id,
           url: this.$route.name
         };
-        this.$router.push({ name: "catsAppraisalOnLineAdd", params: routerData });
+        this.$router.push({ name: "catsAppraisalOffLineAdd", params: routerData });
       },
       format(row, column) {
         if (row.pfStatus === '0') {
