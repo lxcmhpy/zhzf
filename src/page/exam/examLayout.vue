@@ -69,7 +69,7 @@ export default {
   watch: {},
   mounted() {},
   created(){
-    this.$util.initUser(_this);
+    // this.$util.initUser(this);
     // this.success = false;
     this.$store.commit('setShowQZBtn', true)
     this.getSystemData();

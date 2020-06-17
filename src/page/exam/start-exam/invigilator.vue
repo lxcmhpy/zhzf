@@ -107,8 +107,8 @@
                     <span v-if="scope.row.examStatue === '2'" style="color: #18C061;">已交卷</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="loginTime" label="开始答题时间" min-width="100px" align="center"></el-table-column>
-                <el-table-column label="操作" min-width="320px" align="center">
+                <el-table-column prop="loginTime" label="开始答题时间" min-width="140px" align="center"></el-table-column>
+                <el-table-column label="操作" width="420px" align="center">
                   <template slot-scope="scope">
                     <el-button type="text" @click="viewRecord(scope.row,1)">考场记录</el-button>
                     <el-button
