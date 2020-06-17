@@ -373,6 +373,7 @@ export default {
                   message: "自动分配成功"
                 });
                 _this.getRoomList();
+                _this.getNowRoomPerson();
                 _this.getunDispachNum();
               }
             },

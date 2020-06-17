@@ -11,7 +11,7 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     
     import { loginExam, invigilatorSubmitInfo, getJoinExamPerson, signOutSystem, startQuestion, getpersonExamQuestionNextApi, getexamResultSubmitApi,examPersonsByInvigilatorIdApi,getExamInfoByInvigilatorInfoApi,
     addExamRollingApi,examRecordQueryApi,addExamRecordApi,deleteExamRecordApi,updateExamRecordApi,drawInfoApi,setBatchExamDelayedApi,getPersonExamStatus,getWaitScoringExam,getPersonScoreList,
-    getWaitScoreQuestion,saveScoreResult, getSystemDate, checkEntryExam} from '@/api/joinExam';
+    getWaitScoreQuestion,saveScoreResult, getSystemDate, checkEntryExam,editInvigilatorInfo} from '@/api/joinExam';
     import * as types from "../mutation-types";
     
     const exam = {
@@ -714,7 +714,11 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
                                 commit(types.SET_AUTHTOKEN, res.data);
                             }else if(loginType === '2'){
                                 sessionStorage.setItem('ScorerUserInfo', JSON.stringify(res.data.scorerInfo));
-                                commit(types.SET_AUTHTOKEN, res.data.token);
+                                if(res.data.token.indexOf('Bearer ') > -1){
+                                    commit(types.SET_AUTHTOKEN, res.data.token.replace('Bearer ', ''));
+                                }else{
+                                    commit(types.SET_AUTHTOKEN, res.data.token);
+                                }
                             }
                         }else{
                             // 监考老师已提交个人信息
@@ -730,6 +734,17 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
         invigilatorSubmitInfo({ commit }, data){
             return new Promise((resolve, reject) => {
                 invigilatorSubmitInfo(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => { reject(error); }
+                )
+            })
+        },
+        // 修改监考人员信息
+        editInvigilatorInfo({ commit }, data){
+            return new Promise((resolve, reject) => {
+                editInvigilatorInfo(data).then(
                     res => {
                         resolve(res);
                     },

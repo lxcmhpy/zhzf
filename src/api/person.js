@@ -932,7 +932,7 @@ export function personEdabled(data){
 // 上传证明材料文件
 export function uploadMaterial(data){
   return  request({
-    url:  "/case/sys/file/uploadCommon",
+    url:  "/system/sys/file/uploadCommon",
     method:  "POST",
     data: data,
     contentType: 'multipart/form-data;',

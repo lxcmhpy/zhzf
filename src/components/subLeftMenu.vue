@@ -92,7 +92,7 @@ import { mapGetters } from "vuex";
       },
       //监听menu
       menu(val){
-          debugger;
+          // debugger;
         console.log('menu',val)
         this.allMenuList=this.menu;
         this.getSlideMenu(this.headActiveNav); //默认加载案件办理的二级菜单
