@@ -118,8 +118,8 @@ export default {
     margin-top: 10px;
     text-align: center;
     >>>.el-input__inner{
-      height: 28px;
-      line-height: 28px;
+      height: 32px;
+      line-height: 32px;
     }
   }
 }

@@ -9,7 +9,6 @@
     class="fullscreen"
   >
     <el-form
-      :inline="true"
       :model="examNode"
       label-position="right"
       label-width="100px"
@@ -18,13 +17,12 @@
     >
       <div class="departTable">
         <el-row>
-             <el-form-item label="记录类型:" prop="rollingType">
-                <el-select
+          <el-form-item label="记录类型:" prop="rollingType">
+            <el-select
               v-model="examNode.rollingType"
               placeholder="记录类型"
               remote
               @focus="getDictInfo('考试-记录类型','noteTypeList')"
-              @change="changeType($event)"
             >
               <el-option
                 v-for="value in noteTypeList"
@@ -33,7 +31,7 @@
                 :value="value.id"
               ></el-option>
             </el-select>
-             </el-form-item>
+          </el-form-item>
         </el-row>
         <el-row>
           <el-form-item label="发生时间:" prop="happenTime">
@@ -42,28 +40,22 @@
               format="yyyy-MM-dd hh:mm:ss"
               value-format="yyyy-MM-dd HH:mm:ss"
               type="datetime"
-              placeholder="请选择培训开始时间"
               clearable
             ></el-date-picker>
           </el-form-item>
         </el-row>
         <el-row>
           <el-form-item label="记录内容" prop="forceReason" placeholder>
-            <el-input  v-model="examNode.forceReason"></el-input>
+            <el-input type="textarea" rows="2" v-model="examNode.forceReason"></el-input>
           </el-form-item>
         </el-row>
-        <el-row>
-        </el-row>
-      </div>
-      <div class="item" style="text-align:right">
-        <span slot="footer" class="dialog-footer">
-          <div>
-            <el-button type="primary" @click="submit">确 定</el-button>
-            <el-button @click="visible = false">取 消</el-button>
-          </div>
-        </span>
+        <el-row></el-row>
       </div>
     </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="visible = false">取 消</el-button>
+      <el-button type="primary" @click="submit">确 定</el-button>
+    </div>
   </el-dialog>
 </template>
 <script>
@@ -74,15 +66,15 @@ export default {
       isDisabled: true,
       visible: false,
       selectCurrentTreeName: "",
-      noteTypeList:[],
+      noteTypeList: [],
       examNode: {
-        rollingId:"",
+        rollingId: "",
         examId: "", //考试编号
         invigilatorId: "", //监考id
-        examperId: "",//考生Id
-        rollingType:"1",//记录类型
-        forceReason:"",//原因
-        type:"1", //标识是记录类型0：还是交卷类型：1
+        examperId: "", //考生Id
+        rollingType: "", //记录类型
+        forceReason: "", //原因
+        type: "", //标识是记录类型0：还是交卷类型：1
         happenTime: "" //发生时间
       },
       rules: {
@@ -108,8 +100,11 @@ export default {
       handelType: 0 //添加 0  修改2  查看3
     };
   },
+  created(){
+    this.getDictInfo('考试-记录类型','noteTypeList');
+  },
   methods: {
-        getDictInfo(name, codeName) {
+    getDictInfo(name, codeName) {
       this.$store.dispatch("drawInfo", name).then(res => {
         if (res.code === 200) {
           if (codeName === "noteTypeList") {
@@ -145,46 +140,44 @@ export default {
     submit() {
       let _this = this;
       if (_this.handelType == 1) {
-        _this.$store
-          .dispatch("addExamRecordInfo", _this.examNode)
-          .then(res => {
-           // _this.$emit("getTempleteComp");
-            _this.$message({
-              type: "success",
-              message: "添加成功!"
-            });
-            _this.visible = false;
+        _this.$store.dispatch("addExamRecordInfo", _this.examNode).then(res => {
+          _this.$emit("getExamRoom");
+          _this.$message({
+            type: "success",
+            message: "添加成功!"
           });
-        err => {
-          console.log(err);
-        };
+          _this.visible = false;
+        }, err =>{
+          this.$message({ type: 'error', message: err.msg || '' });
+        });
       } else if (_this.handelType == 2) {
         _this.$store
           .dispatch("updateExamRecordInfo", _this.examNode)
           .then(res => {
-            if(res.code === '200'){
-               _this.$message({
-                  type: "success",
-                  message: "修改成功!"
-                });
+            if (res.data.code === 200) {
+              _this.$emit("getExamRoom");
+              _this.$message({
+                type: "success",
+                message: "修改成功!"
+              });
             }
             _this.visible = false;
+          }, err => {
+            this.$message({ type: 'error', message: err.msg || '' });
           });
-        err => {
-          console.log(err);
-        };
       }
     },
-    showModal(row,date,type){
+    showModal(row, date, type) {
       let _this = this;
       _this.visible = true;
       _this.handelType = type;
       _this.examNode.examperId = row.examperId;
       _this.examNode.invigilatorId = row.invigilatorId;
       _this.examNode.examId = row.examId;
+      _this.examNode.roomId = row.roomId;
       if (type == 1) {
         //新增
-        _this.dialogTitle = "模板选择";
+        _this.dialogTitle = "添加考场记录";
         _this.isDisabled = false;
       } else if (type == 2) {
         //修改,查看
@@ -192,7 +185,7 @@ export default {
         _this.examNode.happenTime = date.happenTime;
         _this.examNode.forceReason = date.forceReason;
         _this.examNode.rollingId = date.rollingId;
-        _this.dialogTitle = "修改";
+        _this.dialogTitle = "修改考场记录";
         _this.isDisabled = false;
       }
     },
@@ -206,13 +199,12 @@ export default {
       this.$refs["examNodeRef"].resetFields();
       this.errorName = false;
     }
-  },
-  created() {
   }
 };
 </script>
 <style lang="scss" scoped>
->>>.el-date-editor.el-input, >>>.el-select{
-    width: 100%;
+>>> .el-date-editor.el-input,
+>>> .el-select {
+  width: 100%;
 }
 </style>

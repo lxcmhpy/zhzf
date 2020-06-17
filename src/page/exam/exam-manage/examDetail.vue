@@ -102,7 +102,7 @@
             <el-table-column prop="ministerialNo" label="执法证号" min-width="120px" align="center"></el-table-column>
             <el-table-column prop="branchName" label="执法领域" min-width="120px" align="center"></el-table-column>
             <el-table-column prop="roomName" label="考场" min-width="100px" align="center"></el-table-column>
-            <el-table-column prop="testScores" label="成绩" min-width="80px" align="center"></el-table-column>
+            <el-table-column prop="sumScores" label="成绩" min-width="80px" align="center"></el-table-column>
             <el-table-column label="操作" align="center" width="250px" fixed="right">
               <template slot-scope="scope">
                 <el-button type="text" @click="invigilateCard(scope.row)">准考证</el-button>
@@ -317,8 +317,8 @@ export default {
     margin-top: 10px;
     text-align: center;
     >>> .el-input__inner {
-      height: 28px;
-      line-height: 28px;
+      height: 32px;
+      line-height: 32px;
     }
   }
 }

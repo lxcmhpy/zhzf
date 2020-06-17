@@ -69,15 +69,13 @@
         <li @click="goHearingNotice_JX">听证通知书-江西</li>
         <li @click="goEnforceApplication">强制执行申请书-江西</li>
         <li @click="goHearingReportDoc">听证报告书</li>
-        
-        <br>
-        <li @click="goForceCorrect_JX">责令改正违法行为通知书-江西</li>
-        <li @click="goIllegalActionPdf">违法行为通知书PDF</li>
-        <li @click="goHearingNoticePdf">听证通知书pdf</li>
-        <li @click="goHearingRecordPdf">听证笔录PDF</li>
-        <li @click="goSpotAdmPunishDecisionPdf">当场行政处罚决定书PDF</li>
-        <li @click="goAdmPunishDecisionPdf">行政处罚决定书PDF</li>
-        <li @click="goOrderCorrectIllegalActPdf">责令改正违法行为通知书PDF</li>
+        <li @click="goDeliveryConfirmDoc">执法文书送达地址确认书</li>
+        <li @click="goForceCorrect_JX">责令改正违法行为通知书-江西</li>        
+        <li @click="goEnforceDecideDoc_JX">行政强制执行决定书-江西</li>
+        <li @click="goFinishCaseReport_JX">结案报告-江西</li>
+        <li @click="goSpotAdmPunishDecision_JX">当场行政处罚决定书-江西</li>
+        <li @click="goPunishDecision_JX">行政处罚决定书-江西</li>
+        <li @click="goCaseInvestigReport_JX">案件调查报告</li>
       </ul>
     </div>
     <div>
@@ -230,7 +228,7 @@ export default {
 
     },
     goSceneNotesDoc() {
-      this.$router.push({ name: 'sceneNotesDoc' });
+      this.$router.push({ name: 'case_handle_sceneNotesDoc' });
     },
     goInquiryNotesDoc() {
       this.$router.push({ name: 'inquiryNotesDoc' });
@@ -379,6 +377,24 @@ export default {
     },
     goForceCorrect_JX(){
       this.$router.push({ name: 'case_handle_forceCorrect_JX' });
+    },
+    goDeliveryConfirmDoc(){
+      this.$router.push({ name: 'case_handle_deliveryConfirmDoc' });
+    },
+    goEnforceDecideDoc_JX(){
+      this.$router.push({ name: 'case_handle_enforceDecideDoc_JX' });
+    },
+    goFinishCaseReport_JX(){
+      this.$router.push({ name: 'case_handle_finishCaseReport_JX' });
+    },
+    goSpotAdmPunishDecision_JX(){
+      this.$router.push({ name: 'case_handle_spotAdmPunishDecisionDoc_JX' });
+    },
+    goPunishDecision_JX(){
+      this.$router.push({ name: 'case_handle_punishDecisionDoc_JX' });
+    },
+    goCaseInvestigReport_JX(){
+      this.$router.push({ name: 'case_handle_caseInvestigReport_JX' });
     },
     goEnforceApplication(){
       this.$router.push({ name: 'case_handle_enforceApplicationDoc' });

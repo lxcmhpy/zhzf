@@ -88,9 +88,9 @@ export function randomSamplingStaffByPage (oId,batchId) {
 }
 
 //省级提交最终人员(剩下未抽取到的人员id)
-export function submitProStaff (data,oId) {
+export function submitProStaff (data) {
   return request({
-    url: "/pykh/randomSampling/submitProStaff/"+oId,
+    url: "/pykh/randomSampling/submitProStaff",
     method: "get",
     showloading: false,
     baseUrlType:'CAPTCHA_HOST',
