@@ -15,7 +15,7 @@ export const mixinGetCaseApiList = {
     }
   },
   computed: {
-    ...mapGetters(['caseId']),
+    ...mapGetters(['caseId','province']),
     // 是否禁用
     fieldDisabled(fieldProperty) {
       return function (fieldProperty) {
@@ -719,6 +719,21 @@ export const mixinGetCaseApiList = {
         .catch(err => {
           console.log(err);
         });
+    },
+    //获取要跳转的路由
+    getCaseNextRoute(name){
+      let routeName = '';
+      let provinceCode = '';
+      if(this.province == 'BZ'){
+        provinceCode = '';
+      }else if(this.province == 'JX'){
+        provinceCode = "_JX"
+      }
+      switch (name){
+        case '立案登记': routeName = 'case_handle_establish' + provinceCode; break;  
+      }
+      console.log('routeName',routeName)
+      return routeName;
     }
 
 

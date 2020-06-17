@@ -1,7 +1,7 @@
 <template>
   <div
     class="print_box printNumbers_box"
-    id="adminCoerciveMeasure-print"
+    id="enforceDecideApprovalForm_print"
     style="width:790px; margin:0 auto;"
   >
     <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
@@ -10,8 +10,7 @@
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
         <table
-          class="print_table"
-          style="table-layout: fixed;"
+          class="print_table prolong_table"
           border="1"
           bordercolor="black"
           width="100%"
@@ -22,9 +21,7 @@
               <p>案由</p>
             </td>
             <td colspan="7" class="color_DBE4EF">
-              <p>
-                <el-input type="textarea" v-model="formData.notes"></el-input>
-              </p>
+              {{formData.caseName}}
             </td>
           </tr>
           <tr>
@@ -32,9 +29,19 @@
               <p>行政决定书文号</p>
             </td>
             <td colspan="7" class="color_DBE4EF">
-              <p>
-                <el-input type="textarea" v-model="formData.notes"></el-input>
-              </p>
+              {{formData.decisionNumber}}
+              <!-- <span>
+                <el-form-item prop="decisionNumber">
+                  <el-input
+                    type="textarea"
+                    v-model="formData.decisionNumber"
+                    v-bind:class="{ over_flow:formData.decisionNumber.length>14?true:false }"
+                    :autosize="{ minRows: 1, maxRows: 3}"
+                    :maxlength="50"
+                    placeholder="\"
+                  ></el-input>
+                </el-form-item>
+              </span> -->
             </td>
           </tr>
           <tr>
@@ -202,17 +209,17 @@
             </td>
             <td rowspan="2" colspan="7" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="basicSituation"
+                :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
+                  v-model="formData.basicSituation"
+                  v-bind:class="{ over_flow:formData.basicSituation && formData.basicSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -224,17 +231,17 @@
             </td>
             <td rowspan="2" colspan="7" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="details"
+                :rules="fieldRules('details',propertyFeatures['details'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
+                  v-model="formData.details"
+                  v-bind:class="{ over_flow:formData.details && formData.details.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['details'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -246,17 +253,17 @@
             </td>
             <td rowspan="2" colspan="7" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="reliefSituation"
+                :rules="fieldRules('reliefSituation',propertyFeatures['reliefSituation'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
+                  v-model="formData.reliefSituation"
+                  v-bind:class="{ over_flow:formData.reliefSituation && formData.reliefSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['reliefSituation'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -266,7 +273,7 @@
       </div>
       <div class="print_info">
         <table
-          class="print_table"
+          class="print_table prolong_table"
           style="table-layout: fixed;"
           border="1"
           bordercolor="black"
@@ -279,17 +286,17 @@
             </td>
             <td rowspan="2" colspan="7" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="dutySituation"
+                :rules="fieldRules('dutySituation',propertyFeatures['dutySituation'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
+                  v-model="formData.dutySituation"
+                  v-bind:class="{ over_flow:formData.closedutySituationResult && formData.dutySituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['dutySituation'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -301,17 +308,17 @@
             </td>
             <td rowspan="2" colspan="7" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="subjectMatter"
+                :rules="fieldRules('subjectMatter',propertyFeatures['subjectMatter'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
+                  v-model="formData.subjectMatter"
+                  v-bind:class="{ over_flow:formData.subjectMatter && formData.subjectMatter.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['subjectMatter'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -327,12 +334,13 @@
                 <span>
                   <el-form-item
                     prop="punishLaw"
+                    style="width: 360px"
                     :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])"
-                    style="width: 70%;"
                   >
                     <el-select
                       v-model="formData.punishLaw"
                       :maxLength="maxLength"
+                      style="width: 360px"
                       :disabled="fieldDisabled(propertyFeatures['punishLaw'])"
                     >
                       <el-option
@@ -369,6 +377,15 @@
                   </el-checkbox-group>
                 </el-form-item>
               </div>
+            </td>
+          </tr>
+          <tr></tr>
+          <tr>
+            <td rowspan="2">
+              <p>承办机构意见</p>
+            </td>
+            <td rowspan="2" colspan="7" class="color_DBE4EF">
+              {{formData.approveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
                 <p>
@@ -376,12 +393,20 @@
                   <span v-else>年 月 日</span>
                 </p>
               </div>
+              <!-- {{formData.secondApproveOpinions}}
+              <div class="pdf_seal">
+                <p>签名：{{formData.secondApprovePeo}}</p>
+                <p>
+                  <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
+                  <span v-else>年 月 日</span>
+                </p>
+              </div> -->
             </td>
           </tr>
           <tr></tr>
           <tr>
             <td rowspan="2">
-              <p>承办机构意见</p>
+              <p>法制审核机构意见</p>
             </td>
             <td rowspan="2" colspan="7" class="color_DBE4EF">
               {{formData.secondApproveOpinions}}
@@ -392,22 +417,14 @@
                   <span v-else>年 月 日</span>
                 </p>
               </div>
-            </td>
-          </tr>
-          <tr></tr>
-          <tr>
-            <td rowspan="2">
-              <p>法制审核机构意见</p>
-            </td>
-            <td rowspan="2" colspan="7" class="color_DBE4EF">
-              {{formData.threeApproveOpinions}}
+              <!-- {{formData.threeApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.threeApprovePeo}}</p>
                 <p>
                   <span v-if="formData.threeApproveTime">{{formData.threeApproveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
-              </div>
+              </div> -->
             </td>
           </tr>
           <tr></tr>
@@ -432,38 +449,37 @@
               <p>备注</p>
             </td>
             <td colspan="7" class="color_DBE4EF">
-              <p>
-                <el-input type="textarea" v-model="formData.notes"></el-input>
-              </p>
+              <span>
+                <el-form-item prop="notes">
+                  <el-input
+                    type="textarea"
+                    v-model="formData.notes"
+                    v-bind:class="{ over_flow:formData.notes.length>14?true:false }"
+                    :autosize="{ minRows: 1, maxRows: 3}"
+                    :maxlength="200"
+                    placeholder="\"
+                  ></el-input>
+                </el-form-item>
+              </span>
             </td>
           </tr>
         </table>
       </div>
     </el-form>
     <casePageFloatBtns
-      :pageDomId="'prolongAdminCoerciveMeasureApproval_print'"
+      :pageDomId="'enforceDecideApprovalForm_print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
-      @showApprovePeopleList="showApprovePeopleList"
-      @showApproval="showApproval"
     ></casePageFloatBtns>
-    <!-- 提交审批 -->
-    <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
-    <!-- 审批 -->
-    <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
   </div>
 </template>
 <script>
-import showApprovePeople from "@/page/caseHandle/components/showApprovePeople";
-import approvalDialog from "@/page/caseHandle/components/approvalDialog";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    showApprovePeople,
-    approvalDialog,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
@@ -475,39 +491,25 @@ export default {
       isOverflow: false,
       // isOverLine: false,
       formData: {
+        caseNumber: "",
         caseName: "",
+        decisionNumber: "",
         party: "",
         partyIdNo: "",
         partyAddress: "",
-        defendState: "",
         partyTel: "",
         partyName: "",
         partyUnitAddress: "",
         partyUnitTel: "",
         partyManager: "",
-        punishLaw: "",
-        illegalLaw: "",
+        socialCreditCode: "",
+        basicSituation: "",
+        details: "",
+        reliefSituation: "",
         checkBox: [],
-        tempPunishAmount: "",
-        socialCreditCode: "",
-        illegalFactsEvidence: "",
-        reconsiderationOrgan: "",
-        partyUnitPosition: "",
-        defendReason: "",
-        note: "",
-        party: "",
-        partySex: "",
-        partyAge: "",
-        partyManager: "",
-        socialCreditCode: "",
-        caseBasicInfo: "",
-        caseReplay: "",
-        // partyUnitPosition: "",
-        partyZipCode: "",
-        partyManagerPositions: "",
-        closeResult: "",
-        leadOpinion: "",
-        closeSituation: "",
+        subjectMatter: "",
+        dutySituation: "",
+        punishLaw: "",
         approveOpinions: "",
         approvePeo: "",
         approveTime: "",
@@ -516,8 +518,15 @@ export default {
         secondApproveTime: "",
         threeApproveOpinions: "",
         threeApprovePeo: "",
-        threeApproveTime: ""
+        threeApproveTime: "",
+        notes: "",
       },
+      laWOptions: [
+        {
+          value: '1',
+          label: '《中华人民共和国强制法》第二十四条'
+        }
+      ],
       isParty: false,
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
@@ -535,14 +544,12 @@ export default {
         party: [
           { required: true, message: "当事人姓名不能为空", trigger: "blur" }
         ],
-        partyAge: [
-          { required: true, message: "当事人年龄不能为空", trigger: "blur" }
-        ],
-        partySex: [
-          { required: true, message: "当时人性别不能为空", trigger: "blur" }
-        ],
-        partyUnitPosition: [
-          { required: true, message: "当事人所在单位不能为空", trigger: "blur" }
+        partyIdNo: [
+          {
+            required: true,
+            message: "当事人身份证件号不能为空",
+            trigger: "blur"
+          }
         ],
         partyAddress: [
           { required: true, message: "当事人联系地址不能为空", trigger: "blur" }
@@ -554,9 +561,6 @@ export default {
             trigger: "blur"
           },
           { validator: validatePhone, trigger: "blur" }
-        ],
-        partyZipCode: [
-          { required: true, message: "邮政编码不能为空", trigger: "blur" }
         ],
         partyName: [
           { required: true, message: "单位名称不能为空", trigger: "blur" }
@@ -571,14 +575,30 @@ export default {
         partyManager: [
           { required: true, message: "法人不能为空", trigger: "blur" }
         ],
-        partyManagerPositions: [
-          { required: true, message: "职务不能为空", trigger: "blur" }
+        socialCreditCode: [
+          {
+            required: true,
+            message: "单位统一社会信用代码不能为空",
+            trigger: "blur"
+          }
         ],
-        closeResult: [
-          { required: true, message: "处理结果不能为空", trigger: "blur" }
+        basicSituation: [
+          { required: true, message: "基本情况不能为空", trigger: "blur" }
         ],
-        closeSituation: [
-          { required: true, message: "执行情况不能为空", trigger: "blur" }
+        details: [
+          { required: true, message: "具体内容不能为空", trigger: "blur" }
+        ],
+        reliefSituation: [
+          { required: true, message: "救济情况不能为空", trigger: "blur" }
+        ],
+        dutySituation: [
+          { required: true, message: "义务情况不能为空", trigger: "blur" }
+        ],
+        subjectMatter: [
+          { required: true, message: "标的情况不能为空", trigger: "blur" }
+        ],
+        punishLaw: [
+          { required: true, message: "处罚依据不能为空", trigger: "blur" }
         ]
       },
       nameLength: 23,
@@ -599,7 +619,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "prolongAdminCoerciveMeasureApproval_print"
+        pageDomId: "enforceDecideApprovalForm_print"
       },
       huanjieAndDocId: this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId, //结案报告的文书id
       approvalOver: false, //审核完成
@@ -621,26 +641,6 @@ export default {
     saveData(handleType) {
       //参数  提交类型 、formRef
       this.com_submitCaseForm(handleType, "docForm", true);
-    },
-    showApprovePeopleList() {
-      let data = {
-        caseId: this.caseId,
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId
-      };
-      this.$refs.showApprovePeopleRef.showModal(data);
-    },
-    //审批弹窗
-    showApproval() {
-      //二级审批(经办机构负责人审批、部门负责人审批)
-      console.log(this.formData);
-      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : "";
-      let caseData = {
-        caseId: this.caseId,
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,
-        firstApproval: approvePeo,
-        approvalNumber: 2 //2次审批
-      };
-      this.$refs.approvalDialogRef.showModal(caseData);
     },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
@@ -699,25 +699,12 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-.textindent0 {
-  text-indent: 0 !important;
-}
-.print_box
-  #prolongAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.el-textarea {
-  top: -12px;
-}
-.print_box
-  #prolongAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.over_flow {
-  top: -8px;
-  text-overflow: initial;
-  font-size: 12px;
-  line-height: 14px;
+.prolong_table {
+  table-layout: fixed;
+  td, p, span, .el-checkbox {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
 }
 </style>

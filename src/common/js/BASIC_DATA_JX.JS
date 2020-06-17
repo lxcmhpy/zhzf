@@ -4,7 +4,7 @@ export const BASIC_DATA_JX = {
     establish_JX_caseLinktypeId:'3b203c7dcb3ab617ab6a61060253c7af',
     //立案登记 文书id
     establish_JX_huanjieAndDocId:'a4416d89a9e6884fe9ae0b1f43f0f885',
-    //调查报告
+    //案件调查
     caseDoc_JX_caseLinktypeId:'0e36b3ec81cff5d675eec9687c339de2',
     //行政强制措施 环节id caseLinktypeId
     adminCoerciveMeasure_JX_caseLinktypeId:'c9493b367f429c2b55eea4bbb3627e36',

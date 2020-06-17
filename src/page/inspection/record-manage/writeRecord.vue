@@ -18,9 +18,11 @@
 
       </div>
       <!-- {{rule}} -->
-      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty">
+      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
       </form-create>
       <uploadTmp :recordMsg='recordMsg'></uploadTmp>
+      <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
+      <mapDiag id="mapDiagRef" ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
       <!-- 悬浮按钮 -->
       <div class="float-btns btn-height63">
         <el-button type="success" @click="edit()" v-if="addOrEiditFlag=='view'">
@@ -45,6 +47,9 @@
 </template>
 <script>
 import writeRecordHome from "./modleList.vue";
+import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag.vue";
+import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
+
 import uploadTmp from './upload/uploadModleFile.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
@@ -89,13 +94,22 @@ export default {
           disabled: false,
         }
       },
-      recordMsg:''
+      recordMsg: '',
+      adressName: '',
+      // 执法人员
+      allUserList: [],
+      Lawid: '',
+      LawName: '',
+      alreadyChooseLawPerson:[],
+      lawPersonListId: "",
     }
   },
   components: {
     writeRecordHome: writeRecordHome,
     formCreate: formCreate.$form(),
     uploadTmp,
+    mapDiag,
+    chooseLawPerson,
   },
   methods: {
     // 查找模板
@@ -165,6 +179,32 @@ export default {
         error => {
         })
     },
+    //查询执法人员
+    getAllUserList(list) {
+      console.log("list", list);
+      this.allUserList = list;
+    },
+    setLawPerson(userlist) {
+      console.log('选择的执法人员', userlist);
+      // this.lawPersonList = userlist;
+      this.alreadyChooseLawPerson = userlist;
+      this.lawPersonListId = [];
+      let staffIdArr = [];
+      let staffArr = [];
+      let certificateIdArr = [];
+
+      this.alreadyChooseLawPerson.forEach(item => {
+        this.lawPersonListId.push(item.id);
+        //给表单数据赋值
+        staffIdArr.push(item.id);
+        staffArr.push(item.lawOfficerName);
+        certificateIdArr.push(item.selectLawOfficerCard);
+      });
+      this.inforForm.staffId = staffIdArr.join(',');
+      this.inforForm.staff = staffArr.join(',');
+      this.inforForm.certificateId = certificateIdArr.join(',');
+
+    },
     //用户的id去拿他名字
     setLawPersonCurrentP() {
       this.formData.createUser = iLocalStroage.gets("userInfo").username;
@@ -214,7 +254,7 @@ export default {
             // console.log(res)
             if (res.code == 200) {
               this.addOrEiditFlag = 'view'
-              this.recordMsg=res.data;//根据返回id上传文件
+              this.recordMsg = res.data;//根据返回id上传文件
               this.$message({
                 type: "success",
                 message: res.msg
@@ -260,7 +300,6 @@ export default {
 
         });
         submitData = JSON.stringify(submitData)
-
         this.formData.layout = submitData
         this.formData.templateFieldList = '';
         this.formData.createTime = '';
@@ -360,6 +399,7 @@ export default {
       this.findDataByld()
       this.isChangeModle = false
     },
+    // 匹配数据格式
     dealFormData() {
       this.rule = []
       let data = JSON.parse(JSON.stringify(this.defaultRuleData.templateFieldList))
@@ -387,16 +427,17 @@ export default {
 
         element.fieldList.forEach(item => {
           // console.log(item)
-          if (item.type == '文本型' || item.type == '地址型' || item.type == '引用型') {
+          if (item.type == '文本型') {
             item.type = 'input';
             this.rule.push({
               type: 'input',
-              field: item.id||item.field,//id用于传值，field用于预览
+              field: item.id || item.field,//id用于传值，field用于预览
               title: item.title,
               props: {
-                type: 'text',
+                type: 'textarea',
                 placeholder: item.remark,
-                disable: true
+                disable: true,
+                autosize: { minRows: 1 }
               },
               value: item.text,
               validate: [{
@@ -411,7 +452,7 @@ export default {
             });
             this.rule.push({
               type: "select",
-              field: item.id||item.field,
+              field: item.id || item.field,
               title: item.title,
               options: item.options,
               validate: [{
@@ -429,7 +470,7 @@ export default {
             });
             this.rule.push({
               type: "radio",
-              field: item.id||item.field,
+              field: item.id || item.field,
               title: item.title,
               options: item.options,
               value: item.text,
@@ -446,10 +487,9 @@ export default {
             item.options.forEach(option => {
               option.label = option.value
             });
-            debugger
             this.rule.push({
               type: "checkbox",
-              field: item.id||item.field,
+              field: item.id || item.field,
               title: item.title,
               options: item.options,
               value: item.text ? item.text.split(',') : [],
@@ -463,7 +503,7 @@ export default {
             if (item.options[0].value == 'HH:mm') {
               this.rule.push({
                 type: "TimePicker",
-                field: item.id||item.field,
+                field: item.id || item.field,
                 title: item.title,
                 value: item.text || [new Date()],
                 props: {
@@ -479,7 +519,7 @@ export default {
             } else {
               this.rule.push({
                 type: "DatePicker",
-                field: item.id||item.field,
+                field: item.id || item.field,
                 title: item.title,
                 value: item.text || [new Date()],
                 props: {
@@ -497,7 +537,7 @@ export default {
           } else if (item.type == '数字型') {
             this.rule.push({
               type: "InputNumber",
-              field: item.id||item.field,
+              field: item.id || item.field,
               title: item.title,
               value: item.text || 1,
               props: {
@@ -509,6 +549,72 @@ export default {
                 trigger: 'blur'
               }]
             })
+          } else if (item.type == '地址型') {
+            item.type = 'input';
+            this.rule.push({
+              type: 'input',
+              field: item.id || item.field,//id用于传值，field用于预览
+              // title: item.title,
+              title: item.title,
+              props: {
+                type: 'text',
+                placeholder: item.remark,
+                disable: true
+              },
+              value: item.text,
+              validate: [{
+                required: item.required == 'true' ? true : false,
+                message: '请输入' + item.title,
+                trigger: 'blur'
+              }],
+              children: [
+                {
+                  type: 'i',
+                  class: 'iconfont law-weizhi',
+                  slot: 'suffix',
+
+                }
+              ],
+              inject: true,
+              on: {
+                'focus': this.changeAdress
+              },
+            })
+          } else if (item.type == '引用型') {
+            item.type = 'input';
+            this.rule.push({
+              type: 'input',
+              field: item.id || item.field,//id用于传值，field用于预览
+              title: item.title,
+              props: {
+                type: 'text',
+                placeholder: item.remark,
+                disable: true
+              },
+              value: item.text,
+              validate: [{
+                required: item.required == 'true' ? true : false,
+                message: '请输入' + item.title,
+                trigger: 'blur'
+              }],
+              children: [
+                {
+                  type: 'i',
+                  class: 'iconfont law-weizhi',
+                  slot: 'suffix',
+
+                }
+              ],
+              inject: true,
+              on: {
+                'focus': this.changeLaw
+              },
+            })
+            if (item.field == 'staff') {
+              this.LawName = item.id;// 执法人员字段名
+            } else if (item.field == 'certificateId') {//执法人员账号字段名
+              this.Lawid = item.id;
+            }
           }
         });
         this.$nextTick(() => {
@@ -516,6 +622,13 @@ export default {
         });
 
       });
+    },
+    //获取坐标
+    getLngLat(lngLatStr) {
+      console.log(`lngLatStr:`, lngLatStr);
+      this.$data.$f.setValue(this.adressName, lngLatStr);
+      // this.inforForm.latitudeAndLongitude = lngLatStr;   
+      // this.hasLatitudeAndLongitude = true;
     },
     isEdit() {
       console.log('rule', this.rule)
@@ -554,6 +667,18 @@ export default {
         }
       }
       this.findRecordDataByld()
+    },
+    changeAdress(inject) {
+      console.log(`blur: ${inject.self.title}`);
+      console.log(`blur: ${inject.self.field}`);
+      this.$refs.mapDiagRef.showModal();
+      this.adressName = inject.self.field;// 地址字段名
+    },
+    changeLaw(inject) {
+      console.log(`blur: ${inject.self.title}`);
+      console.log(`blur: ${inject.self.field}`);
+      //选择执法人员
+      this.$refs.chooseLawPersonRef.showModal(this.lawPersonListId, this.alreadyChooseLawPerson);
     }
   },
   mounted() {
