@@ -11,10 +11,10 @@
           <div>
             <div class="item">
               <el-row>
-                <el-form-item label="试卷名称" prop="pageName" placeholder="试卷名称">
-                  <el-input v-model="maintainPageForm.pageName"></el-input>
+                <el-form-item label="试卷名称" prop="pageName" >
+                  <el-input v-model="maintainPageForm.pageName" placeholder="试卷名称"></el-input>
                 </el-form-item>
-                <el-form-item label="试卷类型" prop="pageType" style="margin-left:20px;">
+                <!-- <el-form-item label="试卷类型" prop="pageType" style="margin-left:20px;">
                   <el-select
                     v-model="maintainPageForm.pageType"
                     placeholder="试卷类型"
@@ -28,7 +28,7 @@
                       :value="value.id"
                     ></el-option>
                   </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item style="margin-left:20px;">
                   <el-button
                     title="搜索"

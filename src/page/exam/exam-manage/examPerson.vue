@@ -18,26 +18,12 @@
           :inline="true"
         >
           <div>
-            <el-row>
+            <div class="item">
               <el-form-item label="姓名" prop="personName" class-form="form-class">
-                <el-input v-model="examPersonForm.personName"></el-input>
+                <el-input v-model="examPersonForm.personName" placeholder="请输入姓名"></el-input>
               </el-form-item>
               <el-form-item label="身份证号" prop="idNo" class-form="form-class">
-                <el-input v-model="examPersonForm.idNo"></el-input>
-              </el-form-item>
-              <el-form-item label="所属机构" prop="oname" class-form="form-class">
-                <el-input v-model="examPersonForm.oname"></el-input>
-              </el-form-item>
-            </el-row>
-            <el-row>
-              <el-form-item label="执法领域" prop="branchName" class-form="form-class">
-                <el-input v-model="examPersonForm.branchName"></el-input>
-              </el-form-item>
-              <el-form-item label="岗位" prop="stationName" class-form="form-class">
-                <el-input v-model="examPersonForm.stationName"></el-input>
-              </el-form-item>
-              <el-form-item label="执法证号" prop="ministerialNo" class-form="form-class">
-                <el-input v-model="examPersonForm.ministerialNo"></el-input>
+                <el-input v-model="examPersonForm.idNo" placeholder="请输入身份证号"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button
@@ -54,7 +40,53 @@
                   icon="iconfont law-zhongzhi"
                   @click="resetLog"
                 ></el-button>
+                <el-button
+                  size="medium"
+                  class="commonBtn toogleBtn"
+                  :title="isShow? '点击收缩':'点击展开'"
+                  :icon="isShow? 'iconfont law-top': 'iconfont law-down'"
+                  @click="isShow = !isShow"
+                ></el-button>
               </el-form-item>
+              </div>
+               <div class="item" v-show="isShow">
+              <el-form-item label="所属机构" prop="oname" class-form="form-class">
+                <el-input v-model="examPersonForm.oname" placeholder="请输入所属机构"></el-input>
+              </el-form-item>
+               <el-form-item label="执法领域" prop="branchId">
+                <el-select
+                  v-model="examPersonForm.branchId"
+                  placeholder="执法领域"
+                  remote
+                  @focus="getDepatements('执法门类','branchIdsInfo')"
+                >
+                  <el-option
+                    v-for="value in branchIdsInfo"
+                    :key="value.id"
+                    :label="value.name"
+                    :value="value.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="岗位" prop="stationId">
+                <el-select
+                  v-model="examPersonForm.stationId"
+                  placeholder="选择岗位"
+                  remote
+                  @focus="getStationInfo('人员信息-岗位','stationInfo')"
+                >
+                  <el-option
+                    v-for="value in stationInfo"
+                    :key="value.id"
+                    :label="value.name"
+                    :value="value.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="执法证号" prop="ministerialNo" class-form="form-class">
+                <el-input v-model="examPersonForm.ministerialNo" placeholder="请输入执法证号"></el-input>
+              </el-form-item>
+               </div>
             </el-row>
             <el-row>
               <el-form-item>
@@ -122,6 +154,9 @@ export default {
   mixins: [mixinPerson],
   data() {
     return {
+      branchIdsInfo: [{ id: "", name: "全部" }], //执法领域列表
+      oidsInfo: [{ id: "", name: "全部" }], //所属机构列表
+      stationInfo: [{ id: "", name: "全部" }], //岗位列表
       examPersonForm: {
         examId: "",
         personName: "",
@@ -132,8 +167,8 @@ export default {
         stationName: "",
         stationId: "",
         ministerialNo: "",
-        batchId: ""
       },
+      isShow: false,
       visible: false,
       dialogtitle: "",
       errorName: "",
@@ -208,17 +243,46 @@ export default {
       }
     
     },
+        //点击下拉框的时候后头获取下拉框数据
+    getDepatements(name, codeName) {
+      this.$store.dispatch("findAllDrawerByName", name).then(
+        //查询执法领域
+        res => {
+          if (res.code === 200) {
+            if (codeName === "branchIdsInfo") {
+              this.branchIdsInfo = res.data;
+              this.branchIdsInfo.unshift({ id: "", name: "全部" });
+            }
+            if (codeName === "stationIdsInfo") {
+              this.stationIdsInfo = res.data;
+              this.stationIdsInfo.unshift({ id: "", name: "全部" });
+            }
+            if (codeName === "oidsInfo") {
+              this.oidsInfo = res.data;
+              this.oidsInfo.unshift({ id: "", name: "全部" });
+            }
+            if (codeName === "stationStatusInfo") {
+              this.stationStatusInfo = res.data;
+              this.stationStatusInfo.unshift({ id: "", name: "全部" });
+            }
+          } else {
+            console.info("没有查询到数据");
+          }
+        }
+      );
+    },
     getPageAllInfo() {
       //查询参考考生列表
       let data = {
         examId: this.examPersonForm.examId,
         personName: this.examPersonForm.personName,
         idNo: this.examPersonForm.idNo,
-        oname: this.examPersonForm.oname,
+        oName: this.examPersonForm.oname,
         branchName: this.examPersonForm.branchName,
         branchId: this.examPersonForm.branchId,
         stationName: this.examPersonForm.stationName,
         ministerialNo: this.examPersonForm.ministerialNo,
+        stationId: this.examPersonForm.stationId,
         current: this.currentPage,
         size: this.pageSize
       };

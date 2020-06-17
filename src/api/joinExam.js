@@ -146,6 +146,16 @@ export function examRecordQueryApi(data){
     cancelToken: setCancelSource()
   })
 }
+//考场记录查询后台
+export function examRecordQueryForManangeApi(data){
+  return request({
+    url: "exam/examRolling/examRecordQueryForManange",
+    method: "get",
+    params:data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+}
 //添加考场记录
 export function addExamRecordApi(data){
   return request({
