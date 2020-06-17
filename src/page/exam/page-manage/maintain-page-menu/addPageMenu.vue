@@ -206,7 +206,7 @@ export default {
     savePaper(){
       const loading = this.$loading({
         lock: true,
-        text: '正在新增',
+        text: '试卷生成中，预计时间1~3分钟，请耐心等待',
         spinner: 'car-loading',
         customClass: 'loading-box',
         background: 'rgba(234,237,244, 0.8)'

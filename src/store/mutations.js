@@ -65,8 +65,9 @@ const mutations = {
       }
       index++;
     }
-    state.openTab.splice(index, 1);
-    debugger;
+    if (index !== 0) {
+        state.openTab.splice(index, 1);
+    }
     // state.activeIndexSto = state.openTab[state.openTab.length - 1].name;
 
   },
@@ -78,7 +79,8 @@ const mutations = {
   //删除所有的tabs
   [types.DELETE_ALLTABS](state) {
     // state.openTab = [{route: "/index",name: "law_supervise_lawSupervise",title: "可视化监管",headActiveNav:"lawSupervise-menu-law_supervise_lawSupervise"}];
-    state.openTab = [{route: "/index",name: "case_handle_home_index",title: "案件办理首页",headActiveNav:"caseHandle-menu-case_handle_home_index"}];
+    // routerName
+    state.openTab.splice(0,state.openTab.length);
   },
   // 设置当前激活的tab
   [types.SET_ACTIVE_INDEX](state, name) {
@@ -120,23 +122,13 @@ const mutations = {
     }
     state.openTab.splice(index, 1);
   },
-
-
-
-
-
-
-
   [types.USERNAME](state, name) {
     // Cookies.set("username", name); //退出浏览器过期
     state.username = name;
   },
-
-
   [types.SET_IMGSRC](state, imgSrc) {
     state.imgSrc = imgSrc;
   },
-
   [types.SET_WHITELIST](state, whiteListItem) {
     let addIndex=state.whiteList.indexOf(whiteListItem);
     if(addIndex==-1) state.whiteList.push(whiteListItem);

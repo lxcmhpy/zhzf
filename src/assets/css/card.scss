@@ -62,6 +62,9 @@
     font-size  : 14px;
     font-weight: 500;
     line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .card-title-margin {
@@ -282,7 +285,7 @@
 
 .card-drawer {
     .el-drawer__body {
-        padding-bottom: 85px;
+        padding-bottom: 85px !important;
     }
 }
 
@@ -354,6 +357,21 @@
     }
 }
 
+/* .form-create-sty {
+    .el-form-item__label {
+        line-height: 20px;
+    }
+
+    .el-form-item__label:first-line {
+        line-height: 40px;
+    }
+    .el-form-item__label:before {
+        content: '*';
+        color: #F56C6C;
+        margin-right: 4px;
+    }
+} */
+
 .box-card-img-content {
     margin-bottom: 0;
     width        : 206px;
@@ -361,8 +379,6 @@
     display      : none;
     text-align   : center;
     background   : #ebebeb;
-
-
 }
 
 .border-title {
@@ -391,4 +407,10 @@
     .el-date-editor {
         width: 360px;
     }
+}
+
+.modle-upload{
+    margin-left: 100px;
+    // margin-top: -10px;
+    width: 50%;
 }

@@ -21,7 +21,7 @@
                 <p>备注：</p>
                 <p class="f-s-12">1.考生应自觉服从监考员等考试工作人员管理,不准以任何理由妨碍监考员等考试工作人员履行职责...</p>
                 <p class="f-s-12">2.考生凭准考证、有效居民身份证按规定时间参加考试。</p>
-                <p class="f-s-12">3.严禁考生携带手机等各种通讯工具、手表、电子存储记忆录放。</p>
+                <p class="f-s-12">3.严禁考生携带手机等各种通讯工具、手表、电子存储记忆录放等设备。</p>
               </div>
             </div>
           </el-col>
@@ -64,6 +64,7 @@
 
 <script>
 import { setToken } from "@/common/js/auth";
+import { validateIDNumber, validatePhone } from '@/common/js/validator';
 
 export default {
   data() {
@@ -80,10 +81,12 @@ export default {
         company: [{ required: true, message: "请输入单位", trigger: "blur" }],
         userName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         idCode: [
-          { required: true, message: "请输入身份证号", trigger: "blur" }
+          { required: true, message: "请输入身份证号", trigger: "blur" },
+          { validator: validateIDNumber, trigger: "blur" }
         ],
         telephone: [
-          { required: true, message: "请输入联系方式", trigger: "blur" }
+          { required: true, message: "请输入联系方式", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" }
         ]
       },
       intervalTime: null,

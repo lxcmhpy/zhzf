@@ -9,7 +9,7 @@ export function showFullScreenLoading(type) {
  needLoadingRequestCount++
 }
 
-export function tryHideFullScreenLoading() { 
+export function tryHideFullScreenLoading() {
   if (needLoadingRequestCount <= 0) return
   needLoadingRequestCount--
   if (needLoadingRequestCount === 0) {
@@ -25,7 +25,7 @@ export function tryHideFullScreenLoading() {
  }
  function endLoading() {
   let data = {
-    flag:true,
+    flag:false,
   }
   store.dispatch("setLoadingState", data);
  }
