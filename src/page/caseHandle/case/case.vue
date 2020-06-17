@@ -233,7 +233,7 @@ export default {
 
     },
     goSceneNotesDoc() {
-      this.$router.push({ name: 'sceneNotesDoc' });
+      this.$router.push({ name: 'case_handle_sceneNotesDoc' });
     },
     goInquiryNotesDoc() {
       this.$router.push({ name: 'inquiryNotesDoc' });

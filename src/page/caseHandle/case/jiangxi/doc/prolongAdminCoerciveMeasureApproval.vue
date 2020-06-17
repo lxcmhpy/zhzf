@@ -5,7 +5,7 @@
         <div class="doc_topic">延长行政强制措施审批表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+        <table class="print_table prolong_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td rowspan="6">
               当
@@ -13,7 +13,7 @@
               <br />人
             </td>
             <td rowspan="2">个人</td>
-            <td>姓名</td>
+            <td colspan="2">姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="party"
@@ -31,7 +31,7 @@
                 <!-- <el-input v-model="formData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
-            <td>身份证件号</td>
+            <td colspan="2">身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyIdNo"
@@ -49,7 +49,7 @@
             </td>
           </tr>
           <tr>
-            <td>住址</td>
+            <td colspan="2">住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyAddress"
@@ -66,7 +66,7 @@
                 ></el-input>
               </el-form-item>
             </td>
-            <td>联系电话</td>
+            <td colspan="2">联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyTel"
@@ -83,8 +83,8 @@
           </tr>
           <tr>
             <td rowspan="4">单位</td>
-            <td>名称</td>
-            <td colspan="5" class="color_DBE4EF">
+            <td colspan="2">名称</td>
+            <td colspan="6" class="color_DBE4EF">
               <el-form-item
                 prop="partyName"
                 :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)"
@@ -99,8 +99,8 @@
             </td>
           </tr>
           <tr>
-            <td>地址</td>
-            <td colspan="4" class="color_DBE4EF">
+            <td colspan="2">地址</td>
+            <td colspan="6" class="color_DBE4EF">
               <el-form-item
                 prop="partyUnitAddress"
                 :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)"
@@ -115,7 +115,7 @@
             </td>
           </tr>
           <tr>
-            <td>联系电话</td>
+            <td colspan="2">联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyUnitTel"
@@ -130,8 +130,8 @@
                 ></el-input>
               </el-form-item>
             </td>
-            <td>法定代表人</td>
-            <td class="color_DBE4EF">
+            <td colspan="2">法定代表人</td>
+            <td class="color_DBE4EF" colspan="2">
               <el-form-item
                 prop="partyManager"
                 :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)"
@@ -146,8 +146,8 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2">统一社会信用代码</td>
-            <td colspan="3" class="color_DBE4EF">
+            <td colspan="3">统一社会信用代码</td>
+            <td colspan="5" class="color_DBE4EF">
               <el-form-item
                 prop="socialCreditCode"
                 :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)"
@@ -167,19 +167,19 @@
               <p>基本</p>
               <p>情况</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="9" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="basicSituation"
+                :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
+                  v-model="formData.basicSituation"
+                  v-bind:class="{ over_flow:formData.basicSituation && formData.basicSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -189,15 +189,29 @@
             <td rowspan="2">
               <p>承办人意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="9" class="color_DBE4EF">
               <p>&nbsp;&nbsp;根据 《中华人民共和国行政强制法》第二十五条的规定，拟延长以下强制措施期限：</p>
-              <p>
-                &nbsp;&nbsp;<el-checkbox>扣押财物</el-checkbox>
-                <br />
-                &nbsp;&nbsp;<el-checkbox>查封场所、设施或者财物</el-checkbox>
-                <br />
-                &nbsp;&nbsp;<el-checkbox>其他行政强制措施：</el-checkbox>
-              </p>
+              <div class="text-left">
+                <el-form-item
+                  prop="checkBox"
+                  :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
+                >
+                  <el-checkbox-group
+                    v-model="formData.checkBox"
+                    :disabled="fieldDisabled(propertyFeatures['checkBox'])"
+                  >
+                    <p>
+                      <el-checkbox label="1">扣押财物</el-checkbox>
+                    </p>
+                    <p>
+                      <el-checkbox label="2">查封场所、设施或者财物</el-checkbox>
+                    </p>
+                    <p>
+                      <el-checkbox label="3">其他行政强制措施：</el-checkbox>
+                    </p>
+                  </el-checkbox-group>
+                </el-form-item>
+              </div>
               <p>
                 自
                 <span>
@@ -240,19 +254,13 @@
                 <el-input style="width:10%" type="number" v-model="formData.days"></el-input>日
               </p>
               <p>
+                {{formData.approveOpinions}}
                 <el-row>
                   <el-col :span="8">&nbsp;</el-col>
                   <el-col :span="8">签名：</el-col>
                   <el-col :span="8">日期：</el-col>
                 </el-row>
               </p>
-              <!-- <div class="pdf_seal">
-                <p>签名：{{formData.approvePeo}}</p>
-                <p>
-                  <span v-if="formData.approveTime">{{formData.approveTime}}</span>
-                  <span v-else>年 月 日</span>
-                </p>
-              </div>-->
             </td>
           </tr>
           <tr></tr>
@@ -260,7 +268,7 @@
             <td rowspan="2">
               <p>承办机构意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="9" class="color_DBE4EF">
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
@@ -276,12 +284,12 @@
             <td rowspan="2">
               <p>法制审核机构意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
-              {{formData.threeApproveOpinions}}
+            <td rowspan="2" colspan="9" class="color_DBE4EF">
+              {{formData.fourApproveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{formData.threeApprovePeo}}</p>
+                <p>签名：{{formData.fourApprovePeo}}</p>
                 <p>
-                  <span v-if="formData.threeApproveTime">{{formData.threeApproveTime}}</span>
+                  <span v-if="formData.fourApproveTime">{{formData.fourApproveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -292,7 +300,7 @@
             <td rowspan="2">
               <p>行政机关负责人意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="9" class="color_DBE4EF">
               {{formData.threeApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.threeApprovePeo}}</p>
@@ -308,10 +316,19 @@
             <td>
               <p>备注</p>
             </td>
-            <td colspan="6" class="color_DBE4EF">
-              <p>
-                <el-input type="textarea" v-model="formData.notes"></el-input>
-              </p>
+            <td colspan="9" class="color_DBE4EF">
+              <span>
+                <el-form-item prop="notes">
+                  <el-input
+                    type="textarea"
+                    v-model="formData.notes"
+                    v-bind:class="{ over_flow:formData.notes.length>14?true:false }"
+                    :autosize="{ minRows: 1, maxRows: 3}"
+                    :maxlength="200"
+                    placeholder="\"
+                  ></el-input>
+                </el-form-item>
+              </span>
             </td>
           </tr>
         </table>
@@ -321,37 +338,43 @@
       :pageDomId="'prolongAdminCoerciveMeasureApproval_print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
-      @showApprovePeopleList="showApprovePeopleList"
-      @showApproval="showApproval"
     ></casePageFloatBtns>
-    <!-- 提交审批 -->
-    <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
-    <!-- 审批 -->
-    <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
   </div>
 </template>
 <script>
-import showApprovePeople from "@/page/caseHandle/components/showApprovePeople";
-import approvalDialog from "@/page/caseHandle/components/approvalDialog";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    showApprovePeople,
-    approvalDialog,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId"]) },
   data() {
+    //起止期限日期验证
+    var validateIfDate = (rule, value, callback) => {
+      var diff =
+        new Date(value).getTime() -
+        new Date(this.formData.measureStartDate).getTime();
+      var days = diff / 24 / 60 / 60 / 1000;
+      console.log("差几天", days);
+      if (days > 30) {
+        return callback("措施起止期限不得超过30日");
+      }
+      if (days <= 0) {
+        return callback("措施起止期限不得为同一天");
+      }
+      callback();
+    };
     return {
       validatePhone: validatePhone,
       validateIDNumber: validateIDNumber,
       isOverflow: false,
       // isOverLine: false,
       formData: {
+        caseNumber: "",
         caseName: "",
         party: "",
         partyIdNo: "",
@@ -361,28 +384,12 @@ export default {
         partyUnitAddress: "",
         partyUnitTel: "",
         partyManager: "",
-        punishLaw: "",
-        illegalLaw: "",
-        tempPunishAmount: "",
         socialCreditCode: "",
-        illegalFactsEvidence: "",
-        reconsiderationOrgan: "",
-        partyUnitPosition: "",
-        test: "",
-        note: "",
-        party: "",
-        partySex: "",
-        partyAge: "",
-        partyManager: "",
-        socialCreditCode: "",
-        caseBasicInfo: "",
-        caseReplay: "",
-        // partyUnitPosition: "",
-        partyZipCode: "",
-        partyManagerPositions: "",
-        closeResult: "",
-        leadOpinion: "",
-        closeSituation: "",
+        basicSituation: "",
+        measureStartDate: "",
+        measureEndDate: "",
+        notes: "",
+        checkBox:[],
         approveOpinions: "",
         approvePeo: "",
         approveTime: "",
@@ -391,7 +398,10 @@ export default {
         secondApproveTime: "",
         threeApproveOpinions: "",
         threeApprovePeo: "",
-        threeApproveTime: ""
+        threeApproveTime: "",
+        fourApproveOpinions: "",
+        fourApprovePeo: "",
+        fourApproveTime: "",
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交
@@ -410,14 +420,12 @@ export default {
         party: [
           { required: true, message: "当事人姓名不能为空", trigger: "blur" }
         ],
-        partyAge: [
-          { required: true, message: "当事人年龄不能为空", trigger: "blur" }
-        ],
-        partySex: [
-          { required: true, message: "当时人性别不能为空", trigger: "blur" }
-        ],
-        partyUnitPosition: [
-          { required: true, message: "当事人所在单位不能为空", trigger: "blur" }
+        partyIdNo: [
+          {
+            required: true,
+            message: "当事人身份证件号不能为空",
+            trigger: "blur"
+          }
         ],
         partyAddress: [
           { required: true, message: "当事人联系地址不能为空", trigger: "blur" }
@@ -429,9 +437,6 @@ export default {
             trigger: "blur"
           },
           { validator: validatePhone, trigger: "blur" }
-        ],
-        partyZipCode: [
-          { required: true, message: "邮政编码不能为空", trigger: "blur" }
         ],
         partyName: [
           { required: true, message: "单位名称不能为空", trigger: "blur" }
@@ -446,14 +451,30 @@ export default {
         partyManager: [
           { required: true, message: "法人不能为空", trigger: "blur" }
         ],
-        partyManagerPositions: [
-          { required: true, message: "职务不能为空", trigger: "blur" }
+        socialCreditCode: [
+          {
+            required: true,
+            message: "单位统一社会信用代码不能为空",
+            trigger: "blur"
+          }
         ],
-        closeResult: [
-          { required: true, message: "处理结果不能为空", trigger: "blur" }
+        basicSituation: [
+          { required: true, message: "基本情况不能为空", trigger: "blur" }
         ],
-        closeSituation: [
-          { required: true, message: "执行情况不能为空", trigger: "blur" }
+        measureStartDate: [
+          {
+            required: true,
+            message: "延长强制措施开始时间不能为空",
+            trigger: "blur"
+          }
+        ],
+        measureEndDate: [
+          {
+            required: true,
+            message: "延长强制措施结束时间不能为空",
+            trigger: "blur"
+          },
+          { validator: validateIfDate, trigger: "blur" }
         ]
       },
       nameLength: 23,
@@ -497,25 +518,10 @@ export default {
       //参数  提交类型 、formRef
       this.com_submitCaseForm(handleType, "docForm", true);
     },
-    showApprovePeopleList() {
-      let data = {
-        caseId: this.caseId,
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId
-      };
-      this.$refs.showApprovePeopleRef.showModal(data);
-    },
-    //审批弹窗
-    showApproval() {
-      //二级审批(经办机构负责人审批、部门负责人审批)
-      console.log(this.formData);
-      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : "";
-      let caseData = {
-        caseId: this.caseId,
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,
-        firstApproval: approvePeo,
-        approvalNumber: 2 //2次审批
-      };
-      this.$refs.approvalDialogRef.showModal(caseData);
+    startTime() {
+      if (this.formData.measureStartDate) {
+        this.$set(this.formData, 'measureEndDate', new Date(new Date(this.formData.measureStartDate).getTime() + 30 * 24 * 3600 * 1000).format("yyyy-MM-dd"));
+      }
     },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
@@ -574,25 +580,12 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-.textindent0 {
-  text-indent: 0 !important;
-}
-.print_box
-  #prolongAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.el-textarea {
-  top: -12px;
-}
-.print_box
-  #prolongAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.over_flow {
-  top: -8px;
-  text-overflow: initial;
-  font-size: 12px;
-  line-height: 14px;
+.prolong_table {
+  table-layout: fixed;
+  td, p, span, .el-checkbox {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
 }
 </style>

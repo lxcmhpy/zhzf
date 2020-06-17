@@ -4,16 +4,13 @@
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">行政处罚审批表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
-        <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+        <table class="print_table prolong_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td>
               <p>案由</p>
             </td>
-            <td colspan="6" class="color_DBE4EF">
-              <p>
-                <el-input type="textarea" v-model="formData.notes"></el-input>
-              </p>
+            <td colspan="9" class="color_DBE4EF">
+              {{formData.caseName}}
             </td>
           </tr>
           <tr>
@@ -23,7 +20,7 @@
               <br />人
             </td>
             <td rowspan="2">个人</td>
-            <td>姓名</td>
+            <td colspan="2">姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="party"
@@ -38,10 +35,9 @@
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
                   placeholder="\"
                 ></el-input>
-                <!-- <el-input v-model="formData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
-            <td>身份证件号</td>
+            <td colspan="2">身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyIdNo"
@@ -59,7 +55,7 @@
             </td>
           </tr>
           <tr>
-            <td>住址</td>
+            <td colspan="2">住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyAddress"
@@ -76,7 +72,7 @@
                 ></el-input>
               </el-form-item>
             </td>
-            <td>联系电话</td>
+            <td colspan="2">联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyTel"
@@ -93,8 +89,8 @@
           </tr>
           <tr>
             <td rowspan="4">单位</td>
-            <td>名称</td>
-            <td colspan="5" class="color_DBE4EF">
+            <td colspan="2">名称</td>
+            <td colspan="6" class="color_DBE4EF">
               <el-form-item
                 prop="partyName"
                 :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)"
@@ -109,8 +105,8 @@
             </td>
           </tr>
           <tr>
-            <td>地址</td>
-            <td colspan="4" class="color_DBE4EF">
+            <td colspan="2">地址</td>
+            <td colspan="6" class="color_DBE4EF">
               <el-form-item
                 prop="partyUnitAddress"
                 :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)"
@@ -125,7 +121,7 @@
             </td>
           </tr>
           <tr>
-            <td>联系电话</td>
+            <td colspan="2">联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyUnitTel"
@@ -140,8 +136,8 @@
                 ></el-input>
               </el-form-item>
             </td>
-            <td>法定代表人</td>
-            <td class="color_DBE4EF">
+            <td colspan="2">法定代表人</td>
+            <td class="color_DBE4EF" colspan="2">
               <el-form-item
                 prop="partyManager"
                 :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)"
@@ -156,8 +152,8 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2">统一社会信用代码</td>
-            <td colspan="3" class="color_DBE4EF">
+            <td colspan="3">统一社会信用代码</td>
+            <td colspan="5" class="color_DBE4EF">
               <el-form-item
                 prop="socialCreditCode"
                 :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)"
@@ -175,19 +171,19 @@
             <td rowspan="2">
               <p>案件基本情况</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="9" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="basicSituation"
+                :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
+                  v-model="formData.basicSituation"
+                  v-bind:class="{ over_flow:formData.basicSituation && formData.basicSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -197,21 +193,15 @@
             <td rowspan="2">
               <p>承办人意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
-              <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
-              >
-                <el-input
-                  type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 5}"
-                  maxlength="200"
-                  placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
-                ></el-input>
-              </el-form-item>
+            <td rowspan="2" colspan="9" class="color_DBE4EF">
+              {{formData.approveOpinions}}
+              <div class="pdf_seal">
+                <p>签名：{{formData.approvePeo}}</p>
+                <p>
+                  <span v-if="formData.approveTime">{{formData.approveTime}}</span>
+                  <span v-else>年 月 日</span>
+                </p>
+              </div>
             </td>
           </tr>
           <tr></tr>
@@ -219,7 +209,7 @@
             <td rowspan="2">
               <p>承办机构意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="9" class="color_DBE4EF">
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
@@ -235,7 +225,7 @@
             <td rowspan="2">
               <p>法制审核机构意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="9" class="color_DBE4EF">
               {{formData.threeApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.threeApprovePeo}}</p>
@@ -251,7 +241,7 @@
             <td rowspan="2">
               <p>行政机关负责人意见</p>
             </td>
-            <td rowspan="2" colspan="6" class="color_DBE4EF">
+            <td rowspan="2" colspan="9" class="color_DBE4EF">
               {{formData.threeApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.threeApprovePeo}}</p>
@@ -270,26 +260,16 @@
       :pageDomId="'removeAdminCoerciveMeasureApproval_print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
-      @showApprovePeopleList="showApprovePeopleList"
-      @showApproval="showApproval"
     ></casePageFloatBtns>
-    <!-- 提交审批 -->
-    <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
-    <!-- 审批 -->
-    <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
   </div>
 </template>
 <script>
-import showApprovePeople from "@/page/caseHandle/components/showApprovePeople";
-import approvalDialog from "@/page/caseHandle/components/approvalDialog";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    showApprovePeople,
-    approvalDialog,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
@@ -301,6 +281,7 @@ export default {
       isOverflow: false,
       // isOverLine: false,
       formData: {
+        caseNumber: "",
         caseName: "",
         party: "",
         partyIdNo: "",
@@ -310,28 +291,10 @@ export default {
         partyUnitAddress: "",
         partyUnitTel: "",
         partyManager: "",
-        punishLaw: "",
-        illegalLaw: "",
-        tempPunishAmount: "",
         socialCreditCode: "",
-        illegalFactsEvidence: "",
-        reconsiderationOrgan: "",
-        partyUnitPosition: "",
-        test: "",
-        note: "",
-        party: "",
-        partySex: "",
-        partyAge: "",
-        partyManager: "",
-        socialCreditCode: "",
-        caseBasicInfo: "",
-        caseReplay: "",
-        // partyUnitPosition: "",
-        partyZipCode: "",
-        partyManagerPositions: "",
-        closeResult: "",
-        leadOpinion: "",
-        closeSituation: "",
+        basicSituation: "",
+        measureStartDate: "",
+        measureEndDate: "",
         approveOpinions: "",
         approvePeo: "",
         approveTime: "",
@@ -340,7 +303,10 @@ export default {
         secondApproveTime: "",
         threeApproveOpinions: "",
         threeApprovePeo: "",
-        threeApproveTime: ""
+        threeApproveTime: "",
+        fourApproveOpinions: "",
+        fourApprovePeo: "",
+        fourApproveTime: "",
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交
@@ -359,14 +325,12 @@ export default {
         party: [
           { required: true, message: "当事人姓名不能为空", trigger: "blur" }
         ],
-        partyAge: [
-          { required: true, message: "当事人年龄不能为空", trigger: "blur" }
-        ],
-        partySex: [
-          { required: true, message: "当时人性别不能为空", trigger: "blur" }
-        ],
-        partyUnitPosition: [
-          { required: true, message: "当事人所在单位不能为空", trigger: "blur" }
+        partyIdNo: [
+          {
+            required: true,
+            message: "当事人身份证件号不能为空",
+            trigger: "blur"
+          }
         ],
         partyAddress: [
           { required: true, message: "当事人联系地址不能为空", trigger: "blur" }
@@ -378,9 +342,6 @@ export default {
             trigger: "blur"
           },
           { validator: validatePhone, trigger: "blur" }
-        ],
-        partyZipCode: [
-          { required: true, message: "邮政编码不能为空", trigger: "blur" }
         ],
         partyName: [
           { required: true, message: "单位名称不能为空", trigger: "blur" }
@@ -395,15 +356,16 @@ export default {
         partyManager: [
           { required: true, message: "法人不能为空", trigger: "blur" }
         ],
-        partyManagerPositions: [
-          { required: true, message: "职务不能为空", trigger: "blur" }
+        socialCreditCode: [
+          {
+            required: true,
+            message: "单位统一社会信用代码不能为空",
+            trigger: "blur"
+          }
         ],
-        closeResult: [
-          { required: true, message: "处理结果不能为空", trigger: "blur" }
+        basicSituation: [
+          { required: true, message: "基本情况不能为空", trigger: "blur" }
         ],
-        closeSituation: [
-          { required: true, message: "执行情况不能为空", trigger: "blur" }
-        ]
       },
       nameLength: 23,
       adressLength: 23,
@@ -446,31 +408,10 @@ export default {
       //参数  提交类型 、formRef
       this.com_submitCaseForm(handleType, "docForm", true);
     },
-    showApprovePeopleList() {
-      let data = {
-        caseId: this.caseId,
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId
-      };
-      this.$refs.showApprovePeopleRef.showModal(data);
-    },
-    //审批弹窗
-    showApproval() {
-      //二级审批(经办机构负责人审批、部门负责人审批)
-      console.log(this.formData);
-      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : "";
-      let caseData = {
-        caseId: this.caseId,
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,
-        firstApproval: approvePeo,
-        approvalNumber: 2 //2次审批
-      };
-      this.$refs.approvalDialogRef.showModal(caseData);
-    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       let data = {
-        //caseId: this.caseId, //流程里的案件id
-        caseId: "297708bcd8e80872febb61577329194f", //先写死
+        caseId: this.caseId, //流程里的案件id
         docId: "5cad5b54eb97a15250672a4c397cee56"
       };
       this.com_getDocDataByCaseIdAndDocId(data);
@@ -523,25 +464,12 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-.textindent0 {
-  text-indent: 0 !important;
-}
-.print_box
-  #removeAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.el-textarea {
-  top: -12px;
-}
-.print_box
-  #removeAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.over_flow {
-  top: -8px;
-  text-overflow: initial;
-  font-size: 12px;
-  line-height: 14px;
+.prolong_table {
+  table-layout: fixed;
+  td, p, span, .el-checkbox {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
 }
 </style>
