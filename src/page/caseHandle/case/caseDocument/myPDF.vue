@@ -91,12 +91,12 @@
         );
       },
       isApproval() {
-
         //审批
         console.log('this.approvalState',this.approvalState)
         if(this.approvalState == 'approvaling'){
           //审核人员进入 只有审核按钮
           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, true, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+         
         }else if(this.approvalState == 'approvalOver'){
           //审核人员审核完成 只有打印按钮
           this.formOrDocData.showBtn = [false, false, false, true, false, true, false, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回

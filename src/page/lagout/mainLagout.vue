@@ -21,9 +21,9 @@
                 </el-dropdown-menu>
               </el-dropdown>
           </div> -->
-          <div>
+          <div v-if="userInfo">
             <el-popover placement="top-start" width="335" trigger="hover" style="padding:0" popper-class='padding0'>
-              <div class="info_top">
+              <div class="info_top" >
                 <li><img src="../../../static/images/img/personInfo/head.svg" alt=""></li>
                 <li>
                   <p class="name">{{userInfo.nickName}}</p>
@@ -40,7 +40,7 @@
                     {{userInfo.organName}}
                   </el-form-item>
                   <el-form-item label="所属部门：">
-                    北京市交通运输局
+                    空
                   </el-form-item>
                   <el-form-item label="上次登录：">
                     2019.04.17 07:06:45

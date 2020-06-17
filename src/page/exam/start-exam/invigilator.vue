@@ -7,7 +7,9 @@
             <img src="../../../../static/images/img/exam/clocks.png" alt />
             <span class="time-prompt">{{ countText }}</span>
             <span v-if="intervalTime" class="count-down">{{ countTime.minutes }}</span>
+            <span style="margin-right: 8px;">分</span>
             <span v-if="intervalTime" class="count-down">{{ countTime.second }}</span>
+            <span>秒</span>
           </div>
           <div class="exam-name">
             <p>考试名称</p>
@@ -25,7 +27,7 @@
             <p class="title">备注</p>
             <p class="f-s-12">1.考生应自觉服从监考员等考试工作人员管理,不准以任何理由妨碍监考员等考试工作人员履行职责...</p>
             <p class="f-s-12">2.考生凭准考证、有效居民身份证按规定时间参加考试。</p>
-            <p class="f-s-12">3.严禁考生携带手机等各种通讯工具、手表、电子存储记忆录放。</p>
+            <p class="f-s-12">3.严禁考生携带手机等各种通讯工具、手表、电子存储记忆录放等设备。</p>
           </div>
         </div>
       </el-col>
@@ -46,7 +48,7 @@
                   class="commonBtn searchBtn"
                   size="medium"
                   icon="iconfont law-sousuo"
-                  @click="getExamPerson"
+                  @click="currentPage = 1 ;getExamPerson();"
                 ></el-button>
                 <el-button
                   title="重置"
@@ -66,11 +68,16 @@
                 size="medium"
                 @click="viewRecord('',3)"
               >批量延迟</el-button>
-              <el-button type="info" icon="el-icon-edit-outline" size="medium">修改信息</el-button>
+              <el-button
+                type="info"
+                icon="el-icon-edit-outline"
+                size="medium"
+                @click="editUserInfo"
+              >修改信息</el-button>
             </div>
             <div class="exam-status">
               <el-radio-group v-model="searchForm.status" @change="searchByStatus">
-                <el-radio :label="''">全部</el-radio>
+                <el-radio label>全部</el-radio>
                 <el-radio :label="'0'">未答题</el-radio>
                 <el-radio :label="'1'">答题中</el-radio>
                 <el-radio :label="'2'">已交卷</el-radio>
@@ -100,12 +107,25 @@
                     <span v-if="scope.row.examStatue === '2'" style="color: #18C061;">已交卷</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="time" label="答题时间" min-width="100px" align="center"></el-table-column>
+                <el-table-column
+                  prop="loginTime"
+                  label="开始答题时间"
+                  min-width="100px"
+                  align="center"
+                ></el-table-column>
                 <el-table-column label="操作" min-width="320px" align="center">
                   <template slot-scope="scope">
                     <el-button type="text" @click="viewRecord(scope.row,1)">考场记录</el-button>
-                    <el-button v-if="scope.row.examStatue === '1'" type="text" @click="viewRecord(scope.row,2)">强制收卷</el-button>
-                    <el-button v-if="scope.row.examStatue === '1'" type="text" @click="viewRecord(scope.row,3)">延迟收卷</el-button>
+                    <el-button
+                      v-if="scope.row.examStatue === '1'"
+                      type="text"
+                      @click="viewRecord(scope.row,2)"
+                    >强制收卷</el-button>
+                    <el-button
+                      v-if="scope.row.examStatue === '1'"
+                      type="text"
+                      @click="viewRecord(scope.row,3)"
+                    >延迟收卷</el-button>
                     <el-button type="text" @click="viewRecord(scope.row,4)">登录重置</el-button>
                   </template>
                 </el-table-column>
@@ -128,18 +148,21 @@
     </el-row>
     <!-- 考场记录 -->
     <examRoomRecord ref="examRoomRecord" />
-    <windowsPage ref="windowsPage"></windowsPage>
+    <windowsPage ref="windowsPage" @reloadTable="currentPage = 1;getExamPerson();"></windowsPage>
+    <!-- 修改信息 -->
+    <editInvigilator ref="editInvigilator" />
   </div>
 </template>
 
 <script>
 import examRoomRecord from "./examRoomRecord";
 import windowsPage from "./windowsPage";
+import editInvigilator from "./editInvigilator";
 export default {
-  components: { examRoomRecord, windowsPage },
+  components: { examRoomRecord, windowsPage, editInvigilator },
   data() {
     return {
-      searchForm: { idNo: "", status: 0 },
+      searchForm: { idNo: "", status: "" },
       roomInfo: {
         roomId: "",
         roomName: "",
@@ -168,7 +191,7 @@ export default {
       tableData: [], //列表数据
       tableLoading: false, // 列表数据加载
       intervalTime: null,
-      countText: '', // 倒计时显示文字
+      countText: "", // 倒计时显示文字
       differenceTime: 0
     };
   },
@@ -186,13 +209,16 @@ export default {
   },
   methods: {
     // 获取系统当前时间
-    getSystemTime(){
-      this.$store.dispatch('getSystemDate').then(res => {
-        this.differenceTime = res - new Date().getTime();
-        this.startCountDown();
-      }, err => {
-        console.log(err);
-      });
+    getSystemTime() {
+      this.$store.dispatch("getSystemDate").then(
+        res => {
+          this.differenceTime = res - new Date().getTime();
+          this.startCountDown();
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     // 开始倒计时
     startCountDown() {
@@ -203,17 +229,17 @@ export default {
       let examEnd = new Date(this.examInfo.examEnd).getTime();
       let diffTime = 0;
       let endTime = 0;
-      if(examEnd - newTime < 0){
-        this.countText = '考试已结束';
+      if (examEnd - newTime < 0) {
+        this.countText = "考试已结束";
         clearInterval(this.intervalTime);
         return false;
       }
-      if(newTime - examBegin < 0){
-        this.countText = '距离考试开始'
+      if (newTime - examBegin < 0) {
+        this.countText = "距离考试开始";
         diffTime = examBegin - newTime;
         endTime = examBegin;
-      }else{
-        this.countText = '距离考试结束'
+      } else {
+        this.countText = "距离考试结束";
         diffTime = examEnd - newTime;
         endTime = examEnd;
       }
@@ -233,7 +259,7 @@ export default {
         let diffTime = endTime - newTime;
         this.countDownList = "";
         if (diffTime < 0 || diffTime === 0) {
-          this.countText = '考试已结束';
+          this.countText = "考试已结束";
           clearInterval(this.intervalTime);
         } else {
           let time = diffTime / 1000;
@@ -256,13 +282,20 @@ export default {
     timeFormat(param) {
       return param < 10 ? "0" + param : param;
     },
+    // 修改信息
+    editUserInfo() {
+      this.$refs.editInvigilator.showModal(
+        this.invigilatorInfo.invigilatorInfo
+      );
+    },
     // 考场记录
     viewRecord(row, type) {
       let data = {
         invigilatorId: this.invigilatorId,
         examId: this.invigilatorInfo.examManageInfo.examId,
         preDelayedTime: this.examInfo.examEnd,
-        examperIds: this.examperIds
+        examperIds: this.examperIds,
+        roomId: this.invigilatorInfo.invigilatorInfo.roomId
       };
       if (row != "") {
         data.examperIds = row.examperId;
@@ -281,9 +314,9 @@ export default {
           customClass: "custom-confirm"
         })
           .then(() => {
-            this.$store.dispatch("signOutSystem", row.idNo).then(res=>{
-              if(res.code === '200'){
-                   this.$message({ type: "success", message: "重置登录成功！"});
+            this.$store.dispatch("signOutSystem", row.idNo).then(res => {
+              if (res.code === 200) {
+                this.$message({ type: "success", message: "重置登录成功！" });
               }
             });
           })
@@ -292,10 +325,11 @@ export default {
     },
     // 搜索表单重置
     resetSearchForm() {
-      this.$refs["searchForm"].resetFields();
+      this.searchForm.personName = "";
+      this.searchForm.status = "";
     },
     // 根据考生状态查询
-    searchByStatus(val){
+    searchByStatus(val) {
       this.currentPage = 1;
       this.getExamPerson();
     },
@@ -316,6 +350,7 @@ export default {
           this.tableLoading = false;
           if (res.code == "200") {
             this.tableData = res.data.records;
+            this.totalPage = res.data.total;
           }
           this.visible = false;
         },
@@ -324,6 +359,25 @@ export default {
           this.$message({ type: "error", message: err.msg || "" });
         }
       );
+    },
+    // 考生答题时间
+    answerTime(row) {
+      if (row.loginTime) {
+        const examBegin = new Date().getTime();
+        const loginTime = new Date(row.loginTime).getTime();
+        const time = examBegin - loginTime;
+          if(time > 0){
+          let hou = parseInt((time % (60 * 60 * 24)) / 3600);
+          let min = parseInt(((time % (60 * 60 * 24)) % 3600) / 60);
+          let sec = parseInt(((time % (60 * 60 * 24)) % 3600) % 60);
+          if (hou > 0) {
+            min = hou * 60 + min;
+          }
+          return `${min}分钟${sec}秒`;
+        }
+      }else{
+        return '';
+      }
     },
     //考场信息
     getExamMsg() {
@@ -370,7 +424,7 @@ export default {
     }
   },
   mounted() {},
-  destroyed(){
+  destroyed() {
     clearInterval(this.intervalTime);
   }
 };
@@ -462,7 +516,7 @@ export default {
         top: 0;
         bottom: 70px;
         width: 100%;
-        >>>.el-table__body-wrapper{
+        >>> .el-table__body-wrapper {
           padding-bottom: 0;
         }
       }

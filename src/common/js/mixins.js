@@ -213,78 +213,78 @@ export const mixinGetCaseApiList = {
       );
     },
     //根据环节ID转路由name 跳转
-    com_getCaseRouteName(caseLinkId) {
-      let data = {
-        nextLink: '',
-        docId: ''
-      }
-      switch (caseLinkId) {
-        case this.BASIC_DATA_SYS.establish_caseLinktypeId:   //立案登记
-          data.nextLink = "case_handle_establish";
-          data.docId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
-          break;
-        case this.BASIC_DATA_SYS.caseDoc_caseLinktypeId: //调查类文书
-        case this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId:
-          data.nextLink = "case_handle_caseDoc";
-          break;
-        case this.BASIC_DATA_SYS.compensationNote_caseDoctypeId:
-          data.nextLink = "case_handle_compensationNotice";
-          data.docId = this.BASIC_DATA_SYS.compensationNote_huanjieAndDocId;
-          break;
-        case this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId:  //赔补偿当事人权利环节
-          data.nextLink = "case_handle_compensationPartyRights";
-          break;
-        case this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId:   //行政强制措施
-          data.nextLink = "case_handle_adminCoerciveMeasure";
-          data.docId = this.BASIC_DATA_SYS.adminCoerciveMeasure_huanjieAndDocId;
-          break;
-        case this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId:   //调查报告
-          data.nextLink = "case_handle_caseInvestig";
-          data.docId = this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId;
-          break;
-        case "a36b59bd27ff4b6fe96e1b06390d204e":   //案件审核
-          data.nextLink = "";
-          break;
-        case this.BASIC_DATA_SYS.illegalActionForm_caseLinktypeId:   //违法行为通知
-          data.nextLink = "case_handle_illegalActionForm";
-          data.docId = this.BASIC_DATA_SYS.illegalActionForm_huanjieAndDocId;
-          break;
-        case this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId:   //责令改正
-          data.nextLink = "case_handle_forceCorrect";
-          data.docId = this.BASIC_DATA_SYS.forceCorrect_huanjieAndDocId;
-          break;
-        case "a36b59bd27ff4b6fe96e1b06390d204f":   //移交移送
-          data.nextLink = "";
-          break;
-        case this.BASIC_DATA_SYS.noPenalty_caseLinktypeId:   //不予处罚
-          data.nextLink = "case_handle_noPenalty";
-          break;
-        case this.BASIC_DATA_SYS.partyRights_caseLinktypeId:   //当事人权利
-          data.nextLink = "case_handle_partyRights";
-          break;
-        case this.BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId:   //处罚决定
-          data.nextLink = "case_handle_punishDecisionDoc";
-          data.docId = this.BASIC_DATA_SYS.punishDecisionDoc_huanjieAndDocId;
-          break;
-        case this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId:   //决定执行
-          data.nextLink = "case_handle_penaltyExecution";
-          break;
-        case this.BASIC_DATA_SYS.forceExecute_caseLinktypeId:   //强制执行
-          data.nextLink = "case_handle_forceExecute";
-          break;
-        case this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId:   //结案登记
-          data.nextLink = "case_handle_finishCaseReport";
-          data.docId = this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId;
-          break;
-        case "2c9029ee6cac9281016cacab478e0007":   //归档
-          data.nextLink = "";
-          break;
-        case this.BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId:   //收缴赔补偿款 环节id 
-          data.nextLink = "case_handle_payCompensation";
-          break;
-      }
-      return data;
-    },
+    // com_getCaseRouteName(caseLinkId) {
+    //   let data = {
+    //     nextLink: '',
+    //     docId: ''
+    //   }
+    //   switch (caseLinkId) {
+    //     case this.BASIC_DATA_SYS.establish_caseLinktypeId:   //立案登记
+    //       data.nextLink = "case_handle_establish";
+    //       data.docId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
+    //       break;
+    //     case this.BASIC_DATA_SYS.caseDoc_caseLinktypeId: //调查类文书
+    //     case this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId:
+    //       data.nextLink = "case_handle_caseDoc";
+    //       break;
+    //     case this.BASIC_DATA_SYS.compensationNote_caseDoctypeId:
+    //       data.nextLink = "case_handle_compensationNotice";
+    //       data.docId = this.BASIC_DATA_SYS.compensationNote_huanjieAndDocId;
+    //       break;
+    //     case this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId:  //赔补偿当事人权利环节
+    //       data.nextLink = "case_handle_compensationPartyRights";
+    //       break;
+    //     case this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId:   //行政强制措施
+    //       data.nextLink = "case_handle_adminCoerciveMeasure";
+    //       data.docId = this.BASIC_DATA_SYS.adminCoerciveMeasure_huanjieAndDocId;
+    //       break;
+    //     case this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId:   //调查报告
+    //       data.nextLink = "case_handle_caseInvestig";
+    //       data.docId = this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId;
+    //       break;
+    //     case "a36b59bd27ff4b6fe96e1b06390d204e":   //案件审核
+    //       data.nextLink = "";
+    //       break;
+    //     case this.BASIC_DATA_SYS.illegalActionForm_caseLinktypeId:   //违法行为通知
+    //       data.nextLink = "case_handle_illegalActionForm";
+    //       data.docId = this.BASIC_DATA_SYS.illegalActionForm_huanjieAndDocId;
+    //       break;
+    //     case this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId:   //责令改正
+    //       data.nextLink = "case_handle_forceCorrect";
+    //       data.docId = this.BASIC_DATA_SYS.forceCorrect_huanjieAndDocId;
+    //       break;
+    //     case "a36b59bd27ff4b6fe96e1b06390d204f":   //移交移送
+    //       data.nextLink = "";
+    //       break;
+    //     case this.BASIC_DATA_SYS.noPenalty_caseLinktypeId:   //不予处罚
+    //       data.nextLink = "case_handle_noPenalty";
+    //       break;
+    //     case this.BASIC_DATA_SYS.partyRights_caseLinktypeId:   //当事人权利
+    //       data.nextLink = "case_handle_partyRights";
+    //       break;
+    //     case this.BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId:   //处罚决定
+    //       data.nextLink = "case_handle_punishDecisionDoc";
+    //       data.docId = this.BASIC_DATA_SYS.punishDecisionDoc_huanjieAndDocId;
+    //       break;
+    //     case this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId:   //决定执行
+    //       data.nextLink = "case_handle_penaltyExecution";
+    //       break;
+    //     case this.BASIC_DATA_SYS.forceExecute_caseLinktypeId:   //强制执行
+    //       data.nextLink = "case_handle_forceExecute";
+    //       break;
+    //     case this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId:   //结案登记
+    //       data.nextLink = "case_handle_finishCaseReport";
+    //       data.docId = this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId;
+    //       break;
+    //     case "2c9029ee6cac9281016cacab478e0007":   //归档
+    //       data.nextLink = "";
+    //       break;
+    //     case this.BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId:   //收缴赔补偿款 环节id 
+    //       data.nextLink = "case_handle_payCompensation";
+    //       break;
+    //   }
+    //   return data;
+    // },
     //根据案件ID和文书Id获取数据   文书数据
     com_getDocDataByCaseIdAndDocId(params) {
       let data = {
@@ -444,7 +444,6 @@ export const mixinGetCaseApiList = {
     },
     async printContent(docDataId = '') {
       console.log('printContent docDataId', docDataId)
-      this.replaceTextArea();
       this.uploadFile('', '', docDataId)
     },
     uploadFile(file, name, docDataId) {
@@ -566,7 +565,11 @@ export const mixinGetCaseApiList = {
         isHuanjieDoc = true;
       }
       this.$store.dispatch('deleteTabs', 'case_handle_flowChart');
-      let data2 = this.com_getCaseRouteName(data.linkID);
+      // let data2 = this.com_getCaseRouteName(data.linkID);
+      let data2 ={
+        nextLink: data.linkName || '',
+        docId: data.docId || ''
+      }
       this.$store.commit('setDocId', data.docId);
       if (data.curLinkState == "complete") {    //已完成文书显示pdf  审核中也显示pdf
         if (!isHuanjieDoc) {
@@ -638,33 +641,6 @@ export const mixinGetCaseApiList = {
         // console.log(data);
         this.propertyFeatures = resdata;
       })
-    },
-    //隐藏textarea 显示span
-    replaceTextArea() {
-      //打印时去掉下拉框的图标
-      let selectObjIcon = document.getElementsByClassName('el-select__caret');
-      for (let i = 0; i < selectObjIcon.length; i++) {
-        selectObjIcon[i].style.display = 'none';
-      }
-
-      let obj = document.getElementsByTagName('textarea');
-      console.log(obj);
-      console.log(obj[0]);
-
-
-      for (let i = 0; i < obj.length; i++) {
-        //获取textarea的值
-        let textAreaValue = obj[i].value;
-        //获取textarea 父元素的classname
-        let textAreaBoxClass = obj[i].parentNode.className;
-        let objParent = obj[i].parentNode.parentNode;
-        //追加span元素
-        let newSpan = document.createElement("span");
-        newSpan.innerHTML = textAreaValue;
-        newSpan.setAttribute("class", textAreaBoxClass);
-        obj[i].parentNode.style.display = 'none'
-        objParent.appendChild(newSpan);
-      }
     },
     //查询环节是否生成了pdf
     searchHuanjiePdf(data, linkID) {

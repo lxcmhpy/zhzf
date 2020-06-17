@@ -63,7 +63,7 @@
                 <img width="62px" height="62px" class="right"
                     onerror="this.src='./static/images/img/catsAppraisalExamination/icon_head.png'"
                     :src="'./static/images/img/catsAppraisalExamination/icon_head.png'">
-                <div class="peopleMessage">
+                <div class="peopleMessage" v-if="userInfo">
                     <span>{{userInfo.nickName}}</span><br>
                     <span>{{userInfo.organName}}</span>
                 </div>
@@ -141,8 +141,7 @@ export default {
             //     icon: 'pic_fenxiyanpan'
             // }
             ],
-            userInfo: null,
-            systemTitle: null
+            userInfo: null
         }
     },
     components: {
@@ -234,14 +233,14 @@ export default {
         }
     },
     mounted () {
-        this.systemTitle = this.system.systemTitle;
-        this.userInfo = iLocalStroage.gets('userInfo', res.data);
-        this.$store.dispatch("deleteTabs", this.$route.name);
+        debugger;
+        this.userInfo = iLocalStroage.gets('userInfo');
+        // this.$store.dispatch("deleteTabs", this.$route.name);
         this.getNotices()
         this.getAppraisalMenuList()
     },
     computed: {
-        ...mapGetters(["system"])
+        ...mapGetters(["systemTitle"])
     }
 }
 </script>

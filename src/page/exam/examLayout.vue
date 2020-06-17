@@ -38,7 +38,9 @@ export default {
     showLogout(){
       return this.$route.path !== '/startAnswer'
     },
-    ...mapGetters(['systemTitle'])
+    systemTitle(){
+      return sessionStorage.getItem('DocumentTitle');
+    }
   },
   inject: ["reload"],
   methods: {
@@ -52,8 +54,12 @@ export default {
     },
     //获取系统标题
     getSystemData() {
+      if(this.systemTitle){
+        window.document.title = this.systemTitle;
+        return;
+      }
       getDictListDetailByNameApi('系统标题').then(res => {
-        this.$store.commit('set_systemTitle',res.data[0].name);
+        sessionStorage.setItem('DocumentTitle', res.data[0].name);
         window.document.title = res.data[0].name
       }, err => {
         console.log(err);

@@ -49,7 +49,8 @@ export default [
     meta: {
       title: "评议考核首页面"
     },
-    component: () => import("@/page/catsAppraisalExamination/assessExtract/assessExtract.vue")
+    // component: () => import("@/page/catsAppraisalExamination/assessExtract/assessExtract.vue")
+    component: () => import("@/page/catsAppraisalExamination/home.vue")
 
 }
 , {

@@ -288,8 +288,8 @@ export default {
             }
           });
         }
-        this.currentSysTime = this.currentSysTime + 10000;
-      }, 10000);
+        this.currentSysTime = this.currentSysTime + 1000;
+      }, 1000);
     },
     // 设置倒计时显示值
     setCountDownTime(time) {
