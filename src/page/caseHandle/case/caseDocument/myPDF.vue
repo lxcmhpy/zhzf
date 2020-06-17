@@ -91,7 +91,6 @@
         );
       },
       isApproval() {
-
         //审批
         console.log('this.approvalState',this.approvalState)
         if(this.approvalState == 'approvaling'){
