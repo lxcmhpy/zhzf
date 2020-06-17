@@ -21,8 +21,6 @@ const state = {
         imgIp:'',  //图片的地址
         listPage:'',   //当前page
         // btnlawId:''  //当前法规id
-        province:'', //当前系统部署在哪个省
-
 };
 
 export default state;
