@@ -151,7 +151,8 @@ const mutations = {
   },
   [types.SET_LISTPAGE](state,page){
     state.listPage = page;
-  }
+  },
+  
 };
 
 export default mutations;

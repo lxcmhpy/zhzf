@@ -134,7 +134,7 @@ export default {
     //   Cookies.remove("TokenKey");
       // this.$store.state.openTab = [];
       this.$store.dispatch('deleteAllTabs');
-      this.$router.push("/");
+      this.$router.push({name:'login'});
     },
     //个人设置  待完善
     goToUser() {
@@ -216,6 +216,8 @@ export default {
   mounted() {
     this.selectedHeadMenu = this.headActiveNav;
     this.userInfo = iLocalStroage.gets('userInfo');
+    // ???
+     this.$store.commit('setShowQZBtn', true);
   },
   created(){
     //判断有没有menu

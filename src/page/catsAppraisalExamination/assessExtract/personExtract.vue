@@ -39,8 +39,6 @@
                         <li><span>证件号:{{ option.maritimeNo }} </span></li>
                     </ul>
                 </span>
-<!--              <el-button class="transfer-footer" slot="left-header" size="small" @click="leftClick">操作</el-button>-->
-<!--              <el-button class="transfer-footer" slot="right-header" size="small" @click="rightClick">操作</el-button>-->
 
             </el-transfer>
           </div>
@@ -53,6 +51,7 @@
   import { mixinsCommon } from "@/common/js/mixinsCommon";
   import {findPykhStaffByPage,randomSamplingStaffByPage,findListVoByBatch,findAllDepartment,submitProStaff} from "@/api/catsAppraisalExamPersonUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
+  import qs from 'qs';
 
   export default {
     data() {
@@ -74,15 +73,17 @@
       fetchData(data){
         data.size=1000;
         data.current=1;
-        console.info("查询参数：",data)
         findPykhStaffByPage(data).then(res=>{
-          console.info("根据条件分页查询人员列表:",res);
+          // console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
             var personlist=[];
             for(var i=0;i<res.data.records.length;i++){
               var maritimeNo=res.data.records[i].maritimeNo==null?'':res.data.records[i].maritimeNo+",";
               var provinceNo=res.data.records[i].provinceNo==null?'':res.data.records[i].provinceNo+",";
               var ministerialNo=res.data.records[i].ministerialNo==null?'':res.data.records[i].ministerialNo+",";
+              if(res.data.records[i].staffStatus!=0){
+                this.value.push(i)
+              }
               personlist.push({
                 key: i,
                 label: res.data.records[i].staffName,
@@ -99,31 +100,19 @@
       },
       handleChange(value, direction, movedKeys) {
         console.log(value, direction, movedKeys);
-        var ids=[];
+        var ids= [];
         var personList=this.personList;
         console.info("personlist:",personList)
-        // for (var i =0 ;i<personList.length;i++){
-        //   for(var j=0;j<value.length;j++){
-        //     console.info("抽取号：",value[j])
-        //     if(i!=value[j]){
-        //       ids.push(personList[i].staffId);
-        //     }
-        //   }
-        // }
         for(var j=0;j<value.length;j++){
-          // for (var i =0 ;i<personList.length;i++){
-          //   if(i==value[j]){
-          //           ids.push(personList[i].staffId);
-          //   }
-          //   break;
-          // }
+          // ids+="idList="+personList[value[j]].staffId+"&"
           ids.push(personList[value[j]].staffId)
         }
-        console.info("ids:",ids)
+        // console.info("ids:",qs.stringify(ids, { arrayFormat: 'brackets' }))
         var submitProStaffData={};
-        submitProStaffData.idList=ids;
+        var param=qs.stringify(ids, { arrayFormat: 'repeat' });
+        submitProStaffData.idList= param ;
         submitProStaffData.batchId=this.search.batchId;
-        submitProStaff(submitProStaffData,this.search.OId).then(res=>{
+        submitProStaff(submitProStaffData).then(res=>{
           console.info("抽取结果",res);
         });
       },
@@ -135,7 +124,7 @@
         let data={};
         data.OId=this.search.OId;
         data.batchId=this.search.batchId;
-        console.info("this.search:",data)
+        // console.info("this.search:",data)
         this.fetchData(data);
       },
       randomSamplingStaff(){

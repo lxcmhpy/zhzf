@@ -11,8 +11,8 @@
           <div>
             <div class="item">
               <el-row>
-                <el-form-item label="试卷名称" prop="pageName" placeholder="试卷名称">
-                  <el-input v-model="maintainPageForm.pageName"></el-input>
+                <el-form-item label="试卷名称" prop="pageName" >
+                  <el-input v-model="maintainPageForm.pageName" placeholder="试卷名称"></el-input>
                 </el-form-item>
                 <el-form-item label="试卷类型" prop="pageType" style="margin-left:20px;">
                   <el-select

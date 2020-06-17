@@ -20,6 +20,7 @@ const getters = {
   openTab: state => state.openTab,
   approvalState:state => state.caseHandle.approvalState,
   showQZBtn:state => state.caseHandle.showQZBtn,
+  province: state => state.caseHandle.province,
 
   //监管
   offSiteManageId: state => state.supervise.offSiteManageId,

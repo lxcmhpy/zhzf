@@ -264,7 +264,7 @@ export default {
       _this.$router.replace({
         name: "viewApplayDetail",
         params: {
-          pageId: row.examNum,
+          pageId: row.examNum,  
           name: row.pageName,
           type: "view"
         }
