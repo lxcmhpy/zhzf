@@ -8,7 +8,7 @@
     width="61%">
     <div>
       <el-table
-        :data="tableDate"
+        :data="tableData"
         resizable
         stripe
         style="width:98%"
@@ -16,11 +16,11 @@
         element-loading-spinner="car-loading"
         element-loading-text="加载中..."
         :max-height="380">
-        <el-table-column prop="personName" label="记录类型" min-width="120px" align="center"></el-table-column>
-        <el-table-column prop="sexName" label="发生时间" min-width="160px" align="center"></el-table-column>
-        <el-table-column prop="idNo" label="记录时间" min-width="160px" align="center"></el-table-column>
-        <el-table-column prop="oname" label="记录内容" min-width="220px" align="center"></el-table-column>
-      </el-table>
+         <el-table-column prop="roomName" label="考场" align="center" min-width="100px"></el-table-column>
+        <el-table-column prop="rollingTypeName" label="记录类型" align="center" width="120px"></el-table-column>
+        <el-table-column prop="happenTime" label="发生时间" align="center" width="174px"></el-table-column>
+        <el-table-column prop="rollingTime" label="记录时间" align="center"></el-table-column>
+        <el-table-column prop="forceReason" label="记录内容" align="center" min-width="80px"></el-table-column> </el-table>
     </div>
     <div class="paginationBox">
       <el-pagination
@@ -42,21 +42,21 @@ export default {
   data(){
     return {
       addExamPersonForm:{
-        personName:"",
-        idNo:"",
-        oname:"",
-        oid:"",
-        branchName:"",
-        stationName:"",
-        ministerialNo:"",
+       examId:'',  
+        roomId:'',
         invigilatorId:'',
-        examId:"",
-        examperId:"",
+        personId:'',
+        rollingType:'',
+        rollingTime:'',
+        forceReason:'',
+        type:'',
+        happenTime:'',
+        examperId:'',
       },
       visible:false,
       dialogtitle:"",
       errorName:"",
-      tableDate:[],
+      tableData:[],
       tableLoading: false
     }
   },
@@ -68,20 +68,25 @@ export default {
       let _this = this 
       _this.visible=true;
       _this.dialogtitle="考场记录";
-      console.info("aaaaaa"+JSON.stringify(data))
       _this.addExamPersonForm.invigilatorId=data.invigilatorId,
       _this.addExamPersonForm.examId=data.examId,
       _this.addExamPersonForm.examperId=data.examperId,
       this.getPersonAllInfo();
     },
     getPersonAllInfo(){//查询试卷列表
+    let _this = this;
         let data = {
-          invigilatorId:this.addExamPersonForm.invigilatorId,
           examId: this.addExamPersonForm.examId,
           examperId:this.addExamPersonForm.examperId
       }
-      console.info(JSON.stringify(data))
-      this.getPageList("examRecordQueryInfo",data);
+     // this.getPageList("examRecordQueryForManange",data);
+        this.$store.dispatch("examRecordQueryForManange", data).then(res => {
+          if(res.code == '200'){
+            this.tableData = res.data;
+          };
+        }, err => {
+          this.$message({ type: 'error', message: err.msg || '' });
+        });
     },
     //更改每页显示的条数
     handleSizeChange(val) {

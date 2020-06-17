@@ -85,12 +85,12 @@
                       <el-col :span="16">
                         <!-- <el-form :model="field" ref="filedForm"> -->
                         <el-form-item label-width="0" prop="title" :rules="{ required: true, message: '请输入字段名称', trigger: 'blur' }">
-                          <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
-                          </el-input>
-                          <!-- 
-                          <el-select v-model="item.classs" filterable allow-create clearable placeholder="请填写字段名称" @change="changeGroup(item)" >
-                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.classs" :value="commonField.classs"></el-option>
-                          </el-select> -->
+                          <!-- <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
+                          </el-input> -->
+
+                          <el-select v-model="field.title" filterable allow-create clearable placeholder="请填写字段名称" @change="changeGroup(item)">
+                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField.field"></el-option>
+                          </el-select>
 
                         </el-form-item>
                         <!-- </el-form> -->
@@ -489,31 +489,14 @@ export default {
             });
           });
           console.log('common', this.commonGroupFieldList)
-
+          // 获取通用字段
+          this.commonFieldList =  this.commonGroupFieldList[3].fieldList
         },
         error => {
 
         })
     },
-    // 获取通用字段
-    findCommonField() {
-      findAllCommonFieldApi().then(
-        res => {
-          this.commonFieldList = res.data
-          this.commonFieldList.forEach(element => {
-            element.fieldList.forEach(item => {
-              if (item.options) {
-                item.options = JSON.parse(item.options)
-              }
-            });
-          });
-          console.log('common', this.commonFieldList)
 
-        },
-        error => {
-
-        })
-    },
     // 获取机构下的人员
     getPerson() {
       findLawOfficerListApi(iLocalStroage.gets("userInfo").organId).then(
@@ -809,13 +792,13 @@ export default {
       }
     },
     handleClose() {
-      debugger
+      // debugger
       this.resetForm('formData')
       this.newModleTable = false;
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.formData.title=''
+      this.formData.title = ''
       this.titileText = '';
       this.formData.templateFieldList = [
         {

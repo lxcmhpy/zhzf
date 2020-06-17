@@ -1084,11 +1084,18 @@
 }
 .text_indent2 {
     .el-textarea__inner {
-        text-indent: 2em;
+        text-indent: 4em;
   
     }
 }
-.text_indent20 {
+.text_indent25 {
+    .el-textarea__inner {
+        text-indent: 25em;
+  
+    }
+}
+
+.text_indent50 {
     .el-textarea__inner {
         text-indent: 50em;
   

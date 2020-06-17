@@ -139,7 +139,7 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="scenePeopeRelation" :rules="fieldRules('scenePeopeRelation',propertyFeatures['scenePeopeRelation'])">
                   <el-select v-model="docData.scenePeopeRelation" :maxLength="maxLength" placeholder="\" @change="changeRelationWithCase" :disabled="fieldDisabled(propertyFeatures['scenePeopeRelation'])">
-                    <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>
+                    <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </el-form-item>
               </td>
@@ -605,7 +605,7 @@ export default {
             name: this.docData.party,
             sex: this.docData.partySex,
             zhengjianNumber: this.docData.partyIdNo,
-            relationWithCase: "当事人",
+            relationWithCase: "0",
             company: this.docData.partyUnitPosition,
             position: this.docData.partyUnitPosition,
             tel: this.docData.partyTel,
@@ -640,7 +640,7 @@ export default {
       changeRelationWithCase(val) {
         console.log(val,this.originalDocData)
         let dailiData=this.originalDocData
-       if (val=='当事人') {
+       if (val=='0') {
           this.docData.scenePeopelName = dailiData.name;
           this.docData.scenePeopelSex = Number(dailiData.sex);
           this.docData.scenePeopelIdNo = dailiData.zhengjianNumber;
@@ -650,11 +650,11 @@ export default {
           this.docData.scenePeopeTel = dailiData.tel;
 
         } else {
-          //不为当事人时指标不清空
+          //不为当事人时指标清空
           this.docData.scenePeopelName = '';
           this.docData.scenePeopelSex = '';
           this.docData.scenePeopelIdNo =  '';
-          this.docData.scenePeopeRelation = '';
+          // this.docData.scenePeopeRelation = '';
           this.docData.scenePeopeUnitPosition =  '';
           this.docData.scenePeopeAddress =  '';
           this.docData.scenePeopeTel =  '';
@@ -670,7 +670,7 @@ export default {
         }
       },
       //现场人员信息赋值
-      setDataForScenePelple(flag, dailiData = {}) {
+      setDataForScenePelple(flag, dailiData = {}) {   
         if (flag) {
           this.docData.scenePeopelName = dailiData.name;
           this.docData.scenePeopelSex = Number(dailiData.sex);
@@ -684,7 +684,7 @@ export default {
           //1 有自动带入信息：当姓名的内容修改时，清空自动带入的其他指标内容；2 若无自动带入信息，则修改姓名时，其他指标不清空
           this.docData.scenePeopelSex = this.daiRuscenePeopelSex ? '' : this.docData.scenePeopelSex;
           this.docData.scenePeopelIdNo = this.daiRuscenePeopelIdNo ? '' : this.docData.scenePeopelIdNo;
-          this.docData.scenePeopeRelation = this.daiRuscenePeopeRelation ? '' : this.docData.scenePeopeRelation;
+          //this.docData.scenePeopeRelation = this.daiRuscenePeopeRelation ? '' : this.docData.scenePeopeRelation;
           this.docData.scenePeopeUnitPosition = this.daiRuscenePeopeUnitPosition ? '' : this.docData.scenePeopeUnitPosition;
           this.docData.scenePeopeAddress = this.daiRuscenePeopeAddress ? '' : this.docData.scenePeopeAddress;
           this.docData.scenePeopeTel = this.daiRuscenePeopeTel ? '' : this.docData.scenePeopeTel;

@@ -35,6 +35,9 @@
                     line-height:30px
                }
            }
+           .list {
+               height: 440px;
+           }
        }
        .leftBox {
            flex: 1;
@@ -51,6 +54,7 @@
             font-size: 16px;
             margin-left: 20px;
             margin-bottom: 20px;
+            height: 210px;
             li {
                 display: block;
                 line-height: 40px;
