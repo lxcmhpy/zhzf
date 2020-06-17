@@ -25,15 +25,15 @@
       <mapDiag id="mapDiagRef" ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
       <!-- 悬浮按钮 -->
       <div class="float-btns btn-height63">
-        <el-button type="success" @click="edit()" v-if="addOrEiditFlag=='view'">
+        <el-button type="success" @click="editRecord()" v-if="addOrEiditFlag=='view'">
           <i class="iconfont law-icon_zancun1"></i>
           <br />修改
         </el-button>
-        <el-button type="success" @click="onSave()" v-if="addOrEiditFlag=='add'||addOrEiditFlag=='temporary'">
+        <el-button type="success" @click="onSaveRecord()" v-if="addOrEiditFlag=='add'||addOrEiditFlag=='temporary'">
           <i class="iconfont law-icon_zancun1"></i>
           <br />暂存
         </el-button>
-        <el-button type="primary" @click="save()" v-if="addOrEiditFlag=='add'||addOrEiditFlag=='temporary'">
+        <el-button type="primary" @click="saveRecord()" v-if="addOrEiditFlag=='add'||addOrEiditFlag=='temporary'">
           <i class="iconfont law-icon_baocun1"></i>
           <br />保存
         </el-button>
@@ -48,7 +48,8 @@
 <script>
 import writeRecordHome from "./modleList.vue";
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag.vue";
-import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
+import chooseLawPerson from "./chooseModlePerson.vue";
+// import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
 
 import uploadTmp from './upload/uploadModleFile.vue'
 import formCreate, { maker } from '@form-create/element-ui'
@@ -98,9 +99,9 @@ export default {
       adressName: '',
       // 执法人员
       allUserList: [],
-      Lawid: '',
+      LawOfficerCard: '',
       LawName: '',
-      alreadyChooseLawPerson:[],
+      alreadyChooseLawPerson: [],
       lawPersonListId: "",
     }
   },
@@ -186,23 +187,19 @@ export default {
     },
     setLawPerson(userlist) {
       console.log('选择的执法人员', userlist);
-      // this.lawPersonList = userlist;
       this.alreadyChooseLawPerson = userlist;
-      this.lawPersonListId = [];
-      let staffIdArr = [];
+
       let staffArr = [];
       let certificateIdArr = [];
 
       this.alreadyChooseLawPerson.forEach(item => {
-        this.lawPersonListId.push(item.id);
-        //给表单数据赋值
-        staffIdArr.push(item.id);
-        staffArr.push(item.lawOfficerName);
-        certificateIdArr.push(item.selectLawOfficerCard);
+      //   //给表单数据赋值
+        staffArr.push(item.lawOfficerName);//执法人员
+        certificateIdArr.push(item.selectLawOfficerCard);//执法账号
       });
-      this.inforForm.staffId = staffIdArr.join(',');
-      this.inforForm.staff = staffArr.join(',');
-      this.inforForm.certificateId = certificateIdArr.join(',');
+
+      this.$data.$f.setValue(this.LawOfficerCard, certificateIdArr.join(','));
+      this.$data.$f.setValue(this.LawName, staffArr.join(','));
 
     },
     //用户的id去拿他名字
@@ -211,7 +208,7 @@ export default {
 
     },
     // 修改
-    edit() {
+    editRecord() {
       // console.log('rule', this.rule)
       this.$data.$f.resetFields()
       this.rule.forEach(element => {
@@ -222,7 +219,7 @@ export default {
       });
       this.addOrEiditFlag = 'add'
     },
-    save() {
+    saveRecord() {
       this.formData.status = '保存';
       // this.onSubmit()
       this.$data.$f.submit((formData, $f) => {
@@ -274,7 +271,7 @@ export default {
       })
 
     },
-    onSave() {
+    onSaveRecord() {
       // console.log('rule', this.rule)
       this.rule.forEach(element => {
         if (element.validate[0]) {
@@ -613,7 +610,7 @@ export default {
             if (item.field == 'staff') {
               this.LawName = item.id;// 执法人员字段名
             } else if (item.field == 'certificateId') {//执法人员账号字段名
-              this.Lawid = item.id;
+              this.LawOfficerCard = item.id;
             }
           }
         });
