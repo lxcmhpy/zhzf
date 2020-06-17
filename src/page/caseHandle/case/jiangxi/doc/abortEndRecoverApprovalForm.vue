@@ -347,7 +347,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId, //表单类型IDer
+        caseLinktypeId: "", //表单类型IDer
         //表单数据
         formData: "",
         status: ""
