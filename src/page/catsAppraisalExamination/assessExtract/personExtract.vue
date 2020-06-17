@@ -53,6 +53,7 @@
   import { mixinsCommon } from "@/common/js/mixinsCommon";
   import {findPykhStaffByPage,randomSamplingStaffByPage,findListVoByBatch,findAllDepartment,submitProStaff} from "@/api/catsAppraisalExamPersonUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
+  import qs from 'qs';
 
   export default {
     data() {
@@ -83,6 +84,9 @@
               var maritimeNo=res.data.records[i].maritimeNo==null?'':res.data.records[i].maritimeNo+",";
               var provinceNo=res.data.records[i].provinceNo==null?'':res.data.records[i].provinceNo+",";
               var ministerialNo=res.data.records[i].ministerialNo==null?'':res.data.records[i].ministerialNo+",";
+              if(res.data.records[i].staffStatus!=0){
+                this.value.push(i)
+              }
               personlist.push({
                 key: i,
                 label: res.data.records[i].staffName,
@@ -99,31 +103,19 @@
       },
       handleChange(value, direction, movedKeys) {
         console.log(value, direction, movedKeys);
-        var ids=[];
+        var ids= [];
         var personList=this.personList;
         console.info("personlist:",personList)
-        // for (var i =0 ;i<personList.length;i++){
-        //   for(var j=0;j<value.length;j++){
-        //     console.info("抽取号：",value[j])
-        //     if(i!=value[j]){
-        //       ids.push(personList[i].staffId);
-        //     }
-        //   }
-        // }
         for(var j=0;j<value.length;j++){
-          // for (var i =0 ;i<personList.length;i++){
-          //   if(i==value[j]){
-          //           ids.push(personList[i].staffId);
-          //   }
-          //   break;
-          // }
+          // ids+="idList="+personList[value[j]].staffId+"&"
           ids.push(personList[value[j]].staffId)
         }
-        console.info("ids:",ids)
+        // console.info("ids:",qs.stringify(ids, { arrayFormat: 'brackets' }))
         var submitProStaffData={};
-        submitProStaffData.idList=ids;
+        submitProStaffData.idList= ids ;
         submitProStaffData.batchId=this.search.batchId;
-        submitProStaff(submitProStaffData,this.search.OId).then(res=>{
+        var param=qs.stringify(submitProStaffData, { indices: false });
+        submitProStaff(param).then(res=>{
           console.info("抽取结果",res);
         });
       },
