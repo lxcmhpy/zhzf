@@ -323,8 +323,10 @@ export default {
                 message: "添加成功!"
               });
               _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
-              _this.$router.push({ name: "catsAppraisalStartUp", params: {} });
-            },
+              _this.$router.push({
+                      name: this.$route.params.url
+                  });
+              },
             err => {
               console.log(err);
             }

@@ -45,6 +45,18 @@ export function invigilatorSubmitInfo(data){
   })
 }
 
+// 监考老师修改个人信息
+export function editInvigilatorInfo(data){
+  return request({
+    url: `invigilator/updateInvigilator`,
+    method: 'get',
+    params: data,
+    baseUrlType: 'EXAM',
+    showloading: false,
+    cancelToken:  setCancelSource()
+  })
+}
+
 // 获取考试人员信息
 export function getJoinExamPerson(loginName){
   return request({
@@ -141,7 +153,7 @@ export function examRecordQueryApi(data){
     url: "examRolling/examRecordQuery",
     method: "get",
     baseUrlType: 'EXAM',
-    params:data,
+    params: data,
     showloading: false,
     cancelToken: setCancelSource()
   })
@@ -241,6 +253,7 @@ export function getWaitScoringExam(scorerId){
   return request({
     url: 'scorer/getWaitScoringExam',
     method: "get",
+    baseUrlType: 'EXAM',
     params: { scorerId },
     showloading: false,
     cancelToken: setCancelSource()
@@ -251,6 +264,7 @@ export function getPersonScoreList(data){
   return request({
     url: 'scorer/getPersonScoreList',
     method: "get",
+    baseUrlType: 'EXAM',
     params: data,
     showloading: false,
     cancelToken: setCancelSource()
@@ -261,6 +275,7 @@ export function getWaitScoreQuestion(data){
   return request({
     url: 'scorer/getWaitScoreQuestion',
     method: "get",
+    baseUrlType: 'EXAM',
     params: data,
     showloading: false,
     cancelToken: setCancelSource()
@@ -271,6 +286,7 @@ export function saveScoreResult(data){
   return request({
     url: 'scorer/saveScoreResult',
     method: "get",
+    baseUrlType: 'EXAM',
     params: data,
     showloading: false,
     cancelToken: setCancelSource()

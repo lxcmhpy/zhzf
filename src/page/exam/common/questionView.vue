@@ -38,6 +38,15 @@
               </div>
               <div v-if="questionTypeTxt === 'essays'" style="width: 100%;">
                 <el-input
+                  v-if="question.personAnswer"
+                  type="textarea"
+                  :rows="8"
+                  cols="100%"
+                  v-model="question.personAnswer"
+                  disabled
+                ></el-input>
+                <el-input
+                  v-else
                   type="textarea"
                   :rows="8"
                   cols="100%"
@@ -159,7 +168,11 @@ export default {
             }
           });
         }
-        return answer.join(", ");
+        if(item.answer){
+          return item.answer
+        }else{
+          return answer.join(", ");
+        }
       } else {
         return item.answer;
       }

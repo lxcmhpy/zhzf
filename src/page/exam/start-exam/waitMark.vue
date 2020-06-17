@@ -16,7 +16,7 @@
                 <el-input v-model="personName"></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button title="搜索" class="searchBtn" size="medium" icon="iconfont law-sousuo" @click="getPersonScoreList"></el-button>
+                <el-button title="搜索" class="searchBtn" size="medium" icon="iconfont law-sousuo" @click="currentPage = 1;getPersonScoreList();"></el-button>
               </el-form-item>
             </el-form>
           </div>

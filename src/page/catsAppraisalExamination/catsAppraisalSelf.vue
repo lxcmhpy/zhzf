@@ -19,24 +19,90 @@
         </div>
       </div>
       <div class="tablePart">
-                  <el-table
-        :data="form.pykhScoreDetailsVos"
+                 <!--  -->
+        <!-- :span-method="tree" -->
+         <!-- default-expand-all -->
+        <el-table
+        :data="tree"
         border
-        :span-method="objectSpanMethod"
         style="width: 100%;">
-            <el-table-column
-            width="100px"
-                prop="indexOne"
-                label="一级指标">
+            <el-table-column type="expand">
+                <template slot-scope="scope1">
+                    <div style="margin-left: 30px">
+                        <!-- {{scope1.children}} -->
+                        <el-table
+                            :data="scope1.row.children"
+                            border
+                            style="width: 100%;margin-left: 30px">
+                             <el-table-column type="expand">
+                                <template slot-scope="scope">
+                                    <div style="margin-left: 30px">
+                                        <el-table
+                                            :data="scope.row.children"
+                                            border
+                                            style="width: 100%;margin-left: 30px">
+                                            <el-table-column
+                                                prop="nrxm"
+                                                label="评查内容">
+                                            </el-table-column>
+                                            <el-table-column
+                                                prop="score"
+                                                label="单项分值">
+                                            </el-table-column>
+                                            <el-table-column
+                                                v-if="form.pfStatus==='0'"
+                                                prop="twoSore"
+                                                label="得分">
+                                                <template slot-scope="scope" >
+                                                    <el-input v-model="scope.row.twoSore" @blur="saveRecord(scope.row,'twoSore')" @focus="getOldValue(scope.row.twoSore)" ></el-input>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                v-else
+                                                prop="twoSore"
+                                                label="得分">
+                                            </el-table-column>
+                                            <el-table-column
+                                                v-if="form.pfStatus==='0'"
+                                                prop="season"
+                                                label="扣分原因">
+                                                <template slot-scope="scope">
+                                                    <el-input v-model="scope.row.season" @blur="saveRecord(scope.row,'season')"  @focus="getOldValue(scope.row.season)"></el-input>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                v-else
+                                                prop="season"
+                                                label="扣分原因">
+                                            </el-table-column>
+
+                                        </el-table>
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="indexTwo"
+                                >
+                            </el-table-column>
+                        </el-table>
+                     </div>
+                </template>
             </el-table-column>
-             <el-table-column type="expand" >
+            <el-table-column
+                prop="indexOne"
+                >
+            </el-table-column>
+             <!-- <el-table-column lable="二级1">
                   <template slot-scope="scope1">
                       <div>
-                        {{scope1.row.indexTwo}}
+                        <el-table-column
+                            prop="indexTwo"
+                            label="二级指标">
+                        </el-table-column>
 
                     </div>
                   </template>
-             </el-table-column>
+             </el-table-column> -->
             <!-- <el-table-column
                 prop="indexTwo"
                 label="二级指标">
@@ -131,12 +197,14 @@
 <script>
   import {getPykhOrgInfo,updateScore,updateScoreState} from "@/api/appraisalExam.js";
   import { mixinsCommon } from "@/common/js/mixinsCommon";
+  import _ from "lodash";
 export default {
     mixins: [mixinsCommon],
     data () {
         return {
             form:{},
-            oldValue:""
+            oldValue:"",
+            tree: []
         }
     },
     methods: {
@@ -203,10 +271,70 @@ export default {
       getOldValue(val){
           this.oldValue=val
       },
+      load() {
+
+      },
       fetchData(){
+          let _this = this;
+          debugger;
         getPykhOrgInfo({assessType:"自查自评"}).then(
             res => {
-                this.form = res.data
+                _this.form = res.data;
+                // let tree = [];
+                let firstIdList = filterId(firstIdList,_this.form.pykhScoreDetailsVos, 'indexOneId');
+
+                // this.form.pykhScoreDetailsVos.forEach((v,i)=>{
+                //     firstIdList.push(v.indexOneId);
+                // })
+                // firstIdList = new Set(firstIdList);
+
+                firstIdList.forEach((v,i)=>{
+                    let obj = {
+                        children: []
+                    }
+                    let index = _.findIndex(_this.form.pykhScoreDetailsVos,(chr)=>{
+                        return chr.indexOneId = v;
+                    })
+                    if (index > -1) {
+                        obj.indexOne = _this.form.pykhScoreDetailsVos[index].indexOne;
+                        obj.indexOneId = _this.form.pykhScoreDetailsVos[index].indexOneId;
+                        // obj.nrxm = _this.form.pykhScoreDetailsVos[index].nrxm;
+                    }
+
+                    let secondList = _.takeWhile(_this.form.pykhScoreDetailsVos, function(o) { return o.indexOneId === v; });
+
+                    let secondIdList = filterId(secondIdList,_this.form.pykhScoreDetailsVos, 'indexTwoId');
+
+
+
+                    secondIdList.forEach((v2,i)=>{
+                        let obj2 = {
+
+                        }
+                        let index2 = _.findIndex(_this.form.pykhScoreDetailsVos,(chr)=>{
+                            return chr.indexTwoId === v2 && chr.indexOneId === v;
+                        })
+                        if (index2 > -1) {
+                            obj2.indexTwo = _this.form.pykhScoreDetailsVos[index2].indexTwo;
+                            obj2.indexTwoId = _this.form.pykhScoreDetailsVos[index2].indexTwoId;
+                        }
+
+                        let thirdList = _.takeWhile(_this.form.pykhScoreDetailsVos, function(o) { return o.indexOneId === v&&o.indexTwoId === v2; });
+                        obj2.children = thirdList;
+                        // let thirdIdList = [];
+                        // filterId(thirdIdList,_this.form.pykhScoreDetailsVos, 'indexThirdId');
+                        obj.children.push(obj2);
+                    })
+                    _this.tree.push(obj);
+                })
+
+                function filterId (newList,oldList ,filedName) {
+                    newList = [];
+                    oldList.forEach((v,i)=>{
+                        newList.push(v[filedName]);
+                    })
+                    return new Set(newList);
+                }
             },
             err => {
                 console.log(err);

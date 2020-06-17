@@ -74,8 +74,6 @@
 <script>
 // 滑动验证
 import VueSimpleVerify from 'vue-simple-verify';
-import { mapGetters } from "vuex";
-import iLocalStroage from "@/common/js/localStroage";
 import * as types from "@/store/mutation-types";
 import { getDictListDetailByNameApi } from "@/api/system";
 
@@ -104,10 +102,10 @@ export default {
       success: false,
       weChatFlag: false,
       resetFlag: false,
-      timeOutFlag: ""
+      timeOutFlag: "",
+      systemTitle: sessionStorage.getItem('DocumentTitle')
     };
   },
-  computed: {...mapGetters(['systemTitle'])},
   methods: {
     // 切换登录方式
     changeType(type) {
@@ -198,9 +196,14 @@ export default {
     },
     //获取系统标题
     getSystemData() {
+      if(this.systemTitle){
+        window.document.title = this.systemTitle;
+        return false;
+      }
       getDictListDetailByNameApi('系统标题').then(res => {
-        this.$store.commit('set_systemTitle',res.data[0].name);
-        window.document.title = res.data[0].name
+        sessionStorage.setItem('DocumentTitle', res.data[0].name);
+        window.document.title = res.data[0].name;
+        this.systemTitle = res.data[0].name;
       }, err => {
         console.log(err);
       })
@@ -208,11 +211,11 @@ export default {
   },
   created () {
     window.sessionStorage.clear();
-    this.getSystemData();
   },
   mounted() {
     this.showLogin = true;
     sessionStorage.setItem('LoginSystem', 'examLogin');
+    this.getSystemData();
   }
 };
 </script>
