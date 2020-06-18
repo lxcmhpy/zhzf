@@ -186,14 +186,18 @@ export default {
       _this.examNode.roomId = row.roomId;
       if (type == 1) {
         //新增
+         _this.examNode.operationType = "";
+        _this.examNode.happenTime = "";
+        _this.examNode.operationDescription = "";
+        _this.examNode.operationId = "";
         _this.dialogTitle = "添加考场记录";
         _this.isDisabled = false;
       } else if (type == 2) {
         //修改,查看
-        _this.examNode.operationType = date.rollingType;
+        _this.examNode.operationType = date.operationType;
         _this.examNode.happenTime = date.happenTime;
-        _this.examNode.operationDescription = date.forceReason;
-        _this.examNode.operationId = date.rollingId;
+        _this.examNode.operationDescription = date.operationDescription;
+        _this.examNode.operationId = date.operationId;
         _this.dialogTitle = "修改考场记录";
         _this.isDisabled = false;
       }
