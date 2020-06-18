@@ -76,7 +76,7 @@ export default {
           storageId: row.storageId
         };
         // this.$router.push({ name: "case_handle_viewPDF", params: routerData });
-        _that.$refs.viewNoticeRef.showPDF(row.storageId);
+        this.$refs.viewNoticeRef.showPDF(row.storageId);
       }else{
         let _that = this
         getContentApi(row.id).then(

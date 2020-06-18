@@ -24,7 +24,7 @@
         height="1000px"
         append-to-body
         >
-        <object>
+        <object v-if="storagePath">
             <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1000px" name="plugin" id="plugin" :src="storagePath" type="application/pdf" internalinstanceid="29">
         </object>
   </el-dialog>
@@ -40,7 +40,7 @@ import iLocalStroage from "@/common/js/localStroage";
         content : ``,
         visible : false,
         visible1: false,
-        storagePath: ''
+        storagePath: null
     }
   },
   methods: {
