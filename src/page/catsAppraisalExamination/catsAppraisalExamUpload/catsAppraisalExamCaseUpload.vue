@@ -85,7 +85,7 @@
                   action="https://jsonplaceholder.typicode.com/posts/"
                   multiple
                   :limit="1">
-                  <el-button size="small" type="primary">点击上传</el-button>
+                  <el-button size="small" type="primary">上传附件</el-button>
                 </el-upload>
                 <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.caseStatus==1 && scope.row.fjStatus==1">查看附件</el-button>
               </template>
@@ -222,7 +222,7 @@
         let routerData = {
           storageId: row.storageId
         };
-        _that.$refs.viewNoticeRef.showPDF(row.storageId);
+        this.$refs.viewNoticeRef.showPDF(row.storageId);
       },
       fetchData(data){
         data.current=this.current
