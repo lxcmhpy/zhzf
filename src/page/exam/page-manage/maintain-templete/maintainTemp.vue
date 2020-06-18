@@ -1,8 +1,8 @@
 <template>
   <div class="com_searchAndpageBoxPadding temp">
-    <div class="searchPage toggleBox">
+    <div class="searchPage">
       <div class="handlePart">
-        <el-form :inline="true" :model="templeteForm" label-width="120px;" ref="templeteFormRef">
+        <el-form :inline="true" :model="templeteForm" label-width="80px" ref="templeteFormRef">
           <div>
             <div class="item">
               <el-row>

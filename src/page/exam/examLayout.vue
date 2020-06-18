@@ -3,7 +3,7 @@
     <el-container id="fullscreenCon">
       <el-header id="mainHeader">
         <div class="main_logo"><img :src="'./static/images/img/main/logo.png'" alt="">
-          <span>{{ systemTitle }}(人员考试子系统)</span>
+          <span>{{ systemTitle }}--人员考试系统</span>
         </div>
         <div v-if="showLogout" class="headerRight">
           <div>

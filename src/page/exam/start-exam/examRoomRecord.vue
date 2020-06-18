@@ -110,7 +110,15 @@ export default {
       this.$refs.addNote.showModal(this.paramDate, data, type);
     },
     deleteNote(row) {
-      this.$store.dispatch("deleteExamRecordInfo", row.rollingId).then(
+      let _this = this;
+      _this .$confirm("确认删除吗？", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            iconClass: "el-icon-question",
+            customClass: "custom-confirm"
+          })
+          .then(() => {
+               this.$store.dispatch("deleteExamRecordInfo", row.operationId).then(
         res => {
           if (res.code == "200") {
             this.getNoteMsg();
@@ -120,6 +128,9 @@ export default {
           this.$message({ type: "error", message: err.msg || "" });
         }
       );
+          })
+          .catch(() => {});
+ 
     },
     // 考场信息
     getNoteMsg() {

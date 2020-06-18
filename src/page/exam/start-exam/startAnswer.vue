@@ -5,20 +5,6 @@
         <div v-if="questionData && questionData.firstQuestion" class="exam-info question">
           <div class="header">
             <span>{{ questionData.firstQuestion.questionTypeName }}</span>
-            <el-button
-              v-if="!marked"
-              type="text"
-              icon="icon-sign"
-              class="sign-question"
-              @click="markedQuestion(true)"
-            >标记该题</el-button>
-            <el-button
-              v-if="marked"
-              type="text"
-              icon="icon-marked"
-              class="sign-question marked"
-              @click="markedQuestion(false)"
-            >已标记</el-button>
           </div>
           <div class="question-box">
             <questionItem
@@ -28,6 +14,14 @@
             />
           </div>
           <div class="select-btn">
+            <div v-if="!currentGraph.labelStatue" class="sign-btn sign" @click="markedQuestion(true)">
+              <i class="icon-sign"></i>
+              <span style="margin-left:45px;">标记该题</span>
+            </div>
+            <div v-if="currentGraph.labelStatue" class="sign-btn marked" @click="markedQuestion(false)">
+              <i class="icon-marked"></i>
+              <span style="margin-left:50px;">已标记</span>
+            </div>
             <el-button
               class="question-btn"
               :disabled="currentGraph.orderNo === 1"
@@ -98,8 +92,8 @@
                     class="item"
                     :key="num.resultId"
                     :class="{
-                      'sign': num.labelStatue === '1',
-                      'finish': num.answer && num.labelStatue !== '1',
+                      'sign': num.labelStatue,
+                      'finish': num.answer && !num.labelStatue,
                       'current': num.resultId == questionData.firstQuestion.resultId}"
                     @click="currentGraph = num ;nextQuestion('', num.orderNo)"
                   >{{ num.orderNum }}</a>
@@ -288,8 +282,7 @@ export default {
 
     // 标记该题
     markedQuestion(mark) {
-      this.marked = mark;
-      this.currentGraph.labelStatue = mark ? "1" : "0";
+      this.currentGraph.labelStatue = mark;
     },
     // 下一题
     nextQuestion(dir, orderNo) {
@@ -427,7 +420,7 @@ export default {
       this.$store.dispatch("getexamResultSubmit", submitData).then(
         res => {
           loading.close();
-          this.quitExam('提交成功，预祝您考试顺利！');
+          this.quitExam("提交成功，预祝您考试顺利！");
         },
         err => {
           loading.close();
@@ -488,22 +481,6 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.icon-sign,
-.icon-marked {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  margin-right: 6px;
-  background: url("../../../../static/images/img/exam/sign.png");
-  background-size: 100%;
-  vertical-align: bottom;
-}
-.icon-marked {
-  background: url("../../../../static/images/img/exam/marked.png");
-  background-size: 100%;
-}
-</style>
 <style lang="scss" scoped>
 .entry-exam {
   position: absolute;
@@ -707,6 +684,48 @@ export default {
               color: rgba(123, 123, 123, 1);
               background: rgba(201, 201, 201, 0.25);
               border: 1px solid rgba(201, 201, 201, 0.25);
+            }
+          }
+          .sign-btn {
+            display: inline-block;
+            padding-left: 0;
+            padding-right: 0;
+            width: 130px;
+            height: 40px;
+            line-height: 40px;
+            margin-right: 30px;
+            font-size: 16px;
+            font-weight: 500;
+            position: relative;
+            text-align: inherit;
+            border: 1px solid #ddd;
+            color: #7b7b7b;
+            cursor: pointer;
+            .icon-sign,
+            .icon-marked {
+              display: inline-block;
+              width: 18px;
+              height: 18px;
+              background: url("../../../../static/images/img/exam/sign.png");
+              background-size: 100%;
+              position: absolute;
+              left: 20px;
+              top: 11px;
+            }
+            .icon-marked {
+              background: url("../../../../static/images/img/exam/marked.png");
+              background-size: 100%;
+              color: #e61111;
+            }
+            &.sign:hover{
+              background: rgba(221,221,221, 0.2);
+            }
+            &.marked{
+              color: #e61111;
+              border: 1px solid #e61111;
+              &:hover{
+                background: rgba(230,17,17, 0.1);
+              }
             }
           }
         }
