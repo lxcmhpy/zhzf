@@ -2,7 +2,7 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox toggleBox">
       <div class="handlePart" style="margin-left: 0px;">
-
+        <viewNotice ref="viewNoticeRef"></viewNotice>
         <div class="search">
           <el-form :inline="true" >
             <!-- <el-form-item label="考核名称">
@@ -75,8 +75,19 @@
 
             <el-table-column label="操作" align="center" width="120">
               <template  slot-scope="scope">
-                <el-button type="text" @click.stop @click="update(scope.row)">修改</el-button>
-                <el-button type="text" @click.stop @click="delete(scope.row)">删除</el-button>
+                <el-button type="text" @click.stop @click="update(scope.row)" v-show="scope.row.caseStatus==0">修改</el-button>
+                <el-button type="text" @click.stop @click="delete(scope.row)" v-show="scope.row.caseStatus==0">删除</el-button>
+                <el-upload
+                  class="upload-demo"
+                  accept=".pdf"
+                  v-show="scope.row.caseStatus==1"
+                  :http-request="saveFile"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  multiple
+                  :limit="1">
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+                <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.caseStatus==1 && scope.row.fjStatus==1">查看附件</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -159,13 +170,16 @@
 
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo } from "@/api/catsAppraisalExamCaseUpload.js";
+  import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo,deleteCaseInfo } from "@/api/catsAppraisalExamCaseUpload.js";
   import {findListVoByBatch,findAllDepartment} from "@/api/catsAppraisalExamPersonUpload.js";
-
+  import viewNotice from "../noticeManage/viewNotice"; 
   import iLocalStroage from '@/common/js/localStroage';
 
   export default {
     mixins: [mixinsCommon],
+    components: {
+      viewNotice
+    },
     data() {
       return {
         current:1,
@@ -201,7 +215,18 @@
       }
     },
     methods:{
+      saveFile(param) {
+        console.log(param);
+      },
+      view(row){
+        let routerData = {
+          storageId: row.storageId
+        };
+        _that.$refs.viewNoticeRef.showPDF(row.storageId);
+      },
       fetchData(data){
+        data.current=this.current
+        data.size=this.size
         findPykhCaseByPage(data).then(res=>{
           if(res.code==200){
             this.dataList=res.data.records;
@@ -210,6 +235,17 @@
           }
         });
       },
+      //更改每页显示的条数
+    handleSizeChange(val) {
+      this.size = val;
+      this.current = 1;
+      this.fetchData();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      this.current = val;
+      this.fetchData();
+    },
       searchData(){
         let data=this.search;
         console.info("searchData:",data)
@@ -240,7 +276,32 @@
         })
       },
       delete(data){
-
+        this.$confirm("确定删除吗？", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }).then(() => {
+              deleteCaseInfo(data.caseId).then(
+                res => {
+                  if(res.data===true){
+                    this.$message({
+                      type: "success",
+                      message: "删除成功!"
+                    });
+                    this.reload();
+                  }else{
+                    this.$message({
+                      type: "warning",
+                      message: "删除失败!"
+                    });
+                  }
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+            })
+            .catch(() => {});
       },
       uploadCase(param){
         console.log(param);
