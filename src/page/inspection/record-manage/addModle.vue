@@ -85,7 +85,7 @@
                       <!-- {{field}} -->
                       <el-col :span="16">
                         <!-- <el-form :model="field" ref="filedForm"> -->
-                        <el-form-item label-width="0" :prop="'fieldList[' + index1 +  '].title'" :rules="{ required: true, message: '请输入字段名称', trigger: 'blur' }">
+                        <el-form-item label-width="0" :prop="'fieldList[' + index1 +  '].title'" :rules="{ required: true, message: '请输入字段名称', trigger: 'change' }">
                           <!-- <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
                           </el-input> -->
 
