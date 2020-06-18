@@ -89,8 +89,8 @@
             <el-table-column prop="scorerPhone" label="联系电话" align="center"></el-table-column>
             <el-table-column label="操作" align="center" fixed="right">
               <template slot-scope="scope">
-                <el-button type="text" @click="deleteScore(scope.row)">删除</el-button>
                 <el-button type="text" @click="addExamBatchInfo(scope.row,'1')">修改</el-button>
+                <el-button type="text" @click="deleteScore(scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>

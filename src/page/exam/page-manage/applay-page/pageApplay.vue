@@ -1,11 +1,11 @@
 <template>
   <div class="com_searchAndpageBoxPadding page-apply">
-    <div class="searchPage toggleBox">
+    <div class="searchPage">
       <div class="handlePart">
         <el-form
           :inline="true"
           :model="maintainPageForm"
-          label-width="120px;"
+          label-width="80px"
           ref="maintainPageFormRef"
         >
           <div>
