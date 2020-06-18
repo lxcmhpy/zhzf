@@ -217,7 +217,7 @@
 
     .is-indeterminate {
         .el-checkbox__inner {
-            color       : #4573D0;
+            color       : #4573D0; 
             border-color: #4573D0;
         }
     }
@@ -228,11 +228,12 @@
 }
 
 .card-add-ziduan {
+    margin-left: 9%;
     color      : #4573D0;
     height     : 20px;
     font-size  : 14px;
     font-weight: 500;
-    display    : inline-block;
+    display    : inline-block; 
     cursor     : pointer;
 
     .el-icon-arrow-right {
