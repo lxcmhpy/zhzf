@@ -175,8 +175,7 @@
 
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo,deleteCaseInfo } from "@/api/catsAppraisalExamCaseUpload.js";
-  import {findListVoByBatch,findAllDepartment} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo,deleteCaseInfo,StaffAndCaseFile } from "@/api/catsAppraisalExamCaseUpload.js";
   import viewNotice from "../noticeManage/viewNotice";
   import iLocalStroage from '@/common/js/localStroage';
 
@@ -222,8 +221,21 @@
     },
     methods:{
       saveFile(param, row) {
-          debugger;
-        console.log(param);
+        var fd = new FormData();
+        fd.append("file", param.file);
+        fd.append("userId", iLocalStroage.gets("userInfo").id);
+        fd.append("category", "案件报送");
+        fd.append("caseId", row.caseId);
+        fd.append("storageId", row.storageId===null?'':row.storageId);
+        let _this = this
+        StaffAndCaseFile(fd).then(res => {
+          if (res.code == 200){
+            row.storageId = res.data
+            row.fjStatus = '1'
+          }else{
+            _this.$message.error('出现异常，添加失败！');
+          }
+        });   
       },
       view(row){
           debugger;

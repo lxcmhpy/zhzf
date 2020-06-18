@@ -63,8 +63,9 @@
                 <el-upload
                   class="upload-demo"
                   accept=".jpg, .png"
+                  :show-file-list="false"
                   v-show="scope.row.staffStatus==1"
-                  :http-request="saveFile"
+                  :http-request="(params)=>saveFile(params,scope.row)"
                   action="https://jsonplaceholder.typicode.com/posts/"
                   multiple
                   :limit="1">
@@ -137,6 +138,7 @@
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
   import {findPykhStaffByPage,importPerson,addOrUpdatePykhStaff,findAllDepartment,findListVoByBatch,deletePykhStaff} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {StaffAndCaseFile } from "@/api/catsAppraisalExamCaseUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
   import viewNotice from "../noticeManage/viewNotice"; 
 
@@ -177,8 +179,22 @@
     },
 
     methods: {
-      saveFile(param) {
-        console.log(param);
+      saveFile(param, row) {
+        var fd = new FormData();
+        fd.append("file", param.file);
+        fd.append("userId", iLocalStroage.gets("userInfo").id);
+        fd.append("category", "人员报送");
+        fd.append("docId", row.staffId);
+        fd.append("storageId", row.storageId===null?'':row.storageId);
+        let _this = this
+        StaffAndCaseFile(fd).then(res => {
+          if (res.code == 200){
+            row.storageId = res.data
+            row.fjStatus = '1'
+          }else{
+            _this.$message.error('出现异常，添加失败！');
+          }
+        });   
       },
       view(row){
         this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +row.storageId;

@@ -240,7 +240,7 @@ export default {
             }
       },
       commitData(){
-        var re = /^[1-9]([0-9])*$/;
+        var re = /^[0-9]([0-9])*$/;
         let validata = this.pykhScoreDetailsVos.find(value=>value.twoSore===null || !re.test(value.twoSore))
         if(validata){
             this.$message({type: "warning",message: "全部评分之后才能提交"});
