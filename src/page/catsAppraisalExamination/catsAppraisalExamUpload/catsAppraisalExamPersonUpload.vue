@@ -93,30 +93,30 @@
         </div>
 
         <el-dialog :visible.sync="visible" title="人员报送" width="480px" >
-          <el-form :label-position="labelPosition" :model="form" ref="form" label-width="160px">
+          <el-form :label-position="labelPosition" :model="form" :rules="rules" ref="formRY" label-width="160px">
             <!-- <el-form-item label="选择检查名称">
               <el-select v-model="form.batchId" placeholder="请选择" >
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
             </el-form-item> -->
-            <el-form-item label="姓名" prop="operator" >
+            <el-form-item label="姓名" prop="staffName">
               <el-input placeholder="请输入姓名" v-model.trim="form.staffName" ></el-input>
             </el-form-item>
 <!--            <el-form-item label="执法证号" prop="operator" >-->
 <!--              <el-input placeholder="请输入执法证号" v-model.trim="form.enforcementCertificate" ></el-input>-->
 <!--            </el-form-item>-->
-            <el-form-item label="身份证号" prop="operator" >
+            <el-form-item label="身份证号" prop="idCard" >
               <el-input placeholder="请输入身份证号" v-model.trim="form.idCard" ></el-input>
             </el-form-item>
 
-            <el-form-item label="现持海事执法证号" prop="operator" >
+            <el-form-item label="现持海事执法证号" prop="maritimeNo" >
               <el-input placeholder="请输入现持海事执法证号" v-model.trim="form.maritimeNo" ></el-input>
             </el-form-item>
 
-            <el-form-item label="现持部级执法证号" prop="operator" >
+            <el-form-item label="现持部级执法证号" prop="ministerialNo" >
               <el-input placeholder="请输入现持部级执法证号" v-model.trim="form.ministerialNo" ></el-input>
             </el-form-item>
-            <el-form-item label="现持省内执法证号" prop="operator" >
+            <el-form-item label="现持省内执法证号" >
               <el-input placeholder="请输入现持省内执法证号" v-model.trim="form.provinceNo" ></el-input>
             </el-form-item>
           </el-form>
@@ -140,7 +140,8 @@
   import {findPykhStaffByPage,importPerson,addOrUpdatePykhStaff,findAllDepartment,findListVoByBatch,deletePykhStaff} from "@/api/catsAppraisalExamPersonUpload.js";
   import {StaffAndCaseFile } from "@/api/catsAppraisalExamCaseUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
-  import viewNotice from "../noticeManage/viewNotice"; 
+  import viewNotice from "../noticeManage/viewNotice";
+  import {validateIDNumber,isInteger_8_10,isInteger_10} from '@/common/js/validator';
 
   export default {
     mixins: [mixinsCommon],
@@ -175,6 +176,17 @@
         uploadHeaders: {
           'Authorization': ''
         },
+        rules: {
+            staffName: [
+                {required: true, message: "请输入姓名", trigger: "blur"}
+            ],
+            idCard: [
+                { required: true, message: "身份证号不能为空", trigger: "blur" },
+                { validator: validateIDNumber, trigger: "blur" }
+            ],
+            ministerialNo:[{ validator: isInteger_8_10, trigger: "blur" }],
+            maritimeNo: [{ validator: isInteger_10, trigger: "blur" }],
+        }
       }
     },
 
@@ -279,12 +291,21 @@
         this.visible=true;
       },
       addOrUpdatePykhStaff(){
-        addOrUpdatePykhStaff(this.form).then(res=>{
-          console.info("保存报送人员结果：",res)
-          if(res.code==200){
-            this.visible=false;
-            this.fetchData({});
-          }
+          let _this =this;
+          this.$refs['formRY'].validate((valid) => {
+              if (valid) {
+                    addOrUpdatePykhStaff(this.form).then(res=>{
+                        console.info("保存报送人员结果：",res)
+                        if(res.code==200){
+                            this.visible=false;
+                            this.fetchData({});
+                        }
+                    })
+               } else {
+                    _this.errorMsg("您有必填字段未填写！", 'error')
+                    _this.closeLoading();
+                    return false;
+                }
         })
       },
       deleteStaff(data){

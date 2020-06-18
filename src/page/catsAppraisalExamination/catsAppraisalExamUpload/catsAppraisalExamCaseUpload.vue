@@ -111,13 +111,13 @@
         </div>
 
         <el-dialog :visible.sync="visible" title="案件报送" width="480px" >
-          <el-form :label-position="labelPosition" :model="form" ref="form" label-width="160px">
+          <el-form :label-position="labelPosition" :model="form" ref="form" :rules="rules" label-width="160px">
             <!-- <el-form-item label="考核名称">
               <el-select v-model="form.batchId" placeholder="请选择" >
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
             </el-form-item> -->
-            <el-form-item label="案卷编号">
+            <el-form-item label="案卷编号" prop="caseNo">
               <el-input placeholder="请输入" v-model.trim="form.caseNo" ></el-input>
             </el-form-item>
             <el-form-item label="案由">
@@ -186,6 +186,11 @@
     },
     data() {
       return {
+        rules: {
+            caseNo: [
+                {required: true, message: "请输入案件编号", trigger: "blur"}
+            ]
+        },
         current:1,
         size:20,
         total:0,
@@ -235,7 +240,7 @@
           }else{
             _this.$message.error('出现异常，添加失败！');
           }
-        });   
+        });
       },
       view(row){
           debugger;
@@ -286,15 +291,24 @@
         this.visible=true;
       },
       addOrUpdate(){
-        saveOrUpdateCaseInfo(this.form).then(res=>{
-          console.info("保存案件结果：",res)
-          if(res.code==200){
-            this.visible=false;
-            this.form={};
-            this.fetchData({});
-          }else{
-            this.$message({type: "error",message:res.data});
-          }
+        let _this =this;
+        this.$refs['form'].validate((valid) => {
+            if (valid) {
+                saveOrUpdateCaseInfo(_this.form).then(res=>{
+                    console.info("保存案件结果：",res)
+                    if(res.code==200){
+                        _this.visible=false;
+                        _this.form={};
+                        _this.fetchData({});
+                    }else{
+                            _this.$message({type: "error",message:res.data});
+                        }
+                })
+            } else {
+                _this.errorMsg("您有必填字段未填写！", 'error')
+                _this.closeLoading();
+                return false;
+            }
         })
       },
       delete(data){
