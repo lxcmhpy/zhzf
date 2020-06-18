@@ -6,21 +6,21 @@
         <div class="search">
           <el-form :label-position="labelPosition" :model="search" ref="form" label-width="160px" :inline="true" >
             <el-form-item label="所属机构">
-              <el-select v-model="search.OId" placeholder="请选择" >
+              <el-select v-model="search.oId" placeholder="请选择"  @change="fetchData" >
                 <el-option v-for="(item,index) in organList" :key="index" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="考核名称">
+            <!-- <el-form-item label="考核名称">
               <el-select v-model="search.batchId" placeholder="请选择" >
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
-            </el-form-item>
-            <el-form-item>
+            </el-form-item> -->
+            <!-- <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-plus"  @click="randomSamplingStaff">随机抽取</el-button>
             </el-form-item>
@@ -49,7 +49,8 @@
 </template>
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhStaffByPage,randomSamplingStaffByPage,findListVoByBatch,findAllDepartment,submitProStaff} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {findPykhStaffByPage,randomSamplingStaffByPage,findListVoByBatch,findAllDepartment,submitProStaff,submitStaff} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {getCurrentBatchId} from "@/api/catsAppraisalStartUp.js";
   import iLocalStroage from '@/common/js/localStroage';
   import qs from 'qs';
 
@@ -58,8 +59,11 @@
       return {
         value: [],
         search:{
-          OId:"",
-          batchId:""
+          oId:"",
+          batchId:"",
+          current:1,
+          size:1000,
+          bsStatus:"1"
         },
         personList:[],
         organId:"",
@@ -70,10 +74,8 @@
       };
     },
     methods:{
-      fetchData(data){
-        data.size=1000;
-        data.current=1;
-        findPykhStaffByPage(data).then(res=>{
+      fetchData(){
+        findPykhStaffByPage(this.search).then(res=>{
           // console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
             var personlist=[];
@@ -109,23 +111,22 @@
         }
         // console.info("ids:",qs.stringify(ids, { arrayFormat: 'brackets' }))
         var submitProStaffData={};
-        var param=qs.stringify(ids, { arrayFormat: 'repeat' });
-        submitProStaffData.idList= param ;
+        submitProStaffData.idList= ids ;
         submitProStaffData.batchId=this.search.batchId;
-        submitProStaff(submitProStaffData).then(res=>{
-          console.info("抽取结果",res);
+        let _this = this
+        submitStaff(submitProStaffData).then(res=>{
+          if(res.code===200){
+            if(res.data === "操作成功"){
+              _this.$message({type: "success",message: res.data});
+            }else if(res.data === "取消成功"){
+              _this.$message({type: "success",message: res.data});
+              _this.value = []
+            }else{
+              _this.$message({type: "error",message: res.data});
+              _this.value = []
+            }
+          }
         });
-      },
-      resetSearch(){
-        this.search={}
-      },
-      searchData(){
-
-        let data={};
-        data.OId=this.search.OId;
-        data.batchId=this.search.batchId;
-        // console.info("this.search:",data)
-        this.fetchData(data);
       },
       randomSamplingStaff(){
         if(this.search.batchId=="" || this.search.OId=="" ){
@@ -134,19 +135,33 @@
             type: 'error'
           })
         }else{
-          randomSamplingStaffByPage(this.search.OId,this.search.batchId).then(res=>{
-            console.info("部级随机抽取人员:",res);
+          randomSamplingStaffByPage(this.search.oId,this.search.batchId).then(res=>{
+            if(res.code==200){
+            var personlist=[];
+            for(var i=0;i<res.data.length;i++){
+              if(res.data[i].staffStatus!=0){
+                this.value.push(i)
+              }
+              var maritimeNo=res.data[i].maritimeNo==null?'':res.data[i].maritimeNo+",";
+              var provinceNo=res.data[i].provinceNo==null?'':res.data[i].provinceNo+",";
+              var ministerialNo=res.data[i].ministerialNo==null?'':res.data[i].ministerialNo+",";
+              personlist.push({
+                key: i,
+                label: res.data[i].staffName,
+                staffName:res.data[i].staffName,
+                maritimeNo: maritimeNo+provinceNo+ministerialNo,
+                staffId:res.data[i].staffId
+              });
+            }
+            this.personList=personlist;
+          }
           })
         }
       },
       getBatch(){
-        let batchData={}
-        let nowDate = new Date();
-        batchData.batchYear=nowDate.getFullYear();
-        findListVoByBatch(batchData).then(res=>{
-          console.info("请求批次结果：",res);
+        getCurrentBatchId().then(res=>{
           if(res.code=200){
-            this.batchList=res.data
+            this.search.batchId=res.data
           }
         });
       },
