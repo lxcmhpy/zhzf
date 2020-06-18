@@ -107,13 +107,8 @@
                     <span v-if="scope.row.examStatue === '2'" style="color: #18C061;">已交卷</span>
                   </template>
                 </el-table-column>
-                <el-table-column
-                  prop="loginTime"
-                  label="开始答题时间"
-                  min-width="100px"
-                  align="center"
-                ></el-table-column>
-                <el-table-column label="操作" min-width="320px" align="center">
+                <el-table-column prop="loginTime" label="开始答题时间" min-width="140px" align="center"></el-table-column>
+                <el-table-column label="操作" width="420px" align="center">
                   <template slot-scope="scope">
                     <el-button type="text" @click="viewRecord(scope.row,1)">考场记录</el-button>
                     <el-button
@@ -305,7 +300,14 @@ export default {
       } else if (type === 2) {
         this.$refs.windowsPage.showModal(row, data, type);
       } else if (type === 3) {
-        this.$refs.windowsPage.showModal(row, data, type);
+        if (data.examperIds == undefined || data.examperIds.length == 0) {
+          this.$message({
+            type: "warning",
+            message: "请选择一条考生信息"
+          });
+        } else {
+          this.$refs.windowsPage.showModal(row, data, type);
+        }
       } else if (type === 4) {
         this.$confirm("确定重置登录吗！", "提示", {
           confirmButtonText: "确定",
@@ -366,7 +368,7 @@ export default {
         const examBegin = new Date().getTime();
         const loginTime = new Date(row.loginTime).getTime();
         const time = examBegin - loginTime;
-          if(time > 0){
+        if (time > 0) {
           let hou = parseInt((time % (60 * 60 * 24)) / 3600);
           let min = parseInt(((time % (60 * 60 * 24)) % 3600) / 60);
           let sec = parseInt(((time % (60 * 60 * 24)) % 3600) % 60);
@@ -375,8 +377,8 @@ export default {
           }
           return `${min}分钟${sec}秒`;
         }
-      }else{
-        return '';
+      } else {
+        return "";
       }
     },
     //考场信息

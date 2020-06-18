@@ -18,13 +18,13 @@
           :inline="true"
         >
            <div class="item">
-            <el-form-item label="姓名" prop="personName" class-form="form-class">
+            <el-form-item label="姓名:" prop="personName" class-form="form-class">
               <el-input v-model="examPersonForm.personName" placeholder="考生姓名"></el-input>
             </el-form-item>
-            <el-form-item label="身份证号" prop="idNo" class-form="form-class">
+            <el-form-item label="身份证号:" prop="idNo" class-form="form-class">
               <el-input v-model="examPersonForm.idNo" placeholder="身份证号码"></el-input>
             </el-form-item>
-            <el-form-item label="所属机构" prop="oname" class-form="form-class">
+            <el-form-item label="所属机构:" prop="oname" class-form="form-class">
               <el-input v-model="examPersonForm.oname" placeholder="所属机构"></el-input>
             </el-form-item>
              <el-form-item>
@@ -52,12 +52,24 @@
             </el-form-item>
            </div>
           <div class="item" v-show="isShow">
-            <el-form-item label="考场" prop="roomId" class-form="form-class">
+            <el-form-item label="考场名称:" prop="roomId" class-form="form-class">
               <el-input v-model="examPersonForm.roomId" placeholder="考场"></el-input>
             </el-form-item>
-            <el-form-item label="执法领域" prop="ministerialNo" class-form="form-class">
-              <el-input v-model="examPersonForm.ministerialNo" placeholder="执法领域"></el-input>
-            </el-form-item>
+            <el-form-item label="执法领域:" prop="branchId">
+                <el-select
+                  v-model="examPersonForm.branchId"
+                  placeholder="执法领域"
+                  remote
+                  @focus="getDepatements('执法门类','branchIdsInfo')"
+                >
+                  <el-option
+                    v-for="value in branchIdsInfo"
+                    :key="value.id"
+                    :label="value.name"
+                    :value="value.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
           </div>
           <el-row>
             <el-form-item>
@@ -133,8 +145,10 @@ export default {
   mixins: [mixinPerson],
   data() {
     return {
+      branchIdsInfo: [{ id: "", name: "全部" }], //执法领域列表
       examPersonForm: {
         roomId: "",
+        examName:"",
         examId: "",
         personName: "",
         idNo: "",
@@ -144,7 +158,12 @@ export default {
         stationName: "",
         stationId: "",
         ministerialNo: "",
-        batchId: ""
+      },
+      examMsg:{
+        examVenues:"",//考试地点
+        examName:"",//考试名称
+        examBegin:"",//考试开始时间
+        examEnd:"",//考试结束时间
       },
        isShow: false,
       visible: false,
@@ -165,11 +184,43 @@ export default {
       _this.visible = true;
       _this.dialogtitle = "考试详情";
       _this.examPersonForm.examId = data.examId;
+      _this.examMsg.examVenues = data.examVenues;
+      _this.examMsg.examName = data.examName;
+      _this.examMsg.examBegin = data.examBegin;
+      _this.examMsg.examEnd =data.examEnd;
       this.getPageAllInfo();
+    },
+      //点击下拉框的时候后头获取下拉框数据
+    getDepatements(name, codeName) {
+      this.$store.dispatch("findAllDrawerByName", name).then(
+        //查询执法领域
+        res => {
+          if (res.code === 200) {
+            if (codeName === "branchIdsInfo") {
+              this.branchIdsInfo = res.data;
+              this.branchIdsInfo.unshift({ id: "", name: "全部" });
+            }
+            if (codeName === "stationIdsInfo") {
+              this.stationIdsInfo = res.data;
+              this.stationIdsInfo.unshift({ id: "", name: "全部" });
+            }
+            if (codeName === "oidsInfo") {
+              this.oidsInfo = res.data;
+              this.oidsInfo.unshift({ id: "", name: "全部" });
+            }
+            if (codeName === "stationStatusInfo") {
+              this.stationStatusInfo = res.data;
+              this.stationStatusInfo.unshift({ id: "", name: "全部" });
+            }
+          } else {
+            console.info("没有查询到数据");
+          }
+        }
+      );
     },
     invigilateCard(row) {
       //准考证
-      this.$refs.invigilateCardCompRef.showModal("1",row);
+      this.$refs.invigilateCardCompRef.showModal("1",row,this.examMsg);
     },
     roomNotes(row) {
       //考场记录
@@ -209,10 +260,10 @@ export default {
       let data = {
         examId: _this.examPersonForm.examId,
         roomId: _this.examPersonForm.roomId,
-        // batchId:_this.examPersonForm.batchId,
+        branchId:_this.examPersonForm.branchId,
         personName: _this.examPersonForm.personName,
         idNo: _this.examPersonForm.idNo,
-        oname: _this.examPersonForm.oname,
+        oName: _this.examPersonForm.oname,
         current: _this.currentPage,
         size: _this.pageSize
       };

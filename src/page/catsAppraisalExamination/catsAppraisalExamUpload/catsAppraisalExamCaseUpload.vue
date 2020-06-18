@@ -2,14 +2,14 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox toggleBox">
       <div class="handlePart" style="margin-left: 0px;">
-
+        <viewNotice ref="viewNoticeRef"></viewNotice>
         <div class="search">
           <el-form :inline="true" >
-            <el-form-item label="考核名称">
+            <!-- <el-form-item label="考核名称">
               <el-select v-model="search.batchId" placeholder="请选择" >
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="业务领域">
               <el-select v-model="search.businessArea" placeholder="请选择" >
                 <el-option v-for="(item,index) in businessAreaList" :key="index" :label="item" :value="item"></el-option>
@@ -75,8 +75,20 @@
 
             <el-table-column label="操作" align="center" width="120">
               <template  slot-scope="scope">
-                <el-button type="text" @click.stop @click="update(scope.row)">修改</el-button>
-                <el-button type="text" @click.stop @click="delete(scope.row)">删除</el-button>
+                <el-button type="text" @click.stop @click="update(scope.row)" v-show="scope.row.caseStatus==0">修改</el-button>
+                <el-button type="text" @click.stop @click="delete(scope.row)" v-show="scope.row.caseStatus==0">删除</el-button>
+                <el-upload
+                  class="upload-demo"
+                  accept=".pdf"
+                  :show-file-list="false"
+                  v-show="scope.row.caseStatus==1"
+                  :http-request="(params)=>saveFile(params,scope.row)"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  multiple
+                  :limit="1">
+                  <el-button size="small" type="primary">上传附件</el-button>
+                </el-upload>
+                <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.caseStatus==1 && scope.row.fjStatus==1">查看附件</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -99,11 +111,11 @@
 
         <el-dialog :visible.sync="visible" title="案件报送" width="480px" >
           <el-form :label-position="labelPosition" :model="form" ref="form" label-width="160px">
-            <el-form-item label="考核名称">
+            <!-- <el-form-item label="考核名称">
               <el-select v-model="form.batchId" placeholder="请选择" >
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="案卷编号">
               <el-input placeholder="请输入" v-model.trim="form.caseNo" ></el-input>
             </el-form-item>
@@ -159,13 +171,16 @@
 
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo } from "@/api/catsAppraisalExamCaseUpload.js";
-  import {findListVoByBatch} from "@/api/catsAppraisalExamPersonUpload.js";
-
+  import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo,deleteCaseInfo } from "@/api/catsAppraisalExamCaseUpload.js";
+  import {findListVoByBatch,findAllDepartment} from "@/api/catsAppraisalExamPersonUpload.js";
+  import viewNotice from "../noticeManage/viewNotice";
   import iLocalStroage from '@/common/js/localStroage';
 
   export default {
     mixins: [mixinsCommon],
+    components: {
+      viewNotice
+    },
     data() {
       return {
         current:1,
@@ -174,6 +189,7 @@
         dataList:[],
         visible:false,
         labelPosition: 'right',
+        organId:'',
         form:{
           caseNo:'',
           caseCause:'',
@@ -197,11 +213,23 @@
         ],
         caseTypeList:['行政处罚','行政检查','行政强制'],
         handleTypeList:['罚款'],
-        batchList:[]
       }
     },
     methods:{
+      saveFile(param, row) {
+          debugger;
+        console.log(param);
+      },
+      view(row){
+          debugger;
+        let routerData = {
+          storageId: row.storageId
+        };
+        this.$refs.viewNoticeRef.showPDF(row.storageId);
+      },
       fetchData(data){
+        data.current=this.current
+        data.size=this.size
         findPykhCaseByPage(data).then(res=>{
           if(res.code==200){
             this.dataList=res.data.records;
@@ -210,6 +238,17 @@
           }
         });
       },
+      //更改每页显示的条数
+    handleSizeChange(val) {
+      this.size = val;
+      this.current = 1;
+      this.fetchData();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      this.current = val;
+      this.fetchData();
+    },
       searchData(){
         let data=this.search;
         console.info("searchData:",data)
@@ -240,17 +279,38 @@
         })
       },
       delete(data){
-
+        this.$confirm("确定删除吗？", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }).then(() => {
+              deleteCaseInfo(data.caseId).then(
+                res => {
+                  if(res.data===true){
+                    this.$message({
+                      type: "success",
+                      message: "删除成功!"
+                    });
+                    this.reload();
+                  }else{
+                    this.$message({
+                      type: "warning",
+                      message: "删除失败!"
+                    });
+                  }
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+            })
+            .catch(() => {});
       },
       uploadCase(param){
         console.log(param);
         var fd = new FormData();
-        let batchId='';
-        if(this.batchList.length>0){
-          batchId=this.batchList[0].id
-        }
         fd.append("file", param.file);
-        fd.append("batchId",batchId)
+        fd.append("oId",this.organId)
         importCase(fd).then(
           res => {
             console.log(res);
@@ -265,17 +325,10 @@
       }
     },
     mounted() {
+      let userInfo = iLocalStroage.gets("userInfo");
+      this.organId = userInfo.organId;
       let initdata={}
       this.fetchData(initdata);
-      let batchData={}
-      let nowDate = new Date();
-      batchData.batchYear=nowDate.getFullYear();
-      findListVoByBatch(batchData).then(res=>{
-        console.info("请求批次结果：",res);
-        if(res.code=200){
-          this.batchList=res.data
-        }
-      });
     }
   }
 

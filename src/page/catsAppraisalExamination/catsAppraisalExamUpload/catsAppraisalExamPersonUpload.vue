@@ -2,6 +2,7 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox toggleBox">
       <div class="handlePart" style="margin-left: 0px;">
+        <viewNotice ref="viewNoticeRef"></viewNotice>
         <div class="search">
           <el-form :label-position="labelPosition" :model="search" ref="form" label-width="160px" :inline="true" >
             <el-form-item label="姓名">
@@ -57,8 +58,19 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="120">
               <template  slot-scope="scope">
-                <el-button type="text" @click.stop @click="update_openDialog(scope.row)">修改</el-button>
-                <el-button type="text" @click.stop @click="deleteStaff(scope.row)">删除</el-button>
+                <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
+                <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
+                <el-upload
+                  class="upload-demo"
+                  accept=".jpg, .png"
+                  v-show="scope.row.staffStatus==1"
+                  :http-request="saveFile"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  multiple
+                  :limit="1">
+                  <el-button size="small" type="primary">上传照片</el-button>
+                </el-upload>
+                <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.staffStatus==1 && scope.row.fjStatus==1">查看照片</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -81,11 +93,11 @@
 
         <el-dialog :visible.sync="visible" title="人员报送" width="480px" >
           <el-form :label-position="labelPosition" :model="form" ref="form" label-width="160px">
-            <el-form-item label="选择检查名称">
+            <!-- <el-form-item label="选择检查名称">
               <el-select v-model="form.batchId" placeholder="请选择" >
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="姓名" prop="operator" >
               <el-input placeholder="请输入姓名" v-model.trim="form.staffName" ></el-input>
             </el-form-item>
@@ -115,6 +127,9 @@
         </el-dialog>
 
       </div>
+      <el-dialog title="查看" :visible.sync="dialogVisible">
+        <img width="100%" :src="dialogImageUrl" alt="">
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -123,20 +138,23 @@
   import { mixinsCommon } from "@/common/js/mixinsCommon";
   import {findPykhStaffByPage,importPerson,addOrUpdatePykhStaff,findAllDepartment,findListVoByBatch,deletePykhStaff} from "@/api/catsAppraisalExamPersonUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
+  import viewNotice from "../noticeManage/viewNotice"; 
 
   export default {
     mixins: [mixinsCommon],
+    components: {
+      viewNotice
+    },
     data() {
       return {
         current:1,
-        size:10,
+        size:20,
         total:0,
         search:{
           staffName:"",
           OId:""
         },
         organList:[],
-        batchList:[],
         organId:'',
         dataList:[],
         visible:false,
@@ -150,6 +168,8 @@
           provinceNo:'',
           staffName:''
         },
+        dialogImageUrl:'',
+        dialogVisible: false,
         uploadHeaders: {
           'Authorization': ''
         },
@@ -157,6 +177,13 @@
     },
 
     methods: {
+      saveFile(param) {
+        console.log(param);
+      },
+      view(row){
+        this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +row.storageId;
+        this.dialogVisible = true;
+      },
       fetchData(data){
         data.current=this.current;
         data.size=this.size;
@@ -197,18 +224,18 @@
       uploadPerson(param) {
         console.log(param);
         var fd = new FormData();
-        let batchId='';
-        if(this.batchList.length>0){
-          batchId=this.batchList[0].id
-        }
         fd.append("file", param.file);
-        fd.append("batchId",batchId)
         fd.append("OId",this.organId)
         importPerson(fd).then(
           res => {
             console.log(res);
             if(res.code==200){
-              this.fetchData({});
+              if(res.data === "上传成功"){
+                this.fetchData({});
+                this.$message({type: "success",message: res.data});
+              }else{
+                 this.$message({type: "error",message:res.data});
+              }
             }
           },
           error => {
@@ -268,15 +295,6 @@
       //     this.organList=res.data
       //   }
       // });
-      let batchData={}
-      let nowDate = new Date();
-      batchData.batchYear=nowDate.getFullYear();
-      findListVoByBatch(batchData).then(res=>{
-          console.info("请求批次结果：",res);
-          if(res.code=200){
-            this.batchList=res.data
-          }
-      });
     },
 
   }

@@ -7,7 +7,7 @@
       mode="horizontal"
       @select="handleSelect">
       <!-- v-show="false" -->
-      <el-menu-item v-for="(item) in headMenuList" :index="`${item.name}-menu-${item.path}`" :keyPath="'dd'" :key="item.id" >
+      <el-menu-item v-for="(item) in headMenuList" :index="`${item.name}`" :key="item.id" >
           {{item.title}}</el-menu-item>
     </el-menu>
   </div>
@@ -15,6 +15,7 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
+import _ from "lodash";
   export default {
     name: "",
     data() {
@@ -27,8 +28,8 @@ import { mapGetters } from "vuex";
         ...mapGetters(["headActiveNav", 'menu', 'activeIndexSto'])
     },
     methods: {
-      handleSelect(key, keyPath) {
-        //   debugger;
+      handleSelect(key, indexPath) {
+          debugger;
         let keyStr = key.split(this.reg);
         console.log('key',key)
         this.$store.commit("SET_ACTIVE_INDEX_STO", key);
@@ -37,12 +38,12 @@ import { mapGetters } from "vuex";
         //将当前选中的一级菜单名传到父组件
         console.log('handleSelect',key)
         this.$emit("selectHeadMenu",  key);
-        //删除之前的tab页签
-        if (keyStr[2] && keyStr[2] !== 'null') {
-            // debugger;
-            this.$router.push({ name: keyStr[2] });
-        } else {
 
+        let index = _.findIndex(this.headMenuList,(chr)=>{
+            return chr.name === key
+        })
+        if (index >-1 &&this.headMenuList[index].path&& this.headMenuList[index].path !== 'null') {
+            this.$router.push({ name: this.headMenuList[index].path });
         }
       }
     },

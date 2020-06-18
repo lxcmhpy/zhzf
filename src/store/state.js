@@ -21,7 +21,6 @@ const state = {
         imgIp:'',  //图片的地址
         listPage:'',   //当前page
         // btnlawId:''  //当前法规id
-
 };
 
 export default state;

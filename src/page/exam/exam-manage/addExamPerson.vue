@@ -53,12 +53,36 @@
            <el-form-item label="所属机构" prop="oname" class-form="form-class">
             <el-input v-model="addExamPersonForm.oname" placeholder="所属机构"></el-input>
           </el-form-item>
-          <el-form-item label="执法领域" prop="branchName" class-form="form-class">
-            <el-input v-model="addExamPersonForm.branchName" placeholder="执法领域"></el-input>
-          </el-form-item>
-          <el-form-item label="岗位" prop="stationName" class-form="form-class">
-            <el-input v-model="addExamPersonForm.stationName" placeholder="岗位"></el-input>
-          </el-form-item>
+          <el-form-item label="执法领域" prop="branchId">
+                <el-select
+                  v-model="addExamPersonForm.branchId"
+                  placeholder="执法领域"
+                  remote
+                  @focus="getDepatements('执法门类','branchIdsInfo')"
+                >
+                  <el-option
+                    v-for="value in branchIdsInfo"
+                    :key="value.id"
+                    :label="value.name"
+                    :value="value.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+           <el-form-item label="岗位" prop="stationId">
+                <el-select
+                  v-model="addExamPersonForm.stationId"
+                  placeholder="选择岗位"
+                  remote
+                  @focus="getStationInfo('人员信息-岗位','stationInfo')"
+                >
+                  <el-option
+                    v-for="value in stationInfo"
+                    :key="value.id"
+                    :label="value.name"
+                    :value="value.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
           <el-form-item label="执法证号" prop="ministerialNo" class-form="form-class">
             <el-input v-model="addExamPersonForm.ministerialNo" placeholder="执法证号"></el-input>
           </el-form-item>
@@ -91,7 +115,7 @@
         <el-table-column prop="postName" label="职务" align="center" min-width="80px"></el-table-column>
         <el-table-column prop="stationName" label="岗位" align="center" min-width="80px"></el-table-column>
         <el-table-column prop="ministerialNo" label="执法证号" min-width="100px" align="center"></el-table-column>
-        <el-table-column prop="area" label="执法领域" min-width="120px" align="left"></el-table-column>
+        <el-table-column prop="branchName" label="执法领域" min-width="120px" align="left"></el-table-column>
       </el-table>
     </div>
     <div class="paginationBox">
@@ -117,6 +141,9 @@ export default {
   mixins: [mixinPerson],
   data() {
     return {
+       branchIdsInfo: [{ id: "", name: "全部" }], //执法领域列表
+      oidsInfo: [{ id: "", name: "全部" }], //所属机构列表
+      stationInfo: [{ id: "", name: "全部" }], //岗位列表
       addExamPersonForm: {
         roomId: "",
         examId: "",
@@ -125,7 +152,9 @@ export default {
         oname: "",
         oid: "",
         branchName: "",
+        branchId: "",
         stationName: "",
+        stationId: "",
         ministerialNo: ""
       },
       isShow: false,
@@ -141,6 +170,34 @@ export default {
     };
   },
   methods: {
+          //点击下拉框的时候后头获取下拉框数据
+    getDepatements(name, codeName) {
+      this.$store.dispatch("findAllDrawerByName", name).then(
+        //查询执法领域
+        res => {
+          if (res.code === 200) {
+            if (codeName === "branchIdsInfo") {
+              this.branchIdsInfo = res.data;
+              this.branchIdsInfo.unshift({ id: "", name: "全部" });
+            }
+            if (codeName === "stationIdsInfo") {
+              this.stationIdsInfo = res.data;
+              this.stationIdsInfo.unshift({ id: "", name: "全部" });
+            }
+            if (codeName === "oidsInfo") {
+              this.oidsInfo = res.data;
+              this.oidsInfo.unshift({ id: "", name: "全部" });
+            }
+            if (codeName === "stationStatusInfo") {
+              this.stationStatusInfo = res.data;
+              this.stationStatusInfo.unshift({ id: "", name: "全部" });
+            }
+          } else {
+            console.info("没有查询到数据");
+          }
+        }
+      );
+    },
     submit() {
       let _this = this;
       const loading = this.$loading({
@@ -236,7 +293,7 @@ export default {
         examId: this.addExamPersonForm.examId,
         personName: this.addExamPersonForm.personName,
         idNo: this.addExamPersonForm.idNo,
-        oname: this.addExamPersonForm.oname,
+        oName: this.addExamPersonForm.oname,
         branchName: this.addExamPersonForm.branchName,
         oid: this.addExamPersonForm.oid,
         stationName: this.addExamPersonForm.stationName,

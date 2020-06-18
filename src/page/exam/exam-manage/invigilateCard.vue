@@ -18,7 +18,7 @@
               <td
                 colspan="6"
                 style="font-size:24px;height:34px;text-align: center; line-height:34px;font-weight:900;color:#000;"
-                >道路运输驾驶员从业资格应用能力考核</td>
+                >{{addExamBatchForm.examName}}</td>
             </tr>
             <tr style="vertical-align: inherit;">
               <td
@@ -34,7 +34,14 @@
               <td rowspan="5" style="width: 60px;"></td>
               <td rowspan="5" style="width: 160px;vertical-align: top;">
                 <img
-                  src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=845265002,1740826154&fm=26&gp=0.jpg"
+                  v-if="addExamBatchForm.photoUrl"
+                  :src="baseUrl + addExamBatchForm.photoUrl"
+                  width="100%"
+                  height="224px"
+                />
+                <img
+                  v-else
+                  :src="personImg"
                   width="100%"
                   height="224px"
                 />
@@ -50,7 +57,7 @@
             </tr>
             <tr style="vertical-align: inherit; font-size:18px;color: #000;">
               <td style="width: 90px; padding: 14px 0;">考试地点：</td>
-              <td colspan="3">{{addExamBatchForm.roomName}}</td>
+              <td colspan="3">{{addExamBatchForm.examVenues}}</td>
             </tr>
             <tr style="vertical-align: inherit; font-size:18px;color: #000;">
               <td style="width: 90px; padding: 14px 0;">考&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;场：</td>
@@ -58,7 +65,7 @@
             </tr>
             <tr style="vertical-align: inherit; font-size:18px;color: #000;">
               <td style="width: 90px; padding: 14px 0;">考试时间：</td>
-              <td colspan="3">2020年4月12日  14:00 - 16:00</td>
+              <td colspan="3">{{addExamBatchForm.examTime}} </td>
             </tr>
           </tbody>
         </table>
@@ -67,6 +74,8 @@
   </el-dialog>
 </template>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
+
 export default {
   data() {
     return {
@@ -82,12 +91,24 @@ export default {
         roomName: "",
         examBatchReadyStartTime: "",
         examBatchReadyEndTime: "",
-        remark: ""
-      }
+        remark: "",
+        examVenues:"",//考试地点
+        examName:"",//考试名称
+        examBegin:"",//考试开始时间
+        examEnd:"",//考试结束时间
+        examTime:"",
+        photoUrl: "'"
+      },
+      personImg: "@/../static/images/img/personInfo/upload_bg.png",
     };
   },
+  computed:{
+    baseUrl() {
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+    }
+  },
   methods: {
-    showModal(type, row) {
+    showModal(type, row,examMsg) {
       let _this = this;
       _this.visible = true;
       _this.addExamBatchForm.personName = row.personName;
@@ -95,6 +116,13 @@ export default {
       _this.addExamBatchForm.idNo = row.idNo;
       _this.addExamBatchForm.oname = row.oname;
       _this.addExamBatchForm.roomName = row.roomName;
+      _this.addExamBatchForm.photoUrl = row.photoUrl;
+      _this.addExamBatchForm.examName = examMsg.examName;
+      _this.addExamBatchForm.examVenues = examMsg.examVenues;
+      _this.addExamBatchForm.examTime = examMsg.examBegin.substring(0,4) + "年" + examMsg.examBegin.substring(6,7) + "月" + examMsg.examBegin.substring(8,10) + "日"+
+      "         "+examMsg.examBegin.substring(12,16)+"-"+ examMsg.examEnd.substring(12,16);
+      _this.addExamBatchForm.examBegin =  examMsg.examBegin.substring(0,10);
+      _this.addExamBatchForm.examEnd = examMsg.examEnd;
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

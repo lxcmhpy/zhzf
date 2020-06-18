@@ -103,7 +103,7 @@ export default [
     meta: {
       title: "现场检查评分"
     },
-    component: () => import("@/page/catsAppraisalExamination/catsAppraisalOffLine.vue")
+    component: () => import("@/page/catsAppraisalExamination/catsAppraisalOffLineAdd.vue")
   }, {
     path: "/catsAppraisalGrade",
     name: "catsAppraisalGrade",

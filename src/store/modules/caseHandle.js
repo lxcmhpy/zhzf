@@ -53,7 +53,7 @@ const caseHandle = {
         //设置部署省份
         setProvince(state,data){
             state.province = data;
-        },
+        }
     },
     actions:{
         //获取执法门类
