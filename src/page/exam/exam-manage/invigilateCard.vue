@@ -34,7 +34,14 @@
               <td rowspan="5" style="width: 60px;"></td>
               <td rowspan="5" style="width: 160px;vertical-align: top;">
                 <img
-                  src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=845265002,1740826154&fm=26&gp=0.jpg"
+                  v-if="addExamBatchForm.photoUrl"
+                  :src="baseUrl + addExamBatchForm.photoUrl"
+                  width="100%"
+                  height="224px"
+                />
+                <img
+                  v-else
+                  :src="personImg"
                   width="100%"
                   height="224px"
                 />
@@ -67,6 +74,8 @@
   </el-dialog>
 </template>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
+
 export default {
   data() {
     return {
@@ -88,8 +97,15 @@ export default {
         examBegin:"",//考试开始时间
         examEnd:"",//考试结束时间
         examTime:"",
-      }
+        photoUrl: "'"
+      },
+      personImg: "@/../static/images/img/personInfo/upload_bg.png",
     };
+  },
+  computed:{
+    baseUrl() {
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+    }
   },
   methods: {
     showModal(type, row,examMsg) {
@@ -100,6 +116,7 @@ export default {
       _this.addExamBatchForm.idNo = row.idNo;
       _this.addExamBatchForm.oname = row.oname;
       _this.addExamBatchForm.roomName = row.roomName;
+      _this.addExamBatchForm.photoUrl = row.photoUrl;
       _this.addExamBatchForm.examName = examMsg.examName;
       _this.addExamBatchForm.examVenues = examMsg.examVenues;
       _this.addExamBatchForm.examTime = examMsg.examBegin.substring(0,4) + "年" + examMsg.examBegin.substring(6,7) + "月" + examMsg.examBegin.substring(8,10) + "日"+
