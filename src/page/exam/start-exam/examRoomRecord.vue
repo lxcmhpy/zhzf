@@ -46,14 +46,14 @@
         :max-height="280"
       >
         <el-table-column prop="roomName" label="考场" align="center" width="100px"></el-table-column>
-        <el-table-column prop="rollingTypeName" label="记录类型" align="center" width="100px"></el-table-column>
+        <el-table-column prop="operationTypeName" label="记录类型" align="center" width="100px"></el-table-column>
         <el-table-column prop="happenTime" label="发生时间" align="center" width="170px">
           <template slot-scope="scope">
             <span>{{ scope.row.happenTime ? scope.row.happenTime : scope.row.rollingTime }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="rollingTime" label="记录时间" align="center" width="170px"></el-table-column>
-        <el-table-column prop="forceReason" label="记录内容" align="center" min-width="100px"></el-table-column>
+        <el-table-column prop="modifyTime" label="记录时间" align="center" width="170px"></el-table-column>
+        <el-table-column prop="operationDescription" label="记录内容" align="center" min-width="100px"></el-table-column>
         <el-table-column label="操作" width="140px" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="addNote(scope.row,'2')">修改</el-button>
@@ -78,13 +78,14 @@ export default {
       idNo: "",
       photoUrl: "",
       examData: {
+        operationId:'',
         examId: "",
         roomId: "",
         invigilatorId: "",
         personId: "",
-        rollingType: "",
+        operationType: "",
         rollingTime: "",
-        forceReason: "",
+        operationDescription: "",
         type: "",
         happenTime: ""
       },
