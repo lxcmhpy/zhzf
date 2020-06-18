@@ -7,7 +7,7 @@
             <p class="question-num">{{ question.orderNum }}</p>
             <div class="question-cnt">
               <div class="question-desc">
-                {{ question.questionName }}
+                （{{ question.score }}分）{{ question.questionName }}
               </div>
               <div v-if="question.questionTypeName === '单选题' || question.questionTypeName === '判断题'">
                 <div

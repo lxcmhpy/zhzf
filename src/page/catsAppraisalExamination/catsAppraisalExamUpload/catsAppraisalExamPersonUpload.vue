@@ -2,6 +2,7 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox toggleBox">
       <div class="handlePart" style="margin-left: 0px;">
+        <viewNotice ref="viewNoticeRef"></viewNotice>
         <div class="search">
           <el-form :label-position="labelPosition" :model="search" ref="form" label-width="160px" :inline="true" >
             <el-form-item label="姓名">
@@ -57,8 +58,20 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="120">
               <template  slot-scope="scope">
-                <el-button type="text" @click.stop @click="update_openDialog(scope.row)">修改</el-button>
-                <el-button type="text" @click.stop @click="deleteStaff(scope.row)">删除</el-button>
+                <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
+                <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
+                <el-upload
+                  class="upload-demo"
+                  accept=".jpg, .png"
+                  :show-file-list="false"
+                  v-show="scope.row.staffStatus==1"
+                  :http-request="(params)=>saveFile(params,scope.row)"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  multiple
+                  :limit="1">
+                  <el-button size="small" type="primary">上传照片</el-button>
+                </el-upload>
+                <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.staffStatus==1 && scope.row.fjStatus==1">查看照片</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -115,6 +128,9 @@
         </el-dialog>
 
       </div>
+      <el-dialog title="查看" :visible.sync="dialogVisible">
+        <img width="100%" :src="dialogImageUrl" alt="">
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -122,14 +138,19 @@
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
   import {findPykhStaffByPage,importPerson,addOrUpdatePykhStaff,findAllDepartment,findListVoByBatch,deletePykhStaff} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {StaffAndCaseFile } from "@/api/catsAppraisalExamCaseUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
+  import viewNotice from "../noticeManage/viewNotice"; 
 
   export default {
     mixins: [mixinsCommon],
+    components: {
+      viewNotice
+    },
     data() {
       return {
         current:1,
-        size:10,
+        size:20,
         total:0,
         search:{
           staffName:"",
@@ -149,6 +170,8 @@
           provinceNo:'',
           staffName:''
         },
+        dialogImageUrl:'',
+        dialogVisible: false,
         uploadHeaders: {
           'Authorization': ''
         },
@@ -156,6 +179,27 @@
     },
 
     methods: {
+      saveFile(param, row) {
+        var fd = new FormData();
+        fd.append("file", param.file);
+        fd.append("userId", iLocalStroage.gets("userInfo").id);
+        fd.append("category", "人员报送");
+        fd.append("docId", row.staffId);
+        fd.append("storageId", row.storageId===null?'':row.storageId);
+        let _this = this
+        StaffAndCaseFile(fd).then(res => {
+          if (res.code == 200){
+            row.storageId = res.data
+            row.fjStatus = '1'
+          }else{
+            _this.$message.error('出现异常，添加失败！');
+          }
+        });   
+      },
+      view(row){
+        this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +row.storageId;
+        this.dialogVisible = true;
+      },
       fetchData(data){
         data.current=this.current;
         data.size=this.size;
@@ -197,7 +241,7 @@
         console.log(param);
         var fd = new FormData();
         fd.append("file", param.file);
-        fd.append("OId",this.organId)
+        fd.append("oId",this.organId)
         importPerson(fd).then(
           res => {
             console.log(res);
@@ -208,6 +252,8 @@
               }else{
                  this.$message({type: "error",message:res.data});
               }
+            }else{
+              this.$message({type: "error",message:res.data});
             }
           },
           error => {

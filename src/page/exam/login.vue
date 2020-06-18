@@ -10,7 +10,7 @@
         </div>
         <div class="rightC" v-if="!resetFlag">
           <div class="form_box">
-            <span class="sys-title">人员考试子系统</span>
+            <span class="sys-title">人员考试系统</span>
             <span class="title" :class="check === '0'  ? 'checkText' : '' " @click="changeType('0')">参考考生</span>
             <span class="title" :class="check === '1'  ? 'checkText' : '' " @click="changeType('1')">监考老师</span>
             <span class="title" :class="check === '2'  ? 'checkText' : '' " @click="changeType('2')">评卷人</span>
