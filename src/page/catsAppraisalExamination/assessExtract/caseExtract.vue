@@ -68,7 +68,8 @@
           oId:"",
           batchId:"",
           current:1,
-          size:200
+          size:1000,
+          bsStatus:"1"
         },
         organId:"",
         labelPosition: 'right',
@@ -81,7 +82,6 @@
       fetchData(){
         findPykhCaseByPage(this.search).then(res=>{
           if(res.code==200){
-            this.data=res.data.records;
             var caseList=[];
             for(var i=0;i<res.data.records.length;i++){
               if(res.data.records[i].caseStatus!=0){
@@ -132,8 +132,24 @@
           })
         }else{
           randomSamplingCaseByPage(this.search.oId,this.search.batchId).then(res=>{
-            this.value.push(2)
-            this.value.push(4)
+            if(res.code==200){
+            var caseList=[];
+            for(var i=0;i<res.data.length;i++){
+              if(res.data[i].caseStatus!=0){
+                this.value.push(i)
+              }
+              caseList.push({
+                key: i,
+                label: res.data[i].caseNo,
+                caseNo:res.data[i].caseNo,
+                caseId:res.data[i].caseId,
+                caseType: res.data[i].caseType,
+                businessArea:res.data[i].businessArea,
+                caseCause:res.data[i].caseCause
+              });
+            }
+            this.data=caseList;
+          }
           })
         }
       },
