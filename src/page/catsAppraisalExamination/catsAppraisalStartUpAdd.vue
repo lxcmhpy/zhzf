@@ -385,7 +385,9 @@ export default {
     }
   },
   mounted() {
-    this.init();
+    if(this.$route.params.type!== undefined){
+      this.init();
+    }
   }
 };
 </script>
