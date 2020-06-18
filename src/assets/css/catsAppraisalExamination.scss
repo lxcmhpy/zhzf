@@ -313,10 +313,11 @@
         .el-transfer-panel {
             flex:1;
             .transfer-list {
+                display: flex;
                 li {
-                    width: 200px;
+                    // width: 200px;
                     overflow:hidden;
-                    float:left;
+                    // float:left;
                     margin:0 20px;
                 }
             }
