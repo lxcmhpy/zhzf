@@ -107,6 +107,38 @@ export default {
     }
   },
   data() {
+    const validateExamBegin = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入培训开始时间"));
+      } else {
+        if (this.addTrainForm.trainEndDate !== "") {
+          const beginTime = new Date(value).getTime();
+          const endTime = new Date(this.addTrainForm.trainEndDate).getTime();
+          if (beginTime - endTime > 0) {
+            callback(new Error("培训开始时间不能大于结束时间"));
+          } else {
+            this.$refs.addTrainForm.clearValidate("trainEndDate");
+          }
+        }
+        callback();
+      }
+    };
+    const validateExamEnd = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入培训结束时间"));
+      } else {
+        if (this.addTrainForm.trainBeginDate !== "") {
+          const beginTime = new Date(this.addTrainForm.trainBeginDate).getTime();
+          const endTime = new Date(value).getTime();
+          if (beginTime - endTime > 0) {
+            callback(new Error("培训结束时间不能小于开始时间"));
+          } else {
+            this.$refs.addTrainForm.clearValidate("trainBeginDate");
+          }
+        }
+        callback();
+      }
+    };
     return {
       visible: false,
       trainTypeInfo: [], //培训类型下拉列表
@@ -128,10 +160,10 @@ export default {
           { required: true, message: "培训类型必须填写", trigger: "change" }
         ],
         trainBeginDate: [
-          { required: true, message: "培训时间必须填写", trigger: "blur" }
+          { required: true, validator: validateExamBegin, trigger: "blur" }
         ],
         trainEndDate: [
-          { required: true, message: "培训时间必须填写", trigger: "blur" }
+          { required: true, validator: validateExamEnd, trigger: "blur" }
         ],
         trainName: [
           { required: true, message: "培训名称必须填写", trigger: "blur" }
@@ -214,7 +246,7 @@ export default {
       let _this = this;
       _this.visible = true;
       _this.handelType = type;
-        
+
       if (type == 1) {
         //新增
         this.dialogTitle = "新增";
@@ -245,10 +277,10 @@ export default {
       let _this = this;
       _this.visible = false;
       _this.$refs["addTrainForm"].resetFields();
-       for (const key in this.addTrainForm) {
-          this.addTrainForm[key] = "";
-        }
-        _this.addTrainForm.personId = this.params.id;
+      for (const key in this.addTrainForm) {
+        this.addTrainForm[key] = "";
+      }
+      _this.addTrainForm.personId = this.params.id;
       _this.errorName = false;
     }
   }

@@ -55,6 +55,7 @@
             <el-table-column prop="caseNo" label="案件编号" align="center"></el-table-column>
             <el-table-column prop="caseParty" label="当事人" align="center"></el-table-column>
             <el-table-column prop="caseType" label="案卷类型" align="center"></el-table-column>
+            <el-table-column prop="caseAgency" label="立案机构" align="center"></el-table-column>
             <el-table-column prop="casesMajor" label="是否是重大案件" align="center"></el-table-column>
             <el-table-column prop="enforcementOfficials1" label="执法人员1" align="center"></el-table-column>
             <el-table-column prop="enforcementOfficials2" label="执法人员2" align="center"></el-table-column>
@@ -130,6 +131,9 @@
             <el-form-item label="当事人">
               <el-input placeholder="请输入" v-model.trim="form.caseParty" ></el-input>
             </el-form-item>
+            <el-form-item label="立案机构">
+              <el-input placeholder="请输入" v-model.trim="form.caseAgency" ></el-input>
+            </el-form-item>
             <el-form-item label="执法人员1">
               <el-input placeholder="请输入" v-model.trim="form.enforcementOfficials1" ></el-input>
             </el-form-item>
@@ -171,8 +175,7 @@
 
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo,deleteCaseInfo } from "@/api/catsAppraisalExamCaseUpload.js";
-  import {findListVoByBatch,findAllDepartment} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo,deleteCaseInfo,StaffAndCaseFile } from "@/api/catsAppraisalExamCaseUpload.js";
   import viewNotice from "../noticeManage/viewNotice";
   import iLocalStroage from '@/common/js/localStroage';
 
@@ -200,6 +203,7 @@
           caseCause:'',
           caseType:'',
           OId:'',
+          caseAgency:'',
           caseParty:'',
           enforcementOfficials1:'',
           enforcementOfficials2:'',
@@ -222,8 +226,21 @@
     },
     methods:{
       saveFile(param, row) {
-          debugger;
-        console.log(param);
+        var fd = new FormData();
+        fd.append("file", param.file);
+        fd.append("userId", iLocalStroage.gets("userInfo").id);
+        fd.append("category", "案件报送");
+        fd.append("caseId", row.caseId);
+        fd.append("storageId", row.storageId===null?'':row.storageId);
+        let _this = this
+        StaffAndCaseFile(fd).then(res => {
+          if (res.code == 200){
+            row.storageId = res.data
+            row.fjStatus = '1'
+          }else{
+            _this.$message.error('出现异常，添加失败！');
+          }
+        });
       },
       view(row){
           debugger;
@@ -275,22 +292,24 @@
       },
       addOrUpdate(){
         let _this =this;
-            this.$refs['form'].validate((valid) => {
-                if (valid) {
-                    saveOrUpdateCaseInfo(this.form).then(res=>{
-                        console.info("保存案件结果：",res)
-                        if(res.code==200){
-                            this.visible=false;
-                            this.form={};
-                            this.fetchData({});
+        this.$refs['form'].validate((valid) => {
+            if (valid) {
+                saveOrUpdateCaseInfo(_this.form).then(res=>{
+                    console.info("保存案件结果：",res)
+                    if(res.code==200){
+                        _this.visible=false;
+                        _this.form={};
+                        _this.fetchData({});
+                    }else{
+                            _this.$message({type: "error",message:res.data});
                         }
-                    })
-                } else {
-                    _this.errorMsg("您有必填字段未填写！", 'error')
-                    _this.closeLoading();
-                    return false;
-                }
-            })
+                })
+            } else {
+                _this.errorMsg("您有必填字段未填写！", 'error')
+                _this.closeLoading();
+                return false;
+            }
+        })
       },
       delete(data){
         this.$confirm("确定删除吗？", "提示", {

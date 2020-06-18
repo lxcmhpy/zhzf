@@ -73,3 +73,15 @@ export function deleteCaseInfo(id){
     cancelToken: setCancelSource()
   })
 }
+
+export  function  StaffAndCaseFile(data)  {
+  return  request({
+    url:  "/pykh/file/StaffAndCaseFile",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+  });
+}
