@@ -70,8 +70,8 @@ export function validateIDNumber(rule, value, callback) {
     }
     callback();
 
-    
-    
+
+
     // if(value){
     //     if (18 != value.length) callback(new Error('身份证格式错误'));;
     //     var number = value.toLowerCase();
@@ -86,7 +86,7 @@ export function validateIDNumber(rule, value, callback) {
     //     for (var i = 0; i < 17; i++) sum += number.charAt(i) * w[i];
     //     if(!(re[2].length == 9 || number.charAt(17) == v.charAt(sum % 11))) callback(new Error('身份证格式错误'));
     // }
-    
+
     // if (re == null || a.indexOf(re[1]) < 0) callback(new Error('身份证格式错误'));
     // if (re[2].length == 9) {
     //     number = number.substr(0, 6) + '19' + number.substr(6);
@@ -95,7 +95,7 @@ export function validateIDNumber(rule, value, callback) {
     // if (!isDateTime.call(d, 'yyyy-MM-dd')) callback(new Error('身份证格式错误'));
     // for (var i = 0; i < 17; i++) sum += number.charAt(i) * w[i];
 	// if(!(re[2].length == 9 || number.charAt(17) == v.charAt(sum % 11))) callback(new Error('身份证格式错误'));
-    
+
     // callback();
 }
 
@@ -158,9 +158,19 @@ export function validateAge(rule, value, callback) {
     }
     callback();
 }
-
-
-
-
+export function isInteger_8_10 (rule, value, callback) {
+    if (!/^\d{8}$|^\d{10}$/.test(value)) {
+        callback(new Error('请输入8位或10位数字'))
+    } else {
+        callback()
+    }
+}
+export function isInteger_10(rule, value, callback) {
+    if (!/^\d{10}$/.test(value)) {
+        callback(new Error('请输入10位数字'))
+    } else {
+        callback()
+    }
+}
 
 

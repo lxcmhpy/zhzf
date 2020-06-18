@@ -139,5 +139,12 @@ export default [
       title: "本期考核结果"
     },
     component: () => import("@/page/catsAppraisalExamination/catsAppraisalResult.vue")
+  }, {
+    path: "/catsAppraisalPDF",
+    name: "catsAppraisalPDF",
+    meta: {
+      title: "查看PDF"
+    },
+    component: () => import("@/page/catsAppraisalExamination/viewPDF.vue")
   }
 ]
