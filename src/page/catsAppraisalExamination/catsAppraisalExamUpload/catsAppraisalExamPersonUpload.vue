@@ -81,11 +81,11 @@
 
         <el-dialog :visible.sync="visible" title="人员报送" width="480px" >
           <el-form :label-position="labelPosition" :model="form" ref="form" label-width="160px">
-            <el-form-item label="选择检查名称">
+            <!-- <el-form-item label="选择检查名称">
               <el-select v-model="form.batchId" placeholder="请选择" >
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="姓名" prop="operator" >
               <el-input placeholder="请输入姓名" v-model.trim="form.staffName" ></el-input>
             </el-form-item>
@@ -136,7 +136,6 @@
           OId:""
         },
         organList:[],
-        batchList:[],
         organId:'',
         dataList:[],
         visible:false,
@@ -197,18 +196,18 @@
       uploadPerson(param) {
         console.log(param);
         var fd = new FormData();
-        let batchId='';
-        if(this.batchList.length>0){
-          batchId=this.batchList[0].id
-        }
         fd.append("file", param.file);
-        fd.append("batchId",batchId)
         fd.append("OId",this.organId)
         importPerson(fd).then(
           res => {
             console.log(res);
             if(res.code==200){
-              this.fetchData({});
+              if(res.data === "上传成功"){
+                this.fetchData({});
+                this.$message({type: "success",message: res.data});
+              }else{
+                 this.$message({type: "error",message:res.data});
+              }
             }
           },
           error => {
@@ -268,15 +267,6 @@
       //     this.organList=res.data
       //   }
       // });
-      let batchData={}
-      let nowDate = new Date();
-      batchData.batchYear=nowDate.getFullYear();
-      findListVoByBatch(batchData).then(res=>{
-          console.info("请求批次结果：",res);
-          if(res.code=200){
-            this.batchList=res.data
-          }
-      });
     },
 
   }

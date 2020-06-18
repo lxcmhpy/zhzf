@@ -5,11 +5,11 @@
 
         <div class="search">
           <el-form :inline="true" >
-            <el-form-item label="考核名称">
+            <!-- <el-form-item label="考核名称">
               <el-select v-model="search.batchId" placeholder="请选择" >
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="业务领域">
               <el-select v-model="search.businessArea" placeholder="请选择" >
                 <el-option v-for="(item,index) in businessAreaList" :key="index" :label="item" :value="item"></el-option>
@@ -99,11 +99,11 @@
 
         <el-dialog :visible.sync="visible" title="案件报送" width="480px" >
           <el-form :label-position="labelPosition" :model="form" ref="form" label-width="160px">
-            <el-form-item label="考核名称">
+            <!-- <el-form-item label="考核名称">
               <el-select v-model="form.batchId" placeholder="请选择" >
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="案卷编号">
               <el-input placeholder="请输入" v-model.trim="form.caseNo" ></el-input>
             </el-form-item>
@@ -198,7 +198,6 @@
         ],
         caseTypeList:['行政处罚','行政检查','行政强制'],
         handleTypeList:['罚款'],
-        batchList:[]
       }
     },
     methods:{
@@ -246,12 +245,7 @@
       uploadCase(param){
         console.log(param);
         var fd = new FormData();
-        let batchId='';
-        if(this.batchList.length>0){
-          batchId=this.batchList[0].id
-        }
         fd.append("file", param.file);
-        fd.append("batchId",batchId)
         fd.append("oId",this.organId)
         importCase(fd).then(
           res => {
@@ -271,15 +265,6 @@
       this.organId = userInfo.organId;
       let initdata={}
       this.fetchData(initdata);
-      let batchData={}
-      let nowDate = new Date();
-      batchData.batchYear=nowDate.getFullYear();
-      findListVoByBatch(batchData).then(res=>{
-        console.info("请求批次结果：",res);
-        if(res.code=200){
-          this.batchList=res.data
-        }
-      });
     }
   }
 
