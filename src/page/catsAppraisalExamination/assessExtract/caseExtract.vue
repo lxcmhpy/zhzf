@@ -22,7 +22,7 @@
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
             </el-form-item> -->
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="randomSamplingStaff">随机抽取</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="randomSamplingCase">随机抽取</el-button>
             </el-form-item>
 
           </el-form>
@@ -54,11 +54,11 @@
 </template>
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhCaseByPage} from "@/api/catsAppraisalExamCaseUpload.js";
-  import {randomSamplingStaffByPage,findAllDepartment} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {findPykhCaseByPage,submitCase,randomSamplingCaseByPage} from "@/api/catsAppraisalExamCaseUpload.js";
+  import {findAllDepartment} from "@/api/catsAppraisalExamPersonUpload.js";
   import {getCurrentBatchId} from "@/api/catsAppraisalStartUp.js";
   import iLocalStroage from '@/common/js/localStroage';
-
+  import qs from 'qs';
   export default {
     data() {
       return {
@@ -68,7 +68,8 @@
           oId:"",
           batchId:"",
           current:1,
-          size:200
+          size:200,
+          bsStatus:"1"
         },
         organId:"",
         labelPosition: 'right',
@@ -81,7 +82,6 @@
       fetchData(){
         findPykhCaseByPage(this.search).then(res=>{
           if(res.code==200){
-            this.data=res.data.records;
             var caseList=[];
             for(var i=0;i<res.data.records.length;i++){
               if(res.data.records[i].caseStatus!=0){
@@ -91,10 +91,10 @@
                 key: i,
                 label: res.data.records[i].caseNo,
                 caseNo:res.data.records[i].caseNo,
+                caseId:res.data.records[i].caseId,
                 caseType: res.data.records[i].caseType,
                 businessArea:res.data.records[i].businessArea,
-                caseCause:res.data.records[i].caseCause,
-                disabled: res.data.records[i].caseStatus==0?false:true
+                caseCause:res.data.records[i].caseCause
               });
             }
             this.data=caseList;
@@ -102,7 +102,6 @@
         });
       },
       handleChange(value, direction, movedKeys) {
-        console.log(value, direction, movedKeys);
         var ids= [];
         for(var j=0;j<value.length;j++){
           ids.push(this.data[value[j]].caseId)
@@ -110,19 +109,52 @@
         var submitCaseData={};
         submitCaseData.idList= ids ;
         submitCaseData.batchId=this.search.batchId;
-        var param=qs.stringify(submitCaseData, { indices: false });
-        submitProStaff(param).then(res=>{
-          console.info("抽取结果",res);
+        let _this = this
+        submitCase(submitCaseData).then(res=>{
+          if(res.code===200){
+            if(res.data === "操作成功"){
+              _this.$message({type: "success",message: res.data});
+            }else if(res.data === "取消成功"){
+              _this.$message({type: "success",message: res.data});
+              _this.value = []
+            }else{
+              _this.$message({type: "error",message: res.data});
+              _this.value = []
+            }
+          }
         });
       },
-      randomSamplingStaff(){
-        randomSamplingStaffByPage({}).then(res=>{
-          console.info("部级随机抽取人员:",res);
-        })
+      randomSamplingCase(){
+        if(this.search.batchId=="" || this.search.OId=="" ){
+          this.$message({
+            message: '请先选择机构和考核名称',
+            type: 'error'
+          })
+        }else{
+          randomSamplingCaseByPage(this.search.oId,this.search.batchId).then(res=>{
+            if(res.code==200){
+            var caseList=[];
+            for(var i=0;i<res.data.length;i++){
+              if(res.data[i].caseStatus!=0){
+                this.value.push(i)
+              }
+              caseList.push({
+                key: i,
+                label: res.data[i].caseNo,
+                caseNo:res.data[i].caseNo,
+                caseId:res.data[i].caseId,
+                caseType: res.data[i].caseType,
+                businessArea:res.data[i].businessArea,
+                caseCause:res.data[i].caseCause
+              });
+            }
+            this.data=caseList;
+          }
+          })
+        }
       },
       getBatch(){
         getCurrentBatchId().then(res=>{
-          console.info("请求批次结果：",res);
           if(res.code=200){
             this.search.batchId=res.data
           }
@@ -130,7 +162,6 @@
       },
       getOrgan(){
         findAllDepartment(this.organId).then(res=>{
-          console.info("组织机构：",res);
           if(res.code=200){
             this.organList=res.data
           }
@@ -140,7 +171,6 @@
     },
     mounted() {
       let userInfo = iLocalStroage.gets("userInfo");
-      console.info("userinfo:",userInfo)
       this.organId = userInfo.organId;
       this.getBatch();
       this.getOrgan();

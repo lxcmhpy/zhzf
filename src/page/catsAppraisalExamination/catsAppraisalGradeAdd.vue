@@ -247,6 +247,12 @@ export default {
             }
       },
       commitData(){
+          var re = /^[1-9]([0-9])*$/;
+        let validata = this.pykhScoreDetailsVos.find(value=>value.oneSore===null || !re.test(value.oneSore))
+        if(validata){
+            this.$message({type: "warning",message: "全部评分之后才能提交"});
+            return
+        }
         const data = {
             id:this.form.id,
             assessType:"案卷评查",
@@ -268,6 +274,19 @@ export default {
       },
       saveRecord(row,key){
           if(this.oldValue !== row[key]){
+              if(key === "twoSore" || key === "oneSore"){
+                var re = /^[0-9]([0-9])*$/;
+                if (!re.test(row[key])) {
+                    row[key]=''
+                    this.$message({type: "error",message: "请输入整数"});
+                    return
+                }
+                if(parseInt(row[key])>row.score){
+                    row[key]=''
+                    this.$message({type: "error",message: "得分不能高于单项分值"});
+                    return
+                }
+              }
             updateScore(row).then(
                 res => {
                     
@@ -353,7 +372,9 @@ export default {
       }
     },
     mounted () {
-      this.fetchData();
+      if(this.$route.params.id !== undefined){
+            this.fetchData();
+        }
     }
 }
 </script>

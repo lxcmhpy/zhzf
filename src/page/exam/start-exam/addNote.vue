@@ -15,7 +15,7 @@
       ref="examNodeRef"
       :rules="rules"
     >
-      <div class="departTable">
+      <div>
         <el-row>
           <el-form-item label="记录类型:" prop="operationType">
             <el-select
@@ -49,7 +49,6 @@
             <el-input type="textarea" rows="2" v-model="examNode.operationDescription"></el-input>
           </el-form-item>
         </el-row>
-        <el-row></el-row>
       </div>
     </el-form>
     <div slot="footer" class="dialog-footer">
