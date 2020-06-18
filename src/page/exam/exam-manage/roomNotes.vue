@@ -25,7 +25,7 @@
         <el-table-column prop="forceReason" label="记录内容" align="center" min-width="80px"></el-table-column>
       </el-table>
     </div>
-    <div class="paginationBox">
+    <!-- <div class="paginationBox">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -35,7 +35,7 @@
         layout="prev, pager, next,sizes,jumper"
         :total="totalPage"
       ></el-pagination>
-    </div>
+    </div> -->
   </el-dialog>
 </template>
 <script>
@@ -94,15 +94,15 @@ export default {
       );
     },
     //更改每页显示的条数
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.getPersonAllInfo();
-    },
+    // handleSizeChange(val) {
+    //   this.pageSize = val;
+    //   this.getPersonAllInfo();
+    // },
     //更换页码
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getPersonAllInfo();
-    },
+    // handleCurrentChange(val) {
+    //   this.currentPage = val;
+    //   this.getPersonAllInfo();
+    // },
     closeDialog() {
       this.tableData.splice(this.tableData.length);
       this.visible = false;
