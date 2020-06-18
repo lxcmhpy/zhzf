@@ -55,6 +55,7 @@
             <el-table-column prop="caseNo" label="案件编号" align="center"></el-table-column>
             <el-table-column prop="caseParty" label="当事人" align="center"></el-table-column>
             <el-table-column prop="caseType" label="案卷类型" align="center"></el-table-column>
+            <el-table-column prop="caseAgency" label="立案机构" align="center"></el-table-column>
             <el-table-column prop="casesMajor" label="是否是重大案件" align="center"></el-table-column>
             <el-table-column prop="enforcementOfficials1" label="执法人员1" align="center"></el-table-column>
             <el-table-column prop="enforcementOfficials2" label="执法人员2" align="center"></el-table-column>
@@ -118,6 +119,9 @@
             <el-form-item label="当事人">
               <el-input placeholder="请输入" v-model.trim="form.caseParty" ></el-input>
             </el-form-item>
+            <el-form-item label="立案机构">
+              <el-input placeholder="请输入" v-model.trim="form.caseAgency" ></el-input>
+            </el-form-item>
             <el-form-item label="执法人员1">
               <el-input placeholder="请输入" v-model.trim="form.enforcementOfficials1" ></el-input>
             </el-form-item>
@@ -180,6 +184,7 @@
           caseCause:'',
           caseType:'',
           OId:'',
+          caseAgency:'',
           caseParty:'',
           enforcementOfficials1:'',
           enforcementOfficials2:'',
@@ -236,6 +241,8 @@
             this.visible=false;
             this.form={};
             this.fetchData({});
+          }else{
+            this.$message({type: "error",message:res.data});
           }
         })
       },

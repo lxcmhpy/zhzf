@@ -197,7 +197,7 @@
         console.log(param);
         var fd = new FormData();
         fd.append("file", param.file);
-        fd.append("OId",this.organId)
+        fd.append("oId",this.organId)
         importPerson(fd).then(
           res => {
             console.log(res);
@@ -208,6 +208,8 @@
               }else{
                  this.$message({type: "error",message:res.data});
               }
+            }else{
+              this.$message({type: "error",message:res.data});
             }
           },
           error => {
