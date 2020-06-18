@@ -80,8 +80,9 @@
                 <el-upload
                   class="upload-demo"
                   accept=".pdf"
+                  :show-file-list="false"
                   v-show="scope.row.caseStatus==1"
-                  :http-request="saveFile"
+                  :http-request="(params)=>saveFile(params,scope.row)"
                   action="https://jsonplaceholder.typicode.com/posts/"
                   multiple
                   :limit="1">
@@ -172,7 +173,7 @@
   import { mixinsCommon } from "@/common/js/mixinsCommon";
   import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo,deleteCaseInfo } from "@/api/catsAppraisalExamCaseUpload.js";
   import {findListVoByBatch,findAllDepartment} from "@/api/catsAppraisalExamPersonUpload.js";
-  import viewNotice from "../noticeManage/viewNotice"; 
+  import viewNotice from "../noticeManage/viewNotice";
   import iLocalStroage from '@/common/js/localStroage';
 
   export default {
@@ -215,10 +216,12 @@
       }
     },
     methods:{
-      saveFile(param) {
+      saveFile(param, row) {
+          debugger;
         console.log(param);
       },
       view(row){
+          debugger;
         let routerData = {
           storageId: row.storageId
         };
