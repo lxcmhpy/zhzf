@@ -88,6 +88,18 @@ export function randomSamplingStaffByPage (oId,batchId) {
   })
 }
 
+// 报送
+export function confirmSubmissionStaff (oId) {
+  return request({
+    url: "/pykh/staff/confirmSubmissionStaff/"+oId,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    params: null,
+    cancelToken: setCancelSource()
+  })
+}
+
 //省级提交最终人员(剩下未抽取到的人员id)
 export function submitProStaff (data) {
   return request({
