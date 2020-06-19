@@ -6,8 +6,7 @@
     :close-on-click-modal="false"
     width="35%">
     <el-form ref="examDeployFormRef" :model="examDeployForm" label-position="right"  label-width="100px">
-      <el-row>
-        <el-form-item label="考试名称" prop="examId" >
+        <!-- <el-form-item label="考试名称" prop="examId" >
               <el-select
                 v-model="examDeployForm.examId"
                 placeholder="考试名称"
@@ -21,34 +20,43 @@
                   :value="value.examId"
                 ></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
+      <el-row>
+        <el-form-item label="任务名称" prop="jobName">
+          <el-input v-model="examDeployForm.jobName"></el-input>
+        </el-form-item>  
       </el-row>
-      <el-row v-if="handelType == 3?false:true">
+      <el-row>
+        <el-form-item label="任务分组" prop="jobGroup">
+          <el-input v-model="examDeployForm.jobGroup"></el-input>
+        </el-form-item>  
+      </el-row>
+      <el-row>
+        <el-form-item label="开始时间" prop="startTime">
+          <el-date-picker
+            type="datetime"
+            v-model="examDeployForm.startTime"
+            format="yyyy-MM-dd HH:mm:ss"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            placeholder="请选择开始时间"
+            clearable
+          ></el-date-picker>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="cron表达式" prop="cronExpression">
+          <el-input v-model="examDeployForm.cronExpression"></el-input>
+        </el-form-item>  
+      </el-row>
+      <el-row>
+        <el-form-item label="参数名称" prop="invokeParam">
+          <el-input v-model="examDeployForm.invokeParam"></el-input>
+        </el-form-item>  
+      </el-row>
+      <el-row>
         <el-form-item label="类名" prop="className">
           <el-input v-model="examDeployForm.className"></el-input>
         </el-form-item>  
-      </el-row>
-      <el-row v-if="handelType == 3?false:true">
-        <el-form-item label="参数名称" prop="params">
-          <el-input v-model="examDeployForm.params"></el-input>
-        </el-form-item>  
-      </el-row>
-     
-        <el-row>
-        <el-form-item label="执行时间" prop="cronExpression1">
-          <el-date-picker type="datetime"   v-model="examDeployForm.cronExpression1" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择执行时间" clearable></el-date-picker>
-        </el-form-item>   
-      </el-row>
-       <el-row v-if="handelType == 3?false:true">
-        <el-form-item label="是否启用:" prop="status">
-          <el-radio v-model="examDeployForm.status" label="0">启用</el-radio>
-          <el-radio v-model="examDeployForm.status" label="1">不启用</el-radio>
-        </el-form-item>
-      </el-row>
-       <el-row v-if="handelType == 3?false:true">
-        <el-form-item label="说明:" prop="remark">
-          <el-input v-model="examDeployForm.remark"></el-input>
-        </el-form-item>
       </el-row>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -65,25 +73,30 @@ export default {
       isDisabled:false,
       visible: false,
      examDeployForm:{
-                id:'',
-                examId:'',
-                examName:'',
-                className:'',
-                params:'',
-                status:'',
-                cronExpression1:'',
-                status:'1',
-                remark:'',
-            },
+          quartzId: "",
+          jobName: "",
+          jobGroup: "",
+          startTime: "",
+          jobStatus: "",
+          cronExpression: "",
+          invokeParam: "",
+          className: "",
+          excuteTimes:"",
+          excuteStatus:"",
+          createId:"",
+          createTime:"",
+          modifyTime:"",
+          modifyId:"",
+      },
       examList:[],      
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
       handelType: 0 //添加 0  修改1 
     }
   },
-  created(){
-    this.getDictInfo();
-  },
+  // created(){
+  //   this.getDictInfo();
+  // },
   methods:{
      getDictInfo() {
       this.$store.dispatch("getExamManageSchedule").then(res => {
@@ -96,15 +109,25 @@ export default {
     },
     //提交
     submitStation() {
-      let _this = this
+      let _this = this;
+      let data = {
+          jobName: _this.examDeployForm.jobName,
+          jobGroup: _this.examDeployForm.jobGroup,
+          startTime: _this.examDeployForm.startTime,
+          cronExpression: _this.examDeployForm.cronExpression,
+          invokeParam: _this.examDeployForm.invokeParam,
+          className:_this.examDeployForm.className,
+      };
       if(_this.handelType==0){
-        _this.$store.dispatch("addScheduleJobModul", _this.examDeployForm).then(res => {
+        _this.$store.dispatch("addScheduleJobModul",data).then(res => {
           _this.$emit("getAddStationPage");
-          _this.$message({
+          if(res.code == '200'){
+            _this.$message({
               type: "success",
               message:  "添加成功!",
           });
           _this.visible = false;
+          }
         }, err => { this.$message({ type: 'error', message: err.msg || '' }) });
       }else if(_this.handelType==1){
         _this.$store.dispatch("updateScheduleJobModul", _this.examDeployForm).then(res => {
@@ -134,23 +157,24 @@ export default {
       _this.visible = true;
       _this.handelType = type;
       _this.isDisabled=false;
-      _this.examDeployForm.examId='';
-      _this.examDeployForm.examName='';
-      _this.examDeployForm.cronExpression1='';
-      _this.examDeployForm.status='1';
-      _this.examDeployForm.remark='';
+      _this.examDeployForm.quartzId='';
+      _this.examDeployForm.jobName='';
+      _this.examDeployForm.jobGroup='';
+      _this.examDeployForm.startTime='';
+      _this.examDeployForm.cronExpression='';
+      _this.examDeployForm.invokeParam='';
+      _this.examDeployForm.className='';
       if(type==0){//新增
         _this.dialogTitle = "新增";
       }else if(type==1){//修改
-        _this.dialogTitle = "修改";
-         _this.examDeployForm.id=row.id;
-        _this.examDeployForm.examId=row.examId;
-      _this.examDeployForm.examName=row.examName;
+      _this.dialogTitle = "修改";
+      _this.examDeployForm.quartzId=row.quartzId;
+      _this.examDeployForm.jobName=row.jobName;
+      _this.examDeployForm.jobGroup=row.jobGroup;
+      _this.examDeployForm.startTime=row.startTime;
+      _this.examDeployForm.cronExpression=row.cronExpression;
+      _this.examDeployForm.invokeParam=row.invokeParam;
       _this.examDeployForm.className=row.className;
-      _this.examDeployForm.params=row.params;
-      _this.examDeployForm.cronExpression1=row.cronExpression1;
-      _this.examDeployForm.status=row.status;
-      _this.examDeployForm.remark=row.remark;
       }
     },
     //聚焦清除错误信息
