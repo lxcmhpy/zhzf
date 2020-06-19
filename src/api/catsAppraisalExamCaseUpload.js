@@ -62,3 +62,26 @@ export function randomSamplingCaseByPage (oId,batchId) {
     cancelToken: setCancelSource()
   })
 }
+
+export function deleteCaseInfo(id){
+  return request({
+    url: "/pykh/case/deleteCaseInfo/"+id,
+    method: "get",
+    showloading: false,
+    baseUrlType:'CAPTCHA_HOST',
+    params: null,
+    cancelToken: setCancelSource()
+  })
+}
+
+export  function  StaffAndCaseFile(data)  {
+  return  request({
+    url:  "/pykh/file/StaffAndCaseFile",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+  });
+}

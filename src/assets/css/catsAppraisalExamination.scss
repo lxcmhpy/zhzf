@@ -144,6 +144,7 @@
                 width: 70px;
                 text-align: center;
                 margin-right: 80px;
+                cursor: pointer;
                 img:hover {
 
                 }
@@ -306,19 +307,39 @@
         display: flex;
         margin-right: 50px;
         .el-transfer__buttons {
-            width: 130px;
+            width: 90px;
             flex-shrink: 0;
+            box-sizing: border-box;
+            button {
+                margin-left:0px;
+                width: 100%;
+                .el-icon-arrow-left::before {
+                    content: "\e6dd";
+                    margin-left:-6px;
+                }
+                .el-icon-arrow-right::before {
+                    content: "\e6dc";
+                    margin-left:-6px;
+                }
+            }
         }
         .el-transfer-panel {
             flex:1;
             .transfer-list {
+                display: flex;
                 li {
-                    width: 200px;
+                    min-width: 80px;
+                    max-width: 200px;
+                    // flex:1;
                     overflow:hidden;
-                    float:left;
-                    margin:0 20px;
+                    // float:left;
+                    margin:0px;
+                    margin-right: 10px;
                 }
             }
         }
+    }
+    .el-transfer-panel__item {
+        margin-right: 7px;
     }
 }

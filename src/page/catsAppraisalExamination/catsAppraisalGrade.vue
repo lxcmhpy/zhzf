@@ -86,9 +86,10 @@
     mounted () {
       let userInfo = iLocalStroage.gets("userInfo");
       this.organId = userInfo.organId;
-      this.fetchData()
       if(this.organId === '1'){
         this.findAllOrg()
+      }else{
+        this.fetchData()
       }
     }
   };

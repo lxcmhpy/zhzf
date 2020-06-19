@@ -32,13 +32,12 @@
       <div class="item" :hidden="!showUpload">
       <el-upload
         class="upload-demo"
+        accept=".pdf"
         :http-request="saveFile"
         action="https://jsonplaceholder.typicode.com/posts/"
         multiple
-        :on-exceed="handleExceed"
         :file-list="fileList"
-        :limit="1"
-        :before-upload="beforeAvatarUpload">
+        :limit="1">
         <el-button size="small" type="primary"  v-show="true">上传</el-button>
     </el-upload>
     </div>
@@ -155,22 +154,13 @@
           this.addNoticeForm.content = ""
         }
       },
-      handleExceed(files, fileList){
-        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
-      beforeAvatarUpload(file) {
-        const isPDF = file.type === "application/pdf";
-        if (!isPDF) {
-          this.$message.error('上传附件只能是PDF格式!');
-        }
-        return isPDF ;
-      },
       saveFile(param) {
         console.log(param);
         var fd = new FormData();
         fd.append("file", param.file);
         fd.append("userId", iLocalStroage.gets("userInfo").id);
         fd.append("category", "公告");
+        fd.append("storageId", this.addNoticeForm.storageId);
         let _this = this
         uploadNoticeFile(fd).then(res => {
           console.log("1111111",res);
