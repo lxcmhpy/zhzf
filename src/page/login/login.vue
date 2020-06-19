@@ -6,7 +6,7 @@
         <div class="leftC">
           <img src="../../../static/images/img/login/zf_bg.png" alt="">
           <div class="leftC_title">
-              <img src="../../../static/images/img/login/logo1.png" alt=""> {{systemTitle}}
+              <img src="../../../static/images/img/login/logo1.png" alt=""> {{systemTitleLogin}}
           </div>
         </div>
         <div class="rightC" v-if="!resetFlag">
@@ -189,7 +189,8 @@ export default {
       weChatFlag: false,
       resetFlag: false,
       timeOutFlag: "",
-      menuList: null
+      menuList: null,
+      systemTitleLogin: null
     };
   },
   computed: {...mapGetters(['systemTitle'])},
@@ -320,13 +321,16 @@ export default {
     },
     //获取当前登录用户的信息
     getCurrentUser(){
-      getCurrentUserApi().then(res=>{
-        console.log("当前用户信息",res);
-        iLocalStroage.sets('userInfo', res.data);
-        this.getMenu();
-      },err=>{
-        console.log(err);
-      })
+        let _this =this;
+        new Promise((resolve, reject) => {
+            getCurrentUserApi().then(res=>{
+                console.log("当前用户信息",res);
+                iLocalStroage.sets('userInfo', res.data);
+                _this.getMenu();
+            },err=>{
+                console.log(err);
+            })
+       })
     },
     blueUsername() {
       this.hasUserError = false;
@@ -384,27 +388,35 @@ export default {
     },
 
     //获取系统标题
-    getSystemData() {
-      getDictListDetailByNameApi('系统标题').then(res => {
-        console.log('系统标题', res);
-        //系统标题
+    async getSystemData() {
+        // let _this = this;
+        let res = await getDictListDetailByNameApi('系统标题');
+        this.systemTitleLogin = res.data[0].name;
         this.$store.commit('set_systemTitle',res.data[0].name);
         window.document.title = res.data[0].name;
         //设置省份
         this.$store.commit('setProvince',res.data[2]&&res.data[2].name?res.data[2].name:'');
         //是否需要签章
         this.$store.commit('setShowQZBtn', res.data[1]&&res.data[1].name == '是'? true : false)
-        //设置系统首页
-        // this.$store.commit('setHomePage', res.data[3].name)
-      }, err => {
-        console.log(err);
-      })
+    //     new Promise((resolve, reject) => {
+    //         getDictListDetailByNameApi('系统标题').then(res => {
+    //             console.log('系统标题', res);
+    //             //系统标题
+
+    //             //设置系统首页
+    //             // this.$store.commit('setHomePage', res.data[3].name)
+    //         }, err => {
+    //             console.log(err);
+    //         })
+    //   })
     },
   },
   mounted() {
     this.showLogin = true;
     // this.test()
-    this.getSystemData();
+  },
+  async created () {
+    await this.getSystemData();
   },
   components: {
       VueSimpleVerify

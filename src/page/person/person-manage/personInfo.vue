@@ -512,6 +512,8 @@ export default {
     // 日志重置
     resetLog() {
       this.$refs["personFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getPersonList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {

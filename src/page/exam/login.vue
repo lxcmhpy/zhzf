@@ -209,11 +209,9 @@ export default {
       })
     }
   },
-  created () {
-    window.sessionStorage.clear();
-  },
   mounted() {
     this.showLogin = true;
+    window.sessionStorage.clear();
     sessionStorage.setItem('LoginSystem', 'examLogin');
     this.getSystemData();
   }
