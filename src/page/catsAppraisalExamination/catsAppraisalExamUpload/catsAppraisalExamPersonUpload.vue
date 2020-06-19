@@ -206,7 +206,7 @@
           }else{
             _this.$message.error('出现异常，添加失败！');
           }
-        });   
+        });
       },
       view(row){
         this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +row.storageId;

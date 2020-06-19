@@ -307,18 +307,28 @@
         display: flex;
         margin-right: 50px;
         .el-transfer__buttons {
-            width: 130px;
+            width: 90px;
             flex-shrink: 0;
+            button {
+                margin-left:0px;
+                width: 100%;
+            }
         }
         .el-transfer-panel {
             flex:1;
             .transfer-list {
                 display: flex;
                 li {
-                    // width: 200px;
+                    min-width: 80px;
+                    max-width: 200px;
+                    // flex:1;
                     overflow:hidden;
                     // float:left;
-                    margin:0 20px;
+                    margin:0px;
+                    margin-right: 10px;
+                }
+                .el-transfer-panel__item {
+                    margin-right: 7px;
                 }
             }
         }
